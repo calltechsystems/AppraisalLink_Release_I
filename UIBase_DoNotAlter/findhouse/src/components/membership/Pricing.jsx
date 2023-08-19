@@ -2,8 +2,8 @@ const Pricing = () => {
   const pricingContent = [
     {
       id: 1,
-      price: "56",
-      title: "Standard Plan",
+      price: "11",
+      title: "Lite Plan",
       features: [
         "50 Property Listings",
         "60 Days Availability",
@@ -13,8 +13,8 @@ const Pricing = () => {
     },
     {
       id: 2,
-      price: "190",
-      title: "Extended Plan",
+      price: "19",
+      title: "Pro Plan",
       features: [
         "50 Property Listings",
         "60 Days Availability",
@@ -24,8 +24,8 @@ const Pricing = () => {
     },
     {
       id: 3,
-      price: "291",
-      title: "Premium Plan",
+      price: "35",
+      title: "Ultimate Plan",
       features: [
         "50 Property Listings",
         "60 Days Availability",
@@ -51,7 +51,7 @@ const Pricing = () => {
               </ul>
             </div>
             <div className="pricing_footer">
-              <a className="btn pricing_btn btn-block" href="#">
+              <a className="btn pricing_btn btn-block w-100" href="#">
                 Select Package
               </a>
             </div>

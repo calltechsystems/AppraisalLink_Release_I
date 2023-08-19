@@ -4215,7 +4215,7 @@ form.home5_advanced_search_form .form-group input.form-control::-ms-input-placeh
 }
 
 .home1_bgi1 {
-  background-image: url(../images/background/1.jpg);
+  background-image: url(../images/home/Homepage_01.jpg);
   -webkit-background-size: cover;
   background-size: cover;
   background-position: center center;
@@ -8766,7 +8766,7 @@ form.home5_advanced_search_form .form-group input.form-control::-ms-input-placeh
 
 /*== Inner Pages Breadcrumb ==*/
 .inner_page_breadcrumb {
-  background-image: url(../images/background/inner-pagebg.jpg);
+  background-image: url(../images/home/membership.jpg);
   background-repeat: no-repeat;
   height: 370px;
   margin-top: 88px;
@@ -10485,9 +10485,9 @@ a.btn.btn_error {
 }
 
 .pricing_table .pricing_content ul li {
-  font-size: 14px;
+  font-size: 15px;
   font-family: "Nunito";
-  color: #484848;
+  color: #000000;
   line-height: 3.571;
 }
 
@@ -19741,4 +19741,150 @@ button.gm-ui-hover-effect:focus {
 
 .pro-sidebar .pro-menu a.ui-active {
   color: var(--color-primary) !important;
+}
+
+
+/* Custom css */
+
+.pricing_table .pricing_header .price{
+  color: #7ba7ed !important;
+}
+
+.pricing_table .pricing_footer a.btn.pricing_btn{
+  background-color: #5081f2;
+  border: 2px solid #5081f2 !important;
+  border-radius: 8px;
+  color: #ffffff !important;
+}
+
+.pricing_table .pricing_footer a.btn.pricing_btn:hover{
+  background-color: #6714e3 !important;
+  color: #ffffff !important;
+  border: 1px solid #6714e3 !important;
+}
+
+.pricing_table .pricing_header h4 {
+  font-size: 18px;
+  font-family: "Nunito";
+  color: #ffffff !important;
+  /* font-weight: bold; */
+  /* line-height: 1.444; */
+}
+
+header.header-nav.menu_style_home_one.style2 ul.ace-responsive-menu li.add_listing{
+  background-color: #084c61 !important ;
+}
+
+header.header-nav.menu_style_home_one.stricky-fixed .ace-responsive-menu li.add_listing{
+  background-color: #084c61 !important;
+}
+
+.home1-advnc-search ul li .search_option_button button{
+  background-color: #084c61 !important ;
+  border: 1px solid !important;
+}
+
+.home1-advnc-search ul li .search_option_button button:hover {
+  background-color: #ffffff !important;
+  border: 2px solid var(--color-primary);
+  color: red !important;
+}
+
+.home_adv_srch_opt .nav-pills li.nav-item a.nav-link.active{
+  background-color: #1a3275 !important ;
+  border-color: var(--color-primary);
+  color: #ffffff;
+}
+
+.home_adv_srch_opt .nav-pills li.nav-item a.nav-link.active:before{
+  background-color: #1a3275 !important ;
+  color: white !important;
+}
+
+/* header.header-nav.menu_style_home_one ul.ace-responsive-menu li.add_listing a:hover{
+  background-color: #084c61 !important ;
+  color: #ffffff !important;
+} */
+
+.bgc-thm{
+  background-color: #084c61 !important ;
+}
+
+.parner_reg_btn a.btn{
+  background-color: #db3934 !important ;
+}
+
+.parner_reg_btn a.btn:hover{
+  background-color: #ffffff !important ;
+}
+
+.login_form .btn-log{
+  background-color: #084c61 !important ;
+  border: 1px solid;
+}
+
+.login_form .btn-log:hover{
+  background-color: #ffffff !important ;
+  /* border: 1px solid; */
+}
+
+.sign_up_modal .modal-header{
+  background-color: #084c61 !important ;
+}
+
+.sign_up_form .btn-log{
+  background-color: #084c61 !important ;
+  border: 1px solid;
+}
+
+.inner_page_breadcrumb_contact_us{
+  background-image: url(../images/home/contact_us.jpg) !important;
+}
+
+.text-color{
+  color: #abe856;
+}
+
+.text-color_01{
+  color: #08ee90;
+}
+
+.text-color_02{
+  color: #5c05f5;
+}
+
+/* Pricing Table Custom CSS */
+
+.pricing_table{
+  background-color: #0446b0 !important;
+  /* border: none !important; */
+}
+
+.pricing_table:hover {
+  background-color: #3d0d78 !important;
+  color: white !important;
+}
+
+.pricing_table .pricing_content ul li{
+  color: white !important;
+}
+
+.bg-color{
+  /* background-color: rgb(5, 252, 207); */
+  /* background-image: url(../images/home/group-people-hold-huge-lamp-new-idea-illustration-success-business-rely-teamwork-creative-problem-solving_121223-1205.avif); */
+  opacity: 0.9;
+  -webkit-background-size: cover;
+  background-size: cover;
+  background-position: center center;
+  /* height: 960px; */
+
+}
+
+header.header-nav.menu_style_home_one .ace-responsive-menu > li > a{
+  font-size: 17px !important;
+
+}
+.fs-13{
+  font-size: 14px !important;
+
 }

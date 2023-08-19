@@ -1,11 +1,10 @@
-import CallToAction from "../common/CallToAction";
 import CopyrightFooter from "../common/footer/CopyrightFooter";
 import Footer from "../common/footer/Footer";
 import Header from "../common/header/DefaultHeader";
 import MobileMenu from "../common/header/MobileMenu";
 import PopupSignInUp from "../common/PopupSignInUp";
 import BreadCrumbBanner from "./BreadCrumbBanner";
-import Pricing from "./Pricing";
+import Form from "./form";
 
 const index = () => {
   return (
@@ -22,30 +21,16 @@ const index = () => {
       {/* <!-- Inner Page Breadcrumb --> */}
       <BreadCrumbBanner />
 
-      {/* <!-- Service Section Area --> */}
-      <section className="our-service pb30 bg-color">
+      {/* <!-- Our LogIn Register --> */}
+      <section className="our-log bgc-fa">
         <div className="container">
-          <div className="row">
-            <div className="col-lg-6 offset-lg-3">
-              <div className="main-title text-center">
-                <h2 className="text-dark">Ready to get started?</h2>
-                <p className="text-dark">Choose a plan tailored to your needs</p>
+          <div className="row  ">
+            <div className="col-sm-12 col-lg-12 offset-lg-0">
+              <div className="login_form  inner_page">
+                <Form />
               </div>
             </div>
           </div>
-          {/* End .row */}
-
-          <div className="row">
-            <Pricing />
-          </div>
-          {/* End .row */}
-        </div>
-      </section>
-
-      {/* <!-- Start Call to Action --> */}
-      <section className="start-partners bgc-thm pt50 pb50">
-        <div className="container">
-          <CallToAction />
         </div>
       </section>
 

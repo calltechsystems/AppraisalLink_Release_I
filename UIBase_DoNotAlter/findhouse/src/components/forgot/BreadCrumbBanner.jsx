@@ -2,13 +2,13 @@ import BreadCrumb from "../common/BreadCrumb";
 
 const BreadCrumbBanner = () => {
   return (
-    <section className="inner_page_breadcrumb_contact_us inner_page_breadcrumb">
+    <section className="inner_page_breadcrumb">
       <div className="container">
         <div className="row">
           <div className="col-xl-6">
             <div className="breadcrumb_content">
-              <BreadCrumb title="contact" />
-              <h4 className="breadcrumb_title">Contact Us</h4>
+              <BreadCrumb title="Forgot Password" />
+              <h4 className="breadcrumb_title">Password Reset</h4>
             </div>
           </div>
           {/* End .col */}

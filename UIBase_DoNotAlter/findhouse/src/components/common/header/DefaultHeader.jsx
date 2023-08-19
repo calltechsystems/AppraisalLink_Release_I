@@ -31,17 +31,17 @@ const Header = () => {
             width={40}
             height={45}
             className="logo1 img-fluid"
-            src="/assets/images/header-logo2.png"
+            src="/assets/images/logo_new.png"
             alt="header-logo2.png"
           />
           <Image
             width={40}
             height={45}
             className="logo2 img-fluid"
-            src="/assets/images/header-logo2.png"
+            src="/assets/images/logo_new.png"
             alt="header-logo2.png"
           />
-          <span>FindHouse</span>
+          <span>Appraisal Link</span>
         </Link>
         {/* site logo brand */}
 
