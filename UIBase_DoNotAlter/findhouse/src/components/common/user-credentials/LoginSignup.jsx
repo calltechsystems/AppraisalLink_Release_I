@@ -95,7 +95,7 @@ const LoginSignup = () => {
                       type="text"
                       className="form-control"
                       id="inlineFormInputGroupUsername2"
-                      placeholder="Enter Your Email Address"
+                      placeholder="Enter Your Email Address" required
                     />
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -110,7 +110,7 @@ const LoginSignup = () => {
                       type="password"
                       className="form-control"
                       id="exampleInputPassword1"
-                      placeholder="Enter Your Password"
+                      placeholder="Enter Your Password" required
                     />
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -227,7 +227,7 @@ const LoginSignup = () => {
                         type="email"
                         className="form-control"
                         id="exampleInputEmail2"
-                        placeholder="Email Address"
+                        placeholder="Email Address" required
                       />
                       <div className="input-group-prepend">
                         <div className="input-group-text">
@@ -243,7 +243,7 @@ const LoginSignup = () => {
                       type="password"
                       className="form-control"
                       id="exampleInputPassword2"
-                      placeholder="Create Password"
+                      placeholder="Create Password" required
                     />
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -259,7 +259,7 @@ const LoginSignup = () => {
                       type="password"
                       className="form-control"
                       id="exampleInputPassword3"
-                      placeholder="Confirm Password"
+                      placeholder="Confirm Password" required
                     />
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -324,7 +324,7 @@ const LoginSignup = () => {
                       className="form-check-input"
                       type="checkbox"
                       value=""
-                      id="terms"
+                      id="terms" required
                     />
                     <label
                       className="form-check-label form-check-label"
@@ -332,7 +332,7 @@ const LoginSignup = () => {
                     >
                       I accept the Terms and Privacy Policy.
                     </label>
-                    <a href="file:///C:/Users/PC6/OneDrive/Desktop/WebUI%20Base%20Configurations/findhouse/public/assets/images/s-series.pdf">Guidelines</a>
+                    <a href="assets/images/PYTHON PROGRAMMING NOTES.pdf">Guidelines</a>
                   </div>
                   {/* End from-group */}
 
