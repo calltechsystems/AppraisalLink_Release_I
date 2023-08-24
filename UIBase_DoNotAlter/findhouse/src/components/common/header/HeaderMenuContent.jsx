@@ -461,8 +461,8 @@ const HeaderMenuContent = ({ float = "" }) => {
       </li> */}
       <li className="last">
         <Link
-          href="/gallery"
-          className={route.pathname === "/gallery" ? "ui-active" : undefined}
+          href="/membership"
+          className={route.pathname === "/membership" ? "ui-active" : undefined}
         >
           Membership
         </Link>

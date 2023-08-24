@@ -30,6 +30,11 @@ const index = () => {
               <div className="main-title text-center">
                 <h2 className="text-dark">Ready to get started?</h2>
                 <p className="text-dark">Choose a plan tailored to your needs</p>
+                {/* <div class="form-switch mt-2">
+                  <label className="form-check-label" for="flexSwitchCheckDefault">Monthly</label>
+                  <input className="form-check-input" type="checkbox" id="flexSwitchCheckDefault"/>
+                  <label className="form-check-label" for="flexSwitchCheckDefault">Yearly</label>
+                </div> */}
               </div>
             </div>
           </div>
