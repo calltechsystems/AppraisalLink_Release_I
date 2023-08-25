@@ -462,6 +462,17 @@ const HeaderMenuContent = ({ float = "" }) => {
       </li>
       {/* End .dropitem */}
 
+      <li className={"user_setting"}>
+            <Image
+              width={25}
+              height={25}
+              className="rounded-circle"
+              src="/assets/images/service/bell.png"
+              alt="e1.png"
+            />
+      </li>
+
+
       <li className="user_setting">
         <div className="dropdown">
           <a className="btn dropdown-toggle" href="#" data-bs-toggle="dropdown">
@@ -469,10 +480,10 @@ const HeaderMenuContent = ({ float = "" }) => {
               width={45}
               height={45}
               className="rounded-circle"
-              src="/assets/images/team/e1.png"
+              src="/assets/images/team/Gary-Avatar.png"
               alt="e1.png"
             />
-            <span className="dn-1199 ms-1">Ali Tufan</span>
+            <span className="dn-1199 ms-1">Shubhendra Patel</span>
           </a>
           <div className="dropdown-menu">
             <MyAccount />
@@ -481,12 +492,12 @@ const HeaderMenuContent = ({ float = "" }) => {
       </li>
       {/* End ."user_setting */}
 
-      <li className={`list-inline-item add_listing ${float}`}>
+      {/* <li className={`list-inline-item add_listing ${float}`}>
         <Link href="/create-listing">
           <span className="flaticon-plus"></span>
           <span className="dn-lg"> Create Listing</span>
         </Link>
-      </li>
+      </li> */}
       {/* End .dropitem */}
     </ul>
   );

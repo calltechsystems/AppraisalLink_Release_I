@@ -3,7 +3,7 @@ const Pricing = () => {
     {
       id: 1,
       price: "11",
-      title: "Lite Plan",
+      title: "Lite",
       features: [
         "50 Property Listings",
         "60 Days Availability",
@@ -14,7 +14,7 @@ const Pricing = () => {
     {
       id: 2,
       price: "19",
-      title: "Pro Plan",
+      title: "Pro",
       features: [
         "50 Property Listings",
         "60 Days Availability",
@@ -25,7 +25,7 @@ const Pricing = () => {
     {
       id: 3,
       price: "35",
-      title: "Ultimate Plan",
+      title: "Ultimate",
       features: [
         "50 Property Listings",
         "60 Days Availability",

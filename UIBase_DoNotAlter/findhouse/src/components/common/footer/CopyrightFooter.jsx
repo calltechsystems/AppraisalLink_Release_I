@@ -34,7 +34,7 @@ const CopyrightFooter = () => {
               target="_blank"
               rel="noreferrer"
             >
-              Appraiser Company
+              Appraisal Link
             </a>
             . All rights reserved.
           </p>

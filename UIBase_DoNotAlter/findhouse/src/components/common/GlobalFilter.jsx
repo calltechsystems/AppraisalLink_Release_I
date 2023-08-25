@@ -45,7 +45,7 @@ const GlobalFilter = ({ className = "" }) => {
             <input
               type="text"
               className="form-control"
-              placeholder="Zipcode"
+              placeholder="Zip-Code"
               onChange={(e) => dispatch(addKeyword(e.target.value))}
             />
           </div>

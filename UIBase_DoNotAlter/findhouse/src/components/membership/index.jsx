@@ -48,11 +48,11 @@ const index = () => {
       </section>
 
       {/* <!-- Start Call to Action --> */}
-      <section className="start-partners bgc-thm pt50 pb50">
+      {/* <section className="start-partners bgc-thm pt50 pb50">
         <div className="container">
           <CallToAction />
         </div>
-      </section>
+      </section> */}
 
       {/* <!-- Our Footer --> */}
       <section className="footer_one">

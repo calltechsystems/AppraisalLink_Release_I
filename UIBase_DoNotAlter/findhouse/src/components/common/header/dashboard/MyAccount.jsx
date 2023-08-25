@@ -19,12 +19,12 @@ const MyAccount = () => {
           width={40}
           height={40}
           className="float-start"
-          src="/assets/images/team/e1.png"
+          src="/assets/images/team/Gary-Avatar.png"
           alt="e1.png"
         />
         <p>
-          Ali Tufan <br />
-          <span className="address">alitufan@gmail.com</span>
+          Shubhendra Patel <br />
+          <span className="address">abc@xyz.com</span>
         </p>
       </div>
       {/* End user_set_header */}

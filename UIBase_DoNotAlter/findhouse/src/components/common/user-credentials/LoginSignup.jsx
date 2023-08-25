@@ -95,7 +95,7 @@ const LoginSignup = () => {
                       type="text"
                       className="form-control"
                       id="inlineFormInputGroupUsername2"
-                      placeholder="Enter Your Email Address" required
+                      placeholder="Email Address" required
                     />
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -110,7 +110,7 @@ const LoginSignup = () => {
                       type="password"
                       className="form-control"
                       id="exampleInputPassword1"
-                      placeholder="Enter Your Password" required
+                      placeholder="Password" required
                     />
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -147,7 +147,7 @@ const LoginSignup = () => {
 
                   <p className="text-center">
                     Dont have an account?{" "}
-                    <a className="text-thm fw-bold" href="#">
+                    <a className="text-danger fw-bold" href="#">
                       Register
                     </a>
                   </p>
@@ -170,7 +170,7 @@ const LoginSignup = () => {
                   width={357}
                   height={659}
                   className="img-fluid w100 h-100 cover"
-                  src="/assets/images/home/register_new.webp"
+                  src="/assets/images/home/mobile-login-concept-illustration_114360-83.avif"
                   alt="regstr.jpg"
                 />
               </div>
@@ -327,12 +327,12 @@ const LoginSignup = () => {
                       id="terms" required
                     />
                     <label
-                      className="form-check-label form-check-label"
+                      className="form-check-label"
                       htmlFor="terms"
                     >
                       I accept the Terms and Privacy Policy.
                     </label>
-                    <a href="assets/images/PYTHON PROGRAMMING NOTES.pdf">Guidelines</a>
+                    <a href="assets/images/Terms & Conditions.pdf" target="_blank" className="form-check-label text-danger">Terms&Cond.</a>
                   </div>
                   {/* End from-group */}
 

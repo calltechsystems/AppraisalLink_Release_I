@@ -42,10 +42,10 @@ const SidebarMenu = () => {
             <Image
               width={40}
               height={45}
-              src="/assets/images/header-logo2.png"
+              src="/assets/images/logo_new.png"
               alt="header-logo2.png"
             />
-            <span>FindHouse</span>
+            <span>Appraisal Link</span>
           </Link>
         </li>
         {/* End header */}
@@ -74,7 +74,7 @@ const SidebarMenu = () => {
             >
               <Link href="/create-listing">
                 <i className="flaticon-plus"></i>
-                <span> Create Listing</span>
+                <span> Appraise Property</span>
               </Link>
             </li>
             <li
@@ -84,17 +84,17 @@ const SidebarMenu = () => {
                   : ""
               }`}
             >
-              <Link href="/my-message">
+              {/* <Link href="/my-message">
                 <i className="flaticon-envelope"></i>
                 <span> Message</span>
-              </Link>
+              </Link> */}
             </li>
           </ul>
         </li>
         {/* End Main */}
 
         <li className="title">
-          <span>Manage Listings</span>
+          <span>Manage Appraise Properties</span>
           <ul>
             <li
               className={`treeview ${

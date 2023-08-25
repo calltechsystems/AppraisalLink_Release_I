@@ -1,7 +1,20 @@
 const SocialMedia = () => {
   return (
     <div className="row">
-      <div className="col-lg-6 col-xl-6">
+     <h4 className="mb-3">Other Information</h4>
+
+
+      <div class="accordion" id="accordionExample">
+         <div class="accordion-item">
+         <h2 class="accordion-header" id="headingOne">
+         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+           Social Media
+         </button>
+         </h2>
+      <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"       data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          <div className="row">
+        <div className="col-lg-6 col-xl-6">
         <div className="my_profile_setting_input form-group">
           <label htmlFor="formGroupExampleSkype">Skype</label>
           <input
@@ -129,6 +142,14 @@ const SocialMedia = () => {
         </div>
       </div>
       {/* End .col */}
+      </div>
+      </div>
+  </div>
+  </div>
+</div>
+
+
+
     </div>
   );
 };

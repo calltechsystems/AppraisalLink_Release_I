@@ -19758,9 +19758,9 @@ button.gm-ui-hover-effect:focus {
 }
 
 .pricing_table .pricing_footer a.btn.pricing_btn:hover{
-  background-color: #6714e3 !important;
+  background-color: #052ca1 !important;
   color: #ffffff !important;
-  border: 1px solid #6714e3 !important;
+  border: 1px solid black !important;
 }
 
 .pricing_table .pricing_header h4 {
@@ -19819,22 +19819,45 @@ header.header-nav.menu_style_home_one.stricky-fixed .ace-responsive-menu li.add_
 }
 
 .login_form .btn-log{
-  background-color: #084c61 !important ;
+  /* background-color: #084c61 !important ; */
+  background-color: #0272db !important;
   border: 1px solid;
 }
 
 .login_form .btn-log:hover{
-  background-color: #ffffff !important ;
-  /* border: 1px solid; */
+  background-color: #0595e3 !important ;
+  color: black !important;
+  border: 1px solid black !important;
 }
 
 .sign_up_modal .modal-header{
-  background-color: #084c61 !important ;
+  background-color: #0272db !important ;
 }
 
-.sign_up_form .btn-log{
-  background-color: #084c61 !important ;
+/* Buttons css */
+
+.my_profile_setting_input .btn2{
+  background-color: #0272db !important ;
   border: 1px solid;
+}
+
+.my_profile_setting_input .btn2:hover{
+  background-color: #0595e3 !important ;
+  color: black !important;
+  border: 1px solid black !important;
+}
+
+
+.sign_up_form .btn-log{
+  background-color: #0595e3 !important ;
+  color: black !important;
+  border: 1px solid black !important;
+}
+
+.sign_up_form .btn-log:hover{
+  background-color: #0595e3 !important ;
+  color: black !important;
+  border: 1px solid black !important;
 }
 
 .inner_page_breadcrumb_contact_us{
@@ -19845,6 +19868,9 @@ header.header-nav.menu_style_home_one.stricky-fixed .ace-responsive-menu li.add_
   color: #abe856;
 }
 
+.theme-color{
+  color: #0272db;
+}
 .text-color_01{
   color: #08ee90;
 }
@@ -19861,7 +19887,7 @@ header.header-nav.menu_style_home_one.stricky-fixed .ace-responsive-menu li.add_
 }
 
 .pricing_table:hover {
-  background-color: #4d8a78 !important;
+  background-color: #0272db !important;
   color: white !important;
 }
 
@@ -19887,4 +19913,46 @@ header.header-nav.menu_style_home_one .ace-responsive-menu > li > a{
 .fs-13{
   font-size: 14px !important;
 
+}
+
+.login_form .heading h4,
+.sign_up_form .heading h4 {
+  color: #0272db !important;
+}
+
+.sign_up_tab li.nav-item .nav-link.active{
+  background-color: #95c5f5 !important;
+}
+
+.pricing_table .pricing_header {
+  padding: 10px 0 !important;
+}
+
+.inner_page_breadcrumb_membership {
+  background-image: url(../images/home/membership.jpg);
+  background-repeat: no-repeat;
+  height: 100px;
+  margin-top: 88px;
+  position: relative;
+}
+
+.inner_page_breadcrumb_membership:before {
+  background-color: rgb(29, 41, 62);
+  bottom: 0;
+  content: "";
+  left: 0;
+  opacity: 0.4;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.text_membership{
+  font-size: 32px !important;
+  color: white !important;
+}
+
+.our-dashbord.dashbord {
+  padding-top: 100px !important;
+  padding-left: 295px !important;
 }

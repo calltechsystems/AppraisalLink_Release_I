@@ -49,7 +49,7 @@ const index = () => {
                 </div>
                 {/* End Dashboard Navigation */}
 
-                <div className="col-lg-12 mb10">
+                <div className="col-lg-12">
                   <div className="breadcrumb_content style2">
                     <h2 className="breadcrumb_title">My Profile</h2>
                     <p>We are glad to see you again!</p>
@@ -60,10 +60,10 @@ const index = () => {
                 <div className="col-lg-12">
                   <div className="my_dashboard_review">
                     <div className="row">
-                      <div className="col-xl-2">
-                        <h4>Profile Information</h4>
-                      </div>
-                      <div className="col-xl-10">
+                      {/* <div className="col-xl-2">
+                        <h4>Personal Information</h4>
+                      </div> */}
+                      <div className="col-xl-12">
                         <ProfileInfo />
                       </div>
                     </div>
@@ -72,10 +72,10 @@ const index = () => {
 
                   <div className="my_dashboard_review mt30">
                     <div className="row">
-                      <div className="col-xl-2">
+                      {/* <div className="col-xl-2">
                         <h4>Social Media</h4>
-                      </div>
-                      <div className="col-xl-10">
+                      </div> */}
+                      <div className="col-xl-12">
                         <SocialMedia />
                       </div>
                     </div>
@@ -84,10 +84,10 @@ const index = () => {
 
                   <div className="my_dashboard_review mt30">
                     <div className="row">
-                      <div className="col-xl-2">
+                      {/* <div className="col-xl-2">
                         <h4>Change password</h4>
-                      </div>
-                      <div className="col-xl-10">
+                      </div> */}
+                      <div className="col-xl-12">
                         <ChangePassword />
                       </div>
                     </div>
@@ -99,7 +99,7 @@ const index = () => {
               <div className="row mt50">
                 <div className="col-lg-12">
                   <div className="copyright-widget text-center">
-                    <p>© 2020 Find House. Made with love.</p>
+                    <p>© 2023 Appraisal Link. All Rights Reserved.</p>
                   </div>
                 </div>
               </div>
