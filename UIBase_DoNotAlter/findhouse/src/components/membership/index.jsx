@@ -23,13 +23,18 @@ const index = () => {
       <BreadCrumbBanner />
 
       {/* <!-- Service Section Area --> */}
-      <section className="our-service pb30">
+      <section className="our-service pb30 bg-color">
         <div className="container">
           <div className="row">
             <div className="col-lg-6 offset-lg-3">
               <div className="main-title text-center">
-                <h2>Choose Your Perfect Plan From Us</h2>
-                <p>We provide full service at every step</p>
+                <h2 className="text-dark">Ready to get started?</h2>
+                <p className="text-dark">Choose a plan tailored to your needs</p>
+                {/* <div class="form-switch mt-2">
+                  <label className="form-check-label" for="flexSwitchCheckDefault">Monthly</label>
+                  <input className="form-check-input" type="checkbox" id="flexSwitchCheckDefault"/>
+                  <label className="form-check-label" for="flexSwitchCheckDefault">Yearly</label>
+                </div> */}
               </div>
             </div>
           </div>
@@ -43,11 +48,11 @@ const index = () => {
       </section>
 
       {/* <!-- Start Call to Action --> */}
-      <section className="start-partners bgc-thm pt50 pb50">
+      {/* <section className="start-partners bgc-thm pt50 pb50">
         <div className="container">
           <CallToAction />
         </div>
-      </section>
+      </section> */}
 
       {/* <!-- Our Footer --> */}
       <section className="footer_one">

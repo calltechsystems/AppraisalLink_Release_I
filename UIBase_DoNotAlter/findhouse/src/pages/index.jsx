@@ -5,7 +5,7 @@ import HomeMain from "../components/home";
 const index = () => {
   return (
     <>
-      <Seo pageTitle="Home-1" />
+      <Seo pageTitle="Homepage" />
       <HomeMain />
     </>
   );

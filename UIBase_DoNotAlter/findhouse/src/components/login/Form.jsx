@@ -1,8 +1,21 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const Form = () => {
   return (
-    <form action="#">
+    <>
+      <div className="row">
+        <div className="col-lg-6">
+       <Image
+        width={157}
+        height={100}
+        className="img-fluid w100 h-100 cover"
+        src="/assets/images/home/login_01.avif"
+        alt="login.jpg"
+       />
+        </div>
+        <div className="col-lg-6">
+          <form action="#">
       <div className="heading text-center">
         <h3>Login to your account</h3>
         <p className="text-center">
@@ -19,7 +32,7 @@ const Form = () => {
           type="text"
           className="form-control"
           required
-          placeholder="User Name Or Email"
+          placeholder="Enter your email address"
         />
         <div className="input-group-prepend">
           <div className="input-group-text">
@@ -34,7 +47,7 @@ const Form = () => {
           type="password"
           className="form-control"
           required
-          placeholder="Password"
+          placeholder="Enter your password"
         />
         <div className="input-group-prepend">
           <div className="input-group-text">
@@ -58,9 +71,12 @@ const Form = () => {
           Remember me
         </label>
 
-        <a className="btn-fpswd float-end" href="#">
+        <Link href="/forgot-password" className="btn-fpswd float-end">
           Forgot password?
-        </a>
+          </Link>
+        {/* <a className="btn-fpswd float-end" href="/forgot-password">
+          Forgot password?
+        </a> */}
       </div>
       {/* End .form-group */}
 
@@ -69,35 +85,39 @@ const Form = () => {
       </button>
       {/* login button */}
 
-      <div className="divide">
+      {/* <div className="divide">
         <span className="lf_divider">Or</span>
         <hr />
-      </div>
+      </div> */}
       {/* devider */}
 
       <div className="row mt25">
-        <div className="col-lg-6">
+        {/* <div className="col-lg-6">
           <button
             type="submit"
             className="btn btn-block color-white bgc-fb mb0 w-100"
           >
             <i className="fa fa-facebook float-start mt5"></i> Facebook
           </button>
-        </div>
+        </div> */}
         {/* End .col */}
 
-        <div className="col-lg-6">
+        {/* <div className="col-lg-6">
           <button
             type="submit"
             className="btn btn2 btn-block color-white bgc-gogle mb0 w-100"
           >
             <i className="fa fa-google float-start mt5"></i> Google
           </button>
-        </div>
+        </div> */}
         {/* End .col */}
       </div>
       {/* more signin options */}
-    </form>
+          </form>
+        </div>
+        
+      </div>
+    </>
   );
 };
 

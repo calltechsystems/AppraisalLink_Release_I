@@ -7,7 +7,7 @@ const Footer = () => {
     <>
       <div className="col-sm-6 col-md-6 col-lg-3 col-xl-3 pr0 pl0">
         <div className="footer_about_widget">
-          <h4>About Site</h4>
+          <h4>About Appraisal Link</h4>
           <p>
             We’re reimagining how you buy, sell and rent. It’s now easier to get
             into a place you love. So let’s do this, together.
@@ -33,7 +33,7 @@ const Footer = () => {
               <Link href="/">Support Center</Link>
             </li>
             <li>
-              <Link href="/">Press Info</Link>
+              <Link href="/">FAQ's</Link>
             </li>
           </ul>
         </div>
@@ -45,19 +45,19 @@ const Footer = () => {
           <h4>Contact Us</h4>
           <ul className="list-unstyled">
             <li>
-              <a href="mailto:info@findhouse.com">info@findhouse.com</a>
+              <a href="mailto:info@findhouse.com">xyz@abc.com</a>
             </li>
             <li>
-              <a href="#">Collins Street West, Victoria</a>
+              <a href="#">XYZ street Model Town British Columbia</a>
             </li>
             <li>
-              <a href="#">8007, Australia.</a>
+              <a href="#">Canada Pin Code 123456</a>
             </li>
             <li>
-              <a href="tel:+4733378901">+1 246-345-0699</a>
+              <a href="tel:+4733378901">+X XXX-YYY-ZZZZ</a>
             </li>
             <li>
-              <a href="tel:+4733378901">+1 246-345-0695</a>
+              <a href="tel:+4733378901">+X XXX-YYY-ZZZZ</a>
             </li>
           </ul>
         </div>

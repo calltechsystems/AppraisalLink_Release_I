@@ -1,7 +1,16 @@
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
 const LoginSignup = () => {
+
+  const[showhide, setShowhide]=useState('');
+   
+    const handleshowhide=(event)=>{
+      const getuser = event.target.value;
+        setShowhide(getuser);
+    }
+
   return (
     <div className="modal-content">
       <div className="modal-header">
@@ -66,7 +75,7 @@ const LoginSignup = () => {
                   width={357}
                   height={494}
                   className="img-fluid w100 h-100 cover"
-                  src="/assets/images/resource/login.jpg"
+                  src="/assets/images/home/computer-login.avif"
                   alt="login.jpg"
                 />
               </div>
@@ -81,30 +90,12 @@ const LoginSignup = () => {
                   </div>
                   {/* End heading */}
 
-                  <div className="row mt25">
-                    <div className="col-lg-12">
-                      <button type="submit" className="btn btn-fb w-100">
-                        <i className="fa fa-facebook float-start mt5"></i> Login
-                        with Facebook
-                      </button>
-                    </div>
-                    <div className="col-lg-12">
-                      <button type="submit" className="btn btn-googl w-100">
-                        <i className="fa fa-google float-start mt5"></i> Login
-                        with Google
-                      </button>
-                    </div>
-                  </div>
-                  {/* End .row */}
-
-                  <hr />
-
                   <div className="input-group mb-2 mr-sm-2">
                     <input
                       type="text"
                       className="form-control"
                       id="inlineFormInputGroupUsername2"
-                      placeholder="User Name Or Email"
+                      placeholder="Email Address" required
                     />
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -119,7 +110,7 @@ const LoginSignup = () => {
                       type="password"
                       className="form-control"
                       id="exampleInputPassword1"
-                      placeholder="Password"
+                      placeholder="Password" required
                     />
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -143,8 +134,8 @@ const LoginSignup = () => {
                       Remember me
                     </label>
 
-                    <a className="btn-fpswd float-end" href="#">
-                      Lost your password?
+                    <a className="btn-fpswd float-end" href="/forgot-password">
+                      Forgot password?
                     </a>
                   </div>
                   {/* End remember me checkbox */}
@@ -156,7 +147,7 @@ const LoginSignup = () => {
 
                   <p className="text-center">
                     Dont have an account?{" "}
-                    <a className="text-thm" href="#">
+                    <a className="text-danger fw-bold" href="#">
                       Register
                     </a>
                   </p>
@@ -179,7 +170,7 @@ const LoginSignup = () => {
                   width={357}
                   height={659}
                   className="img-fluid w100 h-100 cover"
-                  src="/assets/images/resource/regstr.jpg"
+                  src="/assets/images/home/mobile-login-concept-illustration_114360-83.avif"
                   alt="regstr.jpg"
                 />
               </div>
@@ -195,7 +186,7 @@ const LoginSignup = () => {
 
                 <form action="#">
                   <div className="row ">
-                    <div className="col-lg-12">
+                    {/* <div className="col-lg-12">
                       <button type="submit" className="btn btn-fb w-100">
                         <i className="fa fa-facebook float-start mt5"></i> Login
                         with Facebook
@@ -206,48 +197,53 @@ const LoginSignup = () => {
                         <i className="fa fa-google float-start mt5"></i> Login
                         with Google
                       </button>
-                    </div>
+                    </div> */}
                   </div>
                   {/* End .row */}
 
-                  <hr />
+                  {/* <hr /> */}
 
-                  <div className="form-group input-group mb-3">
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="exampleInputName"
-                      placeholder="User Name"
-                    />
-                    <div className="input-group-prepend">
-                      <div className="input-group-text">
-                        <i className="flaticon-user"></i>
+                  <div className="form-group ui_kit_select_search mb-3">
+                    <select
+                      className="form-select"
+                      data-live-search="true"
+                      data-width="100%" onChange={(e)=>(handleshowhide(e))}
+                    >
+                      <option data-tokens="SelectRole">Choose User</option>
+                      <option data-tokens="Agent/Agency" value="1">Mortgage Broker</option>
+                      <option data-tokens="SingleUser" value="1">Mortgage Brokerage</option>
+                      <option data-tokens="SingleUser" value="1">Appraiser</option>
+                      <option data-tokens="SingleUser" value="1">Appraiser Company</option>
+                    </select>
+                  </div>
+                  {/* End from-group */}
+
+                  {
+                    showhide==='1' &&(
+                      <>
+
+                      <div className="form-group input-group  mb-3">
+                      <input
+                        type="email"
+                        className="form-control"
+                        id="exampleInputEmail2"
+                        placeholder="Email Address" required
+                      />
+                      <div className="input-group-prepend">
+                        <div className="input-group-text">
+                          <i className="fa fa-envelope-o"></i>
+                        </div>
                       </div>
                     </div>
-                  </div>
                   {/* End .row */}
+                    
 
-                  <div className="form-group input-group  mb-3">
-                    <input
-                      type="email"
-                      className="form-control"
-                      id="exampleInputEmail2"
-                      placeholder="Email"
-                    />
-                    <div className="input-group-prepend">
-                      <div className="input-group-text">
-                        <i className="fa fa-envelope-o"></i>
-                      </div>
-                    </div>
-                  </div>
-                  {/* End .row */}
-
-                  <div className="form-group input-group  mb-3">
+                    <div className="form-group input-group  mb-3">
                     <input
                       type="password"
                       className="form-control"
                       id="exampleInputPassword2"
-                      placeholder="Password"
+                      placeholder="Create Password" required
                     />
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -256,13 +252,14 @@ const LoginSignup = () => {
                     </div>
                   </div>
                   {/* End .row */}
+
 
                   <div className="form-group input-group  mb-3">
                     <input
                       type="password"
                       className="form-control"
                       id="exampleInputPassword3"
-                      placeholder="Re-enter password"
+                      placeholder="Confirm Password" required
                     />
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -272,32 +269,70 @@ const LoginSignup = () => {
                   </div>
                   {/* End .row */}
 
-                  <div className="form-group ui_kit_select_search mb-3">
-                    <select
-                      className="form-select"
-                      data-live-search="true"
-                      data-width="100%"
-                    >
-                      <option data-tokens="SelectRole">Single User</option>
-                      <option data-tokens="Agent/Agency">Agent</option>
-                      <option data-tokens="SingleUser">Multi User</option>
-                    </select>
-                  </div>
-                  {/* End from-group */}
+                  {/* <div className="form-group input-group mb-3">
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="exampleInputName"
+                      placeholder="First Name"
+                    />
+                    <div className="input-group-prepend">
+                      <div className="input-group-text">
+                        <i className="flaticon-user"></i>
+                      </div>
+                    </div>
+                  </div> */}
+                  {/* End .row */}
 
+                  {/* <div className="form-group input-group mb-3">
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="exampleInputName"
+                      placeholder="Last Name"
+                    />
+                    <div className="input-group-prepend">
+                      <div className="input-group-text">
+                        <i className="flaticon-user"></i>
+                      </div>
+                    </div>
+                  </div> */}
+                  {/* End .row */}
+
+                  {/* <div className="form-group input-group mb-3">
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="exampleInputName"
+                      placeholder="Phone Number"
+                    />
+                    <div className="input-group-prepend">
+                      <div className="input-group-text">
+                        <i className="flaticon-telephone"></i>
+                      </div>
+                    </div>
+                  </div> */}
+                  {/* End .row */}
+
+                  </>
+                    )
+                  }                 
+
+                  
                   <div className="form-group form-check custom-checkbox mb-3">
                     <input
                       className="form-check-input"
                       type="checkbox"
                       value=""
-                      id="terms"
+                      id="terms" required
                     />
                     <label
-                      className="form-check-label form-check-label"
+                      className="form-check-label"
                       htmlFor="terms"
                     >
-                      I have accept the Terms and Privacy Policy.
+                      I accept the Terms and Privacy Policy.
                     </label>
+                    <a href="assets/images/Terms & Conditions.pdf" target="_blank" className="form-check-label text-danger">Terms&Cond.</a>
                   </div>
                   {/* End from-group */}
 
@@ -308,7 +343,7 @@ const LoginSignup = () => {
 
                   <p className="text-center">
                     Already have an account?{" "}
-                    <a className="text-thm" href="#">
+                    <a className="text-thm fw-bold" href="#">
                       Log In
                     </a>
                   </p>

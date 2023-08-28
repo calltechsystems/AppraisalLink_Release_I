@@ -11,21 +11,20 @@ const AddressSidebar = () => {
       <div className="content_list">
         <h5>Address</h5>
         <p>
-          2301 Ravenswood Rd Madison, <br />
-          WI 53711
+        XYZ street Model Town British Columbia Canada Pin Code 123456
         </p>
       </div>
       <div className="content_list">
         <h5>Phone</h5>
-        <p>(315) 905-2321</p>
+        <p>XXXXXXXXXX</p>
       </div>
       <div className="content_list">
         <h5>Mail</h5>
-        <p>info@findhouse.com</p>
+        <p>XYZ@ABC.com</p>
       </div>
       <div className="content_list">
         <h5>Skype</h5>
-        <p>findhouse.com</p>
+        <p>xyz.com</p>
       </div>
       <h5>Follow Us</h5>
       <ul className="contact_form_social_area">

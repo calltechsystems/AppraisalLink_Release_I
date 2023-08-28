@@ -28,13 +28,13 @@ const CopyrightFooter = () => {
       <div className="col-lg-6 col-xl-6">
         <div className="copyright-widget text-end">
           <p>
-            &copy; {new Date().getFullYear()} by{" "}
+            &copy; {new Date().getFullYear()} {" "}
             <a
-              href="https://themeforest.net/user/ib-themes"
+              href="#"
               target="_blank"
               rel="noreferrer"
             >
-              ib-themes
+              Appraisal Link
             </a>
             . All rights reserved.
           </p>

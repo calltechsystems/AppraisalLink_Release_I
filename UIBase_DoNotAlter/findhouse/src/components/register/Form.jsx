@@ -14,12 +14,82 @@ const Form = () => {
       </div>
       {/* End .heading */}
 
-      <div className="form-group input-group ">
+      <div className="row">
+        <div className="col-lg-6">
+          <div className="form-group input-group ">
+             <input
+             type="text"
+             className="form-control"
+             required
+             placeholder="Enter Appraiser Company Name"
+             />
+            <div className="input-group-prepend">
+              <div className="input-group-text">
+                <i className="flaticon-user"></i>
+              </div>
+            </div>
+          </div>
+              {/* End .form-group */}
+        </div>
+
+        <div className="col-lg-6">
+        <div className="form-group input-group  ">
+        <input
+          type="email"
+          className="form-control"
+          required
+          placeholder="Enter Email Address"
+        />
+        <div className="input-group-prepend">
+          <div className="input-group-text">
+            <i className="fa fa-envelope-o"></i>
+          </div>
+        </div>
+      </div>
+      {/* End .form-group */} 
+        </div>
+
+         <div className="col-lg-6">
+         <div className="form-group input-group  ">
+        <input
+          type="password"
+          className="form-control"
+          required
+          placeholder="Enter Create Password"
+        />
+        <div className="input-group-prepend">
+          <div className="input-group-text">
+            <i className="flaticon-password"></i>
+          </div>
+        </div>
+      </div>
+      {/* End .form-group */} 
+         </div>
+
+         <div className="col-lg-6">
+         <div className="form-group input-group  ">
+        <input
+          type="password"
+          className="form-control"
+          required
+          placeholder="Enter Confirm Password"
+        />
+        <div className="input-group-prepend">
+          <div className="input-group-text">
+            <i className="flaticon-password"></i>
+          </div>
+        </div>
+      </div>
+      {/* End .form-group */}
+         </div>
+
+         <div className="col-lg-6">
+         <div className="form-group input-group ">
         <input
           type="text"
           className="form-control"
           required
-          placeholder="User Name"
+          placeholder="Enter First Name"
         />
         <div className="input-group-prepend">
           <div className="input-group-text">
@@ -28,51 +98,63 @@ const Form = () => {
         </div>
       </div>
       {/* End .form-group */}
+         </div>
 
-      <div className="form-group input-group  ">
+
+         <div className="col-lg-6">
+         <div className="form-group input-group ">
         <input
-          type="email"
+          type="text"
           className="form-control"
           required
-          placeholder="Email"
+          placeholder="Enter Last Name"
         />
         <div className="input-group-prepend">
           <div className="input-group-text">
-            <i className="fa fa-envelope-o"></i>
+            <i className="flaticon-user"></i>
           </div>
         </div>
       </div>
       {/* End .form-group */}
+         </div>
 
-      <div className="form-group input-group  ">
+    <div className="col-lg-6">
+      <div className="form-group input-group ">
         <input
-          type="password"
+          type="text"
           className="form-control"
           required
-          placeholder="Password"
+          placeholder="Enter Phone Number"
         />
         <div className="input-group-prepend">
           <div className="input-group-text">
-            <i className="flaticon-password"></i>
+            <i className="flaticon-user"></i>
           </div>
         </div>
       </div>
       {/* End .form-group */}
+         </div>
 
-      <div className="form-group input-group  ">
+         <div className="col-lg-6">
+      <div className="form-group input-group ">
         <input
-          type="password"
+          type="text"
           className="form-control"
           required
-          placeholder="Re-enter password"
+          placeholder="Enter Address"
         />
         <div className="input-group-prepend">
           <div className="input-group-text">
-            <i className="flaticon-password"></i>
+            <i className="flaticon-user"></i>
           </div>
         </div>
       </div>
       {/* End .form-group */}
+         </div>
+         
+      </div>
+
+ 
 
       <div className="form-group form-check custom-checkbox mb-3">
         <input
@@ -93,31 +175,31 @@ const Form = () => {
       </button>
       {/* login button */}
 
-      <div className="divide">
+      {/* <div className="divide">
         <span className="lf_divider">Or</span>
         <hr />
-      </div>
+      </div> */}
       {/* devider */}
 
       <div className="row mt25">
-        <div className="col-lg-6">
+        {/* <div className="col-lg-6">
           <button
             type="submit"
             className="btn btn-block color-white bgc-fb mb0 w-100"
           >
             <i className="fa fa-facebook float-start mt5"></i> Facebook
           </button>
-        </div>
+        </div> */}
         {/* End .col */}
 
-        <div className="col-lg-6">
+        {/* <div className="col-lg-6">
           <button
             type="submit"
             className="btn btn-block color-white bgc-gogle mb0 w-100"
           >
             <i className="fa fa-google float-start mt5"></i> Google
           </button>
-        </div>
+        </div> */}
         {/* End .col */}
       </div>
       {/* more signin options */}
