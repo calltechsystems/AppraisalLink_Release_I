@@ -9,8 +9,9 @@ const Footer = () => {
         <div className="footer_about_widget">
           <h4>About Appraisal Link</h4>
           <p>
-            We’re reimagining how you buy, sell and rent. It’s now easier to get
-            into a place you love. So let’s do this, together.
+            We&apos;re reimagining how you buy, sell and rent. It&apos;s now
+            easier to get into a place you love. So let&apos;s do this,
+            together.
           </p>
         </div>
       </div>
@@ -27,7 +28,7 @@ const Footer = () => {
               <Link href="/">Terms & Conditions</Link>
             </li>
             <li>
-              <Link href="/">User’s Guide</Link>
+              <Link href="/">User&apos;s Guide</Link>
             </li>
             <li>
               <Link href="/">Support Center</Link>
