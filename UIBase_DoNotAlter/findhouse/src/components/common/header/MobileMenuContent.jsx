@@ -311,10 +311,10 @@ const MobileMenuContent = () => {
               width={40}
               height={45}
               className="nav_logo_img img-fluid mt20"
-              src="/assets/images/header-logo2.png"
+              src="/assets/images/logo_new.png"
               alt="header-logo.png"
             />
-            <span className="brand-text">FindHouse</span>
+            <span className="brand-text">Appraisal Link</span>
           </Link>
           {/* End .logo */}
 
@@ -512,13 +512,15 @@ const MobileMenuContent = () => {
           <MenuItem>
             <Link
               href="/login"
+              data-bs-toggle="modal"
+              data-bs-target=".bd-example-modal-lg"
               className={route.pathname === "/login" ? "ui-active" : undefined}
             >
-              <span className="flaticon-user"></span> Login
+              <span className="flaticon-user"></span> Login/Register
             </Link>
           </MenuItem>
 
-          <MenuItem>
+          {/* <MenuItem>
             <Link
               href="/register"
               className={
@@ -527,16 +529,18 @@ const MobileMenuContent = () => {
             >
               <span className="flaticon-edit"></span> Register
             </Link>
-          </MenuItem>
+          </MenuItem> */}
         </Menu>
       </SidebarContent>
 
       <SidebarFooter>
         <Link
-          href="/create-listing"
+          data-bs-toggle="modal"
+          data-bs-target=".bd-example-modal-lg"
+          href="#"
           className="btn btn-block btn-lg btn-thm circle"
         >
-          <span className="flaticon-plus"></span> Create Listing
+          <span className="flaticon-plus"></span> Appraise Property
         </Link>
       </SidebarFooter>
     </ProSidebar>

@@ -492,7 +492,8 @@ const HeaderMenuContent = ({ float = "" }) => {
       {/* End .dropitem */}
 
       <li className={`list-inline-item add_listing ${float}`}>
-        <Link href="/create-listing">
+        <Link href="#" data-bs-toggle="modal"
+          data-bs-target=".bd-example-modal-lg">
           <span className="flaticon-plus fs-13"></span>
           <span className="dn-lg fs-13"> Appraise Property</span>
         </Link>

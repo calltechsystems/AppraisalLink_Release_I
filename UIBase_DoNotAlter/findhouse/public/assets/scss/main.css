@@ -920,7 +920,7 @@ ul.sign_up_btn.home7 a {
 }
 
 .header_search_widget .mailchimp_form input[type="text"].form-control::-webkit-input-placeholder {
-  font-size: 14px;
+  font-size: 16px;
   font-family: "Nunito";
   color: #484848;
   line-height: 1.2;
@@ -10695,7 +10695,7 @@ a.btn.btn_error {
   border: 1px solid #ebebeb;
   border-radius: 8px;
   color: #484848;
-  font-size: 14px;
+  font-size: 16px;
   font-family: "Nunito";
   height: 52px;
   line-height: 1.2;
@@ -19960,4 +19960,52 @@ header.header-nav.menu_style_home_one .ace-responsive-menu > li > a{
 .our-dashbord.dashbord {
   padding-top: 100px !important;
   padding-left: 295px !important;
+}
+
+/* Captcha CSS */
+
+.bg-imgg{
+  /* background: url(https://www.optacom.com/components/com_breezingforms/images/captcha/backgrounds/bg6.png); */
+  /* opacity: 0.9; */
+  position: relative;
+  top: 39px;
+  left: 35px;
+  margin-top:-28px !important ;
+}
+
+.cap-img{
+  margin-top: -10px;
+  border-radius: 5px;
+}
+
+.mr{
+  margin-bottom: 0px !important;
+}
+
+.btn-captcha{
+  height: 25px !important;
+  margin-top: 0.6rem !important;
+  line-height: 0.5;
+  position: relative;
+  top: -50px;
+  left: 7.3rem;
+  /* display: none !important; */
+  /* margin-left: 12rem; */
+}
+
+.btn-captcha:hover{
+  height: 25px !important;
+  cursor:none;
+  background-color: #007bff	 !important;
+  color: white !important;
+  border: none !important;
+  /* margin-top: -0.6rem !important; */
+  line-height: 0.5;
+  /* margin-left: 12rem; */
+}
+
+.text-captcha{
+  color: #434343 !important;
+  font-size: 20px !important;
+  font-weight: bold;
 }

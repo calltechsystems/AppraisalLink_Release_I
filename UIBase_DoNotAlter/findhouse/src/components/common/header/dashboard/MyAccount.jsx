@@ -5,11 +5,11 @@ import Image from "next/image";
 
 const MyAccount = () => {
   const profileMenuItems = [
-    { id: 1, name: "My Profile", ruterPath: "/my-profile" },
-    { id: 2, name: " My Message", ruterPath: "/my-message" },
-    { id: 3, name: " My Favourite", ruterPath: "/my-favourites" },
-    { id: 4, name: " My Package", ruterPath: "/my-package" },
-    { id: 5, name: " Log out", ruterPath: "/login" },
+    { id: 1, name: "Profile", ruterPath: "/my-profile" },
+    // { id: 2, name: " My Message", ruterPath: "/my-message" },
+    // { id: 3, name: " My Favourite", ruterPath: "/my-favourites" },
+    { id: 4, name: "Plan", ruterPath: "/my-package" },
+    { id: 5, name: "Log out", ruterPath: "/login" },
   ];
   const route = useRouter();
   return (

@@ -117,7 +117,7 @@ const SidebarMenu = () => {
             </li>
             {/* end properties */}
 
-            <li
+            {/* <li
               className={`treeview ${
                 isParentPageActive(reviews, route.pathname) ? "active" : ""
               }`}
@@ -136,10 +136,10 @@ const SidebarMenu = () => {
                   </li>
                 ))}
               </ul>
-            </li>
+            </li> */}
             {/* End Review */}
 
-            <li
+            {/* <li
               className={`treeview ${
                 isSinglePageActive("/my-favourites", route.pathname)
                   ? "active"
@@ -162,7 +162,7 @@ const SidebarMenu = () => {
                 <i className="flaticon-magnifying-glass"></i>
                 <span> Saved Search</span>
               </Link>
-            </li>
+            </li> */}
           </ul>
         </li>
         {/* End manage listing */}

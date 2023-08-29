@@ -13,7 +13,7 @@ const MobileMenu = () => {
               width={40}
               height={45}
               className="nav_logo_img contain mt20"
-              src="/assets/images/header-logo2.png"
+              src="/assets/images/logo_new.png"
               alt="header-logo2.png"
             />
             <span className="mt20">Appraisal Link</span>
