@@ -9,8 +9,8 @@ const Footer = () => {
         <div className="footer_about_widget">
           <h4>About Appraisal Link</h4>
           <p>
-            We`&apos;`re reimagining how you buy, sell and rent. It`&apos;`s now
-            easier to get into a place you love. So let`&apos;`s do this,
+            We&rsquo;re reimagining how you buy, sell and rent. It&rsquo;s now
+            easier to get into a place you love. So let&rsquo;s do this,
             together.
           </p>
         </div>
@@ -28,13 +28,13 @@ const Footer = () => {
               <Link href="/">Terms & Conditions</Link>
             </li>
             <li>
-              <Link href="/">User`&apos;`s Guide</Link>
+              <Link href="/">User&rsquo;s Guide</Link>
             </li>
             <li>
               <Link href="/">Support Center</Link>
             </li>
             <li>
-              <Link href="/">FAQ`&apos;`s</Link>
+              <Link href="/">FAQ&rsquo;s</Link>
             </li>
           </ul>
         </div>
