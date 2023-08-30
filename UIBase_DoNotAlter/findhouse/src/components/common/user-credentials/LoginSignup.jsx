@@ -234,7 +234,6 @@ const LoginSignup = () => {
                     <>
                       <div className="form-group input-group  mb-3">
                         <input
-                          value={email}
                           type="email"
                           name="email"
                           className="form-control"
@@ -252,7 +251,6 @@ const LoginSignup = () => {
 
                       <div className="form-group input-group  mb-3">
                         <input
-                          value={password}
                           name="password"
                           type="password"
                           className="form-control"
