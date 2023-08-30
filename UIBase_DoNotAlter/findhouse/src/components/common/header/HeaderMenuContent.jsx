@@ -244,7 +244,7 @@ const HeaderMenuContent = ({ float = "" }) => {
     >
       <li className="dropitem">
         <a
-          href="#"
+          href="/"
           className={
             home.some((page) => page.routerPath === route.pathname)
               ? "ui-active"
@@ -252,11 +252,11 @@ const HeaderMenuContent = ({ float = "" }) => {
           }
         >
           <span className="title">Home</span>
-          <span className="arrow"></span>
+          {/* <span className="arrow"></span> */}
         </a>
         {/* <!-- Level Two--> */}
 
-        <ul className="sub-menu ">
+        {/* <ul className="sub-menu ">
           {home.map((item) => (
             <li key={item.id}>
               <Link
@@ -269,7 +269,7 @@ const HeaderMenuContent = ({ float = "" }) => {
               </Link>
             </li>
           ))}
-        </ul>
+        </ul> */}
       </li>
       {/* End .dropitem */}
 
@@ -492,8 +492,11 @@ const HeaderMenuContent = ({ float = "" }) => {
       {/* End .dropitem */}
 
       <li className={`list-inline-item add_listing ${float}`}>
-        <Link href="#" data-bs-toggle="modal"
-          data-bs-target=".bd-example-modal-lg">
+        <Link
+          href="#"
+          data-bs-toggle="modal"
+          data-bs-target=".bd-example-modal-lg"
+        >
           <span className="flaticon-plus fs-13"></span>
           <span className="dn-lg fs-13"> Appraise Property</span>
         </Link>
