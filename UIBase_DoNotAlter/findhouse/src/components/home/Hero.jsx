@@ -12,23 +12,6 @@ const Hero = () => {
         </div>
       </div>
       {/* End .container */}
-
-      <div className="mouse_scroll">
-        <a href="#feature-property">
-          <div className="icon">
-            <h4>Scroll Down</h4>
-            <p>to discover more</p>
-          </div>
-          <div className="thumb">
-            <Image
-              width={21}
-              height={35}
-              src="/assets/images/resource/mouse.png"
-              alt="mouse.png"
-            />
-          </div>
-        </a>
-      </div>
     </section>
   );
 };

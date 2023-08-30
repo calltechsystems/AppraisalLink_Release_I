@@ -27,40 +27,8 @@ const Index = () => {
       <Hero />
 
       {/* <!-- Feature Properties --> */}
-      <section id="feature-property" className="feature-property bgc-f7">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-6 offset-lg-3">
-              <div className="main-title text-center mb40">
-                <h2>Featured Properties</h2>
-                <p>Handpicked properties by our team.</p>
-              </div>
-            </div>
-            <div className="col-lg-12">
-              <div className="feature_property_slider gutter-x15">
-                <FeaturedProperties />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* <!-- Property Cities --> */}
-      <section id="property-city" className="property-city pb30">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-6 offset-lg-3">
-              <div className="main-title text-center">
-                <h2>Find Properties in These Cities</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-              </div>
-            </div>
-          </div>
-          <div className="row">
-            <FindProperties />
-          </div>
-        </div>
-      </section>
 
       {/* <!-- Why Chose Us --> */}
       <section id="why-chose" className="whychose_us bgc-f7 pb30">

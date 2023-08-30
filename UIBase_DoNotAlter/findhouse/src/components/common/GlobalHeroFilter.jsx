@@ -4,7 +4,7 @@ const GlobalHeroFilter = ({ className = "" }) => {
   return (
     <div className={`home_adv_srch_opt ${className}`}>
       <ul className="nav nav-pills" id="pills-tab" role="tablist">
-        <li className="nav-item">
+        {/* <li className="nav-item">
           <a
             className="nav-link active"
             id="pills-home-tab"
@@ -16,7 +16,7 @@ const GlobalHeroFilter = ({ className = "" }) => {
           >
             Appraise
           </a>
-        </li>
+        </li> */}
 
         {/* <li className="nav-item">
           <a

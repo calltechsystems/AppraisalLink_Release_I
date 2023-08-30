@@ -22,19 +22,19 @@ const Footer = () => {
           <h4>Quick Links</h4>
           <ul className="list-unstyled">
             <li>
-              <Link href="/">About Us</Link>
+              <Link href="/about-us">About Us</Link>
             </li>
             <li>
-              <Link href="/">Terms & Conditions</Link>
+              <Link href="/terms">Terms & Conditions</Link>
             </li>
             <li>
               <Link href="/">User&apos;s Guide</Link>
             </li>
             <li>
-              <Link href="/">Support Center</Link>
+              <Link href="/contact-us">Support Center</Link>
             </li>
             <li>
-              <Link href="/">FAQ&apos;s</Link>
+              <Link href="/faq">FAQ&apos;s</Link>
             </li>
           </ul>
         </div>

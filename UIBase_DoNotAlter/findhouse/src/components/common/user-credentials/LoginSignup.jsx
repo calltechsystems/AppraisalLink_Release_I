@@ -5,54 +5,16 @@ import Captcha from "../Captcha";
 import CaptchaReg from "../CaptchaReg";
 
 const LoginSignup = () => {
-  // for Registration API
-
-  const [usertype, setUsertype] = useState();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-
-  const handleChange = (e) => {
-    if (e.target.name == usertype) {
-      setUsertype(e.target.value);
-    } else if (e.target.name == email) {
-      setEmail(e.target.value);
-    } else if (e.target.name == password) {
-      setPassword(e.target.value);
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const data = { usertype, email, password };
-
-    try {
-      let response = await fetch(
-        "https://calltech20230809222640.azurewebsites.net/api/Registration/Registration",
-        {
-          method: "POST", // or 'PUT'
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
-
-      let result = await response.json();
-      console.log("Success:", result);
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
 
   // Registration Show Hide Functionality start
 
   const [showhide, setShowhide] = useState("");
-  const [userinput, setUserinput] = useState(true);
+  // const [userinput, setUserinput] = useState(true);
 
   const handleshowhide = (event) => {
     const getuser = event.target.value;
     setShowhide(getuser);
-    setUserinput(false);
+    // setUserinput(false);
   };
 
   // Registration Show Hide Functionality end
@@ -130,7 +92,7 @@ const LoginSignup = () => {
 
             <div className="col-lg-6 col-xl-6">
               <div className="login_form">
-                <form action="#">
+                <form action="/my-profile">
                   <div className="heading">
                     <h4>Login</h4>
                   </div>
@@ -242,14 +204,14 @@ const LoginSignup = () => {
                 </div>
                 {/* End .heading */}
 
-                <form action="#" onSubmit={handleSubmit} method="POST">
+                <form action="#" method="POST">
                   <div className="form-group ui_kit_select_search mb-3">
                     <select
                       className="form-select"
                       data-live-search="true"
                       data-width="100%"
                       onChange={(e) => handleshowhide(e)}
-                      disabled={!userinput}
+                      // disabled={!userinput}
                     >
                       <option data-tokens="SelectRole">Choose User</option>
                       <option data-tokens="Agent/Agency" value="1">
@@ -273,7 +235,6 @@ const LoginSignup = () => {
                       <div className="form-group input-group  mb-3">
                         <input
                           value={email}
-                          onChange={handleChange}
                           type="email"
                           name="email"
                           className="form-control"
@@ -292,7 +253,6 @@ const LoginSignup = () => {
                       <div className="form-group input-group  mb-3">
                         <input
                           value={password}
-                          onChange={handleChange}
                           name="password"
                           type="password"
                           className="form-control"
