@@ -5,59 +5,57 @@ import Captcha from "../Captcha";
 import CaptchaReg from "../CaptchaReg";
 
 const LoginSignup = () => {
+  // for Registration API
 
-   // for Registration API
-  
-   const [usertype, setUsertype] = useState()
-   const [email, setEmail] = useState()
-   const [password, setPassword] = useState()
+  const [usertype, setUsertype] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
 
-   const handleChange = (e) =>{
-     if (e.target.name == usertype){
-      setUsertype(e.target.value)
-     }
-     else if(e.target.name == email){
-      setEmail(e.target.value)
-     }
-     else if(e.target.name == password){
-      setPassword(e.target.value)
-     }
-   }
- 
-   const handleSubmit = async (e) =>{
-     e.preventDefault()
-     const data = {usertype, email, password}
+  const handleChange = (e) => {
+    if (e.target.name == usertype) {
+      setUsertype(e.target.value);
+    } else if (e.target.name == email) {
+      setEmail(e.target.value);
+    } else if (e.target.name == password) {
+      setPassword(e.target.value);
+    }
+  };
 
-     try {
-      let response = await fetch("https://calltech20230809222640.azurewebsites.net/api/Registration/Registration", {
-        method: "POST", // or 'PUT'
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const data = { usertype, email, password };
+
+    try {
+      let response = await fetch(
+        "https://calltech20230809222640.azurewebsites.net/api/Registration/Registration",
+        {
+          method: "POST", // or 'PUT'
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
       let result = await response.json();
       console.log("Success:", result);
     } catch (error) {
       console.error("Error:", error);
     }
-  }
-   
+  };
 
   // Registration Show Hide Functionality start
 
-  const[showhide, setShowhide] = useState('');
-  const[userinput, setUserinput] = useState(true);
-   
-    const handleshowhide=(event)=>{
-      const getuser = event.target.value;
-        setShowhide(getuser);
-        setUserinput(false)
-    }
+  const [showhide, setShowhide] = useState("");
+  const [userinput, setUserinput] = useState(true);
+
+  const handleshowhide = (event) => {
+    const getuser = event.target.value;
+    setShowhide(getuser);
+    setUserinput(false);
+  };
 
   // Registration Show Hide Functionality end
-
 
   return (
     <div className="modal-content">
@@ -76,7 +74,7 @@ const LoginSignup = () => {
           <div className="col-lg-12">
             <ul className="sign_up_tab nav nav-tabs" id="myTab" role="tablist">
               <li className="nav-item">
-                <a
+                <Link
                   className="nav-link active"
                   id="home-tab"
                   data-bs-toggle="tab"
@@ -86,12 +84,12 @@ const LoginSignup = () => {
                   aria-selected="true"
                 >
                   Login
-                </a>
+                </Link>
               </li>
               {/* End login tab */}
 
               <li className="nav-item">
-                <a
+                <Link
                   className="nav-link"
                   id="profile-tab"
                   data-bs-toggle="tab"
@@ -101,7 +99,7 @@ const LoginSignup = () => {
                   aria-selected="false"
                 >
                   Register
-                </a>
+                </Link>
               </li>
               {/* End Register tab */}
             </ul>
@@ -143,7 +141,8 @@ const LoginSignup = () => {
                       type="text"
                       className="form-control"
                       id="inlineFormInputGroupUsername2"
-                      placeholder="Email Address" required
+                      placeholder="Email Address"
+                      required
                     />
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -158,7 +157,8 @@ const LoginSignup = () => {
                       type="password"
                       className="form-control"
                       id="exampleInputPassword1"
-                      placeholder="Password" required
+                      placeholder="Password"
+                      required
                     />
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -168,7 +168,7 @@ const LoginSignup = () => {
                   </div>
                   {/* End input-group */}
 
-                  <Captcha/>
+                  <Captcha />
 
                   <div className="form-group form-check custom-checkbox mb-3">
                     <input
@@ -184,22 +184,30 @@ const LoginSignup = () => {
                       Remember me
                     </label>
 
-                    <a className="btn-fpswd float-end" href="/forgot-password">
+                    <Link
+                      className="btn-fpswd float-end"
+                      href="/forgot-password"
+                    >
                       Forgot password?
-                    </a>
+                    </Link>
                   </div>
                   {/* End remember me checkbox */}
 
-                  <button type="submit" className="btn btn-log w-100 btn-thm" disabled={true} id="login">
+                  <button
+                    type="submit"
+                    className="btn btn-log w-100 btn-thm"
+                    disabled={true}
+                    id="login"
+                  >
                     Log In
                   </button>
                   {/* End submit button */}
 
                   <p className="text-center">
                     Dont have an account?{" "}
-                    <a className="text-danger fw-bold" href="#">
+                    <Link className="text-danger fw-bold" href="#">
                       Register
-                    </a>
+                    </Link>
                   </p>
                 </form>
               </div>
@@ -235,113 +243,127 @@ const LoginSignup = () => {
                 {/* End .heading */}
 
                 <form action="#" onSubmit={handleSubmit} method="POST">
-
                   <div className="form-group ui_kit_select_search mb-3">
                     <select
                       className="form-select"
                       data-live-search="true"
-                      data-width="100%" onChange={(e)=>(handleshowhide(e))} disabled={!userinput}
+                      data-width="100%"
+                      onChange={(e) => handleshowhide(e)}
+                      disabled={!userinput}
                     >
                       <option data-tokens="SelectRole">Choose User</option>
-                      <option data-tokens="Agent/Agency" value="1">Mortgage Broker</option>
-                      <option data-tokens="SingleUser" value="1">Mortgage Brokerage</option>
-                      <option data-tokens="SingleUser" value="1">Appraiser</option>
-                      <option data-tokens="SingleUser" value="1">Appraiser Company</option>
+                      <option data-tokens="Agent/Agency" value="1">
+                        Mortgage Broker
+                      </option>
+                      <option data-tokens="SingleUser" value="1">
+                        Mortgage Brokerage
+                      </option>
+                      <option data-tokens="SingleUser" value="1">
+                        Appraiser
+                      </option>
+                      <option data-tokens="SingleUser" value="1">
+                        Appraiser Company
+                      </option>
                     </select>
                   </div>
                   {/* End from-group */}
 
-                  {
-                    showhide==='1' &&(
-                      <>
-
+                  {showhide === "1" && (
+                    <>
                       <div className="form-group input-group  mb-3">
-                      <input
-                        value={email}
-                        onChange={handleChange}
-                        type="email"
-                        name="email"
-                        className="form-control"
-                        id="exampleInputEmail2"
-                        placeholder="Email Address" required
-                      />
-                      <div className="input-group-prepend">
-                        <div className="input-group-text">
-                          <i className="fa fa-envelope-o"></i>
+                        <input
+                          value={email}
+                          onChange={handleChange}
+                          type="email"
+                          name="email"
+                          className="form-control"
+                          id="exampleInputEmail2"
+                          placeholder="Email Address"
+                          required
+                        />
+                        <div className="input-group-prepend">
+                          <div className="input-group-text">
+                            <i className="fa fa-envelope-o"></i>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  {/* End .row */}
-                    
+                      {/* End .row */}
 
-                    <div className="form-group input-group  mb-3">
-                    <input
-                    value={password}
-                      onChange={handleChange}
-                      name="password"
-                      type="password"
-                      className="form-control"
-                      id="exampleInputPassword2"
-                      placeholder="Create Password" required
-                    />
-                    <div className="input-group-prepend">
-                      <div className="input-group-text">
-                        <i className="flaticon-password"></i>
+                      <div className="form-group input-group  mb-3">
+                        <input
+                          value={password}
+                          onChange={handleChange}
+                          name="password"
+                          type="password"
+                          className="form-control"
+                          id="exampleInputPassword2"
+                          placeholder="Create Password"
+                          required
+                        />
+                        <div className="input-group-prepend">
+                          <div className="input-group-text">
+                            <i className="flaticon-password"></i>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                  {/* End .row */}
+                      {/* End .row */}
 
-
-                  <div className="form-group input-group  mb-3">
-                    <input
-                      type="password"
-                      className="form-control"
-                      id="exampleInputPassword3"
-                      placeholder="Confirm Password" required
-                    />
-                    <div className="input-group-prepend">
-                      <div className="input-group-text">
-                        <i className="flaticon-password"></i>
+                      <div className="form-group input-group  mb-3">
+                        <input
+                          type="password"
+                          className="form-control"
+                          id="exampleInputPassword3"
+                          placeholder="Confirm Password"
+                          required
+                        />
+                        <div className="input-group-prepend">
+                          <div className="input-group-text">
+                            <i className="flaticon-password"></i>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                  {/* End .row */}
+                      {/* End .row */}
 
-                  <CaptchaReg/>
+                      <CaptchaReg />
+                    </>
+                  )}
 
-                  </>
-                    )
-                  }                 
-
-                  
                   <div className="form-group form-check custom-checkbox mb-3">
                     <input
                       className="form-check-input"
                       type="checkbox"
                       value=""
-                      id="terms" required
+                      id="terms"
+                      required
                     />
-                    <label
-                      className="form-check-label"
-                      htmlFor="terms"
-                    >
+                    <label className="form-check-label" htmlFor="terms">
                       I accept the Terms and Privacy Policy.
                     </label>
-                    <a href="assets/images/Terms & Conditions.pdf" target="_blank" className="form-check-label text-danger">Terms&Cond.</a>
+                    <Link
+                      href="assets/images/Terms & Conditions.pdf"
+                      target="_blank"
+                      className="form-check-label text-danger"
+                    >
+                      Terms&Cond.
+                    </Link>
                   </div>
                   {/* End from-group */}
 
-                  <button type="submit" className="btn btn-log w-100 btn-thm" id="signup" disabled={true}>
+                  <button
+                    type="submit"
+                    className="btn btn-log w-100 btn-thm"
+                    id="signup"
+                    disabled={true}
+                  >
                     Sign Up
                   </button>
                   {/* End btn */}
 
                   <p className="text-center">
                     Already have an account?{" "}
-                    <a className="text-thm fw-bold" href="#">
+                    <Link className="text-thm fw-bold" href="#">
                       Log In
-                    </a>
+                    </Link>
                   </p>
                 </form>
                 {/* End .form */}
