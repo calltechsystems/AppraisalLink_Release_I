@@ -334,10 +334,7 @@ const LoginSignup = () => {
                     <>
                       <div className="form-group input-group  mb-3">
                         <input
-<<<<<<< Updated upstream
-=======
                           ref={emailRegisterRef}
->>>>>>> Stashed changes
                           type="email"
                           name="email"
                           className="form-control"
@@ -355,10 +352,7 @@ const LoginSignup = () => {
 
                       <div className="form-group input-group  mb-3">
                         <input
-<<<<<<< Updated upstream
-=======
                           ref={passwordRegisterRef}
->>>>>>> Stashed changes
                           name="password"
                           type="password"
                           className="form-control"
