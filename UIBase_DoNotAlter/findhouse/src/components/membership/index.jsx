@@ -8,7 +8,7 @@ import PopupSignInUp from "../common/PopupSignInUp";
 import BreadCrumbBanner from "./BreadCrumbBanner";
 import Pricing from "./Pricing";
 
-const index = () => {
+const Index = () => {
   //by default monthly being selected here as 
   // 1-->means monthly
   // 2--> yearly
@@ -134,4 +134,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;
