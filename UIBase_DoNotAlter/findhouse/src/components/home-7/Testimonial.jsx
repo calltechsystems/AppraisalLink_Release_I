@@ -7,9 +7,9 @@ const Testimonial = () => {
     dots: true,
     arrow: false,
     speed: 1200,
-    slidesToShow: 1,
+    slidesToShow: 3,
     slidesToScroll: 1,
-    autoplay: false,
+    autoplay: true,
   };
 
   return (

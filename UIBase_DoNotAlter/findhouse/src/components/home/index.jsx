@@ -4,8 +4,9 @@ import Footer from "../common/footer/Footer";
 import MobileMenu from "../common/header/MobileMenu";
 import Partners from "../common/Partners";
 import Blogs from "../common/Blogs";
-import FeaturedProperties from "./FeaturedProperties";
-import FindProperties from "./FindProperties";
+// import FeaturedProperties from "./FeaturedProperties";
+// import FindProperties from "./FindProperties";
+import Testimonial from "../home-7/Testimonial";
 import Header from "./Header";
 import Hero from "./Hero";
 import WhyChoose from "../common/WhyChoose";
@@ -60,6 +61,27 @@ const Index = () => {
           </div>
           <div className="row">
             <Blogs />
+          </div>
+        </div>
+      </section>
+
+       {/* <!-- Our Testimonials --> */}
+       <section className="our-testimonials">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-6 offset-lg-3">
+              <div className="main-title text-center mb20">
+                <h2>Testimonials</h2>
+                <p>Here could be a nice sub title</p>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-lg-12">
+              <div className="testimonial_grid_slider style2 gutter-x15">
+                <Testimonial />
+              </div>
+            </div>
           </div>
         </div>
       </section>

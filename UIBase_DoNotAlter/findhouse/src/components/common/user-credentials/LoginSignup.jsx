@@ -5,7 +5,6 @@ import Captcha from "../Captcha";
 import CaptchaReg from "../CaptchaReg";
 
 const LoginSignup = () => {
-
   // Registration Show Hide Functionality start
 
   const [showhide, setShowhide] = useState("");
@@ -85,6 +84,7 @@ const LoginSignup = () => {
                   className="img-fluid w100 h-100 cover"
                   src="/assets/images/home/computer-login.avif"
                   alt="login.jpg"
+                  loading="eager"
                 />
               </div>
             </div>
@@ -192,6 +192,7 @@ const LoginSignup = () => {
                   className="img-fluid w100 h-100 cover"
                   src="/assets/images/home/mobile-login-concept-illustration_114360-83.avif"
                   alt="regstr.jpg"
+                  loading="eager"
                 />
               </div>
             </div>

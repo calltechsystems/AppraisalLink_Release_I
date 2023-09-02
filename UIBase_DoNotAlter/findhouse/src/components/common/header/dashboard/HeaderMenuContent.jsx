@@ -12,19 +12,19 @@ const HeaderMenuContent = ({ float = "" }) => {
       name: "Home 1",
       routerPath: "/",
     },
-    { id: 2, name: "Home 2", routerPath: "/home-2" },
-    {
-      id: 3,
-      name: "Home 3",
-      routerPath: "/home-3",
-    },
-    { id: 4, name: "Home 4", routerPath: "/home-4" },
-    { id: 5, name: "Home 5", routerPath: "/home-5" },
-    { id: 6, name: "Home 6", routerPath: "/home-6" },
-    { id: 7, name: "Home 7", routerPath: "/home-7" },
-    { id: 8, name: "Home 8", routerPath: "/home-8" },
-    { id: 9, name: "Home 9", routerPath: "/home-9" },
-    { id: 10, name: "Home 10", routerPath: "/home-10" },
+    // { id: 2, name: "Home 2", routerPath: "/home-2" },
+    // {
+    //   id: 3,
+    //   name: "Home 3",
+    //   routerPath: "/home-3",
+    // },
+    // { id: 4, name: "Home 4", routerPath: "/home-4" },
+    // { id: 5, name: "Home 5", routerPath: "/home-5" },
+    // { id: 6, name: "Home 6", routerPath: "/home-6" },
+    // { id: 7, name: "Home 7", routerPath: "/home-7" },
+    // { id: 8, name: "Home 8", routerPath: "/home-8" },
+    // { id: 9, name: "Home 9", routerPath: "/home-9" },
+    // { id: 10, name: "Home 10", routerPath: "/home-10" },
   ];
 
   const listing = [
@@ -245,20 +245,20 @@ const HeaderMenuContent = ({ float = "" }) => {
       data-menu-style="horizontal"
     >
       <li className="dropitem">
-        <a
-          href="#"
+        <Link
+          href="/"
           className={
             home.some((page) => page.routerPath === route.pathname)
               ? "ui-active"
               : undefined
           }
         >
-          <span className="title">Home</span>
-          <span className="arrow"></span>
-        </a>
+          <span className="title text-info-01">Home</span>
+          {/* <span className="arrow"></span> */}
+        </Link>
         {/* <!-- Level Two--> */}
 
-        <ul className="sub-menu ">
+        {/* <ul className="sub-menu ">
           {home.map((item) => (
             <li key={item.id}>
               <Link
@@ -271,13 +271,13 @@ const HeaderMenuContent = ({ float = "" }) => {
               </Link>
             </li>
           ))}
-        </ul>
+        </ul> */}
       </li>
       {/* End .dropitem */}
 
       <li className="dropitem">
-        <a
-          href="#"
+        <Link
+          href="/about-us"
           className={
             listing.some((parent) => {
               return parent.items.some(
@@ -288,14 +288,15 @@ const HeaderMenuContent = ({ float = "" }) => {
               : undefined
           }
         >
-          <span className="title">Listing</span>
-          <span className="arrow"></span>
-        </a>
+          {/* <span className="title">Listing</span> */}
+          <span className="title text-info-01">Who we are</span>
+          <span className="arrow text-info-01"></span>
+        </Link>
         {/* <!-- Level Two--> */}
         <ul className="sub-menu ">
           {listing.map((item) => (
             <li className="dropitem arrow" key={item.id}>
-              <a
+              <Link
                 href="#"
                 className={
                   item.items.some((page) => page.routerPath === route.pathname)
@@ -304,7 +305,7 @@ const HeaderMenuContent = ({ float = "" }) => {
                 }
               >
                 {item.title}
-              </a>
+              </Link>
               {/* <!-- Level Three--> */}
               <ul className="sub-menu ">
                 {item.items.map((val, i) => (
@@ -329,8 +330,8 @@ const HeaderMenuContent = ({ float = "" }) => {
       {/* End .dropitem */}
 
       <li className="dropitem">
-        <a
-          href="#"
+        <Link
+          href="/service"
           className={
             property.some((parent) => {
               return parent.items.some(
@@ -343,13 +344,14 @@ const HeaderMenuContent = ({ float = "" }) => {
               : undefined
           }
         >
-          <span className="title">Property</span>{" "}
-          <span className="arrow"></span>
-        </a>
+          {/* <span className="title">Property</span>{" "} */}
+          <span className="title text-info-01">Services</span>{" "}
+          <span className="arrow text-info-01"></span>
+        </Link>
         <ul className="sub-menu ">
           {property.map((item) => (
             <li className="dropitem arrow" key={item.id}>
-              <a
+              <Link
                 href="#"
                 className={
                   item.items.some(
@@ -362,7 +364,7 @@ const HeaderMenuContent = ({ float = "" }) => {
                 }
               >
                 {item.title}
-              </a>
+              </Link>
               {/* <!-- Level Three--> */}
               <ul className="sub-menu ">
                 {item.items.map((val, i) => (
@@ -388,18 +390,18 @@ const HeaderMenuContent = ({ float = "" }) => {
       {/* End .dropitem */}
 
       <li className="dropitem">
-        <a
-          href="#"
+        <Link
+          href="/gallery"
           className={
             pages.some((page) => page.routerPath === route.pathname)
               ? "ui-active"
               : undefined
           }
         >
-          <span className="title">Pages</span>
-          <span className="arrow"></span>
-        </a>
-        <ul className="sub-menu ">
+          <span className="title text-info-01">Media</span>
+          {/* <span className="arrow text-info-01"></span> */}
+        </Link>
+        {/* <ul className="sub-menu ">
           {pages.map((item) => (
             <li key={item.id}>
               <Link
@@ -412,12 +414,21 @@ const HeaderMenuContent = ({ float = "" }) => {
               </Link>
             </li>
           ))}
-        </ul>
+        </ul> */}
       </li>
+
+      {/* <li className="last">
+        <Link
+          href="/gallery"
+          className={route.pathname === "/gallery" ? "ui-active" : undefined}
+        >
+          Team
+        </Link>
+      </li> */}
       {/* End .dropitem */}
 
-      <li className="dropitem">
-        <a
+      {/* <li className="dropitem">
+        <Link
           href="#"
           className={
             blog.some(
@@ -431,7 +442,7 @@ const HeaderMenuContent = ({ float = "" }) => {
         >
           <span className="title">Blog</span>
           <span className="arrow"></span>
-        </a>
+        </Link>
         <ul className="sub-menu ">
           {blog.map((item) => (
             <li key={item.id}>
@@ -449,6 +460,14 @@ const HeaderMenuContent = ({ float = "" }) => {
             </li>
           ))}
         </ul>
+      </li> */}
+      <li className="last">
+        <Link
+          href="/membership"
+          className={route.pathname === "/membership" ? "ui-active" : undefined}
+        >
+          <span className="text-info-01">Subscription</span>
+        </Link>
       </li>
       {/* End .dropitem */}
 
@@ -457,7 +476,7 @@ const HeaderMenuContent = ({ float = "" }) => {
           href="/contact"
           className={route.pathname === "/contact" ? "ui-active" : undefined}
         >
-          Contact
+          <span className="text-info-01">Contact Us</span>
         </Link>
       </li>
       {/* End .dropitem */}

@@ -1249,12 +1249,13 @@ header.header-nav.menu_style_home_one ul.ace-responsive-menu li.add_listing {
   border-radius: 25px;
   height: 50px;
   position: relative;
-  text-align: center;
+  text-align: left;
   vertical-align: middle;
   width: 180px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  color: blue;
 }
 
 header.header-nav.menu_style_home_one
@@ -5184,7 +5185,7 @@ form.home5_advanced_search_form
 }
 
 .home1_bgi1 {
-  background-image: url(../images/home/Homepage_01.jpg);
+  background-image: url(../images/home/Homepage_04.jpg);
   -webkit-background-size: cover;
   background-size: cover;
   background-position: center center;
@@ -5198,7 +5199,7 @@ form.home5_advanced_search_form
 .home1-overlay:before {
   content: "";
   background-color: rgb(29, 41, 62);
-  opacity: 0.6;
+  opacity: 0.7;
   position: absolute;
   bottom: 0;
   left: 0;
@@ -21216,11 +21217,11 @@ header.header-nav.menu_style_home_one.stricky-fixed
   background-color: #0272db !important;
 }
 
-/* header.header-nav.menu_style_home_one.stricky-fixed .ace-responsive-menu li.add_listing:hover{
-  background-color: #0595e3 !important ;
-  color: black !important;
-  border: 1px solid black !important;
-} */
+header.header-nav.menu_style_home_one.stricky-fixed .ace-responsive-menu li.add_listing{
+  background-color: #ffffff !important ;
+  /* color: white !important; */
+  border: 1px solid #007bff !important;
+}
 
 .home1-advnc-search ul li .search_option_button button {
   background-color: #0272db !important ;
@@ -21244,10 +21245,20 @@ header.header-nav.menu_style_home_one.stricky-fixed
   color: white !important;
 }
 
-/* header.header-nav.menu_style_home_one ul.ace-responsive-menu li.add_listing a:hover{
-  background-color: #084c61 !important ;
-  color: #ffffff !important;
-} */
+header.header-nav.menu_style_home_one ul.ace-responsive-menu li.add_listing a {
+  font-family: "Nunito";
+  color: #007bff !important;
+  line-height: 1.2;
+  top: -4px !important;
+  padding: 13px !important;
+  /* border: 1px solid #007bff !important; */
+}
+
+header.header-nav.menu_style_home_one ul.ace-responsive-menu li.add_listing{
+  /* background-color: #084c61 !important ; */
+  /* color: #ffffff !important; */
+  border: 1px solid #007bff !important;
+}
 
 .bgc-thm {
   background-color: #084c61 !important ;
@@ -21302,7 +21313,7 @@ header.header-nav.menu_style_home_one.stricky-fixed
 }
 
 .inner_page_breadcrumb_contact_us {
-  background-image: url(../images/home/contact_us.jpg) !important;
+  background-image: url(../images/home/31.jpg) !important;
 }
 
 .text-color {
@@ -21347,10 +21358,11 @@ header.header-nav.menu_style_home_one.stricky-fixed
 }
 
 header.header-nav.menu_style_home_one .ace-responsive-menu > li > a {
-  font-size: 17px !important;
+  font-size: 21px !important;
+  font-weight: 600 !important;
 }
 .fs-13 {
-  font-size: 14px !important;
+  font-size: 15px !important;
 }
 
 .login_form .heading h4,
@@ -21402,7 +21414,7 @@ header.header-nav.menu_style_home_one .ace-responsive-menu > li > a {
   /* opacity: 0.9; */
   position: relative;
   top: 43px;
-  left: 3rem;
+  left: 2.6rem;
   margin-top: -28px !important ;
 }
 
@@ -21421,7 +21433,7 @@ header.header-nav.menu_style_home_one .ace-responsive-menu > li > a {
   line-height: 0.5;
   position: relative;
   top: -50px;
-  left: 7.3rem;
+  left: 7.5rem;
   /* display: none !important; */
   /* margin-left: 12rem; */
 }
@@ -21445,4 +21457,32 @@ header.header-nav.menu_style_home_one .ace-responsive-menu > li > a {
 
 .home_content {
   padding: 250px 0 400px !important;
+}
+
+/* .text-info-01 {
+  color: #0272db;
+  color: #08ee90;
+  color: #0905ff;
+  color: #ff5a5f;
+} */
+
+header.header-nav.menu_style_home_one .ace-responsive-menu li a {
+  color: #eda8a8 !important;
+}
+
+header.header-nav.menu_style_home_one.stricky-fixed
+  .ace-responsive-menu
+  > li
+  > a.active
+  span,
+header.header-nav.menu_style_home_one.stricky-fixed
+  .ace-responsive-menu
+  li
+  a.active
+  span,
+header.header-nav.menu_style_home_one.stricky-fixed .ace-responsive-menu li a,
+header.header-nav.menu_style_home_one.stricky-fixed a.navbar_brand span,
+header.header-nav.menu_style_home_one.stricky-fixed .sign_up_btn .btn,
+header.header-nav.menu_style_home_one.stricky-fixed #search-button i {
+  color: black !important;
 }
