@@ -74,7 +74,7 @@ const Captcha = () => {
   return (
     <>
       <div className="row">
-        <div className="col-lg-6 col-sm-6 col-5">
+        <div className="col-lg-6">
           <h4 id="captcha" className="bg-imgg text-captcha">
             {captcha}
           </h4>
@@ -85,7 +85,7 @@ const Captcha = () => {
             src="/assets/images/home/bg.png"
           />
         </div>
-        <div className="col-lg-6 col-sm-6 col-7">
+        <div className="col-lg-6">
           <input
             type="text"
             id="inputType"

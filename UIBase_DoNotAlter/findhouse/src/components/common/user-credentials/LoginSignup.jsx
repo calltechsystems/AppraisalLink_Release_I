@@ -11,6 +11,7 @@ import axios from "axios";
 import { encryptionData } from "../../../utils/dataEncryption";
 
 const LoginSignup = () => {
+
   // Registration Show Hide Functionality start
 
   const [showhide, setShowhide] = useState("");
@@ -180,7 +181,6 @@ const LoginSignup = () => {
                   className="img-fluid w100 h-100 cover"
                   src="/assets/images/home/computer-login.avif"
                   alt="login.jpg"
-                  loading="eager"
                 />
               </div>
             </div>
@@ -291,7 +291,6 @@ const LoginSignup = () => {
                   className="img-fluid w100 h-100 cover"
                   src="/assets/images/home/mobile-login-concept-illustration_114360-83.avif"
                   alt="regstr.jpg"
-                  loading="eager"
                 />
               </div>
             </div>
@@ -335,10 +334,7 @@ const LoginSignup = () => {
                     <>
                       <div className="form-group input-group  mb-3">
                         <input
-<<<<<<< Updated upstream
-=======
                           ref={emailRegisterRef}
->>>>>>> Stashed changes
                           type="email"
                           name="email"
                           className="form-control"
@@ -356,10 +352,7 @@ const LoginSignup = () => {
 
                       <div className="form-group input-group  mb-3">
                         <input
-<<<<<<< Updated upstream
-=======
                           ref={passwordRegisterRef}
->>>>>>> Stashed changes
                           name="password"
                           type="password"
                           className="form-control"
