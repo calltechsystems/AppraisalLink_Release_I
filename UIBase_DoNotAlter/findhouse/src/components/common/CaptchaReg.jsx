@@ -73,6 +73,7 @@ const CaptchaReg = () => {
 
   return (
     <>
+<<<<<<< Updated upstream
       <div className="row">
         <div className="col-lg-6 col-sm-6 col-5">
           <h4 id="captchanew" className="bg-imgg text-captcha">
@@ -106,6 +107,26 @@ const CaptchaReg = () => {
       </div>
       {/* End input-group */}
     </>
+=======
+     <div className="row">
+                    <div className="col-lg-6">
+                       <h4 id="captchanew" className="bg-imgg text-captcha">{captchanew}</h4>
+                       <Image
+                             width={60}
+                             height={45}
+                             className="w-100 mb-2 mt-0 cap-img"
+                             src="/assets/images/home/bg.png"
+                             />
+                    </div>
+                  <div className="col-lg-6">
+                      <input type="text" id="inputTypenew" className="form-control mr"placeholder="Enter Captcha"
+                      name="usernamenew"  onChange={handleChange} autocomplete="off"/><button type="button" id="succesBtn" className="btn btn-primary w-25 btn-captcha">!</button>
+                    </div>
+           </div>
+                  {/* End input-group */}
+   </>
+
+>>>>>>> Stashed changes
   );
 };
 

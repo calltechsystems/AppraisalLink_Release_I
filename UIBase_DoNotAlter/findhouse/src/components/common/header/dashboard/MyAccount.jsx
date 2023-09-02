@@ -2,8 +2,9 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { isSinglePageActive } from "../../../../utils/daynamicNavigation";
 import Image from "next/image";
+import {getSession} from 'next-iron-session';
 
-const MyAccount = () => {
+const MyAccount = ({user}) => {
   const profileMenuItems = [
     { id: 1, name: "Profile", ruterPath: "/my-profile" },
     // { id: 2, name: " My Message", ruterPath: "/my-message" },
@@ -23,7 +24,7 @@ const MyAccount = () => {
           alt="e1.png"
         />
         <p>
-          Shubhendra Patel <br />
+          {user?.email} <br />
           <span className="address">abc@xyz.com</span>
         </p>
       </div>
@@ -48,5 +49,15 @@ const MyAccount = () => {
     </>
   );
 };
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+
+  return {
+    props: {
+      user: session?.user || null,
+    },
+  };
+}
 
 export default MyAccount;
