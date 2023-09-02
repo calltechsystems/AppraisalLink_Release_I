@@ -91,7 +91,7 @@ return (
                     </div>
                   <div className="col-lg-6">
                       <input type="text" id="inputTypenew" className="form-control mr"placeholder="Enter Captcha"
-                      name="usernamenew"  onChange={handleChange} autocomplete="off"/><button type="button" id="succesBtn   " className="btn btn-primary w-25 btn-captcha">!</button>
+                      name="usernamenew"  onChange={handleChange} autocomplete="off"/><button type="button" id="succesBtn" className="btn btn-primary w-25 btn-captcha">!</button>
                     </div>
            </div>
                   {/* End input-group */}

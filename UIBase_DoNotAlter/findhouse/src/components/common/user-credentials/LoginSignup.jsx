@@ -1,21 +1,116 @@
-import { useState } from "react";
+import {  useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { getSession } from "next-iron-session";
+
+
 import Captcha from "../Captcha";
 import CaptchaReg from "../CaptchaReg";
+import axios from "axios";
+import { encryptionData } from "../../../utils/dataEncryption";
 
 const LoginSignup = () => {
 
   // Registration Show Hide Functionality start
 
   const [showhide, setShowhide] = useState("");
+  const [showRegister,setRegister]=useState(true);
   // const [userinput, setUserinput] = useState(true);
+
+  //defining the variables
+  const emailLoginRef = useRef();
+  const passwordLoginRef = useRef();
+
+  const emailRegisterRef = useRef();
+  const passwordRegisterRef = useRef();
+  const repasswordRef = useRef();
+  const userTypeRef = useRef();
+
+  const checkValueRef = useRef();
+
+  const [isLoading , setLoading] = useState(false);
+
+  const router = useRouter();
 
   const handleshowhide = (event) => {
     const getuser = event.target.value;
     setShowhide(getuser);
     // setUserinput(false);
   };
+
+  //login trigger function
+  const loginHandler = (event) =>{
+
+    event.preventDefault();
+    const email = emailLoginRef.current.value;
+    const password = passwordLoginRef.current.value;
+
+    if(!email  || !password){
+      alert("Credentials Can't be empty");
+    }
+
+    const data = {
+      email :email,
+      password:password
+    };
+
+    const encryptedData = encryptionData(data);
+
+    setLoading(true);
+    axios.post("/api/login",encryptedData)
+    .then(res=>{
+      console.log(res);
+      alert("Successfully Logged In!");
+      localStorage.setItem("user",JSON.stringify(res));
+      router.push("/my-profile");
+    })
+    .catch(err=>{
+      alert(err.message);
+    })
+    .finally(()=>{
+      setLoading(false);
+    })
+  }
+
+  const registerHandler = (event)=>{
+``
+          event.preventDefault();
+          
+          setRegister(false);
+        
+          const email = emailRegisterRef.current.value;
+          const password = passwordRegisterRef.current.value;
+          const reEnterPassword = repasswordRef.current.value;
+          const user = userTypeRef.current.value;
+          
+          if(password!==reEnterPassword){
+            alert("Password are meant to be same ");
+          }
+          else if(!email){
+            alert("Email cant be empty or non valid.");
+          }
+          const data = {
+            email :email,
+            password:password,
+            AccountType :user
+          };
+          
+          const encryptedData = encryptionData(data);
+
+          setLoading(true);
+          axios.post("/api/register",encryptedData)
+          .then(res=>{
+            alert("Successfully Signed In!");
+            //redirection to login
+          })
+          .catch(err=>{
+           alert(err.message);
+          })
+          .finally(()=>{
+            setLoading(false);
+          })
+  }
 
   // Registration Show Hide Functionality end
 
@@ -33,7 +128,7 @@ const LoginSignup = () => {
 
       <div className="modal-body container pb20">
         <div className="row">
-          <div className="col-lg-12">
+          <div className={ showRegister ? "col-lg-12" : "col-lg-24"}>
             <ul className="sign_up_tab nav nav-tabs" id="myTab" role="tablist">
               <li className="nav-item">
                 <Link
@@ -50,7 +145,7 @@ const LoginSignup = () => {
               </li>
               {/* End login tab */}
 
-              <li className="nav-item">
+              { showRegister && ( <li className="nav-item">
                 <Link
                   className="nav-link"
                   id="profile-tab"
@@ -62,7 +157,8 @@ const LoginSignup = () => {
                 >
                   Register
                 </Link>
-              </li>
+              </li>)
+              }
               {/* End Register tab */}
             </ul>
             {/* End .sign_up_tab */}
@@ -92,7 +188,7 @@ const LoginSignup = () => {
 
             <div className="col-lg-6 col-xl-6">
               <div className="login_form">
-                <form action="/my-profile">
+                <form  onSubmit={(e)=>loginHandler(e)}>
                   <div className="heading">
                     <h4>Login</h4>
                   </div>
@@ -105,6 +201,7 @@ const LoginSignup = () => {
                       id="inlineFormInputGroupUsername2"
                       placeholder="Email Address"
                       required
+                      ref={emailLoginRef}
                     />
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -121,6 +218,7 @@ const LoginSignup = () => {
                       id="exampleInputPassword1"
                       placeholder="Password"
                       required
+                      ref={passwordLoginRef}
                     />
                     <div className="input-group-prepend">
                       <div className="input-group-text">
@@ -138,6 +236,7 @@ const LoginSignup = () => {
                       type="checkbox"
                       value=""
                       id="remeberMe"
+                      ref={checkValueRef}
                     />
                     <label
                       className="form-check-label form-check-label"
@@ -178,7 +277,7 @@ const LoginSignup = () => {
           </div>
           {/* End .tab-pane */}
 
-          <div
+          { showRegister && (<div
             className="row mt25 tab-pane fade"
             id="profile"
             role="tabpanel"
@@ -197,33 +296,34 @@ const LoginSignup = () => {
             </div>
             {/* End . left side image for register */}
 
-            <div className="col-lg-6 col-xl-6">
+           <div className="col-lg-6 col-xl-6">
               <div className="sign_up_form">
                 <div className="heading">
                   <h4>Register</h4>
                 </div>
                 {/* End .heading */}
 
-                <form action="#" method="POST">
+                <form onSubmit={(e)=>registerHandler(e)}>
                   <div className="form-group ui_kit_select_search mb-3">
                     <select
                       className="form-select"
                       data-live-search="true"
                       data-width="100%"
                       onChange={(e) => handleshowhide(e)}
+                      ref={userTypeRef}
                       // disabled={!userinput}
                     >
                       <option data-tokens="SelectRole">Choose User</option>
                       <option data-tokens="Agent/Agency" value="1">
                         Mortgage Broker
                       </option>
-                      <option data-tokens="SingleUser" value="1">
+                      <option data-tokens="SingleUser" value="2">
                         Mortgage Brokerage
                       </option>
-                      <option data-tokens="SingleUser" value="1">
+                      <option data-tokens="SingleUser" value="3">
                         Appraiser
                       </option>
-                      <option data-tokens="SingleUser" value="1">
+                      <option data-tokens="SingleUser" value="4">
                         Appraiser Company
                       </option>
                     </select>
@@ -234,6 +334,10 @@ const LoginSignup = () => {
                     <>
                       <div className="form-group input-group  mb-3">
                         <input
+<<<<<<< Updated upstream
+=======
+                          ref={emailRegisterRef}
+>>>>>>> Stashed changes
                           type="email"
                           name="email"
                           className="form-control"
@@ -251,6 +355,10 @@ const LoginSignup = () => {
 
                       <div className="form-group input-group  mb-3">
                         <input
+<<<<<<< Updated upstream
+=======
+                          ref={passwordRegisterRef}
+>>>>>>> Stashed changes
                           name="password"
                           type="password"
                           className="form-control"
@@ -273,6 +381,7 @@ const LoginSignup = () => {
                           id="exampleInputPassword3"
                           placeholder="Confirm Password"
                           required
+                          ref={repasswordRef}
                         />
                         <div className="input-group-prepend">
                           <div className="input-group-text">
@@ -293,6 +402,7 @@ const LoginSignup = () => {
                       value=""
                       id="terms"
                       required
+                      ref={checkValueRef}
                     />
                     <label className="form-check-label" htmlFor="terms">
                       I accept the Terms and Privacy Policy.
@@ -308,7 +418,7 @@ const LoginSignup = () => {
                   {/* End from-group */}
 
                   <button
-                    type="submit"
+                   type = "submit"
                     className="btn btn-log w-100 btn-thm"
                     id="signup"
                     disabled={true}
@@ -328,12 +438,34 @@ const LoginSignup = () => {
               </div>
             </div>
             {/* End register content */}
-          </div>
+          </div>)}
           {/* End .tab-pane */}
         </div>
       </div>
     </div>
   );
 };
+
+export async function getStaticProps(context) {
+  const isPreview = context.preview; // Check if in preview mode
+
+  return {
+    props: {
+      preview: isPreview
+    },
+  };
+}
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+  const decryptionKey = process.env.CRYPTO_SECRET_KEY;
+
+  return {
+    props: {
+      decryptionKey
+    },
+  };
+}
+
 
 export default LoginSignup;
