@@ -1,5 +1,6 @@
 This is a sample testing of git
 
-THis is second sentence
+THis is second.
 
-This is third sentence.
+This is a chnage made by Aishwarya.
+This is a chnage made by Vijay.
