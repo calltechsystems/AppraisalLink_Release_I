@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-const HeaderMenuContent = ({ float = "" ,hide,isListing}) => {
+const HeaderMenuContent = ({ float = "", hide, isListing }) => {
   const route = useRouter();
 
   const home = [
@@ -236,36 +236,32 @@ const HeaderMenuContent = ({ float = "" ,hide,isListing}) => {
     { id: 10, name: "Terms & Conditions", routerPath: "/terms" },
   ];
 
-  let classname = ""
-  if (hide){
-    classname="ace-responsive-menu text-end d-lg-block d-none "
-  } 
-  else{
-    classname="ace-responsive-menu text-end d-lg-block d-none text-end-01"
+  let classname = "";
+  if (hide) {
+    classname = "ace-responsive-menu text-end d-lg-block d-none ";
+  } else {
+    classname = "ace-responsive-menu text-end d-lg-block d-none text-end-01";
   }
 
   return (
     <div>
-    <ul
-      id="respMenu"
-      className={classname}
-      data-menu-style="horizontal"
-    >
-      {hide && (<li className="dropitem">
-        <Link
-          href="/"
-          className={
-            home.some((page) => page.routerPath === route.pathname)
-              ? "ui-active"
-              : undefined
-          }
-        >
-          <span className="title">Home</span>
-          {/* <span className="arrow"></span> */}
-        </Link>
-        {/* <!-- Level Two--> */}
+      <ul id="respMenu" className={classname} data-menu-style="horizontal">
+        {hide && (
+          <li className="dropitem">
+            <Link
+              href="/"
+              className={
+                home.some((page) => page.routerPath === route.pathname)
+                  ? "ui-active"
+                  : undefined
+              }
+            >
+              <span className="title">Home</span>
+              {/* <span className="arrow"></span> */}
+            </Link>
+            {/* <!-- Level Two--> */}
 
-        {/* <ul className="sub-menu ">
+            {/* <ul className="sub-menu ">
           {home.map((item) => (
             <li key={item.id}>
               <Link
@@ -279,33 +275,30 @@ const HeaderMenuContent = ({ float = "" ,hide,isListing}) => {
             </li>
           ))}
         </ul> */}
-      </li>)}
-      {/* End .dropitem */}
+          </li>
+        )}
+        {/* End .dropitem */}
 
-      {hide && (<li className="dropitem">
-        <Link
-          href="/choose-us"
-          className={
-            listing.some((parent) => {
-              return parent.items.some(
-                (page) => page.routerPath === route.pathname
-              );
-            })
-              ? "ui-active"
-              : undefined
-          }
-        >
-          {/* <span className="title">Listing</span> */}
-<<<<<<< Updated upstream
-          <span className="title text-warning">Who we are</span>
-          {/* <span className="arrow text-warning"></span> */}
-=======
-          <span className="title text-info-01">Why Choose Us</span>
-          {/* <span className="arrow text-info-01"></span> */}
->>>>>>> Stashed changes
-        </Link>
-        {/* <!-- Level Two--> */}
-        {/* <ul className="sub-menu ">
+        {hide && (
+          <li className="dropitem">
+            <Link
+              href="/choose-us"
+              className={
+                listing.some((parent) => {
+                  return parent.items.some(
+                    (page) => page.routerPath === route.pathname
+                  );
+                })
+                  ? "ui-active"
+                  : undefined
+              }
+            >
+              {/* <span className="title">Listing</span> */}
+              <span className="title text-info-01">Why Choose Us</span>
+              {/* <span className="arrow text-info-01"></span> */}
+            </Link>
+            {/* <!-- Level Two--> */}
+            {/* <ul className="sub-menu ">
           {listing.map((item) => (
             <li className="dropitem arrow" key={item.id}>
               <Link
@@ -318,8 +311,8 @@ const HeaderMenuContent = ({ float = "" ,hide,isListing}) => {
               >
                 {item.title}
               </Link> */}
-              {/* <!-- Level Three--> */}
-              {/* <ul className="sub-menu ">
+            {/* <!-- Level Three--> */}
+            {/* <ul className="sub-menu ">
                 {item.items.map((val, i) => (
                   <li key={i}>
                     <Link
@@ -338,38 +331,31 @@ const HeaderMenuContent = ({ float = "" ,hide,isListing}) => {
             </li>
           ))}
         </ul> */}
-<<<<<<< Updated upstream
-      </li>
-=======
-      </li>)}
->>>>>>> Stashed changes
-      {/* End .dropitem */}
+          </li>
+        )}
+        {/* End .dropitem */}
 
-      {hide && (<li className="dropitem">
-        <Link
-          href="/service"
-          className={
-            property.some((parent) => {
-              return parent.items.some(
-                (page) =>
-                  page.routerPath === route.pathname ||
-                  page.routerPath + "/[id]" === route.pathname
-              );
-            })
-              ? "ui-active"
-              : undefined
-          }
-        >
-          {/* <span className="title">Property</span>{" "} */}
-<<<<<<< Updated upstream
-          <span className="title text-color_02">Services</span>{" "}
-          {/* <span className="arrow text-color_02"></span> */}
-=======
-          <span className="title text-info-01">Insights</span>{" "}
-          <span className="arrow text-info-01"></span>
->>>>>>> Stashed changes
-        </Link>
-        {/* <ul className="sub-menu ">
+        {hide && (
+          <li className="dropitem">
+            <Link
+              href="/service"
+              className={
+                property.some((parent) => {
+                  return parent.items.some(
+                    (page) =>
+                      page.routerPath === route.pathname ||
+                      page.routerPath + "/[id]" === route.pathname
+                  );
+                })
+                  ? "ui-active"
+                  : undefined
+              }
+            >
+              {/* <span className="title">Property</span>{" "} */}
+              <span className="title text-info-01">Insights</span>{" "}
+              <span className="arrow text-info-01"></span>
+            </Link>
+            {/* <ul className="sub-menu ">
           {property.map((item) => (
             <li className="dropitem arrow" key={item.id}>
               <Link
@@ -386,8 +372,8 @@ const HeaderMenuContent = ({ float = "" ,hide,isListing}) => {
               >
                 {item.title}
               </Link> */}
-              {/* <!-- Level Three--> */}
-              {/* <ul className="sub-menu ">
+            {/* <!-- Level Three--> */}
+            {/* <ul className="sub-menu ">
                 {item.items.map((val, i) => (
                   <li key={i}>
                     <Link
@@ -406,28 +392,24 @@ const HeaderMenuContent = ({ float = "" ,hide,isListing}) => {
               </ul>
             </li>
           ))}
-<<<<<<< Updated upstream
-        </ul> */}
-      </li>
-=======
-        </ul>
-      </li>)}
->>>>>>> Stashed changes
-      {/* End .dropitem */}
+          </ul>*/}
+          </li>
+        )}
+        {/* End .dropitem */}
 
-      <li className="dropitem">
-        <Link
-          href="/gallery"
-          className={
-            pages.some((page) => page.routerPath === route.pathname)
-              ? "ui-active"
-              : undefined
-          }
-        >
-          <span className="title text-info">Media</span>
-          {/* <span className="arrow text-info"></span> */}
-        </Link>
-        {/* <ul className="sub-menu ">
+        <li className="dropitem">
+          <Link
+            href="/gallery"
+            className={
+              pages.some((page) => page.routerPath === route.pathname)
+                ? "ui-active"
+                : undefined
+            }
+          >
+            <span className="title text-info">Media</span>
+            {/* <span className="arrow text-info"></span> */}
+          </Link>
+          {/* <ul className="sub-menu ">
           {pages.map((item) => (
             <li key={item.id}>
               <Link
@@ -441,9 +423,9 @@ const HeaderMenuContent = ({ float = "" ,hide,isListing}) => {
             </li>
           ))}
         </ul> */}
-      </li>
+        </li>
 
-      {/* <li className="last">
+        {/* <li className="last">
         <Link
           href="/gallery"
           className={route.pathname === "/gallery" ? "ui-active" : undefined}
@@ -451,9 +433,9 @@ const HeaderMenuContent = ({ float = "" ,hide,isListing}) => {
           Team
         </Link>
       </li> */}
-      {/* End .dropitem */}
+        {/* End .dropitem */}
 
-      {/* <li className="dropitem">
+        {/* <li className="dropitem">
         <Link
           href="#"
           className={
@@ -487,78 +469,78 @@ const HeaderMenuContent = ({ float = "" ,hide,isListing}) => {
           ))}
         </ul>
       </li> */}
-      {hide && (<li className="last">
-        <Link
-          href="/membership"
-          className={route.pathname === "/membership" ? "ui-active" : undefined}
-        >
-          Subscription
-        </Link>
-      </li>)}
-      {/* End .dropitem */}
+        {hide && (
+          <li className="last">
+            <Link
+              href="/membership"
+              className={
+                route.pathname === "/membership" ? "ui-active" : undefined
+              }
+            >
+              Subscription
+            </Link>
+          </li>
+        )}
+        {/* End .dropitem */}
 
-<<<<<<< Updated upstream
-      <li className="last">
-=======
-      {hide && (<li className="last">
->>>>>>> Stashed changes
-        <Link
-          href="/contact"
-          className={route.pathname === "/contact" ? "ui-active" : undefined}
-        >
-<<<<<<< Updated upstream
-          <span className="text-color_01">Contact Us</span>
-        </Link>
-      </li>
-=======
-          <span className="text-info-01">About Us</span>
-        </Link>
-      </li>)}
->>>>>>> Stashed changes
-      {/* End .dropitem */}
+        {hide && (
+          <li className="last">
+            <Link
+              href="/contact"
+              className={
+                route.pathname === "/contact" ? "ui-active" : undefined
+              }
+            >
+              <span className="text-info-01">About Us</span>
+            </Link>
+          </li>
+        )}
+        {/* End .dropitem */}
 
-      {hide && (<li className="last">
-        <Link
-          href="/contact"
-          className={route.pathname === "/contact" ? "ui-active" : undefined}
-        >
-          <span className="btn-primary dn-lg text-info-01">Get In Touch</span>
-        </Link>
-      </li>)}
-      {/* End .dropitem */}
+        {hide && (
+          <li className="last">
+            <Link
+              href="/contact"
+              className={
+                route.pathname === "/contact" ? "ui-active" : undefined
+              }
+            >
+              <span className="btn-primary dn-lg text-info-01">
+                Get In Touch
+              </span>
+            </Link>
+          </li>
+        )}
+        {/* End .dropitem */}
 
-      {hide && (<li className={`list-inline-item list_s ${float}`}>
-        <Link
-          href="#"
-          className="btn text-color flaticon-user"
-          data-bs-toggle="modal"
-          data-bs-target=".bd-example-modal-lg"
-        >
-          <span className="dn-lg text-color">Login / Register</span>
-        </Link>
-      </li>)}
-      {/* End .dropitem */}
+        {hide && (
+          <li className={`list-inline-item list_s ${float}`}>
+            <Link
+              href="#"
+              className="btn text-color flaticon-user"
+              data-bs-toggle="modal"
+              data-bs-target=".bd-example-modal-lg"
+            >
+              <span className="dn-lg text-color">Login / Register</span>
+            </Link>
+          </li>
+        )}
+        {/* End .dropitem */}
 
-<<<<<<< Updated upstream
-      {/* <li className={`list-inline-item add_listing ${float}`}>
-=======
-      {isListing && (<li className={`list-inline-item add_listing ${float}`}>
->>>>>>> Stashed changes
-        <Link
-          href="#"
-          data-bs-toggle="modal"
-          data-bs-target=".bd-example-modal-lg"
-        >
-          <span className="flaticon-plus fs-13"></span>
-          <span className="dn-lg fs-13"> Appraise Property</span>
-        </Link>
-<<<<<<< Updated upstream
-      </li> */}
-=======
-      </li>)}
->>>>>>> Stashed changes
-      {/* End .dropitem */}
-    </ul>
+        {isListing && (
+          <li className={`list-inline-item add_listing ${float}`}>
+            <Link
+              href="#"
+              data-bs-toggle="modal"
+              data-bs-target=".bd-example-modal-lg"
+            >
+              <span className="flaticon-plus fs-13"></span>
+              <span className="dn-lg fs-13"> Appraise Property</span>
+            </Link>
+          </li>
+        )}
+        {/* End .dropitem */}
+      </ul>
     </div>
   );
 };

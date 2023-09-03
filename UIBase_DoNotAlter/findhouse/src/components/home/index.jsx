@@ -11,6 +11,7 @@ import Hero from "./Hero";
 import WhyChoose from "../common/WhyChoose";
 import PopupSignInUp from "../common/PopupSignInUp";
 import Pricing from "../membership/Pricing";
+import Testimonial from "../home-7/Testimonial";
 
 const Index = () => {
   return (
@@ -61,13 +62,13 @@ const Index = () => {
           </div>
           <div className="row">
             {/* <Blogs /> */}
-            <Pricing hideButton={true}/>
+            <Pricing hideButton={true} />
           </div>
         </div>
       </section>
 
-       {/* <!-- Our Testimonials --> */}
-       <section className="our-testimonials">
+      {/* <!-- Our Testimonials --> */}
+      <section className="our-testimonials">
         <div className="container">
           <div className="row">
             <div className="col-lg-6 col-12 offset-lg-3">
