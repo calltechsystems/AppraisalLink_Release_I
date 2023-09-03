@@ -46,10 +46,11 @@ const Header = () => {
         {/* site logo brand */}
 
         <nav>
-          <HeaderMenuContent />
+          <HeaderMenuContent   />
         </nav>
         {/* End .navbar */}
       </div>
+    
     </header>
     // {/* <!-- /.theme-main-menu --> */}
   );

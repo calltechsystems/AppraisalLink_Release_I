@@ -9,9 +9,7 @@ const Footer = () => {
         <div className="footer_about_widget">
           <h4>About Appraisal Link</h4>
           <p>
-            We&apos;re reimagining how you buy, sell and rent. It&apos;s now
-            easier to get into a place you love. So let&apos;s do this,
-            together.
+            We are a Ontario based buisness working with brokers and appraisers providing services in real estate sector.
           </p>
         </div>
       </div>
@@ -45,20 +43,18 @@ const Footer = () => {
         <div className="footer_contact_widget">
           <h4>Contact Us</h4>
           <ul className="list-unstyled">
+           
             <li>
-              <a href="mailto:info@findhouse.com">xyz@abc.com</a>
+              <a href="#">123 Main Street</a>
             </li>
             <li>
-              <a href="#">XYZ street Model Town British Columbia</a>
+              <a href="#">Brampton, LX23Y2, Ontario</a>
             </li>
             <li>
-              <a href="#">Canada Pin Code 123456</a>
+              <a href="mailto:info@findhouse.com">info@appraisallink.ca</a>
             </li>
             <li>
-              <a href="tel:+4733378901">+X XXX-YYY-ZZZZ</a>
-            </li>
-            <li>
-              <a href="tel:+4733378901">+X XXX-YYY-ZZZZ</a>
+              <a href="#">+1 302-000-1111</a>
             </li>
           </ul>
         </div>
@@ -71,8 +67,8 @@ const Footer = () => {
           <ul className="mb30">
             <Social />
           </ul>
-          <h4>Subscribe</h4>
-          <SubscribeForm />
+          {/* <h4>Subscribe</h4>
+          <SubscribeForm /> */}
         </div>
       </div>
     </>

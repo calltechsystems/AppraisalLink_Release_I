@@ -12,7 +12,7 @@ const CopyrightFooter = () => {
 
   return (
     <div className="row">
-      <div className="col-lg-6 col-xl-6">
+      {/* <div className="col-lg-6 col-xl-6">
         <div className="footer_menu_widget">
           <ul>
             {menuItems.map((item) => (
@@ -22,11 +22,11 @@ const CopyrightFooter = () => {
             ))}
           </ul>
         </div>
-      </div>
+      </div> */}
       {/* End .col */}
 
-      <div className="col-lg-6 col-xl-6">
-        <div className="copyright-widget text-end">
+      <div className="col-12">
+        <div className="copyright-widget text-center">
           <p>
             &copy; {new Date().getFullYear()} {" "}
             <a

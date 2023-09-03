@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-const HeaderMenuContent = ({ float = "" }) => {
+const HeaderMenuContent = ({ float = "" ,hide,isListing}) => {
   const route = useRouter();
 
   const home = [
@@ -236,13 +236,22 @@ const HeaderMenuContent = ({ float = "" }) => {
     { id: 10, name: "Terms & Conditions", routerPath: "/terms" },
   ];
 
+  let classname = ""
+  if (hide){
+    classname="ace-responsive-menu text-end d-lg-block d-none "
+  } 
+  else{
+    classname="ace-responsive-menu text-end d-lg-block d-none text-end-01"
+  }
+
   return (
+    <div>
     <ul
       id="respMenu"
-      className="ace-responsive-menu text-end d-lg-block d-none"
+      className={classname}
       data-menu-style="horizontal"
     >
-      <li className="dropitem">
+      {hide && (<li className="dropitem">
         <Link
           href="/"
           className={
@@ -270,12 +279,12 @@ const HeaderMenuContent = ({ float = "" }) => {
             </li>
           ))}
         </ul> */}
-      </li>
+      </li>)}
       {/* End .dropitem */}
 
-      <li className="dropitem">
+      {hide && (<li className="dropitem">
         <Link
-          href="/about-us"
+          href="/choose-us"
           className={
             listing.some((parent) => {
               return parent.items.some(
@@ -287,8 +296,13 @@ const HeaderMenuContent = ({ float = "" }) => {
           }
         >
           {/* <span className="title">Listing</span> */}
+<<<<<<< Updated upstream
           <span className="title text-warning">Who we are</span>
           {/* <span className="arrow text-warning"></span> */}
+=======
+          <span className="title text-info-01">Why Choose Us</span>
+          {/* <span className="arrow text-info-01"></span> */}
+>>>>>>> Stashed changes
         </Link>
         {/* <!-- Level Two--> */}
         {/* <ul className="sub-menu ">
@@ -324,10 +338,14 @@ const HeaderMenuContent = ({ float = "" }) => {
             </li>
           ))}
         </ul> */}
+<<<<<<< Updated upstream
       </li>
+=======
+      </li>)}
+>>>>>>> Stashed changes
       {/* End .dropitem */}
 
-      <li className="dropitem">
+      {hide && (<li className="dropitem">
         <Link
           href="/service"
           className={
@@ -343,8 +361,13 @@ const HeaderMenuContent = ({ float = "" }) => {
           }
         >
           {/* <span className="title">Property</span>{" "} */}
+<<<<<<< Updated upstream
           <span className="title text-color_02">Services</span>{" "}
           {/* <span className="arrow text-color_02"></span> */}
+=======
+          <span className="title text-info-01">Insights</span>{" "}
+          <span className="arrow text-info-01"></span>
+>>>>>>> Stashed changes
         </Link>
         {/* <ul className="sub-menu ">
           {property.map((item) => (
@@ -383,8 +406,13 @@ const HeaderMenuContent = ({ float = "" }) => {
               </ul>
             </li>
           ))}
+<<<<<<< Updated upstream
         </ul> */}
       </li>
+=======
+        </ul>
+      </li>)}
+>>>>>>> Stashed changes
       {/* End .dropitem */}
 
       <li className="dropitem">
@@ -459,27 +487,47 @@ const HeaderMenuContent = ({ float = "" }) => {
           ))}
         </ul>
       </li> */}
-      <li className="last">
+      {hide && (<li className="last">
         <Link
           href="/membership"
           className={route.pathname === "/membership" ? "ui-active" : undefined}
         >
           Subscription
         </Link>
-      </li>
+      </li>)}
       {/* End .dropitem */}
 
+<<<<<<< Updated upstream
       <li className="last">
+=======
+      {hide && (<li className="last">
+>>>>>>> Stashed changes
         <Link
           href="/contact"
           className={route.pathname === "/contact" ? "ui-active" : undefined}
         >
+<<<<<<< Updated upstream
           <span className="text-color_01">Contact Us</span>
         </Link>
       </li>
+=======
+          <span className="text-info-01">About Us</span>
+        </Link>
+      </li>)}
+>>>>>>> Stashed changes
       {/* End .dropitem */}
 
-      <li className={`list-inline-item list_s ${float}`}>
+      {hide && (<li className="last">
+        <Link
+          href="/contact"
+          className={route.pathname === "/contact" ? "ui-active" : undefined}
+        >
+          <span className="btn-primary dn-lg text-info-01">Get In Touch</span>
+        </Link>
+      </li>)}
+      {/* End .dropitem */}
+
+      {hide && (<li className={`list-inline-item list_s ${float}`}>
         <Link
           href="#"
           className="btn text-color flaticon-user"
@@ -488,10 +536,14 @@ const HeaderMenuContent = ({ float = "" }) => {
         >
           <span className="dn-lg text-color">Login / Register</span>
         </Link>
-      </li>
+      </li>)}
       {/* End .dropitem */}
 
+<<<<<<< Updated upstream
       {/* <li className={`list-inline-item add_listing ${float}`}>
+=======
+      {isListing && (<li className={`list-inline-item add_listing ${float}`}>
+>>>>>>> Stashed changes
         <Link
           href="#"
           data-bs-toggle="modal"
@@ -500,9 +552,14 @@ const HeaderMenuContent = ({ float = "" }) => {
           <span className="flaticon-plus fs-13"></span>
           <span className="dn-lg fs-13"> Appraise Property</span>
         </Link>
+<<<<<<< Updated upstream
       </li> */}
+=======
+      </li>)}
+>>>>>>> Stashed changes
       {/* End .dropitem */}
     </ul>
+    </div>
   );
 };
 

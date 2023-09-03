@@ -7,13 +7,7 @@ const Partners = () => {
       {partnersImages.map((val, i) => (
         <div className="col-sm-6 col-md-4 col-lg" key={i}>
           <div className="our_partner">
-            <Image
-              width={106}
-              height={71}
-              className="contain"
-              src={`/assets/images/partners/${val}.png`}
-              alt="1.png"
-            />
+            <h3>{`Appraiser ${i}`}</h3>
           </div>
         </div>
       ))}

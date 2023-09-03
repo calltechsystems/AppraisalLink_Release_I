@@ -6,8 +6,7 @@ const HeroFilter = () => {
             <div className="home-text text-center">
                 <h2 className="fz55">Brokers Paradise for Appraising the Property</h2>
                 <p className="fz18 color-white">
-                    From as low as $10 per month with limited time offer
-                    discounts.
+                    From as low as $11 per month for limited time.
                 </p>
             </div>
             {/* End .home-text */}

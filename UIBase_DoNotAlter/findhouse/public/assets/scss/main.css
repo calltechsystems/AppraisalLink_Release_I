@@ -21258,6 +21258,7 @@ header.header-nav.menu_style_home_one ul.ace-responsive-menu li.add_listing{
   /* background-color: #084c61 !important ; */
   /* color: #ffffff !important; */
   border: 1px solid #007bff !important;
+  margin-top: 7px !important;
 }
 
 .bgc-thm {
@@ -21358,7 +21359,7 @@ header.header-nav.menu_style_home_one ul.ace-responsive-menu li.add_listing{
 }
 
 header.header-nav.menu_style_home_one .ace-responsive-menu > li > a {
-  font-size: 21px !important;
+  font-size: 19px !important;
   font-weight: 600 !important;
 }
 .fs-13 {
@@ -21459,12 +21460,12 @@ header.header-nav.menu_style_home_one .ace-responsive-menu > li > a {
   padding: 250px 0 400px !important;
 }
 
-/* .text-info-01 {
-  color: #0272db;
-  color: #08ee90;
+.text-info-01 {
+  /* color: #0272db; */
+  /* color: #08ee90; */
   color: #0905ff;
-  color: #ff5a5f;
-} */
+  /* color: #ff5a5f; */
+}
 
 header.header-nav.menu_style_home_one .ace-responsive-menu li a {
   color: #eda8a8 !important;
@@ -21485,4 +21486,33 @@ header.header-nav.menu_style_home_one.stricky-fixed a.navbar_brand span,
 header.header-nav.menu_style_home_one.stricky-fixed .sign_up_btn .btn,
 header.header-nav.menu_style_home_one.stricky-fixed #search-button i {
   color: black !important;
+}
+
+.home-logo-header{
+  background-color: white !important;
+  width: 100% !important;
+}
+
+header.header-nav.menu_style_home_one a.navbar_brand{
+  margin: 10px !important;
+}
+
+.text-end{
+  /* justify-content: space-between !important; */
+  text-align: center !important;
+}
+
+.text-end-01{
+  text-align: end !important;
+}
+
+header.header-nav.menu_style_home_one .ace-responsive-menu > li > a,
+header.header-nav.menu_style_home_three .ace-responsive-menu > li > a,
+header.header-nav.menu_style_home_four .ace-responsive-menu > li > a,
+header.header-nav.menu_style_home_five .ace-responsive-menu > li > a,
+header.header-nav.menu_style_home_six .ace-responsive-menu > li > a,
+header.header-nav.menu_style_home_seven .ace-responsive-menu > li > a,
+header.header-nav.menu_style_home_eight .ace-responsive-menu > li > a {
+  font-family: "Nunito", sans-serif;
+  padding: 20px 10px 10px 10px !important;
 }

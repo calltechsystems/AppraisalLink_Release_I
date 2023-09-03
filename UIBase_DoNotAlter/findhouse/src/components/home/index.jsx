@@ -10,6 +10,7 @@ import Header from "./Header";
 import Hero from "./Hero";
 import WhyChoose from "../common/WhyChoose";
 import PopupSignInUp from "../common/PopupSignInUp";
+import Pricing from "../membership/Pricing";
 
 const Index = () => {
   return (
@@ -53,17 +54,42 @@ const Index = () => {
           <div className="row">
             <div className="col-lg-6 offset-lg-3">
               <div className="main-title text-center">
-                <h2>Articles & Tips</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <h2>Membership Plans</h2>
+                <p>Choose a plan tailored to your needs.</p>
               </div>
             </div>
           </div>
           <div className="row">
-            <Blogs />
+            {/* <Blogs /> */}
+            <Pricing hideButton={true}/>
           </div>
         </div>
       </section>
 
+<<<<<<< Updated upstream
+=======
+       {/* <!-- Our Testimonials --> */}
+       <section className="our-testimonials">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-6 col-12 offset-lg-3">
+              <div className="main-title text-center mb20">
+                <h2>Testimonials</h2>
+                <p>Here could be a nice sub title</p>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-lg-12 col">
+              <div className="testimonial_grid_slider style2 gutter-x15">
+                <Testimonial />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+>>>>>>> Stashed changes
       {/* <!-- Our Partners --> */}
       <section id="our-partners" className="our-partners">
         <div className="container">
@@ -71,7 +97,7 @@ const Index = () => {
             <div className="col-lg-6 offset-lg-3">
               <div className="main-title text-center">
                 <h2>Our Partners</h2>
-                <p>We only work with the best companies around the globe</p>
+                <p>We work with the best appraisers around the country.</p>
               </div>
             </div>
           </div>
@@ -82,11 +108,11 @@ const Index = () => {
       </section>
 
       {/* <!-- Start Call to Action --> */}
-      <section className="start-partners bgc-thm pt50 pb50">
+      {/* <section className="start-partners bgc-thm pt50 pb50">
         <div className="container">
           <CallToAction />
         </div>
-      </section>
+      </section> */}
 
       {/* <!-- Our Footer --> */}
       <section className="footer_one">
