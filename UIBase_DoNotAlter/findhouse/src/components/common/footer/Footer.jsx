@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Social from "./Social";
-import SubscribeForm from "./SubscribeForm";
+// import SubscribeForm from "./SubscribeForm";
 
 const Footer = () => {
   return (
@@ -51,7 +51,7 @@ const Footer = () => {
               <a href="#">Brampton, LX23Y2, Ontario</a>
             </li>
             <li>
-              <a href="mailto:info@findhouse.com">info@appraisallink.ca</a>
+              <a href="#">info@appraisallink.ca</a>
             </li>
             <li>
               <a href="#">+1 302-000-1111</a>

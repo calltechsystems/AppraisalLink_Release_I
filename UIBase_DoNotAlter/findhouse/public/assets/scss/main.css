@@ -1214,7 +1214,7 @@ nav button {
 }
 
 header.header-nav {
-  padding: 0 30px;
+  padding: 10px 15px;
 }
 
 header.header-nav.dashbord_pages {
@@ -5185,7 +5185,7 @@ form.home5_advanced_search_form
 }
 
 .home1_bgi1 {
-  background-image: url(../images/home/Homepage_04.jpg);
+  background-image: url(../images/home/Homepage_05.jpg);
   -webkit-background-size: cover;
   background-size: cover;
   background-position: center center;
@@ -21249,7 +21249,7 @@ header.header-nav.menu_style_home_one ul.ace-responsive-menu li.add_listing a {
   font-family: "Nunito";
   color: #007bff !important;
   line-height: 1.2;
-  top: -4px !important;
+  top: 0px !important;
   padding: 13px !important;
   /* border: 1px solid #007bff !important; */
 }
@@ -21258,7 +21258,7 @@ header.header-nav.menu_style_home_one ul.ace-responsive-menu li.add_listing{
   /* background-color: #084c61 !important ; */
   /* color: #ffffff !important; */
   border: 1px solid #007bff !important;
-  margin-top: 7px !important;
+  /* margin-top: 5px !important; */
 }
 
 .bgc-thm {
@@ -21468,7 +21468,7 @@ header.header-nav.menu_style_home_one .ace-responsive-menu > li > a {
 }
 
 header.header-nav.menu_style_home_one .ace-responsive-menu li a {
-  color: #eda8a8 !important;
+  color: #0905ff !important;
 }
 
 header.header-nav.menu_style_home_one.stricky-fixed
@@ -21494,7 +21494,7 @@ header.header-nav.menu_style_home_one.stricky-fixed #search-button i {
 }
 
 header.header-nav.menu_style_home_one a.navbar_brand{
-  margin: 10px !important;
+  margin: 0px !important;
 }
 
 .text-end{
@@ -21515,4 +21515,8 @@ header.header-nav.menu_style_home_seven .ace-responsive-menu > li > a,
 header.header-nav.menu_style_home_eight .ace-responsive-menu > li > a {
   font-family: "Nunito", sans-serif;
   padding: 20px 10px 10px 10px !important;
+}
+
+header.header-nav {
+  padding: 10px 15px !important;
 }

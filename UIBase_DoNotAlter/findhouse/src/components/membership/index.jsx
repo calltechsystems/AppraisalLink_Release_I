@@ -42,7 +42,7 @@ const Index = () => {
             <div className="col-lg-6 offset-lg-3">
               <div className="main-title text-center">
                 <h2 className="text-dark">Ready to get started?</h2>
-                <p className="text-dark">Choose a plan tailored to your needs {isSelected ===1 ? "Monthly" : "Yearly"} </p>
+                <p className="text-dark">Choose a plan tailored to your needs {isSelected === 1 ? "Monthly" : "Yearly"} </p>
                 <div>
                 <button
                 style={{
@@ -103,7 +103,7 @@ const Index = () => {
 
           <div className="row">
             <Pricing  isPlan = {isSelected}/>
-            <Pricing hideButton={false}/>
+            {/* <Pricing hideButton={false}/> */}
           </div>
           {/* End .row */}
         </div>

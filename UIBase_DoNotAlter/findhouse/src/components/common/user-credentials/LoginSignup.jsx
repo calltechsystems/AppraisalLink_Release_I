@@ -2,13 +2,11 @@ import {  useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { getSession } from "next-iron-session";
-
-
+// import { getSession } from "next-iron-session";
 import Captcha from "../Captcha";
 import CaptchaReg from "../CaptchaReg";
-import axios from "axios";
-import { encryptionData } from "../../../utils/dataEncryption";
+// import axios from "axios";
+// import { encryptionData } from "../../../utils/dataEncryption";
 
 const LoginSignup = () => {
 
@@ -74,7 +72,7 @@ const LoginSignup = () => {
   }
 
   const registerHandler = (event)=>{
-``
+
           event.preventDefault();
           
           setRegister(false);

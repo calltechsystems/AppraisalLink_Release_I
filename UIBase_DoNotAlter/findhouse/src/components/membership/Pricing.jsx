@@ -1,6 +1,6 @@
 
 const Pricing = ({isPlan,hideButton}) => {
-  const pricingContent = [
+  const pricingContentForMonthly = [
     {
       id: 1,
       price: "11",
@@ -36,10 +36,10 @@ const Pricing = ({isPlan,hideButton}) => {
     },
   ];
 
-  const pricingContentYearly = [
+  const pricingContentForYearly = [
     {
-      id: 1,
-      price: "11",
+      id: 4,
+      price: "132",
       title: "Lite",
       features: [
         "75 Properties Appraisal",
@@ -49,8 +49,8 @@ const Pricing = ({isPlan,hideButton}) => {
       ],
     },
     {
-      id: 2,
-      price: "19",
+      id: 5,
+      price: "228",
       title: "Pro",
       features: [
         "300 Properties Appraisal",
@@ -60,50 +60,14 @@ const Pricing = ({isPlan,hideButton}) => {
       ],
     },
     {
-      id: 3,
-      price: "35",
+      id: 6,
+      price: "420",
       title: "Ultimate",
       features: [
         "1000 Properties Appraisal",
         "365 Days Validity",
         "Unlimited Roll Over",
         "Complete Support",
-      ],
-    },
-  ];
-
-  const pricingContentForYearly = [
-    {
-      id: 1,
-      price: "132",
-      title: "Lite",
-      features: [
-        "50 Property Listings",
-        "60 Days Availability",
-        "20 Featured Property",
-        "Limited Support",
-      ],
-    },
-    {
-      id: 2,
-      price: "228",
-      title: "Pro",
-      features: [
-        "50 Property Listings",
-        "60 Days Availability",
-        "20 Featured Property",
-        "Limited Support",
-      ],
-    },
-    {
-      id: 3,
-      price: "420",
-      title: "Ultimate",
-      features: [
-        "50 Property Listings",
-        "60 Days Availability",
-        "20 Featured Property",
-        "Limited Support",
       ],
     },
   ];

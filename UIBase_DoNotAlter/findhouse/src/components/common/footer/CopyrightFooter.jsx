@@ -11,7 +11,7 @@ const CopyrightFooter = () => {
   ];
 
   return (
-    <div className="row">
+    <div className="row" style={{padding:0}}>
       {/* <div className="col-lg-6 col-xl-6">
         <div className="footer_menu_widget">
           <ul>

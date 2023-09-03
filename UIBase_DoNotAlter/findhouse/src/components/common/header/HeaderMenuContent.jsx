@@ -256,7 +256,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                   : undefined
               }
             >
-              <span className="title">Home</span>
+              <span className="title text-info-01">Home</span>
               {/* <span className="arrow"></span> */}
             </Link>
             {/* <!-- Level Two--> */}
@@ -295,10 +295,10 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
             >
               {/* <span className="title">Listing</span> */}
               <span className="title text-info-01">Why Choose Us</span>
-              {/* <span className="arrow text-info-01"></span> */}
+              <span className="arrow text-info-01"></span>
             </Link>
             {/* <!-- Level Two--> */}
-            {/* <ul className="sub-menu ">
+            <ul className="sub-menu ">
           {listing.map((item) => (
             <li className="dropitem arrow" key={item.id}>
               <Link
@@ -310,9 +310,9 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                 }
               >
                 {item.title}
-              </Link> */}
+              </Link>
             {/* <!-- Level Three--> */}
-            {/* <ul className="sub-menu ">
+            <ul className="sub-menu ">
                 {item.items.map((val, i) => (
                   <li key={i}>
                     <Link
@@ -330,7 +330,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
               </ul>
             </li>
           ))}
-        </ul> */}
+        </ul>
           </li>
         )}
         {/* End .dropitem */}
@@ -355,7 +355,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
               <span className="title text-info-01">Insights</span>{" "}
               <span className="arrow text-info-01"></span>
             </Link>
-            {/* <ul className="sub-menu ">
+            <ul className="sub-menu ">
           {property.map((item) => (
             <li className="dropitem arrow" key={item.id}>
               <Link
@@ -371,9 +371,9 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                 }
               >
                 {item.title}
-              </Link> */}
+              </Link>
             {/* <!-- Level Three--> */}
-            {/* <ul className="sub-menu ">
+            <ul className="sub-menu ">
                 {item.items.map((val, i) => (
                   <li key={i}>
                     <Link
@@ -392,12 +392,12 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
               </ul>
             </li>
           ))}
-          </ul>*/}
+          </ul>
           </li>
         )}
         {/* End .dropitem */}
 
-        <li className="dropitem">
+        {/* <li className="dropitem">
           <Link
             href="/gallery"
             className={
@@ -407,9 +407,9 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
             }
           >
             <span className="title text-info">Media</span>
-            {/* <span className="arrow text-info"></span> */}
+            <span className="arrow text-info"></span>
           </Link>
-          {/* <ul className="sub-menu ">
+          <ul className="sub-menu ">
           {pages.map((item) => (
             <li key={item.id}>
               <Link
@@ -422,8 +422,8 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
               </Link>
             </li>
           ))}
-        </ul> */}
-        </li>
+        </ul>
+        </li> */}
 
         {/* <li className="last">
         <Link
@@ -477,7 +477,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                 route.pathname === "/membership" ? "ui-active" : undefined
               }
             >
-              Subscription
+             <span className="text-info-01">Subscription</span> 
             </Link>
           </li>
         )}
@@ -521,7 +521,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
               data-bs-toggle="modal"
               data-bs-target=".bd-example-modal-lg"
             >
-              <span className="dn-lg text-color">Login / Register</span>
+              <span className="dn-lg text-info-01">Login / Register</span>
             </Link>
           </li>
         )}
