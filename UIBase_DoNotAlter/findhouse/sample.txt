@@ -1,3 +1,5 @@
 This is a sample testing of git
 
 THis is second sentence
+
+This is third sentence.
