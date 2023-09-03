@@ -2,8 +2,6 @@ This is a sample testing of git
 
 THis is second.
 
-This is a chnage made by Aishwarya.
-This is a chnage made by Vijay.
 
 Added one more line
 
