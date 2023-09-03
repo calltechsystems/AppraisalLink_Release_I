@@ -1,10 +1,6 @@
-<<<<<<< Updated upstream
-const Pricing = ({isPlan}) => {
-  const pricingContentForMonthly = [
-=======
-const Pricing = ({hideButton}) => {
+
+const Pricing = ({isPlan,hideButton}) => {
   const pricingContent = [
->>>>>>> Stashed changes
     {
       id: 1,
       price: "11",

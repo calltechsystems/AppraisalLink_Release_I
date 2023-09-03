@@ -66,8 +66,6 @@ const Index = () => {
         </div>
       </section>
 
-<<<<<<< Updated upstream
-=======
        {/* <!-- Our Testimonials --> */}
        <section className="our-testimonials">
         <div className="container">
@@ -89,7 +87,6 @@ const Index = () => {
         </div>
       </section>
 
->>>>>>> Stashed changes
       {/* <!-- Our Partners --> */}
       <section id="our-partners" className="our-partners">
         <div className="container">

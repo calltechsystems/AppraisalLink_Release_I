@@ -102,11 +102,8 @@ const Index = () => {
           {/* End .row */}
 
           <div className="row">
-<<<<<<< Updated upstream
             <Pricing  isPlan = {isSelected}/>
-=======
             <Pricing hideButton={false}/>
->>>>>>> Stashed changes
           </div>
           {/* End .row */}
         </div>
