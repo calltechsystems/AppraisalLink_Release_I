@@ -243,6 +243,11 @@ const HeaderMenuContent = ({ float = "" }) => {
       id="respMenu"
       className="ace-responsive-menu text-end d-lg-block d-none"
       data-menu-style="horizontal"
+      style={{
+        backgroundColor: "f7f7f7",
+        marginTop: "5px",
+        borderRadius: "5px",
+      }}
     >
       <li className="dropitem">
         <a
@@ -463,15 +468,14 @@ const HeaderMenuContent = ({ float = "" }) => {
       {/* End .dropitem */}
 
       <li className={"last"}>
-            <Image
-              width={25}
-              height={25}
-              className="rounded-circle"
-              src="/assets/images/home/blue-notification-bell.png"
-              alt="e1.png"
-            />
+        <Image
+          width={25}
+          height={25}
+          className="rounded-circle"
+          src="/assets/images/home/blue-notification-bell.png"
+          alt="e1.png"
+        />
       </li>
-
 
       <li className="user_setting">
         <div className="dropdown">

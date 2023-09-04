@@ -9,9 +9,12 @@ import FindProperties from "./FindProperties";
 import Header from "./Header";
 import Hero from "./Hero";
 import WhyChoose from "../common/WhyChoose";
+import Team from "../about-us/Team";
 import PopupSignInUp from "../common/PopupSignInUp";
 import Pricing from "../membership/Pricing";
 import Testimonial from "../home-7/Testimonial";
+import HeroSlider from "./HeroSlider";
+import GlobalHeroFilter from "../common/GlobalHeroFilter";
 
 const Index = () => {
   return (
@@ -26,19 +29,49 @@ const Index = () => {
       <PopupSignInUp />
 
       {/* <!-- Home Design --> */}
-      <Hero />
+      {/* <Hero /> */}
+      {/* <HeroSlider/> */}
 
-      {/* <!-- Feature Properties --> */}
+      {/* <!-- 4th Home Slider --> */}
 
-      {/* <!-- Property Cities --> */}
+      <div className="home-four ">
+        <div className="container-fluid p0">
+          <div className="main-banner-wrapper">
+            <div className="arrow-style-2 banner-style-one ">
+              <HeroSlider />
+            </div>
+          </div>
+          {/* <!-- /.main-banner-wrapper --> */}
+        </div>
+        {/* End .container-fluid */}
+
+        <div className="container home_iconbox_container">
+          <div className="row posr">
+            <div className="col-lg-12">
+              <div className="home_content home4">
+                <div className="home-text text-center" style={{marginTop:"-30px"}}>
+                  <h2 className="fz50">
+                    Brokers Paradise for all Real Estate Appraisals
+                  </h2>
+                  <p className="fz18 color-white">
+                    From as low as $11 per month for limited time.
+                  </p>
+                </div>
+                {/* <GlobalHeroFilter className="home4" /> */}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* <!-- 4th Home Slider End --> */}
 
       {/* <!-- Why Chose Us --> */}
       <section id="why-chose" className="whychose_us bgc-f7 pb30">
         <div className="container">
           <div className="row">
-            <div className="col-lg-6 offset-lg-3">
+            <div className="col-lg-12">
               <div className="main-title text-center">
-                <h2>Why Choose Us</h2>
+                <h2 style={{backgroundColor:"#2e008b", color:"white", borderRadius:"10px", padding:"5px"}}>Why Choose Us</h2>
                 <p>We provide full service at every step.</p>
               </div>
             </div>
@@ -50,7 +83,7 @@ const Index = () => {
       </section>
 
       {/* <!-- Our Blog --> */}
-      <section className="our-blog bgc-f7 pb30">
+      {/* <section className="our-blog bgc-f7 pb30">
         <div className="container">
           <div className="row">
             <div className="col-lg-6 offset-lg-3">
@@ -61,20 +94,64 @@ const Index = () => {
             </div>
           </div>
           <div className="row">
-            {/* <Blogs /> */}
+            <Blogs />
             <Pricing hideButton={true} />
           </div>
         </div>
+      </section> */}
+
+      <hr />
+
+      {/* <!-- Our Team --> */}
+      <section className="our-team bgc-f7">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-12">
+              <div className="main-title text-center">
+                <h2 style={{backgroundColor:"#2e008b", color:"white", borderRadius:"10px", padding:"5px"}}>Meet Our Team</h2>
+                <p>Our team of experts is there to grow your buisness.</p>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-lg-12">
+              <div className="team_slider gutter-x15">
+                <Team />
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
+
+      <hr />
+
+       {/* <!-- Our Partners --> */}
+       <section id="our-partners" className="our-partners">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-12">
+              <div className="main-title text-center">
+                <h2 style={{backgroundColor:"#2e008b", color:"white", borderRadius:"10px", padding:"5px"}}>Our Partners</h2>
+                <p>We work with the best appraisers around the country.</p>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <Partners />
+          </div>
+        </div>
+      </section>
+
+      <hr />
 
       {/* <!-- Our Testimonials --> */}
       <section className="our-testimonials">
         <div className="container">
           <div className="row">
-            <div className="col-lg-6 col-12 offset-lg-3">
+            <div className="col-lg-12 col-12">
               <div className="main-title text-center mb20">
-                <h2>Testimonials</h2>
-                <p>Here could be a nice sub title</p>
+                <h2 style={{backgroundColor:"#2e008b", color:"white", borderRadius:"10px", padding:"5px"}}>What Customers Says About Us</h2>
+                {/* <p>Here could be a nice sub title</p> */}
               </div>
             </div>
           </div>
@@ -84,23 +161,6 @@ const Index = () => {
                 <Testimonial />
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* <!-- Our Partners --> */}
-      <section id="our-partners" className="our-partners">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-6 offset-lg-3">
-              <div className="main-title text-center">
-                <h2>Our Partners</h2>
-                <p>We work with the best appraisers around the country.</p>
-              </div>
-            </div>
-          </div>
-          <div className="row">
-            <Partners />
           </div>
         </div>
       </section>

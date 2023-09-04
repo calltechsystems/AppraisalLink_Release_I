@@ -236,9 +236,16 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
     { id: 10, name: "Terms & Conditions", routerPath: "/terms" },
   ];
 
+  const user = [
+    { id: 1, name: "Broker", routerPath: "/login" },
+    { id: 2, name: "Broker", routerPath: "/login" },
+    { id: 3, name: "Broker", routerPath: "/login" },
+    { id: 4, name: "Broker", routerPath: "/login" },
+  ];
+
   let classname = "";
   if (hide) {
-    classname = "ace-responsive-menu text-end d-lg-block d-none ";
+    classname = "ace-responsive-menu text-end d-lg-block d-none";
   } else {
     classname = "ace-responsive-menu text-end d-lg-block d-none text-end-01";
   }
@@ -299,38 +306,40 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
             </Link>
             {/* <!-- Level Two--> */}
             <ul className="sub-menu ">
-          {listing.map((item) => (
-            <li className="dropitem arrow" key={item.id}>
-              <Link
-                href="#"
-                className={
-                  item.items.some((page) => page.routerPath === route.pathname)
-                    ? "ui-active"
-                    : undefined
-                }
-              >
-                {item.title}
-              </Link>
-            {/* <!-- Level Three--> */}
-            <ul className="sub-menu ">
-                {item.items.map((val, i) => (
-                  <li key={i}>
-                    <Link
-                      href={val.routerPath}
-                      className={
-                        route.pathname === val.routerPath
-                          ? "ui-active"
-                          : undefined
-                      }
-                    >
-                      {val.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ))}
-        </ul>
+              {listing.map((item) => (
+                <li className="dropitem arrow" key={item.id}>
+                  <Link
+                    href="#"
+                    className={
+                      item.items.some(
+                        (page) => page.routerPath === route.pathname
+                      )
+                        ? "ui-active"
+                        : undefined
+                    }
+                  >
+                    {item.title}
+                  </Link>
+                  {/* <!-- Level Three--> */}
+                  <ul className="sub-menu ">
+                    {item.items.map((val, i) => (
+                      <li key={i}>
+                        <Link
+                          href={val.routerPath}
+                          className={
+                            route.pathname === val.routerPath
+                              ? "ui-active"
+                              : undefined
+                          }
+                        >
+                          {val.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ))}
+            </ul>
           </li>
         )}
         {/* End .dropitem */}
@@ -355,44 +364,44 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
               <span className="title text-info-01">Insights</span>{" "}
               <span className="arrow text-info-01"></span>
             </Link>
-            <ul className="sub-menu ">
-          {property.map((item) => (
-            <li className="dropitem arrow" key={item.id}>
-              <Link
-                href="#"
-                className={
-                  item.items.some(
-                    (page) =>
-                      page.routerPath === route.pathname ||
-                      page.routerPath + "/[id]" === route.pathname
-                  )
-                    ? "ui-active"
-                    : undefined
-                }
-              >
-                {item.title}
-              </Link>
-            {/* <!-- Level Three--> */}
-            <ul className="sub-menu ">
-                {item.items.map((val, i) => (
-                  <li key={i}>
-                    <Link
-                      href={val.routerPath}
-                      className={
-                        route.pathname === val.routerPath ||
-                        val.routerPath + "/[id]" === route.pathname
-                          ? "ui-active"
-                          : undefined
-                      }
-                    >
-                      {val.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ))}
-          </ul>
+            <ul className="sub-menu">
+              {property.map((item) => (
+                <li className="dropitem arrow" key={item.id}>
+                  <Link
+                    href="#"
+                    className={
+                      item.items.some(
+                        (page) =>
+                          page.routerPath === route.pathname ||
+                          page.routerPath + "/[id]" === route.pathname
+                      )
+                        ? "ui-active"
+                        : undefined
+                    }
+                  >
+                    {item.title}
+                  </Link>
+                  {/* <!-- Level Three--> */}
+                  <ul className="sub-menu ">
+                    {item.items.map((val, i) => (
+                      <li key={i}>
+                        <Link
+                          href={val.routerPath}
+                          className={
+                            route.pathname === val.routerPath ||
+                            val.routerPath + "/[id]" === route.pathname
+                              ? "ui-active"
+                              : undefined
+                          }
+                        >
+                          {val.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ))}
+            </ul>
           </li>
         )}
         {/* End .dropitem */}
@@ -477,7 +486,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                 route.pathname === "/membership" ? "ui-active" : undefined
               }
             >
-             <span className="text-info-01">Subscription</span> 
+              <span className="text-info-01">Subscription</span>
             </Link>
           </li>
         )}
@@ -497,23 +506,28 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
         )}
         {/* End .dropitem */}
 
-        {hide && (
-          <li className="last">
+        {/* {hide && (
+          <li
+            className="last"
+            style={{
+              backgroundColor: "blue",
+              borderRadius: "5px",
+              padding: "0px",
+            }}
+          >
             <Link
               href="/contact"
               className={
                 route.pathname === "/contact" ? "ui-active" : undefined
               }
             >
-              <span className="btn-primary dn-lg text-info-01">
-                Get In Touch
-              </span>
+              <span className="text-info-01">Get In Touch</span>
             </Link>
           </li>
-        )}
+        )} */}
         {/* End .dropitem */}
 
-        {hide && (
+        {/* {hide && (
           <li className={`list-inline-item list_s ${float}`}>
             <Link
               href="#"
@@ -521,21 +535,50 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
               data-bs-toggle="modal"
               data-bs-target=".bd-example-modal-lg"
             >
-              <span className="dn-lg text-info-01">Login / Register</span>
+              <span className="dn-lg text-info-01">Login</span>
             </Link>
           </li>
-        )}
+        )} */}
         {/* End .dropitem */}
+
+        {hide && (
+          <li className="dropitem">
+            <Link
+              href="#"
+              className={
+                pages.some((page) => page.routerPath === route.pathname)
+                  ? "ui-active"
+                  : undefined
+              }
+            >
+              <span className="btn text-color-01 flaticon-user"></span>
+              <span className=" dn-lg text-info-01">Login</span>
+              <span className="arrow text-info-01"></span>
+            </Link>
+            <ul className="sub-menu ">
+              {user.map((item) => (
+                <li key={item.id}>
+                  <Link
+                    href={item.routerPath}
+                    className={
+                      route.pathname === item.routerPath
+                        ? "ui-active"
+                        : undefined
+                    }
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </li>
+        )}
 
         {isListing && (
           <li className={`list-inline-item add_listing ${float}`}>
-            <Link
-              href="#"
-              data-bs-toggle="modal"
-              data-bs-target=".bd-example-modal-lg"
-            >
+            <Link href="#">
               <span className="flaticon-plus fs-13"></span>
-              <span className="dn-lg fs-13"> Appraise Property</span>
+              <span className="dn-lg fs-13"> Get In Touch</span>
             </Link>
           </li>
         )}

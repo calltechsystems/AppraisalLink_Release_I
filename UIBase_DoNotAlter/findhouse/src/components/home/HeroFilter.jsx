@@ -4,7 +4,7 @@ const HeroFilter = () => {
     return (
         <div className="home_content">
             <div className="home-text text-center">
-                <h2 className="fz55">Brokers Paradise for Appraising the Property</h2>
+                <h2 className="fz50">Brokers Paradise for all Real Estate Appraisals</h2>
                 <p className="fz18 color-white">
                     From as low as $11 per month for limited time.
                 </p>

@@ -1,4 +1,4 @@
-const WhyChoose = ({ style = "" }) => {
+const WhyChoose = ({ style ="" }) => {
   const whyCooseContent = [
     {
       id: 1,
@@ -41,8 +41,8 @@ const WhyChoose = ({ style = "" }) => {
   return (
     <>
       {whyCooseContent.map((item) => (
-        <div className="col-md-6 col-lg-4  col-xl-4" key={item.id}>
-          <div className={`why_chose_us ${style}`}>
+        <div className="col-md-6 col-lg-4 col-xl-4" key={item.id} >
+          <div className={`why_chose_us ${style}`} style={{height:"350px"}}>
             <div className="icon">
               <span className={item.icon}></span>
             </div>

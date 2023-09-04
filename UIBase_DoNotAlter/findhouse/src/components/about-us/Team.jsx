@@ -9,8 +9,8 @@ const Team = () => {
     arrows: true,
     slidesToShow: 4,
     slidesToScroll: 1,
-    autoplay: false,
-    speed: 1200,
+    autoplay: true,
+    speed: 1600,
     draggable: false,
     responsive: [
       {
@@ -50,7 +50,7 @@ const Team = () => {
                   alt="5.jpg"
                 />
                 <div className="overylay">
-                  <ul className="social_icon">
+                  {/* <ul className="social_icon">
                     {item.socialList.map((social, i) => (
                       <li className="list-inline-item" key={i}>
                         <a
@@ -62,7 +62,7 @@ const Team = () => {
                         </a>
                       </li>
                     ))}
-                  </ul>
+                  </ul> */}
                 </div>
               </div>
               {/* End .thumb */}

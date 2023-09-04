@@ -1,5 +1,6 @@
 import Image from "next/image";
 import HeroFilter from "./HeroFilter";
+import HeroSlider from "./HeroSlider";
 
 const Hero = () => {
   return (

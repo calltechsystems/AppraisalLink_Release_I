@@ -2,11 +2,12 @@ import { useState } from "react";
 import CallToAction from "../common/CallToAction";
 import CopyrightFooter from "../common/footer/CopyrightFooter";
 import Footer from "../common/footer/Footer";
-import Header from "../common/header/DefaultHeader";
+// import Header from "../common/header/DefaultHeader";
 import MobileMenu from "../common/header/MobileMenu";
 import PopupSignInUp from "../common/PopupSignInUp";
 import BreadCrumbBanner from "./BreadCrumbBanner";
 import Pricing from "./Pricing";
+import Header from "../home/Header";
 
 const Index = () => {
   //by default monthly being selected here as 
