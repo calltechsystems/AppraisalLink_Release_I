@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import MyAccount from "./MyAccount";
 import Image from "next/image";
 
-const HeaderMenuContent = ({ float = "" ,isDashboard}) => {
+const HeaderMenuContent = ({ float = "" ,hide}) => {
   const route = useRouter();
 
   const home = [
@@ -241,7 +241,7 @@ const HeaderMenuContent = ({ float = "" ,isDashboard}) => {
   return (
     <ul
       id="respMenu"
-      className="ace-responsive-menu text-end text-end_01 d-lg-block d-none bg-color"
+      className="ace-responsive-menu text_end d-lg-block d-none"
       data-menu-style="horizontal"
       style={{
         backgroundColor: "f7f7f7",
@@ -249,7 +249,7 @@ const HeaderMenuContent = ({ float = "" ,isDashboard}) => {
         borderRadius: "5px",
       }}
     >
-      {/* <li className="dropitem">
+      { hide ? (<li className="dropitem">
         <a
           href="#"
           className={
@@ -260,7 +260,8 @@ const HeaderMenuContent = ({ float = "" ,isDashboard}) => {
         >
           <span className="title">Home</span>
           <span className="arrow"></span>
-        </a> */}
+        </a> 
+        </li>):""}
         {/* <!-- Level Two--> */}
 
         {/* <ul className="sub-menu ">
@@ -277,10 +278,10 @@ const HeaderMenuContent = ({ float = "" ,isDashboard}) => {
             </li>
           ))}
         </ul>
-      </li> */}
+      </li>):""}
       {/* End .dropitem */}
 
-      {/* <li className="dropitem">
+      {hide ? (<li className="dropitem">
         <a
           href="#"
           className={
@@ -295,7 +296,8 @@ const HeaderMenuContent = ({ float = "" ,isDashboard}) => {
         >
           <span className="title">Listing</span>
           <span className="arrow"></span>
-        </a> */}
+        </a> 
+        </li>):""}
         {/* <!-- Level Two--> */}
         {/* <ul className="sub-menu ">
           {listing.map((item) => (
@@ -330,10 +332,10 @@ const HeaderMenuContent = ({ float = "" ,isDashboard}) => {
             </li>
           ))}
         </ul>
-      </li> */}
+      </li>):""}
       {/* End .dropitem */}
 
-      {/* <li className="dropitem">
+      {hide ? (<li className="dropitem">
         <a
           href="#"
           className={
@@ -367,7 +369,11 @@ const HeaderMenuContent = ({ float = "" ,isDashboard}) => {
                 }
               >
                 {item.title}
-              </a> */}
+              </a> 
+            </li>))}
+          </ul>
+      </li>):""}
+            
               {/* <!-- Level Three--> */}
               {/* <ul className="sub-menu ">
                 {item.items.map((val, i) => (
@@ -389,10 +395,10 @@ const HeaderMenuContent = ({ float = "" ,isDashboard}) => {
             </li>
           ))}
         </ul>
-      </li> */}
+      </li>):""}
       {/* End .dropitem */}
 
-      {/* <li className="dropitem">
+      {hide ? (<li className="dropitem">
         <a
           href="#"
           className={
@@ -418,10 +424,10 @@ const HeaderMenuContent = ({ float = "" ,isDashboard}) => {
             </li>
           ))}
         </ul>
-      </li> */}
+      </li>):""}
       {/* End .dropitem */}
 
-      {/* <li className="dropitem">
+      {hide ? (<li className="dropitem">
         <a
           href="#"
           className={
@@ -454,17 +460,17 @@ const HeaderMenuContent = ({ float = "" ,isDashboard}) => {
             </li>
           ))}
         </ul>
-      </li> */}
+      </li>):""}
       {/* End .dropitem */}
 
-      {/* <li className="last">
+      {hide ? (<li className="last">
         <Link
           href="/contact"
           className={route.pathname === "/contact" ? "ui-active" : undefined}
         >
           Contact
         </Link>
-      </li> */}
+      </li>) : ""}
       {/* End .dropitem */}
 
       <li className={"last"}>

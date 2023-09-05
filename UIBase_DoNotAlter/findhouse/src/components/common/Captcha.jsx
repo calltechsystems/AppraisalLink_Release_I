@@ -1,12 +1,19 @@
 import { useState } from "react";
 import Image from "next/image";
+import { FaRedo } from 'react-icons/fa';
+import { useRef } from "react";
+import { useEffect } from "react";
 
-const Captcha = () => {
-  const [verified, setVerified] = useState(false);
+const Captcha = ({ verified }) => {
 
-  const [user, setUser] = useState({
-    username: "",
+  const [change,setChange]=useState(false);
+  const [captcha,setCaptcha]=useState("");
+  const [style,setStyle]=useState({
+    borderColor:"black",
+    borderWidth:"1px"
   });
+  const captchaRef = useRef("");
+
   const uppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   const lowercaseChars = "abcdefghijklmnopqrstuvwxyz";
   const numberChars = "0123456789";
@@ -14,6 +21,11 @@ const Captcha = () => {
 
   const allChars = uppercaseChars + lowercaseChars + numberChars + specialChars;
   // const allCharsLength = allChars.length;
+
+  useEffect(()=>{
+    const temp=generateString(6);
+    setCaptcha(temp);
+  },[change]);
 
   function generateString(length) {
     let result = "";
@@ -23,58 +35,44 @@ const Captcha = () => {
     }
     return result;
   }
-  const captcha = generateString(6); // Function called here and save in captcha variable
+
+  
   let handleChange = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    user[name] = value;
-    setUser(user);
 
-    var element = document.getElementById("succesBTN");
-    var inputData = document.getElementById("inputType");
-    var login = document.getElementById("login");
-    //    var signup = document.getElementById("signup")
 
-    element.style.cursor = "wait";
-    element.innerHTML = "...";
-    //  inputData.disabled = true;
-    element.disabled = true;
-    var myFunctions = function () {
-      if (captcha == user.username) {
-        element.style.backgroundColor = "green";
-        // element.style.marginTop   = "20px";
-        element.innerHTML = "✔";
-        element.disabled = true;
-        login.disabled = false;
-        //   signup.disabled = false;
-        element.style.cursor = "not-allowed";
-        // inputData.style.display = "none";
+    console.log(captchaRef.current.value);
 
-        setVerified(true);
-      } else {
-        element.style.backgroundColor = "red";
-        element.style.cursor = "not-allowed";
-        element.innerHTML = "✗";
-        element.disabled = true;
-        //  element.disabled = true;
-        var myFunction = function () {
-          element.style.backgroundColor = "#007bff";
-          element.style.cursor = "pointer";
-          element.innerHTML = "!";
-          element.disabled = false;
-          inputData.disabled = false;
-          // inputData.value ='';
-        };
-        setTimeout(myFunction, 2000);
-      }
-    };
-    setTimeout(myFunctions, 2000);
+    const inputValue = captchaRef.current.value;
+    if(String(inputValue)!== String(captcha)){
+    
+     verified(false);
+     setStyle({
+        borderColor:"red",borderWidth:"2px"
+      });
+    }
+    else{
+
+      verified(true);
+      setStyle({
+        borderColor:"green",borderWidth:"2px"
+      });
+    }
   };
+
+  const refreshHandler = ()=>{
+    const prevState = change;
+    captchaRef.current.value = "";
+    setStyle({
+      borderColor:"black",
+      borderWidth:"1px"
+    });
+    setChange(!prevState);
+  }
 
   return (
     <>
-      <div className="row">
-        <div className="col-lg-6">
+      <div className="row" style={{paddingLeft:"10%"}}>
+        <div className="col-lg-6" style={{width:"50%"}}>
           <h4 id="captcha" className="bg-imgg text-captcha">
             {captcha}
           </h4>
@@ -85,11 +83,12 @@ const Captcha = () => {
             src="/assets/images/home/bg.png"
           />
         </div>
-        <div className="col-lg-6">
+        <div className="col-lg-6" style={{width:"50%"}}>
           <input
             type="text"
-            id="inputType"
+            ref={captchaRef}
             className="form-control mr"
+            style={style}
             placeholder="Enter Captcha"
             name="username"
             onChange={handleChange}
@@ -99,8 +98,10 @@ const Captcha = () => {
             type="button"
             id="succesBTN"
             className="btn btn-primary w-25 btn-captcha"
+            style={{cursor:"pointer"}}
+            onClick={refreshHandler}
           >
-            !
+            <FaRedo style={{padding:"2px"}}/>
           </button>
         </div>
         <div className="col-lg-2 text-end"></div>

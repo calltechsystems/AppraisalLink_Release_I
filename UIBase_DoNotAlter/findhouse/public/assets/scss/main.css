@@ -15864,7 +15864,7 @@ legend span {
 
 .sidebar-menu li.header {
   background-color: #24324a;
-  color: #ffffff;
+  color: white;
   font-family: "Nunito";
   font-size: 25px;
   font-weight: bold;
@@ -16078,7 +16078,7 @@ legend span {
   overflow: hidden;
   cursor: pointer;
   background-image: url(../images/team/upload_photo.jpg);
-  border-radius: 5px;
+  border-radius: 50%;
   -webkit-transition: -webkit-transform 0.4s;
   transition: -webkit-transform 0.4s;
   transition: transform 0.4s;
@@ -16101,7 +16101,8 @@ legend span {
   font-family: "Nunito";
   line-height: 2.2;
   height: 50px;
-  left: 20px;
+  left: 50px;
+  top: 60%;
   position: absolute;
   width: 160px;
 }
@@ -21745,4 +21746,15 @@ a::before {
   color: #ffffff;
   background-color: #172123 !important;
   border-left-color: var(--color-primary) !important;
+}
+
+.sidebar-menu > li > ul > li:hover > a,
+.sidebar-menu li.active a {
+  color: white !important;
+  background-color: green !important;
+  border-left-color: #1d3b2b;
+}
+
+.text_end{
+  text-align: end !important;
 }

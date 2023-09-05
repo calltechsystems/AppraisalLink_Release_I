@@ -6,7 +6,7 @@ import PopupSignInUp from "../common/PopupSignInUp";
 import BreadCrumbBanner from "./BreadCrumbBanner";
 import Form from "./Form";
 
-const index = () => {
+const index = ({user}) => {
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -27,7 +27,7 @@ const index = () => {
           <div className="row  ">
             <div className="col-sm-12 col-lg-12 offset-lg-0">
               <div className="login_form  inner_page" style={{padding:"10px"}}>
-                <Form />
+                <Form user={user}/>
               </div>
             </div>
           </div>

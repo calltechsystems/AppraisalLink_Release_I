@@ -1,7 +1,92 @@
 import Link from "next/link";
 import Image from "next/image";
+import { useState } from "react";
+import { useRef } from "react";
+import axios from "axios";
 
-const Form = () => {
+import Captcha from "../common/Captcha";
+import { encryptionData } from "../../utils/dataEncryption";
+
+const Form = ({user}) => {
+
+        const [showhide, setShowhide] = useState("");
+        const [showRegister,setRegister]=useState(true);
+        const [captchaVerfied ,setCaptchaVerified] = useState(false);
+
+        const [passwordLoginVerified,setPasswordLoginVerified] = useState(true)
+
+        const [passwordVisible, setPasswordVisible] = useState(false); // State variable to toggle password visibility
+        const [passwordLogin, setPasswordLogin] = useState(''); // State variable to store the password value
+
+
+        //defining the variables
+        const emailLoginRef = useRef();
+        const [isLoading , setLoading] = useState(false);
+
+        const handleshowhide = (event) => {
+          const getuser = event.target.value;
+          setShowhide(getuser);
+          // setUserinput(false);
+        };
+
+        // Toggle password visibility hnadler
+        const togglePasswordVisibility = () => {
+          setPasswordVisible(!passwordVisible); 
+        };
+
+
+
+        //login trigger function
+        const loginHandler = (event) =>{
+
+          event.preventDefault();
+          const email = emailLoginRef.current.value;
+          const password = passwordLogin;
+
+          if(!email  || !password ){
+            alert("Credentials Can't be empty");
+          }
+          else if(!captchaVerfied){
+            alert("captcha isnt verified");
+          }
+
+          const data = {
+            email :email,
+            password:password
+          };
+
+          const encryptedData = encryptionData(data);
+
+          setLoading(true);
+          axios.post("/api/login",encryptedData)
+          .then(res=>{
+            console.log(res);
+            alert("Successfully Logged In!");
+            localStorage.setItem("user",JSON.stringify(res));
+            router.push("/my-profile");
+          })
+          .catch(err=>{
+            alert(err.message);
+          })
+          .finally(()=>{
+            setLoading(false);
+          })
+        }
+
+       
+
+        const checkPasswordLoginHandler = (event)=>{
+          setPasswordLogin(event.target.value);
+      const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+      if (passwordRegex.test(event.target.value)) {
+        setPasswordLoginVerified(true);
+      } else {
+        setPasswordLoginVerified(false); // Change this to false for invalid passwords
+      }
+        }
+
+       
+
   return (
     <>
       <div className="row">
@@ -15,15 +100,9 @@ const Form = () => {
        />
         </div>
         <div className="col-lg-6 pt100">
-          <form action="#">
+          <form onSubmit={loginHandler}>
       <div className="heading text-center">
-        <h3>Login to your account</h3>
-        <p className="text-center">
-          Dont have an account?{" "}
-          <Link href="/register" className="text-thm">
-            Sign Up!
-          </Link>
-        </p>
+        <h3>{`Login to your account ${user}`} </h3>
       </div>
       {/* End .heading */}
 
@@ -33,6 +112,7 @@ const Form = () => {
           className="form-control"
           required
           placeholder="Email address"
+          ref={emailLoginRef}
         />
         <div className="input-group-prepend">
           <div className="input-group-text">
@@ -43,17 +123,29 @@ const Form = () => {
       {/* End .input-group */}
 
       <div className="input-group form-group">
-        <input
-          type="password"
+      
+      <input
+          type={passwordVisible ? 'text' : 'password'} // Conditionally set the input type
           className="form-control"
-          required
+          id="exampleInputPassword1"
           placeholder="Password"
+          required
+          value={passwordLogin}
+          onChange={(e)=>checkPasswordLoginHandler(e)}
+          style={{ paddingRight: '40px' }} // Add right padding to accommodate the button
         />
         <div className="input-group-prepend">
-          <div className="input-group-text">
+          <div className="input-group-text" onClick={togglePasswordVisibility}>
             <i className="flaticon-password"></i>
           </div>
         </div>
+
+      </div>
+      <div className="input-group form-group">
+        <div>
+         <Captcha verified={setCaptchaVerified}/>
+        </div>
+              
       </div>
       {/* End .input-group */}
 
@@ -83,6 +175,18 @@ const Form = () => {
       <button type="submit" className="btn btn-log w-100 btn-thm">
         Log In
       </button>
+      <div className="heading text-center" style={{display:"flex",flexDirection:"row",textAlign:"center",paddingLeft:"30%"}}>
+        <div>
+        <p className="text-center">
+        Dont have an account?{" "}
+        </p>
+        </div>
+          <div style={{ textDecoration: 'underline', fontWeight: 'bold' }}>
+          <Link href="/register" className="text-thm" >
+              Sign Up!
+            </Link>
+          </div>
+      </div>
       {/* login button */}
 
       {/* <div className="divide">

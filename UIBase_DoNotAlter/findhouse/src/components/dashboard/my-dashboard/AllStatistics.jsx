@@ -19,14 +19,14 @@ const AllStatistics = () => {
       blockStyle: "style3",
       icon: "flaticon-chat",
       timer: "12",
-      name: "Total Visitor Reviews",
+      name: "Bids",
     },
     {
       id: 4,
       blockStyle: "style4",
       icon: "flaticon-heart",
       timer: "18",
-      name: "Total Favorites",
+      name: "Favorites",
     },
   ];
 

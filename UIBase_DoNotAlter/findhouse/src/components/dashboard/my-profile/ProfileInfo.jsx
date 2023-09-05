@@ -18,6 +18,7 @@ const ProfileInfo = () => {
                         id="image1"
                         accept="image/png, image/gif, image/jpeg"
                         onChange={uploadProfile}
+                        style={{borderRadius:"50%"}}
                     />
                     <label
                         style={

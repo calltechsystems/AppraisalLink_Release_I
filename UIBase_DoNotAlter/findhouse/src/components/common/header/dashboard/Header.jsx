@@ -6,7 +6,7 @@ import Image from "next/image";
 const Header = () => {
   const [navbar, setNavbar] = useState(false);
 
-  const changeBackground = () => {
+  const changeBackground = ({hide}) => {
     if (window.scrollY >= 95) {
       setNavbar(true);
     } else {
@@ -46,7 +46,7 @@ const Header = () => {
         {/* site logo brand */}
 
         <nav>
-          <HeaderMenuContent />
+          <HeaderMenuContent hide={false} />
         </nav>
         {/* End .navbar */}
       </div>

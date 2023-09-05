@@ -157,10 +157,10 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
   ];
 
   const user = [
-    { id: 1, name: "Broker", routerPath: "/login" },
-    { id: 2, name: "Broker", routerPath: "/login" },
-    { id: 3, name: "Broker", routerPath: "/login" },
-    { id: 4, name: "Broker", routerPath: "/login" },
+    { id: 1, name: "Mortgage Broker", routerPath: "/login" },
+    { id: 2, name: "Mortgage Brokerage", routerPath: "/login" },
+    { id: 3, name: "Appraiser", routerPath: "/login" },
+    { id: 4, name: "Appraiser Company", routerPath: "/login" },
   ];
 
   let classname = "";

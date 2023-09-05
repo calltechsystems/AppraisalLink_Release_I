@@ -70,28 +70,28 @@ const index = () => {
                   </div>
                   {/* End prifle info wrapper end */}
 
-                  {/* <div className="my_dashboard_review mt30">
+                  {/*<div className="my_dashboard_review mt30">
                     <div className="row">
                       <div className="col-xl-2">
                         <h4>Social Media</h4>
-                      </div>
+                      </div> 
                       <div className="col-xl-12">
                         <SocialMedia />
                       </div>
                     </div>
-                  </div> */}
+                    </div>*/}
                   {/* End .SocialMedia */}
 
-                  {/* <div className="my_dashboard_review mt30">
+                 {/* <div className="my_dashboard_review mt30">
                     <div className="row">
-                      <div className="col-xl-2">
+                       <div className="col-xl-2">
                         <h4>Change password</h4>
-                      </div>
+                      </div> 
                       <div className="col-xl-12">
                         <ChangePassword />
                       </div>
                     </div>
-                  </div> */}
+                    </div>*/}
                 </div>
               </div>
               {/* End .row */}

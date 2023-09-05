@@ -52,7 +52,7 @@ const Index = () => {
                   borderRadius: '8px',
                   backgroundColor: 'blue',
                   color: 'white',
-                  border: '2px solid blue', // Initial border color
+                  border: '4px solid blue', // Initial border color
                   transition: 'border-color 0.3s', // Adding a smooth transition
                 }}
                 onMouseEnter={(e) => {

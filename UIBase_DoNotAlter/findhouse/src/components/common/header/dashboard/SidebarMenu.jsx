@@ -21,7 +21,7 @@ const SidebarMenu = () => {
   const manageAccount = [
     {
       id: 1,
-      name: "Packages",
+      name: "Package",
       route: "/my-package",
       icon: "flaticon-box",
     },
@@ -29,9 +29,15 @@ const SidebarMenu = () => {
       id: 2,
       name: "Transactions",
       route: "/my-transaction",
-      icon: "flaticon-user",
+      icon: "flaticon-box",
     },
-    { id: 3, name: "Subscription", route: "/my-subscription", icon: "flaticon-box" },
+    {
+      id: 3,
+      name: "Subscription",
+      route: "/my-subscription",
+      icon: "flaticon-box",
+    },
+    // { id: 3, name: "Logout", route: "/login", icon: "flaticon-logout" },
   ];
 
   return (
@@ -89,24 +95,51 @@ const SidebarMenu = () => {
                 <span> Appraise Property</span>
               </Link>
             </li>
+
             <li
+              className={`treeview ${
+                isSinglePageActive("/my-properties", route.pathname)
+                  ? "active"
+                  : ""
+              }`}
+            >
+              <Link href="/create-listing">
+                <i className="flaticon-home"></i>
+                <span> Properties</span>
+              </Link>
+            </li>
+           {/* <li
+              className={`treeview ${
+                    isParentPageActive("/my-properties", route.pathname) ? "active" : ""
+                  }`}
+                >
+                <Link href="/my-properties">
+                <i className="flaticon-home"></i>
+                <span>Properties</span>
+              </Link>
+                </li>*/}
+          </ul>
+        </li>
+      
+     
+            {/*<li
               className={`treeview ${
                 isSinglePageActive("/my-message", route.pathname)
                   ? "active"
                   : ""
               }`}
             >
-              {/* <Link href="/my-message">
+               <Link href="/my-message">
                 <i className="flaticon-envelope"></i>
                 <span> Message</span>
-              </Link> */}
-            </li>
-          </ul>
-        </li>
+              </Link> 
+            </li>*/}
+         
+        
         {/* End Main */}
 
-        {/* <li className="title">
-          <span>Manage Appraise Properties</span>
+       {/* <li className="title">
+          <span >Manage Appraise Properties</span>
           <ul>
             <li
               className={`treeview ${
@@ -115,9 +148,11 @@ const SidebarMenu = () => {
             >
               <a data-bs-toggle="collapse" href="#my-property">
                 <i className="flaticon-home"></i> <span>My Properties</span>
-                <i className="fa fa-angle-down pull-right"></i>
-              </a>
-              <ul className="treeview-menu collapse" id="my-property">
+                </a>
+            </li>*/}
+                {/* <i className="fa fa-angle-down pull-right"></i>*/}
+              
+              {/*<ul className="treeview-menu collapse" id="my-property">
                 {myProperties.map((item) => (
                   <li key={item.id}>
                     <Link href={item.route}>
@@ -125,8 +160,8 @@ const SidebarMenu = () => {
                     </Link>
                   </li>
                 ))}
-              </ul>
-            </li> */}
+                </ul>*/}
+            
             {/* end properties */}
 
             {/* <li
@@ -174,9 +209,9 @@ const SidebarMenu = () => {
                 <i className="flaticon-magnifying-glass"></i>
                 <span> Saved Search</span>
               </Link>
-            </li> 
-          </ul>
-        </li>*/}
+            </li> */}
+          {/*</ul>
+          </li>*/}
         {/* End manage listing */}
 
         <li className="title">

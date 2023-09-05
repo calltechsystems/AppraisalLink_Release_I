@@ -9,7 +9,7 @@ const MyAccount = ({user}) => {
     { id: 1, name: "Profile", ruterPath: "/my-profile" },
     // { id: 2, name: " My Message", ruterPath: "/my-message" },
     // { id: 3, name: " My Favourite", ruterPath: "/my-favourites" },
-    { id: 4, name: "Change Password", ruterPath: "/my-package" },
+    { id: 4, name: "Change Password ", ruterPath: "/my-package" },
     { id: 5, name: "Log out", ruterPath: "/login" },
   ];
   const route = useRouter();

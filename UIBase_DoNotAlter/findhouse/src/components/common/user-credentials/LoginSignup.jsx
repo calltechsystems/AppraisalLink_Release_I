@@ -4,9 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 // import { getSession } from "next-iron-session";
 import Captcha from "../Captcha";
-import CaptchaReg from "../CaptchaReg";
-// import axios from "axios";
-// import { encryptionData } from "../../../utils/dataEncryption";
+import axios from "axios";
+import { encryptionData } from "../../../utils/dataEncryption";
 
 const LoginSignup = () => {
 
@@ -14,15 +13,21 @@ const LoginSignup = () => {
 
   const [showhide, setShowhide] = useState("");
   const [showRegister,setRegister]=useState(true);
-  // const [userinput, setUserinput] = useState(true);
+  const [captchaVerfied ,setCaptchaVerified] = useState(false);
+
+  const [passwordLoginVerified,setPasswordLoginVerified] = useState(true)
+  const [passwordRegisterVerified,setPasswordRegisterVerified] = useState(true)
+
+  const [passwordVisible, setPasswordVisible] = useState(false); // State variable to toggle password visibility
+  const [passwordLogin, setPasswordLogin] = useState(''); // State variable to store the password value
+  const [passwordRegister, setPasswordRegister] = useState(''); // State variable to store the password value
+  const [passwordReRegister, setPasswordReRegister] = useState(''); // State variable to store the password value
+
 
   //defining the variables
   const emailLoginRef = useRef();
-  const passwordLoginRef = useRef();
 
   const emailRegisterRef = useRef();
-  const passwordRegisterRef = useRef();
-  const repasswordRef = useRef();
   const userTypeRef = useRef();
 
   const checkValueRef = useRef();
@@ -37,15 +42,25 @@ const LoginSignup = () => {
     // setUserinput(false);
   };
 
+  // Toggle password visibility hnadler
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible); 
+  };
+
+
+
   //login trigger function
   const loginHandler = (event) =>{
 
     event.preventDefault();
     const email = emailLoginRef.current.value;
-    const password = passwordLoginRef.current.value;
+    const password = passwordLogin;
 
-    if(!email  || !password){
+    if(!email  || !password ){
       alert("Credentials Can't be empty");
+    }
+    else if(!captchaVerfied){
+      alert("captcha isnt verified");
     }
 
     const data = {
@@ -78,8 +93,8 @@ const LoginSignup = () => {
           setRegister(false);
         
           const email = emailRegisterRef.current.value;
-          const password = passwordRegisterRef.current.value;
-          const reEnterPassword = repasswordRef.current.value;
+          const password = passwordRegister;
+          const reEnterPassword = passwordReRegister;
           const user = userTypeRef.current.value;
           
           if(password!==reEnterPassword){
@@ -87,6 +102,9 @@ const LoginSignup = () => {
           }
           else if(!email){
             alert("Email cant be empty or non valid.");
+          }
+          else if(!captchaVerfied){
+            alert("captcha isnt verified");
           }
           const data = {
             email :email,
@@ -108,6 +126,27 @@ const LoginSignup = () => {
           .finally(()=>{
             setLoading(false);
           })
+  }
+
+  const checkPasswordLoginHandler = (event,chnage)=>{
+    setPasswordLogin(event.target.value);
+const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+if (passwordRegex.test(event.target.value)) {
+  setPasswordLoginVerified(true);
+} else {
+  setPasswordLoginVerified(false); // Change this to false for invalid passwords
+}
+  }
+
+  const checkPasswordRegisterHandler = (event)=>{
+    setPasswordRegister(event.target.value);
+    const passwordRegex = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$";
+    if(passwordRegex.test(event.target.value)){
+      setPasswordRegisterVerified(true);
+    }
+    else{
+      setPasswordRegisterVerified(true);
+    }
   }
 
   // Registration Show Hide Functionality end
@@ -210,23 +249,26 @@ const LoginSignup = () => {
                   {/* End input-group */}
 
                   <div className="input-group form-group">
-                    <input
-                      type="password"
-                      className="form-control"
-                      id="exampleInputPassword1"
-                      placeholder="Password"
-                      required
-                      ref={passwordLoginRef}
-                    />
+                  <input
+                    type={passwordVisible ? 'text' : 'password'} // Conditionally set the input type
+                    className="form-control"
+                    id="exampleInputPassword1"
+                    placeholder="Password"
+                    required
+                    value={passwordLogin}
+                    onChange={(e)=>checkPasswordLoginHandler(e)}
+                    style={{ paddingRight: '40px' }} // Add right padding to accommodate the button
+                  />
                     <div className="input-group-prepend">
-                      <div className="input-group-text">
+                      <div className="input-group-text" onClick={togglePasswordVisibility}>
                         <i className="flaticon-password"></i>
                       </div>
                     </div>
                   </div>
+                  <div>{!passwordLoginVerified ?  <div>Password not strong</div>:""}</div>
                   {/* End input-group */}
 
-                  <Captcha />
+                  <Captcha  verified = {setCaptchaVerified}/>
 
                   <div className="form-group form-check custom-checkbox mb-3">
                     <input
@@ -255,7 +297,6 @@ const LoginSignup = () => {
                   <button
                     type="submit"
                     className="btn btn-log w-100 btn-thm"
-                    disabled={true}
                     id="login"
                   >
                     Log In
@@ -348,42 +389,46 @@ const LoginSignup = () => {
                       </div>
                       {/* End .row */}
 
-                      <div className="form-group input-group  mb-3">
-                        <input
-                          ref={passwordRegisterRef}
-                          name="password"
-                          type="password"
-                          className="form-control"
-                          id="exampleInputPassword2"
-                          placeholder="Create Password"
-                          required
-                        />
+                      <div className="input-group form-group">
+                      <input
+                        type={passwordVisible ? 'text' : 'password'} // Conditionally set the input type
+                        className="form-control"
+                        id="exampleInputPassword1"
+                        placeholder="Password"
+                        required
+                        value={passwordRegister}
+                        onChange={(e) => checkPasswordRegisterHandler(e)}
+                        style={{ paddingRight: '40px' }} // Add right padding to accommodate the button
+                      />
                         <div className="input-group-prepend">
-                          <div className="input-group-text">
+                          <div className="input-group-text" onClick={togglePasswordVisibility}>
                             <i className="flaticon-password"></i>
                           </div>
-                        </div>
                       </div>
+                  </div>
+                  <div>{!passwordLoginVerified ?  <div>Password not strong</div>:""}</div>
                       {/* End .row */}
 
-                      <div className="form-group input-group  mb-3">
+                      <div className="input-group form-group">
                         <input
-                          type="password"
+                          type={passwordVisible ? 'text' : 'password'} // Conditionally set the input type
                           className="form-control"
-                          id="exampleInputPassword3"
-                          placeholder="Confirm Password"
+                          id="exampleInputPassword1"
+                          placeholder="Password"
                           required
-                          ref={repasswordRef}
+                          value={passwordReRegister}
+                          onChange={(e,setPasswordReRegister) => checkPasswordHandler(e,setPasswordReRegister)}
+                          style={{ paddingRight: '40px' }} // Add right padding to accommodate the button
                         />
-                        <div className="input-group-prepend">
-                          <div className="input-group-text">
-                            <i className="flaticon-password"></i>
-                          </div>
+                          <div className="input-group-prepend">
+                            <div className="input-group-text" onClick={togglePasswordVisibility}>
+                              <i className="flaticon-password"></i>
+                            </div>
                         </div>
-                      </div>
+                  </div>
                       {/* End .row */}
 
-                      <CaptchaReg />
+                      <  Captcha verified = {setCaptchaVerified} />
                     </>
                   )}
 
@@ -413,7 +458,6 @@ const LoginSignup = () => {
                    type = "submit"
                     className="btn btn-log w-100 btn-thm"
                     id="signup"
-                    disabled={true}
                   >
                     Sign Up
                   </button>

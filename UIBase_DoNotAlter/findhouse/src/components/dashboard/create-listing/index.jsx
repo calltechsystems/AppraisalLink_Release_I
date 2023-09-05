@@ -82,13 +82,13 @@ const index = () => {
                     <div className="col-lg-12">
                       <h3 className="mb30">Detailed Information</h3>
                     </div>
-                    <DetailedInfo />
+                    {/*<DetailedInfo />*/}
                   </div>
                   {/* <div className="my_dashboard_review mt30">
                     <div className="col-lg-12">
                       <h3 className="mb30">Property media</h3>
                     </div>
-                    <PropertyMediaUploader />
+                    {/*<PropertyMediaUploader />*/}
                   </div>
                   <div className="my_dashboard_review mt30">
                     <div className="col-lg-12">
@@ -96,7 +96,7 @@ const index = () => {
                       <button className="btn admore_btn mb30">Add More</button>
                     </div>
                     <FloorPlans />
-                  </div> */}
+                  </div> 
                 </div>
                 {/* End .col */}
               </div>
@@ -113,7 +113,6 @@ const index = () => {
             </div>
             {/* End .col */}
           </div>
-        </div>
       </section>
     </>
   );
