@@ -88,7 +88,7 @@ const Pricing = ({isPlan,hideButton}) => {
                 ))}
               </ul>
             <div className="pricing_header">
-              <h4>${item.price}</h4>
+              <h2 className="text-light">${item.price}</h2>
               </div>
             </div>
             {!hideButton && (<div className="pricing_footer">

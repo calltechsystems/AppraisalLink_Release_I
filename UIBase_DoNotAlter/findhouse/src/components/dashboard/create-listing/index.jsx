@@ -63,7 +63,7 @@ const index = () => {
                   <div className="my_dashboard_review">
                     <div className="row">
                       <div className="col-lg-12">
-                        <h3 className="mb30">Create Listing</h3>
+                        <h3 className="mb30">Appraise Property</h3>
                       </div>
 
                       <CreateList />
@@ -84,7 +84,7 @@ const index = () => {
                     </div>
                     <DetailedInfo />
                   </div>
-                  <div className="my_dashboard_review mt30">
+                  {/* <div className="my_dashboard_review mt30">
                     <div className="col-lg-12">
                       <h3 className="mb30">Property media</h3>
                     </div>
@@ -96,7 +96,7 @@ const index = () => {
                       <button className="btn admore_btn mb30">Add More</button>
                     </div>
                     <FloorPlans />
-                  </div>
+                  </div> */}
                 </div>
                 {/* End .col */}
               </div>
@@ -105,7 +105,7 @@ const index = () => {
               <div className="row mt50">
                 <div className="col-lg-12">
                   <div className="copyright-widget text-center">
-                    <p>© 2020 Find House. Made with love.</p>
+                    <p>© 2023 Appraisal Link. All Rights Reserved.</p>
                   </div>
                 </div>
               </div>

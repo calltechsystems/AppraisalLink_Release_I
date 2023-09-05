@@ -60,7 +60,7 @@ const LocationField = () => {
       </div>
       {/* End .col */}
 
-      <div className="col-lg-12">
+      {/* <div className="col-lg-12">
         <div className="my_profile_setting_input form-group">
           <div className="h400 bdrs8" id="map-canvas">
             <div className="gmap_canvas pe-none">
@@ -72,7 +72,7 @@ const LocationField = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
       {/* End .col */}
 
       <div className="col-lg-4 col-xl-4">

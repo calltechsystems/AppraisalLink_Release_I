@@ -16,13 +16,13 @@ const index = () => {
       <MobileMenu />
 
       {/* <!-- Modal --> */}
-      <PopupSignInUp />
+      {/* <PopupSignInUp /> */}
 
       {/* <!-- Inner Page Breadcrumb --> */}
-      <BreadCrumbBanner />
+      {/* <BreadCrumbBanner /> */}
 
       {/* <!-- Our LogIn Register --> */}
-      <section className="our-log bgc-fa">
+      <section className="our-log bgc-fa pt100">
         <div className="container">
           <div className="row  ">
             <div className="col-sm-12 col-lg-12 offset-lg-0">

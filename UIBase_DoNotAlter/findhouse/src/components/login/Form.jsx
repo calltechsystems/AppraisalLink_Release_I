@@ -9,12 +9,12 @@ const Form = () => {
        <Image
         width={157}
         height={100}
-        className="img-fluid w100 h-100 cover"
-        src="/assets/images/home/login_01.avif"
+        className="img-fluid w100 h-80 cover"
+        src="/assets/images/home/computer-login.avif"
         alt="login.jpg"
        />
         </div>
-        <div className="col-lg-6">
+        <div className="col-lg-6 pt100">
           <form action="#">
       <div className="heading text-center">
         <h3>Login to your account</h3>
@@ -32,7 +32,7 @@ const Form = () => {
           type="text"
           className="form-control"
           required
-          placeholder="Enter your email address"
+          placeholder="Email address"
         />
         <div className="input-group-prepend">
           <div className="input-group-text">
@@ -47,7 +47,7 @@ const Form = () => {
           type="password"
           className="form-control"
           required
-          placeholder="Enter your password"
+          placeholder="Password"
         />
         <div className="input-group-prepend">
           <div className="input-group-text">

@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import MyAccount from "./MyAccount";
 import Image from "next/image";
 
-const HeaderMenuContent = ({ float = "" }) => {
+const HeaderMenuContent = ({ float = "" ,isDashboard}) => {
   const route = useRouter();
 
   const home = [
@@ -241,7 +241,7 @@ const HeaderMenuContent = ({ float = "" }) => {
   return (
     <ul
       id="respMenu"
-      className="ace-responsive-menu text-end d-lg-block d-none"
+      className="ace-responsive-menu text-end text-end_01 d-lg-block d-none bg-color"
       data-menu-style="horizontal"
       style={{
         backgroundColor: "f7f7f7",
@@ -249,7 +249,7 @@ const HeaderMenuContent = ({ float = "" }) => {
         borderRadius: "5px",
       }}
     >
-      <li className="dropitem">
+      {/* <li className="dropitem">
         <a
           href="#"
           className={
@@ -260,10 +260,10 @@ const HeaderMenuContent = ({ float = "" }) => {
         >
           <span className="title">Home</span>
           <span className="arrow"></span>
-        </a>
+        </a> */}
         {/* <!-- Level Two--> */}
 
-        <ul className="sub-menu ">
+        {/* <ul className="sub-menu ">
           {home.map((item) => (
             <li key={item.id}>
               <Link
@@ -277,10 +277,10 @@ const HeaderMenuContent = ({ float = "" }) => {
             </li>
           ))}
         </ul>
-      </li>
+      </li> */}
       {/* End .dropitem */}
 
-      <li className="dropitem">
+      {/* <li className="dropitem">
         <a
           href="#"
           className={
@@ -295,9 +295,9 @@ const HeaderMenuContent = ({ float = "" }) => {
         >
           <span className="title">Listing</span>
           <span className="arrow"></span>
-        </a>
+        </a> */}
         {/* <!-- Level Two--> */}
-        <ul className="sub-menu ">
+        {/* <ul className="sub-menu ">
           {listing.map((item) => (
             <li className="dropitem arrow" key={item.id}>
               <a
@@ -309,9 +309,9 @@ const HeaderMenuContent = ({ float = "" }) => {
                 }
               >
                 {item.title}
-              </a>
+              </a> */}
               {/* <!-- Level Three--> */}
-              <ul className="sub-menu ">
+              {/* <ul className="sub-menu ">
                 {item.items.map((val, i) => (
                   <li key={i}>
                     <Link
@@ -330,10 +330,10 @@ const HeaderMenuContent = ({ float = "" }) => {
             </li>
           ))}
         </ul>
-      </li>
+      </li> */}
       {/* End .dropitem */}
 
-      <li className="dropitem">
+      {/* <li className="dropitem">
         <a
           href="#"
           className={
@@ -367,9 +367,9 @@ const HeaderMenuContent = ({ float = "" }) => {
                 }
               >
                 {item.title}
-              </a>
+              </a> */}
               {/* <!-- Level Three--> */}
-              <ul className="sub-menu ">
+              {/* <ul className="sub-menu ">
                 {item.items.map((val, i) => (
                   <li key={i}>
                     <Link
@@ -389,10 +389,10 @@ const HeaderMenuContent = ({ float = "" }) => {
             </li>
           ))}
         </ul>
-      </li>
+      </li> */}
       {/* End .dropitem */}
 
-      <li className="dropitem">
+      {/* <li className="dropitem">
         <a
           href="#"
           className={
@@ -418,10 +418,10 @@ const HeaderMenuContent = ({ float = "" }) => {
             </li>
           ))}
         </ul>
-      </li>
+      </li> */}
       {/* End .dropitem */}
 
-      <li className="dropitem">
+      {/* <li className="dropitem">
         <a
           href="#"
           className={
@@ -454,17 +454,17 @@ const HeaderMenuContent = ({ float = "" }) => {
             </li>
           ))}
         </ul>
-      </li>
+      </li> */}
       {/* End .dropitem */}
 
-      <li className="last">
+      {/* <li className="last">
         <Link
           href="/contact"
           className={route.pathname === "/contact" ? "ui-active" : undefined}
         >
           Contact
         </Link>
-      </li>
+      </li> */}
       {/* End .dropitem */}
 
       <li className={"last"}>
@@ -487,7 +487,7 @@ const HeaderMenuContent = ({ float = "" }) => {
               src="/assets/images/team/Gary-Avatar.png"
               alt="e1.png"
             />
-            <span className="dn-1199 ms-1">Shubhendra Patel</span>
+            <span className="dn-1199 ms-1 text-light">Shubhendra Patel</span>
           </a>
           <div className="dropdown-menu">
             <MyAccount />

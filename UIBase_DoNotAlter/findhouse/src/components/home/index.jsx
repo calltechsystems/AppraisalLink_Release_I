@@ -49,7 +49,10 @@ const Index = () => {
           <div className="row posr">
             <div className="col-lg-12">
               <div className="home_content home4">
-                <div className="home-text text-center" style={{marginTop:"-30px"}}>
+                <div
+                  className="home-text text-center"
+                  style={{ marginTop: "-30px" }}
+                >
                   <h2 className="fz50">
                     Brokers Paradise for all Real Estate Appraisals
                   </h2>
@@ -67,15 +70,23 @@ const Index = () => {
 
       {/* <!-- Why Chose Us --> */}
       <section id="why-chose" className="whychose_us bgc-f7 pb30">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-12">
-              <div className="main-title text-center">
-                <h2 style={{backgroundColor:"#2e008b", color:"white", borderRadius:"10px", padding:"5px"}}>Why Choose Us</h2>
-                <p>We provide full service at every step.</p>
-              </div>
+        <div className="row">
+          <div className="col-lg-12">
+            <div className="main-title text-center">
+              <h2
+                style={{
+                  backgroundColor: "#2e008b",
+                  color: "white",
+                  padding: "20px",
+                }}
+              >
+                Why Choose Us
+              </h2>
+              <p>We provide full service at every step.</p>
             </div>
           </div>
+        </div>
+        <div className="container">
           <div className="row">
             <WhyChoose />
           </div>
@@ -104,15 +115,23 @@ const Index = () => {
 
       {/* <!-- Our Team --> */}
       <section className="our-team bgc-f7">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-12">
-              <div className="main-title text-center">
-                <h2 style={{backgroundColor:"#2e008b", color:"white", borderRadius:"10px", padding:"5px"}}>Meet Our Team</h2>
-                <p>Our team of experts is there to grow your buisness.</p>
-              </div>
+        <div className="row">
+          <div className="col-lg-12">
+            <div className="main-title text-center">
+              <h2
+                style={{
+                  backgroundColor: "#2e008b",
+                  color: "white",
+                  padding: "20px",
+                }}
+              >
+                Meet Our Team
+              </h2>
+              <p>Our team of experts is there to grow your buisness.</p>
             </div>
           </div>
+        </div>
+        <div className="container">
           <div className="row">
             <div className="col-lg-12">
               <div className="team_slider gutter-x15">
@@ -125,17 +144,25 @@ const Index = () => {
 
       <hr />
 
-       {/* <!-- Our Partners --> */}
-       <section id="our-partners" className="our-partners">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-12">
-              <div className="main-title text-center">
-                <h2 style={{backgroundColor:"#2e008b", color:"white", borderRadius:"10px", padding:"5px"}}>Our Partners</h2>
-                <p>We work with the best appraisers around the country.</p>
-              </div>
+      {/* <!-- Our Partners --> */}
+      <section id="our-partners" className="our-partners">
+        <div className="row">
+          <div className="col-lg-12">
+            <div className="main-title text-center">
+              <h2
+                style={{
+                  backgroundColor: "#2e008b",
+                  color: "white",
+                  padding: "20px",
+                }}
+              >
+                Our Partners
+              </h2>
+              <p>We work with the best appraisers around the country.</p>
             </div>
           </div>
+        </div>
+        <div className="container">
           <div className="row">
             <Partners />
           </div>
@@ -146,15 +173,23 @@ const Index = () => {
 
       {/* <!-- Our Testimonials --> */}
       <section className="our-testimonials">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-12 col-12">
-              <div className="main-title text-center mb20">
-                <h2 style={{backgroundColor:"#2e008b", color:"white", borderRadius:"10px", padding:"5px"}}>What Customers Says About Us</h2>
-                {/* <p>Here could be a nice sub title</p> */}
-              </div>
+        <div className="row">
+          <div className="col-lg-12 col-12">
+            <div className="main-title text-center mb20">
+              <h2
+                style={{
+                  backgroundColor: "#2e008b",
+                  color: "white",
+                  padding: "20px",
+                }}
+              >
+                What Customers Says About Us
+              </h2>
+              {/* <p>Here could be a nice sub title</p> */}
             </div>
           </div>
+        </div>
+        <div className="container">
           <div className="row">
             <div className="col-lg-12 col">
               <div className="testimonial_grid_slider style2 gutter-x15">
