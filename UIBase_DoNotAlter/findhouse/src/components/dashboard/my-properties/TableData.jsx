@@ -6,14 +6,14 @@ const TableData = () => {
     "Listing Title",
     "Date published",
     "Status",
-    "View",
+    "Bids",
     "Action",
   ];
   let tbodyContent = properties?.slice(0, 4)?.map((item) => (
     <tr key={item.id}>
       <td scope="row">
         <div className="feat_property list favorite_page style2">
-          <div className="thumb">
+          {/* <div className="thumb">
             <Image
               width={150}
               height={220}
@@ -28,7 +28,7 @@ const TableData = () => {
                 </li>
               </ul>
             </div>
-          </div>
+          </div> */}
           <div className="details">
             <div className="tc_content">
               <h4>{item.title}</h4>
@@ -59,6 +59,18 @@ const TableData = () => {
 
       <td>
         <ul className="view_edit_delete_list mb0">
+        <li
+            className="list-inline-item"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Edit"
+          >
+            <a href="#">
+              <span className="flaticon-phone"></span>
+            </a>
+          </li>
+          {/* End li */}
+
           <li
             className="list-inline-item"
             data-toggle="tooltip"

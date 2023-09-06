@@ -37,7 +37,7 @@ const Index = () => {
       {/* <BreadCrumbBanner /> */}
 
       {/* <!-- Service Section Area --> */}
-      <section className="our-service pb30 pt160 bg-color">
+      <section className="our-service pb30 pt160">
         <div className="container">
           <div className="row">
             <div className="col-lg-6 offset-lg-3">
@@ -78,14 +78,14 @@ const Index = () => {
                   border: '2px solid blue', // Initial border color
                   transition: 'border-color 0.3s', // Adding a smooth transition
                 }}
-                onMouseEnter={(e) => {
+                onMouseClick={(e) => {
                   e.target.style.border = '2px solid white'; // Change border color on hover
                   e.target.style.backgroundColor = 'rgba(0, 0, 255, 0.8)';
                 }}
                 onMouseLeave={(e) => {
                   e.target.style.border = '2px solid blue';
                   e.target.style.backgroundColor = 'blue';
-                }}
+                }}  
                 onClick={changePlanToYearly}
               >
                 Yearly
@@ -109,13 +109,6 @@ const Index = () => {
           {/* End .row */}
         </div>
       </section>
-
-      {/* <!-- Start Call to Action --> */}
-      {/* <section className="start-partners bgc-thm pt50 pb50">
-        <div className="container">
-          <CallToAction />
-        </div>
-      </section> */}
 
       {/* <!-- Our Footer --> */}
       <section className="footer_one">

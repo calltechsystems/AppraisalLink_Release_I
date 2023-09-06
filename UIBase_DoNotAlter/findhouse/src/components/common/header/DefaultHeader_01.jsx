@@ -26,11 +26,12 @@ const Header = () => {
     >
       <div className="container-fluid p0">
         {/* <!-- Menu Toggle btn--> */}
-        <Link href="/" className="navbar_brand float-start dn-smd" style={{marginTop:"20px"}}>
+        <Link href="/" className="navbar_brand float-start dn-smd">
           <Image
             width={40}
             height={45}
             className="logo1 img-fluid"
+            style={{marginTop:"15px"}}
             src="/assets/images/logo_new.png"
             alt="header-logo2.png"
           />
@@ -38,10 +39,11 @@ const Header = () => {
             width={40}
             height={45}
             className="logo2 img-fluid"
+            style={{marginTop:"15px"}}
             src="/assets/images/logo_new.png"
             alt="header-logo2.png"
           />
-          <span>Appraisal Link</span>
+          <span style={{marginTop:"18px"}}>Appraisal Link</span>
         </Link>
         {/* site logo brand */}
 

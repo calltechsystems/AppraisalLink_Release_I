@@ -172,7 +172,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
 
   return (
     <div>
-      <ul id="respMenu" className={classname} data-menu-style="horizontal" style={{marginTop:"-15px"}}>
+      <ul id="respMenu" className={classname} data-menu-style="horizontal" >
         <li className="dropitem">
           <Link
             href="/"
@@ -484,7 +484,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
           </ul>
         </li>
 
-        <li className={`list-inline-item add_listing ${float}`} style={{padding:"-15px"}}>
+        <li className={`list-inline-item add_listing ${float}`} style={{padding:"0px"}}>
           <Link href="#">
             <span className="fs-13"></span>
             <span className="dn-lg fs-13"> Get In Touch</span>

@@ -478,7 +478,7 @@ const HeaderMenuContent = ({ float = "" ,hide}) => {
           width={25}
           height={25}
           className="rounded-circle"
-          src="/assets/images/home/blue-notification-bell.png"
+          src="/assets/images/home/bell.jpg"
           alt="e1.png"
         />
       </li>

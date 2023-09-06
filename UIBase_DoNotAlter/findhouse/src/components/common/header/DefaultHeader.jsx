@@ -31,6 +31,7 @@ const Header = () => {
             width={40}
             height={45}
             className="logo1 img-fluid"
+            style={{marginTop:"30px"}}
             src="/assets/images/logo_new.png"
             alt="header-logo2.png"
           />

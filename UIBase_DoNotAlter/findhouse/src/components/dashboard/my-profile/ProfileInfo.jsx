@@ -10,8 +10,8 @@ const ProfileInfo = () => {
 
     return (
         <div className="row">
-            <h4 className="mb-3">Personal Information</h4>
-            <div className="col-lg-12">
+            <h4 className="mb-3 text-center">Personal Information</h4>
+            <div className="col-lg-12 text-center">
                 <div className="wrap-custom-file">
                     <input
                         type="file"
@@ -37,7 +37,7 @@ const ProfileInfo = () => {
                         </span>
                     </label>
                 </div>
-                <p>*minimum 260px x 260px</p>
+                {/* <p>*minimum 260px x 260px</p> */}
             </div>
             {/* End .col */}
 
@@ -67,25 +67,27 @@ const ProfileInfo = () => {
             </div> */}
             {/* End .col */}
 
-            <div className="col-lg-6 col-xl-6">
+            <div className="col-lg-6 col-xl-6 mt-2">
                 <div className="my_profile_setting_input form-group">
                     <label htmlFor="formGroupExampleInput3">First Name</label>
                     <input
                         type="text"
                         className="form-control"
                         id="formGroupExampleInput3"
+                        placeholder="Micheal"
                     />
                 </div>
             </div>
             {/* End .col */}
 
-            <div className="col-lg-6 col-xl-6">
+            <div className="col-lg-6 col-xl-6 mt-2">
                 <div className="my_profile_setting_input form-group">
                     <label htmlFor="formGroupExampleInput4">Last Name</label>
                     <input
                         type="text"
                         className="form-control"
                         id="formGroupExampleInput4"
+                        placeholder="Jackson"
                     />
                 </div>
             </div>
@@ -100,6 +102,7 @@ const ProfileInfo = () => {
                         type="text"
                         className="form-control"
                         id="formGroupExampleInput12"
+                        placeholder="xyz"
                     />
                 </div>
             </div>
@@ -112,6 +115,7 @@ const ProfileInfo = () => {
                         type="text"
                         className="form-control"
                         id="formGroupExampleInput5"
+                        placeholder="house no.23, near bus stand"
                     />
                 </div>
             </div>
@@ -124,6 +128,7 @@ const ProfileInfo = () => {
                         type="text"
                         className="form-control"
                         id="formGroupExampleInput6"
+                        placeholder="house no.23, near bus stand"
                     />
                 </div>
             </div>
@@ -148,6 +153,7 @@ const ProfileInfo = () => {
                         type="text"
                         className="form-control"
                         id="formGroupExampleInput8"
+                        placeholder="Bhopal"
                     />
                 </div>
             </div>
@@ -160,6 +166,7 @@ const ProfileInfo = () => {
                         type="text"
                         className="form-control"
                         id="formGroupExampleInput9"
+                        placeholder="Madhya Pradesh"
                     />
                 </div>
             </div>
@@ -172,6 +179,7 @@ const ProfileInfo = () => {
                         type="text"
                         className="form-control"
                         id="formGroupExampleInput10"
+                        placeholder="890754"
                     />
                 </div>
             </div>
@@ -186,6 +194,7 @@ const ProfileInfo = () => {
                         type="email"
                         className="form-control"
                         id="formGroupExampleInput12"
+                        placeholder="info@test.com"
                     />
                 </div>
             </div>
@@ -200,6 +209,7 @@ const ProfileInfo = () => {
                         type="text"
                         className="form-control"
                         id="formGroupExampleInput12"
+                        placeholder="0908756437"
                     />
                 </div>
             </div>
@@ -212,6 +222,7 @@ const ProfileInfo = () => {
                         type="text"
                         className="form-control"
                         id="formGroupExampleInput11"
+                        placeholder="xyvs1234"
                     />
                 </div>
             </div>
@@ -226,6 +237,7 @@ const ProfileInfo = () => {
                         type="text"
                         className="form-control"
                         id="formGroupExampleInput13"
+                        placeholder="abc23426"
                     />
                 </div>
             </div>

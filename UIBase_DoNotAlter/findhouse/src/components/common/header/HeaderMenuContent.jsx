@@ -167,14 +167,14 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
   if (hide) {
     classname = "ace-responsive-menu text-end d-lg-block d-none";
   } else {
-    classname = "ace-responsive-menu text-end d-lg-block d-none text-end-01";
+    classname = "ace-responsive-menu d-lg-block d-none text-end-01";
   }
 
   return (
     <div>
-      <ul id="respMenu" className={classname} data-menu-style="horizontal">
+      <ul id="respMenu" className={classname} data-menu-style="horizontal" style={{borderBottom:"2px solid #2e008b", paddingBottom:"2px"}}>
         {hide && (
-          <li className="dropitem">
+          <li className="dropitem" >
             <Link
               href="/"
               className={
