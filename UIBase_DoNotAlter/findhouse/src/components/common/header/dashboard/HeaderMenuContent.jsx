@@ -241,12 +241,12 @@ const HeaderMenuContent = ({ float = "" ,hide}) => {
   return (
     <ul
       id="respMenu"
-      className="ace-responsive-menu text_end d-lg-block d-none"
+      className="ace-responsive-menu text-end-01 d-lg-block d-none"
       data-menu-style="horizontal"
       style={{
-        backgroundColor: "f7f7f7",
+        backgroundColor: "grey",
         marginTop: "5px",
-        borderRadius: "5px",
+        borderRadius: "2px",
       }}
     >
       { hide ? (<li className="dropitem">
@@ -493,7 +493,7 @@ const HeaderMenuContent = ({ float = "" ,hide}) => {
               src="/assets/images/team/Gary-Avatar.png"
               alt="e1.png"
             />
-            <span className="dn-1199 ms-1 text-light">Shubhendra Patel</span>
+            <span className="dn-1199 ms-1 text-dark">Shubhendra Patel</span>
           </a>
           <div className="dropdown-menu">
             <MyAccount />

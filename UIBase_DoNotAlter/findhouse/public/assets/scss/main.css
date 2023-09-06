@@ -21674,7 +21674,7 @@ a::before {
 
 /* dropdown */
 
-/* ul {
+.ul_01 {
   text-align: center;
   li {
     display:inline-block;
@@ -21734,7 +21734,8 @@ a::before {
       }
     }
   }
-} */
+}
+
 .bg-color{
   background-color:#1d293e !important;
 }

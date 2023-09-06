@@ -12,9 +12,11 @@ import WhyChoose from "../common/WhyChoose";
 import Team from "../about-us/Team";
 import PopupSignInUp from "../common/PopupSignInUp";
 import Pricing from "../membership/Pricing";
-import Testimonial from "../home-7/Testimonial";
+// import Testimonial from "../home-7/Testimonial";
 import HeroSlider from "./HeroSlider";
 import GlobalHeroFilter from "../common/GlobalHeroFilter";
+import ComfortPlace from "./ComfortPlace";
+import Testimonials from "./Testimonials";
 
 const Index = () => {
   return (
@@ -51,7 +53,7 @@ const Index = () => {
               <div className="home_content home4">
                 <div
                   className="home-text text-center"
-                  style={{ marginTop: "-30px" }}
+                  style={{ marginTop: "-100px", marginBottom: "50px" }}
                 >
                   <h2 className="fz50">
                     Brokers Paradise for all Real Estate Appraisals
@@ -61,6 +63,9 @@ const Index = () => {
                   </p>
                 </div>
                 {/* <GlobalHeroFilter className="home4" /> */}
+                <div className="row">
+                  <ComfortPlace />
+                </div>
               </div>
             </div>
           </div>
@@ -183,17 +188,21 @@ const Index = () => {
                   padding: "20px",
                 }}
               >
-                What Customers Says About Us
+                {/* What Customers Says About Us */}
+                What Our Users Says
               </h2>
-              {/* <p>Here could be a nice sub title</p> */}
+              <p>
+                Discover how Listable can you help you find everything you want.
+              </p>
             </div>
           </div>
         </div>
         <div className="container">
-          <div className="row">
-            <div className="col-lg-12 col">
-              <div className="testimonial_grid_slider style2 gutter-x15">
-                <Testimonial />
+          <div className="row mt-5">
+            <div className="col-lg-8 offset-lg-2 col-xl-6 offset-xl-3">
+              <div className="testimonialsec slick-custom-as-nav">
+                {/* <Testimonial /> */}
+                <Testimonials />
               </div>
             </div>
           </div>
