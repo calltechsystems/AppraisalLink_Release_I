@@ -33,7 +33,7 @@ module.exports = [
   },
   {
     id: 5,
-    img: "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg",
+    img: "/assets/images/testimonial/4.png",
     name: "Augusta Silva",
     designation: "Sales Manager",
     text: `Aliquam dictum elit vitae mauris facilisis at dictum urna dignissim donec vel lectus vel felis.`,

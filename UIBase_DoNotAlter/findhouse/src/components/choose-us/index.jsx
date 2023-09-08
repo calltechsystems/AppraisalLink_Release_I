@@ -1,6 +1,6 @@
 import React from "react";
 import WhyChoose from "../common/WhyChoose";
-import Header from "../common/header/DefaultHeader";
+import Header from "../common/header/DefaultHeader_01";
 import Footer from "../common/footer/Footer";
 import CopyrightFooter from "../common/footer/CopyrightFooter";
 

@@ -487,7 +487,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
         <li className={`list-inline-item add_listing ${float}`} style={{padding:"0px"}}>
           <Link href="/contact">
             <span className="fs-13"></span>
-            <span className="dn-lg fs-13"> Get In Touch</span>
+            <span className="dn-lg fs-13 text-light"> Get In Touch</span>
           </Link>
         </li>
 

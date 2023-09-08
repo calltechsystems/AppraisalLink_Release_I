@@ -42,7 +42,7 @@ const index = () => {
             <OurMission />
           </div>
           {/* End .row */}
-
+         
           <div className="row mt80">
             <div className="col-lg-6 offset-lg-3">
               <div className="main-title text-center">
@@ -61,7 +61,7 @@ const index = () => {
       </section>
 
       {/* <!-- Our Team --> */}
-      <section className="our-team bgc-f7">
+      {/* <section className="our-team bgc-f7">
         <div className="container">
           <div className="row">
             <div className="col-lg-6 offset-lg-3">
@@ -79,10 +79,10 @@ const index = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* <!-- Our Testimonials --> */}
-      <section className="our-testimonials">
+      {/* <section className="our-testimonials">
         <div className="container">
           <div className="row">
             <div className="col-lg-6 offset-lg-3">
@@ -100,7 +100,7 @@ const index = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* <!-- Our Partners --> */}
       {/* <section id="our-partners" className="our-partners">
