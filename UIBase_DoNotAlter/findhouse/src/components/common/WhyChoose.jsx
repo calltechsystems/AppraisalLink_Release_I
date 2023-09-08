@@ -8,7 +8,7 @@ const WhyChoose = ({ style ="" }) => {
     },
     {
       id: 2,
-      icon: "flaticon-home-1",
+      icon: "flaticon-heartbeat",
       title: "Real Time Analytics",
       descriptions: `Data analytics, Dashboard, Historical data.`,
     },
@@ -20,19 +20,19 @@ const WhyChoose = ({ style ="" }) => {
     },
     {
       id: 4,
-      icon: "flaticon-high-five",
+      icon: "flaticon-transfer",
       title: "Flexbility",
       descriptions: `Choose your own property appraising partner`,
     },
     {
       id: 5,
-      icon: "flaticon-home-1",
+      icon: "flaticon-percent",
       title: "User Friendly",
       descriptions: `Easy to navigate portal`,
     },
     {
       id: 6,
-      icon: "flaticon-home-1",
+      icon: "flaticon-chat",
       title: "24X7 Accessibility",
       descriptions: `Run your buisness without time and location constraints`,
     }

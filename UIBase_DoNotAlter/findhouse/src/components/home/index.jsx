@@ -23,7 +23,6 @@ const Index = () => {
     <>
       {/* <!-- Main Header Nav --> */}
       <Header />
-
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
 

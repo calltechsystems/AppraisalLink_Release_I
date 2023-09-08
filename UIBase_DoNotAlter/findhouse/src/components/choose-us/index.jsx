@@ -1,6 +1,8 @@
 import React from "react";
 import WhyChoose from "../common/WhyChoose";
 import Header from "../common/header/DefaultHeader";
+import Footer from "../common/footer/Footer";
+import CopyrightFooter from "../common/footer/CopyrightFooter";
 
 const ChooseUs = () => {
   return (
@@ -36,6 +38,21 @@ const ChooseUs = () => {
         </div>
       </section> */}
       {/* End .row */}
+      {/* <!-- Our Footer --> */}
+      <section className="footer_one">
+        <div className="container">
+          <div className="row">
+            <Footer />
+          </div>
+        </div>
+      </section>
+
+      {/* <!-- Our Footer Bottom Area --> */}
+      <div className="footer_middle_area">
+        <div className="container">
+          <CopyrightFooter />
+        </div>
+      </div>
     </div>
   );
 };

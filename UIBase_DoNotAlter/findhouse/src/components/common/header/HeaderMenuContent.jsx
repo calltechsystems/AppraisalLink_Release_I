@@ -165,14 +165,14 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
 
   let classname = "";
   if (hide) {
-    classname = "ace-responsive-menu text-end d-lg-block d-none";
+    classname = "ace-responsive-menu text-end d-lg-block d-none bg-back";
   } else {
-    classname = "ace-responsive-menu d-lg-block d-none text-end-01 ul_01 submenu";
+    classname = "ace-responsive-menu d-lg-block d-none text-end-01 ul_01 submenu border-bottom";
   }
 
   return (
     <div>
-      <ul id="respMenu" className={classname} data-menu-style="horizontal" style={{borderBottom:"2px solid #2e008b", paddingBottom:"2px"}}>
+      <ul id="respMenu" className={classname} data-menu-style="horizontal">
         {hide && (
           <li className="dropitem" >
             <Link
@@ -415,7 +415,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
         {hide && (
           <li className="last">
             <Link
-              href="/contact"
+              href="/about-us"
               className={
                 route.pathname === "/contact" ? "ui-active" : undefined
               }
@@ -496,7 +496,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
 
         {isListing && (
           <li className={`list-inline-item add_listing ${float}`}>
-            <Link href="#">
+            <Link href="/contact">
               <span className="fs-13"></span>
               <span className="dn-lg fs-13"> Get In Touch</span>
             </Link>

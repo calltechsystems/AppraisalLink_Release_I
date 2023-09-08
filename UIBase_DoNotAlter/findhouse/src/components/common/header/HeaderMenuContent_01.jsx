@@ -157,10 +157,10 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
   ];
 
   const user = [
-    { id: 1, name: "Broker", routerPath: "/login" },
-    { id: 2, name: "Broker", routerPath: "/login" },
-    { id: 3, name: "Broker", routerPath: "/login" },
-    { id: 4, name: "Broker", routerPath: "/login" },
+    { id: 1, name: "Mortgage Broker", routerPath: "/login" },
+    { id: 2, name: "Mortgage Brokerage", routerPath: "/login" },
+    { id: 3, name: "Appraiser", routerPath: "/login" },
+    { id: 4, name: "Appraiser Company", routerPath: "/login" },
   ];
 
   let classname = "";
@@ -411,7 +411,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
 
         <li className="last">
           <Link
-            href="/contact"
+            href="/about-us"
             className={route.pathname === "/contact" ? "ui-active" : undefined}
           >
             <span className="text-info-01">About Us</span>
@@ -485,7 +485,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
         </li>
 
         <li className={`list-inline-item add_listing ${float}`} style={{padding:"0px"}}>
-          <Link href="#">
+          <Link href="/contact">
             <span className="fs-13"></span>
             <span className="dn-lg fs-13"> Get In Touch</span>
           </Link>

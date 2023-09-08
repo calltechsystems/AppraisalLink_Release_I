@@ -11,7 +11,7 @@ const [usernew, setUsernew] = useState({
     const uppercaseChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const lowercaseChars = 'abcdefghijklmnopqrstuvwxyz';
     const numberChars = '0123456789';
-    const specialChars = '!@#$%^&*()_+[]{}|;:,.<>?';
+    const specialChars = '@#$%&';
 
     const allChars = uppercaseChars + lowercaseChars + numberChars + specialChars;
     // const allCharsLength = allChars.length;

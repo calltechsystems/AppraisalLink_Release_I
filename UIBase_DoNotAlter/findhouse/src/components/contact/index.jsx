@@ -1,8 +1,7 @@
 import Image from "next/image";
-import CallToAction from "../common/CallToAction";
 import CopyrightFooter from "../common/footer/CopyrightFooter";
 import Footer from "../common/footer/Footer";
-import Header from "../common/header/DefaultHeader";
+import Header from "../common/header/DefaultHeader_01";
 import MobileMenu from "../common/header/MobileMenu";
 import PopupSignInUp from "../common/PopupSignInUp";
 import AddressSidebar from "./AddressSidebar";
@@ -43,7 +42,7 @@ const index = () => {
             </div>
             {/* End .col */}
 
-            <div className="col-lg-5 col-xl-4">
+            <div className="col-lg-5 col-xl-4 mb-5">
               <AddressSidebar />
             </div>
           </div>
@@ -51,7 +50,7 @@ const index = () => {
         </div>
         {/* End .container */}
 
-        <div className="container-fluid p0 mt50">
+        {/* <div className="container-fluid p0 mt50">
           <div className="row">
             <div className="col-lg-12">
               <div className="h600" id="map-canvas">
@@ -60,10 +59,10 @@ const index = () => {
                     title="map"
                     className="gmap_iframe"
                     src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d193309.02147838814!2d-74.53513266718751!3d40.79602810000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sbd!4v1663993365939!5m2!1sen!2sbd"
-                  ></iframe>
+                  ></iframe> */}
                   {/* End iframe */}
 
-                  <Image
+                  {/* <Image
                     width={32}
                     height={50}
                     className="location-finder"
@@ -74,14 +73,7 @@ const index = () => {
               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* <!-- Start Call to Action --> */}
-      <section className="start-partners bgc-thm pt50 pb50">
-        <div className="container">
-          <CallToAction />
-        </div>
+        </div> */}
       </section>
 
       {/* <!-- Our Footer --> */}

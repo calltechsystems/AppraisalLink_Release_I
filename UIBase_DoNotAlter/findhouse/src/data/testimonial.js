@@ -1,7 +1,7 @@
 module.exports = [
   {
     id: 1,
-    img: "https://media.istockphoto.com/id/1448167415/photo/smiling-indian-businessman-in-suit-and-glasses-with-laptop-near-office-building.webp?b=1&s=170667a&w=0&k=20&c=kQ-sWPkU5XP8sG1-MIrGnTe9SkLQBjGvVsa2X8uVHfc=",
+    img: "/assets/images/testimonial/1.webp",
     name: "Augusta Silva",
     designation: "Sales Manager",
     text: `Aliquam dictum elit vitae mauris facilisis at dictum urna dignissim donec vel lectus vel felis.`,
@@ -17,7 +17,7 @@ module.exports = [
   },
   {
     id: 3,
-    img: "https://media.istockphoto.com/id/1448167415/photo/smiling-indian-businessman-in-suit-and-glasses-with-laptop-near-office-building.webp?b=1&s=170667a&w=0&k=20&c=kQ-sWPkU5XP8sG1-MIrGnTe9SkLQBjGvVsa2X8uVHfc=",
+    img: "/assets/images/testimonial/2.webp",
     name: "Augusta Silva",
     designation: "Sales Manager",
     text: `Aliquam dictum elit vitae mauris facilisis at dictum urna dignissim donec vel lectus vel felis.`,
@@ -33,7 +33,7 @@ module.exports = [
   },
   {
     id: 5,
-    img: "/assets/images/testimonial/5.png",
+    img: "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg",
     name: "Augusta Silva",
     designation: "Sales Manager",
     text: `Aliquam dictum elit vitae mauris facilisis at dictum urna dignissim donec vel lectus vel felis.`,

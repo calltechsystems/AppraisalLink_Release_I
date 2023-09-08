@@ -1,271 +1,247 @@
 import { useState } from "react";
 
 const ProfileInfo = () => {
-    const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState(null);
 
-    // upload profile
-    const uploadProfile = (e) => {
-        setProfile(e.target.files[0]);
-    };
+  // upload profile
+  const uploadProfile = (e) => {
+    setProfile(e.target.files[0]);
+  };
 
-    return (
-        <div className="row">
-            <h4 className="mb-3 text-center">Personal Information</h4>
-            <div className="col-lg-12 text-center">
-                <div className="wrap-custom-file">
-                    <input
-                        type="file"
-                        id="image1"
-                        accept="image/png, image/gif, image/jpeg"
-                        onChange={uploadProfile}
-                        style={{borderRadius:"50%"}}
-                    />
-                    <label
-                        style={
-                            profile !== null
-                                ? {
-                                      backgroundImage: `url(${URL.createObjectURL(
-                                          profile
-                                      )})`,
-                                  }
-                                : undefined
+  return (
+    <div className="row">
+      <h4 className="mb-3">Personal Information</h4>
+      <div className="col-lg-12">{/* <p>*minimum 260px x 260px</p> */}</div>
+      {/* End .col */}
+
+      <div className="col-lg-12 col-xl-12 mt-2">
+        <div className="my_profile_setting_input form-group">
+          <div className="row">
+            <div className="col-lg-4">
+              <div className="wrap-custom-file">
+                <input
+                  type="file"
+                  id="image1"
+                  accept="image/png, image/gif, image/jpeg"
+                  onChange={uploadProfile}
+                  style={{ borderRadius: "50%" }}
+                />
+                <label
+                  style={
+                    profile !== null
+                      ? {
+                          backgroundImage: `url(${URL.createObjectURL(
+                            profile
+                          )})`,
                         }
-                        htmlFor="image1"
-                    >
-                        <span>
-                            <i className="flaticon-download"></i> Upload Photo{" "}
-                        </span>
-                    </label>
-                </div>
-                {/* <p>*minimum 260px x 260px</p> */}
+                      : undefined
+                  }
+                  htmlFor="image1"
+                >
+                  <span>
+                    <i className="flaticon-download"></i> Upload Photo{" "}
+                  </span>
+                </label>
+              </div>
             </div>
-            {/* End .col */}
-
-            {/* <div className="col-lg-6 col-xl-6">
-                <div className="my_profile_setting_input form-group">
-                    <label htmlFor="formGroupExampleInput1">Brokerage Name</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="formGroupExampleInput1"
-                        placeholder="alitfn"
-                    />
+            <div className="col-lg-8">
+              <div className="row mb-2">
+                <div className="col-lg-5">
+                  <label htmlFor="" style={{ paddingTop: "15px" }}>
+                    First Name :
+                  </label>
                 </div>
-            </div> */}
-            {/* End .col */}
-
-            {/* <div className="col-lg-6 col-xl-6">
-                <div className="my_profile_setting_input form-group">
-                    <label htmlFor="formGroupExampleEmail">Email</label>
-                    <input
-                        type="email"
-                        className="form-control"
-                        id="formGroupExampleEmail"
-                        placeholder="creativelayers@gmail.com"
-                    />
+                <div className="col-lg-7">
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="formGroupExampleInput3"
+                    placeholder="Micheal"
+                  />
                 </div>
-            </div> */}
-            {/* End .col */}
-
-            <div className="col-lg-6 col-xl-6 mt-2">
-                <div className="my_profile_setting_input form-group">
-                    <label htmlFor="formGroupExampleInput3">First Name</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="formGroupExampleInput3"
-                        placeholder="Micheal"
-                    />
+              </div>
+              <div className="row mb-2">
+                <div className="col-lg-5">
+                  <label htmlFor="" style={{ paddingTop: "15px" }}>
+                    Last Name :
+                  </label>
                 </div>
+                <div className="col-lg-7">
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="formGroupExampleInput3"
+                    placeholder="Micheal"
+                  />
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-lg-5 mb-2">
+                  <label htmlFor="" style={{ paddingTop: "15px" }}>
+                    Company Name{" "}
+                  </label>
+                </div>
+                <div className="col-lg-7">
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="formGroupExampleInput3"
+                    placeholder="Jackson"
+                  />
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-lg-5 mb-2">
+                  <label htmlFor="" style={{ paddingTop: "15px" }}>
+                    Address Line 1 :
+                  </label>
+                </div>
+                <div className="col-lg-7 mb-2">
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="formGroupExampleInput3"
+                    placeholder="h.no. 14"
+                  />
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-lg-5 mb-2">
+                  <label htmlFor="" style={{ paddingTop: "15px" }}>
+                    Address Line 2 :
+                  </label>
+                </div>
+                <div className="col-lg-7 mb-2">
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="formGroupExampleInput3"
+                    placeholder="near bus stand"
+                  />
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-lg-5 mb-2">
+                  <label htmlFor="" style={{ paddingTop: "15px" }}>
+                    City :
+                  </label>
+                </div>
+                <div className="col-lg-7 mb-2">
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="formGroupExampleInput3"
+                    placeholder="Bhopal"
+                  />
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-lg-5 mb-2">
+                  <label htmlFor="" style={{ paddingTop: "15px" }}>
+                    State :
+                  </label>
+                </div>
+                <div className="col-lg-7 mb-2">
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="formGroupExampleInput3"
+                    placeholder="Madhya Pradesh"
+                  />
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-lg-5 mb-2">
+                  <label htmlFor="" style={{ paddingTop: "15px" }}>
+                    Zip-Code :
+                  </label>
+                </div>
+                <div className="col-lg-7 mb-2">
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="formGroupExampleInput3"
+                    placeholder="980764"
+                  />
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-lg-5 mb-2">
+                  <label htmlFor="" style={{ paddingTop: "15px" }}>
+                    Email Address :
+                  </label>
+                </div>
+                <div className="col-lg-7">
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="formGroupExampleInput3"
+                    placeholder="Jackson@test.com"
+                  />
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-lg-5 mb-2">
+                  <label htmlFor="" style={{ paddingTop: "15px" }}>
+                    Phone Number :
+                  </label>
+                </div>
+                <div className="col-lg-7">
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="formGroupExampleInput3"
+                    placeholder="0909087667"
+                  />
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-lg-5 mb-2">
+                  <label htmlFor="" style={{ paddingTop: "15px" }}>
+                    Mortgage Brokerage Lic. No.:
+                  </label>
+                </div>
+                <div className="col-lg-7">
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="formGroupExampleInput3"
+                    placeholder="XCF65765Jackson"
+                  />
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-lg-5">
+                  <label htmlFor="" style={{ paddingTop: "15px" }}>
+                    Mortgage Broker Licence No.:
+                  </label>
+                </div>
+                <div className="col-lg-7">
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="formGroupExampleInput3"
+                    placeholder="ACF345666Jackson"
+                  />
+                </div>
+              </div>
+              <div className="row mt-4">
+                <div className="col-xl-12">
+                  <div className="my_profile_setting_input" style={{textAlign:"end"}}>
+                    {/* <button className="btn btn1">Save Details</button> */}
+                    <button className="btn btn2 btn-dark">
+                      Update Profile
+                    </button>
+                  </div>
+                </div>
+                {/* End .col */}
+              </div>
             </div>
-            {/* End .col */}
-
-            <div className="col-lg-6 col-xl-6 mt-2">
-                <div className="my_profile_setting_input form-group">
-                    <label htmlFor="formGroupExampleInput4">Last Name</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="formGroupExampleInput4"
-                        placeholder="Jackson"
-                    />
-                </div>
-            </div>
-            {/* End .col */}
-
-            <div className="col-lg-6 col-xl-6">
-                <div className="my_profile_setting_input form-group">
-                    <label htmlFor="formGroupExampleInput12">
-                        Company Name
-                    </label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="formGroupExampleInput12"
-                        placeholder="xyz"
-                    />
-                </div>
-            </div>
-            {/* End .col */}
-
-            <div className="col-lg-6 col-xl-6">
-                <div className="my_profile_setting_input form-group">
-                    <label htmlFor="formGroupExampleInput5">Address Line 1</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="formGroupExampleInput5"
-                        placeholder="house no.23, near bus stand"
-                    />
-                </div>
-            </div>
-            {/* End .col */}
-
-            <div className="col-lg-6 col-xl-6">
-                <div className="my_profile_setting_input form-group">
-                    <label htmlFor="formGroupExampleInput6">Address Line 2</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="formGroupExampleInput6"
-                        placeholder="house no.23, near bus stand"
-                    />
-                </div>
-            </div>
-            {/* End .col */}
-
-            {/* <div className="col-lg-6 col-xl-6">
-                <div className="my_profile_setting_input form-group">
-                    <label htmlFor="formGroupExampleInput7">Tax Number</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="formGroupExampleInput7"
-                    />
-                </div>
-            </div> */}
-            {/* End .col */}
-
-            <div className="col-lg-6 col-xl-6">
-                <div className="my_profile_setting_input form-group">
-                    <label htmlFor="formGroupExampleInput8">City</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="formGroupExampleInput8"
-                        placeholder="Bhopal"
-                    />
-                </div>
-            </div>
-            {/* End .col */}
-
-            <div className="col-lg-6 col-xl-6">
-                <div className="my_profile_setting_input form-group">
-                    <label htmlFor="formGroupExampleInput9">State</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="formGroupExampleInput9"
-                        placeholder="Madhya Pradesh"
-                    />
-                </div>
-            </div>
-            {/* End .col */}
-
-            <div className="col-lg-6 col-xl-6">
-                <div className="my_profile_setting_input form-group">
-                    <label htmlFor="formGroupExampleInput10">Zip-Code</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="formGroupExampleInput10"
-                        placeholder="890754"
-                    />
-                </div>
-            </div>
-            {/* End .col */}
-
-            <div className="col-lg-6 col-xl-6">
-                <div className="my_profile_setting_input form-group">
-                    <label htmlFor="formGroupExampleInput12">
-                        Email Address
-                    </label>
-                    <input
-                        type="email"
-                        className="form-control"
-                        id="formGroupExampleInput12"
-                        placeholder="info@test.com"
-                    />
-                </div>
-            </div>
-            {/* End .col */}
-
-            <div className="col-lg-6 col-xl-6">
-                <div className="my_profile_setting_input form-group">
-                    <label htmlFor="formGroupExampleInput12">
-                        Phone Number
-                    </label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="formGroupExampleInput12"
-                        placeholder="0908756437"
-                    />
-                </div>
-            </div>
-            {/* End .col */}
-
-            <div className="col-lg-6 col-xl-6">
-                <div className="my_profile_setting_input form-group">
-                    <label htmlFor="formGroupExampleInput11">Mortgage Brokerage Licence Number</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="formGroupExampleInput11"
-                        placeholder="xyvs1234"
-                    />
-                </div>
-            </div>
-            {/* End .col */}
-
-            
-
-            <div className="col-lg-6 col-xl-6">
-                <div className="my_profile_setting_input form-group">
-                    <label htmlFor="formGroupExampleInput13">Mortgage Broker Licence Number</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="formGroupExampleInput13"
-                        placeholder="abc23426"
-                    />
-                </div>
-            </div>
-            {/* End .col */}
-
-            {/* <div className="col-xl-12">
-                <div className="my_profile_setting_textarea">
-                    <label htmlFor="exampleFormControlTextarea1">
-                        About me
-                    </label>
-                    <textarea
-                        className="form-control"
-                        id="exampleFormControlTextarea1"
-                        rows="7"
-                    ></textarea>
-                </div>
-            </div> */}
-            {/* End .col */}
-
-            <div className="col-xl-12 text-right">
-                <div className="my_profile_setting_input">
-                    {/* <button className="btn btn1">View Public Profile</button> */}
-                    <button className="btn btn2 btn-dark">Update Profile</button>
-                </div>
-            </div>
-            {/* End .col */}
+          </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default ProfileInfo;
