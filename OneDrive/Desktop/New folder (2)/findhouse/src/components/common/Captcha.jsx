@@ -1,0 +1,111 @@
+import { useState } from "react";
+import Image from "next/image";
+import { FaRedo } from "react-icons/fa";
+import { useRef } from "react";
+import { useEffect } from "react";
+
+const Captcha = ({ verified }) => {
+  const [change, setChange] = useState(false);
+  const [captcha, setCaptcha] = useState("");
+  const [style, setStyle] = useState({
+    // borderColor: "black",
+    // borderWidth: "1px",
+  });
+  const captchaRef = useRef("");
+
+  const uppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const lowercaseChars = "abcdefghijklmnopqrstuvwxyz";
+  const numberChars = "0123456789";
+  const specialChars = "@#$%&";
+
+  const allChars = uppercaseChars + lowercaseChars + numberChars + specialChars;
+  // const allCharsLength = allChars.length;
+
+  useEffect(() => {
+    const temp = generateString(6);
+    setCaptcha(temp);
+  }, [change]);
+
+  function generateString(length) {
+    let result = "";
+    const charactersLength = allChars.length;
+    for (let i = 0; i < length; i++) {
+      result += allChars.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  }
+
+  let handleChange = (e) => {
+    console.log(captchaRef.current.value);
+
+    const inputValue = captchaRef.current.value;
+    if (String(inputValue) !== String(captcha)) {
+      verified(false);
+      setStyle({
+        borderColor: "red",
+        borderWidth: "2px",
+      });
+    } else {
+      verified(true);
+      setStyle({
+        borderColor: "green",
+        borderWidth: "2px",
+      });
+    }
+  };
+
+  const refreshHandler = () => {
+    const prevState = change;
+    captchaRef.current.value = "";
+    setStyle({
+      borderColor: "black",
+      borderWidth: "1px",
+    });
+    setChange(!prevState);
+  };
+
+  return (
+    <>
+      <div className="row" style={{ paddingLeft: "" }}>
+        <div className="col-lg-6" style={{ width: "33%" }}>
+          <h4 id="captcha" className="bg-imgg text-captcha">
+            {captcha}
+          </h4>
+          <Image
+            width={60}
+            height={45}
+            className="w-100 mb-2 mt-0 cap-img"
+            src="/assets/images/home/bg.png"
+          />
+        </div>
+        <div className="col-lg-6" style={{ width: "60%" }}>
+          <input
+            type="text"
+            ref={captchaRef}
+            className="form-control mr"
+            style={style}
+            placeholder="Enter Captcha"
+            name="username"
+            onChange={handleChange}
+            autocomplete="off"
+          />
+          <button
+            type="button"
+            id="succesBTN"
+            className="btn btn-captcha"
+            style={{ cursor: "pointer" }}
+            onClick={refreshHandler}
+          >
+            <FaRedo style={{ padding: "2px" }} />
+          </button>
+        </div>
+        {/* <div className="col-lg-2"></div> */}
+      </div>
+
+      {/* <div className="mt-0"></div> */}
+      {/* End input-group */}
+    </>
+  );
+};
+
+export default Captcha;
