@@ -22,21 +22,15 @@ const SidebarMenu = () => {
     {
       id: 1,
       name: "Package",
-      route: "/my-package",
+      route: "/my-plans",
       icon: "flaticon-box",
     },
     {
       id: 2,
       name: "Transactions",
-      route: "/my-transaction",
+      route: "/my-package",
       icon: "flaticon-box",
-    },
-    {
-      id: 3,
-      name: "Subscription",
-      route: "/my-subscription",
-      icon: "flaticon-box",
-    },
+    }
     // { id: 3, name: "Logout", route: "/login", icon: "flaticon-logout" },
   ];
 
@@ -96,7 +90,7 @@ const SidebarMenu = () => {
               </Link>
             </li>
 
-            <li
+            {/*<li
               className={`treeview ${
                 isSinglePageActive("/my-properties", route.pathname)
                   ? "active"
@@ -107,7 +101,7 @@ const SidebarMenu = () => {
                 <i className="flaticon-home"></i>
                 <span> Properties</span>
               </Link>
-            </li>
+            </li>*/}
            {/* <li
               className={`treeview ${
                     isParentPageActive("/my-properties", route.pathname) ? "active" : ""

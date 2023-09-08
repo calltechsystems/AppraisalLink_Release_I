@@ -10,6 +10,8 @@ const Form = () => {
   const [showLabel, setShowLabel] = useState(false);
   const [captchaVerfied, setCaptchaVerified] = useState(false);
 
+  const [firstClick,setFirstClick] = useState(true);
+
   const [passwordRegisterVerified, setPasswordRegisterVerified] =
     useState(false);
 
@@ -94,6 +96,8 @@ const Form = () => {
   };
 
   const checkPasswordRegisterHandler = (event) => {
+
+    setFirstClick(false);
     setPasswordRegister(event.target.value);
     const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/;
     if (passwordRegex.test(event.target.value)) {
@@ -173,7 +177,7 @@ const Form = () => {
               style={{ position: "relative", marginBottom: "6px" }}
             >
               <label htmlFor="passwordInput" style={labelStyle}>
-                Password must have a A-Z,a-z,0-9,!@#$%^& a & 8 characters long.
+                Password must have a A-Z,a-z,0-9,!@#$%^& a & 8 - 15 characters long.
               </label>
               <input
                 type={passwordVisible ? "text" : "password"} // Conditionally set the input type
@@ -203,9 +207,9 @@ const Form = () => {
           <div style={{ marginTop: "0px" }}>
             {isFocused ? (
               passwordRegisterVerified ? (
-                <span style={{ color: "green" }}>Strong Password &#10004;</span>
+                <span style={{ color: "green" }}>Strong Password &#10004;</span> 
               ) : (
-                <span style={{ color: "red" }}> Weak Password &#10008;</span>
+                !firstClick ?  <span style={{ color: "red" }}> Weak Password &#10008;</span> : ""
               )
             ) : (
               ""

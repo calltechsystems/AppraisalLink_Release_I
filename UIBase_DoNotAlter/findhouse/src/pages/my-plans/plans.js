@@ -1,13 +1,8 @@
 import { useState } from "react";
-import CallToAction from "../common/CallToAction";
-import CopyrightFooter from "../common/footer/CopyrightFooter";
-import Footer from "../common/footer/Footer";
-import Header from "../common/header/DefaultHeader_01";
-import MobileMenu from "../common/header/MobileMenu";
-import PopupSignInUp from "../common/PopupSignInUp";
-import BreadCrumbBanner from "./BreadCrumbBanner";
-import Pricing from "./Pricing";
-// import Header from "../home/Header";
+
+import Pricing from "./pricing";
+import SidebarMenu from "../../components/common/header/dashboard/SidebarMenu";
+
 
 const Index = () => {
   //by default monthly being selected here as 
@@ -24,21 +19,18 @@ const Index = () => {
   }
   return (
     <>
-      {/* <!-- Main Header Nav --> */}
-      <Header />
-
-      {/* <!--  Mobile Menu --> */}
-      <MobileMenu />
-
-      {/* <!-- Modal --> */}
-      <PopupSignInUp />
-
-      {/* <!-- Inner Page Breadcrumb --> */}
-      {/* <BreadCrumbBanner /> */}
-
-      {/* <!-- Service Section Area --> */}
-      <section className="our-service pb30 pt160">
-        <div className="container">
+    
+    <div className="dashboard_sidebar_menu">
+    <div
+      className="offcanvas offcanvas-dashboard offcanvas-start"
+      tabIndex="-1"
+      id="DashboardOffcanvasMenu"
+      data-bs-scroll="true"
+    >
+      <SidebarMenu />
+    </div>
+  </div>
+        <div  className="our-dashbord dashbord bgc-f7 pb50 " style={{marginTop:"-6%",marginLeft:"5%"}}>
           <div className="row">
             <div className="col-lg-6 offset-lg-3">
               <div className="main-title text-center">
@@ -55,11 +47,9 @@ const Index = () => {
                   border: '4px solid blue', // Initial border color
                   transition: 'border-color 0.3s', // Adding a smooth transition
                 }}
-                
-                onMouseClick={(e) => {
-                  e.target.style.border = '0px solid white'; // Change border color on hover
+                onMouseEnter={(e) => {
+                  e.target.style.border = '2px solid white'; // Change border color on hover
                   e.target.style.backgroundColor = 'rgba(0, 0, 255, 0.8)';
-                  
                 }}
                 onMouseLeave={(e) => {
                   e.target.style.border = '2px solid blue';
@@ -80,14 +70,14 @@ const Index = () => {
                   border: '2px solid blue', // Initial border color
                   transition: 'border-color 0.3s', // Adding a smooth transition
                 }}
-                onMouseClick={(e) => {
+                onMouseEnter={(e) => {
                   e.target.style.border = '2px solid white'; // Change border color on hover
                   e.target.style.backgroundColor = 'rgba(0, 0, 255, 0.8)';
                 }}
                 onMouseLeave={(e) => {
                   e.target.style.border = '2px solid blue';
                   e.target.style.backgroundColor = 'blue';
-                }}  
+                }}
                 onClick={changePlanToYearly}
               >
                 Yearly
@@ -104,29 +94,20 @@ const Index = () => {
           </div>
           {/* End .row */}
 
-          <div className="row">
-            <Pricing  isPlan = {isSelected}/>
+          <div className="row" >
+            <Pricing  isPlan = {isSelected} />
             {/* <Pricing hideButton={false}/> */}
           </div>
           {/* End .row */}
         </div>
-      </section>
 
-      {/* <!-- Our Footer --> */}
-      <section className="footer_one">
+      {/* <!-- Start Call to Action --> */}
+      {/* <section className="start-partners bgc-thm pt50 pb50">
         <div className="container">
-          <div className="row">
-            <Footer />
-          </div>
+          <CallToAction />
         </div>
-      </section>
+      </section> */}
 
-      {/* <!-- Our Footer Bottom Area --> */}
-      <section className="footer_middle_area pt40 pb40">
-        <div className="container">
-          <CopyrightFooter />
-        </div>
-      </section>
     </>
   );
 };

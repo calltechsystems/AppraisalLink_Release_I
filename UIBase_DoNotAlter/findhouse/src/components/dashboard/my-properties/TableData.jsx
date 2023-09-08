@@ -1,7 +1,13 @@
 import Image from "next/image";
 import properties from "../../../data/properties";
+import { useState } from "react";
 
 const TableData = () => {
+
+  const [Id,setId] = useState(-1);
+  const [toggle,setToggle] = useState(false);
+
+
   let theadConent = [
     "Listing Title",
     "Date published",
@@ -9,11 +15,19 @@ const TableData = () => {
     "Bids",
     "Action",
   ];
-  let tbodyContent = properties?.slice(0, 4)?.map((item) => (
+
+  const toggleDropdownDiv = (key)=>{
+
+    setId(key);
+
+  };
+
+  let tbodyContent = properties?.slice(0, 4)?.map((item,key) => (
+    <>
     <tr key={item.id}>
       <td scope="row">
-        <div className="feat_property list favorite_page style2">
-          {/* <div className="thumb">
+       {/* <div className="feat_property list favorite_page style2" >
+          {/*<div className="thumb">
             <Image
               width={150}
               height={220}
@@ -28,7 +42,7 @@ const TableData = () => {
                 </li>
               </ul>
             </div>
-          </div> */}
+         </div> */}
           <div className="details">
             <div className="tc_content">
               <h4>{item.title}</h4>
@@ -42,7 +56,6 @@ const TableData = () => {
               </a>
             </div>
           </div>
-        </div>
       </td>
       {/* End td */}
 
@@ -75,9 +88,19 @@ const TableData = () => {
             className="list-inline-item"
             data-toggle="tooltip"
             data-placement="top"
+            title="View"
+          >
+            <a href="#" onClick={()=>toggleDropdownDiv(key )}>
+              <span className="flaticon-view"></span>
+            </a>
+          </li>
+          <li 
+            className="list-inline-item"
+            data-toggle="tooltip"
+            data-placement="top"
             title="Edit"
           >
-            <a href="#">
+            <a href="#" onClick={""}>
               <span className="flaticon-edit"></span>
             </a>
           </li>
@@ -93,10 +116,12 @@ const TableData = () => {
               <span className="flaticon-garbage"></span>
             </a>
           </li>
-        </ul>
+        </ul>  
       </td>
       {/* End td */}
     </tr>
+    { Id === key ?<tr>property data </tr>:""}
+    </>
   ));
 
   return (

@@ -19,7 +19,6 @@ const Captcha = ({ verified }) => {
   const specialChars = "@#$%&";
 
   const allChars = uppercaseChars + lowercaseChars + numberChars + specialChars;
-  // const allCharsLength = allChars.length;
 
   useEffect(() => {
     const temp = generateString(6);
@@ -66,8 +65,8 @@ const Captcha = ({ verified }) => {
 
   return (
     <>
-      <div className="row" style={{ paddingLeft: "" }}>
-        <div className="col-lg-6" style={{ width: "33%" }}>
+      <div className="row" style={{paddingLeft:"6%",display:"flex",flexDirection:"row",marginBottom:"6%"}}>
+        <div className="col-lg-6" style={{width:"40%"}}>
           <h4 id="captcha" className="bg-imgg text-captcha">
             {captcha}
           </h4>
@@ -78,29 +77,36 @@ const Captcha = ({ verified }) => {
             src="/assets/images/home/bg.png"
           />
         </div>
-        <div className="col-lg-6" style={{ width: "60%" }}>
+        <div className="col-lg-6" style={{ width: "60%" ,display:"flex",flexDirection:"row"}}>
           <input
             type="text"
             ref={captchaRef}
             className="form-control mr"
-            style={style}
+            style={{width:"70%"}}
             placeholder="Enter Captcha"
             name="username"
             onChange={handleChange}
             autocomplete="off"
           />
           <button
-            type="button"
-            id="succesBTN"
-            className="btn btn-captcha"
-            style={{ cursor: "pointer" }}
-            onClick={refreshHandler}
-          >
-            <FaRedo style={{ padding: "2px" }} />
-          </button>
+          type="button"
+          id="succesBTN"
+          className="btn btn-primary w-15 "
+          style={{cursor:"pointer",margin:"2%"}}
+          onClick={refreshHandler}
+           >
+             <FaRedo style={{padding:"2px"}}/>
+        </button>
+          
         </div>
-        {/* <div className="col-lg-2"></div> */}
-      </div>
+        <div>
+           
+        </div>
+           
+          
+        </div>
+        <div className="col-lg-2 text-end"></div>
+      
 
       {/* <div className="mt-0"></div> */}
       {/* End input-group */}

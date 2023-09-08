@@ -21445,6 +21445,8 @@ header.header-nav.menu_style_home_one .ace-responsive-menu > li > a {
   left: 20rem;
   background-color: #2e008b;
   color: white;
+  top: -50px;
+  left: 7.5rem;
   /* display: none !important; */
   /* margin-left: 12rem; */
 }
@@ -21783,3 +21785,27 @@ a::before {
   margin-left:10px ;
   margin-top: 20px;
 }
+.text_end{
+  text-align: end !important;
+}
+
+.my_plan_pricing_header{
+  padding-left: "30%";
+}
+
+.list-item-transition {
+  transition: transform 0.3s; 
+  transform-origin: left; 
+}
+
+.list-item-transition:hover {
+  transform: translateX(10px); 
+}
+
+
+.pricing_table_border_style{
+  border: 12px solid darkslateblue;
+  
+}
+
+
