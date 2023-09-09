@@ -2314,7 +2314,7 @@ header.header-nav.menu_style_home_one.style2
   position: absolute;
   right: 0;
   top: 26px;
-  width: 1px;
+  width: 1   px;
 }
 
 header.header-nav.menu_style_home_one.style2.home10
@@ -16540,6 +16540,8 @@ legend span {
   border-radius: 8px;
   border: 1px solid #ebebeb;
   padding: 30px;
+  display: flex;
+  justify-content: center;
 }
 
 .form_grid h4 {

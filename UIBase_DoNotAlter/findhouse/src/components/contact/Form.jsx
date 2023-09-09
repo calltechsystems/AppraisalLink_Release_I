@@ -24,7 +24,7 @@ const Form = () => {
               className="form-control required email"
               required="required"
               type="email"
-              placeholder="Email"
+              placeholder="Email Address"
             />
           </div>
         </div>
@@ -38,7 +38,63 @@ const Form = () => {
               className="form-control required phone"
               required="required"
               type="phone"
-              placeholder="Phone"
+              placeholder="Phone Number"
+            />
+          </div>
+        </div>
+        {/* End .col */}
+
+        <div className="col-md-6">
+          <div className="form-group">
+            <input
+              id="form_subject"
+              name="form_subject"
+              className="form-control required"
+              required="required"
+              type="text"
+              placeholder="Company"
+            />
+          </div>
+        </div>
+        {/* End .col */}
+
+        <div className="col-md-6">
+          <div className="form-group">
+            <input
+              id="form_subject"
+              name="form_subject"
+              className="form-control required"
+              required="required"
+              type="text"
+              placeholder="You are"
+            />
+          </div>
+        </div>
+        {/* End .col */}
+
+        <div className="col-md-6">
+          <div className="form-group">
+            <input
+              id="form_subject"
+              name="form_subject"
+              className="form-control required"
+              required="required"
+              type="text"
+              placeholder="Country"
+            />
+          </div>
+        </div>
+        {/* End .col */}
+
+        <div className="col-md-6">
+          <div className="form-group">
+            <input
+              id="form_subject"
+              name="form_subject"
+              className="form-control required"
+              required="required"
+              type="text"
+              placeholder="Province/State"
             />
           </div>
         </div>
@@ -58,8 +114,22 @@ const Form = () => {
         </div>
         {/* End .col */}
 
-        <div className="col-sm-12">
+        <div className="col-md-12">
           <div className="form-group">
+            <input
+              id="form_subject"
+              name="form_subject"
+              className="form-control required"
+              required="required"
+              type="text"
+              placeholder="How we can help you?"
+            />
+          </div>
+        </div>
+        {/* End .col */}
+
+        <div className="col-sm-12">
+          {/* <div className="form-group">
             <textarea
               id="form_message"
               name="form_message"
@@ -68,12 +138,12 @@ const Form = () => {
               required="required"
               placeholder="Your Message"
             ></textarea>
-          </div>
+          </div> */}
           {/* End .col */}
 
-          <div className="form-group mb0">
+          <div className="form-group mb0 text-end">
             <button type="submit" className="btn btn-lg btn-thm">
-              Send Message
+              Submit
             </button>
           </div>
           {/* End button submit */}

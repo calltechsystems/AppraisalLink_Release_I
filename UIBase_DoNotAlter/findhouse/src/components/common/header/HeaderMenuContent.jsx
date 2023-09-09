@@ -165,7 +165,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
 
   let classname = "";
   if (hide) {
-    classname = "ace-responsive-menu text-end d-lg-block d-none bg-back";
+    classname = "ace-responsive-menu text-end d-lg-block d-none bg-back ul_01";
   } else {
     classname = "ace-responsive-menu d-lg-block d-none text-end-01 ul_01 submenu border-bottom";
   }
@@ -225,7 +225,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
               <span className="arrow text-info-01"></span>
             </Link>
             {/* <!-- Level Two--> */}
-            <ul className="sub-menu ">
+            <ul className="sub-menu">
               {listing.map((item) => (
                 <li className="dropitem arrow" key={item.id}>
                   <Link
@@ -286,7 +286,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
             </Link>
             <ul className="sub-menu">
               {property.map((item) => (
-                <li className="dropitem arrow" key={item.id}>
+                <li className=" " key={item.id}>
                   <Link
                     href="#"
                     className={
@@ -498,7 +498,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
           <li className={`list-inline-item add_listing ${float}`}>
             <Link href="/contact">
               <span className="fs-13"></span>
-              <span className="dn-lg fs-13"> Get In Touch</span>
+              <span className="dn-lg fs-13"> GET IN TOUCH</span>
             </Link>
           </li>
         )}
