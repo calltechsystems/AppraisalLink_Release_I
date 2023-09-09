@@ -286,7 +286,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
             </Link>
             <ul className="sub-menu">
               {property.map((item) => (
-                <li className=" " key={item.id}>
+                <li className="dropitem arrow" key={item.id}>
                   <Link
                     href="#"
                     className={

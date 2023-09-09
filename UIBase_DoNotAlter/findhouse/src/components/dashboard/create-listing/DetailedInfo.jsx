@@ -81,49 +81,85 @@ import CheckBoxFilter from "../../common/CheckBoxFilter";
 
 const DetailedInfo = () => {
   return (
-    <div className="row">
-      <div className="col-lg-6 offset-3">
-        <div className="col-12">
-          <div className="my_profile_setting_input form-group">
-            <label htmlFor="propertyASize">Applicant First Name</label>
-            <input type="text" className="form-control" id="propertyASize" placeholder="John"/>
+    <>
+      <div className="row">
+        <div className="col-lg-12">
+          <div className="row mb-2">
+            <div className="col-lg-3 my_profile_setting_input form-group">
+              <label htmlFor="" style={{ paddingTop: "15px" }}>
+                Applicant First Name :
+              </label>
+            </div>
+            <div className="col-lg-7">
+              <input
+                type="text"
+                className="form-control"
+                id="formGroupExampleInput3"
+                placeholder="Micheal"
+              />
+            </div>
           </div>
-        </div>
-        {/* End .col */}
+          <div className="row mb-2">
+            <div className="col-lg-3 my_profile_setting_input form-group">
+              <label htmlFor="" style={{ paddingTop: "15px" }}>
+                Applicant Last Name :
+              </label>
+            </div>
+            <div className="col-lg-7">
+              <input
+                type="text"
+                className="form-control"
+                id="formGroupExampleInput3"
+                placeholder="Jackson"
+              />
+            </div>
+          </div>
+          <div className="row mb-2">
+            <div className="col-lg-3 my_profile_setting_input form-group">
+              <label htmlFor="" style={{ paddingTop: "15px" }}>
+                Applicant Phone Number :
+              </label>
+            </div>
+            <div className="col-lg-7">
+              <input
+                type="text"
+                className="form-control"
+                id="formGroupExampleInput3"
+                placeholder="000-876-876"
+              />
+            </div>
+          </div>
+          <div className="row mb-2">
+            <div className="col-lg-3 my_profile_setting_input form-group">
+              <label htmlFor="" style={{ paddingTop: "15px" }}>
+                Applicant Email Address :
+              </label>
+            </div>
+            <div className="col-lg-7">
+              <input
+                type="text"
+                className="form-control"
+                id="formGroupExampleInput3"
+                placeholder="info@test.com"
+              />
+            </div>
+          </div>
 
-        <div className="col-12">
-          <div className="my_profile_setting_input form-group">
-            <label htmlFor="sizePrefix">Applicant Last Name</label>
-            <input type="text" className="form-control" id="sizePrefix" placeholder="Sina"/>
+          <div className="col-xl-12">
+            <div className="my_profile_setting_input overflow-hidden mt20">
+              {/* <button className="btn btn1 float-start">Back</button> */}
+              <button
+                className="btn btn2 float-center"
+                style={{ textAlign:'center' }}
+              >
+                Submit
+              </button>
+            </div>
           </div>
+          {/* End .col */}
         </div>
-        {/* End .col */}
-
-        <div className="col-12">
-          <div className="my_profile_setting_input form-group">
-            <label htmlFor="landArea">Applicant Phone Number</label>
-            <input type="text" className="form-control" id="landArea" placeholder="0918789654"/>
-          </div>
-        </div>
-        {/* End .col */}
-
-        <div className="col-12">
-          <div className="my_profile_setting_input form-group">
-            <label htmlFor="LASPostfix">Applicant Email Address</label>
-            <input type="text" className="form-control" id="LASPostfix" placeholder="info@test.com"/>
-          </div>
-        </div>
-        {/* End .col */}
-
-        <div className="col-xl-12">
-          <div className="my_profile_setting_input overflow-hidden mt20">
-            {/* <button className="btn btn1 float-start">Back</button> */}
-            <button className="btn btn2 float-center" style={{marginLeft:"8rem"}}>Submit</button>
-          </div>
-        </div>
-        {/* End .col */}
       </div>
-    </div>
+    </>
   );
 };
 
