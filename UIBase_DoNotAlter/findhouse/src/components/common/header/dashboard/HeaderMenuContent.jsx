@@ -484,7 +484,7 @@ const HeaderMenuContent = ({ float = "" ,hide}) => {
       </li>
 
       <li className="user_setting">
-        <div className="dropdown">
+        <div className="">
           <a className="btn dropdown-toggle" href="#" data-bs-toggle="dropdown">
             <Image
               width={45}
