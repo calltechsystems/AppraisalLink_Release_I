@@ -9,8 +9,8 @@ const TableData = () => {
 
 
   let theadConent = [
-    "Listing Title",
-    "Date published",
+    "Property Title",
+    "Date",
     "Status",
     "Bids",
     "Action",
@@ -72,18 +72,6 @@ const TableData = () => {
 
       <td>
         <ul className="view_edit_delete_list mb0">
-        <li
-            className="list-inline-item"
-            data-toggle="tooltip"
-            data-placement="top"
-            title="Edit"
-          >
-            <a href="#">
-              <span className="flaticon-phone"></span>
-            </a>
-          </li>
-          {/* End li */}
-
           <li
             className="list-inline-item"
             data-toggle="tooltip"

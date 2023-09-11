@@ -2,7 +2,7 @@ const LocationField = () => {
   return (
     <>
       <div className="row">
-        <div className="col-lg-6 offset-3">
+        <div className="col-lg-6">
           <div className="col-lg-12">
             <div className="my_profile_setting_input form-group">
               <label htmlFor="propertyAddress">Street Name</label>

@@ -32,11 +32,11 @@ const index = () => {
       </section>
 
       {/* <!-- Start Call to Action --> */}
-      <section className="start-partners bgc-thm pt50 pb50">
+      {/* <section className="start-partners bgc-thm pt50 pb50">
         <div className="container">
           <CallToAction />
         </div>
-      </section>
+      </section> */}
 
       {/* <!-- Our Footer --> */}
       <section className="footer_one">
@@ -48,11 +48,11 @@ const index = () => {
       </section>
 
       {/* <!-- Our Footer Bottom Area --> */}
-      <section className="footer_middle_area pt40 pb40">
+      <div className="footer_middle_area">
         <div className="container">
           <CopyrightFooter />
         </div>
-      </section>
+      </div>
     </>
   );
 };
