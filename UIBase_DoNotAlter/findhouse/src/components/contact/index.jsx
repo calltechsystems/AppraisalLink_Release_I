@@ -39,7 +39,7 @@ const index = () => {
             </div>
             <div className="container">
               <div className="row mt-5">
-                <h2 className="text-center">Let's Chat !</h2>
+                <h2 className="text-center">Let&apos;s Chat !</h2>
                 <AddressSidebar />
               </div>
             </div>
