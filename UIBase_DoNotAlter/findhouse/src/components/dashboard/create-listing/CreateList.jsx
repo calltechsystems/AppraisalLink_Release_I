@@ -2,16 +2,79 @@ const CreateList = () => {
   return (
     <>
       <div className="row">
+        <div className="col-lg-12">
+          <div className="row mb-2">
+            <div className="col-lg-3 my_profile_setting_input form-group">
+              <label htmlFor="" style={{ paddingTop: "15px" }}>
+                Community :
+              </label>
+            </div>
+            <div className="col-lg-7">
+              <input
+                type="text"
+                className="form-control"
+                id="formGroupExampleInput3"
+                placeholder="xxicheal"
+              />
+            </div>
+          </div>
+          <div className="row mb-2">
+            <div className="col-lg-3 my_profile_setting_input form-group">
+              <label htmlFor="" style={{ paddingTop: "15px" }}>
+                Type of Building :
+              </label>
+            </div>
+            <div className="col-lg-7">
+              <input
+                type="text"
+                className="form-control"
+                id="formGroupExampleInput3"
+                placeholder="Jackson"
+              />
+            </div>
+          </div>
+          <div className="row mb-2">
+            <div className="col-lg-3 my_profile_setting_input form-group">
+              <label htmlFor="" style={{ paddingTop: "15px" }}>
+                Urgency :
+              </label>
+            </div>
+            <div className="col-lg-7">
+              <input
+                type="text"
+                className="form-control"
+                id="formGroupExampleInput3"
+                placeholder="000-876-876"
+              />
+            </div>
+          </div>
+
+          <div className="col-xl-12">
+            <div className="my_profile_setting_input overflow-hidden mt20">
+              {/* <button className="btn btn1 float-start">Back</button> */}
+              <button
+                className="btn btn2 float-center"
+                style={{ textAlign: "center" }}
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+          {/* End .col */}
+        </div>
+      </div>
+
+      {/* <div className="row">
         <div className="col-lg-6 offset-3">
           <div className="col-lg-12">
             <div className="my_profile_setting_input form-group">
               <label htmlFor="propertyTitle">Community</label>
               <input type="text" className="form-control" id="propertyTitle" placeholder="xxxxz"/>
             </div>
-          </div>
-          {/* End .col */}
+          </div> */}
+      {/* End .col */}
 
-          {/* <div className="col-lg-12">
+      {/* <div className="col-lg-12">
         <div className="my_profile_setting_textarea">
           <label htmlFor="propertyDescription">Description</label>
           <textarea
@@ -21,9 +84,9 @@ const CreateList = () => {
           ></textarea>
         </div>
       </div> */}
-          {/* End .col */}
+      {/* End .col */}
 
-          {/* <div className="col-lg-6 col-xl-6">
+      {/* <div className="col-lg-6 col-xl-6">
             <div className="my_profile_setting_input ui_kit_select_search form-group">
               <label>Type</label>
               <select
@@ -39,9 +102,9 @@ const CreateList = () => {
               </select>
             </div>
           </div> */}
-          {/* End .col */}
+      {/* End .col */}
 
-          {/* <div className="col-lg-6 col-xl-6">
+      {/* <div className="col-lg-6 col-xl-6">
             <div className="my_profile_setting_input ui_kit_select_search form-group">
               <label>Status</label>
               <select
@@ -57,9 +120,9 @@ const CreateList = () => {
               </select>
             </div>
           </div> */}
-          {/* End .col */}
+      {/* End .col */}
 
-          <div className="col-lg-12">
+      {/* <div className="col-lg-12">
             <div className="my_profile_setting_input form-group">
               <label htmlFor="formGroupExamplePrice">Type of Building</label>
               <input
@@ -69,10 +132,10 @@ const CreateList = () => {
                 placeholder="abcccqw"
               />
             </div>
-          </div>
-          {/* End .col */}
+          </div> */}
+      {/* End .col */}
 
-          <div className="col-lg-12">
+      {/* <div className="col-lg-12">
             <div className="my_profile_setting_input form-group">
               <label htmlFor="formGroupExampleArea">Urgency</label>
               <input
@@ -82,10 +145,10 @@ const CreateList = () => {
                 placeholder="xyz"
               />
             </div>
-          </div>
-          {/* End .col */}
+          </div> */}
+      {/* End .col */}
 
-          {/* <div className="col-lg-4 col-xl-4">
+      {/* <div className="col-lg-4 col-xl-4">
             <div className="my_profile_setting_input ui_kit_select_search form-group">
               <label>Rooms</label>
               <select
@@ -102,16 +165,16 @@ const CreateList = () => {
               </select>
             </div>
           </div> */}
-          {/* End .col */}
+      {/* End .col */}
 
-          {/* <div className="col-xl-12">
+      {/* <div className="col-xl-12">
             <div className="my_profile_setting_input">
               <button className="btn btn1 float-start">Back</button>
               <button className="btn btn2 float-end">Next</button>
             </div>
           </div> */}
-        </div>
-      </div>
+      {/* </div>
+      </div> */}
     </>
   );
 };

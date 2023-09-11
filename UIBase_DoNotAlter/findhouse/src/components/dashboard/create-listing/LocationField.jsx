@@ -2,6 +2,100 @@ const LocationField = () => {
   return (
     <>
       <div className="row">
+        <div className="col-lg-12">
+          <div className="row mb-2">
+            <div className="col-lg-3 my_profile_setting_input form-group">
+              <label htmlFor="" style={{ paddingTop: "15px" }}>
+                Street Name :
+              </label>
+            </div>
+            <div className="col-lg-7">
+              <input
+                type="text"
+                className="form-control"
+                id="formGroupExampleInput3"
+                placeholder="Hosangabad Road"
+              />
+            </div>
+          </div>
+          <div className="row mb-2">
+            <div className="col-lg-3 my_profile_setting_input form-group">
+              <label htmlFor="" style={{ paddingTop: "15px" }}>
+                Street Number :
+              </label>
+            </div>
+            <div className="col-lg-7">
+              <input
+                type="text"
+                className="form-control"
+                id="formGroupExampleInput3"
+                placeholder="657 Road"
+              />
+            </div>
+          </div>
+          <div className="row mb-2">
+            <div className="col-lg-3 my_profile_setting_input form-group">
+              <label htmlFor="" style={{ paddingTop: "15px" }}>
+                City :
+              </label>
+            </div>
+            <div className="col-lg-7">
+              <input
+                type="text"
+                className="form-control"
+                id="formGroupExampleInput3"
+                placeholder="Hosangabad"
+              />
+            </div>
+          </div>
+          <div className="row mb-2">
+            <div className="col-lg-3 my_profile_setting_input form-group">
+              <label htmlFor="" style={{ paddingTop: "15px" }}>
+                State :
+              </label>
+            </div>
+            <div className="col-lg-7">
+              <input
+                type="text"
+                className="form-control"
+                id="formGroupExampleInput3"
+                placeholder="Madhya Pradesh"
+              />
+            </div>
+          </div>
+          <div className="row mb-2">
+            <div className="col-lg-3 my_profile_setting_input form-group">
+              <label htmlFor="" style={{ paddingTop: "15px" }}>
+                Zip-Code :
+              </label>
+            </div>
+            <div className="col-lg-7">
+              <input
+                type="text"
+                className="form-control"
+                id="formGroupExampleInput3"
+                placeholder="986543"
+              />
+            </div>
+          </div>
+          <div className="row mb-2">
+            <div className="col-lg-3 my_profile_setting_input form-group">
+              <label htmlFor="" style={{ paddingTop: "15px" }}>
+                Area :
+              </label>
+            </div>
+            <div className="col-lg-7">
+              <input
+                type="text"
+                className="form-control"
+                id="formGroupExampleInput3"
+                placeholder="Hosangabad Road"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* <div className="row">
         <div className="col-lg-6">
           <div className="col-lg-12">
             <div className="my_profile_setting_input form-group">
@@ -26,37 +120,57 @@ const LocationField = () => {
               />
             </div>
           </div>
-          {/* End .col */}
+
           <div className="col-lg-12">
             <div className="my_profile_setting_input form-group">
               <label htmlFor="propertyCity">City</label>
-              <input type="text" className="form-control" id="propertyCity" placeholder="Tokyo"/>
+              <input
+                type="text"
+                className="form-control"
+                id="propertyCity"
+                placeholder="Tokyo"
+              />
             </div>
           </div>
-          {/* End .col */}
+          
 
           <div className="col-lg-12">
             <div className="my_profile_setting_input form-group">
               <label htmlFor="propertyState">State</label>
-              <input type="text" className="form-control" id="propertyState" placeholder="State"/>
+              <input
+                type="text"
+                className="form-control"
+                id="propertyState"
+                placeholder="State"
+              />
             </div>
           </div>
-          {/* End .col */}
+
 
           <div className="col-lg-12">
             <div className="my_profile_setting_input form-group">
               <label htmlFor="zipCode">Zip-Code</label>
-              <input type="text" className="form-control" id="zipCode" placeholder="239788"/>
+              <input
+                type="text"
+                className="form-control"
+                id="zipCode"
+                placeholder="239788"
+              />
             </div>
           </div>
-          {/* End .col */}
+
 
           <div className="col-lg-12">
             <div className="my_profile_setting_input form-group">
               <label htmlFor="zipCode">Area</label>
-              <input type="text" className="form-control" id="zipCode" placeholder="abcxyz"/>
+              <input
+                type="text"
+                className="form-control"
+                id="zipCode"
+                placeholder="abcxyz"
+              />
             </div>
-          </div>
+          </div> */}
 
           {/* <div className="col-lg-12">
             <div className="my_profile_setting_input ui_kit_select_search form-group">
@@ -99,8 +213,8 @@ const LocationField = () => {
             </div>
           </div> */}
           {/* End .col */}
-        </div>
-      </div>
+        {/* </div>
+      </div> */}
     </>
   );
 };
