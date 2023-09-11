@@ -86,7 +86,7 @@ const DetailedInfo = () => {
         <div className="col-lg-12">
           <div className="row mb-2">
             <div className="col-lg-3 my_profile_setting_input form-group">
-              <label htmlFor="" style={{ paddingTop: "15px" }}>
+              <label htmlFor="" style={{ paddingTop: "15px", fontWeight:'lighter' }}>
                 Applicant First Name :
               </label>
             </div>
@@ -95,13 +95,13 @@ const DetailedInfo = () => {
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder="Micheal"
+                value="Micheal"
               />
             </div>
           </div>
           <div className="row mb-2">
             <div className="col-lg-3 my_profile_setting_input form-group">
-              <label htmlFor="" style={{ paddingTop: "15px" }}>
+              <label htmlFor="" style={{ paddingTop: "15px", fontWeight:'lighter' }}>
                 Applicant Last Name :
               </label>
             </div>
@@ -110,13 +110,13 @@ const DetailedInfo = () => {
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder="Jackson"
+                value="Jackson"
               />
             </div>
           </div>
           <div className="row mb-2">
             <div className="col-lg-3 my_profile_setting_input form-group">
-              <label htmlFor="" style={{ paddingTop: "15px" }}>
+              <label htmlFor="" style={{ paddingTop: "15px", fontWeight:'lighter' }}>
                 Applicant Phone Number :
               </label>
             </div>
@@ -125,13 +125,13 @@ const DetailedInfo = () => {
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder="000-876-876"
+                value="000-876-876"
               />
             </div>
           </div>
           <div className="row mb-2">
             <div className="col-lg-3 my_profile_setting_input form-group">
-              <label htmlFor="" style={{ paddingTop: "15px" }}>
+              <label htmlFor="" style={{ paddingTop: "15px", fontWeight:'lighter' }}>
                 Applicant Email Address :
               </label>
             </div>
@@ -140,22 +140,22 @@ const DetailedInfo = () => {
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder="info@test.com"
+                value="info@test.com"
               />
             </div>
           </div>
 
-          {/* <div className="col-xl-12">
+          <div className="col-xl-12">
             <div className="my_profile_setting_input overflow-hidden mt20">
-              <button className="btn btn1 float-start">Back</button>
+              {/* <button className="btn btn1 float-start">Back</button> */}
               <button
-                className="btn btn2 float-center"
+                className="btn btn2 float-end"
                 style={{ textAlign:'center' }}
               >
                 Submit
               </button>
             </div>
-          </div> */}
+          </div>
           {/* End .col */}
         </div>
       </div>

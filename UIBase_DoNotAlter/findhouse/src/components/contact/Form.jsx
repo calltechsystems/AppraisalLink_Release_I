@@ -1,16 +1,38 @@
+import ReCAPTCHA from "react-google-recaptcha";
+
+function onChange(value) {
+  console.log("Captcha value:", value);
+}
+
 const Form = () => {
   return (
     <form className="contact_form" action="#">
       <div className="row">
         <div className="col-md-6">
           <div className="form-group">
+            {/* <label htmlFor="first-name" className="mb-2 text-dark">First Name <span class="req-btn">*</span></label> */}
             <input
               id="form_name"
               name="form_name"
               className="form-control"
               required="required"
               type="text"
-              placeholder="Name"
+              placeholder="First Name"
+            />
+          </div>
+        </div>
+        {/* End .col */}
+
+        <div className="col-md-6">
+          <div className="form-group">
+            {/* <label htmlFor="first-name" className="mb-2 text-dark">First Name <span class="req-btn">*</span></label> */}
+            <input
+              id="form_name"
+              name="form_name"
+              className="form-control"
+              required="required"
+              type="text"
+              placeholder="Last Name"
             />
           </div>
         </div>
@@ -23,7 +45,7 @@ const Form = () => {
               name="form_email"
               className="form-control required email"
               required="required"
-              type="email"
+              type="text"
               placeholder="Email Address"
             />
           </div>
@@ -37,7 +59,7 @@ const Form = () => {
               name="form_phone"
               className="form-control required phone"
               required="required"
-              type="phone"
+              type="text"
               placeholder="Phone Number"
             />
           </div>
@@ -100,7 +122,7 @@ const Form = () => {
         </div>
         {/* End .col */}
 
-        <div className="col-md-6">
+        <div className="col-md-12">
           <div className="form-group">
             <input
               id="form_subject"
@@ -140,7 +162,7 @@ const Form = () => {
             ></textarea>
           </div> */}
           {/* End .col */}
-
+          <ReCAPTCHA sitekey="Your client site key" onChange={onChange} />,
           <div className="form-group mb0 text-end">
             <button type="submit" className="btn btn-lg btn-thm">
               Submit

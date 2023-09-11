@@ -7,7 +7,7 @@ const ComfortPlace = () => {
       {comfortPlace.map((item) => (
         <div className="col-sm-4 col-lg-3" key={item.id}>
           <Link
-            href="/listing-grid-v5"
+            href="#"
             className="icon_hvr_img_box image-1 d-block"
             style={{
               backgroundImage: `url(${item.bgImg})`,

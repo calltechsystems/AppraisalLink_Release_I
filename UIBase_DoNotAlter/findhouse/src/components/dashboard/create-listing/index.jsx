@@ -60,28 +60,30 @@ const index = () => {
                 {/* End .col */}
 
                 <div className="col-lg-12">
-                  <div className="my_dashboard_review">
+                  
+                  <div className="my_dashboard_review ">
                     <div className="row">
                       <div className="col-lg-12">
-                        <h4 className="mb30">1. Applicant Information</h4>
-                      </div>
-                      <DetailedInfo />
-                    </div>
-                  </div>
-                  <div className="my_dashboard_review mt30">
-                    <div className="row">
-                      <div className="col-lg-12">
-                        <h4 className="mb30">2. location Information</h4>
+                        <h4 className="mb30">1. location Information</h4>
                       </div>
                       <LocationField />
                     </div>
                   </div>
                   <div className="my_dashboard_review mt30">
                     <div className="col-lg-12">
-                      <h4 className="mb30">3. Other Information</h4>
+                      <h4 className="mb30">2. Other Information</h4>
                      
                     </div>
                     <CreateList/>
+                  </div>
+
+                  <div className="my_dashboard_review mt30">
+                    <div className="row">
+                      <div className="col-lg-12">
+                        <h4 className="mb30">3. Applicant Information</h4>
+                      </div>
+                      <DetailedInfo />
+                    </div>
                   </div>
                   {/* <div className="my_dashboard_review mt30">
                     <div className="col-lg-12">

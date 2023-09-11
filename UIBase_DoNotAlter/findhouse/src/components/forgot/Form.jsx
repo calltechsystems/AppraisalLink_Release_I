@@ -18,13 +18,13 @@ const Form = () => {
         <div className="col-lg-6 pt60 ">
           <form action="#">
             <div className="heading text-center">
-              <h3>You can reset your password here.</h3>
-              <p className="text-center">
+              <h3>Reset your password with registered email.</h3>
+              {/* <p className="text-center">
                 Reset your password with email.{" "}
-                {/* <Link href="/register" className="text-thm">
+                <Link href="/register" className="text-thm">
             Sign Up!
-          </Link> */}
-              </p>
+          </Link>
+              </p> */}
             </div>
             {/* End .heading */}
 

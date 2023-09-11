@@ -53,15 +53,15 @@ const index = () => {
               <div className="row align-items-center">
                 <div className="col-md-8 col-lg-8 col-xl-9 mb20">
                   <div className="breadcrumb_content style2 mb30-991">
-                    <h2 className="breadcrumb_title">My Package</h2>
-                    <p>We are glad to see you again!</p>
+                    <h2 className="breadcrumb_title">My Transactions</h2>
+                    <p>You can see your transactions history here!</p>
                   </div>
                 </div>
                 {/* End .col */}
                 <div className="col-md-4 col-lg-4 col-xl-3 mb20">
                   <ul className="sasw_list mb0">
                     <li className="search_area">
-                      <SearchBox />
+                      {/* <SearchBox /> */}
                     </li>
                   </ul>
                 </div>
@@ -81,7 +81,7 @@ const index = () => {
                       {/* End .packages_table */}
 
                       <div className="pck_chng_btn text-end">
-                        <button className="btn btn-lg btn-thm">
+                        <button className="btn btn-lg">
                           Change Package
                         </button>
                       </div>
@@ -94,7 +94,7 @@ const index = () => {
               <div className="row mt50">
                 <div className="col-lg-12">
                   <div className="copyright-widget text-center">
-                    <p>© 2020 Find House. Made with love.</p>
+                    <p>© 2023 Appraisal Link. All Rights Reserved.</p>
                   </div>
                 </div>
               </div>

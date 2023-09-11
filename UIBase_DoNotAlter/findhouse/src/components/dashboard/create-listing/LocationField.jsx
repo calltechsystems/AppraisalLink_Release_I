@@ -5,8 +5,8 @@ const LocationField = () => {
         <div className="col-lg-12">
           <div className="row mb-2">
             <div className="col-lg-3 my_profile_setting_input form-group">
-              <label htmlFor="" style={{ paddingTop: "15px" }}>
-                Street Name :
+              <label htmlFor="" style={{ paddingTop: "15px", fontWeight:'lighter' }}>
+                Street Name <span class="req-btn">*</span> :
               </label>
             </div>
             <div className="col-lg-7">
@@ -14,14 +14,14 @@ const LocationField = () => {
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder="Hosangabad Road"
+                value="Hosangabad Road"
               />
             </div>
           </div>
           <div className="row mb-2">
             <div className="col-lg-3 my_profile_setting_input form-group">
-              <label htmlFor="" style={{ paddingTop: "15px" }}>
-                Street Number :
+              <label htmlFor="" style={{ paddingTop: "15px", fontWeight:'lighter' }}>
+                Street Number <span class="req-btn">*</span> :
               </label>
             </div>
             <div className="col-lg-7">
@@ -29,14 +29,14 @@ const LocationField = () => {
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder="657 Road"
+                value="657 Road"
               />
             </div>
           </div>
           <div className="row mb-2">
             <div className="col-lg-3 my_profile_setting_input form-group">
-              <label htmlFor="" style={{ paddingTop: "15px" }}>
-                City :
+              <label htmlFor="" style={{ paddingTop: "15px", fontWeight:'lighter' }}>
+                City <span class="req-btn">*</span> :
               </label>
             </div>
             <div className="col-lg-7">
@@ -44,14 +44,14 @@ const LocationField = () => {
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder="Hosangabad"
+                value="Hosangabad"
               />
             </div>
           </div>
           <div className="row mb-2">
             <div className="col-lg-3 my_profile_setting_input form-group">
-              <label htmlFor="" style={{ paddingTop: "15px" }}>
-                State :
+              <label htmlFor="" style={{ paddingTop: "15px", fontWeight:'lighter' }}>
+                State <span class="req-btn">*</span> :
               </label>
             </div>
             <div className="col-lg-7">
@@ -59,14 +59,14 @@ const LocationField = () => {
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder="Madhya Pradesh"
+                value="Madhya Pradesh"
               />
             </div>
           </div>
           <div className="row mb-2">
             <div className="col-lg-3 my_profile_setting_input form-group">
-              <label htmlFor="" style={{ paddingTop: "15px" }}>
-                Zip-Code :
+              <label htmlFor="" style={{ paddingTop: "15px", fontWeight:'lighter' }}>
+                Zip-Code <span class="req-btn">*</span> :
               </label>
             </div>
             <div className="col-lg-7">
@@ -74,14 +74,14 @@ const LocationField = () => {
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder="986543"
+                value="986543"
               />
             </div>
           </div>
           <div className="row mb-2">
             <div className="col-lg-3 my_profile_setting_input form-group">
-              <label htmlFor="" style={{ paddingTop: "15px" }}>
-                Area :
+              <label htmlFor="" style={{ paddingTop: "15px", fontWeight:'lighter' }}>
+                Area <span class="req-btn">*</span> :
               </label>
             </div>
             <div className="col-lg-7">
@@ -89,7 +89,7 @@ const LocationField = () => {
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder="Hosangabad Road"
+                value="Hosangabad Road"
               />
             </div>
           </div>

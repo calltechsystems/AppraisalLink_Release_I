@@ -38,22 +38,23 @@ const index = () => {
               </p>
             </div>
             <div className="container">
-              <div className="row" style={{ marginLeft: "150px" }}>
+              <div className="row mt-5">
+                <h2 className="text-center">Let's Chat !</h2>
                 <AddressSidebar />
               </div>
             </div>
             <div className="col-lg-12 mb-5">
               <div
-                className="row form_grid"
-                style={{ boxShadow: "0px 0px 50px 0px rgba(19, 19, 28, 0.42)" }}
+                className="row"
+                style={{ boxShadow: "10px 10px 50px 10px rgba(19, 19, 28, 0.52)" }}
               >
                 <div
-                  className="col-lg-2"
-                  style={{ backgroundColor: "#2e008b", borderRadius: "2px", background:'url(https://pub-static.fotor.com/assets/bg/78f0d7f1-e8e5-4f87-9af7-17495858c8ec.jpg)' }}
+                  className="col-lg-3"
+                  style={{ backgroundColor: "#2e008b", borderRadius: "4px 0 0 4px",opacity:'0.9', background:'url(https://previews.123rf.com/images/alisapotap1/alisapotap11910/alisapotap1191000338/132966594-dark-seamless-pattern-with-social-media-doodle-elements-purple-hand-drawn-icons-on-black-background.jpg)' }}
                 >
-                 <h3 className="text-center mt-5 text-light"> Reach out to our team for any questions or inquiries you have!</h3>
+                 <h3 className="text-center text-light" style={{marginTop:'15rem', lineHeight:'1.5'}}> Reach out to our team for any questions or inquiries you have!</h3>
                 </div>
-                <div className="col-lg-10">
+                <div className="col-lg-9 form_grid">
                   <div className="">
                     <Form />
                   </div>

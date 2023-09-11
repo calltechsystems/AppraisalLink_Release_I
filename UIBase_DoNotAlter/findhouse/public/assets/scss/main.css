@@ -14260,7 +14260,7 @@ legend span {
 
 .pck_chng_btn .btn {
   border-radius: 8px;
-  background-color: rgb(255, 90, 95);
+  background-color: #2e008b;
   -webkit-box-shadow: 0px 1px 4px 0px rgba(255, 90, 95, 0.3);
   -moz-box-shadow: 0px 1px 4px 0px rgba(255, 90, 95, 0.3);
   -o-box-shadow: 0px 1px 4px 0px rgba(255, 90, 95, 0.3);
@@ -21323,7 +21323,7 @@ header.header-nav.menu_style_home_one ul.ace-responsive-menu li.add_listing {
 }
 
 .inner_page_breadcrumb_contact_us {
-  background-image: url(../images/home/31.jpg) !important;
+  background-image: url(../images/home/contact1.jpg) !important;
 }
 
 .text-color {
@@ -21425,7 +21425,7 @@ header.header-nav.menu_style_home_one .ace-responsive-menu > li > a {
   /* opacity: 0.9; */
   position: relative;
   top: 43px;
-  left: 2.6rem;
+  left: 4rem;
   margin-top: -28px !important ;
 }
 
@@ -21807,7 +21807,7 @@ a::before {
 
 
 .pricing_table_border_style{
-  background-color: #000 !important;
+  background-color: #224a23 !important;
   border: 12px solid darkslateblue;
   margin-top: -30px;
 }
@@ -21815,3 +21815,15 @@ a::before {
   background-color: #112360 !important;
 }
 
+/* .pck_chng_btn .btn{
+  background-color: #2e008b !important;
+} */
+
+input[type=text]{
+  font-weight: 700;
+}
+
+.req-btn{
+  color: #e80000;
+  font-weight: 700;
+}

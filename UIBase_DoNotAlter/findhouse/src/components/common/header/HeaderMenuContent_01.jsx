@@ -167,7 +167,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
   if (hide) {
     classname = "ace-responsive-menu text-end d-lg-block d-none";
   } else {
-    classname = "ace-responsive-menu text-end d-lg-block d-none text-end-01";
+    classname = "ace-responsive-menu text-end d-lg-block d-none text-end-01 ul_01";
   }
 
   return (

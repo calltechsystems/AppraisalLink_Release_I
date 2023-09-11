@@ -3,11 +3,11 @@ const SearchData = () => {
     <table className="table">
       <thead className="thead-light">
         <tr>
-          <th scope="col">Current Package</th>
-          <th scope="col">Properties remaining</th>
-          <th scope="col">Featured remaining</th>
-          <th scope="col">Renewal remaining</th>
-          <th scope="col">Storage Space</th>
+          <th scope="col">Package</th>
+          <th scope="col">Total Properties</th>
+          <th scope="col">Appraised Properties</th>
+          <th scope="col">Pending Properties</th>
+          {/* <th scope="col">Storage Space</th> */}
           <th scope="col">Expiry Date</th>
         </tr>
       </thead>
@@ -19,7 +19,7 @@ const SearchData = () => {
           <td>0</td>
           <td>3</td>
           <td>8</td>
-          <td>2 MB / 20 MB</td>
+          {/* <td>2 MB / 20 MB</td> */}
           <td>December 31, 2020</td>
         </tr>
         {/* End tr */}
@@ -29,7 +29,7 @@ const SearchData = () => {
           <td>0</td>
           <td>3</td>
           <td>8</td>
-          <td>2 MB / 20 MB</td>
+          {/* <td>2 MB / 20 MB</td> */}
           <td>December 31, 2020</td>
         </tr>
         {/* End tr */}
@@ -41,7 +41,7 @@ const SearchData = () => {
           <td>0</td>
           <td>3</td>
           <td>8</td>
-          <td>2 MB / 20 MB</td>
+          {/* <td>2 MB / 20 MB</td> */}
           <td>December 31, 2020</td>
         </tr>
         {/* End tr */}
@@ -51,7 +51,7 @@ const SearchData = () => {
           <td>0</td>
           <td>3</td>
           <td>8</td>
-          <td>2 MB / 20 MB</td>
+          {/* <td>2 MB / 20 MB</td> */}
           <td>December 31, 2020</td>
         </tr>
         {/* End tr */}
@@ -61,7 +61,7 @@ const SearchData = () => {
           <td>0</td>
           <td>3</td>
           <td>8</td>
-          <td>2 MB / 20 MB</td>
+          {/* <td>2 MB / 20 MB</td> */}
           <td>December 31, 2020</td>
         </tr>
         {/* End tr */}
@@ -71,7 +71,7 @@ const SearchData = () => {
           <td>0</td>
           <td>3</td>
           <td>8</td>
-          <td>2 MB / 20 MB</td>
+          {/* <td>2 MB / 20 MB</td> */}
           <td>December 31, 2020</td>
         </tr>
         {/* End tr */}
@@ -81,7 +81,7 @@ const SearchData = () => {
           <td>0</td>
           <td>3</td>
           <td>8</td>
-          <td>2 MB / 20 MB</td>
+          {/* <td>2 MB / 20 MB</td> */}
           <td>December 31, 2020</td>
         </tr>
         {/* End tr */}
