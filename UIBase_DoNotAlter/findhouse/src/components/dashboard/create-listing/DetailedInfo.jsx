@@ -145,9 +145,9 @@ const DetailedInfo = () => {
             </div>
           </div>
 
-          <div className="col-xl-12">
+          {/* <div className="col-xl-12">
             <div className="my_profile_setting_input overflow-hidden mt20">
-              {/* <button className="btn btn1 float-start">Back</button> */}
+              <button className="btn btn1 float-start">Back</button>
               <button
                 className="btn btn2 float-center"
                 style={{ textAlign:'center' }}
@@ -155,7 +155,7 @@ const DetailedInfo = () => {
                 Submit
               </button>
             </div>
-          </div>
+          </div> */}
           {/* End .col */}
         </div>
       </div>

@@ -72,13 +72,13 @@ const Pricing = ({isPlan,hideButton,selectedId}) => {
       },
     ];
   
-    const selectedIdStyle = selectedId ? selectedId : "3";
+    const selectedIdStyle = selectedId ? selectedId : "2";
     const content = isPlan === 1 ? pricingContentForMonthly : pricingContentForYearly ;
     return (
       <>
         {content.map((item) => (
 
-          <div className="col-sm-4 col-md-4 col-lg-3 my_plan_pricing_header"  key={item.id}>
+          <div className="col-sm-4 col-md-4 my_plan_pricing_header"  key={item.id}>
             <div className={`pricing_table  ${ String(selectedIdStyle) === String(item.id) ? "pricing_table_border_style":""}`}>
               <div className="pricing_header">
                 <div className="price">{item.title}</div>

@@ -21807,8 +21807,11 @@ a::before {
 
 
 .pricing_table_border_style{
+  background-color: #000 !important;
   border: 12px solid darkslateblue;
-  
+  margin-top: -30px;
 }
-
+.pricing_table_border_style:hover{
+  background-color: #112360 !important;
+}
 

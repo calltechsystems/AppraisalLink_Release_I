@@ -53,8 +53,8 @@ const CreateList = () => {
             <div className="my_profile_setting_input overflow-hidden mt20">
               {/* <button className="btn btn1 float-start">Back</button> */}
               <button
-                className="btn btn2 float-center"
-                style={{ textAlign: "center" }}
+                className="btn btn2 float-end"
+                // style={{ textAlign: "center" }}
               >
                 Submit
               </button>
