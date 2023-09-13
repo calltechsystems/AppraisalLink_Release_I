@@ -1,8 +1,44 @@
 import Link from "next/link";
+import { useState } from "react";
 import { useRouter } from "next/router";
 
 const HeaderMenuContent = ({ float = "", hide, isListing }) => {
   const route = useRouter();
+
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
+  const menuStyle = {
+    width: '200px', // Initial width
+    transition: 'width 0.3s ease', // Add transition for the width property
+    position: 'relative',
+  };
+
+  const contentStyle = {
+    opacity: isHovered ? 1 : 0, // Show content when hovered
+    transition: 'opacity 0.3s ease', // Add transition for the opacity property
+    position: 'absolute',
+    top: '100%',
+    left: "-460px",
+    width: '1580px',
+    margin:"-16px",
+    height:'80px',
+    backgroundColor: '#fff',
+    color: '#333',
+    borderTopColor:"#2e008b",
+    borderTopWidth:"6px",
+    borderTopStyle:"solid",
+    display:"flex",
+    flexDirection:"row",
+    justifyContent:"center"
+  };
 
   const home = [
     {
@@ -31,6 +67,10 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
       title: "Agent View",
       items: [
         {
+          name: "Agent View",
+          routerPath: "/agent-v1", 
+        },
+        {
           name: "Agent V1",
           routerPath: "/agent-v1",
         },
@@ -48,6 +88,10 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
       id: 6,
       title: "Agencies View",
       items: [
+        {
+          name: "Agencies View",
+          routerPath: "/agency-v1",
+        },
         {
           name: "Agencies V1",
           routerPath: "/agency-v1",
@@ -207,7 +251,10 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
         {/* End .dropitem */}
 
         {hide && (
-          <li className="dropitem">
+          <li className="dropitem"  
+          style={menuStyle}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}>
             <Link
               href="/choose-us"
               className={
@@ -225,9 +272,10 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
               <span className="arrow text-info-01"></span>
             </Link>
             {/* <!-- Level Two--> */}
-            <ul className="sub-menu">
+            <ul className="sub-menu" >
+            <div style={contentStyle}>
               {listing.map((item) => (
-                <li className="dropitem arrow" key={item.id}>
+                <li className="dropitem " key={item.id} >
                   <Link
                     href="#"
                     className={
@@ -243,7 +291,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                   {/* <!-- Level Three--> */}
                   <ul className="sub-menu ">
                     {item.items.map((val, i) => (
-                      <li key={i}>
+                      <li  key={i}>
                         <Link
                           href={val.routerPath}
                           className={
@@ -259,13 +307,17 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                   </ul>
                 </li>
               ))}
+              </div>
             </ul>
           </li>
         )}
         {/* End .dropitem */}
 
         {hide && (
-          <li className="dropitem">
+          <li className="dropitem"
+          style={menuStyle}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave} >
             <Link
               href="/service"
               className={
@@ -284,9 +336,12 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
               <span className="title text-info-01">Insights</span>{" "}
               <span className="arrow text-info-01"></span>
             </Link>
+            
             <ul className="sub-menu">
               {property.map((item) => (
+                <div  style={contentStyle}>
                 <li className="dropitem arrow" key={item.id}>
+                <div>
                   <Link
                     href="#"
                     className={
@@ -301,12 +356,14 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                   >
                     {item.title}
                   </Link>
+                  </div>
                   {/* <!-- Level Three--> */}
                   <ul className="sub-menu ">
                     {item.items.map((val, i) => (
+                      <div>
                       <li key={i}>
                         <Link
-                          href={val.routerPath}
+                          href={val.routerPath} 
                           className={
                             route.pathname === val.routerPath ||
                             val.routerPath + "/[id]" === route.pathname
@@ -317,9 +374,12 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                           {val.name}
                         </Link>
                       </li>
-                    ))}
+                      </div>
+                  ))}
                   </ul>
+
                 </li>
+                </div>
               ))}
             </ul>
           </li>

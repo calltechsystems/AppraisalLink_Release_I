@@ -1,9 +1,10 @@
 const Filtering = () => {
   return (
     <select className="selectpicker show-tick form-select c_select">
-      <option>Featured First</option>
-      <option>Recent</option>
-      <option>Old Review</option>
+      <option>Last 30 Days</option>
+      <option>Last 1 month</option>
+      <option>Last 6 months</option>
+      <option>Last 1 year</option>
     </select>
   );
 };

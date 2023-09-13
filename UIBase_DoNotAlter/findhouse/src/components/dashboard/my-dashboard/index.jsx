@@ -6,6 +6,7 @@ import Activities from "./Activities";
 import AllStatistics from "./AllStatistics";
 import StatisticsChart from "./StatisticsChart";
 import StatisticsPieChart from "./StatisticsPieChart";
+import Dropdown from "./DropDown";
 
 const index = () => {
   return (
@@ -94,6 +95,9 @@ const index = () => {
                 </div>*/}
               </div>
               {/* End .row  */}
+              <div>
+                <Dropdown/>
+              </div>
 
               <div className="row mt50">
                 <div className="col-lg-12">

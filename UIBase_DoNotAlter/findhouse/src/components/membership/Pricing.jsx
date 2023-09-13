@@ -1,5 +1,5 @@
 
-const Pricing = ({isPlan,hideButton}) => {
+const Pricing = ({isPlan,hideButton,selectedId}) => {
   const pricingContentForMonthly = [
     {
       id: 1,
@@ -72,14 +72,15 @@ const Pricing = ({isPlan,hideButton}) => {
     },
   ];
 
+  const selectedIdStyle = selectedId ? selectedId : "2";
   const content = isPlan === 1 ? pricingContentForMonthly : pricingContentForYearly ;
   return (
     <>
       {content.map((item) => (
         <div className="col-sm-6 col-md-6 col-lg-4" key={item.id}>
-          <div className="pricing_table">
+          <div className={`pricing_table  ${ String(selectedIdStyle) === String(item.id) ? "pricing_table_border_style":""}`}>
             <div className="pricing_header">
-              <div className="price">{item.title}</div>
+              <div className={`price  ${ String(selectedIdStyle) === String(item.id) ? "pricing_table_border_style_title":""}`}>{item.title}</div>{String(selectedIdStyle) === String(item.id) ? <div style={{backgroundColor:"darkslateblue",borderRadius:"4px"}}><h4 >Suggested Plan</h4> </div>: "" }
             </div>
             <div className="pricing_content">
               <ul className="mb0">
@@ -93,7 +94,7 @@ const Pricing = ({isPlan,hideButton}) => {
             </div>
             {!hideButton && (<div className="pricing_footer">
               <a className="btn pricing_btn btn-block w-100" href="#">
-                Select Package
+              {selectedId!==item.id ? !selectedId ? "Select Plan":"Change Plan":"Upgrade" }
               </a>
             </div>)}
           </div>

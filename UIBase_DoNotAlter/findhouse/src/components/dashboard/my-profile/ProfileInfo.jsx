@@ -2,18 +2,30 @@ import { useState } from "react";
 
 const ProfileInfo = () => {
   const [profile, setProfile] = useState(null);
+  const [edit,setEdit]=useState(false);
 
   // upload profile
   const uploadProfile = (e) => {
     setProfile(e.target.files[0]);
   };
 
+  const changeEditHandler = ()=>{
+    setEdit(true);
+  }
+
   return (
     <div className="row">
       <h4 className="mb-3">Personal Information</h4>
       <div className="col-lg-12">{/* <p>*minimum 260px x 260px</p> */}</div>
       {/* End .col */}
-
+      { !edit && ( <div>
+        <button 
+        className="btn btn2 btn-dark profile_edit_button"
+        onClick={changeEditHandler}
+        >
+       Edit
+        </button>
+      </div>)}
       <div className="col-lg-12 col-xl-12 mt-2">
         <div className="my_profile_setting_input form-group">
           <div className="row">
@@ -25,6 +37,7 @@ const ProfileInfo = () => {
                   accept="image/png, image/gif, image/jpeg"
                   onChange={uploadProfile}
                   style={{ borderRadius: "50%" }}
+                  disabled={!edit}
                 />
                 <label
                   style={
@@ -58,6 +71,7 @@ const ProfileInfo = () => {
                     id="formGroupExampleInput3"
                     placeholder="Micheal"
                     value="Micheal"
+                    disabled={!edit}
                   />
                 </div>
               </div>
@@ -89,6 +103,7 @@ const ProfileInfo = () => {
                     id="formGroupExampleInput3"
                     placeholder="Micheal"
                     value="Sinha"
+                    disabled={!edit}
                   />
                 </div>
               </div>
@@ -104,7 +119,9 @@ const ProfileInfo = () => {
                     className="form-control"
                     id="formGroupExampleInput3"
                     placeholder="Jackson"
-                    value="Jackson Empire"                  />
+                    value="Jackson Empire"                  
+                    disabled={!edit}
+                  />
                 </div>
               </div>
               <div className="row">
@@ -119,7 +136,9 @@ const ProfileInfo = () => {
                     className="form-control"
                     id="formGroupExampleInput3"
                     placeholder="h.no. 14"
-                    value="h.no. 14"                  />
+                    value="h.no. 14"                  
+                    disabled={!edit}
+                  />
                 </div>
               </div>
               <div className="row">
@@ -134,7 +153,9 @@ const ProfileInfo = () => {
                     className="form-control"
                     id="formGroupExampleInput3"
                     placeholder="near bus stand"
-                    value="near bus stand"                  />
+                    value="near bus stand"                  
+                    disabled={!edit}
+                  />
                 </div>
               </div>
               <div className="row">
@@ -149,7 +170,9 @@ const ProfileInfo = () => {
                     className="form-control"
                     id="formGroupExampleInput3"
                     placeholder="Bhopal"
-                    value="Bhopal"                  />
+                    value="Bhopal"                  
+                    disabled={!edit}
+                  />
                 </div>
               </div>
               <div className="row">
@@ -164,7 +187,9 @@ const ProfileInfo = () => {
                     className="form-control"
                     id="formGroupExampleInput3"
                     placeholder="Madhya Pradesh"
-                    value="Madhya Pradesh"                  />
+                    value="Madhya Pradesh"                  
+                    disabled={!edit}
+                  />
                 </div>
               </div>
               <div className="row">
@@ -179,7 +204,9 @@ const ProfileInfo = () => {
                     className="form-control"
                     id="formGroupExampleInput3"
                     placeholder="980764"
-                    value="980764"                  />
+                    value="980764"                  
+                    disabled={!edit}
+                  />
                 </div>
               </div>
               <div className="row">
@@ -195,6 +222,7 @@ const ProfileInfo = () => {
                     id="formGroupExampleInput3"
                     placeholder="Jackson@test.com"
                     value="Jackson@test.com"
+                    disabled={!edit}
                   />
                 </div>
               </div>
@@ -211,6 +239,7 @@ const ProfileInfo = () => {
                     id="formGroupExampleInput3"
                     placeholder="0909087667"
                     value="0909087667"
+                    disabled={!edit}
                   />
                 </div>
               </div>
@@ -227,6 +256,7 @@ const ProfileInfo = () => {
                     id="formGroupExampleInput3"
                     placeholder="XCF65765Jackson"
                     value="XCF65765Jackson"
+                    disabled={!edit}
                   />
                 </div>
               </div>
@@ -243,10 +273,11 @@ const ProfileInfo = () => {
                     id="formGroupExampleInput3"
                     placeholder="ACF345666Jackson"
                     value="ACF345666Jackson"
+                    disabled={!edit}
                   />
                 </div>
               </div>
-              <div className="row mt-4">
+              { edit && (<div className="row mt-4">
                 <div className="col-xl-12">
                   <div className="my_profile_setting_input" style={{textAlign:"end"}}>
                     {/* <button className="btn btn1">Save Details</button> */}
@@ -255,8 +286,7 @@ const ProfileInfo = () => {
                     </button>
                   </div>
                 </div>
-                {/* End .col */}
-              </div>
+              </div>)}
             </div>
           </div>
         </div>
