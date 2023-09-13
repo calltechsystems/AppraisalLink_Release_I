@@ -354,8 +354,8 @@ const HeaderMenuContent = ({ float = "" ,hide}) => {
           <span className="arrow"></span>
         </a>
         <ul className="sub-menu ">
-          {property.map((item) => (
-            <li className="dropitem arrow" key={item.id}>
+          {property.map((item,index) => (
+            <li className="dropitem arrow" key={index}>
               <a
                 href="#"
                 className={
@@ -444,8 +444,8 @@ const HeaderMenuContent = ({ float = "" ,hide}) => {
           <span className="arrow"></span>
         </a>
         <ul className="sub-menu ">
-          {blog.map((item) => (
-            <li key={item.id}>
+          {blog.map((item,index) => (
+            <li key={index}>
               <Link
                 href={item.routerPath}
                 className={
