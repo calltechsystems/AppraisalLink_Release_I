@@ -338,8 +338,8 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
             </Link>
             
             <ul className="sub-menu">
-              {property.map((item) => (
-                <div  style={contentStyle}>
+              {property.map((item,index) => (
+                <div  style={contentStyle} key={index}>
                 <li className="dropitem arrow" key={item.id}>
                 <div>
                   <Link
@@ -360,7 +360,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                   {/* <!-- Level Three--> */}
                   <ul className="sub-menu ">
                     {item.items.map((val, i) => (
-                      <div>
+                      <div key={i}>
                       <li key={i}>
                         <Link
                           href={val.routerPath} 

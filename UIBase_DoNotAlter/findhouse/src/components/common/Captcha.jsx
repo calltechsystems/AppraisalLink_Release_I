@@ -86,7 +86,7 @@ const Captcha = ({ verified }) => {
             placeholder="Enter Captcha"
             name="username"
             onChange={handleChange}
-            autocomplete="off"
+            autoComplete="off"
           />
           <button
           type="button"
