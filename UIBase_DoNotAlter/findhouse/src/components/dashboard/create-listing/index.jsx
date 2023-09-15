@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Header from "../../common/header/dashboard/Header";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
 import MobileMenu from "../../common/header/MobileMenu";
@@ -7,7 +8,8 @@ import FloorPlans from "./FloorPlans";
 import LocationField from "./LocationField";
 import PropertyMediaUploader from "./PropertyMediaUploader";
 
-const index = () => {
+const index = ({isView}) => {
+  const [isDisable,setDisable] = useState(isView);
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -53,7 +55,7 @@ const index = () => {
 
                 <div className="col-lg-12 mb10">
                   <div className="breadcrumb_content style2">
-                    <h2 className="breadcrumb_title">Add New Property</h2>
+                    <h2 className="breadcrumb_title">{isView?  "View the selected  property": "Add New Property"}</h2>
                     <p>We are glad to see you again!</p>
                   </div>
                 </div>
@@ -66,7 +68,8 @@ const index = () => {
                       <div className="col-lg-12">
                         <h4 className="mb30">1. location Information</h4>
                       </div>
-                      <LocationField />
+                      {isDisable && (<div style={{marginLeft:"80%",marginBottom:"1%"}}><button  style={{borderRadius:"10%",backgroundColor:"#2e008b",color:"white"}} onClick={()=>setDisable(false)}>Edit</button></div>)}
+                      <LocationField isDisable={isDisable} setDisable={setDisable}/>
                     </div>
                   </div>
                   <div className="my_dashboard_review mt30">
@@ -74,7 +77,7 @@ const index = () => {
                       <h4 className="mb30">2. Other Information</h4>
                      
                     </div>
-                    <CreateList/>
+                    <CreateList isDisable={isDisable} setDisable={setDisable}/>
                   </div>
 
                   <div className="my_dashboard_review mt30">
@@ -82,7 +85,7 @@ const index = () => {
                       <div className="col-lg-12">
                         <h4 className="mb30">3. Applicant Information</h4>
                       </div>
-                      <DetailedInfo />
+                      <DetailedInfo isDisable={isDisable} setDisable={setDisable} />
                     </div>
                   </div>
                   {/* <div className="my_dashboard_review mt30">

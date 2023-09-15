@@ -14,6 +14,7 @@ const Index = () => {
   // 1-->means monthly
   // 2--> yearly
   const [isSelected,setSelected] = useState(1);
+  
 
   const changePlanToMonthly = ()=>{
     setSelected(1);

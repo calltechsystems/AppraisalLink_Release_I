@@ -31,14 +31,16 @@ const ProfileInfo = () => {
           <div className="row">
             <div className="col-lg-4">
               <div className="wrap-custom-file">
+              <div style={{borderWidth:"4px",borderColor:"black",borderRadius:"50%",width:"60px"}}>
                 <input
                   type="file"
                   id="image1"
                   accept="image/png, image/gif, image/jpeg"
                   onChange={uploadProfile}
-                  style={{ borderRadius: "50%" }}
+                  style={{ borderRadius: "50%"}}
                   disabled={!edit}
                 />
+                </div>
                 <label
                   style={
                     profile !== null

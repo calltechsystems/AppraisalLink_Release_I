@@ -1,4 +1,4 @@
-const CreateList = () => {
+const CreateList = ({isDisable,setDisable}) => {
   return (
     <>
       <div className="row">
@@ -16,6 +16,7 @@ const CreateList = () => {
                 className="form-control"
                 id="formGroupExampleInput3"
                 value="xxicheal"
+                disabled={isDisable}
               />
             </div>
           </div>
@@ -31,6 +32,7 @@ const CreateList = () => {
                 className="form-control"
                 id="formGroupExampleInput3"
                 value="Jackson"
+                disabled={isDisable}
               />
             </div>
           </div>
@@ -46,6 +48,7 @@ const CreateList = () => {
                 className="form-control"
                 id="formGroupExampleInput3"
                 value="000-876-876"
+                disabled={isDisable}
               />
             </div>
           </div>

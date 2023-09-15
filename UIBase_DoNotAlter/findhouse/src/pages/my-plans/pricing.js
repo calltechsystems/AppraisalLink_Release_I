@@ -1,5 +1,5 @@
 
-const Pricing = ({isPlan,hideButton,selectedId}) => {
+const Pricing = ({isPlan,hideButton,selectedId,setModalOpen,setPrice}) => {
     const pricingContentForMonthly = [
       {
         id: 1,
@@ -74,6 +74,14 @@ const Pricing = ({isPlan,hideButton,selectedId}) => {
   
     const selectedIdStyle = selectedId ? selectedId : "2";
     const content = isPlan === 1 ? pricingContentForMonthly : pricingContentForYearly ;
+
+    const selectPackageHandler = (title,price) =>{
+      setModalOpen(true);
+      setPrice({
+        title : title,
+        price : price
+      });
+    }
     return (
       <>
         {content.map((item) => (
@@ -94,7 +102,7 @@ const Pricing = ({isPlan,hideButton,selectedId}) => {
                 <h2 className="text-light">${item.price}</h2>
                 </div>
               </div>
-              {!hideButton && (<div className="pricing_footer">
+              {!hideButton && (<div className="pricing_footer" onClick={()=>selectPackageHandler(item.title,item.price)}>
                 <a className={`btn pricing_btn btn-block w-100`}  href="#">
                    {selectedId!==item.id ? !selectedId ? "Select Plan":"Change Plan":"Upgrade" }
                 </a>

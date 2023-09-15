@@ -79,7 +79,7 @@ import React, { Component, useState } from "react";
 
 import CheckBoxFilter from "../../common/CheckBoxFilter";
 
-const DetailedInfo = () => {
+const DetailedInfo = ({isDisable,setDisable}) => {
   return (
     <>
       <div className="row">
@@ -96,6 +96,7 @@ const DetailedInfo = () => {
                 className="form-control"
                 id="formGroupExampleInput3"
                 value="Micheal"
+                disabled={isDisable}
               />
             </div>
           </div>
@@ -111,6 +112,7 @@ const DetailedInfo = () => {
                 className="form-control"
                 id="formGroupExampleInput3"
                 value="Jackson"
+                disabled={isDisable}
               />
             </div>
           </div>
@@ -126,6 +128,7 @@ const DetailedInfo = () => {
                 className="form-control"
                 id="formGroupExampleInput3"
                 value="000-876-876"
+                disabled={isDisable}
               />
             </div>
           </div>
@@ -141,6 +144,7 @@ const DetailedInfo = () => {
                 className="form-control"
                 id="formGroupExampleInput3"
                 value="info@test.com"
+                disabled={isDisable}
               />
             </div>
           </div>
@@ -148,12 +152,12 @@ const DetailedInfo = () => {
           <div className="col-xl-12">
             <div className="my_profile_setting_input overflow-hidden mt20">
               {/* <button className="btn btn1 float-start">Back</button> */}
-              <button
+              {!isDisable && (<button
                 className="btn btn2 float-end"
                 style={{ textAlign:'center' }}
               >
                 Submit
-              </button>
+              </button>)}
             </div>
           </div>
           {/* End .col */}

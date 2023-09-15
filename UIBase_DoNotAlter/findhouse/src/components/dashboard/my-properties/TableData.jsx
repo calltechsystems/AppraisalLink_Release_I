@@ -16,10 +16,7 @@ const TableData = () => {
     "Action",
   ];
 
-  const toggleDropdownDiv = (key)=>{
-
-    setId(key);
-
+  const toggleDropdownDiv = (item)=>{
   };
 
   let tbodyContent = properties?.slice(0, 4)?.map((item,key) => (
@@ -78,7 +75,7 @@ const TableData = () => {
             data-placement="top"
             title="View"
           >
-            <a href="#" onClick={()=>toggleDropdownDiv(key )}>
+            <a href={`/create-listing/${item}`} >
               <span className="flaticon-view"></span>
             </a>
           </li>
@@ -88,7 +85,7 @@ const TableData = () => {
             data-placement="top"
             title="Edit"
           >
-            <a href="#" onClick={""}>
+            <a href="/create-listing/${item}" >
               <span className="flaticon-edit"></span>
             </a>
           </li>

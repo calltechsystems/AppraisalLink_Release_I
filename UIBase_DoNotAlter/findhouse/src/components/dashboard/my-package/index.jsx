@@ -82,7 +82,7 @@ const index = () => {
 
                       <div className="pck_chng_btn text-end">
                         <button className="btn btn-lg">
-                          Change Package
+                          Update Package
                         </button>
                       </div>
                     </div>

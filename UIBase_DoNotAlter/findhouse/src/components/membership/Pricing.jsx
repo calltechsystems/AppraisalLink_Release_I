@@ -1,5 +1,5 @@
 
-const Pricing = ({isPlan,hideButton,selectedId}) => {
+const Pricing = ({isPlan,hideButton,selectedId,changePlan}) => {
   const pricingContentForMonthly = [
     {
       id: 1,
@@ -72,7 +72,7 @@ const Pricing = ({isPlan,hideButton,selectedId}) => {
     },
   ];
 
-  const selectedIdStyle = selectedId ? selectedId : "2";
+  const selectedIdStyle = selectedId ? selectedId : 2;
   const content = isPlan === 1 ? pricingContentForMonthly : pricingContentForYearly ;
   return (
     <>

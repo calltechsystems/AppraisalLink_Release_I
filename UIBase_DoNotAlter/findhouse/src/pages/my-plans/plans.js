@@ -4,12 +4,22 @@ import MobileMenu from "../../components/common/header/MobileMenu";
 import Pricing from "./pricing";
 import SidebarMenu from "../../components/common/header/dashboard/SidebarMenu";
 
-const Index = () => {
+const Index = ({setModalOpen,setPrice}) => {
   //by default monthly being selected here as
   // 1-->means monthly
   // 2--> yearly
   const [isSelected, setSelected] = useState(1);
+  const [selectedPlan, setSelectedPlan] = useState('Monthly');
 
+  const changePlan = (newPlan) => {
+    if(newPlan === "Monthly"){
+      setSelected(1);
+    }
+    else{
+      setSelected(2);
+    }
+    setSelectedPlan(newPlan);
+  };
   const changePlanToMonthly = () => {
     setSelected(1);
   };
@@ -43,71 +53,49 @@ const Index = () => {
       >
         <div className="container-fluid ovh">
           <div className="row">
-            <div className="col-lg-12 col-lg-6 maxw100flex-992">
-              <div className="main-title text-center">
-                <h2 className="text-dark">Ready to get started?</h2>
-                <p className="text-dark">
-                  Choose a plan tailored to your needs{" "}
-                  {isSelected === 1 ? "Monthly" : "Yearly"}{" "}
-                </p>
-                <div>
-                  <button
-                    style={{
-                      width: "120px",
-                      margin: "6px",
-                      borderRadius: "8px",
-                      backgroundColor: "blue",
-                      color: "white",
-                      border: "4px solid blue", // Initial border color
-                      transition: "border-color 0.3s", // Adding a smooth transition
-                    }}
-                    onMouseEnter={(e) => {
-                      e.target.style.border = "2px solid white"; // Change border color on hover
-                      e.target.style.backgroundColor = "rgba(0, 0, 255, 0.8)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.border = "2px solid blue";
-                      e.target.style.backgroundColor = "blue";
-                    }}
-                    onClick={changePlanToMonthly}
-                  >
-                    Monthly
-                  </button>
-                  <button
-                    style={{
-                      width: "120px",
-                      margin: "6px",
-                      borderRadius: "8px",
-                      backgroundColor: "blue",
-                      color: "white",
-                      border: "2px solid blue", // Initial border color
-                      transition: "border-color 0.3s", // Adding a smooth transition
-                    }}
-                    onMouseEnter={(e) => {
-                      e.target.style.border = "2px solid white"; // Change border color on hover
-                      e.target.style.backgroundColor = "rgba(0, 0, 255, 0.8)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.border = "2px solid blue";
-                      e.target.style.backgroundColor = "blue";
-                    }}
-                    onClick={changePlanToYearly}
-                  >
-                    Yearly
-                  </button>
-                </div>
-                {/* <div class="form-switch mt-2">
-                  <label className="form-check-label" for="flexSwitchCheckDefault">Monthly</label>
-                  <input className="form-check-input" type="checkbox" id="flexSwitchCheckDefault"/>
-                  <label className="form-check-label" for="flexSwitchCheckDefault">Yearly</label>
-                </div> */}
+          <div className="col-lg-12 col-lg-6 maxw100flex-992">
+            <div className="main-title text-center">
+              <h2 className="text-dark">Ready to get started?</h2>
+              <p className="text-dark">
+                Choose a plan tailored to your needs {selectedPlan}
+              </p>
+              <div>
+                <button
+                  style={{
+                    width: "120px",
+                    margin: "6px",
+                    borderRadius: "8px",
+                    borderColor:"#2e008b",
+                    backgroundColor:
+                      selectedPlan === "Monthly" ? "#2e008b" : "white",
+                    color: selectedPlan === "Monthly" ? "white" : "#2e008b",
+                  }}
+                  onClick={() => changePlan("Monthly")}
+                >
+                  Monthly
+                </button>
+                <button
+                  style={{
+                    width: "120px",
+                    margin: "6px",
+                    borderRadius: "8px",
+                    borderColor:"#2e008b",
+                    backgroundColor:
+                      selectedPlan === "Yearly" ? "#2e008b" : "white",
+                    color: selectedPlan === "Yearly" ? "white" : "#2e008b",
+                  }}
+                  onClick={() => changePlan("Yearly")}
+                >
+                  Yearly
+                </button>
               </div>
             </div>
+          </div>
           </div>
           {/* End .row */}
 
           <div className="row">
-            <Pricing isPlan={isSelected} />
+            <Pricing isPlan={isSelected} setModalOpen={setModalOpen} setPrice={setPrice}/>
             {/* <Pricing hideButton={false}/> */}
           </div>
           {/* End .row */}

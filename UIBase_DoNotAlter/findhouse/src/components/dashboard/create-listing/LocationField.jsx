@@ -1,4 +1,4 @@
-const LocationField = () => {
+const LocationField = ({isDisable,setDisable}) => {
   return (
     <>
       <div className="row">
@@ -15,6 +15,7 @@ const LocationField = () => {
                 className="form-control"
                 id="formGroupExampleInput3"
                 value="Hosangabad Road"
+                disabled={isDisable}
               />
             </div>
           </div>
@@ -30,6 +31,7 @@ const LocationField = () => {
                 className="form-control"
                 id="formGroupExampleInput3"
                 value="657 Road"
+                disabled={isDisable}
               />
             </div>
           </div>
@@ -45,6 +47,7 @@ const LocationField = () => {
                 className="form-control"
                 id="formGroupExampleInput3"
                 value="Hosangabad"
+                disabled={isDisable}
               />
             </div>
           </div>
@@ -60,6 +63,7 @@ const LocationField = () => {
                 className="form-control"
                 id="formGroupExampleInput3"
                 value="Madhya Pradesh"
+                disabled={isDisable}
               />
             </div>
           </div>
@@ -75,6 +79,7 @@ const LocationField = () => {
                 className="form-control"
                 id="formGroupExampleInput3"
                 value="986543"
+                disabled={isDisable}
               />
             </div>
           </div>
@@ -90,6 +95,7 @@ const LocationField = () => {
                 className="form-control"
                 id="formGroupExampleInput3"
                 value="Hosangabad Road"
+                disabled={isDisable}
               />
             </div>
           </div>

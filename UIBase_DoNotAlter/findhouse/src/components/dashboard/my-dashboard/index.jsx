@@ -95,9 +95,7 @@ const index = () => {
                 </div>*/}
               </div>
               {/* End .row  */}
-              <div>
-                <Dropdown/>
-              </div>
+              
 
               <div className="row mt50">
                 <div className="col-lg-12">
