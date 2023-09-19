@@ -1,5 +1,5 @@
 
-const Pricing = ({isPlan,hideButton,selectedId,changePlan}) => {
+const Pricing = ({isPlan,hideButton,selectedId,setModalOpen,setPrice}) => {
   const pricingContentForMonthly = [
     {
       id: 1,
@@ -38,7 +38,7 @@ const Pricing = ({isPlan,hideButton,selectedId,changePlan}) => {
 
   const pricingContentForYearly = [
     {
-      id: 4,
+      id: 1,
       price: "132",
       title: "Lite",
       features: [
@@ -49,7 +49,7 @@ const Pricing = ({isPlan,hideButton,selectedId,changePlan}) => {
       ],
     },
     {
-      id: 5,
+      id: 2,
       price: "228",
       title: "Pro",
       features: [
@@ -60,7 +60,7 @@ const Pricing = ({isPlan,hideButton,selectedId,changePlan}) => {
       ],
     },
     {
-      id: 6,
+      id: 3,
       price: "420",
       title: "Ultimate",
       features: [
@@ -72,15 +72,25 @@ const Pricing = ({isPlan,hideButton,selectedId,changePlan}) => {
     },
   ];
 
-  const selectedIdStyle = selectedId ? selectedId : 2;
+  const selectedIdStyle = selectedId ? selectedId : "2";
   const content = isPlan === 1 ? pricingContentForMonthly : pricingContentForYearly ;
+
+  const selectPackageHandler = (title,price) =>{
+    setModalOpen(true);
+    setPrice({
+      title : title,
+      price : price
+    });
+  }
   return (
     <>
       {content.map((item) => (
-        <div className="col-sm-6 col-md-6 col-lg-4" key={item.id}>
+
+        <div className="col-sm-4 col-md-4 my_plan_pricing_header"  key={item.id}>
           <div className={`pricing_table  ${ String(selectedIdStyle) === String(item.id) ? "pricing_table_border_style":""}`}>
             <div className="pricing_header">
-              <div className={`price  ${ String(selectedIdStyle) === String(item.id) ? "pricing_table_border_style_title":""}`}>{item.title}</div>{String(selectedIdStyle) === String(item.id) ? <div style={{backgroundColor:"darkslateblue",borderRadius:"4px"}}><h4 >Suggested Plan</h4> </div>: "" }
+              <div className="price">{item.title}</div>
+              {String(selectedIdStyle) === String(item.id) ? <div style={{backgroundColor:"darkslateblue",borderRadius:"4px"}}><h4 >Suggested Plan</h4> </div>: "" }
             </div>
             <div className="pricing_content">
               <ul className="mb0">
@@ -92,9 +102,9 @@ const Pricing = ({isPlan,hideButton,selectedId,changePlan}) => {
               <h2 className="text-light">${item.price}</h2>
               </div>
             </div>
-            {!hideButton && (<div className="pricing_footer">
-              <a className="btn pricing_btn btn-block w-100" href="#">
-              {selectedId!==item.id ? !selectedId ? "Select Plan":"Change Plan":"Upgrade" }
+            {!hideButton && (<div className="pricing_footer" onClick={()=>selectPackageHandler(item.title,item.price)}>
+              <a className={`btn pricing_btn btn-block w-100`}  href="#">
+                 {selectedId!==item.id ? !selectedId ? "Select Plan":"Change Plan":"Upgrade" }
               </a>
             </div>)}
           </div>
@@ -105,3 +115,5 @@ const Pricing = ({isPlan,hideButton,selectedId,changePlan}) => {
 };
 
 export default Pricing;
+
+

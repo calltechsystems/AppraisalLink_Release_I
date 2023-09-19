@@ -4,7 +4,7 @@ import MyPlans from "./plans";
 import { useState } from "react";
 import Modal from "./Modal";
 
-const index = () => {
+const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [price, setPrice] = useState({
     title : "Basic",
@@ -27,4 +27,4 @@ const index = () => {
   );
 };
 
-export default dynamic(() => Promise.resolve(index), { ssr: false });
+export default dynamic(() => Promise.resolve(Index), { ssr: false });

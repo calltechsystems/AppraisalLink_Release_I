@@ -4,7 +4,7 @@ import Seo from "../../components/common/seo";
 import CreateListing from "../../components/dashboard/create-listing";
 import { useEffect } from "react";
 
-const index = () => {
+const Index = () => {
   const router = useRouter();
   const { item } = router.query;
 
@@ -20,4 +20,4 @@ const index = () => {
   );
 };
 
-export default dynamic(() => Promise.resolve(index), { ssr: false });
+export default dynamic(() => Promise.resolve(Index), { ssr: false });

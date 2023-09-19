@@ -8,7 +8,7 @@ import FloorPlans from "./FloorPlans";
 import LocationField from "./LocationField";
 import PropertyMediaUploader from "./PropertyMediaUploader";
 
-const index = ({isView}) => {
+const Index = ({isView}) => {
   const [isDisable,setDisable] = useState(isView);
   return (
     <>
@@ -123,4 +123,4 @@ const index = ({isView}) => {
   );
 };
 
-export default index;
+export default Index;

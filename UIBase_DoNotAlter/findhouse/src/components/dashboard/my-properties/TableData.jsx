@@ -2,6 +2,7 @@ import Image from "next/image";
 import properties from "../../../data/properties";
 import { useState } from "react";
 
+import Link from "next/link";
 const TableData = () => {
 
   const [Id,setId] = useState(-1);
@@ -47,10 +48,10 @@ const TableData = () => {
                 <span className="flaticon-placeholder"></span>
                 {item.location}
               </p>
-              <a className="fp_price text-thm" href="#">
+              <Link className="fp_price text-thm" href="#">
                 ${item.price}
                 <small>/mo</small>
-              </a>
+              </Link>
             </div>
           </div>
       </td>
@@ -75,9 +76,9 @@ const TableData = () => {
             data-placement="top"
             title="View"
           >
-            <a href={`/create-listing/${item}`} >
+            <Link href={`/create-listing/${item}`} >
               <span className="flaticon-view"></span>
-            </a>
+            </Link>
           </li>
           <li 
             className="list-inline-item"
@@ -85,9 +86,9 @@ const TableData = () => {
             data-placement="top"
             title="Edit"
           >
-            <a href="/create-listing/${item}" >
+            <Link href="/create-listing/${item}" >
               <span className="flaticon-edit"></span>
-            </a>
+            </Link>
           </li>
           {/* End li */}
 
@@ -97,9 +98,9 @@ const TableData = () => {
             data-placement="top"
             title="Delete"
           >
-            <a href="#">
+            <Link href="#">
               <span className="flaticon-garbage"></span>
-            </a>
+            </Link>
           </li>
         </ul>  
       </td>
