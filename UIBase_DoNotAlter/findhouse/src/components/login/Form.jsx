@@ -140,7 +140,7 @@ const Form = ({ user }) => {
               </div>
             </div>
 
-            <div className="" style={{marginBottom:'-30px'}}>
+            <div className="col-12" style={{marginBottom:'-30px'}}>
               <div>
                 <Captcha verified={setCaptchaVerified} />
               </div>

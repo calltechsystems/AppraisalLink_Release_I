@@ -5,7 +5,7 @@ const ComfortPlace = () => {
   return (
     <>
       {comfortPlace.map((item) => (
-        <div className="col-sm-4 col-lg-3" key={item.id}>
+        <div className="col-lg-3 col-6 " key={item.id}>
           <Link
             href="#"
             className="icon_hvr_img_box image-1 d-block"

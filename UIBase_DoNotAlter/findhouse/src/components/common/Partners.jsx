@@ -6,16 +6,16 @@ const Partners = () => {
     dots: false,
     arrow: false,
     speed: 1200,
-    slidesToShow: 5,
+    slidesToShow: 2,
     slidesToScroll: 1,
     autoplay: true,
   };
-  const partnersImages = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+  const partnersImages = ["1", "2", "3", "4", "5"];
   return (
     <>
       <Slider {...settings} arrows={false}>
       {partnersImages.map((val, i) => (
-        <div className="col-sm-6 col-md-4 col-lg" key={i}>
+        <div className="col-sm-6 col-12" key={i}>
           <div className="our_partner">
           {/* <Image
               width={106}

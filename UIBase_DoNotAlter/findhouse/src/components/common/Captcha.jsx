@@ -65,8 +65,16 @@ const Captcha = ({ verified }) => {
 
   return (
     <>
-      <div className="row" style={{paddingLeft:"6%",display:"flex",flexDirection:"row",marginBottom:"6%"}}>
-        <div className="col-lg-6" style={{width:"40%"}}>
+      <div
+        className="row"
+        style={{
+          paddingLeft: "6%",
+          display: "flex",
+          flexDirection: "row",
+          marginBottom: "6%",
+        }}
+      >
+        <div className="col-lg-6 col-12" style={{ width: "40%" }}>
           <h4 id="captcha" className="bg-imgg text-captcha">
             {captcha}
           </h4>
@@ -77,36 +85,33 @@ const Captcha = ({ verified }) => {
             src="/assets/images/home/bg.png"
           />
         </div>
-        <div className="col-lg-6" style={{ width: "60%" ,display:"flex",flexDirection:"row"}}>
+        <div
+          className="col-lg-6 col-12"
+          style={{ width: "60%", display: "flex", flexDirection: "row" }}
+        >
           <input
             type="text"
             ref={captchaRef}
             className="form-control mr"
-            style={{width:"70%"}}
+            style={{ width: "70%" }}
             placeholder="Enter Captcha"
             name="username"
             onChange={handleChange}
             autoComplete="off"
           />
           <button
-          type="button"
-          id="succesBTN"
-          className="btn btn-primary w-15 "
-          style={{cursor:"pointer",margin:"2%"}}
-          onClick={refreshHandler}
-           >
-             <FaRedo style={{padding:"2px"}}/>
-        </button>
-          
+            type="button"
+            id="succesBTN"
+            className="btn btn-primary w-15 "
+            style={{ cursor: "pointer", margin: "2%", marginTop:'5px' }}
+            onClick={refreshHandler}
+          >
+            <FaRedo style={{ padding: "2px" }} />
+          </button>
         </div>
-        <div>
-           
-        </div>
-           
-          
-        </div>
-        <div className="col-lg-2 text-end"></div>
-      
+        <div></div>
+      </div>
+      <div className="col-lg-2 text-end"></div>
 
       {/* <div className="mt-0"></div> */}
       {/* End input-group */}

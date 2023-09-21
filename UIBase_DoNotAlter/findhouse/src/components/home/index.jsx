@@ -10,7 +10,7 @@ import Header from "./Header";
 import Hero from "./Hero";
 import WhyChoose from "../common/WhyChoose";
 import Team from "../about-us/Team";
-import PopupSignInUp from "../common/PopupSignInUp";
+// import PopupSignInUp from "../common/PopupSignInUp";
 import Pricing from "../membership/Pricing";
 // import Testimonial from "../home-7/Testimonial";
 import HeroSlider from "./HeroSlider";
@@ -27,7 +27,7 @@ const Index = () => {
       <MobileMenu />
 
       {/* <!-- Modal --> */}
-      <PopupSignInUp />
+      {/* <PopupSignInUp /> */}
 
       {/* <!-- Home Design --> */}
       {/* <Hero /> */}
@@ -52,7 +52,7 @@ const Index = () => {
               <div className="home_content home4">
                 <div
                   className="home-text text-center"
-                  style={{ marginTop: "-100px", marginBottom: "50px" }}
+                  style={{ marginTop: "-40px", marginBottom: "50px" }}
                 >
                   <h2 className="fz50">
                     Brokers Paradise for all Real Estate Appraisals

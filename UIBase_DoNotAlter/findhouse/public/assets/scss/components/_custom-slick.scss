@@ -76,7 +76,7 @@
 
 //
 .slide {
-    height: 650px;
+    height: 670px;
     // background-color: rgba(10, 10, 10, 0.5);
     // opacity: 0.3;
     &.image-1 {
@@ -93,6 +93,21 @@
     }
     &.image-5 {
         background-image: url(../../images/home/Homepage_05.jpg);
+    }
+    &.image-6 {
+        background-image: url(../../images//home/contact1.jpg);
+    }
+    &.image-7 {
+        background-image: url(../../images/home/contact12.jpg);
+    }
+    &.image-8 {
+        background-image: url(../../images/home/contact5.jpg);
+    }
+    &.image-9 {
+        background-image: url(../../images/home/contact10.jpg   );
+    }
+    &.image-10 {
+        background-image: url(../../images/home/31.jpg);
     }
 }
 .listing-single-4 {

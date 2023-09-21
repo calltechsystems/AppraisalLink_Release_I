@@ -53,7 +53,7 @@ const Index = () => {
       {/* <!-- Service Section Area --> */}
       <section
       className="our-dashbord dashbord bgc-f7 pb50 "
-      style={{ marginLeft: "-10%" }}
+      style={{ marginLeft: "-20%",paddingRight:"5%" }}
     >
       <div className="container-fluid ovh">
         <div className="row">

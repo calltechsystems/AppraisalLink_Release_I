@@ -16,29 +16,48 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
   };
 
   const menuStyle = {
-    width: '200px', // Initial width
-    transition: 'width 0.3s ease', // Add transition for the width property
-    position: 'relative',
+    // width: '200px',  Initial width
+    transition: "width 0.3s ease", // Add transition for the width property
+    position: "relative",
   };
 
   const contentStyle = {
     opacity: isHovered ? 1 : 0, // Show content when hovered
-    transition: 'opacity 0.3s ease', // Add transition for the opacity property
-    position: 'absolute',
-    top: '100%',
+    transition: "opacity 0.3s ease", // Add transition for the opacity property
+    position: "absolute",
+    top: "100%",
     left: "-460px",
-    width: '1580px',
-    margin:"-16px",
-    height:'80px',
-    backgroundColor: '#fff',
-    color: '#333',
-    borderTopColor:"#2e008b",
-    borderTopWidth:"6px",
-    borderTopStyle:"solid",
-    display:"flex",
-    flexDirection:"row",
-    justifyContent:"center"
+    width: "1580px",
+    margin: "-16px",
+    height: "80px",
+    backgroundColor: "#fff",
+    color: "#333",
+    borderTopColor: "#2e008b",
+    borderTopWidth: "6px",
+    borderTopStyle: "solid",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
   };
+
+  // const contentStyle_01 = {
+  //   opacity: isHovered ? 1 : 0, // Show content when hovered
+  //   transition: "opacity 0.3s ease", // Add transition for the opacity property
+  //   position: "absolute",
+  //   top: "100%",
+  //   left: "-460px",
+  //   width: "1580px",
+  //   margin: "-16px",
+  //   height: "180px",
+  //   backgroundColor: "#fff",
+  //   color: "#333",
+  //   borderTopColor: "#2e008b",
+  //   borderTopWidth: "6px",
+  //   borderTopStyle: "solid",
+  //   display: "flex",
+  //   flexDirection: "row",
+  //   justifyContent: "center",
+  // };
 
   const home = [
     {
@@ -61,14 +80,58 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
     // { id: 10, name: "Home 10", routerPath: "/home-10" },
   ];
 
-  const listing = [   
+  const listing = [
     {
       id: 5,
       title: "Agent View",
       items: [
         {
           name: "Agent View",
-          routerPath: "/agent-v1", 
+          routerPath: "/agent-v1",
+        },
+        {
+          name: "Agent V1",
+          routerPath: "/agent-v1",
+        },
+        {
+          name: "Agent V2",
+          routerPath: "/agent-v2",
+        },
+        {
+          name: "Agent Details",
+          routerPath: "/agent-details",
+        },
+      ],
+    },
+    {
+      id: 6,
+      title: "Agencies View",
+      items: [
+        {
+          name: "Agencies View",
+          routerPath: "/agency-v1",
+        },
+        {
+          name: "Agencies V1",
+          routerPath: "/agency-v1",
+        },
+        {
+          name: "Agencies V2",
+          routerPath: "/agency-v2",
+        },
+        {
+          name: "Agencies Details",
+          routerPath: "/agency-details",
+        },
+      ],
+    },
+    {
+      id: 5,
+      title: "Agent View",
+      items: [
+        {
+          name: "Agent View",
+          routerPath: "/agent-v1",
         },
         {
           name: "Agent V1",
@@ -173,6 +236,48 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
         },
       ],
     },
+    {
+      id: 1,
+      title: "User Admin",
+      items: [
+        {
+          name: "Dashboard",
+          routerPath: "/my-dashboard",
+        },
+        {
+          name: "My Properties",
+          routerPath: "/my-properties",
+        },
+        {
+          name: "My Message",
+          routerPath: "/my-message",
+        },
+        {
+          name: "My Review",
+          routerPath: "/my-review",
+        },
+        {
+          name: "My Favourites",
+          routerPath: "/my-favourites",
+        },
+        {
+          name: "My Profile",
+          routerPath: "/my-profile",
+        },
+        {
+          name: "My Package",
+          routerPath: "/my-package",
+        },
+        {
+          name: "My Saved Search",
+          routerPath: "/my-saved-search",
+        },
+        {
+          name: "Add Property",
+          routerPath: "/create-listing",
+        },
+      ],
+    },
   ];
 
   const blog = [
@@ -211,14 +316,15 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
   if (hide) {
     classname = "ace-responsive-menu text-end d-lg-block d-none bg-back ul_01";
   } else {
-    classname = "ace-responsive-menu d-lg-block d-none text-end-01 ul_01 submenu border-bottom";
+    classname =
+      "ace-responsive-menu d-lg-block d-none text-end-01 ul_01 submenu border-bottom";
   }
 
   return (
     <div>
       <ul id="respMenu" className={classname} data-menu-style="horizontal">
         {hide && (
-          <li className="dropitem" >
+          <li className="dropitem">
             <Link
               href="/"
               className={
@@ -251,10 +357,12 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
         {/* End .dropitem */}
 
         {hide && (
-          <li className="dropitem"  
-          style={menuStyle}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}>
+          <li
+            className="dropitem"
+            style={menuStyle}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
             <Link
               href="/choose-us"
               className={
@@ -272,41 +380,41 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
               <span className="arrow text-info-01"></span>
             </Link>
             {/* <!-- Level Two--> */}
-            <ul className="sub-menu" >
-            <div style={contentStyle}>
-              {listing.map((item) => (
-                <li className="dropitem " key={item.id} >
-                  <Link
-                    href="#"
-                    className={
-                      item.items.some(
-                        (page) => page.routerPath === route.pathname
-                      )
-                        ? "ui-active"
-                        : undefined
-                    }
-                  >
-                    {item.title}
-                  </Link>
-                  {/* <!-- Level Three--> */}
-                  <ul className="sub-menu ">
-                    {item.items.map((val, i) => (
-                      <li  key={i}>
-                        <Link
-                          href={val.routerPath}
-                          className={
-                            route.pathname === val.routerPath
-                              ? "ui-active"
-                              : undefined
-                          }
-                        >
-                          {val.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </li>
-              ))}
+            <ul className="sub-menu">
+              <div style={contentStyle}>
+                {listing.map((item) => (
+                  <li className="dropitem " key={item.id}>
+                    <Link
+                      href="#"
+                      className={
+                        item.items.some(
+                          (page) => page.routerPath === route.pathname
+                        )
+                          ? "ui-active"
+                          : undefined
+                      }
+                    >
+                      {item.title}
+                    </Link>
+                    {/* <!-- Level Three--> */}
+                    {/* <ul className="sub-menu ">
+                      {item.items.map((val, i) => (
+                        <li key={i}>
+                          <Link
+                            href={val.routerPath}
+                            className={
+                              route.pathname === val.routerPath
+                                ? "ui-active"
+                                : undefined
+                            }
+                          >
+                            {val.name}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul> */}
+                  </li>
+                ))}
               </div>
             </ul>
           </li>
@@ -314,10 +422,12 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
         {/* End .dropitem */}
 
         {hide && (
-          <li className="dropitem"
-          style={menuStyle}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave} >
+          <li
+            className="dropitem"
+            style={menuStyle}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
             <Link
               href="/service"
               className={
@@ -336,49 +446,48 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
               <span className="title text-info-01">Insights</span>{" "}
               <span className="arrow text-info-01"></span>
             </Link>
-            
-            <ul className="sub-menu">
-              {property.map((item,index) => (
-                <div  style={contentStyle} key={index}>
-                <li className="dropitem arrow" key={item.id}>
-                <div>
-                  <Link
-                    href="#"
-                    className={
-                      item.items.some(
-                        (page) =>
-                          page.routerPath === route.pathname ||
-                          page.routerPath + "/[id]" === route.pathname
-                      )
-                        ? "ui-active"
-                        : undefined
-                    }
-                  >
-                    {item.title}
-                  </Link>
-                  </div>
-                  {/* <!-- Level Three--> */}
-                  <ul className="sub-menu ">
-                    {item.items.map((val, i) => (
-                      <div key={i}>
-                      <li key={i}>
-                        <Link
-                          href={val.routerPath} 
-                          className={
-                            route.pathname === val.routerPath ||
-                            val.routerPath + "/[id]" === route.pathname
-                              ? "ui-active"
-                              : undefined
-                          }
-                        >
-                          {val.name}
-                        </Link>
-                      </li>
-                      </div>
-                  ))}
-                  </ul>
 
-                </li>
+            <ul className="sub-menu">
+              {property.map((item, index) => (
+                <div style={contentStyle} key={index}>
+                  <li className="dropitem arrow" key={item.id}>
+                    <div>
+                      <Link
+                        href="#"
+                        className={
+                          item.items.some(
+                            (page) =>
+                              page.routerPath === route.pathname ||
+                              page.routerPath + "/[id]" === route.pathname
+                          )
+                            ? "ui-active"
+                            : undefined
+                        }
+                      >
+                        {item.title}
+                      </Link>
+                    </div>
+                    {/* <!-- Level Three--> */}
+                    {/* <ul className="sub-menu ">
+                      {item.items.map((val, i) => (
+                        <div key={i}>
+                          <li key={i}>
+                            <Link
+                              href={val.routerPath}
+                              className={
+                                route.pathname === val.routerPath ||
+                                val.routerPath + "/[id]" === route.pathname
+                                  ? "ui-active"
+                                  : undefined
+                              }
+                            >
+                              {val.name}
+                            </Link>
+                          </li>
+                        </div>
+                      ))}
+                    </ul> */}
+                  </li>
                 </div>
               ))}
             </ul>
@@ -522,7 +631,12 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
         {/* End .dropitem */}
 
         {hide && (
-          <li className="dropitem">
+          <li
+            className="dropitem"
+            style={menuStyle}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
             <Link
               href="#"
               className={

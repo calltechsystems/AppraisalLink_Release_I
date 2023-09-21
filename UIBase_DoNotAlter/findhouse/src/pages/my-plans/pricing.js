@@ -90,7 +90,7 @@ const Pricing = ({isPlan,hideButton,selectedId,setModalOpen,setPrice}) => {
             <div className={`pricing_table  ${ String(selectedIdStyle) === String(item.id) ? "pricing_table_border_style":""}`}>
               <div className="pricing_header">
                 <div className="price">{item.title}</div>
-                {String(selectedIdStyle) === String(item.id) ? <div style={{backgroundColor:"darkslateblue",borderRadius:"4px"}}><h4 >Suggested Plan</h4> </div>: "" }
+                {String(selectedIdStyle) === String(item.id) ? <div style={{backgroundColor:"darkslateblue",borderRadius:"4px",paddingTop:'5px', paddingBottom:'px'}}><h4 >Suggested Plan</h4> </div>: "" }
               </div>
               <div className="pricing_content">
                 <ul className="mb0">

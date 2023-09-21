@@ -21425,7 +21425,7 @@ header.header-nav.menu_style_home_one .ace-responsive-menu > li > a {
   /* opacity: 0.9; */
   position: relative;
   top: 43px;
-  left: 4rem;
+  left: 1rem;
   margin-top: -28px !important ;
 }
 
@@ -21680,7 +21680,7 @@ a::before {
 
 /* dropdown */
 
-.ul_01 {
+/* .ul_01 {
   text-align: center;
   li {
     display: inline-block;
@@ -21740,7 +21740,7 @@ a::before {
       }
     }
   }
-}
+} */
 
 .bg-color {
   background-color: #1d293e !important;
@@ -21772,22 +21772,6 @@ a::before {
   background-color: #f2f2f2 !important;
 }
 
-/*    dropdown		*/
-/* .dropdown
-{
-	display: none;
-    position: absolute;
-    width: 550px;
-    z-index: 1;
-
-}
-.sign:hover .dropdown
-{
-  display: block;
-  margin-left:10px ;
-  margin-top: 20px;
-} */
-
 .text_end{
   text-align: end !important;
 }
@@ -21807,14 +21791,15 @@ a::before {
 
 
 .pricing_table_border_style{
-  background-color: #224a23 !important;
-  background-color: #41a0ae !important;
-  border: 12px solid darkslateblue;
+  background-color: #97d700 !important;
+  border: 10px solid darkslateblue;
   margin-top: -30px;
 }
 .pricing_table_border_style:hover{
   background-color: 	#3ec995 !important;
 }
+
+.pricing_table_border_style 
 
 /* .pck_chng_btn .btn{
   background-color: #2e008b !important;
@@ -21914,8 +21899,10 @@ input[type=text]{
 
 /* Close Button */
 .close {
-    color: #aaa;
-    float: right;
+    color: red;
+    text-align: end;
+    margin-top: -10px;
+    /* float: right; */
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
@@ -21929,7 +21916,7 @@ input[type=text]{
 
 .button-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   margin-top: 20px;
   border-top: 2px solid gray;
   padding-top: 20px;
