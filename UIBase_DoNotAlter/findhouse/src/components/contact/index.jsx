@@ -37,7 +37,7 @@ const index = () => {
               }}
             >
               Our goal is to promptly attend to your requirements, allowing you
-              to focus on what's most important to you: managing your business.
+              to focus on what&apos;s most important to you: managing your business.
               If you require immediate assistance, please either dial one of the
               numbers provided below or engage with us via our online chat
               platform.
