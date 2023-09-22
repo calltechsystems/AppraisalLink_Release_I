@@ -3,7 +3,6 @@ import CopyrightFooter from "../common/footer/CopyrightFooter";
 import Footer from "../common/footer/Footer";
 import Header from "../common/header/DefaultHeader_01";
 import MobileMenu from "../common/header/MobileMenu";
-// import PopupSignInUp from "../common/PopupSignInUp";
 import AddressSidebar from "./AddressSidebar";
 import BreadCrumbBanner from "./BreadCrumbBanner";
 import HeroSlider from "./HeroSlider";
@@ -24,8 +23,25 @@ const index = () => {
       <div className="container-fluid p0">
         <div className="main-banner-wrapper">
           <div className="arrow-style-2 banner-style-one ">
+            {/* <div className="home-text text-center">
+              <h2 className="fz55">Discover your place to live</h2>
+              <p className="fz18 color-white">Get started in few clicks.</p>
+            </div> */}
             <HeroSlider />
-            <h2 className="text-light text-center" style={{marginTop:'-20rem', position:'relative', paddingBottom:'20px'}}>Contact Us</h2>
+            <h4
+              className="text-light text-center"
+              style={{
+                marginTop: "-30rem",
+                position: "relative",
+                paddingBottom: "60px",
+              }}
+            >
+              Our goal is to promptly attend to your requirements, allowing you
+              to focus on what's most important to you: managing your business.
+              If you require immediate assistance, please either dial one of the
+              numbers provided below or engage with us via our online chat
+              platform.
+            </h4>
           </div>
         </div>
         {/* <!-- /.main-banner-wrapper --> */}
@@ -34,7 +50,7 @@ const index = () => {
 
       {/* <!-- Our Contact --> */}
       <section className="our-contact pb0 bgc-f7">
-        <div className="container">
+        <div className="container" style={{ marginTop: "-70px" }}>
           <div className="row">
             {/* <div className="col-lg-12">
               <h4 className="mb5 text-center">Send Us An Email</h4>
@@ -47,8 +63,8 @@ const index = () => {
               </p>
             </div> */}
             <div className="container">
-              <div className="row mt-5">
-                <h2 className="text-center">Let&apos;s Chat !</h2>
+              <div className="row">
+                {/* <h2 className="text-center">Let&apos;s Chat !</h2> */}
                 <AddressSidebar />
               </div>
             </div>
@@ -66,12 +82,12 @@ const index = () => {
                     borderRadius: "4px 0 0 4px",
                     opacity: "0.9",
                     background:
-                      "url(https://previews.123rf.com/images/alisapotap1/alisapotap11910/alisapotap1191000338/132966594-dark-seamless-pattern-with-social-media-doodle-elements-purple-hand-drawn-icons-on-black-background.jpg)",
+                      "url(https://i.pinimg.com/originals/02/7e/fd/027efde1602fe8a0a642fafbe5673b42.jpg)",
                   }}
                 >
                   <h3
                     className="text-center text-light"
-                    style={{ marginTop: "15rem", lineHeight: "1.5" }}
+                    style={{ marginTop: "13rem", lineHeight: "1.5" }}
                   >
                     {" "}
                     Reach out to our team for any questions or inquiries you

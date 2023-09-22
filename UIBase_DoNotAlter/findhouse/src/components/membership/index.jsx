@@ -3,7 +3,6 @@ import CopyrightFooter from "../common/footer/CopyrightFooter";
 import Footer from "../common/footer/Footer";
 import Header from "../common/header/DefaultHeader_01";
 import MobileMenu from "../common/header/MobileMenu";
-import PopupSignInUp from "../common/PopupSignInUp";
 import Pricing from "./Pricing";
 import  Modal  from "./Modal";
 // import Header from "../home/Header";
@@ -45,15 +44,14 @@ const Index = () => {
       <MobileMenu />
 
       {/* <!-- Modal --> */}
-      <PopupSignInUp />
 
       {/* <!-- Inner Page Breadcrumb --> */}
       {/* <BreadCrumbBanner /> */}
 
       {/* <!-- Service Section Area --> */}
       <section
-      className="our-dashbord dashbord bgc-f7 pb50 "
-      style={{ marginLeft: "-20%",paddingRight:"5%" }}
+      className="our-dashbord mt-5 container"
+      style={{  }}
     >
       <div className="container-fluid ovh">
         <div className="row">

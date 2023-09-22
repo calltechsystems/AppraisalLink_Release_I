@@ -18,7 +18,7 @@ const Form = () => {
         <div className="col-lg-6 pt60 ">
           <form action="#">
             <div className="heading text-center">
-              <h3>Reset your password with registered email.</h3>
+              <h3>Reset your password via registered email.</h3>
               {/* <p className="text-center">
                 Reset your password with email.{" "}
                 <Link href="/register" className="text-thm">
@@ -49,7 +49,7 @@ const Form = () => {
       </div> */}
             {/* devider */}
 
-            <div className="input-group mb-2 mr-sm-2">
+            {/* <div className="input-group mb-2 mr-sm-2">
               <input
                 type="email"
                 className="form-control"
@@ -61,7 +61,7 @@ const Form = () => {
                   <i className="flaticon-user"></i>
                 </div>
               </div>
-            </div>
+            </div> */}
             {/* End .input-group */}
 
             {/* <div className="input-group mb-2 mr-sm-2">
@@ -80,7 +80,7 @@ const Form = () => {
             {/* End .input-group */}
 
             <button type="submit" className="btn btn-log w-100 btn-thm">
-              Submit
+              Send OTP
             </button>
             {/* login button */}
 

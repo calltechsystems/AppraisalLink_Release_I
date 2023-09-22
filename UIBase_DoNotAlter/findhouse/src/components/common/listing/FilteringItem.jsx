@@ -355,7 +355,7 @@ const FilteringItem = () => {
       </li>
       {/* End li */}
 
-      <li className="min_area list-inline-item">
+      {/* <li className="min_area list-inline-item">
         <div className="form-group mb-4">
           <input
             type="number"
@@ -366,10 +366,10 @@ const FilteringItem = () => {
             onChange={(e) => setAreaMin(e.target.value)}
           />
         </div>
-      </li>
+      </li> */}
       {/* End li */}
 
-      <li className="max_area list-inline-item">
+      {/* <li className="max_area list-inline-item">
         <div className="form-group mb-4">
           <input
             type="number"
@@ -380,10 +380,10 @@ const FilteringItem = () => {
             onChange={(e) => setAreaMax(e.target.value)}
           />
         </div>
-      </li>
+      </li> */}
       {/* End li */}
 
-      <li>
+      {/* <li>
         <div id="accordion" className="panel-group">
           <div className="panel">
             <div className="panel-heading">
@@ -397,10 +397,10 @@ const FilteringItem = () => {
                   <i className="flaticon-more"></i> Advanced features
                 </a>
               </h4>
-            </div>
+            </div> */}
             {/* End .panel-heading */}
 
-            <div id="panelBodyRating" className="panel-collapse collapse">
+            {/* <div id="panelBodyRating" className="panel-collapse collapse">
               <div className="panel-body row">
                 <div className="col-lg-12">
                   <ul className="ui_kit_checkbox selectable-list fn-400">
@@ -431,9 +431,9 @@ const FilteringItem = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> 
         </div>
-      </li>
+      </li>*/}
       {/* End li */}
 
       <li>

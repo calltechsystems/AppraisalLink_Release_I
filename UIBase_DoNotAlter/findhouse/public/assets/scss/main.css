@@ -19684,7 +19684,7 @@ canvas {
 #open.flaticon-close:before,
 #open2.flaticon-filter-results-button:before,
 #open2.flaticon-close:before {
-  background-color: #f53c41;
+  /* background-color: #f53c41;4 */
   left: 0;
   position: absolute;
   width: 48px;
@@ -21791,8 +21791,9 @@ a::before {
 
 
 .pricing_table_border_style{
-  background-color: #97d700 !important;
+  background-color: #87d700 !important;
   border: 10px solid darkslateblue;
+  /* color: red; */
   margin-top: -30px;
 }
 .pricing_table_border_style:hover{

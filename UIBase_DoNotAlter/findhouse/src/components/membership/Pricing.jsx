@@ -72,7 +72,7 @@ const Pricing = ({isPlan,hideButton,selectedId,setModalOpen,setPrice}) => {
     },
   ];
 
-  const selectedIdStyle = selectedId ? selectedId : "2";
+  const selectedIdStyle = selectedId ? selectedId : "3";
   const content = isPlan === 1 ? pricingContentForMonthly : pricingContentForYearly ;
 
   const selectPackageHandler = (title,price) =>{
@@ -86,11 +86,11 @@ const Pricing = ({isPlan,hideButton,selectedId,setModalOpen,setPrice}) => {
     <>
       {content.map((item) => (
 
-        <div className="col-sm-4 col-md-4 my_plan_pricing_header"  key={item.id}>
+        <div className="col-sm-4 col-md-4 my_plan_pricing_header mb-5"  key={item.id}>
           <div className={`pricing_table  ${ String(selectedIdStyle) === String(item.id) ? "pricing_table_border_style":""}`}>
             <div className="pricing_header">
               <div className="price">{item.title}</div>
-              {String(selectedIdStyle) === String(item.id) ? <div style={{backgroundColor:"darkslateblue",borderRadius:"4px"}}><h4 >Suggested Plan</h4> </div>: "" }
+              {String(selectedIdStyle) === String(item.id) ? <div style={{backgroundColor:"darkslateblue",borderRadius:"4px", paddingTop:'5px',paddingBottom:'5px'}}><h4 >Suggested Plan</h4> </div>: "" }
             </div>
             <div className="pricing_content">
               <ul className="mb0">

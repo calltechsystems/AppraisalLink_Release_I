@@ -10,7 +10,9 @@ const Form = () => {
       <div className="row">
         <div className="col-md-6">
           <div className="form-group">
-            {/* <label htmlFor="first-name" className="mb-2 text-dark">First Name <span class="req-btn">*</span></label> */}
+            <label htmlFor="first-name" className="mb-2 text-dark">
+              First Name <span class="req-btn">*</span>
+            </label>
             <input
               id="form_name"
               name="form_name"
@@ -25,7 +27,9 @@ const Form = () => {
 
         <div className="col-md-6">
           <div className="form-group">
-            {/* <label htmlFor="first-name" className="mb-2 text-dark">First Name <span class="req-btn">*</span></label> */}
+            <label htmlFor="first-name" className="mb-2 text-dark">
+              Last Name <span class="req-btn">*</span>
+            </label>
             <input
               id="form_name"
               name="form_name"
@@ -40,6 +44,9 @@ const Form = () => {
 
         <div className="col-md-6">
           <div className="form-group">
+            <label htmlFor="first-name" className="mb-2 text-dark">
+              Email Address <span class="req-btn">*</span>
+            </label>
             <input
               id="form_email"
               name="form_email"
@@ -54,6 +61,9 @@ const Form = () => {
 
         <div className="col-md-6">
           <div className="form-group">
+            <label htmlFor="first-name" className="mb-2 text-dark">
+              Phone Number <span class="req-btn">*</span>
+            </label>
             <input
               id="form_phone"
               name="form_phone"
@@ -68,11 +78,13 @@ const Form = () => {
 
         <div className="col-md-6">
           <div className="form-group">
+            <label htmlFor="first-name" className="mb-2 text-dark">
+              Company <span class="req-btn"></span>
+            </label>
             <input
               id="form_subject"
               name="form_subject"
               className="form-control required"
-              required="required"
               type="text"
               placeholder="Company"
             />
@@ -80,7 +92,7 @@ const Form = () => {
         </div>
         {/* End .col */}
 
-        <div className="col-md-6">
+        {/* <div className="col-md-6">
           <div className="form-group">
             <input
               id="form_subject"
@@ -91,10 +103,10 @@ const Form = () => {
               placeholder="You are"
             />
           </div>
-        </div>
+        </div> */}
         {/* End .col */}
 
-        <div className="col-md-6">
+        {/* <div className="col-md-6">
           <div className="form-group">
             <input
               id="form_subject"
@@ -105,16 +117,18 @@ const Form = () => {
               placeholder="Country"
             />
           </div>
-        </div>
+        </div> */}
         {/* End .col */}
 
         <div className="col-md-6">
           <div className="form-group">
+            <label htmlFor="first-name" className="mb-2 text-dark">
+              Province/State <span class="req-btn"></span>
+            </label>
             <input
               id="form_subject"
               name="form_subject"
               className="form-control required"
-              required="required"
               type="text"
               placeholder="Province/State"
             />
@@ -124,11 +138,13 @@ const Form = () => {
 
         <div className="col-md-12">
           <div className="form-group">
+            <label htmlFor="first-name" className="mb-2 text-dark">
+              Subject <span class="req-btn"></span>
+            </label>
             <input
               id="form_subject"
               name="form_subject"
               className="form-control required"
-              required="required"
               type="text"
               placeholder="Subject"
             />
@@ -136,7 +152,7 @@ const Form = () => {
         </div>
         {/* End .col */}
 
-        <div className="col-md-12">
+        {/* <div className="col-md-12">
           <div className="form-group">
             <input
               id="form_subject"
@@ -147,20 +163,23 @@ const Form = () => {
               placeholder="How we can help you?"
             />
           </div>
-        </div>
+        </div> */}
         {/* End .col */}
 
         <div className="col-sm-12">
-          {/* <div className="form-group">
+          <div className="form-group">
+            <label htmlFor="first-name" className="mb-2 text-dark">
+              How we can help you? <span class="req-btn">*</span>
+            </label>
             <textarea
               id="form_message"
               name="form_message"
               className="form-control required"
-              rows="8"
+              rows="4"
               required="required"
-              placeholder="Your Message"
+              placeholder="How we can help you?"
             ></textarea>
-          </div> */}
+          </div>
           {/* End .col */}
           {/* <ReCAPTCHA sitekey="Your client site key" onChange={onChange} />, */}
           <div className="form-group mb0 text-end">
