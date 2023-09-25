@@ -19,7 +19,6 @@ const Form = () => {
               className="form-control"
               required="required"
               type="text"
-              placeholder="First Name"
             />
           </div>
         </div>
@@ -36,7 +35,6 @@ const Form = () => {
               className="form-control"
               required="required"
               type="text"
-              placeholder="Last Name"
             />
           </div>
         </div>
@@ -53,7 +51,6 @@ const Form = () => {
               className="form-control required email"
               required="required"
               type="text"
-              placeholder="Email Address"
             />
           </div>
         </div>
@@ -70,7 +67,6 @@ const Form = () => {
               className="form-control required phone"
               required="required"
               type="text"
-              placeholder="Phone Number"
             />
           </div>
         </div>
@@ -86,7 +82,6 @@ const Form = () => {
               name="form_subject"
               className="form-control required"
               type="text"
-              placeholder="Company"
             />
           </div>
         </div>
@@ -130,7 +125,6 @@ const Form = () => {
               name="form_subject"
               className="form-control required"
               type="text"
-              placeholder="Province/State"
             />
           </div>
         </div>
@@ -146,7 +140,6 @@ const Form = () => {
               name="form_subject"
               className="form-control required"
               type="text"
-              placeholder="Subject"
             />
           </div>
         </div>
@@ -177,7 +170,6 @@ const Form = () => {
               className="form-control required"
               rows="4"
               required="required"
-              placeholder="How we can help you?"
             ></textarea>
           </div>
           {/* End .col */}

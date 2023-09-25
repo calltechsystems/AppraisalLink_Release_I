@@ -35,9 +35,15 @@ const Form = () => {
                 required
                 placeholder="Email Address"
               />
-              <div className="input-group-prepend">
-                <div className="input-group-text">
-                  <i className="flaticon-user"></i>
+              <div className="">
+                <div className="">
+                  <button
+                    type="submit"
+                    className="btn btn-log w-100 btn-thm mb-0"
+                    style={{ marginLeft: "5px" }}
+                  >
+                    Send OTP
+                  </button>
                 </div>
               </div>
             </div>
@@ -49,20 +55,24 @@ const Form = () => {
       </div> */}
             {/* devider */}
 
-            {/* <div className="input-group mb-2 mr-sm-2">
+            <div className="input-group mb-0 mr-sm-2">
               <input
                 type="email"
-                className="form-control"
+                className="form-control mb-0"
                 required
                 placeholder="Enter OTP"
               />
               <div className="input-group-prepend">
-                <div className="input-group-text">
+                {/* <div className="input-group-text">
                   <i className="flaticon-user"></i>
-                </div>
+                </div> */}
               </div>
-            </div> */}
+            </div>
             {/* End .input-group */}
+
+            <div className="mt-0 d-flex justify-content-end mb-4">
+              <Link href="#">Resend OTP</Link>
+            </div>
 
             {/* <div className="input-group mb-2 mr-sm-2">
         <input
@@ -80,7 +90,7 @@ const Form = () => {
             {/* End .input-group */}
 
             <button type="submit" className="btn btn-log w-100 btn-thm">
-              Send OTP
+              Submit
             </button>
             {/* login button */}
 

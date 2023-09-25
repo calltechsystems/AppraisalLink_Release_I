@@ -3,11 +3,15 @@ import WhyChoose from "../common/WhyChoose";
 import Header from "../common/header/DefaultHeader_01";
 import Footer from "../common/footer/Footer";
 import CopyrightFooter from "../common/footer/CopyrightFooter";
+import MobileMenu from "../common/header/MobileMenu";
 
 const ChooseUs = () => {
   return (
     <div>
       <Header />
+      {/* <!--  Mobile Menu --> */}
+      <MobileMenu />
+
       <section id="why-chose" className="whychose_us bgc-f7 pb30 mt-5">
         <div className="container">
           <div className="row">

@@ -333,7 +333,24 @@ const MobileMenuContent = () => {
 
       <SidebarContent>
         <Menu>
-          <SubMenu
+          <MenuItem>
+            <Link
+              href="/"
+              className={route.pathname === "/" ? "ui-active" : undefined}
+            >
+              Home
+            </Link>
+          </MenuItem>
+
+          <MenuItem>
+            <Link
+              href="/choose-us"
+              className={route.pathname === "/choose-us" ? "ui-active" : undefined}
+            >
+              Why Choose Us
+            </Link>
+          </MenuItem>
+          {/* <SubMenu
             title="Home"
             className={
               home.some((page) => page.routerPath === route.pathname)
@@ -353,11 +370,11 @@ const MobileMenuContent = () => {
                 </Link>
               </MenuItem>
             ))}
-          </SubMenu>
+          </SubMenu> */}
           {/* End Home Home */}
 
           <SubMenu
-            title="Listing"
+            title="Insights"
             className={
               listing.some((parent) => {
                 return parent.items.some(
@@ -397,7 +414,7 @@ const MobileMenuContent = () => {
           </SubMenu>
           {/* End Pages Listing */}
 
-          <SubMenu
+          {/* <SubMenu
             title="Property"
             className={
               property.some((parent) => {
@@ -442,10 +459,10 @@ const MobileMenuContent = () => {
                 ))}
               </SubMenu>
             ))}
-          </SubMenu>
+          </SubMenu> */}
           {/* End Pages Property */}
 
-          <SubMenu
+          {/* <SubMenu
             title="Blog"
             className={
               blog.some(
@@ -472,10 +489,10 @@ const MobileMenuContent = () => {
                 </Link>
               </MenuItem>
             ))}
-          </SubMenu>
+          </SubMenu> */}
           {/* End pages Blog */}
 
-          <SubMenu
+          {/* <SubMenu
             title="Pages"
             className={
               pages.some((page) => page.routerPath === route.pathname)
@@ -495,25 +512,34 @@ const MobileMenuContent = () => {
                 </Link>
               </MenuItem>
             ))}
-          </SubMenu>
+          </SubMenu> */}
           {/* End pages Pages */}
 
           <MenuItem>
             <Link
-              href="/contact"
+              href="/membership"
               className={
-                route.pathname === "/contact" ? "ui-active" : undefined
+                route.pathname === "/membership" ? "ui-active" : undefined
               }
             >
-              Contact
+              Subscription
+            </Link>
+          </MenuItem>
+
+          <MenuItem>
+            <Link
+              href="/about-us"
+              className={
+                route.pathname === "/about-us" ? "ui-active" : undefined
+              }
+            >
+              About Us
             </Link>
           </MenuItem>
 
           <MenuItem>
             <Link
               href="/login"
-              data-bs-toggle="modal"
-              data-bs-target=".bd-example-modal-lg"
               className={route.pathname === "/login" ? "ui-active" : undefined}
             >
               <span className="flaticon-user"></span> Login/Register
@@ -534,13 +560,8 @@ const MobileMenuContent = () => {
       </SidebarContent>
 
       <SidebarFooter>
-        <Link
-          data-bs-toggle="modal"
-          data-bs-target=".bd-example-modal-lg"
-          href="#"
-          className="btn btn-block btn-lg btn-thm circle"
-        >
-          <span className="flaticon-plus"></span> Appraise Property
+        <Link href="contact" className="btn btn-block btn-lg btn-thm circle">
+          <span className="" style={{ fontWeight: "bold" }}></span> GET IN TOUCH
         </Link>
       </SidebarFooter>
     </ProSidebar>

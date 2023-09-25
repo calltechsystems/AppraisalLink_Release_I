@@ -4,7 +4,6 @@ import Footer from "../common/footer/Footer";
 import Header from "../common/header/DefaultHeader_01";
 import MobileMenu from "../common/header/MobileMenu";
 import Partners from "../common/Partners";
-import PopupSignInUp from "../common/PopupSignInUp";
 import WhyChoose from "../common/WhyChoose";
 import Testimonial from "../home-7/Testimonial";
 import BreadCrumbBanner from "./BreadCrumbBanner";
@@ -19,9 +18,6 @@ const index = () => {
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
-
-      {/* <!-- Modal --> */}
-      <PopupSignInUp />
 
       {/* <!-- Inner Page Breadcrumb --> */}
       <BreadCrumbBanner />

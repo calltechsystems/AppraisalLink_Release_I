@@ -73,6 +73,7 @@ const index = () => {
                 className="row"
                 style={{
                   boxShadow: "10px 10px 50px 10px rgba(19, 19, 28, 0.52)",
+                  borderRadius:'0 5px 5px'
                 }}
               >
                 <div

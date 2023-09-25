@@ -2,7 +2,6 @@ import CopyrightFooter from "../common/footer/CopyrightFooter";
 import Footer from "../common/footer/Footer";
 import Header from "../common/header/DefaultHeader_01";
 import MobileMenu from "../common/header/MobileMenu";
-import PopupSignInUp from "../common/PopupSignInUp";
 import BreadCrumbBanner from "./BreadCrumbBanner";
 import FaqContent from "./FaqContent";
 
@@ -15,9 +14,6 @@ const index = () => {
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
 
-      {/* <!-- Modal --> */}
-      <PopupSignInUp />
-
       {/* <!-- Inner Page Breadcrumb --> */}
       {/* <BreadCrumbBanner /> */}
 
@@ -27,7 +23,7 @@ const index = () => {
           <div className="row">
             <div className="col-lg-6 offset-lg-3">
               <div className="main-title text-center">
-                <h2 className="mt0">Frequently Asked Questions</h2>
+                <h2 className="mt-5">Frequently Asked Questions</h2>
               </div>
             </div>
           </div>
@@ -56,11 +52,11 @@ const index = () => {
       </section>
 
       {/* <!-- Our Footer Bottom Area --> */}
-      <section className="footer_middle_area pt40 pb40">
+      <div className="footer_middle_area">
         <div className="container">
           <CopyrightFooter />
         </div>
-      </section>
+      </div>
     </>
   );
 };

@@ -7,7 +7,7 @@ const ComfortPlace = () => {
       {comfortPlace.map((item) => (
         <div className="col-lg-3 col-6 " key={item.id}>
           <Link
-            href="#"
+            href="/mortgage-broker"
             className="icon_hvr_img_box image-1 d-block"
             style={{
               backgroundImage: `url(${item.bgImg})`,

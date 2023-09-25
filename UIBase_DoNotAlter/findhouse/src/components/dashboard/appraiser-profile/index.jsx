@@ -1,8 +1,7 @@
 import Header from "../../common/header/dashboard/Header_02";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenu_01";
 import MobileMenu from "../../common/header/MobileMenu";
-import Filtering from "./Filtering";
-import AllStatistics from "./AllStatistics";
+import ProfileInfo from "./ProfileInfo";
 
 const index = () => {
   return (
@@ -48,50 +47,52 @@ const index = () => {
                 </div>
                 {/* End Dashboard Navigation */}
 
-                <div className="col-lg-12 mb10" style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}>
+                <div className="col-lg-12">
                   <div className="breadcrumb_content style2">
-                    <h2 className="breadcrumb_title">Howdy, Hasan</h2>
+                    <h2 className="breadcrumb_title">My Profile</h2>
                     <p>We are glad to see you again!</p>
                   </div>
-                  <div>
-                  <Filtering/>
+                </div>
+                {/* End .col */}
+
+                <div className="col-lg-12">
+                  <div className="my_dashboard_review">
+                    <div className="row">
+                      {/* <div className="col-xl-2">
+                        <h4>Personal Information</h4>
+                      </div> */}
+                      <div className="col-xl-12">
+                        <ProfileInfo />
+                      </div>
+                    </div>
                   </div>
-                  
+                  {/* End prifle info wrapper end */}
+
+                  {/*<div className="my_dashboard_review mt30">
+                    <div className="row">
+                      <div className="col-xl-2">
+                        <h4>Social Media</h4>
+                      </div> 
+                      <div className="col-xl-12">
+                        <SocialMedia />
+                      </div>
+                    </div>
+                    </div>*/}
+                  {/* End .SocialMedia */}
+
+                 {/* <div className="my_dashboard_review mt30">
+                    <div className="row">
+                       <div className="col-xl-2">
+                        <h4>Change password</h4>
+                      </div> 
+                      <div className="col-xl-12">
+                        <ChangePassword />
+                      </div>
+                    </div>
+                    </div>*/}
                 </div>
               </div>
               {/* End .row */}
-
-              <div className="row">
-                <AllStatistics />
-              </div>
-              {/* End .row Dashboard top statistics */}
-
-              <div className="row" >
-                {/* <div className="col-xl-6">
-                  <div className="application_statics">
-                    <h4 className="mb-4">View Statistics</h4>
-                    <StatisticsChart />
-                  </div>
-                 </div> 
-                 <div className="col-xl-6">
-                 <div className="application_statics">
-                   <h4 className="mb-4">View Statistics</h4>
-                   <StatisticsPieChart />
-                 </div>
-                </div>  */}
-                
-                
-                {/* End statistics chart */}
-
-                {/*<div className="col-xl-5">
-                  <div className="recent_job_activity">
-                    <h4 className="title mb-4">Recent Activities</h4>
-                    <Activities />
-                  </div>
-                </div>*/}
-              </div>
-              {/* End .row  */}
-              
 
               <div className="row mt50">
                 <div className="col-lg-12">
