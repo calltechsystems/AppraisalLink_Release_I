@@ -1,12 +1,17 @@
+"use client";
 import Image from "next/image";
 import properties from "../../../data/properties";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Link from "next/link";
+import axios from "axios";
+import { encryptionData } from "../../../utils/dataEncryption";
 const TableData = () => {
 
   const [Id,setId] = useState(-1);
   const [toggle,setToggle] = useState(false);
+ 
+  const [data , setData] = useState([]);
 
 
   let theadConent = [
@@ -17,10 +22,37 @@ const TableData = () => {
     "Action",
   ];
 
+  useEffect(()=>{
+    
+    const userData = JSON.parse(localStorage.getItem("user"));
+    const payload = {
+      token : userData.token
+    };
+
+    console.log(payload);
+
+    axios
+      .get("/api/getAllProperties",
+       {
+        headers: {
+          Authorization:`Bearer ${userData.token}`,
+          "Content-Type":"application/json"
+        }
+        
+      })
+      .then((res) => {
+        console.log(res);
+        setData(res.data.data.properties);
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
+  },[]);
+
   const toggleDropdownDiv = (item)=>{
   };
 
-  let tbodyContent = properties?.slice(0, 4)?.map((item,key) => (
+  let tbodyContent = data?.map((item,key) => (
     <>
     <tr key={item.id}>
       <td scope="row">
@@ -46,18 +78,18 @@ const TableData = () => {
               <h4>{item.title}</h4>
               <p>
                 <span className="flaticon-placeholder"></span>
-                {item.location}
+                {item.area} {item.city} {item.state} {item.zipCode}
               </p>
               <Link className="fp_price text-thm" href="#">
-                ${item.price}
-                <small>/mo</small>
+                ${item.bidLowerRange} - ${item.bidUpperRange}
+                <small>/estimated</small>
               </Link>
             </div>
           </div>
       </td>
       {/* End td */}
 
-      <td>30 December, 2020</td>
+      <td>{item?.addedDatetime}</td>
       {/* End td */}
 
       <td>
@@ -76,7 +108,7 @@ const TableData = () => {
             data-placement="top"
             title="View"
           >
-            <Link href={`/create-listing/${item}`} >
+            <Link href={"/my-properties"} >
               <span className="flaticon-view"></span>
             </Link>
           </li>
@@ -86,7 +118,7 @@ const TableData = () => {
             data-placement="top"
             title="Edit"
           >
-            <Link href="/create-listing/${item}" >
+            <Link href={`/create-listing/${item.propertyId}`} >
               <span className="flaticon-edit"></span>
             </Link>
           </li>

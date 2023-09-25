@@ -3,8 +3,9 @@ import { useRouter } from "next/router";
 import { isSinglePageActive } from "../../../../utils/daynamicNavigation";
 import Image from "next/image";
 import {getSession} from 'next-iron-session';
+import CircularIcon from "./CircularIcon";
 
-const MyAccount = ({user}) => {
+const MyAccount = ({user, profileCount , setProfile}) => {
   const profileMenuItems = [
     { id: 1, name: "Profile", ruterPath: "/my-profile" },
     // { id: 2, name: " My Message", ruterPath: "/my-message" },
@@ -42,7 +43,10 @@ const MyAccount = ({user}) => {
                 : undefined
             }
           >
-            {item.name}
+          <div style={{display:'flex',flexDirection:"row"}}>
+          {item.id === 1 && <CircularIcon percentage={profileCount}/>}  
+          {item.name}
+          </div>
           </Link>
         ))}
       </div>

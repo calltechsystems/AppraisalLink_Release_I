@@ -1,4 +1,8 @@
-const CreateList = ({isDisable,setDisable}) => {
+import { useRef } from "react";
+
+const CreateList = ({isDisable,communityRef,buildinRef,urgencyRef,setDisable}) => {
+  
+
   return (
     <>
       <div className="row">
@@ -15,8 +19,9 @@ const CreateList = ({isDisable,setDisable}) => {
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                value="xxicheal"
-                disabled={isDisable}
+                placeholder="xxicheal"
+                ref={communityRef}
+                disabled={isDisable}                                                          
               />
             </div>
           </div>
@@ -31,7 +36,8 @@ const CreateList = ({isDisable,setDisable}) => {
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                value="Jackson"
+                placeholder="Jackson"
+                ref={buildinRef}
                 disabled={isDisable}
               />
             </div>
@@ -47,7 +53,8 @@ const CreateList = ({isDisable,setDisable}) => {
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                value="000-876-876"
+                placeholder="000-876-876"
+                ref={urgencyRef}
                 disabled={isDisable}
               />
             </div>

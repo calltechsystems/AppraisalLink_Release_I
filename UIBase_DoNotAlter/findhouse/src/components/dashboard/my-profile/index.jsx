@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Header from "../../common/header/dashboard/Header";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
 import MobileMenu from "../../common/header/MobileMenu";
@@ -6,10 +7,13 @@ import ProfileInfo from "./ProfileInfo";
 import SocialMedia from "./SocialMedia";
 
 const index = () => {
+
+  const [profileCount , setProfileCount] = useState(7);
+  
   return (
     <>
       {/* <!-- Main Header Nav --> */}
-      <Header />
+      <Header  profileCount = {profileCount}  setProfileCount={setProfileCount}/>
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
@@ -64,7 +68,7 @@ const index = () => {
                         <h4>Personal Information</h4>
                       </div> */}
                       <div className="col-xl-12">
-                        <ProfileInfo />
+                        <ProfileInfo profileCount = {profileCount}  setProfileCount={setProfileCount} />
                       </div>
                     </div>
                   </div>

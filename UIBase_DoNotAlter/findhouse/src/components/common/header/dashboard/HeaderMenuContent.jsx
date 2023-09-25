@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import MyAccount from "./MyAccount";
 import Image from "next/image";
 
-const HeaderMenuContent = ({ float = "" ,hide}) => {
+const HeaderMenuContent = ({ float = "" ,hide, setProfileCount , profileCount}) => {
   const route = useRouter();
 
   const home = [
@@ -496,7 +496,7 @@ const HeaderMenuContent = ({ float = "" ,hide}) => {
             <span className="dn-1199 ms-1 text-dark">Shubhendra Patel</span>
           </a>
           <div className="dropdown-menu">
-            <MyAccount />
+            <MyAccount  profileCount = {profileCount}  setProfileCount={setProfileCount} />
           </div>
         </div>
       </li>

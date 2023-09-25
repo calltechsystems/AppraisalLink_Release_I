@@ -1,5 +1,6 @@
 
 const Pricing = ({isPlan,hideButton,selectedId,setModalOpen,setPrice}) => {
+  console.log(isPlan);
   const pricingContentForMonthly = [
     {
       id: 1,
@@ -72,7 +73,11 @@ const Pricing = ({isPlan,hideButton,selectedId,setModalOpen,setPrice}) => {
     },
   ];
 
+<<<<<<< Updated upstream
   const selectedIdStyle = selectedId ? selectedId : "3";
+=======
+  const selectedIdStyle = selectedId ? selectedId : 2 ;
+>>>>>>> Stashed changes
   const content = isPlan === 1 ? pricingContentForMonthly : pricingContentForYearly ;
 
   const selectPackageHandler = (title,price) =>{

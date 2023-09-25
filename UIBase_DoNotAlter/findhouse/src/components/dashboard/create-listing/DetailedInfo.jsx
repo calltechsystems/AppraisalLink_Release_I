@@ -1,5 +1,6 @@
 import React, { Component, useState } from "react";
 
+
 // const DetailedInfo = () =>{
 
 //     const [userInfo,setUserInfo] = useState( {
@@ -79,7 +80,7 @@ import React, { Component, useState } from "react";
 
 import CheckBoxFilter from "../../common/CheckBoxFilter";
 
-const DetailedInfo = ({isDisable,setDisable}) => {
+const DetailedInfo = ({isDisable,updateHandler,applicantEmail,applicantFirstName,applicantLatsName,applicantNumber,setDisable}) => {
   return (
     <>
       <div className="row">
@@ -95,7 +96,8 @@ const DetailedInfo = ({isDisable,setDisable}) => {
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                value="Micheal"
+                placeholder="Micheal"
+                ref={applicantFirstName}
                 disabled={isDisable}
               />
             </div>
@@ -111,7 +113,8 @@ const DetailedInfo = ({isDisable,setDisable}) => {
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                value="Jackson"
+                placeholder="Jackson"
+                ref={applicantLatsName}
                 disabled={isDisable}
               />
             </div>
@@ -127,7 +130,8 @@ const DetailedInfo = ({isDisable,setDisable}) => {
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                value="000-876-876"
+                placeholder="000-876-876"
+                ref={applicantNumber}
                 disabled={isDisable}
               />
             </div>
@@ -143,7 +147,8 @@ const DetailedInfo = ({isDisable,setDisable}) => {
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                value="info@test.com"
+                placeholder="info@test.com"
+                ref={applicantEmail}
                 disabled={isDisable}
               />
             </div>
@@ -155,6 +160,7 @@ const DetailedInfo = ({isDisable,setDisable}) => {
               {!isDisable && (<button
                 className="btn btn2 float-end"
                 style={{ textAlign:'center' }}
+                onClick={updateHandler}
               >
                 Submit
               </button>)}

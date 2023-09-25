@@ -15,12 +15,12 @@ export default async function handler (request,response) {
         return response.status(403).json({error:"Not a verified Data"})
     }
 
-    const { email, password , AccountType  } = body;
+    const { email, password , userType  } = body;
     
        const formData = {
         email : email, 
         password : password ,
-        AccountType : AccountType
+        userType : userType
     };
 
     // const checkUser = await axios.post("https://calltech20230809222640.azurewebsites.net/api/Login/login", { email : email})
@@ -29,14 +29,16 @@ export default async function handler (request,response) {
     // }
 
     // Make an HTTP request to get user data based on the email
-    const userResponse = await axios.post("https://calltech20230809222640.azurewebsites.net/api/Registration/Registration", formData)
+    const userResponse = await axios.post("https://calltech20230920213721.azurewebsites.net/api/Registration/Registration", formData)
     const user = userResponse.data;
 
     if (!user) {
       return response.status(500).json({error:"Server Error"});
     }
-    return response.status(201).json({msg:"Successfully Created !!"},user);
+    return response.status(201).json({msg:"Successfully Created !!"});
   } catch (err) {
+    console.log(err)
+  ;
     return response.status(400).json({err:err.message});
   }
 }

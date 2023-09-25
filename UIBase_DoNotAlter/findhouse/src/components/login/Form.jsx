@@ -6,11 +6,14 @@ import axios from "axios";
 
 import Captcha from "../common/Captcha";
 import { encryptionData } from "../../utils/dataEncryption";
+import { useRouter } from "next/router";
 
 const Form = ({ user }) => {
   const [showhide, setShowhide] = useState("");
   const [showRegister, setRegister] = useState(true);
   const [captchaVerfied, setCaptchaVerified] = useState(false);
+
+  const router = useRouter();
 
   const [passwordLoginVerified, setPasswordLoginVerified] = useState(true);
 
@@ -27,12 +30,10 @@ const Form = ({ user }) => {
     // setUserinput(false);
   };
 
-  // Toggle password visibility hnadler
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
 
-  //login trigger function
   const loginHandler = (event) => {
     event.preventDefault();
     const email = emailLoginRef.current.value;
@@ -55,10 +56,9 @@ const Form = ({ user }) => {
     axios
       .post("/api/login", encryptedData)
       .then((res) => {
-        console.log(res);
         alert("Successfully Logged In!");
-        localStorage.setItem("user", JSON.stringify(res));
-        router.push("/my-profile");
+        localStorage.setItem("user", JSON.stringify(res.data.userData));
+        router.push("/my-dashboard");
       })
       .catch((err) => {
         alert(err.message);

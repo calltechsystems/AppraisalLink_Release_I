@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
+
+import { useRouter } from "next/router";
 import Header from "../../common/header/dashboard/Header";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
 import MobileMenu from "../../common/header/MobileMenu";
@@ -7,11 +9,76 @@ import DetailedInfo from "./DetailedInfo";
 import FloorPlans from "./FloorPlans";
 import LocationField from "./LocationField";
 import PropertyMediaUploader from "./PropertyMediaUploader";
+import { encryptionData } from "../../../utils/dataEncryption";
+import axios from "axios";
 
-const Index = ({isView}) => {
+const Index = ({isView,propertyData}) => {
   const [isDisable,setDisable] = useState(isView);
+  
+  const router = useRouter();
+
+
+  const streetNameRef = useRef( null);
+  const streetNumberRef = useRef(null);
+  const cityRef = useRef(null);
+  const stateRef = useRef(null);
+  const zipCodeRef = useRef( null);
+  const areaRef = useRef(null);
+  const communityRef = useRef(null);
+  const buildinRef = useRef(null);
+  const urgencyRef = useRef(null);
+  
+  const applicantFirstName = useRef(null);
+  const applicantLatsName  = useRef(null);
+  const applicantNumber = useRef(null);
+  const applicantEmail = useRef(null);
+
+
+
+  const updateHandler = ()=>{
+    const payload = {
+        userId : userData.userId,
+        streetName : streetNameRef.current.value,
+        streetNumber : streetNumberRef.current.value,
+        city : cityRef.current.value,
+        state : stateRef.current.value,
+        zipCode : zipCodeRef.current.value,
+        area : areaRef.current.value,
+        community : communityRef.current.value,
+        typeOfBuilding : buildinRef.current.value,
+        applicantFirstName : applicantFirstName.current.value||"",
+        applicantLastName : applicantLatsName.current.value||"",
+        applicantPhoneNumber : applicantNumber.current.value||"",
+        bidLowerRange : 0,
+        bidUpperRange : 0,
+        urgency : urgencyRef.current.value,
+        propertyStatus : true,
+        token:userData.token
+    };
+
+    const encryptedData = encryptionData(payload);
+    
+    axios
+      .post("/api/addPropertyByBroker", encryptedData,
+       {
+        headers: {
+          Authorization:`Bearer ${userData.token}`,
+          "Content-Type":"application/json"
+        },
+      })
+      .then((res) => {
+        alert("Successfully Added the property!");
+        router.push("/my-properties");
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
+
+
+
+  }
   return (
-    <>
+    <>      
       {/* <!-- Main Header Nav --> */}
       <Header />
 
@@ -69,7 +136,15 @@ const Index = ({isView}) => {
                         <h4 className="mb30">1. location Information</h4>
                       </div>
                       {isDisable && (<div style={{marginLeft:"80%",marginBottom:"1%"}}><button  style={{borderRadius:"10%",backgroundColor:"#2e008b",color:"white"}} onClick={()=>setDisable(false)}>Edit</button></div>)}
-                      <LocationField isDisable={isDisable} setDisable={setDisable}/>
+                      <LocationField 
+                      isDisable={isDisable}
+                      streetNameRef = {streetNameRef}
+                      streetNumberRef = {streetNumberRef}
+                      cityRef = {cityRef}
+                      stateRef = {stateRef}
+                      zipCodeRef = {zipCodeRef}
+                      areaRef = {areaRef} 
+                      setDisable={setDisable}/>
                     </div>
                   </div>
                   <div className="my_dashboard_review mt30">
@@ -77,7 +152,11 @@ const Index = ({isView}) => {
                       <h4 className="mb30">2. Other Information</h4>
                      
                     </div>
-                    <CreateList isDisable={isDisable} setDisable={setDisable}/>
+                    <CreateList isDisable={isDisable}
+                    communityRef = {communityRef}
+                      buildinRef = {buildinRef}
+                      urgencyRef = {urgencyRef}
+                    setDisable={setDisable}/>
                   </div>
 
                   <div className="my_dashboard_review mt30">
@@ -85,7 +164,14 @@ const Index = ({isView}) => {
                       <div className="col-lg-12">
                         <h4 className="mb30">3. Applicant Information</h4>
                       </div>
-                      <DetailedInfo isDisable={isDisable} setDisable={setDisable} />
+                      <DetailedInfo 
+                      isDisable={isDisable}
+                      applicantFirstName={applicantFirstName}
+                      applicantLatsName={applicantLatsName}
+                      applicantNumber={applicantNumber}
+                      applicantEmail={applicantEmail}
+                      updateHandler = {updateHandler}
+                       setDisable={setDisable} />
                     </div>
                   </div>
                   {/* <div className="my_dashboard_review mt30">

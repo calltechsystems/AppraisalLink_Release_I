@@ -3,6 +3,9 @@ import Image from "next/image";
 import { useState, useRef } from "react";
 import Captcha from "../common/Captcha";
 import { encryptionData } from "../../utils/dataEncryption";
+import { useRouter } from "next/router";
+
+import axios from "axios";
 
 const Form = () => {
   const [showhide, setShowhide] = useState("");
@@ -12,6 +15,8 @@ const Form = () => {
 
   const [firstClick,setFirstClick] = useState(true);
 
+  const router = useRouter();
+
   const [passwordRegisterVerified, setPasswordRegisterVerified] =
     useState(false);
 
@@ -20,7 +25,7 @@ const Form = () => {
 
   const emailRegisterRef = useRef();
   const passwordRegisterRef = useRef("");
-  const userTypeRef = useRef();
+  const userTypeRef = useRef(1);
   const checkRef = useRef("");
 
   const [isLoading, setLoading] = useState(false);
@@ -75,8 +80,10 @@ const Form = () => {
     const data = {
       email: email,
       password: password,
-      AccountType: user,
+      userType: Number(user),
     };
+
+    console.log(data);
 
     const encryptedData = encryptionData(data);
 
@@ -84,8 +91,9 @@ const Form = () => {
     axios
       .post("/api/register", encryptedData)
       .then((res) => {
+        console.log(res);
         alert("Successfully Signed In!");
-        //redirection to login
+        router.push("/login");
       })
       .catch((err) => {
         alert(err.message);

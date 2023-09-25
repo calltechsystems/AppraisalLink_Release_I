@@ -1,4 +1,4 @@
-const LocationField = ({isDisable,setDisable}) => {
+const LocationField = ({isDisable,streetNameRef,streetNumberRef,cityRef,stateRef,zipCodeRef,areaRef,setDisable}) => {
   return (
     <>
       <div className="row">
@@ -14,7 +14,8 @@ const LocationField = ({isDisable,setDisable}) => {
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                value="Hosangabad Road"
+                placeholder="Hosangabad Road"
+                ref={streetNameRef}
                 disabled={isDisable}
               />
             </div>
@@ -30,7 +31,8 @@ const LocationField = ({isDisable,setDisable}) => {
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                value="657 Road"
+                placeholder="657 Road"
+                ref={streetNumberRef}
                 disabled={isDisable}
               />
             </div>
@@ -46,7 +48,8 @@ const LocationField = ({isDisable,setDisable}) => {
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                value="Hosangabad"
+                placeholder="Hosangabad"
+                ref={cityRef}
                 disabled={isDisable}
               />
             </div>
@@ -62,7 +65,8 @@ const LocationField = ({isDisable,setDisable}) => {
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                value="Madhya Pradesh"
+                placeholder="Madhya Pradesh"
+                ref={stateRef}
                 disabled={isDisable}
               />
             </div>
@@ -78,7 +82,8 @@ const LocationField = ({isDisable,setDisable}) => {
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                value="986543"
+                placeholder="986543"
+                ref={zipCodeRef}
                 disabled={isDisable}
               />
             </div>
@@ -94,7 +99,8 @@ const LocationField = ({isDisable,setDisable}) => {
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                value="Hosangabad Road"
+                placeholder="Hosangabad Road"
+                ref={areaRef}
                 disabled={isDisable}
               />
             </div>

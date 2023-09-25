@@ -21790,6 +21790,60 @@ a::before {
 }
 
 
+/* YourComponent.module.css */
+
+.toggleContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 240px; /* Adjust the width as needed */
+  margin: 0 auto;
+}
+
+.toggleLabel {
+  position: relative;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 32px;
+  padding: 0 16px;
+}
+
+.toggleLabel input[type="radio"] {
+  display: none;
+}
+
+.toggleSwitch {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 64px;
+  height: 32px;
+  background-color: #ccc; /* Default background color */
+  border-radius: 16px;
+  transition: background-color 0.3s;
+}
+
+.toggleLabel input[type="radio"]:checked + .toggleSwitch {
+  background-color: #2e008b; /* Selected background color */
+}
+
+.toggleSwitch::before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 24px;
+  height: 24px;
+  background-color: #fff; /* Default circle color */
+  border-radius: 50%;
+  transition: transform 0.3s;
+}
+
+.toggleLabel input[type="radio"]:checked + .toggleSwitch::before {
+  transform: translateX(32px); /* Move the circle to the right */
+  background-color: #fff; /* Selected circle color */
+}
+
+
 .pricing_table_border_style{
   background-color: #87d700 !important;
   border: 10px solid darkslateblue;
@@ -21797,7 +21851,8 @@ a::before {
   margin-top: -30px;
 }
 .pricing_table_border_style:hover{
-  background-color: 	#3ec995 !important;
+  background-color: 	#006633 !important;
+  border: 12px solid slategray;
 }
 
 .pricing_table_border_style 
@@ -21946,4 +22001,33 @@ input[type=text]{
 
 .checkout-button:hover {
   background-color: #0056b3;
+}
+
+
+.circular-progress {
+  fill: none;
+  stroke-width: 10;
+  stroke: #ccc; /* Background color */
+}
+
+.background {
+  stroke-dasharray: 283; /* 2 * pi * r (circumference of the circle) */
+}
+
+.progress {
+  stroke-dasharray: 283;
+  stroke-linecap: round;
+  stroke: #007bff; /* Progress color */
+  transform: rotate(-90deg);
+  transform-origin: center;
+  transition: stroke-dashoffset 0.5s ease;
+}
+
+.percentage {
+  position: absolute;
+  top: 48%;
+  left: 26%;
+  transform: translate(-50%, -50%);
+  font-size: 12px; /* Adjust the font size as needed */
+  color: #007bff; /* Text color */
 }

@@ -1,0 +1,64 @@
+import axios from "axios";
+import CryptoJS from "crypto-js";
+
+
+ async function handler (request,response) {
+
+    const decryptionKey = process.env.CRYPTO_SECRET_KEY;
+
+  try {
+    const encryptedBody = await request.body.data;
+
+    const decryptedBytes = CryptoJS.AES.decrypt(encryptedBody, decryptionKey);
+    const body = JSON.parse(decryptedBytes.toString(CryptoJS.enc.Utf8));
+    
+    if(!body){
+        return response.status(403).json({error:"Not a verified Data"})
+    }
+
+    const {id , token , firstName , lastName, middleName , companyName 
+        , licenseNo , mortageBrokerLicNo , mortageBrokerageLicNo , city , state , zipCode 
+        , area , phoneNumber , adressLine1 , adressLine2 , brokerageName  , profileImage} = body;
+
+    const formData = {
+        firstName: firstName,
+        middleName:middleName,
+        lastName: lastName,
+        companyName: companyName,
+        licenseNo:licenseNo,
+        brokerageName:brokerageName,
+        adressLine1: adressLine1,
+        adressLine2: adressLine2,
+        city:city,
+        state: state,
+        zipCode: zipCode,
+        area: area,
+        phoneNumber: phoneNumber,
+        mortageBrokerageLicNo: mortageBrokerageLicNo,
+        mortageBrokerLicNo: mortageBrokerLicNo,
+        profileImage: profileImage
+    }
+
+  
+    const userResponse = await axios.put(`https://calltech20230920213721.azurewebsites.net/api/Broker/${id}`, formData,
+    {
+      headers: {
+        Authorization:`Bearer ${token}`,
+        "Content-Type":"application/json"
+      }
+    });
+    const user = userResponse.data;
+
+
+    if(!user){
+        return response.status(404).json({error:"User Not Found"});
+    }
+    return response.status(200).json({msg:"OK",userData : user});
+  } catch (err) {
+    console.log(err);
+    return response.status(400).json({err:err.message});
+  }
+}
+ 
+export default handler;
+

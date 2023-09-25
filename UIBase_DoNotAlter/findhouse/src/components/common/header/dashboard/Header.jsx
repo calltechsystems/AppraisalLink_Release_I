@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import HeaderMenuContent from "./HeaderMenuContent";
 import Image from "next/image";
 
-const Header = () => {
+const Header = ({profileCount , setProfileCount}) => {
   const [navbar, setNavbar] = useState(false);
 
   const changeBackground = ({hide}) => {
@@ -46,7 +46,7 @@ const Header = () => {
         {/* site logo brand */}
 
         <nav>
-          <HeaderMenuContent hide={false} />
+          <HeaderMenuContent  profileCount = {profileCount}  setProfileCount={setProfileCount} hide={false} />
         </nav>
         {/* End .navbar */}
       </div>

@@ -1,19 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CopyrightFooter from "../common/footer/CopyrightFooter";
 import Footer from "../common/footer/Footer";
 import Header from "../common/header/DefaultHeader_01";
 import MobileMenu from "../common/header/MobileMenu";
 import Pricing from "./Pricing";
 import  Modal  from "./Modal";
-// import Header from "../home/Header";
 
 const Index = () => {
   const [isSelected, setSelected] = useState(1);
   const [selectedPlan, setSelectedPlan] = useState('Monthly');
   const [modalOpen, setModalOpen] = useState(false);
   const [price, setPrice] = useState({
-    title : "Basic",
-    price : 0
+    title : "Pro",
+    price : 19
   });
 
   const openModal = () => {
@@ -32,9 +31,10 @@ const Index = () => {
     else{
       setSelected(2);
     }
+    console.log("selected ",isSelected);
     setSelectedPlan(newPlan);
   };
-  
+
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -59,20 +59,22 @@ const Index = () => {
           <div className="main-title text-center">
             <h2 className="text-dark">Ready to get started?</h2>
             <p className="text-dark">
-              Choose a plan tailored to your needs {selectedPlan}
+              Choose a plan tailored to your needs {isSelected ? "Monthly" : "Yearly"}
             </p>
             <div>
               <button
+              
+              onClick={()=>console.log(1)}
                 style={{
+                  
                   width: "120px",
                   margin: "6px",
                   borderRadius: "8px",
                   borderColor:"#2e008b",
                   backgroundColor:
-                    selectedPlan === "Monthly" ? "#2e008b" : "white",
-                  color: selectedPlan === "Monthly" ? "white" : "#2e008b"
+                    isSelected === 1 ? "#2e008b" : "white",
+                  color: isSelected === 1 ? "white" : "#2e008b"
                 }}
-                onClick={()=>changePlan("Monthly")}
               >
                 Monthly
               </button>
@@ -83,10 +85,10 @@ const Index = () => {
                   borderRadius: "8px",
                   borderColor:"#2e008b",
                   backgroundColor:
-                    selectedPlan === "Yearly" ? "#2e008b" : "white",
-                  color: selectedPlan === "Yearly" ? "white" : "#2e008b"
+                    isSelected === 2 ? "#2e008b" : "white",
+                  color: isSelected === 2 ? "white" : "#2e008b"
                 }}
-                onClick={()=>changePlan("Yearly")}
+                onClick={()=>console.log(2)}
               >
                 Yearly
               </button>
