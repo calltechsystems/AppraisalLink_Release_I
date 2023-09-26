@@ -9,7 +9,7 @@ import StatisticsPieChart from "./StatisticsPieChart";
 import Dropdown from "./DropDown";
 import { useRouter } from "next/router";
 
-const index = () => {
+const Index = () => {
   const userData = (JSON.parse(localStorage.getItem("user")));
   const router = useRouter();
 
@@ -119,4 +119,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;
