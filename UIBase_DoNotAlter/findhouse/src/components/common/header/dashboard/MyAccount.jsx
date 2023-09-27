@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import { isSinglePageActive } from "../../../../utils/daynamicNavigation";
 import Image from "next/image";
 import {getSession} from 'next-iron-session';
@@ -10,10 +10,17 @@ const MyAccount = ({user, profileCount , setProfile}) => {
     { id: 1, name: "Profile", ruterPath: "/my-profile" },
     // { id: 2, name: " My Message", ruterPath: "/my-message" },
     // { id: 3, name: " My Favourite", ruterPath: "/my-favourites" },
-    { id: 4, name: "Change Password ", ruterPath: "/my-package" },
-    { id: 5, name: "Log out", ruterPath: "/login" },
+    { id: 4, name: "Change Password ", ruterPath: "/broker-chnage-password" },
+    { id: 5, name: "Log out", ruterPath: "#" },
   ];
   const route = useRouter();
+
+  const userInfo = (JSON.parse(localStorage.getItem("userInfo")));
+
+  const logout = ()=>{
+    localStorage.removeItem("user");
+    route.push("/login");
+  }
   return (
     <>
       <div className="user_set_header">
@@ -21,12 +28,12 @@ const MyAccount = ({user, profileCount , setProfile}) => {
           width={40}
           height={40}
           className="float-start"
-          src="/assets/images/team/Gary-Avatar.png"
+          src= {`${userInfo.userData.brokerage.profileImage}` || "/assets/team/Gary.png"} 
           alt="e1.png"
         />
         <p>
           {user?.email} <br />
-          <span className="address">abc@xyz.com</span>
+          <span className="address">{ `${userInfo.userData.brokerage.firstName} ${userInfo.userData.brokerage.lastName}`|| `abc@xyz.com`}</span>
         </p>
       </div>
       {/* End user_set_header */}

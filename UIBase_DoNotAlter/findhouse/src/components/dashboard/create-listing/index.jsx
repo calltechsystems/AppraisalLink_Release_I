@@ -14,6 +14,8 @@ import axios from "axios";
 
 const Index = ({isView,propertyData}) => {
   const [isDisable,setDisable] = useState(isView);
+
+  const userData = (JSON.parse(localStorage.getItem("user")));
   
   const router = useRouter();
 
@@ -55,6 +57,8 @@ const Index = ({isView,propertyData}) => {
         propertyStatus : true,
         token:userData.token
     };
+
+    console.log("inside");
 
     const encryptedData = encryptionData(payload);
     

@@ -82,7 +82,7 @@ const Pricing = ({isPlan,hideButton,selectedId,setModalOpen,setPrice}) => {
       title : title,
       price : price
     });
-  }
+  }     
   return (
     <>
       {content.map((item) => (

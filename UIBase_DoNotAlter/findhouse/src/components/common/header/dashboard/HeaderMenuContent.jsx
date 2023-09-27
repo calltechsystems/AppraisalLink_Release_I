@@ -6,6 +6,8 @@ import Image from "next/image";
 const HeaderMenuContent = ({ float = "" ,hide, setProfileCount , profileCount}) => {
   const route = useRouter();
 
+  const userInfo = (JSON.parse(localStorage.getItem("userInfo")));
+
   const home = [
     {
       id: 1,
@@ -490,10 +492,10 @@ const HeaderMenuContent = ({ float = "" ,hide, setProfileCount , profileCount}) 
               width={45}
               height={45}
               className="rounded-circle"
-              src="/assets/images/team/Gary-Avatar.png"
+              src={`${userInfo.userData.brokerage.profileImage}`  || `/assets/images/team/Gary-Avatar.png`}
               alt="e1.png"
             />
-            <span className="dn-1199 ms-1 text-dark">Shubhendra Patel</span>
+            <span className="dn-1199 ms-1 text-dark">{`${userInfo.userData.brokerage.firstName} ${userInfo.userData.brokerage.lastName}`}</span>
           </a>
           <div className="dropdown-menu">
             <MyAccount  profileCount = {profileCount}  setProfileCount={setProfileCount} />
