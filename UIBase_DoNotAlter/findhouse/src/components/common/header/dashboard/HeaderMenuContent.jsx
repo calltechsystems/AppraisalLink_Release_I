@@ -492,10 +492,10 @@ const HeaderMenuContent = ({ float = "" ,hide, setProfileCount , profileCount}) 
               width={45}
               height={45}
               className="rounded-circle"
-              src={`${userInfo.userData.brokerage.profileImage}`  || `/assets/images/team/Gary-Avatar.png`}
+              src={userInfo ? userInfo?.userData?.brokerage?.profileImage : `/assets/images/team/Gary-Avatar.png`}
               alt="e1.png"
             />
-            <span className="dn-1199 ms-1 text-dark">{`${userInfo.userData.brokerage.firstName} ${userInfo.userData.brokerage.lastName}`}</span>
+            <span className="dn-1199 ms-1 text-dark">{userInfo ? userInfo.firstName : `xyz@gmail.com`}</span>
           </a>
           <div className="dropdown-menu">
             <MyAccount  profileCount = {profileCount}  setProfileCount={setProfileCount} />

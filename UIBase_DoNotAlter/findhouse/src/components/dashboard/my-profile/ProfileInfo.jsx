@@ -15,30 +15,30 @@ const ProfileInfo = ({ setProfileCount}) => {
   const userInfo = (JSON.parse(localStorage.getItem("userInfo")));
   const router = useRouter();
 
-  console.log(userInfo.userData.brokerage);
+  console.log(userInfo?.userData?.brokerage);
   
 
-  const [SelectedImage , setSelectedImage] = useState(userInfo.userData.brokerage.profileImage || "/assets/images/team/Gary-Avatar.png");
+  const [SelectedImage , setSelectedImage] = useState(userInfo?.userData?.brokerage?.profileImage || "/assets/images/team/Gary-Avatar.png");
 
   const [edit,setEdit]=useState((!userData.firstName));
   
-  const firstNameRef = useRef(userInfo.userData.brokerage.firstName || "");
-  const middleNameRef = useRef(userInfo.userData.brokerage.middleName || "");
-  const lastNameRef = useRef(userInfo.userData.brokerage.lastName || "");
-  const companyNameRef = useRef(userInfo.userData.brokerage.companyName || "");
+  const firstNameRef = useRef(userInfo?.userData.brokerage.firstName || "");
+  const middleNameRef = useRef(userInfo?.userData.brokerage.middleName || "");
+  const lastNameRef = useRef(userInfo?.userData.brokerage.lastName || "");
+  const companyNameRef = useRef(userInfo?.userData.brokerage.companyName || "");
 
-  const [profile, setProfile] = useState(userInfo.userData.brokerage.profileImage || null);
+  const [profile, setProfile] = useState(userInfo?.userData.brokerage.profileImage || null);
 
-  const addressLineRef = useRef(userInfo.userData.brokerage.adressLine1 || "");
-  const addressLineTwoRef = useRef(userInfo.userData.brokerage.adressLine2 || "");
+  const addressLineRef = useRef(userInfo?.userData.brokerage.adressLine1 || "");
+  const addressLineTwoRef = useRef(userInfo?.serData.brokerage.adressLine2 || "");
 
-  const cityRef = useRef(userInfo.userData.brokerage.city || "");
-  const stateRef = useRef(userInfo.userData.brokerage.state || "");
-  const zipcodeRef = useRef(userInfo.userData.brokerage.zipCode || "");
-  const phoneNumberRef = useRef(userInfo.userData.brokerage.phoneNumber || "");
+  const cityRef = useRef(userInfo?.userData.brokerage.city || "");
+  const stateRef = useRef(userInfo?.userData.brokerage.state || "");
+  const zipcodeRef = useRef(userInfo?.userData.brokerage.zipCode || "");
+  const phoneNumberRef = useRef(userInfo?.userData.brokerage.phoneNumber || "");
 
-  const mortgageBrokrageLicNoRef = useRef(userInfo.userData.brokerage.mortageBrokerageLicNo || "");
-  const mortgageBrokerLicNoRef = useRef(userInfo.userData.brokerage.mortageBrokerLicNo || "");
+  const mortgageBrokrageLicNoRef = useRef(userInfo?.userData.brokerage.mortageBrokerageLicNo || "");
+  const mortgageBrokerLicNoRef = useRef(userInfo?.userData.brokerage.mortageBrokerLicNo || "");
 
   const uploadProfile = (e) => {
     const file = e.target.files[0];
@@ -223,7 +223,7 @@ const ProfileInfo = ({ setProfileCount}) => {
                     type="text"
                     className="form-control"
                     id="formGroupExampleInput3"
-                    placeholder={userInfo.userData.brokerage.firstName ? userInfo.userData.brokerage.firstName : "Enter your first name"}
+                    placeholder={userInfo ? userInfo.userData.brokerage.firstName : "Enter your first name"}
                     ref={firstNameRef}
                     disabled={!edit}
                   />
@@ -240,7 +240,7 @@ const ProfileInfo = ({ setProfileCount}) => {
                     type="text"
                     className="form-control"
                     id="formGroupExampleInput3"
-                    placeholder={userInfo.userData.brokerage.middleName ? userInfo.userData.brokerage.middleName : "Enter your middle name"}
+                    placeholder={userInfo ? userInfo.userData.brokerage.middleName : "Enter your middle name"}
                     ref={middleNameRef}
                   />
                 </div>
@@ -256,7 +256,7 @@ const ProfileInfo = ({ setProfileCount}) => {
                     type="text"
                     className="form-control"
                     id="formGroupExampleInput3"
-                    placeholder={userInfo.userData.brokerage.lastName ? userInfo.userData.brokerage.lastName : "Enter your  last name"}
+                    placeholder={userInfo ? userInfo.userData.brokerage.lastName : "Enter your  last name"}
                     ref={lastNameRef}
                     disabled={!edit}
                   />
@@ -273,7 +273,7 @@ const ProfileInfo = ({ setProfileCount}) => {
                     type="text"
                     className="form-control"
                     id="formGroupExampleInput3"
-                    placeholder={userInfo.userData.brokerage.companyName ? userInfo.userData.brokerage.companyName : "Enter your  company name"}
+                    placeholder={userInfo? userInfo.userData.brokerage.companyName : "Enter your  company name"}
                     ref={companyNameRef}                 
                     disabled={!edit}
                   />
@@ -290,7 +290,7 @@ const ProfileInfo = ({ setProfileCount}) => {
                     type="text"
                     className="form-control"
                     id="formGroupExampleInput3"
-                    placeholder={userInfo.userData.brokerage.adressLine1 ? userInfo.userData.brokerage.adressLine1 : "Enter your address line 1"} 
+                    placeholder={userInfo? userInfo.userData.brokerage.adressLine1 : "Enter your address line 1"} 
                     ref={addressLineRef}                
                     disabled={!edit}
                   />
@@ -307,7 +307,7 @@ const ProfileInfo = ({ setProfileCount}) => {
                     type="text"
                     className="form-control"
                     id="formGroupExampleInput3"
-                    placeholder={userInfo.userData.brokerage.adressLine2 ? userInfo.userData.brokerage.adressLine2 : "Enter your address line 2"}
+                    placeholder={userInfo ? userInfo.userData.brokerage.adressLine2 : "Enter your address line 2"}
                     ref={addressLineTwoRef}                 
                     disabled={!edit}
                   />
@@ -324,7 +324,7 @@ const ProfileInfo = ({ setProfileCount}) => {
                     type="text"
                     className="form-control"
                     id="formGroupExampleInput3"
-                    placeholder={userInfo.userData.brokerage.city ? userInfo.userData.brokerage.city : "Enter your city"} 
+                    placeholder={userInfo ? userInfo.userData.brokerage.city : "Enter your city"} 
                     ref={cityRef}                
                     disabled={!edit}
                   />
@@ -341,7 +341,7 @@ const ProfileInfo = ({ setProfileCount}) => {
                     type="text"
                     className="form-control"
                     id="formGroupExampleInput3"
-                    placeholder={userInfo.userData.brokerage.state ? userInfo.userData.brokerage.state : "Enter your state"} 
+                    placeholder={userInfo ? userInfo.userData.brokerage.state : "Enter your state"} 
                     ref={stateRef}                
                     disabled={!edit}
                   />
@@ -358,7 +358,7 @@ const ProfileInfo = ({ setProfileCount}) => {
                     type="text"
                     className="form-control"
                     id="formGroupExampleInput3"
-                    placeholder={userInfo.userData.brokerage.zipCode ? userInfo.userData.brokerage.zipCode : "Enter your zipcode"}     
+                    placeholder={userInfo ? userInfo.userData.brokerage.zipCode : "Enter your zipcode"}     
                     ref={zipcodeRef}            
                     disabled={!edit}
                   />
@@ -378,7 +378,7 @@ const ProfileInfo = ({ setProfileCount}) => {
                     type="text"
                     className="form-control"
                     id="formGroupExampleInput3"
-                    placeholder={userInfo.userData.brokerage.phoneNumber ? userInfo.userData.brokerage.phoneNumber : "Enter your phoneNumber"}
+                    placeholder={userInfo ? userInfo.userData.brokerage.phoneNumber : "Enter your phoneNumber"}
                     ref={phoneNumberRef}
                     disabled={!edit}
                   />
@@ -395,7 +395,7 @@ const ProfileInfo = ({ setProfileCount}) => {
                     type="text"
                     className="form-control"
                     id="formGroupExampleInput3"
-                    placeholder={userInfo.userData.brokerage.mortageBrokerageLicNo ? userInfo.userData.brokerage.mortageBrokerLicNo : "Enter your Bokerage Lic No"}
+                    placeholder={userInfo ? userInfo.userData.brokerage.mortageBrokerLicNo : "Enter your Bokerage Lic No"}
                     ref={mortgageBrokrageLicNoRef}
                     disabled={!edit}
                   />
@@ -412,7 +412,7 @@ const ProfileInfo = ({ setProfileCount}) => {
                     type="text"
                     className="form-control"
                     id="formGroupExampleInput3"
-                    placeholder={userInfo.userData.brokerage.mortageBrokerLicNo ? userInfo.userData.brokerage.mortageBrokerLicNo : "Enter your Broker Lic No"}
+                    placeholder={userInfo ? userInfo.userData.brokerage.mortageBrokerLicNo : "Enter your Broker Lic No"}
                     ref={mortgageBrokerLicNoRef}
                     
                     disabled={!edit}

@@ -57,6 +57,7 @@ const Form = ({ user }) => {
       .post("/api/login", encryptedData)
       .then((res) => {
         alert("Successfully Logged In!");
+        console.log(res);
         localStorage.setItem("user", JSON.stringify(res.data.userData));
         router.push("/my-dashboard");
       })

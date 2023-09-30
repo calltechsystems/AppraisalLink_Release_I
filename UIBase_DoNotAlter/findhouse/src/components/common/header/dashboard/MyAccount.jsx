@@ -2,8 +2,9 @@ import Link from "next/link";
 import Router, { useRouter } from "next/router";
 import { isSinglePageActive } from "../../../../utils/daynamicNavigation";
 import Image from "next/image";
-import {getSession} from 'next-iron-session';
 import CircularIcon from "./CircularIcon";
+import {getSession} from 'next-iron-session'
+import { useEffect } from "react";
 
 const MyAccount = ({user, profileCount , setProfile}) => {
   const profileMenuItems = [
@@ -15,7 +16,12 @@ const MyAccount = ({user, profileCount , setProfile}) => {
   ];
   const route = useRouter();
 
-  const userInfo = (JSON.parse(localStorage.getItem("userInfo")));
+  let userInfo = "" , userData = "";
+
+  useEffect(()=>{
+      userData = (JSON.parse(localStorage.getItem("user")));
+      userInfo  = (JSON.parse(localStorage.getItem("userInfo")));
+  },[]);
 
   const logout = ()=>{
     localStorage.removeItem("user");
@@ -28,12 +34,12 @@ const MyAccount = ({user, profileCount , setProfile}) => {
           width={40}
           height={40}
           className="float-start"
-          src= {`${userInfo.userData.brokerage.profileImage}` || "/assets/team/Gary.png"} 
+          src= {""} 
           alt="e1.png"
         />
         <p>
           {user?.email} <br />
-          <span className="address">{ `${userInfo.userData.brokerage.firstName} ${userInfo.userData.brokerage.lastName}`|| `abc@xyz.com`}</span>
+          <span className="address">{ ` abc@xyz.com`}</span>
         </p>
       </div>
       {/* End user_set_header */}
