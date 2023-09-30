@@ -1,3 +1,5 @@
+"use client";
+
 import { useRef, useState } from "react";
 
 import { useRouter } from "next/router";
@@ -11,14 +13,14 @@ import LocationField from "./LocationField";
 import PropertyMediaUploader from "./PropertyMediaUploader";
 import { encryptionData } from "../../../utils/dataEncryption";
 import axios from "axios";
+import { useEffect } from "react";
 
 const Index = ({isView,propertyData}) => {
   const [isDisable,setDisable] = useState(isView);
 
-  const userData = (JSON.parse(localStorage.getItem("user")));
+  let userData =  (JSON.parse(localStorage.getItem("user"))) || {};
   
   const router = useRouter();
-
 
   const streetNameRef = useRef( null);
   const streetNumberRef = useRef(null);

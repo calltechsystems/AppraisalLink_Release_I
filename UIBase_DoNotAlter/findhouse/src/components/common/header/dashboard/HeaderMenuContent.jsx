@@ -1,12 +1,18 @@
 import Link from "next/link";
+"use client";
 import { useRouter } from "next/router";
 import MyAccount from "./MyAccount";
 import Image from "next/image";
+import { useEffect } from "react";
+import { func } from "prop-types";
 
 const HeaderMenuContent = ({ float = "" ,hide, setProfileCount , profileCount}) => {
   const route = useRouter();
 
-  const userInfo = (JSON.parse(localStorage.getItem("userInfo")));
+  let userInfo = (JSON.parse(localStorage.getItem("user"))) ||  {};
+
+ 
+
 
   const home = [
     {
@@ -492,7 +498,7 @@ const HeaderMenuContent = ({ float = "" ,hide, setProfileCount , profileCount}) 
               width={45}
               height={45}
               className="rounded-circle"
-              src={userInfo ? userInfo?.userData?.brokerage?.profileImage : `/assets/images/team/Gary-Avatar.png`}
+              src={userInfo ? userInfo?.broker_Details?.profileImage : `/assets/images/team/Gary-Avatar.png`}
               alt="e1.png"
             />
             <span className="dn-1199 ms-1 text-dark">{userInfo ? userInfo.firstName : `xyz@gmail.com`}</span>

@@ -11,17 +11,11 @@ const MyAccount = ({user, profileCount , setProfile}) => {
     { id: 1, name: "Profile", ruterPath: "/my-profile" },
     // { id: 2, name: " My Message", ruterPath: "/my-message" },
     // { id: 3, name: " My Favourite", ruterPath: "/my-favourites" },
-    { id: 4, name: "Change Password ", ruterPath: "/broker-chnage-password" },
+    { id: 4, name: "Change Password ", ruterPath: "/broker-change-password" },
     { id: 5, name: "Log out", ruterPath: "#" },
   ];
   const route = useRouter();
-
-  let userInfo = "" , userData = "";
-
-  useEffect(()=>{
-      userData = (JSON.parse(localStorage.getItem("user")));
-      userInfo  = (JSON.parse(localStorage.getItem("userInfo")));
-  },[]);
+  let userData = (JSON.parse(localStorage.getItem("user"))) ||  {};
 
   const logout = ()=>{
     localStorage.removeItem("user");
@@ -34,12 +28,12 @@ const MyAccount = ({user, profileCount , setProfile}) => {
           width={40}
           height={40}
           className="float-start"
-          src= {""} 
+          src= {userData ? userData.broker_Details?.profileImage : ""} 
           alt="e1.png"
         />
         <p>
-          {user?.email} <br />
-          <span className="address">{ ` abc@xyz.com`}</span>
+          Email :<br />
+          <span className="address">{userData ? userData.userEmail : "xyz@gmail.com"}</span>
         </p>
       </div>
       {/* End user_set_header */}

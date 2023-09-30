@@ -8,11 +8,11 @@ import StatisticsChart from "./StatisticsChart";
 import StatisticsPieChart from "./StatisticsPieChart";
 import Dropdown from "./DropDown";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const Index = () => {
-  const userData = (JSON.parse(localStorage.getItem("user")));
+  let userData =(JSON.parse(localStorage.getItem("user"))) || {};
   const router = useRouter();
-
 
   return (
     <>
@@ -59,7 +59,7 @@ const Index = () => {
 
                 <div className="col-lg-12 mb10" style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}>
                   <div className="breadcrumb_content style2">
-                    <h2 className="breadcrumb_title">{userData?.firstName} {userData?.middleName} {userData?.lastName}</h2>
+                    <h2 className="breadcrumb_title">{userData?.broker_Details?.firstName} {userData?.broker_Details?.lastName}</h2>
                     <p>We are glad to see you again!</p>
                   </div>
                   <div>

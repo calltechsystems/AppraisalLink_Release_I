@@ -41,8 +41,8 @@ const TableData = () => {
         
       })
       .then((res) => {
-        console.log(res);
-        setData(res.data.data.properties);
+        console.log(res.data.data.properties.$values);
+        setData(res.data.data.properties.$values);
       })
       .catch((err) => {
         alert(err.message);

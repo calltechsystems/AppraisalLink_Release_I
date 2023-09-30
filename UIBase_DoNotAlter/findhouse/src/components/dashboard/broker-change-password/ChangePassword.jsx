@@ -11,11 +11,12 @@ const ChangePassword = () => {
   const newPasswordRef = useRef("");
   const confirmPasswordRef = useRef("");
   const emailRef = useRef("");
+  const userData = (JSON.parse(localStorage.getItem("user"))) || {};
 
   const router = useRouter();
 
   const submitHandler = async () =>{
-    const userData = (JSON.parse(localStorage.getItem("user")));
+    
     const email = emailRef.current.value;
     const newPassword = newPasswordRef.current.value;
     const oldPassword = oldPasswordRef.current.value;
@@ -33,8 +34,6 @@ const ChangePassword = () => {
         newPassword : newPassword,
         token : userData.token
       };
-
-      console.log(payload);
 
       const encryptedData = encryptionData(payload);
 
@@ -78,6 +77,7 @@ const ChangePassword = () => {
                 className="form-control"
                 id="formGroupExampleConfPass"
                 ref={emailRef}
+                value={userData.userEmail}
               />
             </div>
           </div>

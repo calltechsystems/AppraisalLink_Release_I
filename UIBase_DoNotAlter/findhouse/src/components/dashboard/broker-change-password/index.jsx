@@ -1,5 +1,5 @@
-import Header from "../../common/header/dashboard/Header_02";
-import SidebarMenu from "../../common/header/dashboard/SidebarMenu_01";
+import Header from "../../common/header/dashboard/Header";
+import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
 import MobileMenu from "../../common/header/MobileMenu";
 import ChangePassword from "./ChangePassword";
 

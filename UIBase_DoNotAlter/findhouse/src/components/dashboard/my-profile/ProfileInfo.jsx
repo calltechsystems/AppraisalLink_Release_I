@@ -5,40 +5,35 @@ import { useRouter } from "next/router";
 import { encryptionData } from "../../../utils/dataEncryption";
 import axios from "axios";
 import { CldUploadWidget } from "next-cloudinary";
+import { join } from "../../../data/properties";
 
 const ProfileInfo = ({ setProfileCount}) => {
 
-  
-  
   const [profilePhoto,setProfilePhoto] = useState(null);
-  const userData = (JSON.parse(localStorage.getItem("user")));
-  const userInfo = (JSON.parse(localStorage.getItem("userInfo")));
+  let userData = (JSON.parse(localStorage.getItem("user"))) || {};
   const router = useRouter();
 
-  console.log(userInfo?.userData?.brokerage);
+  const [SelectedImage , setSelectedImage] = useState(userData?.broker_Details?.profileImage || "/assets/images/team/Gary-Avatar.png");
+
+  const [edit,setEdit]=useState((!userData.broker_Details?.firstName));
   
+  const firstNameRef = useRef(userData?.broker_Details?.firstName || "");
+  const middleNameRef = useRef(userData?.broker_Details?.middleName || "");
+  const lastNameRef = useRef(userData?.broker_Details?.lastName || "");
+  const companyNameRef = useRef(userData?.broker_Details?.companyName || "");
 
-  const [SelectedImage , setSelectedImage] = useState(userInfo?.userData?.brokerage?.profileImage || "/assets/images/team/Gary-Avatar.png");
+  const [profile, setProfile] = useState(userData?.broker_Details?.profileImage || null);
 
-  const [edit,setEdit]=useState((!userData.firstName));
-  
-  const firstNameRef = useRef(userInfo?.userData.brokerage.firstName || "");
-  const middleNameRef = useRef(userInfo?.userData.brokerage.middleName || "");
-  const lastNameRef = useRef(userInfo?.userData.brokerage.lastName || "");
-  const companyNameRef = useRef(userInfo?.userData.brokerage.companyName || "");
+  const addressLineRef = useRef(userData?.broker_Details?.adressLine1 || "");
+  const addressLineTwoRef = useRef(userData?.broker_Details?.adressLine2 || "");
 
-  const [profile, setProfile] = useState(userInfo?.userData.brokerage.profileImage || null);
+  const cityRef = useRef(userData?.broker_Details?.city || "");
+  const stateRef = useRef(userData?.broker_Details?.state || "");
+  const zipcodeRef = useRef(userData?.broker_Details?.zipCode || "");
+  const phoneNumberRef = useRef(userData?.broker_Details?.phoneNumber || "");
 
-  const addressLineRef = useRef(userInfo?.userData.brokerage.adressLine1 || "");
-  const addressLineTwoRef = useRef(userInfo?.serData.brokerage.adressLine2 || "");
-
-  const cityRef = useRef(userInfo?.userData.brokerage.city || "");
-  const stateRef = useRef(userInfo?.userData.brokerage.state || "");
-  const zipcodeRef = useRef(userInfo?.userData.brokerage.zipCode || "");
-  const phoneNumberRef = useRef(userInfo?.userData.brokerage.phoneNumber || "");
-
-  const mortgageBrokrageLicNoRef = useRef(userInfo?.userData.brokerage.mortageBrokerageLicNo || "");
-  const mortgageBrokerLicNoRef = useRef(userInfo?.userData.brokerage.mortageBrokerLicNo || "");
+  const mortgageBrokrageLicNoRef = useRef(userData?.broker_Details?.mortageBrokerageLicNo || "");
+  const mortgageBrokerLicNoRef = useRef(userData?.broker_Details?.mortageBrokerLicNo || "");
 
   const uploadProfile = (e) => {
     const file = e.target.files[0];
@@ -61,22 +56,22 @@ const ProfileInfo = ({ setProfileCount}) => {
   };
 
   const onUpdatHandler = ()=>{
-    const firstName = firstNameRef.current.value;
-    const lastName = lastNameRef.current.value;
-    const adressLine1 = addressLineRef.current.value;
-    const city = cityRef.current.value;
-    const state = stateRef.current.value;
-    const zipCode = zipcodeRef.current.value;
-    const phoneNumber = phoneNumberRef.current.value;
-    const mortageBrokerLicNo = mortgageBrokerLicNoRef.current.value;
-    const mortageBrokerageLicNo = mortgageBrokrageLicNoRef.current.value;
+    const firstName = firstNameRef.current.value || userData.broker_Details.firstName;
+    const lastName = lastNameRef.current.value || userData.broker_Details.lastName;
+    const adressLine1 = addressLineRef.current.value || userData.broker_Details.adressLine1;
+    const city = cityRef.current.value || userData.broker_Details.city;
+    const state = stateRef.current.value || userData.broker_Details.state;
+    const zipCode = zipcodeRef.current.value || userData.broker_Details.zipCode;
+    const phoneNumber = phoneNumberRef.current.value || userData.broker_Details.phoneNumber;
+    const mortageBrokerLicNo = mortgageBrokerLicNoRef.current.value || userData.broker_Details.mortageBrokerLicNo;
+    const mortageBrokerageLicNo = mortgageBrokrageLicNoRef.current.value || userData.broker_Details.mortageBrokerageLicNo;
 
-    const adressLine2 = addressLineTwoRef.current.value;
-    const middleName = middleNameRef.current.value;
-    const companyName = companyNameRef.current.value;
+    const adressLine2 = addressLineTwoRef.current.value || userData.broker_Details.adressLine2;
+    const middleName = middleNameRef.current.value || userData.broker_Details.middleName;
+    const companyName = companyNameRef.current.value || userData.broker_Details.companyName;
 
-    if(!firstName || !lastName || !adressLine1 || !city || !state || !zipCode || !phoneNumber || !mortageBrokerLicNo ||
-    ! mortageBrokerageLicNo ){
+    if((!firstName || !lastName || !adressLine1 || !city || !state || !zipCode || !phoneNumber || !mortageBrokerLicNo ||
+    ! mortageBrokerageLicNo) && (!userData) ){
       alert("All marked fields arent filled !!");
     }
     else{
@@ -125,9 +120,11 @@ const ProfileInfo = ({ setProfileCount}) => {
         axios
       .put("/api/updateBrokerProfile", encryptedData)
       .then((res) => {
-        console.log(res);
         alert("Successfully Updated Profile!");
-        localStorage.setItem("userInfo",JSON.stringify(res.data));
+        let data =  userData;
+        data.broker_Details = res.data.userData.brokerage;
+        localStorage.removeItem("user");
+        localStorage.setItem("user",JSON.stringify(data));
         router.push("/my-dashboard");
       })
       .catch((err) => {
@@ -190,7 +187,7 @@ const ProfileInfo = ({ setProfileCount}) => {
             <div className="col-lg-4">
             <div className="wrap-custom-file">
             <img src={SelectedImage} alt="Uploaded Image"/>
-            <CldUploadWidget
+            { edit && <CldUploadWidget
               onUpload={handleUpload}
               uploadPreset="mpbjdclg"
               options={{
@@ -208,7 +205,7 @@ const ProfileInfo = ({ setProfileCount}) => {
                   </button>
                 </div>
               )}
-            </CldUploadWidget>
+            </CldUploadWidget>}
           </div>
             </div>
             <div className="col-lg-8">
@@ -223,7 +220,7 @@ const ProfileInfo = ({ setProfileCount}) => {
                     type="text"
                     className="form-control"
                     id="formGroupExampleInput3"
-                    placeholder={userInfo ? userInfo.userData.brokerage.firstName : "Enter your first name"}
+                    placeholder={userData ?userData?.broker_Details?.firstName : "Enter your first name"}
                     ref={firstNameRef}
                     disabled={!edit}
                   />
@@ -240,7 +237,7 @@ const ProfileInfo = ({ setProfileCount}) => {
                     type="text"
                     className="form-control"
                     id="formGroupExampleInput3"
-                    placeholder={userInfo ? userInfo.userData.brokerage.middleName : "Enter your middle name"}
+                    placeholder={userData ?userData?.broker_Details?.middleName : "Enter your middle name"}
                     ref={middleNameRef}
                   />
                 </div>
@@ -256,7 +253,7 @@ const ProfileInfo = ({ setProfileCount}) => {
                     type="text"
                     className="form-control"
                     id="formGroupExampleInput3"
-                    placeholder={userInfo ? userInfo.userData.brokerage.lastName : "Enter your  last name"}
+                    placeholder={userData ?userData?.broker_Details?.lastName : "Enter your  last name"}
                     ref={lastNameRef}
                     disabled={!edit}
                   />
@@ -273,7 +270,7 @@ const ProfileInfo = ({ setProfileCount}) => {
                     type="text"
                     className="form-control"
                     id="formGroupExampleInput3"
-                    placeholder={userInfo? userInfo.userData.brokerage.companyName : "Enter your  company name"}
+                    placeholder={userData ?userData?.broker_Details?.companyName : "Enter your  company name"}
                     ref={companyNameRef}                 
                     disabled={!edit}
                   />
@@ -290,7 +287,7 @@ const ProfileInfo = ({ setProfileCount}) => {
                     type="text"
                     className="form-control"
                     id="formGroupExampleInput3"
-                    placeholder={userInfo? userInfo.userData.brokerage.adressLine1 : "Enter your address line 1"} 
+                    placeholder={userData ?userData?.broker_Details?.adressLine1 : "Enter your address line 1"} 
                     ref={addressLineRef}                
                     disabled={!edit}
                   />
@@ -307,7 +304,7 @@ const ProfileInfo = ({ setProfileCount}) => {
                     type="text"
                     className="form-control"
                     id="formGroupExampleInput3"
-                    placeholder={userInfo ? userInfo.userData.brokerage.adressLine2 : "Enter your address line 2"}
+                    placeholder={userData ?userData?.broker_Details?.adressLine2 : "Enter your address line 2"}
                     ref={addressLineTwoRef}                 
                     disabled={!edit}
                   />
@@ -324,7 +321,7 @@ const ProfileInfo = ({ setProfileCount}) => {
                     type="text"
                     className="form-control"
                     id="formGroupExampleInput3"
-                    placeholder={userInfo ? userInfo.userData.brokerage.city : "Enter your city"} 
+                    placeholder={userData ?userData?.broker_Details?.city : "Enter your city"} 
                     ref={cityRef}                
                     disabled={!edit}
                   />
@@ -341,7 +338,7 @@ const ProfileInfo = ({ setProfileCount}) => {
                     type="text"
                     className="form-control"
                     id="formGroupExampleInput3"
-                    placeholder={userInfo ? userInfo.userData.brokerage.state : "Enter your state"} 
+                    placeholder={userData ?userData?.broker_Details?.state : "Enter your state"} 
                     ref={stateRef}                
                     disabled={!edit}
                   />
@@ -358,7 +355,7 @@ const ProfileInfo = ({ setProfileCount}) => {
                     type="text"
                     className="form-control"
                     id="formGroupExampleInput3"
-                    placeholder={userInfo ? userInfo.userData.brokerage.zipCode : "Enter your zipcode"}     
+                    placeholder={userData ?userData?.broker_Details?.zipCode : "Enter your zipcode"}     
                     ref={zipcodeRef}            
                     disabled={!edit}
                   />
@@ -378,7 +375,7 @@ const ProfileInfo = ({ setProfileCount}) => {
                     type="text"
                     className="form-control"
                     id="formGroupExampleInput3"
-                    placeholder={userInfo ? userInfo.userData.brokerage.phoneNumber : "Enter your phoneNumber"}
+                    placeholder={userData ?userData?.broker_Details?.phoneNumber : "Enter your phoneNumber"}
                     ref={phoneNumberRef}
                     disabled={!edit}
                   />
@@ -395,7 +392,7 @@ const ProfileInfo = ({ setProfileCount}) => {
                     type="text"
                     className="form-control"
                     id="formGroupExampleInput3"
-                    placeholder={userInfo ? userInfo.userData.brokerage.mortageBrokerLicNo : "Enter your Bokerage Lic No"}
+                    placeholder={userData ?userData?.broker_Details?.mortageBrokerLicNo : "Enter your Bokerage Lic No"}
                     ref={mortgageBrokrageLicNoRef}
                     disabled={!edit}
                   />
@@ -412,7 +409,7 @@ const ProfileInfo = ({ setProfileCount}) => {
                     type="text"
                     className="form-control"
                     id="formGroupExampleInput3"
-                    placeholder={userInfo ? userInfo.userData.brokerage.mortageBrokerLicNo : "Enter your Broker Lic No"}
+                    placeholder={userData ?userData?.broker_Details?.mortageBrokerLicNo : "Enter your Broker Lic No"}
                     ref={mortgageBrokerLicNoRef}
                     
                     disabled={!edit}
