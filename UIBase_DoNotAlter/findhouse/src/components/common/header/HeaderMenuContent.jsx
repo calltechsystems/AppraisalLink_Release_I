@@ -1,44 +1,49 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 const HeaderMenuContent = ({ float = "", hide, isListing }) => {
   const route = useRouter();
 
-  const [isHovered, setIsHovered] = useState(false);
+  const [hovered, setHovered] = useState(false);
 
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
+  const [about, setAbout] = useState(false);
 
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
+  // const [isHovered, setIsHovered] = useState(false);
 
-  const menuStyle = {
-    // width: '200px',  Initial width
-    transition: "width 0.3s ease", // Add transition for the width property
-    position: "relative",
-  };
+  // const handleMouseEnter = () => {
+  //   setIsHovered(true);
+  // };
 
-  const contentStyle = {
-    opacity: isHovered ? 1 : 0, // Show content when hovered
-    transition: "opacity 0.3s ease", // Add transition for the opacity property
-    position: "absolute",
-    top: "100%",
-    left: "-460px",
-    width: "1580px",
-    margin: "-16px",
-    height: "80px",
-    backgroundColor: "#fff",
-    color: "#333",
-    borderTopColor: "#2e008b",
-    borderTopWidth: "6px",
-    borderTopStyle: "solid",
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-  };
+  // const handleMouseLeave = () => {
+  //   setIsHovered(false);
+  // };
+
+  // const menuStyle = {
+  //   // width: '200px',  Initial width
+  //   transition: "width 0.3s ease", // Add transition for the width property
+  //   position: "relative",
+  // };
+
+  // const contentStyle = {
+  //   opacity: isHovered ? 1 : 0, // Show content when hovered
+  //   transition: "opacity 0.3s ease", // Add transition for the opacity property
+  //   position: "absolute",
+  //   top: "100%",
+  //   left: "-460px",
+  //   width: "1580px",
+  //   margin: "-16px",
+  //   height: "80px",
+  //   backgroundColor: "#fff",
+  //   color: "#333",
+  //   borderTopColor: "#2e008b",
+  //   borderTopWidth: "6px",
+  //   borderTopStyle: "solid",
+  //   display: "flex",
+  //   flexDirection: "row",
+  //   justifyContent: "center",
+  // };
 
   // const contentStyle_01 = {
   //   opacity: isHovered ? 1 : 0, // Show content when hovered
@@ -314,15 +319,15 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
 
   let classname = "";
   if (hide) {
-    classname = "ace-responsive-menu text-end d-lg-block d-none bg-back ul_01";
+    classname = "ace-responsive-menu text-end d-lg-block d-none bg-back";
   } else {
     classname =
       "ace-responsive-menu d-lg-block d-none text-end-01 ul_01 submenu border-bottom";
   }
 
   return (
-    <div>
-      <ul id="respMenu" className={classname} data-menu-style="horizontal">
+    <div onMouseLeave={() => setHovered()}>
+      <ul id="respMenu" className={classname} data-menu-style="horizontal" onMouseLeave={() => setAbout()}>
         {hide && (
           <li className="dropitem">
             <Link
@@ -359,64 +364,130 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
         {hide && (
           <li
             className="dropitem"
-            style={menuStyle}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
+
+            //   style={menuStyle}
+            //   onMouseEnter={handleMouseEnter}
+            //   onMouseLeave={handleMouseLeave}
           >
-            <Link
-              href="/choose-us"
-              className={
-                listing.some((parent) => {
-                  return parent.items.some(
-                    (page) => page.routerPath === route.pathname
-                  );
-                })
-                  ? "ui-active"
-                  : undefined
-              }
-            >
-              {/* <span className="title">Listing</span> */}
-              <span className="title text-info-01">Why Choose Us</span>
+            <Link href="/choose-us ">
+              <span
+                className="title text-info-01"
+                onMouseOver={() => setHovered(!hovered)}
+                
+                // onMouseLeave={() => setHovered()}
+              >
+                Why Choose Us
+              </span>
               <span className="arrow text-info-01"></span>
             </Link>
             {/* <!-- Level Two--> */}
-            <ul className="sub-menu">
-              <div style={contentStyle}>
-                {listing.map((item) => (
-                  <li className="dropitem " key={item.id}>
-                    <Link
-                      href="#"
-                      className={
-                        item.items.some(
-                          (page) => page.routerPath === route.pathname
-                        )
-                          ? "ui-active"
-                          : undefined
-                      }
-                    >
-                      {item.title}
-                    </Link>
-                    {/* <!-- Level Three--> */}
-                    {/* <ul className="sub-menu ">
-                      {item.items.map((val, i) => (
-                        <li key={i}>
-                          <Link
-                            href={val.routerPath}
-                            className={
-                              route.pathname === val.routerPath
-                                ? "ui-active"
-                                : undefined
-                            }
+            {hovered ? (
+              <div
+                className=""
+                style={{
+                  width: "100%",
+                  background: "red",
+                  opacity: hovered ? 1 : 0,  //Show content when hovered
+                  transition: "opacity 0.3s ease", // Add transition for the opacity property
+                  position: "absolute",
+                  top: "100%",
+                  left: "-400px",
+                  width: "1420px",
+                  margin: "-16px",
+                  height: "215px",
+                  backgroundColor: "#fff",
+                  color: "#333",
+                  borderTopColor: "#2e008b",
+                  borderTopWidth: "2px",
+                  borderTopStyle: "solid",
+                  // display: "flex",
+                  // flexDirection: "row",
+                  // justifyContent: "center",
+                  marginTop: "15px",
+                }}
+              >
+                <div className="row">
+                  <div className="col-lg-3 text-center">
+                    <div className="row">
+                      <div className="col-lg-12 mt-4">
+                        {/* <Link href="/">
+                          <Image
+                            width={40}
+                            height={45}
+                            className="logo2 img-fluid"
+                            style={{ marginRight: "10px" }}
+                            src="/assets/images/logo_new.png"
+                            alt="header-logo2.png"
+                          />
+                          <span
+                            className="fw-bold"
+                            style={{ fontSize: "19px", color: "black" }}
                           >
-                            {val.name}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul> */}
-                  </li>
-                ))}
+                            <span></span>Appraisal Link
+                          </span>
+                        </Link> */}
+                      </div>
+                      <div className="col-lg-12 mt-4 mb-2">
+                        <button className="btn btn2 w-50 btn-color">
+                          For Brokers
+                        </button>
+                      </div>
+                      <div className="col-lg-12 mb-2">
+                        <button className="btn btn2 w-50 btn-color">
+                          For Appraiser
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-lg-3 text-center">
+                    <div className="row">
+                      <div className="col-lg-8 m-5 fw-bold">
+                        <span>Mortgage Broker</span>
+                        <br />
+                        <span>Mortgage Broker</span>
+                        <br />
+                        <span>Mortgage Broker</span>
+                        <br />
+                        <span>Mortgage Broker</span>
+                        <br />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-lg-3 text-center">
+                    <div className="row">
+                      <div className="col-lg-8 m-5 fw-bold" style={{}}>
+                        <span>Mortgage Broker</span>
+                        <br />
+                        <span>Mortgage Broker</span>
+                        <br />
+                        <span>Mortgage Broker</span>
+                        <br />
+                        <span>Mortgage Broker</span>
+                        <br />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className="col-lg-3 text-center"
+                    style={{ backgroundColor: "#c2c2c2" }}
+                  >
+                    <div className="row">
+                      <div className="col-lg-8 m-5 fw-bold">
+                        <span>
+                          Ready to see Appraisal Link help make you more money
+                          at record speed?
+                        </span>
+                        <br />
+                        <button className="btn btn2 w-50 btn-color">
+                          Register
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* <h1>hiiiii</h1> */}
               </div>
-            </ul>
+            ) : null}
           </li>
         )}
         {/* End .dropitem */}
@@ -424,73 +495,138 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
         {hide && (
           <li
             className="dropitem"
-            style={menuStyle}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
+            // style={menuStyle}
+            // onMouseEnter={handleMouseEnter}
+            // onMouseLeave={handleMouseLeave}
           >
-            <Link
-              href="/service"
-              className={
-                property.some((parent) => {
-                  return parent.items.some(
-                    (page) =>
-                      page.routerPath === route.pathname ||
-                      page.routerPath + "/[id]" === route.pathname
-                  );
-                })
-                  ? "ui-active"
-                  : undefined
-              }
-            >
-              {/* <span className="title">Property</span>{" "} */}
-              <span className="title text-info-01">Insights</span>{" "}
+            <Link href="/service">
+              <span
+                className="title text-info-01"
+                onMouseOver={() => setAbout(!about)}
+                onMouseLeave={() => setHovered()}
+                // onMouseLeave={() => setAbout()}
+              >
+                Insights
+              </span>{" "}
               <span className="arrow text-info-01"></span>
             </Link>
 
-            <ul className="sub-menu">
-              {property.map((item, index) => (
-                <div style={contentStyle} key={index}>
-                  <li className="dropitem arrow" key={item.id}>
-                    <div>
-                      <Link
-                        href="#"
-                        className={
-                          item.items.some(
-                            (page) =>
-                              page.routerPath === route.pathname ||
-                              page.routerPath + "/[id]" === route.pathname
-                          )
-                            ? "ui-active"
-                            : undefined
-                        }
-                      >
-                        {item.title}
-                      </Link>
+            {about ? (
+              <div
+                className=""
+                style={{
+                  width: "100%",
+                  background: "red",
+                  // opacity: isHovered ? 1 : 0,  Show content when hovered
+                  transition: "opacity 0.3s ease", // Add transition for the opacity property
+                  position: "absolute",
+                  top: "100%",
+                  // left: "20px",
+                  right: "-690px",
+                  width: "1420px",
+                  margin: "-16px",
+                  height: "225px",
+                  backgroundColor: "#fff",
+                  color: "#333",
+                  borderTopColor: "#2e008b",
+                  borderTopWidth: "2px",
+                  borderTopStyle: "solid",
+                  // display: "flex",
+                  // flexDirection: "row",
+                  // justifyContent: "center",
+                  marginTop: "15px",
+                }}
+              >
+                <div className="row">
+                  <div className="col-lg-3 text-center">
+                    <div className="row">
+                      <div className="col-lg-12 mt-4">
+                        {/* <Link href="/">
+                          <Image
+                            width={40}
+                            height={45}
+                            className="logo2 img-fluid"
+                            style={{ marginRight: "10px" }}
+                            src="/assets/images/logo_new.png"
+                            alt="header-logo2.png"
+                          />
+                          <span
+                            className="fw-bold"
+                            style={{ fontSize: "19px", color: "black" }}
+                          >
+                            Appraisal Link
+                          </span>
+                        </Link> */}
+                      </div>
+                      <div className="col-lg-12 mt-4 mb-2">
+                        <button className="btn btn2 w-50 btn-color">
+                          For Brokers
+                        </button>
+                      </div>
+                      <div className="col-lg-12 mb-2">
+                        <button className="btn btn2 w-50 btn-color">
+                          For Appraiser
+                        </button>
+                      </div>
                     </div>
-                    {/* <!-- Level Three--> */}
-                    {/* <ul className="sub-menu ">
-                      {item.items.map((val, i) => (
-                        <div key={i}>
-                          <li key={i}>
-                            <Link
-                              href={val.routerPath}
-                              className={
-                                route.pathname === val.routerPath ||
-                                val.routerPath + "/[id]" === route.pathname
-                                  ? "ui-active"
-                                  : undefined
-                              }
-                            >
-                              {val.name}
-                            </Link>
-                          </li>
-                        </div>
-                      ))}
-                    </ul> */}
-                  </li>
+                  </div>
+                  <div className="col-lg-3 text-end">
+                    <div className="row">
+                      <div className="col-lg-12 m-4 fw-bold">
+                        <Link href="/">
+                          <Image
+                            width={190}
+                            height={125}
+                            className="logo2 img-fluid mt-3"
+                            // style={{ marginRight: "10px" }}
+                            src="/assets/images/about/home-inspector-checks-condition-house-writes-report-flat-illustration_2175-8129.avif"
+                            alt="header-logo2.png"
+                          />
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-lg-3 text-center">
+                    <div className="row">
+                      <div className="col-lg-6 m-5 fw-bold" style={{}}>
+                        <Link href="/">
+                          <Image
+                            width={160}
+                            height={125}
+                            className="logo2 img-fluid"
+                            // style={{ marginRight: "10px" }}
+                            src="/assets/images/about/house-mortgage-property-inspection-audit-icon-graphic-home-real-estate-deal-review-assessment_101884-2246.avif"
+                            alt="header-logo2.png"
+                          />
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className="col-lg-3 text-center"
+                    style={{ backgroundColor: "#c2c2c2" }}
+                  >
+                    <div className="row">
+                      <div className="col-lg-8 m-5 fw-bold">
+                        <span style={{ lineHeight: "1.9" }}>
+                          Revolutionize Your Frieght Experience : conquer the
+                          real estate buisness with{" "}
+                          <span className="text-color fw-bold">
+                            Appraisal Link
+                          </span>
+                          .
+                        </span>
+                        <br />
+                        {/* <button className="btn btn2 w-50 btn-color">
+                          Register
+                        </button> */}
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              ))}
-            </ul>
+                {/* <h1>hiiiii</h1> */}
+              </div>
+            ) : null}
           </li>
         )}
         {/* End .dropitem */}
@@ -631,12 +767,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
         {/* End .dropitem */}
 
         {hide && (
-          <li
-            className="dropitem"
-            style={menuStyle}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
+          <li className="dropitem">
             <Link
               href="#"
               className={

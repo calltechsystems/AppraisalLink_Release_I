@@ -16,7 +16,7 @@ const Form = () => {
         </div>
 
         <div className="col-lg-6 pt60 ">
-          <form action="#">
+          <form action="#" style={{padding:'20px'}}>
             <div className="heading text-center">
               <h3>Reset your password via registered email.</h3>
               {/* <p className="text-center">

@@ -1246,8 +1246,8 @@ header.header-nav a.navbar_brand .logo2 {
 
 header.header-nav.menu_style_home_one ul.ace-responsive-menu li.add_listing {
   background-color: #fff;
-  border-radius: 25px;
-  height: 50px;
+  border-radius: 5px;
+  height: 45px;
   position: relative;
   text-align: left;
   vertical-align: middle;
@@ -7289,7 +7289,7 @@ form.home5_advanced_search_form
 }
 
 .search_smart_property button.ssp_btn:hover {
-  background-color: #3e4c66;
+  background-color: #2e008b;
   color: #ffffff;
 }
 
@@ -9977,11 +9977,12 @@ form.home5_advanced_search_form
 
 /*== Inner Pages Breadcrumb ==*/
 .inner_page_breadcrumb {
-  background-image: url(../images/home/blog_image_real-estate-appraisal-career@2x-1.jpg);
+  background-image: url(../images/home/Membership-Page.jpg);
   background-repeat: no-repeat;
-  height: 370px;
-  margin-top: 88px;
+  height: 220px;
+  margin-top: 18px;
   position: relative;
+  text-align: center;
 }
 @media (max-width: 576px) {
   .inner_page_breadcrumb {
@@ -10134,7 +10135,7 @@ ul.ab_counting li:last-child {
 }
 
 .about_thumb .popup-youtube:after {
-  background-color: rgba(255, 90, 95, 0.2);
+  background-color: #2e008b;
   border-radius: 100%;
   content: "";
   height: 87px;
@@ -12242,10 +12243,11 @@ a.btn.btn_error {
 }
 
 .terms_condition_grid .grids p {
-  font-size: 14px;
+  font-size: 15px;
   font-family: "Nunito";
   color: #484848;
   line-height: 1.714;
+  text-align: justify;
 }
 
 .terms_condition_widget {
@@ -18786,12 +18788,13 @@ legend span {
 
 .bg-img4 {
   background-attachment: scroll;
-  background-image: url("../images/background/4.jpg");
+  background-image: url("../images/background/home.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   border-radius: 8px;
   height: 450px;
+  background-color: #000;
 }
 
 .bg-img5 {
@@ -21865,6 +21868,11 @@ input[type=text]{
   font-weight: 700;
 }
 
+.btn-color{
+  background-color: #2e008b;
+  color: white;
+}
+
 .req-btn{
   color: #e80000;
   font-weight: 700;
@@ -22030,4 +22038,17 @@ input[type=text]{
   transform: translate(-50%, -50%);
   font-size: 12px; /* Adjust the font size as needed */
   color: #007bff; /* Text color */
+}
+.inner_page_breadcrumb_cards {
+  background-image: url(../images/home/istockphoto-1285588443-612x612.jpg);
+  background-repeat: repeat;
+  height: 170px;
+  margin-top: 88px;
+  position: relative;
+}
+
+@media (max-width: 991px) {
+  .inner_page_breadcrumb_cards {
+    margin-top: 6px;
+  }
 }

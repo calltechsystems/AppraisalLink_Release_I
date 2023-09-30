@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const TermsCondions = () => {
   const termsContent = [
@@ -6,14 +7,13 @@ const TermsCondions = () => {
       id: 1,
       title: "Mortgage Broker",
       text1: `A mortgage broker is a professional who assists borrowers in securing mortgage loans. They act as intermediaries between borrowers and lenders, helping borrowers find the best mortgage options available to them. Mortgage brokers have access to a wide range of lenders and loan products, allowing them to shop around on behalf of the borrower and negotiate favorable terms, rates, and conditions. They guide borrowers through the entire mortgage process, from initial application to closing, and help simplify the complex paperwork and documentation requirements. Ultimately, the goal of a mortgage broker is to assist borrowers in obtaining a mortgage loan that fits their financial needs and goals `,
-      text2: `To be discussed`,
     },
-    {
-      id: 2,
-      title: "Our Terms",
-      text1: `To be discussed`,
-      text2: `To be discussed`,
-    },
+    // {
+    //   id: 2,
+    //   title: "Our Terms",
+    //   text1: `To be discussed`,
+    //   text2: `To be discussed`,
+    // },
   ];
 
   const navigationList = [
@@ -27,14 +27,25 @@ const TermsCondions = () => {
   return (
     <div className="row">
       <div className="col-lg-12 col-xl-12">
-        <div className="terms_condition_grid">
+        <div className="row terms_condition_grid">
+        <div className="col-lg-7">
           {termsContent.map((item) => (
             <div className="grids mb30" key={item.id}>
               <h4>{item.title}</h4>
               <p className="mb20">{item.text1}</p>
-              <p>{item.text2}</p>
+              {/* <p>{item.text2}</p> */}
             </div>
           ))}
+        </div>
+        <div className="col-lg-5">
+          <Image
+            width={420}
+            height={300}
+            className="location-finder" style={{marginLeft:'5%'}}
+            src="/assets/images/home/register_img_onlineInves.jpg"
+            alt="location"
+          />
+        </div>
         </div>
       </div>
       {/* End .col */}

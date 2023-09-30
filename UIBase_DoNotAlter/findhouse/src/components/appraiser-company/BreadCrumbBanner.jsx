@@ -1,14 +1,12 @@
-import BreadCrumb from "../common/BreadCrumb";
-
 const BreadCrumbBanner = () => {
   return (
-    <section className="inner_page_breadcrumb">
+    <section className="inner_page_breadcrumb_cards">
       <div className="container">
         <div className="row">
-          <div className="col-xl-6">
+          <div className="col-12">
             <div className="breadcrumb_content">
               {/* <BreadCrumb title="Terms & Conditions" /> */}
-              <h4 className="breadcrumb_title">Appraiser Company</h4>
+              <h2 className="text-center text-dark">Appraiser Company</h2>
             </div>
           </div>
           {/* End .col */}

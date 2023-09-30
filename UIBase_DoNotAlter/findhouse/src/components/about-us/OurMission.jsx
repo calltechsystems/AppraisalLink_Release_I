@@ -6,19 +6,19 @@ const OurMission = () => {
     {
       id: 1,
       icon: "flaticon-user",
-      number: "80,123",
+      number: "TBD",
       meta: "Customers to date",
     },
     {
       id: 2,
       icon: "flaticon-home",
-      number: "$74 Billion",
+      number: "TBD",
       meta: "In home sales",
     },
     {
       id: 3,
       icon: "flaticon-transfer",
-      number: "$468 Million",
+      number: "TBD",
       meta: "In Savings",
     },
   ];
@@ -28,26 +28,17 @@ const OurMission = () => {
       <div className="col-lg-8 col-xl-7">
         <div className="about_content">
           <p className="large">
-            Mauris ac consectetur ante, dapibus gravida tellus. Nullam aliquet
-            eleifend dapibus. Cras sagittis, ex euismod lacinia tempor.
+            We are a company headquartered in Ontario, collaborating with
+            brokers and appraisers to offer services within the real estate
+            industry.
           </p>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-            quis ligula eu lectus vulputate porttitor sed feugiat nunc. Mauris
-            ac consectetur ante, dapibus gravida tellus. Nullam aliquet eleifend
-            dapibus. Cras sagittis, ex euismod lacinia tempor, lectus orci
-            elementum augue, eget auctor metus ante sit amet velit.
+            Our mission is to deliver property appraisal services in the most
+            efficient, compliant, and reliable manner possible. Our objective is
+            to nurture our relationships by ensuring timely communication,
+            fostering strong collaboration with stakeholders, and proactively
+            addressing concerns with a solution-oriented, analytical.
           </p>
-          <p>
-            Maecenas quis viverra metus, et efficitur ligula. Nam congue augue
-            et ex congue, sed luctus lectus congue. Integer convallis
-            condimentum sem. Duis elementum tortor eget condimentum tempor.
-            Praesent sollicitudin lectus ut pharetra pulvinar. Donec et libero
-            ligula. Vivamus semper at orci at placerat.Placeat Lorem ipsum dolor
-            sit amet, consectetur adipisicing elit. Quod libero amet, laborum
-            qui nulla quae alias tempora.
-          </p>
-
           <ul className="ab_counting">
             {missionContent.map((item) => (
               <li className="list-inline-item" key={item.id}>
@@ -72,10 +63,10 @@ const OurMission = () => {
         <div className="about_thumb">
           <Image
             width={461}
-            height={509}
+            height={309}
             priority
-            className="img-fluid w100 cover"
-            src="/assets/images/about/1.jpg"
+            className="w100 cover"
+            src="/assets/images/service/10.png"
             alt="1.jpg"
           />
           <PopupVideo />

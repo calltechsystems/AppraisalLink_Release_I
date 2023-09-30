@@ -5,9 +5,9 @@ const BreadCrumbBanner = () => {
     <section className="inner_page_breadcrumb">
       <div className="container">
         <div className="row">
-          <div className="col-xl-6">
+          <div className="col-xl-12">
             <div className="breadcrumb_content">
-              <BreadCrumb title="about us" />
+              {/* <BreadCrumb title="about us" /> */}
               <h4 className="breadcrumb_title">About Us</h4>
             </div>
           </div>

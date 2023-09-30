@@ -1,4 +1,3 @@
-import CallToAction from "../common/CallToAction";
 import CopyrightFooter from "../common/footer/CopyrightFooter";
 import Footer from "../common/footer/Footer";
 import Header from "../common/header/DefaultHeader_01";
@@ -38,7 +37,7 @@ const index = () => {
             <OurMission />
           </div>
           {/* End .row */}
-         
+
           <div className="row mt80">
             <div className="col-lg-6 offset-lg-3">
               <div className="main-title text-center">

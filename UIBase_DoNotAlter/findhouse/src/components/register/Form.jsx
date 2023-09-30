@@ -115,13 +115,13 @@ const Form = () => {
     }
   };
   return (
-    <div className="row">
+    <div className="row mt-4">
       <div className="col-lg-6 col-xl-6">
         <div className="regstr_thumb">
           <Image
             width={357}
             height={659}
-            className="img-fluid w100 h-100 cover"
+            className="img-fluid w100 h-100 cover mb-5"
             src="/assets/images/home/mobile-login-concept-illustration_114360-83.avif"
             alt="regstr.jpg"
           />
