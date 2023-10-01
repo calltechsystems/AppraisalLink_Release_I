@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
 import { encryptionData } from "../../../utils/dataEncryption";
-const TableData = () => {
+const TableData = ({userData}) => {
 
   const [Id,setId] = useState(-1);
   const [toggle,setToggle] = useState(false);
@@ -24,7 +24,6 @@ const TableData = () => {
 
   useEffect(()=>{
     
-    const userData = JSON.parse(localStorage.getItem("user"));
     const payload = {
       token : userData.token
     };

@@ -11,6 +11,9 @@ const Index = () => {
     price : 0
   });
 
+  
+  const userData = (JSON.parse(localStorage.getItem("user"))) || {};
+
   const openModal = () => {
     setModalOpen(true);
   };

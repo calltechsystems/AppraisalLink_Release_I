@@ -13,11 +13,13 @@ import { useEffect } from "react";
 const Index = () => {
   let userData =(JSON.parse(localStorage.getItem("user"))) || {};
   const router = useRouter();
+  console.log(userData);
+
 
   return (
     <>
       {/* <!-- Main Header Nav --> */}
-      <Header />
+      <Header userData = {userData} />
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />

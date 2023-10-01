@@ -1,19 +1,14 @@
 import Link from "next/link";
-"use client";
 import { useRouter } from "next/router";
 import MyAccount from "./MyAccount";
 import Image from "next/image";
 import { useEffect } from "react";
 import { func } from "prop-types";
 
-const HeaderMenuContent = ({ float = "" ,hide, setProfileCount , profileCount}) => {
+const HeaderMenuContent = ({ float = "" ,hide, setProfileCount , profileCount , userInfo}) => {
   const route = useRouter();
 
-  let userInfo = (JSON.parse(localStorage.getItem("user"))) ||  {};
-
- 
-
-
+  
   const home = [
     {
       id: 1,
@@ -504,7 +499,7 @@ const HeaderMenuContent = ({ float = "" ,hide, setProfileCount , profileCount}) 
             <span className="dn-1199 ms-1 text-dark">{userInfo ? userInfo.firstName : `xyz@gmail.com`}</span>
           </a>
           <div className="dropdown-menu">
-            <MyAccount  profileCount = {profileCount}  setProfileCount={setProfileCount} />
+            <MyAccount  profileCount = {profileCount}  setProfileCount={setProfileCount} userData = {userInfo} />
           </div>
         </div>
       </li>

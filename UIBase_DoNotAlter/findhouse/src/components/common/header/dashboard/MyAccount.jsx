@@ -6,7 +6,7 @@ import CircularIcon from "./CircularIcon";
 import {getSession} from 'next-iron-session'
 import { useEffect } from "react";
 
-const MyAccount = ({user, profileCount , setProfile}) => {
+const MyAccount = ({user, profileCount , setProfile, userData}) => {
   const profileMenuItems = [
     { id: 1, name: "Profile", ruterPath: "/my-profile" },
     // { id: 2, name: " My Message", ruterPath: "/my-message" },
@@ -15,8 +15,6 @@ const MyAccount = ({user, profileCount , setProfile}) => {
     { id: 5, name: "Log out", ruterPath: "#" },
   ];
   const route = useRouter();
-  let userData = (JSON.parse(localStorage.getItem("user"))) ||  {};
-
   const logout = ()=>{
     localStorage.removeItem("user");
     route.push("/login");

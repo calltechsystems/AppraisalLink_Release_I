@@ -8,6 +8,7 @@ import SearchBox from "./SearchBox";
 
 const Index = () => {
   
+  const userData = (JSON.parse(localStorage.getItem("user"))) || {};
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -82,7 +83,7 @@ const Index = () => {
                   <div className="my_dashboard_review mb40">
                     <div className="property_table">
                       <div className="table-responsive mt0">
-                        <TableData />
+                        <TableData  userData = {userData}/>
                       </div>
                       {/* End .table-responsive */}
 

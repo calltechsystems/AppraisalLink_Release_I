@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import HeaderMenuContent from "./HeaderMenuContent";
 import Image from "next/image";
 
-const Header = ({profileCount , setProfileCount}) => {
+const Header = ({profileCount , setProfileCount , userData}) => {
   const [navbar, setNavbar] = useState(false);
 
   const changeBackground = ({hide}) => {
@@ -13,6 +13,8 @@ const Header = ({profileCount , setProfileCount}) => {
       setNavbar(false);
     }
   };
+
+  const userInfo = (JSON.parse(localStorage.getItem("user"))) || userData;
 
   useEffect(() => {
     window.addEventListener("scroll", changeBackground);
@@ -46,7 +48,7 @@ const Header = ({profileCount , setProfileCount}) => {
         {/* site logo brand */}
 
         <nav>
-          <HeaderMenuContent  profileCount = {profileCount}  setProfileCount={setProfileCount} hide={false} />
+          <HeaderMenuContent  profileCount = {profileCount}  setProfileCount={setProfileCount} hide={false} userInfo={userInfo} />
         </nav>
         {/* End .navbar */}
       </div>
