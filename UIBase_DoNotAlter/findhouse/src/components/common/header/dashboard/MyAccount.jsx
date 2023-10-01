@@ -15,10 +15,10 @@ const MyAccount = ({user, profileCount , setProfile, userData}) => {
     { id: 5, name: "Log out", ruterPath: "#" },
   ];
   const route = useRouter();
-  const logout = ()=>{
-    localStorage.removeItem("user");
-    route.push("/login");
-  }
+  // const logout = ()=>{
+  //   localStorage.removeItem("user");
+  //   route.push("/login");
+  // }
   return (
     <>
       <div className="user_set_header">

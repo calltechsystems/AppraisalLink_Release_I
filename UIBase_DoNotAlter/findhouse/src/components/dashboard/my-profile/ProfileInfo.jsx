@@ -114,7 +114,7 @@ const ProfileInfo = ({ setProfileCount}) => {
           profileImage : SelectedImage
         };
 
-        console.log(payload);
+        // console.log(payload);
 
         const encryptedData = encryptionData(payload);
         axios

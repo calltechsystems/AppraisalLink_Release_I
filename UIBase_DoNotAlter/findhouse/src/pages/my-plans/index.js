@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import Seo from "../../components/common/seo";
 import MyPlans from "./plans";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "./Modal";
 
 const Index = () => {
@@ -12,7 +12,15 @@ const Index = () => {
   });
 
   
-  const userData = (JSON.parse(localStorage.getItem("user"))) || {};
+  const [userData , setUserData] = useState({});
+  useEffect(()=>{
+    const fetchData = ()=>{
+      const data =  (JSON.parse(localStorage.getItem("user"))) ;
+      if(data)
+       setUserData(data);
+    }
+    fetchData();
+  },[]);
 
   const openModal = () => {
     setModalOpen(true);

@@ -5,10 +5,23 @@ import TableData from "./TableData";
 import Filtering from "./Filtering";
 import Pagination from "./Pagination";
 import SearchBox from "./SearchBox";
+import { useEffect } from "react";
+import { useState } from "react";
 
 const Index = () => {
   
-  const userData = (JSON.parse(localStorage.getItem("user"))) || {};
+  const [userData , setUserData ] = useState( {} );
+
+  useEffect(() => {
+    const fetchData = ()=>{
+      const data = (JSON.parse(localStorage.getItem("user"))) ;
+      if(data){
+        setUserData(data);
+      }
+    }
+    fetchData();
+  },[]);
+
   return (
     <>
       {/* <!-- Main Header Nav --> */}

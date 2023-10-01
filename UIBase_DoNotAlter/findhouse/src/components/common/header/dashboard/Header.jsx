@@ -14,9 +14,11 @@ const Header = ({profileCount , setProfileCount , userData}) => {
     }
   };
 
-  const userInfo = (JSON.parse(localStorage.getItem("user"))) || userData;
+  const [userInfo , setUserInfo ] = useState( userData || {} );
 
   useEffect(() => {
+    setUserInfo (JSON.parse(localStorage.getItem("user"))) ;
+    
     window.addEventListener("scroll", changeBackground);
   }, []);
 

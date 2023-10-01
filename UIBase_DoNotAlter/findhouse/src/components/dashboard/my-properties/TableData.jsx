@@ -13,6 +13,19 @@ const TableData = ({userData}) => {
  
   const [data , setData] = useState([]);
 
+  // const [userInfo , setUserInfo] = useState(userData);
+
+  // useEffect(()=>{
+  //   const fetchData = ()=>{
+  //     const data =(JSON.parse(localStorage.getItem("user")))
+  //     if (data) {
+  //     setUserInfo(data);
+  //     }
+  //   }
+  //   const response =  fetchData();
+  // },[]);
+
+  // console.log(userData);
 
   let theadConent = [
     "Property Title",
@@ -28,19 +41,21 @@ const TableData = ({userData}) => {
       token : userData.token
     };
 
-    console.log(payload);
+    // console.log(payload);
+
+    const data = (JSON.parse(localStorage.getItem("user")));
 
     axios
       .get("/api/getAllProperties",
        {
         headers: {
-          Authorization:`Bearer ${userData.token}`,
+          Authorization:`Bearer ${data.token}`,
           "Content-Type":"application/json"
         }
         
       })
       .then((res) => {
-        console.log(res.data.data.properties.$values);
+        // console.log(res.data.data.properties.$values);
         setData(res.data.data.properties.$values);
       })
       .catch((err) => {
