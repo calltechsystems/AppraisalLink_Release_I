@@ -10,6 +10,8 @@ const TableData = ({userData}) => {
 
   const [Id,setId] = useState(-1);
   const [toggle,setToggle] = useState(false);
+
+  const [rerender , setRerender] = useState(false);
  
   const [data , setData] = useState([]);
 
@@ -57,11 +59,37 @@ const TableData = ({userData}) => {
       .then((res) => {
         // console.log(res.data.data.properties.$values);
         setData(res.data.data.properties.$values);
+        setRerender(false);
       })
       .catch((err) => {
         alert(err.message);
       });
-  },[]);
+  },[rerender]);
+
+  const deletePropertyHandler = (id)=>{
+
+    const data = (JSON.parse(localStorage.getItem("user")));
+    
+    axios
+      .delete("/api/deleteBrokerPropertyById",
+       {
+        headers: {
+          Authorization:`Bearer ${data.token}`,
+          "Content-Type":"application/json"
+        },
+        params: {
+          propertyId : id
+        }
+        
+      })
+      .then((res) => {
+       setRerender(true);
+
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
+  }
 
   const toggleDropdownDiv = (item)=>{
   };
@@ -122,7 +150,7 @@ const TableData = ({userData}) => {
             data-placement="top"
             title="View"
           >
-            <Link href={"/my-properties"} >
+            <Link href={`/create-listing/${item.propertyId}`} >
               <span className="flaticon-view"></span>
             </Link>
           </li>
@@ -144,9 +172,9 @@ const TableData = ({userData}) => {
             data-placement="top"
             title="Delete"
           >
-            <Link href="#">
+            <button style={{border:"none",backgroundColor:"white"}} onClick={()=>deletePropertyHandler(item.propertyId)}><Link href="#">
               <span className="flaticon-garbage"></span>
-            </Link>
+            </Link></button>
           </li>
         </ul>  
       </td>

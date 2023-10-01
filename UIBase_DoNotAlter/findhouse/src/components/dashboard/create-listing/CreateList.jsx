@@ -1,6 +1,6 @@
 import { useRef } from "react";
 
-const CreateList = ({isDisable,communityRef,buildinRef,urgencyRef,setDisable}) => {
+const CreateList = ({isDisable,communityRef,buildinRef,urgencyRef,propertyData,setDisable}) => {
   
 
   return (
@@ -19,7 +19,7 @@ const CreateList = ({isDisable,communityRef,buildinRef,urgencyRef,setDisable}) =
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder="xxicheal"
+                placeholder={propertyData?.community || "xxicheal"}
                 ref={communityRef}
                 disabled={isDisable}                                                          
               />
@@ -36,7 +36,7 @@ const CreateList = ({isDisable,communityRef,buildinRef,urgencyRef,setDisable}) =
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder="Jackson"
+                placeholder={propertyData?.typeOfBuilding || "xxicheal"}
                 ref={buildinRef}
                 disabled={isDisable}
               />
@@ -53,7 +53,7 @@ const CreateList = ({isDisable,communityRef,buildinRef,urgencyRef,setDisable}) =
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder="000-876-876"
+                placeholder={propertyData?.urgency || "urgency"}
                 ref={urgencyRef}
                 disabled={isDisable}
               />

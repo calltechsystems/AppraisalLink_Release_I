@@ -1,4 +1,6 @@
-const LocationField = ({isDisable,streetNameRef,streetNumberRef,cityRef,stateRef,zipCodeRef,areaRef,setDisable}) => {
+import { current } from "@reduxjs/toolkit";
+
+const LocationField = ({isDisable,streetNameRef,streetNumberRef,cityRef,stateRef,zipCodeRef,areaRef,propertyData,setDisable}) => {
   return (
     <>
       <div className="row">
@@ -14,7 +16,7 @@ const LocationField = ({isDisable,streetNameRef,streetNumberRef,cityRef,stateRef
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder="Hosangabad Road"
+                placeholder={propertyData?.streetName || "Street Name"}
                 ref={streetNameRef}
                 disabled={isDisable}
               />
@@ -31,7 +33,7 @@ const LocationField = ({isDisable,streetNameRef,streetNumberRef,cityRef,stateRef
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder="657 Road"
+                placeholder={propertyData?.streetNumber || "Street Number"}
                 ref={streetNumberRef}
                 disabled={isDisable}
               />
@@ -48,7 +50,7 @@ const LocationField = ({isDisable,streetNameRef,streetNumberRef,cityRef,stateRef
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder="Hosangabad"
+                placeholder={propertyData?.city || "city Name"}
                 ref={cityRef}
                 disabled={isDisable}
               />
@@ -65,7 +67,7 @@ const LocationField = ({isDisable,streetNameRef,streetNumberRef,cityRef,stateRef
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder="Madhya Pradesh"
+                placeholder={propertyData?.state || "state Name"}
                 ref={stateRef}
                 disabled={isDisable}
               />
@@ -82,7 +84,7 @@ const LocationField = ({isDisable,streetNameRef,streetNumberRef,cityRef,stateRef
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder="986543"
+                placeholder={propertyData?.zipCode || "ZipCode"}
                 ref={zipCodeRef}
                 disabled={isDisable}
               />
@@ -99,7 +101,7 @@ const LocationField = ({isDisable,streetNameRef,streetNumberRef,cityRef,stateRef
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder="Hosangabad Road"
+                placeholder={propertyData?.area|| "Area"}
                 ref={areaRef}
                 disabled={isDisable}
               />

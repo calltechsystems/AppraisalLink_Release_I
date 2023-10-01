@@ -20,7 +20,6 @@ import CryptoJS from "crypto-js";
     applicantLastName,applicantEmail,applicantPhoneNumber,bidLowerRange,bidUpperRange,urgency,propertyStatus,token} = body;
 
     const formData = {
-      propertyId : propertyId,
         userId:userId,
         streetName: streetName,
         streetNumber:streetNumber,
@@ -38,11 +37,10 @@ import CryptoJS from "crypto-js";
         bidUpperRange: bidUpperRange,
         propertyStatus: propertyStatus,
         urgency: urgency,
-        propertyStatus: propertyStatus
     }
 
   
-    const userResponse = await axios.put(`https://calltech20230920213721.azurewebsites.net/api/Property/ByPropertyID/${propertyId}`, formData,
+    const userResponse = await axios.post(`https://calltech20230920213721.azurewebsites.net/api/Registration/RegisterProperty`, formData,
     {
       headers: {
         Authorization:`Bearer ${token}`,

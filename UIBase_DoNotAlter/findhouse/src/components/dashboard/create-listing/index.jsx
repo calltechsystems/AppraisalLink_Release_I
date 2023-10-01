@@ -18,54 +18,54 @@ import { useEffect } from "react";
 const Index = ({isView,propertyData}) => {
   const [isDisable,setDisable] = useState(isView);
 
-  let userData =  (JSON.parse(localStorage.getItem("user"))) || {};
+  let userData =  (JSON.parse(localStorage.getItem("user")));  
   
   const router = useRouter();
-
-  const streetNameRef = useRef( null);
-  const streetNumberRef = useRef(null);
-  const cityRef = useRef(null);
-  const stateRef = useRef(null);
-  const zipCodeRef = useRef( null);
-  const areaRef = useRef(null);
-  const communityRef = useRef(null);
-  const buildinRef = useRef(null);
-  const urgencyRef = useRef(null);
+  const streetNameRef = useRef(propertyData?.streetName || null);
+  const streetNumberRef = useRef(propertyData?.streetNumber || null);
+  const cityRef = useRef(propertyData?.city || null);
+  const stateRef = useRef(propertyData?.state || null);
+  const zipCodeRef = useRef(propertyData?.zipCode ||  null);
+  const areaRef = useRef( propertyData?.area || null);
+  const communityRef = useRef(propertyData?.community || null);
+  const buildinRef = useRef(propertyData?.typeOfBuilding || null);
+  const urgencyRef = useRef(propertyData?.urgency || null);
   
-  const applicantFirstName = useRef(null);
-  const applicantLatsName  = useRef(null);
-  const applicantNumber = useRef(null);
-  const applicantEmail = useRef(null);
-
+  const applicantFirstName = useRef(propertyData?.applicantFirstName || null);
+  const applicantLatsName  = useRef(propertyData?.applicantLastName || null);
+  const applicantNumber = useRef(propertyData?.applicantNumber || null);
+  const applicantEmail = useRef(propertyData?.applicantEmail || null);
 
 
   const updateHandler = ()=>{
+     
     const payload = {
         userId : userData.userId,
-        streetName : streetNameRef.current.value,
-        streetNumber : streetNumberRef.current.value,
-        city : cityRef.current.value,
-        state : stateRef.current.value,
-        zipCode : zipCodeRef.current.value,
-        area : areaRef.current.value,
-        community : communityRef.current.value,
-        typeOfBuilding : buildinRef.current.value,
-        applicantFirstName : applicantFirstName.current.value||"",
-        applicantLastName : applicantLatsName.current.value||"",
-        applicantPhoneNumber : applicantNumber.current.value||"",
+        propertyId :propertyData?.propertyId,
+        streetName : streetNameRef.current.value || propertyData.streetName,
+        streetNumber : streetNumberRef.current.value || propertyData.streetNumber,
+        city : cityRef.current.value || propertyData.city,
+        state : stateRef.current.value || propertyData.state,
+        zipCode : zipCodeRef.current.value || propertyData.zipCode,
+        area : areaRef.current.value || propertyData.area,
+        community : communityRef.current.value || propertyData.community,
+        typeOfBuilding : buildinRef.current.value || propertyData.typeOfBuilding,
+        applicantFirstName : applicantFirstName.current.value|| propertyData?.applicantFirstName,
+        applicantLastName : applicantLatsName.current.value|| propertyData?.applicantLastName,
+        applicantPhoneNumber : applicantNumber.current.value||propertyData?.applicantNumber,
+        applicantEmail : applicantEmail.current.value||propertyData?.applicantEmail,
         bidLowerRange : 0,
         bidUpperRange : 0,
-        urgency : urgencyRef.current.value,
+        urgency : propertyData?.urgency === 0 ? 0 :1,
         propertyStatus : true,
         token:userData.token
     };
 
-    console.log("inside");
 
     const encryptedData = encryptionData(payload);
     
     axios
-      .post("/api/addPropertyByBroker", encryptedData,
+      .put("/api/addPropertyByBroker", encryptedData,
        {
         headers: {
           Authorization:`Bearer ${userData.token}`,
@@ -73,7 +73,7 @@ const Index = ({isView,propertyData}) => {
         },
       })
       .then((res) => {
-        alert("Successfully Added the property!");
+        alert("Successfully Updated the property!");
         router.push("/my-properties");
       })
       .catch((err) => {
@@ -83,6 +83,56 @@ const Index = ({isView,propertyData}) => {
 
 
   }
+
+
+  
+  const submitHandler = ()=>{
+     
+    const payload = {
+        userId : userData.userId,
+        streetName : streetNameRef.current.value ,
+        streetNumber : streetNumberRef.current.value ,
+        city : cityRef.current.value,
+        state : stateRef.current.value ,
+        zipCode : zipCodeRef.current.value ,
+        area : areaRef.current.value ,
+        community : communityRef.current.value,
+        typeOfBuilding : buildinRef.current.value ,
+        applicantFirstName : applicantFirstName.current.value,
+        applicantLastName : applicantLatsName.current.value,
+        applicantPhoneNumber : applicantNumber.current.value,
+        applicantEmail : applicantEmail.current.value||userData.userEmail,
+        bidLowerRange : 0,
+        bidUpperRange : 0,
+        urgency : propertyData?.urgency === 0 ? 0 :1,
+        propertyStatus : true,
+        token:userData.token
+    };
+
+
+    console.log(payload);
+    const encryptedData = encryptionData(payload);
+    
+    axios
+      .put("/api/addBrokerProperty", encryptedData,
+       {
+        headers: {
+          Authorization:`Bearer ${userData.token}`,
+          "Content-Type":"application/json"
+        },
+      })
+      .then((res) => {
+        alert("Successfully added the property!");
+        router.push("/my-properties");
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
+
+
+
+  }
+  
   return (
     <>      
       {/* <!-- Main Header Nav --> */}
@@ -150,6 +200,7 @@ const Index = ({isView,propertyData}) => {
                       stateRef = {stateRef}
                       zipCodeRef = {zipCodeRef}
                       areaRef = {areaRef} 
+                      propertyData={ propertyData}
                       setDisable={setDisable}/>
                     </div>
                   </div>
@@ -162,6 +213,7 @@ const Index = ({isView,propertyData}) => {
                     communityRef = {communityRef}
                       buildinRef = {buildinRef}
                       urgencyRef = {urgencyRef}
+                      propertyData={ propertyData}
                     setDisable={setDisable}/>
                   </div>
 
@@ -177,6 +229,8 @@ const Index = ({isView,propertyData}) => {
                       applicantNumber={applicantNumber}
                       applicantEmail={applicantEmail}
                       updateHandler = {updateHandler}
+                      submitHandler = {submitHandler}
+                      propertyData = {propertyData}
                        setDisable={setDisable} />
                     </div>
                   </div>

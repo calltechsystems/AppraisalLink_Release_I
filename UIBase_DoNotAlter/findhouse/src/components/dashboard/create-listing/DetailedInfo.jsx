@@ -80,7 +80,7 @@ import React, { Component, useState } from "react";
 
 import CheckBoxFilter from "../../common/CheckBoxFilter";
 
-const DetailedInfo = ({isDisable,updateHandler,applicantEmail,applicantFirstName,applicantLatsName,applicantNumber,setDisable}) => {
+const DetailedInfo = ({isDisable,updateHandler,applicantEmail,applicantFirstName,applicantLatsName,applicantNumber,propertyData,submitHandler,setDisable}) => {
   return (
     <>
       <div className="row">
@@ -96,7 +96,7 @@ const DetailedInfo = ({isDisable,updateHandler,applicantEmail,applicantFirstName
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder="Micheal"
+                placeholder={propertyData?.applicantFirstName || "Micheal"}
                 ref={applicantFirstName}
                 disabled={isDisable}
               />
@@ -113,7 +113,7 @@ const DetailedInfo = ({isDisable,updateHandler,applicantEmail,applicantFirstName
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder="Jackson"
+                placeholder={propertyData?.applicantLastName || "Micheal"}
                 ref={applicantLatsName}
                 disabled={isDisable}
               />
@@ -130,7 +130,7 @@ const DetailedInfo = ({isDisable,updateHandler,applicantEmail,applicantFirstName
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder="000-876-876"
+                placeholder={propertyData?.applicantNumber || "Number please"}
                 ref={applicantNumber}
                 disabled={isDisable}
               />
@@ -147,7 +147,7 @@ const DetailedInfo = ({isDisable,updateHandler,applicantEmail,applicantFirstName
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder="info@test.com"
+                placeholder={propertyData?.applicantEmail || "Email please"}
                 ref={applicantEmail}
                 disabled={isDisable}
               />
@@ -157,13 +157,19 @@ const DetailedInfo = ({isDisable,updateHandler,applicantEmail,applicantFirstName
           <div className="col-xl-12">
             <div className="my_profile_setting_input overflow-hidden mt20">
               {/* <button className="btn btn1 float-start">Back</button> */}
-              {!isDisable && (<button
+              {!isDisable && (propertyData ? <button
                 className="btn btn2 float-end"
                 style={{ textAlign:'center' }}
                 onClick={updateHandler}
               >
-                Submit
-              </button>)}
+                Update
+              </button> : <button
+              className="btn btn2 float-end"
+              style={{ textAlign:'center' }}
+              onClick={submitHandler}
+            >
+              Submit
+            </button>)}
             </div>
           </div>
           {/* End .col */}
