@@ -13,13 +13,16 @@ import { useEffect } from "react";
 const Index = () => {
   let userData =(JSON.parse(localStorage.getItem("user"))) || {};
   const router = useRouter();
+if(!userData?.firstName){
+  router.push("/my-profile")
+}
   console.log(userData);
 
 
   return (
     <>
       {/* <!-- Main Header Nav --> */}
-      <Header userData = {userData} />
+      <Header userData = {userData ? userData : {}} />
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
@@ -61,7 +64,7 @@ const Index = () => {
 
                 <div className="col-lg-12 mb10" style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}>
                   <div className="breadcrumb_content style2">
-                    <h2 className="breadcrumb_title">{userData?.broker_Details?.firstName} {userData?.broker_Details?.lastName}</h2>
+                    <h2 className="breadcrumb_title">{userData?.broker_Details?.firstName ? userData?.broker_Details?.firstName : "firstName"} {userData?.broker_Details?.lastName ? userData?.broker_Details?.lastName: "lastName"}</h2>
                     <p>We are glad to see you again!</p>
                   </div>
                   <div>

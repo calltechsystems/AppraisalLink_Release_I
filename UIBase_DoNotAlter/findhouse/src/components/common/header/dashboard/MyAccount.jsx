@@ -26,12 +26,12 @@ const MyAccount = ({user, profileCount , setProfile, userData}) => {
           width={40}
           height={40}
           className="float-start"
-          src= {userData ? userData.broker_Details?.profileImage : ""} 
+          src= {userData?.broker_Details?.profileImage ? userData.broker_Details?.profileImage : ""} 
           alt="e1.png"
         />
         <p>
-          Email :<br />
-          <span className="address">{userData ? userData.userEmail : "xyz@gmail.com"}</span>
+        {userData?.broker_Details?.firstName ? userData?.broker_Details?.firstName  : "Name"}<br />
+          <span className="address">{userData?.userEmail ? userData.userEmail : "xyz@gmail.com"}</span>
         </p>
       </div>
       {/* End user_set_header */}
