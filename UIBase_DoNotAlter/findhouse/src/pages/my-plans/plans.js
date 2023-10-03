@@ -1,15 +1,39 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "../../components/common/header/dashboard/Header";
 import MobileMenu from "../../components/common/header/MobileMenu";
 import Pricing from "./pricing";
 import SidebarMenu from "../../components/common/header/dashboard/SidebarMenu";
+import axios from "axios";
 
 const Index = ({ setModalOpen, setPrice }) => {
   const [selectedPlan, setSelectedPlan] = useState("Monthly");
   const [isHovered, setIsHovered] = useState(false);
+  const [planData ,setPlanData] = useState([]);
+
+  useEffect(()=>{
+  
+    const data = (JSON.parse(localStorage.getItem("user")));
+
+    axios
+      .get("/api/getAllPlans",
+       {
+        headers: {
+          Authorization:`Bearer ${data.token}`,
+          "Content-Type":"application/json"
+        }
+        
+      })
+      .then((res) => {
+        setPlanData(res.data.data.$values);
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
+  },[]);
 
   const togglePlan = () => {
     setSelectedPlan(selectedPlan === "Monthly" ? "Yearly" : "Monthly");
+    
   };
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -102,6 +126,7 @@ const Index = ({ setModalOpen, setPrice }) => {
               isPlan={selectedPlan === "Monthly" ? 1 : 2}
               setModalOpen={setModalOpen}
               setPrice={setPrice}
+              data = {planData}
             />
           </div>
           {/* End .row */}

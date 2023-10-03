@@ -13,7 +13,7 @@ import { useEffect } from "react";
 const Index = () => {
   let userData =(JSON.parse(localStorage.getItem("user"))) || {};
   const router = useRouter();
-if(!userData?.firstName){
+if(!userData?.broker_Details?.firstName){
   router.push("/my-profile")
 }
   console.log(userData);

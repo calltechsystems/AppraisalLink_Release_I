@@ -12,13 +12,13 @@ const MyAccount = ({user, profileCount , setProfile, userData}) => {
     // { id: 2, name: " My Message", ruterPath: "/my-message" },
     // { id: 3, name: " My Favourite", ruterPath: "/my-favourites" },
     { id: 4, name: "Change Password ", ruterPath: "/broker-change-password" },
-    { id: 5, name: "Log out", ruterPath: "#" },
+    { id: 5, name: "Log out", ruterPath: "/login" },
   ];
   const route = useRouter();
-  // const logout = ()=>{
-  //   localStorage.removeItem("user");
-  //   route.push("/login");
-  // }
+  const logout = ()=>{
+    localStorage.removeItem("user");
+    route.push("/login");
+  }
   return (
     <>
       <div className="user_set_header">
@@ -48,10 +48,10 @@ const MyAccount = ({user, profileCount , setProfile, userData}) => {
                 : undefined
             }
           >
-          <div style={{display:'flex',flexDirection:"row"}}>
+          {item.id === 5 ? <button onClick={logout}>Logout</button> : <div style={{display:'flex',flexDirection:"row"}}>
           {item.id === 1 && <CircularIcon percentage={profileCount}/>}  
           {item.name}
-          </div>
+          </div>}
           </Link>
         ))}
       </div>

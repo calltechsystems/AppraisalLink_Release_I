@@ -1,8 +1,58 @@
 // Modal.js (a React component)
 
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect } from 'react';
+import {  encryptionData } from '../../utils/dataEncryption';
+import { useState } from 'react';
 
 const Modal = ({ modalOpen, closeModal, price }) => {
+  const [paypalUrl, setPaypalUrl] = useState('');
+  const [status , setStatus] = useState(0);
+  const checkOutHandler = ()=>{
+    const data = (JSON.parse(localStorage.getItem("user")));
+
+    const payload = {
+      planId : price.id,
+      userId : data.userId,
+      token : data.token
+    }
+
+    const encryptiondata = encryptionData(payload);
+    axios
+      .post("/api/paypalPayement",
+      encryptiondata)
+      .then((res) => {
+        console.log(res.data);
+        setPaypalUrl(res.data.data.response)
+        setStatus(1);
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
+  }
+
+  useEffect ( ()=>{
+    const fetchData = async () => {
+      try {
+        // Make your API call here
+        const response = await axios.get('/your-api-endpoint');
+        console.log(response.data);
+
+        // You can process the response data here
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    // Call the fetchData function immediately when the component mounts
+    fetchData();
+
+    // Set up an interval to call the fetchData function every minute (60,000 milliseconds)
+    const intervalId = setInterval(fetchData, 30000);
+    return () => {
+      clearInterval(intervalId);
+    };
+  },[paypalUrl !== ""]);
   return (
     <div>
       {modalOpen && (
@@ -19,8 +69,20 @@ const Modal = ({ modalOpen, closeModal, price }) => {
             </div>
             <div className="button-container">
               {/* <button className="cancel-button" onClick={closeModal}>Cancel</button> */}
-              <button className="checkout-button">Checkout</button>
-            </div>
+              {paypalUrl ? (
+                status === 1 ?
+                <div onClick={()=>setStatus(2)}><a href={paypalUrl} target="_blank" rel="noopener noreferrer" className="checkout-button">
+                  Proceed to PayPal
+                </a></div>:
+                <label className="checkout-button">
+                  Waiting ...
+                </label>
+              ) : (
+                <button className="checkout-button" onClick={checkOutHandler}>
+                  Checkout
+                </button>
+              )}            
+              </div>
           </div>
         </div>
       )}
