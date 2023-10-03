@@ -1,6 +1,6 @@
 
 const Pricing = ({isPlan,hideButton,selectedId,setModalOpen,setPrice}) => {
-  console.log(isPlan);
+ 
   const pricingContentForMonthly = [
     {
       id: 1,
