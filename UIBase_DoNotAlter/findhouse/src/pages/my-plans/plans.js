@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../components/common/header/dashboard/Header";
 import MobileMenu from "../../components/common/header/MobileMenu";
 import Pricing from "./pricing";
@@ -7,53 +7,31 @@ import axios from "axios";
 
 const Index = ({ setModalOpen, setPrice }) => {
   const [selectedPlan, setSelectedPlan] = useState("Monthly");
-  const [isHovered, setIsHovered] = useState(false);
-  const [planData ,setPlanData] = useState([]);
+  const [planData, setPlanData] = useState([]);
 
-  useEffect(()=>{
-  
-    const data = (JSON.parse(localStorage.getItem("user")));
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("user"));
 
     axios
-      .get("/api/getAllPlans",
-       {
+      .get("/api/getAllPlans", {
         headers: {
-          Authorization:`Bearer ${data.token}`,
-          "Content-Type":"application/json"
-        }
-        
+          Authorization: `Bearer ${data.token}`,
+          "Content-Type": "application/json",
+        },
       })
       .then((res) => {
+        console.log(res.data.data.$values);
         setPlanData(res.data.data.$values);
       })
       .catch((err) => {
         alert(err.message);
       });
-  },[]);
+  }, []);
 
   const togglePlan = () => {
     setSelectedPlan(selectedPlan === "Monthly" ? "Yearly" : "Monthly");
-    
-  };
-  const handleMouseEnter = () => {
-    setIsHovered(true);
   };
 
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
-
-  const spanStyle = {
-    marginLeft: '90%',
-    color: isHovered ? 'black' : '', // Apply color when hovered
-    fontWeight:"bold"
-  };
-
-  const spanStyle2 = {
-    marginLeft: '120%',
-    color: isHovered ? 'black' : '', // Apply color when hovered
-    fontWeight:"bold"
-  };
   return (
     <>
       {/* Main Header Nav */}
@@ -87,34 +65,18 @@ const Index = ({ setModalOpen, setPrice }) => {
                   Choose a plan tailored to your needs {selectedPlan}
                 </p>
                 <div className="toggleContainer">
-                  <label className="toggleLabel">
+                <span >Monthly</span>
+                <div style={{width:"20%",height:"70%"}}>
+                  <label 
+                    className={`toggleLabel ${selectedPlan}`}
+                    onClick={togglePlan}
+                  >
+                    <button className="toggleSwitch"></button>
                    
-                    <input
-                      type="radio"
-                      name="planToggle"
-                      value="Monthly"
-                      checked={selectedPlan === "Monthly"}
-                      onChange={togglePlan}
-                    />
-                    <span className="toggleSwitch"></span>
-                    <span style={spanStyle}
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}>Monthly</span>
                   </label>
-                  <label className="toggleLabel">
-                    
-                    <input
-                      type="radio"
-                      name="planToggle"
-                      value="Yearly"
-                      checked={selectedPlan === "Yearly"}
-                      onChange={togglePlan}
-                    />
-                    <span className="toggleSwitch"></span>
-                    <span style={spanStyle2}
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}>Yearly</span>
-                  </label>
+                  </div>
+                  
+                  <span >Yearly</span>
                 </div>
               </div>
             </div>
@@ -126,7 +88,7 @@ const Index = ({ setModalOpen, setPrice }) => {
               isPlan={selectedPlan === "Monthly" ? 1 : 2}
               setModalOpen={setModalOpen}
               setPrice={setPrice}
-              data = {planData}
+              data={planData}
             />
           </div>
           {/* End .row */}

@@ -13,6 +13,7 @@ const Header = ({profileCount , setProfileCount , userData}) => {
       setNavbar(false);
     }
   };
+  console.log(profileCount);
 
   const [userInfo , setUserInfo ] = useState( userData || {} );
 

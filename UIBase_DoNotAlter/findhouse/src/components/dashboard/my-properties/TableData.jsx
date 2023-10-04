@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
 import { encryptionData } from "../../../utils/dataEncryption";
+import toast from "react-hot-toast";
 const TableData = ({userData}) => {
 
   const [Id,setId] = useState(-1);
@@ -47,22 +48,27 @@ const TableData = ({userData}) => {
 
     const data = (JSON.parse(localStorage.getItem("user")));
 
+    toast.loading("Getting properties...");
     axios
-      .get("/api/getAllProperties",
+      .get("/api/getPropertiesById",
        {
         headers: {
           Authorization:`Bearer ${data.token}`,
           "Content-Type":"application/json"
+        },
+        params : {
+          userId : data.userId
         }
         
       })
       .then((res) => {
-        // console.log(res.data.data.properties.$values);
-        setData(res.data.data.properties.$values);
+        toast.dismiss();
+        setData(res.data.data.property.$values);
         setRerender(false);
       })
       .catch((err) => {
-        alert(err.message);
+        toast.dismiss();
+        toast.error(err?.response?.data?.error);
       });
   },[rerender]);
 
@@ -87,7 +93,7 @@ const TableData = ({userData}) => {
 
       })
       .catch((err) => {
-        alert(err.message);
+        alert(err.response.data.error);
       });
   }
 

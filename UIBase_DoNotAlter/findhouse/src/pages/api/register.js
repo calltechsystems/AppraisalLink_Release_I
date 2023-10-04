@@ -32,14 +32,21 @@ export default async function handler (request,response) {
     const userResponse = await axios.post("https://calltech20230920213721.azurewebsites.net/api/Registration/Registration", formData)
     const user = userResponse.data;
 
-    if (!user) {
-      return response.status(500).json({error:"Server Error"});
-    }
     return response.status(201).json({msg:"Successfully Created !!"});
   } catch (err) {
-    console.log(err)
-  ;
-    return response.status(400).json({err:err.message});
+   
+    if (err.response) {
+      // If the error is from an axios request (e.g., HTTP 4xx or 5xx error)
+      const axiosError = err.response.data;
+      const statusCode = err.response.status;
+      console.error(statusCode,axiosError.message); // Log the error for debugging
+
+      return response.status(statusCode).json({ error: axiosError.message });
+    } else {
+      // Handle other types of errors
+      return response.status(500).json({ error: "Internal Server Error" });
+    }
+
   }
 }
  

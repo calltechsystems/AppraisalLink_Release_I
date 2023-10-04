@@ -5,9 +5,9 @@ import { useRouter } from "next/router";
 import { encryptionData } from "../../../utils/dataEncryption";
 import axios from "axios";
 import { CldUploadWidget } from "next-cloudinary";
-import { join } from "../../../data/properties";
+import toast from "react-hot-toast";
 
-const ProfileInfo = ({ setProfileCount}) => {
+const ProfileInfo = ({ profileCount , setProfileCount}) => {
 
   const [profilePhoto,setProfilePhoto] = useState(null);
   let userData = (JSON.parse(localStorage.getItem("user"))) || {};
@@ -90,8 +90,10 @@ const ProfileInfo = ({ setProfileCount}) => {
           count++;
         }
 
-        const percentage = Math.floor(count / 13 ) * 100;
+        const percentage = Math.floor(13/count) * 100;
+        console.log(percentage);
         setProfileCount(percentage);
+        profileCount;
 
         const payload = {
           id: userData.userId,
@@ -117,18 +119,20 @@ const ProfileInfo = ({ setProfileCount}) => {
         // console.log(payload);
 
         const encryptedData = encryptionData(payload);
+        toast.loading("Updating.....");
         axios
       .put("/api/updateBrokerProfile", encryptedData)
       .then((res) => {
-        alert("Successfully Updated Profile!");
         let data =  userData;
+        toast.dismiss();
         data.broker_Details = res.data.userData.brokerage;
         localStorage.removeItem("user");
         localStorage.setItem("user",JSON.stringify(data));
         router.push("/my-dashboard");
       })
       .catch((err) => {
-        alert(err.message);
+        toast.dismiss();
+        toast.error(err.response.data.error);
       })
       .finally(() => {
       });
@@ -186,7 +190,7 @@ const ProfileInfo = ({ setProfileCount}) => {
           <div className="row">
             <div className="col-lg-4">
             <div className="wrap-custom-file">
-            <img src={SelectedImage} alt="Uploaded Image"/>
+            <img src={SelectedImage} alt="Uploaded Image" style={{borderRadius:"50%"}}/>
             { edit && <CldUploadWidget
               onUpload={handleUpload}
               uploadPreset="mpbjdclg"
@@ -197,7 +201,7 @@ const ProfileInfo = ({ setProfileCount}) => {
             >
               {({ open }) => (
                 <div>
-                  <button
+                  <button style={{borderRadius:"12px",marginLeft:"-8%",marginTop:"4%"}}
                     className="btn btn-dark profile_edit_button"
                     onClick={open} // This will open the upload widget
                   >
@@ -421,7 +425,7 @@ const ProfileInfo = ({ setProfileCount}) => {
                   <div className="my_profile_setting_input" style={{textAlign:"end"}}>
                     {/* <button className="btn btn1">Save Details</button> */}
                     <button className="btn btn2 btn-dark" onClick={onUpdatHandler}>
-                      Update Profile
+                      {userData.broker_Details?.firstName ? "Update Profile" : "Set Profile"}
                     </button>
                   </div>
                 </div>

@@ -21847,6 +21847,53 @@ a::before {
 }
 
 
+/* Index.css */
+
+/* Style for the toggle label */
+.toggleLabel {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 20px;
+  background-color: #ccc;
+}
+
+/* Style for the Monthly option */
+/* .Monthly {
+  background-color: #007bff;
+  color: white;
+}
+
+.Yearly {
+  background-color: #ccc;
+  color: #007bff;
+} */
+
+/* Style for the toggle switch */
+.toggleSwitch {
+  width: 20px;
+  height: 20px;
+  margin-top: -2%;
+  border-radius: 50%;
+  margin-right: 5px;
+  transition: 0.3s ease-in-out;
+}
+
+/* Style for the Monthly option when selected */
+.Monthly .toggleSwitch {
+  transform: translateX(0);
+}
+
+/* Style for the Yearly option when selected */
+.Yearly .toggleSwitch {
+  transform: translateX(20px);
+}
+
+
 .pricing_table_border_style{
   background-color: #87d700 !important;
   border: 10px solid darkslateblue;

@@ -16,8 +16,8 @@ const MyAccount = ({user, profileCount , setProfile, userData}) => {
   ];
   const route = useRouter();
   const logout = ()=>{
-    localStorage.removeItem("user");
-    route.push("/login");
+    // localStorage.removeItem("user");
+    // route.push("/login");
   }
   return (
     <>
@@ -48,7 +48,7 @@ const MyAccount = ({user, profileCount , setProfile, userData}) => {
                 : undefined
             }
           >
-          {item.id === 5 ? <button onClick={logout}>Logout</button> : <div style={{display:'flex',flexDirection:"row"}}>
+          {item.id === 5 ? <button style={{color:"#2e008b"}} onClick={logout}>Logout</button> : <div style={{display:'flex',flexDirection:"row"}}>
           {item.id === 1 && <CircularIcon percentage={profileCount}/>}  
           {item.name}
           </div>}

@@ -6,6 +6,7 @@ import { encryptionData } from "../../utils/dataEncryption";
 import { useRouter } from "next/router";
 
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const Form = () => {
   const [showhide, setShowhide] = useState("");
@@ -71,36 +72,39 @@ const Form = () => {
     const user = userTypeRef.current.value;
 
     if (password !== reEnterPassword) {
-      alert("Password are meant to be same ");
+      toast.error("Password are meant to be same ");
     } else if (!email) {
-      alert("Email cant be empty or non valid.");
+      toast.error("Email cant be empty or non valid.");
     } else if (!captchaVerfied) {
-      alert("captcha isnt verified");
+      toast.error("captcha isnt verified");
     }
+    else{
     const data = {
       email: email,
       password: password,
       userType: Number(user),
     };
 
-    console.log(data);
-
     const encryptedData = encryptionData(data);
 
     setLoading(true);
+    toast.loading("Registering user...");
     axios
       .post("/api/register", encryptedData)
       .then((res) => {
         console.log(res);
-        alert("Successfully Signed In!");
+        toast.dismiss();
         router.push("/login");
       })
       .catch((err) => {
-        alert(err.message);
+        toast.dismiss();
+        toast.error(err.response.data.error);
+        router.reload();
       })
       .finally(() => {
         setLoading(false);
       });
+    }
   };
 
   const checkPasswordRegisterHandler = (event) => {
@@ -184,9 +188,7 @@ const Form = () => {
               className="form-group input-group  "
               style={{ position: "relative", marginBottom: "6px" }}
             >
-              <label htmlFor="passwordInput" style={labelStyle}>
-                Password must have a A-Z,a-z,0-9,!@#$%^& a & 8 - 15 characters long.
-              </label>
+              
               <input
                 type={passwordVisible ? "text" : "password"} // Conditionally set the input type
                 className="form-control"
@@ -212,20 +214,17 @@ const Form = () => {
             </div>
             {/* End .form-group */}
           </div>
-          <div style={{ marginTop: "0px" }}>
-            {isFocused ? (
-              passwordRegisterVerified ? (
-                <span style={{ color: "green" }}>Strong Password &#10004;</span> 
-              ) : (
-                !firstClick ?  <span style={{ color: "red" }}> Weak Password &#10008;</span> : ""
-              )
-            ) : (
-              ""
-            )}
-          </div>
+          
+            
 
           <div className="col-lg-12">
-            <div className="form-group input-group  ">
+          <div
+          className="form-group input-group  "
+          style={{ position: "relative", marginBottom: "6px",marginTop:"1%"}}
+        >
+          <label htmlFor="passwordInput" style={labelStyle}>
+            Password must have a A-Z,a-z,0-9,!@#$%^& a & 8 - 15 characters long.
+          </label>
               <input
                 className="form-control"
                 placeholder="Re enter Password"
@@ -236,6 +235,15 @@ const Form = () => {
             </div>
             {/* End .form-group */}
           </div>
+          {isFocused ? (
+            passwordRegisterVerified ? (
+              <div style={{marginTop:"-2%"}}> <span style={{ color: "green" }}>Strong Password &#10004;</span> </div>
+            ) : (
+              !firstClick ? <div style={{marginTop:"-2%"}}><span style={{ color: "red" }}> Weak Password &#10008;</span> </div> : ""
+            )
+          ) : (
+            ""
+          )}
 
           <div className="col-lg-12">
             <div>

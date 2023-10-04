@@ -14,6 +14,7 @@ import PropertyMediaUploader from "./PropertyMediaUploader";
 import { encryptionData } from "../../../utils/dataEncryption";
 import axios from "axios";
 import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 const Index = ({isView,propertyData}) => {
   const [isDisable,setDisable] = useState(isView);
@@ -64,6 +65,7 @@ const Index = ({isView,propertyData}) => {
 
     const encryptedData = encryptionData(payload);
     
+    toast.loading("Updating the property..");
     axios
       .put("/api/addPropertyByBroker", encryptedData,
        {
@@ -73,11 +75,12 @@ const Index = ({isView,propertyData}) => {
         },
       })
       .then((res) => {
-        alert("Successfully Updated the property!");
+        toast.dismiss();
         router.push("/my-properties");
       })
       .catch((err) => {
-        alert(err.message);
+        toast.dismiss();
+        toast.error(err.response.data.error);
       });
 
 
@@ -110,9 +113,9 @@ const Index = ({isView,propertyData}) => {
     };
 
 
-    console.log(payload);
     const encryptedData = encryptionData(payload);
     
+    toast.loading("Appraising property ..");
     axios
       .put("/api/addBrokerProperty", encryptedData,
        {
@@ -122,11 +125,12 @@ const Index = ({isView,propertyData}) => {
         },
       })
       .then((res) => {
-        alert("Successfully added the property!");
+        toast.dismiss();
         router.push("/my-properties");
       })
       .catch((err) => {
-        alert(err.message);
+        toast.dismiss();
+        toast.error(err.message);
       });
 
 

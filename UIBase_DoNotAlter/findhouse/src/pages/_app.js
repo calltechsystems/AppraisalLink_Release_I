@@ -1,5 +1,6 @@
 import { Provider } from "react-redux";
 import { store } from "../app/store";
+import {ToastProvider, Toaster} from 'react-hot-toast';
 import ScrollToTop from "../components/common/ScrollTop";
 import Seo from "../components/common/seo";
 import "../index.scss";
@@ -17,8 +18,11 @@ function MyApp({ Component, pageProps }) {
         }
       />
       <Provider store={store}>
+      <Toaster/>
         <Component {...pageProps} />
+       
       </Provider>
+      
 
       <ScrollToTop />
     </>

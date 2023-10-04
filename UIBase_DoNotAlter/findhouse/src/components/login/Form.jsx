@@ -7,6 +7,7 @@ import axios from "axios";
 import Captcha from "../common/Captcha";
 import { encryptionData } from "../../utils/dataEncryption";
 import { useRouter } from "next/router";
+import toast from "react-hot-toast";
 
 const Form = ({ user }) => {
   const [showhide, setShowhide] = useState("");
@@ -14,6 +15,8 @@ const Form = ({ user }) => {
   const [captchaVerfied, setCaptchaVerified] = useState(false);
 
   const router = useRouter();
+
+  console.log(user);
 
   const [passwordLoginVerified, setPasswordLoginVerified] = useState(true);
 
@@ -40,10 +43,11 @@ const Form = ({ user }) => {
     const password = passwordLogin;
 
     if (!email || !password) {
-      alert("Credentials Can't be empty");
+      toast.error("Credentials Can't be empty");
     } else if (!captchaVerfied) {
-      alert("captcha isnt verified");
+      toast.error("captcha isnt verified");
     }
+    else{
 
     const data = {
       email: email,
@@ -53,20 +57,23 @@ const Form = ({ user }) => {
     const encryptedData = encryptionData(data);
 
     setLoading(true);
+    toast.loading("Logging User ..");
     axios
       .post("/api/login", encryptedData)
       .then((res) => {
-        alert("Successfully Logged In!");
-        console.log(res);
+        toast.dismiss();
         localStorage.setItem("user", JSON.stringify(res.data.userData));
         router.push("/my-dashboard");
       })
       .catch((err) => {
-        alert(err.message);
+        toast.dismiss();
+        toast.error(err.response.data.error);
+        router.reload();
       })
       .finally(() => {
         setLoading(false);
       });
+    }
   };
 
   const checkPasswordLoginHandler = (event) => {
@@ -94,7 +101,7 @@ const Form = ({ user }) => {
         <div className="col-lg-6 pt100">
           <form onSubmit={loginHandler}>
             <div className="heading text-center">
-              <h3>{`Login to your account ${user}`} </h3>
+              <h3>{`Login to your account `} </h3>
             </div>
             {/* End .heading */}
 

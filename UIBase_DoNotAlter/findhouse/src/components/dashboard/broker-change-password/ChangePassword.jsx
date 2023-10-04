@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { useReducer } from "react";
 import { encryptionData } from "../../../utils/dataEncryption";
 import { useRouter } from "next/router";
+import toast from "react-hot-toast";
 
 
 
@@ -17,14 +18,14 @@ const ChangePassword = () => {
 
   const submitHandler = async () =>{
     
-    const email = emailRef.current.value;
+    const email = userData.userEmail;
     const newPassword = newPasswordRef.current.value;
     const oldPassword = oldPasswordRef.current.value;
     const confirmPassword = confirmPasswordRef.current.value;
 
     console.log(oldPassword,newPassword,confirmPassword);
     if(String(newPassword) !== String(confirmPassword)){
-      alert("Both the passwords should be same ");
+      toast.error("Both the passwords should be same ");
     }
     else{
      try{
@@ -37,18 +38,20 @@ const ChangePassword = () => {
 
       const encryptedData = encryptionData(payload);
 
+      toast.loading("Changing the password");
       const response = await axios.post("/api/change-broker-password",encryptedData);
       if(!response){
-        alert("Failed Try Again");
+        toast.dismiss();
+        toast.error("Failed Try Again");
       }
       else{
-        alert("Successfully Updated Password!!");
+        toast.dismiss();
         localStorage.removeItem("user");
         router.push("/login");
       }
     }
     catch(err){
-      alert(err.message);
+      toast.error(err.response.data.error);
     }
     }
   }
@@ -67,20 +70,6 @@ const ChangePassword = () => {
            <div class="accordion-body">
           <div className="row">
 
-          <div className="col-lg-6 col-xl-4">
-            <div className="my_profile_setting_input form-group">
-              <label htmlFor="formGroupExampleConfPass">
-                Email
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="formGroupExampleConfPass"
-                ref={emailRef}
-                value={userData.userEmail}
-              />
-            </div>
-          </div>
 
            <div className="col-xl-4">
             <div className="my_profile_setting_input form-group">

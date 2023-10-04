@@ -23,7 +23,6 @@ const Index = () => {
             item: item,
           },
         });
-        console.log(response.data.data);
         setPropertyData(response.data.data); // Update state with the fetched data
       } catch (err) {
         alert(err.message);

@@ -5,7 +5,7 @@ const CircularProgressBar = ({ percentage }) => {
   const strokeDashoffset = circumference - (circumference * percentage) / 100;
 
   return (
-    <div className="circular-progress-container" style={{marginTop:"-10%",color:"#052c65"}} >
+    <div className="circular-progress-container" style={{marginTop:"-10%",color:"#2e008b"}} >
       <svg className="circular-progress" width="100" height="100">
         <circle className="background" cx="50" cy="50" r="20" />
         <circle

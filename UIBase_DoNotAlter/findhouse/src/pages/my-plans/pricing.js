@@ -6,7 +6,6 @@ const Pricing = ({isPlan,hideButton,selectedId,setModalOpen,data,setPrice}) => {
         price: "11",
         title: "Lite",
         features: [
-          "5 Properties Appraisal",
           "30 Days Validity",
           "No Roll Over",
           "Limited Support",
@@ -17,7 +16,6 @@ const Pricing = ({isPlan,hideButton,selectedId,setModalOpen,data,setPrice}) => {
         price: "19",
         title: "Pro",
         features: [
-          "20 Properties Appraisal",
           "30 Days Validity",
           "Partial Roll Over",
           "Enhanced Support",
@@ -28,7 +26,6 @@ const Pricing = ({isPlan,hideButton,selectedId,setModalOpen,data,setPrice}) => {
         price: "35",
         title: "Ultimate",
         features: [
-          "50 Properties Appraisal",
           "30 Days Validity",
           "Unlimited Roll Over",
           "Complete Support",
@@ -42,7 +39,6 @@ const Pricing = ({isPlan,hideButton,selectedId,setModalOpen,data,setPrice}) => {
         price: "132",
         title: "Lite",
         features: [
-          "75 Properties Appraisal",
           "365 Days Validity",
           "Partial Roll Over",
           "Limited Support",
@@ -53,7 +49,6 @@ const Pricing = ({isPlan,hideButton,selectedId,setModalOpen,data,setPrice}) => {
         price: "228",
         title: "Pro",
         features: [
-          "300 Properties Appraisal",
           "365 Days Validity",
           "Partial Roll Over",
           "Complete Support",
@@ -64,7 +59,6 @@ const Pricing = ({isPlan,hideButton,selectedId,setModalOpen,data,setPrice}) => {
         price: "420",
         title: "Ultimate",
         features: [
-          "1000 Properties Appraisal",
           "365 Days Validity",
           "Unlimited Roll Over",
           "Complete Support",
@@ -87,7 +81,7 @@ const Pricing = ({isPlan,hideButton,selectedId,setModalOpen,data,setPrice}) => {
   
     return (
       <>
-        {data.map((item,idx) => (
+        {data?.map((item,idx) => (
 
           <div className="col-sm-4 col-md-4 my_plan_pricing_header"  key={item.id}>
             <div className={`pricing_table  ${ String(selectedIdStyle) === String(item.id) ? "pricing_table_border_style":""}`}>
@@ -97,9 +91,10 @@ const Pricing = ({isPlan,hideButton,selectedId,setModalOpen,data,setPrice}) => {
               </div>
               <div className="pricing_content">
                 <ul className="mb0">
-                 { /*{content[idx].map((val, i) => (
+                <li key={idx} >{item.noOfProperties} Properties Appraisal</li>
+                 {content[idx]?.features?.map((val, i) => (
                     <li key={i}>{val}</li>
-                 ))}*/}
+                 ))}
                 </ul>
               <div className="pricing_header">
                 <h2 className="text-light">${item.amount}</h2>

@@ -22,7 +22,6 @@ const Modal = ({ modalOpen, closeModal, price }) => {
       .post("/api/paypalPayement",
       encryptiondata)
       .then((res) => {
-        console.log(res.data);
         setPaypalUrl(res.data.data.response)
         setStatus(1);
       })
@@ -32,26 +31,7 @@ const Modal = ({ modalOpen, closeModal, price }) => {
   }
 
   useEffect ( ()=>{
-    const fetchData = async () => {
-      try {
-        // Make your API call here
-        const response = await axios.get('/your-api-endpoint');
-        console.log(response.data);
-
-        // You can process the response data here
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    // Call the fetchData function immediately when the component mounts
-    fetchData();
-
-    // Set up an interval to call the fetchData function every minute (60,000 milliseconds)
-    const intervalId = setInterval(fetchData, 30000);
-    return () => {
-      clearInterval(intervalId);
-    };
+   
   },[paypalUrl !== ""]);
   return (
     <div>
