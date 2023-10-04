@@ -192,14 +192,10 @@ const Form = () => {
               className="form-group input-group  "
               style={{ position: "relative", marginBottom: "6px" }}
             >
-<<<<<<< Updated upstream
-              
-=======
               <label htmlFor="passwordInput" style={labelStyle}>
                 Password must have a A-Z,a-z,0-9,!@#$%^& a & 8 - 15 characters
                 long.
               </label>
->>>>>>> Stashed changes
               <input
                 type={passwordVisible ? "text" : "password"} // Conditionally set the input type
                 className="form-control"
@@ -225,10 +221,6 @@ const Form = () => {
             </div>
             {/* End .form-group */}
           </div>
-<<<<<<< Updated upstream
-          
-            
-=======
           <div style={{ marginTop: "0px" }}>
             {isFocused ? (
               passwordRegisterVerified ? (
@@ -242,7 +234,6 @@ const Form = () => {
               ""
             )}
           </div>
->>>>>>> Stashed changes
 
           <div className="col-lg-12">
           <div
