@@ -56,7 +56,7 @@ const Index = () => {
                 <div className="col-lg-12">
                   <div className="breadcrumb_content style2">
                     <h2 className="breadcrumb_title">My Profile</h2>
-                    <p>We are glad to see you again!</p>
+                    {/* <p>We are glad to see you again!</p> */}
                   </div>
                 </div>
                 {/* End .col */}

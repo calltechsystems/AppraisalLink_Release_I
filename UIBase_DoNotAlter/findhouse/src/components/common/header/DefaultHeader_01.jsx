@@ -43,7 +43,7 @@ const Header = () => {
             src="/assets/images/logo_new.png"
             alt="header-logo2.png"
           />
-          <span style={{marginTop:"18px"}}>Appraisal Link</span>
+          <span style={{marginTop:"25px"}}>Appraisal Link</span>
         </Link>
         {/* site logo brand */}
 

@@ -404,6 +404,7 @@
 		top: 0;
 		width: 100px;
 		vertical-align: baseline;
+		/* color: white !important; */
 	}
 	header.header-nav.menu_style_home_one ul.ace-responsive-menu li.add_listing a {
 		top: -28px;

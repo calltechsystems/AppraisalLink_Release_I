@@ -327,7 +327,12 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
 
   return (
     <div onMouseLeave={() => setHovered()}>
-      <ul id="respMenu" className={classname} data-menu-style="horizontal" onMouseLeave={() => setAbout()}>
+      <ul
+        id="respMenu"
+        className={classname}
+        data-menu-style="horizontal"
+        onMouseLeave={() => setAbout()}
+      >
         {hide && (
           <li className="dropitem">
             <Link
@@ -373,7 +378,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
               <span
                 className="title text-info-01"
                 onMouseOver={() => setHovered(!hovered)}
-                
+
                 // onMouseLeave={() => setHovered()}
               >
                 Why Choose Us
@@ -387,7 +392,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                 style={{
                   width: "100%",
                   background: "red",
-                  opacity: hovered ? 1 : 0,  //Show content when hovered
+                  opacity: hovered ? 1 : 0, //Show content when hovered
                   transition: "opacity 0.3s ease", // Add transition for the opacity property
                   position: "absolute",
                   top: "100%",
@@ -478,9 +483,11 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                           at record speed?
                         </span>
                         <br />
-                        <button className="btn btn2 w-50 btn-color">
-                          Register
-                        </button>
+                        <Link href="/register">
+                          <button className="btn btn2 w-50 btn-color">
+                            Register
+                          </button>
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -499,7 +506,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
             // onMouseEnter={handleMouseEnter}
             // onMouseLeave={handleMouseLeave}
           >
-            <Link href="/service">
+            <Link href="#">
               <span
                 className="title text-info-01"
                 onMouseOver={() => setAbout(!about)}
@@ -579,7 +586,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                             height={125}
                             className="logo2 img-fluid mt-3"
                             // style={{ marginRight: "10px" }}
-                            src="/assets/images/about/home-inspector-checks-condition-house-writes-report-flat-illustration_2175-8129.avif"
+                            src="/assets/images/about/home-inspector-checks-condition-house-writes-report-flat-illustration_2175-8129.png"
                             alt="header-logo2.png"
                           />
                         </Link>
@@ -595,7 +602,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                             height={125}
                             className="logo2 img-fluid"
                             // style={{ marginRight: "10px" }}
-                            src="/assets/images/about/house-mortgage-property-inspection-audit-icon-graphic-home-real-estate-deal-review-assessment_101884-2246.avif"
+                            src="/assets/images/about/house-mortgage-property-inspection-audit-icon-graphic-home-real-estate-deal-review-assessment_101884-2246.png"
                             alt="header-logo2.png"
                           />
                         </Link>

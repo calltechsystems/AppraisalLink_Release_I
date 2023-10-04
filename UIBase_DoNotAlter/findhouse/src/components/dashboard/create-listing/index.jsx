@@ -182,8 +182,8 @@ const Index = ({isView,propertyData}) => {
 
                 <div className="col-lg-12 mb10">
                   <div className="breadcrumb_content style2">
-                    <h2 className="breadcrumb_title">{isView?  "View the selected  property": "Add New Property"}</h2>
-                    <p>We are glad to see you again!</p>
+                    <h2 className="breadcrumb_title text-center">{isView?  "View the selected  property": "Add New Property"}</h2>
+                    {/* <p>We are glad to see you again!</p> */}
                   </div>
                 </div>
                 {/* End .col */}
@@ -193,7 +193,7 @@ const Index = ({isView,propertyData}) => {
                   <div className="my_dashboard_review ">
                     <div className="row">
                       <div className="col-lg-12">
-                        <h4 className="mb30">1. location Information</h4>
+                        <h4 className="mb30">Location Information</h4>
                       </div>
                       {isDisable && (<div style={{marginLeft:"80%",marginBottom:"1%"}}><button  style={{borderRadius:"10%",backgroundColor:"#2e008b",color:"white"}} onClick={()=>setDisable(false)}>Edit</button></div>)}
                       <LocationField 
@@ -210,7 +210,7 @@ const Index = ({isView,propertyData}) => {
                   </div>
                   <div className="my_dashboard_review mt30">
                     <div className="col-lg-12">
-                      <h4 className="mb30">2. Other Information</h4>
+                      <h4 className="mb30">Other Information</h4>
                      
                     </div>
                     <CreateList isDisable={isDisable}
@@ -224,7 +224,7 @@ const Index = ({isView,propertyData}) => {
                   <div className="my_dashboard_review mt30">
                     <div className="row">
                       <div className="col-lg-12">
-                        <h4 className="mb30">3. Applicant Information</h4>
+                        <h4 className="mb30">Applicant Information</h4>
                       </div>
                       <DetailedInfo 
                       isDisable={isDisable}

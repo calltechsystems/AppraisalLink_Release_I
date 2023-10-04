@@ -3,20 +3,14 @@ import CopyrightFooter from "../common/footer/CopyrightFooter";
 import Footer from "../common/footer/Footer";
 import MobileMenu from "../common/header/MobileMenu";
 import Partners from "../common/Partners";
-import Blogs from "../common/Blogs";
-import FeaturedProperties from "./FeaturedProperties";
-import FindProperties from "./FindProperties";
-import Header from "./Header";
+// import Header from "./Header";
 import Hero from "./Hero";
 import WhyChoose from "../common/WhyChoose";
 import Team from "../about-us/Team";
-// import PopupSignInUp from "../common/PopupSignInUp";
-import Pricing from "../membership/Pricing";
-// import Testimonial from "../home-7/Testimonial";
 import HeroSlider from "./HeroSlider";
-import GlobalHeroFilter from "../common/GlobalHeroFilter";
 import ComfortPlace from "./ComfortPlace";
 import Testimonials from "./Testimonials";
+import Header from "../common/header/DefaultHeader_01";
 
 const Index = () => {
   return (
@@ -51,8 +45,8 @@ const Index = () => {
             <div className="col-lg-12">
               <div className="home_content home4">
                 <div
-                  className="home-text text-center"
-                  style={{ marginTop: "-40px", marginBottom: "50px" }}
+                  className="d-none d-lg-block d-xl-block d-md-block home-text text-center"
+                  style={{ marginTop: "-120px", marginBottom: "50px" }}
                 >
                   <h2 className="fz50">
                     Brokers Paradise for all Real Estate Appraisals
@@ -61,6 +55,21 @@ const Index = () => {
                     From as low as $11 per month for limited time.
                   </p>
                 </div>
+
+                {/* for mobile view */}
+
+                <div
+                  className="d-sm-block d-md-none home-text text-center"
+                  style={{ marginTop: "0px", marginBottom: "50px" }}
+                >
+                  <h2 className="fz50">
+                    Brokers Paradise for all Real Estate Appraisals
+                  </h2>
+                  <p className="fz18 color-white">
+                    From as low as $11 per month for limited time.
+                  </p>
+                </div>
+
                 {/* <GlobalHeroFilter className="home4" /> */}
                 <div className="row">
                   <ComfortPlace />

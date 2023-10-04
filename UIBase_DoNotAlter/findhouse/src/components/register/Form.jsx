@@ -14,7 +14,7 @@ const Form = () => {
   const [showLabel, setShowLabel] = useState(false);
   const [captchaVerfied, setCaptchaVerified] = useState(false);
 
-  const [firstClick,setFirstClick] = useState(true);
+  const [firstClick, setFirstClick] = useState(true);
 
   const router = useRouter();
 
@@ -22,6 +22,7 @@ const Form = () => {
     useState(false);
 
   const [passwordVisible, setPasswordVisible] = useState(false); // State variable to toggle password visibility
+  const [passwordVisible_01, setPasswordVisible_01] = useState(false); // State variable to toggle password visibility
   const [passwordRegister, setPasswordRegister] = useState(""); // State variable to store the password value
 
   const emailRegisterRef = useRef();
@@ -59,6 +60,10 @@ const Form = () => {
   // Toggle password visibility hnadler
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
+  };
+
+  const togglePasswordVisibility_01 = () => {
+    setPasswordVisible_01(!passwordVisible_01);
   };
 
   const registerHandler = (event) => {
@@ -108,7 +113,6 @@ const Form = () => {
   };
 
   const checkPasswordRegisterHandler = (event) => {
-
     setFirstClick(false);
     setPasswordRegister(event.target.value);
     const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/;
@@ -188,7 +192,14 @@ const Form = () => {
               className="form-group input-group  "
               style={{ position: "relative", marginBottom: "6px" }}
             >
+<<<<<<< Updated upstream
               
+=======
+              <label htmlFor="passwordInput" style={labelStyle}>
+                Password must have a A-Z,a-z,0-9,!@#$%^& a & 8 - 15 characters
+                long.
+              </label>
+>>>>>>> Stashed changes
               <input
                 type={passwordVisible ? "text" : "password"} // Conditionally set the input type
                 className="form-control"
@@ -214,8 +225,24 @@ const Form = () => {
             </div>
             {/* End .form-group */}
           </div>
+<<<<<<< Updated upstream
           
             
+=======
+          <div style={{ marginTop: "0px" }}>
+            {isFocused ? (
+              passwordRegisterVerified ? (
+                <span style={{ color: "green" }}>Strong Password &#10004;</span>
+              ) : !firstClick ? (
+                <span style={{ color: "red" }}> Weak Password &#10008;</span>
+              ) : (
+                ""
+              )
+            ) : (
+              ""
+            )}
+          </div>
+>>>>>>> Stashed changes
 
           <div className="col-lg-12">
           <div
@@ -226,12 +253,21 @@ const Form = () => {
             Password must have a A-Z,a-z,0-9,!@#$%^& a & 8 - 15 characters long.
           </label>
               <input
+                type={passwordVisible_01 ? "text" : "password"} // Conditionally set the input type
                 className="form-control"
                 placeholder="Re enter Password"
                 required
                 ref={passwordRegisterRef}
                 style={{ paddingRight: "40px" }} // Add right padding to accommodate the button
               />
+              <div className="input-group-prepend">
+                <div
+                  className="input-group-text"
+                  onClick={togglePasswordVisibility_01}
+                >
+                  <i className="flaticon-password"></i>
+                </div>
+              </div>
             </div>
             {/* End .form-group */}
           </div>
@@ -280,11 +316,18 @@ const Form = () => {
             }}
           >
             <div>
-              <p className="text-center">Already have Account? </p>
+              <p className="text-center" style={{fontSize:'16px'}}>Already have Account? </p>
             </div>
-            <div style={{ textDecoration: "underline", fontWeight: "bold", lineHeight:'1.3',marginLeft:'2px' }}>
+            <div
+              style={{
+                textDecoration: "underline",
+                fontWeight: "bold",
+                lineHeight: "1.3",
+                marginLeft: "2px",
+              }}
+            >
               <Link href="/login" className="text-thm">
-                 Log In!
+                Log In!
               </Link>
             </div>
           </div>

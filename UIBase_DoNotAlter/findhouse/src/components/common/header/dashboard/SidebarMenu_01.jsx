@@ -208,7 +208,7 @@ const SidebarMenu = () => {
           </li>*/}
         {/* End manage listing */}
 
-        <li className="title">
+        {/* <li className="title">
           <span>Manage Account</span>
           <ul>
             {manageAccount.map((item) => (
@@ -224,7 +224,7 @@ const SidebarMenu = () => {
               </li>
             ))}
           </ul>
-        </li>
+        </li> */}
       </ul>
     </>
   );

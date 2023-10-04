@@ -5,7 +5,7 @@ import Image from "next/image";
 const FindProperties = () => {
   return (
     <>
-      {findProperties.slice(4, 6).map((item) => (
+      {findProperties.slice(10, 12).map((item) => (
         <div className={`col-lg-4 ${item.column}`} key={item.id}>
           <Link href="#" className="properti_city home5 d-block">
             <div className="thumb">

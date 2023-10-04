@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const TermsCondions = () => {
   const termsContent = [
@@ -7,12 +8,12 @@ const TermsCondions = () => {
       title: "Appraiser Company",
       text1: `An appraisal company is a business that specializes in providing valuation services for various assets, such as real estate, machinery, intellectual property, or commercial entities. These companies employ certified appraisers who are trained in assessing the worth or value of different types of assets. The services offered by an appraisal company can include conducting inspections, compiling data and research, analyzing market trends, and preparing comprehensive appraisal reports. They work with individuals, businesses, financial institutions, government agencies, and other entities that require accurate and independent valuations for purposes such as buying or selling assets, obtaining loans or insurance, tax assessments, estate planning, or legal proceedings. Appraisal companies play a crucial role in providing objective and reliable appraisal services to support informed decision-making. `,
     },
-    {
-      id: 2,
-      title: "Our Terms",
-      text1: `To be discussed`,
-      text2: `To be discussed`,
-    },
+    // {
+    //   id: 2,
+    //   title: "Our Terms",
+    //   text1: `To be discussed`,
+    //   text2: `To be discussed`,
+    // },
   ];
 
   const navigationList = [
@@ -26,14 +27,26 @@ const TermsCondions = () => {
   return (
     <div className="row">
       <div className="col-lg-12 col-xl-12">
-        <div className="terms_condition_grid">
-          {termsContent.map((item) => (
-            <div className="grids mb30" key={item.id}>
-              <h4>{item.title}</h4>
-              <p className="mb20">{item.text1}</p>
-              <p>{item.text2}</p>
-            </div>
-          ))}
+        <div className="row terms_condition_grid">
+          <div className="col-lg-7">
+            {termsContent.map((item) => (
+              <div className="grids mb30" key={item.id}>
+                <h4>{item.title}</h4>
+                <p className="mb20">{item.text1}</p>
+                {/* <p>{item.text2}</p> */}
+              </div>
+            ))}
+          </div>
+          <div className="col-lg-5">
+            <Image
+              width={420}
+              height={300}
+              className="location-finder"
+              style={{ marginLeft: "5%" }}
+              src="/assets/images/service/22.jpg"
+              alt="location"
+            />
+          </div>
         </div>
       </div>
       {/* End .col */}

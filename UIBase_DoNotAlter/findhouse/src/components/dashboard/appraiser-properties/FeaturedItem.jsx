@@ -202,20 +202,22 @@ const FeaturedItem = () => {
             <div className="fp_footer">
               <ul className="fp_meta float-start mb0">
                 <li className="list-inline-item">
-                  <Link href="/agent-v1">
+                  {/* <Link href="/agent-v1">
                     <Image
                       width={40}
                       height={40}
                       src={item.posterAvatar}
                       alt="pposter1.png"
                     />
-                  </Link>
+                  </Link> */}
                 </li>
-                <li className="list-inline-item">
-                  <Link href="/agent-v1">{item.posterName}</Link>
+                <li className="list-inline-item" style={{width:"30px",border:'1px solid black', textAlign:'center', borderRadius:'5px'}}>
+                  {/* <Link href="/agent-v1">{item.posterName}</Link> */}
+                  <a href="#"><span className="flaticon-heart text-color"></span></a>
                 </li>
               </ul>
-              <div className="fp_pdate float-end">{item.postedYear}</div>
+              {/* <div className="fp_pdate float-end">{item.postedYear}</div> */}
+              <div className="fp_pdate float-end mt-1 fw-bold"><a href="#" className="text-color">Participate Bid</a></div>
             </div>
             {/* End .fp_footer */}
           </div>

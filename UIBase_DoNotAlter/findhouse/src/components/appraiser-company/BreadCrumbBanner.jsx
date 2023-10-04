@@ -6,7 +6,10 @@ const BreadCrumbBanner = () => {
           <div className="col-12">
             <div className="breadcrumb_content">
               {/* <BreadCrumb title="Terms & Conditions" /> */}
-              <h2 className="text-center text-dark">Appraiser Company</h2>
+              <h2 className="text-center text-light">Appraiser Company</h2>
+              <p className="text-center text-light">
+                Maximizing Value through Professional Appraisal
+              </p>
             </div>
           </div>
           {/* End .col */}

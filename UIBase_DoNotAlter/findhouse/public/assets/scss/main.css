@@ -2236,7 +2236,7 @@ header.header-nav.menu_style_home_one.style2 a.navbar_brand {
 header.header-nav.menu_style_home_one.style2 a.navbar_brand span {
   color: #484848;
   font-family: "Nunito";
-  font-size: 28px;
+  font-size: 22px;
   font-weight: bold;
   line-height: 1.2;
 }
@@ -8882,10 +8882,11 @@ form.home5_advanced_search_form
 }
 
 .my_profile_setting_input .form-control::placeholder {
-  font-size: 14px;
+  font-size: 17px;
   font-family: "Nunito";
   color: rgb(72, 72, 72);
   line-height: 1.2;
+  font-weight: 600;
 }
 
 .my_profile_setting_textarea {
@@ -11836,7 +11837,7 @@ a.btn.btn_error {
 
 .login_form .btn-fpswd {
   color: #8b91dd;
-  font-size: 14px;
+  font-size: 16px;
   font-family: "Nunito";
   line-height: 2.214;
 }
@@ -11983,7 +11984,7 @@ a.btn.btn_error {
 
 .login_form .form-check-label {
   color: #484848;
-  font-size: 14px;
+  font-size: 16px;
   padding-left: 8px;
 }
 
@@ -21214,7 +21215,7 @@ button.gm-ui-hover-effect:focus {
 header.header-nav.menu_style_home_one.style2
   ul.ace-responsive-menu
   li.add_listing {
-  background-color: #2e008b !important ;
+  /* background-color: #2e008b !important ; */
   color: white !important;
 }
 
@@ -21296,6 +21297,7 @@ header.header-nav.menu_style_home_one ul.ace-responsive-menu li.add_listing {
   color: black !important;
   border: 1px solid black !important;
 }
+
 
 .sign_up_modal .modal-header {
   background-color: #2e008b !important ;
@@ -21979,11 +21981,11 @@ input[type=text]{
 
 
 .profile_edit_button{
-  justify-content: end;
-  width: auto;
+  width: max-content;
   border-radius: 4px;
-  margin-left: 90%;
+  margin-left: 96%;
   margin-bottom: 4px;
+  margin-top: 20px;
 }
 
 /* The Modal (background) */
@@ -22099,3 +22101,22 @@ input[type=text]{
     margin-top: 6px;
   }
 }
+
+/* dashboard responsive */
+
+@media (max-width: 1012px) {
+  .our-dashbord.dashbord{
+    padding-left: 0px !important;
+  }
+}
+
+
+/* @media (max-width:767px) {
+  .tagline{
+    margin-top: -40px;
+  }
+} */
+
+/* .text-color-01:hover{
+  text-decoration: underline;
+} */

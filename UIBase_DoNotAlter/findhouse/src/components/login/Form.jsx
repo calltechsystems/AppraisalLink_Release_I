@@ -195,7 +195,7 @@ const Form = ({ user }) => {
               }}
             >
               <div>
-                <p className="text-center">Dont have an account? </p>
+                <p className="text-center" style={{fontSize:'16px'}}>Dont have an account? </p>
               </div>
               <div
                 style={{
