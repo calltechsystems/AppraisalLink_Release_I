@@ -190,7 +190,7 @@ const ProfileInfo = ({ setProfileCount }) => {
     console.log(url);
   };
 
-  return (
+  return (<>
     <div className="row">
       {/* <h4 className="mb-3">Personal Information</h4> */}
       <div className="col-lg-12"></div>
@@ -844,16 +844,6 @@ const ProfileInfo = ({ setProfileCount }) => {
                     disabled={!edit}
                   />
                 </div>
-<<<<<<< Updated upstream
-              </div>
-              { edit && (<div className="row mt-4">
-                <div className="col-xl-12">
-                  <div className="my_profile_setting_input" style={{textAlign:"end"}}>
-                    {/* <button className="btn btn1">Save Details</button> */}
-                    <button className="btn btn2 btn-dark" onClick={onUpdatHandler}>
-                      {userData.broker_Details?.firstName ? "Update Profile" : "Set Profile"}
-                    </button>
-=======
               </div> */}
               {edit && (
                 <div className="row mt-4">
@@ -870,7 +860,6 @@ const ProfileInfo = ({ setProfileCount }) => {
                         Create Profile
                       </button>
                     </div>
->>>>>>> Stashed changes
                   </div>
                 </div>
               )}
@@ -878,7 +867,7 @@ const ProfileInfo = ({ setProfileCount }) => {
           </div>
         </div>
       </div>
-    </div>
+    </div></>
   );
 };
 
