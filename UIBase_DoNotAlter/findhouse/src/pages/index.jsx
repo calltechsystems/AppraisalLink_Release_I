@@ -7,9 +7,9 @@ const index = () => {
   return (
     <>
       <Seo pageTitle="Homepage" />
-      <Toaster>
+      {/* <Toaster> */}
       <HomeMain />
-      </Toaster>
+      {/* </Toaster> */}
     </>
   );
 };
