@@ -29,7 +29,7 @@ module.exports = [
   },
   {
     id: 5,
-    img: "/assets/images/service/17.png",
+    img: "/assets/images/service/d.jpg",
     name: "Miami",
     number: "24",
     column: "col-lg-6 col-xl-6",
@@ -50,14 +50,14 @@ module.exports = [
   },
   {
     id: 8,
-    img: "/assets/images/service/10.png",
+    img: "/assets/images/service/a.jpg",
     name: "Orlando",
     number: "89",
     column: "col-lg-6 col-xl-6",
   },
   {
     id: 9,
-    img: "/assets/images/home/partner.png",
+    img: "/assets/images/service/q.jpg",
     name: "Florida",
     number: "47",
     column: "col-lg-6 col-xl-6",
@@ -78,7 +78,7 @@ module.exports = [
   },
   {
     id: 12,
-    img: "/assets/images/service/11.png",
+    img: "/assets/images/service/e.jpg",
     name: "Miami",
     number: "47",
     column: "col-lg-6 col-xl-6",

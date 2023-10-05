@@ -509,12 +509,12 @@ const ProfileInfo = ({ setProfileCount }) => {
                   </div>
                 </div>
                 <div className="col-lg-6">
-                  <div className="col-12 mb-2">
+                  <div className="col-12">
                     <label
                       htmlFor=""
                       style={{ paddingTop: "15px", fontWeight: "lighter" }}
                     >
-                      Mortgage Brokerage Lic. No. <span class="req-btn">*</span>{" "}
+                      Mortgage Brokerage Licence No. <span class="req-btn">*</span>{" "}
                     
                     </label>
                   </div>

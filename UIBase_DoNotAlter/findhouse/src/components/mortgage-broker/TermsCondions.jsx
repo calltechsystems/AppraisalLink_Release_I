@@ -40,9 +40,9 @@ const TermsCondions = () => {
         <div className="col-lg-5">
           <Image
             width={420}
-            height={300}
+            height={330}
             className="location-finder" style={{marginLeft:'5%'}}
-            src="/assets/images/home/register_img_onlineInves.jpg"
+            src="/assets/images/service/n.jpg"
             alt="location"
           />
         </div>

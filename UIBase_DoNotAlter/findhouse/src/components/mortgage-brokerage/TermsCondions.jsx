@@ -43,7 +43,7 @@ const TermsCondions = () => {
               height={400}
               className="location-finder"
               style={{ marginLeft: "5%" }}
-              src="/assets/images/service/image001.png"
+              src="/assets/images/service/p.jpg"
               alt="location"
             />
           </div>

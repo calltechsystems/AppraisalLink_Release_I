@@ -9,19 +9,9 @@ import FilterTopBar from "../../common/listing/FilterTopBar";
 import ShowFilter from "../../common/listing/ShowFilter";
 import SidebarListing from "../../common/listing/SidebarListing";
 import GridListButton from "../../common/listing/GridListButton";
-import Modal from "./Modal";
-import { useState } from "react";
+
 
 const index = () => {
-  const [modalOpen, setModalOpen] = useState(false);
-
-  const openModal = () => {
-    setModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalOpen(false);
-  };
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -99,12 +89,7 @@ const index = () => {
                         {/* End .row */}
 
                         <div className="row">
-                          {/* <button onClick={()=>openModal()}>click</button> */}
-                          <FeaturedItem setModalOpen={openModal} />
-                          <Modal
-                            modalOpen={modalOpen}
-                            closeModal={closeModal}
-                          />
+                          <FeaturedItem />
                         </div>
                         {/* End .row */}
 
@@ -159,7 +144,7 @@ const index = () => {
               <div className="row mt50">
                 <div className="col-lg-12">
                   <div className="copyright-widget text-center">
-                    <p>© 2023 Appraisal Link. All Rights Reserved.</p>
+                    <p>© 2020 Find House. Made with love.</p>
                   </div>
                 </div>
               </div>

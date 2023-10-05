@@ -23,36 +23,53 @@ const index = () => {
 
       {/* <!-- About Text Content --> */}
       <section className="about-section">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-6 offset-lg-3">
-              <div className="main-title text-center">
-                <h2 className="mt0">Our Mission Is To Appraisal Link</h2>
-              </div>
+        {/* <div className="container"> */}
+        <div className="row">
+          <div className="col-lg-12">
+            <div
+              className="main-title text-center"
+              style={{
+                backgroundColor: "#2e008b",
+                color: "white",
+                padding: "15px",
+              }}
+            >
+              <h2 className="mt0 text-light">
+                Our Mission Is To Appraisal Link
+              </h2>
             </div>
           </div>
-          {/* End .row */}
+        </div>
+        {/* End .row */}
 
+        <div className="container">
           <div className="row">
             <OurMission />
           </div>
-          {/* End .row */}
+        </div>
+        {/* End .row */}
 
-          <div className="row mt80">
-            <div className="col-lg-6 offset-lg-3">
-              <div className="main-title text-center">
-                <h2>Why Choose Us</h2>
-                <p>We provide full service at every step.</p>
-              </div>
+        <div className="row mt80">
+          <div className="col-lg-12">
+            <div className="main-title text-center">
+              <h2 className="text-light" style={{
+                backgroundColor: "#2e008b",
+                color: "white",
+                padding: "20px",
+              }}>Why Choose Us</h2>
+              <p>We provide full service at every step.</p>
             </div>
           </div>
-          {/* End .row */}
+        </div>
+        {/* End .row */}
 
+        <div className="container">
           <div className="row">
             <WhyChoose />
           </div>
-          {/* End .row */}
         </div>
+        {/* End .row */}
+        {/* </div> */}
       </section>
 
       {/* <!-- Our Team --> */}

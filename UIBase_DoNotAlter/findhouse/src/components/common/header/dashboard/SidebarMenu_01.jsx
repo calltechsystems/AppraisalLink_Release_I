@@ -79,12 +79,12 @@ const SidebarMenu = () => {
             </li>
             <li
               className={`treeview ${
-                isSinglePageActive("#", route.pathname)
+                isSinglePageActive("/appraiser-wishlist", route.pathname)
                   ? "active"
                   : ""
               }`}
             >
-              <Link href="#">
+              <Link href="/appraiser-wishlist">
                 <i className="flaticon-heart"></i>
                 <span> Wishlist</span>
               </Link>
@@ -92,12 +92,12 @@ const SidebarMenu = () => {
 
             <li
               className={`treeview ${
-                isSinglePageActive("#", route.pathname)
+                isSinglePageActive("/biding-history", route.pathname)
                   ? "active"
                   : ""
               }`}
             >
-              <Link href="#">
+              <Link href="/biding-history">
                 <i className="flaticon-pdf"></i>
                 <span> Biding History</span>
               </Link>

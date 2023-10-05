@@ -31,7 +31,7 @@ const Index = () => {
     } else {
       setSelected(2);
     }
-    console.log("selected ",isSelected);
+    console.log("selected ", isSelected);
     setSelectedPlan(newPlan);
   };
 
@@ -49,12 +49,16 @@ const Index = () => {
       {/* <BreadCrumbBanner /> */}
 
       {/* <!-- Service Section Area --> */}
-      <section className="our-dashbord mt-5 container" style={{}}>
-        <div className="container-fluid ovh">
+      <section className="our-dashbord mt-5" style={{}}>
+        <div className="ovh">
           <div className="row">
             <div className="col-lg-12 col-lg-6 maxw100flex-992">
               <div className="main-title text-center">
-                <h2 className="text-dark">Ready to get started?</h2>
+                <h2 className="" style={{
+                backgroundColor: "#2e008b",
+                color: "white",
+                padding: "20px",
+              }}>Ready to get started?</h2>
                 <p className="text-dark">
                   Choose a plan tailored to your needs {selectedPlan}
                 </p>
@@ -93,18 +97,20 @@ const Index = () => {
           </div>
           {/* End .row */}
 
-          <div className="row">
-            <Pricing
-              isPlan={isSelected}
-              setModalOpen={setModalOpen}
-              setPrice={setPrice}
-            />
-            <Modal
-              modalOpen={modalOpen}
-              closeModal={closeModal}
-              price={price}
-            />
-            {/* <Pricing hideButton={false}/> */}
+          <div className="container">
+            <div className="row">
+              <Pricing
+                isPlan={isSelected}
+                setModalOpen={setModalOpen}
+                setPrice={setPrice}
+              />
+              <Modal
+                modalOpen={modalOpen}
+                closeModal={closeModal}
+                price={price}
+              />
+              {/* <Pricing hideButton={false}/> */}
+            </div>
           </div>
           {/* End .row */}
         </div>
