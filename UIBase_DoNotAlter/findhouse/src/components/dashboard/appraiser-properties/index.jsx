@@ -12,7 +12,7 @@ import GridListButton from "../../common/listing/GridListButton";
 import Modal from "./Modal";
 import { useState } from "react";
 
-const index = () => {
+const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const openModal = () => {
@@ -173,4 +173,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;
