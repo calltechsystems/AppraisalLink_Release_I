@@ -1,6 +1,6 @@
 import { current } from "@reduxjs/toolkit";
 
-const LocationField = ({isDisable,streetNameRef,streetNumberRef,cityRef,stateRef,zipCodeRef,areaRef,propertyData,setDisable}) => {
+const LocationField = ({isDisable,streetNameRef,streetNumberRef,cityRef,stateRef,zipCodeRef,areaRef,propertyData,handleZipCodeChange,setDisable}) => {
   return (
     <>
       <div className="row">
@@ -85,6 +85,7 @@ const LocationField = ({isDisable,streetNameRef,streetNumberRef,cityRef,stateRef
                 className="form-control"
                 id="formGroupExampleInput3"
                 placeholder={propertyData?.zipCode || "ZipCode"}
+                onChange={handleZipCodeChange}
                 ref={zipCodeRef}
                 disabled={isDisable}
               />

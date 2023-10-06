@@ -7,8 +7,51 @@ import Pagination from "./Pagination";
 import SearchBox from "./SearchBox";
 import { useEffect } from "react";
 import { useState } from "react";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 const Index = () => {
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [ property , setProperty] = useState("");
+
+  const openModal = (property) => {
+    setProperty(property);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleDelete = () => {
+    const data = (JSON.parse(localStorage.getItem("user")));
+    
+    toast.loading("deleting this property");
+    axios
+      .delete("/api/deleteBrokerPropertyById",
+       {
+        headers: {
+          Authorization:`Bearer ${data.token}`,
+          "Content-Type":"application/json"
+        },
+        params: {
+          propertyId : property.propertyId
+        }
+        
+      })
+      .then((res) => {
+       setRerender(true);
+
+      })
+      .catch((err) => {
+        toast.error(err);
+      });
+      toast.dismiss();
+    closeModal();
+  };
+
+  
   
   const [userData , setUserData ] = useState( {} );
 
@@ -96,13 +139,11 @@ const Index = () => {
                   <div className="my_dashboard_review mb40">
                     <div className="property_table">
                       <div className="table-responsive mt0">
-                        <TableData  userData = {userData}/>
+                        <TableData  userData = {userData} open ={openModal} close={closeModal} />
                       </div>
                       {/* End .table-responsive */}
 
-                      <div className="mbp_pagination">
-                        <Pagination />
-                      </div>
+                     
                       {/* End .mbp_pagination */}
                     </div>
                     {/* End .property_table */}
@@ -122,6 +163,18 @@ const Index = () => {
               {/* End .row */}
             </div>
             {/* End .col */}
+            {isModalOpen && (
+              <div className="modal">
+                <div className="modal-content">
+                  <h2>Confirm Deletion</h2>
+                  <p>Are you sure you want to delete the property: {property.area}?</p>
+                  <div style={{marginLeft:"30%"}}>
+                    <button style={{marginRight:"6%",borderRadius:"8px",color:"white",backgroundColor:"red",fontSize:"22px",fontFamily:"Abhaya Libre"}} onClick={handleDelete}>Delete</button>
+                    <button style={{marginRight:"6%",borderRadius:"8px",color:"black",borderColor:"darkblue",fontSize:"22px",fontFamily:"Abhaya Libre"}} onClick={closeModal}>Cancel</button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>

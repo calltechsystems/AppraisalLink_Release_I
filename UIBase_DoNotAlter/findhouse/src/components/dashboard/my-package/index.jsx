@@ -1,10 +1,42 @@
+import { useEffect, useState } from "react";
 import Header from "../../common/header/dashboard/Header";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
 import MobileMenu from "../../common/header/MobileMenu";
 import PackageData from "./PackageData";
 import SearchBox from "./SearchBox";
+import toast from "react-hot-toast";
+import axios from "axios";
 
-const index = () => {
+const Index = () => {
+  const [data , setData] = useState([]);
+  useEffect(()=>{
+    const userData = (JSON.parse(localStorage.getItem("user")));
+   
+    toast.loading("Getting properties...");
+    axios
+      .get("/api/getBrokerTransactions",
+       {
+        headers: {
+          Authorization:`Bearer ${userData.token}`,
+          "Content-Type":"application/json"
+        },
+        params : {
+          userId : userData.userId
+        }
+        
+      })
+      .then((res) => {
+        toast.dismiss();
+        console.log(res.data.data);
+        setData(res.data.data);
+        setRerender(false);
+      })
+      .catch((err) => {
+        toast.dismiss();
+        toast.error(err?.response?.data?.error);
+      });
+  },[]);
+
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -75,7 +107,7 @@ const index = () => {
                     <div className="col-lg-12">
                       <div className="packages_table">
                         <div className="table-responsive mt0">
-                          <PackageData />
+                          <PackageData data={data}/>
                         </div>
                       </div>
                       {/* End .packages_table */}
@@ -108,4 +140,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;

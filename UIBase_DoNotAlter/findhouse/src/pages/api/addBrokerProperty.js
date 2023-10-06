@@ -38,6 +38,7 @@ import CryptoJS from "crypto-js";
         propertyStatus: propertyStatus,
         urgency: urgency,
     }
+    console.log(formData);
 
   
     const userResponse = await axios.post(`https://calltech20230920213721.azurewebsites.net/api/Registration/RegisterProperty`, formData,
@@ -51,18 +52,17 @@ import CryptoJS from "crypto-js";
     const user = userResponse.data;
 
 
+
     if(!user){
         return response.status(404).json({error:"User Not Found"});
     }
     return response.status(200).json({msg:"OK",userData : user});
   } catch (err) {
-    
+    console.log(err);
     if (err.response) {
       // If the error is from an axios request (e.g., HTTP 4xx or 5xx error)
       const axiosError = err.response.data;
-      const statusCode = err.response.status;
-      console.error(statusCode,axiosError.message); // Log the error for debugging
-
+      const statusCode = err.response.status; 
       return response.status(statusCode).json({ error: axiosError.message });
     } else {
       // Handle other types of errors

@@ -31,6 +31,7 @@ const Index = ({isView,propertyData}) => {
   const communityRef = useRef(propertyData?.community || null);
   const buildinRef = useRef(propertyData?.typeOfBuilding || null);
   const urgencyRef = useRef(propertyData?.urgency || null);
+  const bidLowerRangeRef = useRef(propertyData?.lowerRangeBid || null)
   
   const applicantFirstName = useRef(propertyData?.applicantFirstName || null);
   const applicantLatsName  = useRef(propertyData?.applicantLastName || null);
@@ -39,7 +40,25 @@ const Index = ({isView,propertyData}) => {
 
 
   const updateHandler = ()=>{
-     
+
+    const nameRegex = /^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$/;
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+    const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
+
+  if(!nameRegex.test(applicantFirstName.current.value) === true || !nameRegex.test(applicantLatsName.current.value) === true){
+
+    toast.error("Name should be valid ");
+  }
+  else if(!phoneNumberRegex.test(applicantNumber.current.value) === true){
+    toast.error("enter a valid phone number please");
+  }
+
+  else if(!emailRegex.test(applicantEmail.current.value) === true){
+    toast.error("enter a valid phone number please");
+  }
+  else{
+    
     const payload = {
         userId : userData.userId,
         propertyId :propertyData?.propertyId,
@@ -55,8 +74,8 @@ const Index = ({isView,propertyData}) => {
         applicantLastName : applicantLatsName.current.value|| propertyData?.applicantLastName,
         applicantPhoneNumber : applicantNumber.current.value||propertyData?.applicantNumber,
         applicantEmail : applicantEmail.current.value||propertyData?.applicantEmail,
-        bidLowerRange : 0,
-        bidUpperRange : 0,
+        bidLowerRange : Number(bidLowerRangeRef.current.value),
+        bidUpperRange : Number(bidLowerRangeRef.current.value),
         urgency : propertyData?.urgency === 0 ? 0 :1,
         propertyStatus : true,
         token:userData.token
@@ -82,7 +101,7 @@ const Index = ({isView,propertyData}) => {
         toast.dismiss();
         toast.error(err.response.data.error);
       });
-
+    }
 
 
   }
@@ -90,6 +109,24 @@ const Index = ({isView,propertyData}) => {
 
   
   const submitHandler = ()=>{
+
+    const nameRegex = /^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$/;
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+    const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
+
+  if(!nameRegex.test(applicantFirstName.current.value) === true || !nameRegex.test(applicantLatsName.current.value) === true){
+
+    toast.error("Name should be valid ");
+  }
+  else if(!phoneNumberRegex.test(applicantNumber.current.value) === true){
+    toast.error("enter a valid phone number please");
+  }
+
+  else if(!emailRegex.test(applicantEmail.current.value) === true){
+    toast.error("enter a valid phone number please");
+  }
+  else{
      
     const payload = {
         userId : userData.userId,
@@ -105,8 +142,8 @@ const Index = ({isView,propertyData}) => {
         applicantLastName : applicantLatsName.current.value,
         applicantPhoneNumber : applicantNumber.current.value,
         applicantEmail : applicantEmail.current.value||userData.userEmail,
-        bidLowerRange : 0,
-        bidUpperRange : 0,
+        bidLowerRange : Number(bidLowerRangeRef.current.value) ,
+        bidUpperRange : Number(bidLowerRangeRef.current.value),
         urgency : propertyData?.urgency === 0 ? 0 :1,
         propertyStatus : true,
         token:userData.token
@@ -117,7 +154,7 @@ const Index = ({isView,propertyData}) => {
     
     toast.loading("Appraising property ..");
     axios
-      .put("/api/addBrokerProperty", encryptedData,
+      .post("/api/addBrokerProperty", encryptedData,
        {
         headers: {
           Authorization:`Bearer ${userData.token}`,
@@ -132,11 +169,33 @@ const Index = ({isView,propertyData}) => {
         toast.dismiss();
         toast.error(err.message);
       });
-
+    }
 
 
   }
-  
+
+  const handleZipCodeChange = async (e) => {
+    const newZipCode = zipCodeRef.current.value
+   
+
+    if (newZipCode.length === 5) {
+      try {
+        const response = await axios.get(`https://api.zippopotam.us/us/${newZipCode}`);
+        const data = response.data;
+        stateRef.current.value = "";
+        cityRef.current.value="";
+        stateRef.current.value = (data.places[0]['state']);
+       cityRef.current.value = data.places[0]['place name'];
+
+      } catch (error) {
+        // Handle API error or invalid zip code
+        console.error('Error fetching location data:', error);
+      }
+    } else {
+      
+    }
+  };
+
   return (
     <>      
       {/* <!-- Main Header Nav --> */}
@@ -202,6 +261,7 @@ const Index = ({isView,propertyData}) => {
                       streetNumberRef = {streetNumberRef}
                       cityRef = {cityRef}
                       stateRef = {stateRef}
+                      handleZipCodeChange={handleZipCodeChange}
                       zipCodeRef = {zipCodeRef}
                       areaRef = {areaRef} 
                       propertyData={ propertyData}
@@ -218,6 +278,7 @@ const Index = ({isView,propertyData}) => {
                       buildinRef = {buildinRef}
                       urgencyRef = {urgencyRef}
                       propertyData={ propertyData}
+                      bidLowerRangeRef = {bidLowerRangeRef}
                     setDisable={setDisable}/>
                   </div>
 

@@ -16,12 +16,21 @@ const Index = () => {
     price: 0,
   });
 
+  const [isChecked, setIsChecked] = useState(false);
+
+  const toggleSwitch = () => {
+    setIsChecked(!isChecked);
+  };
   const openModal = () => {
     setModalOpen(true);
   };
 
   const closeModal = () => {
     setModalOpen(false);
+  };
+
+  const togglePlan = () => {
+    setSelectedPlan(selectedPlan === "Monthly" ? "Yearly" : "Monthly");
   };
 
   const changePlan = (newPlan) => {
@@ -62,38 +71,33 @@ const Index = () => {
                 <p className="text-dark">
                   Choose a plan tailored to your needs {selectedPlan}
                 </p>
-                <div>
-                  <button
-                    style={{
-                      width: "120px",
-                      margin: "6px",
-                      borderRadius: "8px",
-                      borderColor: "#2e008b",
-                      backgroundColor:
-                        selectedPlan === "Monthly" ? "#2e008b" : "white",
-                      color: selectedPlan === "Monthly" ? "white" : "#2e008b",
-                    }}
-                    onClick={() => changePlan("Monthly")}
-                  >
-                    Monthly
-                  </button>
-                  <button
-                    style={{
-                      width: "120px",
-                      margin: "6px",
-                      borderRadius: "8px",
-                      borderColor: "#2e008b",
-                      backgroundColor:
-                        selectedPlan === "Yearly" ? "#2e008b" : "white",
-                      color: selectedPlan === "Yearly" ? "white" : "#2e008b",
-                    }}
-                    onClick={() => changePlan("Yearly")}
-                  >
-                    Yearly
-                  </button>
+                <div className="toggleContainer">
+                  <span>Monthly</span>
+                  <div style={{ width: "20%", height: "70%" }}>
+                    <label
+                      // className={`toggleLabel ${selectedPlan}`}
+                      // onClick={togglePlan}
+                    >
+                      <button className="toggleSwitch"></button>
+
+                      <div className="toggle-switch">
+                        <label className="switch">
+                          <input
+                            type="checkbox"
+                            onClick={togglePlan}
+                            checked={isChecked}
+                            onChange={toggleSwitch}
+                          />
+                          <span className="slider round"></span>
+                        </label>
+                      </div>
+                    </label>
+                  </div>
+
+                  <span>Yearly</span>
                 </div>
               </div>
-            </div>
+          </div>
           </div>
           {/* End .row */}
 

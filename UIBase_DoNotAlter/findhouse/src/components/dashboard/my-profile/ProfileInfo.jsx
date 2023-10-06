@@ -87,7 +87,17 @@ const ProfileInfo = ({ setProfileCount }) => {
     const companyName =
       companyNameRef.current.value || userData.broker_Details.companyName;
 
-    if (
+      const nameRegex = /^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$/;
+      const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
+
+    if(!nameRegex.test(firstName) === true || !nameRegex.test(lastName) === true){
+      console.log(!nameRegex.test(firstName));
+      toast.error("Name should be valid ");
+    }
+    else if(!phoneNumberRegex.test(phoneNumber) === true){
+      toast.error("enter a valid phone number please");
+    }
+    else if (
       (!firstName ||
         !lastName ||
         !adressLine1 ||
@@ -99,8 +109,9 @@ const ProfileInfo = ({ setProfileCount }) => {
         !mortageBrokerageLicNo) &&
       !userData
     ) {
-      alert("All marked fields arent filled !!");
-    } else {
+      toast.error("All marked fields arent filled !!");
+    } 
+    else {
       let count = 9;
       if (adressLine2) {
         count++;
@@ -141,11 +152,12 @@ const ProfileInfo = ({ setProfileCount }) => {
 
       // console.log(payload);
 
+      toast.loading("Updating ...");
       const encryptedData = encryptionData(payload);
       axios
         .put("/api/updateBrokerProfile", encryptedData)
         .then((res) => {
-          alert("Successfully Updated Profile!");
+          toast.success("Successfully Updated Profile!");
           let data = userData;
           data.broker_Details = res.data.userData.brokerage;
           localStorage.removeItem("user");
@@ -153,9 +165,10 @@ const ProfileInfo = ({ setProfileCount }) => {
           router.push("/my-dashboard");
         })
         .catch((err) => {
-          alert(err.message);
+          toast.error(err.message);
         })
         .finally(() => {});
+        toast.dismiss();
     }
   };
 
@@ -180,6 +193,27 @@ const ProfileInfo = ({ setProfileCount }) => {
     } else {
       // Handle the case when the upload failed
       console.error("Image upload failed");
+    }
+  };
+
+  const handleZipCodeChange = async (e) => {
+    const newZipCode = zipcodeRef.current.value
+   
+
+    if (newZipCode.length === 5) {
+      try {
+        const response = await axios.get(`https://api.zippopotam.us/us/${newZipCode}`);
+        const data = response.data;
+        stateRef.current.value = "";
+        cityRef.current.value="";
+        stateRef.current.value = (data.places[0]['state']);
+       cityRef.current.value = data.places[0]['place name'];
+
+      } catch (error) {
+        console.error('Error fetching location data:', error);
+      }
+    } else {
+      
     }
   };
 
@@ -259,6 +293,7 @@ const ProfileInfo = ({ setProfileCount }) => {
                       type="text"
                       className="form-control"
                       id="formGroupExampleInput3"
+                      required
                       placeholder={
                         userData
                           ? userData?.broker_Details?.firstName
@@ -281,6 +316,7 @@ const ProfileInfo = ({ setProfileCount }) => {
                   <div className="col-12 mb-2">
                     <input
                       type="text"
+                      required
                       className="form-control"
                       id="formGroupExampleInput3"
                       placeholder={
@@ -304,6 +340,7 @@ const ProfileInfo = ({ setProfileCount }) => {
                   <div className="col-12 mb-2">
                     <input
                       type="text"
+                      required
                       className="form-control"
                       id="formGroupExampleInput3"
                       placeholder={
@@ -354,6 +391,7 @@ const ProfileInfo = ({ setProfileCount }) => {
                       type="text"
                       className="form-control"
                       id="formGroupExampleInput3"
+                      required
                       placeholder={
                         userData
                           ? userData?.broker_Details?.adressLine1
@@ -402,6 +440,7 @@ const ProfileInfo = ({ setProfileCount }) => {
                       type="text"
                       className="form-control"
                       id="formGroupExampleInput3"
+                      required
                       placeholder={
                         userData
                           ? userData?.broker_Details?.city
@@ -425,6 +464,7 @@ const ProfileInfo = ({ setProfileCount }) => {
                     <input
                       type="text"
                       className="form-control"
+                      required
                       id="formGroupExampleInput3"
                       placeholder={
                         userData
@@ -449,7 +489,9 @@ const ProfileInfo = ({ setProfileCount }) => {
                     <input
                       type="text"
                       className="form-control"
+                      required
                       id="formGroupExampleInput3"
+                      onChange={(e)=>handleZipCodeChange(e)}
                       placeholder={
                         userData
                           ? userData?.broker_Details?.zipCode
@@ -472,6 +514,7 @@ const ProfileInfo = ({ setProfileCount }) => {
                   <div className="col-12 mb-2">
                     <input
                       type="text"
+                      required
                       className="form-control"
                       id="formGroupExampleInput3"
                       placeholder={
@@ -497,14 +540,10 @@ const ProfileInfo = ({ setProfileCount }) => {
                     <input
                       type="email"
                       className="form-control"
+                      required
                       id="formGroupExampleInput3"
-                      placeholder={
-                        userData
-                          ? userData?.broker_Details?.phoneNumber
-                          : "Enter your phoneNumber"
-                      }
-                      ref={phoneNumberRef}
-                      disabled={!edit}
+                      value={userData?.userEmail ? userData.userEmail : ""}
+                      disabled
                     />
                   </div>
                 </div>
@@ -521,6 +560,7 @@ const ProfileInfo = ({ setProfileCount }) => {
                   <div className="col-12 mb-2">
                     <input
                       type="text"
+                      required
                       className="form-control"
                       id="formGroupExampleInput3"
                       placeholder={
@@ -546,6 +586,7 @@ const ProfileInfo = ({ setProfileCount }) => {
                   <div className="col-12 mb-2">
                     <input
                       type="text"
+                      required
                       className="form-control"
                       id="formGroupExampleInput3"
                       placeholder={
@@ -570,6 +611,7 @@ const ProfileInfo = ({ setProfileCount }) => {
                 <div className="col-lg-7">
                   <input
                     type="text"
+                    required
                     className="form-control"
                     id="formGroupExampleInput3"
                     placeholder={
@@ -617,6 +659,7 @@ const ProfileInfo = ({ setProfileCount }) => {
                 <div className="col-lg-7">
                   <input
                     type="text"
+                    required
                     className="form-control"
                     id="formGroupExampleInput3"
                     placeholder={
@@ -667,6 +710,7 @@ const ProfileInfo = ({ setProfileCount }) => {
                     type="text"
                     className="form-control"
                     id="formGroupExampleInput3"
+                    required
                     placeholder={
                       userData
                         ? userData?.broker_Details?.adressLine1
@@ -714,6 +758,7 @@ const ProfileInfo = ({ setProfileCount }) => {
                   <input
                     type="text"
                     className="form-control"
+                    required
                     id="formGroupExampleInput3"
                     placeholder={
                       userData
@@ -738,6 +783,7 @@ const ProfileInfo = ({ setProfileCount }) => {
                   <input
                     type="text"
                     className="form-control"
+                    required
                     id="formGroupExampleInput3"
                     placeholder={
                       userData
@@ -761,6 +807,7 @@ const ProfileInfo = ({ setProfileCount }) => {
                 <div className="col-lg-7 mb-2">
                   <input
                     type="text"
+                    required
                     className="form-control"
                     id="formGroupExampleInput3"
                     placeholder={
@@ -785,6 +832,7 @@ const ProfileInfo = ({ setProfileCount }) => {
                 <div className="col-lg-7">
                   <input
                     type="text"
+                    required
                     className="form-control"
                     id="formGroupExampleInput3"
                     placeholder={
@@ -857,7 +905,7 @@ const ProfileInfo = ({ setProfileCount }) => {
                         className="btn btn2 btn-dark"
                         onClick={onUpdatHandler}
                       >
-                        Create Profile
+                        {userData?.broker_Details ? "Update Profile" : "Create Profile"}
                       </button>
                     </div>
                   </div>

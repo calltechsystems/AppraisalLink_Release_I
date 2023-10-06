@@ -7,7 +7,7 @@ import Link from "next/link";
 import axios from "axios";
 import { encryptionData } from "../../../utils/dataEncryption";
 import toast from "react-hot-toast";
-const TableData = ({userData}) => {
+const TableData = ({userData , open ,close}) => {
 
   const [Id,setId] = useState(-1);
   const [toggle,setToggle] = useState(false);
@@ -71,6 +71,21 @@ const TableData = ({userData}) => {
         toast.error(err?.response?.data?.error);
       });
   },[rerender]);
+  const formatDate = (dateString) => {
+    const options = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: true, // Use 12-hour format
+    };
+  
+    const formattedDate = new Date(dateString).toLocaleString('en-US', options);
+  
+    return formattedDate;
+  };
 
   const deletePropertyHandler = (id)=>{
 
@@ -126,7 +141,7 @@ const TableData = ({userData}) => {
               <h4>{item.title}</h4>
               <p>
                 <span className="flaticon-placeholder"></span>
-                {item.area} {item.city} {item.state} {item.zipCode}
+                {item.area} {item.city} {item.state} zipCode-{item.zipCode}
               </p>
               <Link className="fp_price text-thm" href="#">
                 ${item.bidLowerRange} - ${item.bidUpperRange}
@@ -137,7 +152,7 @@ const TableData = ({userData}) => {
       </td>
       {/* End td */}
 
-      <td>{item?.addedDatetime}</td>
+      <td>{formatDate(item?.addedDatetime)}</td>
       {/* End td */}
 
       <td>
@@ -178,7 +193,7 @@ const TableData = ({userData}) => {
             data-placement="top"
             title="Delete"
           >
-            <button style={{border:"none",backgroundColor:"white"}} onClick={()=>deletePropertyHandler(item.propertyId)}><Link href="#">
+            <button style={{border:"none",backgroundColor:"white"}} onClick={()=>open(item)}><Link href="#">
               <span className="flaticon-garbage"></span>
             </Link></button>
           </li>

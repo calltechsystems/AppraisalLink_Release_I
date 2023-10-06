@@ -1,6 +1,6 @@
 import { useRef } from "react";
 
-const CreateList = ({isDisable,communityRef,buildinRef,urgencyRef,propertyData,setDisable}) => {
+const CreateList = ({isDisable,communityRef,buildinRef,urgencyRef,propertyData,bidLowerRangeRef,setDisable}) => {
   
 
   return (
@@ -58,6 +58,23 @@ const CreateList = ({isDisable,communityRef,buildinRef,urgencyRef,propertyData,s
                 disabled={isDisable}
               />
             </div>
+            <div className="row mb-2">
+            <div className="col-lg-3 my_profile_setting_input form-group">
+              <label htmlFor="" style={{ paddingTop: "15px", fontWeight:'lighter' }}>
+                Lower Bid <span class="req-btn">*</span> :
+              </label>
+            </div>
+            <div className="col-lg-7">
+              <input
+                type="number"
+                className="form-control"
+                id="formGroupExampleInput3"
+                placeholder={propertyData?.bidLowerRange || " $ 0"}
+                ref={bidLowerRangeRef}
+                disabled={isDisable}
+              />
+            </div>
+          </div>
           </div>
 
           {/* <div className="col-xl-12">
