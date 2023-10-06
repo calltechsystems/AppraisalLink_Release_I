@@ -11822,9 +11822,9 @@ a.btn.btn_error {
 .sign_up_form .input-group-text {
   background-color: transparent;
   border: none;
-  color: #006c70;
+  color: #2e008b;
   height: 40px;
-  position: absolute;
+  /* position: absolute; */
   right: 2px;
   top: 6px;
 }
@@ -21827,8 +21827,8 @@ a::before {
   transition: background-color 0.3s;
 }
 
-.toggleLabel input[type="radio"]:checked + .toggleSwitch {
-  background-color: #2e008b; /* Selected background color */
+.toggleLabel input[type="radio"]:checked + .toggleLabel {
+  background-color: #2e008b !important; /* Selected background color */
 }
 
 .toggleSwitch::before {
@@ -22120,3 +22120,58 @@ input[type=text]{
 /* .text-color-01:hover{
   text-decoration: underline;
 } */
+
+
+
+.toggle-switch {
+  display: inline-block;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: '';
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #2e008b;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}

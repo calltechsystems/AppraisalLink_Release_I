@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import Captcha from "../common/Captcha";
 import { encryptionData } from "../../utils/dataEncryption";
 import { useRouter } from "next/router";
-
+import { FaEye } from "react-icons/fa";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -36,10 +36,10 @@ const Form = () => {
 
   const inputStyle = {
     position: "relative",
-    width: "100%",
-    padding: "8px",
-    border: "1px solid #ccc",
-    borderRadius: "4px",
+    // width: "100%",
+    // padding: "8px",
+    // border: "1px solid #ccc",
+    // borderRadius: "4px",
   };
 
   const labelStyle = {
@@ -179,7 +179,7 @@ const Form = () => {
                 ref={emailRegisterRef}
               />
               <div className="input-group-prepend">
-                <div className="input-group-text">
+                <div className="input-group-text m-1" style={{border:'1px solid #2e008b'}}>
                   <i className="fa fa-envelope-o"></i>
                 </div>
               </div>
@@ -192,10 +192,10 @@ const Form = () => {
               className="form-group input-group  "
               style={{ position: "relative", marginBottom: "6px" }}
             >
-              <label htmlFor="passwordInput" style={labelStyle}>
+              {/* <label htmlFor="passwordInput" style={labelStyle}>
                 Password must have a A-Z,a-z,0-9,!@#$%^& a & 8 - 15 characters
                 long.
-              </label>
+              </label> */}
               <input
                 type={passwordVisible ? "text" : "password"} // Conditionally set the input type
                 className="form-control"
@@ -212,16 +212,16 @@ const Form = () => {
               />
               <div className="input-group-prepend">
                 <div
-                  className="input-group-text"
+                  className="input-group-text m-1"  style={{border:'1px solid #2e008b'}}
                   onClick={togglePasswordVisibility}
                 >
-                  <i className="flaticon-password"></i>
+                  <FaEye/>
                 </div>
               </div>
             </div>
             {/* End .form-group */}
           </div>
-          <div style={{ marginTop: "0px" }}>
+          <div style={{ marginTop: "10px" }}>
             {isFocused ? (
               passwordRegisterVerified ? (
                 <span style={{ color: "green" }}>Strong Password &#10004;</span>
@@ -238,31 +238,31 @@ const Form = () => {
           <div className="col-lg-12">
           <div
           className="form-group input-group  "
-          style={{ position: "relative", marginBottom: "6px",marginTop:"1%"}}
+          style={{ position: "",marginTop:"-10px", marginBottom:'15px'}}
         >
           <label htmlFor="passwordInput" style={labelStyle}>
             Password must have a A-Z,a-z,0-9,!@#$%^& a & 8 - 15 characters long.
           </label>
               <input
                 type={passwordVisible_01 ? "text" : "password"} // Conditionally set the input type
-                className="form-control"
+                className="form-control mt-3"
                 placeholder="Re enter Password"
                 required
                 ref={passwordRegisterRef}
                 style={{ paddingRight: "40px" }} // Add right padding to accommodate the button
               />
-              <div className="input-group-prepend">
+              <div className="input-group-prepend mt-3">
                 <div
-                  className="input-group-text"
+                  className="input-group-text m-1" style={{border:'1px solid #2e008b'}}
                   onClick={togglePasswordVisibility_01}
                 >
-                  <i className="flaticon-password"></i>
+                  <FaEye/>
                 </div>
               </div>
             </div>
             {/* End .form-group */}
           </div>
-          {isFocused ? (
+          {/* {isFocused ? (
             passwordRegisterVerified ? (
               <div style={{marginTop:"-2%"}}> <span style={{ color: "green" }}>Strong Password &#10004;</span> </div>
             ) : (
@@ -270,7 +270,7 @@ const Form = () => {
             )
           ) : (
             ""
-          )}
+          )} */}
 
           <div className="col-lg-12">
             <div>
@@ -302,8 +302,8 @@ const Form = () => {
             style={{
               display: "flex",
               flexDirection: "row",
-              textAlign: "center",
-              paddingLeft: "30%",
+              justifyContent: "center",
+              // paddingLeft: "30%",
             }}
           >
             <div>
@@ -311,10 +311,10 @@ const Form = () => {
             </div>
             <div
               style={{
-                textDecoration: "underline",
+                // textDecoration: "underline",
                 fontWeight: "bold",
-                lineHeight: "1.3",
-                marginLeft: "2px",
+                lineHeight: "1.5",
+                marginLeft: "5px",
               }}
             >
               <Link href="/login" className="text-thm">

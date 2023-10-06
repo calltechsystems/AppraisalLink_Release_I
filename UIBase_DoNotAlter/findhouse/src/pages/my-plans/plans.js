@@ -32,6 +32,11 @@ const Index = ({ setModalOpen, setPrice }) => {
     setSelectedPlan(selectedPlan === "Monthly" ? "Yearly" : "Monthly");
   };
 
+  const [isChecked, setIsChecked] = useState(false);
+
+  const toggleSwitch = () => {
+    setIsChecked(!isChecked);
+  };
   return (
     <>
       {/* Main Header Nav */}
@@ -65,18 +70,29 @@ const Index = ({ setModalOpen, setPrice }) => {
                   Choose a plan tailored to your needs {selectedPlan}
                 </p>
                 <div className="toggleContainer">
-                <span >Monthly</span>
-                <div style={{width:"20%",height:"70%"}}>
-                  <label 
-                    className={`toggleLabel ${selectedPlan}`}
-                    onClick={togglePlan}
-                  >
-                    <button className="toggleSwitch"></button>
-                   
-                  </label>
+                  <span>Monthly</span>
+                  <div style={{ width: "20%", height: "70%" }}>
+                    <label
+                      // className={`toggleLabel ${selectedPlan}`}
+                      // onClick={togglePlan}
+                    >
+                      <button className="toggleSwitch"></button>
+
+                      <div className="toggle-switch">
+                        <label className="switch">
+                          <input
+                            type="checkbox"
+                            onClick={togglePlan}
+                            checked={isChecked}
+                            onChange={toggleSwitch}
+                          />
+                          <span className="slider round"></span>
+                        </label>
+                      </div>
+                    </label>
                   </div>
-                  
-                  <span >Yearly</span>
+
+                  <span>Yearly</span>
                 </div>
               </div>
             </div>

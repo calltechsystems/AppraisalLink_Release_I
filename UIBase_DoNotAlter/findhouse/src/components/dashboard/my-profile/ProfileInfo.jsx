@@ -212,7 +212,7 @@ const ProfileInfo = ({ setProfileCount }) => {
       <div className="col-lg-12 col-xl-12 mt-2">
         <div className="my_profile_setting_input form-group">
           <div className="row">
-            <div className="col-lg-3">
+            <div className="col-lg-3 text-center">
               <div className="wrap-custom-file">
                 <img
                   style={{ borderRadius: "50%" }}
@@ -231,7 +231,7 @@ const ProfileInfo = ({ setProfileCount }) => {
                     {({ open }) => (
                       <div>
                         <button
-                          className="btn btn-color profile_edit_button"
+                          className="btn btn-color profile_edit_button mb-5"
                           style={{ marginLeft: "0px" }}
                           onClick={open} // This will open the upload widget
                         >

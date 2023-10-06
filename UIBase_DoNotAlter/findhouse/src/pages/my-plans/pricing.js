@@ -67,7 +67,8 @@ const Pricing = ({isPlan,hideButton,selectedId,setModalOpen,data,setPrice}) => {
     ];
   
     const selectedIdStyle = selectedId ? selectedId : "2";
-    const content = pricingContentForMonthly ;
+    const content = isPlan === 1 ? pricingContentForMonthly : pricingContentForYearly ;
+
 
     const selectPackageHandler = (id ,title,price) =>{
       setModalOpen(true);

@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { useRef } from "react";
 import axios from "axios";
-
+import { FaEye } from "react-icons/fa";
 import Captcha from "../common/Captcha";
 import { encryptionData } from "../../utils/dataEncryption";
 import { useRouter } from "next/router";
@@ -98,7 +98,7 @@ const Form = ({ user }) => {
             alt="login.jpg"
           />
         </div>
-        <div className="col-lg-6 pt100">
+        <div className="col-lg-6 pt60">
           <form onSubmit={loginHandler}>
             <div className="heading text-center">
               <h3>{`Login to your account `} </h3>
@@ -114,7 +114,7 @@ const Form = ({ user }) => {
                 ref={emailLoginRef}
               />
               <div className="input-group-prepend">
-                <div className="input-group-text">
+                <div className="input-group-text m-1" style={{border:'1px solid #2e008b'}}>
                   <i className="flaticon-user"></i>
                 </div>
               </div>
@@ -140,15 +140,15 @@ const Form = ({ user }) => {
               />
               <div className="input-group-prepend">
                 <div
-                  className="input-group-text"
+                  className="input-group-text m-1" style={{border:'1px solid #2e008b'}}
                   onClick={togglePasswordVisibility}
                 >
-                  <i className="flaticon-password"></i>
+                  <FaEye />
                 </div>
               </div>
             </div>
 
-            <div className="col-12" style={{marginBottom:'-30px'}}>
+            <div className="col-12">
               <div>
                 <Captcha verified={setCaptchaVerified} />
               </div>
@@ -186,23 +186,23 @@ const Form = ({ user }) => {
               Log In
             </button>
             <div
-              className="heading text-center"
+              className="heading"
               style={{
                 display: "flex",
                 flexDirection: "row",
-                textAlign: "center",
-                paddingLeft: "30%",
+                justifyContent:'center'
+                // marginLeft: "20%",
               }}
             >
               <div>
-                <p className="text-center" style={{fontSize:'16px'}}>Dont have an account? </p>
+                <p style={{fontSize:'16px'}}>Dont have an account? </p>
               </div>
               <div
                 style={{
-                  textDecoration: "underline",
+                  // textDecoration: "underline",
                   fontWeight: "bold",
                   marginLeft: "5px",
-                  lineHeight: "1.3",
+                  lineHeight: "1.6",
                 }}
               >
                 <Link href="/register" className="text-thm">

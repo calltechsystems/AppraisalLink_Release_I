@@ -68,32 +68,32 @@ const Captcha = ({ verified }) => {
       <div
         className="row"
         style={{
-          paddingLeft: "6%",
+          // paddingLeft: "6%",
           display: "flex",
           flexDirection: "row",
-          marginBottom: "6%",
+          // marginBottom: "6%",
         }}
       >
-        <div className="col-lg-6 col-12" style={{ width: "40%" }}>
-          <h4 id="captcha" className="bg-imgg text-captcha">
+        <div className="col-lg-4">
+          <h4 id="captcha" className="bg-imgg text-captcha text-center" style={{letterSpacing:'1px', textDecoration:'line-through'}}>
             {captcha}
           </h4>
           <Image
-            width={60}
+            width={40}
             height={45}
             className="w-100 mb-2 mt-0 cap-img"
             src="/assets/images/home/bg.png"
           />
         </div>
         <div
-          className="col-lg-6 col-12"
-          style={{ width: "60%", display: "flex", flexDirection: "row" }}
+          className="col-lg-8 mb-4"
+          style={{ display: "flex", flexDirection: "row" }}
         >
           <input
             type="text"
             ref={captchaRef}
             className="form-control mr"
-            style={{ width: "70%" }}
+            style={{ width: "100%" }}
             placeholder="Enter Captcha"
             name="username"
             onChange={handleChange}
@@ -102,8 +102,8 @@ const Captcha = ({ verified }) => {
           <button
             type="button"
             id="succesBTN"
-            className="btn btn-primary w-15 "
-            style={{ cursor: "pointer", margin: "2%", marginTop:'5px' }}
+            className="w-15 m-2 text-color"
+            style={{ cursor: "pointer", borderRadius:'5px' }}
             onClick={refreshHandler}
           >
             <FaRedo style={{ padding: "2px" }} />
