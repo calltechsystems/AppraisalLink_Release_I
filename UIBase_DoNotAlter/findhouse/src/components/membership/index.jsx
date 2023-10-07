@@ -104,7 +104,7 @@ const Index = () => {
           <div className="container">
             <div className="row">
               <Pricing
-                isPlan={isSelected}
+                isPlan={selectedPlan}
                 setModalOpen={setModalOpen}
                 setPrice={setPrice}
               />

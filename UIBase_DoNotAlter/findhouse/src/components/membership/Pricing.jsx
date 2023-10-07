@@ -73,8 +73,9 @@ const Pricing = ({isPlan,hideButton,selectedId,setModalOpen,setPrice}) => {
     },
   ];
 
+  console.log(isPlan);
   const selectedIdStyle = selectedId ? selectedId : "3";
-  const content = isPlan === 1 ? pricingContentForMonthly : pricingContentForYearly ;
+  const content = isPlan === "Monthly" ? pricingContentForMonthly : pricingContentForYearly ;
 
   const selectPackageHandler = (title,price) =>{
     setModalOpen(true);
