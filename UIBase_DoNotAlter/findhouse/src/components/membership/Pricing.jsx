@@ -1,6 +1,10 @@
-
-const Pricing = ({isPlan,hideButton,selectedId,setModalOpen,setPrice}) => {
- 
+const Pricing = ({
+  isPlan,
+  hideButton,
+  selectedId,
+  setModalOpen,
+  setPrice,
+}) => {
   const pricingContentForMonthly = [
     {
       id: 1,
@@ -75,24 +79,41 @@ const Pricing = ({isPlan,hideButton,selectedId,setModalOpen,setPrice}) => {
 
   console.log(isPlan);
   const selectedIdStyle = selectedId ? selectedId : "3";
-  const content = isPlan === "Monthly" ? pricingContentForMonthly : pricingContentForYearly ;
+  const content =
+    isPlan === "Monthly" ? pricingContentForMonthly : pricingContentForYearly;
 
-  const selectPackageHandler = (title,price) =>{
+  const selectPackageHandler = (title, price) => {
     setModalOpen(true);
     setPrice({
-      title : title,
-      price : price
+      title: title,
+      price: price,
     });
-  }     
+  };
   return (
     <>
       {content.map((item) => (
-
-        <div className="col-sm-4 col-md-4 my_plan_pricing_header mb-5"  key={item.id}>
-          <div className={`pricing_table  ${ String(selectedIdStyle) === String(item.id) ? "pricing_table_border_style":""}`}>
+        <div
+          className="col-sm-4 col-md-4 my_plan_pricing_header mb-5"
+          key={item.id}
+        >
+          <div
+            className={`pricing_table  ${
+              String(selectedIdStyle) === String(item.id)
+                ? "pricing_table_border_style"
+                : ""
+            }`}
+          >
             <div className="pricing_header">
               <div className="price">{item.title}</div>
-              {String(selectedIdStyle) === String(item.id) ? <div style={{backgroundColor:"darkslateblue",borderRadius:"4px", paddingTop:'5px',paddingBottom:'5px'}}><h4 >Recommended Plan</h4> </div>: "" }
+              {String(selectedIdStyle) === String(item.id) ? (
+                <div className="p-1 text-light fw-bold"
+                  style={{ backgroundColor: "darkblue", borderRadius: "4px", fontSize:'19px' }}
+                >
+                  Recommended Plan{" "}
+                </div>
+              ) : (
+                ""
+              )}
             </div>
             <div className="pricing_content">
               <ul className="mb0">
@@ -100,15 +121,24 @@ const Pricing = ({isPlan,hideButton,selectedId,setModalOpen,setPrice}) => {
                   <li key={i}>{val}</li>
                 ))}
               </ul>
-            <div className="pricing_header">
-              <h2 className="text-light">${item.price}</h2>
+              <div className="pricing_header">
+                <h2 className="text-light">${item.price}</h2>
               </div>
             </div>
-            {!hideButton && (<div className="pricing_footer" onClick={()=>selectPackageHandler(item.title,item.price)}>
-              <a className={`btn pricing_btn btn-block w-100`}  href="#">
-                 {selectedId!==item.id ? !selectedId ? "Select Plan":"Change Plan":"Upgrade" }
-              </a>
-            </div>)}
+            {!hideButton && (
+              <div
+                className="pricing_footer"
+                onClick={() => selectPackageHandler(item.title, item.price)}
+              >
+                <a className={`btn pricing_btn btn-block w-100`} href="#">
+                  {selectedId !== item.id
+                    ? !selectedId
+                      ? "Select Plan"
+                      : "Change Plan"
+                    : "Upgrade"}
+                </a>
+              </div>
+            )}
           </div>
         </div>
       ))}
@@ -117,5 +147,3 @@ const Pricing = ({isPlan,hideButton,selectedId,setModalOpen,setPrice}) => {
 };
 
 export default Pricing;
-
-

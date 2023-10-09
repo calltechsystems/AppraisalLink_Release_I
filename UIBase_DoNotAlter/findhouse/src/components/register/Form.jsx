@@ -212,7 +212,7 @@ const Form = () => {
               />
               <div className="input-group-prepend">
                 <div
-                  className="input-group-text m-1"  style={{border:'1px solid #2e008b'}}
+                  className="input-group-text m-1"  style={{border:'1px solid #2e008b', cursor:'pointer'}}
                   onClick={togglePasswordVisibility}
                 >
                   <FaEye/>
@@ -253,7 +253,7 @@ const Form = () => {
               />
               <div className="input-group-prepend mt-3">
                 <div
-                  className="input-group-text m-1" style={{border:'1px solid #2e008b'}}
+                  className="input-group-text m-1" style={{border:'1px solid #2e008b', cursor:'pointer'}}
                   onClick={togglePasswordVisibility_01}
                 >
                   <FaEye/>

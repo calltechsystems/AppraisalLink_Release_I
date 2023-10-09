@@ -166,11 +166,12 @@ const Index = () => {
             {isModalOpen && (
               <div className="modal">
                 <div className="modal-content">
-                  <h2>Confirm Deletion</h2>
-                  <p>Are you sure you want to delete the property: {property.area}?</p>
-                  <div style={{marginLeft:"30%"}}>
-                    <button style={{marginRight:"6%",borderRadius:"8px",color:"white",backgroundColor:"red",fontSize:"22px",fontFamily:"Abhaya Libre"}} onClick={handleDelete}>Delete</button>
-                    <button style={{marginRight:"6%",borderRadius:"8px",color:"black",borderColor:"darkblue",fontSize:"22px",fontFamily:"Abhaya Libre"}} onClick={closeModal}>Cancel</button>
+                  <h3 className="text-center">Delete Confirmation</h3>
+                  <h5 className="text-center">Are you sure you want to delete the property : {property.area} ?</h5>
+                  {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
+                  <div className="text-center" style={{}}>
+                    <button className="btn w-35 btn-thm3 m-2"  onClick={handleDelete}>Delete</button>
+                    <button className="btn w-35 btn-white"  onClick={closeModal}>Cancel</button>
                   </div>
                 </div>
               </div>

@@ -76,9 +76,9 @@ const TableData = ({userData , open ,close}) => {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
+      // hour: 'numeric',
+      // minute: 'numeric',
+      // second: 'numeric',
       hour12: true, // Use 12-hour format
     };
   

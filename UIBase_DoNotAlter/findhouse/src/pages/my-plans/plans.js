@@ -7,6 +7,7 @@ import axios from "axios";
 
 const Index = ({ setModalOpen, setPrice }) => {
   const [selectedPlan, setSelectedPlan] = useState("Monthly");
+
   const [planData, setPlanData] = useState([]);
 
   useEffect(() => {
@@ -73,8 +74,8 @@ const Index = ({ setModalOpen, setPrice }) => {
                   <span>Monthly</span>
                   <div style={{ width: "20%", height: "70%" }}>
                     <label
-                      // className={`toggleLabel ${selectedPlan}`}
-                      // onClick={togglePlan}
+                    // className={`toggleLabel ${selectedPlan}`}
+                    // onClick={togglePlan}
                     >
                       <button className="toggleSwitch"></button>
 

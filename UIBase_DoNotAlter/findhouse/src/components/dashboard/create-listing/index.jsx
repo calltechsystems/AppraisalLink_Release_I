@@ -16,188 +16,177 @@ import axios from "axios";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
 
-const Index = ({isView,propertyData}) => {
-  const [isDisable,setDisable] = useState(isView);
+const Index = ({ isView, propertyData }) => {
+  const [isDisable, setDisable] = useState(isView);
 
-  let userData =  (JSON.parse(localStorage.getItem("user")));  
-  
+  let userData = JSON.parse(localStorage.getItem("user"));
+
   const router = useRouter();
+  if (!userData?.broker_Details?.firstName) {
+    router.push("/my-profile");
+  }
+
   const streetNameRef = useRef(propertyData?.streetName || null);
   const streetNumberRef = useRef(propertyData?.streetNumber || null);
   const cityRef = useRef(propertyData?.city || null);
   const stateRef = useRef(propertyData?.state || null);
-  const zipCodeRef = useRef(propertyData?.zipCode ||  null);
-  const areaRef = useRef( propertyData?.area || null);
+  const zipCodeRef = useRef(propertyData?.zipCode || null);
+  const areaRef = useRef(propertyData?.area || null);
   const communityRef = useRef(propertyData?.community || null);
   const buildinRef = useRef(propertyData?.typeOfBuilding || null);
   const urgencyRef = useRef(propertyData?.urgency || null);
-  const bidLowerRangeRef = useRef(propertyData?.lowerRangeBid || null)
-  
+  const bidLowerRangeRef = useRef(propertyData?.lowerRangeBid || null);
+
   const applicantFirstName = useRef(propertyData?.applicantFirstName || null);
-  const applicantLatsName  = useRef(propertyData?.applicantLastName || null);
+  const applicantLatsName = useRef(propertyData?.applicantLastName || null);
   const applicantNumber = useRef(propertyData?.applicantNumber || null);
   const applicantEmail = useRef(propertyData?.applicantEmail || null);
 
-
-  const updateHandler = ()=>{
-
+  const updateHandler = () => {
     const nameRegex = /^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
     const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
 
-  if(!nameRegex.test(applicantFirstName.current.value) === true || !nameRegex.test(applicantLatsName.current.value) === true){
+    if (
+      !nameRegex.test(applicantFirstName.current.value) === true ||
+      !nameRegex.test(applicantLatsName.current.value) === true
+    ) {
+      toast.error("Name should be valid ");
+    } else if (!phoneNumberRegex.test(applicantNumber.current.value) === true) {
+      toast.error("enter a valid phone number please");
+    } else if (!emailRegex.test(applicantEmail.current.value) === true) {
+      toast.error("enter a valid phone number please");
+    } else {
+      const payload = {
+        userId: userData.userId,
+        propertyId: propertyData?.propertyId,
+        streetName: streetNameRef.current.value || propertyData.streetName,
+        streetNumber:
+          streetNumberRef.current.value || propertyData.streetNumber,
+        city: cityRef.current.value || propertyData.city,
+        state: stateRef.current.value || propertyData.state,
+        zipCode: zipCodeRef.current.value || propertyData.zipCode,
+        area: areaRef.current.value || propertyData.area,
+        community: communityRef.current.value || propertyData.community,
+        typeOfBuilding: buildinRef.current.value || propertyData.typeOfBuilding,
+        applicantFirstName:
+          applicantFirstName.current.value || propertyData?.applicantFirstName,
+        applicantLastName:
+          applicantLatsName.current.value || propertyData?.applicantLastName,
+        applicantPhoneNumber:
+          applicantNumber.current.value || propertyData?.applicantNumber,
+        applicantEmail:
+          applicantEmail.current.value || propertyData?.applicantEmail,
+        bidLowerRange: Number(bidLowerRangeRef.current.value),
+        bidUpperRange: Number(bidLowerRangeRef.current.value),
+        urgency: propertyData?.urgency === 0 ? 0 : 1,
+        propertyStatus: true,
+        token: userData.token,
+      };
 
-    toast.error("Name should be valid ");
-  }
-  else if(!phoneNumberRegex.test(applicantNumber.current.value) === true){
-    toast.error("enter a valid phone number please");
-  }
+      const encryptedData = encryptionData(payload);
 
-  else if(!emailRegex.test(applicantEmail.current.value) === true){
-    toast.error("enter a valid phone number please");
-  }
-  else{
-    
-    const payload = {
-        userId : userData.userId,
-        propertyId :propertyData?.propertyId,
-        streetName : streetNameRef.current.value || propertyData.streetName,
-        streetNumber : streetNumberRef.current.value || propertyData.streetNumber,
-        city : cityRef.current.value || propertyData.city,
-        state : stateRef.current.value || propertyData.state,
-        zipCode : zipCodeRef.current.value || propertyData.zipCode,
-        area : areaRef.current.value || propertyData.area,
-        community : communityRef.current.value || propertyData.community,
-        typeOfBuilding : buildinRef.current.value || propertyData.typeOfBuilding,
-        applicantFirstName : applicantFirstName.current.value|| propertyData?.applicantFirstName,
-        applicantLastName : applicantLatsName.current.value|| propertyData?.applicantLastName,
-        applicantPhoneNumber : applicantNumber.current.value||propertyData?.applicantNumber,
-        applicantEmail : applicantEmail.current.value||propertyData?.applicantEmail,
-        bidLowerRange : Number(bidLowerRangeRef.current.value),
-        bidUpperRange : Number(bidLowerRangeRef.current.value),
-        urgency : propertyData?.urgency === 0 ? 0 :1,
-        propertyStatus : true,
-        token:userData.token
-    };
-
-
-    const encryptedData = encryptionData(payload);
-    
-    toast.loading("Updating the property..");
-    axios
-      .put("/api/addPropertyByBroker", encryptedData,
-       {
-        headers: {
-          Authorization:`Bearer ${userData.token}`,
-          "Content-Type":"application/json"
-        },
-      })
-      .then((res) => {
-        toast.dismiss();
-        router.push("/my-properties");
-      })
-      .catch((err) => {
-        toast.dismiss();
-        toast.error(err.response.data.error);
-      });
+      toast.loading("Updating the property..");
+      axios
+        .put("/api/addPropertyByBroker", encryptedData, {
+          headers: {
+            Authorization: `Bearer ${userData.token}`,
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          toast.dismiss();
+          router.push("/my-properties");
+        })
+        .catch((err) => {
+          toast.dismiss();
+          toast.error(err.response.data.error);
+        });
     }
+  };
 
-
-  }
-
-
-  
-  const submitHandler = ()=>{
-
+  const submitHandler = () => {
     const nameRegex = /^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
     const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
 
-  if(!nameRegex.test(applicantFirstName.current.value) === true || !nameRegex.test(applicantLatsName.current.value) === true){
+    if (
+      !nameRegex.test(applicantFirstName.current.value) === true ||
+      !nameRegex.test(applicantLatsName.current.value) === true
+    ) {
+      toast.error("Name should be valid ");
+    } else if (!phoneNumberRegex.test(applicantNumber.current.value) === true) {
+      toast.error("enter a valid phone number please");
+    } else if (!emailRegex.test(applicantEmail.current.value) === true) {
+      toast.error("enter a valid phone number please");
+    } else {
+      const payload = {
+        userId: userData.userId,
+        streetName: streetNameRef.current.value,
+        streetNumber: streetNumberRef.current.value,
+        city: cityRef.current.value,
+        state: stateRef.current.value,
+        zipCode: zipCodeRef.current.value,
+        area: areaRef.current.value,
+        community: communityRef.current.value,
+        typeOfBuilding: buildinRef.current.value,
+        applicantFirstName: applicantFirstName.current.value,
+        applicantLastName: applicantLatsName.current.value,
+        applicantPhoneNumber: applicantNumber.current.value,
+        applicantEmail: applicantEmail.current.value || userData.userEmail,
+        bidLowerRange: Number(bidLowerRangeRef.current.value),
+        bidUpperRange: Number(bidLowerRangeRef.current.value),
+        urgency: propertyData?.urgency === 0 ? 0 : 1,
+        propertyStatus: true,
+        token: userData.token,
+      };
 
-    toast.error("Name should be valid ");
-  }
-  else if(!phoneNumberRegex.test(applicantNumber.current.value) === true){
-    toast.error("enter a valid phone number please");
-  }
+      const encryptedData = encryptionData(payload);
 
-  else if(!emailRegex.test(applicantEmail.current.value) === true){
-    toast.error("enter a valid phone number please");
-  }
-  else{
-     
-    const payload = {
-        userId : userData.userId,
-        streetName : streetNameRef.current.value ,
-        streetNumber : streetNumberRef.current.value ,
-        city : cityRef.current.value,
-        state : stateRef.current.value ,
-        zipCode : zipCodeRef.current.value ,
-        area : areaRef.current.value ,
-        community : communityRef.current.value,
-        typeOfBuilding : buildinRef.current.value ,
-        applicantFirstName : applicantFirstName.current.value,
-        applicantLastName : applicantLatsName.current.value,
-        applicantPhoneNumber : applicantNumber.current.value,
-        applicantEmail : applicantEmail.current.value||userData.userEmail,
-        bidLowerRange : Number(bidLowerRangeRef.current.value) ,
-        bidUpperRange : Number(bidLowerRangeRef.current.value),
-        urgency : propertyData?.urgency === 0 ? 0 :1,
-        propertyStatus : true,
-        token:userData.token
-    };
-
-
-    const encryptedData = encryptionData(payload);
-    
-    toast.loading("Appraising property ..");
-    axios
-      .post("/api/addBrokerProperty", encryptedData,
-       {
-        headers: {
-          Authorization:`Bearer ${userData.token}`,
-          "Content-Type":"application/json"
-        },
-      })
-      .then((res) => {
-        toast.dismiss();
-        router.push("/my-properties");
-      })
-      .catch((err) => {
-        toast.dismiss();
-        toast.error(err.message);
-      });
+      toast.loading("Appraising property ..");
+      axios
+        .post("/api/addBrokerProperty", encryptedData, {
+          headers: {
+            Authorization: `Bearer ${userData.token}`,
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          toast.dismiss();
+          router.push("/my-properties");
+        })
+        .catch((err) => {
+          toast.dismiss();
+          toast.error(err.message);
+        });
     }
-
-
-  }
+  };
 
   const handleZipCodeChange = async (e) => {
-    const newZipCode = zipCodeRef.current.value
-   
+    const newZipCode = zipCodeRef.current.value;
 
     if (newZipCode.length === 5) {
       try {
-        const response = await axios.get(`https://api.zippopotam.us/us/${newZipCode}`);
+        const response = await axios.get(
+          `https://api.zippopotam.us/us/${newZipCode}`
+        );
         const data = response.data;
         stateRef.current.value = "";
-        cityRef.current.value="";
-        stateRef.current.value = (data.places[0]['state']);
-       cityRef.current.value = data.places[0]['place name'];
-
+        cityRef.current.value = "";
+        stateRef.current.value = data.places[0]["state"];
+        cityRef.current.value = data.places[0]["place name"];
       } catch (error) {
         // Handle API error or invalid zip code
-        console.error('Error fetching location data:', error);
+        console.error("Error fetching location data:", error);
       }
     } else {
-      
     }
   };
 
   return (
-    <>      
+    <>
       {/* <!-- Main Header Nav --> */}
       <Header />
 
@@ -241,45 +230,63 @@ const Index = ({isView,propertyData}) => {
 
                 <div className="col-lg-12 mb10">
                   <div className="breadcrumb_content style2">
-                    <h2 className="breadcrumb_title text-center">{isView?  "View the selected  property": "Add New Property"}</h2>
+                    <h2 className="breadcrumb_title text-center">
+                      {isView
+                        ? "View the selected  property"
+                        : "Add New Property"}
+                    </h2>
                     {/* <p>We are glad to see you again!</p> */}
                   </div>
                 </div>
                 {/* End .col */}
 
                 <div className="col-lg-12">
-                  
                   <div className="my_dashboard_review ">
                     <div className="row">
                       <div className="col-lg-12">
                         <h4 className="mb30">Location Information</h4>
                       </div>
-                      {isDisable && (<div style={{marginLeft:"80%",marginBottom:"1%"}}><button  style={{borderRadius:"10%",backgroundColor:"#2e008b",color:"white"}} onClick={()=>setDisable(false)}>Edit</button></div>)}
-                      <LocationField 
-                      isDisable={isDisable}
-                      streetNameRef = {streetNameRef}
-                      streetNumberRef = {streetNumberRef}
-                      cityRef = {cityRef}
-                      stateRef = {stateRef}
-                      handleZipCodeChange={handleZipCodeChange}
-                      zipCodeRef = {zipCodeRef}
-                      areaRef = {areaRef} 
-                      propertyData={ propertyData}
-                      setDisable={setDisable}/>
+                      {isDisable && (
+                        <div style={{ marginLeft: "80%", marginBottom: "1%" }}>
+                          <button
+                            style={{
+                              borderRadius: "10%",
+                              backgroundColor: "#2e008b",
+                              color: "white",
+                            }}
+                            onClick={() => setDisable(false)}
+                          >
+                            Edit
+                          </button>
+                        </div>
+                      )}
+                      <LocationField
+                        isDisable={isDisable}
+                        streetNameRef={streetNameRef}
+                        streetNumberRef={streetNumberRef}
+                        cityRef={cityRef}
+                        stateRef={stateRef}
+                        handleZipCodeChange={handleZipCodeChange}
+                        zipCodeRef={zipCodeRef}
+                        areaRef={areaRef}
+                        propertyData={propertyData}
+                        setDisable={setDisable}
+                      />
                     </div>
                   </div>
                   <div className="my_dashboard_review mt30">
                     <div className="col-lg-12">
                       <h4 className="mb30">Other Information</h4>
-                     
                     </div>
-                    <CreateList isDisable={isDisable}
-                    communityRef = {communityRef}
-                      buildinRef = {buildinRef}
-                      urgencyRef = {urgencyRef}
-                      propertyData={ propertyData}
-                      bidLowerRangeRef = {bidLowerRangeRef}
-                    setDisable={setDisable}/>
+                    <CreateList
+                      isDisable={isDisable}
+                      communityRef={communityRef}
+                      buildinRef={buildinRef}
+                      urgencyRef={urgencyRef}
+                      propertyData={propertyData}
+                      bidLowerRangeRef={bidLowerRangeRef}
+                      setDisable={setDisable}
+                    />
                   </div>
 
                   <div className="my_dashboard_review mt30">
@@ -287,16 +294,17 @@ const Index = ({isView,propertyData}) => {
                       <div className="col-lg-12">
                         <h4 className="mb30">Applicant Information</h4>
                       </div>
-                      <DetailedInfo 
-                      isDisable={isDisable}
-                      applicantFirstName={applicantFirstName}
-                      applicantLatsName={applicantLatsName}
-                      applicantNumber={applicantNumber}
-                      applicantEmail={applicantEmail}
-                      updateHandler = {updateHandler}
-                      submitHandler = {submitHandler}
-                      propertyData = {propertyData}
-                       setDisable={setDisable} />
+                      <DetailedInfo
+                        isDisable={isDisable}
+                        applicantFirstName={applicantFirstName}
+                        applicantLatsName={applicantLatsName}
+                        applicantNumber={applicantNumber}
+                        applicantEmail={applicantEmail}
+                        updateHandler={updateHandler}
+                        submitHandler={submitHandler}
+                        propertyData={propertyData}
+                        setDisable={setDisable}
+                      />
                     </div>
                   </div>
                   {/* <div className="my_dashboard_review mt30">
@@ -305,7 +313,7 @@ const Index = ({isView,propertyData}) => {
                     </div>
                     <PropertyMediaUploader />
                   </div> */}
-                 {/* <div className="my_dashboard_review mt30">
+                  {/* <div className="my_dashboard_review mt30">
                     <div className="col-lg-12">
                       <h3 className="mb30">Property Information</h3>
                     
@@ -328,7 +336,7 @@ const Index = ({isView,propertyData}) => {
             </div>
             {/* End .col */}
           </div>
-        </div>  
+        </div>
       </section>
     </>
   );

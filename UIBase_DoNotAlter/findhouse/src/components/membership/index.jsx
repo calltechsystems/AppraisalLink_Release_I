@@ -63,22 +63,27 @@ const Index = () => {
           <div className="row">
             <div className="col-lg-12 col-lg-6 maxw100flex-992">
               <div className="main-title text-center">
-                <h2 className="" style={{
-                backgroundColor: "#2e008b",
-                color: "white",
-                padding: "20px",
-              }}>Ready to get started?</h2>
+                <h2
+                  className=""
+                  style={{
+                    backgroundColor: "#2e008b",
+                    color: "white",
+                    padding: "20px",
+                  }}
+                >
+                  Ready to get started?
+                </h2>
                 <p className="text-dark">
                   Choose a plan tailored to your needs {selectedPlan}
                 </p>
-                <div className="toggleContainer">
-                  <span>Monthly</span>
-                  <div style={{ width: "20%", height: "70%" }}>
+                <div className="toggleContainer mt-3">
+                  <span className="fw-bold text-dark">Monthly</span>
+                  <div>
                     <label
-                      // className={`toggleLabel ${selectedPlan}`}
-                      // onClick={togglePlan}
+                    // className={`toggleLabel ${selectedPlan}`}
+                    // onClick={togglePlan}
                     >
-                      <button className="toggleSwitch"></button>
+                      {/* <button className="toggleSwitch"></button> */}
 
                       <div className="toggle-switch">
                         <label className="switch">
@@ -94,10 +99,10 @@ const Index = () => {
                     </label>
                   </div>
 
-                  <span>Yearly</span>
+                  <span className="fw-bold text-dark">Yearly</span>
                 </div>
               </div>
-          </div>
+            </div>
           </div>
           {/* End .row */}
 

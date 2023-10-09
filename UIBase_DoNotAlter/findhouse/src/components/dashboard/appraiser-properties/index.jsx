@@ -74,14 +74,11 @@ const Index = () => {
                       {/* End .col */}
 
                       <div className="col-lg-6 position-relative">
-                        {/* <div className="listing_list_style mb20-xsd tal-991">
-                          <GridListButton />
-                        </div> */}
-                        {/* End list grid */}
-
-                        <div className="dn db-991 mt30 mb0">
+                        <div className="dn db-991 mt90 mb0">
                           <ShowFilter />
                         </div>
+                        {/* End list grid */}
+
                         {/* ENd button for mobile sidebar show  */}
                       </div>
                       {/* End .col filter grid list */}
@@ -110,9 +107,9 @@ const Index = () => {
 
                         <div className="row">
                           <div className="col-lg-12 mt20">
-                            <div className="mbp_pagination">
+                            {/* <div className="mbp_pagination">
                               <Pagination />
-                            </div>
+                            </div> */}
                           </div>
                           {/* End paginaion .col */}
                         </div>

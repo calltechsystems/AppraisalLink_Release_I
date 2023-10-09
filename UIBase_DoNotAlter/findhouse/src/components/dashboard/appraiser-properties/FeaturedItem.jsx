@@ -5,7 +5,7 @@ import { addLength } from "../../../features/properties/propertiesSlice";
 import properties from "../../../data/properties";
 import Image from "next/image";
 
-const FeaturedItem = () => {
+const FeaturedItem = ({setModalOpen}) => {
 
   const {
     keyword,
@@ -218,7 +218,7 @@ const FeaturedItem = () => {
                 </li>
               </ul>
               {/* <div className="fp_pdate float-end">{item.postedYear}</div> */}
-              <div className="fp_pdate float-end mt-1 fw-bold" onClick={() => NewModal()}><a href="#" className="text-color">Participate Bid</a></div>
+              <div className="fp_pdate float-end mt-1 fw-bold" onClick={() => setModalOpen()}><a href="#" className="text-color">Participate Bid</a></div>
             </div>
             {/* End .fp_footer */}
           </div>
