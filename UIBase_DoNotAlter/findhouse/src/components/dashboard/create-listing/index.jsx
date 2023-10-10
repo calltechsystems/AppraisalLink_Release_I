@@ -8,37 +8,32 @@ import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
 import MobileMenu from "../../common/header/MobileMenu";
 import CreateList from "./CreateList";
 import DetailedInfo from "./DetailedInfo";
-import FloorPlans from "./FloorPlans";
 import LocationField from "./LocationField";
-import PropertyMediaUploader from "./PropertyMediaUploader";
 import { encryptionData } from "../../../utils/dataEncryption";
 import axios from "axios";
-import { useEffect } from "react";
 import toast from "react-hot-toast";
 
 const Index = ({isView,propertyData}) => {
   const [isDisable,setDisable] = useState(isView);
 
-  console.log(propertyData);
-
   let userData =  (JSON.parse(localStorage.getItem("user")));  
   
   const router = useRouter();
-  const streetNameRef = useRef(propertyData?.streetName || null);
-  const streetNumberRef = useRef(propertyData?.streetNumber || null);
-  const cityRef = useRef(propertyData?.city || null);
-  const stateRef = useRef(propertyData?.state || null);
-  const zipCodeRef = useRef(propertyData?.zipCode ||  null);
-  const areaRef = useRef( propertyData?.area || null);
-  const communityRef = useRef(propertyData?.community || null);
-  const buildinRef = useRef(propertyData?.typeOfBuilding || null);
-  const urgencyRef = useRef(propertyData?.urgency || null);
-  const bidLowerRangeRef = useRef(propertyData?.lowerRangeBid || null)
+  const [streetNameRef , setStreetNameRef]= useState(propertyData?.streetName || null);
+  const [streetNumberRef , setStreetNumberRef]= useState(propertyData?.streetNumber || null);
+  const [cityRef , setCityRef]= useState(propertyData?.city || null);
+  const [stateRef , setStateRef]= useState(propertyData?.state || null);
+  const [zipCodeRef ,setZipCodeRef]= useState(propertyData?.zipCode ||  null);
+  const [areaRef , setAreaRef]= useState( propertyData?.area || null);
+  const [communityRef , setCommunityRef] = useState(propertyData?.community || null);
+  const [buildinRef , setBuildinRef]= useState(propertyData?.typeOfBuilding || null);
+  const [urgencyRef , setUrgencyRef]= useState(propertyData?.urgency || null);
+  const [bidLowerRangeRef , setBidLowerRangeRef] = useState(propertyData?.lowerRangeBid || null)
   
-  const applicantFirstName = useRef(propertyData?.applicantFirstName || null);
-  const applicantLatsName  = useRef(propertyData?.applicantLastName || null);
-  const applicantNumber = useRef(propertyData?.applicantPhoneNumber || null);
-  const applicantEmail = useRef(propertyData?.applicantEmailAddress || null);
+  const [applicantFirstName , setApplicantFirstName] = useState(propertyData?.applicantFirstName || null);
+  const [applicantLatsName , setApplicantLastName] = useState(propertyData?.applicantLastName || null);
+  const [applicantNumber , setApplicantNumber]= useState(propertyData?.applicantPhoneNumber || null);
+  const [applicantEmail , setApplicantEmail] = useState(propertyData?.applicantEmailAddress || null);
 
 
   const updateHandler = ()=>{
@@ -53,32 +48,32 @@ const Index = ({isView,propertyData}) => {
     const payload = {
         userId : userData.userId,
         propertyId :propertyData?.propertyId,
-        streetName : streetNameRef.current.value || propertyData.streetName,
-        streetNumber : streetNumberRef.current.value || propertyData.streetNumber,
-        city : cityRef.current.value || propertyData.city,
-        state : stateRef.current.value || propertyData.state,
-        zipCode : zipCodeRef.current.value || propertyData.zipCode,
-        area : areaRef.current.value || propertyData.area,
-        community : communityRef.current.value || propertyData.community,
-        typeOfBuilding : buildinRef.current.value || propertyData.typeOfBuilding,
-        applicantFirstName : applicantFirstName.current.value|| propertyData?.applicantFirstName,
-        applicantLastName : applicantLatsName.current.value|| propertyData?.applicantLastName,
-        applicantPhoneNumber : applicantNumber.current.value||propertyData?.applicantNumber,
-        applicantEmail : applicantEmail.current.value||propertyData?.applicantEmail,
-        bidLowerRange : Number(bidLowerRangeRef.current.value),
-        bidUpperRange : Number(bidLowerRangeRef.current.value),
+        streetName : streetNameRef ,
+        streetNumber : streetNumberRef ,
+        city : cityRef,
+        state : stateRef,
+        zipCode : zipCodeRef,
+        area : areaRef,
+        community : communityRef,
+        typeOfBuilding : buildinRef,
+        applicantFirstName : applicantFirstName,
+        applicantLastName : applicantLatsName,
+        applicantPhoneNumber : applicantNumber,
+        applicantEmail : applicantEmail||propertyData?.applicantEmail,
+        bidLowerRange : Number(bidLowerRangeRef),
+        bidUpperRange : Number(bidLowerRangeRef),
         urgency : propertyData?.urgency === 0 ? 0 :1,
         propertyStatus : true,
         token:userData.token
     };
-    if(!nameRegex.test(payload.applicantFirstName) && payload.applicantFirstName  || !nameRegex.test(payload.applicantLastName) === true && payload.applicantLastName){
+    if(!nameRegex.test(payload.applicantFirstName) && payload.applicantFirstName !== ""    || !nameRegex.test(payload.applicantLastName && payload.applicantLastName !== "" ) ){
       toast.error("Name should be valid ");
     }
-    else if(!phoneNumberRegex.test(payload.applicantPhoneNumber) === true && payload.applicantPhoneNumber){
+    else if(!phoneNumberRegex.test(payload.applicantPhoneNumber) && payload.applicantPhoneNumber !== "" ){
       toast.error("enter a valid phone number please");
     }
 
-    else if(!emailRegex.test(payload.applicantEmail) === true && payload.applicantEmail){
+    else if(!emailRegex.test(payload.applicantEmail) && payload.applicantEmail !== "" ){
       toast.error("enter a valid email address please");
     }
     else{
@@ -118,36 +113,36 @@ const Index = ({isView,propertyData}) => {
 
     const phoneNumberRegex = /^\d{10}$/;
 
-  if(!nameRegex.test(applicantFirstName.current.value) === true && applicantFirstName.current.value || !nameRegex.test(applicantLatsName.current.value) === true && applicantLatsName.current.value
+  if(!nameRegex.test(applicantFirstName) === true && applicantFirstName|| !nameRegex.test(applicantLatsName) === true && applicantLatsName
   ){
 
     toast.error("Name should be valid ");
   }
-  else if((!phoneNumberRegex.test(applicantNumber.current.value) === true) && applicantNumber.current.value){
+  else if((!phoneNumberRegex.test(applicantNumber) === true) && applicantNumber){
     toast.error("enter a valid phone number please");
   }
 
-  else if(!emailRegex.test(applicantEmail.current.value) === true && applicantEmail.current.value){
+  else if(!emailRegex.test(applicantEmail) === true && applicantEmail){
     toast.error("enter a valid phone number please");
   }
   else{
      
     const payload = {
         userId : userData.userId,
-        streetName : streetNameRef.current.value ,
-        streetNumber : streetNumberRef.current.value ,
-        city : cityRef.current.value,
-        state : stateRef.current.value ,
-        zipCode : zipCodeRef.current.value ,
-        area : areaRef.current.value ,
-        community : communityRef.current.value,
-        typeOfBuilding : buildinRef.current.value ,
-        applicantFirstName : applicantFirstName.current.value,
-        applicantLastName : applicantLatsName.current.value,
-        applicantPhoneNumber : applicantNumber.current.value,
-        applicantEmail : applicantEmail.current.value||userData.userEmail,
-        bidLowerRange : Number(bidLowerRangeRef.current.value) ,
-        bidUpperRange : Number(bidLowerRangeRef.current.value),
+        streetName : streetNameRef ,
+        streetNumber : streetNumberRef,
+        city : cityRef,
+        state : stateRef ,
+        zipCode : zipCodeRef,
+        area : areaRef ,
+        community : communityRef,
+        typeOfBuilding : buildinRef,
+        applicantFirstName : applicantFirstName,
+        applicantLastName : applicantLatsName,
+        applicantPhoneNumber : applicantNumber,
+        applicantEmail : applicantEmail||userData.userEmail,
+        bidLowerRange : Number(bidLowerRangeRef) ,
+        bidUpperRange : Number(bidLowerRangeRef),
         urgency : propertyData?.urgency === 0 ? 0 :1,
         propertyStatus : true,
         token:userData.token
@@ -186,25 +181,21 @@ const Index = ({isView,propertyData}) => {
   }
 
   const handleZipCodeChange = async (e) => {
-    const newZipCode = zipCodeRef.current.value
+    setZipCodeRef(e.target.value);
    
 
-    if (newZipCode.length === 5) {
       try {
-        const response = await axios.get(`https://api.zippopotam.us/us/${newZipCode}`);
+        const response = await axios.get(`https://api.zippopotam.us/us/${zipCodeRef}`);
         const data = response.data;
-        stateRef.current.value = "";
-        cityRef.current.value="";
-        stateRef.current.value = (data.places[0]['state']);
-       cityRef.current.value = data.places[0]['place name'];
+        
+        setStateRef(data.places[0]['state']);
+        setCityRef(data.places[0]['place name']);
 
       } catch (error) {
         // Handle API error or invalid zip code
         console.error('Error fetching location data:', error);
       }
-    } else {
-      
-    }
+    
   };
 
   return (
@@ -269,12 +260,18 @@ const Index = ({isView,propertyData}) => {
                       <LocationField 
                       isDisable={isDisable}
                       streetNameRef = {streetNameRef}
+                      setStreetNameRef={setStreetNameRef}
                       streetNumberRef = {streetNumberRef}
+                      setStreetNumberRef={setStreetNumberRef}
                       cityRef = {cityRef}
+                      setCityRef={setCityRef}
                       stateRef = {stateRef}
+                      setStateRef = {setStateRef}
                       handleZipCodeChange={handleZipCodeChange}
                       zipCodeRef = {zipCodeRef}
                       areaRef = {areaRef} 
+                      setAreaRef = {setAreaRef}
+                      setZipCodeRef = {setZipCodeRef}
                       propertyData={ propertyData}
                       setDisable={setDisable}/>
                     </div>
@@ -286,10 +283,14 @@ const Index = ({isView,propertyData}) => {
                     </div>
                     <CreateList isDisable={isDisable}
                     communityRef = {communityRef}
+                    setCommunityRef = {setCommunityRef}
                       buildinRef = {buildinRef}
+                      setBuildinRef = {setBuildinRef}
                       urgencyRef = {urgencyRef}
+                      setUrgencyRef = {setUrgencyRef}
                       propertyData={ propertyData}
                       bidLowerRangeRef = {bidLowerRangeRef}
+                      setBidLowerRangeRef = {setBidLowerRangeRef}
                     setDisable={setDisable}/>
                   </div>
 
@@ -301,9 +302,13 @@ const Index = ({isView,propertyData}) => {
                       <DetailedInfo 
                       isDisable={isDisable}
                       applicantFirstName={applicantFirstName}
+                      setApplicantFirstName = {setApplicantFirstName}
                       applicantLatsName={applicantLatsName}
+                      setApplicantLastName = {setApplicantLastName}
                       applicantNumber={applicantNumber}
+                      setApplicantNumber = {setApplicantNumber}
                       applicantEmail={applicantEmail}
+                      setApplicantEmail = {setApplicantEmail}
                       updateHandler = {updateHandler}
                       submitHandler = {submitHandler}
                       propertyData = {propertyData}

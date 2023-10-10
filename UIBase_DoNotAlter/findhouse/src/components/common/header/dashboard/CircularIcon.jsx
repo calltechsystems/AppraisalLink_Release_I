@@ -16,7 +16,6 @@ const CircularProgressBar = ({ percentage }) => {
           style={{ strokeDasharray: circumference, strokeDashoffset }}
         />
       </svg>
-      <div className="percentage">{percentage}%</div>
     </div>
   );
 };

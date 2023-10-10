@@ -1,6 +1,8 @@
 import { useRef } from "react";
 
-const CreateList = ({isDisable,communityRef,buildinRef,urgencyRef,propertyData,bidLowerRangeRef,setDisable}) => {
+
+ 
+const CreateList = ({isDisable,communityRef ,setCommunityRef ,buildinRef ,setBuildinRef ,urgencyRef ,setUrgencyRef ,propertyData , bidLowerRangeRef,setBidLowerRangeRef,setDisable}) => {
   
 
   return (
@@ -19,8 +21,8 @@ const CreateList = ({isDisable,communityRef,buildinRef,urgencyRef,propertyData,b
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder={propertyData?.community || "xxicheal"}
-                ref={communityRef}
+                onChange={(e)=>setCommunityRef(e.target.value)}
+                value={communityRef}
                 disabled={isDisable}                                                          
               />
             </div>
@@ -36,8 +38,8 @@ const CreateList = ({isDisable,communityRef,buildinRef,urgencyRef,propertyData,b
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder={propertyData?.typeOfBuilding || "xxicheal"}
-                ref={buildinRef}
+                onChange={(e)=>setBuildinRef(e.target.value)}
+                value={buildinRef}
                 disabled={isDisable}
               />
             </div>
@@ -53,8 +55,8 @@ const CreateList = ({isDisable,communityRef,buildinRef,urgencyRef,propertyData,b
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder={propertyData?.urgency || "urgency"}
-                ref={urgencyRef}
+                onChange={(e)=>setUrgencyRef(e.target.value)}
+                value={urgencyRef}
                 disabled={isDisable}
               />
             </div>
@@ -69,8 +71,8 @@ const CreateList = ({isDisable,communityRef,buildinRef,urgencyRef,propertyData,b
                 type="number"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder={propertyData?.bidLowerRange || " $ 0"}
-                ref={bidLowerRangeRef}
+                onChange={(e)=>setBidLowerRangeRef(e.target.value)}
+                value={bidLowerRangeRef}
                 disabled={isDisable}
               />
             </div>

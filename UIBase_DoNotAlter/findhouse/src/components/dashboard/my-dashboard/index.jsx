@@ -6,9 +6,7 @@ import Activities from "./Activities";
 import AllStatistics from "./AllStatistics";
 import StatisticsChart from "./StatisticsChart";
 import StatisticsPieChart from "./StatisticsPieChart";
-import Dropdown from "./DropDown";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 
 const Index = () => {
   let userData =(JSON.parse(localStorage.getItem("user"))) ;

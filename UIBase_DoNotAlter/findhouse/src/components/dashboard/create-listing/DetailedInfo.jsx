@@ -79,8 +79,8 @@ import React, { Component, useState } from "react";
 // export default DetailedInfo;
 
 import CheckBoxFilter from "../../common/CheckBoxFilter";
-
-const DetailedInfo = ({isDisable,updateHandler,applicantEmail,applicantFirstName,applicantLatsName,applicantNumber,propertyData,submitHandler,setDisable}) => {
+const DetailedInfo = ({isDisable,updateHandler,applicantFirstName,setApplicantFirstName ,applicantLatsName,setApplicantLastName,applicantNumber,setApplicantNumber ,applicantEmail,setApplicantEmail,propertyData,submitHandler,setDisable}) => {
+  console.log(applicantEmail)
   return (
     <>
       <div className="row">
@@ -96,8 +96,8 @@ const DetailedInfo = ({isDisable,updateHandler,applicantEmail,applicantFirstName
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder={propertyData?.applicantFirstName || "Micheal"}
-                ref={applicantFirstName}
+               onChange={(e)=>setApplicantFirstName(e.target.value)}
+               value={applicantFirstName}
                 disabled={isDisable}
               />
             </div>
@@ -113,8 +113,8 @@ const DetailedInfo = ({isDisable,updateHandler,applicantEmail,applicantFirstName
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder={propertyData?.applicantLastName || "Micheal"}
-                ref={applicantLatsName}
+                onChange={(e)=>setApplicantLastName(e.target.value)}
+                value={applicantLatsName}
                 disabled={isDisable}
               />
             </div>
@@ -130,8 +130,8 @@ const DetailedInfo = ({isDisable,updateHandler,applicantEmail,applicantFirstName
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder={propertyData?.applicantNumber || "Number please"}
-                ref={applicantNumber}
+                onChange={(e)=>setApplicantNumber(e.target.value)}
+               value={applicantNumber}
                 disabled={isDisable}
               />
             </div>
@@ -147,8 +147,8 @@ const DetailedInfo = ({isDisable,updateHandler,applicantEmail,applicantFirstName
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder={propertyData?.applicantEmail || "Email please"}
-                ref={applicantEmail}
+                onChange={(e)=>setApplicantEmail(e.target.value)}
+               value={applicantEmail}
                 disabled={isDisable}
               />
             </div>

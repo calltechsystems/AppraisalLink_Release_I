@@ -1,6 +1,7 @@
 import { current } from "@reduxjs/toolkit";
 
-const LocationField = ({isDisable,streetNameRef,streetNumberRef,cityRef,stateRef,zipCodeRef,areaRef,propertyData,handleZipCodeChange,setDisable}) => {
+
+const LocationField = ({isDisable,streetNameRef , setStreetNameRef,streetNumberRef ,setStreetNumberRef, cityRef ,setCityRef,setZipCodeRef, stateRef ,setStateRef,handleZipCodeChange,zipCodeRef,areaRef ,setAreaRef ,propertyData,setDisable}) => {
   return (
     <>
       <div className="row">
@@ -16,8 +17,8 @@ const LocationField = ({isDisable,streetNameRef,streetNumberRef,cityRef,stateRef
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder={propertyData?.streetName || "Street Name"}
-                ref={streetNameRef}
+                onChange={(e)=>setStreetNameRef(e.target.value)}
+                value={streetNameRef}
                 disabled={isDisable}
               />
             </div>
@@ -33,8 +34,8 @@ const LocationField = ({isDisable,streetNameRef,streetNumberRef,cityRef,stateRef
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder={propertyData?.streetNumber || "Street Number"}
-                ref={streetNumberRef}
+                onChange={(e)=>setStreetNumberRef(e.target.value)}
+                value={streetNumberRef}
                 disabled={isDisable}
               />
             </div>
@@ -50,8 +51,8 @@ const LocationField = ({isDisable,streetNameRef,streetNumberRef,cityRef,stateRef
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder={propertyData?.city || "city Name"}
-                ref={cityRef}
+                onChange={(e)=>setCityRef(e.target.value)}
+                value={cityRef}
                 disabled={isDisable}
               />
             </div>
@@ -67,8 +68,8 @@ const LocationField = ({isDisable,streetNameRef,streetNumberRef,cityRef,stateRef
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder={propertyData?.state || "state Name"}
-                ref={stateRef}
+                onChange={(e)=>setStateRef(e.target.value)}
+                value={stateRef}
                 disabled={isDisable}
               />
             </div>
@@ -84,9 +85,8 @@ const LocationField = ({isDisable,streetNameRef,streetNumberRef,cityRef,stateRef
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder={propertyData?.zipCode || "ZipCode"}
-                onChange={handleZipCodeChange}
-                ref={zipCodeRef}
+                onChange={(e)=>handleZipCodeChange(e)}
+                value={zipCodeRef}
                 disabled={isDisable}
               />
             </div>
@@ -102,8 +102,8 @@ const LocationField = ({isDisable,streetNameRef,streetNumberRef,cityRef,stateRef
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                placeholder={propertyData?.area|| "Area"}
-                ref={areaRef}
+                onChange={(e)=>setAreaRef(e.target.value)}
+                value={areaRef}
                 disabled={isDisable}
               />
             </div>

@@ -19,27 +19,27 @@ const ProfileInfo = ({ setProfileCount }) => {
 
   const [edit, setEdit] = useState(!userData.broker_Details?.firstName);
 
-  const firstNameRef = useRef(userData?.broker_Details?.firstName || "");
-  const middleNameRef = useRef(userData?.broker_Details?.middleName || "");
-  const lastNameRef = useRef(userData?.broker_Details?.lastName || "");
-  const companyNameRef = useRef(userData?.broker_Details?.companyName || "");
+  const [firstNameRef,setFirstNameRef] = useState(userData?.broker_Details?.firstName || "");
+  const [middleNameRef , setMiddleNameRef] = useState(userData?.broker_Details?.middleName || "");
+  const [lastNameRef , setLastNameRef] = useState(userData?.broker_Details?.lastName || "");
+  const [companyNameRef , setCompanyNameRef] = useState(userData?.broker_Details?.companyName || "");
 
   const [profile, setProfile] = useState(
     userData?.broker_Details?.profileImage || null
   );
 
-  const addressLineRef = useRef(userData?.broker_Details?.adressLine1 || "");
-  const addressLineTwoRef = useRef(userData?.broker_Details?.adressLine2 || "");
+  const [addressLineRef , setAddressLineRef] = useState(userData?.broker_Details?.adressLine1 || "");
+  const [addressLineTwoRef , setAddressLineTwoRef] = useState(userData?.broker_Details?.adressLine2 || "");
 
-  const cityRef = useRef(userData?.broker_Details?.city || "");
-  const stateRef = useRef(userData?.broker_Details?.state || "");
-  const zipcodeRef = useRef(userData?.broker_Details?.zipCode || "");
-  const phoneNumberRef = useRef(userData?.broker_Details?.phoneNumber || "");
+  const [cityRef , setCityRef] = useState(userData?.broker_Details?.city || "");
+  const [stateRef , setStateRef] = useState(userData?.broker_Details?.state || "");
+  const[zipcodeRef , setZipcodeRef]= useState(userData?.broker_Details?.zipCode || "");
+  const [phoneNumberRef , setPhoneNumberRef]= useState(userData?.broker_Details?.phoneNumber || "");
 
-  const mortgageBrokrageLicNoRef = useRef(
+  const [mortgageBrokrageLicNoRef , setMortgageLicNoRef] = useState(
     userData?.broker_Details?.mortageBrokerageLicNo || ""
   );
-  const mortgageBrokerLicNoRef = useRef(
+  const [mortgageBrokerLicNoRef , setMortgageBrokerLicNoRef]= useState(
     userData?.broker_Details?.mortageBrokerLicNo || ""
   );
 
@@ -63,31 +63,31 @@ const ProfileInfo = ({ setProfileCount }) => {
 
   const onUpdatHandler = () => {
     const firstName =
-      firstNameRef.current.value !== "" ? firstNameRef.current.value : userData.broker_Details.firstName;
+      firstNameRef!== "" ? firstNameRef : userData.broker_Details.firstName;
     const lastName =
-      lastNameRef.current.value !== "" ? lastNameRef.current.value : userData.broker_Details.lastName;
+      lastNameRef !== "" ? lastNameRef  : userData.broker_Details.lastName;
     const adressLine1 =
-      addressLineRef.current.value !== "" ? addressLineRef.current.value : userData.broker_Details.adressLine1 ;
-    const city = cityRef.current.value !== "" ? cityRef.current.value : userData.broker_Details.city;
-    const state = stateRef.current.value !== "" ? stateRef.current.value : userData.broker_Details.state;
-    const zipCode = zipcodeRef.current.value !== "" ? zipcodeRef.current.value : userData.broker_Details.zipCode;
+      addressLineRef !== "" ? addressLineRef : userData.broker_Details.adressLine1 ;
+    const city = cityRef !== "" ? cityRef : userData.broker_Details.city;
+    const state = stateRef !== "" ? stateRef : userData.broker_Details.state;
+    const zipCode = zipcodeRef !== "" ? zipcodeRef : userData.broker_Details.zipCode;
     const phoneNumber =
-      phoneNumberRef.current.value !== "" ? phoneNumberRef.current.value : userData.broker_Details.phoneNumber;
+      phoneNumberRef !== "" ? phoneNumberRef : userData.broker_Details.phoneNumber;
     const mortageBrokerLicNo =
-      mortgageBrokerLicNoRef.current.value !==
-      "" ? mortgageBrokerLicNoRef.current.value :
+      mortgageBrokerLicNoRef !==
+      "" ? mortgageBrokerLicNoRef :
       userData.broker_Details.mortageBrokerLicNo;
     const mortageBrokerageLicNo =
-      mortgageBrokrageLicNoRef.current.value !==
-      "" ?  mortgageBrokrageLicNoRef.current.value :
+      mortgageBrokrageLicNoRef !==
+      "" ?  mortgageBrokrageLicNoRef :
       userData.broker_Details.mortageBrokerageLicNo;
 
     const adressLine2 =
-      addressLineTwoRef.current.value !== "" ? addressLineTwoRef.current.value : userData.broker_Details.adressLine2;
+      addressLineTwoRef !== "" ? addressLineTwoRef : userData.broker_Details.adressLine2;
     const middleName =
-      middleNameRef.current.value !== "" ? middleNameRef.current.value : userData.broker_Details.middleName;
+      middleNameRef !== "" ? middleNameRef : userData.broker_Details.middleName;
     const companyName =
-      companyNameRef.current.value !== "" ? companyNameRef.current.value : userData.broker_Details.companyName;
+      companyNameRef !== "" ? companyNameRef : userData.broker_Details.companyName;
 
       
       const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
@@ -210,25 +210,23 @@ const ProfileInfo = ({ setProfileCount }) => {
     }
   };
 
-  const handleZipCodeChange = async (e) => {
-    const newZipCode = zipcodeRef.current.value
+  const handleZipCodeChange = async (val) => {
+    setZipcodeRef(val);
    
-
-    if (newZipCode.length === 5) {
+    
       try {
-        const response = await axios.get(`https://api.zippopotam.us/us/${newZipCode}`);
+        const response = await axios.get(`https://api.zippopotam.us/us/${zipcodeRef}`);
         const data = response.data;
-        stateRef.current.value = "";
-        cityRef.current.value="";
-        stateRef.current.value = (data.places[0]['state']);
-       cityRef.current.value = data.places[0]['place name'];
+
+        console.log(response)
+        
+        setStateRef(data.places[0]['state']);
+       setCityRef(data.places[0]['place name']);
 
       } catch (error) {
         console.error('Error fetching location data:', error);
       }
-    } else {
-      
-    }
+    
   };
 
   const handleFileUpload = async (event) => {
@@ -308,13 +306,8 @@ const ProfileInfo = ({ setProfileCount }) => {
                       className="form-control"
                       id="formGroupExampleInput3"
                       required
-                      placeholder={
-                        userData
-                          ? userData?.broker_Details?.firstName
-                          : "Enter your  first name"
-                      }
-                      value={firstNameRef.current.va}
-                      ref={firstNameRef}
+                      value={firstNameRef}
+                      onChange={(e)=>setFirstNameRef(e.target.value)}
                       disabled={!edit}
                     />
                   </div>
@@ -335,12 +328,8 @@ const ProfileInfo = ({ setProfileCount }) => {
                       className="form-control"
                       id="formGroupExampleInput3"
                       disabled={!edit}
-                      placeholder={
-                        userData
-                          ? userData?.broker_Details?.middleName
-                          : "Enter your middle name"
-                      }
-                      ref={middleNameRef}
+                      value={middleNameRef}
+                      onChange={(e)=>setMiddleNameRef(e.target.value)}
                     />
                   </div>
                 </div>
@@ -359,12 +348,8 @@ const ProfileInfo = ({ setProfileCount }) => {
                       required
                       className="form-control"
                       id="formGroupExampleInput3"
-                      placeholder={
-                        userData
-                          ? userData?.broker_Details?.lastName
-                          : "Enter your  last name"
-                      }
-                      ref={lastNameRef}
+                      value={lastNameRef}
+                      onChange={(e)=>setLastNameRef(e.target.value)}
                       disabled={!edit}
                     />
                   </div>
@@ -383,12 +368,8 @@ const ProfileInfo = ({ setProfileCount }) => {
                       type="text"
                       className="form-control"
                       id="formGroupExampleInput3"
-                      placeholder={
-                        userData
-                          ? userData?.broker_Details?.companyName
-                          : "Enter your  company name"
-                      }
-                      ref={companyNameRef}
+                     value={companyNameRef}
+                     onChange={(e)=>setCompanyNameRef(e.target.value)}
                       disabled={!edit}
                     />
                   </div>
@@ -408,12 +389,8 @@ const ProfileInfo = ({ setProfileCount }) => {
                       className="form-control"
                       id="formGroupExampleInput3"
                       required
-                      placeholder={
-                        userData
-                          ? userData?.broker_Details?.adressLine1
-                          : "Enter your address line 1"
-                      }
-                      ref={addressLineRef}
+                     value={addressLineRef}
+                     onChange={(e)=>setAddressLineRef(e.target.value)}
                       disabled={!edit}
                     />
                   </div>
@@ -432,12 +409,8 @@ const ProfileInfo = ({ setProfileCount }) => {
                       type="text"
                       className="form-control"
                       id="formGroupExampleInput3"
-                      placeholder={
-                        userData
-                          ? userData?.broker_Details?.adressLine2
-                          : "Enter your address line 2"
-                      }
-                      ref={addressLineTwoRef}
+                    value={addressLineTwoRef}
+                    onChange={(e)=>setAddressLineTwoRef(e.target.value)}
                       disabled={!edit}
                     />
                   </div>
@@ -457,12 +430,8 @@ const ProfileInfo = ({ setProfileCount }) => {
                       className="form-control"
                       id="formGroupExampleInput3"
                       required
-                      placeholder={
-                        userData
-                          ? userData?.broker_Details?.city
-                          : "Enter your city"
-                      }
-                      ref={cityRef}
+                      value={cityRef}
+                      onChange={(e)=>setCityRef(e.target.value)}
                       disabled={!edit}
                     />
                   </div>
@@ -482,12 +451,8 @@ const ProfileInfo = ({ setProfileCount }) => {
                       className="form-control"
                       required
                       id="formGroupExampleInput3"
-                      placeholder={
-                        userData
-                          ? userData?.broker_Details?.state
-                          : "Enter your state"
-                      }
-                      ref={stateRef}
+                     value={stateRef}
+                     onChange={(e)=>setStateRef(e.target.value)}
                       disabled={!edit}
                     />
                   </div>
@@ -507,13 +472,8 @@ const ProfileInfo = ({ setProfileCount }) => {
                       className="form-control"
                       required
                       id="formGroupExampleInput3"
-                      onChange={(e)=>handleZipCodeChange(e)}
-                      placeholder={
-                        userData
-                          ? userData?.broker_Details?.zipCode
-                          : "Enter your zipcode"
-                      }
-                      ref={zipcodeRef}
+                      onChange={(e)=>handleZipCodeChange(e.target.value)}
+                     value={zipcodeRef}
                       disabled={!edit}
                     />
                   </div>
@@ -533,12 +493,8 @@ const ProfileInfo = ({ setProfileCount }) => {
                       required
                       className="form-control"
                       id="formGroupExampleInput3"
-                      placeholder={
-                        userData
-                          ? userData?.broker_Details?.phoneNumber
-                          : "Enter your phoneNumber"
-                      }
-                      ref={phoneNumberRef}
+                    value={phoneNumberRef}
+                    onChange={(e)=>setPhoneNumberRef(e.target.value)}
                       disabled={!edit}
                     />
                   </div>
@@ -579,12 +535,8 @@ const ProfileInfo = ({ setProfileCount }) => {
                       required
                       className="form-control"
                       id="formGroupExampleInput3"
-                      placeholder={
-                        userData
-                          ? userData?.broker_Details?.mortageBrokerLicNo
-                          : "Enter your Bokerage Lic No"
-                      }
-                      ref={mortgageBrokrageLicNoRef}
+                     value={mortgageBrokrageLicNoRef}
+                     onChange={(e)=>setMortgageLicNoRef(e.target.value)}
                       disabled={!edit}
                     />
                   </div>
@@ -605,12 +557,8 @@ const ProfileInfo = ({ setProfileCount }) => {
                       required
                       className="form-control"
                       id="formGroupExampleInput3"
-                      placeholder={
-                        userData
-                          ? userData?.broker_Details?.mortageBrokerLicNo
-                          : "Enter your Broker Lic No"
-                      }
-                      ref={mortgageBrokerLicNoRef}
+                      value={mortgageBrokerLicNoRef}
+                      onChange={(e)=>setMortgageBrokerLicNoRef(e.target.value)}
                       disabled={!edit}
                     />
                   </div>
@@ -630,12 +578,10 @@ const ProfileInfo = ({ setProfileCount }) => {
                     required
                     className="form-control"
                     id="formGroupExampleInput3"
-                    placeholder={
-                      userData
-                        ? userData?.broker_Details?.firstName
-                        : "Enter your first name"
+                    onChange={
+                     (e)=>setFirstNameRef(e.target.value)
                     }
-                    ref={firstNameRef}
+                    value={firstNameRef}
                     disabled={!edit}
                   />
                 </div> */}
@@ -654,12 +600,8 @@ const ProfileInfo = ({ setProfileCount }) => {
                     type="text"
                     className="form-control"
                     id="formGroupExampleInput3"
-                    placeholder={
-                      userData
-                        ? userData?.broker_Details?.middleName
-                        : "Enter your middle name"
-                    }
-                    ref={middleNameRef}
+                    onChange={(e)=>setMiddleNameRef(e.target.value)}
+                    value={middleNameRef}
                   />
                 </div>
               </div>
@@ -678,12 +620,10 @@ const ProfileInfo = ({ setProfileCount }) => {
                     required
                     className="form-control"
                     id="formGroupExampleInput3"
-                    placeholder={
-                      userData
-                        ? userData?.broker_Details?.lastName
-                        : "Enter your  last name"
+                    onChange={
+                     (e)=>setLastNameRef(e.target.value)
                     }
-                    ref={lastNameRef}
+                    value={lastNameRef}
                     disabled={!edit}
                   />
                 </div>
@@ -702,12 +642,10 @@ const ProfileInfo = ({ setProfileCount }) => {
                     type="text"
                     className="form-control"
                     id="formGroupExampleInput3"
-                    placeholder={
-                      userData
-                        ? userData?.broker_Details?.companyName
-                        : "Enter your  company name"
+                    onChange={
+                      (e)=>setCompanyNameRef(e.target.value)
                     }
-                    ref={companyNameRef}
+                    value={companyNameRef}
                     disabled={!edit}
                   />
                 </div>
@@ -727,12 +665,10 @@ const ProfileInfo = ({ setProfileCount }) => {
                     className="form-control"
                     id="formGroupExampleInput3"
                     required
-                    placeholder={
-                      userData
-                        ? userData?.broker_Details?.adressLine1
-                        : "Enter your address line 1"
+                    onChange={
+                     (e)=>setAddressLineRef(e.target.value)
                     }
-                    ref={addressLineRef}
+                    value={addressLineRef}
                     disabled={!edit}
                   />
                 </div>
@@ -751,12 +687,10 @@ const ProfileInfo = ({ setProfileCount }) => {
                     type="text"
                     className="form-control"
                     id="formGroupExampleInput3"
-                    placeholder={
-                      userData
-                        ? userData?.broker_Details?.adressLine2
-                        : "Enter your address line 2"
+                    onChange={
+                     (e)=>setAddressLineTwoRef(e.target.value)
                     }
-                    ref={addressLineTwoRef}
+                    value={addressLineTwoRef}
                     disabled={!edit}
                   />
                 </div>

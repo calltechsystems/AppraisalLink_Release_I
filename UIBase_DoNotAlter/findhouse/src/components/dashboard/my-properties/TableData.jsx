@@ -48,7 +48,7 @@ const TableData = ({userData , open ,close}) => {
         }
       })
       .then((res) => {
-        console.log(res.data.property.$values);
+        console.log(res.data);
         toast.dismiss();
         setData(res.data.data.property.$values);
         setRerender(false);
