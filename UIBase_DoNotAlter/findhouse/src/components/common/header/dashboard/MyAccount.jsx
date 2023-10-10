@@ -16,8 +16,8 @@ const MyAccount = ({user, profileCount , setProfile, userData}) => {
   ];
   const route = useRouter();
   const logout = ()=>{
-    // localStorage.removeItem("user");
-    // route.push("/login");
+    localStorage.removeItem("user");
+    route.push("/login");
   }
   return (
     <>

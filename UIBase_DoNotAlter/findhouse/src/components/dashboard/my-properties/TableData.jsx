@@ -16,20 +16,6 @@ const TableData = ({userData , open ,close}) => {
  
   const [data , setData] = useState([]);
 
-  // const [userInfo , setUserInfo] = useState(userData);
-
-  // useEffect(()=>{
-  //   const fetchData = ()=>{
-  //     const data =(JSON.parse(localStorage.getItem("user")))
-  //     if (data) {
-  //     setUserInfo(data);
-  //     }
-  //   }
-  //   const response =  fetchData();
-  // },[]);
-
-  // console.log(userData);
-
   let theadConent = [
     "Property Title",
     "Date",
@@ -40,28 +26,29 @@ const TableData = ({userData , open ,close}) => {
 
   useEffect(()=>{
     
+   
+
+    const data = (JSON.parse(localStorage.getItem("user")));
+
     const payload = {
       token : userData.token
     };
 
-    // console.log(payload);
-
-    const data = (JSON.parse(localStorage.getItem("user")));
 
     toast.loading("Getting properties...");
     axios
       .get("/api/getPropertiesById",
        {
         headers: {
-          Authorization:`Bearer ${data.token}`,
+          Authorization:`Bearer ${data?.token}`,
           "Content-Type":"application/json"
         },
         params : {
-          userId : data.userId
+          userId : data?.userId
         }
-        
       })
       .then((res) => {
+        console.log(res.data.property.$values);
         toast.dismiss();
         setData(res.data.data.property.$values);
         setRerender(false);
@@ -76,9 +63,9 @@ const TableData = ({userData , open ,close}) => {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
-      // hour: 'numeric',
-      // minute: 'numeric',
-      // second: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
       hour12: true, // Use 12-hour format
     };
   
@@ -95,7 +82,7 @@ const TableData = ({userData , open ,close}) => {
       .delete("/api/deleteBrokerPropertyById",
        {
         headers: {
-          Authorization:`Bearer ${data.token}`,
+          Authorization:`Bearer ${data?.token}`,
           "Content-Type":"application/json"
         },
         params: {

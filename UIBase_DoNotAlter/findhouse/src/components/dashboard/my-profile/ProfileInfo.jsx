@@ -63,38 +63,40 @@ const ProfileInfo = ({ setProfileCount }) => {
 
   const onUpdatHandler = () => {
     const firstName =
-      firstNameRef.current.value || userData.broker_Details.firstName;
+      firstNameRef.current.value !== "" ? firstNameRef.current.value : userData.broker_Details.firstName;
     const lastName =
-      lastNameRef.current.value || userData.broker_Details.lastName;
+      lastNameRef.current.value !== "" ? lastNameRef.current.value : userData.broker_Details.lastName;
     const adressLine1 =
-      addressLineRef.current.value || userData.broker_Details.adressLine1;
-    const city = cityRef.current.value || userData.broker_Details.city;
-    const state = stateRef.current.value || userData.broker_Details.state;
-    const zipCode = zipcodeRef.current.value || userData.broker_Details.zipCode;
+      addressLineRef.current.value !== "" ? addressLineRef.current.value : userData.broker_Details.adressLine1 ;
+    const city = cityRef.current.value !== "" ? cityRef.current.value : userData.broker_Details.city;
+    const state = stateRef.current.value !== "" ? stateRef.current.value : userData.broker_Details.state;
+    const zipCode = zipcodeRef.current.value !== "" ? zipcodeRef.current.value : userData.broker_Details.zipCode;
     const phoneNumber =
-      phoneNumberRef.current.value || userData.broker_Details.phoneNumber;
+      phoneNumberRef.current.value !== "" ? phoneNumberRef.current.value : userData.broker_Details.phoneNumber;
     const mortageBrokerLicNo =
-      mortgageBrokerLicNoRef.current.value ||
+      mortgageBrokerLicNoRef.current.value !==
+      "" ? mortgageBrokerLicNoRef.current.value :
       userData.broker_Details.mortageBrokerLicNo;
     const mortageBrokerageLicNo =
-      mortgageBrokrageLicNoRef.current.value ||
+      mortgageBrokrageLicNoRef.current.value !==
+      "" ?  mortgageBrokrageLicNoRef.current.value :
       userData.broker_Details.mortageBrokerageLicNo;
 
     const adressLine2 =
-      addressLineTwoRef.current.value || userData.broker_Details.adressLine2;
+      addressLineTwoRef.current.value !== "" ? addressLineTwoRef.current.value : userData.broker_Details.adressLine2;
     const middleName =
-      middleNameRef.current.value || userData.broker_Details.middleName;
+      middleNameRef.current.value !== "" ? middleNameRef.current.value : userData.broker_Details.middleName;
     const companyName =
-      companyNameRef.current.value || userData.broker_Details.companyName;
+      companyNameRef.current.value !== "" ? companyNameRef.current.value : userData.broker_Details.companyName;
 
-      const nameRegex = /^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$/;
+      
       const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
+      const nameRegex = /^[A-Za-z]+$/;
 
-    if(!nameRegex.test(firstName) === true || !nameRegex.test(lastName) === true){
-      console.log(!nameRegex.test(firstName));
+    if(nameRegex.test(firstName) === false   || nameRegex.test(lastName) === false ){
       toast.error("Name should be valid ");
     }
-    else if(!phoneNumberRegex.test(phoneNumber) === true){
+    else if(phoneNumberRegex.test(phoneNumber) === false || !phoneNumber){
       toast.error("enter a valid phone number please");
     }
     else if (
@@ -124,6 +126,18 @@ const ProfileInfo = ({ setProfileCount }) => {
       }
       if (profilePhoto) {
         count++;
+      }
+      if(adressLine2 === ""){
+        count --;
+      }
+      if(middleName === ""){
+        count--;
+      }
+      if(companyName === ""){
+        count --;
+      }
+      if(profilePhoto){
+        count --;
       }
 
       const percentage = Math.floor(count / 13) * 100;
@@ -297,8 +311,9 @@ const ProfileInfo = ({ setProfileCount }) => {
                       placeholder={
                         userData
                           ? userData?.broker_Details?.firstName
-                          : "Enter your first name"
+                          : "Enter your  first name"
                       }
+                      value={firstNameRef.current.va}
                       ref={firstNameRef}
                       disabled={!edit}
                     />
@@ -319,6 +334,7 @@ const ProfileInfo = ({ setProfileCount }) => {
                       required
                       className="form-control"
                       id="formGroupExampleInput3"
+                      disabled={!edit}
                       placeholder={
                         userData
                           ? userData?.broker_Details?.middleName

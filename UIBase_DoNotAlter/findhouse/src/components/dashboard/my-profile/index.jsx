@@ -5,10 +5,19 @@ import MobileMenu from "../../common/header/MobileMenu";
 import ChangePassword from "./ChangePassword";
 import ProfileInfo from "./ProfileInfo";
 import SocialMedia from "./SocialMedia";
+import { useRouter } from "next/router";
 
 const Index = () => {
 
   const [profileCount , setProfileCount] = useState(7);
+
+  const router = useRouter();
+
+  const userData = (JSON.parse(localStorage.getItem("user")));
+  if(!userData){
+    router.push("/login");
+  }
+  
   
   return (
     <>

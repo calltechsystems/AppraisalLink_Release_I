@@ -11,12 +11,15 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 const Index = () => {
-  let userData =(JSON.parse(localStorage.getItem("user"))) || {};
+  let userData =(JSON.parse(localStorage.getItem("user"))) ;
   const router = useRouter();
-if(!userData?.broker_Details?.firstName){
+    
+ if(!userData){
+  router.push("/login");
+}
+else if(!userData?.broker_Details?.firstName){
   router.push("/my-profile")
 }
-  console.log(userData);
 
 
   return (

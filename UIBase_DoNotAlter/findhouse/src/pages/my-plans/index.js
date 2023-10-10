@@ -6,23 +6,21 @@ import Modal from "./Modal";
 
 const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
-  const [isHome, setIsHome] = useState(
-    JSON.parse(localStorage.getItem("user") ? false : true)
-  );
-
   const [price, setPrice] = useState({
-    title: "Basic",
-    price: 0,
+    title : "Basic",
+    price : 0
   });
 
-  const [userData, setUserData] = useState({});
-  useEffect(() => {
-    const fetchData = () => {
-      const data = JSON.parse(localStorage.getItem("user"));
-      if (data) setUserData(data);
-    };
+  
+  const [userData , setUserData] = useState({});
+  useEffect(()=>{
+    const fetchData = ()=>{
+      const data =  (JSON.parse(localStorage.getItem("user"))) ;
+      if(data)
+       setUserData(data);
+    }
     fetchData();
-  }, []);
+  },[]);
 
   const openModal = () => {
     setModalOpen(true);
@@ -35,7 +33,7 @@ const Index = () => {
     <>
       <Seo pageTitle="My Plans" />
       <MyPlans setModalOpen={setModalOpen} setPrice={setPrice} />
-      <Modal modalOpen={modalOpen} closeModal={closeModal} price={price} />
+      <Modal modalOpen={modalOpen} closeModal={closeModal} price={price}/>
     </>
   );
 };

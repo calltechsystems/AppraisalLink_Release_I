@@ -4,19 +4,23 @@ import MobileMenu from "../../components/common/header/MobileMenu";
 import Pricing from "./pricing";
 import SidebarMenu from "../../components/common/header/dashboard/SidebarMenu";
 import axios from "axios";
+import { useRouter } from "next/router";
 
 const Index = ({ setModalOpen, setPrice }) => {
   const [selectedPlan, setSelectedPlan] = useState("Monthly");
-
   const [planData, setPlanData] = useState([]);
 
+  const router = useRouter();
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("user"));
+    if(!data){
+      router.push("/login");
+    }
 
     axios
       .get("/api/getAllPlans", {
         headers: {
-          Authorization: `Bearer ${data.token}`,
+          Authorization: `Bearer ${data?.token}`,
           "Content-Type": "application/json",
         },
       })
@@ -74,8 +78,8 @@ const Index = ({ setModalOpen, setPrice }) => {
                   <span>Monthly</span>
                   <div style={{ width: "20%", height: "70%" }}>
                     <label
-                    // className={`toggleLabel ${selectedPlan}`}
-                    // onClick={togglePlan}
+                      // className={`toggleLabel ${selectedPlan}`}
+                      // onClick={togglePlan}
                     >
                       <button className="toggleSwitch"></button>
 

@@ -38,7 +38,6 @@ import CryptoJS from "crypto-js";
         propertyStatus: propertyStatus,
         urgency: urgency,
     }
-    console.log(formData);
 
   
     const userResponse = await axios.post(`https://calltech20230920213721.azurewebsites.net/api/Registration/RegisterProperty`, formData,

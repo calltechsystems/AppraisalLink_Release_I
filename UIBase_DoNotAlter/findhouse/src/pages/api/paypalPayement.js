@@ -15,7 +15,7 @@ import CryptoJS from "crypto-js";
    
 
     const {userId,planId,token} = body;
-
+   
 
     const userResponse = await axios.post(`https://calltech20230920213721.azurewebsites.net/api/payments/paymenturl?Planid=${planId}&UserId=${userId}`,
     null,{
@@ -30,6 +30,7 @@ import CryptoJS from "crypto-js";
   } catch (err) {
     
     if (err.response) {
+      console.log(err.response)
       // If the error is from an axios request (e.g., HTTP 4xx or 5xx error)
       const axiosError = err.response.data;
       const statusCode = err.response.status;

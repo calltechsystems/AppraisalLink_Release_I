@@ -18,6 +18,9 @@ const Form = () => {
 
   const router = useRouter();
 
+  const [checkRegisterConfrim, setCheckRegisterConfrim] =
+    useState(false);
+
   const [passwordRegisterVerified, setPasswordRegisterVerified] =
     useState(false);
 
@@ -33,6 +36,7 @@ const Form = () => {
   const [isLoading, setLoading] = useState(false);
 
   const [isFocused, setIsFocused] = useState(false);
+  const [is2Focused, setIs2Focused] = useState(false);
 
   const inputStyle = {
     position: "relative",
@@ -122,6 +126,19 @@ const Form = () => {
       setPasswordRegisterVerified(false);
     }
   };
+
+  const checkConfirmHandler = (event) => {
+   const password = passwordRegister;
+   const confirmPassword = passwordRegisterRef.current.value;
+
+   if(password === confirmPassword){
+    setCheckRegisterConfrim(true);
+   }
+   else{
+    setCheckRegisterConfrim(false);
+   }
+  };
+
   return (
     <div className="row mt-4">
       <div className="col-lg-6 col-xl-6">
@@ -212,7 +229,7 @@ const Form = () => {
               />
               <div className="input-group-prepend">
                 <div
-                  className="input-group-text m-1"  style={{border:'1px solid #2e008b', cursor:'pointer'}}
+                  className="input-group-text m-1"  style={{border:'1px solid #2e008b'}}
                   onClick={togglePasswordVisibility}
                 >
                   <FaEye/>
@@ -248,12 +265,15 @@ const Form = () => {
                 className="form-control mt-3"
                 placeholder="Re enter Password"
                 required
+                onChange={(e)=>checkConfirmHandler(e)}
+                onFocus={() => setIs2Focused(true)}
+                onBlur={() => setIs2Focused(false)}
                 ref={passwordRegisterRef}
                 style={{ paddingRight: "40px" }} // Add right padding to accommodate the button
               />
               <div className="input-group-prepend mt-3">
                 <div
-                  className="input-group-text m-1" style={{border:'1px solid #2e008b', cursor:'pointer'}}
+                  className="input-group-text m-1" style={{border:'1px solid #2e008b'}}
                   onClick={togglePasswordVisibility_01}
                 >
                   <FaEye/>
@@ -262,15 +282,15 @@ const Form = () => {
             </div>
             {/* End .form-group */}
           </div>
-          {/* {isFocused ? (
-            passwordRegisterVerified ? (
-              <div style={{marginTop:"-2%"}}> <span style={{ color: "green" }}>Strong Password &#10004;</span> </div>
+           {is2Focused ? (
+            checkRegisterConfrim ? (
+              ""
             ) : (
-              !firstClick ? <div style={{marginTop:"-2%"}}><span style={{ color: "red" }}> Weak Password &#10008;</span> </div> : ""
+               <div style={{marginTop:"-2%"}}><span style={{ color: "red" }}> Both password arent same &#10008;</span> </div> 
             )
           ) : (
             ""
-          )} */}
+          )} 
 
           <div className="col-lg-12">
             <div>

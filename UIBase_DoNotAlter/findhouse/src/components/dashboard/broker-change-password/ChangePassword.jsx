@@ -116,8 +116,8 @@ const ChangePassword = () => {
           {/* End .col */}
   
           <div className="col-xl-12">
-            <div className="my_profile_setting_input text-center">
-              <button className="btn btn2 btn-dark text-center" onClick={submitHandler}>Update</button>
+            <div className="my_profile_setting_input float-start fn-520">
+              <button className="btn btn2 btn-dark" onClick={submitHandler}>Update Password</button>
             </div>
           </div>
           {/* End .col */}

@@ -140,7 +140,7 @@ const Form = ({ user }) => {
               />
               <div className="input-group-prepend">
                 <div
-                  className="input-group-text m-1" style={{border:'1px solid #2e008b', cursor:'pointer'}}
+                  className="input-group-text m-1" style={{border:'1px solid #2e008b'}}
                   onClick={togglePasswordVisibility}
                 >
                   <FaEye />

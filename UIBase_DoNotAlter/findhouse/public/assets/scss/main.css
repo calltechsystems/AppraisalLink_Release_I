@@ -21274,10 +21274,6 @@ header.header-nav.menu_style_home_one ul.ace-responsive-menu li.add_listing {
   /* margin-top: 5px !important; */
 }
 
-.btn-cancel{
-  border: 1px solid #2e008b;
-}
-
 .bgc-thm {
   background-color: #084c61 !important ;
 }
@@ -21297,9 +21293,9 @@ header.header-nav.menu_style_home_one ul.ace-responsive-menu li.add_listing {
 }
 
 .login_form .btn-log:hover {
-  background-color: #fff !important ;
-  color: #2e008b !important;
-  border: 1px solid #2e008b !important;
+  background-color: #0595e3 !important ;
+  color: black !important;
+  border: 1px solid black !important;
 }
 
 
@@ -21315,9 +21311,9 @@ header.header-nav.menu_style_home_one ul.ace-responsive-menu li.add_listing {
 }
 
 .my_profile_setting_input .btn2:hover {
-  background-color: #fff !important ;
-  color: #2e008b !important;
-  border: 1px solid #2e008b !important;
+  background-color: #0595e3 !important ;
+  color: black !important;
+  border: 1px solid black !important;
 }
 
 .sign_up_form .btn-log {
@@ -22012,17 +22008,7 @@ input[type=text]{
     padding: 20px;
     border: 1px solid #888;
     width: 50%;
-    margin-top: 10%;
 }
-
-@media (max-width: 991px) {
-  .modal-content {
-    width: 100%;
-    margin-top: 26%;
-
-  }
-}
-
 
 /* Close Button */
 .close {
@@ -22048,13 +22034,6 @@ input[type=text]{
   border-top: 2px solid gray;
   padding-top: 20px;
   
-}
-@media (max-width: 991px) {
-  .button-container {
-    display: flex;
-    justify-content: center;
-    /* width: 100%; */
-  }
 }
 
 .cancel-button {

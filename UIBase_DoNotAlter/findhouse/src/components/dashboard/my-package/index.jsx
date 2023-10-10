@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import Header from "../../common/header/dashboard/Header";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
 import MobileMenu from "../../common/header/MobileMenu";
@@ -6,22 +6,27 @@ import PackageData from "./PackageData";
 import SearchBox from "./SearchBox";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { useRouter } from "next/router";
 
 const Index = () => {
   const [data , setData] = useState([]);
+  const router = useRouter();
   useEffect(()=>{
     const userData = (JSON.parse(localStorage.getItem("user")));
+    if(!userData){
+      router.push("/login");
+    }
    
     toast.loading("Getting properties...");
     axios
       .get("/api/getBrokerTransactions",
        {
         headers: {
-          Authorization:`Bearer ${userData.token}`,
+          Authorization:`Bearer ${userData?.token}`,
           "Content-Type":"application/json"
         },
         params : {
-          userId : userData.userId
+          userId : userData?.userId
         }
         
       })

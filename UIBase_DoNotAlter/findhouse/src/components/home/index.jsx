@@ -11,8 +11,18 @@ import HeroSlider from "./HeroSlider";
 import ComfortPlace from "./ComfortPlace";
 import Testimonials from "./Testimonials";
 import Header from "../common/header/DefaultHeader_01";
+import { useRouter } from "next/router";
 
 const Index = () => {
+  const userData = (JSON.parse(localStorage.getItem("user")));
+  const router = useRouter();
+
+  if(userData && userData.userType === 1){
+    router.push("/my-dashboard");
+  }
+  else if(userData && userData.userType === 2){
+    router.push("/appraiser-dashboard");
+  }
   return (
     <>
       {/* <!-- Main Header Nav --> */}
