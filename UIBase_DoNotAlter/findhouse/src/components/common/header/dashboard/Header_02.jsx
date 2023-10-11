@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import HeaderMenuContent from "./HeaderMenuContent_02";
 import Image from "next/image";
 
-const Header = () => {
+const Header = ({ userData }) => {
   const [navbar, setNavbar] = useState(false);
 
-  const changeBackground = ({hide}) => {
+  const changeBackground = ({ hide }) => {
     if (window.scrollY >= 95) {
       setNavbar(true);
     } else {
@@ -46,7 +46,7 @@ const Header = () => {
         {/* site logo brand */}
 
         <nav>
-          <HeaderMenuContent hide={false} />
+          <HeaderMenuContent hide={false} juserData={userData} />
         </nav>
         {/* End .navbar */}
       </div>
@@ -54,7 +54,5 @@ const Header = () => {
     // {/* <!-- /.theme-main-menu --> */}
   );
 };
-
-
 
 export default Header;

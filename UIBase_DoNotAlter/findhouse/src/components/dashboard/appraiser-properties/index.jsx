@@ -111,7 +111,7 @@ const Index = () => {
                         <div className="row">
                           <div className="col-lg-12 mt20">
                             <div className="mbp_pagination">
-                              <Pagination />
+                              {/* <Pagination /> */}
                             </div>
                           </div>
                           {/* End paginaion .col */}

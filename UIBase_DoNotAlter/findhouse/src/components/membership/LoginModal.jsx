@@ -1,13 +1,8 @@
 // Modal.js (a React component)
 
 import React from "react";
-import { useRouter } from "next/router";
 
-const Modal = ({ modalOpen, closeModal, price }) => {
-  const router = useRouter();
-  const loginHandler = () => {
-    router.push("/login");
-  };
+const LoginModal = ({ modalOpen, closeModal, price }) => {
   return (
     <>
       <div>
@@ -19,7 +14,7 @@ const Modal = ({ modalOpen, closeModal, price }) => {
               </span>
               <div style={{ display: "flex", flexDirection: "column" }}>
                 <h2 className="text-center">
-                  Get subscription to our{" "}
+                  Get to our{" "}
                   <span
                     style={{
                       fontWeight: "bold",
@@ -40,16 +35,15 @@ const Modal = ({ modalOpen, closeModal, price }) => {
               ></div>
               <div style={{ marginLeft: "14%" }}>
                 <p className="m-3" style={{ fontSize: "17px" }}>
-                  Please login to check and use your plan
+                  Please checkout for payment option
                 </p>
                 <p className="m-3" style={{ fontSize: "17px" }}>
-                  Your selected Package . Click{" "}
-                  <span style={{ color: "blue" }}>continue</span> for further .
+                  Your selected Package{" "}
                   <span
                     style={{
                       fontWeight: "bold",
                       fontSize: "25px",
-                      color: "#2e008b",
+                       color: "#2e008b",
                     }}
                   >
                     {price.title} Plan
@@ -70,18 +64,7 @@ const Modal = ({ modalOpen, closeModal, price }) => {
                 {/* <button className="cancel-button" onClick={closeModal}>
                   Cancel
                 </button> */}
-                <button
-                  className="btn w-35 btn-cancel m-1"
-                  onClick={closeModal}
-                >
-                  Cancel
-                </button>
-                <button
-                  className="btn btn-log w-35 btn-thm m-1"
-                  onClick={loginHandler}
-                >
-                  Continue
-                </button>
+                <button className="btn btn-log w-35 btn-thm">Checkout</button>
               </div>
             </div>
           </div>
@@ -91,4 +74,4 @@ const Modal = ({ modalOpen, closeModal, price }) => {
   );
 };
 
-export default Modal;
+export default LoginModal;

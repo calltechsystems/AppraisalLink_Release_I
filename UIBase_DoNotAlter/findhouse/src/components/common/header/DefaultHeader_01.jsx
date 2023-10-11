@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import HeaderMenuContent from "./HeaderMenuContent_01";
 import Image from "next/image";
 
-const Header = () => {
+const Header = ({ userData }) => {
   const [navbar, setNavbar] = useState(false);
 
   const changeBackground = () => {
@@ -31,7 +31,7 @@ const Header = () => {
             width={40}
             height={45}
             className="logo1 img-fluid"
-            style={{marginTop:"15px"}}
+            style={{ marginTop: "15px" }}
             src="/assets/images/logo_new.png"
             alt="header-logo2.png"
           />
@@ -39,20 +39,19 @@ const Header = () => {
             width={40}
             height={45}
             className="logo2 img-fluid"
-            style={{marginTop:"15px"}}
+            style={{ marginTop: "15px" }}
             src="/assets/images/logo_new.png"
             alt="header-logo2.png"
           />
-          <span style={{marginTop:"25px"}}>Appraisal Link</span>
+          <span style={{ marginTop: "25px" }}>Appraisal Link</span>
         </Link>
         {/* site logo brand */}
 
         <nav>
-          <HeaderMenuContent />
+          <HeaderMenuContent userData={userData} />
         </nav>
         {/* End .navbar */}
       </div>
-    
     </header>
     // {/* <!-- /.theme-main-menu --> */}
   );

@@ -2314,7 +2314,7 @@ header.header-nav.menu_style_home_one.style2
   position: absolute;
   right: 0;
   top: 26px;
-  width: 1   px;
+  width: 1 px;
 }
 
 header.header-nav.menu_style_home_one.style2.home10
@@ -21293,11 +21293,10 @@ header.header-nav.menu_style_home_one ul.ace-responsive-menu li.add_listing {
 }
 
 .login_form .btn-log:hover {
-  background-color: #0595e3 !important ;
-  color: black !important;
-  border: 1px solid black !important;
+  background-color: #fff !important ;
+  color: #2e008b !important;
+  border: 1px solid #2e008b !important;
 }
-
 
 .sign_up_modal .modal-header {
   background-color: #2e008b !important ;
@@ -21322,9 +21321,9 @@ header.header-nav.menu_style_home_one ul.ace-responsive-menu li.add_listing {
 }
 
 .sign_up_form .btn-log:hover {
-  background-color: #0595e3 !important ;
-  color: black !important;
-  border: 1px solid black !important;
+  background-color: #fff !important ;
+  color: #2e008b !important;
+  border: 1px solid #2e008b !important;
 }
 
 .inner_page_breadcrumb_contact_us {
@@ -21773,27 +21772,26 @@ a::before {
   padding-bottom: 2px !important;
 }
 
-.bg-back{
+.bg-back {
   background-color: #f2f2f2 !important;
 }
 
-.text_end{
+.text_end {
   text-align: end !important;
 }
 
-.my_plan_pricing_header{
+.my_plan_pricing_header {
   padding-left: "30%";
 }
 
 .list-item-transition {
-  transition: transform 0.3s; 
-  transform-origin: left; 
+  transition: transform 0.3s;
+  transform-origin: left;
 }
 
 .list-item-transition:hover {
-  transform: translateX(10px); 
+  transform: translateX(10px);
 }
-
 
 /* YourComponent.module.css */
 
@@ -21848,7 +21846,6 @@ a::before {
   background-color: #fff; /* Selected circle color */
 }
 
-
 /* Index.css */
 
 /* Style for the toggle label */
@@ -21895,15 +21892,14 @@ a::before {
   transform: translateX(20px);
 }
 
-
-.pricing_table_border_style{
+.pricing_table_border_style {
   background-color: #87d700 !important;
   border: 10px solid darkslateblue;
   /* color: red; */
   margin-top: -30px;
 }
-.pricing_table_border_style:hover{
-  background-color: 	#006633 !important;
+.pricing_table_border_style:hover {
+  background-color: #006633 !important;
   border: 12px solid slategray;
 }
 
@@ -21913,26 +21909,26 @@ a::before {
   background-color: #2e008b !important;
 } */
 
-input[type=text]{
+input[type=text] {
   font-weight: 700;
 }
 
-.btn-color{
+.btn-color {
   background-color: #2e008b;
   color: white;
 }
 
-.req-btn{
+.req-btn {
   color: #e80000;
   font-weight: 700;
 }
 
-.pricing_table_border_style_title:hover{
-  color: 	#3a2f6b !important;
+.pricing_table_border_style_title:hover {
+  color: #3a2f6b !important;
 }
 
-.pricing_table_border_style_button{
-  color: 	#3a2f6b !important;
+.pricing_table_border_style_button {
+  color: #3a2f6b !important;
 }
 /* Dropdown.css */
 
@@ -21977,10 +21973,7 @@ input[type=text]{
 
 /* Additional styles can be added for dropdown content */
 
-
-
-
-.profile_edit_button{
+.profile_edit_button {
   width: max-content;
   border-radius: 4px;
   margin-left: 96%;
@@ -21990,39 +21983,40 @@ input[type=text]{
 
 /* The Modal (background) */
 .modal {
-    display: block; /* Initially hidden */
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
+  display: block; /* Initially hidden */
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 /* Modal Content/Box */
 .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 50%;
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 50%;
+  margin-top: 10%;
 }
 
 /* Close Button */
 .close {
-    color: red;
-    text-align: end;
-    margin-top: -10px;
-    /* float: right; */
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
+  color: red;
+  text-align: end;
+  margin-top: -10px;
+  /* float: right; */
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 .close:hover {
-    color: black;
+  color: black;
 }
 
 /* Add this to your Modal.css or a separate CSS file */
@@ -22033,7 +22027,6 @@ input[type=text]{
   margin-top: 20px;
   border-top: 2px solid gray;
   padding-top: 20px;
-  
 }
 
 .cancel-button {
@@ -22059,7 +22052,6 @@ input[type=text]{
 .checkout-button:hover {
   background-color: #0056b3;
 }
-
 
 .circular-progress {
   fill: none;
@@ -22105,11 +22097,10 @@ input[type=text]{
 /* dashboard responsive */
 
 @media (max-width: 1012px) {
-  .our-dashbord.dashbord{
+  .our-dashbord.dashbord {
     padding-left: 0px !important;
   }
 }
-
 
 /* @media (max-width:767px) {
   .tagline{
@@ -22120,8 +22111,6 @@ input[type=text]{
 /* .text-color-01:hover{
   text-decoration: underline;
 } */
-
-
 
 .toggle-switch {
   display: inline-block;
@@ -22150,11 +22139,13 @@ input[type=text]{
   background-color: #ccc;
   -webkit-transition: 0.4s;
   transition: 0.4s;
+  padding: 10px;
+  border-radius: 25px 25px;
 }
 
 .slider:before {
   position: absolute;
-  content: '';
+  content: "";
   height: 26px;
   width: 26px;
   left: 4px;
@@ -22162,6 +22153,7 @@ input[type=text]{
   background-color: white;
   -webkit-transition: 0.4s;
   transition: 0.4s;
+  border-radius: 50%;
 }
 
 input:checked + .slider {
@@ -22169,7 +22161,7 @@ input:checked + .slider {
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+  box-shadow: 0 0 1px #2196f3;
 }
 
 input:checked + .slider:before {

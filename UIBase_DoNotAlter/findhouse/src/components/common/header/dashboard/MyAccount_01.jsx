@@ -4,7 +4,8 @@ import { isSinglePageActive } from "../../../../utils/daynamicNavigation";
 import Image from "next/image";
 import {getSession} from 'next-iron-session';
 
-const MyAccount = ({user}) => {
+const MyAccount = ({user , userData}) => {
+
   const profileMenuItems = [
     { id: 1, name: "Profile", ruterPath: "/appraiser-profile" },
     // { id: 2, name: " My Message", ruterPath: "/my-message" },
@@ -20,7 +21,7 @@ const MyAccount = ({user}) => {
           width={40}
           height={40}
           className="float-start"
-          src="/assets/images/team/a2.jpg"
+          src={userData?.brokerage_Details?.profileImage|| "/assets/images/team/a2.jpg"}
           alt="e1.png"
         />
         <p>

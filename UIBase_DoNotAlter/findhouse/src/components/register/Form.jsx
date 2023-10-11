@@ -86,33 +86,32 @@ const Form = () => {
       toast.error("Email cant be empty or non valid.");
     } else if (!captchaVerfied) {
       toast.error("captcha isnt verified");
-    }
-    else{
-    const data = {
-      email: email,
-      password: password,
-      userType: Number(user),
-    };
+    } else {
+      const data = {
+        email: email,
+        password: password,
+        userType: Number(user),
+      };
 
-    const encryptedData = encryptionData(data);
+      const encryptedData = encryptionData(data);
 
-    setLoading(true);
-    toast.loading("Registering user...");
-    axios
-      .post("/api/register", encryptedData)
-      .then((res) => {
-        console.log(res);
-        toast.dismiss();
-        router.push("/login");
-      })
-      .catch((err) => {
-        toast.dismiss();
-        toast.error(err.response.data.error);
-        router.reload();
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+      setLoading(true);
+      toast.loading("Registering user...");
+      axios
+        .post("/api/register", encryptedData)
+        .then((res) => {
+          console.log(res);
+          toast.dismiss();
+          router.push("/login");
+        })
+        .catch((err) => {
+          toast.dismiss();
+          toast.error(err.response.data.error);
+          router.reload();
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     }
   };
 
@@ -196,7 +195,10 @@ const Form = () => {
                 ref={emailRegisterRef}
               />
               <div className="input-group-prepend">
-                <div className="input-group-text m-1" style={{border:'1px solid #2e008b'}}>
+                <div
+                  className="input-group-text m-1"
+                  style={{ border: "1px solid #2e008b" }}
+                >
                   <i className="fa fa-envelope-o"></i>
                 </div>
               </div>
@@ -232,7 +234,7 @@ const Form = () => {
                   className="input-group-text m-1"  style={{border:'1px solid #2e008b'}}
                   onClick={togglePasswordVisibility}
                 >
-                  <FaEye/>
+                  <FaEye />
                 </div>
               </div>
             </div>
@@ -253,13 +255,14 @@ const Form = () => {
           </div>
 
           <div className="col-lg-12">
-          <div
-          className="form-group input-group  "
-          style={{ position: "",marginTop:"-10px", marginBottom:'15px'}}
-        >
-          <label htmlFor="passwordInput" style={labelStyle}>
-            Password must have a A-Z,a-z,0-9,!@#$%^& a & 8 - 15 characters long.
-          </label>
+            <div
+              className="form-group input-group  "
+              style={{ position: "", marginTop: "-10px", marginBottom: "15px" }}
+            >
+              <label htmlFor="passwordInput" style={labelStyle}>
+                Password must have a A-Z,a-z,0-9,!@#$%^& a & 8 - 15 characters
+                long.
+              </label>
               <input
                 type={passwordVisible_01 ? "text" : "password"} // Conditionally set the input type
                 className="form-control mt-3"
@@ -276,7 +279,7 @@ const Form = () => {
                   className="input-group-text m-1" style={{border:'1px solid #2e008b'}}
                   onClick={togglePasswordVisibility_01}
                 >
-                  <FaEye/>
+                  <FaEye />
                 </div>
               </div>
             </div>
@@ -327,7 +330,9 @@ const Form = () => {
             }}
           >
             <div>
-              <p className="text-center" style={{fontSize:'16px'}}>Already have Account? </p>
+              <p className="text-center" style={{ fontSize: "16px" }}>
+                Already have Account?{" "}
+              </p>
             </div>
             <div
               style={{

@@ -1,11 +1,14 @@
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addLength } from "../../../features/properties/propertiesSlice";
 import properties from "../../../data/properties";
 import Image from "next/image";
+import axios from "axios";
+import toast from "react-hot-toast";
 
-const FeaturedItem = () => {
+const FeaturedItem = ({ setModalOpen }) => {
+  const [data, setData] = useState([]);
 
   const {
     keyword,
@@ -118,8 +121,30 @@ const FeaturedItem = () => {
     return true;
   };
 
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("user"));
+
+    toast.loading("Getting properties...");
+    axios
+      .get("/api/getAllListedProperties", {
+        headers: {
+          Authorization: `Bearer ${data?.token}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        toast.dismiss();
+        console.log(res.data.data.properties.$values);
+        setData(res.data.data.properties.$values);
+      })
+      .catch((err) => {
+        toast.dismiss();
+        toast.error(err?.response?.data?.error);
+      });
+  }, []);
+
   // status handler
-  let content = properties
+  {/*let content = properties
     ?.slice(0, 9)
     ?.filter(keywordHandler)
     ?.filter(locationHandler)
@@ -133,9 +158,10 @@ const FeaturedItem = () => {
     ?.filter(areaHandler)
     ?.filter(advanceHandler)
     ?.sort(statusTypeHandler)
-    ?.filter(featuredHandler)
-    .map((item) => (
-      <div className="col-md-6" key={item.id}>
+?.filter(featuredHandler)*/}
+let content =
+    data.map((item) => (
+      <div className="col-md-6" key={item._id}>
         <div className="feat_property home7 style4">
           <div className="thumb">
             {/* <Image
@@ -146,13 +172,7 @@ const FeaturedItem = () => {
               alt="fp1.jpg"
             /> */}
             <div className="thmb_cntnt">
-              <ul className="tag mb0">
-                {item.saleTag.map((val, i) => (
-                  <li className="list-inline-item" key={i}>
-                    <a href="#">{val}</a>
-                  </li>
-                ))}
-              </ul>
+             
               <ul className="icon mb0">
                 <li className="list-inline-item">
                   <a href="#">
@@ -167,28 +187,28 @@ const FeaturedItem = () => {
               </ul>
 
               <Link
-                href={`/listing-details-v1/${item.id}`}
+                href={`/listing-details-v1/${item._id}`}
                 className="fp_price"
               >
-                ${item.price}
+                ${item.bidLowerRange}
                 <small>/mo</small>
               </Link>
             </div>
           </div>
           <div className="details">
             <div className="tc_content">
-              <p className="text-thm">{item.type}</p>
+              <p className="text-thm">{item.typeOfBuilding}</p>
               <h4>
                 <Link href={`/listing-details-v1/${item.id}`}>
-                  {item.title}
+                  {item.streetName} {item.streetNumber}
                 </Link>
               </h4>
               <p>
                 <span className="flaticon-placeholder"></span>
-                {item.location}
+                {item.area} {item.city} {item.state} {item.zipCode} 
               </p>
 
-              <ul className="prop_details mb0">
+             {/* <ul className="prop_details mb0">
                 {item.itemDetails.map((val, i) => (
                   <li className="list-inline-item" key={i}>
                     <a href="#">
@@ -196,7 +216,7 @@ const FeaturedItem = () => {
                     </a>
                   </li>
                 ))}
-              </ul>
+              </ul>*/}
             </div>
             {/* End .tc_content */}
 
@@ -212,13 +232,30 @@ const FeaturedItem = () => {
                     />
                   </Link> */}
                 </li>
-                <li className="list-inline-item" style={{width:"30px",border:'1px solid black', textAlign:'center', borderRadius:'5px'}}>
+                <li
+                  className="list-inline-item"
+                  style={{
+                    width: "30px",
+                    border: "1px solid black",
+                    textAlign: "center",
+                    borderRadius: "5px",
+                  }}
+                >
                   {/* <Link href="/agent-v1">{item.posterName}</Link> */}
-                  <a href="#"><span className="flaticon-heart text-color"></span></a>
+                  <a href="#">
+                    <span className="flaticon-heart text-color"></span>
+                  </a>
                 </li>
               </ul>
               {/* <div className="fp_pdate float-end">{item.postedYear}</div> */}
-              <div className="fp_pdate float-end mt-1 fw-bold" onClick={() => NewModal()}><a href="#" className="text-color">Participate Bid</a></div>
+              <div
+                className="fp_pdate float-end mt-1 fw-bold"
+                onClick={() => setModalOpen()}
+              >
+                <a href="#" className="text-color">
+                  Participate Bid
+                </a>
+              </div>
             </div>
             {/* End .fp_footer */}
           </div>
@@ -227,9 +264,10 @@ const FeaturedItem = () => {
     ));
 
   // add length of filter items
+
   useEffect(() => {
-    dispatch(addLength(content.length));
-  }, [dispatch, content]);
+    dispatch(addLength(data.length));
+  }, [dispatch, data]);
   return <>{content}</>;
 };
 

@@ -9,18 +9,21 @@ import axios from "axios";
 import { useRouter } from "next/router";
 
 const Index = () => {
-  const [data , setData] = useState([]);
+  const [data, setData] = useState([]);
   const router = useRouter();
-  useEffect(()=>{
-    const userData = (JSON.parse(localStorage.getItem("user")));
-    if(!userData){
-      router.push("/login");
-    }
-   
+  const userData = JSON.parse(localStorage.getItem("user"));
+  if (!userData) {
+    router.push("/login");
+  } else if (!userData?.broker_Details?.firstName) {
+    router.push("/my-profile");
+  }
+
+  useEffect(() => {
+    
+
     toast.loading("Getting properties...");
     axios
-      .get("/api/getBrokerTransactions",
-       {
+      .get("/api/getBrokerTransactions", {
         headers: {
           Authorization:`Bearer ${userData?.token}`,
           "Content-Type":"application/json"
@@ -40,7 +43,7 @@ const Index = () => {
         toast.dismiss();
         toast.error(err?.response?.data?.error);
       });
-  },[]);
+  }, []);
 
   return (
     <>
@@ -97,9 +100,7 @@ const Index = () => {
                 {/* End .col */}
                 <div className="col-md-4 col-lg-4 col-xl-3 mb20">
                   <ul className="sasw_list mb0">
-                    <li className="search_area">
-                      {/* <SearchBox /> */}
-                    </li>
+                    <li className="search_area">{/* <SearchBox /> */}</li>
                   </ul>
                 </div>
                 {/* End .col */}
@@ -112,15 +113,13 @@ const Index = () => {
                     <div className="col-lg-12">
                       <div className="packages_table">
                         <div className="table-responsive mt0">
-                          <PackageData data={data}/>
+                          <PackageData data={data} />
                         </div>
                       </div>
                       {/* End .packages_table */}
 
                       <div className="pck_chng_btn text-end">
-                        <button className="btn btn-lg">
-                          Update Package
-                        </button>
+                        <button className="btn btn-lg">Update Package</button>
                       </div>
                     </div>
                   </div>

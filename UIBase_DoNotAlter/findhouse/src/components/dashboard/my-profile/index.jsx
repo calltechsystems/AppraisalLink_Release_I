@@ -8,24 +8,26 @@ import SocialMedia from "./SocialMedia";
 import { useRouter } from "next/router";
 
 const Index = () => {
-
-  const [profileCount , setProfileCount] = useState(7);
-
+  const [profileCount, setProfileCount] = useState(7);
+  let userData = JSON.parse(localStorage.getItem("user"));
   const router = useRouter();
 
-  const userData = (JSON.parse(localStorage.getItem("user")));
-  if(!userData){
+  if (!userData) {
     router.push("/login");
+  } else if (!userData?.broker_Details?.firstName) {
+    router.push("/my-profile");
   }
+
+  
   
   
   return (
     <>
       {/* <!-- Main Header Nav --> */}
-      <Header  profileCount = {profileCount}  setProfileCount={setProfileCount}/>
+      <Header profileCount={profileCount} setProfileCount={setProfileCount} />
 
       {/* <!--  Mobile Menu --> */}
-      <MobileMenu />
+      {/* <MobileMenu /> */}
 
       <div className="dashboard_sidebar_menu">
         <div
@@ -77,7 +79,10 @@ const Index = () => {
                         <h4>Personal Information</h4>
                       </div> */}
                       <div className="col-xl-12">
-                        <ProfileInfo profileCount = {profileCount}  setProfileCount={setProfileCount} />
+                        <ProfileInfo
+                          profileCount={profileCount}
+                          setProfileCount={setProfileCount}
+                        />
                       </div>
                     </div>
                   </div>
@@ -95,7 +100,7 @@ const Index = () => {
                     </div>*/}
                   {/* End .SocialMedia */}
 
-                 {/* <div className="my_dashboard_review mt30">
+                  {/* <div className="my_dashboard_review mt30">
                     <div className="row">
                        <div className="col-xl-2">
                         <h4>Change password</h4>

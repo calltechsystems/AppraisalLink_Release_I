@@ -12,67 +12,63 @@ import axios from "axios";
 import { useRouter } from "next/router";
 
 const Index = () => {
-
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [ property , setProperty] = useState("");
+  const [property, setProperty] = useState("");
+
+  const router = useRouter();
 
   const openModal = (property) => {
     setProperty(property);
     setIsModalOpen(true);
   };
 
-  const router = useRouter();
-  
-
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
   const handleDelete = () => {
-    const data = (JSON.parse(localStorage.getItem("user")));
-    
+    const data = JSON.parse(localStorage.getItem("user"));
+
     toast.loading("deleting this property");
     axios
-      .delete("/api/deleteBrokerPropertyById",
-       {
+      .delete("/api/deleteBrokerPropertyById", {
         headers: {
-          Authorization:`Bearer ${data?.token}`,
-          "Content-Type":"application/json"
+          Authorization: `Bearer ${data.token}`,
+          "Content-Type": "application/json",
         },
         params: {
-          propertyId : property.propertyId
-        }
-        
+          propertyId: property.propertyId,
+        },
       })
       .then((res) => {
-       setRerender(true);
-
+        setRerender(true);
       })
       .catch((err) => {
         toast.error(err);
       });
-      toast.dismiss();
+    toast.dismiss();
     closeModal();
   };
 
-  
-  
-  const [userData , setUserData ] = useState( {} );
+  const [userData, setUserData] = useState({});
 
   useEffect(() => {
-    const data = (JSON.parse(localStorage.getItem("user"))) ;
-    if(!data){
+    const data = JSON.parse(localStorage.getItem("user"));
+    if (!data) {
+      router.push("/login");
+    } else if (!data?.broker_Details?.firstName) {
+      router.push("/my-profile");
+    }
+    if (!data) {
       router.push("/login");
     }
-    const fetchData = ()=>{
-      
-      
-      if(data){
+    const fetchData = () => {
+      if (data) {
         setUserData(data);
       }
-    }
+    };
     fetchData();
-  },[]);
+  }, []);
 
   return (
     <>
@@ -148,11 +144,14 @@ const Index = () => {
                   <div className="my_dashboard_review mb40">
                     <div className="property_table">
                       <div className="table-responsive mt0">
-                        <TableData  userData = {userData} open ={openModal} close={closeModal} />
+                        <TableData
+                          userData={userData}
+                          open={openModal}
+                          close={closeModal}
+                        />
                       </div>
                       {/* End .table-responsive */}
 
-                     
                       {/* End .mbp_pagination */}
                     </div>
                     {/* End .property_table */}
@@ -175,11 +174,22 @@ const Index = () => {
             {isModalOpen && (
               <div className="modal">
                 <div className="modal-content">
-                  <h2>Confirm Deletion</h2>
-                  <p>Are you sure you want to delete the property: {property.area}?</p>
-                  <div style={{marginLeft:"30%"}}>
-                    <button style={{marginRight:"6%",borderRadius:"8px",color:"white",backgroundColor:"red",fontSize:"22px",fontFamily:"Abhaya Libre"}} onClick={handleDelete}>Delete</button>
-                    <button style={{marginRight:"6%",borderRadius:"8px",color:"black",borderColor:"darkblue",fontSize:"22px",fontFamily:"Abhaya Libre"}} onClick={closeModal}>Cancel</button>
+                  <h3 className="text-center">Delete Confirmation</h3>
+                  <h5 className="text-center">
+                    Are you sure you want to delete the property :{" "}
+                    {property.area} ?
+                  </h5>
+                  {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
+                  <div className="text-center" style={{}}>
+                    <button
+                      className="btn w-35 btn-thm3 m-2"
+                      onClick={handleDelete}
+                    >
+                      Delete
+                    </button>
+                    <button className="btn w-35 btn-white" onClick={closeModal}>
+                      Cancel
+                    </button>
                   </div>
                 </div>
               </div>

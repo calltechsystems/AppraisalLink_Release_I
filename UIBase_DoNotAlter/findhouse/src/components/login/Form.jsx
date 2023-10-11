@@ -44,13 +44,12 @@ const Form = ({ user }) => {
       toast.error("Credentials Can't be empty");
     } else if (!captchaVerfied) {
       toast.error("captcha isnt verified");
-    }
-    else{
+    } else {
+      const data = {
+        email: email,
+        password: password,
+      };
 
-    const data = {
-      email: email,
-      password: password,
-    };
 
     const encryptedData = encryptionData(data);
 
@@ -117,7 +116,10 @@ const Form = ({ user }) => {
                 ref={emailLoginRef}
               />
               <div className="input-group-prepend">
-                <div className="input-group-text m-1" style={{border:'1px solid #2e008b'}}>
+                <div
+                  className="input-group-text m-1"
+                  style={{ border: "1px solid #2e008b" }}
+                >
                   <i className="flaticon-user"></i>
                 </div>
               </div>
@@ -143,7 +145,8 @@ const Form = ({ user }) => {
               />
               <div className="input-group-prepend">
                 <div
-                  className="input-group-text m-1" style={{border:'1px solid #2e008b'}}
+                  className="input-group-text m-1"
+                  style={{ border: "1px solid #2e008b", cursor: "pointer" }}
                   onClick={togglePasswordVisibility}
                 >
                   <FaEye />
@@ -193,12 +196,12 @@ const Form = ({ user }) => {
               style={{
                 display: "flex",
                 flexDirection: "row",
-                justifyContent:'center'
+                justifyContent: "center",
                 // marginLeft: "20%",
               }}
             >
               <div>
-                <p style={{fontSize:'16px'}}>Dont have an account? </p>
+                <p style={{ fontSize: "16px" }}>Dont have an account? </p>
               </div>
               <div
                 style={{

@@ -4,11 +4,12 @@ import MobileMenu from "../../common/header/MobileMenu";
 import Filtering from "./Filtering";
 import AllStatistics from "./AllStatistics";
 
-const index = () => {
+const Index = () => {
+  const userData = JSON.parse(localStorage.getItem("user"));
   return (
     <>
       {/* <!-- Main Header Nav --> */}
-      <Header />
+      <Header userData={userData} />
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
@@ -48,15 +49,25 @@ const index = () => {
                 </div>
                 {/* End Dashboard Navigation */}
 
-                <div className="col-lg-12 mb10" style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}>
+                <div
+                  className="col-lg-12 mb10"
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
                   <div className="breadcrumb_content style2">
-                    <h2 className="breadcrumb_title">Howdy, Hasan</h2>
+                    <h2 className="breadcrumb_title">
+                      {userData?.brokerage_Details
+                        ? `${userData?.brokerage_Details?.firstName} ${userData?.brokerage_Details?.lastName}`
+                        : ""}
+                    </h2>
                     <p>We are glad to see you again!</p>
                   </div>
                   <div>
-                  <Filtering/>
+                    <Filtering />
                   </div>
-                  
                 </div>
               </div>
               {/* End .row */}
@@ -66,7 +77,7 @@ const index = () => {
               </div>
               {/* End .row Dashboard top statistics */}
 
-              <div className="row" >
+              <div className="row">
                 {/* <div className="col-xl-6">
                   <div className="application_statics">
                     <h4 className="mb-4">View Statistics</h4>
@@ -79,8 +90,7 @@ const index = () => {
                    <StatisticsPieChart />
                  </div>
                 </div>  */}
-                
-                
+
                 {/* End statistics chart */}
 
                 {/*<div className="col-xl-5">
@@ -91,7 +101,6 @@ const index = () => {
                 </div>*/}
               </div>
               {/* End .row  */}
-              
 
               <div className="row mt50">
                 <div className="col-lg-12">
@@ -110,4 +119,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;

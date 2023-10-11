@@ -7,7 +7,8 @@ import TermsCondions from "./TermsCondions";
 import Link from "next/link";
 import FindProperties from "./FindProperties";
 
-const index = () => {
+const Index = () => {
+  // const userData = JSON.parse(localStorage.getItem("user"));
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -83,4 +84,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;

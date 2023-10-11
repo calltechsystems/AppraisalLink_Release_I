@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import Image from "next/image";
 
-const HeaderMenuContent = ({ float = "", hide, isListing }) => {
+const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
   const route = useRouter();
 
   const [hovered, setHovered] = useState(false);
@@ -256,7 +256,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                   // flexDirection: "row",
                   // justifyContent: "center",
                   marginTop: "15px",
-                  cursor:"pointer"
+                  cursor: "pointer",
                 }}
               >
                 <div className="row">
