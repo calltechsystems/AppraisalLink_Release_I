@@ -35,6 +35,7 @@ export default async function handler (request,response) {
     return response.status(201).json({msg:"Successfully Created !!"});
   } catch (err) {
    
+    console.log(err)
     if (err.response) {
       // If the error is from an axios request (e.g., HTTP 4xx or 5xx error)
       const axiosError = err.response.data;

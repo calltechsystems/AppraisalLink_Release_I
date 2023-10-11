@@ -16,8 +16,6 @@ const Form = ({ user }) => {
 
   const router = useRouter();
 
-  console.log(user);
-
   const [passwordLoginVerified, setPasswordLoginVerified] = useState(true);
 
   const [passwordVisible, setPasswordVisible] = useState(false); // State variable to toggle password visibility
@@ -63,7 +61,12 @@ const Form = ({ user }) => {
       .then((res) => {
         toast.dismiss();
         localStorage.setItem("user", JSON.stringify(res.data.userData));
-        router.push("/my-dashboard");
+        if(res.data.userData.userType === 1){
+          router.push("/my-dashboard");
+        }
+        else if(res.data.userData.userType === 2){
+          router.push("/appraiser-dashboard");
+        }
       })
       .catch((err) => {
         toast.dismiss();

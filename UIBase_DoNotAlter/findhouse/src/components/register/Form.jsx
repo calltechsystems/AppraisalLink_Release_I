@@ -172,10 +172,10 @@ const Form = () => {
                 <option data-tokens="SelectRole" value={1}>
                   Mortgage Broker
                 </option>
-                <option data-tokens="Agent/Agency" value={2}>
+                <option data-tokens="Agent/Agency" value={3}>
                   Mortgage Brokerage
                 </option>
-                <option data-tokens="SingleUser" value={3}>
+                <option data-tokens="SingleUser" value={2}>
                   Appraiser
                 </option>
                 <option data-tokens="SingleUser" value={4}>
