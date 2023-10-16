@@ -83,7 +83,7 @@ const Index = () => {
                     // className={`toggleLabel ${selectedPlan}`}
                     // onClick={togglePlan}
                     >
-                      <button className="toggleSwitch"></button>
+                      {/* <button className="toggleSwitch"></button> */}
 
                       <div className="toggle-switch">
                         <label className="switch">

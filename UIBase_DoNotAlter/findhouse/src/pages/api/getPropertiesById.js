@@ -5,13 +5,14 @@ import CryptoJS from "crypto-js";
  async function handler (request,response) {
 
     const decryptionKey = process.env.CRYPTO_SECRET_KEY;
+    const domain = process.env.BACKEND_DOMAIN;
 
   try {
     const token = request.headers.authorization;
     const userId = request.query.userId;
 
 
-    const userResponse = await axios.get(`https://calltech20230920213721.azurewebsites.net/api/Property/ByUserId/${userId}`,
+    const userResponse = await axios.get(`${domain}/Property/ByUserId/${userId}`,
     {
         headers: {
           Authorization:token,

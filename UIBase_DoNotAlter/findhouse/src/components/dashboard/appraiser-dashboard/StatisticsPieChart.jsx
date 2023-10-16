@@ -1,15 +1,22 @@
+import { Chart as ChartJS, Title, Tooltip, Legend } from "chart.js";
 import {
-  Chart as ChartJS,
+  BarController,
   CategoryScale,
   LinearScale,
-  Title,
-  Tooltip,
-  Legend,
+  BarElement,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import { faker } from "@faker-js/faker";
 
-ChartJS.register(CategoryScale, LinearScale, Title, Tooltip, Legend);
+ChartJS.register(
+  Title,
+  Tooltip,
+  Legend,
+  BarController, // Register the BarController
+  CategoryScale,
+  LinearScale,
+  BarElement // Register the BarElement
+);
 
 export const options = {
   responsive: true,

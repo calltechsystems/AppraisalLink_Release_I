@@ -12,18 +12,18 @@ const Index = () => {
   let userData =(JSON.parse(localStorage.getItem("user"))) ;
   const router = useRouter();
     
- if(!userData){
-  router.push("/login");
-}
-else if(!userData?.broker_Details?.firstName){
-  router.push("/my-profile")
-}
+//  if(!userData){
+//   router.push("/login");
+// }
+// else if(!userData?.broker_Details?.firstName){
+//   router.push("/my-profile")
+// }
 
-  if (!userData) {
-    router.push("/login");
-  } else if (!userData?.broker_Details?.firstName) {
-    router.push("/my-profile");
-  }
+  // if (!userData) {
+  //   router.push("/login");
+  // } else if (!userData?.broker_Details?.firstName) {
+  //   router.push("/my-profile");
+  // }
 
   return (
     <>

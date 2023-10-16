@@ -2,17 +2,28 @@ import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
+  PointElement,
+  LineElement,
   Title,
   Tooltip,
   Legend,
 } from "chart.js";
-import { Bar } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 import { faker } from "@faker-js/faker";
 
-ChartJS.register(CategoryScale, LinearScale, Title, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 export const options = {
   responsive: true,
+
   plugins: {
     legend: {
       display: false,
@@ -20,6 +31,7 @@ export const options = {
     title: {
       display: false,
     },
+
     tooltips: {
       position: "nearest",
       mode: "index",
@@ -44,13 +56,14 @@ export const data = {
     {
       label: "Dataset",
       data: labels.map(() => faker.datatype.number({ min: 100, max: 400 })),
-      backgroundColor: "rgba(7, 5, 79, 0.8)",
-      borderColor: "rgb(7, 5, 79)",
-      borderWidth: 1,
+      borderColor: "rgb(255, 99, 132)",
+      backgroundColor: "rgba(255, 99, 132, 0.5)",
+      data: [196, 132, 215, 362, 210, 252],
+      fill: false,
     },
   ],
 };
 
 export default function StatisticsChart() {
-  return <Bar options={options} data={data} />;
+  return <Line options={options} data={data} />;
 }

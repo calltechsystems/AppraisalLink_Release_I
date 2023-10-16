@@ -1,8 +1,10 @@
 import Header from "../../common/header/dashboard/Header_02";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenu_01";
-import MobileMenu from "../../common/header/MobileMenu";
+import MobileMenu from "../../common/header/MobileMenu_01";
 import Filtering from "./Filtering";
 import AllStatistics from "./AllStatistics";
+import StatisticsPieChart from "./StatisticsPieChart";
+import StatisticsChart from "./StatisticsChart";
 
 const Index = () => {
   const userData = JSON.parse(localStorage.getItem("user"));
@@ -33,7 +35,7 @@ const Index = () => {
             <div className="col-lg-12 maxw100flex-992">
               <div className="row">
                 {/* Start Dashboard Navigation */}
-                <div className="col-lg-12">
+                {/* <div className="col-lg-12">
                   <div className="dashboard_navigationbar dn db-1024">
                     <div className="dropdown">
                       <button
@@ -46,15 +48,16 @@ const Index = () => {
                       </button>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 {/* End Dashboard Navigation */}
 
                 <div
-                  className="col-lg-12 mb10"
+                  className=""
                   style={{
                     display: "flex",
                     flexDirection: "row",
                     justifyContent: "space-between",
+                    alignItems:'center'
                   }}
                 >
                   <div className="breadcrumb_content style2">
@@ -78,7 +81,7 @@ const Index = () => {
               {/* End .row Dashboard top statistics */}
 
               <div className="row">
-                {/* <div className="col-xl-6">
+                <div className="col-xl-6">
                   <div className="application_statics">
                     <h4 className="mb-4">View Statistics</h4>
                     <StatisticsChart />
@@ -89,7 +92,7 @@ const Index = () => {
                    <h4 className="mb-4">View Statistics</h4>
                    <StatisticsPieChart />
                  </div>
-                </div>  */}
+                </div> 
 
                 {/* End statistics chart */}
 

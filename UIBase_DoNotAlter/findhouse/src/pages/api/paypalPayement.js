@@ -5,6 +5,7 @@ import CryptoJS from "crypto-js";
  async function handler (request,response) {
 
     const decryptionKey = process.env.CRYPTO_SECRET_KEY;
+    const domain = process.env.BACKEND_DOMAIN;
 
   try {
 
@@ -17,7 +18,7 @@ import CryptoJS from "crypto-js";
     const {userId,planId,token} = body;
    
 
-    const userResponse = await axios.post(`https://calltech20230920213721.azurewebsites.net/api/payments/paymenturl?Planid=${planId}&UserId=${userId}`,
+    const userResponse = await axios.post(`${domain}/payments/paymenturl?Planid=${planId}&UserId=${userId}`,
     null,{
         headers: {
           Authorization:`Bearer ${token}`

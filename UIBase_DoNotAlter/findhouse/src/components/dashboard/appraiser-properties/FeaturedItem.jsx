@@ -144,7 +144,8 @@ const FeaturedItem = ({ setModalOpen }) => {
   }, []);
 
   // status handler
-  {/*let content = properties
+  {
+    /*let content = properties
     ?.slice(0, 9)
     ?.filter(keywordHandler)
     ?.filter(locationHandler)
@@ -158,57 +159,53 @@ const FeaturedItem = ({ setModalOpen }) => {
     ?.filter(areaHandler)
     ?.filter(advanceHandler)
     ?.sort(statusTypeHandler)
-?.filter(featuredHandler)*/}
-let content =
-    data.map((item) => (
-      <div className="col-md-6" key={item._id}>
-        <div className="feat_property home7 style4">
-          <div className="thumb">
-            {/* <Image
+?.filter(featuredHandler)*/
+  }
+  let content = data.map((item) => (
+    <div className="col-md-6" key={item._id}>
+      <div className="feat_property home7 style4">
+        <div className="thumb">
+          {/* <Image
               width={342}
               height={220}
               className="img-whp w-100 h-100 cover"
               src={item.img}
               alt="fp1.jpg"
             /> */}
-            <div className="thmb_cntnt">
-             
-              <ul className="icon mb0">
-                <li className="list-inline-item">
-                  <a href="#">
-                    <span className="flaticon-transfer-1"></span>
-                  </a>
-                </li>
-                <li className="list-inline-item">
-                  <a href="#">
-                    <span className="flaticon-heart"></span>
-                  </a>
-                </li>
-              </ul>
+          <div className="thmb_cntnt">
+            <ul className="icon mb0">
+              <li className="list-inline-item">
+                <a href="#">
+                  <span className="flaticon-transfer-1"></span>
+                </a>
+              </li>
+              <li className="list-inline-item">
+                <a href="#">
+                  <span className="flaticon-heart"></span>
+                </a>
+              </li>
+            </ul>
 
-              <Link
-                href={`/listing-details-v1/${item._id}`}
-                className="fp_price"
-              >
-                ${item.bidLowerRange}
-                <small>/mo</small>
-              </Link>
-            </div>
+            <Link href={`/listing-details-v1/${item._id}`} className="fp_price">
+              ${item.bidLowerRange}
+              <small>/mo</small>
+            </Link>
           </div>
-          <div className="details">
-            <div className="tc_content">
-              <p className="text-thm">{item.typeOfBuilding}</p>
-              <h4>
-                <Link href={`/listing-details-v1/${item.id}`}>
-                  {item.streetName} {item.streetNumber}
-                </Link>
-              </h4>
-              <p>
-                <span className="flaticon-placeholder"></span>
-                {item.area} {item.city} {item.state} {item.zipCode} 
-              </p>
+        </div>
+        <div className="details">
+          <div className="tc_content">
+            <p className="text-thm">{item.typeOfBuilding}</p>
+            <h4>
+              <Link href={`/listing-details-v1/${item.id}`}>
+                {item.streetName} {item.streetNumber}
+              </Link>
+            </h4>
+            <p>
+              <span className="flaticon-placeholder"></span>
+              {item.area} {item.city} {item.state} {item.zipCode}
+            </p>
 
-             {/* <ul className="prop_details mb0">
+            {/* <ul className="prop_details mb0">
                 {item.itemDetails.map((val, i) => (
                   <li className="list-inline-item" key={i}>
                     <a href="#">
@@ -217,13 +214,13 @@ let content =
                   </li>
                 ))}
               </ul>*/}
-            </div>
-            {/* End .tc_content */}
+          </div>
+          {/* End .tc_content */}
 
-            <div className="fp_footer">
-              <ul className="fp_meta float-start mb0">
-                <li className="list-inline-item">
-                  {/* <Link href="/agent-v1">
+          <div className="fp_footer">
+            <ul className="fp_meta float-start mb0">
+              <li className="list-inline-item">
+                {/* <Link href="/agent-v1">
                     <Image
                       width={40}
                       height={40}
@@ -231,37 +228,37 @@ let content =
                       alt="pposter1.png"
                     />
                   </Link> */}
-                </li>
-                <li
-                  className="list-inline-item"
-                  style={{
-                    width: "30px",
-                    border: "1px solid black",
-                    textAlign: "center",
-                    borderRadius: "5px",
-                  }}
-                >
-                  {/* <Link href="/agent-v1">{item.posterName}</Link> */}
-                  <a href="#">
-                    <span className="flaticon-heart text-color"></span>
-                  </a>
-                </li>
-              </ul>
-              {/* <div className="fp_pdate float-end">{item.postedYear}</div> */}
-              <div
-                className="fp_pdate float-end mt-1 fw-bold"
-                onClick={() => setModalOpen()}
+              </li>
+              <li
+                className="list-inline-item"
+                style={{
+                  width: "30px",
+                  border: "1px solid black",
+                  textAlign: "center",
+                  borderRadius: "5px",
+                }}
               >
-                <a href="#" className="text-color">
-                  Participate Bid
+                {/* <Link href="/agent-v1">{item.posterName}</Link> */}
+                <a href="#">
+                  <span className="flaticon-heart text-color"></span>
                 </a>
-              </div>
+              </li>
+            </ul>
+            {/* <div className="fp_pdate float-end">{item.postedYear}</div> */}
+            <div
+              className="fp_pdate float-end mt-1 fw-bold"
+              onClick={() => setModalOpen()}
+            >
+              <a href="#" className="text-color">
+                Participate Bid
+              </a>
             </div>
-            {/* End .fp_footer */}
           </div>
+          {/* End .fp_footer */}
         </div>
       </div>
-    ));
+    </div>
+  ));
 
   // add length of filter items
 

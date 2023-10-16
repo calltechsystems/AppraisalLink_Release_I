@@ -5,6 +5,7 @@ import CryptoJS from "crypto-js";
  async function handler (request,response) {
 
     const decryptionKey = process.env.CRYPTO_SECRET_KEY;
+    const domain = process.env.BACKEND_DOMAIN;
 
   try {
     const encryptedBody = await request.body.data;
@@ -42,7 +43,7 @@ import CryptoJS from "crypto-js";
     }
 
   
-    const userResponse = await axios.put(`https://calltech20230920213721.azurewebsites.net/api/Property/ByPropertyID/${propertyId}`, formData,
+    const userResponse = await axios.put(`${domain}/Property/ByPropertyID/${propertyId}`, formData,
     {
       headers: {
         Authorization:`Bearer ${token}`,
