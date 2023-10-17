@@ -56,7 +56,7 @@ const Index = () => {
               <div className="home_content home4">
                 <div
                   className="d-none d-lg-block d-xl-block d-md-block home-text text-center"
-                  style={{ marginTop: "-120px", marginBottom: "50px" }}
+                  style={{ marginTop: "-190px", marginBottom: "100px" }}
                 >
                   <h2 className="fz50">
                     Brokers Paradise for all Real Estate Appraisals
