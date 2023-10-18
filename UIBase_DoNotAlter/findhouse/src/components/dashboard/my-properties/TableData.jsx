@@ -1,16 +1,12 @@
 "use client";
-import Image from "next/image";
-import properties from "../../../data/properties";
 import { useEffect, useState } from "react";
 
 import Link from "next/link";
 import axios from "axios";
-import { encryptionData } from "../../../utils/dataEncryption";
 import toast from "react-hot-toast";
-const TableData = ({userData , open ,close}) => {
+const TableData = ({userData , open ,close , properties, setProperties}) => {
 
   const [Id,setId] = useState(-1);
-  const [toggle,setToggle] = useState(false);
 
   const [rerender , setRerender] = useState(false);
  
@@ -48,9 +44,10 @@ const TableData = ({userData , open ,close}) => {
         }
       })
       .then((res) => {
-        console.log(res.data);
+   
         toast.dismiss();
-        setData(res.data.data.property.$values);
+        
+        setProperties(res.data.data.property.$values);
         setRerender(false);
       })
       .catch((err) => {
@@ -74,6 +71,9 @@ const TableData = ({userData , open ,close}) => {
     return formattedDate;
   };
 
+  useEffect(()=>{
+    setData(properties);
+  },[properties]);
   const deletePropertyHandler = (id)=>{
 
     const data = (JSON.parse(localStorage.getItem("user")));

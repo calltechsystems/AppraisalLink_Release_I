@@ -43,9 +43,24 @@ export const options = {
   },
 };
 
-const labels = ["January", "February", "March", "April", "May", "June"];
+const currentMonth = new Date().getMonth();
+const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+const labels = monthNames.slice(0, currentMonth + 1);
 
-export const data = {
+export const tempData = {
   labels,
   datasets: [
     {
@@ -58,6 +73,6 @@ export const data = {
   ],
 };
 
-export default function StatisticsChart() {
-  return <Bar options={options} data={data} />;
+export default function StatisticsChart({data}) {
+  return <Bar options={options} data={data ? data : tempData} />;
 }

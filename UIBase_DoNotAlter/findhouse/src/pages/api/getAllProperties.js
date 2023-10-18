@@ -23,7 +23,7 @@ import CryptoJS from "crypto-js";
 
     return response.status(200).json({msg:"OK",data : users});
   } catch (err) {
-    
+    console.log(err);
    return response.status(500).json({ error: "Internal Server Error" });
     
 

@@ -23,6 +23,7 @@ import CryptoJS from "crypto-js";
 
     return response.status(200).json({msg:"OK",data : users});
   } catch (err) {
+    console.log(err);
     
     if (err.response) {
         // If the error is from an axios request (e.g., HTTP 4xx or 5xx error)

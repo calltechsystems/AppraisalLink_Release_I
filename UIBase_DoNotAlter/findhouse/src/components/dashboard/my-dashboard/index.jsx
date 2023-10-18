@@ -2,14 +2,22 @@ import Header from "../../common/header/dashboard/Header";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
 import MobileMenu from "../../common/header/MobileMenu";
 import Filtering from "./Filtering";
-import Activities from "./Activities";
 import AllStatistics from "./AllStatistics";
 import StatisticsChart from "./StatisticsChart";
 import StatisticsPieChart from "./StatisticsPieChart";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { toast } from "react-toast";
+
+import axios from 'axios'
 
 const Index = () => {
   let userData =(JSON.parse(localStorage.getItem("user"))) ;
+  const [data , setData] = useState([]);
+  const [unfilteredData , setUnfilteredData] = useState([]);
+  const [showLineGraph , setShowLineGraph] = useState(false);
+  const [filterQuery , setFilterQuery] = useState("monthly");
+  const [lineData , setLineData] = useState([]);
   const router = useRouter();
     
 //  if(!userData){
@@ -24,6 +32,123 @@ const Index = () => {
   // } else if (!userData?.broker_Details?.firstName) {
   //   router.push("/my-profile");
   // }
+
+  const categorizeDataByMonth = (data) => {
+    if(data.length <= 0)
+     return [];
+    // Initialize an object to store data by month
+    const dataByMonth = {};
+  
+    const currentMonth = new Date().getMonth();
+  
+    data.forEach((property) => {
+      const createdAtDate = new Date(property.createdAt);
+      const month = createdAtDate.getMonth();
+      if (month <= currentMonth) {
+        if (!dataByMonth[month]) {
+          dataByMonth[month] = [];
+        }
+        dataByMonth[month].push(property);
+      }
+    });
+  
+    const categorizedData = Object.entries(dataByMonth)?.map(([month, properties]) => ({
+      month: parseInt(month, 10), 
+      properties,
+    }));
+  
+    categorizedData.sort((a, b) => a.month - b.month);
+  
+    return categorizedData;
+  };
+
+
+  const filterData = (tempData) => {
+    const currentDate = new Date();
+    const oneYearAgo = new Date(currentDate);
+    oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
+    
+    switch (filterQuery) {
+      case 'monthly':
+        const oneMonthAgo = new Date(currentDate);
+        oneMonthAgo.setMonth(currentDate.getMonth() - 1);
+        return tempData.filter(item => new Date(item.addedDatetime) >= oneMonthAgo);
+      case 'yearly':
+        return tempData.filter(item => new Date(item.addedDatetime) >= oneYearAgo);
+      case 'weekly':
+        const oneWeekAgo = new Date(currentDate);
+        oneWeekAgo.setDate(currentDate.getDate() - 7);
+        return tempData.filter(item => new Date(item.addedDatetime) >= oneWeekAgo);
+      default:
+        return tempData; 
+    }
+  };
+
+  useEffect(()=>{
+    const dataTemp = filterData(data);
+    setData(dataTemp);
+  },[filterQuery]);
+  
+
+  
+  useEffect(()=>{
+    
+   
+
+    const data = (JSON.parse(localStorage.getItem("user")));
+
+    const func = ()=>{
+    axios.get("/api/getPropertiesById",
+       {
+        headers: {
+          Authorization:`Bearer ${data?.token}`,
+          "Content-Type":"application/json"
+        },
+        params : {
+          userId : data?.userId
+        }
+      })
+      .then((res) => {
+        // console.log(categorizeDataByMonth(res.data.data.property.$values));
+     
+        setData(res.data.data.property.$values);
+        setShowLineGraph(true);
+        setRerender(false);
+      })
+      .catch((err) => {
+        toast.error(err?.response?.data?.error);
+      });
+    }
+    func();
+    
+  },[]);
+
+  useEffect(()=>{
+    const categorizeDataByMonth = (data) => {
+      if (data.length === 0) {
+          return Array(12).fill(0); // Initialize an array with 12 elements, all initialized to 0.
+      }
+  
+      const currentMonth = new Date().getMonth();
+  
+      const countsByMonth = Array(currentMonth+1).fill(0);
+  
+      data.forEach((property) => {
+          const createdAtDate = new Date(property.addedDatetime);
+          const month = createdAtDate.getMonth();
+  
+          if (month <= currentMonth) {
+              countsByMonth[month]++;
+          }
+      });
+  
+      return countsByMonth;
+  };
+  const temp = categorizeDataByMonth(data);
+  setLineData(temp);
+  },[data]);
+
+
 
   return (
     <>
@@ -88,7 +213,7 @@ const Index = () => {
                     <p>We are glad to see you again!</p>
                   </div>
                   <div>
-                    <Filtering />
+                    <Filtering setFilterQuery = {setFilterQuery}/>
                   </div>
                 </div>
               </div>
@@ -103,13 +228,21 @@ const Index = () => {
                 <div className="col-xl-6">
                   <div className="application_statics">
                     <h4 className="mb-4">View Statistics</h4>
-                    <StatisticsChart />
+                    {data.length > 0 && showLineGraph ? (
+                      <StatisticsChart data={lineData} />
+                    ) : (
+                      <p>Loading...</p> // You can replace this with a loading indicator
+                    )}
                   </div>
                 </div>
                 <div className="col-xl-6">
                   <div className="application_statics">
                     <h4 className="mb-4">View Statistics</h4>
-                    <StatisticsPieChart />
+                    {data.length > 0 && showLineGraph ? (
+                     <StatisticsPieChart data = {lineData}/>
+                    ) : (
+                      <p>Loading...</p> // You can replace this with a loading indicator
+                    )}
                   </div>
                 </div>
 

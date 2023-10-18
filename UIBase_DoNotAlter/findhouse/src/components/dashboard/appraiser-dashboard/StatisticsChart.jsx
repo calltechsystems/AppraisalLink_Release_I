@@ -48,7 +48,22 @@ export const options = {
   },
 };
 
-const labels = ["January", "February", "March", "April", "May", "June"];
+const currentMonth = new Date().getMonth(); // Get the current month (0-11)
+const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+const labels = monthNames.slice(0, currentMonth + 1);
 
 export const data = {
   labels,
@@ -58,7 +73,6 @@ export const data = {
       data: labels.map(() => faker.datatype.number({ min: 100, max: 400 })),
       borderColor: "rgb(255, 99, 132)",
       backgroundColor: "rgba(255, 99, 132, 0.5)",
-      data: [196, 132, 215, 362, 210, 252],
       fill: false,
     },
   ],

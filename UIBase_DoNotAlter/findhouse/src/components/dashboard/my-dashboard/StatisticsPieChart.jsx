@@ -1,15 +1,22 @@
+import { Chart as ChartJS, Title, Tooltip, Legend } from "chart.js";
 import {
-  Chart as ChartJS,
+  BarController,
   CategoryScale,
   LinearScale,
-  Title,
-  Tooltip,
-  Legend,
+  BarElement,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import { faker } from "@faker-js/faker";
 
-ChartJS.register(CategoryScale, LinearScale, Title, Tooltip, Legend);
+ChartJS.register(
+  Title,
+  Tooltip,
+  Legend,
+  BarController, // Register the BarController
+  CategoryScale,
+  LinearScale,
+  BarElement // Register the BarElement
+);
 
 export const options = {
   responsive: true,
@@ -36,14 +43,30 @@ export const options = {
   },
 };
 
-const labels = ["January", "February", "March", "April", "May", "June"];
 
-export const data = {
+const currentMonth = new Date().getMonth(); // Get the current month (0-11)
+const monthNames = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sept",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+const labels = monthNames.slice(0, currentMonth + 1);
+
+export const tempData = {
   labels,
   datasets: [
     {
       label: "Dataset",
-      data: labels.map(() => faker.datatype.number({ min: 100, max: 400 })),
+      data: labels?.map(() => faker.datatype.number({ min: 100, max: 400 })),
       backgroundColor: "rgba(7, 5, 79, 0.8)",
       borderColor: "rgb(7, 5, 79)",
       borderWidth: 1,
@@ -51,6 +74,19 @@ export const data = {
   ],
 };
 
-export default function StatisticsChart() {
-  return <Bar options={options} data={data} />;
+export default function StatisticsChart({data}) {
+
+  const customData = {
+    labels,
+    datasets: [
+      {
+        label: "Dataset",
+        data:data,
+        backgroundColor: "rgba(7, 5, 79, 0.8)",
+        borderColor: "rgb(7, 5, 79)",
+        borderWidth: 1,
+      },
+    ],
+  };
+  return <Bar options={options} data={customData} />;
 }
