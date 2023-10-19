@@ -17,7 +17,7 @@ const AllStatistics = () => {
     {
       id: 3,
       blockStyle: "style3",
-      icon: "flaticon-chat",
+      icon: "flaticon-user",
       timer: "12",
       name: "Bids",
     },
