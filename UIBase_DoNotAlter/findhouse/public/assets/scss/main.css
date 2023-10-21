@@ -11447,7 +11447,7 @@ ul.mc_parent_list .membership_header .thumb a span {
 
 ul.mc_parent_list .membership_header .thumb .price {
   bottom: 15px;
-  color: #ffffff;
+  color: white;
   font-family: "Nunito";
   font-size: 22px;
   font-weight: bold;
@@ -21899,8 +21899,8 @@ a::before {
   margin-top: -30px;
 }
 .pricing_table_border_style:hover {
-  background-color: #006633 !important;
-  border: 12px solid slategray;
+  background-color: #00c689 !important;
+  border: 12px solid darkslategrey;
 }
 
 .pricing_table_border_style 

@@ -10,6 +10,8 @@ import toast from "react-hot-toast";
 
 const Form = () => {
   const [showhide, setShowhide] = useState("");
+  
+  const [change , setChange] = useState(false);
   const [showRegister, setRegister] = useState(true);
   const [showLabel, setShowLabel] = useState(false);
   const [captchaVerfied, setCaptchaVerified] = useState(false);
@@ -80,11 +82,21 @@ const Form = () => {
     const reEnterPassword = passwordRegisterRef.current.value;
     const user = userTypeRef.current.value;
 
+    
+
     if (password !== reEnterPassword) {
+      setChange(true);
       toast.error("Password are meant to be same ");
-    } else if (!email) {
+    }
+    else if (user === "") {
+      setChange(true);
+      toast.error("User Type must be selected for registration!!");
+    }
+    else if (!email) {
+      setChange(true);
       toast.error("Email cant be empty or non valid.");
     } else if (!captchaVerfied) {
+      setChange(true);
       toast.error("captcha isnt verified");
     } else {
       const data = {
@@ -94,7 +106,6 @@ const Form = () => {
       };
 
       const encryptedData = encryptionData(data);
-
       setLoading(true);
       toast.loading("Registering user...");
       axios
@@ -106,7 +117,10 @@ const Form = () => {
         })
         .catch((err) => {
           toast.dismiss();
-          toast.error(err.response.data.error);
+          toast.error(err.response.data.error ?
+            err.response.data.error : "Internal server error." , {
+            autoClose: 30000,
+          });
           router.reload();
         })
         .finally(() => {
@@ -297,7 +311,7 @@ const Form = () => {
 
           <div className="col-lg-12">
             <div>
-              <Captcha verified={setCaptchaVerified} />
+              <Captcha verified={setCaptchaVerified} change={change} setChange={setChange}/>
             </div>
           </div>
           <div className="form-group form-check custom-checkbox mb-3">

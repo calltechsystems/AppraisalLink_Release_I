@@ -50,18 +50,18 @@ export const options = {
 
 const currentMonth = new Date().getMonth(); // Get the current month (0-11)
 const monthNames = [
-  "January",
-  "February",
-  "March",
-  "April",
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
   "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
 ];
 const labels = monthNames.slice(0, currentMonth + 1);
 

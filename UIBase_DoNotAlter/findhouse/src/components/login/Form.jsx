@@ -11,8 +11,11 @@ import toast from "react-hot-toast";
 
 const Form = ({ user }) => {
   const [showhide, setShowhide] = useState("");
+  const [change , setChange] = useState(false);
   const [showRegister, setRegister] = useState(true);
   const [captchaVerfied, setCaptchaVerified] = useState(false);
+
+  const [reloadOption, setReloadOption] = useState(false);
 
   const router = useRouter();
 
@@ -41,8 +44,10 @@ const Form = ({ user }) => {
     const password = passwordLogin;
 
     if (!email || !password) {
+      setChange(true);
       toast.error("Credentials Can't be empty");
     } else if (!captchaVerfied) {
+      setChange(true);
       toast.error("captcha isnt verified");
     } else {
       const data = {
@@ -69,7 +74,11 @@ const Form = ({ user }) => {
       })
       .catch((err) => {
         toast.dismiss();
-        toast.error(err.response.data.error);
+        toast.error(err.response.data.error ?
+          err.response.data.error : "Internal server error." , {
+          autoClose: 30000,
+        });
+        setReloadOption(true);
         router.reload();
       })
       .finally(() => {
@@ -83,7 +92,8 @@ const Form = ({ user }) => {
     const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/;
     if (passwordRegex.test(event.target.value)) {
       setPasswordLoginVerified(true);
-    } else {
+    } 
+    else {
       setPasswordLoginVerified(false); // Change this to false for invalid passwords
     }
   };
@@ -156,11 +166,9 @@ const Form = ({ user }) => {
 
             <div className="col-12">
               <div>
-                <Captcha verified={setCaptchaVerified} />
+                <Captcha verified={setCaptchaVerified} reload = {reloadOption} change={change} setChange={setChange}/>
               </div>
             </div>
-
-            {/* End .input-group */}
 
             <div className="form-group form-check custom-checkbox mb-3 mt-0">
               <input

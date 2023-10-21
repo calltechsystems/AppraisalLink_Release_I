@@ -4,8 +4,7 @@ import { FaRedo } from "react-icons/fa";
 import { useRef } from "react";
 import { useEffect } from "react";
 
-const Captcha = ({ verified }) => {
-  const [change, setChange] = useState(false);
+const Captcha = ({ verified , reload , change , setChange}) => {
   const [captcha, setCaptcha] = useState("");
   const [style, setStyle] = useState({
     // borderColor: "black",
@@ -23,6 +22,7 @@ const Captcha = ({ verified }) => {
   useEffect(() => {
     const temp = generateString(6);
     setCaptcha(temp);
+    setChange(false);
   }, [change]);
 
   function generateString(length) {
@@ -35,7 +35,6 @@ const Captcha = ({ verified }) => {
   }
 
   let handleChange = (e) => {
-    console.log(captchaRef.current.value);
 
     const inputValue = captchaRef.current.value;
     if (String(inputValue) !== String(captcha)) {
@@ -44,7 +43,15 @@ const Captcha = ({ verified }) => {
         borderColor: "red",
         borderWidth: "2px",
       });
-    } else {
+      
+    }
+    else if (reload){
+      const prevState = change;
+      captchaRef.current.value = "";
+      setChange(!prevState); 
+      console.log(reload,change);     
+    }
+     else {
       verified(true);
       setStyle({
         borderColor: "green",
