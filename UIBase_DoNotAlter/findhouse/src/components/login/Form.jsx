@@ -48,7 +48,7 @@ const Form = ({ user }) => {
       toast.error("Credentials Can't be empty");
     } else if (!captchaVerfied) {
       setChange(true);
-      toast.error("captcha isnt verified");
+      return;
     } else {
       const data = {
         email: email,
@@ -166,6 +166,13 @@ const Form = ({ user }) => {
 
             <div className="col-12">
               <div>
+           {captchaVerfied ? "" : <label
+              className="form-check-label form-check-label"
+              htmlFor="remeberMe"
+              style={{color:"red"}}
+            >
+              Captcha doesnt match
+            </label>}
                 <Captcha verified={setCaptchaVerified} reload = {reloadOption} change={change} setChange={setChange}/>
               </div>
             </div>

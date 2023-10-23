@@ -7,8 +7,8 @@ import { useEffect } from "react";
 const Captcha = ({ verified , reload , change , setChange}) => {
   const [captcha, setCaptcha] = useState("");
   const [style, setStyle] = useState({
-    // borderColor: "black",
-    // borderWidth: "1px",
+    borderColor: "black",
+    borderWidth: "1px",
   });
   const captchaRef = useRef("");
 
@@ -41,7 +41,7 @@ const Captcha = ({ verified , reload , change , setChange}) => {
       verified(false);
       setStyle({
         borderColor: "red",
-        borderWidth: "2px",
+        borderWidth: "1px",
       });
       
     }
@@ -55,7 +55,7 @@ const Captcha = ({ verified , reload , change , setChange}) => {
       verified(true);
       setStyle({
         borderColor: "green",
-        borderWidth: "2px",
+        borderWidth: "1px",
       });
     }
   };
@@ -100,7 +100,7 @@ const Captcha = ({ verified , reload , change , setChange}) => {
             type="text"
             ref={captchaRef}
             className="form-control mr"
-            style={{ width: "100%" }}
+            style={style}
             placeholder="Enter Captcha"
             name="username"
             onChange={handleChange}

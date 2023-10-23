@@ -1,11 +1,29 @@
 import Link from "next/link";
 import Image from "next/image";
+import { useState } from "react";
+import { useRouter } from "next/router";
+
 
 const Form = () => {
+
+  const router = useRouter();
+
+  const [show , setShow] = useState(false);
+
+  const onCloseHandler = () =>{
+    console.log("in");
+  }
+
+  const onClickHandler = () =>{
+    setShow(true);
+  }
   return (
     <>
       <div className="row">
         <div className="col-lg-6">
+          <Link href={"/login"}>
+              <span className="flaticon-close"></span>
+          </Link>
           <Image
             width={157}
             height={300}
@@ -13,18 +31,13 @@ const Form = () => {
             src="/assets/images/home/forgot-password.avif"
             alt="login.jpg"
           />
+        
         </div>
 
         <div className="col-lg-6 pt60 ">
           <form action="#" style={{padding:'20px'}}>
             <div className="heading text-center">
               <h3>Reset your password via registered email.</h3>
-              {/* <p className="text-center">
-                Reset your password with email.{" "}
-                <Link href="/register" className="text-thm">
-            Sign Up!
-          </Link>
-              </p> */}
             </div>
             {/* End .heading */}
 
@@ -36,9 +49,9 @@ const Form = () => {
                 placeholder="Email Address"
               />
               <div className="">
-                <div className="">
+                <div className="button-class-close-forgot">
                   <button
-                    type="submit"
+                    onClick={onClickHandler}
                     className="btn btn-log w-100 btn-thm mb-0"
                     style={{ marginLeft: "5px" }}
                   >
@@ -55,7 +68,41 @@ const Form = () => {
       </div> */}
             {/* devider */}
 
-            <div className="input-group mb-0 mr-sm-2">
+            {show && (<div className="input-group mb-2 mr-sm-2">
+
+           
+              <input
+                type="password"
+                className="form-control mb-2"
+                required
+                placeholder="Enter your new password"
+              />
+              <div className="input-group-prepend">
+                {/* <div className="input-group-text">
+                  <i className="flaticon-user"></i>
+                </div> */}
+              </div>
+            </div>)}
+
+            {show && (<div className="input-group mb-2 mr-sm-2">
+
+           
+              <input
+                type="password"
+                className="form-control mb-2"
+                required
+                placeholder="Enter confirm password"
+              />
+              <div className="input-group-prepend">
+                {/* <div className="input-group-text">
+                  <i className="flaticon-user"></i>
+                </div> */}
+              </div>
+            </div>)}
+
+            {show && (<div className="input-group mb-0 mr-sm-2">
+
+           
               <input
                 type="email"
                 className="form-control mb-0"
@@ -67,7 +114,7 @@ const Form = () => {
                   <i className="flaticon-user"></i>
                 </div> */}
               </div>
-            </div>
+            </div>)}
             {/* End .input-group */}
 
             <div className="mt-0 d-flex justify-content-end mb-4">

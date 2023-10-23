@@ -9744,6 +9744,10 @@ Rainbow Styles
   max-width: 140px;
 }
 
+.button-class-close-forgot{
+  border: none !important;
+}
+
 .menu > .nav-item {
   padding-bottom: 20px;
   padding-top: 20px;

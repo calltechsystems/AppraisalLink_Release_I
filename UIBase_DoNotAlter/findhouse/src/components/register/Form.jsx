@@ -97,7 +97,7 @@ const Form = () => {
       toast.error("Email cant be empty or non valid.");
     } else if (!captchaVerfied) {
       setChange(true);
-      toast.error("captcha isnt verified");
+      return ;
     } else {
       const data = {
         email: email,
@@ -310,6 +310,13 @@ const Form = () => {
           )} 
 
           <div className="col-lg-12">
+          {captchaVerfied ? "" : <label
+              className="form-check-label form-check-label"
+              htmlFor="remeberMe"
+              style={{color:"red"}}
+            >
+              Captcha doesnt match
+            </label>}
             <div>
               <Captcha verified={setCaptchaVerified} change={change} setChange={setChange}/>
             </div>

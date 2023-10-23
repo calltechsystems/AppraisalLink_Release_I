@@ -16,6 +16,8 @@ import toast from "react-hot-toast";
 const Index = ({isView,propertyData}) => {
   const [isDisable,setDisable] = useState(isView);
 
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
   let userData =  (JSON.parse(localStorage.getItem("user")));  
   
   const router = useRouter();
@@ -43,8 +45,6 @@ const Index = ({isView,propertyData}) => {
 
     const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
 
- 
-    
     const payload = {
         userId : userData.userId,
         propertyId :propertyData?.propertyId,
@@ -92,8 +92,8 @@ const Index = ({isView,propertyData}) => {
       })
       .then((res) => {
         toast.dismiss();
-        console.log(res);
-        router.push("/my-properties");
+        setModalIsOpen(true);
+        // router.push("/my-properties");
       })
       .catch((err) => {
         toast.dismiss();
@@ -102,6 +102,11 @@ const Index = ({isView,propertyData}) => {
     }
 
 
+  }
+
+  const onCancelHandler = ()=>{
+    setModalIsOpen(false);
+    router.push("/my-properties");
   }
 
 
@@ -332,6 +337,31 @@ const Index = ({isView,propertyData}) => {
                 {/* End .col */}
               </div>
               {/* End .row */}
+              <div>
+              {modalIsOpen && (
+                <div className="modal">
+                  <div className="modal-content">
+                    <h3 className="text-center">Property Submission</h3>
+                    <h5 className="text-center">
+                     Here is a whole information about the appraised property
+                    
+                    </h5>
+                     <div className="text-center" style={{display:'flex',flexDirection:"column"}}>
+                      <label>Property Name</label>
+                      <label>Property Name</label>
+                      <label>Property Name</label>
+                      <label>Property Name</label>
+                      <label>Property Name</label>
+                      <label>Property Name</label>
+                      <label>Property Name</label>
+                      <button className="btn w-35 btn-white" onClick={()=>onCancelHandler()}>
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+              </div>
 
               <div className="row mt50">
                 <div className="col-lg-12">

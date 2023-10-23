@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import CopyrightFooter from "../common/footer/CopyrightFooter";
 import Footer from "../common/footer/Footer";
 import Header from "../common/header/DefaultHeader_01";
@@ -5,8 +6,30 @@ import MobileMenu from "../common/header/MobileMenu";
 import PopupSignInUp from "../common/PopupSignInUp";
 import BreadCrumbBanner from "./BreadCrumbBanner";
 import Form from "./Form";
+import { useEffect, useState } from "react";
 
-const index = ({user}) => {
+const index = ({user}) => { 
+  const router = useRouter();
+
+  useEffect(() => {
+    const initialRoute = router.asPath;
+
+    const handleRouteChange = (url) => {
+      if (url === initialRoute) {
+        window.location.reload();
+      }
+    };
+
+    router.events.on("routeChangeComplete", handleRouteChange);
+
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange);
+    };
+  }, [router]);
+
+ 
+
+
   return (
     <>
       {/* <!-- Main Header Nav --> */}
