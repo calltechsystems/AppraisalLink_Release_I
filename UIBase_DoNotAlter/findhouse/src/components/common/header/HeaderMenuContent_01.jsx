@@ -682,7 +682,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                     // display: "flex",
                     // flexDirection: "row",
                     // justifyContent: "center",
-                    marginTop: "5px",
+                    marginTop: "0px",
                   }}
                 >
                   <div className="row">

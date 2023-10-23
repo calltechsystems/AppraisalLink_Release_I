@@ -95,8 +95,8 @@ const index = () => {
                   <p>
                     As we continually strive to broaden our network of partners
                     and collaborators, we emphasize the importance of
-                    transparent and open communication. It's not just about
-                    conducting business; it's about fostering a community of
+                    transparent and open communication. It&apos;s not just about
+                    conducting business; it&apos;s about fostering a community of
                     professionals who share a common vision: to push the
                     boundaries of excellence in the real estate sector. We also
                     prioritize proactivity in addressing challenges and

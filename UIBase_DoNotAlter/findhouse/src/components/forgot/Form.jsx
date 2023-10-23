@@ -3,39 +3,36 @@ import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/router";
 
-
 const Form = () => {
-
   const router = useRouter();
 
-  const [show , setShow] = useState(false);
+  const [show, setShow] = useState(false);
 
-  const onCloseHandler = () =>{
+  const onCloseHandler = () => {
     console.log("in");
-  }
+  };
 
-  const onClickHandler = () =>{
+  const onClickHandler = () => {
     setShow(true);
-  }
+  };
   return (
     <>
       <div className="row">
+        <Link href={"/login"} className="text-end" style={{marginLeft:'34rem'}}>
+          <span className="flaticon-close"></span>
+        </Link>
         <div className="col-lg-6">
-          <Link href={"/login"}>
-              <span className="flaticon-close"></span>
-          </Link>
           <Image
             width={157}
             height={300}
-            className="img-fluid w100 h-100 cover"
+            className="img-fluid w100 h-90 cover"
             src="/assets/images/home/forgot-password.avif"
             alt="login.jpg"
           />
-        
         </div>
 
         <div className="col-lg-6 pt60 ">
-          <form action="#" style={{padding:'20px'}}>
+          <form action="#" style={{ padding: "20px" }}>
             <div className="heading text-center">
               <h3>Reset your password via registered email.</h3>
             </div>
@@ -68,58 +65,58 @@ const Form = () => {
       </div> */}
             {/* devider */}
 
-            {show && (<div className="input-group mb-2 mr-sm-2">
-
-           
-              <input
-                type="password"
-                className="form-control mb-2"
-                required
-                placeholder="Enter your new password"
-              />
-              <div className="input-group-prepend">
-                {/* <div className="input-group-text">
+            {show && (
+              <div className="input-group mb-2 mr-sm-2">
+                <input
+                  type="number"
+                  className="form-control mb-2"
+                  required
+                  placeholder="Enter OTP"
+                />
+                <div className="input-group-prepend">
+                  {/* <div className="input-group-text">
                   <i className="flaticon-user"></i>
                 </div> */}
+                </div>
               </div>
-            </div>)}
-
-            {show && (<div className="input-group mb-2 mr-sm-2">
-
-           
-              <input
-                type="password"
-                className="form-control mb-2"
-                required
-                placeholder="Enter confirm password"
-              />
-              <div className="input-group-prepend">
-                {/* <div className="input-group-text">
-                  <i className="flaticon-user"></i>
-                </div> */}
-              </div>
-            </div>)}
-
-            {show && (<div className="input-group mb-0 mr-sm-2">
-
-           
-              <input
-                type="email"
-                className="form-control mb-0"
-                required
-                placeholder="Enter OTP"
-              />
-              <div className="input-group-prepend">
-                {/* <div className="input-group-text">
-                  <i className="flaticon-user"></i>
-                </div> */}
-              </div>
-            </div>)}
+            )}
             {/* End .input-group */}
 
-            <div className="mt-0 d-flex justify-content-end mb-4">
+            {show && (
+              <div className="input-group mb-2 mr-sm-2">
+                <input
+                  type="password"
+                  className="form-control mb-2"
+                  required
+                  placeholder="New password"
+                />
+                <div className="input-group-prepend">
+                  {/* <div className="input-group-text">
+                  <i className="flaticon-user"></i>
+                </div> */}
+                </div>
+              </div>
+            )}
+
+            {show && (
+              <div className="input-group mb-2 mr-sm-2">
+                <input
+                  type="password"
+                  className="form-control mb-2"
+                  required
+                  placeholder="Confirm password"
+                />
+                <div className="input-group-prepend">
+                  {/* <div className="input-group-text">
+                  <i className="flaticon-user"></i>
+                </div> */}
+                </div>
+              </div>
+            )}
+
+            {/* <div className="mt-0 d-flex justify-content-end mb-4">
               <Link href="#">Resend OTP</Link>
-            </div>
+            </div> */}
 
             {/* <div className="input-group mb-2 mr-sm-2">
         <input
@@ -136,9 +133,11 @@ const Form = () => {
       </div> */}
             {/* End .input-group */}
 
-            <button type="submit" className="btn btn-log w-100 btn-thm">
-              Submit
-            </button>
+            {show && (
+              <button type="submit" className="btn btn-log w-100 btn-thm">
+                Submit
+              </button>
+            )}
             {/* login button */}
 
             <div className="row mt25">

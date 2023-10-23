@@ -13,7 +13,7 @@ import { useState } from "react";
 import Modal from "./MonthlyModal";
 // import Modal_01 from "./YearlyModal";
 
-const index = () => {
+const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const openModal = () => {
@@ -190,4 +190,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;
