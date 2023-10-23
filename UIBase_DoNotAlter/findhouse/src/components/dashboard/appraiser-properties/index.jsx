@@ -1,6 +1,6 @@
 import Header from "../../common/header/dashboard/Header_02";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenu_01";
-import MobileMenu from "../../common/header/MobileMenu";
+import MobileMenu from "../../common/header/MobileMenu_01";
 import Pagination from "./Pagination";
 import SearchBox from "./SearchBox";
 import BreadCrumb2 from "./BreadCrumb2";
@@ -49,7 +49,7 @@ const Index = () => {
             <div className="col-lg-12 maxw100flex-992">
               <div className="row">
                 {/* Start Dashboard Navigation */}
-                <div className="col-lg-12">
+                {/* <div className="col-lg-12">
                   <div className="dashboard_navigationbar dn db-1024">
                     <div className="dropdown">
                       <button
@@ -62,7 +62,7 @@ const Index = () => {
                       </button>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 {/* End Dashboard Navigation */}
 
                 <div className="our-listing bgc-f7 pb30-991 md-mt0 ">
@@ -79,7 +79,7 @@ const Index = () => {
                         </div> */}
                         {/* End list grid */}
 
-                        <div className="dn db-991 mt30 mb0">
+                        <div className="dn db-991 mt100 mb0">
                           <ShowFilter />
                         </div>
                         {/* ENd button for mobile sidebar show  */}
@@ -159,7 +159,10 @@ const Index = () => {
               <div className="row mt50">
                 <div className="col-lg-12">
                   <div className="copyright-widget text-center">
-                    <p>© 2023 Appraisal Link. All Rights Reserved.</p>
+                    <p>
+                      &copy; {new Date().getFullYear()} Appraisal Link. All
+                      Rights Reserved.
+                    </p>
                   </div>
                 </div>
               </div>

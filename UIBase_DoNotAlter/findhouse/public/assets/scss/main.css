@@ -1247,11 +1247,11 @@ header.header-nav a.navbar_brand .logo2 {
 header.header-nav.menu_style_home_one ul.ace-responsive-menu li.add_listing {
   background-color: #fff;
   border-radius: 5px;
-  height: 45px;
+  height: 35px;
   position: relative;
   text-align: left;
   vertical-align: middle;
-  width: 180px;
+  width: 140px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -2356,7 +2356,7 @@ header.header-nav.menu_style_home_one.style2
   font-size: 16px;
   font-family: "Nunito";
   color: #ffffff;
-  line-height: 1;
+  line-height: 1.5;
 }
 
 header.header-nav.menu_style_home_one.style2.home10
@@ -7252,7 +7252,8 @@ form.home5_advanced_search_form
 
 /*== Search Smart Property ==*/
 .search_smart_property {
-  padding: 75px 0;
+  /* padding: 75px 0; */
+  padding: 0;
   position: relative;
 }
 
@@ -18794,17 +18795,18 @@ legend span {
   background-repeat: no-repeat;
   background-size: cover;
   border-radius: 8px;
-  height: 450px;
+  height: 250px;
   background-color: #000;
 }
 
 .bg-img5 {
+  background: url(https://i.pinimg.com/originals/02/7e/fd/027efde1602fe8a0a642fafbe5673b42.jpg);
   background-attachment: scroll;
-  background-image: url("../images/background/5.jpg");
+  /* background-image: url("../images/background/5.jpg"); */
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  height: 650px;
+  height: 250px;
 }
 
 .bg-img6 {
@@ -21893,9 +21895,9 @@ a::before {
 }
 
 .pricing_table_border_style {
-  background-color: #87d700 !important;
+  background-color: #21a680 !important;
   border: 10px solid darkslateblue;
-  /* color: red; */
+  color: black !important;
   margin-top: -30px;
 }
 .pricing_table_border_style:hover {
@@ -22166,4 +22168,18 @@ input:focus + .slider {
 
 input:checked + .slider:before {
   transform: translateX(26px);
+}
+
+.menuitem{
+  color: #000 !important;
+}
+
+.menuitem:hover{
+  color: #2e008b !important;
+  border-bottom: 4px solid #2e008b !important;
+}
+
+.menuitem:active{
+  color: #2e008b !important;
+  border-bottom: 4px solid #2e008b !important;
 }

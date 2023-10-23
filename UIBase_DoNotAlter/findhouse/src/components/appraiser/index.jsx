@@ -66,7 +66,7 @@ const Index = () => {
       </section>
 
       {/* <!-- Our Footer --> */}
-      <section className="footer_one">
+      <section className="footer_one p20">
         <div className="container">
           <div className="row">
             <Footer />

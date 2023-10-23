@@ -174,7 +174,7 @@ const Form = () => {
 
           <div className="col-lg-12">
             <div className="form-group input-group ui_kit_select_search mb-3">
-              <select
+              <select required
                 className="form-select"
                 data-live-search="true"
                 data-width="100%"

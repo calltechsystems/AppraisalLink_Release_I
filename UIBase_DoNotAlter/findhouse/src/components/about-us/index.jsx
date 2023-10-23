@@ -8,6 +8,7 @@ import Testimonial from "../home-7/Testimonial";
 import BreadCrumbBanner from "./BreadCrumbBanner";
 import Team from "./Team";
 import OurMission from "./OurMission";
+import Link from "next/link";
 
 const index = () => {
   return (
@@ -49,7 +50,7 @@ const index = () => {
         </div>
         {/* End .row */}
 
-        <div className="row mt80">
+        {/* <div className="row mt80">
           <div className="col-lg-12">
             <div className="main-title text-center">
               <h2 className="text-light" style={{
@@ -60,16 +61,89 @@ const index = () => {
               <p>We provide full service at every step.</p>
             </div>
           </div>
-        </div>
+        </div> */}
         {/* End .row */}
 
-        <div className="container">
+        <div className="container mt-5">
           <div className="row">
-            <WhyChoose />
+            {/* <WhyChoose /> */}
+            <div className="col-lg-12 col-xl-12">
+              <div className="terms_condition_grid">
+                <div className="grids mb30">
+                  {/* <h4>{item.title}</h4> */}
+                  <p className="mb20">
+                    Based in Ontario, our company collaborates with brokers and
+                    appraisers to deliver a comprehensive suite of services
+                    tailored to the real estate sector. Our primary mission is
+                    to ensure the provision of property appraisal services that
+                    are marked by efficiency, strict adherence to industry
+                    regulations, and unwavering reliability. Our ultimate goal
+                    is to cultivate enduring relationships by maintaining open
+                    lines of communication, encouraging robust collaboration
+                    with all stakeholders, and proactively addressing any
+                    challenges with a solution-oriented and analytically-driven
+                    approach.
+                  </p>
+                  <p>
+                    Our dedication to excellence remains steadfast, and we are
+                    unwavering in our pursuit of raising industry standards. Our
+                    team of devoted experts consistently works with precision
+                    and accuracy to ensure that every property appraisal meets
+                    the highest standards, offering our clients the confidence
+                    they need when making crucial decisions.{" "}
+                  </p>
+                  <p>
+                    As we continually strive to broaden our network of partners
+                    and collaborators, we emphasize the importance of
+                    transparent and open communication. It's not just about
+                    conducting business; it's about fostering a community of
+                    professionals who share a common vision: to push the
+                    boundaries of excellence in the real estate sector. We also
+                    prioritize proactivity in addressing challenges and
+                    concerns. Our analytical approach allows us to identify
+                    issues and create practical, forward-thinking solutions for
+                    their resolution. This approach is a testament to our
+                    commitment and passion for innovation within the real estate
+                    industry.{" "}
+                  </p>
+                  <p>
+                    In summary, our Ontario-based company is more than just a
+                    service provider. We are a trusted partner on your real
+                    estate journey, dedicated to elevating industry standards,
+                    fostering strong connections, and proactively solving
+                    problems to ensure your success.{" "}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         {/* End .row */}
         {/* </div> */}
+      </section>
+
+      {/* <!-- Property Search --> */}
+      <section
+        id="property-search"
+        className="property-search home1-overlay bg-img5"
+      >
+        <div className="row">
+          <div className="col-lg-12">
+            <div className="search_smart_property text-center">
+              <h2 className="text-light">
+                Having trouble finding what you want?
+              </h2>
+              <p className="text-light">
+                To learn more about the plans available and how to tailor your
+                Appraisal Link membership to maximize your earning potential,
+                speak with a product consultant.
+              </p>
+              <Link href="/contact">
+                <button className="btn ssp_btn">Contact Us</button>
+              </Link>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* <!-- Our Team --> */}
@@ -139,7 +213,7 @@ const index = () => {
       </section> */}
 
       {/* <!-- Our Footer --> */}
-      <section className="footer_one">
+      <section className="footer_one p20">
         <div className="container">
           <div className="row">
             <Footer />

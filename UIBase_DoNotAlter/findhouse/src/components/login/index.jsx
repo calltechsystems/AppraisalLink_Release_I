@@ -8,7 +8,7 @@ import BreadCrumbBanner from "./BreadCrumbBanner";
 import Form from "./Form";
 import { useEffect, useState } from "react";
 
-const index = ({user}) => { 
+const Index = ({user}) => { 
   const router = useRouter();
 
   useEffect(() => {
@@ -58,7 +58,7 @@ const index = ({user}) => {
       </section>
 
       {/* <!-- Our Footer --> */}
-      <section className="footer_one">
+      <section className="footer_one p20">
         <div className="container">
           <div className="row">
             <Footer />
@@ -67,13 +67,13 @@ const index = ({user}) => {
       </section>
 
       {/* <!-- Our Footer Bottom Area --> */}
-      <section className="footer_middle_area pt40 pb40">
+      <div className="footer_middle_area pt40 pb40">
         <div className="container">
           <CopyrightFooter />
         </div>
-      </section>
+      </div>
     </>
   );
 };
 
-export default index;
+export default Index;

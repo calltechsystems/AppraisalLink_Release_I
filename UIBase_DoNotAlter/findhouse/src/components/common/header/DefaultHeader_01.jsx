@@ -20,11 +20,11 @@ const Header = ({ userData }) => {
 
   return (
     <header
-      className={`header-nav menu_style_home_one style2 navbar-scrolltofixed stricky main-menu  ${
+      className={`header-nav menu_style_home_one style2 navbar-scrolltofixed stricky main-menu ${
         navbar ? "stricky-fixed " : ""
       }`}
     >
-      <div className="container-fluid p0">
+      <div className="container-fluid">
         {/* <!-- Menu Toggle btn--> */}
         <Link href="/" className="navbar_brand float-start dn-smd">
           <Image

@@ -5,6 +5,7 @@ import Header from "../common/header/DefaultHeader_01";
 import MobileMenu from "../common/header/MobileMenu";
 import Pricing from "./Pricing";
 import Modal from "./Modal";
+import Link from "next/link";
 // import Header from "../home/Header";
 
 const Index = () => {
@@ -74,11 +75,16 @@ const Index = () => {
                   Ready to get started?
                 </h2>
                 <p className="text-dark">
-                  Choose a plan tailored to your needs {selectedPlan}
+                  Choose a plan tailored to your needs.
                 </p>
                 <div className="toggleContainer mt-3">
-                  <span className="fw-bold text-dark">Monthly</span>
-                  <div style={{ width: "20%", height: "70%" }}>
+                  <span
+                    className="fw-bold text-dark"
+                    style={{ fontSize: "20px" }}
+                  >
+                    Monthly
+                  </span>
+                  <div style={{ width: "24%", height: "70%" }}>
                     <label
                     // className={`toggleLabel ${selectedPlan}`}
                     // onClick={togglePlan}
@@ -99,7 +105,12 @@ const Index = () => {
                     </label>
                   </div>
 
-                  <span className="text-dark fw-bold">Yearly</span>
+                  <span
+                    className="text-dark fw-bold"
+                    style={{ fontSize: "20px" }}
+                  >
+                    Yearly
+                  </span>
                 </div>
               </div>
             </div>
@@ -125,8 +136,32 @@ const Index = () => {
         </div>
       </section>
 
+      {/* <!-- Property Search --> */}
+      <section
+        id="property-search"
+        className="property-search home1-overlay bg-img5"
+      >
+        <div className="row">
+          <div className="col-lg-12">
+            <div className="search_smart_property text-center">
+              <h2 className="text-light">
+                Having trouble finding what you want?
+              </h2>
+              <p className="text-light">
+                To learn more about the plans available and how to tailor your
+                Appraisal Link membership to maximize your earning potential,
+                speak with a product consultant.
+              </p>
+              <Link href="/contact">
+                <button className="btn ssp_btn">Contact Us</button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* <!-- Our Footer --> */}
-      <section className="footer_one">
+      <section className="footer_one p20">
         <div className="container">
           <div className="row">
             <Footer />

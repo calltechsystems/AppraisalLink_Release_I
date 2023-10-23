@@ -26,7 +26,7 @@ const AllStatistics = () => {
       blockStyle: "style4",
       icon: "flaticon-heart",
       timer: "18",
-      name: "Favorites",
+      name: "Wishlist",
     },
   ];
 

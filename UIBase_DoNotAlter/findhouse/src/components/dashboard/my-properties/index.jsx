@@ -1,6 +1,6 @@
 import Header from "../../common/header/dashboard/Header";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
-import MobileMenu from "../../common/header/MobileMenu";
+import MobileMenu from "../../common/header/MobileMenu_02";
 import TableData from "./TableData";
 import Filtering from "./Filtering";
 import Pagination from "./Pagination";
@@ -160,7 +160,7 @@ const Index = () => {
             <div className="col-lg-12 maxw100flex-992">
               <div className="row">
                 {/* Start Dashboard Navigation */}
-                <div className="col-lg-12">
+                {/* <div className="col-lg-12">
                   <div className="dashboard_navigationbar dn db-1024">
                     <div className="dropdown">
                       <button
@@ -173,7 +173,7 @@ const Index = () => {
                       </button>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 {/* End Dashboard Navigation */}
 
                 <div className="col-lg-4 col-xl-4 mb10">

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import Header from "../../common/header/dashboard/Header";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
-import MobileMenu from "../../common/header/MobileMenu";
+import MobileMenu from "../../common/header/MobileMenu_02";
 import ChangePassword from "./ChangePassword";
 import ProfileInfo from "./ProfileInfo";
-import SocialMedia from "./SocialMedia";
 import { useRouter } from "next/router";
+import Form from "./Form";
 
 const Index = () => {
   const [profileCount, setProfileCount] = useState(7);
@@ -18,16 +18,13 @@ const Index = () => {
   //   router.push("/my-profile");
   // }
 
-  
-  
-  
   return (
     <>
       {/* <!-- Main Header Nav --> */}
       <Header profileCount={profileCount} setProfileCount={setProfileCount} />
 
       {/* <!--  Mobile Menu --> */}
-      {/* <MobileMenu /> */}
+      <MobileMenu />
 
       <div className="dashboard_sidebar_menu">
         <div
@@ -48,7 +45,7 @@ const Index = () => {
             <div className="col-lg-12 maxw100flex-992">
               <div className="row">
                 {/* Start Dashboard Navigation */}
-                <div className="col-lg-12">
+                {/* <div className="col-lg-12">
                   <div className="dashboard_navigationbar dn db-1024">
                     <div className="dropdown">
                       <button
@@ -61,7 +58,7 @@ const Index = () => {
                       </button>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 {/* End Dashboard Navigation */}
 
                 <div className="col-lg-12">
@@ -79,6 +76,9 @@ const Index = () => {
                         <h4>Personal Information</h4>
                       </div> */}
                       <div className="col-xl-12">
+                        <div className="mb-5">
+                          <Form />
+                        </div>
                         <ProfileInfo
                           profileCount={profileCount}
                           setProfileCount={setProfileCount}
@@ -117,7 +117,7 @@ const Index = () => {
               <div className="row mt50">
                 <div className="col-lg-12">
                   <div className="copyright-widget text-center">
-                    <p>© 2023 Appraisal Link. All Rights Reserved.</p>
+                    <p>&copy; {new Date().getFullYear()} Appraisal Link. All Rights Reserved.</p>
                   </div>
                 </div>
               </div>

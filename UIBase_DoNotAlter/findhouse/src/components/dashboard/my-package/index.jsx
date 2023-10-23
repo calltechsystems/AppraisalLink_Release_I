@@ -130,7 +130,7 @@ const Index = () => {
               <div className="row mt50">
                 <div className="col-lg-12">
                   <div className="copyright-widget text-center">
-                    <p>© 2023 Appraisal Link. All Rights Reserved.</p>
+                    <p>&copy; {new Date().getFullYear()} Appraisal Link. All Rights Reserved.</p>
                   </div>
                 </div>
               </div>

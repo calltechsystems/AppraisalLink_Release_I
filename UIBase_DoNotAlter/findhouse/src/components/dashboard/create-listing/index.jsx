@@ -5,7 +5,7 @@ import { useRef, useState } from "react";
 import { useRouter } from "next/router";
 import Header from "../../common/header/dashboard/Header";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
-import MobileMenu from "../../common/header/MobileMenu";
+import MobileMenu from "../../common/header/MobileMenu_02";
 import CreateList from "./CreateList";
 import DetailedInfo from "./DetailedInfo";
 import LocationField from "./LocationField";
@@ -230,7 +230,7 @@ const Index = ({isView,propertyData}) => {
             <div className="col-lg-12 maxw100flex-992">
               <div className="row">
                 {/* Start Dashboard Navigation */}
-                <div className="col-lg-12">
+                {/* <div className="col-lg-12">
                   <div className="dashboard_navigationbar dn db-1024">
                     <div className="dropdown">
                       <button
@@ -243,7 +243,7 @@ const Index = ({isView,propertyData}) => {
                       </button>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 {/* End Dashboard Navigation */}
 
                 <div className="col-lg-12 mb10">
@@ -366,7 +366,7 @@ const Index = ({isView,propertyData}) => {
               <div className="row mt50">
                 <div className="col-lg-12">
                   <div className="copyright-widget text-center">
-                    <p>© 2023 Appraisal Link. All Rights Reserved.</p>
+                    <p>&copy; {new Date().getFullYear()} Appraisal Link. All Rights Reserved.</p>
                   </div>
                 </div>
               </div>

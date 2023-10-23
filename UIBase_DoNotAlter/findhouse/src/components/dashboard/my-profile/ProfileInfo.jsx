@@ -19,27 +19,45 @@ const ProfileInfo = ({ setProfileCount }) => {
 
   const [edit, setEdit] = useState(!userData.broker_Details?.firstName);
 
-  const [firstNameRef,setFirstNameRef] = useState(userData?.broker_Details?.firstName || "");
-  const [middleNameRef , setMiddleNameRef] = useState(userData?.broker_Details?.middleName || "");
-  const [lastNameRef , setLastNameRef] = useState(userData?.broker_Details?.lastName || "");
-  const [companyNameRef , setCompanyNameRef] = useState(userData?.broker_Details?.companyName || "");
+  const [firstNameRef, setFirstNameRef] = useState(
+    userData?.broker_Details?.firstName || ""
+  );
+  const [middleNameRef, setMiddleNameRef] = useState(
+    userData?.broker_Details?.middleName || ""
+  );
+  const [lastNameRef, setLastNameRef] = useState(
+    userData?.broker_Details?.lastName || ""
+  );
+  const [companyNameRef, setCompanyNameRef] = useState(
+    userData?.broker_Details?.companyName || ""
+  );
 
   const [profile, setProfile] = useState(
     userData?.broker_Details?.profileImage || null
   );
 
-  const [addressLineRef , setAddressLineRef] = useState(userData?.broker_Details?.adressLine1 || "");
-  const [addressLineTwoRef , setAddressLineTwoRef] = useState(userData?.broker_Details?.adressLine2 || "");
+  const [addressLineRef, setAddressLineRef] = useState(
+    userData?.broker_Details?.adressLine1 || ""
+  );
+  const [addressLineTwoRef, setAddressLineTwoRef] = useState(
+    userData?.broker_Details?.adressLine2 || ""
+  );
 
-  const [cityRef , setCityRef] = useState(userData?.broker_Details?.city || "");
-  const [stateRef , setStateRef] = useState(userData?.broker_Details?.state || "");
-  const[zipcodeRef , setZipcodeRef]= useState(userData?.broker_Details?.zipCode || "");
-  const [phoneNumberRef , setPhoneNumberRef]= useState(userData?.broker_Details?.phoneNumber || "");
+  const [cityRef, setCityRef] = useState(userData?.broker_Details?.city || "");
+  const [stateRef, setStateRef] = useState(
+    userData?.broker_Details?.state || ""
+  );
+  const [zipcodeRef, setZipcodeRef] = useState(
+    userData?.broker_Details?.zipCode || ""
+  );
+  const [phoneNumberRef, setPhoneNumberRef] = useState(
+    userData?.broker_Details?.phoneNumber || ""
+  );
 
-  const [mortgageBrokrageLicNoRef , setMortgageLicNoRef] = useState(
+  const [mortgageBrokrageLicNoRef, setMortgageLicNoRef] = useState(
     userData?.broker_Details?.mortageBrokerageLicNo || ""
   );
-  const [mortgageBrokerLicNoRef , setMortgageBrokerLicNoRef]= useState(
+  const [mortgageBrokerLicNoRef, setMortgageBrokerLicNoRef] = useState(
     userData?.broker_Details?.mortageBrokerLicNo || ""
   );
 
@@ -63,43 +81,52 @@ const ProfileInfo = ({ setProfileCount }) => {
 
   const onUpdatHandler = () => {
     const firstName =
-      firstNameRef!== "" ? firstNameRef : userData.broker_Details.firstName;
+      firstNameRef !== "" ? firstNameRef : userData.broker_Details.firstName;
     const lastName =
-      lastNameRef !== "" ? lastNameRef  : userData.broker_Details.lastName;
+      lastNameRef !== "" ? lastNameRef : userData.broker_Details.lastName;
     const adressLine1 =
-      addressLineRef !== "" ? addressLineRef : userData.broker_Details.adressLine1 ;
+      addressLineRef !== ""
+        ? addressLineRef
+        : userData.broker_Details.adressLine1;
     const city = cityRef !== "" ? cityRef : userData.broker_Details.city;
     const state = stateRef !== "" ? stateRef : userData.broker_Details.state;
-    const zipCode = zipcodeRef !== "" ? zipcodeRef : userData.broker_Details.zipCode;
+    const zipCode =
+      zipcodeRef !== "" ? zipcodeRef : userData.broker_Details.zipCode;
     const phoneNumber =
-      phoneNumberRef !== "" ? phoneNumberRef : userData.broker_Details.phoneNumber;
+      phoneNumberRef !== ""
+        ? phoneNumberRef
+        : userData.broker_Details.phoneNumber;
     const mortageBrokerLicNo =
-      mortgageBrokerLicNoRef !==
-      "" ? mortgageBrokerLicNoRef :
-      userData.broker_Details.mortageBrokerLicNo;
+      mortgageBrokerLicNoRef !== ""
+        ? mortgageBrokerLicNoRef
+        : userData.broker_Details.mortageBrokerLicNo;
     const mortageBrokerageLicNo =
-      mortgageBrokrageLicNoRef !==
-      "" ?  mortgageBrokrageLicNoRef :
-      userData.broker_Details.mortageBrokerageLicNo;
+      mortgageBrokrageLicNoRef !== ""
+        ? mortgageBrokrageLicNoRef
+        : userData.broker_Details.mortageBrokerageLicNo;
 
     const adressLine2 =
-      addressLineTwoRef !== "" ? addressLineTwoRef : userData.broker_Details.adressLine2;
+      addressLineTwoRef !== ""
+        ? addressLineTwoRef
+        : userData.broker_Details.adressLine2;
     const middleName =
       middleNameRef !== "" ? middleNameRef : userData.broker_Details.middleName;
     const companyName =
-      companyNameRef !== "" ? companyNameRef : userData.broker_Details.companyName;
+      companyNameRef !== ""
+        ? companyNameRef
+        : userData.broker_Details.companyName;
 
-      
-      const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
-      const nameRegex = /^[A-Za-z]+$/;
+    const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
+    const nameRegex = /^[A-Za-z]+$/;
 
-    if(nameRegex.test(firstName) === false   || nameRegex.test(lastName) === false ){
+    if (
+      nameRegex.test(firstName) === false ||
+      nameRegex.test(lastName) === false
+    ) {
       toast.error("Name should be valid ");
-    }
-    else if(phoneNumberRegex.test(phoneNumber) === false || !phoneNumber){
+    } else if (phoneNumberRegex.test(phoneNumber) === false || !phoneNumber) {
       toast.error("enter a valid phone number please");
-    }
-    else if (
+    } else if (
       (!firstName ||
         !lastName ||
         !adressLine1 ||
@@ -112,8 +139,7 @@ const ProfileInfo = ({ setProfileCount }) => {
       !userData
     ) {
       toast.error("All marked fields arent filled !!");
-    } 
-    else {
+    } else {
       let count = 9;
       if (adressLine2) {
         count++;
@@ -127,17 +153,17 @@ const ProfileInfo = ({ setProfileCount }) => {
       if (profilePhoto) {
         count++;
       }
-      if(adressLine2 === ""){
-        count --;
-      }
-      if(middleName === ""){
+      if (adressLine2 === "") {
         count--;
       }
-      if(companyName === ""){
-        count --;
+      if (middleName === "") {
+        count--;
       }
-      if(profilePhoto){
-        count --;
+      if (companyName === "") {
+        count--;
+      }
+      if (profilePhoto) {
+        count--;
       }
 
       const percentage = Math.floor(count / 13) * 100;
@@ -182,7 +208,7 @@ const ProfileInfo = ({ setProfileCount }) => {
           toast.error(err.message);
         })
         .finally(() => {});
-        toast.dismiss();
+      toast.dismiss();
     }
   };
 
@@ -212,21 +238,20 @@ const ProfileInfo = ({ setProfileCount }) => {
 
   const handleZipCodeChange = async (val) => {
     setZipcodeRef(val);
-   
-    
-      try {
-        const response = await axios.get(`https://api.zippopotam.us/us/${zipcodeRef}`);
-        const data = response.data;
 
-        console.log(response)
-        
-        setStateRef(data.places[0]['state']);
-       setCityRef(data.places[0]['place name']);
+    try {
+      const response = await axios.get(
+        `https://api.zippopotam.us/us/${zipcodeRef}`
+      );
+      const data = response.data;
 
-      } catch (error) {
-        console.error('Error fetching location data:', error);
-      }
-    
+      console.log(response);
+
+      setStateRef(data.places[0]["state"]);
+      setCityRef(data.places[0]["place name"]);
+    } catch (error) {
+      console.error("Error fetching location data:", error);
+    }
   };
 
   const handleFileUpload = async (event) => {
@@ -236,335 +261,338 @@ const ProfileInfo = ({ setProfileCount }) => {
     console.log(url);
   };
 
-  return (<>
-    <div className="row">
-      {/* <h4 className="mb-3">Personal Information</h4> */}
-      <div className="col-lg-12"></div>
-      {!edit && (
-        <div>
-          <button
-            className="btn btn2 btn-color profile_edit_button"
-            onClick={changeEditHandler}
-          >
-            <span
-              className="flaticon-edit"
-              data-toggle="tooltip"
-              data-placement="top"
-              title="Edit Profile"
-            ></span>
-          </button>
-        </div>
-      )}
-      <div className="col-lg-12 col-xl-12 mt-2">
-        <div className="my_profile_setting_input form-group">
-          <div className="row">
-            <div className="col-lg-3 text-center">
-              <div className="wrap-custom-file">
-                <img
-                  style={{ borderRadius: "50%" }}
-                  src={SelectedImage}
-                  alt="Uploaded Image"
-                />
-                {edit && (
-                  <CldUploadWidget
-                    onUpload={handleUpload}
-                    uploadPreset="mpbjdclg"
-                    options={{
-                      cloudName: "dcrq3m6dx", // Your Cloudinary upload preset
-                      maxFiles: 1,
-                    }}
-                  >
-                    {({ open }) => (
-                      <div>
-                        <button
-                          className="btn btn-color profile_edit_button mb-5"
-                          style={{ marginLeft: "0px" }}
-                          onClick={open} // This will open the upload widget
-                        >
-                          Upload Photo
-                        </button>
-                      </div>
-                    )}
-                  </CldUploadWidget>
-                )}
+  return (
+    <>
+      <div className="row">
+        {/* <h4 className="mb-3">Personal Information</h4> */}
+        <div className="col-lg-12"></div>
+        {!edit && (
+          <div>
+            <button
+              className="btn btn2 btn-color profile_edit_button"
+              onClick={changeEditHandler}
+            >
+              <span
+                className="flaticon-edit"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="Edit Profile"
+              ></span>
+            </button>
+          </div>
+        )}
+        <div className="col-lg-12 col-xl-12 mt-2">
+          <div className="my_profile_setting_input form-group">
+            <div className="row">
+              <div className="col-lg-3 text-center">
+                <div className="wrap-custom-file">
+                  <img
+                    style={{ borderRadius: "50%" }}
+                    src={SelectedImage}
+                    alt="Uploaded Image"
+                  />
+                  {edit && (
+                    <CldUploadWidget
+                      onUpload={handleUpload}
+                      uploadPreset="mpbjdclg"
+                      options={{
+                        cloudName: "dcrq3m6dx", // Your Cloudinary upload preset
+                        maxFiles: 1,
+                      }}
+                    >
+                      {({ open }) => (
+                        <div>
+                          <button
+                            className="btn btn-color profile_edit_button mb-5"
+                            style={{ marginLeft: "0px" }}
+                            onClick={open} // This will open the upload widget
+                          >
+                            Upload Photo
+                          </button>
+                        </div>
+                      )}
+                    </CldUploadWidget>
+                  )}
+                </div>
               </div>
-            </div>
-            <div className="col-lg-9">
-              <div className="row mb-2">
-                <div className="col-lg-4">
+              <div className="col-lg-9">
+                <div className="row mb-2">
+                  <div className="col-lg-4">
+                    <div className="col-12">
+                      <label
+                        htmlFor=""
+                        style={{ paddingTop: "15px", fontWeight: "lighter" }}
+                      >
+                        First Name <span class="req-btn">*</span>
+                      </label>
+                    </div>
+                    <div className="col-12 mb-2">
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="formGroupExampleInput3"
+                        required
+                        value={firstNameRef}
+                        onChange={(e) => setFirstNameRef(e.target.value)}
+                        disabled={!edit}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-lg-4">
+                    <div className="col-12">
+                      <label
+                        htmlFor=""
+                        style={{ paddingTop: "15px", fontWeight: "lighter" }}
+                      >
+                        Middle Name
+                      </label>
+                    </div>
+                    <div className="col-12 mb-2">
+                      <input
+                        type="text"
+                        required
+                        className="form-control"
+                        id="formGroupExampleInput3"
+                        disabled={!edit}
+                        value={middleNameRef}
+                        onChange={(e) => setMiddleNameRef(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-lg-4">
+                    <div className="col-12">
+                      <label
+                        htmlFor=""
+                        style={{ paddingTop: "15px", fontWeight: "lighter" }}
+                      >
+                        Last Name <span class="req-btn">*</span>
+                      </label>
+                    </div>
+                    <div className="col-12 mb-2">
+                      <input
+                        type="text"
+                        required
+                        className="form-control"
+                        id="formGroupExampleInput3"
+                        value={lastNameRef}
+                        onChange={(e) => setLastNameRef(e.target.value)}
+                        disabled={!edit}
+                      />
+                    </div>
+                  </div>
                   <div className="col-12">
-                    <label
-                      htmlFor=""
-                      style={{ paddingTop: "15px", fontWeight: "lighter" }}
-                    >
-                      First Name <span class="req-btn">*</span>
-                    </label>
+                    <div className="col-12 mb-2">
+                      <label
+                        htmlFor=""
+                        style={{ paddingTop: "15px", fontWeight: "lighter" }}
+                      >
+                        Company Name{" "}
+                      </label>
+                    </div>
+                    <div className="col-12 mb-2">
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="formGroupExampleInput3"
+                        value={companyNameRef}
+                        onChange={(e) => setCompanyNameRef(e.target.value)}
+                        disabled={!edit}
+                      />
+                    </div>
                   </div>
-                  <div className="col-12 mb-2">
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="formGroupExampleInput3"
-                      required
-                      value={firstNameRef}
-                      onChange={(e)=>setFirstNameRef(e.target.value)}
-                      disabled={!edit}
-                    />
+                  <div className="col-lg-6">
+                    <div className="col-12 mb-2">
+                      <label
+                        htmlFor=""
+                        style={{ paddingTop: "15px", fontWeight: "lighter" }}
+                      >
+                        Address Line 1 <span class="req-btn">*</span>
+                      </label>
+                    </div>
+                    <div className="col-12 mb-2">
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="formGroupExampleInput3"
+                        required
+                        value={addressLineRef}
+                        onChange={(e) => setAddressLineRef(e.target.value)}
+                        disabled={!edit}
+                      />
+                    </div>
                   </div>
-                </div>
-                <div className="col-lg-4">
-                  <div className="col-12">
-                    <label
-                      htmlFor=""
-                      style={{ paddingTop: "15px", fontWeight: "lighter" }}
-                    >
-                      Middle Name
-                    </label>
+                  <div className="col-lg-6">
+                    <div className="col-12 mb-2">
+                      <label
+                        htmlFor=""
+                        style={{ paddingTop: "15px", fontWeight: "lighter" }}
+                      >
+                        Address Line 2
+                      </label>
+                    </div>
+                    <div className="col-12 mb-2">
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="formGroupExampleInput3"
+                        value={addressLineTwoRef}
+                        onChange={(e) => setAddressLineTwoRef(e.target.value)}
+                        disabled={!edit}
+                      />
+                    </div>
                   </div>
-                  <div className="col-12 mb-2">
-                    <input
-                      type="text"
-                      required
-                      className="form-control"
-                      id="formGroupExampleInput3"
-                      disabled={!edit}
-                      value={middleNameRef}
-                      onChange={(e)=>setMiddleNameRef(e.target.value)}
-                    />
+                  <div className="col-lg-4">
+                    <div className="col-12 mb-2">
+                      <label
+                        htmlFor=""
+                        style={{ paddingTop: "15px", fontWeight: "lighter" }}
+                      >
+                        City <span class="req-btn">*</span>
+                      </label>
+                    </div>
+                    <div className="col-12 mb-2">
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="formGroupExampleInput3"
+                        required
+                        value={cityRef}
+                        onChange={(e) => setCityRef(e.target.value)}
+                        disabled={!edit}
+                      />
+                    </div>
                   </div>
-                </div>
-                <div className="col-lg-4">
-                  <div className="col-12">
-                    <label
-                      htmlFor=""
-                      style={{ paddingTop: "15px", fontWeight: "lighter" }}
-                    >
-                      Last Name <span class="req-btn">*</span>
-                    </label>
+                  <div className="col-lg-4">
+                    <div className="col-12 mb-2">
+                      <label
+                        htmlFor=""
+                        style={{ paddingTop: "15px", fontWeight: "lighter" }}
+                      >
+                        State <span class="req-btn">*</span>
+                      </label>
+                    </div>
+                    <div className="col-12 mb-2">
+                      <input
+                        type="text"
+                        className="form-control"
+                        required
+                        id="formGroupExampleInput3"
+                        value={stateRef}
+                        onChange={(e) => setStateRef(e.target.value)}
+                        disabled={!edit}
+                      />
+                    </div>
                   </div>
-                  <div className="col-12 mb-2">
-                    <input
-                      type="text"
-                      required
-                      className="form-control"
-                      id="formGroupExampleInput3"
-                      value={lastNameRef}
-                      onChange={(e)=>setLastNameRef(e.target.value)}
-                      disabled={!edit}
-                    />
+                  <div className="col-lg-4">
+                    <div className="col-12 mb-2">
+                      <label
+                        htmlFor=""
+                        style={{ paddingTop: "15px", fontWeight: "lighter" }}
+                      >
+                        Zip-Code <span class="req-btn">*</span>
+                      </label>
+                    </div>
+                    <div className="col-12 mb-2">
+                      <input
+                        type="text"
+                        className="form-control"
+                        required
+                        id="formGroupExampleInput3"
+                        onChange={(e) => handleZipCodeChange(e.target.value)}
+                        value={zipcodeRef}
+                        disabled={!edit}
+                      />
+                    </div>
                   </div>
-                </div>
-                <div className="col-12">
-                  <div className="col-12 mb-2">
-                    <label
-                      htmlFor=""
-                      style={{ paddingTop: "15px", fontWeight: "lighter" }}
-                    >
-                      Company Name{" "}
-                    </label>
+                  <div className="col-lg-6">
+                    <div className="col-12 mb-2">
+                      <label
+                        htmlFor=""
+                        style={{ paddingTop: "15px", fontWeight: "lighter" }}
+                      >
+                        Phone Number <span class="req-btn">*</span>
+                      </label>
+                    </div>
+                    <div className="col-12 mb-2">
+                      <input
+                        type="text"
+                        required
+                        className="form-control"
+                        id="formGroupExampleInput3"
+                        value={phoneNumberRef}
+                        onChange={(e) => setPhoneNumberRef(e.target.value)}
+                        disabled={!edit}
+                      />
+                    </div>
                   </div>
-                  <div className="col-12 mb-2">
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="formGroupExampleInput3"
-                     value={companyNameRef}
-                     onChange={(e)=>setCompanyNameRef(e.target.value)}
-                      disabled={!edit}
-                    />
+                  <div className="col-lg-6">
+                    <div className="col-12 mb-2">
+                      <label
+                        htmlFor=""
+                        style={{ paddingTop: "15px", fontWeight: "lighter" }}
+                      >
+                        Email Address <span class="req-btn">*</span>
+                      </label>
+                    </div>
+                    <div className="col-12 mb-2">
+                      <input
+                        type="email"
+                        className="form-control"
+                        required
+                        id="formGroupExampleInput3"
+                        value={userData?.userEmail ? userData.userEmail : ""}
+                        disabled
+                      />
+                    </div>
                   </div>
-                </div>
-                <div className="col-lg-6">
-                  <div className="col-12 mb-2">
-                    <label
-                      htmlFor=""
-                      style={{ paddingTop: "15px", fontWeight: "lighter" }}
-                    >
-                      Address Line 1 <span class="req-btn">*</span>
-                    </label>
+                  <div className="col-lg-6">
+                    <div className="col-12">
+                      <label
+                        htmlFor=""
+                        style={{ paddingTop: "15px", fontWeight: "lighter" }}
+                      >
+                        Mortgage Brokerage Licence No.{" "}
+                        <span class="req-btn">*</span>{" "}
+                      </label>
+                    </div>
+                    <div className="col-12 mb-2">
+                      <input
+                        type="text"
+                        required
+                        className="form-control"
+                        id="formGroupExampleInput3"
+                        value={mortgageBrokrageLicNoRef}
+                        onChange={(e) => setMortgageLicNoRef(e.target.value)}
+                        disabled={!edit}
+                      />
+                    </div>
                   </div>
-                  <div className="col-12 mb-2">
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="formGroupExampleInput3"
-                      required
-                     value={addressLineRef}
-                     onChange={(e)=>setAddressLineRef(e.target.value)}
-                      disabled={!edit}
-                    />
+                  <div className="col-lg-6">
+                    <div className="col-12">
+                      <label
+                        htmlFor=""
+                        style={{ paddingTop: "15px", fontWeight: "lighter" }}
+                      >
+                        Mortgage Broker Licence No.{" "}
+                        <span class="req-btn">*</span>{" "}
+                      </label>
+                    </div>
+                    <div className="col-12 mb-2">
+                      <input
+                        type="text"
+                        required
+                        className="form-control"
+                        id="formGroupExampleInput3"
+                        value={mortgageBrokerLicNoRef}
+                        onChange={(e) =>
+                          setMortgageBrokerLicNoRef(e.target.value)
+                        }
+                        disabled={!edit}
+                      />
+                    </div>
                   </div>
-                </div>
-                <div className="col-lg-6">
-                  <div className="col-12 mb-2">
-                    <label
-                      htmlFor=""
-                      style={{ paddingTop: "15px", fontWeight: "lighter" }}
-                    >
-                      Address Line 2
-                    </label>
-                  </div>
-                  <div className="col-12 mb-2">
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="formGroupExampleInput3"
-                    value={addressLineTwoRef}
-                    onChange={(e)=>setAddressLineTwoRef(e.target.value)}
-                      disabled={!edit}
-                    />
-                  </div>
-                </div>
-                <div className="col-lg-4">
-                  <div className="col-12 mb-2">
-                    <label
-                      htmlFor=""
-                      style={{ paddingTop: "15px", fontWeight: "lighter" }}
-                    >
-                      City <span class="req-btn">*</span>
-                    </label>
-                  </div>
-                  <div className="col-12 mb-2">
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="formGroupExampleInput3"
-                      required
-                      value={cityRef}
-                      onChange={(e)=>setCityRef(e.target.value)}
-                      disabled={!edit}
-                    />
-                  </div>
-                </div>
-                <div className="col-lg-4">
-                  <div className="col-12 mb-2">
-                    <label
-                      htmlFor=""
-                      style={{ paddingTop: "15px", fontWeight: "lighter" }}
-                    >
-                      State <span class="req-btn">*</span>
-                    </label>
-                  </div>
-                  <div className="col-12 mb-2">
-                    <input
-                      type="text"
-                      className="form-control"
-                      required
-                      id="formGroupExampleInput3"
-                     value={stateRef}
-                     onChange={(e)=>setStateRef(e.target.value)}
-                      disabled={!edit}
-                    />
-                  </div>
-                </div>
-                <div className="col-lg-4">
-                  <div className="col-12 mb-2">
-                    <label
-                      htmlFor=""
-                      style={{ paddingTop: "15px", fontWeight: "lighter" }}
-                    >
-                      Zip-Code <span class="req-btn">*</span>
-                    </label>
-                  </div>
-                  <div className="col-12 mb-2">
-                    <input
-                      type="text"
-                      className="form-control"
-                      required
-                      id="formGroupExampleInput3"
-                      onChange={(e)=>handleZipCodeChange(e.target.value)}
-                     value={zipcodeRef}
-                      disabled={!edit}
-                    />
-                  </div>
-                </div>
-                <div className="col-lg-6">
-                  <div className="col-12 mb-2">
-                    <label
-                      htmlFor=""
-                      style={{ paddingTop: "15px", fontWeight: "lighter" }}
-                    >
-                      Phone Number <span class="req-btn">*</span>
-                    </label>
-                  </div>
-                  <div className="col-12 mb-2">
-                    <input
-                      type="text"
-                      required
-                      className="form-control"
-                      id="formGroupExampleInput3"
-                    value={phoneNumberRef}
-                    onChange={(e)=>setPhoneNumberRef(e.target.value)}
-                      disabled={!edit}
-                    />
-                  </div>
-                </div>
-                <div className="col-lg-6">
-                  <div className="col-12 mb-2">
-                    <label
-                      htmlFor=""
-                      style={{ paddingTop: "15px", fontWeight: "lighter" }}
-                    >
-                      Email Address <span class="req-btn">*</span>
-                    </label>
-                  </div>
-                  <div className="col-12 mb-2">
-                    <input
-                      type="email"
-                      className="form-control"
-                      required
-                      id="formGroupExampleInput3"
-                      value={userData?.userEmail ? userData.userEmail : ""}
-                      disabled
-                    />
-                  </div>
-                </div>
-                <div className="col-lg-6">
-                  <div className="col-12">
-                    <label
-                      htmlFor=""
-                      style={{ paddingTop: "15px", fontWeight: "lighter" }}
-                    >
-                      Mortgage Brokerage Licence No. <span class="req-btn">*</span>{" "}
-                    
-                    </label>
-                  </div>
-                  <div className="col-12 mb-2">
-                    <input
-                      type="text"
-                      required
-                      className="form-control"
-                      id="formGroupExampleInput3"
-                     value={mortgageBrokrageLicNoRef}
-                     onChange={(e)=>setMortgageLicNoRef(e.target.value)}
-                      disabled={!edit}
-                    />
-                  </div>
-                </div>
-                <div className="col-lg-6">
-                  <div className="col-12">
-                    <label
-                      htmlFor=""
-                      style={{ paddingTop: "15px", fontWeight: "lighter" }}
-                    >
-                      Mortgage Broker Licence No. <span class="req-btn">*</span>{" "}
-                    
-                    </label>
-                  </div>
-                  <div className="col-12 mb-2">
-                    <input
-                      type="text"
-                      required
-                      className="form-control"
-                      id="formGroupExampleInput3"
-                      value={mortgageBrokerLicNoRef}
-                      onChange={(e)=>setMortgageBrokerLicNoRef(e.target.value)}
-                      disabled={!edit}
-                    />
-                  </div>
-                </div>
 
-                {/* <div className="col-lg-5">
+                  {/* <div className="col-lg-5">
                   <label
                     htmlFor=""
                     style={{ paddingTop: "15px", fontWeight: "lighter" }}
@@ -585,8 +613,8 @@ const ProfileInfo = ({ setProfileCount }) => {
                     disabled={!edit}
                   />
                 </div> */}
-              </div>
-              {/* <div className="row mb-2">
+                </div>
+                {/* <div className="row mb-2">
                 <div className="col-lg-5">
                   <label
                     htmlFor=""
@@ -695,7 +723,7 @@ const ProfileInfo = ({ setProfileCount }) => {
                   />
                 </div>
               </div> */}
-              {/* <div className="row">
+                {/* <div className="row">
                 <div className="col-lg-5 mb-2">
                   <label
                     htmlFor=""
@@ -795,7 +823,7 @@ const ProfileInfo = ({ setProfileCount }) => {
                   />
                 </div>
               </div>*/}
-              {/* <div className="row">
+                {/* <div className="row">
                 <div className="col-lg-5 mb-2">
                   <label
                     htmlFor=""
@@ -843,29 +871,32 @@ const ProfileInfo = ({ setProfileCount }) => {
                   />
                 </div>
               </div> */}
-              {edit && (
-                <div className="row mt-4">
-                  <div className="col-xl-12">
-                    <div
-                      className="my_profile_setting_input"
-                      style={{ textAlign: "end" }}
-                    >
-                      {/* <button className="btn btn1">Save Details</button> */}
-                      <button
-                        className="btn btn2 btn-dark"
-                        onClick={onUpdatHandler}
+                {edit && (
+                  <div className="row mt-4">
+                    <div className="col-xl-12">
+                      <div
+                        className="my_profile_setting_input"
+                        style={{ textAlign: "end" }}
                       >
-                        {userData?.broker_Details ? "Update Profile" : "Create Profile"}
-                      </button>
+                        {/* <button className="btn btn1">Save Details</button> */}
+                        <button
+                          className="btn btn2 btn-dark"
+                          onClick={onUpdatHandler}
+                        >
+                          {userData?.broker_Details
+                            ? "Update Profile"
+                            : "Create Profile"}
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div></>
+    </>
   );
 };
 

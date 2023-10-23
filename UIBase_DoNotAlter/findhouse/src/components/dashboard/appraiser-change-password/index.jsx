@@ -1,6 +1,6 @@
 import Header from "../../common/header/dashboard/Header_02";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenu_01";
-import MobileMenu from "../../common/header/MobileMenu";
+import MobileMenu from "../../common/header/MobileMenu_01";
 import ChangePassword from "./ChangePassword";
 
 const index = () => {
@@ -31,7 +31,7 @@ const index = () => {
             <div className="col-lg-12 maxw100flex-992">
               <div className="row">
                 {/* Start Dashboard Navigation */}
-                <div className="col-lg-12">
+                {/* <div className="col-lg-12">
                   <div className="dashboard_navigationbar dn db-1024">
                     <div className="dropdown">
                       <button
@@ -44,7 +44,7 @@ const index = () => {
                       </button>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 {/* End Dashboard Navigation */}
 
                 <div className="col-lg-12">
@@ -55,7 +55,7 @@ const index = () => {
                 </div>
                 {/* End .col */}
 
-                <div className="col-lg-12">
+                <div className="col-lg-12 mb100">
                   <div className="my_dashboard_review">
                     <div className="row">
                       {/* <div className="col-xl-2">
@@ -67,37 +67,17 @@ const index = () => {
                     </div>
                   </div>
                   {/* End prifle info wrapper end */}
-
-                  {/*<div className="my_dashboard_review mt30">
-                    <div className="row">
-                      <div className="col-xl-2">
-                        <h4>Social Media</h4>
-                      </div> 
-                      <div className="col-xl-12">
-                        <SocialMedia />
-                      </div>
-                    </div>
-                    </div>*/}
-                  {/* End .SocialMedia */}
-
-                 {/* <div className="my_dashboard_review mt30">
-                    <div className="row">
-                       <div className="col-xl-2">
-                        <h4>Change password</h4>
-                      </div> 
-                      <div className="col-xl-12">
-                        <ChangePassword />
-                      </div>
-                    </div>
-                    </div>*/}
                 </div>
               </div>
               {/* End .row */}
 
-              <div className="row mt50">
+              <div className="row mt100">
                 <div className="col-lg-12">
                   <div className="copyright-widget text-center">
-                    <p>© 2023 Appraisal Link. All Rights Reserved.</p>
+                    <p>
+                      &copy; {new Date().getFullYear()} Appraisal Link. All
+                      Rights Reserved.
+                    </p>
                   </div>
                 </div>
               </div>

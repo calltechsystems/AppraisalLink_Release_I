@@ -32,13 +32,13 @@ const SidebarMenu = () => {
     {
       id: 1,
       name: "Profile",
-      route: "/my-profile",
+      route: "/appraiser-profile",
       icon: "flaticon-user",
     },
     {
       id: 2,
       name: "Change Password",
-      route: "/my-package",
+      route: "/appraiser-change-password",
       icon: "flaticon-box",
     },
     { id: 3, name: "Logout", route: "/login", icon: "flaticon-logout" },
@@ -50,7 +50,7 @@ const SidebarMenu = () => {
         <ul className="sidebar-menu">
           <SidebarHeader>
             <div className="sidebar-header">
-              <Link href="/" className="sidebar-header-inner">
+              <Link href="#" className="sidebar-header-inner">
                 <Image
                   width={40}
                   height={45}

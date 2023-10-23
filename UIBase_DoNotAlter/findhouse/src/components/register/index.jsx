@@ -35,7 +35,7 @@ const index = () => {
       </section>
 
       {/* <!-- Our Footer --> */}
-      <section className="footer_one">
+      <section className="footer_one p20">
         <div className="container">
           <div className="row">
             <Footer />
@@ -44,11 +44,11 @@ const index = () => {
       </section>
 
       {/* <!-- Our Footer Bottom Area --> */}
-      <section className="footer_middle_area pt40 pb40">
+      <div className="footer_middle_area pt40 pb40">
         <div className="container">
           <CopyrightFooter />
         </div>
-      </section>
+      </div>
     </>
   );
 };
