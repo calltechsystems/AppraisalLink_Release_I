@@ -476,7 +476,7 @@ const HeaderMenuContent = ({ float = "" ,hide, setProfileCount , profileCount , 
       </li>) : ""}
       {/* End .dropitem */}
 
-      {/* <li className={"last"}>
+      <li className={"last"} style={{cursor:'pointer'}}>
         <Image
           width={25}
           height={25}
@@ -484,7 +484,7 @@ const HeaderMenuContent = ({ float = "" ,hide, setProfileCount , profileCount , 
           src="/assets/images/home/bell.jpg"
           alt="e1.png"
         />
-      </li> */}
+      </li>
 
       <li className="user_setting">
         <div className="">
