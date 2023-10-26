@@ -107,11 +107,12 @@ const Pricing = ({
               <div className="price">{item.title}</div>
               {String(selectedIdStyle) === String(item.id) ? (
                 <div
-                  className="p-1 text-light fw-bold"
+                  className="p-1 fw-bold"
                   style={{
-                    backgroundColor: "darkblue",
+                    backgroundColor: "white",
                     borderRadius: "4px",
                     fontSize: "19px",
+                    color:"#2e008b"
                   }}
                 >
                   Recommended Plan{" "}
@@ -138,7 +139,7 @@ const Pricing = ({
                 <a className={`btn pricing_btn btn-block w-100`} href="#">
                   {selectedId !== item.id
                     ? !selectedId
-                      ? "Select Plan"
+                      ? "Get Started"
                       : "Change Plan"
                     : "Upgrade"}
                 </a>

@@ -10030,7 +10030,7 @@ form.home5_advanced_search_form
   color: #ffffff;
   font-weight: bold;
   line-height: 1.2;
-  margin-bottom: 0;
+  margin-bottom: 10px;
 }
 
 .inner_page_breadcrumb .breadcrumb_title li:first-child {
@@ -21896,13 +21896,13 @@ a::before {
 
 .pricing_table_border_style {
   background-color: #21a680 !important;
-  border: 10px solid darkslateblue;
-  color: black !important;
+  border: 5px solid darkslateblue;
+  /* color: black !important; */
   margin-top: -30px;
 }
 .pricing_table_border_style:hover {
-  background-color: #00c689 !important;
-  border: 12px solid darkslategrey;
+  background-color: #007789 !important;
+  border: 10px solid #007789;
 }
 
 .pricing_table_border_style 

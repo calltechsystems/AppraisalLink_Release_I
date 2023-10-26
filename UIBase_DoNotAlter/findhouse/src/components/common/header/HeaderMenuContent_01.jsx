@@ -142,14 +142,9 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
   ];
 
   const blog = [
-    { id: 1, name: "Blog List 1", routerPath: "/blog-list-1" },
-    { id: 2, name: "Blog List 2", routerPath: "/blog-list-2" },
-    { id: 3, name: "Blog List 3", routerPath: "/blog-list-3" },
-    {
-      id: 4,
-      name: "Blog Details",
-      routerPath: "/blog-details",
-    },
+    { id: 1, name: "FR", routerPath: "#" },
+    { id: 2, name: "EN", routerPath: "#" },
+    // { id: 3, name: "GEM", routerPath: "#" },
   ];
 
   const pages = [
@@ -198,9 +193,9 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                   home.some((page) => page.routerPath === route.pathname)
                     ? "ui-active"
                     : undefined
-                }
+                } onMouseOver={()=>setAbout()}
               >
-                <span className="title text-info-01 menuitem">Home</span>
+                <span className="title text-info-01 menuitem" onMouseOver={()=>setInsight()} onMouseEnter={()=>setLogin()}>Home</span>
                 {/* <span className="arrow"></span> */}
               </Link>
               {/* <!-- Level Two--> */}
@@ -221,8 +216,8 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
         </ul> */}
             </li>
             {/* End .dropitem */}
-            <li className="dropitem" onMouseOver={() => setAbout()}>
-              <Link href="#">
+            <li className="dropitem" onMouseOver={() => setAbout()} onMouseEnter={()=>setLogin()}>
+              <Link href="#" onMouseOver={()=>setInsight()}>
                 <span
                   className="title text-info-01 menuitem"
                   onMouseOver={() => setHovered(!hovered)}
@@ -352,11 +347,11 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
               ) : null}
             </li>
             {/* End .dropitem */}
-            <li className="dropitem" onMouseOver={() => setHovered()}>
+            <li className="dropitem" onMouseOver={() => setHovered()} onMouseEnter={()=>setLogin()}>
               <Link href="#">
                 <span
                   className="title text-info-01 menuitem"
-                  onMouseOver={() => setAbout(!about)}
+                  onMouseOver={() => setAbout(!about)} onMouseEnter={()=>setInsight()}
                   // onMouseLeave={() => setAbout()}
                   // onMouseLeave={() => setLogin()}
                 >
@@ -378,7 +373,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                     right: "-840px",
                     width: "1900px",
                     margin: "-16px",
-                    height: "225px",
+                    height: "235px",
                     backgroundColor: "#fff",
                     color: "#333",
                     borderTopColor: "#2e008b",
@@ -426,14 +421,14 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                     </div>
                     <div className="col-lg-2 text-end">
                       <div className="row">
-                        <div className="col-lg-12 m-4 fw-bold">
+                        <div className="col-lg-12 m-3 fw-bold">
                           <Link href="/">
                             <Image
                               width={190}
                               height={125}
-                              className="logo2 img-fluid mt-3"
+                              className="logo2 img-fluid mt-4"
                               // style={{ marginRight: "10px" }}
-                              src="/assets/images/about/home-inspector-checks-condition-house-writes-report-flat-illustration_2175-8129.png"
+                              src="/assets/images/service/22.jpg"
                               alt="header-logo2.png"
                             />
                           </Link>
@@ -442,14 +437,14 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                     </div>
                     <div className="col-lg-2 text-center">
                       <div className="row">
-                        <div className="col-lg-6 m-5 fw-bold" style={{}}>
+                        <div className="col-lg-6 m-4 fw-bold" style={{}}>
                           <Link href="/">
                             <Image
                               width={160}
                               height={125}
                               className="logo2 img-fluid"
                               // style={{ marginRight: "10px" }}
-                              src="/assets/images/about/house-mortgage-property-inspection-audit-icon-graphic-home-real-estate-deal-review-assessment_101884-2246.png"
+                              src="/assets/images/service/p.jpg"
                               alt="header-logo2.png"
                             />
                           </Link>
@@ -481,7 +476,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
               ) : null}
             </li>
             {/* End .dropitem */}
-            <li className="last">
+            <li className="last" onMouseOver={() => setHovered()}>
               <Link
                 href="/membership"
                 onMouseOver={() => setInsight()}
@@ -489,7 +484,10 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                   route.pathname === "/membership" ? "ui-active" : undefined
                 }
               >
-                <span className="text-info-01 menuitem" onMouseOver={() => setAbout()}>
+                <span
+                  className="text-info-01 menuitem"
+                  onMouseOver={() => setAbout()} onMouseEnter={()=>setLogin()}
+                >
                   Subscription
                 </span>
               </Link>
@@ -577,29 +575,32 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                               height={125}
                               className="logo2 img-fluid mt-3"
                               // style={{ marginRight: "10px" }}
-                              src="/assets/images/about/home-inspector-checks-condition-house-writes-report-flat-illustration_2175-8129.png"
+                              src="/assets/images/service/house_.png"
                               alt="header-logo2.png"
                             />
                           </Link>
                         </div>
                       </div>
                     </div>
-                    <div
-                      className="col-lg-2"
-                      style={{ backgroundColor: "" }}
-                    >
+                    <div className="col-lg-2" style={{ backgroundColor: "" }}>
                       <div className="row">
                         <div className="col-lg-12 mt-3 fw-bold text-start">
                           <Link href="/about-us">
-                            <button className="fw-bold mt-4 menuitem">About Appraisal Link</button>
+                            <button className="fw-bold mt-4 menuitem">
+                              About Appraisal Link
+                            </button>
                           </Link>
                           <br />
                           <Link href="/events">
-                            <button className=" mt-3 fw-bold menuitem">Events</button>
+                            <button className=" mt-3 fw-bold menuitem">
+                              Events
+                            </button>
                           </Link>
                           <br />
                           <Link href="/how-we-work">
-                            <button className=" mt-3 fw-bold menuitem">How We Work</button>
+                            <button className=" mt-3 fw-bold menuitem">
+                              How We Work
+                            </button>
                           </Link>
                           <br />
                           {/* <Link href="#">
@@ -610,16 +611,16 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-lg-2 text-center">
+                    <div className="col-lg-3 text-start">
                       <div className="row">
                         <div className="col-lg-6 m-5 fw-bold" style={{}}>
                           <Link href="/">
                             <Image
                               width={160}
                               height={125}
-                              className="logo2 img-fluid"
+                              className="logo2"
                               // style={{ marginRight: "10px" }}
-                              src="/assets/images/about/house-mortgage-property-inspection-audit-icon-graphic-home-real-estate-deal-review-assessment_101884-2246.png"
+                              src="/assets/images/service/image001.png"
                               alt="header-logo2.png"
                             />
                           </Link>
@@ -634,7 +635,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
               ) : null}
             </li>
             {/* End .dropitem */}
-            <li className="dropitem">
+            <li className="dropitem" onMouseEnter={()=>setHovered()} onMouseOver={()=>setAbout()}>
               <Link
                 href="#"
                 onMouseOver={() => setInsight()}
@@ -726,9 +727,9 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                             <Image
                               width={190}
                               height={125}
-                              className="logo2 img-fluid mt-3"
+                              className="logo2 img-fluid mt-2"
                               // style={{ marginRight: "10px" }}
-                              src="/assets/images/about/home-inspector-checks-condition-house-writes-report-flat-illustration_2175-8129.png"
+                              src="/assets/images/service/222.jpg"
                               alt="header-logo2.png"
                             />
                           </Link>
@@ -742,9 +743,9 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                             <Image
                               width={160}
                               height={125}
-                              className="logo2 img-fluid"
+                              className="logo2 img-fluid mt-3"
                               // style={{ marginRight: "10px" }}
-                              src="/assets/images/about/house-mortgage-property-inspection-audit-icon-graphic-home-real-estate-deal-review-assessment_101884-2246.png"
+                              src="/assets/images/service/333.jpg"
                               alt="header-logo2.png"
                             />
                           </Link>
@@ -801,27 +802,45 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
             ))}
           </ul> */}
             </li>
-            <li className="last">
+            <li className="dropitem" onMouseEnter={()=>setInsight()} onMouseOver={()=>setAbout()}>
               <Link
                 href="#"
                 className={
-                  route.pathname === "/contact" ? "ui-active" : undefined
+                  blog.some((page) => page.routerPath === route.pathname)
+                    ? "ui-active"
+                    : undefined
                 }
               >
-                <span className="title menuitem" onMouseOver={() => setLogin()}>
+                <span className="title menuitem" onMouseOver={() => setLogin()} onMouseEnter={()=>setHovered()}>
                   En
                 </span>
                 <span className="arrow"></span>
               </Link>
+              <ul className="sub-menu ">
+                {blog.map((item) => (
+                  <li key={item.id}>
+                    <Link
+                      href={item.routerPath}
+                      className={
+                        route.pathname === item.routerPath
+                          ? "ui-active"
+                          : undefined
+                      }
+                    >
+                      {item.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </li>{" "}
             <li
               className={`list-inline-item add_listing ${float}`}
               style={{ padding: "0px" }}
-              onMouseOver={() => setLogin()}
+              onMouseOver={() => setLogin()} onMouseEnter={()=>setInsight()}
             >
-              <Link href="/contact">
+              <Link href="/contact" onMouseOver={()=>setAbout()} onMouseEnter={()=>setHovered ()}>
                 <span className="fs-13"></span>
-                <span className="dn-lg fs-13"> GET IN TOUCH</span>
+                <span className="dn-lg fs-13" > GET IN TOUCH</span>
               </Link>
             </li>
             {/* End .dropitem */}

@@ -6,6 +6,7 @@ import Partners from "../common/Partners";
 import WhyChoose from "../common/WhyChoose";
 import Testimonial from "../home-7/Testimonial";
 import BreadCrumbBanner from "./BreadCrumbBanner";
+import TermsCondions from "./TermsCondions";
 import Team from "./Team";
 import OurMission from "./OurMission";
 
@@ -34,40 +35,42 @@ const index = () => {
                 padding: "15px",
               }}
             >
-              <h2 className="mt0 text-light">
-                Our Mission Is To Appraisal Link
-              </h2>
+              <h2 className="mt0 text-light">Our Events on Appraisal Link</h2>
             </div>
           </div>
         </div>
         {/* End .row */}
 
-        <div className="container">
+        <section className="our-terms bgc-f7">
+          <div className="container">
+            <TermsCondions />
+          </div>
+        </section>
+
+        {/* <div className="container">
           <div className="row">
             <OurMission />
           </div>
-        </div>
+        </div> */}
         {/* End .row */}
 
-        <div className="row mt80">
+        {/* <div className="row mt80">
           <div className="col-lg-12">
             <div className="main-title text-center">
-              {/* <h2 className="text-light" style={{
+              <h2 className="text-light" style={{
                 backgroundColor: "#2e008b",
                 color: "white",
                 padding: "20px",
               }}>Why Choose Us</h2>
-              <p>We provide full service at every step.</p> */}
+              <p>We provide full service at every step.</p>
             </div>
           </div>
-        </div>
+        </div> */}
         {/* End .row */}
 
-        <div className="container">
-          <div className="row">
-            {/* <WhyChoose /> */}
-          </div>
-        </div>
+        {/* <div className="container">
+          <div className="row"><WhyChoose /></div>
+        </div> */}
         {/* End .row */}
         {/* </div> */}
       </section>
