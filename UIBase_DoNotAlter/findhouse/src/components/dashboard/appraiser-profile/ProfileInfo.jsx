@@ -20,20 +20,25 @@ const ProfileInfo = ({ setProfileCount }) => {
   const [edit, setEdit] = useState(!userData.broker_Details?.firstName);
 
   const [firstNameRef, setFirstNameRef] = useState(
-    userData?.broker_Details?.firstName || ""
+    userData?.brokerage_Details
+    ?.firstName || ""
   );
   const [middleNameRef, setMiddleNameRef] = useState(
-    userData?.broker_Details?.middleName || ""
+    userData?.brokerage_Details
+    ?.middleName || ""
   );
   const [lastNameRef, setLastNameRef] = useState(
-    userData?.broker_Details?.lastName || ""
+    userData?.brokerage_Details
+    ?.lastName || ""
   );
   const [companyNameRef, setCompanyNameRef] = useState(
-    userData?.broker_Details?.companyName || ""
+    userData?.brokerage_Details
+    ?.companyName || ""
   );
 
   const [profile, setProfile] = useState(
-    userData?.broker_Details?.profileImage || null
+    userData?.brokerage_Details
+    ?.profileImage || null
   );
 
   const [addressLineRef, setAddressLineRef] = useState(
@@ -48,17 +53,41 @@ const ProfileInfo = ({ setProfileCount }) => {
     userData?.broker_Details?.state || ""
   );
   const [zipcodeRef, setZipcodeRef] = useState(
-    userData?.broker_Details?.zipCode || ""
+    userData?.brokerage_Details
+    ?.zipCode || ""
   );
   const [phoneNumberRef, setPhoneNumberRef] = useState(
-    userData?.broker_Details?.phoneNumber || ""
+    userData?.brokerage_Details
+    ?.phoneNumber || ""
+  );
+
+  const [licenseNo, setLicenseNo] = useState(
+    userData?.brokerage_Details
+    ?.licenseNo || ""
+  );
+
+  const [assistantFirstName, setAssistantFirstName] = useState(
+    userData?.brokerage_Details
+    ?.licenseNo || ""
+  );
+
+  const [assistantLastName, setAssistantLastName] = useState(
+    userData?.brokerage_Details
+    ?.assistantLastName || ""
+  );
+
+  const [brokerageName, setBrokerageName] = useState(
+    userData?.brokerage_Details
+    ?.brokerageName || ""
   );
 
   const [mortgageBrokrageLicNoRef, setMortgageLicNoRef] = useState(
-    userData?.broker_Details?.mortageBrokerageLicNo || ""
+    userData?.brokerage_Details
+    ?.mortageBrokerageLicNo || ""
   );
   const [mortgageBrokerLicNoRef, setMortgageBrokerLicNoRef] = useState(
-    userData?.broker_Details?.mortageBrokerLicNo || ""
+    userData?.brokerage_Details
+    ?.mortageBrokerLicNo || ""
   );
 
   const uploadProfile = (e) => {
@@ -81,40 +110,40 @@ const ProfileInfo = ({ setProfileCount }) => {
 
   const onUpdatHandler = () => {
     const firstName =
-      firstNameRef !== "" ? firstNameRef : userData.broker_Details.firstName;
+      firstNameRef !== "" ? firstNameRef : userData.brokerage_Details.firstName;
     const lastName =
-      lastNameRef !== "" ? lastNameRef : userData.broker_Details.lastName;
+      lastNameRef !== "" ? lastNameRef : userData.brokerage_Details.lastName;
     const adressLine1 =
       addressLineRef !== ""
         ? addressLineRef
-        : userData.broker_Details.adressLine1;
-    const city = cityRef !== "" ? cityRef : userData.broker_Details.city;
-    const state = stateRef !== "" ? stateRef : userData.broker_Details.state;
+        : userData.brokerage_Details.adressLine1;
+    const city = cityRef !== "" ? cityRef : userData.brokerage_Details.city;
+    const state = stateRef !== "" ? stateRef : userData.brokerage_Details.state;
     const zipCode =
-      zipcodeRef !== "" ? zipcodeRef : userData.broker_Details.zipCode;
+      zipcodeRef !== "" ? zipcodeRef : userData.brokerage_Details.zipCode;
     const phoneNumber =
       phoneNumberRef !== ""
         ? phoneNumberRef
-        : userData.broker_Details.phoneNumber;
+        : userData.brokerage_Details.phoneNumber;
     const mortageBrokerLicNo =
       mortgageBrokerLicNoRef !== ""
         ? mortgageBrokerLicNoRef
-        : userData.broker_Details.mortageBrokerLicNo;
+        : userData.brokerage_Details.mortageBrokerLicNo;
     const mortageBrokerageLicNo =
       mortgageBrokrageLicNoRef !== ""
         ? mortgageBrokrageLicNoRef
-        : userData.broker_Details.mortageBrokerageLicNo;
+        : userData.brokerage_Details.mortageBrokerageLicNo;
 
     const adressLine2 =
       addressLineTwoRef !== ""
         ? addressLineTwoRef
-        : userData.broker_Details.adressLine2;
+        : userData.brokerage_Details.adressLine2;
     const middleName =
-      middleNameRef !== "" ? middleNameRef : userData.broker_Details.middleName;
+      middleNameRef !== "" ? middleNameRef : userData.brokerage_Details.middleName;
     const companyName =
       companyNameRef !== ""
         ? companyNameRef
-        : userData.broker_Details.companyName;
+        : userData.brokerage_Details.companyName;
 
     const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const nameRegex = /^[A-Za-z]+$/;
@@ -133,9 +162,7 @@ const ProfileInfo = ({ setProfileCount }) => {
         !city ||
         !state ||
         !zipCode ||
-        !phoneNumber ||
-        !mortageBrokerLicNo ||
-        !mortageBrokerageLicNo) &&
+        !phoneNumber) &&
       !userData
     ) {
       toast.error("All marked fields arent filled !!");
@@ -166,8 +193,8 @@ const ProfileInfo = ({ setProfileCount }) => {
         count--;
       }
 
-      const percentage = Math.floor(count / 13) * 100;
-      setProfileCount(percentage);
+      // const percentage = Math.floor(count / 13) * 100;
+      // setProfileCount(percentage);
 
       const payload = {
         id: userData.userId,
@@ -178,6 +205,7 @@ const ProfileInfo = ({ setProfileCount }) => {
         companyName: companyName,
         licenseNo: mortageBrokerLicNo,
         brokerageName: firstName,
+
         adressLine1: adressLine1,
         adressLine2: adressLine2,
         city: city,
@@ -187,22 +215,23 @@ const ProfileInfo = ({ setProfileCount }) => {
         phoneNumber: phoneNumber,
         mortageBrokerLicNo: mortageBrokerLicNo,
         mortgageBrokerageLicNoRef: mortageBrokerageLicNo,
+        assistantFirstName : assistantFirstName,
+        assistantLastName : assistantLastName,
         profileImage: SelectedImage,
       };
-
-      // console.log(payload);
 
       toast.loading("Updating ...");
       const encryptedData = encryptionData(payload);
       axios
-        .put("/api/updateBrokerProfile", encryptedData)
+        .put("/api/updateAppraiserProfile", encryptedData)
         .then((res) => {
           toast.success("Successfully Updated Profile!");
+         
           let data = userData;
-          data.broker_Details = res.data.userData.brokerage;
+          data.brokerage_Details = res.data.userData.broker;
           localStorage.removeItem("user");
           localStorage.setItem("user", JSON.stringify(data));
-          router.push("/my-dashboard");
+          router.push("/appraiser-dashboard");
         })
         .catch((err) => {
           toast.error(err.message);
@@ -695,7 +724,7 @@ const ProfileInfo = ({ setProfileCount }) => {
                     id="formGroupExampleInput3"
                     placeholder={
                       userData
-                        ? userData?.broker_Details?.city
+                        ? userData?.brokerage_Details?.city
                         : "Enter your city"
                     }
                     ref={cityRef}
@@ -720,7 +749,7 @@ const ProfileInfo = ({ setProfileCount }) => {
                     id="formGroupExampleInput3"
                     placeholder={
                       userData
-                        ? userData?.broker_Details?.state
+                        ? userData?.brokerage_Details?.state
                         : "Enter your state"
                     }
                     ref={stateRef}
@@ -745,7 +774,7 @@ const ProfileInfo = ({ setProfileCount }) => {
                     id="formGroupExampleInput3"
                     placeholder={
                       userData
-                        ? userData?.broker_Details?.zipCode
+                        ? userData?.brokerage_Details?.zipCode
                         : "Enter your zipcode"
                     }
                     ref={zipcodeRef}
@@ -770,7 +799,7 @@ const ProfileInfo = ({ setProfileCount }) => {
                     id="formGroupExampleInput3"
                     placeholder={
                       userData
-                        ? userData?.broker_Details?.phoneNumber
+                        ? userData?.brokerage_Details?.phoneNumber
                         : "Enter your phoneNumber"
                     }
                     ref={phoneNumberRef}
@@ -778,13 +807,13 @@ const ProfileInfo = ({ setProfileCount }) => {
                   />
                 </div>
               </div>*/}
-                {/* <div className="row">
+                 <div className="row">
                 <div className="col-lg-5 mb-2">
                   <label
                     htmlFor=""
                     style={{ paddingTop: "15px", fontWeight: "lighter" }}
                   >
-                    Mortgage Brokerage Lic. No. <span class="req-btn">*</span> :
+                    License No . 
                   </label>
                 </div>
                 <div className="col-lg-7">
@@ -792,23 +821,79 @@ const ProfileInfo = ({ setProfileCount }) => {
                     type="text"
                     className="form-control"
                     id="formGroupExampleInput3"
-                    placeholder={
-                      userData
-                        ? userData?.broker_Details?.mortageBrokerLicNo
-                        : "Enter your Bokerage Lic No"
-                    }
-                    ref={mortgageBrokrageLicNoRef}
-                    disabled={!edit}
-                  />
+                    value={licenseNo}
+                        onChange={(e) => setLicenseNo(e.target.value)}
+                        disabled={!edit}                  
+                      />
                 </div>
               </div>
+              <div className="row">
+              <div className="col-lg-5 mb-2">
+                <label
+                  htmlFor=""
+                  style={{ paddingTop: "15px", fontWeight: "lighter" }}
+                >
+                  Brokerage Name
+                </label>
+              </div>
+              <div className="col-lg-7">
+                <input
+                  type="text"
+                  className="form-control"
+                  id="formGroupExampleInput3"
+                  value={brokerageName}
+                      onChange={(e) => setBrokerageName(e.target.value)}
+                      disabled={!edit}                  
+                    />
+              </div>
+            </div>
+              <div className="row">
+              <div className="col-lg-5 mb-2">
+                <label
+                  htmlFor=""
+                  style={{ paddingTop: "15px", fontWeight: "lighter" }}
+                >
+                  Assistant First Name
+                </label>
+              </div>
+              <div className="col-lg-7">
+                <input
+                  type="text"
+                  className="form-control"
+                  id="formGroupExampleInput3"
+                  value={assistantFirstName}
+                      onChange={(e) => setAssistantFirstName(e.target.value)}
+                      disabled={!edit}                  
+                    />
+              </div>
+            </div>
+              <div className="row">
+              <div className="col-lg-5 mb-2">
+                <label
+                  htmlFor=""
+                  style={{ paddingTop: "15px", fontWeight: "lighter" }}
+                >
+                 Assistant Last Name
+                </label>
+              </div>
+              <div className="col-lg-7">
+                <input
+                  type="text"
+                  className="form-control"
+                  id="formGroupExampleInput3"
+                  value={assistantLastName}
+                      onChange={(e) => setAssistantLastName(e.target.value)}
+                      disabled={!edit}                  
+                    />
+              </div>
+            </div>
               <div className="row">
                 <div className="col-lg-5">
                   <label
                     htmlFor=""
                     style={{ paddingTop: "15px", fontWeight: "lighter" }}
                   >
-                    Mortgage Broker Licence No. <span class="req-btn">*</span> :
+                    Mortgage Broker Licence No.
                   </label>
                 </div>
                 <div className="col-lg-7">
@@ -816,16 +901,32 @@ const ProfileInfo = ({ setProfileCount }) => {
                     type="text"
                     className="form-control"
                     id="formGroupExampleInput3"
-                    placeholder={
-                      userData
-                        ? userData?.broker_Details?.mortageBrokerLicNo
-                        : "Enter your Broker Lic No"
-                    }
-                    ref={mortgageBrokerLicNoRef}
-                    disabled={!edit}
+                    value={mortgageBrokerLicNoRef}
+                        onChange={(e) => setMortgageBrokerLicNoRef(e.target.value)}
+                        disabled={!edit}
                   />
                 </div>
-              </div> */}
+              </div> 
+              <div className="row">
+                <div className="col-lg-5">
+                  <label
+                    htmlFor=""
+                    style={{ paddingTop: "15px", fontWeight: "lighter" }}
+                  >
+                    Mortgage Brokerage Licence No.
+                  </label>
+                </div>
+                <div className="col-lg-7">
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="formGroupExampleInput3"
+                    value={mortgageBrokrageLicNoRef}
+                        onChange={(e) => setMortgageLicNoRef(e.target.value)}
+                        disabled={!edit}
+                  />
+                </div>
+              </div> 
                 {edit && (
                   <div className="row mt-4">
                     <div className="col-xl-12">
@@ -838,7 +939,7 @@ const ProfileInfo = ({ setProfileCount }) => {
                           className="btn btn2 btn-dark"
                           onClick={onUpdatHandler}
                         >
-                          {userData?.broker_Details
+                          {userData?.brokerage_Details
                             ? "Update Profile"
                             : "Create Profile"}
                         </button>

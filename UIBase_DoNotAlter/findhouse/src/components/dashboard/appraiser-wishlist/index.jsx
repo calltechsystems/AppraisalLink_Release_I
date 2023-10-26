@@ -9,9 +9,100 @@ import FilterTopBar from "../../common/listing/FilterTopBar";
 import ShowFilter from "../../common/listing/ShowFilter";
 import SidebarListing from "../../common/listing/SidebarListing";
 import GridListButton from "../../common/listing/GridListButton";
-
+import { useEffect, useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const index = () => {
+
+  const [properties , setProperties ] = useState([]);
+  const [reload , setReload] = useState(false);
+  const [allProperties,setAllProperties] = useState([]);
+
+  useEffect(()=>{
+    setReload(false);
+  
+  },[reload]);
+
+  useEffect(()=>{
+    const data = JSON.parse(localStorage.getItem("user"));
+    if (!data) {
+      router.push("/login");
+    } else if (!data?.brokerage_Details?.firstName) {
+      router.push("/my-profile");
+    }
+    if (!data) {
+      router.push("/login");
+    }
+
+    let tempId = [];
+    const func = ()=>{
+    axios.get("/api/appraiserWishlistedProperties",
+    {
+     headers: {
+       Authorization:`Bearer ${data?.token}`,
+       "Content-Type":"application/json"
+     }
+   })
+   .then((res) => {
+    const tempData = res.data.data.$values;
+    const responseData = tempData.filter((prop,index)=>{
+      if(prop.userId === data.userId){
+        return true;
+      }
+      else{
+        return false;
+      }
+    })
+    tempId =responseData;
+    setProperties(responseData);
+   })
+   .catch((err) => {
+     toast.error(err?.response?.data?.error);
+   });
+ }
+ func();
+},[]);
+
+
+useEffect(()=>{
+
+  const data = JSON.parse(localStorage.getItem("user"));
+  if (!data) {
+    router.push("/login");
+  } else if (!data?.brokerage_Details?.firstName) {
+    router.push("/my-profile");
+  }
+  if (!data) {
+    router.push("/login");
+  }
+ const func2 = ()=>{
+  axios
+  .get("/api/getAllListedProperties", {
+    headers: {
+      Authorization: `Bearer ${data?.token}`,
+      "Content-Type": "application/json",
+    },
+  })
+  .then((res) => {
+    toast.dismiss();
+
+    const tempData = res.data.data.properties.$values;
+    const responseData = tempData.filter((prop) => {
+      return properties.some((data) => {
+        return data.propertyId === prop.propertyId;
+      });
+    })
+    setAllProperties(responseData);
+  })
+  .catch((err) => {
+    toast.dismiss();
+    toast.error(err?.response?.data?.error);
+  });
+}
+func2();
+
+  }, [properties]);
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -89,7 +180,7 @@ const index = () => {
                         {/* End .row */}
 
                         <div className="row">
-                          <FeaturedItem />
+                          <FeaturedItem data = {allProperties} setReload = {setReload}/>
                         </div>
                         {/* End .row */}
 

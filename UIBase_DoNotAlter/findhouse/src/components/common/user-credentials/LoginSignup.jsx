@@ -310,7 +310,7 @@ if (passwordRegex.test(event.target.value)) {
                     </Link>
                   </p>
                 </form>
-              </div>
+              </div>6
               {/* End .col .login_form */}
             </div>
           </div>
@@ -428,7 +428,7 @@ if (passwordRegex.test(event.target.value)) {
                   </div>
                       {/* End .row */}
 
-                      <  Captcha verified = {setCaptchaVerified} />
+                      {/*<  Captcha verified = {setCaptchaVerified} />*/}
                     </>
                   )}
 

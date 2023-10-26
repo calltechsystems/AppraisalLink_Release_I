@@ -5,9 +5,124 @@ import Filtering from "./Filtering";
 import AllStatistics from "./AllStatistics";
 import StatisticsPieChart from "./StatisticsPieChart";
 import StatisticsChart from "./StatisticsChart";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const Index = () => {
   const userData = JSON.parse(localStorage.getItem("user"));
+  const [properties,setProperties] = useState([]);
+
+  const [allProperties , setAllProperties] = useState([]);
+
+  const [chartData , setChartData] = useState([]);
+
+
+  useEffect(()=>{
+    const data = JSON.parse(localStorage.getItem("user"));
+    if (!data) {
+      router.push("/login");
+    } else if (!data?.brokerage_Details?.firstName) {
+      router.push("/my-profile");
+    }
+    if (!data) {
+      router.push("/login");
+    }
+
+    let tempId = [];
+    const func = ()=>{
+    axios.get("/api/appraiserWishlistedProperties",
+    {
+     headers: {
+       Authorization:`Bearer ${data?.token}`,
+       "Content-Type":"application/json"
+     }
+   })
+   .then((res) => {
+    const tempData = res.data.data.$values;
+    const responseData = tempData.filter((prop,index)=>{
+      if(prop.userId === data.userId){
+        return true;
+      }
+      else{
+        return false;
+      }
+    })
+    tempId =responseData;
+    setProperties(responseData);
+   })
+   .catch((err) => {
+     toast.error(err?.response?.data?.error);
+   });
+ }
+ func();
+},[]);
+
+
+useEffect(()=>{
+
+  const data = JSON.parse(localStorage.getItem("user"));
+  if (!data) {
+    router.push("/login");
+  } else if (!data?.brokerage_Details?.firstName) {
+    router.push("/my-profile");
+  }
+  if (!data) {
+    router.push("/login");
+  }
+ const func2 = ()=>{
+  axios
+  .get("/api/getAllListedProperties", {
+    headers: {
+      Authorization: `Bearer ${data?.token}`,
+      "Content-Type": "application/json",
+    },
+  })
+  .then((res) => {
+    toast.dismiss();
+
+    const tempData = res.data.data.properties.$values;
+    const responseData = tempData.filter((prop) => {
+      return properties.some((data) => {
+        return data.propertyId === prop.propertyId;
+      });
+    })
+    setAllProperties(responseData);
+  })
+  .catch((err) => {
+    toast.dismiss();
+    toast.error(err?.response?.data?.error);
+  });
+}
+func2();
+
+  }, [properties]);
+
+  useEffect(()=>{
+    const categorizeDataByMonth = (data) => {
+      if (data.length === 0) {
+          return Array(12).fill(0); // Initialize an array with 12 elements, all initialized to 0.
+      }
+  
+      const currentMonth = new Date().getMonth();
+  
+      const countsByMonth = Array(currentMonth+1).fill(0);
+  
+      data.forEach((property) => {
+          const createdAtDate = new Date(property.addedDatetime);
+          const month = createdAtDate.getMonth();
+  
+          if (month <= currentMonth) {
+              countsByMonth[month]++;
+          }
+      });
+  
+      return countsByMonth;
+  };
+  const temp = categorizeDataByMonth(allProperties);
+  setChartData(temp);
+ console.log(temp);
+  },[allProperties]);
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -81,18 +196,26 @@ const Index = () => {
               {/* End .row Dashboard top statistics */}
 
               <div className="row">
-                <div className="col-xl-6">
-                  <div className="application_statics">
-                    <h4 className="mb-4">Appraised Property</h4>
-                    <StatisticsChart />
-                  </div>
-                 </div> 
-                 <div className="col-xl-6">
-                 <div className="application_statics">
-                   <h4 className="mb-4">Appraised Property</h4>
-                   <StatisticsPieChart />
-                 </div>
-                </div> 
+              <div className="col-xl-6">
+              <div className="application_statics">
+                <h4 className="mb-4">View Statistics</h4>
+                {chartData.length > 0 ? (
+                  <StatisticsChart data={chartData} />
+                ) : (
+                  <p>Loading...</p> // You can replace this with a loading indicator
+                )}
+              </div>
+            </div>
+            <div className="col-xl-6">
+              <div className="application_statics">
+                <h4 className="mb-4">View Statistics</h4>
+                {chartData.length > 0 ? (
+                 <StatisticsPieChart data = {chartData}/>
+                ) : (
+                  <p>Loading...</p> // You can replace this with a loading indicator
+                )}
+              </div>
+            </div>
 
                 {/* End statistics chart */}
 

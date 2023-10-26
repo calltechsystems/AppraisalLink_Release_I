@@ -58,19 +58,19 @@ const monthNames = [
   "Jun",
   "Jul",
   "Aug",
-  "Sep",
+  "Sept",
   "Oct",
   "Nov",
   "Dec",
 ];
 const labels = monthNames.slice(0, currentMonth + 1);
 
-export const data = {
+export const tempData = {
   labels,
   datasets: [
     {
       label: "Dataset",
-      data: labels.map(() => faker.datatype.number({ min: 100, max: 400 })),
+      data: labels?.map(() => faker.datatype.number({ min: 100, max: 400 })),
       borderColor: "rgb(255, 99, 132)",
       backgroundColor: "rgba(255, 99, 132, 0.5)",
       fill: false,
@@ -78,6 +78,22 @@ export const data = {
   ],
 };
 
-export default function StatisticsChart() {
-  return <Line options={options} data={data} />;
+
+
+export default function StatisticsChart({data}) {
+
+  const customData = {
+    labels,
+    datasets: [
+      {
+        label: "Dataset",
+        data: data,
+        borderColor: "rgb(255, 99, 132)",
+        backgroundColor: "rgba(255, 99, 132, 0.5)",
+        fill: false,
+      },
+    ],
+  };
+
+  return <Line options={options} data={customData} />;
 }

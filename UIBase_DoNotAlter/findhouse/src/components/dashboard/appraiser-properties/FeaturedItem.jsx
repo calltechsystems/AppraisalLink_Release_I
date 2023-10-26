@@ -6,6 +6,7 @@ import properties from "../../../data/properties";
 import Image from "next/image";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { encryptionData } from "../../../utils/dataEncryption";
 
 const FeaturedItem = ({ setModalOpen }) => {
   const [data, setData] = useState([]);
@@ -31,24 +32,37 @@ const FeaturedItem = ({ setModalOpen }) => {
 
   // keyword filter
   const keywordHandler = (item) =>
-    item.title.toLowerCase().includes(keyword?.toLowerCase());
+    item.community.toLowerCase().includes(keyword?.toLowerCase())||
+    item.city.toLowerCase().includes(keyword?.toLowerCase())||
+    item.area.toLowerCase().includes(keyword?.toLowerCase())||
+    item.typeOfBuilding.toLowerCase().includes(keyword?.toLowerCase())||
+    item.state.toLowerCase().includes(keyword?.toLowerCase())||
+    item.streetNumber.toLowerCase().includes(keyword?.toLowerCase())||
+    item.streetName.toLowerCase().includes(keyword?.toLowerCase());
+
 
   // location handler
   const locationHandler = (item) => {
-    return item.location.toLowerCase().includes(location.toLowerCase());
+    item.city.toLowerCase().includes(keyword?.toLowerCase())||
+    item.area.toLowerCase().includes(keyword?.toLowerCase())||
+    item.state.toLowerCase().includes(keyword?.toLowerCase())||
+    item.streetNumber.toLowerCase().includes(keyword?.toLowerCase())||
+    item.streetName.toLowerCase().includes(keyword?.toLowerCase());
   };
 
   // status handler
   const statusHandler = (item) =>
-    item.type.toLowerCase().includes(status.toLowerCase());
+  item.community.toLowerCase().includes(keyword?.toLowerCase())||
+  item.typeOfBuilding.toLowerCase().includes(keyword?.toLowerCase());
 
   // properties handler
   const propertiesHandler = (item) =>
-    item.type.toLowerCase().includes(propertyType.toLowerCase());
+  item.community.toLowerCase().includes(keyword?.toLowerCase())||
+  item.typeOfBuilding.toLowerCase().includes(keyword?.toLowerCase());
 
   // price handler
   const priceHandler = (item) =>
-    item.price < price?.max && item.price > price?.min;
+    item.bidLowerRange < price?.max && item.bidUpperRange > price?.min;
 
   // bathroom handler
   const bathroomHandler = (item) => {
@@ -98,6 +112,35 @@ const FeaturedItem = ({ setModalOpen }) => {
     }
     return true;
   };
+
+  const onWishlistHandler = (id) =>{
+
+    
+
+    const userData = JSON.parse(localStorage.getItem("user"));
+
+    const formData = {
+      userId : userData.userId,
+      propertyId : id,
+      token : userData.token
+    }
+
+    const payload = encryptionData(formData);
+
+    toast.loading("Setting this property into your wishlist");
+    axios.post("/api/addToWishlist",payload)
+    .then((res) => {
+      toast.dismiss();
+      toast.success("Successfully added !!! ");
+     console.log(res);
+     
+    })
+    .catch((err) => {
+      toast.dismiss();
+      toast.error(err?.response?.data?.error);
+    });
+    
+  }
 
   // status filter
   const statusTypeHandler = (a, b) => {
@@ -239,9 +282,9 @@ const FeaturedItem = ({ setModalOpen }) => {
                 }}
               >
                 {/* <Link href="/agent-v1">{item.posterName}</Link> */}
-                <a href="#">
-                  <span className="flaticon-heart text-color"></span>
-                </a>
+                <button onClick={()=>onWishlistHandler(item.propertyId)}>
+                  <span className="flaticon-heart text-color "></span>
+                </button>
               </li>
             </ul>
             {/* <div className="fp_pdate float-end">{item.postedYear}</div> */}

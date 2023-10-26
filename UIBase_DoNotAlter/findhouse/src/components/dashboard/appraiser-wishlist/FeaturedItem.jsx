@@ -5,7 +5,7 @@ import { addLength } from "../../../features/properties/propertiesSlice";
 import properties from "../../../data/properties";
 import Image from "next/image";
 
-const FeaturedItem = () => {
+const FeaturedItem = ({data , setReload}) => {
   const {
     keyword,
     location,
@@ -27,24 +27,37 @@ const FeaturedItem = () => {
 
   // keyword filter
   const keywordHandler = (item) =>
-    item.title.toLowerCase().includes(keyword?.toLowerCase());
+    item.community.toLowerCase().includes(keyword?.toLowerCase())||
+    item.city.toLowerCase().includes(keyword?.toLowerCase())||
+    item.area.toLowerCase().includes(keyword?.toLowerCase())||
+    item.typeOfBuilding.toLowerCase().includes(keyword?.toLowerCase())||
+    item.state.toLowerCase().includes(keyword?.toLowerCase())||
+    item.streetNumber.toLowerCase().includes(keyword?.toLowerCase())||
+    item.streetName.toLowerCase().includes(keyword?.toLowerCase());
+
 
   // location handler
   const locationHandler = (item) => {
-    return item.location.toLowerCase().includes(location.toLowerCase());
+    item.city.toLowerCase().includes(keyword?.toLowerCase())||
+    item.area.toLowerCase().includes(keyword?.toLowerCase())||
+    item.state.toLowerCase().includes(keyword?.toLowerCase())||
+    item.streetNumber.toLowerCase().includes(keyword?.toLowerCase())||
+    item.streetName.toLowerCase().includes(keyword?.toLowerCase());
   };
 
   // status handler
   const statusHandler = (item) =>
-    item.type.toLowerCase().includes(status.toLowerCase());
+  item.community.toLowerCase().includes(keyword?.toLowerCase())||
+  item.typeOfBuilding.toLowerCase().includes(keyword?.toLowerCase());
 
   // properties handler
   const propertiesHandler = (item) =>
-    item.type.toLowerCase().includes(propertyType.toLowerCase());
+  item.community.toLowerCase().includes(keyword?.toLowerCase())||
+  item.typeOfBuilding.toLowerCase().includes(keyword?.toLowerCase());
 
   // price handler
   const priceHandler = (item) =>
-    item.price < price?.max && item.price > price?.min;
+    item.bidLowerRange < price?.max && item.bidUpperRange > price?.min;
 
   // bathroom handler
   const bathroomHandler = (item) => {
@@ -117,24 +130,19 @@ const FeaturedItem = () => {
     return true;
   };
 
-  // status handler
-  let content = properties
-    ?.slice(0, 9)
-    ?.filter(keywordHandler)
-    ?.filter(locationHandler)
-    ?.filter(statusHandler)
-    ?.filter(propertiesHandler)
-    ?.filter(priceHandler)
-    ?.filter(bathroomHandler)
-    ?.filter(bedroomHandler)
-    ?.filter(garagesHandler)
-    ?.filter(builtYearsHandler)
-    ?.filter(areaHandler)
-    ?.filter(advanceHandler)
-    ?.sort(statusTypeHandler)
-    ?.filter(featuredHandler)
-    .map((item) => (
-      <div className="col-md-6" key={item.id}>
+  const removeFromWishlist = ()=>{
+
+  }
+
+  let content = data
+    // ?.filter(keywordHandler)
+    // ?.filter(locationHandler)
+    // ?.filter(statusHandler)
+    // ?.filter(propertiesHandler)
+    // ?.filter(priceHandler)
+    // ?.sort(statusTypeHandler)
+    .map((item) => {
+      return <div className="col-md-6" key={item.id}>
         <div className="feat_property home7 style4">
           <div className="thumb">
             {/* <Image
@@ -145,13 +153,13 @@ const FeaturedItem = () => {
               alt="fp1.jpg"
             /> */}
             <div className="thmb_cntnt">
-              <ul className="tag mb0">
+              {/*<ul className="tag mb0">
                 {item.saleTag.map((val, i) => (
                   <li className="list-inline-item" key={i}>
                     <a href="#">{val}</a>
                   </li>
                 ))}
-              </ul>
+                </ul>*/}
               <ul className="icon mb0">
                 <li className="list-inline-item">
                   <a href="#">
@@ -169,25 +177,25 @@ const FeaturedItem = () => {
                 href={`/listing-details-v1/${item.id}`}
                 className="fp_price"
               >
-                ${item.price}
+                ${item.bidLowerRange} - ${item.bidUpperRange}
                 <small>/mo</small>
               </Link>
             </div>
           </div>
           <div className="details">
             <div className="tc_content">
-              <p className="text-thm">{item.type}</p>
+              <p className="text-thm">{item.typeOfBuilding}</p>
               <h4>
                 <Link href={`/listing-details-v1/${item.id}`}>
-                  {item.title}
+                  {item.community}
                 </Link>
               </h4>
               <p>
                 <span className="flaticon-placeholder"></span>
-                {item.location}
+                {item.area} {item.city} {item.state} {item.zipCode}
               </p>
 
-              <ul className="prop_details mb0">
+              {/*<ul className="prop_details mb0">
                 {item.itemDetails.map((val, i) => (
                   <li className="list-inline-item" key={i}>
                     <a href="#">
@@ -195,7 +203,7 @@ const FeaturedItem = () => {
                     </a>
                   </li>
                 ))}
-              </ul>
+                </ul>*/}
             </div>
             {/* End .tc_content */}
 
@@ -223,12 +231,12 @@ const FeaturedItem = () => {
           </div>
         </div>
       </div>
-    ));
+                });
 
   // add length of filter items
   useEffect(() => {
-    dispatch(addLength(content.length));
-  }, [dispatch, content]);
+    dispatch(addLength(data.length));
+  }, [dispatch, data]);
   return <>{content}</>;
 };
 

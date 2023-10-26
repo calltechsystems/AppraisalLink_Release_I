@@ -43,7 +43,8 @@ export const options = {
   },
 };
 
-const currentMonth = new Date().getMonth();
+
+const currentMonth = new Date().getMonth(); // Get the current month (0-11)
 const monthNames = [
   "Jan",
   "Feb",
@@ -53,7 +54,7 @@ const monthNames = [
   "Jun",
   "Jul",
   "Aug",
-  "Sep",
+  "Sept",
   "Oct",
   "Nov",
   "Dec",
@@ -65,7 +66,7 @@ export const tempData = {
   datasets: [
     {
       label: "Dataset",
-      data: labels.map(() => faker.datatype.number({ min: 100, max: 400 })),
+      data: labels?.map(() => faker.datatype.number({ min: 100, max: 400 })),
       backgroundColor: "rgba(7, 5, 79, 0.8)",
       borderColor: "rgb(7, 5, 79)",
       borderWidth: 1,
@@ -74,5 +75,18 @@ export const tempData = {
 };
 
 export default function StatisticsChart({data}) {
-  return <Bar options={options} data={data ? data : tempData} />;
+
+  const customData = {
+    labels,
+    datasets: [
+      {
+        label: "Dataset",
+        data:data,
+        backgroundColor: "rgba(7, 5, 79, 0.8)",
+        borderColor: "rgb(7, 5, 79)",
+        borderWidth: 1,
+      },
+    ],
+  };
+  return <Bar options={options} data={customData} />;
 }

@@ -9,7 +9,7 @@ const nextConfig = {
     CLOUDINARY_CLOUD_NAME: "dcrq3m6dx",
     CLOUDINARY_API_KEY: "121866971488326",
     CLOUDINARY_API_SECRET: "FFNmV8H7NH3euKmH0wf1bFqfZjI",
-    BACKEND_DOMAIN: "https://calltech20231013122502.azurewebsites.net/api",
+    BACKEND_DOMAIN: "http://calltech-prod.us-east-1.elasticbeanstalk.com/api",
   },
   images: {
     domains: [

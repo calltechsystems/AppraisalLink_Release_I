@@ -1,20 +1,123 @@
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/router";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { encryptionData } from "../../utils/dataEncryption";
 
 const Form = () => {
   const router = useRouter();
 
   const [show, setShow] = useState(false);
 
-  const onCloseHandler = () => {
+  const tokenRef = useRef("");
+  const newPassword = useRef("");
+  const newPasswordConfirm = useRef("");
+  const emailRef = useRef("");
+
+  const onCloseHandler = () =>{
     console.log("in");
   };
 
-  const onClickHandler = () => {
-    setShow(true);
-  };
+  const onClickHandler = () =>{
+
+    const email = emailRef.current.value;
+    if(email === ""){
+      toast.error("Registered email should be filled !");
+    }
+    else{
+      const formData = {
+        email : email
+      };
+
+      const payload = encryptionData(formData);
+      toast.loading("Sending the token to this email");
+      axios.post("/api/sendResetToken",payload)
+      .then((res)=>{
+        toast.dismiss();
+        setShow(true);
+        toast.success("Sent Successfully");
+      })
+      .catch((err)=>{
+        toast.dismiss();
+        toast.error("Try again");
+      })
+    }
+    
+  }
+
+  const onSubmitHnadler = () =>{
+
+    const email = emailRef.current.value;
+    const newPasswordRef = newPassword.current.value;
+    const newPasswordConfirmRef = newPasswordConfirm.current.value;
+    const token = tokenRef.current.value;
+    if(email === ""){
+      toast.error("Registered email should be filled !");
+    }
+
+    if(token === ""){
+      toast.error("Please provide the token !");
+    }
+
+    if(newPasswordRef !== newPasswordConfirmRef){
+      toast.error("provide the same password");
+    }
+
+    else{
+      const formData = {
+        email : email,
+        newPassword : newPasswordRef,
+        token : token
+      };
+
+      const payload = encryptionData(formData);
+      toast.loading("Reseting password ....");
+      axios.post("/api/resetForgotPassword",payload)
+      .then((res)=>{
+        toast.dismiss();
+        setShow(true);
+        toast.success("Password set Successfully");
+        router.push("/login");
+      })
+      .catch((err)=>{
+        toast.dismiss();
+        toast.error("Try again");
+      })
+    }
+
+
+
+    
+  }
+
+  const resentOTPHnadler = () =>{
+
+    const email = emailRef.current.value;
+    if(email === ""){
+      toast.error("Registered email should be filled !");
+    }
+    else{
+      const formData = {
+        email : email
+      };
+
+      const payload = encryptionData(formData);
+      toast.loading("Re sending the token to this email");
+      axios.post("/api/sendResetToken",payload)
+      .then((res)=>{
+        toast.dismiss();
+        setShow(true);
+        toast.success("Sent Successfully");
+      })
+      .catch((err)=>{
+        toast.dismiss();
+        toast.error("Try again");
+      })
+    }
+  }
+
   return (
     <>
       <div className="row">
@@ -42,6 +145,7 @@ const Form = () => {
               <input
                 type="email"
                 className="form-control"
+                ref={emailRef}
                 required
                 placeholder="Email Address"
               />

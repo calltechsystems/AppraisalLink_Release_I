@@ -98,10 +98,10 @@ const Pricing = ({isPlan,hideButton,selectedId,setModalOpen,data,setPrice}) => {
                  ))}
                 </ul>
               <div className="pricing_header">
-                <h2 className="text-light">${item.amount}</h2>
+                <h2 className="text-light">${isPlan === 1 ? item.monthlyAmount - item.discount : item.yearlyAmount - item.discount}</h2>
                 </div>
               </div>
-              {!hideButton && (<div className="pricing_footer" onClick={()=>selectPackageHandler(item.id,item.description,item.amount)}>
+              {!hideButton && (<div className="pricing_footer" onClick={()=>selectPackageHandler(item.id,item.description,isPlan === 1 ? item.monthlyAmount - item.discount : item.yearlyAmount - item.discount)}>
                 <a className={`btn pricing_btn btn-block w-100`}  href="#">
                    {selectedId!==item.id ? !selectedId ? "Select Plan":"Change Plan":"Upgrade" }
                 </a>
