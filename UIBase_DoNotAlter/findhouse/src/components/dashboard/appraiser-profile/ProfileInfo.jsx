@@ -7,7 +7,7 @@ import axios from "axios";
 import { CldUploadWidget } from "next-cloudinary";
 import toast from "react-hot-toast";
 
-const ProfileInfo = ({ setProfileCount }) => {
+const ProfileInfo = ({ setProfileCount , setShowCard}) => {
   const [profilePhoto, setProfilePhoto] = useState(null);
   let userData = JSON.parse(localStorage.getItem("user")) || {};
   const router = useRouter();
@@ -231,6 +231,7 @@ const ProfileInfo = ({ setProfileCount }) => {
           data.brokerage_Details = res.data.userData.broker;
           localStorage.removeItem("user");
           localStorage.setItem("user", JSON.stringify(data));
+          setShowCard(true);
           router.push("/appraiser-dashboard");
         })
         .catch((err) => {

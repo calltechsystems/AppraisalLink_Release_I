@@ -14,23 +14,29 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const Index = ({isView,propertyData}) => {
+
+  if(!propertyData)
+   return ;
+
   const [isDisable,setDisable] = useState(isView);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   let userData =  (JSON.parse(localStorage.getItem("user")));  
+
+  const [updatedProperty , setUpdatedProperty] = useState([]);
   
   const router = useRouter();
-  const [streetNameRef , setStreetNameRef]= useState(propertyData?.streetName || null);
-  const [streetNumberRef , setStreetNumberRef]= useState(propertyData?.streetNumber || null);
-  const [cityRef , setCityRef]= useState(propertyData?.city || null);
-  const [stateRef , setStateRef]= useState(propertyData?.state || null);
+  const [streetNameRef , setStreetNameRef]= useState(propertyData?.streetName ? propertyData?.streetName : "Add the street name");
+  const [streetNumberRef , setStreetNumberRef]= useState(propertyData?.streetNumber || "");
+  const [cityRef , setCityRef]= useState(propertyData?.city || "");
+  const [stateRef , setStateRef]= useState(propertyData?.state || "");
   const [zipCodeRef ,setZipCodeRef]= useState(propertyData?.zipCode ||  null);
   const [areaRef , setAreaRef]= useState( propertyData?.area || null);
   const [communityRef , setCommunityRef] = useState(propertyData?.community || null);
   const [buildinRef , setBuildinRef]= useState(propertyData?.typeOfBuilding || null);
   const [urgencyRef , setUrgencyRef]= useState(propertyData?.urgency || null);
-  const [bidLowerRangeRef , setBidLowerRangeRef] = useState(propertyData?.lowerRangeBid || null)
+  const [bidLowerRangeRef , setBidLowerRangeRef] = useState(propertyData?.bidLowerRange || null)
   
   const [applicantFirstName , setApplicantFirstName] = useState(propertyData?.applicantFirstName || null);
   const [applicantLatsName , setApplicantLastName] = useState(propertyData?.applicantLastName || null);
@@ -347,13 +353,14 @@ const Index = ({isView,propertyData}) => {
                     
                     </h5>
                      <div className="text-center" style={{display:'flex',flexDirection:"column"}}>
-                      <label>Property Name</label>
-                      <label>Property Name</label>
-                      <label>Property Name</label>
-                      <label>Property Name</label>
-                      <label>Property Name</label>
-                      <label>Property Name</label>
-                      <label>Property Name</label>
+                      <label>Property Value : ${bidLowerRangeRef}</label>
+                      <label>community Type : {communityRef}</label>
+                      <label>Property type : {buildinRef}</label>
+                      <label>{streetNameRef} {streetNumberRef} {cityRef}</label>
+                      <label>zipCode : {zipCodeRef}</label>
+                      <label>Property By : {applicantFirstName} {applicantLatsName}</label>
+                      <label>{applicantEmail} - {applicantNumber}</label>
+                     
                       <button className="btn w-35 btn-white" onClick={()=>onCancelHandler()}>
                         Cancel
                       </button>

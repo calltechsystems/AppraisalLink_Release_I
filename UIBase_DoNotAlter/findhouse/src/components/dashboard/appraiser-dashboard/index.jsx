@@ -8,9 +8,11 @@ import StatisticsChart from "./StatisticsChart";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { Router, useRouter } from "next/router";
 
 const Index = () => {
   const userData = JSON.parse(localStorage.getItem("user"));
+  const router = useRouter();
   const [properties,setProperties] = useState([]);
 
   const [allProperties , setAllProperties] = useState([]);

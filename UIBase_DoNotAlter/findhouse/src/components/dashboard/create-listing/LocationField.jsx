@@ -2,6 +2,7 @@ import { current } from "@reduxjs/toolkit";
 
 
 const LocationField = ({isDisable,streetNameRef , setStreetNameRef,streetNumberRef ,setStreetNumberRef, cityRef ,setCityRef,setZipCodeRef, stateRef ,setStateRef,handleZipCodeChange,zipCodeRef,areaRef ,setAreaRef ,propertyData,setDisable}) => {
+  
   return (
     <>
       <div className="row">

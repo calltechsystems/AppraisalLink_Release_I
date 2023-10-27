@@ -9,9 +9,14 @@ import Form from "./Form";
 
 const Index = () => {
   const [profileCount, setProfileCount] = useState(7);
+
+  const [showCard , setShowCard] = useState(true);
   let userData = JSON.parse(localStorage.getItem("user"));
   const router = useRouter();
 
+  const chnageShowCardHandler = (val)=>{
+    setShowCard(val);
+  }
   // if (!userData) {
   //   router.push("/login");
   // } else if (!userData?.broker_Details?.firstName) {
@@ -76,13 +81,13 @@ const Index = () => {
                         <h4>Personal Information</h4>
                       </div> */}
                       <div className="col-xl-12">
-                        <div className="mb-5">
-                          <Form />
-                        </div>
-                        <ProfileInfo
+                       {showCard === true ? <div className="mb-5">
+                          <Form userData = {userData} chnageShowCardHandler={chnageShowCardHandler}/>
+                        </div> : <ProfileInfo
                           profileCount={profileCount}
                           setProfileCount={setProfileCount}
-                        />
+                          setShowCard={setShowCard}
+                        /> }
                       </div>
                     </div>
                   </div>

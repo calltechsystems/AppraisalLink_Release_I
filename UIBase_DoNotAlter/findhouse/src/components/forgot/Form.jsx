@@ -72,6 +72,8 @@ const Form = () => {
         token : token
       };
 
+      console.log(formData);
+
       const payload = encryptionData(formData);
       toast.loading("Reseting password ....");
       axios.post("/api/resetForgotPassword",payload)
@@ -135,7 +137,7 @@ const Form = () => {
         </div>
 
         <div className="col-lg-6 pt60 ">
-          <form action="#" style={{ padding: "20px" }}>
+          <div  style={{ padding: "20px" }}>
             <div className="heading text-center">
               <h3>Reset your password via registered email.</h3>
             </div>
@@ -173,6 +175,7 @@ const Form = () => {
               <div className="input-group mb-2 mr-sm-2">
                 <input
                   type="number"
+                  ref={tokenRef}
                   className="form-control mb-2"
                   required
                   placeholder="Enter OTP"
@@ -190,6 +193,7 @@ const Form = () => {
               <div className="input-group mb-2 mr-sm-2">
                 <input
                   type="password"
+                  ref={newPassword}
                   className="form-control mb-2"
                   required
                   placeholder="New password"
@@ -206,6 +210,7 @@ const Form = () => {
               <div className="input-group mb-2 mr-sm-2">
                 <input
                   type="password"
+                  ref={newPasswordConfirm}
                   className="form-control mb-2"
                   required
                   placeholder="Confirm password"
@@ -238,7 +243,7 @@ const Form = () => {
             {/* End .input-group */}
 
             {show && (
-              <button type="submit" className="btn btn-log w-100 btn-thm">
+              <button onClick={onSubmitHnadler} className="btn btn-log w-100 btn-thm">
                 Submit
               </button>
             )}
@@ -266,7 +271,7 @@ const Form = () => {
               {/* End .col */}
             </div>
             {/* more signin options */}
-          </form>
+          </div>
         </div>
       </div>
     </>

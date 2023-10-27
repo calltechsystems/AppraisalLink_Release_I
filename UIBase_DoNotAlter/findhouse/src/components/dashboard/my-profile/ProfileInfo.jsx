@@ -7,7 +7,7 @@ import axios from "axios";
 import { CldUploadWidget } from "next-cloudinary";
 import toast from "react-hot-toast";
 
-const ProfileInfo = ({ setProfileCount }) => {
+const ProfileInfo = ({ setProfileCount , setShowCard }) => {
   const [profilePhoto, setProfilePhoto] = useState(null);
   let userData = JSON.parse(localStorage.getItem("user")) || {};
   const router = useRouter();
@@ -17,7 +17,7 @@ const ProfileInfo = ({ setProfileCount }) => {
       "/assets/images/team/Gary-Avatar.png"
   );
 
-  const [edit, setEdit] = useState(!userData.broker_Details?.firstName);
+  const [edit, setEdit] = useState(true);
 
   const [firstNameRef, setFirstNameRef] = useState(
     userData?.broker_Details?.firstName || ""
@@ -203,6 +203,7 @@ const ProfileInfo = ({ setProfileCount }) => {
           localStorage.removeItem("user");
           localStorage.setItem("user", JSON.stringify(data));
           router.push("/my-dashboard");
+          setShowCard(true);
         })
         .catch((err) => {
           toast.error(err.message);
@@ -266,21 +267,7 @@ const ProfileInfo = ({ setProfileCount }) => {
       <div className="row">
         {/* <h4 className="mb-3">Personal Information</h4> */}
         <div className="col-lg-12"></div>
-        {!edit && (
-          <div>
-            <button
-              className="btn btn2 btn-color profile_edit_button"
-              onClick={changeEditHandler}
-            >
-              <span
-                className="flaticon-edit"
-                data-toggle="tooltip"
-                data-placement="top"
-                title="Edit Profile"
-              ></span>
-            </button>
-          </div>
-        )}
+        
         <div className="col-lg-12 col-xl-12 mt-2">
           <div className="my_profile_setting_input form-group">
             <div className="row">

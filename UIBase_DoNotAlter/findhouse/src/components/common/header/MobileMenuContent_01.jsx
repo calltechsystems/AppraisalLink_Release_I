@@ -38,7 +38,7 @@ const SidebarMenu = () => {
     {
       id: 2,
       name: "Change Password",
-      route: "/appraiser-change-password",
+      route: "/broker-change-password",
       icon: "flaticon-box",
     },
     { id: 3, name: "Logout", route: "/login", icon: "flaticon-logout" },
