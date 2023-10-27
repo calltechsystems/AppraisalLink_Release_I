@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-const index = () => {
+const Index = () => {
 
   const [properties , setProperties ] = useState([]);
   const [reload , setReload] = useState(false);
@@ -249,4 +249,4 @@ func2();
   );
 };
 
-export default index;
+export default Index;
