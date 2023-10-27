@@ -15,9 +15,6 @@ import toast from "react-hot-toast";
 
 const Index = ({isView,propertyData}) => {
 
-  if(!propertyData)
-   return ;
-
   const [isDisable,setDisable] = useState(isView);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -72,17 +69,13 @@ const Index = ({isView,propertyData}) => {
         propertyStatus : true,
         token:userData.token
     };
-    if(!nameRegex.test(payload.applicantFirstName) && payload.applicantFirstName !== ""    || !nameRegex.test(payload.applicantLastName && payload.applicantLastName !== "" ) ){
-      toast.error("Name should be valid ");
-    }
-    else if(!phoneNumberRegex.test(payload.applicantPhoneNumber) && payload.applicantPhoneNumber !== "" ){
-      toast.error("enter a valid phone number please");
-    }
+    if(!payload.streetName || !payload.streetNumber || !payload.city || !payload.state || !payload.zipCode 
+      || !payload.area || !payload.community || !payload.typeOfBuilding || !payload.bidLowerRange ){
+        toast.error("All required fields must be filled");
+      }
+      else{
 
-    else if(!emailRegex.test(payload.applicantEmail) && payload.applicantEmail !== "" ){
-      toast.error("enter a valid email address please");
-    }
-    else{
+
 
 
     const encryptedData = encryptionData(payload);
@@ -119,25 +112,18 @@ const Index = ({isView,propertyData}) => {
   
   const submitHandler = ()=>{
 
+
     const nameRegex = /^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
     const phoneNumberRegex = /^\d{10}$/;
 
-  if(!nameRegex.test(applicantFirstName) === true && applicantFirstName|| !nameRegex.test(applicantLatsName) === true && applicantLatsName
-  ){
-
-    toast.error("Name should be valid ");
+  if((!nameRegex.test(applicantFirstName) && applicantFirstName !== "" ) || (!nameRegex.test(applicantLatsName) && applicantLatsName !== "")
+  || (!phoneNumberRegex.test(applicantNumber) && applicantNumber !== "" ) || (!emailRegex.test(applicantEmail) === true && applicantEmail !== "")){
+    toast.error("Please provide a valid applicant Information");
   }
-  else if((!phoneNumberRegex.test(applicantNumber) === true) && applicantNumber){
-    toast.error("enter a valid phone number please");
-  }
-
-  else if(!emailRegex.test(applicantEmail) === true && applicantEmail){
-    toast.error("enter a valid phone number please");
-  }
+  
   else{
-     
     const payload = {
         userId : userData.userId,
         streetName : streetNameRef ,

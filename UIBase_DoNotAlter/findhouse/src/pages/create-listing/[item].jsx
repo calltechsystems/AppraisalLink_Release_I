@@ -35,11 +35,12 @@ const Index = () => {
     }
   }, [item]); // Add item as a dependency to trigger the effect when it changes
 
+
   return (
     <>
       <Seo pageTitle="Create Listing" />
 
-      <CreateListing isView={true} propertyData={propertyData} />
+      {propertyData && (<CreateListing isView={true} propertyData={propertyData} />)}
     </>
   );
 };

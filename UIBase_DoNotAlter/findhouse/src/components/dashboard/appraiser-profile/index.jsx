@@ -5,7 +5,7 @@ import MobileMenu from "../../common/header/MobileMenu_01";
 import ProfileInfo from "./ProfileInfo";
 import Form from "./Form";
 
-const index = ({profileCount,setProfileCount}) => {
+const Index = ({profileCount,setProfileCount}) => {
 
   const [showCard , setShowCard] = useState(true);
 
@@ -127,7 +127,7 @@ const index = ({profileCount,setProfileCount}) => {
   );
 };
 
-export default index;
+export default Index;
 
 
 
