@@ -15,6 +15,9 @@ const Index = () => {
   const router = useRouter();
 
 
+  if(userData?.broker_Details?.firstName === ""){
+    setShowCard(true);
+  }
 
   const chnageShowCardHandler = (val)=>{
     setShowCard(val);

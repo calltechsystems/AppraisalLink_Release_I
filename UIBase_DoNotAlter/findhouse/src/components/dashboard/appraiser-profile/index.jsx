@@ -17,6 +17,10 @@ const Index = ({profileCount,setProfileCount}) => {
     router.push("/login");
   }
 
+  if( userData.brokerage_Details.firstName === null ){
+    setShowCard(false);
+  }
+
   const chnageShowCardHandler = (val)=>{
     setShowCard(val);
   }

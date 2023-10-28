@@ -3,8 +3,6 @@ import Router, { useRouter } from "next/router";
 import { isSinglePageActive } from "../../../../utils/daynamicNavigation";
 import Image from "next/image";
 import CircularIcon from "./CircularIcon";
-import {getSession} from 'next-iron-session'
-import { useEffect } from "react";
 
 const MyAccount = ({user, profileCount , setProfile, userData}) => {
   const profileMenuItems = [
@@ -59,14 +57,14 @@ const MyAccount = ({user, profileCount , setProfile, userData}) => {
   );
 };
 
-export async function getServerSideProps(context) {
-  const session = await getSession(context);
+// export async function getServerSideProps(context) {
+//   const session = await getSession(context);
 
-  return {
-    props: {
-      user: session?.user || null,
-    },
-  };
-}
+//   return {
+//     props: {
+//       user: session?.user || null,
+//     },
+//   };
+// }
 
 export default MyAccount;
