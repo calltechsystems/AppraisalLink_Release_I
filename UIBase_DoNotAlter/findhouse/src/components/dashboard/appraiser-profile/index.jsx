@@ -10,6 +10,7 @@ const Index = ({profileCount,setProfileCount}) => {
 
   const [showCard , setShowCard] = useState(true);
 
+  useEffect(()=>{
   const userData = JSON.parse(localStorage.getItem("user"));
   const router = useRouter();
 
@@ -20,6 +21,8 @@ const Index = ({profileCount,setProfileCount}) => {
   if( userData.brokerage_Details.firstName === null ){
     setShowCard(false);
   }
+
+},[])
 
   const chnageShowCardHandler = (val)=>{
     setShowCard(val);
