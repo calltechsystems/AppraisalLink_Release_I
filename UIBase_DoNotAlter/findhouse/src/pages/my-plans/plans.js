@@ -10,12 +10,13 @@ const Index = ({ setModalOpen, setPrice }) => {
   const [selectedPlan, setSelectedPlan] = useState("Monthly");
   const [planData, setPlanData] = useState([]);
 
+  const data = JSON.parse(localStorage.getItem("user"));
+  if(!data){
+    router.push("/login");
+  }
   const router = useRouter();
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("user"));
-    if(!data){
-      router.push("/login");
-    }
+   
 
     axios
       .get("/api/getAllPlans", {

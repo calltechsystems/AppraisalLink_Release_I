@@ -15,16 +15,25 @@ import toast from "react-hot-toast";
 
 const Index = ({isView,propertyData}) => {
 
+  const router = useRouter();
+
+
   const [isDisable,setDisable] = useState(isView);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   let userData =  (JSON.parse(localStorage.getItem("user")));  
+  
+  if(!userData){
+    router.push("/login");
+  }
+  else if(userData.broker_Details.firstName === ""){
+    router.push("/my-profile");
+  }
 
   const [updatedProperty , setUpdatedProperty] = useState([]);
   
-  const router = useRouter();
-  const [streetNameRef , setStreetNameRef]= useState(propertyData?.streetName ? propertyData?.streetName : "Add the street name");
+  const [streetNameRef , setStreetNameRef]= useState(propertyData?.streetName ? propertyData?.streetName : "");
   const [streetNumberRef , setStreetNumberRef]= useState(propertyData?.streetNumber || "");
   const [cityRef , setCityRef]= useState(propertyData?.city || "");
   const [stateRef , setStateRef]= useState(propertyData?.state || "");

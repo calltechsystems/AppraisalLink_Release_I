@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useEffect } from "react";
 import { func } from "prop-types";
 
-const HeaderMenuContent = ({ float = "" ,hide, setProfileCount , profileCount , userInfo}) => {
+const HeaderMenuContent = ({ float = "" ,hide, setProfileCount , profileCount , userInfo  }) => {
   const route = useRouter();
 
   
@@ -476,7 +476,7 @@ const HeaderMenuContent = ({ float = "" ,hide, setProfileCount , profileCount , 
       </li>) : ""}
       {/* End .dropitem */}
 
-      <li className={"last"} style={{cursor:'pointer'}}>
+      <Link href={"/notifications"}  className={"last"} style={{cursor:'pointer'}}>
         <Image
           width={25}
           height={25}
@@ -484,7 +484,9 @@ const HeaderMenuContent = ({ float = "" ,hide, setProfileCount , profileCount , 
           src="/assets/images/home/bell.jpg"
           alt="e1.png"
         />
-      </li>
+      </Link>
+
+      
 
       <li className="user_setting">
         <div className="">

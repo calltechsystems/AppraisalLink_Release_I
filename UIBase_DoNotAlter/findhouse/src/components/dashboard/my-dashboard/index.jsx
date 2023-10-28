@@ -10,9 +10,11 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toast";
 
 import axios from 'axios'
+import Modal from "../../common/header/dashboard/NotificationModal";
 
 const Index = () => {
   let userData =(JSON.parse(localStorage.getItem("user"))) ;
+  const [showNotification,setShowNotification] = useState(false);
   const [data , setData] = useState([]);
   const [unfilteredData , setUnfilteredData] = useState([]);
   const [showLineGraph , setShowLineGraph] = useState(false);
@@ -20,12 +22,15 @@ const Index = () => {
   const [lineData , setLineData] = useState([]);
   const router = useRouter();
     
-//  if(!userData){
-//   router.push("/login");
-// }
-// else if(!userData?.broker_Details?.firstName){
-//   router.push("/my-profile")
-// }
+  const closeModal = ()=>{
+    setShowNotification(false);
+  }
+ if(!userData){
+  router.push("/login");
+}
+else if(!userData?.broker_Details?.firstName){
+  router.push("/my-profile")
+}
 
   // if (!userData) {
   //   router.push("/login");
@@ -153,7 +158,7 @@ const Index = () => {
   return (
     <>
       {/* <!-- Main Header Nav --> */}
-      <Header userData={userData ? userData : {}} />
+      <Header userData={userData ? userData : {}} setShowNotification = {setShowNotification} />
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
@@ -252,9 +257,11 @@ const Index = () => {
                   <div className="recent_job_activity">
                     <h4 className="title mb-4">Recent Activities</h4>
                     <Activities />
+                    <Modal modalOpen={true} closeModal={closeModal}/>
                   </div>
                 </div>*/}
               </div>
+             
               {/* End .row  */}
 
               <div className="row mt50">

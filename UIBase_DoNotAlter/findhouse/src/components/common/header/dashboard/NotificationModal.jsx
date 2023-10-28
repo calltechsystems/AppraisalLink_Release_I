@@ -3,6 +3,7 @@
 import React from "react";
 
 const Modal = ({ modalOpen, closeModal }) => {
+  console.log("jl");
   return (
     <div>
       {modalOpen && (

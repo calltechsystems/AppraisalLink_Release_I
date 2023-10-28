@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import HeaderMenuContent from "./HeaderMenuContent";
 import Image from "next/image";
 
-const Header = ({profileCount , setProfileCount , userData}) => {
+const Header = ({profileCount , setProfileCount , userData }) => {
   const [navbar, setNavbar] = useState(false);
 
   const changeBackground = ({hide}) => {

@@ -4,12 +4,18 @@ import SidebarMenu from "../../common/header/dashboard/SidebarMenu_01";
 import MobileMenu from "../../common/header/MobileMenu_01";
 import ProfileInfo from "./ProfileInfo";
 import Form from "./Form";
+import { useRouter } from "next/router";
 
 const Index = ({profileCount,setProfileCount}) => {
 
   const [showCard , setShowCard] = useState(true);
 
   const userData = JSON.parse(localStorage.getItem("user"));
+  const router = useRouter();
+
+  if(!userData){
+    router.push("/login");
+  }
 
   const chnageShowCardHandler = (val)=>{
     setShowCard(val);

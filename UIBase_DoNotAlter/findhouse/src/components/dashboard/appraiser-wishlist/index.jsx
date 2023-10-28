@@ -12,56 +12,70 @@ import GridListButton from "../../common/listing/GridListButton";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useRouter } from "next/router";
 
 const Index = () => {
 
   const [properties , setProperties ] = useState([]);
+
+  const [allWishlistedProperties , setAllWishlistedProperties] = useState([]);
   const [reload , setReload] = useState(false);
   const [allProperties,setAllProperties] = useState([]);
+  let data = {};
+  const router = useRouter();
 
+  useEffect(()=>{
+  data = JSON.parse(localStorage.getItem("user"));
+  if (!data) {
+    router.push("/login");
+  } else if (!data?.brokerage_Details?.firstName) {
+    router.push("/my-profile");
+  }
+  if (!data) {
+    router.push("/login");
+  }
+
+  let tempId = [];
+  const func = ()=>{
+  axios.get("/api/appraiserWishlistedProperties",
+  {
+   headers: {
+     Authorization:`Bearer ${data?.token}`,
+     "Content-Type":"application/json"
+   }
+ })
+ .then((res) => {
+  const tempData = res.data.data.$values;
+  setAllWishlistedProperties(res.data.data.$values);
+  const responseData = tempData.filter((prop,index)=>{
+    if(prop.userId === data.userId){
+      return true;
+    }
+    else{
+      return false;
+    }
+  })
+  tempId =responseData;
+  setProperties(responseData);
+ })
+ .catch((err) => {
+   toast.error(err?.response?.data?.error);
+ });
+}
+func();
+
+
+  },[])
+  
   useEffect(()=>{
     setReload(false);
   
   },[reload]);
 
   useEffect(()=>{
-    const data = JSON.parse(localStorage.getItem("user"));
-    if (!data) {
-      router.push("/login");
-    } else if (!data?.brokerage_Details?.firstName) {
-      router.push("/my-profile");
-    }
-    if (!data) {
-      router.push("/login");
-    }
+   
 
-    let tempId = [];
-    const func = ()=>{
-    axios.get("/api/appraiserWishlistedProperties",
-    {
-     headers: {
-       Authorization:`Bearer ${data?.token}`,
-       "Content-Type":"application/json"
-     }
-   })
-   .then((res) => {
-    const tempData = res.data.data.$values;
-    const responseData = tempData.filter((prop,index)=>{
-      if(prop.userId === data.userId){
-        return true;
-      }
-      else{
-        return false;
-      }
-    })
-    tempId =responseData;
-    setProperties(responseData);
-   })
-   .catch((err) => {
-     toast.error(err?.response?.data?.error);
-   });
- }
- func();
+   
 },[]);
 
 
@@ -180,7 +194,7 @@ func2();
                         {/* End .row */}
 
                         <div className="row">
-                          <FeaturedItem data = {allProperties} setReload = {setReload}/>
+                          <FeaturedItem user={data} data = {allProperties} setReload = {setReload} allWishlistedProperties={allWishlistedProperties}/>
                         </div>
                         {/* End .row */}
 

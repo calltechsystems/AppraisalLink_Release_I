@@ -4,8 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { addLength } from "../../../features/properties/propertiesSlice";
 import properties from "../../../data/properties";
 import Image from "next/image";
+import toast from "react-hot-toast";
+import { encryptionData } from "../../../utils/dataEncryption";
+import axios from "axios";
 
-const FeaturedItem = ({data , setReload}) => {
+const FeaturedItem = ({user , data , setReload , allWishlistedProperties}) => {
+
+  console.log(data);
+ 
   const {
     keyword,
     location,
@@ -130,8 +136,41 @@ const FeaturedItem = ({data , setReload}) => {
     return true;
   };
 
-  const removeFromWishlist = ()=>{
+  const removeFromWishlist = (id)=>{
 
+    console.log(id,user.userId);
+    const getId = allWishlistedProperties.filter((item,index)=>{
+     if(item.userId === user.userId && item.propertyId === id){
+      return true;
+     }
+     else{
+      return false;
+     }
+    });
+
+    console.log(getId);
+    toast.loading("removing this property from wishlist");
+    
+    axios.delete("/api/removeWishlistProperty",
+    {
+     headers: {
+       Authorization:`Bearer ${user?.token}`,
+       "Content-Type":"application/json"
+     },
+     params : {
+      userId : getId[0]?.id
+     }
+   })
+   .then((res) => {
+    toast.dismiss();
+    toast.success("Successfully removed");
+    setReload(true);
+   })
+   .catch((err) => {
+    toast.dismiss();
+     toast.error(err?.response?.data?.error);
+   });
+    
   }
 
   let content = data
@@ -221,7 +260,7 @@ const FeaturedItem = ({data , setReload}) => {
                 </li>
                 <li className="list-inline-item" style={{width:"50%"}}>
                   {/* <Link href="/agent-v1">{item.posterName}</Link> */}
-                  <a href="#">Remove</a>
+                  <button onClick={()=>removeFromWishlist(item.propertyId)}>Remove</button>
                 </li>
               </ul>
               {/* <div className="fp_pdate float-end">{item.postedYear}</div> */}
