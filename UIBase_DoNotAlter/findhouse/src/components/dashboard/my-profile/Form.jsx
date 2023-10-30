@@ -31,7 +31,7 @@ const Form = ({userData , chnageShowCardHandler}) => {
           <div className="wrap-custom-file mt-3 mb-5">
             <img
               style={{ borderRadius: "50%",}}
-              src={userData.broker_Details.profileImage}
+              src={userData?.broker_Details?.profileImage}
               alt="Uploaded Image"
             />
           </div>
@@ -49,7 +49,7 @@ const Form = ({userData , chnageShowCardHandler}) => {
                       style={{ fontSize: "21px" }}
                     >
                       {" "}
-                      Name : {userData.broker_Details.firstName} {userData.broker_Details?.middleName} {userData.broker_Details.lastName}
+                      Name : {userData?.broker_Details?.firstName} {userData?.broker_Details?.middleName} {userData?.broker_Details?.lastName}
                     </span>
                   </li>
                 </ul>
@@ -58,7 +58,7 @@ const Form = ({userData , chnageShowCardHandler}) => {
                 <ul>
                   <li className="text-light mt-0">
                     <p className="text-light" style={{ fontSize: "18px" }}>
-                     Company : {userData.broker_Details.companyName}
+                     Company : {userData?.broker_Details?.companyName}
                     </p>
                     {/* <span className="text-light fw-bold">Middle Name</span> :{" "}
                     <span className="text-light fw-bold"> Devendra </span> */}
@@ -69,7 +69,7 @@ const Form = ({userData , chnageShowCardHandler}) => {
                 <ul>
                   <li className="text-light mt-0">
                     <p className="text-light" style={{ fontSize: "17px" }}>
-                     Email : {userData.userEmail}
+                     Email : {userData?.userEmail}
                     </p>
                     {/* <span className="text-light fw-bold">Middle Name</span> :{" "}
                     <span className="text-light fw-bold"> Devendra </span> */}
@@ -80,7 +80,7 @@ const Form = ({userData , chnageShowCardHandler}) => {
                 <ul>
                   <li className="text-light mt-0">
                     <p className="text-light" style={{ fontSize: "17px" }}>
-                      Phone : {userData.broker_Details.phoneNumber}
+                      Phone : {userData?.broker_Details?.phoneNumber}
                     </p>
                     {/* <span className="text-light fw-bold">Last Name</span> :{" "}
                     <span className="text-light fw-bold"> Patel </span> */}
@@ -100,7 +100,7 @@ const Form = ({userData , chnageShowCardHandler}) => {
                       style={{ fontSize: "17px" }}
                     >
                       {" "}
-                     Address : {userData.broker_Details.adressLine1}
+                     Address : {userData?.broker_Details?.adressLine1}
                     </span>
                   </li>
                 </ul>
@@ -109,7 +109,7 @@ const Form = ({userData , chnageShowCardHandler}) => {
                 <ul>
                   <li className="text-light mt-0">
                     <p className="text-light" style={{ fontSize: "17px", marginLeft:'4.8rem' }}>
-                      {userData.broker_Details.area}
+                      {userData?.broker_Details?.area}
                     </p>
                     {/* <span className="text-light fw-bold">Middle Name</span> :{" "}
                     <span className="text-light fw-bold"> Devendra </span> */}
@@ -120,7 +120,7 @@ const Form = ({userData , chnageShowCardHandler}) => {
                 <ul>
                   <li className="text-light mt-0">
                     <p className="text-light" style={{ fontSize: "17px", marginLeft:'4.8rem' }}>
-                     {userData.broker_Details.city}, {userData.broker_Details.state}
+                     {userData?.broker_Details?.city}, {userData?.broker_Details?.state}
                     </p>
                     {/* <span className="text-light fw-bold">Middle Name</span> :{" "}
                     <span className="text-light fw-bold"> Devendra </span> */}
@@ -131,7 +131,7 @@ const Form = ({userData , chnageShowCardHandler}) => {
                 <ul>
                   <li className="text-light mt-0">
                     <p className="text-light" style={{ fontSize: "17px", marginLeft:'4.8rem' }}>
-                      {userData.broker_Details.zipCode}
+                      {userData?.broker_Details?.zipCode}
                     </p>
                     {/* <span className="text-dark fw-bold">Last Name</span> :{" "}
                     <span className="text-dark fw-bold"> Patel </span> */}

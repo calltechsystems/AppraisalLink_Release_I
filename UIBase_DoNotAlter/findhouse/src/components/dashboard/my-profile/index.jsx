@@ -15,6 +15,11 @@ const Index = () => {
   const router = useRouter();
 
 
+  if (!userData) {
+    router.push("/login");
+  } else if (!userData?.broker_Details?.firstName) {
+    router.push("/my-profile");
+  }
   if(userData?.broker_Details?.firstName === ""){
     setShowCard(true);
   }
@@ -22,11 +27,7 @@ const Index = () => {
   const chnageShowCardHandler = (val)=>{
     setShowCard(val);
   }
-  if (!userData) {
-    router.push("/login");
-  } else if (!userData?.broker_Details?.firstName) {
-    router.push("/my-profile");
-  }
+ 
 
   return (
     <>

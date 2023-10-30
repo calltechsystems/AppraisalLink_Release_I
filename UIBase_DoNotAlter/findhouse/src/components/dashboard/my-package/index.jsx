@@ -21,7 +21,7 @@ const Index = () => {
   useEffect(() => {
     
 
-    toast.loading("Getting properties...");
+    toast.loading("Getting Transactions...");
     axios
       .get("/api/getBrokerTransactions", {
         headers: {

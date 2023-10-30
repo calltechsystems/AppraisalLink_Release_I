@@ -5,16 +5,18 @@ import Pricing from "./pricing";
 import SidebarMenu from "../../components/common/header/dashboard/SidebarMenu";
 import axios from "axios";
 import { useRouter } from "next/router";
+import toast from "react-hot-toast";
 
 const Index = ({ setModalOpen, setPrice }) => {
   const [selectedPlan, setSelectedPlan] = useState("Monthly");
   const [planData, setPlanData] = useState([]);
+  
+  const router = useRouter();
 
   const data = JSON.parse(localStorage.getItem("user"));
   if(!data){
     router.push("/login");
   }
-  const router = useRouter();
   useEffect(() => {
    
 
@@ -30,7 +32,7 @@ const Index = ({ setModalOpen, setPrice }) => {
         setPlanData(res.data.data.$values);
       })
       .catch((err) => {
-        alert(err.message);
+        toast.error(err.message);
       });
   }, []);
 

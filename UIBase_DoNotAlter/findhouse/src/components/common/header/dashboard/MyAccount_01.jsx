@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { isSinglePageActive } from "../../../../utils/daynamicNavigation";
 import Image from "next/image";
-import {getSession} from 'next-iron-session';
+// import {getSession} from 'next-iron-session';
 
 const MyAccount = ({user , userData}) => {
 
@@ -51,14 +51,14 @@ const MyAccount = ({user , userData}) => {
   );
 };
 
-export async function getServerSideProps(context) {
-  const session = await getSession(context);
+// export async function getServerSideProps(context) {
+//   const session = await getSession(context);
 
-  return {
-    props: {
-      user: session?.user || null,
-    },
-  };
-}
+//   return {
+//     props: {
+//       user: session?.user || null,
+//     },
+//   };
+// }
 
 export default MyAccount;
