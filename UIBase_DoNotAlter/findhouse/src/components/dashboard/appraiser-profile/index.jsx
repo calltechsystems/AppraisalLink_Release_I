@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "../../common/header/dashboard/Header_02";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenu_01";
 import MobileMenu from "../../common/header/MobileMenu_01";
@@ -9,15 +9,11 @@ import { useRouter } from "next/router";
 const Index = ({profileCount,setProfileCount}) => {
 
   const [showCard , setShowCard] = useState(true);
-  const router = useRouter();
+  let userData = {};
 
   useEffect(()=>{
-  const userData = JSON.parse(localStorage.getItem("user"));
-  
+   userData = JSON.parse(localStorage.getItem("user"));
 
-  if(!userData){
-    router.push("/login");
-  }
 
   if( userData.brokerage_Details.firstName === null ){
     setShowCard(false);
