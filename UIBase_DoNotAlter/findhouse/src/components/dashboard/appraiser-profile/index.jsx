@@ -9,10 +9,11 @@ import { useRouter } from "next/router";
 const Index = ({profileCount,setProfileCount}) => {
 
   const [showCard , setShowCard] = useState(true);
+  const router = useRouter();
 
   useEffect(()=>{
   const userData = JSON.parse(localStorage.getItem("user"));
-  const router = useRouter();
+  
 
   if(!userData){
     router.push("/login");

@@ -8,7 +8,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { encryptionData } from "../../../utils/dataEncryption";
 
-const FeaturedItem = ({ setModalOpen }) => {
+const FeaturedItem = ({ setModalOpen , setLowRangeBid , setPropertyId }) => {
   const [data, setData] = useState([]);
 
   const {
@@ -164,6 +164,12 @@ const FeaturedItem = ({ setModalOpen }) => {
     return true;
   };
 
+  const participateHandler = (val , id)=>{
+    setLowRangeBid(val);
+    setPropertyId(id);
+    setModalOpen();
+  }
+
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("user"));
 
@@ -290,7 +296,7 @@ const FeaturedItem = ({ setModalOpen }) => {
             {/* <div className="fp_pdate float-end">{item.postedYear}</div> */}
             <div
               className="fp_pdate float-end mt-1 fw-bold"
-              onClick={() => setModalOpen()}
+              onClick={()=>participateHandler(item.bidLowerRange , item.propertyId)}
             >
               <a href="#" className="text-color">
                 Participate Bid

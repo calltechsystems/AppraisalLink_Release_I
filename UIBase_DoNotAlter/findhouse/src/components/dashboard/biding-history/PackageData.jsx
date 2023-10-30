@@ -1,11 +1,63 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+
 const SearchData = () => {
+
+  const [data , setData] = useState([]);
+
+  useEffect(()=>{
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    toast.loading("Getting all the bids");
+    axios.get("/api/getAllBids",{
+      headers : {
+        Authorization : `Bearer ${user.token}`
+      }
+    })
+    .then((res)=>{
+      const tempData = res.data.data.result.$values;
+
+      const response = tempData.filter((item,idex)=>{
+        if(item.userId === user.userId){
+          return true;
+        }
+        else{
+          return false;
+        }
+      })
+
+      setData(response);
+      toast.dismiss();
+      toast.success("Successfully fetched");
+    })
+    .catch((err)=>{
+      toast.dismiss();
+      toast.error("Reload the page")
+    })
+  },[]);
+
+
+  function getPrettifiedDate(dateString) {
+    const date = new Date(dateString);
+    const options = {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+    };
+    return date.toLocaleString(undefined, options);
+  }
+  
   return (
     <table className="table">
       <thead className="thead-light">
         <tr>
-          <th scope="col">S.No.</th>
+          <th scope="col">Id</th>
           <th scope="col">Date</th>
-          <th scope="col">Property Details</th>
+          <th scope="col">Description</th>
           <th scope="col">Bid Amount</th>
           <th scope="col">Proposed Amount</th>
           <th scope="col">Status</th>
@@ -14,30 +66,19 @@ const SearchData = () => {
       {/* End thead */}
 
       <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>December 31, 2020</td>
-          <td>0</td>
-          <td>3</td>
-          <td>8</td>
+      {data.map((bid, index) => (
+        <tr key={index}>
+          <td>{bid.bidId}</td>
+          <td>{getPrettifiedDate(bid.requestTime)}</td>
+          <td>{bid.description}</td>
+          <td>${bid.bidLowerRange} - ${bid.bidUpperRange}</td>
+          <td>${bid.bidAmount}</td>
           <td>
-            {" "}
-            <span className="status_tag badge">Pending</span>
+            {bid.status === 0 ? <span className="status_tag badge">Pending</span> : <span className="status_tag badge2">Completed</span>}
           </td>
         </tr>
-        {/* End tr */}
-
-        <tr>
-          <th scope="row">2</th>
-          <td>December 31, 2020</td>
-          <td>0</td>
-          <td>3</td>
-          <td>8</td>
-          <td>
-            {" "}
-            <span className="status_tag badge2">Completed</span>
-          </td>
-        </tr>
+      ))}
+       
         {/* End tr */}
       </tbody>
     </table>

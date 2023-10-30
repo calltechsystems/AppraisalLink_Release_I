@@ -14,6 +14,8 @@ import { useState } from "react";
 
 const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [lowRangeBid , setLowRangeBid] = useState("");
+  const [propertyId , setPropertyId] = useState(null);
 
   const openModal = () => {
     setModalOpen(true);
@@ -100,10 +102,12 @@ const Index = () => {
 
                         <div className="row">
                           {/* <button onClick={()=>openModal()}>click</button> */}
-                          <FeaturedItem setModalOpen={openModal} />
+                          <FeaturedItem setModalOpen={openModal} setLowRangeBid={setLowRangeBid} setPropertyId={setPropertyId} />
                           <Modal
                             modalOpen={modalOpen}
                             closeModal={closeModal}
+                            lowRangeBid = {lowRangeBid}
+                            propertyId={propertyId}
                           />
                         </div>
                         {/* End .row */}

@@ -1,8 +1,49 @@
 // Modal.js (a React component)
 
-import React from "react";
+import React, { useRef } from "react";
+import toast from "react-hot-toast";
+import { encryptionData } from "../../../utils/dataEncryption";
+import axios from "axios";
 
-const Modal = ({ modalOpen, closeModal }) => {
+const Modal = ({ modalOpen, closeModal , lowRangeBid , propertyId}) => {
+
+  const valueRef = useRef(0);
+  const descriptionRef = useRef("");
+
+  const onSubmitHnadler = ()=>{
+    const bidAmount = valueRef.current.value;
+    const description = descriptionRef.current.value;
+
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    console.log(bidAmount,description,propertyId , user.userId);
+
+    if(bidAmount < 1 || bidAmount < lowRangeBid ){
+      toast.error("Amount should be in a range");
+    }
+    else{
+      const formData = {
+        propertyId : propertyId,
+        userId : user.userId,
+        bidAmount : bidAmount,
+        description : description,
+        token : user.token
+      };
+
+      const payload = encryptionData(formData);
+
+      toast.loading("Setting a bid");
+      axios.post("/api/setBid",payload)
+      .then((res)=>{
+        toast.dismiss();
+        toast.success("Successfully set the bid ");
+        closeModal();
+      }).catch((err)=>{
+        toast.dismiss();
+        toast.error("Try Again");
+      });
+    }
+  }
   return (
     <div>
       {modalOpen && (
@@ -46,12 +87,13 @@ const Modal = ({ modalOpen, closeModal }) => {
                           htmlFor=""
                           style={{ paddingTop: "15px", fontWeight: "lighter" }}
                         >
-                          Bid Amount <span class="req-btn">*</span> :
+                          Bid Amount  (Lower Range)<span class="req-btn">*</span> :
                         </label>
                       </div>
                       <div className="col-lg-7">
                         <input
                           type="text"
+                          value={lowRangeBid}
                           className="form-control"
                           id="formGroupExampleInput3"
                         />
@@ -69,12 +111,33 @@ const Modal = ({ modalOpen, closeModal }) => {
                       <div className="col-lg-7">
                         <input
                           type="number"
+                          ref={valueRef}
                           className="form-control"
                           id="formGroupExampleInput3"
                         />
                       </div>
                     </div>
+                    <div className="row">
+                    <div className="col-lg-3 mb-2">
+                      <label
+                        htmlFor=""
+                        style={{ paddingTop: "15px", fontWeight: "lighter" }}
+                      >
+                        Description 
+                      </label>
+                    </div>
+                    <div className="col-lg-7">
+                      <input
+                        type="text"
+                        ref={descriptionRef}
+                        className="form-control"
+                        id="formGroupExampleInput3"
+                      />
+                    </div>
                   </div>
+                  </div>
+
+                  
 
                   {/* End .col */}
                 </div>
@@ -84,7 +147,7 @@ const Modal = ({ modalOpen, closeModal }) => {
               {/* <button className="cancel-button" onClick={closeModal}>
                   Cancel
                 </button> */}
-              <button className="btn btn-log w-35 btn-thm">Submit</button>
+              <button className="btn btn-log w-35 btn-thm" onClick={onSubmitHnadler}>Submit</button>
             </div>
           </div>
         </div>
