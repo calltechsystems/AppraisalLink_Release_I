@@ -10,41 +10,43 @@ import toast from "react-hot-toast";
 const Index = ({ setModalOpen, setPrice }) => {
   const [selectedPlan, setSelectedPlan] = useState("Monthly");
   const [planData, setPlanData] = useState([]);
-  
+  const [isChecked, setIsChecked] = useState(false);
+
   const router = useRouter();
 
-  const data = JSON.parse(localStorage.getItem("user"));
-  if(!data){
-    router.push("/login");
-  }
   useEffect(() => {
-   
+    const fetchData = async () => {
+      const data = JSON.parse(localStorage.getItem("user"));
+      if (!data) {
+        router.push("/login");
+      } else {
+        try {
+          const res = await axios.get("/api/getAllPlans", {
+            headers: {
+              Authorization: `Bearer ${data?.token}`,
+              "Content-Type": "application/json",
+            },
+          });
+          setPlanData(res.data.data.$values);
+        } catch (err) {
+          toast.error(err.message);
+        }
+      }
+    };
 
-    axios
-      .get("/api/getAllPlans", {
-        headers: {
-          Authorization: `Bearer ${data?.token}`,
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => {
-        console.log(res.data.data.$values);
-        setPlanData(res.data.data.$values);
-      })
-      .catch((err) => {
-        toast.error(err.message);
-      });
-  }, []);
+    if (typeof window !== "undefined") {
+      fetchData();
+    }
+  }, [router]);
 
   const togglePlan = () => {
     setSelectedPlan(selectedPlan === "Monthly" ? "Yearly" : "Monthly");
   };
 
-  const [isChecked, setIsChecked] = useState(false);
-
   const toggleSwitch = () => {
     setIsChecked(!isChecked);
   };
+
   return (
     <>
       {/* Main Header Nav */}

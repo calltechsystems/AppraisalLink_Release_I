@@ -11,10 +11,11 @@ const Index = () => {
   const [profileCount, setProfileCount] = useState(7);
 
   const [showCard , setShowCard] = useState(true);
-  let userData = JSON.parse(localStorage.getItem("user"));
+  let userData = {};
   const router = useRouter();
 
-
+useEffect(()=>{
+  userData = JSON.parse(localStorage.getItem("user"));
   if (!userData) {
     router.push("/login");
   } else if (!userData?.broker_Details?.firstName) {
@@ -23,6 +24,8 @@ const Index = () => {
   if(userData?.broker_Details?.firstName === ""){
     setShowCard(true);
   }
+},[])
+ 
 
   const chnageShowCardHandler = (val)=>{
     setShowCard(val);

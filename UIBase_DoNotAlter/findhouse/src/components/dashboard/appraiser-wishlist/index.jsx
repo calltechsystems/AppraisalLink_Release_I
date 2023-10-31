@@ -37,6 +37,7 @@ const Index = () => {
 
   let tempId = [];
   const func = ()=>{
+    toast.loading("Getting all wishlishted properties");
   axios.get("/api/appraiserWishlistedProperties",
   {
    headers: {
@@ -45,6 +46,7 @@ const Index = () => {
    }
  })
  .then((res) => {
+  toast.dismiss();
   const tempData = res.data.data.$values;
   setAllWishlistedProperties(res.data.data.$values);
   const responseData = tempData.filter((prop,index)=>{
@@ -56,9 +58,11 @@ const Index = () => {
     }
   })
   tempId =responseData;
+  toast.success("Successfully fteched ");
   setProperties(responseData);
  })
  .catch((err) => {
+  toast.dismiss();
    toast.error(err?.response?.data?.error);
  });
 }

@@ -11,15 +11,17 @@ import { useRouter } from "next/router";
 const Index = () => {
   const [data, setData] = useState([]);
   const router = useRouter();
-  const userData = JSON.parse(localStorage.getItem("user"));
+  let userData = {};
+
+
+  useEffect(() => {
+    
+    userData = JSON.parse(localStorage.getItem("user"));
   if (!userData) {
     router.push("/login");
   } else if (!userData?.broker_Details?.firstName) {
     router.push("/my-profile");
   }
-
-  useEffect(() => {
-    
 
     toast.loading("Getting Transactions...");
     axios

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { useRouter } from "next/router";
 import Header from "../../common/header/dashboard/Header";
@@ -22,15 +22,7 @@ const Index = ({isView,propertyData}) => {
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  let userData =  (JSON.parse(localStorage.getItem("user")));  
-  
-  if(!userData){
-    router.push("/login");
-  }
-  else if(userData.broker_Details.firstName === ""){
-    router.push("/my-profile");
-  }
-
+  let userData =  {};
   const [updatedProperty , setUpdatedProperty] = useState([]);
   
   const [streetNameRef , setStreetNameRef]= useState(propertyData?.streetName ? propertyData?.streetName : "");
@@ -50,6 +42,17 @@ const Index = ({isView,propertyData}) => {
   const [applicantEmail , setApplicantEmail] = useState(propertyData?.applicantEmailAddress || null);
 
 
+  useEffect(()=>{
+    userData = (JSON.parse(localStorage.getItem("user")));  
+  
+  if(!userData){
+    router.push("/login");
+  }
+  else if(userData?.broker_Details?.firstName === ""){
+    router.push("/my-profile");
+  }
+
+  },[]);
   const updateHandler = ()=>{
 
     const nameRegex = /^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$/;

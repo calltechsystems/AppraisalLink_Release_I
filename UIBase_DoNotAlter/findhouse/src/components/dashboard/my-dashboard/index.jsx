@@ -13,7 +13,7 @@ import axios from 'axios'
 import Modal from "../../common/header/dashboard/NotificationModal";
 
 const Index = () => {
-  let userData =(JSON.parse(localStorage.getItem("user"))) ;
+  let userData = {} ;
   const [showNotification,setShowNotification] = useState(false);
   const [data , setData] = useState([]);
   const [unfilteredData , setUnfilteredData] = useState([]);
@@ -25,12 +25,7 @@ const Index = () => {
   const closeModal = ()=>{
     setShowNotification(false);
   }
- if(!userData){
-  router.push("/login");
-}
-else if(!userData?.broker_Details?.firstName){
-  router.push("/my-profile")
-}
+ 
 
   // if (!userData) {
   //   router.push("/login");
@@ -101,6 +96,13 @@ else if(!userData?.broker_Details?.firstName){
    
 
     const data = (JSON.parse(localStorage.getItem("user")));
+
+    if(!data){
+      router.push("/login");
+    }
+    else if(!data?.broker_Details?.firstName){
+      router.push("/my-profile")
+    }
 
     const func = ()=>{
     axios.get("/api/getPropertiesById",

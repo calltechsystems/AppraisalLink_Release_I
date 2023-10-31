@@ -11,7 +11,7 @@ import toast from "react-hot-toast";
 import { Router, useRouter } from "next/router";
 
 const Index = () => {
-  const userData = JSON.parse(localStorage.getItem("user"));
+  let userData ={};
   const router = useRouter();
   const [properties,setProperties] = useState([]);
 
@@ -21,6 +21,7 @@ const Index = () => {
 
 
   useEffect(()=>{
+    userData =  JSON.parse(localStorage.getItem("user"));
     const data = JSON.parse(localStorage.getItem("user"));
     if (!data) {
       router.push("/login");
