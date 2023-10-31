@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addLength } from "../../../features/properties/propertiesSlice";
 import properties from "../../../data/properties";
@@ -7,10 +7,24 @@ import Image from "next/image";
 import toast from "react-hot-toast";
 import { encryptionData } from "../../../utils/dataEncryption";
 import axios from "axios";
+import Modal from "../appraiser-properties/Modal";
 
 const FeaturedItem = ({user , data , setReload , allWishlistedProperties}) => {
 
   console.log(data);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [lowRangeBid , setLowRangeBid] = useState("");
+  const [propertyId , setPropertyId] = useState(null);
+
+  const openModal = (val,bid) => {
+    setPropertyId(val);
+    setLowRangeBid(bid);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
  
   const {
     keyword,
@@ -134,11 +148,10 @@ const FeaturedItem = ({user , data , setReload , allWishlistedProperties}) => {
       return item.featured === featured;
     }
     return true;
-  };
+  }; 
 
   const removeFromWishlist = (id)=>{
-
-    console.log(id,user.userId);
+ 
     const getId = allWishlistedProperties.filter((item,index)=>{
      if(item.userId === user.userId && item.propertyId === id){
       return true;
@@ -148,7 +161,6 @@ const FeaturedItem = ({user , data , setReload , allWishlistedProperties}) => {
      }
     });
 
-    console.log(getId);
     toast.loading("removing this property from wishlist");
     
     axios.delete("/api/removeWishlistProperty",
@@ -174,12 +186,7 @@ const FeaturedItem = ({user , data , setReload , allWishlistedProperties}) => {
   }
 
   let content = data
-    // ?.filter(keywordHandler)
-    // ?.filter(locationHandler)
-    // ?.filter(statusHandler)
-    // ?.filter(propertiesHandler)
-    // ?.filter(priceHandler)
-    // ?.sort(statusTypeHandler)
+    ?.filter(keywordHandler)
     .map((item) => {
       return <div className="col-md-6" key={item.id}>
         <div className="feat_property home7 style4">
@@ -245,6 +252,12 @@ const FeaturedItem = ({user , data , setReload , allWishlistedProperties}) => {
                 </ul>*/}
             </div>
             {/* End .tc_content */}
+            <Modal
+            modalOpen={modalOpen}
+            closeModal={closeModal}
+            lowRangeBid = {lowRangeBid}
+            propertyId={propertyId}
+          />
 
             <div className="fp_footer">
               <ul className="fp_meta float-start mb0">
@@ -264,7 +277,7 @@ const FeaturedItem = ({user , data , setReload , allWishlistedProperties}) => {
                 </li>
               </ul>
               {/* <div className="fp_pdate float-end">{item.postedYear}</div> */}
-              <div className="fp_pdate float-end mt-1 fw-bold"><a href="#" className="text-color">Participate Bid</a></div>
+              <div className="fp_pdate float-end mt-1 fw-bold"><button onClick={()=>openModal(item.propertyId,item.bidLowerRange)} className="text-color">Participate Bid</button></div>
             </div>
             {/* End .fp_footer */}
           </div>

@@ -6,141 +6,87 @@ import ProfileInfo from "./ProfileInfo";
 import Form from "./Form";
 import { useRouter } from "next/router";
 
-const Index = ({profileCount,setProfileCount}) => {
-
-  const [showCard , setShowCard] = useState(true);
-  let userData = {};
+const Index = ({ profileCount, setProfileCount }) => {
+  const [showCard, setShowCard] = useState(false); // Set to false by default
+  const [userData, setUserData] = useState({}); // State to hold user data
   const router = useRouter();
 
-  useEffect(()=>{
-   userData = JSON.parse(localStorage.getItem("user"));
-  if(!userData){
-    router.push("/login");
-  }
+  useEffect(() => {
+    const storedUserData = JSON.parse(localStorage.getItem("user"));
+    if (!storedUserData) {
+      router.push("/login");
+    } else {
+      setUserData(storedUserData); // Set user data in state
+      if (storedUserData?.brokerage_Details?.firstName !== null) {
+        setShowCard(true); // Show content if conditions are met
+      }
+    }
+  }, []); // Empty dependency array for componentDidMount-like behavior
 
-  if( userData?.brokerage_Details?.firstName === null ){
-    setShowCard(false);
-  }
-
-},[])
-
-  const chnageShowCardHandler = (val)=>{
+  const chnageShowCardHandler = (val) => {
     setShowCard(val);
-  }
+  };
+
   return (
     <>
-       {/* <!-- Main Header Nav --> */}
-       <Header profileCount={profileCount} setProfileCount={setProfileCount} />
+      <Header profileCount={profileCount} setProfileCount={setProfileCount} />
+      <MobileMenu />
 
-       {/* <!--  Mobile Menu --> */}
-       <MobileMenu />
- 
-       <div className="dashboard_sidebar_menu">
-         <div
-           className="offcanvas offcanvas-dashboard offcanvas-start"
-           tabIndex="-1"
-           id="DashboardOffcanvasMenu"
-           data-bs-scroll="true"
-         >
-           <SidebarMenu />
-         </div>
-       </div>
-       {/* End sidebar_menu */}
- 
-       {/* <!-- Our Dashbord --> */}
-       <section className="our-dashbord dashbord bgc-f7 pb50">
-         <div className="container-fluid ovh">
-           <div className="row">
-             <div className="col-lg-12 maxw100flex-992">
-               <div className="row">
-                 {/* Start Dashboard Navigation */}
-                 {/* <div className="col-lg-12">
-                   <div className="dashboard_navigationbar dn db-1024">
-                     <div className="dropdown">
-                       <button
-                         className="dropbtn"
-                         data-bs-toggle="offcanvas"
-                         data-bs-target="#DashboardOffcanvasMenu"
-                         aria-controls="DashboardOffcanvasMenu"
-                       >
-                         <i className="fa fa-bars pr10"></i> Dashboard Navigation
-                       </button>
-                     </div>
-                   </div>
-                 </div> */}
-                 {/* End Dashboard Navigation */}
- 
-                 <div className="col-lg-12">
-                   <div className="breadcrumb_content style2">
-                     <h2 className="breadcrumb_title">My Profile</h2>
-                     {/* <p>We are glad to see you again!</p> */}
-                   </div>
-                 </div>
-                 {/* End .col */}
- 
-                 <div className="col-lg-12">
-                   <div className="my_dashboard_review">
-                     <div className="row">
-                       {/* <div className="col-xl-2">
-                         <h4>Personal Information</h4>
-                       </div> */}
-                       <div className="col-xl-12">
-                        {showCard === true ? <div className="mb-5">
-                           <Form userData = {userData} chnageShowCardHandler={chnageShowCardHandler}/>
-                         </div> : <ProfileInfo
-                           profileCount={profileCount}
-                           setProfileCount={setProfileCount}
-                           setShowCard={setShowCard}
-                         /> }
-                       </div>
-                     </div>
-                   </div>
-                   {/* End prifle info wrapper end */}
- 
-                   {/*<div className="my_dashboard_review mt30">
-                     <div className="row">
-                       <div className="col-xl-2">
-                         <h4>Social Media</h4>
-                       </div> 
-                       <div className="col-xl-12">
-                         <SocialMedia />
-                       </div>
-                     </div>
-                     </div>*/}
-                   {/* End .SocialMedia */}
- 
-                   {/* <div className="my_dashboard_review mt30">
-                     <div className="row">
-                        <div className="col-xl-2">
-                         <h4>Change password</h4>
-                       </div> 
-                       <div className="col-xl-12">
-                         <ChangePassword />
-                       </div>
-                     </div>
-                     </div>*/}
-                 </div>
-               </div>
-               {/* End .row */}
- 
-               <div className="row mt50">
-                 <div className="col-lg-12">
-                   <div className="copyright-widget text-center">
-                     <p>&copy; {new Date().getFullYear()} Appraisal Link. All Rights Reserved.</p>
-                   </div>
-                 </div>
-               </div>
-               {/* End .row */}
-             </div>
-             {/* End .col */}
-           </div>
-         </div>
-       </section>
+      <div className="dashboard_sidebar_menu">
+        <div
+          className="offcanvas offcanvas-dashboard offcanvas-start"
+          tabIndex="-1"
+          id="DashboardOffcanvasMenu"
+          data-bs-scroll="true"
+        >
+          <SidebarMenu />
+        </div>
+      </div>
+      {/* End sidebar_menu */}
+
+      <section className="our-dashbord dashbord bgc-f7 pb50">
+        <div className="container-fluid ovh">
+          {userData && Object.keys(userData).length > 0 && (
+            <>
+              <div className="row">
+                <div className="col-lg-12 maxw100flex-992">
+                  <div className="row">
+                    <div className="col-lg-12">
+                      <div className="breadcrumb_content style2">
+                        <h2 className="breadcrumb_title">My Profile</h2>
+                      </div>
+                    </div>
+                    <div className="col-lg-12">
+                      <div className="my_dashboard_review">
+                        <div className="row">
+                          <div className="col-xl-12">
+                            {showCard ? (
+                              <div className="mb-5">
+                                <Form userData={userData} chnageShowCardHandler={chnageShowCardHandler} />
+                              </div>
+                            ) : (
+                              <ProfileInfo profileCount={profileCount} setProfileCount={setProfileCount} setShowCard={setShowCard} />
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="row mt50">
+                <div className="col-lg-12">
+                  <div className="copyright-widget text-center">
+                    <p>&copy; {new Date().getFullYear()} Appraisal Link. All Rights Reserved.</p>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      </section>
     </>
   );
 };
 
 export default Index;
-
-
-

@@ -59,6 +59,7 @@ const Index = () => {
   })
   tempId =responseData;
   toast.success("Successfully fteched ");
+  console.log(tempData); 
   setProperties(responseData);
  })
  .catch((err) => {

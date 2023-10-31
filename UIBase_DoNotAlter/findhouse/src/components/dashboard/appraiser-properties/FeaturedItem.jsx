@@ -210,7 +210,7 @@ const FeaturedItem = ({ setModalOpen , setLowRangeBid , setPropertyId }) => {
     ?.sort(statusTypeHandler)
 ?.filter(featuredHandler)*/
   }
-  let content = data.map((item) => (
+  let content = data?.slice(0, 9)?.filter(keywordHandler)?.map((item) => (
     <div className="col-md-6" key={item._id}>
       <div className="feat_property home7 style4">
         <div className="thumb">
