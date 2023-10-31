@@ -29,7 +29,7 @@ const Index = () => {
   if (!data) {
     router.push("/login");
   } else if (!data?.brokerage_Details?.firstName) {
-    router.push("/my-profile");
+    router.push("/appraiser-profile");
   }
   if (!data) {
     router.push("/login");
@@ -90,7 +90,7 @@ useEffect(()=>{
   if (!data) {
     router.push("/login");
   } else if (!data?.brokerage_Details?.firstName) {
-    router.push("/my-profile");
+    router.push("/appraiser-profile");
   }
   if (!data) {
     router.push("/login");

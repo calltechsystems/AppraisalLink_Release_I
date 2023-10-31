@@ -8,11 +8,7 @@ import StatisticsChart from "./StatisticsChart";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-<<<<<<< Updated upstream
-import { Router, useRouter } from "next/router";
-=======
-// import Router from "next/router";
->>>>>>> Stashed changes
+import { useRouter } from "next/router";
 
 const Index = () => {
   let userData ={};
@@ -72,7 +68,7 @@ useEffect(()=>{
   if (!data) {
     router.push("/login");
   } else if (!data?.brokerage_Details?.firstName) {
-    router.push("/my-profile");
+    router.push("/appraiser-profile");
   }
   if (!data) {
     router.push("/login");
