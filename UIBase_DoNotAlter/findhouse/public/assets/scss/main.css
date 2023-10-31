@@ -22176,10 +22176,32 @@ input:checked + .slider:before {
 
 .menuitem:hover{
   color: #2e008b !important;
-  border-bottom: 4px solid #2e008b !important;
+  /* border-bottom: 4px solid #2e008b !important; */
 }
 
 .menuitem:active{
   color: #2e008b !important;
   border-bottom: 4px solid #2e008b !important;
+}
+
+/* bordor bottom css */
+
+.cool-link {
+  display: inline-block;
+  color: #000;
+  text-decoration: none;
+}
+
+.cool-link::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 3px;
+  background: #2e008b;
+  transition: width .3s;
+}
+
+.cool-link:hover::after {
+  width: 100%;
+  /* transition: width .3s; */
 }

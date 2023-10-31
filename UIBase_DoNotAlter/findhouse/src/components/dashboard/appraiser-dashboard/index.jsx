@@ -8,7 +8,11 @@ import StatisticsChart from "./StatisticsChart";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+<<<<<<< Updated upstream
 import { Router, useRouter } from "next/router";
+=======
+// import Router from "next/router";
+>>>>>>> Stashed changes
 
 const Index = () => {
   let userData ={};

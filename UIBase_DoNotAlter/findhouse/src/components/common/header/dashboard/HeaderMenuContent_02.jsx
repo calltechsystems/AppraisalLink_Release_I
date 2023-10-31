@@ -499,13 +499,15 @@ const HeaderMenuContent = ({ float = "", hide, userData }) => {
       {/* End .dropitem */}
 
       <li className={"last"} style={{ cursor: "pointer" }}>
-        <Image
-          width={25}
-          height={25}
-          className="rounded-circle"
-          src="/assets/images/home/bell.jpg"
-          alt="e1.png"
-        />
+        <Link href="/notification-appraiser">
+          <Image
+            width={25}
+            height={25}
+            className="rounded-circle"
+            src="/assets/images/home/bell_1.png"
+            alt="e1.png"
+          />
+        </Link>
       </li>
 
       <li className="user_setting">

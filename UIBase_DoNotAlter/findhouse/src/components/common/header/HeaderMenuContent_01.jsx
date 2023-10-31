@@ -195,7 +195,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                     : undefined
                 } onMouseOver={()=>setAbout()}
               >
-                <span className="title text-info-01 menuitem" onMouseOver={()=>setInsight()} onMouseEnter={()=>setLogin()}>Home</span>
+                <span className="title text-info-01 cool-link menuitem" onMouseOver={()=>setInsight()} onMouseEnter={()=>setLogin()}>Home</span>
                 {/* <span className="arrow"></span> */}
               </Link>
               {/* <!-- Level Two--> */}
@@ -219,7 +219,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
             <li className="dropitem" onMouseOver={() => setAbout()} onMouseEnter={()=>setLogin()}>
               <Link href="#" onMouseOver={()=>setInsight()}>
                 <span
-                  className="title text-info-01 menuitem"
+                  className="title text-info-01 cool-link menuitem"
                   onMouseOver={() => setHovered(!hovered)}
                   // onMouseLeave={() => setLogin()}
                   // onMouseLeave={() => setHovered()}
@@ -350,14 +350,14 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
             <li className="dropitem" onMouseOver={() => setHovered()} onMouseEnter={()=>setLogin()}>
               <Link href="#">
                 <span
-                  className="title text-info-01 menuitem"
+                  className="title text-info-01 cool-link cool-link menuitem"
                   onMouseOver={() => setAbout(!about)} onMouseEnter={()=>setInsight()}
                   // onMouseLeave={() => setAbout()}
                   // onMouseLeave={() => setLogin()}
                 >
                   Insights
                 </span>{" "}
-                <span className="arrow text-info-01 menuitem"></span>
+                <span className="arrow text-info-01"></span>
               </Link>
               {about ? (
                 <div
@@ -485,7 +485,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                 }
               >
                 <span
-                  className="text-info-01 menuitem"
+                  className="text-info-01 cool-link menuitem"
                   onMouseOver={() => setAbout()} onMouseEnter={()=>setLogin()}
                 >
                   Subscription
@@ -499,7 +499,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                 className={route.pathname === "#" ? "ui-active" : undefined}
               >
                 <span
-                  className="text-info-01 menuitem"
+                  className="text-info-01 cool-link menuitem"
                   onMouseOver={() => setInsight(!insight)}
                 >
                   About Us
@@ -586,19 +586,19 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                       <div className="row">
                         <div className="col-lg-12 mt-3 fw-bold text-start">
                           <Link href="/about-us">
-                            <button className="fw-bold mt-4 menuitem">
+                            <button className="fw-bold mt-4 cool-link menuitem">
                               About Appraisal Link
                             </button>
                           </Link>
                           <br />
                           <Link href="/events">
-                            <button className=" mt-3 fw-bold menuitem">
+                            <button className=" mt-3 fw-bold cool-link menuitem">
                               Events
                             </button>
                           </Link>
                           <br />
                           <Link href="/how-we-work">
-                            <button className=" mt-3 fw-bold menuitem">
+                            <button className=" mt-3 fw-bold cool-link menuitem">
                               How We Work
                             </button>
                           </Link>
@@ -650,7 +650,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                   style={{ visibility: "hidden" }}
                 ></span>
                 <span
-                  className=" dn-lg text-info-01 menuitem"
+                  className=" dn-lg text-info-01 cool-link menuitem"
                   style={{ marginLeft: "-35px" }}
                   onMouseOver={() => setLogin(!login)}
                   // onMouseLeave={() => setLogin()}
@@ -811,7 +811,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                     : undefined
                 }
               >
-                <span className="title menuitem" onMouseOver={() => setLogin()} onMouseEnter={()=>setHovered()}>
+                <span className="title cool-link menuitem" onMouseOver={() => setLogin()} onMouseEnter={()=>setHovered()}>
                   En
                 </span>
                 <span className="arrow"></span>
