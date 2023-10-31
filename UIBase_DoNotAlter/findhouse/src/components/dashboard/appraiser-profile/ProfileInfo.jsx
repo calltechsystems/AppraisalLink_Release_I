@@ -42,15 +42,15 @@ const ProfileInfo = ({ setProfileCount , setShowCard}) => {
   );
 
   const [addressLineRef, setAddressLineRef] = useState(
-    userData?.broker_Details?.adressLine1 || ""
+    userData?.brokerage_Details?.adressLine1 || ""
   );
   const [addressLineTwoRef, setAddressLineTwoRef] = useState(
-    userData?.broker_Details?.adressLine2 || ""
+    userData?.brokerage_Details?.adressLine2 || ""
   );
 
-  const [cityRef, setCityRef] = useState(userData?.broker_Details?.city || "");
+  const [cityRef, setCityRef] = useState(userData?.brokerage_Details?.city || "");
   const [stateRef, setStateRef] = useState(
-    userData?.broker_Details?.state || ""
+    userData?.brokerage_Details?.state || ""
   );
   const [zipcodeRef, setZipcodeRef] = useState(
     userData?.brokerage_Details
@@ -110,40 +110,28 @@ const ProfileInfo = ({ setProfileCount , setShowCard}) => {
 
   const onUpdatHandler = () => {
     const firstName =
-      firstNameRef !== "" ? firstNameRef : userData.brokerage_Details.firstName;
+      firstNameRef;
     const lastName =
-      lastNameRef !== "" ? lastNameRef : userData.brokerage_Details.lastName;
+      lastNameRef ;
     const adressLine1 =
-      addressLineRef !== ""
-        ? addressLineRef
-        : userData.brokerage_Details.adressLine1;
-    const city = cityRef !== "" ? cityRef : userData.brokerage_Details.city;
-    const state = stateRef !== "" ? stateRef : userData.brokerage_Details.state;
+      addressLineRef;
+    const city = cityRef ;
+    const state = stateRef ;
     const zipCode =
-      zipcodeRef !== "" ? zipcodeRef : userData.brokerage_Details.zipCode;
+      zipcodeRef ;
     const phoneNumber =
-      phoneNumberRef !== ""
-        ? phoneNumberRef
-        : userData.brokerage_Details.phoneNumber;
+      phoneNumberRef ;
     const mortageBrokerLicNo =
-      mortgageBrokerLicNoRef !== ""
-        ? mortgageBrokerLicNoRef
-        : userData.brokerage_Details.mortageBrokerLicNo;
+      mortgageBrokerLicNoRef ;
     const mortageBrokerageLicNo =
-      mortgageBrokrageLicNoRef !== ""
-        ? mortgageBrokrageLicNoRef
-        : userData.brokerage_Details.mortageBrokerageLicNo;
+      mortgageBrokrageLicNoRef ;
 
     const adressLine2 =
-      addressLineTwoRef !== ""
-        ? addressLineTwoRef
-        : userData.brokerage_Details.adressLine2;
+      addressLineTwoRef ;
     const middleName =
-      middleNameRef !== "" ? middleNameRef : userData.brokerage_Details.middleName;
+      middleNameRef ;
     const companyName =
-      companyNameRef !== ""
-        ? companyNameRef
-        : userData.brokerage_Details.companyName;
+      companyNameRef 
 
     const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const nameRegex = /^[A-Za-z]+$/;

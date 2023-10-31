@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 
 const Form = ({ user }) => {
   const [showhide, setShowhide] = useState("");
+  const [change , setChange] = useState(false);
   const [showRegister, setRegister] = useState(true);
   const [captchaVerfied, setCaptchaVerified] = useState(false);
 
@@ -156,7 +157,7 @@ const Form = ({ user }) => {
 
             <div className="col-12">
               <div>
-                <Captcha verified={setCaptchaVerified} />
+                <Captcha verified={setCaptchaVerified} change={change} setChange={setChange}/>
               </div>
             </div>
 

@@ -268,7 +268,7 @@ if (passwordRegex.test(event.target.value)) {
                   <div>{!passwordLoginVerified ?  <div>Password not strong</div>:""}</div>
                   {/* End input-group */}
 
-                  <Captcha  verified = {setCaptchaVerified}/>
+                 {/* <Captcha  verified = {setCaptchaVerified}/>*/} 
 
                   <div className="form-group form-check custom-checkbox mb-3">
                     <input
