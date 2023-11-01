@@ -17,12 +17,12 @@ const Index = () => {
   const userData = (JSON.parse(localStorage.getItem("user")));
   const router = useRouter();
 
-  if(userData && userData.userType === 1){
-    router.push("/my-dashboard");
-  }
-  else if(userData && userData.userType === 2){
-    router.push("/appraiser-dashboard");
-  }
+  // if(userData && userData.userType === 1){
+  //   router.push("/my-dashboard");
+  // }
+  // else if(userData && userData.userType === 2){
+  //   router.push("/appraiser-dashboard");
+  // }
   return (
     <>
       {/* <!-- Main Header Nav --> */}

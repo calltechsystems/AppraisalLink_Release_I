@@ -1,4 +1,4 @@
-import Header from "../../common/header/dashboard/HeaderAdmin";
+import Header from "../../common/header/dashboard/Header";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenuAdmin";
 import MobileMenu from "../../common/header/MobileMenuAdmin";
 import Filtering from "./Filtering";
@@ -84,21 +84,19 @@ const Index = () => {
               {/* End .row */}
 
               <div className="row">
-                <div className="col-lg-12">
+                <div className="col-lg-6">
                   <div className="row">
                     <AllStatistics />
                   </div>
-                </div>
-                <div className="col-lg-6">
                   <div className="application_statics">
-                    <h4 className="mb-4">Appraisers </h4>
-                    <StatisticsPieChart />
+                    <h4 className="mb-4">View Statistics</h4>
+                    <StatisticsChart />
                   </div>
                 </div>
                 <div className="col-lg-6">
                   <div className="application_statics">
-                    <h4 className="mb-4">Bid Properties</h4>
-                    <StatisticsChart />
+                    <h4 className="mb-4">Plan Wise Appraisers</h4>
+                    <StatisticsPieChart />
                   </div>
                 </div>
               </div>
@@ -110,7 +108,7 @@ const Index = () => {
                     <div className="col-lg-12">
                       <div className="row">
                         <div className="col-lg-8">
-                          <h4 className="mt-2">All Appraisers</h4>
+                          <h4 className="mt-2">All Brokers</h4>
                         </div>
                         <div className="col-lg-4 mb-2 candidate_revew_search_box">
                           <SearchUser />
