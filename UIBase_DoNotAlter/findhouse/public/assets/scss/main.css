@@ -21484,6 +21484,9 @@ header.header-nav.menu_style_home_one .ace-responsive-menu > li > a {
   /* color: #0905ff; */
   color: #2e008b !important;
 }
+.ml{
+  margin-left: -10px !important;
+}
 
 header.header-nav.menu_style_home_one .ace-responsive-menu li a {
   /* color: #0905ff !important; */
@@ -22181,7 +22184,7 @@ input:checked + .slider:before {
 
 .menuitem:active{
   color: #2e008b !important;
-  border-bottom: 4px solid #2e008b !important;
+  /* border-bottom: 4px solid #2e008b !important; */
 }
 
 /* bordor bottom css */

@@ -1,4 +1,4 @@
-import Header from "../../common/header/dashboard/Header_02";
+import Header from "../../common/header/dashboard/HeaderAdmin";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenuAdmin";
 import MobileMenu from "../../common/header/MobileMenuAdmin";
 import SearchBox from "./SearchBox";

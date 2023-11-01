@@ -6,15 +6,15 @@ import Image from "next/image";
 
 const MyAccount = ({ user, userData }) => {
   const profileMenuItems = [
-    { id: 1, name: "Profile", ruterPath: "/appraiser-profile" },
+    { id: 1, name: "Profile", ruterPath: "/admin-profile" },
     // { id: 2, name: " My Message", ruterPath: "/my-message" },
     // { id: 3, name: " My Favourite", ruterPath: "/my-favourites" },
     {
       id: 4,
       name: "Change Password ",
-      ruterPath: "/appraiser-change-password",
+      ruterPath: "/admin-change-password",
     },
-    { id: 5, name: "Log out", ruterPath: "/login" },
+    { id: 5, name: "Log out", ruterPath: "/login-admin" },
   ];
   const route = useRouter();
   return (

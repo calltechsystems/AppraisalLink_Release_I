@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const TermsCondions = () => {
   const termsContent = [
@@ -50,8 +51,17 @@ const TermsCondions = () => {
 
   return (
     <div className="row">
-      <div className="col-lg-8 col-xl-8">
-        <div className="terms_condition_grid">
+      <div className="col-lg-12 col-xl-12">
+        <div className="about_thumb terms_condition_grid">
+          {" "}
+          <Image
+            width={461}
+            height={479}
+            priority
+            className="w100 cover mb-5"
+            src="/assets/images/service/Roadmap.png"
+            alt="1.jpg"
+          />
           {termsContent.map((item) => (
             <div className="grids mb30" key={item.id}>
               <h4>{item.title}</h4>
@@ -63,20 +73,18 @@ const TermsCondions = () => {
       </div>
       {/* End .col */}
 
-      {/* <div className="col-lg-4 col-xl-4">
+      {/* <div className="col-lg-6 col-xl-6">
         <div className="terms_condition_widget">
           <h4 className="title">Navigation</h4>
           <div className="widget_list">
-            <ul className="list_details">
-              {navigationList.map((list) => (
-                <li key={list.id}>
-                  <Link href={list.routeLink}>
-                    <i className="fa fa-caret-right mr10"></i>
-                    {list.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <Image
+              width={461}
+              height={359}
+              priority
+              className="w100 cover"
+              src="/assets/images/service/Roadmap.png"
+              alt="1.jpg"
+            />
           </div>
         </div>
       </div> */}

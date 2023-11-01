@@ -38,7 +38,7 @@ const SidebarMenu = () => {
     <>
       <ul className="sidebar-menu">
         <li className="sidebar_header header">
-          <Link href="/">
+          <Link href="#">
             <Image
               width={40}
               height={45}

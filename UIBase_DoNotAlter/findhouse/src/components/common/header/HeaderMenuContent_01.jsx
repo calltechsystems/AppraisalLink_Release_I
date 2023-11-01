@@ -226,7 +226,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                 >
                   Why Choose Us
                 </span>
-                <span className="arrow text-info-01"></span>
+                <span className="arrow text-info-01" style={{marginLeft:'-5px'}}></span>
               </Link>
               {/* <!-- Level Two--> */}
               {hovered ? (
@@ -357,7 +357,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                 >
                   Insights
                 </span>{" "}
-                <span className="arrow text-info-01"></span>
+                <span className="arrow text-info-01 ml"></span>
               </Link>
               {about ? (
                 <div
@@ -504,7 +504,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                 >
                   About Us
                 </span>
-                <span className="arrow text-info-01"></span>
+                <span className="arrow text-info-01" style={{marginLeft:'-5px'}}></span>
               </Link>
               {insight ? (
                 <div
@@ -657,7 +657,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                 >
                   Login
                 </span>
-                <span className="arrow text-info-01"></span>
+                <span className="arrow text-info-01" style={{marginLeft:'-5px'}}></span>
               </Link>
 
               {login ? (
@@ -814,7 +814,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                 <span className="title cool-link menuitem" onMouseOver={() => setLogin()} onMouseEnter={()=>setHovered()}>
                   En
                 </span>
-                <span className="arrow"></span>
+                <span className="arrow" style={{marginLeft:'-5px'}}></span>
               </Link>
               <ul className="sub-menu ">
                 {blog.map((item) => (

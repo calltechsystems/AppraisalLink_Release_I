@@ -31,7 +31,7 @@ const Header = ({profileCount , setProfileCount , userData}) => {
     >
       <div className="container-fluid p0">
         {/* <!-- Menu Toggle btn--> */}
-        <Link href="/" className="navbar_brand float-start dn-smd">
+        <Link href="#" className="navbar_brand float-start dn-smd">
           <Image
             width={40}
             height={45}
