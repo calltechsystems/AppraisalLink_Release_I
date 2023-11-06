@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Image from "next/image";
+import { useTranslation } from "react-i18next";
 
 const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
   const route = useRouter();
@@ -295,14 +296,18 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                    </Link> */}
                           </div>
                           <div className="col-lg-12 mt-4 mb-2">
-                            <button className="btn btn2 w-50 btn-color">
-                              For Brokers
-                            </button>
+                            <Link href="/how-we-work">
+                              <button className="btn btn2 w-50 btn-color">
+                                For Brokers
+                              </button>
+                            </Link>
                           </div>
                           <div className="col-lg-12 mb-2">
-                            <button className="btn btn2 w-50 btn-color">
-                              For Appraiser
-                            </button>
+                            <Link href="/how-we-work">
+                              <button className="btn btn2 w-50 btn-color">
+                                For Appraiser
+                              </button>
+                            </Link>
                           </div>
                         </div>
                       </div>
