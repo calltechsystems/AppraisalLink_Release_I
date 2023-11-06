@@ -257,7 +257,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                       transition: "opacity 0.3s ease", // Add transition for the opacity property
                       position: "absolute",
                       top: "100%",
-                      left: "-840px",
+                      left: "-820px",
                       // right: "-500px",
                       width: "1900px",
                       margin: "-16px",
@@ -397,7 +397,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                       position: "absolute",
                       top: "100%",
                       // left: "20px",
-                      right: "-740px",
+                      right: "-780px",
                       width: "1900px",
                       margin: "-16px",
                       height: "235px",
@@ -414,7 +414,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                   >
                     <div className="row">
                       <div className="col-lg-2"></div>
-                      <div className="col-lg-2 text-end">
+                      <div className="col-lg-2 text-center">
                         <div className="row">
                           <div className="col-lg-12 mt-4">
                             {/* <Link href="/">
@@ -669,35 +669,22 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                   >
                     <div className="row">
                       <div className="col-lg-2"></div>
-                      <div className="col-lg-2 text-end">
-                        <div className="row">
-                          <div className="col-lg-12 mt-4">
-                            {/* <Link href="/">
-                       <Image
-                         width={40}
-                         height={45}
-                         className="logo2 img-fluid"
-                         style={{ marginRight: "10px" }}
-                         src="/assets/images/logo_new.png"
-                         alt="header-logo2.png"
-                       />
-                       <span
-                         className="fw-bold"
-                         style={{ fontSize: "19px", color: "black" }}
-                       >
-                         Appraisal Link
-                       </span>
-                     </Link> */}
-                          </div>
-                          <div className="col-lg-12 mt-4 mb-2">
-                            <button className="btn btn2 w-50 btn-color">
-                              For Brokers
-                            </button>
-                          </div>
-                          <div className="col-lg-12 mb-2">
-                            <button className="btn btn2 w-50 btn-color">
-                              For Appraiser
-                            </button>
+                      <div
+                        className="col-lg-2 text-center"
+                        style={{ backgroundColor: "#c2c2c2" }}
+                      >
+                        <div className="row text-end">
+                          <div className="col-lg-10 m-5 fw-bold">
+                            <span>
+                              Ready to see Appraisal Link help make you more
+                              money at record speed?
+                            </span>
+                            <br />
+                            <Link href="/register">
+                              <button className="btn btn2 w-50 btn-color">
+                                Register
+                              </button>
+                            </Link>
                           </div>
                         </div>
                       </div>

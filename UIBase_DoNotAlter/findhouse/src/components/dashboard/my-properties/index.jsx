@@ -3,6 +3,7 @@ import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
 import MobileMenu from "../../common/header/MobileMenu_02";
 import TableData from "./TableData";
 import Filtering from "./Filtering";
+import FilteringBy from "./FilteringBy";
 import Pagination from "./Pagination";
 import SearchBox from "./SearchBox";
 import { useEffect } from "react";
@@ -163,7 +164,7 @@ const Index = () => {
       <section className="our-dashbord dashbord bgc-f7 pb50">
         <div
           className="container-fluid ovh"
-          style={{ marginLeft: "-70px", marginTop: "" }}
+          style={{ marginLeft: "-10px", marginTop: "" }}
         >
           <div className="row">
             <div className="col-lg-12 maxw100flex-992">
@@ -185,17 +186,23 @@ const Index = () => {
                 </div> */}
                 {/* End Dashboard Navigation */}
 
-                <div className="col-lg-4 col-xl-4 mb10">
+                {/* <div className="col-lg-4 col-xl-4 mb10">
                   <div className="breadcrumb_content style2 mb30-991">
                     <h2 className="breadcrumb_title">My Properties</h2>
-                    {/* <p>We are glad to see you again!</p>                                                             */}
+                    <p>We are glad to see you again!</p>                                                            
                   </div>
-                </div>
+                </div> */}
                 {/* End .col */}
 
-                <div className="col-lg-8 col-xl-8">
-                  <div className="candidate_revew_select style2 text-end mb30-991">
+                <div className="col-lg-12 col-xl-12">
+                  <div className="candidate_revew_select style2 mb30-991">
                     <ul className="mb0">
+                      <li className="list-inline-item">
+                        <Filtering setFilterQuery={setFilterQuery} />
+                      </li>
+                      <li className="list-inline-item">
+                      <FilteringBy setFilterQuery={setFilterQuery} />
+                      </li>
                       <li className="list-inline-item">
                         <div className="candidate_revew_search_box course fn-520">
                           <SearchBox setSearchInput={setSearchInput} />
@@ -203,9 +210,9 @@ const Index = () => {
                       </li>
                       {/* End li */}
 
-                      <li className="list-inline-item">
+                      {/* <li className="list-inline-item">
                         <Filtering setFilterQuery={setFilterQuery} />
-                      </li>
+                      </li> */}
                       {/* End li */}
                     </ul>
                   </div>

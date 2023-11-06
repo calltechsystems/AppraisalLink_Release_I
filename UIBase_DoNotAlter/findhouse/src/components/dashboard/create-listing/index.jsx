@@ -245,7 +245,7 @@ const Index = ({ isView, propertyData }) => {
       <section className="our-dashbord dashbord bgc-f7 pb50">
         <div
           className="container-fluid ovh"
-          style={{ marginLeft: "-70px", marginTop: "-40px" }}
+          style={{ marginLeft: "-10px", marginTop: "-40px" }}
         >
           <div className="row">
             <div className="col-lg-12 maxw100flex-992">

@@ -246,7 +246,7 @@ const HeaderMenuContent = ({ float = "" ,hide, setProfileCount , profileCount , 
       className="ace-responsive-menu text-end-01 d-lg-block d-none"
       data-menu-style="horizontal"
       style={{
-        backgroundColor: "#2e008b",
+        backgroundColor: "#1d293e",
         marginTop: "5px",
         borderRadius: "2px",
       }}
