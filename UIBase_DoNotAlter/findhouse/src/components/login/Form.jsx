@@ -11,7 +11,7 @@ import toast from "react-hot-toast";
 
 const Form = ({ user }) => {
   const [showhide, setShowhide] = useState("");
-  const [change , setChange] = useState(false);
+  const [change, setChange] = useState(false);
   const [showRegister, setRegister] = useState(true);
   const [captchaVerfied, setCaptchaVerified] = useState(false);
 
@@ -55,35 +55,37 @@ const Form = ({ user }) => {
         password: password,
       };
 
+      const encryptedData = encryptionData(data);
 
-    const encryptedData = encryptionData(data);
-
-    setLoading(true);
-    toast.loading("Logging User ..");
-    axios
-      .post("/api/login", encryptedData)
-      .then((res) => {
-        toast.dismiss();
-        localStorage.setItem("user", JSON.stringify(res.data.userData));
-        if(res.data.userData.userType === 1){
-          router.push("/my-dashboard");
-        }
-        else if(res.data.userData.userType === 2){
-          router.push("/appraiser-dashboard");
-        }
-      })
-      .catch((err) => {
-        toast.dismiss();
-        toast.error(err.response.data.error ?
-          err.response.data.error : "Internal server error." , {
-          autoClose: 30000,
+      setLoading(true);
+      toast.loading("Logging User ..");
+      axios
+        .post("/api/login", encryptedData)
+        .then((res) => {
+          toast.dismiss();
+          localStorage.setItem("user", JSON.stringify(res.data.userData));
+          if (res.data.userData.userType === 1) {
+            router.push("/my-dashboard");
+          } else if (res.data.userData.userType === 2) {
+            router.push("/appraiser-dashboard");
+          }
+        })
+        .catch((err) => {
+          toast.dismiss();
+          toast.error(
+            err.response.data.error
+              ? err.response.data.error
+              : "Internal server error.",
+            {
+              autoClose: 30000,
+            }
+          );
+          setReloadOption(true);
+          router.reload();
+        })
+        .finally(() => {
+          setLoading(false);
         });
-        setReloadOption(true);
-        router.reload();
-      })
-      .finally(() => {
-        setLoading(false);
-      });
     }
   };
 
@@ -92,8 +94,7 @@ const Form = ({ user }) => {
     const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/;
     if (passwordRegex.test(event.target.value)) {
       setPasswordLoginVerified(true);
-    } 
-    else {
+    } else {
       setPasswordLoginVerified(false); // Change this to false for invalid passwords
     }
   };
@@ -166,14 +167,23 @@ const Form = ({ user }) => {
 
             <div className="col-12">
               <div>
-           {captchaVerfied ? "" : <label
-              className="form-check-label form-check-label"
-              htmlFor="remeberMe"
-              style={{color:"red"}}
-            >
-              Captcha doesnt match
-            </label>}
-                <Captcha verified={setCaptchaVerified} reload = {reloadOption} change={change} setChange={setChange}/>
+                {captchaVerfied ? (
+                  ""
+                ) : (
+                  <label
+                    className="form-check-label form-check-label"
+                    htmlFor="remeberMe"
+                    style={{ color: "red" }}
+                  >
+                    Captcha doesnt match
+                  </label>
+                )}
+                <Captcha
+                  verified={setCaptchaVerified}
+                  reload={reloadOption}
+                  change={change}
+                  setChange={setChange}
+                />
               </div>
             </div>
 
@@ -183,6 +193,7 @@ const Form = ({ user }) => {
                 type="checkbox"
                 value=""
                 id="remeberMe"
+                style={{ border: "1px solid black" }}
               />
               <label
                 className="form-check-label form-check-label"

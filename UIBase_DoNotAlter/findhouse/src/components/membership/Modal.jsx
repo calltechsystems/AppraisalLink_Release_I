@@ -6,7 +6,13 @@ import { useRouter } from "next/router";
 const Modal = ({ modalOpen, closeModal, price }) => {
   const router = useRouter();
   const loginHandler = () => {
-    router.push("/login");
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if(userData?.userType === 1){
+      router.push("/my-plans");
+    }
+    else{
+      router.push("/login");
+    }
   };
   return (
     <>
@@ -40,11 +46,10 @@ const Modal = ({ modalOpen, closeModal, price }) => {
               ></div>
               <div style={{ marginLeft: "14%" }}>
                 <p className="m-3" style={{ fontSize: "17px" }}>
-                  Please login to check and use your plan
+                  Please click checkout to login 
                 </p>
                 <p className="m-3" style={{ fontSize: "17px" }}>
-                  Your selected Package . Click{" "}
-                  <span style={{ color: "blue" }}>continue</span> for further .
+                  Your selected Package . 
                   <span
                     style={{
                       fontWeight: "bold",

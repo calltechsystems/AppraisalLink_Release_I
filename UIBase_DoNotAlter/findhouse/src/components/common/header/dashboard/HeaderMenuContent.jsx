@@ -246,7 +246,7 @@ const HeaderMenuContent = ({ float = "" ,hide, setProfileCount , profileCount , 
       className="ace-responsive-menu text-end-01 d-lg-block d-none"
       data-menu-style="horizontal"
       style={{
-        backgroundColor: "grey",
+        backgroundColor: "#2e008b",
         marginTop: "5px",
         borderRadius: "2px",
       }}
@@ -526,7 +526,7 @@ const HeaderMenuContent = ({ float = "" ,hide, setProfileCount , profileCount , 
               }
               alt="e1.png"
             />
-            <span className="dn-1199 ms-1 text-dark">
+            <span className="dn-1199 ms-1 text-light">
               {userInfo?.broker_Details?.firstName
                 ? userInfo.broker_Details?.firstName
                 : `XYZ`}

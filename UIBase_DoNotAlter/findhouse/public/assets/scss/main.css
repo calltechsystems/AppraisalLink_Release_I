@@ -1410,7 +1410,7 @@ header.header-nav.menu_style_home_seven .ace-responsive-menu li ul.sub-menu,
 header.header-nav.menu_style_home_eight .ace-responsive-menu li ul.sub-menu {
   background-color: #ffffff;
   border-radius: 5px;
-  padding: 15px 0;
+  padding:5px 0;
   -webkit-box-shadow: 0px 0px 50px 0px rgba(32, 32, 32, 0.15);
   -moz-box-shadow: 0px 0px 50px 0px rgba(32, 32, 32, 0.15);
   -o-box-shadow: 0px 0px 50px 0px rgba(32, 32, 32, 0.15);
@@ -1616,7 +1616,7 @@ header.header-nav.menu_style_home_eight
 
 header.header-nav.menu_style_home_one .ace-responsive-menu > li > ul.sub-menu,
 header.header-nav.home2.style_one .ace-responsive-menu > li > ul.sub-menu {
-  margin-left: -180px;
+  margin-left: -10px;
 }
 
 header.header-nav.menu_style_home_one .ace-responsive-menu li ul.sub-menu,
@@ -1653,7 +1653,7 @@ header.header-nav.menu_style_home_eight
   .ace-responsive-menu
   li
   ul.sub-menu:before {
-  background-color: #ffffff;
+  background-color: transparent;
   content: "";
   height: 20px;
   right: 25px;
@@ -2034,7 +2034,7 @@ header.header-nav.menu_style_home_eight .ace-responsive-menu li ul.sub-menu li {
   background-color: #ffffff;
   border-radius: 5px;
   padding: 0 30px;
-  width: 260px;
+  width: 100px;
 }
 
 header.header-nav.menu_style_home_four .ace-responsive-menu li ul.sub-menu li,
@@ -21312,9 +21312,9 @@ header.header-nav.menu_style_home_one ul.ace-responsive-menu li.add_listing {
 }
 
 .my_profile_setting_input .btn2:hover {
-  background-color: #0595e3 !important ;
-  color: black !important;
-  border: 1px solid black !important;
+  background-color: #fff !important ;
+  color: #2e008b !important;
+  border: 1px solid #2e008b !important;
 }
 
 .sign_up_form .btn-log {
@@ -21355,8 +21355,10 @@ header.header-nav.menu_style_home_one ul.ace-responsive-menu li.add_listing {
 }
 
 .pricing_table:hover {
-  background-color: #0272db !important;
-  color: white !important;
+  /* background-color: #0272db !important;
+  color: white !important; */
+  background-color: #007789 !important;
+  border: 10px solid #007789;
 }
 
 .pricing_table .pricing_content ul li {
@@ -21471,8 +21473,8 @@ header.header-nav.menu_style_home_one .ace-responsive-menu > li > a {
 }
 
 .text-captcha {
-  color: #434343 !important;
-  font-size: 20px !important;
+  color: #fff !important;
+  font-size: 22px !important;
   font-weight: bold;
 }
 
@@ -22208,3 +22210,4 @@ input:checked + .slider:before {
   width: 100%;
   /* transition: width .3s; */
 }
+

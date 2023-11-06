@@ -10,8 +10,8 @@ import toast from "react-hot-toast";
 
 const Form = () => {
   const [showhide, setShowhide] = useState("");
-  
-  const [change , setChange] = useState(false);
+
+  const [change, setChange] = useState(false);
   const [showRegister, setRegister] = useState(true);
   const [showLabel, setShowLabel] = useState(false);
   const [captchaVerfied, setCaptchaVerified] = useState(false);
@@ -20,8 +20,7 @@ const Form = () => {
 
   const router = useRouter();
 
-  const [checkRegisterConfrim, setCheckRegisterConfrim] =
-    useState(false);
+  const [checkRegisterConfrim, setCheckRegisterConfrim] = useState(false);
 
   const [passwordRegisterVerified, setPasswordRegisterVerified] =
     useState(false);
@@ -82,22 +81,18 @@ const Form = () => {
     const reEnterPassword = passwordRegisterRef.current.value;
     const user = userTypeRef.current.value;
 
-    
-
     if (password !== reEnterPassword) {
       setChange(true);
       toast.error("Password are meant to be same ");
-    }
-    else if (user === "") {
+    } else if (user === "") {
       setChange(true);
       toast.error("User Type must be selected for registration!!");
-    }
-    else if (!email) {
+    } else if (!email) {
       setChange(true);
       toast.error("Email cant be empty or non valid.");
     } else if (!captchaVerfied) {
       setChange(true);
-      return ;
+      return;
     } else {
       const data = {
         email: email,
@@ -117,10 +112,14 @@ const Form = () => {
         })
         .catch((err) => {
           toast.dismiss();
-          toast.error(err.response.data.error ?
-            err.response.data.error : "Internal server error." , {
-            autoClose: 30000,
-          });
+          toast.error(
+            err.response.data.error
+              ? err.response.data.error
+              : "Internal server error.",
+            {
+              autoClose: 30000,
+            }
+          );
           router.reload();
         })
         .finally(() => {
@@ -141,15 +140,14 @@ const Form = () => {
   };
 
   const checkConfirmHandler = (event) => {
-   const password = passwordRegister;
-   const confirmPassword = passwordRegisterRef.current.value;
+    const password = passwordRegister;
+    const confirmPassword = passwordRegisterRef.current.value;
 
-   if(password === confirmPassword){
-    setCheckRegisterConfrim(true);
-   }
-   else{
-    setCheckRegisterConfrim(false);
-   }
+    if (password === confirmPassword) {
+      setCheckRegisterConfrim(true);
+    } else {
+      setCheckRegisterConfrim(false);
+    }
   };
 
   return (
@@ -174,7 +172,8 @@ const Form = () => {
 
           <div className="col-lg-12">
             <div className="form-group input-group ui_kit_select_search mb-3">
-              <select required
+              <select
+                required
                 className="form-select"
                 data-live-search="true"
                 data-width="100%"
@@ -245,7 +244,8 @@ const Form = () => {
               />
               <div className="input-group-prepend">
                 <div
-                  className="input-group-text m-1"  style={{border:'1px solid #2e008b'}}
+                  className="input-group-text m-1"
+                  style={{ border: "1px solid #2e008b" }}
                   onClick={togglePasswordVisibility}
                 >
                   <FaEye />
@@ -282,7 +282,7 @@ const Form = () => {
                 className="form-control mt-3"
                 placeholder="Re enter Password"
                 required
-                onChange={(e)=>checkConfirmHandler(e)}
+                onChange={(e) => checkConfirmHandler(e)}
                 onFocus={() => setIs2Focused(true)}
                 onBlur={() => setIs2Focused(false)}
                 ref={passwordRegisterRef}
@@ -290,7 +290,8 @@ const Form = () => {
               />
               <div className="input-group-prepend mt-3">
                 <div
-                  className="input-group-text m-1" style={{border:'1px solid #2e008b'}}
+                  className="input-group-text m-1"
+                  style={{ border: "1px solid #2e008b" }}
                   onClick={togglePasswordVisibility_01}
                 >
                   <FaEye />
@@ -299,26 +300,39 @@ const Form = () => {
             </div>
             {/* End .form-group */}
           </div>
-           {is2Focused ? (
+          {is2Focused ? (
             checkRegisterConfrim ? (
               ""
             ) : (
-               <div style={{marginTop:"-2%"}}><span style={{ color: "red" }}> Both password arent same &#10008;</span> </div> 
+              <div style={{ marginTop: "-2%" }}>
+                <span style={{ color: "red" }}>
+                  {" "}
+                  Both password arent same &#10008;
+                </span>{" "}
+              </div>
             )
           ) : (
             ""
-          )} 
+          )}
 
           <div className="col-lg-12">
-          {captchaVerfied ? "" : <label
-              className="form-check-label form-check-label"
-              htmlFor="remeberMe"
-              style={{color:"red"}}
-            >
-              Captcha doesnt match
-            </label>}
+            {captchaVerfied ? (
+              ""
+            ) : (
+              <label
+                className="form-check-label form-check-label"
+                htmlFor="remeberMe"
+                style={{ color: "red" }}
+              >
+                Captcha doesnt match
+              </label>
+            )}
             <div>
-              <Captcha verified={setCaptchaVerified} change={change} setChange={setChange}/>
+              <Captcha
+                verified={setCaptchaVerified}
+                change={change}
+                setChange={setChange}
+              />
             </div>
           </div>
           <div className="form-group form-check custom-checkbox mb-3">
@@ -328,6 +342,7 @@ const Form = () => {
               value=""
               required
               id="terms"
+              style={{ border: "1px solid black" }}
             />
             <label
               className="form-check-label form-check-label"

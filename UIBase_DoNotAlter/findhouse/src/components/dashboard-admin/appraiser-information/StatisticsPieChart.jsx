@@ -1,63 +1,59 @@
-import { Chart as ChartJS, Title, Tooltip, Legend } from "chart.js";
-import {
-  BarController,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-} from "chart.js";
-import { Bar } from "react-chartjs-2";
-import { faker } from "@faker-js/faker";
+import Chart from 'chart.js/auto';
+import React, { useRef, useEffect } from 'react';
 
-ChartJS.register(
-  Title,
-  Tooltip,
-  Legend,
-  BarController, // Register the BarController
-  CategoryScale,
-  LinearScale,
-  BarElement // Register the BarElement
-);
+export default function StatisticsPieChart() {
+  const canvas = useRef();
 
-export const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      display: false,
-    },
-    title: {
-      display: false,
-    },
-    tooltips: {
-      position: "nearest",
-      mode: "index",
-      intersect: false,
-      yPadding: 10,
-      xPadding: 10,
-      caretSize: 8,
-      backgroundColor: "rgba(72, 241, 12, 1)",
-      borderColor: "rgb(255, 99, 132)",
-      backgroundColor: "rgba(255, 99, 132, 0.5)",
-      borderColor: "rgba(0,0,0,1)",
-      borderWidth: 4,
-    },
-  },
-};
+  useEffect(() => {
+    const ctx = canvas.current;
 
-const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    let chartStatus = Chart.getChart('myChart');
+    if (chartStatus != undefined) {
+      chartStatus.destroy();
+    }
 
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: "Dataset",
-      data: labels.map(() => faker.datatype.number({ min: 10, max: 100 })),
-      backgroundColor: "rgba(7, 5, 79, 0.8)",
-      borderColor: "rgb(7, 5, 79)",
-      borderWidth: 1,
-    },
-  ],
-};
+    const chart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: ['Lite Plan', 'Pro Plan', 'Ultimate Plan'],
+        datasets: [
+          {
+            label: '',
+            data: [17, 16, 13],
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              
+            ],
+            borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+             
+            ],
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: 'Number of Active Plans by Appraisers',
+          },
+        },
+      },
+    });
+  }, []);
 
-export default function StatisticsChart() {
-  return <Bar options={options} data={data} />;
+  return (
+    <div className='container pt-1 pb-2'>
+      <canvas id='myChart' ref={canvas}></canvas>
+    </div>
+  );
 }

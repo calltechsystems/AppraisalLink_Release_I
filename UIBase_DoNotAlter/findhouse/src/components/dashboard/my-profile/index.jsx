@@ -10,27 +10,25 @@ import Form from "./Form";
 const Index = () => {
   const [profileCount, setProfileCount] = useState(7);
 
-  const [showCard , setShowCard] = useState(true);
+  const [showCard, setShowCard] = useState(true);
   let userData = {};
   const router = useRouter();
 
-useEffect(()=>{
-  userData = JSON.parse(localStorage.getItem("user"));
-  if (!userData) {
-    router.push("/login");
-  } else if (!userData?.broker_Details?.firstName) {
-    router.push("/my-profile");
-  }
-  if(userData?.broker_Details?.firstName === ""){
-    setShowCard(true);
-  }
-},[])
- 
+  useEffect(() => {
+    userData = JSON.parse(localStorage.getItem("user"));
+    if (!userData) {
+      router.push("/login");
+    } else if (!userData?.broker_Details?.firstName) {
+      router.push("/my-profile");
+    }
+    if (userData?.broker_Details?.firstName === "") {
+      setShowCard(true);
+    }
+  }, []);
 
-  const chnageShowCardHandler = (val)=>{
+  const chnageShowCardHandler = (val) => {
     setShowCard(val);
-  }
- 
+  };
 
   return (
     <>
@@ -54,7 +52,10 @@ useEffect(()=>{
 
       {/* <!-- Our Dashbord --> */}
       <section className="our-dashbord dashbord bgc-f7 pb50">
-        <div className="container-fluid ovh">
+        <div
+          className="container-fluid ovh"
+          style={{ marginLeft: "-70px", marginTop: "" }}
+        >
           <div className="row">
             <div className="col-lg-12 maxw100flex-992">
               <div className="row">
@@ -90,13 +91,20 @@ useEffect(()=>{
                         <h4>Personal Information</h4>
                       </div> */}
                       <div className="col-xl-12">
-                       {showCard === true ? <div className="mb-5">
-                          <Form userData = {userData} chnageShowCardHandler={chnageShowCardHandler}/>
-                        </div> : <ProfileInfo
-                          profileCount={profileCount}
-                          setProfileCount={setProfileCount}
-                          setShowCard={setShowCard}
-                        /> }
+                        {showCard === true ? (
+                          <div className="mb-5">
+                            <Form
+                              userData={userData}
+                              chnageShowCardHandler={chnageShowCardHandler}
+                            />
+                          </div>
+                        ) : (
+                          <ProfileInfo
+                            profileCount={profileCount}
+                            setProfileCount={setProfileCount}
+                            setShowCard={setShowCard}
+                          />
+                        )}
                       </div>
                     </div>
                   </div>
@@ -131,7 +139,10 @@ useEffect(()=>{
               <div className="row mt50">
                 <div className="col-lg-12">
                   <div className="copyright-widget text-center">
-                    <p>&copy; {new Date().getFullYear()} Appraisal Link. All Rights Reserved.</p>
+                    <p>
+                      &copy; {new Date().getFullYear()} Appraisal Link. All
+                      Rights Reserved.
+                    </p>
                   </div>
                 </div>
               </div>

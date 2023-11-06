@@ -11,7 +11,7 @@ import toast from "react-hot-toast";
 
 const Form = ({ user }) => {
   const [showhide, setShowhide] = useState("");
-  const [change , setChange] = useState(false);
+  const [change, setChange] = useState(false);
   const [showRegister, setRegister] = useState(true);
   const [captchaVerfied, setCaptchaVerified] = useState(false);
 
@@ -51,31 +51,29 @@ const Form = ({ user }) => {
         password: password,
       };
 
+      const encryptedData = encryptionData(data);
 
-    const encryptedData = encryptionData(data);
-
-    setLoading(true);
-    toast.loading("Logging User ..");
-    axios
-      .post("/api/login", encryptedData)
-      .then((res) => {
-        toast.dismiss();
-        localStorage.setItem("user", JSON.stringify(res.data.userData));
-        if(res.data.userData.userType === 1){
-          router.push("/my-dashboard");
-        }
-        else if(res.data.userData.userType === 2){
-          router.push("/appraiser-dashboard");
-        }
-      })
-      .catch((err) => {
-        toast.dismiss();
-        toast.error(err.response.data.error);
-        router.reload();
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+      setLoading(true);
+      toast.loading("Logging User ..");
+      axios
+        .post("/api/login", encryptedData)
+        .then((res) => {
+          toast.dismiss();
+          localStorage.setItem("user", JSON.stringify(res.data.userData));
+          if (res.data.userData.userType === 1) {
+            router.push("/my-dashboard");
+          } else if (res.data.userData.userType === 2) {
+            router.push("/appraiser-dashboard");
+          }
+        })
+        .catch((err) => {
+          toast.dismiss();
+          toast.error(err.response.data.error);
+          router.reload();
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     }
   };
 
@@ -157,7 +155,11 @@ const Form = ({ user }) => {
 
             <div className="col-12">
               <div>
-                <Captcha verified={setCaptchaVerified} change={change} setChange={setChange}/>
+                <Captcha
+                  verified={setCaptchaVerified}
+                  change={change}
+                  setChange={setChange}
+                />
               </div>
             </div>
 
@@ -169,6 +171,7 @@ const Form = ({ user }) => {
                 type="checkbox"
                 value=""
                 id="remeberMe"
+                style={{ border: "1px solid black" }}
               />
               <label
                 className="form-check-label form-check-label"

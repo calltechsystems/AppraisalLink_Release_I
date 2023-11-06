@@ -12,17 +12,18 @@ import ComfortPlace from "./ComfortPlace";
 import Testimonials from "./Testimonials";
 import Header from "../common/header/DefaultHeader_01";
 import { useRouter } from "next/router";
+import Partners_01 from "../common/Partners";
 
 const Index = () => {
-  const userData = (JSON.parse(localStorage.getItem("user")));
+  const userData = JSON.parse(localStorage.getItem("user"));
   const router = useRouter();
 
-  if(userData && userData.userType === 1){
-    router.push("/my-dashboard");
-  }
-  else if(userData && userData.userType === 2){
-    router.push("/appraiser-dashboard");
-  }
+  // if(userData && userData.userType === 1){
+  //   router.push("/my-dashboard");
+  // }
+  // else if(userData && userData.userType === 2){
+  //   router.push("/appraiser-dashboard");
+  // }
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -179,7 +180,7 @@ const Index = () => {
                   padding: "20px",
                 }}
               >
-                Our Partners
+                Our Brokerage Partners
               </h2>
               <p>We work with the best appraisers around the country.</p>
             </div>
@@ -188,6 +189,33 @@ const Index = () => {
         <div className="container">
           <div className="row">
             <Partners />
+          </div>
+        </div>
+      </section>
+
+      <hr />
+
+      {/* <!-- Our Partners --> */}
+      <section id="our-partners" className="our-partners">
+        <div className="row">
+          <div className="col-lg-12">
+            <div className="main-title text-center">
+              <h2
+                style={{
+                  backgroundColor: "#2e008b",
+                  color: "white",
+                  padding: "20px",
+                }}
+              >
+                Our Appraiser Partners
+              </h2>
+              <p>We work with the best appraisers around the country.</p>
+            </div>
+          </div>
+        </div>
+        <div className="container">
+          <div className="row">
+            <Partners_01 />
           </div>
         </div>
       </section>

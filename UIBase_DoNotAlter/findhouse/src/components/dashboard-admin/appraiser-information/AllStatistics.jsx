@@ -14,27 +14,27 @@ const AllStatistics = () => {
       timer: "24",
       name: "Total Active Appraisers",
     },
-    {
-      id: 3,
-      blockStyle: "style3",
-      icon: "flaticon-box",
-      timer: "12",
-      name: "Total Pending Bids",
-    },
-    {
-      id: 4,
-      blockStyle: "style4",
-      icon: "flaticon-heart",
-      timer: "18",
-      name: "Total Complete Bids",
-    },
+    // {
+    //   id: 3,
+    //   blockStyle: "style3",
+    //   icon: "flaticon-chat",
+    //   timer: "12",
+    //   name: "Bids",
+    // },
+    // {
+    //   id: 4,
+    //   blockStyle: "style4",
+    //   icon: "flaticon-heart",
+    //   timer: "18",
+    //   name: "Favorites",
+    // },
   ];
 
   return (
     <>
       {allStatistics.map((item) => (
         // <div className="col-sm-6 col-md-6 col-lg-6 col-xl-3" key={item.id}>
-        <div className="col-lg-6 col-md-6 col-lg-6 col-xl-3" key={item.id}>
+        <div className="col-lg-6" key={item.id}>
           <div className={`ff_one ${item.blockStyle}`}>
             <div className="detais">
               <div className="timer">{item.timer}</div>

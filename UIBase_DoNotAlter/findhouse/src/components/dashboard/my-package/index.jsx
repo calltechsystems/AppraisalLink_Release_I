@@ -13,27 +13,24 @@ const Index = () => {
   const router = useRouter();
   let userData = {};
 
-
   useEffect(() => {
-    
     userData = JSON.parse(localStorage.getItem("user"));
-  if (!userData) {
-    router.push("/login");
-  } else if (!userData?.broker_Details?.firstName) {
-    router.push("/my-profile");
-  }
+    if (!userData) {
+      router.push("/login");
+    } else if (!userData?.broker_Details?.firstName) {
+      router.push("/my-profile");
+    }
 
     toast.loading("Getting Transactions...");
     axios
       .get("/api/getBrokerTransactions", {
         headers: {
-          Authorization:`Bearer ${userData?.token}`,
-          "Content-Type":"application/json"
+          Authorization: `Bearer ${userData?.token}`,
+          "Content-Type": "application/json",
         },
-        params : {
-          userId : userData?.userId
-        }
-        
+        params: {
+          userId: userData?.userId,
+        },
       })
       .then((res) => {
         toast.dismiss();
@@ -69,7 +66,10 @@ const Index = () => {
 
       {/* <!-- Our Dashbord --> */}
       <section className="our-dashbord dashbord bgc-f7 pb50">
-        <div className="container-fluid ovh">
+        <div
+          className="container-fluid ovh"
+          style={{ marginLeft: "-70px", marginTop: "" }}
+        >
           <div className="row">
             <div className="col-lg-12 maxw100flex-992">
               <div className="row">
@@ -132,7 +132,10 @@ const Index = () => {
               <div className="row mt50">
                 <div className="col-lg-12">
                   <div className="copyright-widget text-center">
-                    <p>&copy; {new Date().getFullYear()} Appraisal Link. All Rights Reserved.</p>
+                    <p>
+                      &copy; {new Date().getFullYear()} Appraisal Link. All
+                      Rights Reserved.
+                    </p>
                   </div>
                 </div>
               </div>

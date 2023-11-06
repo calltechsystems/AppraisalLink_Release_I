@@ -1,16 +1,35 @@
 import { current } from "@reduxjs/toolkit";
 
-
-const LocationField = ({isDisable,streetNameRef , setStreetNameRef,streetNumberRef ,setStreetNumberRef, cityRef ,setCityRef,setZipCodeRef, stateRef ,setStateRef,handleZipCodeChange,zipCodeRef,areaRef ,setAreaRef ,propertyData,setDisable}) => {
-  
+const LocationField = ({
+  isDisable,
+  streetNameRef,
+  setStreetNameRef,
+  streetNumberRef,
+  setStreetNumberRef,
+  cityRef,
+  setCityRef,
+  setZipCodeRef,
+  stateRef,
+  setStateRef,
+  handleZipCodeChange,
+  zipCodeRef,
+  areaRef,
+  setAreaRef,
+  propertyData,
+  setDisable,
+  buildinRef,
+}) => {
   return (
     <>
       <div className="row">
         <div className="col-lg-12">
           <div className="row mb-2">
             <div className="col-lg-3 my_profile_setting_input form-group">
-              <label htmlFor="" style={{ paddingTop: "15px", fontWeight:'lighter' }}>
-                Street Name <span class="req-btn">*</span> :
+              <label
+                htmlFor=""
+                style={{ paddingTop: "15px", fontWeight: "lighter" }}
+              >
+                Street Name <span class="req-btn">*</span>
               </label>
             </div>
             <div className="col-lg-7">
@@ -18,7 +37,7 @@ const LocationField = ({isDisable,streetNameRef , setStreetNameRef,streetNumberR
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                onChange={(e)=>setStreetNameRef(e.target.value)}
+                onChange={(e) => setStreetNameRef(e.target.value)}
                 value={streetNameRef}
                 disabled={isDisable}
               />
@@ -26,8 +45,11 @@ const LocationField = ({isDisable,streetNameRef , setStreetNameRef,streetNumberR
           </div>
           <div className="row mb-2">
             <div className="col-lg-3 my_profile_setting_input form-group">
-              <label htmlFor="" style={{ paddingTop: "15px", fontWeight:'lighter' }}>
-                Street Number <span class="req-btn">*</span> :
+              <label
+                htmlFor=""
+                style={{ paddingTop: "15px", fontWeight: "lighter" }}
+              >
+                Street Number <span class="req-btn">*</span>
               </label>
             </div>
             <div className="col-lg-7">
@@ -35,7 +57,7 @@ const LocationField = ({isDisable,streetNameRef , setStreetNameRef,streetNumberR
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                onChange={(e)=>setStreetNumberRef(e.target.value)}
+                onChange={(e) => setStreetNumberRef(e.target.value)}
                 value={streetNumberRef}
                 disabled={isDisable}
               />
@@ -43,8 +65,11 @@ const LocationField = ({isDisable,streetNameRef , setStreetNameRef,streetNumberR
           </div>
           <div className="row mb-2">
             <div className="col-lg-3 my_profile_setting_input form-group">
-              <label htmlFor="" style={{ paddingTop: "15px", fontWeight:'lighter' }}>
-                City <span class="req-btn">*</span> :
+              <label
+                htmlFor=""
+                style={{ paddingTop: "15px", fontWeight: "lighter" }}
+              >
+                City <span class="req-btn">*</span>
               </label>
             </div>
             <div className="col-lg-7">
@@ -52,7 +77,7 @@ const LocationField = ({isDisable,streetNameRef , setStreetNameRef,streetNumberR
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                onChange={(e)=>setCityRef(e.target.value)}
+                onChange={(e) => setCityRef(e.target.value)}
                 value={cityRef}
                 disabled={isDisable}
               />
@@ -60,8 +85,11 @@ const LocationField = ({isDisable,streetNameRef , setStreetNameRef,streetNumberR
           </div>
           <div className="row mb-2">
             <div className="col-lg-3 my_profile_setting_input form-group">
-              <label htmlFor="" style={{ paddingTop: "15px", fontWeight:'lighter' }}>
-                State <span class="req-btn">*</span> :
+              <label
+                htmlFor=""
+                style={{ paddingTop: "15px", fontWeight: "lighter" }}
+              >
+                State <span class="req-btn">*</span>
               </label>
             </div>
             <div className="col-lg-7">
@@ -69,7 +97,7 @@ const LocationField = ({isDisable,streetNameRef , setStreetNameRef,streetNumberR
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                onChange={(e)=>setStateRef(e.target.value)}
+                onChange={(e) => setStateRef(e.target.value)}
                 value={stateRef}
                 disabled={isDisable}
               />
@@ -77,8 +105,11 @@ const LocationField = ({isDisable,streetNameRef , setStreetNameRef,streetNumberR
           </div>
           <div className="row mb-2">
             <div className="col-lg-3 my_profile_setting_input form-group">
-              <label htmlFor="" style={{ paddingTop: "15px", fontWeight:'lighter' }}>
-                Zip-Code <span class="req-btn">*</span> :
+              <label
+                htmlFor=""
+                style={{ paddingTop: "15px", fontWeight: "lighter" }}
+              >
+                Postal Code <span class="req-btn">*</span>
               </label>
             </div>
             <div className="col-lg-7">
@@ -86,7 +117,7 @@ const LocationField = ({isDisable,streetNameRef , setStreetNameRef,streetNumberR
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                onChange={(e)=>handleZipCodeChange(e)}
+                onChange={(e) => handleZipCodeChange(e)}
                 value={zipCodeRef}
                 disabled={isDisable}
               />
@@ -94,19 +125,56 @@ const LocationField = ({isDisable,streetNameRef , setStreetNameRef,streetNumberR
           </div>
           <div className="row mb-2">
             <div className="col-lg-3 my_profile_setting_input form-group">
-              <label htmlFor="" style={{ paddingTop: "15px", fontWeight:'lighter' }}>
-                Area <span class="req-btn">*</span> :
+              <label
+                htmlFor=""
+                style={{ paddingTop: "15px", fontWeight: "lighter" }}
+              >
+                Property Area (sq.ft)
               </label>
             </div>
             <div className="col-lg-7">
               <input
-                type="text"
+                type="number"
                 className="form-control"
                 id="formGroupExampleInput3"
-                onChange={(e)=>setAreaRef(e.target.value)}
+                onChange={(e) => setAreaRef(e.target.value)}
                 value={areaRef}
                 disabled={isDisable}
               />
+            </div>
+          </div>
+          <div className="row mb-2">
+            <div className="col-lg-3 my_profile_setting_input form-group">
+              <label
+                htmlFor=""
+                style={{ paddingTop: "15px", fontWeight: "lighter" }}
+              >
+                Type of Building <span class="req-btn">*</span>
+              </label>
+            </div>
+            <div className="col-lg-7">
+              <div className="form-group input-group ui_kit_select_search mb-3">
+                <select
+                  required
+                  className="form-select"
+                  data-live-search="true"
+                  data-width="100%"
+                  onChange={(e) => setBuildinRef(e.target.value)}
+                  value={buildinRef}
+                  disabled={isDisable}
+                  style={{ paddingTop: "15px", paddingBottom: "15px" }}
+                >
+                  <option data-tokens="SelectRole" value={1}>
+                    Commercial
+                  </option>
+                  <option data-tokens="Agent/Agency" value={3}>
+                    Domestic
+                  </option>
+                  <option data-tokens="SingleUser" value={2}>
+                    Apartment
+                  </option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
@@ -188,7 +256,7 @@ const LocationField = ({isDisable,streetNameRef , setStreetNameRef,streetNumberR
             </div>
           </div> */}
 
-          {/* <div className="col-lg-12">
+      {/* <div className="col-lg-12">
             <div className="my_profile_setting_input ui_kit_select_search form-group">
               <label>Country</label>
               <select
@@ -205,9 +273,9 @@ const LocationField = ({isDisable,streetNameRef , setStreetNameRef,streetNumberR
               </select>
             </div>
           </div> */}
-          {/* End .col */}
+      {/* End .col */}
 
-          {/* <div className="col-lg-12">
+      {/* <div className="col-lg-12">
         <div className="my_profile_setting_input form-group">
           <div className="h400 bdrs8" id="map-canvas">
             <div className="gmap_canvas pe-none">
@@ -221,15 +289,15 @@ const LocationField = ({isDisable,streetNameRef , setStreetNameRef,streetNumberR
         </div>
       </div> */}
 
-          {/* End .col */}
+      {/* End .col */}
 
-          {/* <div className="col-xl-12">
+      {/* <div className="col-xl-12">
             <div className="my_profile_setting_input">
               <button className="btn btn2 float-center" style={{marginLeft:"8rem"}}>Submit</button>
             </div>
           </div> */}
-          {/* End .col */}
-        {/* </div>
+      {/* End .col */}
+      {/* </div>
       </div> */}
     </>
   );

@@ -89,7 +89,7 @@ const Captcha = ({ verified , reload , change , setChange}) => {
             width={40}
             height={45}
             className="w-100 mb-2 mt-0 cap-img"
-            src="/assets/images/home/bg.png"
+            src="/assets/images/home/dark-blue.jpg"
           />
         </div>
         <div

@@ -10,6 +10,8 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
 
   const [about, setAbout] = useState(false);
 
+  const [plan, setPlan] = useState(false);
+
   const [login, setLogin] = useState(false);
 
   const [insight, setInsight] = useState(false);
@@ -177,30 +179,38 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
   }
 
   return (
-    <div onMouseLeave={() => setInsight()}>
-      <div onMouseLeave={() => setLogin()}>
-        <div onMouseLeave={() => setHovered()}>
-          <ul
-            id="respMenu"
-            className={classname}
-            data-menu-style="horizontal"
-            onMouseLeave={() => setAbout()}
-          >
-            <li className="dropitem" onMouseOver={() => setHovered()}>
-              <Link
-                href="/"
-                className={
-                  home.some((page) => page.routerPath === route.pathname)
-                    ? "ui-active"
-                    : undefined
-                } onMouseOver={()=>setAbout()}
-              >
-                <span className="title text-info-01 cool-link menuitem" onMouseOver={()=>setInsight()} onMouseEnter={()=>setLogin()}>Home</span>
-                {/* <span className="arrow"></span> */}
-              </Link>
-              {/* <!-- Level Two--> */}
+    <div onMouseLeave={() => setPlan()}>
+      <div onMouseLeave={() => setInsight()}>
+        <div onMouseLeave={() => setLogin()}>
+          <div onMouseLeave={() => setHovered()}>
+            <ul
+              id="respMenu"
+              className={classname}
+              data-menu-style="horizontal"
+              onMouseLeave={() => setAbout()}
+            >
+              <li className="dropitem" onMouseOver={() => setHovered()}>
+                <Link
+                  href="/"
+                  className={
+                    home.some((page) => page.routerPath === route.pathname)
+                      ? "ui-active"
+                      : undefined
+                  }
+                  onMouseOver={() => setAbout()}
+                >
+                  <span
+                    className="title text-info-01 cool-link menuitem"
+                    onMouseOver={() => setInsight()}
+                    onMouseEnter={() => setLogin()}
+                  >
+                    Home
+                  </span>
+                  {/* <span className="arrow"></span> */}
+                </Link>
+                {/* <!-- Level Two--> */}
 
-              {/* <ul className="sub-menu ">
+                {/* <ul className="sub-menu ">
           {home.map((item) => (
             <li key={item.id}>
               <Link
@@ -214,53 +224,60 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
             </li>
           ))}
         </ul> */}
-            </li>
-            {/* End .dropitem */}
-            <li className="dropitem" onMouseOver={() => setAbout()} onMouseEnter={()=>setLogin()}>
-              <Link href="#" onMouseOver={()=>setInsight()}>
-                <span
-                  className="title text-info-01 cool-link menuitem"
-                  onMouseOver={() => setHovered(!hovered)}
-                  // onMouseLeave={() => setLogin()}
-                  // onMouseLeave={() => setHovered()}
-                >
-                  Why Choose Us
-                </span>
-                <span className="arrow text-info-01" style={{marginLeft:'-5px'}}></span>
-              </Link>
-              {/* <!-- Level Two--> */}
-              {hovered ? (
-                <div
-                  className=""
-                  style={{
-                    width: "100%",
-                    background: "red",
-                    // opacity: isHovered ? 1 : 0,  Show content when hovered
-                    transition: "opacity 0.3s ease", // Add transition for the opacity property
-                    position: "absolute",
-                    top: "100%",
-                    left: "-740px",
-                    // right: "-500px",
-                    width: "1900px",
-                    margin: "-16px",
-                    height: "225px",
-                    backgroundColor: "#fff",
-                    color: "#333",
-                    borderTopColor: "#2e008b",
-                    borderTopWidth: "4px",
-                    borderTopStyle: "solid",
-                    // display: "flex",
-                    // flexDirection: "row",
-                    // justifyContent: "center",
-                    marginTop: "5px",
-                  }}
-                >
-                  <div className="row">
-                    <div className="col-lg-2"></div>
-                    <div className="col-lg-2 text-end">
-                      <div className="row">
-                        <div className="col-lg-12 mt-4">
-                          {/* <Link href="/">
+              </li>
+              {/* End .dropitem */}
+              <li
+                className="dropitem"
+                onMouseOver={() => setAbout()}
+                onMouseEnter={() => setLogin()}
+              >
+                <Link href="#" onMouseOver={() => setInsight()}>
+                  <span
+                    className="title text-info-01 cool-link menuitem"
+                    onMouseOver={() => setHovered(!hovered)}
+                    // onMouseLeave={() => setLogin()}
+                    // onMouseLeave={() => setHovered()}
+                  >
+                    Why Choose Us
+                  </span>
+                  {/* <span
+                    className="arrow text-info-01"
+                    style={{ marginLeft: "-5px" }}
+                  ></span> */}
+                </Link>
+                {/* <!-- Level Two--> */}
+                {hovered ? (
+                  <div
+                    className=""
+                    style={{
+                      width: "100%",
+                      background: "red",
+                      // opacity: isHovered ? 1 : 0,  Show content when hovered
+                      transition: "opacity 0.3s ease", // Add transition for the opacity property
+                      position: "absolute",
+                      top: "100%",
+                      left: "-840px",
+                      // right: "-500px",
+                      width: "1900px",
+                      margin: "-16px",
+                      height: "225px",
+                      backgroundColor: "#fff",
+                      color: "#333",
+                      borderTopColor: "#2e008b",
+                      borderTopWidth: "4px",
+                      borderTopStyle: "solid",
+                      // display: "flex",
+                      // flexDirection: "row",
+                      // justifyContent: "center",
+                      marginTop: "5px",
+                    }}
+                  >
+                    <div className="row">
+                      <div className="col-lg-2"></div>
+                      <div className="col-lg-2 text-end">
+                        <div className="row">
+                          <div className="col-lg-12 mt-4">
+                            {/* <Link href="/">
                      <Image
                        width={40}
                        height={45}
@@ -276,121 +293,126 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                        Appraisal Link
                      </span>
                    </Link> */}
-                        </div>
-                        <div className="col-lg-12 mt-4 mb-2">
-                          <button className="btn btn2 w-50 btn-color">
-                            For Brokers
-                          </button>
-                        </div>
-                        <div className="col-lg-12 mb-2">
-                          <button className="btn btn2 w-50 btn-color">
-                            For Appraiser
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-2 text-end">
-                      <div className="row">
-                        <div className="col-lg-12 m-4 fw-bold">
-                          <Link href="/">
-                            <Image
-                              width={190}
-                              height={125}
-                              className="logo2 img-fluid mt-3"
-                              // style={{ marginRight: "10px" }}
-                              src="/assets/images/about/home-inspector-checks-condition-house-writes-report-flat-illustration_2175-8129.png"
-                              alt="header-logo2.png"
-                            />
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-2 text-center">
-                      <div className="row">
-                        <div className="col-lg-6 m-5 fw-bold" style={{}}>
-                          <Link href="/">
-                            <Image
-                              width={160}
-                              height={125}
-                              className="logo2 img-fluid"
-                              // style={{ marginRight: "10px" }}
-                              src="/assets/images/about/house-mortgage-property-inspection-audit-icon-graphic-home-real-estate-deal-review-assessment_101884-2246.png"
-                              alt="header-logo2.png"
-                            />
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      className="col-lg-3 text-center"
-                      style={{ backgroundColor: "#c2c2c2" }}
-                    >
-                      <div className="row">
-                        <div className="col-lg-8 m-5 fw-bold">
-                          <span>
-                            Ready to see Appraisal Link help make you more money
-                            at record speed?
-                          </span>
-                          <br />
-                          <Link href="/register">
+                          </div>
+                          <div className="col-lg-12 mt-4 mb-2">
                             <button className="btn btn2 w-50 btn-color">
-                              Register
+                              For Brokers
                             </button>
-                          </Link>
+                          </div>
+                          <div className="col-lg-12 mb-2">
+                            <button className="btn btn2 w-50 btn-color">
+                              For Appraiser
+                            </button>
+                          </div>
                         </div>
                       </div>
+                      <div className="col-lg-2 text-end">
+                        <div className="row">
+                          <div className="col-lg-12 m-4 fw-bold">
+                            <Link href="/">
+                              <Image
+                                width={190}
+                                height={125}
+                                className="logo2 img-fluid mt-3"
+                                // style={{ marginRight: "10px" }}
+                                src="/assets/images/about/home-inspector-checks-condition-house-writes-report-flat-illustration_2175-8129.png"
+                                alt="header-logo2.png"
+                              />
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-lg-2 text-center">
+                        <div className="row">
+                          <div className="col-lg-6 m-5 fw-bold" style={{}}>
+                            <Link href="/">
+                              <Image
+                                width={160}
+                                height={125}
+                                className="logo2 img-fluid"
+                                // style={{ marginRight: "10px" }}
+                                src="/assets/images/about/house-mortgage-property-inspection-audit-icon-graphic-home-real-estate-deal-review-assessment_101884-2246.png"
+                                alt="header-logo2.png"
+                              />
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        className="col-lg-3 text-center"
+                        style={{ backgroundColor: "#c2c2c2" }}
+                      >
+                        <div className="row">
+                          <div className="col-lg-8 m-5 fw-bold">
+                            <span>
+                              Ready to see Appraisal Link help make you more
+                              money at record speed?
+                            </span>
+                            <br />
+                            <Link href="/register">
+                              <button className="btn btn2 w-50 btn-color">
+                                Register
+                              </button>
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-lg-1"></div>
                     </div>
-                    <div className="col-lg-1"></div>
+                    {/* <h1>hiiiii</h1> */}
                   </div>
-                  {/* <h1>hiiiii</h1> */}
-                </div>
-              ) : null}
-            </li>
-            {/* End .dropitem */}
-            <li className="dropitem" onMouseOver={() => setHovered()} onMouseEnter={()=>setLogin()}>
-              <Link href="#">
-                <span
-                  className="title text-info-01 cool-link cool-link menuitem"
-                  onMouseOver={() => setAbout(!about)} onMouseEnter={()=>setInsight()}
-                  // onMouseLeave={() => setAbout()}
-                  // onMouseLeave={() => setLogin()}
-                >
-                  Insights
-                </span>{" "}
-                <span className="arrow text-info-01 ml"></span>
-              </Link>
-              {about ? (
-                <div
-                  className=""
-                  style={{
-                    width: "100%",
-                    background: "red",
-                    // opacity: isHovered ? 1 : 0,  Show content when hovered
-                    transition: "opacity 0.3s ease", // Add transition for the opacity property
-                    position: "absolute",
-                    top: "100%",
-                    // left: "20px",
-                    right: "-840px",
-                    width: "1900px",
-                    margin: "-16px",
-                    height: "235px",
-                    backgroundColor: "#fff",
-                    color: "#333",
-                    borderTopColor: "#2e008b",
-                    borderTopWidth: "4px",
-                    borderTopStyle: "solid",
-                    // display: "flex",
-                    // flexDirection: "row",
-                    // justifyContent: "center",
-                    marginTop: "5px",
-                  }}
-                >
-                  <div className="row">
-                    <div className="col-lg-2"></div>
-                    <div className="col-lg-2 text-end">
-                      <div className="row">
-                        <div className="col-lg-12 mt-4">
-                          {/* <Link href="/">
+                ) : null}
+              </li>
+              {/* End .dropitem */}
+              <li
+                className="dropitem"
+                onMouseOver={() => setHovered()}
+                onMouseEnter={() => setLogin()}
+              >
+                <Link href="#" onMouseEnter={() => setPlan()}>
+                  <span
+                    className="title text-info-01 cool-link cool-link menuitem"
+                    onMouseOver={() => setAbout(!about)}
+                    onMouseEnter={() => setInsight()}
+                    // onMouseLeave={() => setAbout()}
+                    // onMouseLeave={() => setLogin()}
+                  >
+                    Insights
+                  </span>{" "}
+                  {/* <span className="arrow text-info-01 ml"></span> */}
+                </Link>
+                {about ? (
+                  <div
+                    className=""
+                    style={{
+                      width: "100%",
+                      background: "red",
+                      // opacity: isHovered ? 1 : 0,  Show content when hovered
+                      transition: "opacity 0.3s ease", // Add transition for the opacity property
+                      position: "absolute",
+                      top: "100%",
+                      // left: "20px",
+                      right: "-740px",
+                      width: "1900px",
+                      margin: "-16px",
+                      height: "235px",
+                      backgroundColor: "#fff",
+                      color: "#333",
+                      borderTopColor: "#2e008b",
+                      borderTopWidth: "4px",
+                      borderTopStyle: "solid",
+                      // display: "flex",
+                      // flexDirection: "row",
+                      // justifyContent: "center",
+                      marginTop: "5px",
+                    }}
+                  >
+                    <div className="row">
+                      <div className="col-lg-2"></div>
+                      <div className="col-lg-2 text-end">
+                        <div className="row">
+                          <div className="col-lg-12 mt-4">
+                            {/* <Link href="/">
                      <Image
                        width={40}
                        height={45}
@@ -406,138 +428,246 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                        Appraisal Link
                      </span>
                    </Link> */}
-                        </div>
-                        <div className="col-lg-12 mt-4 mb-2">
-                          <button className="btn btn2 w-50 btn-color">
-                            For Brokers
-                          </button>
-                        </div>
-                        <div className="col-lg-12 mb-2">
+                          </div>
+                          <div className="col-lg-12 mt-4 mb-2">
+                            <button className="btn btn2 w-50 btn-color">
+                              Dashboard
+                            </button>
+                          </div>
+                          {/* <div className="col-lg-12 mb-2">
                           <button className="btn btn2 w-50 btn-color">
                             For Appraiser
                           </button>
+                        </div> */}
                         </div>
                       </div>
-                    </div>
-                    <div className="col-lg-2 text-end">
-                      <div className="row">
-                        <div className="col-lg-12 m-3 fw-bold">
-                          <Link href="/">
-                            <Image
-                              width={190}
-                              height={125}
-                              className="logo2 img-fluid mt-4"
-                              // style={{ marginRight: "10px" }}
-                              src="/assets/images/service/22.jpg"
-                              alt="header-logo2.png"
-                            />
-                          </Link>
+                      <div className="col-lg-2 text-end">
+                        <div className="row">
+                          <div className="col-lg-12 m-3 fw-bold">
+                            <Link href="/">
+                              <Image
+                                width={190}
+                                height={125}
+                                className="logo2 img-fluid mt-4"
+                                // style={{ marginRight: "10px" }}
+                                src="/assets/images/service/22.jpg"
+                                alt="header-logo2.png"
+                              />
+                            </Link>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="col-lg-2 text-center">
-                      <div className="row">
-                        <div className="col-lg-6 m-4 fw-bold" style={{}}>
-                          <Link href="/">
-                            <Image
-                              width={160}
-                              height={125}
-                              className="logo2 img-fluid"
-                              // style={{ marginRight: "10px" }}
-                              src="/assets/images/service/p.jpg"
-                              alt="header-logo2.png"
-                            />
-                          </Link>
+                      <div className="col-lg-2 text-center">
+                        <div className="row">
+                          <div className="col-lg-6 m-4 fw-bold" style={{}}>
+                            <Link href="/">
+                              <Image
+                                width={160}
+                                height={125}
+                                className="logo2 img-fluid"
+                                // style={{ marginRight: "10px" }}
+                                src="/assets/images/service/p.jpg"
+                                alt="header-logo2.png"
+                              />
+                            </Link>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div
-                      className="col-lg-3 text-center"
-                      style={{ backgroundColor: "#c2c2c2" }}
-                    >
-                      <div className="row">
-                        <div className="col-lg-8 m-5 fw-bold">
-                          <span style={{ lineHeight: "1.9" }}>
-                            Revolutionize Your Frieght Experience : conquer the
-                            real estate buisness with{" "}
-                            <span className="text-color fw-bold">
-                              Appraisal Link
+                      <div
+                        className="col-lg-3 text-center"
+                        style={{ backgroundColor: "#c2c2c2" }}
+                      >
+                        <div className="row">
+                          <div className="col-lg-8 m-5 fw-bold">
+                            <span style={{ lineHeight: "1.9" }}>
+                              Revolutionize Your Frieght Experience : conquer
+                              the real estate buisness with{" "}
+                              <span className="text-color fw-bold">
+                                Appraisal Link
+                              </span>
+                              .
                             </span>
-                            .
-                          </span>
-                          <br />
+                            <br />
+                          </div>
                         </div>
                       </div>
+                      <div className="col-lg-1"></div>
                     </div>
-                    <div className="col-lg-1"></div>
+                    {/* <h1>hiiiii</h1> */}
                   </div>
-                  {/* <h1>hiiiii</h1> */}
-                </div>
-              ) : null}
-            </li>
-            {/* End .dropitem */}
-            <li className="last" onMouseOver={() => setHovered()}>
-              <Link
-                href="/membership"
-                onMouseOver={() => setInsight()}
-                className={
-                  route.pathname === "/membership" ? "ui-active" : undefined
-                }
-              >
-                <span
-                  className="text-info-01 cool-link menuitem"
-                  onMouseOver={() => setAbout()} onMouseEnter={()=>setLogin()}
+                ) : null}
+              </li>
+              {/* End .dropitem */}
+              <li className="last" onMouseOver={() => setHovered()}>
+                <Link
+                  href="#"
+                  onMouseEnter={() => setInsight()}
+                  className={
+                    route.pathname === "/membership" ? "ui-active" : undefined
+                  }
                 >
-                  Subscription
-                </span>
-              </Link>
-            </li>
-            {/* End .dropitem */}
-            <li className="last" onMouseOver={() => setLogin()}>
-              <Link
-                href="#"
-                className={route.pathname === "#" ? "ui-active" : undefined}
-              >
-                <span
-                  className="text-info-01 cool-link menuitem"
-                  onMouseOver={() => setInsight(!insight)}
+                  <span
+                    className="text-info-01 cool-link menuitem"
+                    onMouseOver={() => setPlan(!plan)}
+                    // onMouseOver={() => setAbout()}
+                    // onMouseEnter={() => setLogin()}
+                  >
+                    Subscription
+                  </span>
+                </Link>
+                {plan ? (
+                  <div
+                    className=""
+                    style={{
+                      width: "100%",
+                      background: "red",
+                      // opacity: isHovered ? 1 : 0,  Show content when hovered
+                      transition: "opacity 0.3s ease", // Add transition for the opacity property
+                      position: "absolute",
+                      top: "100%",
+                      // left: "20px",
+                      right: "-640px",
+                      width: "1900px",
+                      margin: "-16px",
+                      height: "235px",
+                      backgroundColor: "#fff",
+                      color: "#333",
+                      borderTopColor: "#2e008b",
+                      borderTopWidth: "4px",
+                      borderTopStyle: "solid",
+                      // display: "flex",
+                      // flexDirection: "row",
+                      // justifyContent: "center",
+                      marginTop: "5px",
+                    }}
+                  >
+                    <div className="row">
+                      <div className="col-lg-3"></div>
+                      <div
+                        className="col-lg-3 text-center"
+                        style={{ backgroundColor: "#c2c2c2" }}
+                      >
+                        <div className="row text-end">
+                          <div className="col-lg-8 m-5 fw-bold">
+                            <span>
+                              Subscribe today to unlock a world of exclusive
+                              benefits.
+                            </span>
+                            <br />
+                            <Link href="/membership">
+                              <button className="btn btn2 w-50 btn-color">
+                                Get Started
+                              </button>
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-lg-2 text-end">
+                        <div className="row">
+                          <div className="col-lg-12 m-3 fw-bold">
+                            <Link href="/">
+                              <Image
+                                width={190}
+                                height={125}
+                                className="logo2 img-fluid mt-4"
+                                // style={{ marginRight: "10px" }}
+                                src="/assets/images/home/man-pencil-fills-out-questionnaire-260nw-2052001217.png"
+                                alt="header-logo2.png"
+                              />
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        className="col-lg-3 text-center"
+                        style={{ backgroundColor: "#c2c2c2" }}
+                      >
+                        <div className="row">
+                          <div className="col-lg-8 m-5 fw-bold">
+                            <span style={{ lineHeight: "1.9" }}>
+                              Revolutionize Your Frieght Experience : conquer
+                              the real estate buisness with{" "}
+                              <span className="text-color fw-bold">
+                                Appraisal Link
+                              </span>
+                              .
+                            </span>
+                            <br />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-lg-2 text-center">
+                        <div className="row">
+                          <div className="col-lg-6 m-4 fw-bold" style={{}}>
+                            <Link href="/">
+                              <Image
+                                width={160}
+                                height={125}
+                                className="logo2 img-fluid"
+                                // style={{ marginRight: "10px" }}
+                                src="/assets/images/service/p.jpg"
+                                alt="header-logo2.png"
+                              />
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="col-lg-1"></div>
+                    </div>
+                    {/* <h1>hiiiii</h1> */}
+                  </div>
+                ) : null}
+              </li>
+              {/* End .dropitem */}
+              <li className="last" onMouseOver={() => setLogin()}>
+                <Link
+                  href="#"
+                  className={route.pathname === "#" ? "ui-active" : undefined}
                 >
-                  About Us
-                </span>
-                <span className="arrow text-info-01" style={{marginLeft:'-5px'}}></span>
-              </Link>
-              {insight ? (
-                <div
-                  className=""
-                  style={{
-                    width: "100%",
-                    background: "red",
-                    // opacity: isHovered ? 1 : 0,  Show content when hovered
-                    transition: "opacity 0.3s ease", // Add transition for the opacity property
-                    position: "absolute",
-                    top: "100%",
-                    // left: "20px",
-                    right: "-600px",
-                    width: "1900px",
-                    margin: "-16px",
-                    height: "225px",
-                    backgroundColor: "#fff",
-                    color: "#333",
-                    borderTopColor: "#2e008b",
-                    borderTopWidth: "4px",
-                    borderTopStyle: "solid",
-                    // display: "flex",
-                    // flexDirection: "row",
-                    // justifyContent: "center",
-                    marginTop: "5px",
-                  }}
-                >
-                  <div className="row">
-                    <div className="col-lg-2"></div>
-                    <div className="col-lg-2 text-end">
-                      <div className="row">
-                        <div className="col-lg-12 mt-4">
-                          {/* <Link href="/">
+                  <span
+                    className="text-info-01 cool-link menuitem"
+                    onMouseOver={() => setInsight(!insight)}
+                  >
+                    About Us
+                  </span>
+                  {/* <span
+                    className="arrow text-info-01"
+                    style={{ marginLeft: "-5px" }}
+                  ></span> */}
+                </Link>
+                {insight ? (
+                  <div
+                    className=""
+                    style={{
+                      width: "100%",
+                      background: "red",
+                      // opacity: isHovered ? 1 : 0,  Show content when hovered
+                      transition: "opacity 0.3s ease", // Add transition for the opacity property
+                      position: "absolute",
+                      top: "100%",
+                      // left: "20px",
+                      right: "-600px",
+                      width: "1900px",
+                      margin: "-16px",
+                      height: "225px",
+                      backgroundColor: "#fff",
+                      color: "#333",
+                      borderTopColor: "#2e008b",
+                      borderTopWidth: "4px",
+                      borderTopStyle: "solid",
+                      // display: "flex",
+                      // flexDirection: "row",
+                      // justifyContent: "center",
+                      marginTop: "5px",
+                    }}
+                  >
+                    <div className="row">
+                      <div className="col-lg-2"></div>
+                      <div className="col-lg-2 text-end">
+                        <div className="row">
+                          <div className="col-lg-12 mt-4">
+                            {/* <Link href="/">
                        <Image
                          width={40}
                          height={45}
@@ -553,241 +683,236 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                          Appraisal Link
                        </span>
                      </Link> */}
-                        </div>
-                        <div className="col-lg-12 mt-4 mb-2">
-                          <button className="btn btn2 w-50 btn-color">
-                            For Brokers
-                          </button>
-                        </div>
-                        <div className="col-lg-12 mb-2">
-                          <button className="btn btn2 w-50 btn-color">
-                            For Appraiser
-                          </button>
+                          </div>
+                          <div className="col-lg-12 mt-4 mb-2">
+                            <button className="btn btn2 w-50 btn-color">
+                              For Brokers
+                            </button>
+                          </div>
+                          <div className="col-lg-12 mb-2">
+                            <button className="btn btn2 w-50 btn-color">
+                              For Appraiser
+                            </button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="col-lg-2">
-                      <div className="row">
-                        <div className="col-lg-12 m-3 fw-bold">
-                          <Link href="/">
-                            <Image
-                              width={190}
-                              height={125}
-                              className="logo2 img-fluid mt-3"
-                              // style={{ marginRight: "10px" }}
-                              src="/assets/images/service/house_.png"
-                              alt="header-logo2.png"
-                            />
-                          </Link>
+                      <div className="col-lg-2">
+                        <div className="row">
+                          <div className="col-lg-12 m-3 fw-bold">
+                            <Link href="/">
+                              <Image
+                                width={190}
+                                height={125}
+                                className="logo2 img-fluid mt-3"
+                                // style={{ marginRight: "10px" }}
+                                src="/assets/images/service/house_.png"
+                                alt="header-logo2.png"
+                              />
+                            </Link>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="col-lg-2" style={{ backgroundColor: "" }}>
-                      <div className="row">
-                        <div className="col-lg-12 mt-3 fw-bold text-start">
-                          <Link href="/about-us">
-                            <button className="fw-bold mt-4 cool-link menuitem">
-                              About Appraisal Link
-                            </button>
-                          </Link>
-                          <br />
-                          <Link href="/events">
-                            <button className=" mt-3 fw-bold cool-link menuitem">
-                              Events
-                            </button>
-                          </Link>
-                          <br />
-                          <Link href="/how-we-work">
-                            <button className=" mt-3 fw-bold cool-link menuitem">
-                              How We Work
-                            </button>
-                          </Link>
-                          <br />
-                          {/* <Link href="#">
+                      <div className="col-lg-2" style={{ backgroundColor: "" }}>
+                        <div className="row">
+                          <div className="col-lg-12 mt-3 fw-bold text-start">
+                            <Link href="/about-us">
+                              <button className="fw-bold mt-4 cool-link menuitem">
+                                About Appraisal Link
+                              </button>
+                            </Link>
+                            <br />
+                            <Link href="/events">
+                              <button className=" mt-3 fw-bold cool-link menuitem">
+                                Events
+                              </button>
+                            </Link>
+                            <br />
+                            <Link href="/how-we-work">
+                              <button className=" mt-3 fw-bold cool-link menuitem">
+                                How We Work
+                              </button>
+                            </Link>
+                            <br />
+                            {/* <Link href="#">
                             <button className="mt-3 mb-2">
                               Mortgage Brokerage
                             </button>
                           </Link> */}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="col-lg-3 text-start">
-                      <div className="row">
-                        <div className="col-lg-6 m-5 fw-bold" style={{}}>
-                          <Link href="/">
-                            <Image
-                              width={160}
-                              height={125}
-                              className="logo2"
-                              // style={{ marginRight: "10px" }}
-                              src="/assets/images/service/image001.png"
-                              alt="header-logo2.png"
-                            />
-                          </Link>
+                      <div className="col-lg-3 text-start">
+                        <div className="row">
+                          <div className="col-lg-6 m-5 fw-bold" style={{}}>
+                            <Link href="/">
+                              <Image
+                                width={160}
+                                height={125}
+                                className="logo2"
+                                // style={{ marginRight: "10px" }}
+                                src="/assets/images/service/image001.png"
+                                alt="header-logo2.png"
+                              />
+                            </Link>
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                    <div className="col-lg-1"></div>
+                      <div className="col-lg-1"></div>
+                    </div>
+                    {/* <h1>hiiiii</h1> */}
                   </div>
-                  {/* <h1>hiiiii</h1> */}
-                </div>
-              ) : null}
-            </li>
-            {/* End .dropitem */}
-            <li className="dropitem" onMouseEnter={()=>setHovered()} onMouseOver={()=>setAbout()}>
-              <Link
-                href="#"
-                onMouseOver={() => setInsight()}
-                className={
-                  pages.some((page) => page.routerPath === route.pathname)
-                    ? "ui-active"
-                    : undefined
-                }
+                ) : null}
+              </li>
+              {/* End .dropitem */}
+              <li
+                className="dropitem"
+                onMouseEnter={() => setHovered()}
+                onMouseOver={() => setAbout()}
               >
-                <span
-                  className="btn text-color-01 flaticon-user"
-                  style={{ visibility: "hidden" }}
-                ></span>
-                <span
-                  className=" dn-lg text-info-01 cool-link menuitem"
-                  style={{ marginLeft: "-35px" }}
-                  onMouseOver={() => setLogin(!login)}
-                  // onMouseLeave={() => setLogin()}
+                <Link
+                  href="#"
+                  onMouseOver={() => setInsight()}
+                  className={
+                    pages.some((page) => page.routerPath === route.pathname)
+                      ? "ui-active"
+                      : undefined
+                  }
                 >
-                  Login
-                </span>
-                <span className="arrow text-info-01" style={{marginLeft:'-5px'}}></span>
-              </Link>
+                  <span
+                    className="btn text-color-01 flaticon-user"
+                    style={{ visibility: "hidden" }}
+                  ></span>
+                  <span
+                    className=" dn-lg text-info-01 cool-link menuitem"
+                    style={{ marginLeft: "-35px" }}
+                    onMouseOver={() => setLogin(!login)}
+                    // onMouseLeave={() => setLogin()}
+                  >
+                    Login
+                  </span>
+                  {/* <span
+                    className="arrow text-info-01"
+                    style={{ marginLeft: "-5px" }}
+                  ></span> */}
+                </Link>
 
-              {login ? (
-                <div
-                  className=""
-                  style={{
-                    width: "100%",
-                    background: "red",
-                    // opacity: isHovered ? 1 : 0,  Show content when hovered
-                    transition: "opacity 0.3s ease", // Add transition for the opacity property
-                    position: "absolute",
-                    top: "100%",
-                    // left: "20px",
-                    right: "-500px",
-                    width: "1900px",
-                    margin: "-16px",
-                    height: "225px",
-                    backgroundColor: "#fff",
-                    color: "#333",
-                    borderTopColor: "#2e008b",
-                    borderTopWidth: "4px",
-                    borderTopStyle: "solid",
-                    // display: "flex",
-                    // flexDirection: "row",
-                    // justifyContent: "center",
-                    marginTop: "0px",
-                  }}
-                >
-                  <div className="row">
-                    <div className="col-lg-2"></div>
-                    <div className="col-lg-2 text-end">
-                      <div className="row">
-                        <div className="col-lg-12 mt-4">
-                          {/* <Link href="/">
-                          <Image
-                            width={40}
-                            height={45}
-                            className="logo2 img-fluid"
-                            style={{ marginRight: "10px" }}
-                            src="/assets/images/logo_new.png"
-                            alt="header-logo2.png"
-                          />
-                          <span
-                            className="fw-bold"
-                            style={{ fontSize: "19px", color: "black" }}
-                          >
-                            Appraisal Link
-                          </span>
-                        </Link> */}
-                        </div>
-                        <div className="col-lg-12 mt-4 mb-2">
-                          <button className="btn btn2 w-50 btn-color">
-                            For Brokers
-                          </button>
-                        </div>
-                        <div className="col-lg-12 mb-2">
-                          <button className="btn btn2 w-50 btn-color">
-                            For Appraiser
-                          </button>
+                {login ? (
+                  <div
+                    className=""
+                    style={{
+                      width: "100%",
+                      background: "red",
+                      // opacity: isHovered ? 1 : 0,  Show content when hovered
+                      transition: "opacity 0.3s ease", // Add transition for the opacity property
+                      position: "absolute",
+                      top: "100%",
+                      // left: "20px",
+                      right: "-500px",
+                      width: "1900px",
+                      margin: "-16px",
+                      height: "225px",
+                      backgroundColor: "#fff",
+                      color: "#333",
+                      borderTopColor: "#2e008b",
+                      borderTopWidth: "4px",
+                      borderTopStyle: "solid",
+                      // display: "flex",
+                      // flexDirection: "row",
+                      // justifyContent: "center",
+                      marginTop: "0px",
+                    }}
+                  >
+                    <div className="row">
+                      <div className="col-lg-3"></div>
+                      <div
+                        className="col-lg-3 text-center"
+                        style={{ backgroundColor: "#c2c2c2" }}
+                      >
+                        <div className="row text-end">
+                          <div className="col-lg-10 m-5 fw-bold">
+                            <span>
+                              Ready to see Appraisal Link help make you more
+                              money at record speed?
+                            </span>
+                            <br />
+                            <Link href="/register">
+                              <button className="btn btn2 w-50 btn-color">
+                                Register
+                              </button>
+                            </Link>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="col-lg-2 text-end">
-                      <div className="row">
-                        <div className="col-lg-12 m-4 fw-bold">
-                          <Link href="/">
-                            <Image
-                              width={190}
-                              height={125}
-                              className="logo2 img-fluid mt-2"
-                              // style={{ marginRight: "10px" }}
-                              src="/assets/images/service/222.jpg"
-                              alt="header-logo2.png"
-                            />
-                          </Link>
+                      <div className="col-lg-2 text-end">
+                        <div className="row">
+                          <div className="col-lg-12 m-4 fw-bold">
+                            <Link href="/">
+                              <Image
+                                width={190}
+                                height={125}
+                                className="logo2 img-fluid mt-2"
+                                // style={{ marginRight: "10px" }}
+                                src="/assets/images/service/222.jpg"
+                                alt="header-logo2.png"
+                              />
+                            </Link>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="col-lg-2 text-center">
-                      <div className="row">
-                        <div className="col-lg-6 m-5 fw-bold" style={{}}>
-                          <Link href="/">
-                            <Image
-                              width={160}
-                              height={125}
-                              className="logo2 img-fluid mt-3"
-                              // style={{ marginRight: "10px" }}
-                              src="/assets/images/service/333.jpg"
-                              alt="header-logo2.png"
-                            />
-                          </Link>
+                      <div
+                        className="col-lg-2 text-center"
+                        style={{ backgroundColor: "#c2c2c2" }}
+                      >
+                        <div className="row">
+                          <div className="col-lg-12 mt-3 fw-bold">
+                            <Link href="/login">
+                              <button className="btn btn2 w-100 btn-color">
+                                Appraiser
+                              </button>
+                            </Link>
+                            <Link href="/login">
+                              <button className="btn btn2 w-100 btn-color mt-3">
+                                Mortgage Broker
+                              </button>
+                            </Link>
+                            <Link href="/login">
+                              <button className="btn btn2 w-100 btn-color mt-3">
+                                Appraiser Company
+                              </button>
+                            </Link>
+                            <Link href="/login">
+                              <button className="btn btn2 w-100 btn-color mt-3 mb-2">
+                                Mortgage Brokerage
+                              </button>
+                            </Link>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div
-                      className="col-lg-2 text-center"
-                      style={{ backgroundColor: "#c2c2c2" }}
-                    >
-                      <div className="row">
-                        <div className="col-lg-12 mt-3 fw-bold">
-                          <Link href="/login">
-                            <button className="btn btn2 w-100 btn-color">
-                              Appraiser
-                            </button>
-                          </Link>
-                          <Link href="/login">
-                            <button className="btn btn2 w-100 btn-color mt-3">
-                              Mortgage Broker
-                            </button>
-                          </Link>
-                          <Link href="/login">
-                            <button className="btn btn2 w-100 btn-color mt-3">
-                              Appraiser Company
-                            </button>
-                          </Link>
-                          <Link href="/login">
-                            <button className="btn btn2 w-100 btn-color mt-3 mb-2">
-                              Mortgage Brokerage
-                            </button>
-                          </Link>
+                      <div className="col-lg-2 text-center">
+                        <div className="row">
+                          <div className="col-lg-6 m-5 fw-bold" style={{}}>
+                            <Link href="/">
+                              <Image
+                                width={160}
+                                height={125}
+                                className="logo2 img-fluid mt-3"
+                                // style={{ marginRight: "10px" }}
+                                src="/assets/images/service/333.jpg"
+                                alt="header-logo2.png"
+                              />
+                            </Link>
+                          </div>
                         </div>
                       </div>
+
+                      <div className="col-lg-1"></div>
                     </div>
-                    <div className="col-lg-1"></div>
+                    {/* <h1>hiiiii</h1> */}
                   </div>
-                  {/* <h1>hiiiii</h1> */}
-                </div>
-              ) : null}
+                ) : null}
 
-              {/* <ul className="sub-menu ">
+                {/* <ul className="sub-menu ">
             {user.map((item) => (
               <li key={item.id}>
                 <Link
@@ -801,50 +926,64 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
               </li>
             ))}
           </ul> */}
-            </li>
-            <li className="dropitem" onMouseEnter={()=>setInsight()} onMouseOver={()=>setAbout()}>
-              <Link
-                href="#"
-                className={
-                  blog.some((page) => page.routerPath === route.pathname)
-                    ? "ui-active"
-                    : undefined
-                }
+              </li>
+              <li
+                className="dropitem"
+                onMouseEnter={() => setInsight()}
+                onMouseOver={() => setAbout()}
               >
-                <span className="title cool-link menuitem" onMouseOver={() => setLogin()} onMouseEnter={()=>setHovered()}>
-                  En
-                </span>
-                <span className="arrow" style={{marginLeft:'-5px'}}></span>
-              </Link>
-              <ul className="sub-menu ">
-                {blog.map((item) => (
-                  <li key={item.id}>
-                    <Link
-                      href={item.routerPath}
-                      className={
-                        route.pathname === item.routerPath
-                          ? "ui-active"
-                          : undefined
-                      }
-                    >
-                      {item.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </li>{" "}
-            <li
-              className={`list-inline-item add_listing ${float}`}
-              style={{ padding: "0px" }}
-              onMouseOver={() => setLogin()} onMouseEnter={()=>setInsight()}
-            >
-              <Link href="/contact" onMouseOver={()=>setAbout()} onMouseEnter={()=>setHovered ()}>
-                <span className="fs-13"></span>
-                <span className="dn-lg fs-13" > GET IN TOUCH</span>
-              </Link>
-            </li>
-            {/* End .dropitem */}
-          </ul>
+                <Link
+                  href="#"
+                  className={
+                    blog.some((page) => page.routerPath === route.pathname)
+                      ? "ui-active"
+                      : undefined
+                  }
+                >
+                  <span
+                    className="title cool-link menuitem"
+                    onMouseOver={() => setLogin()}
+                    onMouseEnter={() => setHovered()}
+                  >
+                    En
+                  </span>
+                  {/* <span className="arrow" style={{ marginLeft: "-5px" }}></span> */}
+                </Link>
+                <ul className="sub-menu" style={{ fontWeight: "bold" }}>
+                  {blog.map((item) => (
+                    <li key={item.id}>
+                      <Link
+                        href={item.routerPath}
+                        className={
+                          route.pathname === item.routerPath
+                            ? "ui-active"
+                            : undefined
+                        }
+                      >
+                        {item.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </li>{" "}
+              <li
+                className={`list-inline-item add_listing ${float}`}
+                style={{ padding: "0px" }}
+                onMouseOver={() => setLogin()}
+                onMouseEnter={() => setInsight()}
+              >
+                <Link
+                  href="/contact"
+                  onMouseOver={() => setAbout()}
+                  onMouseEnter={() => setHovered()}
+                >
+                  <span className="fs-13"></span>
+                  <span className="dn-lg fs-13"> GET IN TOUCH</span>
+                </Link>
+              </li>
+              {/* End .dropitem */}
+            </ul>
+          </div>
         </div>
       </div>
     </div>
