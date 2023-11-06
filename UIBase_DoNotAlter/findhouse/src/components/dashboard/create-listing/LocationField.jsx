@@ -23,7 +23,7 @@ const LocationField = ({
     <>
       <div className="row">
         <div className="col-lg-12">
-          <div className="row mb-2">
+          <div className="row" style={{marginBottom:'-15px'}}>
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
                 htmlFor=""
@@ -43,7 +43,7 @@ const LocationField = ({
               />
             </div>
           </div>
-          <div className="row mb-2">
+          <div className="row" style={{marginBottom:'-15px'}}>
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
                 htmlFor=""
@@ -63,7 +63,7 @@ const LocationField = ({
               />
             </div>
           </div>
-          <div className="row mb-2">
+          <div className="row"  style={{marginBottom:'-15px'}}>
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
                 htmlFor=""
@@ -83,7 +83,7 @@ const LocationField = ({
               />
             </div>
           </div>
-          <div className="row mb-2">
+          <div className="row" style={{marginBottom:'-15px'}}>
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
                 htmlFor=""
@@ -103,7 +103,7 @@ const LocationField = ({
               />
             </div>
           </div>
-          <div className="row mb-2">
+          <div className="row" style={{marginBottom:'-15px'}}>
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
                 htmlFor=""
@@ -123,7 +123,7 @@ const LocationField = ({
               />
             </div>
           </div>
-          <div className="row mb-2">
+          <div className="row" style={{marginBottom:'-15px'}}>
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
                 htmlFor=""
@@ -143,7 +143,7 @@ const LocationField = ({
               />
             </div>
           </div>
-          <div className="row mb-2">
+          <div className="row"  style={{marginBottom:'-15px'}}>
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
                 htmlFor=""

@@ -17,7 +17,7 @@ const CreateList = ({
     <>
       <div className="row">
         <div className="col-lg-12">
-          <div className="row mb-2">
+          <div className="row" style={{marginBottom:'-15px'}}>
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
                 htmlFor=""
@@ -55,7 +55,7 @@ const CreateList = ({
               />
             </div>
           </div> */}
-          <div className="row mb-2">
+          <div className="row" style={{marginBottom:'-15px'}}>
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
                 htmlFor=""
@@ -88,7 +88,7 @@ const CreateList = ({
                 </select>
               </div>
             </div>
-            <div className="row mb-2">
+            <div className="row" style={{marginBottom:'-15px'}}>
               <div className="col-lg-3 my_profile_setting_input form-group">
                 <label
                   htmlFor=""
@@ -109,18 +109,6 @@ const CreateList = ({
               </div>
             </div>
           </div>
-
-          {/* <div className="col-xl-12">
-            <div className="my_profile_setting_input overflow-hidden mt20">
-              <button className="btn btn1 float-start">Back</button>
-              <button
-                className="btn btn2 float-end"
-                style={{ textAlign: "center" }}
-              >
-                Submit
-              </button>
-            </div>
-          </div> */}
           {/* End .col */}
         </div>
       </div>

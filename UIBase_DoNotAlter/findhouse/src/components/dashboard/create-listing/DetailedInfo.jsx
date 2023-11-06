@@ -85,7 +85,7 @@ const DetailedInfo = ({isDisable,updateHandler,applicantFirstName,setApplicantFi
     <>
       <div className="row">
         <div className="col-lg-12">
-          <div className="row mb-2">
+          <div className="row" style={{marginBottom:'-15px'}}>
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label htmlFor="" style={{ paddingTop: "15px", fontWeight:'lighter' }}>
                 Applicant First Name :
@@ -102,7 +102,7 @@ const DetailedInfo = ({isDisable,updateHandler,applicantFirstName,setApplicantFi
               />
             </div>
           </div>
-          <div className="row mb-2">
+          <div className="row"  style={{marginBottom:'-15px'}}>
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label htmlFor="" style={{ paddingTop: "15px", fontWeight:'lighter' }}>
                 Applicant Last Name :
@@ -119,7 +119,7 @@ const DetailedInfo = ({isDisable,updateHandler,applicantFirstName,setApplicantFi
               />
             </div>
           </div>
-          <div className="row mb-2">
+          <div className="row"  style={{marginBottom:'-15px'}}>
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label htmlFor="" style={{ paddingTop: "15px", fontWeight:'lighter' }}>
                 Applicant Phone Number :
@@ -136,7 +136,7 @@ const DetailedInfo = ({isDisable,updateHandler,applicantFirstName,setApplicantFi
               />
             </div>
           </div>
-          <div className="row mb-2">
+          <div className="row"  style={{marginBottom:'-15px'}}>
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label htmlFor="" style={{ paddingTop: "15px", fontWeight:'lighter' }}>
                 Applicant Email Address :
