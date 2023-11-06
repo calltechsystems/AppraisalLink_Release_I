@@ -123,7 +123,7 @@ const Pricing = ({
                   )
                 }
               >
-                <a className={`btn pricing_btn btn-block w-100`} href="#">
+                <a className={`btn btn-color_01 btn-block w-100`} href="#">
                   {selectedId !== item.id
                     ? !selectedId
                       ? "Get Started"

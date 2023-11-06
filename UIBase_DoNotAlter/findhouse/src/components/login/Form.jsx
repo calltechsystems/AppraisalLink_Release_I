@@ -167,7 +167,7 @@ const Form = ({ user }) => {
 
             <div className="col-12">
               <div>
-                {captchaVerfied ? (
+                {/* {captchaVerfied ? (
                   ""
                 ) : (
                   <label
@@ -177,7 +177,7 @@ const Form = ({ user }) => {
                   >
                     Captcha doesnt match
                   </label>
-                )}
+                )} */}
                 <Captcha
                   verified={setCaptchaVerified}
                   reload={reloadOption}

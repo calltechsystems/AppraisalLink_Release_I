@@ -21925,6 +21925,17 @@ input[type=text] {
   color: white;
 }
 
+.btn-color_01 {
+  background-color: #fff;
+  color: #2e008b;
+  font-weight: 700;
+}
+
+/* .btn-color_01:hover {
+  background-color: #2e008b;
+  color: #fff;
+} */
+
 .req-btn {
   color: #e80000;
   font-weight: 700;

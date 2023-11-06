@@ -41,7 +41,7 @@ const Captcha = ({ verified , reload , change , setChange}) => {
       verified(false);
       setStyle({
         borderColor: "red",
-        borderWidth: "1px",
+        borderWidth: "2px",
       });
       
     }
@@ -55,7 +55,7 @@ const Captcha = ({ verified , reload , change , setChange}) => {
       verified(true);
       setStyle({
         borderColor: "green",
-        borderWidth: "1px",
+        borderWidth: "2px",
       });
     }
   };
