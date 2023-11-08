@@ -246,7 +246,8 @@ const Form = () => {
                 <div
                   className="input-group-text m-1"
                   style={{ border: "1px solid #2e008b" }}
-                  onClick={togglePasswordVisibility}
+                  onMouseEnter={togglePasswordVisibility}
+                  onMouseLeave={togglePasswordVisibility}
                 >
                   <FaEye />
                 </div>
@@ -292,7 +293,8 @@ const Form = () => {
                 <div
                   className="input-group-text m-1"
                   style={{ border: "1px solid #2e008b" }}
-                  onClick={togglePasswordVisibility_01}
+                  onMouseEnter={togglePasswordVisibility}
+                  onMouseLeave={togglePasswordVisibility}
                 >
                   <FaEye />
                 </div>
