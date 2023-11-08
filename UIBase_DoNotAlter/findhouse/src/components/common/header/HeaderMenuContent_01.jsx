@@ -199,6 +199,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                       : undefined
                   }
                   onMouseOver={() => setAbout()}
+                  onMouseEnter={() => setPlan()}
                 >
                   <span
                     className="title text-info-01 cool-link menuitem"
@@ -236,6 +237,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                   <span
                     className="title text-info-01 cool-link menuitem"
                     onMouseOver={() => setHovered(!hovered)}
+                    onMouseEnter={() => setPlan()}
                     // onMouseLeave={() => setLogin()}
                     // onMouseLeave={() => setHovered()}
                   >
@@ -397,10 +399,10 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                       position: "absolute",
                       top: "100%",
                       // left: "20px",
-                      right: "-780px",
+                      right: "-790px",
                       width: "1900px",
                       margin: "-16px",
-                      height: "235px",
+                      height: "225px",
                       backgroundColor: "#fff",
                       color: "#333",
                       borderTopColor: "#2e008b",
@@ -416,25 +418,13 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                       <div className="col-lg-2"></div>
                       <div className="col-lg-2 text-center">
                         <div className="row">
+                          <div className="col-lg-12 mt-4"></div>
                           <div className="col-lg-12 mt-4">
-                            {/* <Link href="/">
-                     <Image
-                       width={40}
-                       height={45}
-                       className="logo2 img-fluid"
-                       style={{ marginRight: "10px" }}
-                       src="/assets/images/logo_new.png"
-                       alt="header-logo2.png"
-                     />
-                     <span
-                       className="fw-bold"
-                       style={{ fontSize: "19px", color: "black" }}
-                     >
-                       Appraisal Link
-                     </span>
-                   </Link> */}
+                            {/* <p className="">
+                              To access your dashboard by clicking it.
+                            </p> */}
                           </div>
-                          <div className="col-lg-12 mt-4 mb-2">
+                          <div className="col-lg-12 mt-4">
                             <button className="btn btn2 w-50 btn-color">
                               Dashboard
                             </button>
@@ -514,6 +504,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                   <span
                     className="text-info-01 cool-link menuitem"
                     onMouseOver={() => setPlan(!plan)}
+                    onMouseEnter={() => setLogin()}
                     // onMouseOver={() => setAbout()}
                     // onMouseEnter={() => setLogin()}
                   >
@@ -531,10 +522,10 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                       position: "absolute",
                       top: "100%",
                       // left: "20px",
-                      right: "-640px",
+                      right: "-700px",
                       width: "1900px",
                       margin: "-16px",
-                      height: "235px",
+                      height: "225px",
                       backgroundColor: "#fff",
                       color: "#333",
                       borderTopColor: "#2e008b",
@@ -547,12 +538,12 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                     }}
                   >
                     <div className="row">
-                      <div className="col-lg-3"></div>
+                      <div className="col-lg-2"></div>
                       <div
                         className="col-lg-3 text-center"
-                        style={{ backgroundColor: "#c2c2c2" }}
+                        style={{ backgroundColor: "" }}
                       >
-                        <div className="row text-end">
+                        <div className="row">
                           <div className="col-lg-8 m-5 fw-bold">
                             <span>
                               Subscribe today to unlock a world of exclusive
@@ -567,15 +558,17 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                           </div>
                         </div>
                       </div>
-                      <div className="col-lg-2 text-end">
+                      <div className="col-lg-2">
                         <div className="row">
-                          <div className="col-lg-12 m-3 fw-bold">
+                          <div
+                            className="col-lg-12 m-3 fw-bold"
+                            style={{ marginLeft: "-30px" }}
+                          >
                             <Link href="/">
                               <Image
                                 width={190}
                                 height={125}
-                                className="logo2 img-fluid mt-4"
-                                // style={{ marginRight: "10px" }}
+                                className="logo2 img-fluid mt-1"
                                 src="/assets/images/home/man-pencil-fills-out-questionnaire-260nw-2052001217.png"
                                 alt="header-logo2.png"
                               />
@@ -584,14 +577,14 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                         </div>
                       </div>
                       <div
-                        className="col-lg-3 text-center"
+                        className="col-lg-2 text-center"
                         style={{ backgroundColor: "#c2c2c2" }}
                       >
                         <div className="row">
                           <div className="col-lg-8 m-5 fw-bold">
                             <span style={{ lineHeight: "1.9" }}>
-                              Revolutionize Your Frieght Experience : conquer
-                              the real estate buisness with{" "}
+                              Experience our platform to the fullest by becoming
+                              a subscriber on{" "}
                               <span className="text-color fw-bold">
                                 Appraisal Link
                               </span>
@@ -610,7 +603,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                                 height={125}
                                 className="logo2 img-fluid"
                                 // style={{ marginRight: "10px" }}
-                                src="/assets/images/service/p.jpg"
+                                src="/assets/images/home/99.jpg"
                                 alt="header-logo2.png"
                               />
                             </Link>
@@ -671,10 +664,10 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                       <div className="col-lg-2"></div>
                       <div
                         className="col-lg-2 text-center"
-                        style={{ backgroundColor: "#c2c2c2" }}
+                        style={{ backgroundColor: "" }}
                       >
                         <div className="row text-end">
-                          <div className="col-lg-10 m-5 fw-bold">
+                          <div className="col-lg-12 m-5 fw-bold">
                             <span>
                               Ready to see Appraisal Link help make you more
                               money at record speed?
@@ -689,7 +682,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                         </div>
                       </div>
                       <div className="col-lg-2">
-                        <div className="row">
+                        <div className="row text-center">
                           <div className="col-lg-12 m-3 fw-bold">
                             <Link href="/">
                               <Image
@@ -704,9 +697,12 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                           </div>
                         </div>
                       </div>
-                      <div className="col-lg-2" style={{ backgroundColor: "" }}>
+                      <div
+                        className="col-lg-2"
+                        style={{ backgroundColor: "#c2c2c2" }}
+                      >
                         <div className="row">
-                          <div className="col-lg-12 mt-3 fw-bold text-start">
+                          <div className="col-lg-12 mt-3 fw-bold text-center">
                             <Link href="/about-us">
                               <button className="fw-bold mt-4 cool-link menuitem">
                                 About Appraisal Link
@@ -816,7 +812,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                     }}
                   >
                     <div className="row">
-                      <div className="col-lg-3"></div>
+                      <div className="col-lg-2"></div>
                       <div
                         className="col-lg-3 text-center"
                         style={{ backgroundColor: "#c2c2c2" }}
@@ -836,7 +832,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                           </div>
                         </div>
                       </div>
-                      <div className="col-lg-2 text-end">
+                      <div className="col-lg-2 text-center">
                         <div className="row">
                           <div className="col-lg-12 m-4 fw-bold">
                             <Link href="/">
@@ -883,12 +879,12 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                       </div>
                       <div className="col-lg-2 text-center">
                         <div className="row">
-                          <div className="col-lg-6 m-5 fw-bold" style={{}}>
+                          <div className="col-lg-6 m-4 fw-bold" style={{}}>
                             <Link href="/">
                               <Image
                                 width={160}
                                 height={125}
-                                className="logo2 img-fluid mt-3"
+                                className="logo2 img-fluid mt-5"
                                 // style={{ marginRight: "10px" }}
                                 src="/assets/images/service/333.jpg"
                                 alt="header-logo2.png"
@@ -970,7 +966,13 @@ const HeaderMenuContent = ({ float = "", hide, isListing, userData }) => {
                   onMouseEnter={() => setHovered()}
                 >
                   <span className="fs-13"></span>
-                  <span className="dn-lg fs-13"> GET IN TOUCH</span>
+                  <span
+                    className="dn-lg fs-13"
+                    onMouseEnter={() => setPlan()}
+                  >
+                    {" "}
+                    GET IN TOUCH
+                  </span>
                 </Link>
               </li>
               {/* End .dropitem */}

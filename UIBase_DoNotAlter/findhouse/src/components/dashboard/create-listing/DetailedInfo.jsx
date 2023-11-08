@@ -1,6 +1,5 @@
 import React, { Component, useState } from "react";
 
-
 // const DetailedInfo = () =>{
 
 //     const [userInfo,setUserInfo] = useState( {
@@ -79,15 +78,32 @@ import React, { Component, useState } from "react";
 // export default DetailedInfo;
 
 import CheckBoxFilter from "../../common/CheckBoxFilter";
-const DetailedInfo = ({isDisable,updateHandler,applicantFirstName,setApplicantFirstName ,applicantLatsName,setApplicantLastName,applicantNumber,setApplicantNumber ,applicantEmail,setApplicantEmail,propertyData,submitHandler,setDisable}) => {
-  console.log(applicantEmail)
+const DetailedInfo = ({
+  isDisable,
+  updateHandler,
+  applicantFirstName,
+  setApplicantFirstName,
+  applicantLatsName,
+  setApplicantLastName,
+  applicantNumber,
+  setApplicantNumber,
+  applicantEmail,
+  setApplicantEmail,
+  propertyData,
+  submitHandler,
+  setDisable,
+}) => {
+  console.log(applicantEmail);
   return (
     <>
       <div className="row">
         <div className="col-lg-12">
-          <div className="row" style={{marginBottom:'-15px'}}>
+          <div className="row" style={{ marginBottom: "-15px" }}>
             <div className="col-lg-3 my_profile_setting_input form-group">
-              <label htmlFor="" style={{ paddingTop: "15px", fontWeight:'lighter' }}>
+              <label
+                htmlFor=""
+                style={{ paddingTop: "15px", fontWeight: "lighter" }}
+              >
                 Applicant First Name :
               </label>
             </div>
@@ -96,15 +112,18 @@ const DetailedInfo = ({isDisable,updateHandler,applicantFirstName,setApplicantFi
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-               onChange={(e)=>setApplicantFirstName(e.target.value)}
-               value={applicantFirstName}
+                onChange={(e) => setApplicantFirstName(e.target.value)}
+                value={applicantFirstName}
                 disabled={isDisable}
               />
             </div>
           </div>
-          <div className="row"  style={{marginBottom:'-15px'}}>
+          <div className="row" style={{ marginBottom: "-15px" }}>
             <div className="col-lg-3 my_profile_setting_input form-group">
-              <label htmlFor="" style={{ paddingTop: "15px", fontWeight:'lighter' }}>
+              <label
+                htmlFor=""
+                style={{ paddingTop: "15px", fontWeight: "lighter" }}
+              >
                 Applicant Last Name :
               </label>
             </div>
@@ -113,15 +132,18 @@ const DetailedInfo = ({isDisable,updateHandler,applicantFirstName,setApplicantFi
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                onChange={(e)=>setApplicantLastName(e.target.value)}
+                onChange={(e) => setApplicantLastName(e.target.value)}
                 value={applicantLatsName}
                 disabled={isDisable}
               />
             </div>
           </div>
-          <div className="row"  style={{marginBottom:'-15px'}}>
+          <div className="row" style={{ marginBottom: "-15px" }}>
             <div className="col-lg-3 my_profile_setting_input form-group">
-              <label htmlFor="" style={{ paddingTop: "15px", fontWeight:'lighter' }}>
+              <label
+                htmlFor=""
+                style={{ paddingTop: "15px", fontWeight: "lighter" }}
+              >
                 Applicant Phone Number :
               </label>
             </div>
@@ -130,15 +152,18 @@ const DetailedInfo = ({isDisable,updateHandler,applicantFirstName,setApplicantFi
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                onChange={(e)=>setApplicantNumber(e.target.value)}
-               value={applicantNumber}
+                onChange={(e) => setApplicantNumber(e.target.value)}
+                value={applicantNumber}
                 disabled={isDisable}
               />
             </div>
           </div>
-          <div className="row"  style={{marginBottom:'-15px'}}>
+          <div className="row" style={{ marginBottom: "-15px" }}>
             <div className="col-lg-3 my_profile_setting_input form-group">
-              <label htmlFor="" style={{ paddingTop: "15px", fontWeight:'lighter' }}>
+              <label
+                htmlFor=""
+                style={{ paddingTop: "15px", fontWeight: "lighter" }}
+              >
                 Applicant Email Address :
               </label>
             </div>
@@ -147,29 +172,26 @@ const DetailedInfo = ({isDisable,updateHandler,applicantFirstName,setApplicantFi
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                onChange={(e)=>setApplicantEmail(e.target.value)}
-               value={applicantEmail}
+                onChange={(e) => setApplicantEmail(e.target.value)}
+                value={applicantEmail}
                 disabled={isDisable}
               />
             </div>
           </div>
 
           <div className="col-xl-12">
-            <div className="my_profile_setting_input overflow-hidden mt20">
-              <button className="btn btn1 float-start">Cancel</button>
-              {!isDisable && (propertyData ? <button
-                className="btn btn2 float-end"
-                style={{ textAlign:'center' }}
-                onClick={updateHandler}
-              >
-                Update
-              </button> : <button
-              className="btn btn2 float-end"
-              style={{ textAlign:'center' }}
-              onClick={submitHandler}
-            >
-              Submit
-            </button>)}
+            <div className="my_profile_setting_input overflow-hidden mt20 text-center">
+              <button className="btn btn2">Cancel</button>
+              {!isDisable &&
+                (propertyData ? (
+                  <button className="btn btn2" onClick={updateHandler}>
+                    Update
+                  </button>
+                ) : (
+                  <button className="btn btn2" onClick={submitHandler}>
+                    Submit
+                  </button>
+                ))}
             </div>
           </div>
           {/* End .col */}

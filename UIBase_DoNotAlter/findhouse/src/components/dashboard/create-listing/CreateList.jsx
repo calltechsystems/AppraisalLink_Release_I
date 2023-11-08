@@ -77,6 +77,9 @@ const CreateList = ({
                   style={{ paddingTop: "15px", paddingBottom: "15px" }}
                 >
                   <option data-tokens="SelectRole" value={1}>
+                    Choose..
+                  </option>
+                  <option data-tokens="SelectRole" value={1}>
                     Low
                   </option>
                   <option data-tokens="Agent/Agency" value={3}>
@@ -94,7 +97,7 @@ const CreateList = ({
                   htmlFor=""
                   style={{ paddingTop: "15px", fontWeight: "lighter" }}
                 >
-                  Maximum Appraisal Cost ($)
+                  Maximum Appraisal Cost ($)  
                 </label>
               </div>
               <div className="col-lg-7">

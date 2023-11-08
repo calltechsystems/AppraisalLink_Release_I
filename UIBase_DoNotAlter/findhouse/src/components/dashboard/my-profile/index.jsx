@@ -85,7 +85,7 @@ const Index = () => {
                 {/* End .col */}
 
                 <div className="col-lg-12">
-                  <div className="my_dashboard_review">
+                  <div className="my_dashboard_review" style={{background:'aliceblue'}}>
                     <div className="row">
                       {/* <div className="col-xl-2">
                         <h4>Personal Information</h4>

@@ -152,13 +152,13 @@ const Form = () => {
 
   return (
     <div className="row mt-4">
-      <div className="col-lg-6 col-xl-6">
+      <div className="col-lg-6 col-xl-6 mt-5">
         <div className="regstr_thumb">
           <Image
             width={357}
             height={659}
             className="img-fluid w100 h-100 cover mb-5"
-            src="/assets/images/home/mobile-login-concept-illustration_114360-83.avif"
+            src="/assets/images/home/placeholder-concept-illustration_114360-4983.avif"
             alt="regstr.jpg"
           />
         </div>
@@ -178,7 +178,7 @@ const Form = () => {
                 data-live-search="true"
                 data-width="100%"
                 ref={userTypeRef}
-                style={{ paddingTop: "15px", paddingBottom: "15px" }}
+                style={{ paddingTop: "10px", paddingBottom: "15px" }}
               >
                 <option value="">Choose User...</option>
                 <option data-tokens="SelectRole" value={1}>
@@ -316,7 +316,7 @@ const Form = () => {
           )}
 
           <div className="col-lg-12">
-            {captchaVerfied ? (
+            {/* {captchaVerfied ? (
               ""
             ) : (
               <label
@@ -326,7 +326,7 @@ const Form = () => {
               >
                 Captcha doesnt match
               </label>
-            )}
+            )} */}
             <div>
               <Captcha
                 verified={setCaptchaVerified}

@@ -33,7 +33,9 @@ const TermsCondions = () => {
               <div className="grids mb30" key={item.id}>
                 <h4>{item.title}</h4>
                 <p className="mb20">{item.text1}</p>
-                {/* <p>{item.text2}</p> */}
+                <Link href="/register" className="my_profile_setting_input">
+                  <button className="btn btn2 mb-3">Register</button>
+                </Link>
               </div>
             ))}
           </div>

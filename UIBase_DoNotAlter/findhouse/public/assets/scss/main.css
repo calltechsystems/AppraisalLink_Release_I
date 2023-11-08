@@ -201,7 +201,9 @@ a img {
 .form-control {
   height: 50px;
 }
-
+.form-control_01{
+  height: 40px;
+}
 .form-control:active,
 .form-control:focus {
   box-shadow: none;
@@ -8877,9 +8879,9 @@ form.home5_advanced_search_form
 .my_profile_setting_input .form-select {
   background-color: rgb(255, 255, 255);
   border: 1px solid rgb(235, 235, 235);
-  border-radius: 8px;
-  height: 52px;
-  padding-left: 20px;
+  border-radius: 5px;
+  height: 36px;
+  padding-left: 10px;
 }
 
 .my_profile_setting_input .form-control::placeholder {
@@ -8961,6 +8963,35 @@ form.home5_advanced_search_form
   border: 2px solid rgb(29, 41, 62);
   color: rgb(29, 41, 62);
   background-color: #ffffff;
+}
+
+.my_profile_setting_input .btn4{
+  /* background-color: rgb(29, 41, 62);
+  border: 2px solid rgb(29, 41, 62); */
+  border-radius: 8px;
+  -webkit-box-shadow: 0px 1px 4px 0px rgba(255, 90, 95, 0.3);
+  -moz-box-shadow: 0px 1px 4px 0px rgba(255, 90, 95, 0.3);
+  -o-box-shadow: 0px 1px 4px 0px rgba(255, 90, 95, 0.3);
+  box-shadow: 0px 1px 4px 0px rgba(255, 90, 95, 0.3);
+  font-size: 16px;
+  font-family: "Nunito";
+  /* color: rgb(255, 255, 255); */
+  font-weight: bold;
+  line-height: 1.2;
+  height: 50px;
+  width: 200px;
+  border: 2px solid rgb(29, 41, 62);
+  color: rgb(29, 41, 62);
+  background-color: #ffffff;
+}
+
+.my_profile_setting_input .btn4:hover {
+  color: rgb(255, 255, 255);
+  background-color: rgb(29, 41, 62);
+  border: 2px solid rgb(29, 41, 62);
+  /* border: 2px solid rgb(29, 41, 62);
+  color: rgb(29, 41, 62);
+  background-color: #ffffff; */
 }
 
 .my_profile_setting_input2 label {
@@ -17209,7 +17240,8 @@ legend span {
 .btn-thm:focus {
   background-color: #ffffff;
   border-color: var(--color-primary);
-  color: var(--color-primary);
+  /* color: var(--color-primary); */
+  color:#fff;
 }
 
 .btn-thm.white:hover,
@@ -22222,3 +22254,23 @@ input:checked + .slider:before {
   /* transition: width .3s; */
 }
 
+.fixed-image {
+  position: fixed;   /* Set the position to fixed */
+  top: 5;            /* Adjust the top position as needed */
+  left: 5;           /* Adjust the left position as needed */
+  z-index: 1;      /* Adjust the z-index to control its stacking order */
+}
+
+.fixedContainer {
+  background-color:#ddd;
+  position: fixed;
+  padding: 1em;
+  left: 20%;
+  top: 36%;
+  transform: translateX(-50%);
+}
+
+.otherContainer {
+  height:400px;
+  /* background-color:#bbb; */
+}

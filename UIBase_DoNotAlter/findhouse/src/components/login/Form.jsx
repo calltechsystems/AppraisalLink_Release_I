@@ -107,7 +107,7 @@ const Form = ({ user }) => {
             width={157}
             height={100}
             className="img-fluid w100 h-80 cover"
-            src="/assets/images/home/computer-login.avif"
+            src="/assets/images/home/11.avif"
             alt="login.jpg"
           />
         </div>
