@@ -1,0 +1,88 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+
+const SearchData = () => {
+
+  const [data , setData] = useState([]);
+
+  useEffect(()=>{
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    toast.loading("Getting all the bids");
+    axios.get("/api/getAllBids",{
+      headers : {
+        Authorization : `Bearer ${user.token}`
+      }
+    })
+    .then((res)=>{
+      const tempData = res.data.data.result.$values;
+
+      const response = tempData.filter((item,idex)=>{
+        if(item.userId === user.userId){
+          return true;
+        }
+        else{
+          return false;
+        }
+      })
+
+      setData(response);
+      toast.dismiss();
+      toast.success("Successfully fetched");
+    })
+    .catch((err)=>{
+      toast.dismiss();
+      toast.error("Reload the page")
+    })
+  },[]);
+
+
+  function getPrettifiedDate(dateString) {
+    const date = new Date(dateString);
+    const options = {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+    };
+    return date.toLocaleString(undefined, options);
+  }
+  
+  return (
+    <table className="table">
+      <thead className="thead-light">
+        <tr>
+          <th scope="col">Id</th>
+          <th scope="col">Date</th>
+          <th scope="col">Description</th>
+          <th scope="col">Bid Amount</th>
+          <th scope="col">Proposed Amount</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      {/* End thead */}
+
+      <tbody>
+      {data.map((bid, index) => (
+        <tr key={index}>
+          <td>{bid.bidId}</td>
+          <td>{getPrettifiedDate(bid.requestTime)}</td>
+          <td>{bid.description}</td>
+          <td>${bid.bidLowerRange} - ${bid.bidUpperRange}</td>
+          <td>${bid.bidAmount}</td>
+          <td>
+            {bid.status === 0 ? <span className="status_tag badge">Pending</span> : <span className="status_tag badge2">Completed</span>}
+          </td>
+        </tr>
+      ))}
+       
+        {/* End tr */}
+      </tbody>
+    </table>
+  );
+};
+
+export default SearchData;

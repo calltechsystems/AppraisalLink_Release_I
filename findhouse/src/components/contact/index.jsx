@@ -1,0 +1,158 @@
+import Image from "next/image";
+import CopyrightFooter from "../common/footer/CopyrightFooter";
+import Footer from "../common/footer/Footer";
+import Header from "../common/header/DefaultHeader_01";
+import MobileMenu from "../common/header/MobileMenu";
+import AddressSidebar from "./AddressSidebar";
+import BreadCrumbBanner from "./BreadCrumbBanner";
+import HeroSlider from "./HeroSlider";
+import Form from "./Form";
+
+const index = () => {
+  return (
+    <>
+      {/* <!-- Main Header Nav --> */}
+      <Header />
+
+      {/* <!--  Mobile Menu --> */}
+      <MobileMenu />
+
+      {/* <!-- Inner Page Breadcrumb --> */}
+      {/* <BreadCrumbBanner /> */}
+
+      <div className="container-fluid p0">
+        <div className="main-banner-wrapper">
+          <div className="arrow-style-2 banner-style-one ">
+            {/* <div className="home-text text-center">
+              <h2 className="fz55">Discover your place to live</h2>
+              <p className="fz18 color-white">Get started in few clicks.</p>
+            </div> */}
+            <HeroSlider />
+            <h4
+              className="text-light text-center"
+              style={{
+                marginTop: "-30rem",
+                position: "relative",
+                paddingBottom: "60px",
+              }}
+            >
+              Our goal is to promptly attend to your requirements, allowing you
+              to focus on what&apos;s most important to you: managing your business.
+              If you require immediate assistance, please either dial one of the
+              numbers provided below or engage with us via our online chat
+              platform.
+            </h4>
+          </div>
+        </div>
+        {/* <!-- /.main-banner-wrapper --> */}
+      </div>
+      {/* End .container-fluid */}
+
+      {/* <!-- Our Contact --> */}
+      <section className="our-contact pb0 bgc-f7">
+        <div className="container" style={{ marginTop: "-70px" }}>
+          <div className="row">
+            {/* <div className="col-lg-12">
+              <h4 className="mb5 text-center">Send Us An Email</h4>
+              <p className="text-center">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In
+                gravida quis libero eleifend ornare. Maecenas mattis enim at
+                arcu feugiat, sit amet blandit nisl iaculis. Donec lacus odio,
+                malesuada eu libero sit amet, congue aliquam leo. In hac
+                habitasse platea dictumst.
+              </p>
+            </div> */}
+            <div className="container">
+              <div className="row">
+                {/* <h2 className="text-center">Let&apos;s Chat !</h2> */}
+                <AddressSidebar />
+              </div>
+            </div>
+            <div className="col-lg-12 mb-5">
+              <div
+                className="row"
+                style={{
+                  boxShadow: "10px 10px 50px 10px rgba(19, 19, 28, 0.52)",
+                  borderRadius:'0 5px 5px'
+                }}
+              >
+                <div
+                  className="col-lg-3"
+                  style={{
+                    backgroundColor: "#2e008b",
+                    borderRadius: "4px 0 0 4px",
+                    opacity: "0.9",
+                    background:
+                      "url(https://i.pinimg.com/originals/02/7e/fd/027efde1602fe8a0a642fafbe5673b42.jpg)",
+                  }}
+                >
+                  <h3
+                    className="text-center text-light"
+                    style={{ marginTop: "13rem", lineHeight: "1.5" }}
+                  >
+                    {" "}
+                    Reach out to our team for any questions or inquiries you
+                    have!
+                  </h3>
+                </div>
+                <div className="col-lg-9 form_grid">
+                  <div className="">
+                    <Form />
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* End .col */}
+
+            {/* <div className="col-lg-5 col-xl-4 mb-5"></div> */}
+          </div>
+          {/* End .row */}
+        </div>
+        {/* End .container */}
+
+        {/* <div className="container-fluid p0 mt50">
+          <div className="row">
+            <div className="col-lg-12">
+              <div className="h600" id="map-canvas">
+                <div className="gmap_canvas pe-none">
+                  <iframe
+                    title="map"
+                    className="gmap_iframe"
+                    src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d193309.02147838814!2d-74.53513266718751!3d40.79602810000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sbd!4v1663993365939!5m2!1sen!2sbd"
+                  ></iframe> */}
+        {/* End iframe */}
+
+        {/* <Image
+                    width={32}
+                    height={50}
+                    className="location-finder"
+                    src="/assets/images/location.png"
+                    alt="location"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> */}
+      </section>
+
+      {/* <!-- Our Footer --> */}
+      <section className="footer_one p20">
+        <div className="container">
+          <div className="row">
+            <Footer />
+          </div>
+        </div>
+      </section>
+
+      {/* <!-- Our Footer Bottom Area --> */}
+      <div className="footer_middle_area">
+        <div className="container">
+          <CopyrightFooter />
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default index;
