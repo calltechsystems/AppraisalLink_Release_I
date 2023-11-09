@@ -191,6 +191,9 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
     } else if (userInfo.userType === 2) {
       route.push("/appraiser-dashboard");
     }
+    else{
+      route.push("/how-we-work");
+    }
   }
 
   return (
@@ -310,15 +313,15 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                    </Link> */}
                           </div>
                           <div className="col-lg-12 mt-4 mb-2">
-                            <Link href="/how-we-work">
-                              <button className="btn btn2 w-50 btn-color" onClick={handleInsightClick}>
+                            <Link href={userData.userType === 1 ? "/my-dashboard" : "/how-we-work"}>
+                              <button className="btn btn2 w-50 btn-color">
                                 For Brokers
                               </button>
                             </Link>
                           </div>
                           <div className="col-lg-12 mb-2">
-                            <Link href="/how-we-work">
-                              <button className="btn btn2 w-50 btn-color" onClick={handleInsightClick}>
+                            <Link href={userData.userType === 2 ? "/appraiser-dashboard" : "/how-we-work"}>
+                              <button className="btn btn2 w-50 btn-color" >
                                 For Appraiser
                               </button>
                             </Link>

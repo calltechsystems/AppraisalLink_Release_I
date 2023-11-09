@@ -12,7 +12,8 @@ import CryptoJS from "crypto-js";
     const userId = request.query.userId;
 
 
-    const userResponse = await axios.get(`${domain}/Property/ByUserId/${userId}`,
+    console.log(domain);
+    const userResponse = await axios.get(`http://calltech-prod.us-east-1.elasticbeanstalk.com/api/Property/ByUserId/${userId}`,
     {
         headers: {
           Authorization:token,
