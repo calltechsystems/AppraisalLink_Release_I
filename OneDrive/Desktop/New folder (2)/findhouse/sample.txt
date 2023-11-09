@@ -1,8 +1,0 @@
-This is a sample testing of git
-
-THis is second.
-
-
-Added one more line
-
-We are testing git

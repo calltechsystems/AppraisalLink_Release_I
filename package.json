@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "next-i18next": "^15.0.0",
-    "react-toast": "^1.0.3"
-  }
-}
