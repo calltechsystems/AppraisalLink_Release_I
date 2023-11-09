@@ -2,14 +2,18 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addLength } from "../../../features/properties/propertiesSlice";
-import properties from "../../../data/properties";
-import Image from "next/image";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { encryptionData } from "../../../utils/dataEncryption";
+import TableData from "./TableData";
 
-const FeaturedItem = ({ setModalOpen , setLowRangeBid , setPropertyId }) => {
+const FeaturedItem = ({ setModalOpen , close , setLowRangeBid , setPropertyId }) => {
   const [data, setData] = useState([]);
+  let userdata = {};
+  
+  useEffect(()=>{
+    userdata = JSON.parse(localStorage.getItem("user"));
+  },[]);
 
   const {
     keyword,
@@ -314,7 +318,7 @@ const FeaturedItem = ({ setModalOpen , setLowRangeBid , setPropertyId }) => {
   useEffect(() => {
     dispatch(addLength(data.length));
   }, [dispatch, data]);
-  return <>{content}</>;
+  return <><TableData userData={userdata} open={setModalOpen} close={close} onWishlistHandler={onWishlistHandler} participateHandler={participateHandler} properties={data} setProperties={setData}/></>;
 };
 
 export default FeaturedItem;

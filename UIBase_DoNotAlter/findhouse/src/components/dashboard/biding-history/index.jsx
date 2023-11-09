@@ -2,9 +2,15 @@ import Header from "../../common/header/dashboard/Header";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenu_01";
 import MobileMenu from "../../common/header/MobileMenu_01";
 import PackageData from "./PackageData";
-import SearchBox from "./SearchBox";
+import { useState } from "react";
 
 const index = () => {
+
+  const [show , setShow] = useState(true);
+
+  const onClickHandler = ()=>{
+    setShow(false);
+  }
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -76,6 +82,7 @@ const index = () => {
                       <div className="packages_table">
                         <div className="table-responsive mt0">
                           <PackageData />
+                          
                         </div>
                       </div>
                       {/* End .packages_table */}

@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
+import ErrorModal from "../../common/popUpModal/errorModal/index";
 
 const Index = () => {
 
@@ -21,6 +22,13 @@ const Index = () => {
   const [allWishlistedProperties , setAllWishlistedProperties] = useState([]);
   const [reload , setReload] = useState(false);
   const [allProperties,setAllProperties] = useState([]);
+
+  const [show , setShow] = useState(true);
+
+  const onClickHandler = ()=>{
+    setShow(false);
+  }
+
   let data = {};
   const router = useRouter();
 
@@ -203,6 +211,8 @@ func2();
                         </div>
                         {/* End .row */}
 
+                       
+
                         <div className="row">
                           <div className="col-lg-12 mt20">
                             <div className="mbp_pagination">
@@ -239,6 +249,7 @@ func2();
 
                           <div className="offcanvas-body">
                             <SidebarListing />
+                            {show && (<ErrorModal content={"Error Modal"} close={onClickHandler}/>)}
                           </div>
                         </div>
                         {/* End mobile sidebar listing  */}

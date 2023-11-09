@@ -30,12 +30,10 @@ const TermsCondions = () => {
         <div className="row terms_condition_grid">
           <div className="col-lg-7">
             {termsContent.map((item) => (
-              <div className="grids mb10" key={item.id}>
+              <div className="grids mb30" key={item.id}>
                 <h4>{item.title}</h4>
-                <p className="">{item.text1}</p>
-                <Link href="/register" className="my_profile_setting_input">
-                  <button className="btn btn2 mb-3">Register</button>
-                </Link>
+                <p className="mb20">{item.text1}</p>
+                {/* <p>{item.text2}</p> */}
               </div>
             ))}
           </div>

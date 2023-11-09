@@ -16,7 +16,23 @@ const Form = () => {
   const [showLabel, setShowLabel] = useState(false);
   const [captchaVerfied, setCaptchaVerified] = useState(false);
 
+  
+  const [error , setError] = useState(true);
+  const [success , setSuccess] = useState(true);
+  const [errorContent , setErrorContent] = useState("");
+  
+  const [successContent , setSuccessContent] = useState("");
+
   const [firstClick, setFirstClick] = useState(true);
+
+  const handleErrorModalCancel = ()=>{
+    setError(false);
+  }
+
+  const handleSuccessModalCancel = ()=>{
+    setSuccess(false);
+  }
+
 
   const router = useRouter();
 
@@ -152,19 +168,40 @@ const Form = () => {
 
   return (
     <div className="row mt-4">
-      <div className="col-lg-6 col-xl-6 mt-5">
+      <div className="col-lg-6 col-xl-6">
         <div className="regstr_thumb">
           <Image
             width={357}
             height={659}
             className="img-fluid w100 h-100 cover mb-5"
-            src="/assets/images/home/placeholder-concept-illustration_114360-4983.avif"
+            src="/assets/images/home/mobile-login-concept-illustration_114360-83.avif"
             alt="regstr.jpg"
           />
         </div>
       </div>
       <div className="col-lg-6">
         <form onSubmit={registerHandler}>
+        {error && <div style={{backgroundColor:"orangered",opacity:"80%",borderColor:"red",borderWidth:"20px",borderRadius:"4px",padding:"1%",justifyContent:"space-between",display:"flex",flexDirection:"row",width:"80%",marginLeft:"10%"}}>
+        <h4 style={{color:"white"}}>Invalid credentials</h4>
+        <div
+          className="input-group-text m-1"
+          style={{ border: "1px solid white"}}
+          onClick={handleErrorModalCancel}
+        >
+           <img src="https://th.bing.com/th/id/OIP.VirRE_r48DkDvZVNoo6_agHaHZ?w=209&h=208&c=7&r=0&o=5&dpr=1.1&pid=1.7" width={"20px"} height={"20px"}/>
+        </div>
+        </div>}
+        {success && <div style={{backgroundColor:"green",opacity:"80%",borderColor:"green",borderWidth:"20px",borderRadius:"4px",padding:"1%",justifyContent:"space-between",display:"flex",flexDirection:"row",width:"80%",marginLeft:"10%"}}>
+        <h4 style={{color:"white"}}>Successfully logged in</h4>
+        <div
+          className="input-group-text m-1"
+          style={{ border: "1px solid white"}}
+          onClick={handleSuccessModalCancel}
+        >
+           <h4 style={{color:"white",marginTop:"20%"}}>OK</h4>
+        </div>
+        </div>}
+        
           <div className="heading text-center">
             <h3>Signup to your account</h3>
           </div>
@@ -178,7 +215,7 @@ const Form = () => {
                 data-live-search="true"
                 data-width="100%"
                 ref={userTypeRef}
-                style={{ paddingTop: "10px", paddingBottom: "15px" }}
+                style={{ paddingTop: "15px", paddingBottom: "15px" }}
               >
                 <option value="">Choose User...</option>
                 <option data-tokens="SelectRole" value={1}>
@@ -246,7 +283,8 @@ const Form = () => {
                 <div
                   className="input-group-text m-1"
                   style={{ border: "1px solid #2e008b" }}
-                  onClick={togglePasswordVisibility}
+                  onMouseEnter={togglePasswordVisibility}
+                  onMouseLeave={togglePasswordVisibility}
                 >
                   <FaEye />
                 </div>
@@ -292,7 +330,8 @@ const Form = () => {
                 <div
                   className="input-group-text m-1"
                   style={{ border: "1px solid #2e008b" }}
-                  onClick={togglePasswordVisibility_01}
+                  onMouseEnter={togglePasswordVisibility}
+                  onMouseLeave={togglePasswordVisibility}
                 >
                   <FaEye />
                 </div>
@@ -316,7 +355,7 @@ const Form = () => {
           )}
 
           <div className="col-lg-12">
-            {/* {captchaVerfied ? (
+            {/*{captchaVerfied ? (
               ""
             ) : (
               <label
@@ -326,7 +365,7 @@ const Form = () => {
               >
                 Captcha doesnt match
               </label>
-            )} */}
+            )}*/}
             <div>
               <Captcha
                 verified={setCaptchaVerified}
@@ -353,7 +392,7 @@ const Form = () => {
           </div>
           {/* End .form-group */}
 
-          <button type="submit" className="btn btn-log w-100 btn-thm">
+          <button type="submit" className="btn btn-log w-100 btn-thm" disabled={!captchaVerfied}>
             Sign Up
           </button>
           <div

@@ -7,8 +7,10 @@ import PopupSignInUp from "../common/PopupSignInUp";
 import BreadCrumbBanner from "./BreadCrumbBanner";
 import Form from "./Form";
 import { useEffect, useState } from "react";
+import ErrorModal from "../common/popUpModal/errorModal/index";
 
 const Index = ({user}) => { 
+  const [show , setShow] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -56,6 +58,7 @@ const Index = ({user}) => {
           </div>
         </div>
       </section>
+      
 
       {/* <!-- Our Footer --> */}
       <section className="footer_one p20">
@@ -67,7 +70,7 @@ const Index = ({user}) => {
       </section>
 
       {/* <!-- Our Footer Bottom Area --> */}
-      <div className="footer_middle_area">
+      <div className="footer_middle_area pt40 pb40">
         <div className="container">
           <CopyrightFooter />
         </div>

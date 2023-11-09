@@ -272,7 +272,7 @@ const FilteringItem = () => {
       </li>
       {/* End li */}
 
-      <li>
+     {/* <li>
         <div className="search_option_two">
           <div className="candidate_revew_select">
             <select
@@ -290,10 +290,10 @@ const FilteringItem = () => {
             </select>
           </div>
         </div>
-      </li>
+  </li>*/}
       {/* End li */}
 
-      <li>
+     {/* <li>
         <div className="search_option_two">
           <div className="candidate_revew_select">
             <select
@@ -311,10 +311,10 @@ const FilteringItem = () => {
             </select>
           </div>
         </div>
-      </li>
+</li>*/}
       {/* End li */}
 
-      <li>
+      {/*<li>
         <div className="search_option_two">
           <div className="candidate_revew_select">
             <select
@@ -329,10 +329,10 @@ const FilteringItem = () => {
             </select>
           </div>
         </div>
-      </li>
+</li>*/}
       {/* End li */}
 
-      <li>
+      {/*<li>
         <div className="search_option_two">
           <div className="candidate_revew_select">
             <select
@@ -352,7 +352,7 @@ const FilteringItem = () => {
             </select>
           </div>
         </div>
-      </li>
+</li>*/}
       {/* End li */}
 
       {/* <li className="min_area list-inline-item">

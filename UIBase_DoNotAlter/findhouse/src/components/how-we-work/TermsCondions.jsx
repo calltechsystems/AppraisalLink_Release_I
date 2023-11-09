@@ -23,14 +23,14 @@ const TermsCondions = () => {
     },
     {
       id: 4,
-      title: "Step 4. Quote available to broker",
+      title: "Step 5. Quote available to broker",
       text1: `We give the broker the best quote after verifying the appraiser's estimate and being certain of its accuracy. We gather all the relevant data for the verified quote, including the property's specifics, the appraisal report, and any supporting records. The objective is to offer the broker the best quote based on the verified appraisal. A smooth and successful transaction will be facilitated by open and honest communication with all parties involved.  `,
 
       text2: `To be discussed`,
     },
     {
       id: 5,
-      title: "Step 5. Validate quote",
+      title: "Step 4. Validate quote",
       text1: `Once the appraiser has provided us with a quote for the property, we validate it by verifying the accuracy of the property description used by the appraiser to make the appraisal. This may entail physically inspecting the property to ensure that it matches the appraiser's description. We verify the appraiser's use of appropriate appraisal methodologies and techniques, as well as recent sales of comparable properties in the area to compare the appraiser's valuation with market trends.`,
       text2: `To be discussed`,
     },
@@ -53,28 +53,6 @@ const TermsCondions = () => {
   return (
     <div className="row">
       <div className="col-lg-4 col-xl-4">
-        {/* <div className="terms_condition_widget fixedContainer">
-          <div className="widget_list">
-            <Image
-              width={571}
-              height={650}
-              priority
-              className=" fixed-image"
-              src="/assets/images/service/flowchart.png"
-              alt="1.jpg"
-            />
-          </div>
-          <div className="widget_list">
-            <Image
-              width={371}
-              height={250}
-              priority
-              className="otherContainer"
-              src="/assets/images/service/flowchart.png"
-              alt="1.jpg"
-            />
-          </div>
-        </div> */}
         <div className="terms_condition_widget">
           <div className="widget_list">
             <Image

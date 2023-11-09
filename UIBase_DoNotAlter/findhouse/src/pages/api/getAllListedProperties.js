@@ -8,8 +8,9 @@ async function handler(request, response) {
   try {
     const token = request.headers.authorization;
 
+    console.log(domain);
     const userResponse = await axios.get(
-      `${domain}/Property/GetAllProperty`,
+      `http://calltech-prod.us-east-1.elasticbeanstalk.com/api/Property/GetAllProperty`,
       {
         headers: {
           Authorization: token,

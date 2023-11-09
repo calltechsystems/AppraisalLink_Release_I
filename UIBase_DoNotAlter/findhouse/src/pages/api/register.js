@@ -32,6 +32,7 @@ export default async function handler(request, response) {
   } catch (err) {
     if (err.response) {
       // If the error is from an axios request (e.g., HTTP 4xx or 5xx error)
+      console.log(err);
       const axiosError = err.response.data;
       const statusCode = err.response.status;
       console.error(statusCode, axiosError.message); // Log the error for debugging

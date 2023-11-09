@@ -276,7 +276,7 @@ const Index = ({ isView, propertyData }) => {
                 {/* End .col */}
 
                 <div className="col-lg-12">
-                  <div className="my_dashboard_review " style={{background:'aliceblue'}}>
+                  <div className="my_dashboard_review ">
                     <div className="row">
                       <div className="col-lg-12">
                         <h4 className="mb30">
@@ -318,7 +318,7 @@ const Index = ({ isView, propertyData }) => {
                       />
                     </div>
                   </div>
-                  <div className="my_dashboard_review mt30" style={{background:'aliceblue'}}>
+                  <div className="my_dashboard_review mt30">
                     <div className="col-lg-12">
                       <h4 className="mb30">
                         Other Information
@@ -340,7 +340,7 @@ const Index = ({ isView, propertyData }) => {
                     />
                   </div>
 
-                  <div className="my_dashboard_review mt30" style={{background:'aliceblue'}}>
+                  <div className="my_dashboard_review mt30">
                     <div className="row">
                       <div className="col-lg-12">
                         <h4 className="mb30">

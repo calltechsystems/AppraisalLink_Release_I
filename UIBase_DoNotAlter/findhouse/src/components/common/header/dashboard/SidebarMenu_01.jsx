@@ -74,7 +74,7 @@ const SidebarMenu = () => {
             >
               <Link href="/appraise-properties">
                 <i className="flaticon-home"></i>
-                <span>Properties</span>
+                <span>Appraised Properties</span>
               </Link>
             </li>
             <li

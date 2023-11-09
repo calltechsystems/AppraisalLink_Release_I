@@ -8,7 +8,6 @@ import FeaturedItem from "./FeaturedItem";
 import FilterTopBar from "../../common/listing/FilterTopBar";
 import ShowFilter from "../../common/listing/ShowFilter";
 import SidebarListing from "../../common/listing/SidebarListing";
-import GridListButton from "../../common/listing/GridListButton";
 import Modal from "./Modal";
 import { useState } from "react";
 
@@ -101,8 +100,11 @@ const Index = () => {
                         {/* End .row */}
 
                         <div className="row">
-                          {/* <button onClick={()=>openModal()}>click</button> */}
-                          <FeaturedItem setModalOpen={openModal} setLowRangeBid={setLowRangeBid} setPropertyId={setPropertyId} />
+                          <FeaturedItem 
+                          setModalOpen={openModal} 
+                          close={closeModal} 
+                          setLowRangeBid={setLowRangeBid} 
+                          setPropertyId={setPropertyId} />
                           <Modal
                             modalOpen={modalOpen}
                             closeModal={closeModal}

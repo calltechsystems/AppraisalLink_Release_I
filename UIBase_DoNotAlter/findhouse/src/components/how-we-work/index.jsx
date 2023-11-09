@@ -10,7 +10,6 @@ import Team from "./Team";
 import OurMission from "./OurMission";
 import Image from "next/image";
 import TermsCondions from "./TermsCondions";
-import Link from "next/link";
 
 const index = () => {
   return (
@@ -25,7 +24,7 @@ const index = () => {
       <BreadCrumbBanner />
 
       {/* <!-- About Text Content --> */}
-      <section className="about-section" style={{background:'aliceblue'}}>
+      <section className="about-section">
         {/* <div className="container"> */}
         <div className="row">
           <div className="col-lg-12">
@@ -37,43 +36,107 @@ const index = () => {
                 padding: "15px",
               }}
             >
-              <h2 className="text-light">How that works</h2>
+              <h2 className="mt0 text-light">Flow chart description</h2>
             </div>
           </div>
         </div>
         {/* End .row */}
 
-        <div className="container mb-5">
+        <div className="container">
           <div className="row">
             {/* <OurMission /> */}
+       
             <TermsCondions />
           </div>
         </div>
         {/* End .row */}
 
-        {/* <!-- Property Search --> */}
-        <section
-          id="property-search"
-          className="property-search home1-overlay bg-img4"
-        >
+        <div className="row mt80">
+          <div className="col-lg-12">
+            <div className="main-title text-center">
+              {/* <h2 className="text-light" style={{
+                backgroundColor: "#2e008b",
+                color: "white",
+                padding: "20px",
+              }}>Why Choose Us</h2>
+              <p>We provide full service at every step.</p> */}
+            </div>
+          </div>
+        </div>
+        {/* End .row */}
+
+        <div className="container">
+          <div className="row">{/* <WhyChoose /> */}</div>
+        </div>
+        {/* End .row */}
+        {/* </div> */}
+      </section>
+
+      {/* <!-- Our Team --> */}
+      {/* <section className="our-team bgc-f7">
+        <div className="container">
           <div className="row">
-            <div className="col-lg-12">
-              <div className="search_smart_property text-center">
-                <h2 className="text-light">
-                  Appraising properties, simplifying the appraisal process.
-                </h2>
-                <p className="text-light">
-                  Throughout the home appraisal process of appraisal link serves
-                  as a point of contact between the broker and the appraiser.
-                </p>
-                <Link href="/register" className="my_profile_setting_input">
-                  <button className="btn btn2">Register</button>
-                </Link>
+            <div className="col-lg-6 offset-lg-3">
+              <div className="main-title text-center">
+                <h2>Our Team</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
               </div>
             </div>
           </div>
-        </section>
-      </section>
+          <div className="row">
+            <div className="col-lg-12">
+              <div className="team_slider gutter-x15">
+                <Team />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section> */}
+
+      {/* <!-- Our Testimonials --> */}
+      {/* <section className="our-testimonials">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-6 offset-lg-3">
+              <div className="main-title text-center mb20">
+                <h2>Testimonials</h2>
+                <p>Here could be a nice sub title</p>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-lg-6 offset-lg-3">
+              <div className="testimonial_grid_slider style2 gutter-x15">
+                <Testimonial />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section> */}
+
+      {/* <!-- Our Partners --> */}
+      {/* <section id="our-partners" className="our-partners">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-6 offset-lg-3">
+              <div className="main-title text-center">
+                <h2>Our Partners</h2>
+                <p>We only work with the best companies around the globe</p>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <Partners />
+          </div>
+        </div>
+      </section> */}
+
+      {/* <!-- Start Call to Action --> */}
+      {/* <section className="start-partners bgc-thm pt50 pb50">
+        <div className="container">
+          <CallToAction />
+        </div>
+      </section> */}
 
       {/* <!-- Our Footer --> */}
       <section className="footer_one p20">
