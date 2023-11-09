@@ -13,7 +13,7 @@ import axios from 'axios'
 import Modal from "../../common/header/dashboard/NotificationModal";
 
 const Index = () => {
-  let userData = {} ;
+  const [userData , setUserData] = useState({});
   const [showNotification,setShowNotification] = useState(false);
   const [data , setData] = useState([]);
   const [unfilteredData , setUnfilteredData] = useState([]);
@@ -96,7 +96,7 @@ const Index = () => {
    
 
     const data = (JSON.parse(localStorage.getItem("user")));
-
+    setUserData(data);
     if(!data){
       router.push("/login");
     }

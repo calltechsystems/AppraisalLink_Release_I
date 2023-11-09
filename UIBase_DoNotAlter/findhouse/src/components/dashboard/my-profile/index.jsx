@@ -11,11 +11,13 @@ const Index = () => {
   const [profileCount, setProfileCount] = useState(7);
 
   const [showCard, setShowCard] = useState(true);
+  const [data , setData] = useState({});
   let userData = {};
   const router = useRouter();
 
   useEffect(() => {
     userData = JSON.parse(localStorage.getItem("user"));
+    setData(userData);
     if (!userData) {
       router.push("/login");
     } else if (!userData?.broker_Details?.firstName) {
@@ -93,10 +95,10 @@ const Index = () => {
                       <div className="col-xl-12">
                         {showCard === true ? (
                           <div className="mb-5">
-                            <Form
-                              userData={userData}
-                              chnageShowCardHandler={chnageShowCardHandler}
-                            />
+                          {data && (  <Form
+                              userData={data}
+                          chnageShowCardHandler={chnageShowCardHandler}
+                            />)}
                           </div>
                         ) : (
                           <ProfileInfo

@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 
-const { i18n } = require('./next1i.config');
 // import {i18n} from './next1i.config'
 const nextConfig = {
   reactStrictMode: false,

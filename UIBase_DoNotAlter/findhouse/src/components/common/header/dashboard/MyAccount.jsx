@@ -3,6 +3,8 @@ import Router, { useRouter } from "next/router";
 import { isSinglePageActive } from "../../../../utils/daynamicNavigation";
 import Image from "next/image";
 import CircularIcon from "./CircularIcon";
+import { useEffect } from "react";
+import { useState } from "react";
 
 const MyAccount = ({user, profileCount , setProfile, userData}) => {
   const profileMenuItems = [
@@ -12,6 +14,12 @@ const MyAccount = ({user, profileCount , setProfile, userData}) => {
     { id: 4, name: "Change Password ", ruterPath: "/broker-change-password" },
     { id: 5, name: "Log out", ruterPath: "/login" },
   ];
+
+  const [profileValue , setProfileValue] = useState(0);
+  useEffect(()=>{
+
+
+  },[]);
   const route = useRouter();
   const logout = ()=>{
     localStorage.removeItem("user");
@@ -47,7 +55,7 @@ const MyAccount = ({user, profileCount , setProfile, userData}) => {
             }
           >
           {item.id === 5 ? <button style={{color:"#2e008b"}} onClick={logout}>Logout</button> : <div style={{display:'flex',flexDirection:"row"}}>
-          {item.id === 1 && <CircularIcon percentage={profileCount}/>}  
+          {item.id === 1 && <CircularIcon percentage={profileValue}/>}  
           {item.name}
           </div>}
           </Link>
