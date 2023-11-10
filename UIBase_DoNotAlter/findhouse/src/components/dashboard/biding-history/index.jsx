@@ -4,7 +4,7 @@ import MobileMenu from "../../common/header/MobileMenu_01";
 import PackageData from "./PackageData";
 import { useState } from "react";
 
-const index = () => {
+const Index = () => {
 
   const [show , setShow] = useState(true);
 
@@ -115,4 +115,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;
