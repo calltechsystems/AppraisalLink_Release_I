@@ -96,8 +96,9 @@ const DetailedInfo = ({isDisable,updateHandler,applicantFirstName,setApplicantFi
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-               onChange={(e)=>setApplicantFirstName(e.target.value)}
-               value={applicantFirstName}
+                style={{ background: "aliceblue" }}
+                onChange={(e) => setApplicantFirstName(e.target.value)}
+                value={applicantFirstName}
                 disabled={isDisable}
               />
             </div>
@@ -112,6 +113,7 @@ const DetailedInfo = ({isDisable,updateHandler,applicantFirstName,setApplicantFi
               <input
                 type="text"
                 className="form-control"
+                style={{ background: "aliceblue" }}
                 id="formGroupExampleInput3"
                 onChange={(e)=>setApplicantLastName(e.target.value)}
                 value={applicantLatsName}
@@ -129,6 +131,7 @@ const DetailedInfo = ({isDisable,updateHandler,applicantFirstName,setApplicantFi
               <input
                 type="text"
                 className="form-control"
+                style={{ background: "aliceblue" }}
                 id="formGroupExampleInput3"
                 onChange={(e)=>setApplicantNumber(e.target.value)}
                value={applicantNumber}

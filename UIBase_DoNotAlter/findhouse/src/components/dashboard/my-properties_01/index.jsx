@@ -224,7 +224,7 @@ const Index = () => {
                   <div className="my_dashboard_review mb40">
                     <div className="property_table">
                       <div className="table-responsive mt0">
-                        <TableData
+                        {/* <TableData
                           userData={userData}
                           open={openModal}
                           close={closeModal}
@@ -232,7 +232,7 @@ const Index = () => {
                           properties={
                             searchInput === "" ? properties : filterProperty
                           }
-                        />
+                        /> */}
                       </div>
                       {/* End .table-responsive */}
 
@@ -241,7 +241,7 @@ const Index = () => {
                     {/* End .property_table */}
                   </div>
                 </div>
-                {/* <Exemple /> */}
+                <Exemple />
 
                 {/* End .col */}
               </div>

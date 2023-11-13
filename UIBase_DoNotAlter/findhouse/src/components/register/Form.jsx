@@ -168,13 +168,13 @@ const Form = () => {
 
   return (
     <div className="row mt-4">
-      <div className="col-lg-6 col-xl-6">
+      <div className="col-lg-6 col-xl-6 mt-5">
         <div className="regstr_thumb">
           <Image
             width={357}
             height={659}
             className="img-fluid w100 h-100 cover mb-5"
-            src="/assets/images/home/mobile-login-concept-illustration_114360-83.avif"
+            src="/assets/images/home/placeholder-concept-illustration_114360-4983.avif"
             alt="regstr.jpg"
           />
         </div>
@@ -198,7 +198,7 @@ const Form = () => {
           style={{ border: "1px solid white"}}
           onClick={handleSuccessModalCancel}
         >
-           <h4 style={{color:"white",marginTop:"20%"}}>OK</h4>
+           <h4 style={{color:"white"}}>OK</h4>
         </div>
         </div>}
         
@@ -387,7 +387,14 @@ const Form = () => {
               className="form-check-label form-check-label"
               htmlFor="terms"
             >
-              I have read and accept the Terms and Privacy Policy?
+              I have read and accept the
+              <Link
+                href="assets/images/Terms & Conditions.pdf"
+                target="_blank"
+                className="form-check-label text-primary"
+              >
+                Terms and Privacy Policy?
+              </Link>
             </label>
           </div>
           {/* End .form-group */}

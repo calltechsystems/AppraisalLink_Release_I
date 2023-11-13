@@ -37,6 +37,7 @@ const LocationField = ({
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
+                style={{ background: "aliceblue" }}
                 onChange={(e) => setStreetNameRef(e.target.value)}
                 value={streetNameRef}
                 disabled={isDisable}
@@ -57,6 +58,7 @@ const LocationField = ({
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
+                style={{ background: "aliceblue" }}
                 onChange={(e) => setStreetNumberRef(e.target.value)}
                 value={streetNumberRef}
                 disabled={isDisable}
@@ -76,6 +78,7 @@ const LocationField = ({
               <input
                 type="text"
                 className="form-control"
+                style={{ background: "aliceblue" }}
                 id="formGroupExampleInput3"
                 onChange={(e) => setCityRef(e.target.value)}
                 value={cityRef}
@@ -96,6 +99,7 @@ const LocationField = ({
               <input
                 type="text"
                 className="form-control"
+                style={{ background: "aliceblue" }}
                 id="formGroupExampleInput3"
                 onChange={(e) => setStateRef(e.target.value)}
                 value={stateRef}
@@ -117,6 +121,7 @@ const LocationField = ({
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
+                style={{ background: "aliceblue" }}
                 onChange={(e) => handleZipCodeChange(e)}
                 value={zipCodeRef}
                 disabled={isDisable}
@@ -137,6 +142,7 @@ const LocationField = ({
                 type="number"
                 className="form-control"
                 id="formGroupExampleInput3"
+                style={{ background: "aliceblue" }}
                 onChange={(e) => setAreaRef(e.target.value)}
                 value={areaRef}
                 disabled={isDisable}
@@ -162,7 +168,7 @@ const LocationField = ({
                   onChange={(e) => setBuildinRef(e.target.value)}
                   value={buildinRef}
                   disabled={isDisable}
-                  style={{ paddingTop: "15px", paddingBottom: "15px" }}
+                  style={{ paddingTop: "15px", paddingBottom: "15px", backgroundColor:'aliceblue' }}
                 >
                   <option data-tokens="SelectRole" value={1}>
                     Commercial

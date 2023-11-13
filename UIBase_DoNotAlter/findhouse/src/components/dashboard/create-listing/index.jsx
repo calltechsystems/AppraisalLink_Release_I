@@ -280,7 +280,7 @@ const Index = ({ isView, propertyData }) => {
                     <div className="row">
                       <div className="col-lg-12">
                         <h4 className="mb30">
-                          Location Information
+                          Property Details
                           <hr style={{ color: "#2e008b" }} />
                         </h4>
                       </div>

@@ -28,24 +28,28 @@ const TermsCondions = () => {
     <div className="row">
       <div className="col-lg-12 col-xl-12">
         <div className="row terms_condition_grid">
-        <div className="col-lg-7">
-          {termsContent.map((item) => (
-            <div className="grids mb30" key={item.id}>
-              <h4>{item.title}</h4>
-              <p className="mb20">{item.text1}</p>
-              {/* <p>{item.text2}</p> */}
-            </div>
-          ))}
-        </div>
-        <div className="col-lg-5">
-          <Image
-            width={420}
-            height={330}
-            className="location-finder" style={{marginLeft:'5%'}}
-            src="/assets/images/service/n.jpg"
-            alt="location"
-          />
-        </div>
+          <div className="col-lg-7">
+            {termsContent.map((item) => (
+              <div className="grids mb30" key={item.id}>
+                <h4>{item.title}</h4>
+                <p className="mb20">{item.text1}</p>
+                <Link href="/register" className="my_profile_setting_input">
+                  <button className="btn btn2 mb-3">Register</button>
+                </Link>
+                {/* <p>{item.text2}</p> */}
+              </div>
+            ))}
+          </div>
+          <div className="col-lg-5">
+            <Image
+              width={420}
+              height={330}
+              className="location-finder"
+              style={{ marginLeft: "5%" }}
+              src="/assets/images/service/n.jpg"
+              alt="location"
+            />
+          </div>
         </div>
       </div>
       {/* End .col */}

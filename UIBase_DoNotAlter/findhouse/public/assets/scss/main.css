@@ -201,7 +201,7 @@ a img {
 .form-control {
   height: 50px;
 }
-.form-control_01{
+.form-control_01 {
   height: 40px;
 }
 .form-control:active,
@@ -1412,7 +1412,7 @@ header.header-nav.menu_style_home_seven .ace-responsive-menu li ul.sub-menu,
 header.header-nav.menu_style_home_eight .ace-responsive-menu li ul.sub-menu {
   background-color: #ffffff;
   border-radius: 5px;
-  padding:5px 0;
+  padding: 5px 0;
   -webkit-box-shadow: 0px 0px 50px 0px rgba(32, 32, 32, 0.15);
   -moz-box-shadow: 0px 0px 50px 0px rgba(32, 32, 32, 0.15);
   -o-box-shadow: 0px 0px 50px 0px rgba(32, 32, 32, 0.15);
@@ -8965,7 +8965,7 @@ form.home5_advanced_search_form
   background-color: #ffffff;
 }
 
-.my_profile_setting_input .btn4{
+.my_profile_setting_input .btn4 {
   /* background-color: rgb(29, 41, 62);
   border: 2px solid rgb(29, 41, 62); */
   border-radius: 8px;
@@ -17241,7 +17241,7 @@ legend span {
   background-color: #ffffff;
   border-color: var(--color-primary);
   /* color: var(--color-primary); */
-  color:#fff;
+  color: #fff;
 }
 
 .btn-thm.white:hover,
@@ -21518,7 +21518,7 @@ header.header-nav.menu_style_home_one .ace-responsive-menu > li > a {
   /* color: #0905ff; */
   color: #2e008b !important;
 }
-.ml{
+.ml {
   margin-left: -10px !important;
 }
 
@@ -22218,16 +22218,16 @@ input:checked + .slider:before {
   transform: translateX(26px);
 }
 
-.menuitem{
+.menuitem {
   color: #000 !important;
 }
 
-.menuitem:hover{
+.menuitem:hover {
   color: #2e008b !important;
   /* border-bottom: 4px solid #2e008b !important; */
 }
 
-.menuitem:active{
+.menuitem:active {
   color: #2e008b !important;
   /* border-bottom: 4px solid #2e008b !important; */
 }
@@ -22241,12 +22241,12 @@ input:checked + .slider:before {
 }
 
 .cool-link::after {
-  content: '';
+  content: "";
   display: block;
   width: 0;
   height: 3px;
   background: #2e008b;
-  transition: width .3s;
+  transition: width 0.3s;
 }
 
 .cool-link:hover::after {
@@ -22255,14 +22255,14 @@ input:checked + .slider:before {
 }
 
 .fixed-image {
-  position: fixed;   /* Set the position to fixed */
-  top: 5;            /* Adjust the top position as needed */
-  left: 5;           /* Adjust the left position as needed */
-  z-index: 1;      /* Adjust the z-index to control its stacking order */
+  position: fixed; /* Set the position to fixed */
+  top: 5; /* Adjust the top position as needed */
+  left: 5; /* Adjust the left position as needed */
+  z-index: 1; /* Adjust the z-index to control its stacking order */
 }
 
 .fixedContainer {
-  background-color:#ddd;
+  background-color: #ddd;
   position: fixed;
   padding: 1em;
   left: 20%;
@@ -22271,6 +22271,73 @@ input:checked + .slider:before {
 }
 
 .otherContainer {
-  height:400px;
+  height: 400px;
   /* background-color:#bbb; */
+}
+
+.smartTable-container {
+  border: 1px solid lightgray;
+  padding-top: 10px;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 5px 25px 0 rgb(0 113 243 / 40%);
+  position: relative;
+}
+
+.smartTable-tableContainer {
+  max-height: 83vh !important;
+  overflow: scroll;
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}
+
+.smartTable-tableContainer::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 5px;
+  height: 5px;
+}
+
+.smartTable-tableContainer::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: rgba(6, 66, 247, 0.5);
+  box-shadow: 0 0 1px rgba(6, 66, 247, 0.5);
+  -webkit-box-shadow: 0 0 1px rgba(6, 66, 247, 0.5);
+}
+
+.smartTable-table {
+  border-collapse: separate;
+  margin-bottom: 0 !important;
+}
+
+.smartTable-thead {
+  position: sticky;
+  top: 0;
+  left: 0;
+  background-color: white;
+}
+
+.smartTable-pointer {
+  cursor: pointer;
+}
+
+.smartTable-loaderContainer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(127, 127, 127, 0.5);
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.smartTable-noDataFound {
+  text-align: center;
+  padding: 30px;
+  margin-top: 15px;
+  background-color: lightgray;
+  border-radius: 5px;
+  width: 1200px;
 }
