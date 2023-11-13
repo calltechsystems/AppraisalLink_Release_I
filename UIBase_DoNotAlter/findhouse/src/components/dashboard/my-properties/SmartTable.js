@@ -119,7 +119,7 @@ function SmartTable(props) {
 
   return (
     <div className="col-12 p-4">
-      <div className="smartTable-container row">
+      {/* <div className="smartTable-container row">
         <div className="col-12">
           {loading && (
             <div className="smartTable-loaderContainer text-primary">
@@ -272,7 +272,7 @@ function SmartTable(props) {
             </div>
           )}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
