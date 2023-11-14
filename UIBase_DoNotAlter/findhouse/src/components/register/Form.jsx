@@ -8,7 +8,7 @@ import { FaEye } from "react-icons/fa";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-const Form = () => {
+const Form = ({setModalIsOpen,setModalIsOpenError,setErrorMessage}) => {
   const [showhide, setShowhide] = useState("");
 
   const [change, setChange] = useState(false);
@@ -17,8 +17,8 @@ const Form = () => {
   const [captchaVerfied, setCaptchaVerified] = useState(false);
 
   
-  const [error , setError] = useState(true);
-  const [success , setSuccess] = useState(true);
+  const [error , setError] = useState(false);
+  const [success , setSuccess] = useState(false);
   const [errorContent , setErrorContent] = useState("");
   
   const [successContent , setSuccessContent] = useState("");
@@ -99,13 +99,16 @@ const Form = () => {
 
     if (password !== reEnterPassword) {
       setChange(true);
-      toast.error("Password are meant to be same ");
+      setErrorMessage("Password are meant to be same ");
+      setModalIsOpenError(true);
     } else if (user === "") {
       setChange(true);
-      toast.error("User Type must be selected for registration!!");
+      setErrorMessage("User Type must be selected for registration!!");
+      setModalIsOpenError(true);
     } else if (!email) {
       setChange(true);
-      toast.error("Email cant be empty or non valid.");
+      setErrorMessage("Email cant be empty or non valid.");
+      setModalIsOpenError(true);
     } else if (!captchaVerfied) {
       setChange(true);
       return;
@@ -124,19 +127,22 @@ const Form = () => {
         .then((res) => {
           console.log(res);
           toast.dismiss();
-          router.push("/login");
+          setModalIsOpen(true);
+          // router.push("/login");
         })
         .catch((err) => {
           toast.dismiss();
-          toast.error(
-            err.response.data.error
-              ? err.response.data.error
-              : "Internal server error.",
-            {
-              autoClose: 30000,
-            }
-          );
-          router.reload();
+          setErrorMessage(err.response.data.error);
+          setModalIsOpenError(true);
+          // toast.error(
+          //   err.response.data.error
+          //     ? err.response.data.error
+          //     : "Internal server error.",
+          //   {
+          //     autoClose: 30000,
+          //   }
+          // );
+          // router.reload();
         })
         .finally(() => {
           setLoading(false);
@@ -392,7 +398,7 @@ const Form = () => {
           </div>
           {/* End .form-group */}
 
-          <button type="submit" className="btn btn-log w-100 btn-thm" disabled={!captchaVerfied}>
+          <button type="submit" className="btn btn-log w-100 btn-thm">
             Sign Up
           </button>
           <div

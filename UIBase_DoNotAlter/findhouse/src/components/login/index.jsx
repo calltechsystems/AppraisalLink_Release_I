@@ -11,7 +11,20 @@ import ErrorModal from "../common/popUpModal/errorModal/index";
 
 const Index = ({user}) => { 
   const [show , setShow] = useState(false);
+  const [modalIsOpen , setModalIsOpen] = useState(false);
+  const [modalIsOpenError , setModalIsOpenError] = useState(false);
+  const [errorMessage , setErrorMessage ] = useState("");
   const router = useRouter();
+
+  const closeModal = ()=>{
+    setModalIsOpen(false);
+    router.push("/");
+  }
+
+  const closeErrorModal = ()=>{
+    setModalIsOpenError(false);
+    window.location.reload();
+  }
 
   useEffect(() => {
     const initialRoute = router.asPath;
@@ -52,12 +65,64 @@ const Index = ({user}) => {
           <div className="row  ">
             <div className="col-sm-12 col-lg-12 offset-lg-0">
               <div className="login_form  inner_page" style={{padding:"10px"}}>
-                <Form user={user}/>
+                <Form user={user} setModalIsOpen={setModalIsOpen} setModalIsOpenError={setModalIsOpenError} setErrorMessage={setErrorMessage}/>
               </div>
             </div>
           </div>
         </div>
       </section>
+
+      {modalIsOpen && (
+        <div className="modal">
+          <div className="modal-content" style={{borderColor:"green",width:"20%"}}>
+            <h3 className="text-center" style={{color:"green"}}>Success</h3>
+            <div style={{borderWidth:"2px",borderColor:"green"}}><br/></div>
+            <h5 className="text-center">
+              Successfully logged in
+            </h5>
+            <div
+              className="text-center"
+              style={{ display: "flex", flexDirection: "column" }}
+            >
+              
+
+              <button
+                className="btn w-35 btn-white"
+                onClick={()=>closeModal()}
+                style={{borderColor:"green",color:"green"}}
+              >
+                Ok
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {modalIsOpenError && (
+        <div className="modal">
+          <div className="modal-content" style={{borderColor:"orangered",width:"20%"}}>
+            <h3 className="text-center" style={{color:"orangered"}}>Error</h3>
+            <div style={{borderWidth:"2px",borderColor:"orangered"}}><br/></div>
+            <h5 className="text-center">
+              {errorMessage}
+            </h5>
+            <div
+              className="text-center"
+              style={{ display: "flex", flexDirection: "column" }}
+            >
+              
+
+              <button
+                className="btn w-35 btn-white"
+                onClick={()=>closeErrorModal()}
+                style={{borderColor:"orangered",color:"orangered"}}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       
 
       {/* <!-- Our Footer --> */}

@@ -9,12 +9,12 @@ import { encryptionData } from "../../utils/dataEncryption";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 
-const Form = ({ user }) => {
+const Form = ({ user , setModalIsOpen , setModalIsOpenError , setErrorMessage}) => {
   const [showhide, setShowhide] = useState("");
   const [change, setChange] = useState(false);
   const [showRegister, setRegister] = useState(true);
-  const [error , setError] = useState(true);
-  const [success , setSuccess] = useState(true);
+  const [error , setError] = useState(false);
+  const [success , setSuccess] = useState(false);
   const [errorContent , setErrorContent] = useState("");
   
   const [successContent , setSuccessContent] = useState("");
@@ -50,8 +50,10 @@ const Form = ({ user }) => {
 
     if (!email || !password) {
       setChange(true);
-      toast.error("Credentials Can't be empty");
+      setErrorMessage("Credentials Can't be empty");
+      setModalIsOpenError(true);
     } else if (!captchaVerfied) {
+      
       setChange(true);
       return;
     } else {
@@ -68,22 +70,24 @@ const Form = ({ user }) => {
         .post("/api/login", encryptedData)
         .then((res) => {
           toast.dismiss();
-          console.log(res.data);
+          console.log(res);
           localStorage.setItem("user", JSON.stringify(res.data.userData));
-          router.push("/");
+          setModalIsOpen(true);
         })
         .catch((err) => {
           toast.dismiss();
-          toast.error(
-            err.response.data.error
-              ? err.response.data.error
-              : "Internal server error.",
-            {
-              autoClose: 30000,
-            }
-          );
-          setReloadOption(true);
-          router.reload();
+          setErrorMessage(err.response.data.error);
+          setModalIsOpenError(true);
+          // toast.error(
+          //   err.response.data.error
+          //     ? err.response.data.error
+          //     : "Internal server error.",
+          //   {
+          //     autoClose: 30000,
+          //   }
+          // );
+          // setReloadOption(true);
+          // router.reload();
         })
         .finally(() => {
           setLoading(false);
@@ -248,7 +252,7 @@ const Form = ({ user }) => {
             </div>
             {/* End .form-group */}
 
-            <button type="submit" className="btn btn-log w-100 btn-thm" disabled={!captchaVerfied}>
+            <button type="submit" className="btn btn-log w-100 btn-thm" >
               Log In
             </button>
             <div

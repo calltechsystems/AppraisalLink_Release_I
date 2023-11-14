@@ -23,6 +23,7 @@ const Captcha = ({ verified , reload , change , setChange}) => {
     const temp = generateString(6);
     setCaptcha(temp);
     setChange(false);
+    captchaRef.current.value = "";
   }, [change]);
 
   function generateString(length) {

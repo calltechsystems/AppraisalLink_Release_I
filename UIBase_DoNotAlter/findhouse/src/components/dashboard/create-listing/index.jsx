@@ -58,13 +58,20 @@ const Index = ({ isView, propertyData }) => {
   );
 
   useEffect(() => {
+   
     userData = JSON.parse(localStorage.getItem("user"));
+    console.log(userData.userSubscription.$values)
 
     if (!userData) {
       router.push("/login");
-    } else if (userData?.broker_Details?.firstName === "") {
+    } 
+    else if( userData.userSubscription.$values !== null ){
+      router.push("/my-plans");
+    }
+    else if (userData?.broker_Details?.firstName === "") {
       router.push("/my-profile");
     }
+    
   }, []);
   const updateHandler = () => {
     const nameRegex = /^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$/;

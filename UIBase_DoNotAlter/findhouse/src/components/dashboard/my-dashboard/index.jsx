@@ -227,7 +227,7 @@ const Index = () => {
               {/* End .row */}
 
               <div className="row">
-                <AllStatistics />
+                <AllStatistics properties={data.length} views={0} bids={0} favourites={0} />
               </div>
               {/* End .row Dashboard top statistics */}
 

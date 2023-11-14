@@ -1,31 +1,31 @@
-const AllStatistics = () => {
+const AllStatistics = ({properties , views , bids , favourites}) => {
   const allStatistics = [
     {
       id: 1,
       blockStyle: "",
       icon: "flaticon-home",
-      timer: "37",
+      timer: properties,
       name: "All Properties",
     },
     {
       id: 2,
       blockStyle: "style2",
       icon: "flaticon-view",
-      timer: "24",
+      timer: views,
       name: "Total Views",
     },
     {
       id: 3,
       blockStyle: "style3",
       icon: "flaticon-chat",
-      timer: "12",
+      timer: bids,
       name: "Bids",
     },
     {
       id: 4,
       blockStyle: "style4",
       icon: "flaticon-heart",
-      timer: "18",
+      timer: favourites,
       name: "Favorites",
     },
   ];

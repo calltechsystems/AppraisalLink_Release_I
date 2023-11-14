@@ -876,7 +876,7 @@ const ProfileInfo = ({ setProfileCount , setShowCard}) => {
                     />
               </div>
             </div>
-              <div className="row">
+              {/*<div className="row">
                 <div className="col-lg-5">
                   <label
                     htmlFor=""
@@ -915,7 +915,7 @@ const ProfileInfo = ({ setProfileCount , setShowCard}) => {
                         disabled={!edit}
                   />
                 </div>
-              </div> 
+              </div> */}
                 {edit && (
                   <div className="row mt-4">
                     <div className="col-xl-12">
