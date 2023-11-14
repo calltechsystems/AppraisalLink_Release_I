@@ -17,7 +17,128 @@ const MyAccount = ({user, profileCount , setProfile, userData}) => {
 
   const [profileValue , setProfileValue] = useState(0);
   useEffect(()=>{
+    let count =0;
+    if(userData.userType === 1){
+     
+      if(userData.broker_Details.firstName ){
+        count = count + 1;
+      }
+      if(userData.broker_Details.middleName ){
+        count = count + 1;
+      }
+      if(userData.broker_Details.lastName ){
+        count = count + 1;
+      }
+      if(userData.broker_Details.licenseNo != null){
+        count = count + 1;
+      }
+      if(userData.broker_Details.adressLine1 != null){
+        count = count + 1;
+      }
+      if(userData.broker_Details.adressLine2 != null){
+        count = count + 1;
+      }
+      if(userData.broker_Details.area != null){
+        count = count + 1;
+      }
+      if(userData.broker_Details.assistantFirstName != null){
+        count = count + 1;
+      }
+      if(userData.broker_Details.assistantPhoneNumber != null){
+        count = count + 1;
+      }
+      if(userData.broker_Details.brokerageName != null){
+        count = count + 1;
+      }
+      if(userData.broker_Details.city != null){
+        count = count + 1;
+      }
+      if(userData.broker_Details.companyName != null){
+        count = count + 1;
+      }
+      if(userData.broker_Details.mortageBrokerLicNo != null){
+        count = count + 1;
+      }
+      if(userData.broker_Details.mortageBrokerageLicNo != null){
+        count = count + 1;
+      }
+      if(userData.broker_Details.phoneNumber != null){
+        count = count + 1;
+      }
+      if(userData.broker_Details.profileImage != null){
+        count = count + 1;
+      }
+      if(userData.broker_Details.state != null){
+        count = count + 1;
+      }
+      if(userData.broker_Details.zipCode != null){
+        count = count + 1;
+      }
+      
+      const change = (count / 18) * 100;
+      console.log(change);
+      setProfileValue(change);
 
+    }
+    else if(userData.userType === 2){
+      if(userData.brokerage_Details.firstName ){
+        count = count + 1;
+      }
+      if(userData.brokerage_Details.middleName ){
+        count = count + 1;
+      }
+      if(userData.brokerage_Details.lastName ){
+        count = count + 1;
+      }
+      if(userData.brokerage_Details.licenseNo != null){
+        count = count + 1;
+      }
+      if(userData.brokerage_Details.adressLine1 != null){
+        count = count + 1;
+      }
+      if(userData.brokerage_Details.adressLine2 != null){
+        count = count + 1;
+      }
+      if(userData.brokerage_Details.area != null){
+        count = count + 1;
+      }
+      if(userData.brokerage_Details.assistantFirstName != null){
+        count = count + 1;
+      }
+      if(userData.brokerage_Details.assistantPhoneNumber != null){
+        count = count + 1;
+      }
+      if(userData.brokerage_Details.brokerageName != null){
+        count = count + 1;
+      }
+      if(userData.brokerage_Details.city != null){
+        count = count + 1;
+      }
+      if(userData.brokerage_Details.companyName != null){
+        count = count + 1;
+      }
+      if(userData.brokerage_Details.mortageBrokerLicNo != null){
+        count = count + 1;
+      }
+      if(userData.brokerage_Details.mortageBrokerageLicNo != null){
+        count = count + 1;
+      }
+      if(userData.brokerage_Details.phoneNumber != null){
+        count = count + 1;
+      }
+      if(userData.brokerage_Details.profileImage != null){
+        count = count + 1;
+      }
+      if(userData.brokerage_Details.state != null){
+        count = count + 1;
+      }
+      if(userData.brokerage_Details.zipCode != null){
+        count = count + 1;
+      }
+      
+      const change = (count / 18) * 100;
+      setProfileValue(change);
+    }
 
   },[]);
   const route = useRouter();

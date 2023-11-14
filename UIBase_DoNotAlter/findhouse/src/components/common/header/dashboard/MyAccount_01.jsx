@@ -1,19 +1,155 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import { isSinglePageActive } from "../../../../utils/daynamicNavigation";
 import Image from "next/image";
-// import {getSession} from 'next-iron-session';
+import CircularIcon from "./CircularIcon";
+import { use, useEffect } from "react";
+import { useState } from "react";
 
-const MyAccount = ({user , userData}) => {
-
+const MyAccount = ({user, profileCount , setProfile}) => {
   const profileMenuItems = [
     { id: 1, name: "Profile", ruterPath: "/appraiser-profile" },
     // { id: 2, name: " My Message", ruterPath: "/my-message" },
     // { id: 3, name: " My Favourite", ruterPath: "/my-favourites" },
-    { id: 4, name: "Change Password ", ruterPath: "/appraiser-change-password" },
+    { id: 4, name: "Change Password ", ruterPath: "/broker-change-password" },
     { id: 5, name: "Log out", ruterPath: "/login" },
   ];
+
+  let userData = {};
+  useEffect(()=>{
+    userData = JSON.parse(localStorage.getItem("user"));
+  },[])
+  const [profileValue , setProfileValue] = useState(0);
+  useEffect(()=>{
+    let count =0;
+    if(userData?.userType === 1){
+     
+      if(userData.broker_Details.firstName ){
+        count = count + 1;
+      }
+      if(userData.broker_Details.middleName ){
+        count = count + 1;
+      }
+      if(userData.broker_Details.lastName ){
+        count = count + 1;
+      }
+      if(userData.broker_Details.licenseNo != null){
+        count = count + 1;
+      }
+      if(userData.broker_Details.adressLine1 != null){
+        count = count + 1;
+      }
+      if(userData.broker_Details.adressLine2 != null){
+        count = count + 1;
+      }
+      if(userData.broker_Details.area != null){
+        count = count + 1;
+      }
+      if(userData.broker_Details.assistantFirstName != null){
+        count = count + 1;
+      }
+      if(userData.broker_Details.assistantPhoneNumber != null){
+        count = count + 1;
+      }
+      if(userData.broker_Details.brokerageName != null){
+        count = count + 1;
+      }
+      if(userData.broker_Details.city != null){
+        count = count + 1;
+      }
+      if(userData.broker_Details.companyName != null){
+        count = count + 1;
+      }
+      if(userData.broker_Details.mortageBrokerLicNo != null){
+        count = count + 1;
+      }
+      if(userData.broker_Details.mortageBrokerageLicNo != null){
+        count = count + 1;
+      }
+      if(userData.broker_Details.phoneNumber != null){
+        count = count + 1;
+      }
+      if(userData.broker_Details.profileImage != null){
+        count = count + 1;
+      }
+      if(userData.broker_Details.state != null){
+        count = count + 1;
+      }
+      if(userData.broker_Details.zipCode != null){
+        count = count + 1;
+      }
+      
+      const change = (count / 18) * 100;
+      console.log(change);
+      setProfileValue(change);
+
+    }
+    else if(userData.userType === 2){
+      if(userData.brokerage_Details.firstName ){
+        count = count + 1;
+      }
+      if(userData.brokerage_Details.middleName ){
+        count = count + 1;
+      }
+      if(userData.brokerage_Details.lastName ){
+        count = count + 1;
+      }
+      if(userData.brokerage_Details.licenseNo != null){
+        count = count + 1;
+      }
+      if(userData.brokerage_Details.adressLine1 != null){
+        count = count + 1;
+      }
+      if(userData.brokerage_Details.adressLine2 != null){
+        count = count + 1;
+      }
+      if(userData.brokerage_Details.area != null){
+        count = count + 1;
+      }
+      if(userData.brokerage_Details.assistantFirstName != null){
+        count = count + 1;
+      }
+      if(userData.brokerage_Details.assistantPhoneNumber != null){
+        count = count + 1;
+      }
+      if(userData.brokerage_Details.brokerageName != null){
+        count = count + 1;
+      }
+      if(userData.brokerage_Details.city != null){
+        count = count + 1;
+      }
+      if(userData.brokerage_Details.companyName != null){
+        count = count + 1;
+      }
+      if(userData.brokerage_Details.mortageBrokerLicNo != null){
+        count = count + 1;
+      }
+      if(userData.brokerage_Details.mortageBrokerageLicNo != null){
+        count = count + 1;
+      }
+      if(userData.brokerage_Details.phoneNumber != null){
+        count = count + 1;
+      }
+      if(userData.brokerage_Details.profileImage != null){
+        count = count + 1;
+      }
+      if(userData.brokerage_Details.state != null){
+        count = count + 1;
+      }
+      if(userData.brokerage_Details.zipCode != null){
+        count = count + 1;
+      }
+      
+      const change = (count / 18) * 100;
+      setProfileValue(change);
+    }
+
+  },[]);
   const route = useRouter();
+  const logout = ()=>{
+    localStorage.removeItem("user");
+    route.push("/login");
+  }
   return (
     <>
       <div className="user_set_header">
@@ -21,12 +157,12 @@ const MyAccount = ({user , userData}) => {
           width={40}
           height={40}
           className="float-start"
-          src={userData?.brokerage_Details?.profileImage|| "/assets/images/team/a2.jpg"}
+          src= {userData?.brokerage_Details?.profileImage ? userData.brokerage_Details?.profileImage :  `/assets/images/team/Gary-Avatar.png`} 
           alt="e1.png"
         />
         <p>
-          {user?.email} <br />
-          <span className="address">abc@xyz.com</span>
+        {userData?.brokerage_Details?.firstName ? userData?.brokerage_Details?.firstName  : "Name"}<br />
+          <span className="address">{userData?.userEmail ? userData.userEmail : "xyz@gmail.com"}</span>
         </p>
       </div>
       {/* End user_set_header */}
@@ -43,7 +179,10 @@ const MyAccount = ({user , userData}) => {
                 : undefined
             }
           >
-            {item.name}
+          {item.id === 5 ? <button style={{color:"#2e008b"}} onClick={logout}>Logout</button> : <div style={{display:'flex',flexDirection:"row"}}>
+          {item.id === 1 && <CircularIcon percentage={profileValue}/>}  
+          {item.name}
+          </div>}
           </Link>
         ))}
       </div>

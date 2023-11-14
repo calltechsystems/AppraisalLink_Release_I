@@ -1,10 +1,11 @@
 // Modal.js (a React component)
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 
 const Modal = ({ modalOpen, closeModal, price }) => {
   const router = useRouter();
+  let user = {};
   const loginHandler = () => {
     const userData = JSON.parse(localStorage.getItem("user"));
     if(userData?.userType === 1){
@@ -14,6 +15,10 @@ const Modal = ({ modalOpen, closeModal, price }) => {
       router.push("/login");
     }
   };
+
+  useEffect(()=>{
+    user = (JSON.parse(localStorage.getItem("user")));
+  },[]);
   return (
     <>
       <div>

@@ -37,7 +37,7 @@ const Index = ({ isView, propertyData }) => {
     propertyData?.community || null
   );
   const [buildinRef, setBuildinRef] = useState(
-    propertyData?.typeOfBuilding || null
+    propertyData?.typeOfBuilding || "Community"
   );
   const [urgencyRef, setUrgencyRef] = useState(propertyData?.urgency || null);
   const [bidLowerRangeRef, setBidLowerRangeRef] = useState(
@@ -72,8 +72,10 @@ const Index = ({ isView, propertyData }) => {
 
     const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
 
+    const userInfo = (JSON.parse(localStorage.getItem("user")));
+
     const payload = {
-      userId: userData.userId,
+      userId: userInfo.userId,
       propertyId: propertyData?.propertyId,
       streetName: streetNameRef,
       streetNumber: streetNumberRef,
@@ -91,7 +93,7 @@ const Index = ({ isView, propertyData }) => {
       bidUpperRange: Number(bidLowerRangeRef),
       urgency: propertyData?.urgency === 0 ? 0 : 1,
       propertyStatus: true,
-      token: userData.token,
+      token: userInfo.token,
     };
     if (
       !payload.streetName ||
@@ -136,6 +138,7 @@ const Index = ({ isView, propertyData }) => {
   const submitHandler = () => {
     const nameRegex = /^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    const userInfo = (JSON.parse(localStorage.getItem("user")));
 
     const phoneNumberRegex = /^\d{10}$/;
 
@@ -148,7 +151,7 @@ const Index = ({ isView, propertyData }) => {
       toast.error("Please provide a valid applicant Information");
     } else {
       const payload = {
-        userId: userData.userId,
+        userId: userInfo.userId,
         streetName: streetNameRef,
         streetNumber: streetNumberRef,
         city: cityRef,
@@ -165,8 +168,9 @@ const Index = ({ isView, propertyData }) => {
         bidUpperRange: Number(bidLowerRangeRef),
         urgency: propertyData?.urgency === 0 ? 0 : 1,
         propertyStatus: true,
-        token: userData.token,
+        token: userInfo.token,
       };
+
 
       if (
         !payload.streetName ||
@@ -174,15 +178,14 @@ const Index = ({ isView, propertyData }) => {
         !payload.city ||
         !payload.state ||
         !payload.zipCode ||
-        !payload.area ||
         !payload.community ||
-        !payload.typeOfBuilding ||
-        !payload.bidLowerRange
+        !payload.typeOfBuilding 
       ) {
         toast.error("All required fields must be filled");
       } else {
         const encryptedData = encryptionData(payload);
 
+        console.log(payload);
         toast.loading("Appraising property ..");
         axios
           .post("/api/addBrokerProperty", encryptedData, {
@@ -280,7 +283,7 @@ const Index = ({ isView, propertyData }) => {
                     <div className="row">
                       <div className="col-lg-12">
                         <h4 className="mb30">
-                          Property Details
+                          Location Information
                           <hr style={{ color: "#2e008b" }} />
                         </h4>
                       </div>
@@ -315,6 +318,8 @@ const Index = ({ isView, propertyData }) => {
                         setZipCodeRef={setZipCodeRef}
                         propertyData={propertyData}
                         setDisable={setDisable}
+                        buildinRef={buildinRef}
+                        setBuildinRef={setBuildinRef}
                       />
                     </div>
                   </div>

@@ -13,11 +13,11 @@ const Form = ({ user }) => {
   const [showhide, setShowhide] = useState("");
   const [change, setChange] = useState(false);
   const [showRegister, setRegister] = useState(true);
-  const [error, setError] = useState(true);
-  const [success, setSuccess] = useState(true);
-  const [errorContent, setErrorContent] = useState("");
-
-  const [successContent, setSuccessContent] = useState("");
+  const [error , setError] = useState(true);
+  const [success , setSuccess] = useState(true);
+  const [errorContent , setErrorContent] = useState("");
+  
+  const [successContent , setSuccessContent] = useState("");
   const [captchaVerfied, setCaptchaVerified] = useState(false);
 
   const [reloadOption, setReloadOption] = useState(false);
@@ -68,6 +68,7 @@ const Form = ({ user }) => {
         .post("/api/login", encryptedData)
         .then((res) => {
           toast.dismiss();
+          console.log(res.data);
           localStorage.setItem("user", JSON.stringify(res.data.userData));
           router.push("/");
         })
@@ -90,13 +91,14 @@ const Form = ({ user }) => {
     }
   };
 
-  const handleErrorModalCancel = () => {
+  const handleErrorModalCancel = ()=>{
     setError(false);
-  };
+  }
 
-  const handleSuccessModalCancel = () => {
+  const handleSuccessModalCancel = ()=>{
     setSuccess(false);
-  };
+  }
+
 
   const checkPasswordLoginHandler = (event) => {
     setPasswordLogin(event.target.value);
@@ -116,84 +118,33 @@ const Form = ({ user }) => {
             width={157}
             height={100}
             className="img-fluid w100 h-80 cover"
-            src="/assets/images/home/11.avif"
+            src="/assets/images/home/computer-login.avif"
             alt="login.jpg"
           />
         </div>
-
+        
         <div className="col-lg-6 pt60">
-          {error && (
-            <div className="mb-3"
-              style={{
-                backgroundColor: "white",
-                opacity: "80%",
-                border: "1px solid red",
-                borderRadius: "2px",
-                justifyContent: "space-between",
-                display: "flex",
-                flexDirection: "row",
-                width: "80%",
-                marginLeft: "10%",
-              }}
-            >
-              <h4 style={{ color: "red" }} className="m-3">
-                Invalid credentials
-              </h4>
-              <div
-                className="input-group-text m-1"
-                style={{
-                  border: "1px solid white",
-                  cursor: "pointer",
-                  // border: "1px solid green",
-                  // padding: "3px",
-                }}
-                onClick={handleErrorModalCancel}
-              >
-                <img
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLu5o0ISyuHb6CmAm62DbqKvZ3EFBGarj8HA&usqp=CAU"
-                  width={"20px"}
-                  height={"20px"}
-                />
-              </div>
-            </div>
-          )}
-          {success && (
-            <div
-              className="mb-3"
-              style={{
-                backgroundColor: "white",
-                border: "1px solid green",
-                opacity: "80%",
-                borderRadius: "2px",
-                justifyContent: "space-between",
-                display: "flex",
-                flexDirection: "row",
-                width: "80%",
-                marginLeft: "10%",
-              }}
-            >
-              <h4 style={{ color: "green" }} className="m-2">
-                Successfully logged in
-              </h4>
-              <div
-                className="input-group-text m-1"
-                style={{ border: "1px solid white", cursor: "pointer" }}
-                onClick={handleSuccessModalCancel}
-              >
-                <h4
-                  style={{
-                    color: "green",
-                    marginTop: "20%",
-                    // border: "1px solid green",
-                    // padding: "3px",
-                  }}
-                >
-                  OK
-                </h4>
-              </div>
-            </div>
-          )}
-
+        {error && <div style={{backgroundColor:"orangered",opacity:"80%",borderColor:"red",borderWidth:"20px",borderRadius:"4px",padding:"1%",justifyContent:"space-between",display:"flex",flexDirection:"row",width:"80%",marginLeft:"10%"}}>
+        <h4 style={{color:"white"}}>Invalid credentials</h4>
+        <div
+          className="input-group-text m-1"
+          style={{ border: "1px solid white"}}
+          onClick={handleErrorModalCancel}
+        >
+           <img src="https://th.bing.com/th/id/OIP.VirRE_r48DkDvZVNoo6_agHaHZ?w=209&h=208&c=7&r=0&o=5&dpr=1.1&pid=1.7" width={"20px"} height={"20px"}/>
+        </div>
+        </div>}
+        {success && <div style={{backgroundColor:"green",opacity:"80%",borderColor:"green",borderWidth:"20px",borderRadius:"4px",padding:"1%",justifyContent:"space-between",display:"flex",flexDirection:"row",width:"80%",marginLeft:"10%"}}>
+        <h4 style={{color:"white"}}>Successfully logged in</h4>
+        <div
+          className="input-group-text m-1"
+          style={{ border: "1px solid white"}}
+          onClick={handleSuccessModalCancel}
+        >
+           <h4 style={{color:"white",marginTop:"20%"}}>OK</h4>
+        </div>
+        </div>}
+        
           <form onSubmit={loginHandler}>
             <div className="heading text-center">
               <h3>{`Login to your account `} </h3>
@@ -297,11 +248,7 @@ const Form = ({ user }) => {
             </div>
             {/* End .form-group */}
 
-            <button
-              type="submit"
-              className="btn btn-log w-100 btn-thm"
-              disabled={!captchaVerfied}
-            >
+            <button type="submit" className="btn btn-log w-100 btn-thm" disabled={!captchaVerfied}>
               Log In
             </button>
             <div

@@ -90,7 +90,7 @@ const TableData = ({userData , open ,close , onWishlistHandler , participateHand
 
     toast.loading("Getting properties...");
     axios
-      .get("/api/getPropertiesById",
+      .get("/api/getAllListedProperties",
        {
         headers: {
           Authorization:`Bearer ${data?.token}`,
@@ -104,7 +104,8 @@ const TableData = ({userData , open ,close , onWishlistHandler , participateHand
    
         toast.dismiss();
         
-        setProperties(res.data.data.property.$values);
+        console.log(res.data.data.properties.$values);
+        setProperties(res.data.data.properties.$values);
         setRerender(false);
       })
       .catch((err) => {

@@ -17,14 +17,15 @@ const Index = () => {
 
   useEffect(() => {
     userData = JSON.parse(localStorage.getItem("user"));
+    console.log(userData.broker_Details.firstName);
     setData(userData);
     if (!userData) {
       router.push("/login");
     } else if (!userData?.broker_Details?.firstName) {
       router.push("/my-profile");
     }
-    if (userData?.broker_Details?.firstName === "") {
-      setShowCard(true);
+    if (!userData?.broker_Details?.firstName ) {
+      setShowCard(false);
     }
   }, []);
 

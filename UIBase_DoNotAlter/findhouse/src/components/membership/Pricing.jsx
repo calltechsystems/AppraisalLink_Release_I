@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 const Pricing = ({
   isPlan,
   hideButton,
@@ -5,6 +7,11 @@ const Pricing = ({
   setModalOpen,
   setPrice,
 }) => {
+
+  let userData = {} ;
+  useEffect(()=>{
+    userData = (JSON.parse(localStorage.getItem("user")));
+  },[]);
   const pricingContentForMonthly = [
     {
       id: 1,
@@ -134,9 +141,9 @@ const Pricing = ({
             {!hideButton && (
               <div
                 className="pricing_footer"
-                onClick={() => selectPackageHandler(item.title, item.price)}
+                onClick={userData ? "" : () => selectPackageHandler(item.title, item.price)}
               >
-                <a className={`btn btn-color_01 btn-block w-100`} href="#">
+                <a className={`btn btn-color_01 btn-block w-100`} href={userData ? "/my-plans" : "#"}>
                   {selectedId !== item.id
                     ? !selectedId
                       ? "Get Started"

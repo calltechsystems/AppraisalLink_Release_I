@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 import Seo from "../../components/common/seo";
-import AppraiseProperties from "../../components/dashboard/appraiser-properties";
+import AppraiseProperties from "../../components/dashboard/appraised-properties";
 
 const index = () => {
   return (

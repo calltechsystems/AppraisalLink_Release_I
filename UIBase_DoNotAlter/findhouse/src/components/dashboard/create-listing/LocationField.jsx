@@ -15,6 +15,7 @@ const LocationField = ({
   zipCodeRef,
   areaRef,
   setAreaRef,
+  setBuildinRef,
   propertyData,
   setDisable,
   buildinRef,
@@ -37,7 +38,6 @@ const LocationField = ({
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                style={{ background: "aliceblue" }}
                 onChange={(e) => setStreetNameRef(e.target.value)}
                 value={streetNameRef}
                 disabled={isDisable}
@@ -58,7 +58,6 @@ const LocationField = ({
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                style={{ background: "aliceblue" }}
                 onChange={(e) => setStreetNumberRef(e.target.value)}
                 value={streetNumberRef}
                 disabled={isDisable}
@@ -78,7 +77,6 @@ const LocationField = ({
               <input
                 type="text"
                 className="form-control"
-                style={{ background: "aliceblue" }}
                 id="formGroupExampleInput3"
                 onChange={(e) => setCityRef(e.target.value)}
                 value={cityRef}
@@ -99,7 +97,6 @@ const LocationField = ({
               <input
                 type="text"
                 className="form-control"
-                style={{ background: "aliceblue" }}
                 id="formGroupExampleInput3"
                 onChange={(e) => setStateRef(e.target.value)}
                 value={stateRef}
@@ -121,7 +118,6 @@ const LocationField = ({
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                style={{ background: "aliceblue" }}
                 onChange={(e) => handleZipCodeChange(e)}
                 value={zipCodeRef}
                 disabled={isDisable}
@@ -142,7 +138,6 @@ const LocationField = ({
                 type="number"
                 className="form-control"
                 id="formGroupExampleInput3"
-                style={{ background: "aliceblue" }}
                 onChange={(e) => setAreaRef(e.target.value)}
                 value={areaRef}
                 disabled={isDisable}
@@ -165,18 +160,17 @@ const LocationField = ({
                   className="form-select"
                   data-live-search="true"
                   data-width="100%"
-                  onChange={(e) => setBuildinRef(e.target.value)}
-                  value={buildinRef}
+                  onChange={(e) => setBuildinRef(e.target.value) }
                   disabled={isDisable}
-                  style={{ paddingTop: "15px", paddingBottom: "15px", backgroundColor:'aliceblue' }}
+                  style={{ paddingTop: "15px", paddingBottom: "15px" }}
                 >
-                  <option data-tokens="SelectRole" value={1}>
+                  <option data-tokens="SelectRole" value={"Commercial"}>
                     Commercial
                   </option>
-                  <option data-tokens="Agent/Agency" value={3}>
+                  <option data-tokens="Agent/Agency" value={"Domestic"}>
                     Domestic
                   </option>
-                  <option data-tokens="SingleUser" value={2}>
+                  <option data-tokens="SingleUser" value={"Apartment"}>
                     Apartment
                   </option>
                 </select>
