@@ -8,7 +8,7 @@ import BreadCrumbBanner from "./BreadCrumbBanner";
 import Form from "./Form";
 import { useState } from "react";
 
-const index = () => {
+const Index = () => {
   const [modalIsOpen , setModalIsOpen] = useState(false);
   const [modalIsOpenError , setModalIsOpenError] = useState(false);
   const [errorMessage , setErrorMessage ] = useState("");
@@ -123,4 +123,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;
