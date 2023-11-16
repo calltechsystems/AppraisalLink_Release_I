@@ -318,6 +318,7 @@ const ProfileInfo = ({ setProfileCount , setShowCard }) => {
                         type="text"
                         className="form-control"
                         id="formGroupExampleInput3"
+                        style={{backgroundColor:"aliceblue"}}
                         required
                         value={firstNameRef}
                         onChange={(e) => setFirstNameRef(e.target.value)}
@@ -339,6 +340,7 @@ const ProfileInfo = ({ setProfileCount , setShowCard }) => {
                         type="text"
                         required
                         className="form-control"
+                        style={{backgroundColor:"aliceblue"}}
                         id="formGroupExampleInput3"
                         disabled={!edit}
                         value={middleNameRef}
@@ -360,6 +362,7 @@ const ProfileInfo = ({ setProfileCount , setShowCard }) => {
                         type="text"
                         required
                         className="form-control"
+                        style={{backgroundColor:"aliceblue"}}
                         id="formGroupExampleInput3"
                         value={lastNameRef}
                         onChange={(e) => setLastNameRef(e.target.value)}
@@ -380,6 +383,7 @@ const ProfileInfo = ({ setProfileCount , setShowCard }) => {
                       <input
                         type="text"
                         className="form-control"
+                        style={{backgroundColor:"aliceblue"}}
                         id="formGroupExampleInput3"
                         value={companyNameRef}
                         onChange={(e) => setCompanyNameRef(e.target.value)}
@@ -400,6 +404,7 @@ const ProfileInfo = ({ setProfileCount , setShowCard }) => {
                       <input
                         type="text"
                         className="form-control"
+                        style={{backgroundColor:"aliceblue"}}
                         id="formGroupExampleInput3"
                         required
                         value={addressLineRef}
@@ -421,6 +426,7 @@ const ProfileInfo = ({ setProfileCount , setShowCard }) => {
                       <input
                         type="text"
                         className="form-control"
+                        style={{backgroundColor:"aliceblue"}}
                         id="formGroupExampleInput3"
                         value={addressLineTwoRef}
                         onChange={(e) => setAddressLineTwoRef(e.target.value)}
@@ -441,6 +447,7 @@ const ProfileInfo = ({ setProfileCount , setShowCard }) => {
                       <input
                         type="text"
                         className="form-control"
+                        style={{backgroundColor:"aliceblue"}}
                         id="formGroupExampleInput3"
                         required
                         value={cityRef}
@@ -462,6 +469,7 @@ const ProfileInfo = ({ setProfileCount , setShowCard }) => {
                       <input
                         type="text"
                         className="form-control"
+                        style={{backgroundColor:"aliceblue"}}
                         required
                         id="formGroupExampleInput3"
                         value={stateRef}
@@ -483,6 +491,7 @@ const ProfileInfo = ({ setProfileCount , setShowCard }) => {
                       <input
                         type="text"
                         className="form-control"
+                        style={{backgroundColor:"aliceblue"}}
                         required
                         id="formGroupExampleInput3"
                         onChange={(e) => handleZipCodeChange(e.target.value)}
@@ -505,6 +514,7 @@ const ProfileInfo = ({ setProfileCount , setShowCard }) => {
                         type="text"
                         required
                         className="form-control"
+                        style={{backgroundColor:"aliceblue"}}
                         id="formGroupExampleInput3"
                         value={phoneNumberRef}
                         onChange={(e) => setPhoneNumberRef(e.target.value)}
@@ -525,6 +535,7 @@ const ProfileInfo = ({ setProfileCount , setShowCard }) => {
                       <input
                         type="email"
                         className="form-control"
+                        style={{backgroundColor:"aliceblue"}}
                         required
                         id="formGroupExampleInput3"
                         value={userData?.userEmail ? userData.userEmail : ""}
@@ -547,6 +558,7 @@ const ProfileInfo = ({ setProfileCount , setShowCard }) => {
                         type="text"
                         required
                         className="form-control"
+                        style={{backgroundColor:"aliceblue"}}
                         id="formGroupExampleInput3"
                         value={mortgageBrokrageLicNoRef}
                         onChange={(e) => setMortgageLicNoRef(e.target.value)}
@@ -569,6 +581,7 @@ const ProfileInfo = ({ setProfileCount , setShowCard }) => {
                         type="text"
                         required
                         className="form-control"
+                        style={{backgroundColor:"aliceblue"}}
                         id="formGroupExampleInput3"
                         value={mortgageBrokerLicNoRef}
                         onChange={(e) =>

@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-// import SVGArrowDown from './icons/SVGArrowDown';
-// import SVGArrowUp from './icons/SVGArrowUp';
-// import SVGChevronLeft from './icons/SVGChevronLeft';
-// import SVGChevronRight from './icons/SVGChevronRight';
+import SVGArrowDown from './icons/SVGArrowDown';
+import SVGArrowUp from './icons/SVGArrowUp';
+import SVGChevronLeft from './icons/SVGChevronLeft';
+import SVGChevronRight from './icons/SVGChevronRight';
 
 function SmartTable(props) {
   const [loading, setLoading] = useState(false);
@@ -119,7 +119,7 @@ function SmartTable(props) {
 
   return (
     <div className="col-12 p-4">
-      {/* <div className="smartTable-container row">
+      <div className="smartTable-container row">
         <div className="col-12">
           {loading && (
             <div className="smartTable-loaderContainer text-primary">
@@ -127,7 +127,7 @@ function SmartTable(props) {
             </div>
           )}
           <div className="row">
-            <div className="col-6 h3">{props.title}</div>
+            {/* <div className="col-6 h3">{props.title}</div>
             <div className="col-6 text-end">
               <input
                 type="text"
@@ -135,7 +135,7 @@ function SmartTable(props) {
                 placeholder="Search..."
                 onChange={handleSearch}
               />
-            </div>
+            </div> */}
           </div>
           {data.length > 0 ? (
             <div className="row mt-3">
@@ -183,7 +183,7 @@ function SmartTable(props) {
                         <tr key={'tr_' + idx}>
                           {props.headCells.map((headCell, idxx) => {
                             return (
-                              <td key={'td_' + idx + '_' + idxx}>
+                              <td className='text-primary' key={'td_' + idx + '_' + idxx}>
                                 {headCell.render
                                   ? headCell.render(row)
                                   : row[headCell.id]}
@@ -272,7 +272,7 @@ function SmartTable(props) {
             </div>
           )}
         </div>
-      </div> */}
+      </div>
     </div>
   );
 }

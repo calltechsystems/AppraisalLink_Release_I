@@ -288,12 +288,16 @@ const Index = ({ isView, propertyData }) => {
                 <div className="col-lg-12">
                   <div className="my_dashboard_review ">
                     <div className="row">
-                      <div className="col-lg-12">
-                        <h4 className="mb30">
-                          Location Information
-                          <hr style={{ color: "#2e008b" }} />
+                      <div
+                        className="col-lg-12 bg-head text-center mb-4"
+                        style={{ borderRadius: "5px" }}
+                      >
+                        <h4 className="p-2  text-light">
+                          Property Details
+                          {/* <hr style={{ color: "#2e008b" }} /> */}
                         </h4>
                       </div>
+                      <hr style={{ color: "#2e008b" }} />
                       {isDisable && (
                         <div style={{ marginLeft: "80%", marginBottom: "1%" }}>
                           <button

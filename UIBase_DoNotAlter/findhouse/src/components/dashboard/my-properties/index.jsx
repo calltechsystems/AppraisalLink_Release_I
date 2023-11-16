@@ -11,6 +11,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/router";
+import Exemple from "./Exemple";
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -233,13 +234,12 @@ const Index = () => {
                           }
                         />
                       </div>
-                      {/* End .table-responsive */}
-
-                      {/* End .mbp_pagination */}
                     </div>
                     {/* End .property_table */}
                   </div>
                 </div>
+                <Exemple />
+
                 {/* End .col */}
               </div>
 
