@@ -7,7 +7,7 @@ import axios from "axios";
 import { CldUploadWidget } from "next-cloudinary";
 import toast from "react-hot-toast";
 
-const ProfileInfo = ({ setProfileCount, setShowCard }) => {
+const ProfileInfo = ({ setProfileCount , setShowCard }) => {
   const [profilePhoto, setProfilePhoto] = useState(null);
   let userData = JSON.parse(localStorage.getItem("user")) || {};
   const router = useRouter();
@@ -267,7 +267,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
       <div className="row">
         {/* <h4 className="mb-3">Personal Information</h4> */}
         <div className="col-lg-12"></div>
-
+        
         <div className="col-lg-12 col-xl-12 mt-2">
           <div className="my_profile_setting_input form-group">
             <div className="row">
@@ -307,9 +307,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   <div className="col-lg-4">
                     <div className="col-12">
                       <label
-                        className="text-color"
                         htmlFor=""
-                        style={{ paddingTop: "15px" }}
+                        style={{ paddingTop: "15px", fontWeight: "lighter" }}
                       >
                         First Name <span class="req-btn">*</span>
                       </label>
@@ -319,7 +318,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                         type="text"
                         className="form-control"
                         id="formGroupExampleInput3"
-                        style={{ backgroundColor: "aliceblue" }}
                         required
                         value={firstNameRef}
                         onChange={(e) => setFirstNameRef(e.target.value)}
@@ -330,9 +328,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   <div className="col-lg-4">
                     <div className="col-12">
                       <label
-                        className="text-color"
                         htmlFor=""
-                        style={{ paddingTop: "15px" }}
+                        style={{ paddingTop: "15px", fontWeight: "lighter" }}
                       >
                         Middle Name
                       </label>
@@ -342,7 +339,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                         type="text"
                         required
                         className="form-control"
-                        style={{ backgroundColor: "aliceblue" }}
                         id="formGroupExampleInput3"
                         disabled={!edit}
                         value={middleNameRef}
@@ -353,9 +349,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   <div className="col-lg-4">
                     <div className="col-12">
                       <label
-                        className="text-color"
                         htmlFor=""
-                        style={{ paddingTop: "15px" }}
+                        style={{ paddingTop: "15px", fontWeight: "lighter" }}
                       >
                         Last Name <span class="req-btn">*</span>
                       </label>
@@ -365,7 +360,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                         type="text"
                         required
                         className="form-control"
-                        style={{ backgroundColor: "aliceblue" }}
                         id="formGroupExampleInput3"
                         value={lastNameRef}
                         onChange={(e) => setLastNameRef(e.target.value)}
@@ -376,9 +370,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   <div className="col-12">
                     <div className="col-12 mb-2">
                       <label
-                        className="text-color"
                         htmlFor=""
-                        style={{ paddingTop: "15px" }}
+                        style={{ paddingTop: "15px", fontWeight: "lighter" }}
                       >
                         Company Name{" "}
                       </label>
@@ -387,7 +380,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       <input
                         type="text"
                         className="form-control"
-                        style={{ backgroundColor: "aliceblue" }}
                         id="formGroupExampleInput3"
                         value={companyNameRef}
                         onChange={(e) => setCompanyNameRef(e.target.value)}
@@ -398,9 +390,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   <div className="col-lg-6">
                     <div className="col-12 mb-2">
                       <label
-                        className="text-color"
                         htmlFor=""
-                        style={{ paddingTop: "15px" }}
+                        style={{ paddingTop: "15px", fontWeight: "lighter" }}
                       >
                         Address Line 1 <span class="req-btn">*</span>
                       </label>
@@ -409,7 +400,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       <input
                         type="text"
                         className="form-control"
-                        style={{ backgroundColor: "aliceblue" }}
                         id="formGroupExampleInput3"
                         required
                         value={addressLineRef}
@@ -421,9 +411,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   <div className="col-lg-6">
                     <div className="col-12 mb-2">
                       <label
-                        className="text-color"
                         htmlFor=""
-                        style={{ paddingTop: "15px" }}
+                        style={{ paddingTop: "15px", fontWeight: "lighter" }}
                       >
                         Address Line 2
                       </label>
@@ -432,7 +421,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       <input
                         type="text"
                         className="form-control"
-                        style={{ backgroundColor: "aliceblue" }}
                         id="formGroupExampleInput3"
                         value={addressLineTwoRef}
                         onChange={(e) => setAddressLineTwoRef(e.target.value)}
@@ -443,9 +431,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   <div className="col-lg-4">
                     <div className="col-12 mb-2">
                       <label
-                        className="text-color"
                         htmlFor=""
-                        style={{ paddingTop: "15px" }}
+                        style={{ paddingTop: "15px", fontWeight: "lighter" }}
                       >
                         City <span class="req-btn">*</span>
                       </label>
@@ -454,7 +441,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       <input
                         type="text"
                         className="form-control"
-                        style={{ backgroundColor: "aliceblue" }}
                         id="formGroupExampleInput3"
                         required
                         value={cityRef}
@@ -466,9 +452,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   <div className="col-lg-4">
                     <div className="col-12 mb-2">
                       <label
-                        className="text-color"
                         htmlFor=""
-                        style={{ paddingTop: "15px" }}
+                        style={{ paddingTop: "15px", fontWeight: "lighter" }}
                       >
                         State <span class="req-btn">*</span>
                       </label>
@@ -477,7 +462,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       <input
                         type="text"
                         className="form-control"
-                        style={{ backgroundColor: "aliceblue" }}
                         required
                         id="formGroupExampleInput3"
                         value={stateRef}
@@ -489,9 +473,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   <div className="col-lg-4">
                     <div className="col-12 mb-2">
                       <label
-                        className="text-color"
                         htmlFor=""
-                        style={{ paddingTop: "15px" }}
+                        style={{ paddingTop: "15px", fontWeight: "lighter" }}
                       >
                         Zip-Code <span class="req-btn">*</span>
                       </label>
@@ -500,7 +483,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       <input
                         type="text"
                         className="form-control"
-                        style={{ backgroundColor: "aliceblue" }}
                         required
                         id="formGroupExampleInput3"
                         onChange={(e) => handleZipCodeChange(e.target.value)}
@@ -512,9 +494,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   <div className="col-lg-6">
                     <div className="col-12 mb-2">
                       <label
-                        className="text-color"
                         htmlFor=""
-                        style={{ paddingTop: "15px" }}
+                        style={{ paddingTop: "15px", fontWeight: "lighter" }}
                       >
                         Phone Number <span class="req-btn">*</span>
                       </label>
@@ -524,7 +505,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                         type="text"
                         required
                         className="form-control"
-                        style={{ backgroundColor: "aliceblue" }}
                         id="formGroupExampleInput3"
                         value={phoneNumberRef}
                         onChange={(e) => setPhoneNumberRef(e.target.value)}
@@ -535,9 +515,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   <div className="col-lg-6">
                     <div className="col-12 mb-2">
                       <label
-                        className="text-color"
                         htmlFor=""
-                        style={{ paddingTop: "15px" }}
+                        style={{ paddingTop: "15px", fontWeight: "lighter" }}
                       >
                         Email Address <span class="req-btn">*</span>
                       </label>
@@ -546,7 +525,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       <input
                         type="email"
                         className="form-control"
-                        style={{ backgroundColor: "aliceblue" }}
                         required
                         id="formGroupExampleInput3"
                         value={userData?.userEmail ? userData.userEmail : ""}
@@ -557,9 +535,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   <div className="col-lg-6">
                     <div className="col-12">
                       <label
-                        className="text-color"
                         htmlFor=""
-                        style={{ paddingTop: "15px" }}
+                        style={{ paddingTop: "15px", fontWeight: "lighter" }}
                       >
                         Mortgage Brokerage Licence No.{" "}
                         <span class="req-btn">*</span>{" "}
@@ -570,7 +547,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                         type="text"
                         required
                         className="form-control"
-                        style={{ backgroundColor: "aliceblue" }}
                         id="formGroupExampleInput3"
                         value={mortgageBrokrageLicNoRef}
                         onChange={(e) => setMortgageLicNoRef(e.target.value)}
@@ -581,9 +557,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   <div className="col-lg-6">
                     <div className="col-12">
                       <label
-                        className="text-color"
                         htmlFor=""
-                        style={{ paddingTop: "15px" }}
+                        style={{ paddingTop: "15px", fontWeight: "lighter" }}
                       >
                         Mortgage Broker Licence No.{" "}
                         <span class="req-btn">*</span>{" "}
@@ -594,7 +569,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                         type="text"
                         required
                         className="form-control"
-                        style={{ backgroundColor: "aliceblue" }}
                         id="formGroupExampleInput3"
                         value={mortgageBrokerLicNoRef}
                         onChange={(e) =>
@@ -608,7 +582,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   {/* <div className="col-lg-5">
                   <label
                     htmlFor=""
-                    style={{ paddingTop: "15px" }}
+                    style={{ paddingTop: "15px", fontWeight: "lighter" }}
                   >
                     First Name <span class="req-btn">*</span> :
                   </label>
@@ -631,7 +605,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                 <div className="col-lg-5">
                   <label
                     htmlFor=""
-                    style={{ paddingTop: "15px" }}
+                    style={{ paddingTop: "15px", fontWeight: "lighter" }}
                   >
                     Middle Name :
                   </label>
@@ -650,7 +624,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                 <div className="col-lg-5">
                   <label
                     htmlFor=""
-                    style={{ paddingTop: "15px" }}
+                    style={{ paddingTop: "15px", fontWeight: "lighter" }}
                   >
                     Last Name <span class="req-btn">*</span> :
                   </label>
@@ -673,7 +647,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                 <div className="col-lg-5 mb-2">
                   <label
                     htmlFor=""
-                    style={{ paddingTop: "15px" }}
+                    style={{ paddingTop: "15px", fontWeight: "lighter" }}
                   >
                     Company Name{" "}
                   </label>
@@ -695,7 +669,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                 <div className="col-lg-5 mb-2">
                   <label
                     htmlFor=""
-                    style={{ paddingTop: "15px" }}
+                    style={{ paddingTop: "15px", fontWeight: "lighter" }}
                   >
                     Address Line 1 <span class="req-btn">*</span> :
                   </label>
@@ -718,7 +692,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                 <div className="col-lg-5 mb-2">
                   <label
                     htmlFor=""
-                    style={{ paddingTop: "15px" }}
+                    style={{ paddingTop: "15px", fontWeight: "lighter" }}
                   >
                     Address Line 2 :
                   </label>
@@ -740,7 +714,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                 <div className="col-lg-5 mb-2">
                   <label
                     htmlFor=""
-                    style={{ paddingTop: "15px" }}
+                    style={{ paddingTop: "15px", fontWeight: "lighter" }}
                   >
                     City <span class="req-btn">*</span> :
                   </label>
@@ -765,7 +739,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                 <div className="col-lg-5 mb-2">
                   <label
                     htmlFor=""
-                    style={{ paddingTop: "15px" }}
+                    style={{ paddingTop: "15px", fontWeight: "lighter" }}
                   >
                     State <span class="req-btn">*</span> :
                   </label>
@@ -790,7 +764,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                 <div className="col-lg-5 mb-2">
                   <label
                     htmlFor=""
-                    style={{ paddingTop: "15px" }}
+                    style={{ paddingTop: "15px", fontWeight: "lighter" }}
                   >
                     Zip-Code <span class="req-btn">*</span> :
                   </label>
@@ -815,7 +789,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                 <div className="col-lg-5 mb-2">
                   <label
                     htmlFor=""
-                    style={{ paddingTop: "15px" }}
+                    style={{ paddingTop: "15px", fontWeight: "lighter" }}
                   >
                     Phone Number <span class="req-btn">*</span> :
                   </label>
@@ -840,7 +814,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                 <div className="col-lg-5 mb-2">
                   <label
                     htmlFor=""
-                    style={{ paddingTop: "15px" }}
+                    style={{ paddingTop: "15px", fontWeight: "lighter" }}
                   >
                     Mortgage Brokerage Lic. No. <span class="req-btn">*</span> :
                   </label>
@@ -864,7 +838,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                 <div className="col-lg-5">
                   <label
                     htmlFor=""
-                    style={{ paddingTop: "15px" }}
+                    style={{ paddingTop: "15px", fontWeight: "lighter" }}
                   >
                     Mortgage Broker Licence No. <span class="req-btn">*</span> :
                   </label>
@@ -891,7 +865,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                         className="my_profile_setting_input"
                         style={{ textAlign: "end" }}
                       >
-                        <button className="btn btn5 m-1">Cancel</button>
+                        {/* <button className="btn btn1">Save Details</button> */}
                         <button
                           className="btn btn2 btn-dark"
                           onClick={onUpdatHandler}

@@ -16,6 +16,12 @@ import toast from "react-hot-toast";
 const Index = ({ isView, propertyData }) => {
   const router = useRouter();
 
+  
+  const [modalIsOpenError , setModalIsOpenError] = useState(false);
+  const [errorMessage , setErrorMessage ] = useState("");
+
+  
+
   const [isDisable, setDisable] = useState(isView);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -65,14 +71,18 @@ const Index = ({ isView, propertyData }) => {
     if (!userData) {
       router.push("/login");
     } 
-    else if( userData.userSubscription.$values !== null ){
-      router.push("/my-plans");
-    }
+    // else if( userData.userSubscription.$values !== null ){
+    //   router.push("/my-plans");
+    // }
     else if (userData?.broker_Details?.firstName === "") {
       router.push("/my-profile");
     }
     
   }, []);
+
+  const closeErrorModal = ()=>{
+    setModalIsOpenError(false);
+  }
   const updateHandler = () => {
     const nameRegex = /^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -113,7 +123,8 @@ const Index = ({ isView, propertyData }) => {
       !payload.typeOfBuilding ||
       !payload.bidLowerRange
     ) {
-      toast.error("All required fields must be filled");
+      setErrorMessage("All required fields must be filled");
+      setModalIsOpenError(true);
     } else {
       const encryptedData = encryptionData(payload);
 
@@ -132,7 +143,8 @@ const Index = ({ isView, propertyData }) => {
         })
         .catch((err) => {
           toast.dismiss();
-          toast.error(err.response.data.error);
+          setErrorMessage(err.response.data.error);
+          setModalIsOpenError(true);
         });
     }
   };
@@ -155,7 +167,8 @@ const Index = ({ isView, propertyData }) => {
       (!phoneNumberRegex.test(applicantNumber) && applicantNumber !== "") ||
       (!emailRegex.test(applicantEmail) === true && applicantEmail !== "")
     ) {
-      toast.error("Please provide a valid applicant Information");
+      setErrorMessage("Please provide a valid applicant Information");
+      setModalIsOpenError(true);
     } else {
       const payload = {
         userId: userInfo.userId,
@@ -188,7 +201,8 @@ const Index = ({ isView, propertyData }) => {
         !payload.community ||
         !payload.typeOfBuilding 
       ) {
-        toast.error("All required fields must be filled");
+        setErrorMessage("All required fields must be filled");
+        setModalIsOpenError(true);
       } else {
         const encryptedData = encryptionData(payload);
 
@@ -203,12 +217,12 @@ const Index = ({ isView, propertyData }) => {
           })
           .then((res) => {
             toast.dismiss();
-            console.log(res);
-            router.push("/my-properties");
+            setModalIsOpen(true);
           })
           .catch((err) => {
             toast.dismiss();
-            toast.error(err.message);
+            setErrorMessage(err.message);
+            setModalIsOpenError(true)
           });
       }
     }
@@ -288,16 +302,12 @@ const Index = ({ isView, propertyData }) => {
                 <div className="col-lg-12">
                   <div className="my_dashboard_review ">
                     <div className="row">
-                      <div
-                        className="col-lg-12 bg-head text-center mb-4"
-                        style={{ borderRadius: "5px" }}
-                      >
-                        <h4 className="p-2  text-light">
-                          Property Details
-                          {/* <hr style={{ color: "#2e008b" }} /> */}
+                      <div className="col-lg-12">
+                        <h4 className="mb30">
+                          Location Information
+                          <hr style={{ color: "#2e008b" }} />
                         </h4>
                       </div>
-                      <hr style={{ color: "#2e008b" }} />
                       {isDisable && (
                         <div style={{ marginLeft: "80%", marginBottom: "1%" }}>
                           <button
@@ -398,6 +408,34 @@ const Index = ({ isView, propertyData }) => {
                 {/* End .col */}
               </div>
               {/* End .row */}
+              <div>
+              {modalIsOpenError && (
+                <div className="modal">
+                  <div className="modal-content" style={{borderColor:"orangered",width:"20%"}}>
+                    <h3 className="text-center" style={{color:"orangered"}}>Error</h3>
+                    <div style={{borderWidth:"2px",borderColor:"orangered"}}><br/></div>
+                    <h5 className="text-center">
+                      {errorMessage}
+                    </h5>
+                    <div
+                      className="text-center"
+                      style={{ display: "flex", flexDirection: "column" }}
+                    >
+                      
+            
+                      <button
+                        className="btn w-35 btn-white"
+                        onClick={()=>closeErrorModal()}
+                        style={{borderColor:"orangered",color:"orangered"}}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+              </div>
+
               <div>
                 {modalIsOpen && (
                   <div className="modal">

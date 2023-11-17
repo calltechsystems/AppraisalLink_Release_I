@@ -23,28 +23,7 @@ const CreateList = ({
                 htmlFor=""
                 style={{ paddingTop: "15px", fontWeight: "lighter" }}
               >
-                Maximum Appraisal Cost ($)
-              </label>
-            </div>
-            <div className="col-lg-7">
-              <input
-                type="number"
-                className="form-control"
-                id="formGroupExampleInput3"
-                style={{ background: "aliceblue" }}
-                onChange={(e) => setBidLowerRangeRef(e.target.value)}
-                value={bidLowerRangeRef}
-                disabled={isDisable}
-              />
-            </div>
-          </div>
-          <div className="row" style={{ marginBottom: "-15px" }}>
-            <div className="col-lg-3 my_profile_setting_input form-group">
-              <label
-                htmlFor=""
-                style={{ paddingTop: "15px", fontWeight: "lighter" }}
-              >
-                Community
+                Community <span class="req-btn">*</span>
               </label>
             </div>
             <div className="col-lg-7">
@@ -96,10 +75,7 @@ const CreateList = ({
                   disabled={isDisable}
                   style={{ paddingTop: "15px", paddingBottom: "15px" }}
                 >
-                  <option data-tokens="SelectRole" value={1}>
-                    Choose..
-                  </option>
-                  <option data-tokens="SelectRole" value={1}>
+                  <option data-tokens="SelectRole" value={0}>
                     Low
                   </option>
                   <option data-tokens="Agent/Agency" value={1}>
@@ -109,6 +85,26 @@ const CreateList = ({
                     High
                   </option>
                 </select>
+              </div>
+            </div>
+            <div className="row" style={{marginBottom:'-15px'}}>
+              <div className="col-lg-3 my_profile_setting_input form-group">
+                <label
+                  htmlFor=""
+                  style={{ paddingTop: "15px", fontWeight: "lighter" }}
+                >
+                  Maximum Appraisal Cost ($)
+                </label>
+              </div>
+              <div className="col-lg-7">
+                <input
+                  type="number"
+                  className="form-control"
+                  id="formGroupExampleInput3"
+                  onChange={(e) => setBidLowerRangeRef(e.target.value)}
+                  value={bidLowerRangeRef}
+                  disabled={isDisable}
+                />
               </div>
             </div>
           </div>

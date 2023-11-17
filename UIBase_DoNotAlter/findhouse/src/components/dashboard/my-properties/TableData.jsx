@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
 import toast from "react-hot-toast";
-const TableData = ({userData , open ,close , properties, setProperties}) => {
+import Exemple from "./Exemple";
+const TableData = ({userData , open ,close , properties, setProperties, setModalIsOpenError,setErrorMessage}) => {
+  console.log(properties)
 
   const [Id,setId] = useState(-1);
 
@@ -20,41 +22,41 @@ const TableData = ({userData , open ,close , properties, setProperties}) => {
     "Action",
   ];
 
-  useEffect(()=>{
+  // useEffect(()=>{
     
    
 
-    const data = (JSON.parse(localStorage.getItem("user")));
+  //   const data = (JSON.parse(localStorage.getItem("user")));
 
-    const payload = {
-      token : userData.token
-    };
+  //   const payload = {
+  //     token : userData.token
+  //   };
 
 
-    toast.loading("Getting properties...");
-    axios
-      .get("/api/getPropertiesById",
-       {
-        headers: {
-          Authorization:`Bearer ${data?.token}`,
-          "Content-Type":"application/json"
-        },
-        params : {
-          userId : data?.userId
-        }
-      })
-      .then((res) => {
+  //   toast.loading("Getting properties...");
+  //   axios
+  //     .get("/api/getPropertiesById",
+  //      {
+  //       headers: {
+  //         Authorization:`Bearer ${data?.token}`,
+  //         "Content-Type":"application/json"
+  //       },
+  //       params : {
+  //         userId : data?.userId
+  //       }
+  //     })
+  //     .then((res) => {
    
-        toast.dismiss();
+  //       toast.dismiss();
         
-        setProperties(res.data.data.property.$values);
-        setRerender(false);
-      })
-      .catch((err) => {
-        toast.dismiss();
-        toast.error(err?.response?.data?.error);
-      });
-  },[rerender]);
+  //       setProperties(res.data.data.property.$values);
+  //       setRerender(false);
+  //     })
+  //     .catch((err) => {
+  //       toast.dismiss();
+  //       toast.error(err?.response?.data?.error);
+  //     });
+  // },[rerender]);
   const formatDate = (dateString) => {
     const options = {
       year: 'numeric',
@@ -192,22 +194,20 @@ const TableData = ({userData , open ,close , properties, setProperties}) => {
     </>
   ));
 
+  console.log(data);
+
   return (
     <>
-      <table className="table">
-        <thead className="thead-light">
-          <tr>
-            {theadConent.map((value, i) => (
-              <th scope="col" key={i}>
-                {value}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        {/* End theaad */}
-
-        <tbody>{tbodyContent}</tbody>
-      </table>
+    {data && (<Exemple 
+    userData={userData}
+    open={open}
+    close={close}
+    setProperties={setProperties}
+    properties={data}
+    setModalIsOpenError = {setModalIsOpenError}
+    setErrorMessage = {setErrorMessage}
+    deletePropertyHandler = {deletePropertyHandler}
+    />)}
     </>
   );
 };

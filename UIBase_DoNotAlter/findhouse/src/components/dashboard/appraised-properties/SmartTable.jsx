@@ -19,6 +19,7 @@ function SmartTable(props) {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(props.total ?? 0);
 
+  console.log(props.data);
   const fetchData = useCallback(
     async (queryString) => {
       setLoading(true);
@@ -62,6 +63,7 @@ function SmartTable(props) {
     tableWidthFunc,
     fetchData,
   ]);
+  console.log(props.data)
 
   const buildQueryString = (search, page, rowsPerPage) => {
     const queries = [];
@@ -127,7 +129,7 @@ function SmartTable(props) {
             </div>
           )}
           <div className="row">
-            {/* <div className="col-6 h3">{props.title}</div>
+            <div className="col-6 h3">{props.title}</div>
             <div className="col-6 text-end">
               <input
                 type="text"
@@ -135,9 +137,9 @@ function SmartTable(props) {
                 placeholder="Search..."
                 onChange={handleSearch}
               />
-            </div> */}
+            </div>
           </div>
-          {data.length > 0 ? (
+          {props.data.length > 0 ? (
             <div className="row mt-3">
               <div className="smartTable-tableContainer">
                 <table
@@ -178,12 +180,12 @@ function SmartTable(props) {
                     </tr>
                   </thead>
                   <tbody>
-                    {data.map((row, idx) => {
+                    {props.data.map((row, idx) => {
                       return (
                         <tr key={'tr_' + idx}>
                           {props.headCells.map((headCell, idxx) => {
                             return (
-                              <td className='text-primary' key={'td_' + idx + '_' + idxx}>
+                              <td key={'td_' + idx + '_' + idxx}>
                                 {headCell.render
                                   ? headCell.render(row)
                                   : row[headCell.id]}
@@ -207,7 +209,7 @@ function SmartTable(props) {
           {props.noPagination || data.length === 0 || !props.url ? (
             <div className="row">
               <div className="col-12 text-end p-3">
-                {data.length > 0 ? data.length : 0} Rows
+                {props.data.length > 0 ? props.data.length : 0} Rows
               </div>
             </div>
           ) : (

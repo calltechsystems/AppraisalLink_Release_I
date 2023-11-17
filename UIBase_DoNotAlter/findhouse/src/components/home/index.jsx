@@ -106,7 +106,7 @@ const Index = () => {
               >
                 Why Choose Us
               </h2>
-              {/* <p>We provide full service at every step.</p> */}
+              <p>We provide full service at every step.</p>
             </div>
           </div>
         </div>

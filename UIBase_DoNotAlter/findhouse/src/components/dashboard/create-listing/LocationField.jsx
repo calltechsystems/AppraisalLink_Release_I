@@ -22,14 +22,13 @@ const LocationField = ({
 }) => {
   return (
     <>
-      <div className="row offset-1">
+      <div className="row">
         <div className="col-lg-12">
-          <div className="row" style={{ marginBottom: "-15px" }}>
+          <div className="row" style={{marginBottom:'-15px'}}>
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
-                className="text-color"
                 htmlFor=""
-                style={{ paddingTop: "15px" }}
+                style={{ paddingTop: "15px", fontWeight: "lighter" }}
               >
                 Street Name <span class="req-btn">*</span>
               </label>
@@ -45,12 +44,11 @@ const LocationField = ({
               />
             </div>
           </div>
-          <div className="row" style={{ marginBottom: "-15px" }}>
+          <div className="row" style={{marginBottom:'-15px'}}>
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
-                className="text-color"
                 htmlFor=""
-                style={{ paddingTop: "15px" }}
+                style={{ paddingTop: "15px", fontWeight: "lighter" }}
               >
                 Street Number <span class="req-btn">*</span>
               </label>
@@ -66,12 +64,11 @@ const LocationField = ({
               />
             </div>
           </div>
-          <div className="row" style={{ marginBottom: "-15px" }}>
+          <div className="row"  style={{marginBottom:'-15px'}}>
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
-                className="text-color"
                 htmlFor=""
-                style={{ paddingTop: "15px" }}
+                style={{ paddingTop: "15px", fontWeight: "lighter" }}
               >
                 City <span class="req-btn">*</span>
               </label>
@@ -87,12 +84,11 @@ const LocationField = ({
               />
             </div>
           </div>
-          <div className="row" style={{ marginBottom: "-15px" }}>
+          <div className="row" style={{marginBottom:'-15px'}}>
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
-                className="text-color"
                 htmlFor=""
-                style={{ paddingTop: "15px" }}
+                style={{ paddingTop: "15px", fontWeight: "lighter" }}
               >
                 State <span class="req-btn">*</span>
               </label>
@@ -108,12 +104,11 @@ const LocationField = ({
               />
             </div>
           </div>
-          <div className="row" style={{ marginBottom: "-15px" }}>
+          <div className="row" style={{marginBottom:'-15px'}}>
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
-                className="text-color"
                 htmlFor=""
-                style={{ paddingTop: "15px" }}
+                style={{ paddingTop: "15px", fontWeight: "lighter" }}
               >
                 Postal Code <span class="req-btn">*</span>
               </label>
@@ -129,12 +124,11 @@ const LocationField = ({
               />
             </div>
           </div>
-          <div className="row" style={{ marginBottom: "-15px" }}>
+          <div className="row" style={{marginBottom:'-15px'}}>
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
-                className="text-color"
                 htmlFor=""
-                style={{ paddingTop: "15px" }}
+                style={{ paddingTop: "15px", fontWeight: "lighter" }}
               >
                 Property Area (sq.ft)
               </label>
@@ -150,12 +144,11 @@ const LocationField = ({
               />
             </div>
           </div>
-          <div className="row" style={{ marginBottom: "-15px" }}>
+          <div className="row"  style={{marginBottom:'-15px'}}>
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
-                className="text-color"
                 htmlFor=""
-                style={{ paddingTop: "15px" }}
+                style={{ paddingTop: "15px", fontWeight: "lighter" }}
               >
                 Type of Building <span class="req-btn">*</span>
               </label>
@@ -169,16 +162,9 @@ const LocationField = ({
                   data-width="100%"
                   onChange={(e) => setBuildinRef(e.target.value) }
                   disabled={isDisable}
-                  style={{
-                    paddingTop: "15px",
-                    paddingBottom: "15px",
-                    backgroundColor: "aliceblue",
-                  }}
+                  style={{ paddingTop: "15px", paddingBottom: "15px" }}
                 >
-                  <option data-tokens="SelectRole" value={1}>
-                    Choose..
-                  </option>
-                  <option data-tokens="SelectRole" value={1}>
+                  <option data-tokens="SelectRole" value={"Commercial"}>
                     Commercial
                   </option>
                   <option data-tokens="Agent/Agency" value={"Domestic"}>

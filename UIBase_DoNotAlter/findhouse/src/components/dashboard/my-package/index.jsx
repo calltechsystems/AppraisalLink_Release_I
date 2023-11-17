@@ -13,6 +13,43 @@ const Index = () => {
   const router = useRouter();
   let userData = {};
 
+  
+
+  
+  const [modalIsOpenError , setModalIsOpenError] = useState(false);
+  const [errorMessage , setErrorMessage ] = useState("");
+
+  const closeErrorModal =()=>{
+    setModalIsOpenError(false);
+  }
+
+  {modalIsOpenError && (
+                            <div className="modal">
+                              <div className="modal-content" style={{borderColor:"orangered",width:"20%"}}>
+                                <h3 className="text-center" style={{color:"orangered"}}>Error</h3>
+                                <div style={{borderWidth:"2px",borderColor:"orangered"}}><br/></div>
+                                <h5 className="text-center">
+                                  {errorMessage}
+                                </h5>
+                                <div
+                                  className="text-center"
+                                  style={{ display: "flex", flexDirection: "column" }}
+                                >
+                                  
+                        
+                                  <button
+                                    className="btn w-35 btn-white"
+                                    onClick={()=>closeErrorModal()}
+                                    style={{borderColor:"orangered",color:"orangered"}}
+                                  >
+                                    Cancel
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        
+
   useEffect(() => {
     userData = JSON.parse(localStorage.getItem("user"));
     if (!userData) {
@@ -40,7 +77,9 @@ const Index = () => {
       })
       .catch((err) => {
         toast.dismiss();
-        toast.error(err?.response?.data?.error);
+        // toast.error(err?.response?.data?.error);
+        setErrorMessage(err.response);
+        setModalIsOpenError(true);
       });
   }, []);
 
@@ -116,6 +155,32 @@ const Index = () => {
                       <div className="packages_table">
                         <div className="table-responsive mt0">
                           <PackageData data={data} />
+                          {modalIsOpenError && (
+                            <div className="modal">
+                              <div className="modal-content" style={{borderColor:"orangered",width:"20%"}}>
+                                <h3 className="text-center" style={{color:"orangered"}}>Error</h3>
+                                <div style={{borderWidth:"2px",borderColor:"orangered"}}><br/></div>
+                                <h5 className="text-center">
+                                  {errorMessage}
+                                </h5>
+                                <div
+                                  className="text-center"
+                                  style={{ display: "flex", flexDirection: "column" }}
+                                >
+                                  
+                        
+                                  <button
+                                    className="btn w-35 btn-white"
+                                    onClick={()=>closeErrorModal()}
+                                    style={{borderColor:"orangered",color:"orangered"}}
+                                  >
+                                    Cancel
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        
                         </div>
                       </div>
                       {/* End .packages_table */}

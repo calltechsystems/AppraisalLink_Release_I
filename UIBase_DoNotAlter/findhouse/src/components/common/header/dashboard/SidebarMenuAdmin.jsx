@@ -14,6 +14,7 @@ const SidebarMenu = () => {
     { id: 2, name: "Manage Appraisers", route: "/manage-appraisers" },
     // { id: 3, name: "Editors", route: "/my-properties" },
   ];
+  
   const reviews = [
     { id: 1, name: "My Reviews", route: "/my-review" },
     { id: 2, name: "Visitor Reviews", route: "/my-review" },

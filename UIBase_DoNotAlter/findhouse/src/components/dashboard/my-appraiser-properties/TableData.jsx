@@ -4,18 +4,75 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
 import toast from "react-hot-toast";
-const TableData = ({userData , open ,close , properties, setProperties}) => {
+import { useDispatch, useSelector } from "react-redux";
+const TableData = ({userData , open ,close , onWishlistHandler , participateHandler , properties, setProperties , setErrorMessage,setModalIsOpenError}) => {
 
+  let userInfo = {};
   const [Id,setId] = useState(-1);
 
   const [rerender , setRerender] = useState(false);
  
   const [data , setData] = useState([]);
 
+
+  const {
+    keyword,
+    location,
+    status,
+    propertyType,
+    price,
+    bathrooms,
+    bedrooms,
+    garages,
+    yearBuilt,
+    area,
+    amenities,
+  } = useSelector((state) => state.properties);
+  const { statusType, featured, isGridOrList } = useSelector(
+    (state) => state.filter
+  );
+
+  const dispatch = useDispatch();
+
+  // keyword filter
+  const keywordHandler = (item) =>
+    item.community.toLowerCase().includes(keyword?.toLowerCase())||
+    item.city.toLowerCase().includes(keyword?.toLowerCase())||
+    item.area.toLowerCase().includes(keyword?.toLowerCase())||
+    item.typeOfBuilding.toLowerCase().includes(keyword?.toLowerCase())||
+    item.state.toLowerCase().includes(keyword?.toLowerCase())||
+    item.streetNumber.toLowerCase().includes(keyword?.toLowerCase())||
+    item.streetName.toLowerCase().includes(keyword?.toLowerCase());
+
+
+  // location handler
+  const locationHandler = (item) => {
+    item.city.toLowerCase().includes(keyword?.toLowerCase())||
+    item.area.toLowerCase().includes(keyword?.toLowerCase())||
+    item.state.toLowerCase().includes(keyword?.toLowerCase())||
+    item.streetNumber.toLowerCase().includes(keyword?.toLowerCase())||
+    item.streetName.toLowerCase().includes(keyword?.toLowerCase());
+  };
+
+  // status handler
+  const statusHandler = (item) =>
+  item.community.toLowerCase().includes(keyword?.toLowerCase())||
+  item.typeOfBuilding.toLowerCase().includes(keyword?.toLowerCase());
+
+  // properties handler
+  const propertiesHandler = (item) =>
+  item.community.toLowerCase().includes(keyword?.toLowerCase())||
+  item.typeOfBuilding.toLowerCase().includes(keyword?.toLowerCase());
+
+  // price handler
+  const priceHandler = (item) =>
+    item.bidLowerRange < price?.max && item.bidUpperRange > price?.min;
+
+
   let theadConent = [
     "Property Title",
     "Date",
-    "Status",
+    "Urgency",
     "Bids",
     "Action",
   ];
@@ -33,7 +90,7 @@ const TableData = ({userData , open ,close , properties, setProperties}) => {
 
     toast.loading("Getting properties...");
     axios
-      .get("/api/getPropertiesById",
+      .get("/api/getAllListedProperties",
        {
         headers: {
           Authorization:`Bearer ${data?.token}`,
@@ -47,23 +104,21 @@ const TableData = ({userData , open ,close , properties, setProperties}) => {
    
         toast.dismiss();
         
-        setProperties(res.data.data.property.$values);
+        console.log(res.data.data.properties.$values);
+        setProperties(res.data.data.properties.$values);
         setRerender(false);
       })
       .catch((err) => {
         toast.dismiss();
-        toast.error(err?.response?.data?.error);
+        setErrorMessage(err?.response?.data?.error);
+        setModalIsOpenError(true);
       });
   },[rerender]);
   const formatDate = (dateString) => {
     const options = {
       year: 'numeric',
       month: 'long',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
-      hour12: true, // Use 12-hour format
+      day: 'numeric'
     };
   
     const formattedDate = new Date(dateString).toLocaleString('en-US', options);
@@ -95,7 +150,8 @@ const TableData = ({userData , open ,close , properties, setProperties}) => {
 
       })
       .catch((err) => {
-        alert(err.response.data.error);
+        setErrorMessage(err.response.data.error);
+        setModalIsOpenError(true);
       });
   }
 
@@ -143,7 +199,7 @@ const TableData = ({userData , open ,close , properties, setProperties}) => {
       {/* End td */}
 
       <td>
-        <span className="status_tag badge">Pending</span>
+        <span className="status_tag badge">{item?.urgency === 1? "Low" : item?.urgency === 2 ? "Medium" : "High"}</span>
       </td>
       {/* End td */}
 
@@ -152,39 +208,59 @@ const TableData = ({userData , open ,close , properties, setProperties}) => {
 
       <td>
         <ul className="view_edit_delete_list mb0">
-          <li
+          {/* <li
             className="list-inline-item"
             data-toggle="tooltip"
             data-placement="top"
             title="View"
-          >
-            <Link href={`/create-listing/${item.propertyId}`} >
+          > */}
+            {/* <Link href={`/create-listing/${item.propertyId}`} >
               <span className="flaticon-view"></span>
-            </Link>
-          </li>
-          <li 
+            </Link> */}
+          {/* </li> */}
+          {/* <li 
             className="list-inline-item"
             data-toggle="tooltip"
             data-placement="top"
             title="Edit"
-          >
-            <Link href={`/create-listing/${item.propertyId}`} >
+          > */}
+            {/* <Link href={`/create-listing/${item.propertyId}`} >
               <span className="flaticon-edit"></span>
-            </Link>
-          </li>
+            </Link> */}
+          {/* </li> */}
           {/* End li */}
-
+          <li
+                className="list-inline-item"
+                style={{
+                  width: "30px",
+                  border: "1px solid black",
+                  textAlign: "center",
+                  borderRadius: "5px",
+                }}
+              >
+                {/* <Link href="/agent-v1">{item.posterName}</Link> */}
+                <button onClick={()=>onWishlistHandler(item.propertyId)}>
+                  <span className="flaticon-heart text-color "></span>
+                </button>
+              </li>
+            </ul>
+            {/* <div className="fp_pdate float-end">{item.postedYear}</div> */}
+            
           <li
             className="list-inline-item"
             data-toggle="tooltip"
             data-placement="top"
             title="Delete"
           >
-            <button style={{border:"none",backgroundColor:"white"}} onClick={()=>open(item)}><Link href="#">
-              <span className="flaticon-garbage"></span>
-            </Link></button>
+            <div
+              className="fp_pdate float-end mt-1 fw-bold"
+              onClick={()=>participateHandler(item.bidLowerRange , item.propertyId)}
+            >
+              <a href="#" className="text-color">
+                Participate Bid
+              </a>
+            </div>
           </li>
-        </ul>  
       </td>
       {/* End td */}
     </tr>

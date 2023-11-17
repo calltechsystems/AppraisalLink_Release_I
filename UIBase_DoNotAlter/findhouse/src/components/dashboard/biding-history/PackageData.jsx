@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-const SearchData = () => {
+const SearchData = ({setModalIsOpenError , setErrorMessage}) => {
 
   const [data , setData] = useState([]);
 
@@ -33,7 +33,9 @@ const SearchData = () => {
     })
     .catch((err)=>{
       toast.dismiss();
-      toast.error("Reload the page")
+      // toast.error("Reload the page")
+      setErrorMessage("Technical error , Reload the page !");
+      setModalIsOpenError(true);
     })
   },[]);
 
@@ -43,10 +45,7 @@ const SearchData = () => {
     const options = {
       year: 'numeric',
       month: 'short',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
+      day: 'numeric'
     };
     return date.toLocaleString(undefined, options);
   }
@@ -55,7 +54,6 @@ const SearchData = () => {
     <table className="table">
       <thead className="thead-light">
         <tr>
-          <th scope="col">Id</th>
           <th scope="col">Date</th>
           <th scope="col">Description</th>
           <th scope="col">Bid Amount</th>
@@ -68,9 +66,8 @@ const SearchData = () => {
       <tbody>
       {data.map((bid, index) => (
         <tr key={index}>
-          <td>{bid.bidId}</td>
           <td>{getPrettifiedDate(bid.requestTime)}</td>
-          <td>{bid.description}</td>
+          <td>{bid.description ? bid.description : "NA"}</td>
           <td>${bid.bidLowerRange} - ${bid.bidUpperRange}</td>
           <td>${bid.bidAmount}</td>
           <td>

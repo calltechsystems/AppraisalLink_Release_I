@@ -1,6 +1,6 @@
-import Header from "../../common/header/dashboard/Header";
-import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
-import MobileMenu from "../../common/header/MobileMenu_02";
+import Header from "../../common/header/dashboard/Header_02";
+import SidebarMenu from "../../common/header/dashboard/SidebarMenu_01";
+import MobileMenu from "../../common/header/MobileMenu_01";
 import TableData from "./TableData";
 import Filtering from "./Filtering";
 import FilteringBy from "./FilteringBy";
@@ -11,15 +11,30 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/router";
-import Exemple from "./Exemple";
+import Modal from "./Modal";
+import { encryptionData } from "../../../utils/dataEncryption";
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
+  const [searchResult , setSearchResult] = useState([]);
   const [property, setProperty] = useState("");
   const [filterProperty, setFilterProperty] = useState("");
   const [filterQuery, setFilterQuery] = useState("Last 30 Days");
+  const [searchQuery, setSearchQuery] = useState("city");
   const [properties, setProperties] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [lowRangeBid , setLowRangeBid] = useState("");
+  const [propertyId , setPropertyId] = useState(null);
+
+  const [modalIsOpenError , setModalIsOpenError] = useState(false);
+  const [errorMessage , setErrorMessage ] = useState("");
+
+  const closeErrorModal =()=>{
+    setModalIsOpenError(false);
+  }
+
+  
 
   const router = useRouter();
 
@@ -29,7 +44,7 @@ const Index = () => {
   };
 
   const closeModal = () => {
-    setIsModalOpen(false);
+    setModalOpen(false);
   };
 
   useEffect(() => {
@@ -127,8 +142,8 @@ const Index = () => {
     const data = JSON.parse(localStorage.getItem("user"));
     if (!data) {
       router.push("/login");
-    } else if (!data?.broker_Details?.firstName) {
-      router.push("/my-profile");
+    } else if (!data?.brokerage_Details.firstName) {
+      router.push("/appraiser-profile");
     }
     if (!data) {
       router.push("/login");
@@ -140,6 +155,85 @@ const Index = () => {
     };
     fetchData();
   }, []);
+
+
+  const participateHandler = (val , id)=>{
+    setLowRangeBid(val);
+    setPropertyId(id);
+    setModalOpen(true);
+  }
+
+  const onWishlistHandler = (id) =>{
+
+    
+
+    const userData = JSON.parse(localStorage.getItem("user"));
+
+    const formData = {
+      userId : userData.userId,
+      propertyId : id,
+      token : userData.token
+    }
+
+    const payload = encryptionData(formData);
+
+    toast.loading("Setting this property into your wishlist");
+    axios.post("/api/addToWishlist",payload)
+    .then((res) => {
+      toast.dismiss();
+      toast.success("Successfully added !!! ");
+     
+    })
+    .catch((err) => {
+      toast.dismiss();
+      toast.error(err?.response?.data?.error);
+    });
+    
+  }
+
+  useEffect(()=>{
+    console.log(searchQuery);
+   const tempData = properties;
+   if(searchInput === ""){
+    return ;
+   }
+   else if(searchQuery === "city"){
+      const newProperties = tempData.filter((item)=>{
+        if(item.city.toLowerCase() === searchInput.toLowerCase()){
+          return true;
+        }
+        else {
+          return false
+        }
+        
+      })
+      setSearchResult(newProperties);
+   }
+   else if(searchQuery === "state"){
+    const newProperties = tempData.filter((item)=>{
+      if(item.state.toLowerCase() === searchInput.toLowerCase()){
+        return true;
+      }
+      else {
+        return false
+      }
+      
+    })
+    setSearchResult(newProperties);
+   }
+   else{
+    const newProperties = tempData.filter((item)=>{
+      if(item.zipCode.toLowerCase() === searchInput.toLowerCase()){
+        return true;
+      }
+      else {
+        return false
+      }
+      
+    })
+    setSearchResult(newProperties);
+   }
+  },[searchInput]);
 
   return (
     <>
@@ -202,7 +296,7 @@ const Index = () => {
                         <Filtering setFilterQuery={setFilterQuery} />
                       </li>
                       <li className="list-inline-item">
-                        <FilteringBy setFilterQuery={setFilterQuery} />
+                      <FilteringBy setFilterQuery={setSearchQuery} />
                       </li>
                       <li className="list-inline-item">
                         <div className="candidate_revew_search_box course fn-520">
@@ -224,15 +318,45 @@ const Index = () => {
                   <div className="my_dashboard_review mb40">
                     <div className="property_table">
                       <div className="table-responsive mt0">
-                        {/* <TableData
+                        <TableData
                           userData={userData}
-                          open={openModal}
-                          close={closeModal}
+                          setModalOpen={openModal} 
+                          close={closeModal} 
                           setProperties={setProperties}
                           properties={
                             searchInput === "" ? properties : filterProperty
                           }
-                        /> */}
+                          
+                          onWishlistHandler={onWishlistHandler}
+                          participateHandler={participateHandler}
+                          setErrorMessage={setErrorMessage}
+                          setModalIsOpenError={setModalIsOpenError}
+                        />
+                        {modalIsOpenError && (
+                          <div className="modal">
+                            <div className="modal-content" style={{borderColor:"orangered",width:"20%"}}>
+                              <h3 className="text-center" style={{color:"orangered"}}>Error</h3>
+                              <div style={{borderWidth:"2px",borderColor:"orangered"}}><br/></div>
+                              <h5 className="text-center">
+                                {errorMessage}
+                              </h5>
+                              <div
+                                className="text-center"
+                                style={{ display: "flex", flexDirection: "column" }}
+                              >
+                                
+                      
+                                <button
+                                  className="btn w-35 btn-white"
+                                  onClick={()=>closeErrorModal()}
+                                  style={{borderColor:"orangered",color:"orangered"}}
+                                >
+                                  Cancel
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        )}
                       </div>
                       {/* End .table-responsive */}
 
@@ -241,11 +365,18 @@ const Index = () => {
                     {/* End .property_table */}
                   </div>
                 </div>
-                <Exemple />
-
                 {/* End .col */}
               </div>
 
+              <div className="row">
+              
+              <Modal
+                modalOpen={modalOpen}
+                closeModal={closeModal}
+                lowRangeBid = {lowRangeBid}
+                propertyId={propertyId}
+              />
+            </div>
               <div className="row">
                 <div className="col-lg-12 mt20">
                   <div className="mbp_pagination">
@@ -269,29 +400,7 @@ const Index = () => {
               </div>
             </div>
             {/* End .col */}
-            {isModalOpen && (
-              <div className="modal">
-                <div className="modal-content">
-                  <h3 className="text-center">Delete Confirmation</h3>
-                  <h5 className="text-center">
-                    Are you sure you want to delete the property :{" "}
-                    {property.area} ?
-                  </h5>
-                  {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
-                  <div className="text-center" style={{}}>
-                    <button
-                      className="btn w-35 btn-thm3 m-2"
-                      onClick={handleDelete}
-                    >
-                      Delete
-                    </button>
-                    <button className="btn w-35 btn-white" onClick={closeModal}>
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
+          
           </div>
         </div>
       </section>

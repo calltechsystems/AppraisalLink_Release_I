@@ -40,8 +40,8 @@ const Index = () => {
                 Throughout the mortgage process, brokers serve as a point of
                 contact between the borrower and the lender.
               </p>
-              <Link href="/register" className="my_profile_setting_input">
-                <button className="btn btn2">Register</button>
+              <Link href="/register">
+                <button className="btn ssp_btn">Register</button>
               </Link>
             </div>
           </div>
