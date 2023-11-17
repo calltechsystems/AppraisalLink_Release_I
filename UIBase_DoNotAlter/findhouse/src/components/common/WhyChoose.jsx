@@ -8,7 +8,7 @@ const WhyChoose = ({ style = "" }) => {
     },
     {
       id: 2,
-      icon: "flaticon-heartbeat",
+      icon: "flaticon-chat",
       title: "Real Time Analytics & 24X7 Accessibility",
       descriptions: `Data analytics, Dashboard, Historical data. Analysis of data as it is generated, providing immediate insights. `,
     },

@@ -90,8 +90,20 @@ const Pricing = ({
                 >
                     Recommended Plan{" "}
                 </div>
-              ) : (
-                ""
+              ) : ( 
+                <div
+                className="p-1 fw-bold"
+                style={{
+                  visibility:"hidden",
+                  backgroundColor: "white",
+                  borderRadius: "4px",
+                  fontSize: "19px",
+                  color: "#2e008b",
+                }}
+              >
+                  Recommended Plan{" "}
+              </div>
+                
               )}
             </div>
             <div className="pricing_content">
