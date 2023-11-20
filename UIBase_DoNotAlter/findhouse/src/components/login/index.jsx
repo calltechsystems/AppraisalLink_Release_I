@@ -14,6 +14,7 @@ const Index = ({user}) => {
   const [modalIsOpen , setModalIsOpen] = useState(false);
   const [modalIsOpenError , setModalIsOpenError] = useState(false);
   const [errorMessage , setErrorMessage ] = useState("");
+  
   const router = useRouter();
 
   const closeModal = ()=>{
@@ -135,7 +136,7 @@ const Index = ({user}) => {
       </section>
 
       {/* <!-- Our Footer Bottom Area --> */}
-      <div className="footer_middle_area">
+      <div className="footer_middle_area pt40 pb40">
         <div className="container">
           <CopyrightFooter />
         </div>

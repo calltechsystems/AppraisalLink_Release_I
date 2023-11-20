@@ -20,6 +20,15 @@ const Index = () => {
 
   const [chartData , setChartData] = useState([]);
 
+  const [modalIsOpenError , setModalIsOpenError] = useState(false);
+  const [errorMessage , setErrorMessage ] = useState("");
+
+  const closeErrorModal =()=>{
+    setModalIsOpenError(false);
+  }
+
+  
+
 
   useEffect(()=>{
     userData =  JSON.parse(localStorage.getItem("user"));
@@ -56,7 +65,8 @@ const Index = () => {
     setProperties(responseData);
    })
    .catch((err) => {
-     toast.error(err?.response?.data?.error);
+     setErrorMessage(err?.response?.data?.error);
+     setModalIsOpenError(true);
    });
  }
  func();
@@ -95,7 +105,8 @@ useEffect(()=>{
   })
   .catch((err) => {
     toast.dismiss();
-    toast.error(err?.response?.data?.error);
+    setErrorMessage(err?.response?.data?.error);
+    setModalIsOpenError(true);
   });
 }
 func2();
@@ -206,7 +217,7 @@ func2();
                 {chartData.length > 0 ? (
                   <StatisticsChart data={chartData} />
                 ) : (
-                  <p>Loading...</p> // You can replace this with a loading indicator
+                  <StatisticsChart data={chartData}/> // You can replace this with a loading indicator
                 )}
               </div>
             </div>
@@ -216,7 +227,32 @@ func2();
                 {chartData.length > 0 ? (
                  <StatisticsPieChart data = {chartData}/>
                 ) : (
-                  <p>Loading...</p> // You can replace this with a loading indicator
+                 <StatisticsPieChart data={chartData}/> // You can replace this with a loading indicator
+                )}
+                {modalIsOpenError && (
+                  <div className="modal">
+                    <div className="modal-content" style={{borderColor:"orangered",width:"20%"}}>
+                      <h3 className="text-center" style={{color:"orangered"}}>Error</h3>
+                      <div style={{borderWidth:"2px",borderColor:"orangered"}}><br/></div>
+                      <h5 className="text-center">
+                        {errorMessage}
+                      </h5>
+                      <div
+                        className="text-center"
+                        style={{ display: "flex", flexDirection: "column" }}
+                      >
+                        
+              
+                        <button
+                          className="btn w-35 btn-white"
+                          onClick={()=>closeErrorModal()}
+                          style={{borderColor:"orangered",color:"orangered"}}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 )}
               </div>
             </div>

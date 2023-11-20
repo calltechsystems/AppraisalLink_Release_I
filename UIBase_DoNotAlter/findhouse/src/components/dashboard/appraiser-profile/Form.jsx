@@ -5,7 +5,7 @@ import Image from "next/image";
 //   console.log("Captcha value:", value);
 // }
 
-const Form = ({userData , chnageShowCardHandler}) => {
+const Form = ({userData , chnageShowCardHandler,setErrorMessage,setModalIsOpenError}) => {
 
   return (
     <form

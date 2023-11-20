@@ -23,6 +23,15 @@ const Index = () => {
   const [reload , setReload] = useState(false);
   const [allProperties,setAllProperties] = useState([]);
 
+  const [modalIsOpenError , setModalIsOpenError] = useState(false);
+  const [errorMessage , setErrorMessage ] = useState("");
+
+  const closeErrorModal =()=>{
+    setModalIsOpenError(false);
+  }
+
+ 
+
   const [show , setShow] = useState(true);
 
   const onClickHandler = ()=>{
@@ -72,7 +81,8 @@ const Index = () => {
  })
  .catch((err) => {
   toast.dismiss();
-   toast.error(err?.response?.data?.error);
+   setErrorMessage(err?.response?.data?.error);
+   setModalIsOpenError(true);
  });
 }
 func();
@@ -124,7 +134,8 @@ useEffect(()=>{
   })
   .catch((err) => {
     toast.dismiss();
-    toast.error(err?.response?.data?.error);
+    setErrorMessage(err?.response?.data?.error);
+    setModalIsOpenError(true);
   });
 }
 func2();
@@ -207,7 +218,32 @@ func2();
                         {/* End .row */}
 
                         <div className="row">
-                          <FeaturedItem user={data} data = {allProperties} setReload = {setReload} allWishlistedProperties={allWishlistedProperties}/>
+                          <FeaturedItem user={data} data = {allProperties} setReload = {setReload} allWishlistedProperties={allWishlistedProperties} setModalIsOpenError={setModalIsOpenError} setErrorMessage={setErrorMessage}/>
+                          {modalIsOpenError && (
+                            <div className="modal">
+                              <div className="modal-content" style={{borderColor:"orangered",width:"20%"}}>
+                                <h3 className="text-center" style={{color:"orangered"}}>Error</h3>
+                                <div style={{borderWidth:"2px",borderColor:"orangered"}}><br/></div>
+                                <h5 className="text-center">
+                                  {errorMessage}
+                                </h5>
+                                <div
+                                  className="text-center"
+                                  style={{ display: "flex", flexDirection: "column" }}
+                                >
+                                  
+                        
+                                  <button
+                                    className="btn w-35 btn-white"
+                                    onClick={()=>closeErrorModal()}
+                                    style={{borderColor:"orangered",color:"orangered"}}
+                                  >
+                                    Cancel
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          )}
                         </div>
                         {/* End .row */}
 

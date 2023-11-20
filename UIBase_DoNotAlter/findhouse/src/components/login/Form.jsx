@@ -70,9 +70,15 @@ const Form = ({ user , setModalIsOpen , setModalIsOpenError , setErrorMessage}) 
         .post("/api/login", encryptedData)
         .then((res) => {
           toast.dismiss();
-          console.log(res);
+          // console.log(res);
           localStorage.setItem("user", JSON.stringify(res.data.userData));
-          setModalIsOpen(true);
+          // setModalIsOpen(true);
+          if(res.data.userData.userType === 1){
+            router.push("/my-dashboard");
+          }
+          else if(res.data.userData.userType === 2){
+            router.push("/appraiser-dashboard");
+          }
         })
         .catch((err) => {
           toast.dismiss();

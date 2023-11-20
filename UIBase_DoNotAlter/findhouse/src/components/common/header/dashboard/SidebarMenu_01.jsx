@@ -14,6 +14,14 @@ const SidebarMenu = () => {
     { id: 2, name: "Advanced Elements", route: "/my-properties" },
     { id: 3, name: "Editors", route: "/my-properties" },
   ];
+  const appraiserProperties = [
+    { id: 1, name: "Appraised Properties", route: "/appraise-properties" },
+    { id: 2, name: "My Properties", route: "/my-appraiser-properties" },
+    { id: 1, name: "Wishlisted Properties", route: "/appraiser-wishlisted" },
+    { id: 2, name: "Biding History", route: "/biding-history" },
+    // { id: 3, name: "Editors", route: "/my-properties" },
+  ];
+ 
   const reviews = [
     { id: 1, name: "My Reviews", route: "/my-review" },
     { id: 2, name: "Visitor Reviews", route: "/my-review" },
@@ -62,7 +70,7 @@ const SidebarMenu = () => {
             >
               <Link href="/appraiser-dashboard">
                 <i className="flaticon-layers"></i>
-                <span>Appraiser Dashboard</span>
+                <span>Dashboard</span>
               </Link>
             </li>
             <li
@@ -74,10 +82,19 @@ const SidebarMenu = () => {
             >
               <Link href="/appraise-properties">
                 <i className="flaticon-home"></i>
-                <span>Appraised Properties</span>
+                <span> Properties</span>
               </Link>
+              <ul className="treeview-menu collapse" id="my-property">
+              {appraiserProperties.map((item) => (
+                <li key={item.id}>
+                  <Link href={item.route}>
+                    <i className="fa fa-circle"></i> {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
             </li>
-            <li
+            {/*<li
               className={`treeview ${
                 isSinglePageActive("/appraiser-wishlist", route.pathname)
                   ? "active"
@@ -88,9 +105,9 @@ const SidebarMenu = () => {
                 <i className="flaticon-heart"></i>
                 <span> Wishlist</span>
               </Link>
-            </li>
+            </li>*/}
 
-            <li
+           {/* <li
               className={`treeview ${
                 isSinglePageActive("/biding-history", route.pathname)
                   ? "active"
@@ -101,7 +118,7 @@ const SidebarMenu = () => {
                 <i className="flaticon-pdf"></i>
                 <span> Biding History</span>
               </Link>
-            </li>
+            </li>*/}
            {/* <li
               className={`treeview ${
                     isParentPageActive("/my-properties", route.pathname) ? "active" : ""

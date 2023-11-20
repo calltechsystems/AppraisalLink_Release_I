@@ -127,8 +127,8 @@ const Form = ({setModalIsOpen,setModalIsOpenError,setErrorMessage}) => {
         .then((res) => {
           console.log(res);
           toast.dismiss();
-          setModalIsOpen(true);
-          // router.push("/login");
+          // setModalIsOpen(true);
+          router.push("/login");
         })
         .catch((err) => {
           toast.dismiss();

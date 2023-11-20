@@ -4,11 +4,12 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
 import toast from "react-hot-toast";
+import Exemple from "./Exemple"
 import { useDispatch, useSelector } from "react-redux";
-const TableData = ({userData , open ,close , onWishlistHandler , participateHandler , properties, setProperties}) => {
+const TableData = ({userData , open ,close , onWishlistHandler , participateHandler , properties, setProperties,setErrorMessage,setModalIsOpenError}) => {
 
   let userInfo = {};
-  const [Id,setId] = useState(-1);
+  const [Id,setId] = useState(-1);  
 
   const [rerender , setRerender] = useState(false);
  
@@ -17,7 +18,7 @@ const TableData = ({userData , open ,close , onWishlistHandler , participateHand
 
   const {
     keyword,
-    location,
+    location,   
     status,
     propertyType,
     price,
@@ -110,18 +111,15 @@ const TableData = ({userData , open ,close , onWishlistHandler , participateHand
       })
       .catch((err) => {
         toast.dismiss();
-        toast.error(err?.response?.data?.error);
+        setErrorMessage(err?.response?.data?.error);
+        setModalIsOpenError(true);
       });
   },[rerender]);
   const formatDate = (dateString) => {
     const options = {
       year: 'numeric',
       month: 'long',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
-      hour12: true, // Use 12-hour format
+      day: 'numeric'
     };
   
     const formattedDate = new Date(dateString).toLocaleString('en-US', options);
@@ -153,7 +151,8 @@ const TableData = ({userData , open ,close , onWishlistHandler , participateHand
 
       })
       .catch((err) => {
-        alert(err.response.data.error);
+        setErrorMessage(err.response.data.error);
+        setModalIsOpenError(true);
       });
   }
 
@@ -259,7 +258,7 @@ const TableData = ({userData , open ,close , onWishlistHandler , participateHand
               onClick={()=>participateHandler(item.bidLowerRange , item.propertyId)}
             >
               <a href="#" className="text-color">
-                Participate Bid
+                Provide Qoute
               </a>
             </div>
           </li>
@@ -272,20 +271,18 @@ const TableData = ({userData , open ,close , onWishlistHandler , participateHand
 
   return (
     <>
-      <table className="table">
-        <thead className="thead-light">
-          <tr>
-            {theadConent.map((value, i) => (
-              <th scope="col" key={i}>
-                {value}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        {/* End theaad */}
-
-        <tbody>{tbodyContent}</tbody>
-      </table>
+    {data && (<Exemple 
+      userData={userData}
+      open={open}
+      close={close}
+      setProperties={setProperties}
+      properties={data}
+      setModalIsOpenError = {setModalIsOpenError}
+      setErrorMessage = {setErrorMessage}
+      deletePropertyHandler = {deletePropertyHandler}
+      onWishlistHandler={onWishlistHandler}
+      participateHandler={participateHandler}
+      />)}
     </>
   );
 };

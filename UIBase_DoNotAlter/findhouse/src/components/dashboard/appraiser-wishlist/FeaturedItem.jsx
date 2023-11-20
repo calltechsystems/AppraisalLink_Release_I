@@ -2,14 +2,12 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addLength } from "../../../features/properties/propertiesSlice";
-import properties from "../../../data/properties";
-import Image from "next/image";
 import toast from "react-hot-toast";
-import { encryptionData } from "../../../utils/dataEncryption";
 import axios from "axios";
 import Modal from "../appraiser-properties/Modal";
+import Exemple from "./Exemple";
 
-const FeaturedItem = ({user , data , setReload , allWishlistedProperties}) => {
+const FeaturedItem = ({user , data , setReload , allWishlistedProperties,setModalIsOpenError,setErrorMessage}) => {
 
   console.log(data);
   const [modalOpen, setModalOpen] = useState(false);
@@ -277,7 +275,7 @@ const FeaturedItem = ({user , data , setReload , allWishlistedProperties}) => {
                 </li>
               </ul>
               {/* <div className="fp_pdate float-end">{item.postedYear}</div> */}
-              <div className="fp_pdate float-end mt-1 fw-bold"><button onClick={()=>openModal(item.propertyId,item.bidLowerRange)} className="text-color">Participate Bid</button></div>
+              <div className="fp_pdate float-end mt-1 fw-bold"><button onClick={()=>openModal(item.propertyId,item.bidLowerRange)} className="text-color">Provide Quote</button></div>
             </div>
             {/* End .fp_footer */}
           </div>
@@ -289,7 +287,8 @@ const FeaturedItem = ({user , data , setReload , allWishlistedProperties}) => {
   useEffect(() => {
     dispatch(addLength(data.length));
   }, [dispatch, data]);
-  return <>{content}</>;
+  return <>
+  <Exemple   onWishlistHandler ={openModal} removeFromWishlist={removeFromWishlist} setModalIsOpenError={setModalIsOpenError} setErrorMessage={setModalIsOpenError}/></>;
 };
 
 export default FeaturedItem;

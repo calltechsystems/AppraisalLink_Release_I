@@ -21,9 +21,14 @@ const Index = () => {
   const [filterQuery, setFilterQuery] = useState("Last 30 Days");
   const [properties, setProperties] = useState([]);
 
+  
+  const [modalIsOpenError , setModalIsOpenError] = useState(false);
+  const [errorMessage , setErrorMessage ] = useState("");
+
   const router = useRouter();
 
   const openModal = (property) => {
+    console.log("inside");
     setProperty(property);
     setIsModalOpen(true);
   };
@@ -202,7 +207,7 @@ const Index = () => {
                         <Filtering setFilterQuery={setFilterQuery} />
                       </li>
                       <li className="list-inline-item">
-                      <FilteringBy setFilterQuery={setFilterQuery} />
+                        <FilteringBy setFilterQuery={setFilterQuery} />
                       </li>
                       <li className="list-inline-item">
                         <div className="candidate_revew_search_box course fn-520">
@@ -232,13 +237,45 @@ const Index = () => {
                           properties={
                             searchInput === "" ? properties : filterProperty
                           }
+                          setModalIsOpenError = {setModalIsOpenError}
+                        setErrorMessage = {setErrorMessage}
                         />
+                       
+                        {modalIsOpenError && (
+                          <div className="modal">
+                            <div className="modal-content" style={{borderColor:"orangered",width:"20%"}}>
+                              <h3 className="text-center" style={{color:"orangered"}}>Error</h3>
+                              <div style={{borderWidth:"2px",borderColor:"orangered"}}><br/></div>
+                              <h5 className="text-center">
+                                {errorMessage}
+                              </h5>
+                              <div
+                                className="text-center"
+                                style={{ display: "flex", flexDirection: "column" }}
+                              >
+                                
+                      
+                                <button
+                                  className="btn w-35 btn-white"
+                                  onClick={()=>closeModal()}
+                                  style={{borderColor:"orangered",color:"orangered"}}
+                                >
+                                  Cancel
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      
                       </div>
+                      {/* End .table-responsive */}
+
+                      {/* End .mbp_pagination */}
                     </div>
                     {/* End .property_table */}
                   </div>
                 </div>
-                <Exemple />
+                
 
                 {/* End .col */}
               </div>

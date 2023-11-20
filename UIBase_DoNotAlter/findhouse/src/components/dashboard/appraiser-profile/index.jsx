@@ -11,6 +11,15 @@ const Index = ({ profileCount, setProfileCount }) => {
   const [userData, setUserData] = useState({}); // State to hold user data
   const router = useRouter();
 
+  const [modalIsOpenError , setModalIsOpenError] = useState(false);
+  const [errorMessage , setErrorMessage ] = useState("");
+
+  const closeErrorModal =()=>{
+    setModalIsOpenError(false);
+  }
+
+ 
+
   useEffect(() => {
     const storedUserData = JSON.parse(localStorage.getItem("user"));
     if (!storedUserData) {
@@ -62,10 +71,35 @@ const Index = ({ profileCount, setProfileCount }) => {
                           <div className="col-xl-12">
                             {showCard ? (
                               <div className="mb-5">
-                                <Form userData={userData} chnageShowCardHandler={chnageShowCardHandler} />
+                                <Form userData={userData} chnageShowCardHandler={chnageShowCardHandler} setErrorMessage={setErrorMessage} setModalIsOpenError={setModalIsOpenError}/>
                               </div>
                             ) : (
-                              <ProfileInfo profileCount={profileCount} setProfileCount={setProfileCount} setShowCard={setShowCard} />
+                              <ProfileInfo profileCount={profileCount} setProfileCount={setProfileCount} setShowCard={setShowCard} setErrorMessage={setErrorMessage} setModalIsOpenError={setModalIsOpenError}/>
+                            )}
+                            {modalIsOpenError && (
+                              <div className="modal">
+                                <div className="modal-content" style={{borderColor:"orangered",width:"20%"}}>
+                                  <h3 className="text-center" style={{color:"orangered"}}>Error</h3>
+                                  <div style={{borderWidth:"2px",borderColor:"orangered"}}><br/></div>
+                                  <h5 className="text-center">
+                                    {errorMessage}
+                                  </h5>
+                                  <div
+                                    className="text-center"
+                                    style={{ display: "flex", flexDirection: "column" }}
+                                  >
+                                    
+                          
+                                    <button
+                                      className="btn w-35 btn-white"
+                                      onClick={()=>closeErrorModal()}
+                                      style={{borderColor:"orangered",color:"orangered"}}
+                                    >
+                                      Cancel
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
                             )}
                           </div>
                         </div>

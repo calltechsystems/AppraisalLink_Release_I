@@ -5,7 +5,7 @@ import HowWeWork from "../components/how-we-work";
 const index = () => {
   return (
     <>
-      <Seo pageTitle="How We Work!" />
+      <Seo pageTitle="How We Work" />
       <HowWeWork />
     </>
   );
