@@ -251,15 +251,23 @@ const property = [
   },
 ];
 
-const blog = [
-  { id: 1, name: "Blog List 1", routerPath: "/blog-list-1" },
-  { id: 2, name: "Blog List 2", routerPath: "/blog-list-2" },
-  { id: 3, name: "Blog List 3", routerPath: "/blog-list-3" },
+const insights = [
   {
-    id: 4,
-    name: "Blog Details",
-    routerPath: "/blog-details",
+    id: 1,
+    name: "Dashboard",
+    routerPath: "/my-dashboard",
   },
+];
+
+const blog = [
+  { id: 1, name: "Events", routerPath: "/events" },
+  { id: 2, name: "How We Work", routerPath: "/how-we-work" },
+  { id: 3, name: "About Appraisal Link", routerPath: "/about-us" },
+  // {
+  //   id: 4,
+  //   name: "Blog Details",
+  //   routerPath: "/blog-details",
+  // },
 ];
 
 const pages = [
@@ -345,7 +353,9 @@ const MobileMenuContent = () => {
           <MenuItem>
             <Link
               href="/choose-us"
-              className={route.pathname === "/choose-us" ? "ui-active" : undefined}
+              className={
+                route.pathname === "/choose-us" ? "ui-active" : undefined
+              }
             >
               Why Choose Us
             </Link>
@@ -373,7 +383,7 @@ const MobileMenuContent = () => {
           </SubMenu> */}
           {/* End Home Home */}
 
-          <SubMenu
+          {/* <SubMenu
             title="Insights"
             className={
               listing.some((parent) => {
@@ -411,7 +421,7 @@ const MobileMenuContent = () => {
                 ))}
               </SubMenu>
             ))}
-          </SubMenu>
+          </SubMenu> */}
           {/* End Pages Listing */}
 
           {/* <SubMenu
@@ -462,8 +472,37 @@ const MobileMenuContent = () => {
           </SubMenu> */}
           {/* End Pages Property */}
 
-          {/* <SubMenu
-            title="Blog"
+          <SubMenu
+            title="Insights"
+            className={
+              insights.some(
+                (page) =>
+                  page.routerPath === route.pathname ||
+                  page.routerPath + "/[id]" === route.pathname
+              )
+                ? "parent-menu-active"
+                : undefined
+            }
+          >
+            {insights.map((val, i) => (
+              <MenuItem key={i}>
+                <Link
+                  href={val.routerPath}
+                  className={
+                    route.pathname === val.routerPath ||
+                    val.routerPath + "/[id]" === route.pathname
+                      ? "ui-active"
+                      : undefined
+                  }
+                >
+                  {val.name}
+                </Link>
+              </MenuItem>
+            ))}
+          </SubMenu>
+
+          <SubMenu
+            title="About Us"
             className={
               blog.some(
                 (page) =>
@@ -489,7 +528,7 @@ const MobileMenuContent = () => {
                 </Link>
               </MenuItem>
             ))}
-          </SubMenu> */}
+          </SubMenu>
           {/* End pages Blog */}
 
           {/* <SubMenu
@@ -526,7 +565,7 @@ const MobileMenuContent = () => {
             </Link>
           </MenuItem>
 
-          <MenuItem>
+          {/* <MenuItem>
             <Link
               href="/about-us"
               className={
@@ -535,7 +574,7 @@ const MobileMenuContent = () => {
             >
               About Us
             </Link>
-          </MenuItem>
+          </MenuItem> */}
 
           <MenuItem>
             <Link

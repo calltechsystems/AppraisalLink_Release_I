@@ -19,6 +19,7 @@ const Form = () => {
               className="form-control"
               required="required"
               type="text"
+              style={{ border: "1px solid #adadc9" }}
             />
           </div>
         </div>
@@ -35,6 +36,7 @@ const Form = () => {
               className="form-control"
               required="required"
               type="text"
+              style={{ border: "1px solid #adadc9" }}
             />
           </div>
         </div>
@@ -50,7 +52,8 @@ const Form = () => {
               name="form_email"
               className="form-control required email"
               required="required"
-              type="text"
+              type="email"
+              style={{ border: "1px solid #adadc9" }}
             />
           </div>
         </div>
@@ -66,7 +69,8 @@ const Form = () => {
               name="form_phone"
               className="form-control required phone"
               required="required"
-              type="text"
+              type="number"
+              style={{ border: "1px solid #adadc9" }}
             />
           </div>
         </div>
@@ -82,6 +86,7 @@ const Form = () => {
               name="form_subject"
               className="form-control required"
               type="text"
+              style={{ border: "1px solid #adadc9" }}
             />
           </div>
         </div>
@@ -125,6 +130,7 @@ const Form = () => {
               name="form_subject"
               className="form-control required"
               type="text"
+              style={{ border: "1px solid #adadc9" }}
             />
           </div>
         </div>
@@ -140,6 +146,7 @@ const Form = () => {
               name="form_subject"
               className="form-control required"
               type="text"
+              style={{ border: "1px solid #adadc9" }}
             />
           </div>
         </div>
@@ -170,6 +177,7 @@ const Form = () => {
               className="form-control required"
               rows="4"
               required="required"
+              style={{ border: "1px solid #adadc9" }}
             ></textarea>
           </div>
           {/* End .col */}

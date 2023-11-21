@@ -9,7 +9,8 @@ const Footer = () => {
         <div className="footer_about_widget">
           <h4>About Appraisal Link</h4>
           <p>
-            We are a Ontario based buisness working with brokers and appraisers providing services in real estate sector.
+            We are a Ontario based buisness working with brokers and appraisers
+            providing services in real estate sector.
           </p>
         </div>
       </div>
@@ -43,7 +44,6 @@ const Footer = () => {
         <div className="footer_contact_widget">
           <h4>Contact Us</h4>
           <ul className="list-unstyled">
-           
             <li>
               <a href="#">123 Main Street</a>
             </li>

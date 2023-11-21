@@ -58,20 +58,18 @@ const Index = ({ isView, propertyData }) => {
   );
 
   useEffect(() => {
-   
     userData = JSON.parse(localStorage.getItem("user"));
-    console.log(userData.userSubscription.$values)
+    console.log(userData.userSubscription.$values);
 
     if (!userData) {
       router.push("/login");
-    } 
-    else if( userData.userSubscription.$values !== null ){
-      router.push("/my-plans");
     }
+    // else if( userData.userSubscription.$values !== null ){
+    //   router.push("/my-plans");
+    // }
     else if (userData?.broker_Details?.firstName === "") {
       router.push("/my-profile");
     }
-    
   }, []);
   const updateHandler = () => {
     const nameRegex = /^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$/;
@@ -79,7 +77,7 @@ const Index = ({ isView, propertyData }) => {
 
     const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
 
-    const userInfo = (JSON.parse(localStorage.getItem("user")));
+    const userInfo = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
       userId: userInfo.userId,
@@ -145,7 +143,7 @@ const Index = ({ isView, propertyData }) => {
   const submitHandler = () => {
     const nameRegex = /^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    const userInfo = (JSON.parse(localStorage.getItem("user")));
+    const userInfo = JSON.parse(localStorage.getItem("user"));
 
     const phoneNumberRegex = /^\d{10}$/;
 
@@ -178,7 +176,6 @@ const Index = ({ isView, propertyData }) => {
         token: userInfo.token,
       };
 
-
       if (
         !payload.streetName ||
         !payload.streetNumber ||
@@ -186,7 +183,7 @@ const Index = ({ isView, propertyData }) => {
         !payload.state ||
         !payload.zipCode ||
         !payload.community ||
-        !payload.typeOfBuilding 
+        !payload.typeOfBuilding
       ) {
         toast.error("All required fields must be filled");
       } else {
@@ -277,7 +274,7 @@ const Index = ({ isView, propertyData }) => {
                 </div> */}
                 {/* End Dashboard Navigation */}
 
-                <div className="col-lg-12 mb10">
+                <div className="col-lg-12 ">
                   <div className="breadcrumb_content style2">
                     {/* <h2 className="breadcrumb_title text-center">{isView?  "View the selected  property": "Add New Property"}</h2> */}
                     {/* <p>We are glad to see you again!</p> */}
@@ -286,13 +283,16 @@ const Index = ({ isView, propertyData }) => {
                 {/* End .col */}
 
                 <div className="col-lg-12">
-                  <div className="my_dashboard_review ">
+                  <div className="my_dashboard_review">
                     <div className="row">
                       <div
                         className="col-lg-12 bg-head text-center mb-4"
                         style={{ borderRadius: "5px" }}
                       >
-                        <h4 className="p-2  text-light">
+                        <h4
+                          className="text-light"
+                          style={{ paddingTop: "10px" }}
+                        >
                           Property Details
                           {/* <hr style={{ color: "#2e008b" }} /> */}
                         </h4>
@@ -335,12 +335,16 @@ const Index = ({ isView, propertyData }) => {
                     </div>
                   </div>
                   <div className="my_dashboard_review mt30">
-                    <div className="col-lg-12">
-                      <h4 className="mb30">
+                    <div
+                      className="col-lg-12 bg-head text-center mb-4"
+                      style={{ borderRadius: "5px" }}
+                    >
+                      <h4 className="p-2 text-white">
                         Other Information
-                        <hr style={{ color: "#2e008b" }} />
+                        {/* <hr style={{ color: "#2e008b" }} /> */}
                       </h4>
                     </div>
+                    <hr style={{ color: "#2e008b" }} />
                     <CreateList
                       isDisable={isDisable}
                       communityRef={communityRef}
@@ -358,12 +362,16 @@ const Index = ({ isView, propertyData }) => {
 
                   <div className="my_dashboard_review mt30">
                     <div className="row">
-                      <div className="col-lg-12">
-                        <h4 className="mb30">
+                      <div
+                        className="col-lg-12 bg-head text-center mb-4"
+                        style={{ borderRadius: "5px" }}
+                      >
+                        <h4 className="text-white" style={{paddingTop:"10px"}}>
                           Applicant Information
-                          <hr style={{ color: "#2e008b" }} />
+                          {/* <hr style={{ color: "#2e008b" }} /> */}
                         </h4>
                       </div>
+                      <hr style={{ color: "#2e008b" }} />
                       <DetailedInfo
                         isDisable={isDisable}
                         applicantFirstName={applicantFirstName}

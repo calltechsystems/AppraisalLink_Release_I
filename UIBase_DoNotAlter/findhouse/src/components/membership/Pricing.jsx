@@ -7,11 +7,10 @@ const Pricing = ({
   setModalOpen,
   setPrice,
 }) => {
-
-  let userData = {} ;
-  useEffect(()=>{
-    userData = (JSON.parse(localStorage.getItem("user")));
-  },[]);
+  let userData = {};
+  useEffect(() => {
+    userData = JSON.parse(localStorage.getItem("user"));
+  }, []);
   const pricingContentForMonthly = [
     {
       id: 1,
@@ -119,13 +118,24 @@ const Pricing = ({
                     backgroundColor: "white",
                     borderRadius: "4px",
                     fontSize: "19px",
-                    color:"#2e008b"
+                    color: "#2e008b",
                   }}
                 >
                   Recommended Plan{" "}
                 </div>
               ) : (
-                ""
+                <div
+                  className="p-1 fw-bold"
+                  style={{
+                    visibility: "hidden",
+                    backgroundColor: "white",
+                    borderRadius: "4px",
+                    fontSize: "19px",
+                    color: "#2e008b",
+                  }}
+                >
+                  Recommended Plan{" "}
+                </div>
               )}
             </div>
             <div className="pricing_content">
@@ -141,9 +151,16 @@ const Pricing = ({
             {!hideButton && (
               <div
                 className="pricing_footer"
-                onClick={userData ? "" : () => selectPackageHandler(item.title, item.price)}
+                onClick={
+                  userData
+                    ? ""
+                    : () => selectPackageHandler(item.title, item.price)
+                }
               >
-                <a className={`btn btn-color_01 btn-block w-100`} href={userData ? "/my-plans" : "#"}>
+                <a
+                  className={`btn btn-color_01 btn-block w-100`}
+                  href={userData ? "/my-plans" : "#"}
+                >
                   {selectedId !== item.id
                     ? !selectedId
                       ? "Get Started"

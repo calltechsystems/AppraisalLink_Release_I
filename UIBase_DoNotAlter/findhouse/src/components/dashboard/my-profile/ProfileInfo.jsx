@@ -291,7 +291,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                         <div>
                           <button
                             className="btn btn-color profile_edit_button mb-5"
-                            style={{ marginLeft: "0px" }}
+                            style={{ }}
                             onClick={open} // This will open the upload widget
                           >
                             Upload Photo
@@ -891,7 +891,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                         className="my_profile_setting_input"
                         style={{ textAlign: "end" }}
                       >
-                        <button className="btn btn5 m-1">Cancel</button>
+                        <button className="btn btn2 m-1">Cancel</button>
                         <button
                           className="btn btn2 btn-dark"
                           onClick={onUpdatHandler}

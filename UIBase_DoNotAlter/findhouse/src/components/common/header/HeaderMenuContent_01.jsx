@@ -518,136 +518,134 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                 ) : null}
               </li>
               {/* End .dropitem */}
-              
-                <li
-                  className="last"
-                  onMouseOver={() => setHovered()}
-                  onMouseEnter={() => setInsight()}
+              <li
+                className="last"
+                onMouseOver={() => setHovered()}
+                onMouseEnter={() => setInsight()}
+              >
+                <Link
+                  href="#"
+                  onMouseOver={() => setAbout()}
+                  className={
+                    route.pathname === "/membership" ? "ui-active" : undefined
+                  }
                 >
-                  <Link
-                    href="#"
-                    onMouseOver={() => setAbout()}
-                    className={
-                      route.pathname === "/membership" ? "ui-active" : undefined
-                    }
+                  <span
+                    className="text-info-01 cool-link menuitem"
+                    onMouseOver={() => setPlan(!plan)}
+                    onMouseEnter={() => setLogin()}
+                    // onMouseOver={() => setAbout()}
+                    // onMouseEnter={() => setLogin()}
                   >
-                    <span
-                      className="text-info-01 cool-link menuitem"
-                      onMouseOver={() => setPlan(!plan)}
-                      onMouseEnter={() => setLogin()}
-                      // onMouseOver={() => setAbout()}
-                      // onMouseEnter={() => setLogin()}
-                    >
-                      Subscription
-                    </span>
-                  </Link>
-                  {plan ? (
-                    <div
-                      className=""
-                      style={{
-                        width: "100%",
-                        background: "red",
-                        // opacity: isHovered ? 1 : 0,  Show content when hovered
-                        transition: "opacity 0.3s ease", // Add transition for the opacity property
-                        position: "absolute",
-                        top: "100%",
-                        // left: "20px",
-                        right: "-700px",
-                        width: "1900px",
-                        margin: "-16px",
-                        height: "225px",
-                        backgroundColor: "#fff",
-                        color: "#333",
-                        borderTopColor: "#2e008b",
-                        borderTopWidth: "4px",
-                        borderTopStyle: "solid",
-                        // display: "flex",
-                        // flexDirection: "row",
-                        // justifyContent: "center",
-                        marginTop: "5px",
-                      }}
-                    >
-                      <div className="row">
-                        <div className="col-lg-2"></div>
-                        <div
-                          className="col-lg-3 text-center"
-                          style={{ backgroundColor: "" }}
-                        >
-                          <div className="row">
-                            <div className="col-lg-8 m-5 fw-bold">
-                              <span>
-                                Subscribe today to unlock a world of exclusive
-                                benefits.
-                              </span>
-                              <br />
-                              <Link href="/membership">
-                                <button className="btn btn2 w-50 btn-color">
-                                  Get Started
-                                </button>
-                              </Link>
-                            </div>
+                    Subscription
+                  </span>
+                </Link>
+                {plan ? (
+                  <div
+                    className=""
+                    style={{
+                      width: "100%",
+                      background: "red",
+                      // opacity: isHovered ? 1 : 0,  Show content when hovered
+                      transition: "opacity 0.3s ease", // Add transition for the opacity property
+                      position: "absolute",
+                      top: "100%",
+                      // left: "20px",
+                      right: "-700px",
+                      width: "1900px",
+                      margin: "-16px",
+                      height: "225px",
+                      backgroundColor: "#fff",
+                      color: "#333",
+                      borderTopColor: "#2e008b",
+                      borderTopWidth: "4px",
+                      borderTopStyle: "solid",
+                      // display: "flex",
+                      // flexDirection: "row",
+                      // justifyContent: "center",
+                      marginTop: "5px",
+                    }}
+                  >
+                    <div className="row">
+                      <div className="col-lg-2"></div>
+                      <div
+                        className="col-lg-3 text-center"
+                        style={{ backgroundColor: "" }}
+                      >
+                        <div className="row">
+                          <div className="col-lg-8 m-5 fw-bold">
+                            <span>
+                              Subscribe today to unlock a world of exclusive
+                              benefits.
+                            </span>
+                            <br />
+                            <Link href="/membership">
+                              <button className="btn btn2 w-50 btn-color">
+                                Get Started
+                              </button>
+                            </Link>
                           </div>
                         </div>
-                        <div className="col-lg-2 text-end">
-                          <div className="row">
-                            <div
-                              className="col-lg-12 m-3 fw-bold"
-                              style={{ marginLeft: "-30px" }}
-                            >
-                              <Link href="/">
-                                <Image
-                                  width={190}
-                                  height={125}
-                                  className="logo2 img-fluid mt-1"
-                                  src="/assets/images/home/man-pencil-fills-out-questionnaire-260nw-2052001217.png"
-                                  alt="header-logo2.png"
-                                />
-                              </Link>
-                            </div>
-                          </div>
-                        </div>
-                        <div
-                          className="col-lg-2 text-center"
-                          style={{ backgroundColor: "#c2c2c2" }}
-                        >
-                          <div className="row">
-                            <div className="col-lg-8 m-5 fw-bold">
-                              <span style={{ lineHeight: "1.9" }}>
-                                Experience our platform to the fullest by
-                                becoming a subscriber on{" "}
-                                <span className="text-color fw-bold">
-                                  Appraisal Link
-                                </span>
-                                .
-                              </span>
-                              <br />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-lg-2 text-center">
-                          <div className="row">
-                            <div className="col-lg-6 m-4 fw-bold" style={{}}>
-                              <Link href="/">
-                                <Image
-                                  width={160}
-                                  height={125}
-                                  className="logo2 img-fluid"
-                                  // style={{ marginRight: "10px" }}
-                                  src="/assets/images/home/99.jpg"
-                                  alt="header-logo2.png"
-                                />
-                              </Link>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="col-lg-1"></div>
                       </div>
-                      {/* <h1>hiiiii</h1> */}
+                      <div className="col-lg-2 text-end">
+                        <div className="row">
+                          <div
+                            className="col-lg-12 m-3 fw-bold"
+                            style={{ marginLeft: "-30px" }}
+                          >
+                            <Link href="/">
+                              <Image
+                                width={190}
+                                height={125}
+                                className="logo2 img-fluid mt-1"
+                                src="/assets/images/home/man-pencil-fills-out-questionnaire-260nw-2052001217.png"
+                                alt="header-logo2.png"
+                              />
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        className="col-lg-2 text-center"
+                        style={{ backgroundColor: "#c2c2c2" }}
+                      >
+                        <div className="row">
+                          <div className="col-lg-8 m-5 fw-bold">
+                            <span style={{ lineHeight: "1.9" }}>
+                              Experience our platform to the fullest by becoming
+                              a subscriber on{" "}
+                              <span className="text-color fw-bold">
+                                Appraisal Link
+                              </span>
+                              .
+                            </span>
+                            <br />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-lg-2 text-center">
+                        <div className="row">
+                          <div className="col-lg-6 m-4 fw-bold" style={{}}>
+                            <Link href="/">
+                              <Image
+                                width={160}
+                                height={125}
+                                className="logo2 img-fluid"
+                                // style={{ marginRight: "10px" }}
+                                src="/assets/images/home/99.jpg"
+                                alt="header-logo2.png"
+                              />
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="col-lg-1"></div>
                     </div>
-                  ) : null}
-                </li>
-              
+                    {/* <h1>hiiiii</h1> */}
+                  </div>
+                ) : null}
+              </li>
               {/* End .dropitem */}
               <li
                 className="last"

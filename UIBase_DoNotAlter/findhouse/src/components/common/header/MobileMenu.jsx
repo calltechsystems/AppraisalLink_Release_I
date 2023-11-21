@@ -22,7 +22,7 @@ const MobileMenu = () => {
 
           <ul className="menu_bar_home2">
             <li className="list-inline-item list_s">
-              <Link href="/login">
+              <Link href="/register">
                 <span className="flaticon-user"></span>
               </Link>
             </li>

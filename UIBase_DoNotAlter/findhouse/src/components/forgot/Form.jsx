@@ -5,8 +5,13 @@ import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { encryptionData } from "../../utils/dataEncryption";
+import Captcha from "../common/Captcha";
 
 const Form = () => {
+  const [captchaVerfied, setCaptchaVerified] = useState(false);
+  const [reloadOption, setReloadOption] = useState(false);
+  const [change, setChange] = useState(false);
+
   const router = useRouter();
 
   const [show, setShow] = useState(false);
@@ -16,128 +21,136 @@ const Form = () => {
   const newPasswordConfirm = useRef("");
   const emailRef = useRef("");
 
-  const onCloseHandler = () =>{
+  const onCloseHandler = () => {
     console.log("in");
   };
 
-  const onClickHandler = () =>{
-
+  const onClickHandler = () => {
     const email = emailRef.current.value;
-    if(email === ""){
+    if (email === "") {
       toast.error("Registered email should be filled !");
-    }
-    else{
+    } else {
       const formData = {
-        email : email
+        email: email,
       };
 
       const payload = encryptionData(formData);
-      toast.loading("Sending the token to this email");
-      axios.post("/api/sendResetToken",payload)
-      .then((res)=>{
-        toast.dismiss();
-        setShow(true);
-        toast.success("Sent Successfully");
-      })
-      .catch((err)=>{
-        toast.dismiss();
-        toast.error("Try again");
-      })
+      toast.loading("Sending the otp to this email");
+      axios
+        .post("/api/sendResetToken", payload)
+        .then((res) => {
+          toast.dismiss();
+          setShow(true);
+          toast.success("Sent Successfully");
+        })
+        .catch((err) => {
+          toast.dismiss();
+          toast.success("Sent Successfully");
+          // toast.error("Try again");
+        });
     }
-    
-  }
+  };
 
-  const onSubmitHnadler = () =>{
+  const [isFocused, setIsFocused] = useState(false);
+  const [is2Focused, setIs2Focused] = useState(false);
 
+  const labelStyle = {
+    position: "absolute",
+    top: isFocused ? "-30px" : "-20px",
+    left: "0",
+    transition: "top 0.3s ease, font-size 0.3s ease",
+    fontSize: isFocused ? "12px" : "10px",
+    color: isFocused ? "green" : "inherit",
+  };
+
+  const onSubmitHnadler = () => {
     const email = emailRef.current.value;
     const newPasswordRef = newPassword.current.value;
     const newPasswordConfirmRef = newPasswordConfirm.current.value;
     const token = tokenRef.current.value;
-    if(email === ""){
+    if (email === "") {
       toast.error("Registered email should be filled !");
     }
 
-    if(token === ""){
-      toast.error("Please provide the token !");
+    if (token === "") {
+      toast.error("Please provide the otp !");
     }
 
-    if(newPasswordRef !== newPasswordConfirmRef){
+    if (newPasswordRef !== newPasswordConfirmRef) {
       toast.error("provide the same password");
-    }
-
-    else{
+    } else {
       const formData = {
-        email : email,
-        newPassword : newPasswordRef,
-        token : token
+        email: email,
+        newPassword: newPasswordRef,
+        token: token,
       };
 
       console.log(formData);
 
       const payload = encryptionData(formData);
       toast.loading("Reseting password ....");
-      axios.post("/api/resetForgotPassword",payload)
-      .then((res)=>{
-        toast.dismiss();
-        setShow(true);
-        toast.success("Password set Successfully");
-        router.push("/login");
-      })
-      .catch((err)=>{
-        toast.dismiss();
-        toast.error("Try again");
-      })
+      axios
+        .post("/api/resetForgotPassword", payload)
+        .then((res) => {
+          toast.dismiss();
+          setShow(true);
+          toast.success("Password set Successfully");
+          router.push("/login");
+        })
+        .catch((err) => {
+          toast.dismiss();
+          toast.error("Try again");
+        });
     }
+  };
 
-
-
-    
-  }
-
-  const resentOTPHnadler = () =>{
-
+  const resentOTPHnadler = () => {
     const email = emailRef.current.value;
-    if(email === ""){
+    if (email === "") {
       toast.error("Registered email should be filled !");
-    }
-    else{
+    } else {
       const formData = {
-        email : email
+        email: email,
       };
 
       const payload = encryptionData(formData);
       toast.loading("Re sending the token to this email");
-      axios.post("/api/sendResetToken",payload)
-      .then((res)=>{
-        toast.dismiss();
-        setShow(true);
-        toast.success("Sent Successfully");
-      })
-      .catch((err)=>{
-        toast.dismiss();
-        toast.error("Try again");
-      })
+      axios
+        .post("/api/sendResetToken", payload)
+        .then((res) => {
+          toast.dismiss();
+          setShow(true);
+          toast.success("Sent Successfully");
+        })
+        .catch((err) => {
+          toast.dismiss();
+          toast.error("Try again");
+        });
     }
-  }
+  };
 
   return (
     <>
       <div className="row">
-        <Link href={"/login"} className="text-end" style={{marginLeft:'34rem'}}>
+        <Link
+          href={"/login"}
+          className="text-end"
+          style={{ marginLeft: "34rem" }}
+        >
           <span className="flaticon-close"></span>
         </Link>
         <div className="col-lg-6">
           <Image
             width={157}
             height={300}
-            className="img-fluid w100 h-90 cover"
+            className="img-fluid w100 h-90 cover mt-5"
             src="/assets/images/home/forgot-password.avif"
             alt="login.jpg"
           />
         </div>
 
         <div className="col-lg-6 pt60 ">
-          <div  style={{ padding: "20px" }}>
+          <div style={{ padding: "20px" }}>
             <div className="heading text-center">
               <h3>Reset your password via registered email.</h3>
             </div>
@@ -208,10 +221,20 @@ const Form = () => {
 
             {show && (
               <div className="input-group mb-2 mr-sm-2">
+                <label
+                  htmlFor="passwordInput"
+                  style={labelStyle}
+                  className="m-2"
+                >
+                  Password must have a A-Z,a-z,0-9,!@#$%^& a & 8 - 15 characters
+                  long.
+                </label>
                 <input
                   type="password"
                   ref={newPasswordConfirm}
-                  className="form-control mb-2"
+                  onFocus={() => setIs2Focused(true)}
+                  onBlur={() => setIs2Focused(false)}
+                  className="form-control mb-2 mt-2"
                   required
                   placeholder="Confirm password"
                 />
@@ -219,6 +242,30 @@ const Form = () => {
                   {/* <div className="input-group-text">
                   <i className="flaticon-user"></i>
                 </div> */}
+                </div>
+              </div>
+            )}
+
+            {show && (
+              <div className="col-12">
+                <div>
+                  {/* {captchaVerfied ? (
+                  ""
+                ) : (
+                  <label
+                    className="form-check-label form-check-label"
+                    htmlFor="remeberMe"
+                    style={{ color: "red" }}
+                  >
+                    Captcha doesnt match
+                  </label>
+                )} */}
+                  <Captcha
+                    verified={setCaptchaVerified}
+                    reload={reloadOption}
+                    change={change}
+                    setChange={setChange}
+                  />
                 </div>
               </div>
             )}
@@ -243,7 +290,11 @@ const Form = () => {
             {/* End .input-group */}
 
             {show && (
-              <button onClick={onSubmitHnadler} className="btn btn-log w-100 btn-thm">
+              <button
+                type="submit"
+                onClick={onSubmitHnadler}
+                className="btn btn-log w-100 btn-thm"
+              >
                 Submit
               </button>
             )}

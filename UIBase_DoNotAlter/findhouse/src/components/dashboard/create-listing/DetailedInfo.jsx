@@ -98,6 +98,152 @@ const DetailedInfo = ({
     <>
       <div className="row">
         <div className="col-lg-12">
+          <div className="row mb-2">
+            <div className="col-lg-6">
+              <div className="my_profile_setting_input form-group">
+                <label
+                  htmlFor=""
+                  style={{
+                    paddingTop: "15px",
+                    color: "#1e90ff",
+                    fontWeight: "lighter",
+                  }}
+                >
+                  First Name
+                </label>
+              </div>
+              <div className="">
+                <input
+                  style={{
+                    // paddingTop: "15px",
+                    // paddingBottom: "15px",
+                    backgroundColor: "#d1eaf0",
+                    // color: "white",
+                  }}
+                  type="text"
+                  className="form-control"
+                  id="formGroupExampleInput3"
+                  onChange={(e) => setApplicantFirstName(e.target.value)}
+                  value={applicantFirstName}
+                  disabled={isDisable}
+                />
+              </div>
+            </div>
+            <div className="col-lg-6">
+              <div className="my_profile_setting_input form-group">
+                <label
+                  htmlFor=""
+                  style={{
+                    paddingTop: "15px",
+                    color: "#1e90ff",
+                    fontWeight: "lighter",
+                  }}
+                >
+                  Last Name
+                </label>
+              </div>
+              <div className="">
+                <input
+                  style={{
+                    // paddingTop: "15px",
+                    // paddingBottom: "15px",
+                    backgroundColor: "#d1eaf0",
+                    // color: "white",
+                  }}
+                  type="text"
+                  className="form-control"
+                  id="formGroupExampleInput3"
+                  onChange={(e) => setApplicantLastName(e.target.value)}
+                  value={applicantLatsName}
+                  disabled={isDisable}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="row mb-2">
+            <div className="col-lg-6">
+              <div className="my_profile_setting_input form-group">
+                <label
+                  htmlFor=""
+                  style={{
+                    paddingTop: "15px",
+                    color: "#1e90ff",
+                    fontWeight: "lighter",
+                  }}
+                >
+                  Phone Number
+                </label>
+              </div>
+              <div className="">
+                <input
+                  style={{
+                    // paddingTop: "15px",
+                    // paddingBottom: "15px",
+                    backgroundColor: "#d1eaf0",
+                    // color: "white",
+                  }}
+                  type="text"
+                  className="form-control"
+                  id="formGroupExampleInput3"
+                  onChange={(e) => setApplicantNumber(e.target.value)}
+                  value={applicantNumber}
+                  disabled={isDisable}
+                />
+              </div>
+            </div>
+            <div className="col-lg-6">
+              <div className="my_profile_setting_input form-group">
+                <label
+                  htmlFor=""
+                  style={{
+                    paddingTop: "15px",
+                    color: "#1e90ff",
+                    fontWeight: "lighter",
+                  }}
+                >
+                  Email Address
+                </label>
+              </div>
+              <div className="">
+                <input
+                  style={{
+                    // paddingTop: "15px",
+                    // paddingBottom: "15px",
+                    backgroundColor: "#d1eaf0",
+                    // color: "white",
+                  }}
+                  type="text"
+                  className="form-control"
+                  id="formGroupExampleInput3"
+                  onChange={(e) => setApplicantEmail(e.target.value)}
+                  value={applicantEmail}
+                  disabled={isDisable}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="col-xl-12">
+            <div className="my_profile_setting_input overflow-hidden mt20 text-center">
+              <button className="btn btn5 m-1">Cancel</button>
+              {!isDisable &&
+                (propertyData ? (
+                  <button className="btn btn5" onClick={updateHandler}>
+                    Update
+                  </button>
+                ) : (
+                  <button className="btn btn5" onClick={submitHandler}>
+                    Submit
+                  </button>
+                ))}
+            </div>
+          </div>
+          {/* End .col */}
+        </div>
+      </div>
+
+      {/* <div className="row">
+        <div className="col-lg-12">
           <div className="row" style={{ marginBottom: "-15px" }}>
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
@@ -112,8 +258,8 @@ const DetailedInfo = ({
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-               onChange={(e)=>setApplicantFirstName(e.target.value)}
-               value={applicantFirstName}
+                onChange={(e) => setApplicantFirstName(e.target.value)}
+                value={applicantFirstName}
                 disabled={isDisable}
               />
             </div>
@@ -195,9 +341,8 @@ const DetailedInfo = ({
                 ))}
             </div>
           </div>
-          {/* End .col */}
         </div>
-      </div>
+      </div> */}
     </>
   );
 };

@@ -14,7 +14,7 @@ const Form = ({userData , chnageShowCardHandler}) => {
     >
       <div>
         <button
-          className="btn btn2 btn-color profile_edit_button"
+          className="btn btn2 btn-color profile_edit_button_01"
           onClick={()=>chnageShowCardHandler(false)}
         >
           <span
