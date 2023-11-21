@@ -84,7 +84,7 @@ const SidebarMenu = () => {
                   : ""
               }`}
             >
-              <Link href="/appraiser-wishlist">
+              <Link href="/appraiser-wishlisted">
                 <i className="flaticon-heart"></i>
                 <span> Wishlist</span>
               </Link>

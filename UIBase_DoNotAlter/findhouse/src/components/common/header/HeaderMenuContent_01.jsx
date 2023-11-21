@@ -5,6 +5,11 @@ import Image from "next/image";
 import { useTranslation } from "react-i18next";
 
 const HeaderMenuContent = ({ float = "", hide, isListing }) => {
+
+  const logout = ()=>{
+    localStorage.removeItem("user");
+    route.push("/login");
+  }
   const route = useRouter();
 
   const { t } = useTranslation("common");
@@ -812,8 +817,9 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                     onMouseOver={() => setLogin(!login)}
                     // onMouseLeave={() => setLogin()}
                     onMouseEnter={() => setPlan()}
+                    onClick={userData ? logout : ""}
                   >
-                    Login
+                    {userData ? "logout" : "login"}
                   </span>
                   {/* <span
                     className="arrow text-info-01"
