@@ -153,7 +153,7 @@ const MyAccount = ({user, profileCount , setProfile, userData}) => {
           width={40}
           height={40}
           className="float-start"
-          src= {userData?.broker_Details?.profileImage ? userData.broker_Details?.profileImage :  `/assets/images/team/Gary-Avatar.png`} 
+          src= {userData?.broker_Details?.profileImage ? userData.broker_Details?.profileImage :  `/assets/images/home/placeholder_01.jpg`} 
           alt="e1.png"
         />
         <p>

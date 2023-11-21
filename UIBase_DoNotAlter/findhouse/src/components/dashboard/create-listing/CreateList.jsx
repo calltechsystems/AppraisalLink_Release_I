@@ -24,8 +24,8 @@ const CreateList = ({
                   htmlFor=""
                   style={{
                     paddingTop: "15px",
-                    color: "#1e90ff",
-                    fontWeight: "lighter",
+                    color: "#1560bd",
+                    fontWeight: "",
                   }}
                 >
                   Maximum Appraisal Cost ($)
@@ -36,8 +36,8 @@ const CreateList = ({
                   style={{
                     // paddingTop: "15px",
                     // paddingBottom: "15px",
-                    backgroundColor: "#d1eaf0",
-                    // color: "white",
+                    backgroundColor: "#03045e",
+                    color: "white",
                   }}
                   type="number"
                   className="form-control"
@@ -54,8 +54,8 @@ const CreateList = ({
                   htmlFor=""
                   style={{
                     paddingTop: "15px",
-                    color: "#1e90ff",
-                    fontWeight: "lighter",
+                    color: "#1560bd",
+                    fontWeight: "",
                   }}
                 >
                   Community
@@ -66,8 +66,8 @@ const CreateList = ({
                   style={{
                     // paddingTop: "15px",
                     // paddingBottom: "15px",
-                    backgroundColor: "#d1eaf0",
-                    // color: "white",
+                    backgroundColor: "#03045e",
+                    color: "white",
                   }}
                   required
                   type="text"
@@ -88,8 +88,8 @@ const CreateList = ({
                   htmlFor=""
                   style={{
                     paddingTop: "15px",
-                    color: "#1e90ff",
-                    fontWeight: "lighter",
+                    color: "#1560bd",
+                    fontWeight: "",
                   }}
                 >
                   Urgency
@@ -107,8 +107,8 @@ const CreateList = ({
                     style={{
                       paddingTop: "15px",
                       paddingBottom: "15px",
-                      backgroundColor: "#d1eaf0",
-                      // color: "white",
+                      backgroundColor: "#03045e",
+                      color: "white",
                     }}
                   >
                     <option data-tokens="SelectRole" value={1}>
@@ -138,7 +138,7 @@ const CreateList = ({
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
                 htmlFor=""
-                style={{ paddingTop: "15px", fontWeight: "lighter" }}
+                style={{ paddingTop: "15px", fontWeight: "" }}
               >
                 Maximum Appraisal Cost ($)
               </label>
@@ -159,7 +159,7 @@ const CreateList = ({
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
                 htmlFor=""
-                style={{ paddingTop: "15px", fontWeight: "lighter" }}
+                style={{ paddingTop: "15px", fontWeight: "" }}
               >
                 Community
               </label>
@@ -180,7 +180,7 @@ const CreateList = ({
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
                 htmlFor=""
-                style={{ paddingTop: "15px", fontWeight: "lighter" }}
+                style={{ paddingTop: "15px", fontWeight: "" }}
               >
                 Urgency
               </label>

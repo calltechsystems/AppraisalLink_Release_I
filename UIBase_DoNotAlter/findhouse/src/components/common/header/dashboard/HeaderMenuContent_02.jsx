@@ -517,7 +517,7 @@ const HeaderMenuContent = ({ float = "", hide, userData }) => {
               width={45}
               height={45}
               className="rounded-circle"
-              src="/assets/images/team/a2.jpg"
+              src="/assets/images/home/placeholder_01.jpg"
               alt="e1.png"
             />
             <span className="dn-1199 ms-1 text-dark">

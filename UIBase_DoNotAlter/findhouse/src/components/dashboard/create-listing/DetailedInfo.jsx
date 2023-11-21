@@ -105,8 +105,8 @@ const DetailedInfo = ({
                   htmlFor=""
                   style={{
                     paddingTop: "15px",
-                    color: "#1e90ff",
-                    fontWeight: "lighter",
+                    color: "#1560bd",
+                    fontWeight: "",
                   }}
                 >
                   First Name
@@ -117,8 +117,8 @@ const DetailedInfo = ({
                   style={{
                     // paddingTop: "15px",
                     // paddingBottom: "15px",
-                    backgroundColor: "#d1eaf0",
-                    // color: "white",
+                    backgroundColor: "#03045e",
+                    color: "white",
                   }}
                   type="text"
                   className="form-control"
@@ -135,8 +135,8 @@ const DetailedInfo = ({
                   htmlFor=""
                   style={{
                     paddingTop: "15px",
-                    color: "#1e90ff",
-                    fontWeight: "lighter",
+                    color: "#1560bd",
+                    fontWeight: "",
                   }}
                 >
                   Last Name
@@ -147,8 +147,8 @@ const DetailedInfo = ({
                   style={{
                     // paddingTop: "15px",
                     // paddingBottom: "15px",
-                    backgroundColor: "#d1eaf0",
-                    // color: "white",
+                    backgroundColor: "#03045e",
+                    color: "white",
                   }}
                   type="text"
                   className="form-control"
@@ -168,8 +168,8 @@ const DetailedInfo = ({
                   htmlFor=""
                   style={{
                     paddingTop: "15px",
-                    color: "#1e90ff",
-                    fontWeight: "lighter",
+                    color: "#1560bd",
+                    fontWeight: "",
                   }}
                 >
                   Phone Number
@@ -180,8 +180,8 @@ const DetailedInfo = ({
                   style={{
                     // paddingTop: "15px",
                     // paddingBottom: "15px",
-                    backgroundColor: "#d1eaf0",
-                    // color: "white",
+                    backgroundColor: "#03045e",
+                    color: "white",
                   }}
                   type="text"
                   className="form-control"
@@ -198,8 +198,8 @@ const DetailedInfo = ({
                   htmlFor=""
                   style={{
                     paddingTop: "15px",
-                    color: "#1e90ff",
-                    fontWeight: "lighter",
+                    color: "#1560bd",
+                    fontWeight: "",
                   }}
                 >
                   Email Address
@@ -210,8 +210,8 @@ const DetailedInfo = ({
                   style={{
                     // paddingTop: "15px",
                     // paddingBottom: "15px",
-                    backgroundColor: "#d1eaf0",
-                    // color: "white",
+                    backgroundColor: "#03045e",
+                    color: "white",
                   }}
                   type="text"
                   className="form-control"
@@ -248,7 +248,7 @@ const DetailedInfo = ({
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
                 htmlFor=""
-                style={{ paddingTop: "15px", fontWeight: "lighter" }}
+                style={{ paddingTop: "15px", fontWeight: "" }}
               >
                 First Name :
               </label>
@@ -268,7 +268,7 @@ const DetailedInfo = ({
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
                 htmlFor=""
-                style={{ paddingTop: "15px", fontWeight: "lighter" }}
+                style={{ paddingTop: "15px", fontWeight: "" }}
               >
                 Last Name :
               </label>
@@ -288,7 +288,7 @@ const DetailedInfo = ({
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
                 htmlFor=""
-                style={{ paddingTop: "15px", fontWeight: "lighter" }}
+                style={{ paddingTop: "15px", fontWeight: "" }}
               >
                 Phone Number :
               </label>
@@ -308,7 +308,7 @@ const DetailedInfo = ({
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
                 htmlFor=""
-                style={{ paddingTop: "15px", fontWeight: "lighter" }}
+                style={{ paddingTop: "15px", fontWeight: "" }}
               >
                 Email Address :
               </label>

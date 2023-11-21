@@ -8,7 +8,7 @@ import { FaEye } from "react-icons/fa";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-const Form = ({setModalIsOpen,setModalIsOpenError,setErrorMessage}) => {
+const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
   const [showhide, setShowhide] = useState("");
 
   const [change, setChange] = useState(false);
@@ -16,23 +16,21 @@ const Form = ({setModalIsOpen,setModalIsOpenError,setErrorMessage}) => {
   const [showLabel, setShowLabel] = useState(false);
   const [captchaVerfied, setCaptchaVerified] = useState(false);
 
-  
-  const [error , setError] = useState(false);
-  const [success , setSuccess] = useState(false);
-  const [errorContent , setErrorContent] = useState("");
-  
-  const [successContent , setSuccessContent] = useState("");
+  const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [errorContent, setErrorContent] = useState("");
+
+  const [successContent, setSuccessContent] = useState("");
 
   const [firstClick, setFirstClick] = useState(true);
 
-  const handleErrorModalCancel = ()=>{
+  const handleErrorModalCancel = () => {
     setError(false);
-  }
+  };
 
-  const handleSuccessModalCancel = ()=>{
+  const handleSuccessModalCancel = () => {
     setSuccess(false);
-  }
-
+  };
 
   const router = useRouter();
 
@@ -187,27 +185,63 @@ const Form = ({setModalIsOpen,setModalIsOpenError,setErrorMessage}) => {
       </div>
       <div className="col-lg-6">
         <form onSubmit={registerHandler}>
-        {error && <div style={{backgroundColor:"orangered",opacity:"80%",borderColor:"red",borderWidth:"20px",borderRadius:"4px",padding:"1%",justifyContent:"space-between",display:"flex",flexDirection:"row",width:"80%",marginLeft:"10%"}}>
-        <h4 style={{color:"white"}}>Invalid credentials</h4>
-        <div
-          className="input-group-text m-1"
-          style={{ border: "1px solid white"}}
-          onClick={handleErrorModalCancel}
-        >
-           <img src="https://th.bing.com/th/id/OIP.VirRE_r48DkDvZVNoo6_agHaHZ?w=209&h=208&c=7&r=0&o=5&dpr=1.1&pid=1.7" width={"20px"} height={"20px"}/>
-        </div>
-        </div>}
-        {success && <div style={{backgroundColor:"green",opacity:"80%",borderColor:"green",borderWidth:"20px",borderRadius:"4px",padding:"1%",justifyContent:"space-between",display:"flex",flexDirection:"row",width:"80%",marginLeft:"10%"}}>
-        <h4 style={{color:"white"}}>Successfully logged in</h4>
-        <div
-          className="input-group-text m-1"
-          style={{ border: "1px solid white"}}
-          onClick={handleSuccessModalCancel}
-        >
-           <h4 style={{color:"white",marginTop:"20%"}}>OK</h4>
-        </div>
-        </div>}
-        
+          {error && (
+            <div
+              style={{
+                backgroundColor: "orangered",
+                opacity: "80%",
+                borderColor: "red",
+                borderWidth: "20px",
+                borderRadius: "4px",
+                padding: "1%",
+                justifyContent: "space-between",
+                display: "flex",
+                flexDirection: "row",
+                width: "80%",
+                marginLeft: "10%",
+              }}
+            >
+              <h4 style={{ color: "white" }}>Invalid credentials</h4>
+              <div
+                className="input-group-text m-1"
+                style={{ border: "1px solid white" }}
+                onClick={handleErrorModalCancel}
+              >
+                <img
+                  src="https://th.bing.com/th/id/OIP.VirRE_r48DkDvZVNoo6_agHaHZ?w=209&h=208&c=7&r=0&o=5&dpr=1.1&pid=1.7"
+                  width={"20px"}
+                  height={"20px"}
+                />
+              </div>
+            </div>
+          )}
+          {success && (
+            <div
+              style={{
+                backgroundColor: "green",
+                opacity: "80%",
+                borderColor: "green",
+                borderWidth: "20px",
+                borderRadius: "4px",
+                padding: "1%",
+                justifyContent: "space-between",
+                display: "flex",
+                flexDirection: "row",
+                width: "80%",
+                marginLeft: "10%",
+              }}
+            >
+              <h4 style={{ color: "white" }}>Successfully logged in</h4>
+              <div
+                className="input-group-text m-1"
+                style={{ border: "1px solid white" }}
+                onClick={handleSuccessModalCancel}
+              >
+                <h4 style={{ color: "white", marginTop: "20%" }}>OK</h4>
+              </div>
+            </div>
+          )}
+
           <div className="heading text-center">
             <h3>Signup to your account</h3>
           </div>
@@ -393,7 +427,15 @@ const Form = ({setModalIsOpen,setModalIsOpenError,setErrorMessage}) => {
               className="form-check-label form-check-label"
               htmlFor="terms"
             >
-              I have read and accept the Terms and Privacy Policy?
+              I have read and accept the
+              <Link
+                href="assets/images/Terms & Conditions.pdf"
+                target="_blank"
+                className="form-check-label text-primary"
+              >
+                Terms and Privacy Policy
+              </Link>
+              ?
             </label>
           </div>
           {/* End .form-group */}

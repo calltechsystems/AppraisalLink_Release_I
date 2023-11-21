@@ -30,7 +30,7 @@ const LocationField = ({
                 <label
                   // className="text-color"
                   htmlFor=""
-                  style={{ fontWeight: "lighter", color: "#1e90ff" }}
+                  style={{ fontWeight: "", color: "#1560bd" }}
                 >
                   Street Name <span class="req-btn">*</span>
                 </label>
@@ -40,8 +40,8 @@ const LocationField = ({
                   style={{
                     // paddingTop: "15px",
                     // paddingBottom: "15px",
-                    backgroundColor: "#d1eaf0",
-                    // color: "white",
+                    backgroundColor: "#03045e",
+                    color: "white",
                   }}
                   type="text"
                   // placeholder="Street Name"
@@ -59,8 +59,8 @@ const LocationField = ({
                   // className="text-color"
                   htmlFor=""
                   style={{
-                    fontWeight: "lighter",
-                    color: "#1e90ff",
+                    fontWeight: "",
+                    color: "#1560bd",
                     // paddingTop: "15px",
                   }}
                 >
@@ -72,8 +72,8 @@ const LocationField = ({
                   style={{
                     // paddingTop: "15px",
                     // paddingBottom: "15px",
-                    backgroundColor: "#d1eaf0",
-                    // color: "white",
+                    backgroundColor: "#03045e",
+                    color: "white",
                   }}
                   type="text"
                   // placeholder="Street Number"
@@ -94,8 +94,8 @@ const LocationField = ({
                   htmlFor=""
                   style={{
                     paddingTop: "15px",
-                    color: "#1e90ff",
-                    fontWeight: "lighter",
+                    color: "#1560bd",
+                    fontWeight: "",
                   }}
                 >
                   City <span class="req-btn">*</span>
@@ -106,8 +106,8 @@ const LocationField = ({
                   style={{
                     // paddingTop: "15px",
                     // paddingBottom: "15px",
-                    backgroundColor: "#d1eaf0",
-                    // color: "white",
+                    backgroundColor: "#03045e",
+                    color: "white",
                   }}
                   type="text"
                   className="form-control"
@@ -125,8 +125,8 @@ const LocationField = ({
                   htmlFor=""
                   style={{
                     paddingTop: "15px",
-                    color: "#1e90ff",
-                    fontWeight: "lighter",
+                    color: "#1560bd",
+                    fontWeight: "",
                   }}
                 >
                   State <span class="req-btn">*</span>
@@ -137,8 +137,8 @@ const LocationField = ({
                   style={{
                     // paddingTop: "15px",
                     // paddingBottom: "15px",
-                    backgroundColor: "#d1eaf0",
-                    // color: "white",
+                    backgroundColor: "#03045e",
+                    color: "white",
                   }}
                   type="text"
                   className="form-control"
@@ -158,8 +158,8 @@ const LocationField = ({
                   htmlFor=""
                   style={{
                     paddingTop: "15px",
-                    color: "#1e90ff",
-                    fontWeight: "lighter",
+                    color: "#1560bd",
+                    fontWeight: "",
                   }}
                 >
                   Postal Code <span class="req-btn">*</span>
@@ -170,8 +170,8 @@ const LocationField = ({
                   style={{
                     // paddingTop: "15px",
                     // paddingBottom: "15px",
-                    backgroundColor: "#d1eaf0",
-                    // color: "white",
+                    backgroundColor: "#03045e",
+                    color: "white",
                   }}
                   type="text"
                   className="form-control"
@@ -189,8 +189,8 @@ const LocationField = ({
                   htmlFor=""
                   style={{
                     paddingTop: "15px",
-                    color: "#1e90ff",
-                    fontWeight: "lighter",
+                    color: "#1560bd",
+                    fontWeight: "",
                   }}
                 >
                   Property Area (sq.ft)
@@ -201,8 +201,8 @@ const LocationField = ({
                   style={{
                     // paddingTop: "15px",
                     // paddingBottom: "15px",
-                    backgroundColor: "#d1eaf0",
-                    // color: "white",
+                    backgroundColor: "#03045e",
+                    color: "white",
                   }}
                   type="number"
                   className="form-control"
@@ -221,8 +221,8 @@ const LocationField = ({
                 htmlFor=""
                 style={{
                   paddingTop: "15px",
-                  color: "#1e90ff",
-                  fontWeight: "lighter",
+                  color: "#1560bd",
+                  fontWeight: "",
                 }}
               >
                 Type of Building <span class="req-btn">*</span>
@@ -240,7 +240,8 @@ const LocationField = ({
                   style={{
                     paddingTop: "15px",
                     paddingBottom: "15px",
-                    backgroundColor: "#d1eaf0",
+                    backgroundColor: "#03045e",
+                    color:"white"
                   }}
                 >
                   <option data-tokens="SelectRole" value={1}>
@@ -273,8 +274,8 @@ const LocationField = ({
                 htmlFor=""
                 style={{
                     paddingTop: "15px",
-                    color: "#1e90ff",
-                    fontWeight: "lighter",
+                    color: "#1560bd",
+                    fontWeight: "",
                   }}
               >
                 Street Name <span class="req-btn">*</span>
@@ -298,8 +299,8 @@ const LocationField = ({
                 htmlFor=""
                 style={{
                     paddingTop: "15px",
-                    color: "#1e90ff",
-                    fontWeight: "lighter",
+                    color: "#1560bd",
+                    fontWeight: "",
                   }}
               >
                 Street Number <span class="req-btn">*</span>
@@ -323,8 +324,8 @@ const LocationField = ({
                 htmlFor=""
                 style={{
                     paddingTop: "15px",
-                    color: "#1e90ff",
-                    fontWeight: "lighter",
+                    color: "#1560bd",
+                    fontWeight: "",
                   }}
               >
                 City <span class="req-btn">*</span>
@@ -348,8 +349,8 @@ const LocationField = ({
                 htmlFor=""
                 style={{
                     paddingTop: "15px",
-                    color: "#1e90ff",
-                    fontWeight: "lighter",
+                    color: "#1560bd",
+                    fontWeight: "",
                   }}
               >
                 State <span class="req-btn">*</span>
@@ -373,8 +374,8 @@ const LocationField = ({
                 htmlFor=""
                 style={{
                     paddingTop: "15px",
-                    color: "#1e90ff",
-                    fontWeight: "lighter",
+                    color: "#1560bd",
+                    fontWeight: "",
                   }}
               >
                 Postal Code <span class="req-btn">*</span>
@@ -398,8 +399,8 @@ const LocationField = ({
                 htmlFor=""
                 style={{
                     paddingTop: "15px",
-                    color: "#1e90ff",
-                    fontWeight: "lighter",
+                    color: "#1560bd",
+                    fontWeight: "",
                   }}
               >
                 Property Area (sq.ft)
@@ -423,8 +424,8 @@ const LocationField = ({
                 htmlFor=""
                 style={{
                     paddingTop: "15px",
-                    color: "#1e90ff",
-                    fontWeight: "lighter",
+                    color: "#1560bd",
+                    fontWeight: "",
                   }}
               >
                 Type of Building <span class="req-btn">*</span>

@@ -14,7 +14,7 @@ const ProfileInfo = ({ setProfileCount , setShowCard}) => {
 
   const [SelectedImage, setSelectedImage] = useState(
     userData?.broker_Details?.profileImage ||
-      "/assets/images/team/Gary-Avatar.png"
+      "/assets/images/home/placeholder_01.jpg"
   );
 
   const [edit, setEdit] = useState(!userData.broker_Details?.firstName);

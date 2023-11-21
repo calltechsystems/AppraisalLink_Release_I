@@ -522,7 +522,7 @@ const HeaderMenuContent = ({ float = "" ,hide, setProfileCount , profileCount , 
               src={
                 userInfo?.broker_Details?.profileImage
                   ? userInfo?.broker_Details?.profileImage
-                  : `/assets/images/team/Gary-Avatar.png`
+                  : `/assets/images/home/placeholder_01.jpg`
               }
               alt="e1.png"
             />
