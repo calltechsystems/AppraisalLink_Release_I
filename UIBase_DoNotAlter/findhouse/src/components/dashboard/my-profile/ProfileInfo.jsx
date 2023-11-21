@@ -110,7 +110,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         ? addressLineTwoRef
         : userData.broker_Details.adressLine2;
     const middleName =
-      middleNameRef !== "" ? middleNameRef : userData.broker_Details.middleName;
+      middleNameRef !== "" ? middleNameRef : userData?.broker_Details?.middleName;
     const companyName =
       companyNameRef !== ""
         ? companyNameRef

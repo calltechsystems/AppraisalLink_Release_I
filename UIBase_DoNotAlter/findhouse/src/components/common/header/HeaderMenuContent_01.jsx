@@ -5,11 +5,10 @@ import Image from "next/image";
 import { useTranslation } from "react-i18next";
 
 const HeaderMenuContent = ({ float = "", hide, isListing }) => {
-
-  const logout = ()=>{
+  const logout = () => {
     localStorage.removeItem("user");
     route.push("/login");
-  }
+  };
   const route = useRouter();
 
   const { t } = useTranslation("common");
@@ -22,6 +21,8 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
   const [plan, setPlan] = useState(false);
 
   const [login, setLogin] = useState(false);
+
+  const [logout_01, setLogout_01] = useState(false);
 
   const [insight, setInsight] = useState(false);
 
@@ -811,16 +812,31 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                     className="btn text-color-01 flaticon-user"
                     style={{ visibility: "hidden" }}
                   ></span>
-                  <span
-                    className=" dn-lg text-info-01 cool-link menuitem"
-                    style={{ marginLeft: "-35px" }}
-                    onMouseOver={() => setLogin(!login)}
-                    // onMouseLeave={() => setLogin()}
-                    onMouseEnter={() => setPlan()}
-                    onClick={userData ? logout : ""}
-                  >
-                    {userData ? "logout" : "login"}
-                  </span>
+                  {userData ? (
+                    <span
+                      className=" dn-lg text-info-01 cool-link menuitem"
+                      style={{ marginLeft: "-35px", }}
+                      // onMouseOver={() => setLogin(!login)}
+                      // onMouseLeave={() => setLogin()}
+                      onMouseEnter={() => setPlan()}
+                      onClick={userData ? logout : ""}
+                    >
+                      Logout
+                      {/* {userData ? "logout" : "login"} */}
+                    </span>
+                  ) : (
+                    <span
+                      className=" dn-lg text-info-01 cool-link menuitem"
+                      style={{ marginLeft: "-35px" }}
+                      onMouseOver={() => setLogin(!login)}
+                      // onMouseLeave={() => setLogin()}
+                      onMouseEnter={() => setPlan()}
+                      // onClick={userData ? logout : ""}
+                    >
+                      Login
+                      {/* {userData ? "logout" : "login"} */}
+                    </span>
+                  )}
                   {/* <span
                     className="arrow text-info-01"
                     style={{ marginLeft: "-5px" }}

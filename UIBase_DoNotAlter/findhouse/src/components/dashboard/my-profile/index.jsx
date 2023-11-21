@@ -17,7 +17,7 @@ const Index = () => {
 
   useEffect(() => {
     userData = JSON.parse(localStorage.getItem("user"));
-    console.log(userData.broker_Details.firstName);
+    // console.log(userData?.broker_Details?.firstName);
     setData(userData);
     if (!userData) {
       router.push("/login");

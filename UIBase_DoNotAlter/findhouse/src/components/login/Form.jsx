@@ -9,15 +9,20 @@ import { encryptionData } from "../../utils/dataEncryption";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 
-const Form = ({ user , setModalIsOpen , setModalIsOpenError , setErrorMessage}) => {
+const Form = ({
+  user,
+  setModalIsOpen,
+  setModalIsOpenError,
+  setErrorMessage,
+}) => {
   const [showhide, setShowhide] = useState("");
   const [change, setChange] = useState(false);
   const [showRegister, setRegister] = useState(true);
-  const [error , setError] = useState(false);
-  const [success , setSuccess] = useState(false);
-  const [errorContent , setErrorContent] = useState("");
-  
-  const [successContent , setSuccessContent] = useState("");
+  const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [errorContent, setErrorContent] = useState("");
+
+  const [successContent, setSuccessContent] = useState("");
   const [captchaVerfied, setCaptchaVerified] = useState(false);
 
   const [reloadOption, setReloadOption] = useState(false);
@@ -53,7 +58,6 @@ const Form = ({ user , setModalIsOpen , setModalIsOpenError , setErrorMessage}) 
       setErrorMessage("Credentials Can't be empty");
       setModalIsOpenError(true);
     } else if (!captchaVerfied) {
-      
       setChange(true);
       return;
     } else {
@@ -73,10 +77,15 @@ const Form = ({ user , setModalIsOpen , setModalIsOpenError , setErrorMessage}) 
           // console.log(res);
           localStorage.setItem("user", JSON.stringify(res.data.userData));
           // setModalIsOpen(true);
-          if(res.data.userData.userType === 1){
+          if (
+            res.data.userData.userType === 1 ||
+            res.data.userData.userType === 3
+          ) {
             router.push("/my-dashboard");
-          }
-          else if(res.data.userData.userType === 2){
+          } else if (
+            res.data.userData.userType === 2 ||
+            res.data.userData.userType === 4
+          ) {
             router.push("/appraiser-dashboard");
           }
         })
@@ -101,14 +110,13 @@ const Form = ({ user , setModalIsOpen , setModalIsOpenError , setErrorMessage}) 
     }
   };
 
-  const handleErrorModalCancel = ()=>{
+  const handleErrorModalCancel = () => {
     setError(false);
-  }
+  };
 
-  const handleSuccessModalCancel = ()=>{
+  const handleSuccessModalCancel = () => {
     setSuccess(false);
-  }
-
+  };
 
   const checkPasswordLoginHandler = (event) => {
     setPasswordLogin(event.target.value);
@@ -132,29 +140,65 @@ const Form = ({ user , setModalIsOpen , setModalIsOpenError , setErrorMessage}) 
             alt="login.jpg"
           />
         </div>
-        
+
         <div className="col-lg-6 pt60">
-        {error && <div style={{backgroundColor:"orangered",opacity:"80%",borderColor:"red",borderWidth:"20px",borderRadius:"4px",padding:"1%",justifyContent:"space-between",display:"flex",flexDirection:"row",width:"80%",marginLeft:"10%"}}>
-        <h4 style={{color:"white"}}>Invalid credentials</h4>
-        <div
-          className="input-group-text m-1"
-          style={{ border: "1px solid white"}}
-          onClick={handleErrorModalCancel}
-        >
-           <img src="https://th.bing.com/th/id/OIP.VirRE_r48DkDvZVNoo6_agHaHZ?w=209&h=208&c=7&r=0&o=5&dpr=1.1&pid=1.7" width={"20px"} height={"20px"}/>
-        </div>
-        </div>}
-        {success && <div style={{backgroundColor:"green",opacity:"80%",borderColor:"green",borderWidth:"20px",borderRadius:"4px",padding:"1%",justifyContent:"space-between",display:"flex",flexDirection:"row",width:"80%",marginLeft:"10%"}}>
-        <h4 style={{color:"white"}}>Successfully logged in</h4>
-        <div
-          className="input-group-text m-1"
-          style={{ border: "1px solid white"}}
-          onClick={handleSuccessModalCancel}
-        >
-           <h4 style={{color:"white",marginTop:"20%"}}>OK</h4>
-        </div>
-        </div>}
-        
+          {error && (
+            <div
+              style={{
+                backgroundColor: "orangered",
+                opacity: "80%",
+                borderColor: "red",
+                borderWidth: "20px",
+                borderRadius: "4px",
+                padding: "1%",
+                justifyContent: "space-between",
+                display: "flex",
+                flexDirection: "row",
+                width: "80%",
+                marginLeft: "10%",
+              }}
+            >
+              <h4 style={{ color: "white" }}>Invalid credentials</h4>
+              <div
+                className="input-group-text m-1"
+                style={{ border: "1px solid white" }}
+                onClick={handleErrorModalCancel}
+              >
+                <img
+                  src="https://th.bing.com/th/id/OIP.VirRE_r48DkDvZVNoo6_agHaHZ?w=209&h=208&c=7&r=0&o=5&dpr=1.1&pid=1.7"
+                  width={"20px"}
+                  height={"20px"}
+                />
+              </div>
+            </div>
+          )}
+          {success && (
+            <div
+              style={{
+                backgroundColor: "green",
+                opacity: "80%",
+                borderColor: "green",
+                borderWidth: "20px",
+                borderRadius: "4px",
+                padding: "1%",
+                justifyContent: "space-between",
+                display: "flex",
+                flexDirection: "row",
+                width: "80%",
+                marginLeft: "10%",
+              }}
+            >
+              <h4 style={{ color: "white" }}>Successfully logged in</h4>
+              <div
+                className="input-group-text m-1"
+                style={{ border: "1px solid white" }}
+                onClick={handleSuccessModalCancel}
+              >
+                <h4 style={{ color: "white", marginTop: "20%" }}>OK</h4>
+              </div>
+            </div>
+          )}
+
           <form onSubmit={loginHandler}>
             <div className="heading text-center">
               <h3>{`Login to your account `} </h3>
@@ -258,7 +302,7 @@ const Form = ({ user , setModalIsOpen , setModalIsOpenError , setErrorMessage}) 
             </div>
             {/* End .form-group */}
 
-            <button type="submit" className="btn btn-log w-100 btn-thm" >
+            <button type="submit" className="btn btn-log w-100 btn-thm">
               Log In
             </button>
             <div
