@@ -40,8 +40,8 @@ const LocationField = ({
                   style={{
                     // paddingTop: "15px",
                     // paddingBottom: "15px",
-                    backgroundColor: "#03045e",
-                    color: "white",
+                    backgroundColor: "#E8F0FE",
+                    // //color: "white",
                   }}
                   type="text"
                   // placeholder="Street Name"
@@ -72,8 +72,8 @@ const LocationField = ({
                   style={{
                     // paddingTop: "15px",
                     // paddingBottom: "15px",
-                    backgroundColor: "#03045e",
-                    color: "white",
+                    backgroundColor: "#E8F0FE",
+                    //color: "white",
                   }}
                   type="text"
                   // placeholder="Street Number"
@@ -106,8 +106,8 @@ const LocationField = ({
                   style={{
                     // paddingTop: "15px",
                     // paddingBottom: "15px",
-                    backgroundColor: "#03045e",
-                    color: "white",
+                    backgroundColor: "#E8F0FE",
+                    //color: "white",
                   }}
                   type="text"
                   className="form-control"
@@ -137,8 +137,8 @@ const LocationField = ({
                   style={{
                     // paddingTop: "15px",
                     // paddingBottom: "15px",
-                    backgroundColor: "#03045e",
-                    color: "white",
+                    backgroundColor: "#E8F0FE",
+                    //color: "white",
                   }}
                   type="text"
                   className="form-control"
@@ -170,8 +170,8 @@ const LocationField = ({
                   style={{
                     // paddingTop: "15px",
                     // paddingBottom: "15px",
-                    backgroundColor: "#03045e",
-                    color: "white",
+                    backgroundColor: "#E8F0FE",
+                    //color: "white",
                   }}
                   type="text"
                   className="form-control"
@@ -201,8 +201,8 @@ const LocationField = ({
                   style={{
                     // paddingTop: "15px",
                     // paddingBottom: "15px",
-                    backgroundColor: "#03045e",
-                    color: "white",
+                    backgroundColor: "#E8F0FE",
+                    //color: "white",
                   }}
                   type="number"
                   className="form-control"
@@ -240,8 +240,8 @@ const LocationField = ({
                   style={{
                     paddingTop: "15px",
                     paddingBottom: "15px",
-                    backgroundColor: "#03045e",
-                    color:"white"
+                    backgroundColor: "#E8F0FE",
+                    // color:"white"
                   }}
                 >
                   <option data-tokens="SelectRole" value={1}>

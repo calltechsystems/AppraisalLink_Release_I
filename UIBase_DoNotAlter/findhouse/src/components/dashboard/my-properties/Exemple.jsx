@@ -9,7 +9,7 @@ const headCells = [
   {
     id: "name",
     numeric: false,
-    label: "status",
+    label: "Status",
     width: 200,
   },
   {

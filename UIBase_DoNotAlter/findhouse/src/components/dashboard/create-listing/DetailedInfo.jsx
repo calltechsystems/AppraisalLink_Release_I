@@ -117,8 +117,8 @@ const DetailedInfo = ({
                   style={{
                     // paddingTop: "15px",
                     // paddingBottom: "15px",
-                    backgroundColor: "#03045e",
-                    color: "white",
+                    backgroundColor: "#E8F0FE",
+                    //color: "white",
                   }}
                   type="text"
                   className="form-control"
@@ -147,8 +147,8 @@ const DetailedInfo = ({
                   style={{
                     // paddingTop: "15px",
                     // paddingBottom: "15px",
-                    backgroundColor: "#03045e",
-                    color: "white",
+                    backgroundColor: "#E8F0FE",
+                    //color: "white",
                   }}
                   type="text"
                   className="form-control"
@@ -180,10 +180,10 @@ const DetailedInfo = ({
                   style={{
                     // paddingTop: "15px",
                     // paddingBottom: "15px",
-                    backgroundColor: "#03045e",
-                    color: "white",
+                    backgroundColor: "#E8F0FE",
+                    //color: "white",
                   }}
-                  type="text"
+                  type="number"
                   className="form-control"
                   id="formGroupExampleInput3"
                   onChange={(e) => setApplicantNumber(e.target.value)}
@@ -210,8 +210,8 @@ const DetailedInfo = ({
                   style={{
                     // paddingTop: "15px",
                     // paddingBottom: "15px",
-                    backgroundColor: "#03045e",
-                    color: "white",
+                    backgroundColor: "#E8F0FE",
+                    //color: "white",
                   }}
                   type="text"
                   className="form-control"

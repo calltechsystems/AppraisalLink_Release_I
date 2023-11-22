@@ -13,10 +13,50 @@ import Testimonials from "./Testimonials";
 import Header from "../common/header/DefaultHeader_01";
 import { useRouter } from "next/router";
 import Partners_01 from "../common/Partners";
+import { useEffect, useState } from "react";
 
 const Index = () => {
   const userData = JSON.parse(localStorage.getItem("user"));
   const router = useRouter();
+
+  const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
+    Date.now()
+  );
+
+  useEffect(() => {
+    const activityHandler = () => {
+      setLastActivityTimestamp(Date.now());
+    };
+
+    // Attach event listeners for user activity
+    window.addEventListener("mousemove", activityHandler);
+    window.addEventListener("keydown", activityHandler);
+    window.addEventListener("click", activityHandler);
+
+    // Cleanup event listeners when the component is unmounted
+    return () => {
+      window.removeEventListener("mousemove", activityHandler);
+      window.removeEventListener("keydown", activityHandler);
+      window.removeEventListener("click", activityHandler);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Check for inactivity every minute
+    const inactivityCheckInterval = setInterval(() => {
+      const currentTime = Date.now();
+      const timeSinceLastActivity = currentTime - lastActivityTimestamp;
+
+      // Check if there has been no activity in the last 10 minutes (600,000 milliseconds)
+      if (timeSinceLastActivity > 600000) {
+        localStorage.removeItem("user");
+        router.push("/logim");
+      }
+    }, 60000); // Check every minute
+
+    // Cleanup the interval when the component is unmounted
+    return () => clearInterval(inactivityCheckInterval);
+  }, [lastActivityTimestamp]);
 
   // if(userData && userData.userType === 1){
   //   router.push("/my-dashboard");

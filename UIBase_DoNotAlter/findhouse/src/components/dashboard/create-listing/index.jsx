@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useRouter } from "next/router";
 import Header from "../../common/header/dashboard/Header";
@@ -32,16 +32,16 @@ const Index = ({ isView, propertyData }) => {
   const [cityRef, setCityRef] = useState(propertyData?.city || "");
   const [stateRef, setStateRef] = useState(propertyData?.state || "");
   const [zipCodeRef, setZipCodeRef] = useState(propertyData?.zipCode || null);
-  const [areaRef, setAreaRef] = useState(propertyData?.area || null);
+  const [areaRef, setAreaRef] = useState(propertyData?.area || 0);
   const [communityRef, setCommunityRef] = useState(
     propertyData?.community || null
   );
   const [buildinRef, setBuildinRef] = useState(
-    propertyData?.typeOfBuilding || "Community"
+    propertyData?.typeOfBuilding || null
   );
-  const [urgencyRef, setUrgencyRef] = useState(propertyData?.urgency || null);
+  const [urgencyRef, setUrgencyRef] = useState(propertyData?.urgency || 0);
   const [bidLowerRangeRef, setBidLowerRangeRef] = useState(
-    propertyData?.bidLowerRange || null
+    propertyData?.bidLowerRange || 0
   );
 
   const [applicantFirstName, setApplicantFirstName] = useState(
@@ -106,10 +106,8 @@ const Index = ({ isView, propertyData }) => {
       !payload.city ||
       !payload.state ||
       !payload.zipCode ||
-      !payload.area ||
-      !payload.community ||
       !payload.typeOfBuilding ||
-      !payload.bidLowerRange
+      payload.community
     ) {
       toast.error("All required fields must be filled");
     } else {
@@ -148,10 +146,10 @@ const Index = ({ isView, propertyData }) => {
     const phoneNumberRegex = /^\d{10}$/;
 
     if (
-      (!nameRegex.test(applicantFirstName) && applicantFirstName !== "") ||
-      (!nameRegex.test(applicantLatsName) && applicantLatsName !== "") ||
-      (!phoneNumberRegex.test(applicantNumber) && applicantNumber !== "") ||
-      (!emailRegex.test(applicantEmail) === true && applicantEmail !== "")
+       (!nameRegex.test(applicantFirstName) && applicantFirstName ) ||
+      (!nameRegex.test(applicantLatsName) && applicantLatsName ) ||
+      (!phoneNumberRegex.test(applicantNumber) && applicantNumber ) ||
+      (!emailRegex.test(applicantEmail) && applicantEmail )
     ) {
       toast.error("Please provide a valid applicant Information");
     } else {
@@ -182,31 +180,30 @@ const Index = ({ isView, propertyData }) => {
         !payload.city ||
         !payload.state ||
         !payload.zipCode ||
-        !payload.community ||
-        !payload.typeOfBuilding
+        !payload.typeOfBuilding ||
+        payload.community
       ) {
         toast.error("All required fields must be filled");
       } else {
-        const encryptedData = encryptionData(payload);
+        // const encryptedData = encryptionData(payload);
 
-        console.log(payload);
-        toast.loading("Appraising property ..");
-        axios
-          .post("/api/addBrokerProperty", encryptedData, {
-            headers: {
-              Authorization: `Bearer ${userData.token}`,
-              "Content-Type": "application/json",
-            },
-          })
-          .then((res) => {
-            toast.dismiss();
-            console.log(res);
-            router.push("/my-properties");
-          })
-          .catch((err) => {
-            toast.dismiss();
-            toast.error(err.message);
-          });
+        // console.log(payload);
+        // toast.loading("Appraising property ..");
+        // axios
+        //   .post("/api/addBrokerProperty", encryptedData, {
+        //     headers: {
+        //       Authorization: `Bearer ${userData.token}`,
+        //       "Content-Type": "application/json",
+        //     },
+        //   })
+        //   .then((res) => {
+        //     toast.dismiss();
+        //     setModalIsOpen(true);
+        //   })
+        //   .catch((err) => {
+        //     toast.dismiss();
+        //     toast.error(err.message);
+        //   });
       }
     }
   };
@@ -436,7 +433,7 @@ const Index = ({ isView, propertyData }) => {
                           className="btn w-35 btn-white"
                           onClick={() => onCancelHandler()}
                         >
-                          Cancel
+                          OK
                         </button>
                       </div>
                     </div>

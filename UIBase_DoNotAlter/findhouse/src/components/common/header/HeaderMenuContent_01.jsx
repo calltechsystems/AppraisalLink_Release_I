@@ -326,7 +326,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                           </div>
                           <div className="col-lg-12 mb-2">
                             <Link href="/how-we-work">
-                              <button className="btn w-50 btn-color_1">
+                              <button className="btn w-50 btn-color">
                                 For Appraiser
                               </button>
                             </Link>
@@ -362,7 +362,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                             </span>
                             <br />
                             <Link href="/register">
-                              <button className="btn w-50 btn-color_2">
+                              <button className="btn w-50 btn-color">
                                 Register
                               </button>
                             </Link>

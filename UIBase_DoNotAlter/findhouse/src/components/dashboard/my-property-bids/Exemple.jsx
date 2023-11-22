@@ -5,37 +5,41 @@ import toast from "react-hot-toast";
 import axios from "axios";
 // import "./SmartTable.css";
 
-
 const headCells = [
   {
-    id: "title",
+    id: "id",
     numeric: false,
-    label: "Property Title",
+    label: "Id",
     width: 200,
-    backgroundColor:"red"
+  },
+  {
+    id: "AppraiserId",
+    numeric: false,
+    label: "Appraiser Id",
+    width: 200,
+  },
+  {
+    id: "quote",
+    numeric: false,
+    label: "Provided Quote",
+    width: 200,
+  },
+  {
+    id: "amount",
+    numeric: false,
+    label: "Bid Amount",
+    width: 200,
+  },
+  {
+    id: "description",
+    numeric: false,
+    label: "Description",
+    width: 200,
   },
   {
     id: "date",
     numeric: false,
     label: "Date",
-    width: 200,
-  },
-  {
-    id: "urgency",
-    numeric: false,
-    label: "Urgency",
-    width: 200,
-  },
-  {
-    id: "bid",
-    numeric: false,
-    label: "Bid",
-    width: 200,
-  },
-  {
-    id: "action",
-    numeric: false,
-    label: "Action",
     width: 200,
   }
 ];
@@ -70,8 +74,9 @@ const data = [
   },
 ];
 
-export default function Exemple({userData , open ,close , properties, setProperties,deletePropertyHandler,onWishlistHandler,participateHandler,setErrorMessage,setModalIsOpenError}) {
+export default function Exemple({userData , open ,close , propertyId , properties, setProperties,deletePropertyHandler}) {
   
+  console.log(propertyId);
 
   const [updatedData , setUpdatedData] = useState([]);
   const [show , setShow] = useState(false);
@@ -95,48 +100,17 @@ export default function Exemple({userData , open ,close , properties, setPropert
 
       properties.map((property,index)=>{
         const updatedRow = {
-          title : property.typeOfBuilding,
-          date: formatDate(property.addedDatetime ),
-          urgency : property.urgency === 0 ? "low" : property.urgency === 1 ? "medium" : "high",
-          bid : 0,
-
-        action : <ul><li
-        className="list-inline-item"
-        style={{
-          width: "30px",
-          // border: "1px solid black",
-          textAlign: "center",
-          borderRadius: "5px",
-        }}
-      >
-        {/* <Link href="/agent-v1">{item.posterName}</Link> */}
-        <button onClick={()=>onWishlistHandler(property.propertyId)}>
-          <span className="flaticon-heart"></span>
-        </button>
-      </li>
-   
-    {/* <div className="fp_pdate float-end">{item.postedYear}</div> */}
-    
-  <li
-    className="list-inline-item"
-    data-toggle="tooltip"
-    data-placement="top"
-    title="Delete"
-  >
-    <div
-      className=""
-      onClick={()=>participateHandler(property.bidLowerRange , property.propertyId)}
-    >
-      <a href="#" className="text-color" >
-        Provide Quote
-      </a>
-    </div>
-  </li>
-  </ul>
+          id :  property.$id,
+          AppraiserId : property.appraiserUserId,
+          quote : property.bidLowerRange,
+          amount : property.bidAmount,
+          description: formatDate(property.description ),
+        date : formatDate(property.requestTime)
         }
         tempData.push(updatedRow);
       });
       setUpdatedData(tempData);
+      
     };
     getData();
   },[properties]);
@@ -154,7 +128,7 @@ export default function Exemple({userData , open ,close , properties, setPropert
 
     toast.loading("Getting properties...");
     axios
-      .get("/api/getPropertiesById",
+      .get("/api/getAllBids",
        {
         headers: {
           Authorization:`Bearer ${data?.token}`,
@@ -167,13 +141,20 @@ export default function Exemple({userData , open ,close , properties, setPropert
       .then((res) => {
    
         toast.dismiss();
+        const tempBids = res.data.data.result.$values;
+        console.log(tempBids,propertyId);
+        let updatedBids = [];
+         tempBids.filter((bid,index)=>{
+          if(String(bid.propertyId) === String(propertyId)){
+            updatedBids.push(bid);
+          }
+        })
         
-        setProperties(res.data.data.property.$values);
+        setProperties(updatedBids);
       })
       .catch((err) => {
         toast.dismiss();
-        setErrorMessage(err?.response?.data?.error);
-        setModalIsOpenError(true);
+        toast.error(err?.response?.data?.error);
       });
   },[]);
   return (

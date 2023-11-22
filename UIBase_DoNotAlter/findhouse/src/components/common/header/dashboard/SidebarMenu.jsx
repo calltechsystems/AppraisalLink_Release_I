@@ -15,9 +15,9 @@ const SidebarMenu = () => {
     { id: 3, name: "Editors", route: "/my-properties" },
   ];
   const reviews = [
-    { id: 1, name: "Form-1", route: "assets/images/image_02.png", target:"_blank" },
-    { id: 2, name: "Form-2", route: "assets/images/image_03.png" },
-    { id: 3, name: "Form-3", route: "assets/images/image_04.png" },
+    // { id: 1, name: "Form-1", route: "assets/images/image_02.png", target:"_blank" },
+    // { id: 2, name: "Form-2", route: "assets/images/image_03.png" },
+    // { id: 3, name: "Form-3", route: "assets/images/image_04.png" },
     { id: 4, name: "Form-4", route: "assets/images/image_05.png" },
 
   ];

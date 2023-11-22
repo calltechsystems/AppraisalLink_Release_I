@@ -11,6 +11,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   const [profilePhoto, setProfilePhoto] = useState(null);
   let userData = JSON.parse(localStorage.getItem("user")) || {};
   const router = useRouter();
+  const cancelHandler = () => {
+    router.push("/my-dashboard");
+  };
 
   const [SelectedImage, setSelectedImage] = useState(
     userData?.broker_Details?.profileImage ||
@@ -110,7 +113,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         ? addressLineTwoRef
         : userData.broker_Details.adressLine2;
     const middleName =
-      middleNameRef !== "" ? middleNameRef : userData?.broker_Details?.middleName;
+      middleNameRef !== ""
+        ? middleNameRef
+        : userData?.broker_Details?.middleName;
     const companyName =
       companyNameRef !== ""
         ? companyNameRef
@@ -291,7 +296,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                         <div>
                           <button
                             className="btn btn-color profile_edit_button mb-5"
-                            style={{ }}
+                            style={{}}
                             onClick={open} // This will open the upload widget
                           >
                             Upload Photo
@@ -891,7 +896,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                         className="my_profile_setting_input"
                         style={{ textAlign: "end" }}
                       >
-                        <button className="btn btn2 m-1">Cancel</button>
+                        <button className="btn btn2 m-1" onClick={cancelHandler}>Cancel</button>
                         <button
                           className="btn btn2 btn-dark"
                           onClick={onUpdatHandler}

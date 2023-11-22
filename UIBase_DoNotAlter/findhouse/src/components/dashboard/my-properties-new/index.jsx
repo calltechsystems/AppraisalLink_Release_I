@@ -21,11 +21,49 @@ const Index = () => {
   const [filterQuery, setFilterQuery] = useState("Last 30 Days");
   const [properties, setProperties] = useState([]);
 
-  
-  const [modalIsOpenError , setModalIsOpenError] = useState(false);
-  const [errorMessage , setErrorMessage ] = useState("");
+  const [modalIsOpenError, setModalIsOpenError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const router = useRouter();
+
+  const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
+    Date.now()
+  );
+
+  useEffect(() => {
+    const activityHandler = () => {
+      setLastActivityTimestamp(Date.now());
+    };
+
+    // Attach event listeners for user activity
+    window.addEventListener("mousemove", activityHandler);
+    window.addEventListener("keydown", activityHandler);
+    window.addEventListener("click", activityHandler);
+
+    // Cleanup event listeners when the component is unmounted
+    return () => {
+      window.removeEventListener("mousemove", activityHandler);
+      window.removeEventListener("keydown", activityHandler);
+      window.removeEventListener("click", activityHandler);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Check for inactivity every minute
+    const inactivityCheckInterval = setInterval(() => {
+      const currentTime = Date.now();
+      const timeSinceLastActivity = currentTime - lastActivityTimestamp;
+
+      // Check if there has been no activity in the last 10 minutes (600,000 milliseconds)
+      if (timeSinceLastActivity > 600000) {
+        localStorage.removeItem("user");
+        router.push("/logim");
+      }
+    }, 60000); // Check every minute
+
+    // Cleanup the interval when the component is unmounted
+    return () => clearInterval(inactivityCheckInterval);
+  }, [lastActivityTimestamp]);
 
   const openModal = (property) => {
     console.log("inside");
@@ -226,9 +264,9 @@ const Index = () => {
                 {/* End .col */}
 
                 <div className="col-lg-12">
-                  <div className="my_dashboard_review mb40">
+                  <div className="">
                     <div className="property_table">
-                      <div className="table-responsive mt0">
+                      <div className="mt0">
                         <TableData
                           userData={userData}
                           open={openModal}
@@ -237,28 +275,45 @@ const Index = () => {
                           properties={
                             searchInput === "" ? properties : filterProperty
                           }
-                          setModalIsOpenError = {setModalIsOpenError}
-                        setErrorMessage = {setErrorMessage}
+                          setModalIsOpenError={setModalIsOpenError}
+                          setErrorMessage={setErrorMessage}
                         />
-                       
+
                         {modalIsOpenError && (
                           <div className="modal">
-                            <div className="modal-content" style={{borderColor:"orangered",width:"20%"}}>
-                              <h3 className="text-center" style={{color:"orangered"}}>Error</h3>
-                              <div style={{borderWidth:"2px",borderColor:"orangered"}}><br/></div>
-                              <h5 className="text-center">
-                                {errorMessage}
-                              </h5>
+                            <div
+                              className="modal-content"
+                              style={{ borderColor: "orangered", width: "20%" }}
+                            >
+                              <h3
+                                className="text-center"
+                                style={{ color: "orangered" }}
+                              >
+                                Error
+                              </h3>
+                              <div
+                                style={{
+                                  borderWidth: "2px",
+                                  borderColor: "orangered",
+                                }}
+                              >
+                                <br />
+                              </div>
+                              <h5 className="text-center">{errorMessage}</h5>
                               <div
                                 className="text-center"
-                                style={{ display: "flex", flexDirection: "column" }}
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "column",
+                                }}
                               >
-                                
-                      
                                 <button
                                   className="btn w-35 btn-white"
-                                  onClick={()=>closeModal()}
-                                  style={{borderColor:"orangered",color:"orangered"}}
+                                  onClick={() => closeModal()}
+                                  style={{
+                                    borderColor: "orangered",
+                                    color: "orangered",
+                                  }}
                                 >
                                   Cancel
                                 </button>
@@ -266,7 +321,6 @@ const Index = () => {
                             </div>
                           </div>
                         )}
-                      
                       </div>
                       {/* End .table-responsive */}
 
@@ -275,7 +329,6 @@ const Index = () => {
                     {/* End .property_table */}
                   </div>
                 </div>
-                
 
                 {/* End .col */}
               </div>
@@ -298,7 +351,10 @@ const Index = () => {
             <div className="row mt50">
               <div className="col-lg-12">
                 <div className="copyright-widget text-center">
-                  <p>© 2020 Find House. Made with love.</p>
+                  <p>
+                    &copy; {new Date().getFullYear()} Appraisal Link. All Rights
+                    Reserved.
+                  </p>
                 </div>
               </div>
             </div>

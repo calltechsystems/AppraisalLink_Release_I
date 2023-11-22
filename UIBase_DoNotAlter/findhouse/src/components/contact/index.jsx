@@ -7,8 +7,48 @@ import AddressSidebar from "./AddressSidebar";
 import BreadCrumbBanner from "./BreadCrumbBanner";
 import HeroSlider from "./HeroSlider";
 import Form from "./Form";
+import { useEffect, useState } from "react";
 
 const index = () => {
+  const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
+    Date.now()
+  );
+
+  useEffect(() => {
+    const activityHandler = () => {
+      setLastActivityTimestamp(Date.now());
+    };
+
+    // Attach event listeners for user activity
+    window.addEventListener("mousemove", activityHandler);
+    window.addEventListener("keydown", activityHandler);
+    window.addEventListener("click", activityHandler);
+
+    // Cleanup event listeners when the component is unmounted
+    return () => {
+      window.removeEventListener("mousemove", activityHandler);
+      window.removeEventListener("keydown", activityHandler);
+      window.removeEventListener("click", activityHandler);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Check for inactivity every minute
+    const inactivityCheckInterval = setInterval(() => {
+      const currentTime = Date.now();
+      const timeSinceLastActivity = currentTime - lastActivityTimestamp;
+
+      // Check if there has been no activity in the last 10 minutes (600,000 milliseconds)
+      if (timeSinceLastActivity > 600000) {
+        localStorage.removeItem("user");
+        router.push("/logim");
+      }
+    }, 60000); // Check every minute
+
+    // Cleanup the interval when the component is unmounted
+    return () => clearInterval(inactivityCheckInterval);
+  }, [lastActivityTimestamp]);
+
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -37,10 +77,10 @@ const index = () => {
               }}
             >
               Our goal is to promptly attend to your requirements, allowing you
-              to focus on what&apos;s most important to you: managing your business.
-              If you require immediate assistance, please either dial one of the
-              numbers provided below or engage with us via our online chat
-              platform.
+              to focus on what&apos;s most important to you: managing your
+              business. If you require immediate assistance, please either dial
+              one of the numbers provided below or engage with us via our online
+              chat platform.
             </h4>
           </div>
         </div>
@@ -73,7 +113,7 @@ const index = () => {
                 className="row"
                 style={{
                   boxShadow: "10px 10px 50px 10px rgba(19, 19, 28, 0.52)",
-                  borderRadius:'0 5px 5px'
+                  borderRadius: "0 5px 5px",
                 }}
               >
                 <div

@@ -1,9 +1,8 @@
 import { useEffect, useReducer, useState } from "react";
 import Header from "../../common/header/dashboard/Header";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
-import MobileMenu from "../../common/header/MobileMenu_02";
-import PackageData from "./PackageData";
-import SearchBox from "./SearchBox";
+import MobileMenu from "../../common/header/MobileMenu";
+import Exemple from "./Exemple";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -12,6 +11,20 @@ const Index = () => {
   const [data, setData] = useState([]);
   const router = useRouter();
   let userData = {};
+
+  
+
+  
+  const [modalIsOpenError , setModalIsOpenError] = useState(false);
+  const [errorMessage , setErrorMessage ] = useState("");
+
+  const closeErrorModal =()=>{
+    setModalIsOpenError(false);
+  }  
+  
+  const updatePlan = ()=>{
+    router.push("/my-plans");
+  }
 
   useEffect(() => {
     userData = JSON.parse(localStorage.getItem("user"));
@@ -34,13 +47,15 @@ const Index = () => {
       })
       .then((res) => {
         toast.dismiss();
-        console.log(res.data.data);
-        setData(res.data.data);
+        // console.log(res.data.data.$values);
+        setData(res.data.data.$values);
         setRerender(false);
       })
       .catch((err) => {
         toast.dismiss();
-        toast.error(err?.response?.data?.error);
+        // toast.error(err?.response?.data?.error);
+        // setErrorMessage(err.response);
+        // setModalIsOpenError(true);
       });
   }, []);
 
@@ -74,7 +89,7 @@ const Index = () => {
             <div className="col-lg-12 maxw100flex-992">
               <div className="row">
                 {/* Start Dashboard Navigation */}
-                {/* <div className="col-lg-12">
+                <div className="col-lg-12">
                   <div className="dashboard_navigationbar dn db-1024">
                     <div className="dropdown">
                       <button
@@ -87,13 +102,13 @@ const Index = () => {
                       </button>
                     </div>
                   </div>
-                </div> */}
+                </div>
                 {/* End Dashboard Navigation */}
               </div>
               {/* End .row */}
 
               <div className="row align-items-center">
-                <div className="col-md-8 col-lg-8 col-xl-9">
+                <div className="col-md-8 col-lg-8 col-xl-9 mb20">
                   <div className="breadcrumb_content style2 mb30-991">
                     <h2 className="breadcrumb_title">My Transactions</h2>
                     <p>You can see your transactions history here!</p>
@@ -115,13 +130,39 @@ const Index = () => {
                     <div className="col-lg-12">
                       <div className="packages_table">
                         <div className="table-responsive mt0">
-                          <PackageData data={data} />
+                          <Exemple data={data} userData={userData}/>
+                          {modalIsOpenError && (
+                            <div className="modal">
+                              <div className="modal-content" style={{borderColor:"orangered",width:"20%"}}>
+                                <h3 className="text-center" style={{color:"orangered"}}>Error</h3>
+                                <div style={{borderWidth:"2px",borderColor:"orangered"}}><br/></div>
+                                <h5 className="text-center">
+                                  {errorMessage}
+                                </h5>
+                                <div
+                                  className="text-center"
+                                  style={{ display: "flex", flexDirection: "column" }}
+                                >
+                                  
+                        
+                                  <button
+                                    className="btn w-35 btn-white"
+                                    onClick={()=>closeErrorModal()}
+                                    style={{borderColor:"orangered",color:"orangered"}}
+                                  >
+                                    Cancel
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        
                         </div>
                       </div>
                       {/* End .packages_table */}
 
                       <div className="pck_chng_btn text-end">
-                        <button className="btn btn-lg">Update Package</button>
+                        <button className="btn btn-lg" onClick={updatePlan}>Update Package</button>
                       </div>
                     </div>
                   </div>

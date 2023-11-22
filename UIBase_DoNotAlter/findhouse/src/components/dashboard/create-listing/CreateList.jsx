@@ -36,8 +36,8 @@ const CreateList = ({
                   style={{
                     // paddingTop: "15px",
                     // paddingBottom: "15px",
-                    backgroundColor: "#03045e",
-                    color: "white",
+                    backgroundColor: "#E8F0FE",
+                    //color: "white",
                   }}
                   type="number"
                   className="form-control"
@@ -58,7 +58,7 @@ const CreateList = ({
                     fontWeight: "",
                   }}
                 >
-                  Community
+                  Community <span class="req-btn">*</span>
                 </label>
               </div>
               <div className="">
@@ -66,8 +66,8 @@ const CreateList = ({
                   style={{
                     // paddingTop: "15px",
                     // paddingBottom: "15px",
-                    backgroundColor: "#03045e",
-                    color: "white",
+                    backgroundColor: "#E8F0FE",
+                    //color: "white",
                   }}
                   required
                   type="text"
@@ -107,8 +107,8 @@ const CreateList = ({
                     style={{
                       paddingTop: "15px",
                       paddingBottom: "15px",
-                      backgroundColor: "#03045e",
-                      color: "white",
+                      backgroundColor: "#E8F0FE",
+                      // color: "white",
                     }}
                   >
                     <option data-tokens="SelectRole" value={1}>

@@ -9,8 +9,47 @@ import BreadCrumbBanner from "./BreadCrumbBanner";
 import Team from "./Team";
 import OurMission from "./OurMission";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const index = () => {
+  const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
+    Date.now()
+  );
+
+  useEffect(() => {
+    const activityHandler = () => {
+      setLastActivityTimestamp(Date.now());
+    };
+
+    // Attach event listeners for user activity
+    window.addEventListener("mousemove", activityHandler);
+    window.addEventListener("keydown", activityHandler);
+    window.addEventListener("click", activityHandler);
+
+    // Cleanup event listeners when the component is unmounted
+    return () => {
+      window.removeEventListener("mousemove", activityHandler);
+      window.removeEventListener("keydown", activityHandler);
+      window.removeEventListener("click", activityHandler);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Check for inactivity every minute
+    const inactivityCheckInterval = setInterval(() => {
+      const currentTime = Date.now();
+      const timeSinceLastActivity = currentTime - lastActivityTimestamp;
+
+      // Check if there has been no activity in the last 10 minutes (600,000 milliseconds)
+      if (timeSinceLastActivity > 600000) {
+        localStorage.removeItem("user");
+        router.push("/logim");
+      }
+    }, 60000); // Check every minute
+
+    // Cleanup the interval when the component is unmounted
+    return () => clearInterval(inactivityCheckInterval);
+  }, [lastActivityTimestamp]);
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -96,8 +135,8 @@ const index = () => {
                     As we continually strive to broaden our network of partners
                     and collaborators, we emphasize the importance of
                     transparent and open communication. It&apos;s not just about
-                    conducting business; it&apos;s about fostering a community of
-                    professionals who share a common vision: to push the
+                    conducting business; it&apos;s about fostering a community
+                    of professionals who share a common vision: to push the
                     boundaries of excellence in the real estate sector. We also
                     prioritize proactivity in addressing challenges and
                     concerns. Our analytical approach allows us to identify

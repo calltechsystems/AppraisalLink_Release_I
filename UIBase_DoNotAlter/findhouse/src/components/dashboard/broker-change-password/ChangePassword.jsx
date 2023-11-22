@@ -116,7 +116,7 @@ const ChangePassword = () => {
           {/* End .col */}
   
           <div className="col-xl-12">
-            <div className="my_profile_setting_input float-start fn-520">
+            <div className="my_profile_setting_input float-start fn-520 mt-2">
               <button className="btn btn2 btn-dark" onClick={submitHandler}>Update Password</button>
             </div>
           </div>

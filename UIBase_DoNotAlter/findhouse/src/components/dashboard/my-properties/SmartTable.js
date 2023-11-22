@@ -152,7 +152,7 @@ function SmartTable(props) {
                             id={headCell.id}
                             key={headCell.id}
                             scope="col"
-                            style={{ width: headCell.width ?? 'auto' }}
+                            style={{ width: headCell.width, backgroundColor:"#2e008b", color:"white" ?? 'auto' }}
                             className={
                               headCell.sortable !== false
                                 ? 'smartTable-pointer'

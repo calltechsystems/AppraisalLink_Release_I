@@ -9,23 +9,61 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { toast } from "react-toast";
 
-import axios from 'axios'
+import axios from "axios";
 import Modal from "../../common/header/dashboard/NotificationModal";
 
 const Index = () => {
-  const [userData , setUserData] = useState({});
-  const [showNotification,setShowNotification] = useState(false);
-  const [data , setData] = useState([]);
-  const [unfilteredData , setUnfilteredData] = useState([]);
-  const [showLineGraph , setShowLineGraph] = useState(false);
-  const [filterQuery , setFilterQuery] = useState("monthly");
-  const [lineData , setLineData] = useState([]);
+  const [userData, setUserData] = useState({});
+  const [showNotification, setShowNotification] = useState(false);
+  const [data, setData] = useState([]);
+  const [unfilteredData, setUnfilteredData] = useState([]);
+  const [showLineGraph, setShowLineGraph] = useState(false);
+  const [filterQuery, setFilterQuery] = useState("monthly");
+  const [lineData, setLineData] = useState([]);
   const router = useRouter();
-    
-  const closeModal = ()=>{
+
+  const closeModal = () => {
     setShowNotification(false);
-  }
- 
+  };
+
+  const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
+    Date.now()
+  );
+
+  useEffect(() => {
+    const activityHandler = () => {
+      setLastActivityTimestamp(Date.now());
+    };
+
+    // Attach event listeners for user activity
+    window.addEventListener("mousemove", activityHandler);
+    window.addEventListener("keydown", activityHandler);
+    window.addEventListener("click", activityHandler);
+
+    // Cleanup event listeners when the component is unmounted
+    return () => {
+      window.removeEventListener("mousemove", activityHandler);
+      window.removeEventListener("keydown", activityHandler);
+      window.removeEventListener("click", activityHandler);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Check for inactivity every minute
+    const inactivityCheckInterval = setInterval(() => {
+      const currentTime = Date.now();
+      const timeSinceLastActivity = currentTime - lastActivityTimestamp;
+
+      // Check if there has been no activity in the last 10 minutes (600,000 milliseconds)
+      if (timeSinceLastActivity > 600000) {
+        localStorage.removeItem("user");
+        router.push("/logim");
+      }
+    }, 60000); // Check every minute
+
+    // Cleanup the interval when the component is unmounted
+    return () => clearInterval(inactivityCheckInterval);
+  }, [lastActivityTimestamp]);
 
   // if (!userData) {
   //   router.push("/login");
@@ -34,13 +72,12 @@ const Index = () => {
   // }
 
   const categorizeDataByMonth = (data) => {
-    if(data.length <= 0)
-     return [];
+    if (data.length <= 0) return [];
     // Initialize an object to store data by month
     const dataByMonth = {};
-  
+
     const currentMonth = new Date().getMonth();
-  
+
     data.forEach((property) => {
       const createdAtDate = new Date(property.createdAt);
       const month = createdAtDate.getMonth();
@@ -51,116 +88,117 @@ const Index = () => {
         dataByMonth[month].push(property);
       }
     });
-  
-    const categorizedData = Object.entries(dataByMonth)?.map(([month, properties]) => ({
-      month: parseInt(month, 10), 
-      properties,
-    }));
-  
+
+    const categorizedData = Object.entries(dataByMonth)?.map(
+      ([month, properties]) => ({
+        month: parseInt(month, 10),
+        properties,
+      })
+    );
+
     categorizedData.sort((a, b) => a.month - b.month);
-  
+
     return categorizedData;
   };
-
 
   const filterData = (tempData) => {
     const currentDate = new Date();
     const oneYearAgo = new Date(currentDate);
     oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
-    
+
     switch (filterQuery) {
-      case 'monthly':
+      case "monthly":
         const oneMonthAgo = new Date(currentDate);
         oneMonthAgo.setMonth(currentDate.getMonth() - 1);
-        return tempData.filter(item => new Date(item.addedDatetime) >= oneMonthAgo);
-      case 'yearly':
-        return tempData.filter(item => new Date(item.addedDatetime) >= oneYearAgo);
-      case 'weekly':
+        return tempData.filter(
+          (item) => new Date(item.addedDatetime) >= oneMonthAgo
+        );
+      case "yearly":
+        return tempData.filter(
+          (item) => new Date(item.addedDatetime) >= oneYearAgo
+        );
+      case "weekly":
         const oneWeekAgo = new Date(currentDate);
         oneWeekAgo.setDate(currentDate.getDate() - 7);
-        return tempData.filter(item => new Date(item.addedDatetime) >= oneWeekAgo);
+        return tempData.filter(
+          (item) => new Date(item.addedDatetime) >= oneWeekAgo
+        );
       default:
-        return tempData; 
+        return tempData;
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     const dataTemp = filterData(data);
     setData(dataTemp);
-  },[filterQuery]);
-  
+  }, [filterQuery]);
 
-  
-  useEffect(()=>{
-    
-   
-
-    const data = (JSON.parse(localStorage.getItem("user")));
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("user"));
     setUserData(data);
-    if(!data){
+    if (!data) {
       router.push("/login");
-    }
-    else if(!data?.broker_Details?.firstName){
-      router.push("/my-profile")
+    } else if (!data?.broker_Details?.firstName) {
+      router.push("/my-profile");
     }
 
-    const func = ()=>{
-    axios.get("/api/getPropertiesById",
-       {
-        headers: {
-          Authorization:`Bearer ${data?.token}`,
-          "Content-Type":"application/json"
-        },
-        params : {
-          userId : data?.userId
-        }
-      })
-      .then((res) => {
-        // console.log(categorizeDataByMonth(res.data.data.property.$values));
-     
-        setData(res.data.data.property.$values);
-        setShowLineGraph(true);
-        setRerender(false);
-      })
-      .catch((err) => {
-        toast.error(err?.response?.data?.error);
-      });
-    }
+    const func = () => {
+      axios
+        .get("/api/getPropertiesById", {
+          headers: {
+            Authorization: `Bearer ${data?.token}`,
+            "Content-Type": "application/json",
+          },
+          params: {
+            userId: data?.userId,
+          },
+        })
+        .then((res) => {
+          // console.log(categorizeDataByMonth(res.data.data.property.$values));
+
+          setData(res.data.data.property.$values);
+          setShowLineGraph(true);
+          setRerender(false);
+        })
+        .catch((err) => {
+          toast.error(err?.response?.data?.error);
+        });
+    };
     func();
-    
-  },[]);
+  }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     const categorizeDataByMonth = (data) => {
       if (data.length === 0) {
-          return Array(12).fill(0); // Initialize an array with 12 elements, all initialized to 0.
+        return Array(12).fill(0); // Initialize an array with 12 elements, all initialized to 0.
       }
-  
+
       const currentMonth = new Date().getMonth();
-  
-      const countsByMonth = Array(currentMonth+1).fill(0);
-  
+
+      const countsByMonth = Array(currentMonth + 1).fill(0);
+
       data.forEach((property) => {
-          const createdAtDate = new Date(property.addedDatetime);
-          const month = createdAtDate.getMonth();
-  
-          if (month <= currentMonth) {
-              countsByMonth[month]++;
-          }
+        const createdAtDate = new Date(property.addedDatetime);
+        const month = createdAtDate.getMonth();
+
+        if (month <= currentMonth) {
+          countsByMonth[month]++;
+        }
       });
-  
+
       return countsByMonth;
-  };
-  const temp = categorizeDataByMonth(data);
-  setLineData(temp);
-  },[data]);
-
-
+    };
+    const temp = categorizeDataByMonth(data);
+    setLineData(temp);
+  }, [data]);
 
   return (
     <>
       {/* <!-- Main Header Nav --> */}
-      <Header userData={userData ? userData : {}} setShowNotification = {setShowNotification} />
+      <Header
+        userData={userData ? userData : {}}
+        setShowNotification={setShowNotification}
+      />
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
@@ -220,14 +258,19 @@ const Index = () => {
                     <p>We are glad to see you again!</p>
                   </div>
                   <div>
-                    <Filtering setFilterQuery = {setFilterQuery}/>
+                    <Filtering setFilterQuery={setFilterQuery} />
                   </div>
                 </div>
               </div>
               {/* End .row */}
 
               <div className="row">
-                <AllStatistics properties={data.length} views={0} bids={0} favourites={0} />
+                <AllStatistics
+                  properties={data.length}
+                  views={0}
+                  bids={0}
+                  favourites={0}
+                />
               </div>
               {/* End .row Dashboard top statistics */}
 
@@ -246,7 +289,7 @@ const Index = () => {
                   <div className="application_statics">
                     <h4 className="mb-4">View Statistics</h4>
                     {data.length > 0 && showLineGraph ? (
-                     <StatisticsPieChart data = {lineData}/>
+                      <StatisticsPieChart data={lineData} />
                     ) : (
                       <p>Loading...</p> // You can replace this with a loading indicator
                     )}
@@ -263,13 +306,16 @@ const Index = () => {
                   </div>
                 </div>*/}
               </div>
-             
+
               {/* End .row  */}
 
               <div className="row mt50">
                 <div className="col-lg-12">
                   <div className="copyright-widget text-center">
-                    <p>&copy; {new Date().getFullYear()} Appraisal Link. All Rights Reserved.</p>
+                    <p>
+                      &copy; {new Date().getFullYear()} Appraisal Link. All
+                      Rights Reserved.
+                    </p>
                   </div>
                 </div>
               </div>
