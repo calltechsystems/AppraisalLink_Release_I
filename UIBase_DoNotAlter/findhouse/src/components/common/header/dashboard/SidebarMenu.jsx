@@ -89,7 +89,7 @@ const SidebarMenu = () => {
             >
               <Link href="/create-listing">
                 <i className="flaticon-plus"></i>
-                <span> Appraise New Property</span>
+                <span> Add New Property</span>
               </Link>
             </li>
 

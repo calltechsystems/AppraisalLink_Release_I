@@ -8,7 +8,7 @@ import Image from "next/image";
 const Form = ({userData , chnageShowCardHandler}) => {
   return (
     <form
-      className="contact_form bg-dark p-3"
+      className="contact_form p-3"
       action="#"
       style={{ borderRadius: "5px" }}
     >
@@ -42,10 +42,10 @@ const Form = ({userData , chnageShowCardHandler}) => {
             <div className="col-lg-6">
               <div className="form-group">
                 <ul>
-                  <li className="text-light mt-3">
-                    {/* <span className="text-light fw-bold">First Name</span> :{" "} */}
+                  <li className="text-dark mt-3">
+                    {/* <span className="text-dark fw-bold">First Name</span> :{" "} */}
                     <span
-                      className="text-light fw-bold"
+                      className="text-dark fw-bold"
                       style={{ fontSize: "21px" }}
                     >
                       {" "}
@@ -56,34 +56,34 @@ const Form = ({userData , chnageShowCardHandler}) => {
               </div>
               <div className="form-group">
                 <ul>
-                  <li className="text-light mt-0">
-                    <p className="text-light" style={{ fontSize: "18px" }}>
+                  <li className="text-dark mt-0">
+                    <p className="text-dark" style={{ fontSize: "18px" }}>
                      Company : {userData?.broker_Details?.companyName}
                     </p>
-                    {/* <span className="text-light fw-bold">Middle Name</span> :{" "}
-                    <span className="text-light fw-bold"> Devendra </span> */}
+                    {/* <span className="text-dark fw-bold">Middle Name</span> :{" "}
+                    <span className="text-dark fw-bold"> Devendra </span> */}
                   </li>
                 </ul>
               </div>
               <div className="form-group">
                 <ul>
-                  <li className="text-light mt-0">
-                    <p className="text-light" style={{ fontSize: "17px" }}>
+                  <li className="text-dark mt-0">
+                    <p className="text-dark" style={{ fontSize: "17px" }}>
                      Email : {userData?.userEmail}
                     </p>
-                    {/* <span className="text-light fw-bold">Middle Name</span> :{" "}
-                    <span className="text-light fw-bold"> Devendra </span> */}
+                    {/* <span className="text-dark fw-bold">Middle Name</span> :{" "}
+                    <span className="text-dark fw-bold"> Devendra </span> */}
                   </li>
                 </ul>
               </div>
               <div className="form-group">
                 <ul>
-                  <li className="text-light mt-0">
-                    <p className="text-light" style={{ fontSize: "17px" }}>
+                  <li className="text-dark mt-0">
+                    <p className="text-dark" style={{ fontSize: "17px" }}>
                       Phone : {userData?.broker_Details?.phoneNumber}
                     </p>
-                    {/* <span className="text-light fw-bold">Last Name</span> :{" "}
-                    <span className="text-light fw-bold"> Patel </span> */}
+                    {/* <span className="text-dark fw-bold">Last Name</span> :{" "}
+                    <span className="text-dark fw-bold"> Patel </span> */}
                   </li>
                 </ul>
               </div>
@@ -93,10 +93,10 @@ const Form = ({userData , chnageShowCardHandler}) => {
             <div className="col-lg-6">
               <div className="form-group">
                 <ul>
-                  <li className="text-light mt-3">
-                    {/* <span className="text-light fw-bold">First Name</span> :{" "} */}
+                  <li className="text-dark mt-3">
+                    {/* <span className="text-dark fw-bold">First Name</span> :{" "} */}
                     <span
-                      className="text-light"
+                      className="text-dark"
                       style={{ fontSize: "17px" }}
                     >
                       {" "}
@@ -107,30 +107,30 @@ const Form = ({userData , chnageShowCardHandler}) => {
               </div>
               <div className="form-group">
                 <ul>
-                  <li className="text-light mt-0">
-                    <p className="text-light" style={{ fontSize: "17px", marginLeft:'4.8rem' }}>
+                  <li className="text-dark mt-0">
+                    <p className="text-dark" style={{ fontSize: "17px", marginLeft:'4.8rem' }}>
                       {userData?.broker_Details?.area}
                     </p>
-                    {/* <span className="text-light fw-bold">Middle Name</span> :{" "}
-                    <span className="text-light fw-bold"> Devendra </span> */}
+                    {/* <span className="text-dark fw-bold">Middle Name</span> :{" "}
+                    <span className="text-dark fw-bold"> Devendra </span> */}
                   </li>
                 </ul>
               </div>
               <div className="form-group">
                 <ul>
-                  <li className="text-light mt-0">
-                    <p className="text-light" style={{ fontSize: "17px", marginLeft:'4.8rem' }}>
+                  <li className="text-dark mt-0">
+                    <p className="text-dark" style={{ fontSize: "17px", marginLeft:'4.8rem' }}>
                      {userData?.broker_Details?.city}, {userData?.broker_Details?.state}
                     </p>
-                    {/* <span className="text-light fw-bold">Middle Name</span> :{" "}
-                    <span className="text-light fw-bold"> Devendra </span> */}
+                    {/* <span className="text-dark fw-bold">Middle Name</span> :{" "}
+                    <span className="text-dark fw-bold"> Devendra </span> */}
                   </li>
                 </ul>
               </div>
               <div className="form-group">
                 <ul>
-                  <li className="text-light mt-0">
-                    <p className="text-light" style={{ fontSize: "17px", marginLeft:'4.8rem' }}>
+                  <li className="text-dark mt-0">
+                    <p className="text-dark" style={{ fontSize: "17px", marginLeft:'4.8rem' }}>
                       {userData?.broker_Details?.zipCode}
                     </p>
                     {/* <span className="text-dark fw-bold">Last Name</span> :{" "}

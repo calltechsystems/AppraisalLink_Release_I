@@ -3,6 +3,7 @@ import SmartTable from "./SmartTable";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { encryptionData } from "../../../utils/dataEncryption";
 // import "./SmartTable.css";
 
 const headCells = [
@@ -41,6 +42,12 @@ const headCells = [
     numeric: false,
     label: "Date",
     width: 200,
+  },
+  {
+    id: "action",
+    numeric: false,
+    label: "Actions",
+    width: 200,
   }
 ];
 
@@ -76,7 +83,7 @@ const data = [
 
 export default function Exemple({userData , open ,close , propertyId , properties, setProperties,deletePropertyHandler}) {
   
-  console.log(propertyId);
+
 
   const [updatedData , setUpdatedData] = useState([]);
   const [show , setShow] = useState(false);
@@ -94,6 +101,58 @@ export default function Exemple({userData , open ,close , propertyId , propertie
     return formattedDate;
   };
 
+  const acceptRequestHandler = (id)=>{
+    const data = (JSON.parse(localStorage.getItem("user")));
+    toast.loading("Accepting the bid ...");
+    const payload = {
+      bidId : id,
+      token : data.token
+    };
+
+    const encryptedBody = encryptionData(payload);
+    axios
+      .post("/api/acceptBid",encryptedBody,
+       {
+        headers: {
+          Authorization:`Bearer ${data?.token}`,
+          "Content-Type":"application/json"
+        }
+      })
+      .then((res) => {
+        toast.dismiss();
+        toast.success("Successfully accepted the requested Bid");
+      })
+      .catch((err) => {
+        toast.dismiss();
+        console.log(err);
+        toast.error(err?.response?.data?.error);
+      });
+  }
+
+  const rejectRequestHandler=(id)=>{
+    const data = (JSON.parse(localStorage.getItem("user")));
+    toast.loading("Declining the bid ...");
+    const payload = {
+      bidId : id
+    };
+    const encryptedBody = encryptionData(payload);
+    axios
+      .post("/api/declineBid",encryptedBody,
+       {
+        headers: {
+          Authorization:`Bearer ${data?.token}`,
+          "Content-Type":"application/json"
+        }
+      })
+      .then((res) => {
+        toast.dismiss();
+        toast.success("Successfully declined the requested Bid");
+      })
+      .catch((err) => {
+        toast.dismiss();
+        toast.error(err?.response?.data?.error);
+      });
+  }
   
   useEffect(()=>{
     const getData = ()=>{
@@ -104,8 +163,42 @@ export default function Exemple({userData , open ,close , propertyId , propertie
           AppraiserId : property.appraiserUserId,
           quote : property.bidLowerRange,
           amount : property.bidAmount,
-          description: formatDate(property.description ),
-        date : formatDate(property.requestTime)
+          description: property.description,
+        date : formatDate(property.requestTime),
+        action : <ul className=""><li
+        className="list-inline-item"
+       
+      >
+      <div
+      className="fp_pdate float-end mt-1 fw-bold"
+      onClick={()=>acceptRequestHandler(property.bidId)}
+      
+    >
+      <a href="#" className="text-color-green" >
+        Accept
+      </a>
+    </div>  
+      </li>
+   
+    {/* <div className="fp_pdate float-end">{item.postedYear}</div> */}
+    
+  <li
+    className="list-inline-item"
+    data-toggle="tooltip"
+    data-placement="top"
+    title="Delete"
+  >
+    <div
+      className="fp_pdate float-end mt-1 fw-bold"
+      onClick={()=>rejectRequestHandler(property.bidId)}
+    >
+      <a href="#" className="text-color-red">
+        Decline
+      </a>
+    </div>   
+  </li>
+  </ul>
+  
         }
         tempData.push(updatedRow);
       });

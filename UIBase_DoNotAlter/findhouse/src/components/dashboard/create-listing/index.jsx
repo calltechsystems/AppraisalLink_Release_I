@@ -107,7 +107,7 @@ const Index = ({ isView, propertyData }) => {
       !payload.state ||
       !payload.zipCode ||
       !payload.typeOfBuilding ||
-      !payload.community||
+      !payload.community ||
       !payload.area
     ) {
       toast.error("All required fields must be filled");
@@ -140,10 +140,10 @@ const Index = ({ isView, propertyData }) => {
   };
 
   const submitHandler = () => {
-   setModalIsOpen(true);
+    setModalIsOpen(true);
   };
 
-  const finalSubmitHandler=()=>{
+  const finalSubmitHandler = () => {
     setModalIsOpen(false);
     const nameRegex = /^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -152,10 +152,10 @@ const Index = ({ isView, propertyData }) => {
     const phoneNumberRegex = /^\d{10}$/;
 
     if (
-       (!nameRegex.test(applicantFirstName) && applicantFirstName ) ||
-      (!nameRegex.test(applicantLatsName) && applicantLatsName ) ||
-      (!phoneNumberRegex.test(applicantNumber) && applicantNumber ) ||
-      (!emailRegex.test(applicantEmail) && applicantEmail )
+      (!nameRegex.test(applicantFirstName) && applicantFirstName) ||
+      (!nameRegex.test(applicantLatsName) && applicantLatsName) ||
+      (!phoneNumberRegex.test(applicantNumber) && applicantNumber) ||
+      (!emailRegex.test(applicantEmail) && applicantEmail)
     ) {
       toast.error("Please provide a valid applicant Information");
     } else {
@@ -216,7 +216,7 @@ const Index = ({ isView, propertyData }) => {
           });
       }
     }
-  }
+  };
 
   const handleZipCodeChange = async (e) => {
     setZipCodeRef(e.target.value);
@@ -373,7 +373,10 @@ const Index = ({ isView, propertyData }) => {
                         className="col-lg-12 bg-head text-center mb-4"
                         style={{ borderRadius: "5px" }}
                       >
-                        <h4 className="text-white" style={{paddingTop:"10px"}}>
+                        <h4
+                          className="text-white"
+                          style={{ paddingTop: "10px" }}
+                        >
                           Applicant Information
                           {/* <hr style={{ color: "#2e008b" }} /> */}
                         </h4>
@@ -419,10 +422,187 @@ const Index = ({ isView, propertyData }) => {
                   <div className="modal">
                     <div className="modal-content">
                       <h3 className="text-center">Property Submission</h3>
-                      <h5 className="text-center">
-                        Here is a whole information about the appraised property
-                      </h5>
-                      <div
+                      <p className="text-center mb-3">
+                        All of the details on the assessed property are here.
+                      </p>
+                      <div className="d-flex justify-content-center">
+                        <table
+                          style={{
+                            width: "450px",
+                            textAlign: "center",
+                            borderRadius: "5px",
+                          }}
+                        >
+                          <tr>
+                            <td
+                              style={{
+                                border: "1px solid grey",
+                                color: "#2e008b",
+                              }}
+                            >
+                              <span className="text-start">Property Value</span>
+                            </td>
+                            <td
+                              style={{
+                                border: "1px solid grey",
+                                width: "200px",
+                              }}
+                            >
+                              {" "}
+                              ${bidLowerRangeRef}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              style={{
+                                border: "1px solid grey",
+                                color: "#2e008b",
+                              }}
+                            >
+                              <span className="text-start">Community Type</span>
+                            </td>
+                            <td
+                              style={{
+                                border: "1px solid grey",
+                                width: "200px",
+                              }}
+                            >
+                              {communityRef}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              style={{
+                                border: "1px solid grey",
+                                color: "#2e008b",
+                              }}
+                            >
+                              <span className="text-start">Property Type</span>
+                            </td>
+                            <td
+                              style={{
+                                border: "1px solid grey",
+                                width: "200px",
+                              }}
+                            >
+                              {buildinRef}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              style={{
+                                border: "1px solid grey",
+                                color: "#2e008b",
+                              }}
+                            >
+                              <span className="text-start">
+                                Property Address
+                              </span>
+                            </td>
+                            <td
+                              style={{
+                                border: "1px solid grey",
+                                width: "200px",
+                              }}
+                            >
+                              {streetNameRef} {streetNumberRef} {cityRef}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              style={{
+                                border: "1px solid grey",
+                                color: "#2e008b",
+                              }}
+                            >
+                              <span className="text-start">Postal Code</span>
+                            </td>
+                            <td
+                              style={{
+                                border: "1px solid grey",
+                                width: "200px",
+                              }}
+                            >
+                              {" "}
+                              {zipCodeRef}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              style={{
+                                border: "1px solid grey",
+                                color: "#2e008b",
+                              }}
+                            >
+                              <span className="text-start">Property By</span>
+                            </td>
+                            <td
+                              style={{
+                                border: "1px solid grey",
+                                width: "200px",
+                              }}
+                            >
+                              {" "}
+                              {applicantFirstName} {applicantLatsName}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              style={{
+                                border: "1px solid grey",
+                                color: "#2e008b",
+                              }}
+                            >
+                              <span className="text-start">Email Address</span>
+                            </td>
+                            <td
+                              style={{
+                                border: "1px solid grey",
+                                width: "200px",
+                              }}
+                            >
+                              {" "}
+                              {applicantEmail}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              style={{
+                                border: "1px solid grey",
+                                color: "#2e008b",
+                              }}
+                            >
+                              <span className="text-start">Phone Number</span>
+                            </td>
+                            <td
+                              style={{
+                                border: "1px solid grey",
+                                width: "200px",
+                              }}
+                            >
+                              {" "}
+                              {applicantNumber}
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                      <div className="row text-center mt-3">
+                        <div className="col-lg-6">
+                          <button className="w-50 btn-color text-end">
+                            Cancel
+                          </button>
+                        </div>
+                        <div className="col-lg-6">
+                          <button
+                            className="w-50 btn-color"
+                            onClick={() => finalSubmitHandler()}
+                          >
+                            Continue
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* <div
                         className="text-center"
                         style={{ display: "flex", flexDirection: "column" }}
                       >
@@ -446,7 +626,7 @@ const Index = ({ isView, propertyData }) => {
                         >
                           OK
                         </button>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 )}
