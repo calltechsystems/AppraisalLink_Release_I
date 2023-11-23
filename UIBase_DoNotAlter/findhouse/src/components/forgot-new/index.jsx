@@ -7,7 +7,7 @@ import PopupSignInUp from "../common/PopupSignInUp";
 import BreadCrumbBanner from "./BreadCrumbBanner";
 import Form from "./Form";
 
-const index = () => {
+const Index = () => {
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
   );
@@ -98,4 +98,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;

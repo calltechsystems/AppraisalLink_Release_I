@@ -7,7 +7,7 @@ import MobileMenu from "../common/header/MobileMenu";
 import BreadCrumbBanner from "./BreadCrumbBanner";
 import TermsCondions from "./TermsCondions";
 
-const index = () => {
+const Index = () => {
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
   );
@@ -84,4 +84,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;

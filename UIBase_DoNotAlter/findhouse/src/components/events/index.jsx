@@ -11,7 +11,7 @@ import Team from "./Team";
 import OurMission from "./OurMission";
 import { useEffect, useState } from "react";
 
-const index = () => {
+const Index = () => {
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
   );
@@ -199,4 +199,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;
