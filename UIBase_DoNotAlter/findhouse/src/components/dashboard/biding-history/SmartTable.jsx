@@ -128,7 +128,7 @@ function SmartTable(props) {
               <div className="spinner-border" role="status"></div>
             </div>
           )}
-          <div className="row">
+          {/* <div className="row">
             <div className="col-6 h3">{props.title}</div>
             <div className="col-6 text-end">
               <input
@@ -138,7 +138,7 @@ function SmartTable(props) {
                 onChange={handleSearch}
               />
             </div>
-          </div>
+          </div> */}
           {props.data.length > 0 ? (
             <div className="row mt-3">
               <div className="smartTable-tableContainer">
@@ -154,7 +154,7 @@ function SmartTable(props) {
                             id={headCell.id}
                             key={headCell.id}
                             scope="col"
-                            style={{ width: headCell.width ?? 'auto' }}
+                            style={{ width: headCell.width, backgroundColor:"#2e008b", color:"white" ?? 'auto' }}
                             className={
                               headCell.sortable !== false
                                 ? 'smartTable-pointer'

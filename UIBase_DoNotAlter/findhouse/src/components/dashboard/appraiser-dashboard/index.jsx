@@ -11,27 +11,62 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 
 const Index = () => {
-  let userData ={};
+  let userData = {};
   const router = useRouter();
-  const [properties,setProperties] = useState([]);
+  const [properties, setProperties] = useState([]);
 
+  const [allProperties, setAllProperties] = useState([]);
 
-  const [allProperties , setAllProperties] = useState([]);
+  const [chartData, setChartData] = useState([]);
 
-  const [chartData , setChartData] = useState([]);
+  const [modalIsOpenError, setModalIsOpenError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const [modalIsOpenError , setModalIsOpenError] = useState(false);
-  const [errorMessage , setErrorMessage ] = useState("");
-
-  const closeErrorModal =()=>{
+  const closeErrorModal = () => {
     setModalIsOpenError(false);
-  }
+  };
 
-  
+  const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
+    Date.now()
+  );
 
+  useEffect(() => {
+    const activityHandler = () => {
+      setLastActivityTimestamp(Date.now());
+    };
 
-  useEffect(()=>{
-    userData =  JSON.parse(localStorage.getItem("user"));
+    // Attach event listeners for user activity
+    window.addEventListener("mousemove", activityHandler);
+    window.addEventListener("keydown", activityHandler);
+    window.addEventListener("click", activityHandler);
+
+    // Cleanup event listeners when the component is unmounted
+    return () => {
+      window.removeEventListener("mousemove", activityHandler);
+      window.removeEventListener("keydown", activityHandler);
+      window.removeEventListener("click", activityHandler);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Check for inactivity every minute
+    const inactivityCheckInterval = setInterval(() => {
+      const currentTime = Date.now();
+      const timeSinceLastActivity = currentTime - lastActivityTimestamp;
+
+      // Check if there has been no activity in the last 10 minutes (600,000 milliseconds)
+      if (timeSinceLastActivity > 600000) {
+        localStorage.removeItem("user");
+        router.push("/login");
+      }
+    }, 60000); // Check every minute
+
+    // Cleanup the interval when the component is unmounted
+    return () => clearInterval(inactivityCheckInterval);
+  }, [lastActivityTimestamp]);
+
+  useEffect(() => {
+    userData = JSON.parse(localStorage.getItem("user"));
     const data = JSON.parse(localStorage.getItem("user"));
     if (!data) {
       router.push("/login");
@@ -43,101 +78,97 @@ const Index = () => {
     }
 
     let tempId = [];
-    const func = ()=>{
-    axios.get("/api/appraiserWishlistedProperties",
-    {
-     headers: {
-       Authorization:`Bearer ${data?.token}`,
-       "Content-Type":"application/json"
-     }
-   })
-   .then((res) => {
-    const tempData = res.data.data.$values;
-    const responseData = tempData.filter((prop,index)=>{
-      if(prop.userId === data.userId){
-        return true;
-      }
-      else{
-        return false;
-      }
-    })
-    tempId =responseData;
-    setProperties(responseData);
-   })
-   .catch((err) => {
-     setErrorMessage(err?.response?.data?.error);
-     setModalIsOpenError(true);
-   });
- }
- func();
-},[]);
+    const func = () => {
+      axios
+        .get("/api/appraiserWishlistedProperties", {
+          headers: {
+            Authorization: `Bearer ${data?.token}`,
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          const tempData = res.data.data.$values;
+          const responseData = tempData.filter((prop, index) => {
+            if (prop.userId === data.userId) {
+              return true;
+            } else {
+              return false;
+            }
+          });
+          tempId = responseData;
+          setProperties(responseData);
+        })
+        .catch((err) => {
+          setErrorMessage(err?.response?.data?.error);
+          setModalIsOpenError(true);
+        });
+    };
+    func();
+  }, []);
 
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("user"));
+    if (!data) {
+      router.push("/login");
+    } else if (!data?.brokerage_Details?.firstName) {
+      router.push("/appraiser-profile");
+    }
+    if (!data) {
+      router.push("/login");
+    }
+    const func2 = () => {
+      axios
+        .get("/api/getAllListedProperties", {
+          headers: {
+            Authorization: `Bearer ${data?.token}`,
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          toast.dismiss();
 
-useEffect(()=>{
-
-  const data = JSON.parse(localStorage.getItem("user"));
-  if (!data) {
-    router.push("/login");
-  } else if (!data?.brokerage_Details?.firstName) {
-    router.push("/appraiser-profile");
-  }
-  if (!data) {
-    router.push("/login");
-  }
- const func2 = ()=>{
-  axios
-  .get("/api/getAllListedProperties", {
-    headers: {
-      Authorization: `Bearer ${data?.token}`,
-      "Content-Type": "application/json",
-    },
-  })
-  .then((res) => {
-    toast.dismiss();
-
-    const tempData = res.data.data.properties.$values;
-    const responseData = tempData.filter((prop) => {
-      return properties.some((data) => {
-        return data.propertyId === prop.propertyId;
-      });
-    })
-    setAllProperties(responseData);
-  })
-  .catch((err) => {
-    toast.dismiss();
-    setErrorMessage(err?.response?.data?.error);
-    setModalIsOpenError(true);
-  });
-}
-func2();
-
+          const tempData = res.data.data.properties.$values;
+          const responseData = tempData.filter((prop) => {
+            return properties.some((data) => {
+              return data.propertyId === prop.propertyId;
+            });
+          });
+          setAllProperties(responseData);
+        })
+        .catch((err) => {
+          toast.dismiss();
+          setErrorMessage(err?.response?.data?.error);
+          setModalIsOpenError(true);
+        });
+    };
+    func2();
   }, [properties]);
 
-  useEffect(()=>{
+  useEffect(() => {
     const categorizeDataByMonth = (data) => {
       if (data.length === 0) {
-          return Array(12).fill(0); // Initialize an array with 12 elements, all initialized to 0.
+        return Array(12).fill(0); // Initialize an array with 12 elements, all initialized to 0.
       }
-  
+
       const currentMonth = new Date().getMonth();
-  
-      const countsByMonth = Array(currentMonth+1).fill(0);
-  
+
+      const countsByMonth = Array(currentMonth + 1).fill(0);
+
       data.forEach((property) => {
-          const createdAtDate = new Date(property.addedDatetime);
-          const month = createdAtDate.getMonth();
-  
-          if (month <= currentMonth) {
-              countsByMonth[month]++;
-          }
+        const createdAtDate = new Date(property.addedDatetime);
+        const month = createdAtDate.getMonth();
+
+        if (month <= currentMonth) {
+          countsByMonth[month]++;
+        }
       });
-  
+
       return countsByMonth;
-  };
-  const temp = categorizeDataByMonth(allProperties);
-  setChartData(temp);
- console.log(temp);
-  },[allProperties]);
+    };
+    const temp = categorizeDataByMonth(allProperties);
+    setChartData(temp);
+    console.log(temp);
+  }, [allProperties]);
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -187,7 +218,7 @@ func2();
                     display: "flex",
                     flexDirection: "row",
                     justifyContent: "space-between",
-                    alignItems:'center'
+                    alignItems: "center",
                   }}
                 >
                   <div className="breadcrumb_content style2">
@@ -206,56 +237,75 @@ func2();
               {/* End .row */}
 
               <div className="row">
-                <AllStatistics properties={properties.length} views={0} bids={0} wishlist={0} />
+                <AllStatistics
+                  properties={properties.length}
+                  views={0}
+                  bids={0}
+                  wishlist={0}
+                />
               </div>
               {/* End .row Dashboard top statistics */}
 
               <div className="row">
-              <div className="col-xl-6">
-              <div className="application_statics">
-                <h4 className="mb-4">View Statistics</h4>
-                {chartData.length > 0 ? (
-                  <StatisticsChart data={chartData} />
-                ) : (
-                  <StatisticsChart data={chartData}/> // You can replace this with a loading indicator
-                )}
-              </div>
-            </div>
-            <div className="col-xl-6">
-              <div className="application_statics">
-                <h4 className="mb-4">View Statistics</h4>
-                {chartData.length > 0 ? (
-                 <StatisticsPieChart data = {chartData}/>
-                ) : (
-                 <StatisticsPieChart data={chartData}/> // You can replace this with a loading indicator
-                )}
-                {modalIsOpenError && (
-                  <div className="modal">
-                    <div className="modal-content" style={{borderColor:"orangered",width:"20%"}}>
-                      <h3 className="text-center" style={{color:"orangered"}}>Error</h3>
-                      <div style={{borderWidth:"2px",borderColor:"orangered"}}><br/></div>
-                      <h5 className="text-center">
-                        {errorMessage}
-                      </h5>
-                      <div
-                        className="text-center"
-                        style={{ display: "flex", flexDirection: "column" }}
-                      >
-                        
-              
-                        <button
-                          className="btn w-35 btn-white"
-                          onClick={()=>closeErrorModal()}
-                          style={{borderColor:"orangered",color:"orangered"}}
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    </div>
+                <div className="col-xl-6">
+                  <div className="application_statics">
+                    <h4 className="mb-4">View Statistics</h4>
+                    {chartData.length > 0 ? (
+                      <StatisticsChart data={chartData} />
+                    ) : (
+                      <StatisticsChart data={chartData} /> // You can replace this with a loading indicator
+                    )}
                   </div>
-                )}
-              </div>
-            </div>
+                </div>
+                <div className="col-xl-6">
+                  <div className="application_statics">
+                    <h4 className="mb-4">View Statistics</h4>
+                    {chartData.length > 0 ? (
+                      <StatisticsPieChart data={chartData} />
+                    ) : (
+                      <StatisticsPieChart data={chartData} /> // You can replace this with a loading indicator
+                    )}
+                    {modalIsOpenError && (
+                      <div className="modal">
+                        <div
+                          className="modal-content"
+                          style={{ borderColor: "orangered", width: "20%" }}
+                        >
+                          <h3
+                            className="text-center"
+                            style={{ color: "orangered" }}
+                          >
+                            Error
+                          </h3>
+                          <div
+                            style={{
+                              borderWidth: "2px",
+                              borderColor: "orangered",
+                            }}
+                          >
+                            <br />
+                          </div>
+                          <h5 className="text-center">{errorMessage}</h5>
+                          <div
+                            className="text-center"
+                            style={{ display: "flex", flexDirection: "column" }}
+                          >
+                            <button
+                              className="btn w-35 btn-white"
+                              onClick={() => closeErrorModal()}
+                              style={{
+                                borderColor: "orangered",
+                                color: "orangered",
+                              }}
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
 
                 {/* End statistics chart */}
 
@@ -271,7 +321,10 @@ func2();
               <div className="row mt50">
                 <div className="col-lg-12">
                   <div className="copyright-widget text-center">
-                    <p>&copy; {new Date().getFullYear()} Appraisal Link. All Rights Reserved.</p>
+                    <p>
+                      &copy; {new Date().getFullYear()} Appraisal Link. All
+                      Rights Reserved.
+                    </p>
                   </div>
                 </div>
               </div>

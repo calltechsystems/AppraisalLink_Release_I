@@ -744,22 +744,22 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                       >
                         <div className="row">
                           <div className="col-lg-12 mt-3 fw-bold text-center">
-                            <Link href="/events">
-                              <button className=" btn btn2 w-50 btn-color">
-                                Events
+                            <Link href="/about-us">
+                              <button className="btn btn2 w-75 btn-color">
+                                About Us
                               </button>
                             </Link>
                             <br />
                             <Link href="/how-we-work">
                               {/* <button className=" mt-3 fw-bold cool-link menuitem"> */}
-                              <button className="mt-3 btn btn2 w-50 btn-color">
+                              <button className="mt-3 btn btn2 w-75 btn-color">
                                 How We Work
                               </button>
                             </Link>
                             <br />
-                            <Link href="/about-us">
-                              <button className=" mt-3 btn btn2 w-75 btn-color">
-                                About Appraisal Link
+                            <Link href="/events">
+                              <button className="mt-3 btn btn2 w-75 btn-color">
+                                Events
                               </button>
                             </Link>
                             {/* <Link href="#">
@@ -815,7 +815,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                   {userData ? (
                     <span
                       className=" dn-lg text-info-01 cool-link menuitem"
-                      style={{ marginLeft: "-35px", }}
+                      style={{ marginLeft: "-35px" }}
                       // onMouseOver={() => setLogin(!login)}
                       // onMouseLeave={() => setLogin()}
                       onMouseEnter={() => setPlan()}

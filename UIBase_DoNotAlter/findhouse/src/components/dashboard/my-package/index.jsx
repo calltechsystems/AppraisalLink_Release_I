@@ -12,19 +12,55 @@ const Index = () => {
   const router = useRouter();
   let userData = {};
 
-  
+  const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
+    Date.now()
+  );
 
-  
-  const [modalIsOpenError , setModalIsOpenError] = useState(false);
-  const [errorMessage , setErrorMessage ] = useState("");
+  useEffect(() => {
+    const activityHandler = () => {
+      setLastActivityTimestamp(Date.now());
+    };
 
-  const closeErrorModal =()=>{
+    // Attach event listeners for user activity
+    window.addEventListener("mousemove", activityHandler);
+    window.addEventListener("keydown", activityHandler);
+    window.addEventListener("click", activityHandler);
+
+    // Cleanup event listeners when the component is unmounted
+    return () => {
+      window.removeEventListener("mousemove", activityHandler);
+      window.removeEventListener("keydown", activityHandler);
+      window.removeEventListener("click", activityHandler);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Check for inactivity every minute
+    const inactivityCheckInterval = setInterval(() => {
+      const currentTime = Date.now();
+      const timeSinceLastActivity = currentTime - lastActivityTimestamp;
+
+      // Check if there has been no activity in the last 10 minutes (600,000 milliseconds)
+      if (timeSinceLastActivity > 600000) {
+        localStorage.removeItem("user");
+        router.push("/login");
+      }
+    }, 60000); // Check every minute
+
+    // Cleanup the interval when the component is unmounted
+    return () => clearInterval(inactivityCheckInterval);
+  }, [lastActivityTimestamp]);
+
+  const [modalIsOpenError, setModalIsOpenError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const closeErrorModal = () => {
     setModalIsOpenError(false);
-  }  
-  
-  const updatePlan = ()=>{
+  };
+
+  const updatePlan = () => {
     router.push("/my-plans");
-  }
+  };
 
   useEffect(() => {
     userData = JSON.parse(localStorage.getItem("user"));
@@ -130,25 +166,45 @@ const Index = () => {
                     <div className="col-lg-12">
                       <div className="packages_table">
                         <div className="table-responsive mt0">
-                          <Exemple data={data} userData={userData}/>
+                          <Exemple data={data} userData={userData} />
                           {modalIsOpenError && (
                             <div className="modal">
-                              <div className="modal-content" style={{borderColor:"orangered",width:"20%"}}>
-                                <h3 className="text-center" style={{color:"orangered"}}>Error</h3>
-                                <div style={{borderWidth:"2px",borderColor:"orangered"}}><br/></div>
-                                <h5 className="text-center">
-                                  {errorMessage}
-                                </h5>
+                              <div
+                                className="modal-content"
+                                style={{
+                                  borderColor: "orangered",
+                                  width: "20%",
+                                }}
+                              >
+                                <h3
+                                  className="text-center"
+                                  style={{ color: "orangered" }}
+                                >
+                                  Error
+                                </h3>
+                                <div
+                                  style={{
+                                    borderWidth: "2px",
+                                    borderColor: "orangered",
+                                  }}
+                                >
+                                  <br />
+                                </div>
+                                <h5 className="text-center">{errorMessage}</h5>
                                 <div
                                   className="text-center"
-                                  style={{ display: "flex", flexDirection: "column" }}
+                                  style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                  }}
                                 >
-                                  
-                        
                                   <button
                                     className="btn w-35 btn-white"
-                                    onClick={()=>closeErrorModal()}
-                                    style={{borderColor:"orangered",color:"orangered"}}
+                                    onClick={() => closeErrorModal()}
+                                    style={{
+                                      borderColor: "orangered",
+                                      color: "orangered",
+                                    }}
                                   >
                                     Cancel
                                   </button>
@@ -156,13 +212,14 @@ const Index = () => {
                               </div>
                             </div>
                           )}
-                        
                         </div>
                       </div>
                       {/* End .packages_table */}
 
                       <div className="pck_chng_btn text-end">
-                        <button className="btn btn-lg" onClick={updatePlan}>Update Package</button>
+                        <button className="btn btn-lg" onClick={updatePlan}>
+                          Update Package
+                        </button>
                       </div>
                     </div>
                   </div>

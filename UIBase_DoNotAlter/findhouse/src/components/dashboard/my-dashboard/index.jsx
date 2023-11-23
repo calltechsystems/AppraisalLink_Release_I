@@ -255,7 +255,7 @@ const Index = () => {
                         ? userData?.broker_Details?.lastName
                         : "lastName"}
                     </h2>
-                    <p>We are glad to see you again!</p>
+                    {/* <p>We are glad to see you again!</p> */}
                   </div>
                   <div>
                     <Filtering setFilterQuery={setFilterQuery} />

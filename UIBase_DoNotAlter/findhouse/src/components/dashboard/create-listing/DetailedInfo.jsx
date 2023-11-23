@@ -79,6 +79,7 @@ import React, { Component, useState } from "react";
 
 import CheckBoxFilter from "../../common/CheckBoxFilter";
 const DetailedInfo = ({
+  onCancelHandler,
   isDisable,
   updateHandler,
   applicantFirstName,
@@ -225,7 +226,7 @@ const DetailedInfo = ({
           </div>
           <div className="col-xl-12">
             <div className="my_profile_setting_input overflow-hidden mt20 text-center">
-              <button className="btn btn5 m-1">Cancel</button>
+              <button className="btn btn5 m-1" onClick={onCancelHandler}>Cancel</button>
               {!isDisable &&
                 (propertyData ? (
                   <button className="btn btn5" onClick={updateHandler}>

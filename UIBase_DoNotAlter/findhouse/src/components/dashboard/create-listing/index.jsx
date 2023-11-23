@@ -107,7 +107,8 @@ const Index = ({ isView, propertyData }) => {
       !payload.state ||
       !payload.zipCode ||
       !payload.typeOfBuilding ||
-      payload.community
+      !payload.community||
+      !payload.area
     ) {
       toast.error("All required fields must be filled");
     } else {
@@ -139,6 +140,11 @@ const Index = ({ isView, propertyData }) => {
   };
 
   const submitHandler = () => {
+   setModalIsOpen(true);
+  };
+
+  const finalSubmitHandler=()=>{
+    setModalIsOpen(false);
     const nameRegex = /^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     const userInfo = JSON.parse(localStorage.getItem("user"));
@@ -174,6 +180,8 @@ const Index = ({ isView, propertyData }) => {
         token: userInfo.token,
       };
 
+      console.log(payload);
+
       if (
         !payload.streetName ||
         !payload.streetNumber ||
@@ -181,7 +189,8 @@ const Index = ({ isView, propertyData }) => {
         !payload.state ||
         !payload.zipCode ||
         !payload.typeOfBuilding ||
-        payload.community
+        !payload.community ||
+        !payload.area
       ) {
         toast.error("All required fields must be filled");
       } else {
@@ -198,7 +207,8 @@ const Index = ({ isView, propertyData }) => {
           })
           .then((res) => {
             toast.dismiss();
-            setModalIsOpen(true);
+            // setModalIsOpen(true);
+            router.push("/my-properties");
           })
           .catch((err) => {
             toast.dismiss();
@@ -206,7 +216,7 @@ const Index = ({ isView, propertyData }) => {
           });
       }
     }
-  };
+  }
 
   const handleZipCodeChange = async (e) => {
     setZipCodeRef(e.target.value);
@@ -383,6 +393,7 @@ const Index = ({ isView, propertyData }) => {
                         submitHandler={submitHandler}
                         propertyData={propertyData}
                         setDisable={setDisable}
+                        onCancelHandler={onCancelHandler}
                       />
                     </div>
                   </div>
@@ -431,7 +442,7 @@ const Index = ({ isView, propertyData }) => {
 
                         <button
                           className="btn w-35 btn-white"
-                          onClick={() => onCancelHandler()}
+                          onClick={() => finalSubmitHandler()}
                         >
                           OK
                         </button>

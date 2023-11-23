@@ -9,12 +9,12 @@ import FilterTopBar from "../../common/listing/FilterTopBar";
 import ShowFilter from "../../common/listing/ShowFilter";
 import SidebarListing from "../../common/listing/SidebarListing";
 import Modal from "./Modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
-  const [lowRangeBid , setLowRangeBid] = useState("");
-  const [propertyId , setPropertyId] = useState(null);
+  const [lowRangeBid, setLowRangeBid] = useState("");
+  const [propertyId, setPropertyId] = useState(null);
 
   const openModal = () => {
     setModalOpen(true);
@@ -23,6 +23,45 @@ const Index = () => {
   const closeModal = () => {
     setModalOpen(false);
   };
+
+  const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
+    Date.now()
+  );
+
+  useEffect(() => {
+    const activityHandler = () => {
+      setLastActivityTimestamp(Date.now());
+    };
+
+    // Attach event listeners for user activity
+    window.addEventListener("mousemove", activityHandler);
+    window.addEventListener("keydown", activityHandler);
+    window.addEventListener("click", activityHandler);
+
+    // Cleanup event listeners when the component is unmounted
+    return () => {
+      window.removeEventListener("mousemove", activityHandler);
+      window.removeEventListener("keydown", activityHandler);
+      window.removeEventListener("click", activityHandler);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Check for inactivity every minute
+    const inactivityCheckInterval = setInterval(() => {
+      const currentTime = Date.now();
+      const timeSinceLastActivity = currentTime - lastActivityTimestamp;
+
+      // Check if there has been no activity in the last 10 minutes (600,000 milliseconds)
+      if (timeSinceLastActivity > 600000) {
+        localStorage.removeItem("user");
+        router.push("/login");
+      }
+    }, 60000); // Check every minute
+
+    // Cleanup the interval when the component is unmounted
+    return () => clearInterval(inactivityCheckInterval);
+  }, [lastActivityTimestamp]);
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -100,15 +139,16 @@ const Index = () => {
                         {/* End .row */}
 
                         <div className="row">
-                          <FeaturedItem 
-                          setModalOpen={openModal} 
-                          close={closeModal} 
-                          setLowRangeBid={setLowRangeBid} 
-                          setPropertyId={setPropertyId} />
+                          <FeaturedItem
+                            setModalOpen={openModal}
+                            close={closeModal}
+                            setLowRangeBid={setLowRangeBid}
+                            setPropertyId={setPropertyId}
+                          />
                           <Modal
                             modalOpen={modalOpen}
                             closeModal={closeModal}
-                            lowRangeBid = {lowRangeBid}
+                            lowRangeBid={lowRangeBid}
                             propertyId={propertyId}
                           />
                         </div>

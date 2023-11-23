@@ -193,7 +193,7 @@ const LocationField = ({
                     fontWeight: "",
                   }}
                 >
-                  Property Area (sq.ft)
+                  Property Area (sq.ft) <span class="req-btn">*</span>
                 </label>
               </div>
               <div className="">

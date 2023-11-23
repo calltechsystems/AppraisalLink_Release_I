@@ -7326,6 +7326,8 @@ form.home5_advanced_search_form
 
 .icon_hvr_img_box:hover:before {
   background-color: rgba(29, 41, 62, 0.8);
+  border-radius: 8px;
+  border: 3px solid #97d700;
 }
 
 .icon_hvr_img_box .icon {
@@ -7343,7 +7345,7 @@ form.home5_advanced_search_form
 .icon_hvr_img_box:hover .details h4,
 .icon_hvr_img_box:hover .details p,
 .icon_hvr_img_box:hover .overlay .icon {
-  color: #ffffff;
+  color: #97d700;
 }
 
 /*== Single Property ==*/
@@ -21567,7 +21569,7 @@ header.header-nav.menu_style_home_one.stricky-fixed .ace-responsive-menu li a,
 header.header-nav.menu_style_home_one.stricky-fixed a.navbar_brand span,
 header.header-nav.menu_style_home_one.stricky-fixed .sign_up_btn .btn,
 header.header-nav.menu_style_home_one.stricky-fixed #search-button i {
-  color: #2e008b !important;
+  color: #97d700 !important;
 }
 
 .home-logo-header {
