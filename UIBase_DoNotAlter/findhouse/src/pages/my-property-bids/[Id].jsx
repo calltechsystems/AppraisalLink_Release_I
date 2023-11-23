@@ -3,7 +3,7 @@ import Seo from "../../components/common/seo";
 import MyProperties from "../../components/dashboard/my-property-bids";
 import { useRouter } from "next/router";
 
-const index = () => {
+const Index = () => {
   const router = useRouter();
   const { Id } = router.query;
   console.log(Id)
@@ -15,5 +15,5 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;
 // export default dynamic(() => Promise.resolve(index), { ssr: false });

@@ -8,7 +8,7 @@ import Link from "next/link";
 import FindProperties from "./FindProperties";
 import { useEffect, useState } from "react";
 
-const index = () => {
+const Index = () => {
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
   );
@@ -40,7 +40,7 @@ const index = () => {
       // Check if there has been no activity in the last 10 minutes (600,000 milliseconds)
       if (timeSinceLastActivity > 600000) {
         localStorage.removeItem("user");
-        router.push("/logim");
+        router.push("/login");
       }
     }, 60000); // Check every minute
 
@@ -124,4 +124,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;

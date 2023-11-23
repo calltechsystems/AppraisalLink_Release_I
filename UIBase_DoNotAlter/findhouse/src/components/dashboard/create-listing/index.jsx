@@ -185,25 +185,25 @@ const Index = ({ isView, propertyData }) => {
       ) {
         toast.error("All required fields must be filled");
       } else {
-        // const encryptedData = encryptionData(payload);
+        const encryptedData = encryptionData(payload);
 
-        // console.log(payload);
-        // toast.loading("Appraising property ..");
-        // axios
-        //   .post("/api/addBrokerProperty", encryptedData, {
-        //     headers: {
-        //       Authorization: `Bearer ${userData.token}`,
-        //       "Content-Type": "application/json",
-        //     },
-        //   })
-        //   .then((res) => {
-        //     toast.dismiss();
-        //     setModalIsOpen(true);
-        //   })
-        //   .catch((err) => {
-        //     toast.dismiss();
-        //     toast.error(err.message);
-        //   });
+        console.log(payload);
+        toast.loading("Appraising property ..");
+        axios
+          .post("/api/addBrokerProperty", encryptedData, {
+            headers: {
+              Authorization: `Bearer ${userData.token}`,
+              "Content-Type": "application/json",
+            },
+          })
+          .then((res) => {
+            toast.dismiss();
+            setModalIsOpen(true);
+          })
+          .catch((err) => {
+            toast.dismiss();
+            toast.error(err.message);
+          });
       }
     }
   };
