@@ -42,7 +42,7 @@ const WhyChoose = ({ style = "" }) => {
     <>
       {whyCooseContent.map((item) => (
         <div className="col-md-6 col-lg-4 col-xl-4" key={item.id}>
-          <div className={`why_chose_us card_01 ${style}`} style={{ height: "370px", marginTop:'' }}>
+          <div className={`why_chose_us card_01 ${style}`} style={{ height: "390px", marginTop:'' }}>
             <h4 className="mb-3">{item.title}</h4>
             <div className="icon">
               <span className={item.icon}></span>

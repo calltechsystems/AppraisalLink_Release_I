@@ -1,4 +1,5 @@
 import { current } from "@reduxjs/toolkit";
+import { typeOfBuilding } from "./data";
 
 const LocationField = ({
   isDisable,
@@ -244,18 +245,10 @@ const LocationField = ({
                     // color:"white"
                   }}
                 >
-                  <option data-tokens="SelectRole" value={1}>
-                    Choose..
-                  </option>
-                  <option data-tokens="SelectRole" value={1}>
-                    Commercial
-                  </option>
-                  <option data-tokens="Agent/Agency" value={"Domestic"}>
-                    Domestic
-                  </option>
-                  <option data-tokens="SingleUser" value={"Apartment"}>
-                    Apartment
-                  </option>
+                {typeOfBuilding.map((item,index)=>{
+                   return <option key={item.id} value={item.value}>{item.type}</option>
+                })}
+                
                 </select>
               </div>
             </div>

@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { Urgency } from "./data";
 
 const CreateList = ({
   isDisable,
@@ -111,18 +112,10 @@ const CreateList = ({
                       // color: "white",
                     }}
                   >
-                    <option data-tokens="SelectRole" value={1}>
-                      Choose..
-                    </option>
-                    <option data-tokens="SelectRole" value={1}>
-                      Low
-                    </option>
-                    <option data-tokens="Agent/Agency" value={1}>
-                      Medium
-                    </option>
-                    <option data-tokens="SingleUser" value={2}>
-                      High
-                    </option>
+                  {Urgency.map((item,index)=>{
+                    return <option key={item.id} value={item.value}>{item.type}</option>
+                 })}
+                  
                   </select>
                 </div>
               </div>

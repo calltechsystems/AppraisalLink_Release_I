@@ -8045,7 +8045,8 @@ form.home5_advanced_search_form
 }
 
 .why_chose_us:hover {
-  box-shadow: 0px 0px 50px 0px rgba(19, 19, 28, 0.12);
+  /* box-shadow: 0px 0px 50px 0px rgba(19, 19, 28, 0.12); */
+  box-shadow: 0px 0px 50px 0px rgb(151, 215, 0);
 }
 
 .why_chose_us .icon {
@@ -8086,6 +8087,7 @@ form.home5_advanced_search_form
   font-size: 14px;
   font-family: "Nunito";
   line-height: 1.714;
+  padding: 5px;
 }
 
 .why_chose_us.style2 {
@@ -10523,6 +10525,7 @@ ul.ab_counting li:last-child {
 
 .team_member .thumb .overylay {
   background-color: rgba(255, 90, 95, 0.8);
+  /* background-color: rgb(151, 215, 0, 0.8); */
   bottom: 0;
   left: 0;
   opacity: 0;
@@ -21644,13 +21647,13 @@ header.header-nav {
   line-height: 130px;
 }
 
-.why_chose_us:hover .icon {
+/* .why_chose_us:hover .icon {
   background-color: var(--color-primary);
-}
+} */
 
-.why_chose_us:hover .icon span {
+/* .why_chose_us:hover .icon span {
   color: #0b74ff !important;
-}
+} */
 
 .why_chose_us {
   background-color: #ffffff !important;
@@ -21663,7 +21666,8 @@ header.header-nav {
 }
 
 .team_member .thumb .overylay {
-  background-color: rgba(26, 41, 240, 0.5) !important;
+  /* background-color: rgba(26, 41, 240, 0.5) !important; */
+  background-color: rgb(151, 215, 0, 0.5) !important;
   bottom: 0;
   left: 0;
   opacity: 0;
@@ -21998,9 +22002,9 @@ input[type=text] {
 }
 
 .btn-color_1:hover {
-  background-color: #00693E !important;
+  background-color: #00693e !important;
   color: white !important;
-  border: 1px solid #00693E !important;
+  border: 1px solid #00693e !important;
 }
 
 .btn-color_2 {
@@ -22009,9 +22013,9 @@ input[type=text] {
 }
 
 .btn-color_2:hover {
-  background-color: #009E60 !important;
+  background-color: #009e60 !important;
   color: white !important;
-  border: 1px solid #009E60 !important;
+  border: 1px solid #009e60 !important;
 }
 
 .btn-color_01 {
@@ -22019,8 +22023,6 @@ input[type=text] {
   color: #2e008b;
   font-weight: 700;
 }
-
-
 
 /* .btn-color_01:hover {
   background-color: #2e008b;
@@ -22086,7 +22088,7 @@ input[type=text] {
   width: max-content;
   border-radius: 4px;
   /* margin-left: 95%; */
-  margin-bottom: 4px;  
+  margin-bottom: 4px;
   margin-top: 20px;
 }
 
@@ -22425,16 +22427,16 @@ input:checked + .slider:before {
   /* padding-left: 30px; */
 }
 
-
-.bg-head{
+.bg-head {
   background-color: #051925;
 }
 
-.card_01{
+.card_01 {
   background-color: #ffffff;
 }
 
-.card_01:hover{
-  background-color: #97d700 !important;
+.card_01:hover {
+  /* background-color: #97d700 !important; */
+  border: 3px solid #97d700 !important;
   color: white !important;
 }
