@@ -27,7 +27,7 @@ const FaqContent = () => {
               <p> Please follow below steps to reset your password :-</p>
               <ul>
                 <li>
-                  1. Look for a link or button that says "Forgot Password".{" "}
+                  1. Look for a link or button that says &quot;Forgot Password&quot;.{" "}
                 </li>
                 <li>
                   2. Provide the email address or username associated with your
@@ -102,9 +102,9 @@ const FaqContent = () => {
           >
             <div className="card-body">
               <p>
-                Ans. If you are having trouble logging in, click "Forgot
-                Password" for a password reset or contact our support team via
-                the "Contact Us" section on our website.
+                Ans. If you are having trouble logging in, click &quot;Forgot
+                Password&quot; for a password reset or contact our support team via
+                the &quot;Contact Us&quot; section on our website.
               </p>
             </div>
           </div>
