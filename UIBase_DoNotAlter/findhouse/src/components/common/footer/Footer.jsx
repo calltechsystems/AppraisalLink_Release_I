@@ -26,11 +26,11 @@ const Footer = () => {
             <li>
               <Link href="/terms">Terms & Conditions</Link>
             </li>
-            <li>
+            {/* <li>
               <Link href="/">User&apos;s Guide</Link>
-            </li>
+            </li> */}
             <li>
-              <Link href="/contact-us">Support Center</Link>
+              <Link href="/contact">Support Center</Link>
             </li>
             <li>
               <Link href="/faq">FAQ&apos;s</Link>

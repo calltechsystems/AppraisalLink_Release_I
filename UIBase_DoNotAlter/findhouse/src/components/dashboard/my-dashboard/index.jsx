@@ -277,7 +277,7 @@ const Index = () => {
               <div className="row">
                 <div className="col-xl-6">
                   <div className="application_statics">
-                    <h4 className="mb-4">View Statistics</h4>
+                    <h4 className="mb-4">Property Statistics</h4>
                     {data.length > 0 && showLineGraph ? (
                       <StatisticsChart data={lineData} />
                     ) : (
@@ -287,7 +287,7 @@ const Index = () => {
                 </div>
                 <div className="col-xl-6">
                   <div className="application_statics">
-                    <h4 className="mb-4">View Statistics</h4>
+                    <h4 className="mb-4">Plans Statistics</h4>
                     {data.length > 0 && showLineGraph ? (
                       <StatisticsPieChart data={lineData} />
                     ) : (

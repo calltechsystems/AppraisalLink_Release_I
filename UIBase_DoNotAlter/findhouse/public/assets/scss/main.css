@@ -10154,6 +10154,10 @@ ul.ab_counting li:last-child {
   line-height: 1.2;
 }
 
+.about_counting .icon span:hover{
+  color: #97d700;
+}
+
 .about_counting .details {
   padding-left: 12px;
 }
@@ -21418,10 +21422,10 @@ header.header-nav.menu_style_home_one ul.ace-responsive-menu li.add_listing {
 }
 
 .pricing_table:hover {
-  /* background-color: #0272db !important;
-  color: white !important; */
-  background-color: #21a680 !important;
-  border: 10px solid #007789;
+  background-color: #97d700 !important;
+  /* color: white !important;  */
+  /* background-color: #21a680 !important; */
+  border: 5px solid #2e008b;
 }
 
 .pricing_table .pricing_content ul li {
@@ -21637,8 +21641,7 @@ header.header-nav {
 }
 
 /* .why_chose_us:hover .icon{
-  background-color: #00aff0 !important;
-  color: white !important;
+  background-color: #97d700 !important;
 } */
 
 .why_chose_us .icon span {
@@ -21648,12 +21651,12 @@ header.header-nav {
 }
 
 /* .why_chose_us:hover .icon {
-  background-color: var(--color-primary);
+  background-color: #97d700 !important;
 } */
 
-/* .why_chose_us:hover .icon span {
-  color: #0b74ff !important;
-} */
+.why_chose_us:hover .icon span {
+  color: #97d700 !important;
+}
 
 .why_chose_us {
   background-color: #ffffff !important;
@@ -21970,8 +21973,8 @@ a::before {
   /* margin-top: -30px; */
 }
 .pricing_table_border_style:hover {
-  background-color: #21a680 !important;
-  /* background-color: #97d700 !important; */
+  /* background-color: #21a680 !important; */
+  background-color: #97d700 !important;
   /* border: 10px solid #007789; */
 }
 
@@ -22239,7 +22242,7 @@ input[type=text] {
   position: relative;
   display: inline-block;
   width: 60px;
-  height: 34px;
+  height: 30px;
 }
 
 .switch input {
@@ -22265,7 +22268,7 @@ input[type=text] {
 .slider:before {
   position: absolute;
   content: "";
-  height: 26px;
+  height: 22px;
   width: 26px;
   left: 4px;
   bottom: 4px;
@@ -22364,7 +22367,7 @@ input:checked + .slider:before {
 .smartTable-tableContainer::-webkit-scrollbar {
   -webkit-appearance: none;
   width: 5px;
-  height: 5px;
+  height: 10px;
 }
 
 .smartTable-tableContainer::-webkit-scrollbar-thumb {

@@ -10,7 +10,7 @@ const Form = () => {
       <div className="row">
         <div className="col-md-6">
           <div className="form-group">
-            <label htmlFor="first-name" className="mb-2 text-dark">
+            <label htmlFor="first-name" className="mb-2 text-dark fw-bold">
               First Name <span class="req-btn">*</span>
             </label>
             <input
@@ -19,7 +19,12 @@ const Form = () => {
               className="form-control"
               required="required"
               type="text"
-              style={{ border: "1px solid #adadc9" }}
+              style={{
+                // paddingTop: "15px",
+                // paddingBottom: "15px",
+                backgroundColor: "#E8F0FE",
+                // //color: "white",
+              }}
             />
           </div>
         </div>
@@ -27,7 +32,7 @@ const Form = () => {
 
         <div className="col-md-6">
           <div className="form-group">
-            <label htmlFor="first-name" className="mb-2 text-dark">
+            <label htmlFor="first-name" className="mb-2 text-dark fw-bold">
               Last Name <span class="req-btn">*</span>
             </label>
             <input
@@ -36,7 +41,12 @@ const Form = () => {
               className="form-control"
               required="required"
               type="text"
-              style={{ border: "1px solid #adadc9" }}
+              style={{
+                // paddingTop: "15px",
+                // paddingBottom: "15px",
+                backgroundColor: "#E8F0FE",
+                // //color: "white",
+              }}
             />
           </div>
         </div>
@@ -44,7 +54,7 @@ const Form = () => {
 
         <div className="col-md-6">
           <div className="form-group">
-            <label htmlFor="first-name" className="mb-2 text-dark">
+            <label htmlFor="first-name" className="mb-2 text-dark fw-bold">
               Email Address <span class="req-btn">*</span>
             </label>
             <input
@@ -53,7 +63,12 @@ const Form = () => {
               className="form-control required email"
               required="required"
               type="email"
-              style={{ border: "1px solid #adadc9" }}
+              style={{
+                // paddingTop: "15px",
+                // paddingBottom: "15px",
+                backgroundColor: "#E8F0FE",
+                // //color: "white",
+              }}
             />
           </div>
         </div>
@@ -61,7 +76,7 @@ const Form = () => {
 
         <div className="col-md-6">
           <div className="form-group">
-            <label htmlFor="first-name" className="mb-2 text-dark">
+            <label htmlFor="first-name" className="mb-2 text-dark fw-bold">
               Phone Number <span class="req-btn">*</span>
             </label>
             <input
@@ -70,7 +85,12 @@ const Form = () => {
               className="form-control required phone"
               required="required"
               type="number"
-              style={{ border: "1px solid #adadc9" }}
+              style={{
+                // paddingTop: "15px",
+                // paddingBottom: "15px",
+                backgroundColor: "#E8F0FE",
+                // //color: "white",
+              }}
             />
           </div>
         </div>
@@ -78,7 +98,7 @@ const Form = () => {
 
         <div className="col-md-6">
           <div className="form-group">
-            <label htmlFor="first-name" className="mb-2 text-dark">
+            <label htmlFor="first-name" className="mb-2 text-dark fw-bold">
               Company <span class="req-btn"></span>
             </label>
             <input
@@ -86,7 +106,12 @@ const Form = () => {
               name="form_subject"
               className="form-control required"
               type="text"
-              style={{ border: "1px solid #adadc9" }}
+              style={{
+                // paddingTop: "15px",
+                // paddingBottom: "15px",
+                backgroundColor: "#E8F0FE",
+                // //color: "white",
+              }}
             />
           </div>
         </div>
@@ -122,7 +147,7 @@ const Form = () => {
 
         <div className="col-md-6">
           <div className="form-group">
-            <label htmlFor="first-name" className="mb-2 text-dark">
+            <label htmlFor="first-name" className="mb-2 text-dark fw-bold">
               Province/State <span class="req-btn"></span>
             </label>
             <input
@@ -130,7 +155,12 @@ const Form = () => {
               name="form_subject"
               className="form-control required"
               type="text"
-              style={{ border: "1px solid #adadc9" }}
+              style={{
+                // paddingTop: "15px",
+                // paddingBottom: "15px",
+                backgroundColor: "#E8F0FE",
+                // //color: "white",
+              }}
             />
           </div>
         </div>
@@ -138,15 +168,21 @@ const Form = () => {
 
         <div className="col-md-12">
           <div className="form-group">
-            <label htmlFor="first-name" className="mb-2 text-dark">
-              Subject <span class="req-btn"></span>
+            <label htmlFor="first-name" className="mb-2 text-dark fw-bold">
+              Subject <span class="req-btn">*</span>
             </label>
             <input
               id="form_subject"
+              required
               name="form_subject"
               className="form-control required"
               type="text"
-              style={{ border: "1px solid #adadc9" }}
+              style={{
+                // paddingTop: "15px",
+                // paddingBottom: "15px",
+                backgroundColor: "#E8F0FE",
+                // //color: "white",
+              }}
             />
           </div>
         </div>
@@ -168,16 +204,21 @@ const Form = () => {
 
         <div className="col-sm-12">
           <div className="form-group">
-            <label htmlFor="first-name" className="mb-2 text-dark">
-              How we can help you? <span class="req-btn">*</span>
+            <label htmlFor="first-name" className="mb-2 text-dark fw-bold">
+              Description <span class="req-btn">*</span>
             </label>
+            <span style={{ fontSize: "12px" }}>(max. 300 words)</span>
             <textarea
               id="form_message"
               name="form_message"
               className="form-control required"
               rows="4"
-              required="required"
-              style={{ border: "1px solid #adadc9" }}
+              style={{
+                // paddingTop: "15px",
+                // paddingBottom: "15px",
+                backgroundColor: "#E8F0FE",
+                // //color: "white",
+              }}
             ></textarea>
           </div>
           {/* End .col */}

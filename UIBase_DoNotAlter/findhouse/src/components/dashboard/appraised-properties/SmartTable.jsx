@@ -9,7 +9,7 @@ function SmartTable(props) {
   const handlePrint = () => {
     const printWindow = window.open("", "_blank");
     printWindow.document.write(
-      "<html><head><title>AllBrokerProperties</title></head><body>"
+      "<html><head><title>All Brokers Properties</title></head><body>"
     );
     printWindow.document.write("<h1>" + props.title + "</h1>");
     printWindow.document.write(
@@ -159,9 +159,11 @@ function SmartTable(props) {
               />
             </div>
           </div> */}
-          <div className="row">
+          <div className="row mb-2">
             <div className="col-lg-12">{props.title}</div>
-            <button onClick={() => handlePrint()} className="btn-color w-25">Generate PDF</button>
+            <button onClick={() => handlePrint()} className="btn-color w-25">
+              Generate PDF
+            </button>
           </div>
           {props.data.length > 0 ? (
             <div className="row">

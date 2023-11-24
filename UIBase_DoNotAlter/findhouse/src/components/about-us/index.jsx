@@ -103,7 +103,7 @@ const Index = () => {
         </div> */}
         {/* End .row */}
 
-        <div className="container mt-5">
+        <div className="container">
           <div className="row">
             {/* <WhyChoose /> */}
             <div className="col-lg-12 col-xl-12">

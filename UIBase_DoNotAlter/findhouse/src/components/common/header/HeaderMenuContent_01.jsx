@@ -249,6 +249,147 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
               </li>
               {/* End .dropitem */}
               <li
+                className="last"
+                onMouseOver={() => setLogin()}
+                onMouseEnter={() => setAbout()}
+              >
+                <Link
+                  href="#"
+                  onMouseEnter={() => setHovered()}
+                  className={route.pathname === "#" ? "ui-active" : undefined}
+                >
+                  <span
+                    className="text-info-01 cool-link menuitem"
+                    onMouseOver={() => setInsight(!insight)}
+                    onMouseEnter={() => setPlan()}
+                  >
+                    About Us
+                  </span>
+                  {/* <span
+                    className="arrow text-info-01"
+                    style={{ marginLeft: "-5px" }}
+                  ></span> */}
+                </Link>
+                {insight ? (
+                  <div
+                    className=""
+                    style={{
+                      width: "100%",
+                      background: "red",
+                      // opacity: isHovered ? 1 : 0,  Show content when hovered
+                      transition: "opacity 0.3s ease", // Add transition for the opacity property
+                      position: "absolute",
+                      top: "100%",
+                      // left: "20px",
+                      right: "-1000px",
+                      width: "1900px",
+                      margin: "-16px",
+                      height: "225px",
+                      backgroundColor: "#fff",
+                      color: "#333",
+                      borderTopColor: "#2e008b",
+                      borderTopWidth: "4px",
+                      borderTopStyle: "solid",
+                      // display: "flex",
+                      // flexDirection: "row",
+                      // justifyContent: "center",
+                      marginTop: "5px",
+                    }}
+                  >
+                    <div className="row">
+                      <div className="col-lg-2"></div>
+                      <div
+                        className="col-lg-2 text-center"
+                        style={{ backgroundColor: "" }}
+                      >
+                        <div className="row text-end">
+                          <div className="col-lg-12 m-5 fw-bold">
+                            <span>
+                              Ready to see Appraisal Link help make you more
+                              money at record speed?
+                            </span>
+                            <br />
+                            <Link href="/register">
+                              <button className="btn btn2 w-50 btn-color">
+                                Register
+                              </button>
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-lg-2">
+                        <div className="row text-center">
+                          <div className="col-lg-12 m-3 fw-bold">
+                            <Link href="/">
+                              <Image
+                                width={190}
+                                height={125}
+                                className="logo2 img-fluid mt-3"
+                                // style={{ marginRight: "10px" }}
+                                src="/assets/images/service/house_.png"
+                                alt="header-logo2.png"
+                              />
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        className="col-lg-2"
+                        style={{ backgroundColor: "#c2c2c2" }}
+                      >
+                        <div className="row">
+                          <div className="col-lg-12 mt-3 fw-bold text-center">
+                            <Link href="/about-us">
+                              <button className="btn btn2 w-75 btn-color">
+                                Who We Are
+                              </button>
+                            </Link>
+                            <br />
+                            <Link href="/how-we-work">
+                              {/* <button className=" mt-3 fw-bold cool-link menuitem"> */}
+                              <button className="mt-3 btn btn2 w-75 btn-color">
+                                How We Work
+                              </button>
+                            </Link>
+                            <br />
+                            <Link href="/events">
+                              <button className="mt-3 btn btn2 w-75 btn-color">
+                                Events
+                              </button>
+                            </Link>
+                            {/* <Link href="#">
+                            <button className="mt-3 mb-2">
+                              Mortgage Brokerage
+                            </button>
+                          </Link> */}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-lg-3 text-start">
+                        <div className="row">
+                          <div className="col-lg-6 m-5 fw-bold" style={{}}>
+                            <Link href="/">
+                              <Image
+                                width={160}
+                                height={125}
+                                className="logo2"
+                                // style={{ marginRight: "10px" }}
+                                src="/assets/images/service/image001.png"
+                                alt="header-logo2.png"
+                              />
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="col-lg-1"></div>
+                    </div>
+                    {/* <h1>hiiiii</h1> */}
+                  </div>
+                ) : null}
+              </li>
+              {/* End .dropitem */}
+              <li
                 className="dropitem"
                 onMouseOver={() => setAbout()}
                 onMouseEnter={() => setLogin()}
@@ -317,17 +458,31 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                      </span>
                    </Link> */}
                           </div>
-                          <div className="col-lg-12 mt-4 mb-2">
-                            <Link href="/how-we-work">
-                              <button className="btn w-50 btn-color">
-                                For Brokers
+                          <div className="col-lg-12 mb-2">
+                            <Link href="/appraiser-user-guide">
+                              <button className="btn w-100 btn-color">
+                                For Appraiser
                               </button>
                             </Link>
                           </div>
                           <div className="col-lg-12 mb-2">
-                            <Link href="/how-we-work">
-                              <button className="btn w-50 btn-color">
-                                For Appraiser
+                            <Link href="/broker-user-guide">
+                              <button className="btn w-100 btn-color">
+                                For Mortgage Broker
+                              </button>
+                            </Link>
+                          </div>
+                          <div className="col-lg-12 mb-2">
+                            <Link href="/appraiser-user-guide">
+                              <button className="btn w-100 btn-color">
+                                For Appraiser Company
+                              </button>
+                            </Link>
+                          </div>
+                          <div className="col-lg-12 mb-2">
+                            <Link href="/broker-user-guide">
+                              <button className="btn w-100 btn-color">
+                                For Mortgage Brokerage
                               </button>
                             </Link>
                           </div>
@@ -415,7 +570,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                     // onMouseLeave={() => setAbout()}
                     // onMouseLeave={() => setLogin()}
                   >
-                    Insights
+                    Dashboard
                   </span>{" "}
                   {/* <span className="arrow text-info-01 ml"></span> */}
                 </Link>
@@ -430,7 +585,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                       position: "absolute",
                       top: "100%",
                       // left: "20px",
-                      right: "-790px",
+                      right: "-700px",
                       width: "1900px",
                       margin: "-16px",
                       height: "225px",
@@ -458,7 +613,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                               className="btn btn2 w-50 btn-color"
                               onClick={handleInsightClick}
                             >
-                              Dashboard
+                              Insights
                             </button>
                           </div>
                         </div>
@@ -557,7 +712,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                       position: "absolute",
                       top: "100%",
                       // left: "20px",
-                      right: "-700px",
+                      right: "-580px",
                       width: "1900px",
                       margin: "-16px",
                       height: "225px",
@@ -639,147 +794,6 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                                 className="logo2 img-fluid"
                                 // style={{ marginRight: "10px" }}
                                 src="/assets/images/home/99.jpg"
-                                alt="header-logo2.png"
-                              />
-                            </Link>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="col-lg-1"></div>
-                    </div>
-                    {/* <h1>hiiiii</h1> */}
-                  </div>
-                ) : null}
-              </li>
-              {/* End .dropitem */}
-              <li
-                className="last"
-                onMouseOver={() => setLogin()}
-                onMouseEnter={() => setAbout()}
-              >
-                <Link
-                  href="#"
-                  onMouseEnter={() => setHovered()}
-                  className={route.pathname === "#" ? "ui-active" : undefined}
-                >
-                  <span
-                    className="text-info-01 cool-link menuitem"
-                    onMouseOver={() => setInsight(!insight)}
-                    onMouseEnter={() => setPlan()}
-                  >
-                    About Us
-                  </span>
-                  {/* <span
-                    className="arrow text-info-01"
-                    style={{ marginLeft: "-5px" }}
-                  ></span> */}
-                </Link>
-                {insight ? (
-                  <div
-                    className=""
-                    style={{
-                      width: "100%",
-                      background: "red",
-                      // opacity: isHovered ? 1 : 0,  Show content when hovered
-                      transition: "opacity 0.3s ease", // Add transition for the opacity property
-                      position: "absolute",
-                      top: "100%",
-                      // left: "20px",
-                      right: "-600px",
-                      width: "1900px",
-                      margin: "-16px",
-                      height: "225px",
-                      backgroundColor: "#fff",
-                      color: "#333",
-                      borderTopColor: "#2e008b",
-                      borderTopWidth: "4px",
-                      borderTopStyle: "solid",
-                      // display: "flex",
-                      // flexDirection: "row",
-                      // justifyContent: "center",
-                      marginTop: "5px",
-                    }}
-                  >
-                    <div className="row">
-                      <div className="col-lg-2"></div>
-                      <div
-                        className="col-lg-2 text-center"
-                        style={{ backgroundColor: "" }}
-                      >
-                        <div className="row text-end">
-                          <div className="col-lg-12 m-5 fw-bold">
-                            <span>
-                              Ready to see Appraisal Link help make you more
-                              money at record speed?
-                            </span>
-                            <br />
-                            <Link href="/register">
-                              <button className="btn btn2 w-50 btn-color">
-                                Register
-                              </button>
-                            </Link>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-lg-2">
-                        <div className="row text-center">
-                          <div className="col-lg-12 m-3 fw-bold">
-                            <Link href="/">
-                              <Image
-                                width={190}
-                                height={125}
-                                className="logo2 img-fluid mt-3"
-                                // style={{ marginRight: "10px" }}
-                                src="/assets/images/service/house_.png"
-                                alt="header-logo2.png"
-                              />
-                            </Link>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className="col-lg-2"
-                        style={{ backgroundColor: "#c2c2c2" }}
-                      >
-                        <div className="row">
-                          <div className="col-lg-12 mt-3 fw-bold text-center">
-                            <Link href="/about-us">
-                              <button className="btn btn2 w-75 btn-color">
-                                About Us
-                              </button>
-                            </Link>
-                            <br />
-                            <Link href="/how-we-work">
-                              {/* <button className=" mt-3 fw-bold cool-link menuitem"> */}
-                              <button className="mt-3 btn btn2 w-75 btn-color">
-                                How We Work
-                              </button>
-                            </Link>
-                            <br />
-                            <Link href="/events">
-                              <button className="mt-3 btn btn2 w-75 btn-color">
-                                Events
-                              </button>
-                            </Link>
-                            {/* <Link href="#">
-                            <button className="mt-3 mb-2">
-                              Mortgage Brokerage
-                            </button>
-                          </Link> */}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-lg-3 text-start">
-                        <div className="row">
-                          <div className="col-lg-6 m-5 fw-bold" style={{}}>
-                            <Link href="/">
-                              <Image
-                                width={160}
-                                height={125}
-                                className="logo2"
-                                // style={{ marginRight: "10px" }}
-                                src="/assets/images/service/image001.png"
                                 alt="header-logo2.png"
                               />
                             </Link>

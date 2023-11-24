@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const FaqContent = () => {
   return (
     <>
@@ -12,7 +14,7 @@ const FaqContent = () => {
               aria-expanded="false"
               aria-controls="collapseOne"
             >
-              Question 1
+              Ques1. I forgot my password. How can I reset it?
             </button>
           </div>
           <div
@@ -22,9 +24,28 @@ const FaqContent = () => {
             data-bs-parent="#accordionExample"
           >
             <div className="card-body">
-              <p>
-                Answer 1
-              </p>
+              <p> Please follow below steps to reset your password :-</p>
+              <ul>
+                <li>
+                  1. Look for a link or button that says "Forgot Password".{" "}
+                </li>
+                <li>
+                  2. Provide the email address or username associated with your
+                  account.{" "}
+                </li>
+                <li>
+                  3. You will receive a one-time password (OTP) on your
+                  registered email address.{" "}
+                </li>
+                <li>
+                  4. Once you have entered the correct OTP, you should be
+                  prompted to create a new password.{" "}
+                </li>
+                <li>
+                  5. After resetting your password, use the new password to log
+                  in to your account.{" "}
+                </li>
+              </ul>
             </div>
           </div>
         </div>
@@ -40,7 +61,7 @@ const FaqContent = () => {
               aria-expanded="true"
               aria-controls="collapseTwo"
             >
-              Question 2
+              Ques2. Why am I not receiving the password reset OTP email?
             </button>
           </div>
           <div
@@ -51,7 +72,9 @@ const FaqContent = () => {
           >
             <div className="card-body">
               <p>
-                Answer 2
+                Ans. If you are not receiving the password reset OTP email,
+                check your spam folder, verify the correct email address, or
+                contact our support team for assistance.{" "}
               </p>
             </div>
           </div>
@@ -68,7 +91,7 @@ const FaqContent = () => {
               aria-expanded="false"
               aria-controls="collapseThree"
             >
-             Question 3
+              Ques3. I am having trouble logging in. What should I do?
             </button>
           </div>
           <div
@@ -79,7 +102,9 @@ const FaqContent = () => {
           >
             <div className="card-body">
               <p>
-                Answer 3
+                Ans. If you are having trouble logging in, click "Forgot
+                Password" for a password reset or contact our support team via
+                the "Contact Us" section on our website.
               </p>
             </div>
           </div>
@@ -96,7 +121,7 @@ const FaqContent = () => {
               aria-expanded="false"
               aria-controls="collapseFour"
             >
-              Question 4
+              Ques4. Can I use my account login on multiple devices?
             </button>
           </div>
           <div
@@ -107,14 +132,50 @@ const FaqContent = () => {
           >
             <div className="card-body">
               <p>
-                Answer 4
+                Ans. No, your account login is typically restricted to one
+                device at a time for security reasons.
               </p>
             </div>
           </div>
         </div>
         {/* End .card */}
 
-       
+        <div className="card">
+          <div id="headingFive">
+            <button
+              className="btn btn-link accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseFive"
+              aria-expanded="false"
+              aria-controls="collapseFive"
+            >
+              Ques5. Can I update my profile information after creating an
+              account login?
+            </button>
+          </div>
+          <div
+            id="collapseFive"
+            className="accordion-collapse collapse"
+            aria-labelledby="headingFive"
+            data-bs-parent="#accordionExample"
+          >
+            <div className="card-body">
+              <p>
+                Ans. Yes Please follow instructions for updating the profile.
+              </p>
+              <ul>
+                <li>
+                  1. Login to Your Account on website{" "}
+                  <Link href="/">appraisal-eta.vercel.app</Link>{" "}
+                </li>
+                <li>2. Navigate to Profile. </li>
+                <li>3. Locate the Edit or Update Option. </li>
+                <li>4. Update Your Information. </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );
