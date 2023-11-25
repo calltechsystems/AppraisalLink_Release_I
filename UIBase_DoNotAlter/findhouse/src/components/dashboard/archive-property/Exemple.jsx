@@ -7,23 +7,29 @@ import axios from "axios";
 
 const headCells = [
   {
-    id: "order_id",
+    id: "name",
     numeric: false,
-    label: "Order ID",
+    label: "status",
     width: 200,
   },
-  // {
-  //   id: "user",
-  //   numeric: false,
-  //   label: "Appraiser",
-  //   width: 200,
-  // },
-  // {
-  //   id: "amount",
-  //   numeric: false,
-  //   label: "Quote Amount",
-  //   width: 200,
-  // },
+  {
+    id: "address",
+    numeric: false,
+    label: "Property Address",
+    width: 200,
+  },
+  {
+    id: "user",
+    numeric: false,
+    label: "Appraiser",
+    width: 200,
+  },
+  {
+    id: "amount",
+    numeric: false,
+    label: "Quote Amount",
+    width: 200,
+  },
   {
     id: "sub_date",
     numeric: false,
@@ -31,15 +37,9 @@ const headCells = [
     width: 200,
   },
   {
-    id: "status",
+    id: "quote_date",
     numeric: false,
-    label: "Status",
-    width: 200,
-  },
-  {
-    id: "address",
-    numeric: false,
-    label: "Property Address",
+    label: "Quote Date",
     width: 200,
   },
   {
@@ -109,12 +109,12 @@ export default function Exemple({
       properties.map((property, index) => {
         const isEditable = !property.propertyStatus;
         const updatedRow = {
-          order_id: property.orderId,
-          sub_date: formatDate(property.addedDatetime),
-          status: property.propertyStatus ? "Completed" : "Pending",
+          name: property.propertyStatus ? "Completed" : "Pending",
           address: property.city,
-          // user: property.applicantEmailAddress,
-          // amount: property.bidLowerRange,
+          user: property.applicantEmailAddress,
+          amount: property.bidLowerRange,
+          sub_date: formatDate(property.addedDatetime),
+          quote_date: formatDate(property.addedDatetime),
           actions: (
             <ul className="view_edit_delete_list mb0">
               <li
@@ -127,7 +127,6 @@ export default function Exemple({
                   <span className="flaticon-view"></span>
                 </Link>
               </li>
-
               {isEditable && (
                 <li
                   className="list-inline-item"
@@ -140,7 +139,6 @@ export default function Exemple({
                   </Link>
                 </li>
               )}
-
               {/* End li */}
 
               {isEditable && (
@@ -160,21 +158,6 @@ export default function Exemple({
                   </button>
                 </li>
               )}
-
-              {!isEditable && (
-                <li
-                  className="list-inline-item"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Edit"
-                >
-                  <Link href={`/archive-property`}>
-                    <span className="flaticon-box"></span>
-                  </Link>
-                </li>
-              )}
-
-              {/* End li */}
             </ul>
           ),
         };

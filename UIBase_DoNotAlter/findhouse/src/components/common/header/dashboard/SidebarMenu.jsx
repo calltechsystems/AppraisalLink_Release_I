@@ -115,18 +115,18 @@ const SidebarMenu = () => {
             </li>
             {/* End Review */}
 
-            {/*<li
+            <li
               className={`treeview ${
-                isSinglePageActive("/my-properties", route.pathname)
+                isSinglePageActive("/archive-property", route.pathname)
                   ? "active"
                   : ""
               }`}
             >
-              <Link href="/create-listing">
+              <Link href="/archive-property">
                 <i className="flaticon-home"></i>
-                <span> Properties</span>
+                <span>Archive Properties</span>
               </Link>
-            </li>*/}
+            </li>
             {/* <li
               className={`treeview ${
                     isParentPageActive("/my-properties", route.pathname) ? "active" : ""

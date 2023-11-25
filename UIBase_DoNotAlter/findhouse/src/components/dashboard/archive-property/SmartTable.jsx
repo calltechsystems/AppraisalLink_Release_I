@@ -6,26 +6,6 @@ import SVGChevronLeft from "./icons/SVGChevronLeft";
 import SVGChevronRight from "./icons/SVGChevronRight";
 
 function SmartTable(props) {
-  const handlePrint = () => {
-    const printWindow = window.open("", "_blank");
-    printWindow.document.write(
-      "<html><head><title>All Brokers Properties</title></head><body>"
-    );
-    printWindow.document.write("<h1>" + props.title + "</h1>");
-    printWindow.document.write(
-      '<button style="display:none;" onclick="window.print()">Print</button>'
-    );
-    printWindow.document.write(
-      document.getElementById("table-container").innerHTML
-    );
-    printWindow.document.write("</body></html>");
-    printWindow.document.close();
-    printWindow.print();
-    printWindow.onafterprint = () => {
-      printWindow.close();
-      toast.success("Saved the data");
-    };
-  };
   const [loading, setLoading] = useState(false);
   const [sortDesc, setSortDesc] = useState({});
   const [tableWidth, setTableWidth] = useState(1000);
@@ -128,7 +108,7 @@ function SmartTable(props) {
   const sortData = (cell) => {
     let tempData = data.length > 0 ? [...data] : [...props.data];
 
-    if (cell === "bid" || cell === "actions") {
+    if (cell === "status" || cell === "actions") {
       return;
     } else {
       tempData.sort((a, b) => {
@@ -143,7 +123,6 @@ function SmartTable(props) {
       setData(tempData);
     }
   };
-
   return (
     <div className="col-12 p-2">
       <div className="smartTable-container row">
@@ -164,15 +143,9 @@ function SmartTable(props) {
               />
             </div>
           </div> */}
-          <div className="row mb-2">
-            <div className="col-lg-12">{props.title}</div>
-            <button onClick={() => handlePrint()} className="btn-color w-25">
-              Generate PDF
-            </button>
-          </div>
           {props.data.length > 0 ? (
-            <div className="row">
-              <div className="smartTable-tableContainer" id="table-container">
+            <div className="row mt-3">
+              <div className="smartTable-tableContainer">
                 <table
                   className={"smartTable-table table table-striped border"}
                   style={{ minWidth: tableWidth }}
@@ -259,9 +232,9 @@ function SmartTable(props) {
           )}
           {props.noPagination || data.length === 0 || !props.url ? (
             <div className="row">
-              <div className="col-12 text-end p-3">
+              {/* <div className="col-12 text-end p-3">
                 {props.data.length > 0 ? props.data.length : 0} Rows
-              </div>
+              </div> */}
             </div>
           ) : (
             <div className="row">
