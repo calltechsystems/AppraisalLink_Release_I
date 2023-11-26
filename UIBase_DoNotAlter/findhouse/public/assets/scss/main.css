@@ -8060,7 +8060,8 @@ form.home5_advanced_search_form
 }
 
 .why_chose_us:hover .icon {
-  background-color: var(--color-primary);
+  /* background-color: var(--color-primary); */
+  background-color: #97d700 !important;
 }
 
 .why_chose_us:hover .icon span {
@@ -10154,7 +10155,7 @@ ul.ab_counting li:last-child {
   line-height: 1.2;
 }
 
-.about_counting .icon span:hover{
+.about_counting .icon span:hover {
   color: #97d700;
 }
 
@@ -11782,7 +11783,7 @@ a.btn.btn_error {
 /*== Pricing Table Pages Style Code ==*/
 .pricing_table {
   background-color: #ffffff;
-  border: 1px solid #ebebeb;
+  border: 1px solid #2e008b;
   border-radius: 8px;
   margin-bottom: 30px;
   padding: 30px;
@@ -11799,7 +11800,9 @@ a.btn.btn_error {
   -webkit-box-shadow: 0px 0px 50px 0px rgba(19, 19, 28, 0.12);
   -moz-box-shadow: 0px 0px 50px 0px rgba(19, 19, 28, 0.12);
   -o-box-shadow: 0px 0px 50px 0px rgba(19, 19, 28, 0.12);
-  box-shadow: 0px 0px 50px 0px rgba(19, 19, 28, 0.12);
+  /* box-shadow: 0px 0px 50px 0px rgba(19, 19, 28, 0.12); */
+  box-shadow: 0px 0px 50px 0px rgb(151, 215, 0, 0.32);
+  transform: scale(1.1);
 }
 
 .pricing_table .pricing_header {
@@ -21256,8 +21259,10 @@ button.gm-ui-hover-effect:focus {
 
 /* Custom css */
 
+/* pricing table css */
+
 .pricing_table .pricing_header .price {
-  color: #7ba7ed !important;
+  color: #2e008b !important;
 }
 
 .pricing_table .pricing_footer a.btn.pricing_btn {
@@ -21269,7 +21274,7 @@ button.gm-ui-hover-effect:focus {
 
 .pricing_table .pricing_footer a.btn.pricing_btn:hover {
   background-color: #052ca1 !important;
-  color: #ffffff !important;
+  color: #2e008b !important;
   border: 1px solid black !important;
 }
 
@@ -21280,6 +21285,30 @@ button.gm-ui-hover-effect:focus {
   /* font-weight: bold; */
   /* line-height: 1.444; */
 }
+
+/* .pricing_table_border_style_title:hover {
+  color: #3a2f6b !important;
+} */
+
+/* .pricing_table_border_style_button {
+  color: #3a2f6b !important;
+} */
+
+.pricing_table {
+  background-color: white !important;
+  /* border: none !important; */
+}
+
+.pricing_table:hover {
+  background-color: white !important;
+  border: 2px solid #97d700;
+}
+
+/* .pricing_table .pricing_content ul li {
+  color: white;
+} */
+
+/* end pricing table css */
 
 header.header-nav.menu_style_home_one.style2
   ul.ace-responsive-menu
@@ -21414,23 +21443,6 @@ header.header-nav.menu_style_home_one ul.ace-responsive-menu li.add_listing {
   color: #5c05f5;
 }
 
-/* Pricing Table Custom CSS */
-
-.pricing_table {
-  background-color: #2e008b !important;
-  /* border: none !important; */
-}
-
-.pricing_table:hover {
-  background-color: #97d700 !important;
-  /* color: white !important;  */
-  /* background-color: #21a680 !important; */
-  border: 5px solid #2e008b;
-}
-
-.pricing_table .pricing_content ul li {
-  color: white !important;
-}
 
 .bg-color {
   /* background-color: rgb(5, 252, 207); */
@@ -21576,7 +21588,7 @@ header.header-nav.menu_style_home_one.stricky-fixed .ace-responsive-menu li a,
 header.header-nav.menu_style_home_one.stricky-fixed a.navbar_brand span,
 header.header-nav.menu_style_home_one.stricky-fixed .sign_up_btn .btn,
 header.header-nav.menu_style_home_one.stricky-fixed #search-button i {
-  color: #97d700 !important;
+  color: #2e008b !important;
 }
 
 .home-logo-header {
@@ -21655,7 +21667,8 @@ header.header-nav {
 } */
 
 .why_chose_us:hover .icon span {
-  color: #97d700 !important;
+  /* color: #97d700 !important; */
+  color: #2e008b !important;
 }
 
 .why_chose_us {
@@ -22037,13 +22050,6 @@ input[type=text] {
   font-weight: 700;
 }
 
-.pricing_table_border_style_title:hover {
-  color: #3a2f6b !important;
-}
-
-.pricing_table_border_style_button {
-  color: #3a2f6b !important;
-}
 /* Dropdown.css */
 
 .dropdown {

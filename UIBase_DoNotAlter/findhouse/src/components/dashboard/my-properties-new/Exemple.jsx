@@ -43,6 +43,12 @@ const headCells = [
     width: 200,
   },
   {
+    id: "amount",
+    numeric: false,
+    label: "Appraisal Bid",
+    width: 200,
+  },
+  {
     id: "actions",
     numeric: false,
     label: "Actions",
@@ -114,7 +120,7 @@ export default function Exemple({
           status: property.propertyStatus ? "Completed" : "Pending",
           address: property.city,
           // user: property.applicantEmailAddress,
-          // amount: property.bidLowerRange,
+          amount: property.bidLowerRange,
           actions: (
             <ul className="view_edit_delete_list mb0">
               <li
@@ -166,7 +172,7 @@ export default function Exemple({
                   className="list-inline-item"
                   data-toggle="tooltip"
                   data-placement="top"
-                  title="Edit"
+                  title="Archive"
                 >
                   <Link href={`/archive-property`}>
                     <span className="flaticon-box"></span>

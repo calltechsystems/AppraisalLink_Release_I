@@ -43,9 +43,9 @@ const Header = ({ userData }) => {
             src="/assets/images/logo_new.png"
             alt="header-logo2.png"
           />
-          <span style={{ marginTop: "25px", color: "#97d700" }}>Appraisal</span>
+          <span style={{ marginTop: "25px", color: "#2e008b" }}>Appraisal</span>
           <span
-            style={{ marginTop: "25px", color: "#2e008b", marginLeft: "-10px" }}
+            style={{ marginTop: "25px", color: "#97d700", marginLeft: "-10px" }}
           >
             Link
           </span>

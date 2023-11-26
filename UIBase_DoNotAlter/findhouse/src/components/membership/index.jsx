@@ -6,10 +6,13 @@ import MobileMenu from "../common/header/MobileMenu";
 import Pricing from "./Pricing";
 import Modal from "./Modal";
 import Link from "next/link";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { useRouter } from "next/router";
+
 // import Header from "../home/Header";
 
 const Index = () => {
-
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
   );
@@ -49,14 +52,41 @@ const Index = () => {
     return () => clearInterval(inactivityCheckInterval);
   }, [lastActivityTimestamp]);
 
-
   const [isSelected, setSelected] = useState(1);
   const [selectedPlan, setSelectedPlan] = useState("Monthly");
   const [modalOpen, setModalOpen] = useState(false);
+  const [planData, setPlanData] = useState([]);
   const [price, setPrice] = useState({
     title: "Basic",
     price: 0,
   });
+
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = JSON.parse(localStorage.getItem("user"));
+      if (!data) {
+        router.push("/login");
+      } else {
+        try {
+          const res = await axios.get("/api/getAllPlans", {
+            headers: {
+              Authorization: `Bearer ${data?.token}`,
+              "Content-Type": "application/json",
+            },
+          });
+          setPlanData(res.data.data.$values);
+        } catch (err) {
+          toast.error(err.message);
+        }
+      }
+    };
+
+    if (typeof window !== "undefined") {
+      fetchData();
+    }
+  }, [router]);
 
   const [isChecked, setIsChecked] = useState(false);
 
@@ -164,6 +194,7 @@ const Index = () => {
                 isPlan={selectedPlan}
                 setModalOpen={setModalOpen}
                 setPrice={setPrice}
+                data={planData}
               />
               <Modal
                 modalOpen={modalOpen}
