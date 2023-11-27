@@ -72,9 +72,9 @@ const Index = ({ isView, propertyData }) => {
     }
   }, []);
 
-  const onCancelModalHandler = ()=>{
+  const onCancelModalHandler = () => {
     window.location.reload();
-  }
+  };
   const updateHandler = () => {
     const nameRegex = /^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -342,17 +342,22 @@ const Index = ({ isView, propertyData }) => {
                         setDisable={setDisable}
                         buildinRef={buildinRef}
                         setBuildinRef={setBuildinRef}
+                        communityRef={communityRef}
+                        setCommunityRef={setCommunityRef}
+                        urgencyRef={urgencyRef}
+                        setUrgencyRef={setUrgencyRef}
+                        bidLowerRangeRef={bidLowerRangeRef}
+                        setBidLowerRangeRef={setBidLowerRangeRef}
                       />
                     </div>
                   </div>
-                  <div className="my_dashboard_review mt30">
+                  {/* <div className="my_dashboard_review mt30">
                     <div
                       className="col-lg-12 bg-head text-center mb-4"
                       style={{ borderRadius: "5px" }}
                     >
                       <h4 className="p-2 text-white">
                         Other Information
-                        {/* <hr style={{ color: "#2e008b" }} /> */}
                       </h4>
                     </div>
                     <hr style={{ color: "#2e008b" }} />
@@ -369,7 +374,7 @@ const Index = ({ isView, propertyData }) => {
                       setBidLowerRangeRef={setBidLowerRangeRef}
                       setDisable={setDisable}
                     />
-                  </div>
+                  </div> */}
 
                   <div className="my_dashboard_review mt30">
                     <div className="row">
@@ -592,7 +597,10 @@ const Index = ({ isView, propertyData }) => {
                       </div>
                       <div className="row text-center mt-3">
                         <div className="col-lg-6">
-                          <button className="w-50 btn-color text-end" onClick={onCancelModalHandler}>
+                          <button
+                            className="w-50 btn-color text-end"
+                            onClick={onCancelModalHandler}
+                          >
                             Cancel
                           </button>
                         </div>
