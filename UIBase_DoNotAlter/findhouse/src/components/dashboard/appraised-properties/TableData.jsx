@@ -258,7 +258,7 @@ const TableData = ({userData , open ,close , onWishlistHandler , participateHand
               onClick={()=>participateHandler(item.bidLowerRange , item.propertyId)}
             >
               <a href="#" className="text-color">
-                Provide Quote
+                Provide Qoute
               </a>
             </div>
           </li>

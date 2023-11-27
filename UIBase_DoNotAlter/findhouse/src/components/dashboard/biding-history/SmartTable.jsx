@@ -108,7 +108,7 @@ function SmartTable(props) {
   const sortData = (cell) => {
     let tempData = data.length > 0 ? [...data] : [...props.data];
 
-    if (cell === "bid" || cell === "actions") {
+    if (cell === "amount" || cell === "orderId" || cell === "prop_amount") {
       return;
     } else {
       tempData.sort((a, b) => {
@@ -119,7 +119,6 @@ function SmartTable(props) {
         }
       });
       setSortDesc({ [cell]: !sortDesc[cell] });
-
       setData(tempData);
     }
   };
@@ -133,17 +132,17 @@ function SmartTable(props) {
               <div className="spinner-border" role="status"></div>
             </div>
           )}
-          {/* <div className="row">
+          <div className="row">
             <div className="col-6 h3">{props.title}</div>
-            <div className="col-6 text-end">
+            {/*<div className="col-6 text-end">
               <input
                 type="text"
                 className="form-control"
                 placeholder="Search..."
                 onChange={handleSearch}
               />
-            </div>
-          </div> */}
+            </div>*/}
+          </div>
           {props.data.length > 0 ? (
             <div className="row mt-3">
               <div className="smartTable-tableContainer">

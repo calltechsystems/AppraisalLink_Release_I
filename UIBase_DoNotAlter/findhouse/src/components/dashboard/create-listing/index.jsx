@@ -17,6 +17,7 @@ const Index = ({ isView, propertyData }) => {
   const router = useRouter();
 
   const [isDisable, setDisable] = useState(isView);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -138,9 +139,13 @@ const Index = ({ isView, propertyData }) => {
     }
   };
 
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
   const onCancelHandler = () => {
     setModalIsOpen(false);
-    router.push("/my-properties");
+    router.push("/create-listing");
   };
 
   const submitHandler = () => {
@@ -599,7 +604,7 @@ const Index = ({ isView, propertyData }) => {
                         <div className="col-lg-6">
                           <button
                             className="w-50 btn-color text-end"
-                            onClick={onCancelModalHandler}
+                            onClick={onCancelHandler}
                           >
                             Cancel
                           </button>

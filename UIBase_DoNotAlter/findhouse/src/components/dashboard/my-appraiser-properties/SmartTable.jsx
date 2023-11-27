@@ -6,26 +6,6 @@ import SVGChevronLeft from "./icons/SVGChevronLeft";
 import SVGChevronRight from "./icons/SVGChevronRight";
 
 function SmartTable(props) {
-  const handlePrint = () => {
-    const printWindow = window.open("", "_blank");
-    printWindow.document.write(
-      "<html><head><title>All My Properties</title></head><body>"
-    );
-    printWindow.document.write("<h1>" + props.title + "</h1>");
-    printWindow.document.write(
-      '<button style="display:none;" onclick="window.print()">Print</button>'
-    );
-    printWindow.document.write(
-      document.getElementById("table-container").innerHTML
-    );
-    printWindow.document.write("</body></html>");
-    printWindow.document.close();
-    printWindow.print();
-    printWindow.onafterprint = () => {
-      printWindow.close();
-      toast.success("Saved the data");
-    };
-  };
   const [loading, setLoading] = useState(false);
   const [sortDesc, setSortDesc] = useState({});
   const [tableWidth, setTableWidth] = useState(1000);
@@ -126,9 +106,9 @@ function SmartTable(props) {
   }, props.searchDebounceTime ?? 800);
 
   const sortData = (cell) => {
-    let tempData = data.length > 0 ? [...data] : [...props.data];
+    let tempData = [...props.data];
 
-    if (cell === "bid" || cell === "actions") {
+    if (cell === "status") {
       return;
     } else {
       tempData.sort((a, b) => {
@@ -139,10 +119,10 @@ function SmartTable(props) {
         }
       });
       setSortDesc({ [cell]: !sortDesc[cell] });
-
       setData(tempData);
     }
   };
+
   return (
     <div className="col-12 p-4">
       <div className="smartTable-container row">
@@ -153,10 +133,15 @@ function SmartTable(props) {
             </div>
           )}
           <div className="row">
-            <div className="col-lg-12">{props.title}</div>
-            <button onClick={() => handlePrint()} className="btn-color w-25">
-              Generate PDF
-            </button>
+            <div className="col-6 h3">{props.title}</div>
+            {/*<div className="col-6 text-end">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Search..."
+                onChange={handleSearch}
+              />
+            </div>*/}
           </div>
           {props.data.length > 0 ? (
             <div className="row mt-3">
@@ -203,7 +188,7 @@ function SmartTable(props) {
                     </tr>
                   </thead>
                   <tbody>
-                    {data.length > 0
+                    {data
                       ? data.map((row, idx) => {
                           return (
                             <tr key={"tr_" + idx}>

@@ -30,18 +30,18 @@ export const Urgency = [
     },
     {
         id:1,
-        type : "Low",
+        type : "Rush",
         value : 1,
     },
     {
         id:2,
-        type : "Medium",
+        type : "Regular",
         value : 2,
     },
-    {
-        id:3,
-        type : "High",
-        value : 3,
-    },
+    // {
+    //     id:3,
+    //     type : "High",
+    //     value : 3,
+    // },
 ];
 

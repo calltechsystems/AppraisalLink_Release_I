@@ -1,35 +1,22 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import SVGArrowDown from "./icons/SVGArrowDown";
 import SVGArrowUp from "./icons/SVGArrowUp";
 import SVGChevronLeft from "./icons/SVGChevronLeft";
 import SVGChevronRight from "./icons/SVGChevronRight";
 
+import * as XLSX from "xlsx";
+
+import { useReactToPrint } from "react-to-print";
+import toast from "react-hot-toast";
+
 function SmartTable(props) {
-  const handlePrint = () => {
-    const printWindow = window.open("", "_blank");
-    printWindow.document.write(
-      "<html><head><title>All Brokers Properties</title></head><body>"
-    );
-    printWindow.document.write("<h1>" + props.title + "</h1>");
-    printWindow.document.write(
-      '<button style="display:none;" onclick="window.print()">Print</button>'
-    );
-    printWindow.document.write(
-      document.getElementById("table-container").innerHTML
-    );
-    printWindow.document.write("</body></html>");
-    printWindow.document.close();
-    printWindow.print();
-    printWindow.onafterprint = () => {
-      printWindow.close();
-      toast.success("Saved the data");
-    };
-  };
   const [loading, setLoading] = useState(false);
   const [sortDesc, setSortDesc] = useState({});
   const [tableWidth, setTableWidth] = useState(1000);
   const [data, setData] = useState(props.data);
+
+  const componentRef = useRef();
 
   const [search, setSearch] = useState("");
   const [rowsPerPage, setRowsPerPage] = useState(props.rowsPerPage ?? 10);
@@ -38,8 +25,12 @@ function SmartTable(props) {
   );
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(props.total ?? 0);
+  const [changes, setChanges] = useState(false);
 
-  console.log(props.data);
+  const generatePDF = () => {
+    window.print();
+    toast.success("Data added");
+  };
   const fetchData = useCallback(
     async (queryString) => {
       setLoading(true);
@@ -63,6 +54,72 @@ function SmartTable(props) {
     },
     [props.url]
   );
+
+  const handlePrint = () => {
+    const printWindow = window.open("", "_blank");
+    printWindow.document.write(
+      "<html><head><title>AllBrokerProperties</title></head><body>"
+    );
+    printWindow.document.write("<h1>" + props.title + "</h1>");
+    printWindow.document.write(
+      '<button style="display:none;" onclick="window.print()">Print</button>'
+    );
+    // console.log(document.getElementById('table-container').innerHTML);
+    printWindow.document.write(
+      document.getElementById("table-container").innerHTML
+    );
+    printWindow.document.write("</body></html>");
+    printWindow.document.close();
+    printWindow.print();
+    printWindow.onafterprint = () => {
+      printWindow.close();
+      toast.success("Saved the data");
+    };
+  };
+
+  console.log(props.data);
+  const handleExcelPrint = () => {
+    const twoDData = props.data.map((item, index) => {
+      return [item.bid, item.date, item.title, item.urgency];
+    });
+
+    // Remove empty arrays from twoDData
+    const filteredTwoDData = twoDData.filter((row) => row.length > 0);
+
+    // Create a workbook and add a worksheet
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.aoa_to_sheet(filteredTwoDData);
+    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+
+    // Create a blob from the workbook
+    const blob = XLSX.write(wb, {
+      bookType: "xlsx",
+      bookSST: false,
+      type: "blob",
+    });
+
+    // Create a new window for downloading Excel
+    const excelWindow = window.open("", "_blank");
+
+    // Write the Excel blob to the new window
+    excelWindow.document.write(
+      "<html><head><title>AllBrokerProperties</title></head><body>"
+    );
+    excelWindow.document.write("<h1>" + props.title + "</h1>");
+    excelWindow.document.write(
+      '<a id="download-link" download="your_excel_file.xlsx" href="#">Download Excel</a>'
+    );
+
+    // Create a download link and trigger a click event to download the file
+    const url = URL.createObjectURL(blob);
+    const downloadLink = excelWindow.document.getElementById("download-link");
+    downloadLink.href = url;
+    downloadLink.click();
+
+    // Close the new window after the file is downloaded
+    excelWindow.document.write("</body></html>");
+    excelWindow.document.close();
+  };
 
   const tableWidthFunc = useCallback(() => {
     let tempTableWidth = 0;
@@ -88,7 +145,7 @@ function SmartTable(props) {
   const buildQueryString = (search, page, rowsPerPage) => {
     const queries = [];
 
-    if (page) queries.push(`page=${page}`);
+    if (page) queries.push((page = `${page}`));
     if (rowsPerPage) queries.push(`limit=${rowsPerPage}`);
     if (search) queries.push(`search=${search.toLowerCase()}`);
 
@@ -128,7 +185,12 @@ function SmartTable(props) {
   const sortData = (cell) => {
     let tempData = data.length > 0 ? [...data] : [...props.data];
 
-    if (cell === "bid" || cell === "actions") {
+    if (
+      cell === "bid" ||
+      cell === "actions" ||
+      cell === "orderId" ||
+      cell === "bidAmount"
+    ) {
       return;
     } else {
       tempData.sort((a, b) => {
@@ -143,9 +205,10 @@ function SmartTable(props) {
       setData(tempData);
     }
   };
+  console.log(data.length > 0, data);
 
   return (
-    <div className="col-12 p-2">
+    <div className="col-12 p-4">
       <div className="smartTable-container row">
         <div className="col-12">
           {loading && (
@@ -153,25 +216,17 @@ function SmartTable(props) {
               <div className="spinner-border" role="status"></div>
             </div>
           )}
-          {/* <div className="row">
-            <div className="col-6 h3">{props.title}</div>
-            <div className="col-6 text-end">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Search..."
-                onChange={handleSearch}
-              />
-            </div>
-          </div> */}
-          <div className="row mb-2">
-            <div className="col-lg-12">{props.title}</div>
-            <button onClick={() => handlePrint()} className="btn-color w-25">
+          <div className="row">
+            <div className="col-12">{props.title}</div>
+            <button
+              className="btn btn-color w-25"
+              onClick={() => handlePrint()}
+            >
               Generate PDF
             </button>
           </div>
           {props.data.length > 0 ? (
-            <div className="row">
+            <div className="row mt-3">
               <div className="smartTable-tableContainer" id="table-container">
                 <table
                   className={"smartTable-table table table-striped border"}

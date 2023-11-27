@@ -16,6 +16,8 @@ const Index = () => {
   const [lowRangeBid, setLowRangeBid] = useState("");
   const [propertyId, setPropertyId] = useState(null);
 
+  const router = useRouter();
+
   const openModal = () => {
     setModalOpen(true);
   };

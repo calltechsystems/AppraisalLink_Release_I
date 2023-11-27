@@ -224,9 +224,99 @@ const DetailedInfo = ({
               </div>
             </div>
           </div>
+          <div className="row mb-2">
+            <div className="col-lg-6">
+              <div className="my_profile_setting_input form-group">
+                <label
+                  htmlFor=""
+                  style={{
+                    paddingTop: "15px",
+                    color: "#1560bd",
+                    fontWeight: "",
+                  }}
+                >
+                  Address
+                </label>
+              </div>
+              <div className="">
+                <input
+                  style={{
+                    // paddingTop: "15px",
+                    // paddingBottom: "15px",
+                    backgroundColor: "#E8F0FE",
+                    //color: "white",
+                  }}
+                  type="text"
+                  className="form-control"
+                  id="formGroupExampleInput3"
+                  // onChange={(e) => setApplicantNumber(e.target.value)}
+                  // value={applicantNumber}
+                  disabled={isDisable}
+                />
+              </div>
+            </div>
+            <div className="col-xl-6">
+              <div className="my_profile_setting_input form-group">
+                <label
+                  htmlFor=""
+                  style={{
+                    paddingTop: "15px",
+                    color: "#1560bd",
+                    fontWeight: "",
+                  }}
+                >
+                  Address
+                </label>
+                <form className="form-inline d-flex flex-wrap wrap">
+                  {/* <input className="form-control upload-path " /> */}
+                  <label className="upload">
+                    <input
+                      style={{
+                        // paddingTop: "15px",
+                        // paddingBottom: "15px",
+                        backgroundColor: "#E8F0FE",
+                        //color: "white",
+                      }}
+                      className="form-control"
+                      type="file"
+                    />
+                  </label>
+                </form>
+              </div>
+            </div>
+            {/* End .col */}
+          </div>
+          <div className="col-lg-12">
+            <div className="my_profile_setting_textarea">
+              <label
+                htmlFor="propertyDescription"
+                style={{
+                  paddingTop: "15px",
+                  color: "#1560bd",
+                  fontWeight: "",
+                }}
+              >
+                Summary
+              </label>
+              <textarea
+                style={{
+                  // paddingTop: "15px",
+                  // paddingBottom: "15px",
+                  backgroundColor: "#E8F0FE",
+                  //color: "white",
+                }}
+                className="form-control"
+                id="propertyDescription"
+                rows="4"
+              ></textarea>
+            </div>
+          </div>
+          {/* End .col */}
           <div className="col-xl-12">
             <div className="my_profile_setting_input overflow-hidden mt20 text-center">
-              <button className="btn btn5 m-1" onClick={onCancelHandler}>Cancel</button>
+              <button className="btn btn5 m-1" onClick={onCancelHandler}>
+                Cancel
+              </button>
               {!isDisable &&
                 (propertyData ? (
                   <button className="btn btn5" onClick={updateHandler}>

@@ -8,21 +8,27 @@ import axios from "axios";
 
 const headCells = [
   {
-    id: "description",
+    id: "orderId",
     numeric: false,
-    label: "Description",
+    label: "Order Id",
     width: 200,
   },
   {
     id: "amount",
     numeric: false,
-    label: "Bid Amount",
+    label: "Qouted Amount",
     width: 200,
   },
   {
     id: "prop_amount",
     numeric: false,
     label: "Proposed Amount",
+    width: 200,
+  },
+  {
+    id: "date",
+    numeric: false,
+    label: "Submitted Date",
     width: 200,
   },
   {
@@ -90,8 +96,8 @@ export default function Exemple({setModalIsOpenError,setErrorMessage}) {
 
       properties.map((property,index)=>{
         const updatedRow = {
-          date: formatDate(property.addedDatetime ),
-          description : property.description,
+          orderId:property.bidId,
+          date: formatDate(property.requestTime ),
           amount : property.bidLowerRange,
           prop_amount : property.bidAmount,
           status : property.status === 0 ? "pending" : property.status === 1 ? "completed" : "declined"

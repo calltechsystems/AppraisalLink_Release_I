@@ -13,9 +13,22 @@ const headCells = [
     width: 200,
   },
   {
+    id: "broker_name",
+    numeric: false,
+    label: "Broker Name",
+    width: 200,
+  }
+  ,
+  {
+    id: "broker_contact_info",
+    numeric: false,
+    label: "Broker Contact Info",
+    width: 200,
+  },
+  {
     id: "prop_amount",
     numeric: false,
-    label: "Proposed Amount",
+    label: "Proposed Amount ($)",
     width: 200,
   },
   {
@@ -24,19 +37,6 @@ const headCells = [
     label: "Date",
     width: 200,
   },
-  {
-    id: "urgency",
-    numeric: false,
-    label: "Urgency",
-    width: 200,
-  }
-  ,
-  {
-    id: "broker_info",
-    numeric: false,
-    label: "Broker Information",
-    width: 200,
-  }
 ];
 
 const data = [
@@ -94,12 +94,13 @@ export default function Exemple({userData , open ,close ,deletePropertyHandler,o
 
       properties.map((property,index)=>{
         const updatedRow = {
-          property_name: `XXX , ${property.area} - ${property.zipCode}`,
+          property_name: `###-###, ${property.city} - ${property.zipCode}`,
           prop_amount : property.bidLowerRange,
           date : formatDate(property.addedDatetime ),
+          broker_name : `${property.applicantFirstName} ${property.applicantLastName} , ${property.applicantPhoneNumber}`,
+          broker_contact_info : property.applicantEmailAddress,
           urgency : property.urgency === 1 ? "Pending" : property.urgency === 2 ? "Completed" : "Declined",
-          broker_info : `${property.applicantFirstName} ${property.applicantLastName} , ${property.applicantPhoneNumber}`
-         }
+           }
         tempData.push(updatedRow);
       });
       setUpdatedData(tempData);
@@ -142,6 +143,7 @@ export default function Exemple({userData , open ,close ,deletePropertyHandler,o
   const tempId =responseData;
   toast.success("Successfully fetched");
   tempProperties = responseData;
+  console.log(responseData);
  })
  .catch((err) => {
   toast.dismiss();
@@ -170,6 +172,7 @@ export default function Exemple({userData , open ,close ,deletePropertyHandler,o
          return false;
       })
   })
+  console.log(userWishlistProp)
   setProperties(userWishlistProp);
  })
  .catch((err) => {

@@ -7,9 +7,15 @@ import axios from "axios";
 
 const headCells = [
   {
-    id: "title",
+    id: "orderId",
     numeric: false,
-    label: "Property Title",
+    label: "Order Id",
+    width: 200,
+  },
+  {
+    id: "address",
+    numeric: false,
+    label: "Address",
     width: 200,
   },
   {
@@ -19,15 +25,15 @@ const headCells = [
     width: 200,
   },
   {
-    id: "urgency",
+    id: "bidAmount",
     numeric: false,
-    label: "Urgency",
+    label: "Proposed Amount ($)",
     width: 200,
   },
   {
-    id: "bid",
+    id: "status",
     numeric: false,
-    label: "Bid",
+    label: "Status",
     width: 200,
   },
   {
@@ -84,21 +90,21 @@ export default function Exemple({
 
   const filterBidsWithin24Hours = (property) => {
     const userData = JSON.parse(localStorage.getItem("user"));
-    let tempBid = {};
+    let tempBid = 0;
     bids.filter((bid) => {
       if (
         bid.appraiserUserId === userData.userId &&
         bid.propertyId === property.propertyId
       ) {
-        tempBid = bid;
+        tempBid = tempBid + 1;
       } else {
-        return false;
       }
     });
-    const currentTime = new Date();
-    const twentyFourHoursAgo = currentTime - 24 * 60 * 60 * 1000; // Subtracting milliseconds for 24 hours
-    const requestTime = new Date(tempBid.requestTime);
-    return requestTime >= twentyFourHoursAgo && requestTime <= currentTime;
+    return tempBid > 0 ? true : false;
+    // const currentTime = new Date();
+    // const twentyFourHoursAgo = currentTime - 24 * 60 * 60 * 1000; // Subtracting milliseconds for 24 hours
+    //    const requestTime = new Date(tempBid.requestTime);
+    //   return requestTime >= twentyFourHoursAgo && requestTime <= currentTime;
   };
 
   const formatDate = (dateString) => {
@@ -134,23 +140,22 @@ export default function Exemple({
         console.log("isBidded", isBidded, index);
 
         const updatedRow = {
-          title: property.typeOfBuilding,
+          orderId: property.orderId,
+          address: `###-###,${property.city}`,
           date: formatDate(property.addedDatetime),
-          urgency:
+          bidAmount: property.bidLowerRange,
+          status:
             property.urgency === 0
-              ? "low"
+              ? "Low"
               : property.urgency === 1
-              ? "medium"
-              : "high",
-          bid: 0,
+              ? "Medium"
+              : "High",
 
           action: (
             <div className="print-hidden-column">
               <ul className="">
                 {isWishlist ? (
                   <img
-                    className=""
-                    style={{marginRight:"5px"}}
                     width={30}
                     height={30}
                     src="https://th.bing.com/th/id/OIP.h0_o3aftEQhOt3HLVaKSvQHaHT?w=219&h=216&c=7&r=0&o=5&dpr=1.1&pid=1.7"
@@ -160,6 +165,7 @@ export default function Exemple({
                     className="list-inline-item"
                     style={{
                       width: "30px",
+                      // border: "1px solid black",
                       textAlign: "center",
                       borderRadius: "5px",
                     }}
@@ -169,7 +175,7 @@ export default function Exemple({
                       <button
                         onClick={() => onWishlistHandler(property.propertyId)}
                       >
-                        <span className="flaticon-heart text-color"></span>
+                        <span className="flaticon-heart text-color "></span>
                       </button>
                     }
                   </li>
@@ -185,7 +191,7 @@ export default function Exemple({
                     title="Delete"
                   >
                     <div
-                      className="fw-bold"
+                      className="mt-1 fw-bold"
                       onClick={() =>
                         participateHandler(
                           property.bidLowerRange,
@@ -193,7 +199,11 @@ export default function Exemple({
                         )
                       }
                     >
-                      <a href="#" className="text-color">
+                      <a
+                        href="#"
+                        className="text-color"
+                        style={{ marginLeft: "10px" }}
+                      >
                         Provide Qoute
                       </a>
                     </div>
@@ -271,7 +281,7 @@ export default function Exemple({
     axios
       .get("/api/getAllBids", {
         headers: {
-          Authorization: ` Bearer ${data.token}`,
+          Authorization: `Bearer ${data.token}`,
         },
       })
       .then((res) => {

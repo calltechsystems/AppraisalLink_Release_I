@@ -8,21 +8,22 @@ import axios from "axios";
 
 const headCells = [
   {
+    id: "orderId",
+    numeric: false,
+    label: "Order Id",
+    width: 200,
+  },
+ 
+  {
+    id: "date",
+    numeric: false,
+    label: "Submission date",
+    width: 200,
+  },
+  {
     id: "description",
     numeric: false,
-    label: "Description",
-    width: 200,
-  },
-  {
-    id: "amount",
-    numeric: false,
-    label: "Bid Amount",
-    width: 200,
-  },
-  {
-    id: "prop_amount",
-    numeric: false,
-    label: "Proposed Amount",
+    label: "Bid Condition",
     width: 200,
   },
   {
@@ -88,11 +89,11 @@ export default function Exemple({userData , open ,close , properties, setPropert
 
       properties.map((property,index)=>{
         const updatedRow = {
-          date: formatDate(property.addedDatetime ),
-          description : property.description,
-          amount : property.bidLowerRange,
-          prop_amount : property.bidAmount,
-          status : property.status === 0 ? "pending" : property.status === 1 ? "accepted" : "declined"
+          date: formatDate(property.requestTime ),
+          orderId : property.bidId,
+          bidAmount : property.bidLowerRange,
+          description : property.description != "" ? property.description : "NA",
+          status : property.status === 0 ? "pending" : property.status === 1 ? "Accepted" : "Declined"
 
            }
         tempData.push(updatedRow);

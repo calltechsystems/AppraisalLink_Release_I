@@ -45,7 +45,7 @@ const headCells = [
   {
     id: "amount",
     numeric: false,
-    label: "Appraisal Bid",
+    label: "Quote",
     width: 200,
   },
   {

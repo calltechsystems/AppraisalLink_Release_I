@@ -263,7 +263,7 @@ const LocationField = ({
                 </div>
               </div>
             </div>
-            <div className="col-lg-6">
+            {/* <div className="col-lg-6">
               <div className="my_profile_setting_input form-group">
                 <label
                   htmlFor=""
@@ -274,6 +274,36 @@ const LocationField = ({
                   }}
                 >
                   Maximum Appraisal Cost ($)
+                </label>
+              </div>
+              <div className="">
+                <input
+                  style={{
+                    // paddingTop: "15px",
+                    // paddingBottom: "15px",
+                    backgroundColor: "#E8F0FE",
+                    //color: "white",
+                  }}
+                  type="number"
+                  className="form-control"
+                  id="formGroupExampleInput3"
+                  onChange={(e) => setBidLowerRangeRef(e.target.value)}
+                  value={bidLowerRangeRef}
+                  disabled={isDisable}
+                />
+              </div>
+            </div> */}
+            <div className="col-lg-6">
+              <div className="my_profile_setting_input form-group">
+                <label
+                  htmlFor=""
+                  style={{
+                    paddingTop: "15px",
+                    color: "#1560bd",
+                    fontWeight: "",
+                  }}
+                >
+                  Estimated Cost ($)
                 </label>
               </div>
               <div className="">
