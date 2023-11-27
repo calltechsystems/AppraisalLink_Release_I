@@ -11800,8 +11800,8 @@ a.btn.btn_error {
   -webkit-box-shadow: 0px 0px 50px 0px rgba(19, 19, 28, 0.12);
   -moz-box-shadow: 0px 0px 50px 0px rgba(19, 19, 28, 0.12);
   -o-box-shadow: 0px 0px 50px 0px rgba(19, 19, 28, 0.12);
-  /* box-shadow: 0px 0px 50px 0px rgba(19, 19, 28, 0.12); */
-  box-shadow: 0px 0px 50px 0px rgb(151, 215, 0, 0.32);
+  box-shadow: 0px 0px 50px 0px rgba(19, 19, 28, 0.12);
+  /* box-shadow: 0px 0px 50px 0px rgb(151, 215, 0, 0.32); */
   transform: scale(1.1);
 }
 
@@ -21300,7 +21300,7 @@ button.gm-ui-hover-effect:focus {
 }
 
 .pricing_table:hover {
-  background-color: white !important;
+  background-color: #97d700 !important;
   border: 2px solid #97d700;
 }
 

@@ -712,7 +712,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                       position: "absolute",
                       top: "100%",
                       // left: "20px",
-                      right: "-580px",
+                      right: "-650px",
                       width: "1900px",
                       margin: "-16px",
                       height: "225px",
@@ -729,20 +729,51 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                   >
                     <div className="row">
                       <div className="col-lg-2"></div>
-                      <div
-                        className="col-lg-3 text-center"
-                        style={{ backgroundColor: "" }}
-                      >
+                      <div className="col-lg-2 text-end">
                         <div className="row">
-                          <div className="col-lg-8 m-5 fw-bold">
-                            <span>
-                              Subscribe today to unlock a world of exclusive
-                              benefits.
-                            </span>
-                            <br />
+                          <div className="col-lg-12 mt-4">
+                            {/* <Link href="/">
+                     <Image
+                       width={40}
+                       height={45}
+                       className="logo2 img-fluid"
+                       style={{ marginRight: "10px" }}
+                       src="/assets/images/logo_new.png"
+                       alt="header-logo2.png"
+                     />
+                     <span
+                       className="fw-bold"
+                       style={{ fontSize: "19px", color: "black" }}
+                     >
+                       Appraisal Link
+                     </span>
+                   </Link> */}
+                          </div>
+                          <div className="col-lg-12 mb-2">
                             <Link href="/membership">
-                              <button className="btn btn2 w-50 btn-color">
-                                Get Started
+                              <button className="btn w-100 btn-color">
+                                For Appraiser
+                              </button>
+                            </Link>
+                          </div>
+                          <div className="col-lg-12 mb-2">
+                            <Link href="/membership">
+                              <button className="btn w-100 btn-color">
+                                For Mortgage Broker
+                              </button>
+                            </Link>
+                          </div>
+                          <div className="col-lg-12 mb-2">
+                            <Link href="/membership">
+                              <button className="btn w-100 btn-color">
+                                For Appraiser Company
+                              </button>
+                            </Link>
+                          </div>
+                          <div className="col-lg-12 mb-2">
+                            <Link href="/membership">
+                              <button className="btn w-100 btn-color">
+                                For Mortgage Brokerage
                               </button>
                             </Link>
                           </div>
