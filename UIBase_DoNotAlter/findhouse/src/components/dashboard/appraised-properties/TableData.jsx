@@ -6,7 +6,8 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import Exemple from "./Exemple"
 import { useDispatch, useSelector } from "react-redux";
-const TableData = ({userData , open ,close , onWishlistHandler , participateHandler , properties, setProperties,setErrorMessage,setModalIsOpenError}) => {
+const TableData = ({userData , open ,close , onWishlistHandler , participateHandler , properties, setProperties,setErrorMessage,setModalIsOpenError,setReload},reload) => {
+
 
   let userInfo = {};
   const [Id,setId] = useState(-1);  
@@ -15,7 +16,7 @@ const TableData = ({userData , open ,close , onWishlistHandler , participateHand
  
   const [data , setData] = useState([]);
 
-
+  
   const {
     keyword,
     location,   
@@ -282,9 +283,12 @@ const TableData = ({userData , open ,close , onWishlistHandler , participateHand
       deletePropertyHandler = {deletePropertyHandler}
       onWishlistHandler={onWishlistHandler}
       participateHandler={participateHandler}
+      setReload={setReload}
+      reload={reload}
       />)}
     </>
   );
 };
 
 export default TableData;
+

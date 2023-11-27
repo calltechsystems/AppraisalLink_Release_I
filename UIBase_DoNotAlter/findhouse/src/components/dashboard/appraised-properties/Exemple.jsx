@@ -27,7 +27,7 @@ const headCells = [
   {
     id: "bidAmount",
     numeric: false,
-    label: "Proposed Amount ($)",
+    label: "Quote Proposal ($)",
     width: 200,
   },
   {
@@ -79,6 +79,8 @@ export default function Exemple({
   participateHandler,
   setErrorMessage,
   setModalIsOpenError,
+  setReload,
+  reload
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [wishlist, setWishlist] = useState([]);
@@ -221,6 +223,7 @@ export default function Exemple({
   }, [properties]);
 
   useEffect(() => {
+    setReload(false);
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -309,7 +312,7 @@ export default function Exemple({
         // setErrorMessage(err?.response?.data?.error);
         // setModalIsOpenError(true);
       });
-  }, []);
+  }, [reload]);
   return (
     <>
       {updatedData && (

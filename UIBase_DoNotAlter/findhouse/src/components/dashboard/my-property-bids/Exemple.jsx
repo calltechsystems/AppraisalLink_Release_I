@@ -4,6 +4,7 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { encryptionData } from "../../../utils/dataEncryption";
+import { useRouter } from "next/router";
 // import "./SmartTable.css";
 
 const headCells = [
@@ -87,6 +88,8 @@ export default function Exemple({userData , open ,close , propertyId , propertie
 
   const [updatedData , setUpdatedData] = useState([]);
   const [show , setShow] = useState(false);
+
+  const router = useRouter();
   let tempData = [];
 
   const formatDate = (dateString) => {
@@ -121,6 +124,7 @@ export default function Exemple({userData , open ,close , propertyId , propertie
       .then((res) => {
         toast.dismiss();
         toast.success("Successfully accepted the requested Bid");
+        router.push("/my-properties");
       })
       .catch((err) => {
         toast.dismiss();
@@ -147,6 +151,7 @@ export default function Exemple({userData , open ,close , propertyId , propertie
       .then((res) => {
         toast.dismiss();
         toast.success("Successfully declined the requested Bid");
+        router.push("/my-properties");
       })
       .catch((err) => {
         toast.dismiss();
@@ -163,7 +168,7 @@ export default function Exemple({userData , open ,close , propertyId , propertie
           AppraiserId : property.appraiserUserId,
           quote : property.bidLowerRange,
           amount : property.bidAmount,
-          description: property.description,
+          description: property.description != "" ? property.description : "NA",
         date : formatDate(property.requestTime),
         action : <ul className=""><li
         className="list-inline-item"
@@ -174,7 +179,7 @@ export default function Exemple({userData , open ,close , propertyId , propertie
       onClick={()=>acceptRequestHandler(property.bidId)}
       
     >
-      <a href="#" className="text-color-green" >
+      <a href="#" className="text-success" >
         Accept
       </a>
     </div>  
@@ -192,7 +197,7 @@ export default function Exemple({userData , open ,close , propertyId , propertie
       className="fp_pdate float-end mt-1 fw-bold"
       onClick={()=>rejectRequestHandler(property.bidId)}
     >
-      <a href="#" className="text-color-red">
+      <a href="#" className="text-danger">
         Decline
       </a>
     </div>   

@@ -17,23 +17,64 @@ import { encryptionData } from "../../../utils/dataEncryption";
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
-  const [searchResult , setSearchResult] = useState([]);
+  const [searchResult, setSearchResult] = useState([]);
   const [property, setProperty] = useState("");
   const [filterProperty, setFilterProperty] = useState("");
   const [filterQuery, setFilterQuery] = useState("Last 30 Days");
   const [searchQuery, setSearchQuery] = useState("city");
   const [properties, setProperties] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-  const [lowRangeBid , setLowRangeBid] = useState("");
-  const [propertyId , setPropertyId] = useState(null);
+  const [lowRangeBid, setLowRangeBid] = useState("");
+  const [propertyId, setPropertyId] = useState(null);
 
-  const [modalIsOpenError , setModalIsOpenError] = useState(false);
-  const [errorMessage , setErrorMessage ] = useState("");
+  const [modalIsOpenError, setModalIsOpenError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const closeErrorModal =()=>{
+  const [reload, setReload] = useState(false);
+
+  const closeErrorModal = () => {
     setModalIsOpenError(false);
-  }
+  };
   const router = useRouter();
+
+  const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
+    Date.now()
+  );
+
+  useEffect(() => {
+    const activityHandler = () => {
+      setLastActivityTimestamp(Date.now());
+    };
+
+    // Attach event listeners for user activity
+    window.addEventListener("mousemove", activityHandler);
+    window.addEventListener("keydown", activityHandler);
+    window.addEventListener("click", activityHandler);
+
+    // Cleanup event listeners when the component is unmounted
+    return () => {
+      window.removeEventListener("mousemove", activityHandler);
+      window.removeEventListener("keydown", activityHandler);
+      window.removeEventListener("click", activityHandler);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Check for inactivity every minute
+    const inactivityCheckInterval = setInterval(() => {
+      const currentTime = Date.now();
+      const timeSinceLastActivity = currentTime - lastActivityTimestamp;
+
+      // Check if there has been no activity in the last 10 minutes (600,000 milliseconds)
+      if (timeSinceLastActivity > 600000) {
+        localStorage.removeItem("user");
+        router.push("/login");
+      }
+    }, 60000); // Check every minute
+
+    // Cleanup the interval when the component is unmounted
+    return () => clearInterval(inactivityCheckInterval);
+  }, [lastActivityTimestamp]);
 
   const openModal = (property) => {
     setProperty(property);
@@ -43,6 +84,10 @@ const Index = () => {
   const closeModal = () => {
     setModalOpen(false);
   };
+
+  useEffect(() => {
+    setReload(false);
+  }, [reload]);
 
   useEffect(() => {
     const filterProperties = (propertys, searchInput) => {
@@ -153,85 +198,71 @@ const Index = () => {
     fetchData();
   }, []);
 
-
-  const participateHandler = (val , id)=>{
+  const participateHandler = (val, id) => {
     setLowRangeBid(val);
     setPropertyId(id);
     setModalOpen(true);
-  }
+  };
 
-  const onWishlistHandler = (id) =>{
-
-    
-
+  const onWishlistHandler = (id) => {
     const userData = JSON.parse(localStorage.getItem("user"));
 
     const formData = {
-      userId : userData.userId,
-      propertyId : id,
-      token : userData.token
-    }
+      userId: userData.userId,
+      propertyId: id,
+      token: userData.token,
+    };
 
     const payload = encryptionData(formData);
 
     toast.loading("Setting this property into your wishlist");
-    axios.post("/api/addToWishlist",payload)
-    .then((res) => {
-      toast.dismiss();
-      toast.success("Successfully added !!! ");
-      window.location.reload();
-     
-    })
-    .catch((err) => {
-      toast.dismiss();
-      toast.error(err?.response?.data?.error);
-    });
-    
-  }
-
-  useEffect(()=>{
-    console.log(searchQuery);
-   const tempData = properties;
-   if(searchInput === ""){
-    return ;
-   }
-   else if(searchQuery === "city"){
-      const newProperties = tempData.filter((item)=>{
-        if(item.city.toLowerCase() === searchInput.toLowerCase()){
-          return true;
-        }
-        else {
-          return false
-        }
-        
+    axios
+      .post("/api/addToWishlist", payload)
+      .then((res) => {
+        toast.dismiss();
+        toast.success("Successfully added !!! ");
+        router.push("/appraiser-wishlisted");
       })
+      .catch((err) => {
+        toast.dismiss();
+        toast.error(err?.response?.data?.error);
+      });
+  };
+
+  useEffect(() => {
+    console.log(searchQuery);
+    const tempData = properties;
+    if (searchInput === "") {
+      return;
+    } else if (searchQuery === "city") {
+      const newProperties = tempData.filter((item) => {
+        if (item.city.toLowerCase() === searchInput.toLowerCase()) {
+          return true;
+        } else {
+          return false;
+        }
+      });
       setSearchResult(newProperties);
-   }
-   else if(searchQuery === "state"){
-    const newProperties = tempData.filter((item)=>{
-      if(item.state.toLowerCase() === searchInput.toLowerCase()){
-        return true;
-      }
-      else {
-        return false
-      }
-      
-    })
-    setSearchResult(newProperties);
-   }
-   else{
-    const newProperties = tempData.filter((item)=>{
-      if(item.zipCode.toLowerCase() === searchInput.toLowerCase()){
-        return true;
-      }
-      else {
-        return false
-      }
-      
-    })
-    setSearchResult(newProperties);
-   }
-  },[searchInput]);
+    } else if (searchQuery === "state") {
+      const newProperties = tempData.filter((item) => {
+        if (item.state.toLowerCase() === searchInput.toLowerCase()) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      setSearchResult(newProperties);
+    } else {
+      const newProperties = tempData.filter((item) => {
+        if (item.zipCode.toLowerCase() === searchInput.toLowerCase()) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      setSearchResult(newProperties);
+    }
+  }, [searchInput]);
 
   return (
     <>
@@ -294,7 +325,7 @@ const Index = () => {
                         <Filtering setFilterQuery={setFilterQuery} />
                       </li>
                       <li className="list-inline-item">
-                      <FilteringBy setFilterQuery={setSearchQuery} />
+                        <FilteringBy setFilterQuery={setSearchQuery} />
                       </li>
                       <li className="list-inline-item">
                         <div className="candidate_revew_search_box course fn-520">
@@ -318,36 +349,54 @@ const Index = () => {
                       <div className="table-responsive mt0">
                         <TableData
                           userData={userData}
-                          setModalOpen={openModal} 
-                          close={closeModal} 
+                          setModalOpen={openModal}
+                          close={closeModal}
                           setProperties={setProperties}
                           properties={
                             searchInput === "" ? properties : filterProperty
                           }
-                          
                           onWishlistHandler={onWishlistHandler}
                           participateHandler={participateHandler}
                           setErrorMessage={setErrorMessage}
                           setModalIsOpenError={setModalIsOpenError}
+                          setReload={setReload}
+                          reload={reload}
                         />
                         {modalIsOpenError && (
                           <div className="modal">
-                            <div className="modal-content" style={{borderColor:"orangered",width:"20%"}}>
-                              <h3 className="text-center" style={{color:"orangered"}}>Error</h3>
-                              <div style={{borderWidth:"2px",borderColor:"orangered"}}><br/></div>
-                              <h5 className="text-center">
-                                {errorMessage}
-                              </h5>
+                            <div
+                              className="modal-content"
+                              style={{ borderColor: "orangered", width: "20%" }}
+                            >
+                              <h3
+                                className="text-center"
+                                style={{ color: "orangered" }}
+                              >
+                                Error
+                              </h3>
+                              <div
+                                style={{
+                                  borderWidth: "2px",
+                                  borderColor: "orangered",
+                                }}
+                              >
+                                <br />
+                              </div>
+                              <h5 className="text-center">{errorMessage}</h5>
                               <div
                                 className="text-center"
-                                style={{ display: "flex", flexDirection: "column" }}
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "column",
+                                }}
                               >
-                                
-                      
                                 <button
                                   className="btn w-35 btn-white"
-                                  onClick={()=>closeErrorModal()}
-                                  style={{borderColor:"orangered",color:"orangered"}}
+                                  onClick={() => closeErrorModal()}
+                                  style={{
+                                    borderColor: "orangered",
+                                    color: "orangered",
+                                  }}
                                 >
                                   Cancel
                                 </button>
@@ -367,14 +416,13 @@ const Index = () => {
               </div>
 
               <div className="row">
-              
-              <Modal
-                modalOpen={modalOpen}
-                closeModal={closeModal}
-                lowRangeBid = {lowRangeBid}
-                propertyId={propertyId}
-              />
-            </div>
+                <Modal
+                  modalOpen={modalOpen}
+                  closeModal={closeModal}
+                  lowRangeBid={lowRangeBid}
+                  propertyId={propertyId}
+                />
+              </div>
               <div className="row">
                 <div className="col-lg-12 mt20">
                   <div className="mbp_pagination">
@@ -398,7 +446,6 @@ const Index = () => {
               </div>
             </div>
             {/* End .col */}
-          
           </div>
         </div>
       </section>

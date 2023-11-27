@@ -2,8 +2,9 @@
 
 import React, { useRef } from "react";
 import toast from "react-hot-toast";
-import { encryptionData } from "../../../utils/dataEncryption";
+import { encryptionData } from "../../../utils/dataEncryption"; 
 import axios from "axios";
+import { useRouter } from "next/router";
 
 const Modal = ({ modalOpen, closeModal , lowRangeBid , propertyId}) => {
 
@@ -17,6 +18,8 @@ const Modal = ({ modalOpen, closeModal , lowRangeBid , propertyId}) => {
   const onSubmitHnadler = ()=>{
     const bidAmount = valueRef.current.value;
     const description = descriptionRef.current.value;
+
+    const router = useRouter();
 
     const user = JSON.parse(localStorage.getItem("user"));
 
@@ -42,6 +45,7 @@ const Modal = ({ modalOpen, closeModal , lowRangeBid , propertyId}) => {
         toast.dismiss();
         toast.success("Successfully set the bid ");
         closeModal();
+        router.push("/biding-history");
       }).catch((err)=>{
         toast.dismiss();
         toast.error("Try Again");

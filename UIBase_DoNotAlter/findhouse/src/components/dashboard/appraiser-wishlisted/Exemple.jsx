@@ -7,36 +7,30 @@ import axios from "axios";
 
 const headCells = [
   {
-    id: "property_name",
+    id: "orderId",
     numeric: false,
-    label: "Property Name",
+    label: "Order Id",
     width: 200,
   },
   {
-    id: "broker_name",
+    id: "address",
     numeric: false,
-    label: "Broker Name",
+    label: "Address",
     width: 200,
   }
   ,
   {
-    id: "broker_contact_info",
-    numeric: false,
-    label: "Broker Contact Info",
-    width: 200,
-  },
-  {
-    id: "prop_amount",
-    numeric: false,
-    label: "Proposed Amount ($)",
-    width: 200,
-  },
-  {
     id: "date",
     numeric: false,
-    label: "Date",
+    label: "Submission date",
     width: 200,
   },
+  {
+    id: "status",
+    numeric: false,
+    label: "Status",
+    width: 200,
+  }
 ];
 
 const data = [
@@ -94,12 +88,10 @@ export default function Exemple({userData , open ,close ,deletePropertyHandler,o
 
       properties.map((property,index)=>{
         const updatedRow = {
-          property_name: `###-###, ${property.city} - ${property.zipCode}`,
-          prop_amount : property.bidLowerRange,
+          address: `###-###, ${property.city} - ${property.zipCode}`,
+          orderId : property.orderId,
           date : formatDate(property.addedDatetime ),
-          broker_name : `${property.applicantFirstName} ${property.applicantLastName} , ${property.applicantPhoneNumber}`,
-          broker_contact_info : property.applicantEmailAddress,
-          urgency : property.urgency === 1 ? "Pending" : property.urgency === 2 ? "Completed" : "Declined",
+          status : property.urgency === 1 ? "Pending" : property.urgency === 2 ? "Completed" : "Declined",
            }
         tempData.push(updatedRow);
       });
