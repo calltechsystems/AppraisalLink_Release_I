@@ -8041,12 +8041,13 @@ form.home5_advanced_search_form
   padding: 50px 41px 30px 41px;
   position: relative;
   text-align: center;
-  transition: all 0.3s ease;
+  transition: all 0.6s ease;
 }
 
 .why_chose_us:hover {
   /* box-shadow: 0px 0px 50px 0px rgba(19, 19, 28, 0.12); */
   box-shadow: 0px 0px 50px 0px rgb(151, 215, 0, 0.22);
+  transform: scale(1.1);
 }
 
 .why_chose_us .icon {
@@ -15896,7 +15897,8 @@ legend span {
 
 .sidebar-menu li:not(.header) a {
   border-left: 2px solid transparent;
-  color: rgb(138, 153, 179);
+  /* color: rgb(138, 153, 179); */
+  color: white;
   display: block;
   font-size: 14px;
   font-family: "Nunito";
@@ -15937,6 +15939,7 @@ legend span {
 
 .sidebar-menu li.header {
   background-color: #24324a;
+  /* background-color: #1d293e; */
   color: white;
   font-family: "Nunito";
   font-size: 25px;
@@ -21443,7 +21446,6 @@ header.header-nav.menu_style_home_one ul.ace-responsive-menu li.add_listing {
   color: #5c05f5;
 }
 
-
 .bg-color {
   /* background-color: rgb(5, 252, 207); */
   /* background-image: url(../images/home/group-people-hold-huge-lamp-new-idea-illustration-success-business-rely-teamwork-creative-problem-solving_121223-1205.avif); */
@@ -21839,14 +21841,16 @@ a::before {
 
 .sidebar-menu > li > ul > li:hover > a,
 .sidebar-menu li.active a {
-  color: #ffffff;
-  background-color: green !important;
-  border-left-color: darkgreen !important;
+  font-weight: 700;
+  color: black;
+  background-color: #97d700 !important;
+  border-left-color: #2e008b !important;
 }
 
 .sidebar-menu li.active a {
-  color: #ffffff;
-  background-color: #172123 !important;
+  font-weight: 700;
+  color: black;
+  background-color: #97d700 !important;
   border-left-color: var(--color-primary) !important;
 }
 

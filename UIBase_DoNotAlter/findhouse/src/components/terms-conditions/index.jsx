@@ -6,8 +6,10 @@ import Header from "../common/header/DefaultHeader_01";
 import MobileMenu from "../common/header/MobileMenu";
 import BreadCrumbBanner from "./BreadCrumbBanner";
 import TermsCondions from "./TermsCondions";
+import { useRouter } from "next/router";
 
 const Index = () => {
+  const router = useRouter();
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
   );

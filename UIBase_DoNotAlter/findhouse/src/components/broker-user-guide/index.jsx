@@ -12,8 +12,10 @@ import Image from "next/image";
 import TermsCondions from "./TermsCondions";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 const Index = () => {
+  const router = useRouter();
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
   );

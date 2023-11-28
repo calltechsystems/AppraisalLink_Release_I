@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import Header from "../../common/header/dashboard/Header_02";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenu_01";
 import MobileMenu from "../../common/header/MobileMenu_01";
@@ -13,6 +14,8 @@ const Index = () => {
   const closeErrorModal = () => {
     setModalIsOpenError(false);
   };
+
+  const router = useRouter();
 
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()

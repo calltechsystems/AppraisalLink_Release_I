@@ -74,7 +74,7 @@ const SidebarMenu = () => {
               </Link>
             </li>
 
-            <li
+            {/* <li
               className={`treeview ${
                 isParentPageActive(appraiserProperties, route.pathname) ? "active" : ""
               }`}
@@ -93,7 +93,7 @@ const SidebarMenu = () => {
                   </li>
                 ))}
               </ul>
-            </li>
+            </li> */}
             {/* End Review */}
 
             {/*<li
@@ -225,7 +225,7 @@ const SidebarMenu = () => {
           </li>*/}
         {/* End manage listing */}
 
-        {/* <li className="title">
+        <li className="title" style={{marginTop:"5px"}}>
           <span>Manage Properties</span>
           <ul>
             {appraiserProperties.map((item) => (
@@ -241,7 +241,7 @@ const SidebarMenu = () => {
               </li>
             ))}
           </ul>
-        </li> */}
+        </li>
       </ul>
     </>
   );

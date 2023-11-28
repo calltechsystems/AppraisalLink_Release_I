@@ -8,8 +8,10 @@ import BreadCrumbBanner from "./BreadCrumbBanner";
 import HeroSlider from "./HeroSlider";
 import Form from "./Form";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 const Index = () => {
+  const router = useRouter();
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
   );

@@ -7,8 +7,10 @@ import TermsCondions from "./TermsCondions";
 import FindProperties from "./FindProperties";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 const Index = () => {
+  const router = useRouter();
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
   );

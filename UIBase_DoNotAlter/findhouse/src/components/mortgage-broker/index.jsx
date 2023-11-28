@@ -7,10 +7,14 @@ import BreadCrumbBanner from "./BreadCrumbBanner";
 import TermsCondions from "./TermsCondions";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 const Index = () => {
+  const router = useRouter();
 
-  const [lastActivityTimestamp, setLastActivityTimestamp] = useState(Date.now());
+  const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
+    Date.now()
+  );
 
   useEffect(() => {
     const activityHandler = () => {
@@ -18,15 +22,15 @@ const Index = () => {
     };
 
     // Attach event listeners for user activity
-    window.addEventListener('mousemove', activityHandler);
-    window.addEventListener('keydown', activityHandler);
-    window.addEventListener('click', activityHandler);
+    window.addEventListener("mousemove", activityHandler);
+    window.addEventListener("keydown", activityHandler);
+    window.addEventListener("click", activityHandler);
 
     // Cleanup event listeners when the component is unmounted
     return () => {
-      window.removeEventListener('mousemove', activityHandler);
-      window.removeEventListener('keydown', activityHandler);
-      window.removeEventListener('click', activityHandler);
+      window.removeEventListener("mousemove", activityHandler);
+      window.removeEventListener("keydown", activityHandler);
+      window.removeEventListener("click", activityHandler);
     };
   }, []);
 
@@ -35,7 +39,7 @@ const Index = () => {
     const inactivityCheckInterval = setInterval(() => {
       const currentTime = Date.now();
       const timeSinceLastActivity = currentTime - lastActivityTimestamp;
-      
+
       // Check if there has been no activity in the last 10 minutes (600,000 milliseconds)
       if (timeSinceLastActivity > 600000) {
         localStorage.removeItem("user");
