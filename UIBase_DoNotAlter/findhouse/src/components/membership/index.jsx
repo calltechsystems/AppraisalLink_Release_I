@@ -67,7 +67,7 @@ const Index = () => {
     const fetchData = async () => {
       const data = JSON.parse(localStorage.getItem("user"));
       if (!data) {
-        router.push("/login");  
+        router.push("/login");
       } else {
         try {
           const res = await axios.get("/api/getAllPlans", {

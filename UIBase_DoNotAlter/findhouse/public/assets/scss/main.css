@@ -21574,7 +21574,7 @@ header.header-nav.menu_style_home_one .ace-responsive-menu li a {
   color: #2e008b !important;
 }
 
-header.header-nav.menu_style_home_one.stricky-fixed
+/* header.header-nav.menu_style_home_one.stricky-fixed
   .ace-responsive-menu
   > li
   > a.active
@@ -21589,7 +21589,7 @@ header.header-nav.menu_style_home_one.stricky-fixed a.navbar_brand span,
 header.header-nav.menu_style_home_one.stricky-fixed .sign_up_btn .btn,
 header.header-nav.menu_style_home_one.stricky-fixed #search-button i {
   color: #2e008b !important;
-}
+} */
 
 .home-logo-header {
   background-color: white !important;
@@ -22018,9 +22018,9 @@ input[type=text] {
 }
 
 .btn-color_1:hover {
-  background-color: #00693e !important;
-  color: white !important;
-  border: 1px solid #00693e !important;
+  background-color: #ffffff !important;
+  color: #2e008b !important;
+  border: 1px solid #2e008b !important;
 }
 
 .btn-color_2 {

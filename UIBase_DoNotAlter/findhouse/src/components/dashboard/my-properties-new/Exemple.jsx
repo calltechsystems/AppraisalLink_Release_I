@@ -118,7 +118,7 @@ export default function Exemple({
           order_id: property.orderId,
           sub_date: formatDate(property.addedDatetime),
           status: property.propertyStatus ? "Completed" : "Pending",
-          address: `###-### ${property.city},${property.state}`,
+          address: ` ${property.city}, ${property.state}, ${property.zipCode}`,
           // user: property.applicantEmailAddress,
           amount: property.bidLowerRange,
           actions: (

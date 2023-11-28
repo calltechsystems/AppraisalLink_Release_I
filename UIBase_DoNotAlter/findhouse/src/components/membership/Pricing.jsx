@@ -166,7 +166,7 @@ const Pricing = ({
                 // }
               >
                 <a
-                  className={`btn btn-color btn-block w-100`}
+                  className={`btn btn-color_1 btn-block w-100`}
                   href="#"
                   // href={userData ? "/my-plans" : "#"}
                 >

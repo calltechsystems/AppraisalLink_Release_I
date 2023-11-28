@@ -134,7 +134,7 @@ const Pricing = ({
                   )
                 }
               >
-                <a className={`btn btn-color btn-block w-100`} href="#">
+                <a className={`btn btn-color_1 btn-block w-100`} href="#">
                   {selectedId !== item.id
                     ? !selectedId
                       ? "Get Started"
