@@ -7,7 +7,7 @@ import BreadCrumbBanner from "./BreadCrumbBanner";
 import FaqContent from "./FaqContent";
 import { useRouter } from "next/router";
 
-const index = () => {
+const Index = () => {
   const router = useRouter();
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
@@ -102,4 +102,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;
