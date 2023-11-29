@@ -1,8 +1,8 @@
 import ReCAPTCHA from "react-google-recaptcha";
 
-// function onChange(value) {
-//   console.log("Captcha value:", value);
-// }
+function onChange(value) {
+  // console.log("Captcha value:", value);
+}
 
 const Form = () => {
   return (
@@ -222,7 +222,7 @@ const Form = () => {
             ></textarea>
           </div>
           {/* End .col */}
-          {/* <ReCAPTCHA sitekey="Your client site key" onChange={onChange} />, */}
+          <ReCAPTCHA sitekey="6LcyCiApAAAAAGqvFl6wWf8hqjDjO6ZyLuK4mmFe" onChange={onChange} />,
           <div className="form-group mb0 text-end">
             <button type="submit" className="btn btn-lg btn-thm">
               Submit

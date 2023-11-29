@@ -11,6 +11,11 @@ const Form = () => {
   const [captchaVerfied, setCaptchaVerified] = useState(false);
   const [reloadOption, setReloadOption] = useState(false);
   const [change, setChange] = useState(false);
+  const [firstClick, setFirstClick] = useState(true);
+  const [passwordRegister, setPasswordRegister] = useState(""); // State variable to store the password value
+  const [passwordRegisterVerified, setPasswordRegisterVerified] =
+    useState(false);
+  const [checkRegisterConfrim, setCheckRegisterConfrim] = useState(false);
 
   const router = useRouter();
 
@@ -20,6 +25,7 @@ const Form = () => {
   const newPassword = useRef("");
   const newPasswordConfirm = useRef("");
   const emailRef = useRef("");
+  const passwordRegisterRef = useRef("");
 
   const onCloseHandler = () => {
     console.log("in");
@@ -129,6 +135,28 @@ const Form = () => {
     }
   };
 
+  const checkPasswordRegisterHandler = (event) => {
+    setFirstClick(false);
+    setPasswordRegister(event.target.value);
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+    if (passwordRegex.test(event.target.value)) {
+      setPasswordRegisterVerified(true);
+    } else {
+      setPasswordRegisterVerified(false);
+    }
+  };
+
+  const checkConfirmHandler = (event) => {
+    const password = passwordRegister;
+    const confirmPassword = passwordRegisterRef.current.value;
+
+    if (password === confirmPassword) {
+      setCheckRegisterConfrim(true);
+    } else {
+      setCheckRegisterConfrim(false);
+    }
+  };
+
   return (
     <>
       <div className="row">
@@ -210,6 +238,11 @@ const Form = () => {
                   className="form-control mb-2"
                   required
                   placeholder="New password"
+                  onChange={(e) => checkPasswordRegisterHandler(e)}
+                  onFocus={() => setIsFocused(true)}
+                  onBlur={() => setIsFocused(false)}
+                  maxLength={15}
+                  minLength={8}
                 />
                 <div className="input-group-prepend">
                   {/* <div className="input-group-text">
@@ -232,8 +265,11 @@ const Form = () => {
                 <input
                   type="password"
                   ref={newPasswordConfirm}
+                  onChange={(e) => checkConfirmHandler(e)}
                   onFocus={() => setIs2Focused(true)}
                   onBlur={() => setIs2Focused(false)}
+                  maxLength={15}
+                  minLength={8}
                   className="form-control mb-2 mt-2"
                   required
                   placeholder="Confirm password"

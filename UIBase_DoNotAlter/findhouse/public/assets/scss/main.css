@@ -22453,3 +22453,25 @@ input:checked + .slider:before {
   border: 3px solid #97d700 !important;
   color: white !important;
 }
+
+
+/* flip card css */
+
+/* .icon_hvr_img_box {
+  perspective: 1000px;
+  transition: transform 0.5s;
+}
+
+.icon_hvr_img_box:hover {
+  transform: rotateY(180deg);
+}
+
+.icon_hvr_img_box .overlay {
+  transform: rotateY(0deg);
+  backface-visibility: hidden;
+  transition: transform 0.5s;
+}
+
+.icon_hvr_img_box:hover .overlay {
+  transform: rotateY(-180deg);
+} */
