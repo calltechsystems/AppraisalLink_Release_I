@@ -1,10 +1,14 @@
+import { useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 
-function onChange(value) {
-  console.log("Captcha value:", value);
-}
-
 const Form = () => {
+  const [verified, setVerified] = useState(false);
+
+  function onChange(value) {
+    console.log("Captcha value:", value);
+    setVerified(true);
+  }
+
   return (
     <form className="contact_form" action="#">
       <div className="row">
@@ -222,9 +226,17 @@ const Form = () => {
             ></textarea>
           </div>
           {/* End .col */}
-          <ReCAPTCHA sitekey="6LcyCiApAAAAAGqvFl6wWf8hqjDjO6ZyLuK4mmFe" onChange={onChange} />,
+          <ReCAPTCHA
+            sitekey="6LcyCiApAAAAAGqvFl6wWf8hqjDjO6ZyLuK4mmFe"
+            onChange={onChange}
+          />
+          ,
           <div className="form-group mb0 text-end">
-            <button type="submit" className="btn btn-lg btn-thm">
+            <button
+              type="submit"
+              className="btn btn-lg btn-thm"
+              disabled={!verified}
+            >
               Submit
             </button>
           </div>
