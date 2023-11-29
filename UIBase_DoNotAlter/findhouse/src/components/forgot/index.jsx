@@ -8,7 +8,7 @@ import BreadCrumbBanner from "./BreadCrumbBanner";
 import Form from "./Form";
 import { useEffect, useState } from "react";
 
-const index = () => {
+const Index = () => {
   const router = useRouter();
 
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
@@ -101,4 +101,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;
