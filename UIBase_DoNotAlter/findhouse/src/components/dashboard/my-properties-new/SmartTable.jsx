@@ -108,23 +108,21 @@ function SmartTable(props) {
   const sortData = (cell) => {
     let tempData = data.length > 0 ? [...data] : [...props.data];
 
-    tempData.sort((a, b) => {
-      const valueA =
-        typeof a[cell] === "string" ? a[cell].toLowerCase() : a[cell];
-      const valueB =
-        typeof b[cell] === "string" ? b[cell].toLowerCase() : b[cell];
+    if (cell === "status" || cell === "actions") {
+      return;
+    } else {
+      tempData.sort((a, b) => {
+        if (sortDesc[cell]) {
+          return a[cell].toLowerCase() < b[cell].toLowerCase() ? 1 : -1;
+        } else {
+          return a[cell].toLowerCase() > b[cell].toLowerCase() ? 1 : -1;
+        }
+      });
+      setSortDesc({ [cell]: !sortDesc[cell] });
 
-      if (sortDesc[cell]) {
-        return valueA < valueB ? 1 : -1;
-      } else {
-        return valueA > valueB ? 1 : -1;
-      }
-    });
-    setSortDesc({ [cell]: !sortDesc[cell] });
-
-    setData(tempData);
+      setData(tempData);
+    }
   };
-  console.log(data.length > 0, data);
 
   return (
     <div className="col-12 p-2">

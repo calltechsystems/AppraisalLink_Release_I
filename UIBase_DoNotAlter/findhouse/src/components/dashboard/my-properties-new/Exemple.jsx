@@ -43,12 +43,6 @@ const headCells = [
     width: 200,
   },
   {
-    id: "amount",
-    numeric: false,
-    label: "Quote",
-    width: 200,
-  },
-  {
     id: "actions",
     numeric: false,
     label: "Actions",
@@ -88,10 +82,13 @@ const data = [
 
 export default function Exemple({
   userData,
+  archievePropertyHandler,
   open,
+  setModalIsPopupOpen,
   close,
   properties,
   setProperties,
+  setCurrentProperty,
   deletePropertyHandler,
 }) {
   const [updatedData, setUpdatedData] = useState([]);
@@ -110,6 +107,10 @@ export default function Exemple({
     return formattedDate;
   };
 
+  const openPopupModal = (property) => {
+    setModalIsPopupOpen(true);
+    setCurrentProperty(property);
+  };
   useEffect(() => {
     const getData = () => {
       properties.map((property, index) => {
@@ -118,9 +119,9 @@ export default function Exemple({
           order_id: property.orderId,
           sub_date: formatDate(property.addedDatetime),
           status: property.propertyStatus ? "Completed" : "Pending",
-          address: ` ${property.city}, ${property.state}, ${property.zipCode}`,
+          address: property.city,
           // user: property.applicantEmailAddress,
-          amount: property.bidLowerRange,
+          // amount: property.bidLowerRange,
           actions: (
             <ul className="view_edit_delete_list mb0">
               <li
@@ -129,8 +130,21 @@ export default function Exemple({
                 data-placement="top"
                 title="View"
               >
-                <Link href={`/my-property-bids/${property.propertyId}`}>
-                  <span className="flaticon-view"></span>
+                <span className="btn btn-color-table" onClick={() => openPopupModal(property)}>
+                  <Link href={"#"}>
+                    <span className="flaticon-view"></span>
+                  </Link>
+                </span>
+              </li>
+
+              <li
+                className="list-inline-item"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="Bids"
+              >
+                <Link className="btn btn-color-table" href={`/my-property-bids/${property.propertyId}`}>
+                  <span className="flaticon-invoice"></span>
                 </Link>
               </li>
 
@@ -141,7 +155,7 @@ export default function Exemple({
                   data-placement="top"
                   title="Edit"
                 >
-                  <Link href={`/create-listing/${property.propertyId}`}>
+                  <Link className="btn btn-color-table" href={`/create-listing/${property.propertyId}`}>
                     <span className="flaticon-edit"></span>
                   </Link>
                 </li>
@@ -172,11 +186,15 @@ export default function Exemple({
                   className="list-inline-item"
                   data-toggle="tooltip"
                   data-placement="top"
-                  title="Archive"
+                  title="Archive Property"
                 >
-                  <Link href={`/archive-property`}>
-                    <span className="flaticon-box"></span>
-                  </Link>
+                  <span className="btn btn-color-table"
+                    onClick={() => archievePropertyHandler(property.propertyId)}
+                  >
+                    <Link className="color-light" href={`/archive-property`}>
+                      <span className="flaticon-box"></span>
+                    </Link>
+                  </span >
                 </li>
               )}
 

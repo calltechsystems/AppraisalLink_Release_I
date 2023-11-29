@@ -9074,7 +9074,8 @@ form.home5_advanced_search_form
 }
 
 .view_edit_delete_list li a span {
-  color: var(--color-primary);
+  /* color: var(--color-primary); */
+  color: white;
   font-size: 20px;
 }
 
@@ -22044,6 +22045,16 @@ input[type=text] {
   font-weight: 700;
 }
 
+.btn-color-table {
+  background-color: #2e008b;
+  color: white;
+}
+
+.btn-color-table:hover {
+  background-color: #97d700 !important;
+  color: black !important;
+  border: 1px solid #97d700 !important;
+}
 /* .btn-color_01:hover {
   background-color: #2e008b;
   color: #fff;

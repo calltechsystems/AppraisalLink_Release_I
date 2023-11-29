@@ -5,7 +5,7 @@ import Link from "next/link";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Exemple from "./Exemple";
-const TableData = ({userData , open ,close , properties, setProperties, setModalIsOpenError,setErrorMessage}) => {
+const TableData = ({userData , open ,close , properties,setModalIsPopupOpen,archievePropertyHandler,setCurrentProperty, setProperties, setModalIsOpenError,setErrorMessage}) => {
   console.log(properties)
 
   const [Id,setId] = useState(-1);
@@ -207,6 +207,9 @@ const TableData = ({userData , open ,close , properties, setProperties, setModal
     setModalIsOpenError = {setModalIsOpenError}
     setErrorMessage = {setErrorMessage}
     deletePropertyHandler = {deletePropertyHandler}
+    setModalIsPopupOpen={setModalIsPopupOpen}
+    setCurrentProperty={setCurrentProperty}
+    archievePropertyHandler={archievePropertyHandler}
     />)}
     </>
   );
