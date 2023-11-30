@@ -177,8 +177,8 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
           <Image
             width={357}
             height={659}
-            className="img-fluid w100 h-100 cover mb-5"
-            src="/assets/images/home/mobile-login-concept-illustration_114360-83.avif"
+            className="img-fluid w100 h-100 cover mb-5 mt-5"
+            src="/assets/images/home/placeholder-concept-illustration_114360-4983.avif"
             alt="regstr.jpg"
           />
         </div>

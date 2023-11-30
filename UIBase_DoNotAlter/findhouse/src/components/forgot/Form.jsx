@@ -162,10 +162,10 @@ const Form = () => {
       <div className="row">
         <Link
           href={"/login"}
-          className="text-end"
+          className="text-end text-light mt-1"
           style={{ marginLeft: "34rem" }}
         >
-          <span className="flaticon-close"></span>
+          <span className="flaticon-close bg-danger p-1"></span>
         </Link>
         <div className="col-lg-6">
           <Image
