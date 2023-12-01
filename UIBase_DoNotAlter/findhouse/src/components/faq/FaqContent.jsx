@@ -58,7 +58,7 @@ const FaqContent = () => {
               type="button"
               data-bs-toggle="collapse"
               data-bs-target="#collapseTwo"
-              aria-expanded="true"
+              aria-expanded="false"
               aria-controls="collapseTwo"
             >
               Ques2. Why am I not receiving the password reset OTP email?
@@ -66,7 +66,7 @@ const FaqContent = () => {
           </div>
           <div
             id="collapseTwo"
-            className="accordion-collapse collapse show"
+            className="accordion-collapse collapse"
             aria-labelledby="headingTwo"
             data-bs-parent="#accordionExample"
           >

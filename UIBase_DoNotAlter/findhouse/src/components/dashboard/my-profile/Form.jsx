@@ -12,7 +12,7 @@ const Form = ({userData , chnageShowCardHandler}) => {
       action="#"
       style={{ borderRadius: "5px" }}
     >
-      <div>
+      <div className="text-end">
         <button
           className="btn btn2 btn-color profile_edit_button_01"
           onClick={()=>chnageShowCardHandler(false)}
@@ -81,6 +81,28 @@ const Form = ({userData , chnageShowCardHandler}) => {
                   <li className="text-dark mt-0">
                     <p className="text-dark" style={{ fontSize: "17px" }}>
                       Phone : {userData?.broker_Details?.phoneNumber}
+                    </p>
+                    {/* <span className="text-dark fw-bold">Last Name</span> :{" "}
+                    <span className="text-dark fw-bold"> Patel </span> */}
+                  </li>
+                </ul>
+              </div>
+              <div className="form-group">
+                <ul>
+                  <li className="text-dark mt-0">
+                    <p className="text-dark" style={{ fontSize: "17px" }}>
+                      Mortgage Broker Licence No. : {userData?.broker_Details?.mortageBrokerLicNo}
+                    </p>
+                    {/* <span className="text-dark fw-bold">Last Name</span> :{" "}
+                    <span className="text-dark fw-bold"> Patel </span> */}
+                  </li>
+                </ul>
+              </div>
+              <div className="form-group">
+                <ul>
+                  <li className="text-dark mt-0">
+                    <p className="text-dark" style={{ fontSize: "17px" }}>
+                      Mortgage Brokerge Licence No. : {userData?.broker_Details?.mortageBrokerageLicNo}
                     </p>
                     {/* <span className="text-dark fw-bold">Last Name</span> :{" "}
                     <span className="text-dark fw-bold"> Patel </span> */}

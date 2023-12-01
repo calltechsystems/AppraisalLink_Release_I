@@ -110,7 +110,7 @@ const DetailedInfo = ({
                     fontWeight: "",
                   }}
                 >
-                  First Name
+                  First Name <span class="req-btn">*</span>
                 </label>
               </div>
               <div className="">
@@ -121,6 +121,7 @@ const DetailedInfo = ({
                     backgroundColor: "#E8F0FE",
                     //color: "white",
                   }}
+                  required
                   type="text"
                   className="form-control"
                   id="formGroupExampleInput3"
@@ -140,7 +141,7 @@ const DetailedInfo = ({
                     fontWeight: "",
                   }}
                 >
-                  Last Name
+                  Last Name <span class="req-btn">*</span>
                 </label>
               </div>
               <div className="">
@@ -151,6 +152,7 @@ const DetailedInfo = ({
                     backgroundColor: "#E8F0FE",
                     //color: "white",
                   }}
+                  required
                   type="text"
                   className="form-control"
                   id="formGroupExampleInput3"
@@ -173,7 +175,7 @@ const DetailedInfo = ({
                     fontWeight: "",
                   }}
                 >
-                  Phone Number
+                  Phone Number <span class="req-btn">*</span>
                 </label>
               </div>
               <div className="">
@@ -184,12 +186,16 @@ const DetailedInfo = ({
                     backgroundColor: "#E8F0FE",
                     //color: "white",
                   }}
+                  required
                   type="number"
                   className="form-control"
                   id="formGroupExampleInput3"
                   onChange={(e) => setApplicantNumber(e.target.value)}
                   value={applicantNumber}
                   disabled={isDisable}
+                  minLength={10}
+                  maxLength={10}
+                  pattern="\d{10}"
                 />
               </div>
             </div>
@@ -203,7 +209,7 @@ const DetailedInfo = ({
                     fontWeight: "",
                   }}
                 >
-                  Email Address
+                  Email Address <span class="req-btn">*</span>
                 </label>
               </div>
               <div className="">
@@ -214,6 +220,7 @@ const DetailedInfo = ({
                     backgroundColor: "#E8F0FE",
                     //color: "white",
                   }}
+                  required
                   type="text"
                   className="form-control"
                   id="formGroupExampleInput3"
@@ -312,6 +319,29 @@ const DetailedInfo = ({
             </div>
           </div>
           {/* End .col */}
+          <div className="col-lg-6">
+            <div className="form-group form-check custom-checkbox">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                value=""
+                required
+                id="terms"
+                style={{ border: "1px solid black" }}
+              />
+              <label
+                className="form-check-label form-check-label"
+                htmlFor="terms"
+                style={{
+                  color: "#1560bd",
+                  fontWeight: "bold",
+                }}
+              >
+                Validate Address
+              </label>
+            </div>
+            {/* End .form-group */}
+          </div>
           <div className="col-xl-12">
             <div className="my_profile_setting_input overflow-hidden mt20 text-center">
               <button className="btn btn5 m-1" onClick={onCancelHandler}>

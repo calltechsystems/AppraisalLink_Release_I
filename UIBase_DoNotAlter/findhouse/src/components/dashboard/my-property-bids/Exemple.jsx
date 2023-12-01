@@ -49,7 +49,7 @@ const headCells = [
     numeric: false,
     label: "Actions",
     width: 200,
-  }
+  },
 ];
 
 const data = [
@@ -82,44 +82,48 @@ const data = [
   },
 ];
 
-export default function Exemple({userData , open ,close , propertyId , properties, setProperties,deletePropertyHandler}) {
-  
-
-
-  const [updatedData , setUpdatedData] = useState([]);
-  const [show , setShow] = useState(false);
+export default function Exemple({
+  userData,
+  open,
+  close,
+  propertyId,
+  properties,
+  setProperties,
+  deletePropertyHandler,
+}) {
+  const [updatedData, setUpdatedData] = useState([]);
+  const [show, setShow] = useState(false);
 
   const router = useRouter();
   let tempData = [];
 
   const formatDate = (dateString) => {
     const options = {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     };
-  
-    const formattedDate = new Date(dateString).toLocaleString('en-US', options);
-  
+
+    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
+
     return formattedDate;
   };
 
-  const acceptRequestHandler = (id)=>{
-    const data = (JSON.parse(localStorage.getItem("user")));
+  const acceptRequestHandler = (id) => {
+    const data = JSON.parse(localStorage.getItem("user"));
     toast.loading("Accepting the bid ...");
     const payload = {
-      bidId : id,
-      token : data.token
+      bidId: id,
+      token: data.token,
     };
 
     const encryptedBody = encryptionData(payload);
     axios
-      .post("/api/acceptBid",encryptedBody,
-       {
+      .post("/api/acceptBid", encryptedBody, {
         headers: {
-          Authorization:`Bearer ${data?.token}`,
-          "Content-Type":"application/json"
-        }
+          Authorization: `Bearer ${data?.token}`,
+          "Content-Type": "application/json",
+        },
       })
       .then((res) => {
         toast.dismiss();
@@ -131,22 +135,21 @@ export default function Exemple({userData , open ,close , propertyId , propertie
         console.log(err);
         toast.error(err?.response?.data?.error);
       });
-  }
+  };
 
-  const rejectRequestHandler=(id)=>{
-    const data = (JSON.parse(localStorage.getItem("user")));
+  const rejectRequestHandler = (id) => {
+    const data = JSON.parse(localStorage.getItem("user"));
     toast.loading("Declining the bid ...");
     const payload = {
-      bidId : id
+      bidId: id,
     };
     const encryptedBody = encryptionData(payload);
     axios
-      .post("/api/declineBid",encryptedBody,
-       {
+      .post("/api/declineBid", encryptedBody, {
         headers: {
-          Authorization:`Bearer ${data?.token}`,
-          "Content-Type":"application/json"
-        }
+          Authorization: `Bearer ${data?.token}`,
+          "Content-Type": "application/json",
+        },
       })
       .then((res) => {
         toast.dismiss();
@@ -157,111 +160,99 @@ export default function Exemple({userData , open ,close , propertyId , propertie
         toast.dismiss();
         toast.error(err?.response?.data?.error);
       });
-  }
-  
-  useEffect(()=>{
-    const getData = ()=>{
+  };
 
-      properties.map((property,index)=>{
+  useEffect(() => {
+    const getData = () => {
+      properties.map((property, index) => {
         const updatedRow = {
-          id :  property.$id,
-          AppraiserId : property.appraiserUserId,
-          quote : property.bidLowerRange,
-          amount : property.bidAmount,
+          id: property.$id,
+          AppraiserId: property.appraiserUserId,
+          quote: property.bidLowerRange,
+          amount: property.bidAmount,
           description: property.description != "" ? property.description : "NA",
-        date : formatDate(property.requestTime),
-        action : <ul className=""><li
-        className="list-inline-item"
-       
-      >
-      <div
-      className="fp_pdate float-end mt-1 fw-bold"
-      onClick={()=>acceptRequestHandler(property.bidId)}
-      
-    >
-      <a href="#" className="text-success" >
-        Accept
-      </a>
-    </div>  
-      </li>
-   
-    {/* <div className="fp_pdate float-end">{item.postedYear}</div> */}
-    
-  <li
-    className="list-inline-item"
-    data-toggle="tooltip"
-    data-placement="top"
-    title="Delete"
-  >
-    <div
-      className="fp_pdate float-end mt-1 fw-bold"
-      onClick={()=>rejectRequestHandler(property.bidId)}
-    >
-      <a href="#" className="text-danger">
-        Decline
-      </a>
-    </div>   
-  </li>
-  </ul>
-  
-        }
+          date: formatDate(property.requestTime),
+          action: (
+            <ul className="">
+              <li className="list-inline-item">
+                <div
+                  className="fp_pdate float-end mt-1 fw-bold"
+                  onClick={() => acceptRequestHandler(property.bidId)}
+                >
+                  <a href="#" className="btn btn-success">
+                    Accept
+                  </a>
+                </div>
+              </li>
+
+              {/* <div className="fp_pdate float-end">{item.postedYear}</div> */}
+
+              <li
+                className="list-inline-item"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="Delete"
+              >
+                <div
+                  className="fp_pdate float-end mt-1 fw-bold"
+                  onClick={() => rejectRequestHandler(property.bidId)}
+                >
+                  <a href="#" className="btn btn-danger">
+                    Decline
+                  </a>
+                </div>
+              </li>
+            </ul>
+          ),
+        };
         tempData.push(updatedRow);
       });
       setUpdatedData(tempData);
-      
     };
     getData();
-  },[properties]);
+  }, [properties]);
 
-  useEffect(()=>{
-    
-   
-
-    const data = (JSON.parse(localStorage.getItem("user")));
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
-      token : userData.token
+      token: userData.token,
     };
-
 
     toast.loading("Getting properties...");
     axios
-      .get("/api/getAllBids",
-       {
+      .get("/api/getAllBids", {
         headers: {
-          Authorization:`Bearer ${data?.token}`,
-          "Content-Type":"application/json"
+          Authorization: `Bearer ${data?.token}`,
+          "Content-Type": "application/json",
         },
-        params : {
-          userId : data?.userId
-        }
+        params: {
+          userId: data?.userId,
+        },
       })
       .then((res) => {
-   
         toast.dismiss();
         const tempBids = res.data.data.result.$values;
-        console.log(tempBids,propertyId);
+        console.log(tempBids, propertyId);
         let updatedBids = [];
-         tempBids.filter((bid,index)=>{
-          if(String(bid.propertyId) === String(propertyId)){
+        tempBids.filter((bid, index) => {
+          if (String(bid.propertyId) === String(propertyId)) {
             updatedBids.push(bid);
           }
-        })
-        
+        });
+
         setProperties(updatedBids);
       })
       .catch((err) => {
         toast.dismiss();
         toast.error(err?.response?.data?.error);
       });
-  },[]);
+  }, []);
   return (
     <>
-    { updatedData && (<SmartTable
-      title=""
-      data={updatedData}
-      headCells={headCells}
-    />)}
+      {updatedData && (
+        <SmartTable title="" data={updatedData} headCells={headCells} />
+      )}
     </>
   );
 }

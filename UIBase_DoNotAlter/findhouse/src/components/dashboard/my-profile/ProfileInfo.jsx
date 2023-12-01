@@ -896,7 +896,12 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                         className="my_profile_setting_input"
                         style={{ textAlign: "end" }}
                       >
-                        <button className="btn btn2 m-1" onClick={cancelHandler}>Cancel</button>
+                        <button
+                          className="btn btn2 m-1"
+                          onClick={cancelHandler}
+                        >
+                          Cancel
+                        </button>
                         <button
                           className="btn btn2 btn-dark"
                           onClick={onUpdatHandler}

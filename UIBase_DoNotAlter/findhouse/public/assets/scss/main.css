@@ -9021,9 +9021,9 @@ form.home5_advanced_search_form
 }
 
 .my_profile_setting_input .btn5:hover {
-  color: #2e008b;
-  background-color: 3;
-  border: 1px solid rgb(255, 90, 95);
+  color: #ffffff !important;
+  background-color: #97d700 !important;
+  border: 1px solid #97d700 !important;
 }
 
 .my_profile_setting_input2 label {
@@ -21851,8 +21851,8 @@ a::before {
 
 .sidebar-menu li.active a {
   font-weight: 700;
-  color: black;
-  background-color: #97d700 !important;
+  color: white;
+  background-color: black !important;
   border-left-color: var(--color-primary) !important;
 }
 
@@ -22117,13 +22117,13 @@ input[type=text] {
   margin-top: 20px;
 }
 
-/* .profile_edit_button_01 {
+.profile_edit_button_01 {
   width: max-content;
   border-radius: 4px;
   margin-left: 90%;
-  margin-bottom: 4px;  
+  margin-bottom: 4px;
   margin-top: 20px;
-} */
+}
 
 /* The Modal (background) */
 .modal {
@@ -22465,7 +22465,6 @@ input:checked + .slider:before {
   border: 3px solid #97d700 !important;
   color: white !important;
 }
-
 
 /* flip card css */
 

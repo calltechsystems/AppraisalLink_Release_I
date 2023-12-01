@@ -77,7 +77,7 @@ const Index = ({ setModalOpen, setPrice }) => {
               <div className="main-title text-center">
                 {/* <h2 className="text-dark">Ready to get started?</h2> */}
                 <h5 className="text-dark mb-3">
-                  Choose a plan tailored to your needs {selectedPlan}
+                  Choose a plan tailored to your needs.
                 </h5>
                 <div className="toggleContainer">
                   <span className="fw-bold text-dark ">Monthly</span>

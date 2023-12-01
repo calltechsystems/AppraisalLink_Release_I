@@ -500,7 +500,7 @@ const HeaderMenuContent = ({ float = "" ,hide, setProfileCount , profileCount , 
       )}
       {/* End .dropitem */}
 
-      <li className={"last"} style={{ cursor: "pointer" }}>
+      {/* <li className={"last"} style={{ cursor: "pointer" }}>
         <Link href="/notification-broker">
           <Image
             width={25}
@@ -510,7 +510,7 @@ const HeaderMenuContent = ({ float = "" ,hide, setProfileCount , profileCount , 
             alt="e1.png"
           />
         </Link>
-      </li>
+      </li> */}
 
       <li className="user_setting">
         <div className="">

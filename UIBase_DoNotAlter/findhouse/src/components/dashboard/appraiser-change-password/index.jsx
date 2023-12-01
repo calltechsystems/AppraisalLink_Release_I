@@ -49,7 +49,7 @@ const index = () => {
 
                 <div className="col-lg-12">
                   <div className="breadcrumb_content style2">
-                    <h2 className="breadcrumb_title">Change Password</h2>
+                    {/* <h2 className="breadcrumb_title">Change Password</h2> */}
                     {/* <p>We are glad to see you again!</p> */}
                   </div>
                 </div>
@@ -71,7 +71,7 @@ const index = () => {
               </div>
               {/* End .row */}
 
-              <div className="row mt100">
+              <div className="row ">
                 <div className="col-lg-12">
                   <div className="copyright-widget text-center">
                     <p>

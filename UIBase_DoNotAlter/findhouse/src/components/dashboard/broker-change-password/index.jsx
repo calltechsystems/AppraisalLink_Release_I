@@ -31,7 +31,7 @@ const Index = () => {
             <div className="col-lg-12 maxw100flex-992">
               <div className="row">
                 {/* Start Dashboard Navigation */}
-                {/* <div className="col-lg-12">
+                <div className="col-lg-12">
                   <div className="dashboard_navigationbar dn db-1024">
                     <div className="dropdown">
                       <button
@@ -40,16 +40,16 @@ const Index = () => {
                         data-bs-target="#DashboardOffcanvasMenu"
                         aria-controls="DashboardOffcanvasMenu"
                       >
-                        <i className="fa fa-bars pr10"></i> Dashboard Navigation
+                        <i className="fa fa-bars pr10"></i>
                       </button>
                     </div>
                   </div>
-                </div> */}
+                </div>
                 {/* End Dashboard Navigation */}
 
                 <div className="col-lg-12">
                   <div className="breadcrumb_content style2">
-                    <h2 className="breadcrumb_title">Change Password</h2>
+                    <h3 className="breadcrumb_title">Change Password</h3>
                     {/* <p>We are glad to see you again!</p> */}
                   </div>
                 </div>
@@ -66,30 +66,6 @@ const Index = () => {
                       </div>
                     </div>
                   </div>
-                  {/* End prifle info wrapper end */}
-
-                  {/*<div className="my_dashboard_review mt30">
-                    <div className="row">
-                      <div className="col-xl-2">
-                        <h4>Social Media</h4>
-                      </div> 
-                      <div className="col-xl-12">
-                        <SocialMedia />
-                      </div>
-                    </div>
-                    </div>*/}
-                  {/* End .SocialMedia */}
-
-                 {/* <div className="my_dashboard_review mt30">
-                    <div className="row">
-                       <div className="col-xl-2">
-                        <h4>Change password</h4>
-                      </div> 
-                      <div className="col-xl-12">
-                        <ChangePassword />
-                      </div>
-                    </div>
-                    </div>*/}
                 </div>
               </div>
               {/* End .row */}
@@ -97,7 +73,10 @@ const Index = () => {
               <div className="row mt50">
                 <div className="col-lg-12">
                   <div className="copyright-widget text-center">
-                    <p>&copy; {new Date().getFullYear()} Appraisal Link. All Rights Reserved.</p>
+                    <p>
+                      &copy; {new Date().getFullYear()} Appraisal Link. All
+                      Rights Reserved.
+                    </p>
                   </div>
                 </div>
               </div>

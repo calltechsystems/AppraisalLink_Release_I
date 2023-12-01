@@ -201,11 +201,13 @@ const Index = ({ isView, propertyData }) => {
 
     if (
       (!nameRegex.test(applicantFirstName) && applicantFirstName) ||
-      (!nameRegex.test(applicantLatsName) && applicantLatsName) ||
-      (!phoneNumberRegex.test(applicantNumber) && applicantNumber) ||
-      (!emailRegex.test(applicantEmail) && applicantEmail)
+      (!nameRegex.test(applicantLatsName) && applicantLatsName)
     ) {
-      toast.error("Please provide a valid applicant Information");
+      toast.error("Please provide a valid applicant name");
+    } else if (!emailRegex.test(applicantEmail) && applicantEmail) {
+      toast.error("Please provide a valid email address");
+    } else if (!phoneNumberRegex.test(applicantNumber) && applicantNumber) {
+      toast.error("Please provide a valid phone number");
     } else {
       const payload = {
         userId: userInfo.userId,

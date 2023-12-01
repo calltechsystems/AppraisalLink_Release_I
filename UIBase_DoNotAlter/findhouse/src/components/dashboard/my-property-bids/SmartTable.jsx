@@ -106,18 +106,25 @@ function SmartTable(props) {
   }, props.searchDebounceTime ?? 800);
 
   const sortData = (cell) => {
-    let tempData = [...data];
+    let tempData = data.length > 0 ? [...data] : [...props.data];
 
     tempData.sort((a, b) => {
+      const valueA =
+        typeof a[cell] === "string" ? a[cell].toLowerCase() : a[cell];
+      const valueB =
+        typeof b[cell] === "string" ? b[cell].toLowerCase() : b[cell];
+
       if (sortDesc[cell]) {
-        return a[cell].toLowerCase() < b[cell].toLowerCase() ? 1 : -1;
+        return valueA < valueB ? 1 : -1;
       } else {
-        return a[cell].toLowerCase() > b[cell].toLowerCase() ? 1 : -1;
+        return valueA > valueB ? 1 : -1;
       }
     });
     setSortDesc({ [cell]: !sortDesc[cell] });
+
     setData(tempData);
   };
+  console.log(data.length > 0, data);
 
   return (
     <div className="col-12 p-4">
@@ -212,9 +219,9 @@ function SmartTable(props) {
           )}
           {props.noPagination || data.length === 0 || !props.url ? (
             <div className="row">
-              <div className="col-12 text-end p-3">
+              {/* <div className="col-12 text-end p-3">
                 {props.data.length > 0 ? props.data.length : 0} Rows
-              </div>
+              </div> */}
             </div>
           ) : (
             <div className="row">
