@@ -523,7 +523,7 @@ const Index = ({ isView, propertyData }) => {
                               }}
                             >
                               {" "}
-                              {areaRef}
+                              {areaRef} sqft
                             </td>
                           </tr>
 
@@ -556,7 +556,7 @@ const Index = ({ isView, propertyData }) => {
                               }}
                             >
                               <span className="text-start">
-                                Estimated Value
+                                Property Estimated Value
                               </span>
                             </td>
                             <td
@@ -566,7 +566,7 @@ const Index = ({ isView, propertyData }) => {
                               }}
                             >
                               {" "}
-                              ${bidLowerRangeRef}
+                              $ {bidLowerRangeRef}
                             </td>
                           </tr>
                           <tr>

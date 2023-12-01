@@ -43,6 +43,12 @@ const headCells = [
     width: 200,
   },
   {
+    id: "amount",
+    numeric: false,
+    label: "Quote",
+    width: 200,
+  },
+  {
     id: "actions",
     numeric: false,
     label: "Actions",
@@ -118,10 +124,14 @@ export default function Exemple({
         const updatedRow = {
           order_id: property.orderId,
           sub_date: formatDate(property.addedDatetime),
-          status: property.propertyStatus ? "Completed" : "Pending",
-          address: property.city,
+          status: property.propertyStatus ? (
+            <span className="btn bg-success text-light">Completed</span>
+          ) : (
+            <span className="btn bg-warning text-dark">In Progress</span>
+          ),
+          address: ` ${property.city}, ${property.state}, ${property.zipCode}`,
           // user: property.applicantEmailAddress,
-          // amount: property.bidLowerRange,
+          amount: ` $${property.bidLowerRange}`,
           actions: (
             <ul className="view_edit_delete_list mb0">
               <li
@@ -130,7 +140,10 @@ export default function Exemple({
                 data-placement="top"
                 title="View"
               >
-                <span className="btn btn-color-table" onClick={() => openPopupModal(property)}>
+                <span
+                  className="btn btn-color-table"
+                  onClick={() => openPopupModal(property)}
+                >
                   <Link href={"#"}>
                     <span className="flaticon-view"></span>
                   </Link>
@@ -143,7 +156,10 @@ export default function Exemple({
                 data-placement="top"
                 title="Bids"
               >
-                <Link className="btn btn-color-table" href={`/my-property-bids/${property.propertyId}`}>
+                <Link
+                  className="btn btn-color-table"
+                  href={`/my-property-bids/${property.propertyId}`}
+                >
                   <span className="flaticon-invoice"></span>
                 </Link>
               </li>
@@ -155,7 +171,10 @@ export default function Exemple({
                   data-placement="top"
                   title="Edit"
                 >
-                  <Link className="btn btn-color-table" href={`/create-listing/${property.propertyId}`}>
+                  <Link
+                    className="btn btn-color-table"
+                    href={`/create-listing/${property.propertyId}`}
+                  >
                     <span className="flaticon-edit"></span>
                   </Link>
                 </li>
@@ -188,13 +207,14 @@ export default function Exemple({
                   data-placement="top"
                   title="Archive Property"
                 >
-                  <span className="btn btn-color-table"
+                  <span
+                    className="btn btn-color-table"
                     onClick={() => archievePropertyHandler(property.propertyId)}
                   >
                     <Link className="color-light" href={`/archive-property`}>
                       <span className="flaticon-box"></span>
                     </Link>
-                  </span >
+                  </span>
                 </li>
               )}
 

@@ -26,17 +26,17 @@ export const Urgency = [
     {
         id:0,
         type : "Choose...",
-        value : 0,
+        value : "Choose...",
     },
     {
         id:1,
         type : "Rush",
-        value : 1,
+        value : "Rush",
     },
     {
         id:2,
         type : "Regular",
-        value : 2,
+        value : "Regular",
     },
     // {
     //     id:3,
