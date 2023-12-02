@@ -3,14 +3,13 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Exemple from "./Exemple";
 
-const SearchData = ({setModalIsOpenError , setErrorMessage}) => {
+const SearchData = ({setModalIsOpenError ,setUpdatedCode, setErrorMessage}) => {
 
   const [data , setData] = useState([]);
 
   useEffect(()=>{
     const user = JSON.parse(localStorage.getItem("user"));
 
-    toast.loading("Getting all the bids");
     axios.get("/api/getAllBids",{
       headers : {
         Authorization : `Bearer ${user.token}`
@@ -29,8 +28,6 @@ const SearchData = ({setModalIsOpenError , setErrorMessage}) => {
       })
 
       setData(response);
-      toast.dismiss();
-      toast.success("Successfully fetched");
     })
     .catch((err)=>{
       toast.dismiss();
@@ -83,6 +80,7 @@ const SearchData = ({setModalIsOpenError , setErrorMessage}) => {
   {data && (<Exemple 
     setErrorMessage={setErrorMessage}
     setModalIsOpenError={setModalIsOpenError}
+    setUpdatedCode={setUpdatedCode}
     />)}
     </>
   );

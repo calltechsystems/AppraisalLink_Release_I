@@ -18,10 +18,17 @@ const headCells = [
     label: "Address",
     width: 200,
   },
+  ,
+  {
+    id: "community",
+    numeric: false,
+    label: "Community",
+    width: 200,
+  },
   {
     id: "date",
     numeric: false,
-    label: "Date",
+    label: "Submission Date",
     width: 200,
   },
   {
@@ -31,9 +38,9 @@ const headCells = [
     width: 200,
   },
   {
-    id: "status",
+    id: "urgency",
     numeric: false,
-    label: "Status",
+    label: "Urgency",
     width: 200,
   },
   {
@@ -72,6 +79,7 @@ export default function Exemple({
   userData,
   open,
   close,
+  setUpdatedCode,
   properties,
   setProperties,
   deletePropertyHandler,
@@ -143,10 +151,11 @@ export default function Exemple({
 
         const updatedRow = {
           orderId: property.orderId,
-          address: `###-###,${property.city}`,
+          address: `${property.city}-${property.state},${property.zipCode}`,
+          community: `${property.community}`,
           date: formatDate(property.addedDatetime),
           bidAmount: property.bidLowerRange,
-          status:
+          urgency:
             property.urgency === 0
               ? "Low"
               : property.urgency === 1
@@ -218,9 +227,14 @@ export default function Exemple({
         tempData.push(updatedRow);
       });
       setUpdatedData(tempData);
+      
     };
     getData();
   }, [properties]);
+
+  useEffect(()=>{
+    setUpdatedCode(true);
+  },[updatedData])
 
   useEffect(() => {
     setReload(false);
@@ -229,8 +243,6 @@ export default function Exemple({
     const payload = {
       token: userData.token,
     };
-
-    toast.loading("Getting properties...");
     axios
       .get("/api/getPropertiesById", {
         headers: {
@@ -259,7 +271,6 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        toast.dismiss();
         const tempData = res.data.data.$values;
 
         // setAllWishlistedProperties(res.data.data.$values);
@@ -271,12 +282,10 @@ export default function Exemple({
           }
         });
         const tempId = responseData;
-        toast.success("Successfully fetched");
         console.log("wishlist", responseData);
         setWishlist(responseData);
       })
       .catch((err) => {
-        toast.dismiss();
         toast.error(err?.response);
         setErrorMessage(err?.response);
         setModalIsOpenError(true);

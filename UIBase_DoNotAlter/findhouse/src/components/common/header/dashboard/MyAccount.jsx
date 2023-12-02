@@ -6,7 +6,7 @@ import CircularIcon from "./CircularIcon";
 import { useEffect } from "react";
 import { useState } from "react";
 
-const MyAccount = ({user, profileCount , setProfile, userData}) => {
+const MyAccount = ({ user, profileCount, setProfile, userData }) => {
   const profileMenuItems = [
     { id: 1, name: "Profile", ruterPath: "/my-profile" },
     // { id: 2, name: " My Message", ruterPath: "/my-message" },
@@ -15,137 +15,133 @@ const MyAccount = ({user, profileCount , setProfile, userData}) => {
     { id: 5, name: "Log out", ruterPath: "/login" },
   ];
 
-  const [profileValue , setProfileValue] = useState(0);
-  useEffect(()=>{
-    let count =0;
-    if(userData.userType === 1){
-     
-      if(userData.broker_Details.firstName ){
+  const [profileValue, setProfileValue] = useState(0);
+  useEffect(() => {
+    let count = 0;
+    if (userData.userType === 1) {
+      if (userData.broker_Details.firstName) {
         count = count + 1;
       }
-      if(userData.broker_Details.middleName ){
+      if (userData.broker_Details.middleName) {
         count = count + 1;
       }
-      if(userData.broker_Details.lastName ){
+      if (userData.broker_Details.lastName) {
         count = count + 1;
       }
-      if(userData.broker_Details.licenseNo != null){
+      if (userData.broker_Details.licenseNo != null) {
         count = count + 1;
       }
-      if(userData.broker_Details.adressLine1 != null){
+      if (userData.broker_Details.adressLine1 != null) {
         count = count + 1;
       }
-      if(userData.broker_Details.adressLine2 != null){
+      if (userData.broker_Details.adressLine2 != null) {
         count = count + 1;
       }
-      if(userData.broker_Details.area != null){
+      if (userData.broker_Details.area != null) {
         count = count + 1;
       }
-      if(userData.broker_Details.assistantFirstName != null){
+      if (userData.broker_Details.assistantFirstName != null) {
         count = count + 1;
       }
-      if(userData.broker_Details.assistantPhoneNumber != null){
+      if (userData.broker_Details.assistantPhoneNumber != null) {
         count = count + 1;
       }
-      if(userData.broker_Details.brokerageName != null){
+      if (userData.broker_Details.brokerageName != null) {
         count = count + 1;
       }
-      if(userData.broker_Details.city != null){
+      if (userData.broker_Details.city != null) {
         count = count + 1;
       }
-      if(userData.broker_Details.companyName != null){
+      if (userData.broker_Details.companyName != null) {
         count = count + 1;
       }
-      if(userData.broker_Details.mortageBrokerLicNo != null){
+      if (userData.broker_Details.mortageBrokerLicNo != null) {
         count = count + 1;
       }
-      if(userData.broker_Details.mortageBrokerageLicNo != null){
+      if (userData.broker_Details.mortageBrokerageLicNo != null) {
         count = count + 1;
       }
-      if(userData.broker_Details.phoneNumber != null){
+      if (userData.broker_Details.phoneNumber != null) {
         count = count + 1;
       }
-      if(userData.broker_Details.profileImage != null){
+      if (userData.broker_Details.profileImage != null) {
         count = count + 1;
       }
-      if(userData.broker_Details.state != null){
+      if (userData.broker_Details.state != null) {
         count = count + 1;
       }
-      if(userData.broker_Details.zipCode != null){
+      if (userData.broker_Details.zipCode != null) {
         count = count + 1;
       }
-      
+
       const change = (count / 18) * 100;
       console.log(change);
       setProfileValue(change);
+    } else if (userData.userType === 2) {
+      if (userData.brokerage_Details.firstName) {
+        count = count + 1;
+      }
+      if (userData.brokerage_Details.middleName) {
+        count = count + 1;
+      }
+      if (userData.brokerage_Details.lastName) {
+        count = count + 1;
+      }
+      if (userData.brokerage_Details.licenseNo != null) {
+        count = count + 1;
+      }
+      if (userData.brokerage_Details.adressLine1 != null) {
+        count = count + 1;
+      }
+      if (userData.brokerage_Details.adressLine2 != null) {
+        count = count + 1;
+      }
+      if (userData.brokerage_Details.area != null) {
+        count = count + 1;
+      }
+      if (userData.brokerage_Details.assistantFirstName != null) {
+        count = count + 1;
+      }
+      if (userData.brokerage_Details.assistantPhoneNumber != null) {
+        count = count + 1;
+      }
+      if (userData.brokerage_Details.brokerageName != null) {
+        count = count + 1;
+      }
+      if (userData.brokerage_Details.city != null) {
+        count = count + 1;
+      }
+      if (userData.brokerage_Details.companyName != null) {
+        count = count + 1;
+      }
+      if (userData.brokerage_Details.mortageBrokerLicNo != null) {
+        count = count + 1;
+      }
+      if (userData.brokerage_Details.mortageBrokerageLicNo != null) {
+        count = count + 1;
+      }
+      if (userData.brokerage_Details.phoneNumber != null) {
+        count = count + 1;
+      }
+      if (userData.brokerage_Details.profileImage != null) {
+        count = count + 1;
+      }
+      if (userData.brokerage_Details.state != null) {
+        count = count + 1;
+      }
+      if (userData.brokerage_Details.zipCode != null) {
+        count = count + 1;
+      }
 
-    }
-    else if(userData.userType === 2){
-      if(userData.brokerage_Details.firstName ){
-        count = count + 1;
-      }
-      if(userData.brokerage_Details.middleName ){
-        count = count + 1;
-      }
-      if(userData.brokerage_Details.lastName ){
-        count = count + 1;
-      }
-      if(userData.brokerage_Details.licenseNo != null){
-        count = count + 1;
-      }
-      if(userData.brokerage_Details.adressLine1 != null){
-        count = count + 1;
-      }
-      if(userData.brokerage_Details.adressLine2 != null){
-        count = count + 1;
-      }
-      if(userData.brokerage_Details.area != null){
-        count = count + 1;
-      }
-      if(userData.brokerage_Details.assistantFirstName != null){
-        count = count + 1;
-      }
-      if(userData.brokerage_Details.assistantPhoneNumber != null){
-        count = count + 1;
-      }
-      if(userData.brokerage_Details.brokerageName != null){
-        count = count + 1;
-      }
-      if(userData.brokerage_Details.city != null){
-        count = count + 1;
-      }
-      if(userData.brokerage_Details.companyName != null){
-        count = count + 1;
-      }
-      if(userData.brokerage_Details.mortageBrokerLicNo != null){
-        count = count + 1;
-      }
-      if(userData.brokerage_Details.mortageBrokerageLicNo != null){
-        count = count + 1;
-      }
-      if(userData.brokerage_Details.phoneNumber != null){
-        count = count + 1;
-      }
-      if(userData.brokerage_Details.profileImage != null){
-        count = count + 1;
-      }
-      if(userData.brokerage_Details.state != null){
-        count = count + 1;
-      }
-      if(userData.brokerage_Details.zipCode != null){
-        count = count + 1;
-      }
-      
       const change = (count / 18) * 100;
       setProfileValue(change);
     }
-
-  },[]);
+  }, []);
   const route = useRouter();
-  const logout = ()=>{
+  const logout = () => {
     localStorage.removeItem("user");
     route.push("/login");
-  }
+  };
   return (
     <>
       <div className="user_set_header">
@@ -153,12 +149,21 @@ const MyAccount = ({user, profileCount , setProfile, userData}) => {
           width={40}
           height={40}
           className="float-start"
-          src= {userData?.broker_Details?.profileImage ? userData.broker_Details?.profileImage :  `/assets/images/home/placeholder_01.jpg`} 
+          src={
+            userData?.broker_Details?.profileImage
+              ? userData.broker_Details?.profileImage
+              : `/assets/images/home/placeholder_01.jpg`
+          }
           alt="e1.png"
         />
         <p>
-        {userData?.broker_Details?.firstName ? userData?.broker_Details?.firstName  : "Name"}<br />
-          <span className="address">{userData?.userEmail ? userData.userEmail : "xyz@gmail.com"}</span>
+          {userData?.broker_Details?.firstName
+            ? userData?.broker_Details?.firstName
+            : "Name"}
+          <br />
+          <span className="address">
+            {userData?.userEmail ? userData.userEmail : "xyz@gmail.com"}
+          </span>
         </p>
       </div>
       {/* End user_set_header */}
@@ -175,10 +180,16 @@ const MyAccount = ({user, profileCount , setProfile, userData}) => {
                 : undefined
             }
           >
-          {item.id === 5 ? <button style={{color:"#2e008b"}} onClick={logout}>Logout</button> : <div style={{display:'flex',flexDirection:"row"}}>
-          {item.id === 1 && <CircularIcon percentage={profileValue}/>}  
-          {item.name}
-          </div>}
+            {item.id === 5 ? (
+              <button style={{ color: "#2e008b" }} onClick={logout}>
+                Logout
+              </button>
+            ) : (
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                {item.name}
+                {item.id === 1 && <CircularIcon percentage={profileValue} />}
+              </div>
+            )}
           </Link>
         ))}
       </div>

@@ -109,19 +109,18 @@ function SmartTable(props) {
     let tempData = data.length > 0 ? [...data] : [...props.data];
 
     tempData.sort((a, b) => {
-      const valueA =
-        typeof a[cell] === "string" ? a[cell].toLowerCase() : a[cell];
-      const valueB =
-        typeof b[cell] === "string" ? b[cell].toLowerCase() : b[cell];
-
+      const valueA = typeof a[cell] === 'string' ? a[cell].toLowerCase() : a[cell];
+      const valueB = typeof b[cell] === 'string' ? b[cell].toLowerCase() : b[cell];
+  
       if (sortDesc[cell]) {
         return valueA < valueB ? 1 : -1;
       } else {
         return valueA > valueB ? 1 : -1;
       }
     });
-    setSortDesc({ [cell]: !sortDesc[cell] });
-    setData(tempData);
+      setSortDesc({ [cell]: !sortDesc[cell] });
+      setData(tempData);
+    
   };
 
   return (
@@ -176,7 +175,6 @@ function SmartTable(props) {
                             }
                           >
                             {headCell.label}
-                            {/* <span className=""><SVGArrowDown /></span> */}
                             {sortDesc[headCell.id] ? (
                               <SVGArrowDown />
                             ) : sortDesc[headCell.id] === undefined ? (

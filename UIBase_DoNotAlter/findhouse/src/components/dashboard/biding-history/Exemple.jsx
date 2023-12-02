@@ -69,7 +69,7 @@ const data = [
   },
 ];
 
-export default function Exemple({setModalIsOpenError,setErrorMessage}) {
+export default function Exemple({setModalIsOpenError,setUpdatedCode,setErrorMessage}) {
   
   const userData = (JSON.parse(localStorage.getItem("user")));
   const [properties , setProperties] = useState([]);
@@ -100,7 +100,7 @@ export default function Exemple({setModalIsOpenError,setErrorMessage}) {
           date: formatDate(property.requestTime ),
           amount : property.bidLowerRange,
           prop_amount : property.bidAmount,
-          status : property.status === 0 ? "pending" : property.status === 1 ? "completed" : "declined"
+          status : property.status === 0 ? "Pending" : property.status === 1 ? "Completed" : "Declined"
          }
         tempData.push(updatedRow);
       });
@@ -108,6 +108,10 @@ export default function Exemple({setModalIsOpenError,setErrorMessage}) {
     };
     getData();
   },[properties]);
+
+  useEffect(()=>{
+    setUpdatedCode(true);
+  },[updatedData]);
 
   useEffect(()=>{
     
@@ -120,10 +124,8 @@ export default function Exemple({setModalIsOpenError,setErrorMessage}) {
     };
 
 
-    toast.loading("Getting properties...");
     const user = JSON.parse(localStorage.getItem("user"));
 
-    toast.loading("Getting all the bids");
     axios.get("/api/getAllBids",{
       headers : {
         Authorization : `Bearer ${user.token}`
@@ -131,13 +133,9 @@ export default function Exemple({setModalIsOpenError,setErrorMessage}) {
     })
     .then((res)=>{
    
-        toast.dismiss();
-        
-        console.log(res);
         setProperties(res.data.data.result.$values);
       })
       .catch((err) => {
-        toast.dismiss();
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });

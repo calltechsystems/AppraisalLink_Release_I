@@ -123,7 +123,7 @@ export default function Exemple({
                 data-placement="top"
                 title="View"
               >
-                <Link href={`/my-property-bids/${property.propertyId}`}>
+                <Link href={`/my-property-bids/${property.propertyId}`} className="btn btn-color-table">
                   <span className="flaticon-view"></span>
                 </Link>
               </li>

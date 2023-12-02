@@ -63,7 +63,7 @@ const data = [
   },
 ];
 
-export default function Exemple({userData , open ,close ,deletePropertyHandler,onWishlistHandler,participateHandler,setErrorMessage,setModalIsOpenError}) {
+export default function Exemple({userData , open ,close ,setUpdatedCode,setIsLoading,deletePropertyHandler,onWishlistHandler,participateHandler,setErrorMessage,setModalIsOpenError}) {
   
   const [updatedData , setUpdatedData] = useState([]);
   const [properties,setProperties] = useState([]);
@@ -82,13 +82,12 @@ export default function Exemple({userData , open ,close ,deletePropertyHandler,o
     return formattedDate;
   };
 
-  
   useEffect(()=>{
     const getData = ()=>{
 
       properties.map((property,index)=>{
         const updatedRow = {
-          address: `###-###, ${property.city} - ${property.zipCode}`,
+          address: `${property.city}-${property.state},${property.zipCode}`,
           orderId : property.orderId,
           date : formatDate(property.addedDatetime ),
           status : property.urgency === 1 ? "Pending" : property.urgency === 2 ? "Completed" : "Declined",
@@ -99,6 +98,10 @@ export default function Exemple({userData , open ,close ,deletePropertyHandler,o
     };
     getData();
   },[properties]);
+
+  useEffect(()=>{
+    setUpdatedCode(true);
+  },[updatedData])
 
   useEffect(()=>{
     let tempProperties = [];

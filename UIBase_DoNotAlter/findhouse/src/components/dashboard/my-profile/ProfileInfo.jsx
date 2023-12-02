@@ -897,13 +897,13 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                         style={{ textAlign: "end" }}
                       >
                         <button
-                          className="btn btn2 m-1"
+                          className="btn btn5 m-1"
                           onClick={cancelHandler}
                         >
                           Cancel
                         </button>
                         <button
-                          className="btn btn2 btn-dark"
+                          className="btn btn5"
                           onClick={onUpdatHandler}
                         >
                           {userData?.broker_Details

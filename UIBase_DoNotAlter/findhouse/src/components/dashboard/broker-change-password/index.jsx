@@ -70,22 +70,22 @@ const Index = () => {
               </div>
               {/* End .row */}
 
-              <div className="row mt50">
-                <div className="col-lg-12">
-                  <div className="copyright-widget text-center">
-                    <p>
-                      &copy; {new Date().getFullYear()} Appraisal Link. All
-                      Rights Reserved.
-                    </p>
-                  </div>
-                </div>
-              </div>
               {/* End .row */}
             </div>
             {/* End .col */}
           </div>
         </div>
       </section>
+      <div className="row mt100">
+        <div className="col-lg-12">
+          <div className="copyright-widget text-end">
+            <p>
+              &copy; {new Date().getFullYear()} Appraisal Link. All Rights
+              Reserved.
+            </p>
+          </div>
+        </div>
+      </div>
     </>
   );
 };
