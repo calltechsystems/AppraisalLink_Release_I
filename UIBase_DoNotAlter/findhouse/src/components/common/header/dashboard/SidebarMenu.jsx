@@ -33,7 +33,7 @@ const SidebarMenu = () => {
       route: "/my-package",
       icon: "flaticon-box",
     },
-    // { id: 3, name: "Logout", route: "/login", icon: "flaticon-logout" },
+    { id: 3, name: "Help desk", route: "/contact", icon: "flaticon-telephone" },
   ];
 
   return (

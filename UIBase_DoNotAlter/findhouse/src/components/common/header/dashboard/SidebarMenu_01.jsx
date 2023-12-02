@@ -16,10 +16,10 @@ const SidebarMenu = () => {
   ];
   const appraiserProperties = [
     { id: 1, name: "Appraised Properties", route: "/appraise-properties", icon: "flaticon-box", },
-    { id: 2, name: "My Properties", route: "/my-appraiser-properties", icon: "flaticon-box", },
-    { id: 1, name: "Wishlisted Properties", route: "/appraiser-wishlisted", icon: "flaticon-box", },
-    { id: 2, name: "Biding History", route: "/biding-history", icon: "flaticon-box", },
-    // { id: 3, name: "Editors", route: "/my-properties" },
+    { id: 2, name: "My Properties", route: "/my-appraiser-properties", icon: "flaticon-building", },
+    { id: 1, name: "Wishlisted Properties", route: "/appraiser-wishlisted", icon: "flaticon-heart", },
+    { id: 2, name: "Biding History", route: "/biding-history", icon: "flaticon-document", },
+    { id: 3, name: "Help desk", route: "/contact", icon: "flaticon-telephone", },
   ];
 
   const reviews = [
