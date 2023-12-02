@@ -106,7 +106,7 @@ function SmartTable(props) {
   }, props.searchDebounceTime ?? 800);
 
   const sortData = (cell) => {
-    let tempData = [...data];
+    let tempData = data.length > 0 ? [...data] : [...props.data];
 
     tempData.sort((a, b) => {
       const valueA = typeof a[cell] === 'string' ? a[cell].toLowerCase() : a[cell];
@@ -118,8 +118,9 @@ function SmartTable(props) {
         return valueA > valueB ? 1 : -1;
       }
     });
-    setSortDesc({ [cell]: !sortDesc[cell] });
-    setData(tempData);
+      setSortDesc({ [cell]: !sortDesc[cell] });
+      setData(tempData);
+    
   };
 
   return (
@@ -187,22 +188,38 @@ function SmartTable(props) {
                     </tr>
                   </thead>
                   <tbody>
-                    {props.data.map((row, idx) => {
-                      return (
-                        <tr key={"tr_" + idx}>
-                          {props.headCells.map((headCell, idxx) => {
-                            return (
-                              <td key={"td_" + idx + "_" + idxx}>
-                                {headCell.render
-                                  ? headCell.render(row)
-                                  : row[headCell.id]}
-                              </td>
-                            );
-                          })}
-                        </tr>
-                      );
-                    })}
-                  </tbody>
+                  {data.length > 0
+                    ? data.map((row, idx) => {
+                        return (
+                          <tr key={"tr_" + idx}>
+                            {props.headCells.map((headCell, idxx) => {
+                              return (
+                                <td key={"td_" + idx + "_" + idxx}>
+                                  {headCell.render
+                                    ? headCell.render(row)
+                                    : row[headCell.id]}
+                                </td>
+                              );
+                            })}
+                          </tr>
+                        );
+                      })
+                    : props.data.map((row, idx) => {
+                        return (
+                          <tr key={"tr_" + idx}>
+                            {props.headCells.map((headCell, idxx) => {
+                              return (
+                                <td key={"td_" + idx + "_" + idxx}>
+                                  {headCell.render
+                                    ? headCell.render(row)
+                                    : row[headCell.id]}
+                                </td>
+                              );
+                            })}
+                          </tr>
+                        );
+                      })}
+                </tbody>
                 </table>
               </div>
             </div>

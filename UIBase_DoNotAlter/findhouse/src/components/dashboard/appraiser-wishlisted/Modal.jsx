@@ -1,14 +1,14 @@
-// Modal.js (a React component)
 
 import React, { useRef } from "react";
 import toast from "react-hot-toast";
 import { encryptionData } from "../../../utils/dataEncryption";
 import axios from "axios";
 
-const Modal = ({ modalOpen, closeModal , lowRangeBid , propertyId}) => {
+const Modal = ({ modalOpen, closeModal , lowRangeBid , setIsBidded,propertyId}) => {
 
   const valueRef = useRef(0);
   const descriptionRef = useRef("");
+ 
 
   const onSubmitHnadler = ()=>{
     const bidAmount = valueRef.current.value;
@@ -37,6 +37,7 @@ const Modal = ({ modalOpen, closeModal , lowRangeBid , propertyId}) => {
       .then((res)=>{
         toast.dismiss();
         toast.success("Successfully set the bid ");
+        setIsBidded(true);
         closeModal();
       }).catch((err)=>{
         toast.dismiss();

@@ -11,7 +11,11 @@ const MyAccount = ({ user, profileCount, setProfile }) => {
     { id: 1, name: "Profile", ruterPath: "/appraiser-profile" },
     // { id: 2, name: " My Message", ruterPath: "/my-message" },
     // { id: 3, name: " My Favourite", ruterPath: "/my-favourites" },
-    { id: 4, name: "Change Password ", ruterPath: "/appraiser-change-password" },
+    {
+      id: 2,
+      name: "Change Password ",
+      ruterPath: "/appraiser-change-password",
+    },
     { id: 5, name: "Log out", ruterPath: "/login" },
   ];
 
@@ -185,13 +189,22 @@ const MyAccount = ({ user, profileCount, setProfile }) => {
             }
           >
             {item.id === 5 ? (
-              <button style={{ color: "#2e008b" }} onClick={logout}>
+              <span style={{ color: "#2e008b" }} onClick={logout}>
                 Logout
-              </button>
+              </span>
             ) : (
-              <div style={{ display: "flex", flexDirection: "row" }}>
-                {item.id === 1 && <CircularIcon percentage={profileValue} />}
-                {item.name}
+              <div className="row">
+                <div className="col-lg-6">{item.name}</div>
+                <div
+                  className="col-lg-6"
+                  style={{
+                    marginBottom: "-80px",
+                    marginTop: "-25px",
+                    paddingLeft: "20px",
+                  }}
+                >
+                  {item.id === 1 && <CircularIcon percentage={profileValue} />}
+                </div>
               </div>
             )}
           </Link>

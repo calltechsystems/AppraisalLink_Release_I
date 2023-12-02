@@ -157,10 +157,10 @@ export default function Exemple({
           bidAmount: property.bidLowerRange,
           urgency:
             property.urgency === 0
-              ? "Low"
+              ? "Rush"
               : property.urgency === 1
-              ? "Medium"
-              : "High",
+              ? "Regular"
+              : "",
 
           action: (
             <div className="print-hidden-column">
@@ -212,10 +212,10 @@ export default function Exemple({
                     >
                       <a
                         href="#"
-                        className="text-color"
+                        className="btn btn-color"
                         style={{ marginLeft: "10px" }}
                       >
-                        Provide Qoute
+                        Provide Quote
                       </a>
                     </div>
                   </li>

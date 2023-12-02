@@ -14,11 +14,24 @@ const Index = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [updatedCode, setUpdatedCode] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  
+  const [openViewModal, setOpenViewModal] = useState(false);
+  
+  const [viewProperty, setViewProperty] = useState({});
 
   const closeErrorModal = () => {
     setModalIsOpenError(false);
   };
 
+  const setViewPropertyHandler = (property)=>{
+  
+    setViewProperty(property);
+    setOpenViewModal(true);
+  }
+
+  const closeViewModal = ()=>{
+    setOpenViewModal(false);
+  }
   useEffect(() => {
     setIsLoading(false);
   }, [updatedCode]);
@@ -129,6 +142,62 @@ const Index = () => {
               </div>
               {/* End .row */}
 
+              {openViewModal && (
+                <div className="modal">
+                  <div className="modal-content">
+                    <h3 className="text-center">Property Details</h3>
+                    <span style={{ fontWeight: "bold" }}>
+                      <h5 className="text-center">
+                        This is a Property Details :
+                      </h5>
+                    </span>
+                    <h5>
+                      <span>Property Address :</span> {viewProperty.streetName}-
+                      {viewProperty.streetNumber},{viewProperty.city}
+                    </h5>
+                    <h5>
+                      <span>Sq Ft.:</span> {viewProperty.area}{" "}
+                    </h5>
+                    <h5>
+                      <span>Property Type :</span> {viewProperty.typeOfBuilding}
+                    </h5>
+                    <h5>
+                      <span>Property Area Type:</span> {viewProperty.community}
+                    </h5>
+
+                    <span style={{ fontWeight: "bold" }}>
+                      <h5 className="text-center">
+                        This is a Broker Details :
+                      </h5>
+                    </span>
+                    <h5>
+                      <span>Broker Name :</span>{" "}
+                      {viewProperty.applicantFirstName}{" "}
+                      {viewProperty.applicantLastName}
+                    </h5>
+                    <h5>
+                      <span>Broker Phone Number :</span>{" "}
+                      {viewProperty.applicantPhoneNumber}{" "}
+                    </h5>
+                    <h5>
+                      <span>Broker Email :</span>{" "}
+                      {viewProperty.applicantEmailAddress}
+                    </h5>
+
+                    {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
+                    <div className="text-center" style={{}}>
+                      <button
+                        className="btn w-35 btn-white"
+                        onClick={closeViewModal}
+                      >
+                        Ok
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+
               <div className="row">
                 <div className="col-lg-12">
                   <div className="">
@@ -142,6 +211,7 @@ const Index = () => {
                               setModalIsOpenError={setModalIsOpenError}
                               setErrorMessage={setErrorMessage}
                               setUpdatedCode={setUpdatedCode}
+                              setViewPropertyHandler={setViewPropertyHandler}
                             />
                           )}
                           {modalIsOpenError && (

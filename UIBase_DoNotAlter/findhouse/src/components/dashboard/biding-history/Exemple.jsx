@@ -5,7 +5,6 @@ import toast from "react-hot-toast";
 import axios from "axios";
 // import "./SmartTable.css";
 
-
 const headCells = [
   {
     id: "orderId",
@@ -36,7 +35,7 @@ const headCells = [
     numeric: false,
     label: "Status",
     width: 200,
-  }
+  },
 ];
 
 const data = [
@@ -69,84 +68,149 @@ const data = [
   },
 ];
 
-export default function Exemple({setModalIsOpenError,setUpdatedCode,setErrorMessage}) {
-  
-  const userData = (JSON.parse(localStorage.getItem("user")));
-  const [properties , setProperties] = useState([]);
+export default function Exemple({
+  setModalIsOpenError,
+  setUpdatedCode,
+  setViewPropertyHandler,
+  setErrorMessage,
+}) {
+  const userData = JSON.parse(localStorage.getItem("user"));
+  const [properties, setProperties] = useState([]);
 
-  const [updatedData , setUpdatedData] = useState([]);
-  const [show , setShow] = useState(false);
+  const [updatedData, setUpdatedData] = useState([]);
+  const [allProperties, setAllProperties] = useState([]);
+  const [show, setShow] = useState(false);
   let tempData = [];
 
   const formatDate = (dateString) => {
     const options = {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     };
-  
-    const formattedDate = new Date(dateString).toLocaleString('en-US', options);
-  
+
+    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
+
     return formattedDate;
   };
 
-  
-  useEffect(()=>{
-    const getData = ()=>{
+  const filterBidsWithin24Hours = (property) => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    let tempBid = 0;
+    let prop = {};
+    allProperties.filter((bid) => {
+      if (bid.propertyId === property.propertyId) {
+        prop = bid;
+      } else {
+      }
+    });
+    console.log(prop);
+    return prop;
+    // const currentTime = new Date();
+    // const twentyFourHoursAgo = currentTime - 24 * 60 * 60 * 1000; // Subtracting milliseconds for 24 hours
+    //    const requestTime = new Date(tempBid.requestTime);
+    //   return requestTime >= twentyFourHoursAgo && requestTime <= currentTime;
+  };
 
-      properties.map((property,index)=>{
+  useEffect(() => {
+    const getData = () => {
+      properties.map((property, index) => {
+        const currentProperty = filterBidsWithin24Hours(property);
+        console.log(currentProperty);
         const updatedRow = {
-          orderId:property.bidId,
-          date: formatDate(property.requestTime ),
-          amount : property.bidLowerRange,
-          prop_amount : property.bidAmount,
-          status : property.status === 0 ? "Pending" : property.status === 1 ? "Completed" : "Declined"
-         }
+          orderId: currentProperty.orderId,
+          date: formatDate(property.requestTime),
+          amount: property.bidLowerRange,
+          prop_amount: property.bidAmount,
+          status:
+            property.status === 0 ? (
+              <span className="btn bg-warning text-light" style={{cursor:"auto"}}>Pending</span>
+            ) : property.status === 1 ? (
+              <div className="print-hidden-column">
+                <ul className="">
+                  <li
+                    className="list-inline-item"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Property Details"
+                  >
+                    <button className="btn btn-color-table"
+                      onClick={() => setViewPropertyHandler(currentProperty)}
+                    >
+                      <span className="text-light flaticon-view"></span>
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            ) : (
+              <span className="btn bg-danger text-light" style={{cursor:"auto"}}>Declined</span>
+            ),
+        };
         tempData.push(updatedRow);
       });
       setUpdatedData(tempData);
     };
     getData();
-  },[properties]);
+  }, [properties]);
 
-  useEffect(()=>{
+  useEffect(() => {
     setUpdatedCode(true);
-  },[updatedData]);
+  }, [updatedData]);
 
-  useEffect(()=>{
-    
-   
-
-    const data = (JSON.parse(localStorage.getItem("user")));
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
-      token : userData.token
+      token: userData.token,
     };
-
 
     const user = JSON.parse(localStorage.getItem("user"));
 
-    axios.get("/api/getAllBids",{
-      headers : {
-        Authorization : `Bearer ${user.token}`
-      }
-    })
-    .then((res)=>{
-   
+    axios
+      .get("/api/getAllListedProperties", {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        let userWishlistProp = [];
+        const tempData = res.data.data.properties.$values;
+
+        const selectedData = properties.filter((prop, index) => {
+          return tempData.filter((prop2, index) => {
+            if (prop.propertyId === prop2.propertyId) {
+              userWishlistProp.push(prop2);
+              return true;
+            } else return false;
+          });
+        });
+        setAllProperties(userWishlistProp);
+      })
+      .catch((err) => {
+        toast.dismiss();
+        toast.error(err?.response);
+      });
+
+    axios
+      .get("/api/getAllBids", {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      })
+      .then((res) => {
         setProperties(res.data.data.result.$values);
       })
       .catch((err) => {
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
-  },[]);
+  }, []);
   return (
     <>
-    { updatedData && (<SmartTable
-      title=""
-      data={updatedData}
-      headCells={headCells}
-    />)}
+      {updatedData && (
+        <SmartTable title="" data={updatedData} headCells={headCells} />
+      )}
     </>
   );
 }

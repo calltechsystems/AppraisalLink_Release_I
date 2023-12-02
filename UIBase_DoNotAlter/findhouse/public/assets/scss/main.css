@@ -22167,7 +22167,7 @@ input[type=text] {
 
 .button-container {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   margin-top: 20px;
   border-top: 2px solid gray;
   padding-top: 20px;

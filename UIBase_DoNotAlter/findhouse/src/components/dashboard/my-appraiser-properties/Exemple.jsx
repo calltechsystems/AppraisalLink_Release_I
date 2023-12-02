@@ -5,7 +5,6 @@ import toast from "react-hot-toast";
 import axios from "axios";
 // import "./SmartTable.css";
 
-
 const headCells = [
   {
     id: "orderId",
@@ -82,22 +81,34 @@ const data = [
   },
 ];
 
-export default function Exemple({userData , open ,close ,setUpdatedCode,setViewProperty,openViewModal,participateHandler,onWishlistHandler, properties, setProperties,setModalIsOpenError,setErrorMessage}) {
-  
-
+export default function Exemple({
+  userData,
+  open,
+  close,
+  setUpdatedCode,
+  setViewProperty,
+  openViewModal,
+  participateHandler,
+  onWishlistHandler,
+  properties,
+  setProperties,
+  setModalIsOpenError,
+  setErrorMessage,
+}) {
   const [updatedData, setUpdatedData] = useState([]);
   const [wishlist, setWishlist] = useState([]);
   const [bids, setBids] = useState([]);
   const [hideAction, setHideAction] = useState(false);
   const [hideClass, setHideClass] = useState("");
-  const [isStatus,setStatus]=useState(false);
+  const [isStatus, setStatus] = useState(false);
   const [show, setShow] = useState(false);
   let tempData = [];
   let status = 0;
 
   const filterBidsWithin24Hours = (property) => {
     const userData = JSON.parse(localStorage.getItem("user"));
-    let tempBid = 0,bidValues = {};
+    let tempBid = 0,
+      bidValues = {};
     bids.filter((bid) => {
       if (
         bid.appraiserUserId === userData.userId &&
@@ -109,10 +120,10 @@ export default function Exemple({userData , open ,close ,setUpdatedCode,setViewP
       }
     });
     console.log(bidValues.status);
-    setStatus(bidValues.status );
+    setStatus(bidValues.status);
     status = bidValues.status;
     return tempBid > 0 ? true : false;
-    
+
     // const currentTime = new Date();
     // const twentyFourHoursAgo = currentTime - 24 * 60 * 60 * 1000; // Subtracting milliseconds for 24 hours
     //    const requestTime = new Date(tempBid.requestTime);
@@ -139,122 +150,118 @@ export default function Exemple({userData , open ,close ,setUpdatedCode,setViewP
     return temp ? true : false;
   };
 
-  const setViewPropertyHandler = (property)=>{
+  const setViewPropertyHandler = (property) => {
     setViewProperty(property);
     openViewModal(true);
-  }
+  };
 
-  
-  useEffect(()=>{
-    const getData = ()=>{
-
-     
-      properties.map((property,index)=>{
+  useEffect(() => {
+    const getData = () => {
+      properties.map((property, index) => {
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
         console.log(isWishlist || isBidded);
-      
-        if(isWishlist || isBidded){
-        const updatedRow = {
-          orderId: property.orderId,
-          address: `${property.city}-${property.state},${property.zipCode}`,
-          community: `${property.community}`,
-          date: formatDate(property.addedDatetime),
-          bidAmount: property.bidLowerRange,
-          urgency:
-            property.urgency === 0
-              ? "Low"
-              : property.urgency === 1
-              ? "Medium"
-              : "High",
-          action: (
-            <div className="print-hidden-column">
-              <ul className="">
-            
-                {!isWishlist  && (
-                  <li
-                    className="list-inline-item"
-                    style={{
-                      width: "30px",
-                      // border: "1px solid black",
-                      textAlign: "center",
-                      borderRadius: "5px",
-                    }}
-                  >
-                    {/* <Link href="/agent-v1">{item.posterName}</Link> */}
-                    {
-                      <button
-                        onClick={() => onWishlistHandler(property.propertyId)}
-                      >
-                        <span className="flaticon-heart text-color "></span>
-                      </button>
-                    }
-                  </li>
-                )}
 
-                {/* <div className="fp_pdate float-end">{item.postedYear}</div> */}
-
-                {!isBidded && (
-                  <li
-                    className="list-inline-item"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title="Delete"
-                  >
-                    <div
-                      className="mt-1 fw-bold"
-                      onClick={() =>
-                        participateHandler(
-                          property.bidLowerRange,
-                          property.propertyId
-                        )
-                      }
+        if (isWishlist || isBidded) {
+          const updatedRow = {
+            orderId: property.orderId,
+            address: `${property.city}-${property.state},${property.zipCode}`,
+            community: `${property.community}`,
+            date: formatDate(property.addedDatetime),
+            bidAmount: property.bidLowerRange,
+            urgency:
+              property.urgency === 0
+                ? "Rush"
+                : property.urgency === 1
+                ? "Regular"
+                : "",
+            action: (
+              <div className="print-hidden-column">
+                <ul className="">
+                  {!isWishlist && (
+                    <li
+                      className="list-inline-item"
+                      style={{
+                        width: "30px",
+                        // border: "1px solid black",
+                        textAlign: "center",
+                        borderRadius: "5px",
+                      }}
                     >
-                      <a
-                        href="#"
-                        className="text-color"
-                        style={{ marginLeft: "10px" }}
-                      >
-                        Provide Qoute
-                      </a>
-                    </div>
-                  </li>
-                )}
-                {status ===1 && <li
-                  className="list-inline-item"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="View"
-                >
-                  <button onClick={()=>setViewPropertyHandler(property)}>
-                    <span className="flaticon-view"></span>
-                  </button>
-                </li>}
-               
-              </ul>
-            </div>
-          ),
-        };
+                      {/* <Link href="/agent-v1">{item.posterName}</Link> */}
+                      {
+                        <button
+                          onClick={() => onWishlistHandler(property.propertyId)}
+                        >
+                          <span className="flaticon-heart text-color "></span>
+                        </button>
+                      }
+                    </li>
+                  )}
 
-        tempData.push(updatedRow);
-      }
+                  {/* <div className="fp_pdate float-end">{item.postedYear}</div> */}
+
+                  {!isBidded && (
+                    <li
+                      className="list-inline-item"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Provie Quote"
+                    >
+                      <div
+                        className="mt-1 fw-bold"
+                        onClick={() =>
+                          participateHandler(
+                            property.bidLowerRange,
+                            property.propertyId
+                          )
+                        }
+                      >
+                        <a
+                          href="#"
+                          className="btn btn-color"
+                          style={{ marginLeft: "10px" }}
+                        >
+                          Provide Quote
+                        </a>
+                      </div>
+                    </li>
+                  )}
+                  {status === 1 && (
+                    <li
+                      className="list-inline-item"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Property Detais"
+                    >
+                      <button
+                        className="btn btn-color-table"
+                        onClick={() => setViewPropertyHandler(property)}
+                      >
+                        <span className="flaticon-view"></span>
+                      </button>
+                    </li>
+                  )}
+                </ul>
+              </div>
+            ),
+          };
+
+          tempData.push(updatedRow);
+        }
       });
       setUpdatedData(tempData);
     };
     getData();
-  },[properties]);
+  }, [properties]);
 
-  useEffect(()=>{
+  useEffect(() => {
     setUpdatedCode(true);
-  },[updatedData]);
+  }, [updatedData]);
 
-  useEffect(()=>{
-    
-   
-
+  useEffect(() => {
     const data = JSON.parse(localStorage.getItem("user"));
 
-    
     axios
       .get("/api/appraiserWishlistedProperties", {
         headers: {
@@ -306,7 +313,7 @@ export default function Exemple({userData , open ,close ,setUpdatedCode,setViewP
             return false;
           }
         });
-        console.log("bids",responseData);
+        console.log("bids", responseData);
         setBids(responseData);
       })
       .catch((err) => {
@@ -314,15 +321,16 @@ export default function Exemple({userData , open ,close ,setUpdatedCode,setViewP
         // setErrorMessage(err?.response?.data?.error);
         // setModalIsOpenError(true);
       });
-         axios.get("/api/getAllListedProperties", {
+    axios
+      .get("/api/getAllListedProperties", {
         headers: {
           Authorization: `Bearer ${data?.token}`,
-          "Content-Type":"application/json",
-        }
+          "Content-Type": "application/json",
+        },
       })
       .then((res) => {
         console.log(res);
-        console.log("Properties",res.data.data.properties.$values);
+        console.log("Properties", res.data.data.properties.$values);
         setProperties(res.data.data.properties.$values);
       })
       .catch((err) => {
@@ -330,14 +338,12 @@ export default function Exemple({userData , open ,close ,setUpdatedCode,setViewP
         // setErrorMessage(err?.response?.data?.error);
         // setModalIsOpenError(true);
       });
-  },[]);
+  }, []);
   return (
     <>
-    { updatedData && (<SmartTable
-      title=""
-      data={updatedData}
-      headCells={headCells}
-    />)}
+      {updatedData && (
+        <SmartTable title="" data={updatedData} headCells={headCells} />
+      )}
     </>
   );
 }

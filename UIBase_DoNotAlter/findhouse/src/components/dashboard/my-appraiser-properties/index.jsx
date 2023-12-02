@@ -471,9 +471,9 @@ const Index = () => {
                     </h5>
 
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
-                    <div className="text-center" style={{}}>
+                    <div className="col-lg-12" style={{}}>
                       <button
-                        className="btn w-35 btn-white"
+                        className="btn btn-color w-25 text-center"
                         onClick={closeModal}
                       >
                         Ok

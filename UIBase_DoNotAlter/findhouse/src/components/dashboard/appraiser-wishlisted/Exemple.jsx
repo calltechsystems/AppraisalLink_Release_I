@@ -4,7 +4,6 @@ import toast from "react-hot-toast";
 import axios from "axios";
 // import "./SmartTable.css";
 
-
 const headCells = [
   {
     id: "orderId",
@@ -17,8 +16,7 @@ const headCells = [
     numeric: false,
     label: "Address",
     width: 200,
-  }
-  ,
+  },
   {
     id: "date",
     numeric: false,
@@ -26,11 +24,11 @@ const headCells = [
     width: 200,
   },
   {
-    id: "status",
+    id: "actions",
     numeric: false,
-    label: "Status",
+    label: "Actions",
     width: 200,
-  }
+  },
 ];
 
 const data = [
@@ -63,125 +61,200 @@ const data = [
   },
 ];
 
-export default function Exemple({userData , open ,close ,setUpdatedCode,setIsLoading,deletePropertyHandler,onWishlistHandler,participateHandler,setErrorMessage,setModalIsOpenError}) {
-  
-  const [updatedData , setUpdatedData] = useState([]);
-  const [properties,setProperties] = useState([]);
-  const [show , setShow] = useState(false);
+export default function Exemple({
+  userData,
+  open,
+  close,
+  setUpdatedCode,
+  setIsLoading,
+  deletePropertyHandler,
+  onWishlistHandler,
+  participateHandler,
+  setErrorMessage,
+  setModalIsOpenError,
+}) {
+  const [updatedData, setUpdatedData] = useState([]);
+  const [properties, setProperties] = useState([]);
+  const [bids, setBids] = useState([]);
+
+  const [show, setShow] = useState(false);
   let tempData = [];
 
   const formatDate = (dateString) => {
     const options = {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     };
-  
-    const formattedDate = new Date(dateString).toLocaleString('en-US', options);
-  
+
+    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
+
     return formattedDate;
   };
 
-  useEffect(()=>{
-    const getData = ()=>{
+  const filterBidsWithin24Hours = (property) => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    let tempBid = 0;
+    bids.filter((bid) => {
+      if (
+        bid.appraiserUserId === userData.userId &&
+        bid.propertyId === property.propertyId
+      ) {
+        tempBid = tempBid + 1;
+      } else {
+      }
+    });
+    return tempBid > 0 ? true : false;
+    // const currentTime = new Date();
+    // const twentyFourHoursAgo = currentTime - 24 * 60 * 60 * 1000; // Subtracting milliseconds for 24 hours
+    //    const requestTime = new Date(tempBid.requestTime);
+    //   return requestTime >= twentyFourHoursAgo && requestTime <= currentTime;
+  };
 
-      properties.map((property,index)=>{
+  useEffect(() => {
+    const getData = () => {
+      properties.map((property, index) => {
+        const isBidded = filterBidsWithin24Hours(property);
         const updatedRow = {
           address: `${property.city}-${property.state},${property.zipCode}`,
-          orderId : property.orderId,
-          date : formatDate(property.addedDatetime ),
-          status : property.urgency === 1 ? "Pending" : property.urgency === 2 ? "Completed" : "Declined",
-           }
+          orderId: property.orderId,
+          date: formatDate(property.addedDatetime),
+          actions: (
+            <div className="print-hidden-column">
+              {!isBidded ? (
+                <ul className="">
+                  {!isBidded && (
+                    <li
+                      className="list-inline-item"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Provide Quote"
+                    >
+                      <div
+                        className="mt-1 fw-bold"
+                        onClick={() =>
+                          participateHandler(
+                            property.bidLowerRange,
+                            property.propertyId
+                          )
+                        }
+                      >
+                        <a
+                          href="#"
+                          className="btn btn-color"
+                          style={{ marginLeft: "10px" }}
+                        >
+                          Provide Quote
+                        </a>
+                      </div>
+                    </li>
+                  )}
+                </ul>
+              ) : (
+                <h5>Provided</h5>
+              )}
+            </div>
+          ),
+        };
         tempData.push(updatedRow);
       });
       setUpdatedData(tempData);
     };
     getData();
-  },[properties]);
+  }, [properties]);
 
-  useEffect(()=>{
+  useEffect(() => {
     setUpdatedCode(true);
-  },[updatedData])
+  }, [updatedData]);
 
-  useEffect(()=>{
+  useEffect(() => {
     let tempProperties = [];
-    const data = (JSON.parse(localStorage.getItem("user")));
+    const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
-      token : userData.token
+      token: userData.token,
     };
 
     toast.loading("Getting properties...");
     const user = JSON.parse(localStorage.getItem("user"));
 
     toast.loading("Getting all wishlishted properties");
-  axios.get("/api/appraiserWishlistedProperties",
-  {
-   headers: {
-     Authorization:`Bearer ${user?.token}`,
-     "Content-Type":"application/json"
-   }
- })
- .then((res) => {
-  toast.dismiss();
-  const tempData = res.data.data.$values;
-  
-  // setAllWishlistedProperties(res.data.data.$values);
-  const responseData = tempData.filter((prop,index)=>{
-    if(prop.userId === data.userId){
-      return true;
-    }
-    else{
-      return false;
-    }
-  })
-  const tempId =responseData;
-  toast.success("Successfully fetched");
-  tempProperties = responseData;
-  console.log(responseData);
- })
- .catch((err) => {
-  toast.dismiss();
-  toast.error(err?.response);
-   setErrorMessage(err?.response);
-   setModalIsOpenError(true);
- });
-
- axios.get("/api/getAllListedProperties",
-  {
-   headers: {
-     Authorization:`Bearer ${user?.token}`,
-     "Content-Type":"application/json"
-   }
- })
- .then((res) => {
-  toast.dismiss();
-  let userWishlistProp = [];
-  const tempData = res.data.data.properties.$values;
-  const selectedData =tempProperties.filter((prop,index)=>{
-      return tempData.filter((prop2,index)=>{
-        if(prop.propertyId === prop2.propertyId){
-          userWishlistProp.push(prop2);
-         return true;}
-        else
-         return false;
+    axios
+      .get("/api/appraiserWishlistedProperties", {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+          "Content-Type": "application/json",
+        },
       })
-  })
-  console.log(userWishlistProp)
-  setProperties(userWishlistProp);
- })
- .catch((err) => {
-  toast.dismiss();
-  toast.error(err?.response);
- });
-  },[]);
+      .then((res) => {
+        toast.dismiss();
+        const tempData = res.data.data.$values;
+
+        // setAllWishlistedProperties(res.data.data.$values);
+        const responseData = tempData.filter((prop, index) => {
+          if (prop.userId === data.userId) {
+            return true;
+          } else {
+            return false;
+          }
+        });
+        const tempId = responseData;
+        toast.success("Successfully fetched");
+        tempProperties = responseData;
+        console.log(responseData);
+      })
+      .catch((err) => {
+        toast.dismiss();
+        toast.error(err?.response);
+        setErrorMessage(err?.response);
+        setModalIsOpenError(true);
+      });
+
+    axios
+      .get("/api/getAllListedProperties", {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        toast.dismiss();
+        let userWishlistProp = [];
+        const tempData = res.data.data.properties.$values;
+        const selectedData = tempProperties.filter((prop, index) => {
+          return tempData.filter((prop2, index) => {
+            if (prop.propertyId === prop2.propertyId) {
+              userWishlistProp.push(prop2);
+              return true;
+            } else return false;
+          });
+        });
+        console.log(userWishlistProp);
+        setProperties(userWishlistProp);
+      })
+      .catch((err) => {
+        toast.dismiss();
+        toast.error(err?.response);
+      });
+    axios
+      .get("/api/getAllBids", {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      })
+      .then((res) => {
+        setBids(res.data.data.result.$values);
+      })
+      .catch((err) => {
+        setErrorMessage(err?.response?.data?.error);
+        setModalIsOpenError(true);
+      });
+  }, []);
   return (
     <>
-    { updatedData && (<SmartTable
-      title=""
-      data={updatedData}
-      headCells={headCells}
-    />)}
+      {updatedData && (
+        <SmartTable title="" data={updatedData} headCells={headCells} />
+      )}
     </>
   );
 }

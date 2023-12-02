@@ -18,6 +18,7 @@ import Loader from "../appraised-properties/Loader";
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
+  const [isBidded,setIsBidded]=useState(false);
   const [searchResult, setSearchResult] = useState([]);
   const [updatedCode, setUpdatedCode] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -81,6 +82,13 @@ const Index = () => {
   const openModal = (property) => {
     setProperty(property);
     setIsModalOpen(true);
+    if(isBidded ){
+      setIsBidded(false);
+      router.push("/biding-history");
+    }
+    else{
+      setIsBidded(false);
+    }
   };
 
   const closeModal = () => {
@@ -427,6 +435,7 @@ const Index = () => {
                   closeModal={closeModal}
                   lowRangeBid={lowRangeBid}
                   propertyId={propertyId}
+                  setIsBidded={setIsBidded}
                 />
               </div>
               <div className="row">
