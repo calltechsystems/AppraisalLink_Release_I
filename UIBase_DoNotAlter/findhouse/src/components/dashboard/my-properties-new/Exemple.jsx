@@ -3,8 +3,6 @@ import SmartTable from "./SmartTable";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { typeOfBuilding } from "./data";
-import { Urgency } from "./data";
 // import "./SmartTable.css";
 
 const headCells = [
@@ -132,8 +130,7 @@ export default function Exemple({
             <span className="btn bg-warning text-dark">In Progress</span>
           ),
           address: ` ${property.city}, ${property.state}, ${property.zipCode}`,
-          user: property.applicantEmailAddress,
-          phone: property.applicantPhoneNumber,
+          // user: property.applicantEmailAddress,
           amount: ` $${property.bidLowerRange}`,
           actions: (
             <ul className="view_edit_delete_list mb0">

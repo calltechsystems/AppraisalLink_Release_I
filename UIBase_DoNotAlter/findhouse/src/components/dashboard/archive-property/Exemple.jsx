@@ -7,9 +7,9 @@ import axios from "axios";
 
 const headCells = [
   {
-    id: "name",
+    id: "status",
     numeric: false,
-    label: "status",
+    label: "Status",
     width: 200,
   },
   {
@@ -19,7 +19,7 @@ const headCells = [
     width: 200,
   },
   {
-    id: "user",
+    id: "name",
     numeric: false,
     label: "Appraiser",
     width: 200,
@@ -109,10 +109,15 @@ export default function Exemple({
       properties.map((property, index) => {
         const isEditable = !property.propertyStatus;
         const updatedRow = {
-          name: property.propertyStatus ? "Completed" : "Pending",
-          address: property.city,
+          status: property.propertyStatus ? (
+            <span className="btn bg-success text-light">Completed</span>
+          ) : (
+            <span className="btn bg-warning text-dark">In Progress</span>
+          ),
+          address:`${property.city}, ${property.state}, ${property.zipCode}`,
           user: property.applicantEmailAddress,
-          amount: property.bidLowerRange,
+          name: `${property.applicantFirstName}, ${property.applicantLastName}`,
+          amount: ` $${property.bidLowerRange}`,
           sub_date: formatDate(property.addedDatetime),
           quote_date: formatDate(property.addedDatetime),
           actions: (
@@ -123,7 +128,10 @@ export default function Exemple({
                 data-placement="top"
                 title="View"
               >
-                <Link href={`/my-property-bids/${property.propertyId}`} className="btn btn-color-table">
+                <Link
+                  href={`/my-property-bids/${property.propertyId}`}
+                  className="btn btn-color-table"
+                >
                   <span className="flaticon-view"></span>
                 </Link>
               </li>

@@ -10,6 +10,7 @@ import ShowFilter from "../../common/listing/ShowFilter";
 import SidebarListing from "../../common/listing/SidebarListing";
 import Modal from "./Modal";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);

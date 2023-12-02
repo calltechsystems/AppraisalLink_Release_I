@@ -9,8 +9,6 @@ import { useState } from "react";
 const MyAccount = ({ user, profileCount, setProfile, userData }) => {
   const profileMenuItems = [
     { id: 1, name: "Profile", ruterPath: "/my-profile" },
-    // { id: 2, name: " My Message", ruterPath: "/my-message" },
-    // { id: 3, name: " My Favourite", ruterPath: "/my-favourites" },
     { id: 4, name: "Change Password ", ruterPath: "/broker-change-password" },
     { id: 5, name: "Log out", ruterPath: "/login" },
   ];

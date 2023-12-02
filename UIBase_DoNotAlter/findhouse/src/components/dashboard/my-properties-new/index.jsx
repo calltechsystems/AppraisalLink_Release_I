@@ -11,8 +11,6 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { typeOfBuilding } from "./data";
-import { Urgency } from "./data";
 import Exemple from "./Exemple";
 
 const Index = () => {
@@ -464,7 +462,7 @@ const Index = () => {
                                         }}
                                       >
                                         {" "}
-                                        {currentProperty.urgency}
+                                        {currentProperty.urgency === 1 ? "Rush" : currentProperty.urgency === 1 ? "Regular":""}
                                       </td>
                                     </tr>
                                     <tr>

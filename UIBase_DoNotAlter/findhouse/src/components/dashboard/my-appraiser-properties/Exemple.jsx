@@ -152,6 +152,7 @@ export default function Exemple({userData , open ,close ,setUpdatedCode,setViewP
       properties.map((property,index)=>{
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
+        console.log(isWishlist || isBidded);
       
         if(isWishlist || isBidded){
         const updatedRow = {

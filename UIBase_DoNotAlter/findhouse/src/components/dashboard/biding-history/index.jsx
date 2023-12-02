@@ -5,29 +5,68 @@ import MobileMenu from "../../common/header/MobileMenu_01";
 import PackageData from "./PackageData";
 import { useState } from "react";
 import Loader from "../appraised-properties/Loader";
+import { useRouter } from "next/router";
 
 const Index = () => {
+  const [show, setShow] = useState(true);
 
-  const [show , setShow] = useState(true);
+  const [modalIsOpenError, setModalIsOpenError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [updatedCode, setUpdatedCode] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const [modalIsOpenError , setModalIsOpenError] = useState(false);
-  const [errorMessage , setErrorMessage ] = useState("");
-  const [updatedCode,setUpdatedCode]=useState(false);
-  const [isLoading,setIsLoading]=useState(true);
-
-  const closeErrorModal =()=>{
+  const closeErrorModal = () => {
     setModalIsOpenError(false);
-  }
-  
+  };
 
-  useEffect(()=>{
+  useEffect(() => {
     setIsLoading(false);
-  },[updatedCode])
+  }, [updatedCode]);
 
-  
-  const onClickHandler = ()=>{
+  const onClickHandler = () => {
     setShow(false);
-  }
+  };
+
+  const router = useRouter();
+
+  const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
+    Date.now()
+  );
+
+  useEffect(() => {
+    const activityHandler = () => {
+      setLastActivityTimestamp(Date.now());
+    };
+
+    // Attach event listeners for user activity
+    window.addEventListener("mousemove", activityHandler);
+    window.addEventListener("keydown", activityHandler);
+    window.addEventListener("click", activityHandler);
+
+    // Cleanup event listeners when the component is unmounted
+    return () => {
+      window.removeEventListener("mousemove", activityHandler);
+      window.removeEventListener("keydown", activityHandler);
+      window.removeEventListener("click", activityHandler);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Check for inactivity every minute
+    const inactivityCheckInterval = setInterval(() => {
+      const currentTime = Date.now();
+      const timeSinceLastActivity = currentTime - lastActivityTimestamp;
+
+      // Check if there has been no activity in the last 10 minutes (600,000 milliseconds)
+      if (timeSinceLastActivity > 600000) {
+        localStorage.removeItem("user");
+        router.push("/login");
+      }
+    }, 60000); // Check every minute
+
+    // Cleanup the interval when the component is unmounted
+    return () => clearInterval(inactivityCheckInterval);
+  }, [lastActivityTimestamp]);
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -83,9 +122,7 @@ const Index = () => {
                 {/* End .col */}
                 <div className="col-md-4 col-lg-4 col-xl-3 mb20">
                   <ul className="sasw_list mb0">
-                    <li className="search_area">
-                      {/* <SearchBox /> */}
-                    </li>
+                    <li className="search_area">{/* <SearchBox /> */}</li>
                   </ul>
                 </div>
                 {/* End .col */}
@@ -98,25 +135,53 @@ const Index = () => {
                     <div className="col-lg-12">
                       <div className="packages_table">
                         <div className="table-responsive mt0">
-                          {isLoading ? <Loader/> : <PackageData setModalIsOpenError={setModalIsOpenError} setErrorMessage={setErrorMessage} setUpdatedCode={setUpdatedCode}/>}
+                          {isLoading ? (
+                            <Loader />
+                          ) : (
+                            <PackageData
+                              setModalIsOpenError={setModalIsOpenError}
+                              setErrorMessage={setErrorMessage}
+                              setUpdatedCode={setUpdatedCode}
+                            />
+                          )}
                           {modalIsOpenError && (
                             <div className="modal">
-                              <div className="modal-content" style={{borderColor:"orangered",width:"20%"}}>
-                                <h3 className="text-center" style={{color:"orangered"}}>Error</h3>
-                                <div style={{borderWidth:"2px",borderColor:"orangered"}}><br/></div>
-                                <h5 className="text-center">
-                                  {errorMessage}
-                                </h5>
+                              <div
+                                className="modal-content"
+                                style={{
+                                  borderColor: "orangered",
+                                  width: "20%",
+                                }}
+                              >
+                                <h3
+                                  className="text-center"
+                                  style={{ color: "orangered" }}
+                                >
+                                  Error
+                                </h3>
+                                <div
+                                  style={{
+                                    borderWidth: "2px",
+                                    borderColor: "orangered",
+                                  }}
+                                >
+                                  <br />
+                                </div>
+                                <h5 className="text-center">{errorMessage}</h5>
                                 <div
                                   className="text-center"
-                                  style={{ display: "flex", flexDirection: "column" }}
+                                  style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                  }}
                                 >
-                                  
-                        
                                   <button
                                     className="btn w-35 btn-white"
-                                    onClick={()=>closeErrorModal()}
-                                    style={{borderColor:"orangered",color:"orangered"}}
+                                    onClick={() => closeErrorModal()}
+                                    style={{
+                                      borderColor: "orangered",
+                                      color: "orangered",
+                                    }}
                                   >
                                     Cancel
                                   </button>
@@ -124,8 +189,6 @@ const Index = () => {
                               </div>
                             </div>
                           )}
-                        
-                          
                         </div>
                       </div>
                       {/* End .packages_table */}
@@ -144,7 +207,10 @@ const Index = () => {
               <div className="row mt50">
                 <div className="col-lg-12">
                   <div className="copyright-widget text-center">
-                    <p>&copy; {new Date().getFullYear()} Appraisal Link. All Rights Reserved.</p>
+                    <p>
+                      &copy; {new Date().getFullYear()} Appraisal Link. All
+                      Rights Reserved.
+                    </p>
                   </div>
                 </div>
               </div>

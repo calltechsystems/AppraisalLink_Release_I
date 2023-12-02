@@ -10,8 +10,10 @@ import TermsCondions from "./TermsCondions";
 import Team from "./Team";
 import OurMission from "./OurMission";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 const Index = () => {
+  const router = useRouter();
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
   );

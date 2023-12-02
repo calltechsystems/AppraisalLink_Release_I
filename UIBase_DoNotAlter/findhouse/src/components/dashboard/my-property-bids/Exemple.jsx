@@ -29,7 +29,7 @@ const headCells = [
   {
     id: "amount",
     numeric: false,
-    label: "Bid Amount",
+    label: "Quote Amount",
     width: 200,
   },
   {
@@ -168,8 +168,8 @@ export default function Exemple({
         const updatedRow = {
           id: property.$id,
           AppraiserId: property.appraiserUserId,
-          quote: property.bidLowerRange,
-          amount: property.bidAmount,
+          quote: `$ ${property.bidLowerRange}`,
+          amount: `$ ${property.bidAmount}`,
           description: property.description != "" ? property.description : "NA",
           date: formatDate(property.requestTime),
           action: (
