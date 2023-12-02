@@ -5,7 +5,7 @@ import MobileMenu from "../../common/header/MobileMenu_01";
 import ChangePassword from "./ChangePassword";
 import { useRouter } from "next/router";
 
-const index = () => {
+const Index = () => {
   const router = useRouter();
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
@@ -132,4 +132,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;
