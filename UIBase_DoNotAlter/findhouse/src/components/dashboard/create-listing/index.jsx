@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+
 import { useRouter } from "next/router";
 import Header from "../../common/header/dashboard/Header";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
@@ -14,45 +15,6 @@ import toast from "react-hot-toast";
 
 const Index = ({ isView, propertyData }) => {
   const router = useRouter();
-
-  const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
-    Date.now()
-  );
-
-  useEffect(() => {
-    const activityHandler = () => {
-      setLastActivityTimestamp(Date.now());
-    };
-
-    // Attach event listeners for user activity
-    window.addEventListener("mousemove", activityHandler);
-    window.addEventListener("keydown", activityHandler);
-    window.addEventListener("click", activityHandler);
-
-    // Cleanup event listeners when the component is unmounted
-    return () => {
-      window.removeEventListener("mousemove", activityHandler);
-      window.removeEventListener("keydown", activityHandler);
-      window.removeEventListener("click", activityHandler);
-    };
-  }, []);
-
-  useEffect(() => {
-    // Check for inactivity every minute
-    const inactivityCheckInterval = setInterval(() => {
-      const currentTime = Date.now();
-      const timeSinceLastActivity = currentTime - lastActivityTimestamp;
-
-      // Check if there has been no activity in the last 10 minutes (600,000 milliseconds)
-      if (timeSinceLastActivity > 600000) {
-        localStorage.removeItem("user");
-        router.push("/login");
-      }
-    }, 60000); // Check every minute
-
-    // Cleanup the interval when the component is unmounted
-    return () => clearInterval(inactivityCheckInterval);
-  }, [lastActivityTimestamp]);
 
   const [isDisable, setDisable] = useState(isView);
   const [modalOpen, setModalOpen] = useState(false);
@@ -200,13 +162,11 @@ const Index = ({ isView, propertyData }) => {
 
     if (
       (!nameRegex.test(applicantFirstName) && applicantFirstName) ||
-      (!nameRegex.test(applicantLatsName) && applicantLatsName)
+      (!nameRegex.test(applicantLatsName) && applicantLatsName) ||
+      (!phoneNumberRegex.test(applicantNumber) && applicantNumber) ||
+      (!emailRegex.test(applicantEmail) && applicantEmail)
     ) {
-      toast.error("Please provide a valid applicant name");
-    } else if (!emailRegex.test(applicantEmail) && applicantEmail) {
-      toast.error("Please provide a valid email address");
-    } else if (!phoneNumberRegex.test(applicantNumber) && applicantNumber) {
-      toast.error("Please provide a valid phone number");
+      toast.error("Please provide a valid applicant Information");
     } else {
       const payload = {
         userId: userInfo.userId,
@@ -396,18 +356,20 @@ const Index = ({ isView, propertyData }) => {
                       />
                     </div>
                   </div>
-                  {/* <div className="my_dashboard_review mt30">
+                  <div className="my_dashboard_review mt30">
                     <div
                       className="col-lg-12 bg-head text-center mb-4"
                       style={{ borderRadius: "5px" }}
                     >
                       <h4 className="p-2 text-white">
-                        Other Information
+                        Additional Property Information
                       </h4>
                     </div>
                     <hr style={{ color: "#2e008b" }} />
                     <CreateList
                       isDisable={isDisable}
+                      areaRef={areaRef}
+                      setAreaRef={setAreaRef}
                       communityRef={communityRef}
                       setCommunityRef={setCommunityRef}
                       buildinRef={buildinRef}
@@ -419,7 +381,7 @@ const Index = ({ isView, propertyData }) => {
                       setBidLowerRangeRef={setBidLowerRangeRef}
                       setDisable={setDisable}
                     />
-                  </div> */}
+                  </div>
 
                   <div className="my_dashboard_review mt30">
                     <div className="row">
@@ -431,7 +393,7 @@ const Index = ({ isView, propertyData }) => {
                           className="text-white"
                           style={{ paddingTop: "10px" }}
                         >
-                          Applicant Information
+                          Applicant / Owner Information
                           {/* <hr style={{ color: "#2e008b" }} /> */}
                         </h4>
                       </div>
@@ -475,11 +437,11 @@ const Index = ({ isView, propertyData }) => {
                 {modalIsOpen && (
                   <div className="modal">
                     <div className="modal-content">
-                      <h3 className="text-center">Property Submission</h3>
-                      <p className="text-center mb-3">
+                      <h3 className="text-center">Property Form</h3>
+                      {/* <p className="text-center mb-3">
                         All of the details on the assessed property are here.
-                      </p>
-                      <div className="d-flex justify-content-center">
+                      </p> */}
+                      <div className="d-flex justify-content-center mt-2">
                         <table
                           style={{
                             width: "450px",

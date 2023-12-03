@@ -19,7 +19,6 @@ function SmartTable(props) {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(props.total ?? 0);
 
-  console.log(props.data);
   const fetchData = useCallback(
     async (queryString) => {
       setLoading(true);
@@ -63,7 +62,6 @@ function SmartTable(props) {
     tableWidthFunc,
     fetchData,
   ]);
-  console.log(props.data);
 
   const buildQueryString = (search, page, rowsPerPage) => {
     const queries = [];

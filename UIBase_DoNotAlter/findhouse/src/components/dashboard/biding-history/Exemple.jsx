@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 // import "./SmartTable.css";
 
+
 const headCells = [
   {
     id: "orderId",
@@ -15,7 +16,7 @@ const headCells = [
   {
     id: "amount",
     numeric: false,
-    label: "Qouted Amount",
+    label: "Appraisal Qoute Amount ($)",
     width: 200,
   },
   {
@@ -36,6 +37,12 @@ const headCells = [
     label: "Status",
     width: 200,
   },
+  {
+    id: "action",
+    numeric: false,
+    label: "Actions",
+    width: 200,
+  }
 ];
 
 const data = [
@@ -68,53 +75,47 @@ const data = [
   },
 ];
 
-export default function Exemple({
-  setModalIsOpenError,
-  setUpdatedCode,
-  setViewPropertyHandler,
-  setErrorMessage,
-}) {
-  const userData = JSON.parse(localStorage.getItem("user"));
-  const [properties, setProperties] = useState([]);
+export default function Exemple({setModalIsOpenError,allProps,setUpdatedCode,setViewPropertyHandler,setErrorMessage}) {
+  
+  const userData = (JSON.parse(localStorage.getItem("user")));
+  const [properties , setProperties] = useState([]);
+  const [props,setProps]=useState(false);
 
-  const [updatedData, setUpdatedData] = useState([]);
-  const [allProperties, setAllProperties] = useState([]);
-  const [show, setShow] = useState(false);
+  const [updatedData , setUpdatedData] = useState([]);
+  let allProperties = [];
+  const [show , setShow] = useState(false);
   let tempData = [];
 
   const formatDate = (dateString) => {
     const options = {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
     };
-
-    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
-
+  
+    const formattedDate = new Date(dateString).toLocaleString('en-US', options);
+  
     return formattedDate;
   };
 
-  const filterBidsWithin24Hours = (property) => {
-    const userData = JSON.parse(localStorage.getItem("user"));
-    let tempBid = 0;
-    let prop = {};
+  const  filterBidsWithin24Hours = (property) => {
+    
+    let prop={};
     allProperties.filter((bid) => {
-      if (bid.propertyId === property.propertyId) {
-        prop = bid;
+      if (
+        bid.propertyId === property.propertyId
+      ) {
+        prop=bid;
       } else {
       }
     });
-    console.log(prop);
     return prop;
-    // const currentTime = new Date();
-    // const twentyFourHoursAgo = currentTime - 24 * 60 * 60 * 1000; // Subtracting milliseconds for 24 hours
-    //    const requestTime = new Date(tempBid.requestTime);
-    //   return requestTime >= twentyFourHoursAgo && requestTime <= currentTime;
   };
-
   useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+  
     const getData = () => {
-      properties.map((property, index) => {
+      properties.map((property) => {
         const currentProperty = filterBidsWithin24Hours(property);
         console.log(currentProperty);
         const updatedRow = {
@@ -122,95 +123,117 @@ export default function Exemple({
           date: formatDate(property.requestTime),
           amount: property.bidLowerRange,
           prop_amount: property.bidAmount,
-          status:
-            property.status === 0 ? (
-              <span className="btn bg-warning text-light" style={{cursor:"auto"}}>Pending</span>
-            ) : property.status === 1 ? (
-              <div className="print-hidden-column">
-                <ul className="">
-                  <li
-                    className="list-inline-item"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title="Property Details"
-                  >
-                    <button className="btn btn-color-table"
-                      onClick={() => setViewPropertyHandler(currentProperty)}
-                    >
-                      <span className="text-light flaticon-view"></span>
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            ) : (
-              <span className="btn bg-danger text-light" style={{cursor:"auto"}}>Declined</span>
-            ),
+          status : property.status === 0 ? "In Progress" : property.status ? "Completed" : "Declined",
+          action:
+            property.status === 0
+              ? "Waiting"
+              : property.status === 1
+              ? (
+                  <div className="print-hidden-column">
+                    <ul className="">
+                      <li
+                        className="list-inline-item"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="View"
+                      >
+                        <button onClick={() => setViewPropertyHandler(currentProperty)}>
+                          <span className="flaticon-view"></span>
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                )
+              : "Not Applicable",
         };
         tempData.push(updatedRow);
       });
       setUpdatedData(tempData);
     };
+  
     getData();
   }, [properties]);
+  
 
-  useEffect(() => {
-    setUpdatedCode(true);
-  }, [updatedData]);
+  useEffect(()=>{
 
-  useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("user"));
-
-    const payload = {
-      token: userData.token,
-    };
-
+    setProps(false);
     const user = JSON.parse(localStorage.getItem("user"));
+   
+      
+    let tempProps = [];
+    
+  },[props]);
 
-    axios
-      .get("/api/getAllListedProperties", {
-        headers: {
-          Authorization: `Bearer ${user?.token}`,
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => {
-        let userWishlistProp = [];
-        const tempData = res.data.data.properties.$values;
+  useEffect(()=>{
+    setUpdatedCode(true);
+  },[updatedData]);
 
-        const selectedData = properties.filter((prop, index) => {
-          return tempData.filter((prop2, index) => {
-            if (prop.propertyId === prop2.propertyId) {
-              userWishlistProp.push(prop2);
-              return true;
-            } else return false;
-          });
-        });
-        setAllProperties(userWishlistProp);
-      })
-      .catch((err) => {
-        toast.dismiss();
-        toast.error(err?.response);
-      });
-
-    axios
-      .get("/api/getAllBids", {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      })
-      .then((res) => {
-        setProperties(res.data.data.result.$values);
+  useEffect(()=>{
+    
+   
+    const user = JSON.parse(localStorage.getItem("user"));
+    const getData = ()=>{
+    
+    
+    let tempBids = [];
+    axios.get("/api/getAllBids",{
+      headers : {
+        Authorization : `Bearer ${user.token}`
+      }
+    })
+    .then((res)=>{
+   
+      setProps(true);
+      tempBids =res.data.data.result.$values;
       })
       .catch((err) => {
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
-  }, []);
+
+      axios.get("/api/getAllListedProperties",
+    {
+    headers: {
+      Authorization:`Bearer ${user?.token}`,
+      "Content-Type":"application/json"
+    }
+  })
+  .then((res) => {
+    let userWishlistProp = [];
+    const tempData = res.data.data.properties.$values;
+    
+    const selectedData =tempBids.filter((prop,index)=>{
+        return tempData.filter((prop2,index)=>{
+          if(prop.propertyId === prop2.propertyId){
+            userWishlistProp.push(prop2);
+          return true;}
+          else
+          return false;
+        })
+    })
+
+    console.log(userWishlistProp);
+    allProperties = userWishlistProp;
+    setProperties(tempBids);
+    
+  })
+  .catch((err) => {
+    toast.dismiss();
+    toast.error(err?.response);
+  });
+      
+  }
+      
+      getData();
+  },[]);
   return (
     <>
-      {updatedData && (
-        <SmartTable title="" data={updatedData} headCells={headCells} />
-      )}
+    { updatedData && (<SmartTable
+      title=""
+      data={updatedData}
+      headCells={headCells}
+    />)}
     </>
   );
 }

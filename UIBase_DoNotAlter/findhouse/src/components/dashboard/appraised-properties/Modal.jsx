@@ -71,13 +71,9 @@ const Modal = ({ modalOpen, closeModal , lowRangeBid , propertyId}) => {
                     color: "#2e008b",
                   }}
                 >
-                  Participate in Bid
+                  Appraisal Quote Form
                 </span>
               </h2>
-              <p className="text-center">
-                {" "}
-                Please place a bid to fill your amount
-              </p>
             </div>
             <div
               style={{
@@ -90,31 +86,14 @@ const Modal = ({ modalOpen, closeModal , lowRangeBid , propertyId}) => {
               <div className="row">
                 <div className="col-lg-12">
                   <div className="row mb-2 mt-2 text-center">
-                    <div className="row">
-                      <div className="col-lg-3 mb-2">
-                        <label
-                          htmlFor=""
-                          style={{ paddingTop: "15px", fontWeight: "lighter" }}
-                        >
-                          Bid Amount  (Lower Range)<span class="req-btn">*</span> :
-                        </label>
-                      </div>
-                      <div className="col-lg-7">
-                        <input
-                          type="text"
-                          value={lowRangeBid}
-                          className="form-control"
-                          id="formGroupExampleInput3"
-                        />
-                      </div>
-                    </div>
+                    
                     <div className="row mb-2 mt-2">
                       <div className="col-lg-3 mb-2">
                         <label
                           htmlFor=""
                           style={{ paddingTop: "15px", fontWeight: "lighter" }}
                         >
-                          Your Amount <span class="req-btn">*</span> :
+                          Appraisal Quote <span class="req-btn">*</span> :
                         </label>
                       </div>
                       <div className="col-lg-7">

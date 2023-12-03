@@ -136,7 +136,7 @@ function SmartTable(props) {
             </div>
           )}
           <div className="row">
-            <div className="col-12 text-center mt-2 h4">Bids on Property</div>
+            {/* <div className="col-12 text-center mt-2 h2">Appraisal Quotes</div> */}
             {/* <div className="col-6 text-end">
               <input
                 type="text"

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Exemple from "./Exemple";
 
-const SearchData = ({setModalIsOpenError ,setUpdatedCode,setViewPropertyHandler, setErrorMessage}) => {
+const SearchData = ({setModalIsOpenError ,setUpdatedCode,props,setViewPropertyHandler, setErrorMessage}) => {
 
   const [data , setData] = useState([]);
 
@@ -82,6 +82,7 @@ const SearchData = ({setModalIsOpenError ,setUpdatedCode,setViewPropertyHandler,
     setModalIsOpenError={setModalIsOpenError}
     setUpdatedCode={setUpdatedCode}
     setViewPropertyHandler={setViewPropertyHandler}
+    allProps={props}
     />)}
     </>
   );

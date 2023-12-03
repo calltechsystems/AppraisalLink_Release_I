@@ -9,29 +9,41 @@ import { useRouter } from "next/router";
 
 const headCells = [
   {
-    id: "id",
+    id: "order_id",
     numeric: false,
-    label: "Id",
+    label: "Order ID",
     width: 200,
   },
+  // {
+  //   id: "id",
+  //   numeric: false,
+  //   label: "Id",
+  //   width: 200,
+  // },
+  // {
+  //   id: "AppraiserId",
+  //   numeric: false,
+  //   label: "Appraiser Id",
+  //   width: 200,
+  // },
   {
-    id: "AppraiserId",
+    id: "AppraiserName",
     numeric: false,
-    label: "Appraiser Id",
+    label: "Appraiser Name",
     width: 200,
   },
   {
     id: "quote",
     numeric: false,
-    label: "Provided Quote",
+    label: "Appraisal Quote",
     width: 200,
   },
-  {
-    id: "amount",
-    numeric: false,
-    label: "Quote Amount",
-    width: 200,
-  },
+  // {
+  //   id: "amount",
+  //   numeric: false,
+  //   label: "Quote Amount",
+  //   width: 200,
+  // },
   {
     id: "description",
     numeric: false,
@@ -166,8 +178,9 @@ export default function Exemple({
     const getData = () => {
       properties.map((property, index) => {
         const updatedRow = {
-          id: property.$id,
-          AppraiserId: property.appraiserUserId,
+          // id: property.$id,
+          order_id: property.orderId,
+          // AppraiserId: property.appraiserUserId,
           quote: `$ ${property.bidLowerRange}`,
           amount: `$ ${property.bidAmount}`,
           description: property.description != "" ? property.description : "NA",

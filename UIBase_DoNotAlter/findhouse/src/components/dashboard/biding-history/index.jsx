@@ -6,6 +6,8 @@ import PackageData from "./PackageData";
 import { useState } from "react";
 import Loader from "../appraised-properties/Loader";
 import { useRouter } from "next/router";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const Index = () => {
   const [show, setShow] = useState(true);
@@ -18,6 +20,7 @@ const Index = () => {
   const [openViewModal, setOpenViewModal] = useState(false);
   
   const [viewProperty, setViewProperty] = useState({});
+  const [allProps,setAllProps]=useState([]);
 
   const closeErrorModal = () => {
     setModalIsOpenError(false);
@@ -40,6 +43,7 @@ const Index = () => {
     setShow(false);
   };
 
+ 
   const router = useRouter();
 
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
@@ -211,6 +215,7 @@ const Index = () => {
                               setModalIsOpenError={setModalIsOpenError}
                               setErrorMessage={setErrorMessage}
                               setUpdatedCode={setUpdatedCode}
+                              props={allProps}
                               setViewPropertyHandler={setViewPropertyHandler}
                             />
                           )}

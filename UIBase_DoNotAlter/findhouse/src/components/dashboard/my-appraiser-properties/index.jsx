@@ -18,9 +18,11 @@ import Loader from "./Loader";
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [openBrokerModal,setOpenBrokerModal]=useState(false);
   const [reload, setReload] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [searchResult, setSearchResult] = useState([]);
+  const [broker,setBroker]=useState({});
   const [property, setProperty] = useState("");
   const [filterProperty, setFilterProperty] = useState("");
   const [filterQuery, setFilterQuery] = useState("Last 30 Days");
@@ -30,10 +32,11 @@ const Index = () => {
   const [lowRangeBid, setLowRangeBid] = useState("");
   const [propertyId, setPropertyId] = useState(null);
   const [openViewModal, setOpenViewModal] = useState(false);
+  
+  const [viewProperty, setViewProperty] = useState({});
 
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [viewProperty, setViewProperty] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [updatedCode, setUpdatedCode] = useState(false);
 
@@ -41,9 +44,23 @@ const Index = () => {
     setModalIsOpenError(false);
   };
 
-  const closeModal = () => {
+  const closeViewModal = ()=>{
     setOpenViewModal(false);
+  }
+  const closeModal = () => {
+    setModalOpen(false);
   };
+
+  
+
+  const closeBrokerModal = ()=>{
+    setOpenBrokerModal(false);
+  }
+
+  const openModalBroker = (property)=>{
+    setBroker(property);
+    setOpenBrokerModal(true);
+  }
 
   const router = useRouter();
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
@@ -373,6 +390,8 @@ const Index = () => {
                             setErrorMessage={setErrorMessage}
                             setIsLoading={setIsLoading}
                             setModalIsOpenError={setModalIsOpenError}
+                            closeBrokerModal = {closeBrokerModal}
+                            openModalBroker={openModalBroker}
                           />
                         )}
                         {modalIsOpenError && (
@@ -471,10 +490,10 @@ const Index = () => {
                     </h5>
 
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
-                    <div className="col-lg-12" style={{}}>
+                    <div className="text-center" style={{}}>
                       <button
-                        className="btn btn-color w-25 text-center"
-                        onClick={closeModal}
+                        className="btn w-35 btn-white"
+                        onClick={closeViewModal}
                       >
                         Ok
                       </button>
@@ -483,12 +502,52 @@ const Index = () => {
                 </div>
               )}
 
+
+              {openBrokerModal && (
+                <div className="modal">
+                  <div className="modal-content">
+                    
+                    <span style={{ fontWeight: "bold" }}>
+                      <h5 className="text-center">
+                        This is a Broker Details :
+                      </h5>
+                    </span>
+                    <h5>
+                      <span>Broker Name :</span>{" "}
+                      {broker.applicantFirstName}{" "}
+                      {broker.applicantLastName}
+                    </h5>
+                    <h5>
+                      <span>Broker Phone Number :</span>{" "}
+                      {broker.applicantPhoneNumber}{" "}
+                    </h5>
+                    <h5>
+                      <span>Broker Email :</span>{" "}
+                      {broker.applicantEmailAddress}
+                    </h5>
+
+                    {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
+                    <div className="text-center" style={{}}>
+                      <button
+                        className="btn w-35 btn-white"
+                        onClick={closeBrokerModal}
+                      >
+                        Ok
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+
               <div className="row">
                 <Modal
                   modalOpen={modalOpen}
                   closeModal={closeModal}
                   lowRangeBid={lowRangeBid}
                   propertyId={propertyId}
+                  closeBrokerModal = {closeBrokerModal}
+                  openModalBroker={openModalBroker}
                 />
               </div>
               <div className="row">

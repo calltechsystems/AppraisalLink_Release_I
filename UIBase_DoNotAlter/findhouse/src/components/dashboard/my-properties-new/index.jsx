@@ -289,19 +289,6 @@ const Index = () => {
                 </div>
                 {/* End .col */}
 
-                <div className="row">
-                  <div className="col-lg-12 mt20">
-                    <div className="mbp_pagination">
-                      <Pagination
-                        properties={properties}
-                        setProperties={setProperties}
-                      />
-                    </div>
-                  </div>
-                  {/* End paginaion .col */}
-                </div>
-                {/* End .row */}
-
                 <div className="col-lg-12">
                   <div className="">
                     <div className="property_table">
@@ -462,7 +449,11 @@ const Index = () => {
                                         }}
                                       >
                                         {" "}
-                                        {currentProperty.urgency === 1 ? "Rush" : currentProperty.urgency === 1 ? "Regular":""}
+                                        {currentProperty.urgency === 1
+                                          ? "Rush"
+                                          : currentProperty.urgency === 1
+                                          ? "Regular"
+                                          : ""}
                                       </td>
                                     </tr>
                                     <tr>
@@ -629,14 +620,14 @@ const Index = () => {
               </div>
 
               <div className="row">
-                <div className="col-lg-12 mt20">
+                {/* <div className="col-lg-12 mt20">
                   <div className="mbp_pagination">
                     <Pagination
                       properties={properties}
                       setProperties={setProperties}
                     />
                   </div>
-                </div>
+                </div> */}
                 {/* End paginaion .col */}
               </div>
               {/* End .row */}

@@ -97,7 +97,7 @@ const DetailedInfo = ({
   console.log(applicantEmail);
   return (
     <>
-      {/* <div className="row">
+      <div className="row">
         <div className="col-lg-12">
           <div className="row mb-2">
             <div className="col-lg-6">
@@ -110,7 +110,7 @@ const DetailedInfo = ({
                     fontWeight: "",
                   }}
                 >
-                  First Name
+                  First Name <span class="req-btn">*</span>
                 </label>
               </div>
               <div className="">
@@ -121,6 +121,7 @@ const DetailedInfo = ({
                     backgroundColor: "#E8F0FE",
                     //color: "white",
                   }}
+                  required
                   type="text"
                   className="form-control"
                   id="formGroupExampleInput3"
@@ -140,7 +141,7 @@ const DetailedInfo = ({
                     fontWeight: "",
                   }}
                 >
-                  Last Name
+                  Last Name <span class="req-btn">*</span>
                 </label>
               </div>
               <div className="">
@@ -151,6 +152,7 @@ const DetailedInfo = ({
                     backgroundColor: "#E8F0FE",
                     //color: "white",
                   }}
+                  required
                   type="text"
                   className="form-control"
                   id="formGroupExampleInput3"
@@ -173,7 +175,7 @@ const DetailedInfo = ({
                     fontWeight: "",
                   }}
                 >
-                  Phone Number
+                  Phone Number <span class="req-btn">*</span>
                 </label>
               </div>
               <div className="">
@@ -184,12 +186,16 @@ const DetailedInfo = ({
                     backgroundColor: "#E8F0FE",
                     //color: "white",
                   }}
+                  required
                   type="number"
                   className="form-control"
                   id="formGroupExampleInput3"
                   onChange={(e) => setApplicantNumber(e.target.value)}
                   value={applicantNumber}
                   disabled={isDisable}
+                  minLength={10}
+                  maxLength={10}
+                  pattern="\d{10}"
                 />
               </div>
             </div>
@@ -203,7 +209,7 @@ const DetailedInfo = ({
                     fontWeight: "",
                   }}
                 >
-                  Email Address
+                  Email Address <span class="req-btn">*</span>
                 </label>
               </div>
               <div className="">
@@ -214,6 +220,7 @@ const DetailedInfo = ({
                     backgroundColor: "#E8F0FE",
                     //color: "white",
                   }}
+                  required
                   type="text"
                   className="form-control"
                   id="formGroupExampleInput3"
@@ -268,6 +275,7 @@ const DetailedInfo = ({
                   Attachment
                 </label>
                 <form className="form-inline d-flex flex-wrap wrap">
+                  {/* <input className="form-control upload-path " /> */}
                   <label className="upload">
                     <input
                       style={{
@@ -283,6 +291,7 @@ const DetailedInfo = ({
                 </form>
               </div>
             </div>
+            {/* End .col */}
           </div>
           <div className="col-lg-12">
             <div className="my_profile_setting_textarea">
@@ -309,7 +318,30 @@ const DetailedInfo = ({
               ></textarea>
             </div>
           </div>
-          
+          {/* End .col */}
+          <div className="col-lg-6">
+            <div className="form-group form-check custom-checkbox">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                value=""
+                required
+                id="terms"
+                style={{ border: "1px solid black" }}
+              />
+              <label
+                className="form-check-label form-check-label"
+                htmlFor="terms"
+                style={{
+                  color: "#1560bd",
+                  fontWeight: "bold",
+                }}
+              >
+                Validate Address
+              </label>
+            </div>
+            {/* End .form-group */}
+          </div>
           <div className="col-xl-12">
             <div className="my_profile_setting_input overflow-hidden mt20 text-center">
               <button className="btn btn5 m-1" onClick={onCancelHandler}>
@@ -327,15 +359,16 @@ const DetailedInfo = ({
                 ))}
             </div>
           </div>
+          {/* End .col */}
         </div>
-      </div> */}
+      </div>
 
-      <div className="row offset-1">
+      {/* <div className="row">
         <div className="col-lg-12">
-          <div className="row" style={{ marginBottom: "10px" }}>
+          <div className="row" style={{ marginBottom: "-15px" }}>
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
-                className="text-color"
+                htmlFor=""
                 style={{ paddingTop: "15px", fontWeight: "" }}
               >
                 First Name :
@@ -343,12 +376,6 @@ const DetailedInfo = ({
             </div>
             <div className="col-lg-7">
               <input
-                style={{
-                  // paddingTop: "15px",
-                  // paddingBottom: "15px",
-                  backgroundColor: "#E8F0FE",
-                  //color: "white",
-                }}
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
@@ -358,23 +385,17 @@ const DetailedInfo = ({
               />
             </div>
           </div>
-          <div className="row" style={{ marginBottom: "10px" }}>
+          <div className="row" style={{ marginBottom: "-15px" }}>
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
-                className="text-color"
+                htmlFor=""
                 style={{ paddingTop: "15px", fontWeight: "" }}
               >
-                Last Name
+                Last Name :
               </label>
             </div>
             <div className="col-lg-7">
               <input
-                style={{
-                  // paddingTop: "15px",
-                  // paddingBottom: "15px",
-                  backgroundColor: "#E8F0FE",
-                  //color: "white",
-                }}
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
@@ -384,23 +405,17 @@ const DetailedInfo = ({
               />
             </div>
           </div>
-          <div className="row" style={{ marginBottom: "10px" }}>
+          <div className="row" style={{ marginBottom: "-15px" }}>
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
-                className="text-color"
+                htmlFor=""
                 style={{ paddingTop: "15px", fontWeight: "" }}
               >
-                Phone Number
+                Phone Number :
               </label>
             </div>
             <div className="col-lg-7">
               <input
-                style={{
-                  // paddingTop: "15px",
-                  // paddingBottom: "15px",
-                  backgroundColor: "#E8F0FE",
-                  //color: "white",
-                }}
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
@@ -410,123 +425,25 @@ const DetailedInfo = ({
               />
             </div>
           </div>
-          <div className="row" style={{ marginBottom: "10px" }}>
+          <div className="row" style={{ marginBottom: "-15px" }}>
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
-                className="text-color"
+                htmlFor=""
                 style={{ paddingTop: "15px", fontWeight: "" }}
               >
-                Email Address
+                Email Address :
               </label>
             </div>
             <div className="col-lg-7">
               <input
-                style={{
-                  // paddingTop: "15px",
-                  // paddingBottom: "15px",
-                  backgroundColor: "#E8F0FE",
-                  //color: "white",
-                }}
                 type="text"
                 className="form-control"
+                style={{ background: "aliceblue" }}
                 id="formGroupExampleInput3"
                 onChange={(e) => setApplicantEmail(e.target.value)}
                 value={applicantEmail}
                 disabled={isDisable}
               />
-            </div>
-          </div>
-
-          <div className="row" style={{ marginBottom: "10px" }}>
-            <div className="col-lg-3 my_profile_setting_input form-group">
-              <label
-                className="text-color"
-                style={{ paddingTop: "15px", fontWeight: "" }}
-              >
-                Address
-              </label>
-            </div>
-            <div className="col-lg-7">
-              <input
-                style={{
-                  // paddingTop: "15px",
-                  // paddingBottom: "15px",
-                  backgroundColor: "#E8F0FE",
-                  //color: "white",
-                }}
-                type="text"
-                className="form-control"
-                id="formGroupExampleInput3"
-                onChange={(e) => setApplicantEmail(e.target.value)}
-                value={applicantEmail}
-                disabled={isDisable}
-              />
-            </div>
-          </div>
-
-          <div className="">
-            <div className="row my_profile_setting_input form-group">
-              <div className="col-lg-3">
-                <label
-                  className="text-color"
-                  htmlFor=""
-                  style={{
-                    paddingTop: "10px",
-                    color: "#1560bd",
-                    fontWeight: "",
-                  }}
-                >
-                  Attachment
-                </label>
-              </div>
-              <div className="col-lg-7 mb-2">
-                <form className="form-inline d-flex flex-wrap wrap">
-                  <label className="upload">
-                    <input
-                      style={{
-                        // paddingTop: "15px",
-                        // paddingBottom: "15px",
-                        backgroundColor: "#E8F0FE",
-                        //color: "white",
-                      }}
-                      className="form-control"
-                      type="file"
-                    />
-                  </label>
-                </form>
-              </div>
-            </div>
-          </div>
-
-          <div className="">
-            <div className="row my_profile_setting_textarea">
-              <div className="col-lg-3">
-                <label
-                  htmlFor="propertyDescription"
-                  className="text-color"
-                  style={{
-                    paddingTop: "15px",
-                    color: "#1560bd",
-                    fontWeight: "",
-                  }}
-                >
-                  Summary
-                </label>
-              </div>
-
-              <div className="col-lg-7">
-                <textarea
-                  style={{
-                    // paddingTop: "15px",
-                    // paddingBottom: "15px",
-                    backgroundColor: "#E8F0FE",
-                    //color: "white",
-                  }}
-                  className="form-control"
-                  id="propertyDescription"
-                  rows="4"
-                ></textarea>
-              </div>
             </div>
           </div>
 
@@ -546,7 +463,7 @@ const DetailedInfo = ({
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </>
   );
 };

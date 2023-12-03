@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import { useRouter } from "next/router";
 import Header from "../../common/header/dashboard/Header";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
@@ -15,6 +14,45 @@ import toast from "react-hot-toast";
 
 const Index = ({ isView, propertyData }) => {
   const router = useRouter();
+
+  const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
+    Date.now()
+  );
+
+  useEffect(() => {
+    const activityHandler = () => {
+      setLastActivityTimestamp(Date.now());
+    };
+
+    // Attach event listeners for user activity
+    window.addEventListener("mousemove", activityHandler);
+    window.addEventListener("keydown", activityHandler);
+    window.addEventListener("click", activityHandler);
+
+    // Cleanup event listeners when the component is unmounted
+    return () => {
+      window.removeEventListener("mousemove", activityHandler);
+      window.removeEventListener("keydown", activityHandler);
+      window.removeEventListener("click", activityHandler);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Check for inactivity every minute
+    const inactivityCheckInterval = setInterval(() => {
+      const currentTime = Date.now();
+      const timeSinceLastActivity = currentTime - lastActivityTimestamp;
+
+      // Check if there has been no activity in the last 10 minutes (600,000 milliseconds)
+      if (timeSinceLastActivity > 600000) {
+        localStorage.removeItem("user");
+        router.push("/login");
+      }
+    }, 60000); // Check every minute
+
+    // Cleanup the interval when the component is unmounted
+    return () => clearInterval(inactivityCheckInterval);
+  }, [lastActivityTimestamp]);
 
   const [isDisable, setDisable] = useState(isView);
   const [modalOpen, setModalOpen] = useState(false);
@@ -162,11 +200,13 @@ const Index = ({ isView, propertyData }) => {
 
     if (
       (!nameRegex.test(applicantFirstName) && applicantFirstName) ||
-      (!nameRegex.test(applicantLatsName) && applicantLatsName) ||
-      (!phoneNumberRegex.test(applicantNumber) && applicantNumber) ||
-      (!emailRegex.test(applicantEmail) && applicantEmail)
+      (!nameRegex.test(applicantLatsName) && applicantLatsName)
     ) {
-      toast.error("Please provide a valid applicant Information");
+      toast.error("Please provide a valid applicant name");
+    } else if (!emailRegex.test(applicantEmail) && applicantEmail) {
+      toast.error("Please provide a valid email address");
+    } else if (!phoneNumberRegex.test(applicantNumber) && applicantNumber) {
+      toast.error("Please provide a valid phone number");
     } else {
       const payload = {
         userId: userInfo.userId,
@@ -309,7 +349,7 @@ const Index = ({ isView, propertyData }) => {
                           className="text-light"
                           style={{ paddingTop: "10px" }}
                         >
-                          Property Location
+                          Property Details
                           {/* <hr style={{ color: "#2e008b" }} /> */}
                         </h4>
                       </div>
@@ -356,7 +396,7 @@ const Index = ({ isView, propertyData }) => {
                       />
                     </div>
                   </div>
-                  <div className="my_dashboard_review mt30">
+                  {/* <div className="my_dashboard_review mt30">
                     <div
                       className="col-lg-12 bg-head text-center mb-4"
                       style={{ borderRadius: "5px" }}
@@ -379,7 +419,7 @@ const Index = ({ isView, propertyData }) => {
                       setBidLowerRangeRef={setBidLowerRangeRef}
                       setDisable={setDisable}
                     />
-                  </div>
+                  </div> */}
 
                   <div className="my_dashboard_review mt30">
                     <div className="row">
@@ -391,7 +431,7 @@ const Index = ({ isView, propertyData }) => {
                           className="text-white"
                           style={{ paddingTop: "10px" }}
                         >
-                          Applicant/Owner Information
+                          Applicant Information
                           {/* <hr style={{ color: "#2e008b" }} /> */}
                         </h4>
                       </div>
@@ -454,7 +494,28 @@ const Index = ({ isView, propertyData }) => {
                                 color: "#2e008b",
                               }}
                             >
-                              <span className="text-start">Property Value</span>
+                              <span className="text-start">
+                                Property Address
+                              </span>
+                            </td>
+                            <td
+                              style={{
+                                border: "1px solid grey",
+                                width: "200px",
+                              }}
+                            >
+                              {streetNameRef} {streetNumberRef} {cityRef}{" "}
+                              {zipCodeRef}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              style={{
+                                border: "1px solid grey",
+                                color: "#2e008b",
+                              }}
+                            >
+                              <span className="text-start">Property Area</span>
                             </td>
                             <td
                               style={{
@@ -463,7 +524,50 @@ const Index = ({ isView, propertyData }) => {
                               }}
                             >
                               {" "}
-                              ${bidLowerRangeRef}
+                              {areaRef} sqft
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <td
+                              style={{
+                                border: "1px solid grey",
+                                color: "#2e008b",
+                              }}
+                            >
+                              <span className="text-start">
+                                {" "}
+                                Type of Building
+                              </span>
+                            </td>
+                            <td
+                              style={{
+                                border: "1px solid grey",
+                                width: "200px",
+                              }}
+                            >
+                              {buildinRef}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              style={{
+                                border: "1px solid grey",
+                                color: "#2e008b",
+                              }}
+                            >
+                              <span className="text-start">
+                                Property Estimated Value
+                              </span>
+                            </td>
+                            <td
+                              style={{
+                                border: "1px solid grey",
+                                width: "200px",
+                              }}
+                            >
+                              {" "}
+                              $ {bidLowerRangeRef}
                             </td>
                           </tr>
                           <tr>
@@ -484,6 +588,7 @@ const Index = ({ isView, propertyData }) => {
                               {communityRef}
                             </td>
                           </tr>
+
                           <tr>
                             <td
                               style={{
@@ -491,45 +596,7 @@ const Index = ({ isView, propertyData }) => {
                                 color: "#2e008b",
                               }}
                             >
-                              <span className="text-start">Property Type</span>
-                            </td>
-                            <td
-                              style={{
-                                border: "1px solid grey",
-                                width: "200px",
-                              }}
-                            >
-                              {buildinRef}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td
-                              style={{
-                                border: "1px solid grey",
-                                color: "#2e008b",
-                              }}
-                            >
-                              <span className="text-start">
-                                Property Address
-                              </span>
-                            </td>
-                            <td
-                              style={{
-                                border: "1px solid grey",
-                                width: "200px",
-                              }}
-                            >
-                              {streetNameRef} {streetNumberRef} {cityRef}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td
-                              style={{
-                                border: "1px solid grey",
-                                color: "#2e008b",
-                              }}
-                            >
-                              <span className="text-start">Postal Code</span>
+                              <span className="text-start">Urgency</span>
                             </td>
                             <td
                               style={{
@@ -538,9 +605,10 @@ const Index = ({ isView, propertyData }) => {
                               }}
                             >
                               {" "}
-                              {zipCodeRef}
+                              {urgencyRef}
                             </td>
                           </tr>
+
                           <tr>
                             <td
                               style={{

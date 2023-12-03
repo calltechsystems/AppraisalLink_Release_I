@@ -42,12 +42,12 @@ const headCells = [
     label: "Property Address",
     width: 200,
   },
-  {
-    id: "amount",
-    numeric: false,
-    label: "Quote",
-    width: 200,
-  },
+  // {
+  //   id: "amount",
+  //   numeric: false,
+  //   label: "Quote",
+  //   width: 200,
+  // },
   {
     id: "actions",
     numeric: false,

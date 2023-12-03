@@ -1,22 +1,25 @@
 import { useRef } from "react";
 import { Urgency } from "./data";
+import { typeOfBuilding } from "./data";
 
 const CreateList = ({
   isDisable,
-  communityRef,
-  setCommunityRef,
-  buildinRef,
-  setBuildinRef,
   urgencyRef,
-  setUrgencyRef,
+  areaRef,
+  setAreaRef,
+  setBuildinRef,
   propertyData,
+  setDisable,
+  buildinRef,
   bidLowerRangeRef,
   setBidLowerRangeRef,
-  setDisable,
+  communityRef,
+  setCommunityRef,
+  setUrgencyRef,
 }) => {
   return (
     <>
-      <div className="row">
+      {/* <div className="row">
         <div className="col-lg-12">
           <div className="row mb-2">
             <div className="col-lg-6">
@@ -35,10 +38,8 @@ const CreateList = ({
               <div className="">
                 <input
                   style={{
-                    // paddingTop: "15px",
-                    // paddingBottom: "15px",
+                    
                     backgroundColor: "#E8F0FE",
-                    //color: "white",
                   }}
                   type="number"
                   className="form-control"
@@ -121,40 +122,91 @@ const CreateList = ({
               </div>
             </div>
           </div>
-          {/* End .col */}
         </div>
-      </div>
+      </div> */}
 
-      {/* <div className="row">
+      <div className="row offset-1">
         <div className="col-lg-12">
-          <div className="row" style={{ marginBottom: "-15px" }}>
+          <div className="row" style={{ marginBottom: "10px" }}>
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
+                className="text-color"
                 htmlFor=""
-                style={{ paddingTop: "15px", fontWeight: "" }}
+                style={{
+                  paddingTop: "15px",
+                  color: "#1560bd",
+                  fontWeight: "",
+                }}
               >
-                Maximum Appraisal Cost ($)
+                Property Area (sq.ft) <span class="req-btn">*</span>
               </label>
             </div>
             <div className="col-lg-7">
               <input
+                style={{ backgroundColor: "#E8F0FE" }}
                 type="number"
                 className="form-control"
                 id="formGroupExampleInput3"
-                style={{ background: "aliceblue" }}
-                onChange={(e) => setBidLowerRangeRef(e.target.value)}
-                value={bidLowerRangeRef}
+                onChange={(e) => setAreaRef(e.target.value)}
+                value={areaRef}
                 disabled={isDisable}
               />
             </div>
           </div>
-          <div className="row" style={{ marginBottom: "-15px" }}>
+          <div className="row" style={{ marginBottom: "10px" }}>
+            <div className="col-lg-3 my_profile_setting_input form-group">
+              <label
+                className="text-color"
+                htmlFor=""
+                style={{
+                  paddingTop: "15px",
+                  color: "#1560bd",
+                  fontWeight: "",
+                }}
+              >
+                Type of Building <span class="req-btn">*</span>
+              </label>
+            </div>
+            <div className="col-lg-7">
+              <div className="form-group input-group ui_kit_select_search">
+                <select
+                  required
+                  className="form-select"
+                  data-live-search="true"
+                  data-width="100%"
+                  onChange={(e) => setBuildinRef(e.target.value)}
+                  disabled={isDisable}
+                  style={{
+                    paddingTop: "15px",
+                    paddingBottom: "15px",
+                    backgroundColor: "#E8F0FE",
+                    // color:"white"
+                  }}
+                >
+                  {typeOfBuilding.map((item, index) => {
+                    return (
+                      <option key={item.id} value={item.value}>
+                        {item.type}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div className="row" style={{ marginBottom: "10px" }}>
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
                 htmlFor=""
-                style={{ paddingTop: "15px", fontWeight: "" }}
+                className="text-color"
+                style={{
+                  paddingTop: "15px",
+                  color: "#1560bd",
+                  fontWeight: "",
+                }}
               >
-                Community
+                Community <span class="req-btn">*</span>
               </label>
             </div>
             <div className="col-lg-7">
@@ -163,17 +215,49 @@ const CreateList = ({
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
+                style={{ backgroundColor: "#E8F0FE" }}
                 onChange={(e) => setCommunityRef(e.target.value)}
                 value={communityRef}
                 disabled={isDisable}
               />
             </div>
           </div>
-          <div className="row" style={{ marginBottom: "-15px" }}>
+          <div className="row" style={{ marginBottom: "10px" }}>
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
                 htmlFor=""
-                style={{ paddingTop: "15px", fontWeight: "" }}
+                className="text-color"
+                style={{
+                  paddingTop: "15px",
+                  color: "#1560bd",
+                  fontWeight: "",
+                }}
+              >
+                Estimated Property Value ($)
+              </label>
+            </div>
+            <div className="col-lg-7">
+              <input
+                type="number"
+                className="form-control"
+                id="formGroupExampleInput3"
+                style={{ backgroundColor: "#E8F0FE" }}
+                onChange={(e) => setBidLowerRangeRef(e.target.value)}
+                value={bidLowerRangeRef}
+                disabled={isDisable}
+              />
+            </div>
+          </div>
+          <div className="row" style={{ marginBottom: "10px" }}>
+            <div className="col-lg-3 my_profile_setting_input form-group">
+              <label
+                htmlFor=""
+                className="text-color"
+                style={{
+                  paddingTop: "15px",
+                  color: "#1560bd",
+                  fontWeight: "",
+                }}
               >
                 Urgency
               </label>
@@ -187,26 +271,26 @@ const CreateList = ({
                   data-width="100%"
                   onChange={(e) => setUrgencyRef(e.target.value)}
                   disabled={isDisable}
-                  style={{ paddingTop: "15px", paddingBottom: "15px" }}
+                  style={{
+                    paddingTop: "15px",
+                    paddingBottom: "15px",
+                    backgroundColor: "#E8F0FE",
+                    // color: "white",
+                  }}
                 >
-                  <option data-tokens="SelectRole" value={1}>
-                    Choose..
-                  </option>
-                  <option data-tokens="SelectRole" value={1}>
-                    Low
-                  </option>
-                  <option data-tokens="Agent/Agency" value={1}>
-                    Medium
-                  </option>
-                  <option data-tokens="SingleUser" value={2}>
-                    High
-                  </option>
+                  {Urgency.map((item, index) => {
+                    return (
+                      <option key={item.id} value={item.value}>
+                        {item.type}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
             </div>
           </div>
         </div>
-      </div> */}
+      </div>
     </>
   );
 };

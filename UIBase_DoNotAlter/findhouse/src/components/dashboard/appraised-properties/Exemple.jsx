@@ -3,6 +3,8 @@ import SmartTable from "./SmartTable";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { encryptionData } from "../../../utils/dataEncryption";
+import { useRouter } from "next/router";
 // import "./SmartTable.css";
 
 const headCells = [
@@ -12,7 +14,7 @@ const headCells = [
     label: "Order Id",
     width: 200,
   },
-  {
+   {
     id: "address",
     numeric: false,
     label: "Address",
@@ -26,21 +28,28 @@ const headCells = [
     width: 200,
   },
   {
+    id: "bidAmount",
+    numeric: false,
+    label: "Estimated Property Value ($)",
+    width: 200,
+  },
+  ,
+  {
+    id: "propertyType",
+    numeric: false,
+    label: "Property Type ",
+    width: 200,
+  },
+  {
     id: "date",
     numeric: false,
     label: "Submission Date",
     width: 200,
   },
   {
-    id: "bidAmount",
+    id: "broker",
     numeric: false,
-    label: "Quote Proposal ($)",
-    width: 200,
-  },
-  {
-    id: "urgency",
-    numeric: false,
-    label: "Urgency",
+    label: "Broker",
     width: 200,
   },
   {
@@ -85,6 +94,7 @@ export default function Exemple({
   deletePropertyHandler,
   onWishlistHandler,
   participateHandler,
+  openModalBroker,
   setErrorMessage,
   setModalIsOpenError,
   setReload,
@@ -116,6 +126,40 @@ export default function Exemple({
     //    const requestTime = new Date(tempBid.requestTime);
     //   return requestTime >= twentyFourHoursAgo && requestTime <= currentTime;
   };
+
+  const router = useRouter();
+
+  const removeWishlistHandler = (id)=>{
+    const userData = JSON.parse(localStorage.getItem("user"));
+
+    const formData = {
+      userId: userData.userId,
+      propertyId: id,
+      token: userData.token,
+    };
+
+    const payload = encryptionData(formData);
+    toast.loading("removing this property into your wishlist");
+    axios
+      .delete("/api/removeWishlistProperty", {
+        headers : {
+          Authorization : `Bearer ${userData.token}`
+        },
+        params : {
+          userId : id
+        }
+      })
+      .then((res) => {
+        toast.dismiss();
+        toast.success("Successfully removed !!! ");
+        router.push("/my-appraiser-properties")
+        
+      })
+      .catch((err) => {
+        toast.dismiss();
+        toast.error(err?.response?.data?.error);
+      });
+   }
 
   const formatDate = (dateString) => {
     const options = {
@@ -153,24 +197,28 @@ export default function Exemple({
           orderId: property.orderId,
           address: `${property.city}-${property.state},${property.zipCode}`,
           community: `${property.community}`,
+          bidAmount:property.bidLowerRange,
+          broker:<a href="#"><button style={{border:"0px",color:"blue",backgroundColor:"white"}} onClick={()=>openModalBroker(property)}>{property.applicantFirstName}</button></a>,
+         
+          propertyType : property.typeOfBuilding > 0 ? "Apartment" : property.typeOfBuilding,
           date: formatDate(property.addedDatetime),
           bidAmount: property.bidLowerRange,
           urgency:
             property.urgency === 0
-              ? "Rush"
+              ? "Low"
               : property.urgency === 1
-              ? "Regular"
-              : "",
+              ? "Medium"
+              : "High",
 
           action: (
             <div className="print-hidden-column">
               <ul className="">
                 {isWishlist ? (
-                  <img
+                  <button onClick={()=>removeWishlistHandler(property.propertyId)}><img
                     width={30}
                     height={30}
                     src="https://th.bing.com/th/id/OIP.h0_o3aftEQhOt3HLVaKSvQHaHT?w=219&h=216&c=7&r=0&o=5&dpr=1.1&pid=1.7"
-                  />
+                  /></button>
                 ) : (
                   <li
                     className="list-inline-item"
@@ -212,10 +260,10 @@ export default function Exemple({
                     >
                       <a
                         href="#"
-                        className="btn btn-color"
+                        className="text-color"
                         style={{ marginLeft: "10px" }}
                       >
-                        Provide Quote
+                        Provide Qoute
                       </a>
                     </div>
                   </li>

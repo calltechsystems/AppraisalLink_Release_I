@@ -15,11 +15,19 @@ const SidebarMenu = () => {
     { id: 3, name: "Editors", route: "/my-properties" },
   ];
   const appraiserProperties = [
-    { id: 1, name: "Appraised Properties", route: "/appraise-properties", icon: "flaticon-box", },
-    { id: 2, name: "My Properties", route: "/my-appraiser-properties", icon: "flaticon-building", },
-    { id: 1, name: "Wishlisted Properties", route: "/appraiser-wishlisted", icon: "flaticon-heart", },
-    { id: 2, name: "Biding History", route: "/biding-history", icon: "flaticon-document", },
-    { id: 3, name: "Help desk", route: "/contact", icon: "flaticon-telephone", },
+    {
+      id: 2,
+      name: "Wishlist",
+      route: "/my-appraiser-properties",
+      icon: "flaticon-box",
+    },
+    {
+      id: 2,
+      name: "Quote Transactions",
+      route: "/biding-history",
+      icon: "flaticon-box",
+    },
+    // { id: 3, name: "Editors", route: "/my-properties" },
   ];
 
   const reviews = [
@@ -53,7 +61,7 @@ const SidebarMenu = () => {
               src="/assets/images/logo_new.png"
               alt="header-logo2.png"
             />
-            <span>Appraisal Link</span>
+            <span style={{color:"#97d700"}}>Appraisal</span><span style={{color:"#97d700"}}>Link</span>
           </Link>
         </li>
         {/* End header */}
@@ -74,14 +82,29 @@ const SidebarMenu = () => {
               </Link>
             </li>
 
-            {/* <li
+            <li
               className={`treeview ${
-                isParentPageActive(appraiserProperties, route.pathname) ? "active" : ""
+                isSinglePageActive("/appraiser-dashboard", route.pathname)
+                  ? "active"
+                  : ""
+              }`}
+            >
+              <Link href="/appraise-properties">
+                <i className="flaticon-home"></i>
+                <span>Appraise Properties</span>
+              </Link>
+            </li>
+
+            <li
+              className={`treeview ${
+                isParentPageActive(appraiserProperties, route.pathname)
+                  ? "active"
+                  : ""
               }`}
             >
               <a data-bs-toggle="collapse" href="#review">
                 <i className="flaticon-building"></i>
-                <span>Manage Property</span>
+                <span>My Appraised Properties</span>
                 <i className="fa fa-angle-down pull-right"></i>
               </a>
               <ul className="treeview-menu collapse" id="review">
@@ -93,7 +116,7 @@ const SidebarMenu = () => {
                   </li>
                 ))}
               </ul>
-            </li> */}
+            </li>
             {/* End Review */}
 
             {/*<li
@@ -225,7 +248,7 @@ const SidebarMenu = () => {
           </li>*/}
         {/* End manage listing */}
 
-        <li className="title" style={{marginTop:"5px"}}>
+        {/* <li className="title">
           <span>Manage Properties</span>
           <ul>
             {appraiserProperties.map((item) => (
@@ -241,7 +264,7 @@ const SidebarMenu = () => {
               </li>
             ))}
           </ul>
-        </li>
+        </li> */}
       </ul>
     </>
   );

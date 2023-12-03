@@ -18,6 +18,8 @@ import Loader from "./Loader";
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
+  const [toggleId,setToggleId]=useState(-1)
+  const [toggleWishlist,setToggleWishlist]=useState(0);
   const [searchResult, setSearchResult] = useState([]);
   const [property, setProperty] = useState("");
   const [filterProperty, setFilterProperty] = useState("");
@@ -39,6 +41,18 @@ const Index = () => {
   const closeErrorModal = () => {
     setModalIsOpenError(false);
   };
+
+  const [openBrokerModal,setOpenBrokerModal]=useState(false);
+  const [broker,setBroker]=useState({});
+
+  const closeBrokerModal = ()=>{
+    setOpenBrokerModal(false);
+  }
+
+  const openModalBroker = (property)=>{
+    setBroker(property);
+    setOpenBrokerModal(true);
+  }
   const router = useRouter();
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
@@ -151,6 +165,7 @@ const Index = () => {
         return tempData; // Return all data if no valid timeFrame is specified
     }
   };
+
 
   useEffect(() => {
     const tmpData = filterData(properties);
@@ -372,6 +387,7 @@ const Index = () => {
                             setModalIsOpenError={setModalIsOpenError}
                             setReload={setReload}
                             reload={reload}
+                            openModalBroker={openModalBroker}
                           />
                         )}
                         {modalIsOpenError && (
@@ -416,6 +432,44 @@ const Index = () => {
                             </div>
                           </div>
                         )}
+
+                        {openBrokerModal && (
+                          <div className="modal">
+                            <div className="modal-content">
+                              
+                              <span style={{ fontWeight: "bold" }}>
+                                <h5 className="text-center">
+                                  This is a Broker Details :
+                                </h5>
+                              </span>
+                              <h5>
+                                <span>Broker Name :</span>{" "}
+                                {broker.applicantFirstName}{" "}
+                                {broker.applicantLastName}
+                              </h5>
+                              <h5>
+                                <span>Broker Phone Number :</span>{" "}
+                                {broker.applicantPhoneNumber}{" "}
+                              </h5>
+                              <h5>
+                                <span>Broker Email :</span>{" "}
+                                {broker.applicantEmailAddress}
+                              </h5>
+          
+                              {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
+                              <div className="text-center" style={{}}>
+                                <button
+                                  className="btn w-35 btn-white"
+                                  onClick={closeBrokerModal}
+                                >
+                                  Ok
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+          
+          
                       </div>
 
                       {/* End .table-responsive */}
