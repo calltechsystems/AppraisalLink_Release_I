@@ -22511,3 +22511,13 @@ input:checked + .slider:before {
     transform: rotate(360deg);
   }
 }
+
+.link-hover{
+  color: rgb(138, 153, 179) !important;
+}
+
+.link-hover:hover {
+  background-color: #97d700;
+  color: #000000 !important;
+  font-weight: bold;
+}

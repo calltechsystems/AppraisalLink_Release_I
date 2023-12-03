@@ -47,7 +47,8 @@ const SidebarMenu = () => {
               src="/assets/images/logo_new.png"
               alt="header-logo2.png"
             />
-            <span>Appraisal Link</span>
+            <span style={{ color: "#97d700" }}>Appraisal</span>
+            <span style={{ color: "#97d700" }}>Link</span>
           </Link>
         </li>
         {/* End header */}
@@ -235,6 +236,14 @@ const SidebarMenu = () => {
               </li>
             ))}
           </ul>
+        </li>
+        <li
+          className="link-hover sidebar-menu "
+        >
+          <Link href="mailto:patelshubhendra@gmail.com" >
+            <i className="flaticon-envelope"></i>
+            <span>Contact Us</span>
+          </Link>
         </li>
       </ul>
     </>
