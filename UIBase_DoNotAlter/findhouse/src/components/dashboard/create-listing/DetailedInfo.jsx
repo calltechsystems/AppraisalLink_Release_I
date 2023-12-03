@@ -510,7 +510,7 @@ const DetailedInfo = ({
                     fontWeight: "",
                   }}
                 >
-                  Remark
+                  Remark / Additional Information
                 </label>
               </div>
 

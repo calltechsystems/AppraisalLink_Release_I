@@ -189,6 +189,29 @@ const LocationField = ({
               />
             </div>
           </div>
+          <div className="col-lg-6 mt20">
+            <div className="form-group form-check custom-checkbox">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                value=""
+                required
+                id="terms"
+                style={{ border: "1px solid black" }}
+              />
+              <label
+                className="form-check-label form-check-label"
+                htmlFor="terms"
+                style={{
+                  color: "#2e008b",
+                  fontWeight: "bold",
+                }}
+              >
+                Validate Address
+              </label>
+            </div>
+            {/* End .form-group */}
+          </div>
           {/* <div className="row" style={{ marginBottom: "10px" }}>
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label

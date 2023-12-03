@@ -127,14 +127,36 @@ export default function Exemple({
           status: property.propertyStatus ? (
             <span className="btn bg-success text-light">Completed</span>
           ) : (
-            <span className="btn bg-warning text-dark">In Progress</span>
+            <span className="btn bg-primary text-light">In Progress</span>
           ),
           address: ` ${property.city}, ${property.state}, ${property.zipCode}`,
           // user: property.applicantEmailAddress,
           amount: ` $${property.bidLowerRange}`,
           actions: (
-            <ul className="view_edit_delete_list mb0">
-              <li
+            // <ul className="view_edit_delete_list mb0">
+            <ul className="mb0">
+              <li>
+                <span> Property Details </span>{" "}
+                <span
+                  className="btn btn-color-table m-1"
+                  onClick={() => openPopupModal(property)}
+                >
+                  <Link href={"#"}>
+                    <span className="text-light flaticon-view"></span>
+                  </Link>
+                </span>
+              </li>
+              <li>
+                <span> Bids </span>{" "}
+                <Link
+                  className="btn btn-color-table"
+                  style={{ marginLeft: "5.5rem" }}
+                  href={`/my-property-bids/${property.propertyId}`}
+                >
+                  <span className="flaticon-invoice"></span>
+                </Link>
+              </li>
+              {/* <li
                 className="list-inline-item"
                 data-toggle="tooltip"
                 data-placement="top"
@@ -162,7 +184,7 @@ export default function Exemple({
                 >
                   <span className="flaticon-invoice"></span>
                 </Link>
-              </li>
+              </li> */}
 
               {isEditable && (
                 <li
@@ -200,7 +222,7 @@ export default function Exemple({
                 </li>
               )}
 
-              {!isEditable && (
+              {/* {!isEditable && (
                 <li
                   className="list-inline-item"
                   data-toggle="tooltip"
@@ -216,8 +238,20 @@ export default function Exemple({
                     </Link>
                   </span>
                 </li>
+              )} */}
+              {!isEditable && (
+                <li>
+                  <span> Archive Property </span>{" "}
+                  <span
+                    className="btn btn-color-table m-1"
+                    onClick={() => archievePropertyHandler(property.propertyId)}
+                  >
+                    <Link className="color-light" href={`/archive-property`}>
+                      <span className="flaticon-box text-light"></span>
+                    </Link>
+                  </span>
+                </li>
               )}
-
               {/* End li */}
             </ul>
           ),
