@@ -129,14 +129,19 @@ export default function Exemple({
           ) : (
             <span className="btn bg-primary text-light">In Progress</span>
           ),
-          address: ` ${property.city}, ${property.state}, ${property.zipCode}`,
+          address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.state}, ${property.zipCode}`,
           // user: property.applicantEmailAddress,
           amount: ` $${property.bidLowerRange}`,
           actions: (
             // <ul className="view_edit_delete_list mb0">
             <ul className="mb0">
               <li>
-                <span> Property Details </span>{" "}
+                <Link href={"#"}>
+                  <span onClick={() => openPopupModal(property)}>
+                    {" "}
+                    Property Details{" "}
+                  </span>
+                </Link>{" "}
                 <span
                   className="btn btn-color-table m-1"
                   onClick={() => openPopupModal(property)}
@@ -147,10 +152,12 @@ export default function Exemple({
                 </span>
               </li>
               <li>
-                <span> Bids </span>{" "}
+                <Link href={`/my-property-bids/${property.propertyId}`}>
+                  <span> Quotes </span>
+                </Link>{" "}
                 <Link
                   className="btn btn-color-table"
-                  style={{ marginLeft: "5.5rem" }}
+                  style={{ marginLeft: "4.3rem" }}
                   href={`/my-property-bids/${property.propertyId}`}
                 >
                   <span className="flaticon-invoice"></span>
@@ -241,7 +248,16 @@ export default function Exemple({
               )} */}
               {!isEditable && (
                 <li>
-                  <span> Archive Property </span>{" "}
+                  <Link href={`/archive-property`}>
+                    <span
+                      onClick={() =>
+                        archievePropertyHandler(property.propertyId)
+                      }
+                    >
+                      {" "}
+                      Archive Property{" "}
+                    </span>
+                  </Link>{" "}
                   <span
                     className="btn btn-color-table m-1"
                     onClick={() => archievePropertyHandler(property.propertyId)}

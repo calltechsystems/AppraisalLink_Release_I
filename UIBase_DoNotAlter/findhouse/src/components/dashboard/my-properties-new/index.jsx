@@ -320,7 +320,7 @@ const Index = () => {
                                 <div className="d-flex justify-content-center">
                                   <table
                                     style={{
-                                      width: "450px",
+                                      width: "550px",
                                       textAlign: "center",
                                       borderRadius: "5px",
                                     }}
@@ -339,17 +339,18 @@ const Index = () => {
                                       <td
                                         style={{
                                           border: "1px solid grey",
-                                          width: "200px",
+                                          width: "250px",
                                         }}
                                       >
                                         {" "}
                                         {currentProperty.streetName}{" "}
                                         {currentProperty.streetNumber}{" "}
                                         {currentProperty.city}{" "}
+                                        {currentProperty.state}
                                         {currentProperty.zipCode}
                                       </td>
                                     </tr>
-                                    <tr>
+                                    {/* <tr>
                                       <td
                                         style={{
                                           border: "1px solid grey",
@@ -363,12 +364,12 @@ const Index = () => {
                                       <td
                                         style={{
                                           border: "1px solid grey",
-                                          width: "200px",
+                                          width: "250px",
                                         }}
                                       >
                                         {currentProperty.area} sqft
                                       </td>
-                                    </tr>
+                                    </tr> */}
                                     <tr>
                                       <td
                                         style={{
@@ -384,7 +385,7 @@ const Index = () => {
                                       <td
                                         style={{
                                           border: "1px solid grey",
-                                          width: "200px",
+                                          width: "250px",
                                         }}
                                       >
                                         {currentProperty.typeOfBuilding}
@@ -398,16 +399,17 @@ const Index = () => {
                                         }}
                                       >
                                         <span className="text-start">
-                                          Property Estimated Value
+                                          {" "}
+                                          Type of Appraisal
                                         </span>
                                       </td>
                                       <td
                                         style={{
                                           border: "1px solid grey",
-                                          width: "200px",
+                                          width: "250px",
                                         }}
                                       >
-                                        ${currentProperty.bidLowerRange}
+                                        {currentProperty.typeOfBuilding}
                                       </td>
                                     </tr>
                                     <tr>
@@ -418,17 +420,79 @@ const Index = () => {
                                         }}
                                       >
                                         <span className="text-start">
-                                          Community Type
+                                          {" "}
+                                          Purpose
                                         </span>
                                       </td>
                                       <td
                                         style={{
                                           border: "1px solid grey",
-                                          width: "200px",
+                                          width: "250px",
+                                        }}
+                                      >
+                                        {currentProperty.typeOfBuilding}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        style={{
+                                          border: "1px solid grey",
+                                          color: "#2e008b",
+                                        }}
+                                      >
+                                        <span className="text-start">
+                                          {" "}
+                                          Lender Information
+                                        </span>
+                                      </td>
+                                      <td
+                                        style={{
+                                          border: "1px solid grey",
+                                          width: "250px",
+                                        }}
+                                      >
+                                        {currentProperty.typeOfBuilding}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        style={{
+                                          border: "1px solid grey",
+                                          color: "#2e008b",
+                                        }}
+                                      >
+                                        <span className="text-start">
+                                          Community
+                                        </span>
+                                      </td>
+                                      <td
+                                        style={{
+                                          border: "1px solid grey",
+                                          width: "250px",
                                         }}
                                       >
                                         {" "}
                                         {currentProperty.community}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        style={{
+                                          border: "1px solid grey",
+                                          color: "#2e008b",
+                                        }}
+                                      >
+                                        <span className="text-start">
+                                          Estimated Value / Purchased Price
+                                        </span>
+                                      </td>
+                                      <td
+                                        style={{
+                                          border: "1px solid grey",
+                                          width: "250px",
+                                        }}
+                                      >
+                                        ${currentProperty.bidLowerRange}
                                       </td>
                                     </tr>
                                     <tr>
@@ -445,11 +509,11 @@ const Index = () => {
                                       <td
                                         style={{
                                           border: "1px solid grey",
-                                          width: "200px",
+                                          width: "250px",
                                         }}
                                       >
                                         {" "}
-                                        {currentProperty.urgency === 1
+                                        {currentProperty.urgency === 0
                                           ? "Rush"
                                           : currentProperty.urgency === 1
                                           ? "Regular"
@@ -470,7 +534,7 @@ const Index = () => {
                                       <td
                                         style={{
                                           border: "1px solid grey",
-                                          width: "200px",
+                                          width: "250px",
                                         }}
                                       >
                                         {" "}
@@ -494,7 +558,7 @@ const Index = () => {
                                       <td
                                         style={{
                                           border: "1px solid grey",
-                                          width: "200px",
+                                          width: "250px",
                                         }}
                                       >
                                         {" "}
@@ -515,11 +579,53 @@ const Index = () => {
                                       <td
                                         style={{
                                           border: "1px solid grey",
-                                          width: "200px",
+                                          width: "250px",
                                         }}
                                       >
                                         {" "}
                                         {currentProperty.applicantPhoneNumber}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        style={{
+                                          border: "1px solid grey",
+                                          color: "#2e008b",
+                                        }}
+                                      >
+                                        <span className="text-start">
+                                          Address
+                                        </span>
+                                      </td>
+                                      <td
+                                        style={{
+                                          border: "1px solid grey",
+                                          width: "250px",
+                                        }}
+                                      >
+                                        {" "}
+                                        {currentProperty.applicantLatsName}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        style={{
+                                          border: "1px solid grey",
+                                          color: "#2e008b",
+                                        }}
+                                      >
+                                        <span className="text-start">
+                                          Remark / Additional Information
+                                        </span>
+                                      </td>
+                                      <td
+                                        style={{
+                                          border: "1px solid grey",
+                                          width: "250px",
+                                        }}
+                                      >
+                                        {" "}
+                                        {currentProperty.applicantFirstName}
                                       </td>
                                     </tr>
                                   </table>

@@ -457,9 +457,9 @@ const DetailedInfo = ({
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                onChange={(e) => setApplicantEmail(e.target.value)}
-                value={applicantEmail}
-                disabled={isDisable}
+                // onChange={(e) => setApplicantEmail(e.target.value)}
+                // value={applicantEmail}
+                // disabled={isDisable}
               />
             </div>
           </div>

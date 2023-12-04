@@ -18,7 +18,7 @@ const AddressSidebar = () => {
           <div className="d-flex">
             <span className="btn text-color flaticon-house-2"></span>
             <p className="mt-2">
-              XYZ street Model Town British Columbia Canada <br /> Pin Code
+              XYZ street Model <br /> Town British Columbia Canada <br /> Pin Code
               123456
             </p>
           </div>
@@ -83,7 +83,6 @@ const AddressSidebar = () => {
             <p className="mt-2">info@appraisallink.com</p>
           </div>
         </div>
-
         <div
           className="col-lg-3 contact_localtion m-3"
           style={{

@@ -18,12 +18,12 @@ const headCells = [
     label: "Property Address",
     width: 200,
   },
-  {
-    id: "name",
-    numeric: false,
-    label: "Appraiser",
-    width: 200,
-  },
+  // {
+  //   id: "name",
+  //   numeric: false,
+  //   label: "Appraiser",
+  //   width: 200,
+  // },
   {
     id: "amount",
     numeric: false,

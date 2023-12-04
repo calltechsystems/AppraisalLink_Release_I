@@ -96,7 +96,7 @@ const LocationField = ({
                   fontWeight: "",
                 }}
               >
-                Unit/Apartment Number<span class="req-btn">*</span>
+                Unit/Apartment Number
               </label>
             </div>
             <div className="col-lg-7">
@@ -148,7 +148,7 @@ const LocationField = ({
                   fontWeight: "",
                 }}
               >
-                Province Code <span class="req-btn">*</span>
+                Province <span class="req-btn">*</span>
               </label>
             </div>
             <div className="col-lg-7">

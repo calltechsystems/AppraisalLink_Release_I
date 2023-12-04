@@ -7300,6 +7300,7 @@ form.home5_advanced_search_form
   -webkit-background-size: cover;
   background-size: cover;
   border: 1px solid #ebebeb;
+  /* border: 1px solid #2e008b; */
   border-radius: 8px;
   cursor: pointer;
   height: 200px;
@@ -16677,10 +16678,17 @@ legend span {
 .contact_localtion {
   background-color: #ffffff;
   border-radius: 8px;
-  border: 1px solid #ebebeb;
+  /* border: 1px solid #ebebeb; */
+  border: 1px solid #2e008b;
   border-radius: 8px;
   padding: 30px;
   position: relative;
+  transition: all 0.3s ease;
+}
+
+.contact_localtion:hover{
+  border: 2px solid #97d700;
+  transform: scale(1.1);
 }
 
 .contact_localtion h4 {
@@ -22458,6 +22466,7 @@ input:checked + .slider:before {
 
 .card_01 {
   background-color: #ffffff;
+  border: 1px solid #2e008b !important;
 }
 
 .card_01:hover {

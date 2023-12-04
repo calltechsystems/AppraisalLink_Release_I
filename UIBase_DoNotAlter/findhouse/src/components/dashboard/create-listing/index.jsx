@@ -33,7 +33,7 @@ const Index = ({ isView, propertyData }) => {
   const [cityRef, setCityRef] = useState(propertyData?.city || "");
   const [stateRef, setStateRef] = useState(propertyData?.state || "");
   const [zipCodeRef, setZipCodeRef] = useState(propertyData?.zipCode || null);
-  const [areaRef, setAreaRef] = useState(propertyData?.area || 0);
+  // const [areaRef, setAreaRef] = useState(propertyData?.area || 0);
   const [communityRef, setCommunityRef] = useState(
     propertyData?.community || null
   );
@@ -92,7 +92,7 @@ const Index = ({ isView, propertyData }) => {
       city: cityRef,
       state: stateRef,
       zipCode: zipCodeRef,
-      area: areaRef,
+      // area: areaRef,
       community: communityRef,
       typeOfBuilding: buildinRef,
       applicantFirstName: applicantFirstName,
@@ -175,7 +175,7 @@ const Index = ({ isView, propertyData }) => {
         city: cityRef,
         state: stateRef,
         zipCode: zipCodeRef,
-        area: areaRef,
+        // area: areaRef,
         community: communityRef,
         typeOfBuilding: buildinRef,
         applicantFirstName: applicantFirstName,
@@ -198,8 +198,8 @@ const Index = ({ isView, propertyData }) => {
         !payload.state ||
         !payload.zipCode ||
         !payload.typeOfBuilding ||
-        !payload.community ||
-        !payload.area
+        !payload.community
+        // !payload.area
       ) {
         toast.error("All required fields must be filled");
       } else {
@@ -340,8 +340,8 @@ const Index = ({ isView, propertyData }) => {
                         setStateRef={setStateRef}
                         handleZipCodeChange={handleZipCodeChange}
                         zipCodeRef={zipCodeRef}
-                        areaRef={areaRef}
-                        setAreaRef={setAreaRef}
+                        // areaRef={areaRef}
+                        // setAreaRef={setAreaRef}
                         setZipCodeRef={setZipCodeRef}
                         propertyData={propertyData}
                         setDisable={setDisable}
@@ -368,8 +368,8 @@ const Index = ({ isView, propertyData }) => {
                     <hr style={{ color: "#2e008b" }} />
                     <CreateList
                       isDisable={isDisable}
-                      areaRef={areaRef}
-                      setAreaRef={setAreaRef}
+                      // areaRef={areaRef}
+                      // setAreaRef={setAreaRef}
                       communityRef={communityRef}
                       setCommunityRef={setCommunityRef}
                       buildinRef={buildinRef}
@@ -444,7 +444,7 @@ const Index = ({ isView, propertyData }) => {
                       <div className="d-flex justify-content-center mt-2">
                         <table
                           style={{
-                            width: "450px",
+                            width: "550px",
                             textAlign: "center",
                             borderRadius: "5px",
                           }}
@@ -463,14 +463,14 @@ const Index = ({ isView, propertyData }) => {
                             <td
                               style={{
                                 border: "1px solid grey",
-                                width: "200px",
+                                width: "250px",
                               }}
                             >
-                              {streetNameRef} {streetNumberRef} {cityRef}{" "}
-                              {zipCodeRef}
+                              {streetNumberRef} {streetNameRef} {cityRef}{" "}
+                              {stateRef} {zipCodeRef}
                             </td>
                           </tr>
-                          <tr>
+                          {/* <tr>
                             <td
                               style={{
                                 border: "1px solid grey",
@@ -482,13 +482,13 @@ const Index = ({ isView, propertyData }) => {
                             <td
                               style={{
                                 border: "1px solid grey",
-                                width: "200px",
+                                width: "250px",
                               }}
                             >
                               {" "}
                               {areaRef} sqft
                             </td>
-                          </tr>
+                          </tr> */}
 
                           <tr>
                             <td
@@ -505,7 +505,7 @@ const Index = ({ isView, propertyData }) => {
                             <td
                               style={{
                                 border: "1px solid grey",
-                                width: "200px",
+                                width: "250px",
                               }}
                             >
                               {buildinRef}
@@ -519,13 +519,92 @@ const Index = ({ isView, propertyData }) => {
                               }}
                             >
                               <span className="text-start">
-                                Property Estimated Value
+                                {" "}
+                                Type of Appraisal
                               </span>
                             </td>
                             <td
                               style={{
                                 border: "1px solid grey",
-                                width: "200px",
+                                width: "250px",
+                              }}
+                            >
+                              {buildinRef}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              style={{
+                                border: "1px solid grey",
+                                color: "#2e008b",
+                              }}
+                            >
+                              <span className="text-start"> Purpose</span>
+                            </td>
+                            <td
+                              style={{
+                                border: "1px solid grey",
+                                width: "250px",
+                              }}
+                            >
+                              {buildinRef}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              style={{
+                                border: "1px solid grey",
+                                color: "#2e008b",
+                              }}
+                            >
+                              <span className="text-start">
+                                {" "}
+                                Lender Information
+                              </span>
+                            </td>
+                            <td
+                              style={{
+                                border: "1px solid grey",
+                                width: "250px",
+                              }}
+                            >
+                              {buildinRef}
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <td
+                              style={{
+                                border: "1px solid grey",
+                                color: "#2e008b",
+                              }}
+                            >
+                              <span className="text-start">Community</span>
+                            </td>
+                            <td
+                              style={{
+                                border: "1px solid grey",
+                                width: "250px",
+                              }}
+                            >
+                              {communityRef}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              style={{
+                                border: "1px solid grey",
+                                color: "#2e008b",
+                              }}
+                            >
+                              <span className="text-start">
+                                Estimated Value / Purchased Price
+                              </span>
+                            </td>
+                            <td
+                              style={{
+                                border: "1px solid grey",
+                                width: "250px",
                               }}
                             >
                               {" "}
@@ -539,31 +618,12 @@ const Index = ({ isView, propertyData }) => {
                                 color: "#2e008b",
                               }}
                             >
-                              <span className="text-start">Community Type</span>
-                            </td>
-                            <td
-                              style={{
-                                border: "1px solid grey",
-                                width: "200px",
-                              }}
-                            >
-                              {communityRef}
-                            </td>
-                          </tr>
-
-                          <tr>
-                            <td
-                              style={{
-                                border: "1px solid grey",
-                                color: "#2e008b",
-                              }}
-                            >
                               <span className="text-start">Urgency</span>
                             </td>
                             <td
                               style={{
                                 border: "1px solid grey",
-                                width: "200px",
+                                width: "250px",
                               }}
                             >
                               {" "}
@@ -583,7 +643,7 @@ const Index = ({ isView, propertyData }) => {
                             <td
                               style={{
                                 border: "1px solid grey",
-                                width: "200px",
+                                width: "250px",
                               }}
                             >
                               {" "}
@@ -602,7 +662,7 @@ const Index = ({ isView, propertyData }) => {
                             <td
                               style={{
                                 border: "1px solid grey",
-                                width: "200px",
+                                width: "250px",
                               }}
                             >
                               {" "}
@@ -621,11 +681,53 @@ const Index = ({ isView, propertyData }) => {
                             <td
                               style={{
                                 border: "1px solid grey",
-                                width: "200px",
+                                width: "250px",
                               }}
                             >
                               {" "}
                               {applicantNumber}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              style={{
+                                border: "1px solid grey",
+                                color: "#2e008b",
+                              }}
+                            >
+                              <span className="text-start">
+                                Address
+                              </span>
+                            </td>
+                            <td
+                              style={{
+                                border: "1px solid grey",
+                                width: "250px",
+                              }}
+                            >
+                              {" "}
+                               {bidLowerRangeRef}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              style={{
+                                border: "1px solid grey",
+                                color: "#2e008b",
+                              }}
+                            >
+                              <span className="text-start">
+                                Remark / Additional Information
+                              </span>
+                            </td>
+                            <td
+                              style={{
+                                border: "1px solid grey",
+                                width: "250px",
+                              }}
+                            >
+                              {" "}
+                              {bidLowerRangeRef}
                             </td>
                           </tr>
                         </table>
@@ -633,7 +735,7 @@ const Index = ({ isView, propertyData }) => {
                       <div className="row text-center mt-3">
                         <div className="col-lg-6">
                           <button
-                            className="w-50 btn-color text-end"
+                            className="w-50 btn-color"
                             onClick={onCancelHandler}
                           >
                             Cancel
