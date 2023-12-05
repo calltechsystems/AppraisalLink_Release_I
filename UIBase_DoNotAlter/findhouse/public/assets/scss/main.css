@@ -22396,12 +22396,12 @@ input:checked + .slider:before {
 
 .smartTable-tableContainer::-webkit-scrollbar {
   -webkit-appearance: none;
-  width: 5px;
-  height: 10px;
+  width: 15px;
+  height: 15px;
 }
 
 .smartTable-tableContainer::-webkit-scrollbar-thumb {
-  border-radius: 5px;
+  border-radius: 3px;
   background-color: rgba(6, 66, 247, 0.5);
   box-shadow: 0 0 1px rgba(6, 66, 247, 0.5);
   -webkit-box-shadow: 0 0 1px rgba(6, 66, 247, 0.5);

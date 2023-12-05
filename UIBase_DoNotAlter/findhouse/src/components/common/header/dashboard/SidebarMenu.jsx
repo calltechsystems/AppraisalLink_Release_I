@@ -39,7 +39,10 @@ const SidebarMenu = () => {
   return (
     <>
       <ul className="sidebar-menu">
-        <li className="sidebar_header header">
+        <li
+          className="sidebar_header header"
+          style={{ backgroundColor: "white" }}
+        >
           <Link href="/">
             <Image
               width={40}
@@ -47,7 +50,7 @@ const SidebarMenu = () => {
               src="/assets/images/logo_new.png"
               alt="header-logo2.png"
             />
-            <span style={{ color: "#97d700" }}>Appraisal</span>
+            <span style={{ color: "#2e008b" }}>Appraisal</span>
             <span style={{ color: "#97d700" }}>Link</span>
           </Link>
         </li>
@@ -237,10 +240,8 @@ const SidebarMenu = () => {
             ))}
           </ul>
         </li>
-        <li
-          className="link-hover sidebar-menu "
-        >
-          <Link href="mailto:patelshubhendra@gmail.com" >
+        <li className="link-hover sidebar-menu ">
+          <Link href="mailto:patelshubhendra@gmail.com">
             <i className="flaticon-envelope"></i>
             <span>Contact Us</span>
           </Link>

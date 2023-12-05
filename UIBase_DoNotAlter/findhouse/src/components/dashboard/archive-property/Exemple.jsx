@@ -7,6 +7,18 @@ import axios from "axios";
 
 const headCells = [
   {
+    id: "order_id",
+    numeric: false,
+    label: "Order ID",
+    width: 200,
+  },
+  {
+    id: "sub_date",
+    numeric: false,
+    label: "Submission Date",
+    width: 200,
+  },
+  {
     id: "status",
     numeric: false,
     label: "Status",
@@ -24,24 +36,18 @@ const headCells = [
   //   label: "Appraiser",
   //   width: 200,
   // },
-  {
-    id: "amount",
-    numeric: false,
-    label: "Quote Amount",
-    width: 200,
-  },
-  {
-    id: "sub_date",
-    numeric: false,
-    label: "Submission Date",
-    width: 200,
-  },
-  {
-    id: "quote_date",
-    numeric: false,
-    label: "Quote Date",
-    width: 200,
-  },
+  // {
+  //   id: "amount",
+  //   numeric: false,
+  //   label: "Quote Amount",
+  //   width: 200,
+  // },
+  // {
+  //   id: "quote_date",
+  //   numeric: false,
+  //   label: "Quote Date",
+  //   width: 200,
+  // },
   {
     id: "actions",
     numeric: false,
@@ -109,12 +115,13 @@ export default function Exemple({
       properties.map((property, index) => {
         const isEditable = !property.propertyStatus;
         const updatedRow = {
+          order_id: property.orderId,
           status: property.propertyStatus ? (
             <span className="btn bg-success text-light">Completed</span>
           ) : (
-            <span className="btn bg-warning text-dark">In Progress</span>
+            <span className="btn bg-primary text-light">In Progress</span>
           ),
-          address:`${property.city}, ${property.state}, ${property.zipCode}`,
+          address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.state}, ${property.zipCode}`,
           user: property.applicantEmailAddress,
           name: `${property.applicantFirstName}, ${property.applicantLastName}`,
           amount: ` $${property.bidLowerRange}`,

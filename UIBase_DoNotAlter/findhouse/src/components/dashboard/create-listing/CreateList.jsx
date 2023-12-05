@@ -169,7 +169,7 @@ const CreateList = ({
         </div>
       </div> */}
 
-      <div className="row offset-1">
+      <div className="row">
         <div className="col-lg-12">
           {/* <div className="row" style={{ marginBottom: "10px" }}>
             <div className="col-lg-3 my_profile_setting_input form-group">
@@ -208,11 +208,14 @@ const CreateList = ({
                   fontWeight: "",
                 }}
               >
-                Type of Building <span class="req-btn">*</span>
+                Type of Building<span class="req-btn">*</span>
               </label>
             </div>
-            <div className="col-lg-7">
-              <div className="form-group input-group ui_kit_select_search">
+            <div className="col-lg-4">
+              <div
+                className="form-group input-group ui_kit_select_search"
+                style={{ marginLeft: "-5px" }}
+              >
                 <select
                   required
                   className="form-select"
@@ -239,10 +242,7 @@ const CreateList = ({
                 </select>
               </div>
             </div>
-          </div>
-          <div className="row" style={{ marginBottom: "10px" }}>
-            <div className="col-lg-3 my_profile_setting_input form-group"></div>
-            <div className="col-lg-7">
+            <div className="col-lg-5">
               <div id="other-div" style={{ display: "none" }}>
                 {/* Content for the "Other" option */}
                 <input
@@ -257,6 +257,22 @@ const CreateList = ({
               </div>
             </div>
           </div>
+          {/* <div className="row" style={{ marginBottom: "10px" }}>
+            <div className="col-lg-3 my_profile_setting_input form-group"></div>
+            <div className="col-lg-7">
+              <div id="other-div" style={{ display: "none" }}>
+                <input
+                  required
+                  style={{ backgroundColor: "#E8F0FE" }}
+                  onChange={(e) => setBuildinRef(e.target.value)}
+                  type="text"
+                  className="form-control"
+                  id="otherInput"
+                  name="otherInput"
+                />
+              </div>
+            </div>
+          </div> */}
           <div className="row" style={{ marginBottom: "10px" }}>
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
@@ -271,8 +287,11 @@ const CreateList = ({
                 Type of Appraisal <span class="req-btn">*</span>
               </label>
             </div>
-            <div className="col-lg-7">
-              <div className="form-group input-group ui_kit_select_search">
+            <div className="col-lg-4">
+              <div
+                className="form-group input-group ui_kit_select_search"
+                style={{ marginLeft: "-5px" }}
+              >
                 <select
                   required
                   className="form-select"
@@ -299,10 +318,7 @@ const CreateList = ({
                 </select>
               </div>
             </div>
-          </div>
-          <div className="row" style={{ marginBottom: "10px" }}>
-            <div className="col-lg-3 my_profile_setting_input form-group"></div>
-            <div className="col-lg-7">
+            <div className="col-lg-5">
               <div id="other-div_01" style={{ display: "none" }}>
                 {/* Content for the "Other" option */}
                 <input
@@ -316,6 +332,21 @@ const CreateList = ({
               </div>
             </div>
           </div>
+          {/* <div className="row" style={{ marginBottom: "10px" }}>
+            <div className="col-lg-3 my_profile_setting_input form-group"></div>
+            <div className="col-lg-7">
+              <div id="other-div_01" style={{ display: "none" }}>
+                <input
+                  required
+                  style={{ backgroundColor: "#E8F0FE" }}
+                  type="text"
+                  className="form-control"
+                  id="otherInput"
+                  name="otherInput"
+                />
+              </div>
+            </div>
+          </div> */}
           <div className="row" style={{ marginBottom: "10px" }}>
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
@@ -330,8 +361,11 @@ const CreateList = ({
                 Purpose <span class="req-btn">*</span>
               </label>
             </div>
-            <div className="col-lg-7">
-              <div className="form-group input-group ui_kit_select_search">
+            <div className="col-lg-4">
+              <div
+                className="form-group input-group ui_kit_select_search"
+                style={{ marginLeft: "-5px" }}
+              >
                 <select
                   required
                   className="form-select"
@@ -358,10 +392,7 @@ const CreateList = ({
                 </select>
               </div>
             </div>
-          </div>
-          <div className="row" style={{ marginBottom: "10px" }}>
-            <div className="col-lg-3 my_profile_setting_input form-group"></div>
-            <div className="col-lg-7">
+            <div className="col-lg-5">
               <div id="other-div_02" style={{ display: "none" }}>
                 {/* Content for the "Other" option */}
                 <input
@@ -375,6 +406,21 @@ const CreateList = ({
               </div>
             </div>
           </div>
+          {/* <div className="row" style={{ marginBottom: "10px" }}>
+            <div className="col-lg-3 my_profile_setting_input form-group"></div>
+            <div className="col-lg-7">
+              <div id="other-div_02" style={{ display: "none" }}>
+                <input
+                  required
+                  style={{ backgroundColor: "#E8F0FE" }}
+                  type="text"
+                  className="form-control"
+                  id="otherInput"
+                  name="otherInput"
+                />
+              </div>
+            </div>
+          </div> */}
           <div className="row" style={{ marginBottom: "10px" }}>
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
@@ -394,7 +440,7 @@ const CreateList = ({
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                style={{ backgroundColor: "#E8F0FE" }}
+                style={{ backgroundColor: "#E8F0FE", marginLeft: "-5px" }}
                 // onChange={(e) => setCommunityRef(e.target.value)}
                 // value={communityRef}
                 // disabled={isDisable}
@@ -420,7 +466,7 @@ const CreateList = ({
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                style={{ backgroundColor: "#E8F0FE" }}
+                style={{ backgroundColor: "#E8F0FE", marginLeft: "-5px" }}
                 onChange={(e) => setCommunityRef(e.target.value)}
                 value={communityRef}
                 disabled={isDisable}
@@ -446,7 +492,7 @@ const CreateList = ({
                 type="number"
                 className="form-control"
                 id="formGroupExampleInput3"
-                style={{ backgroundColor: "#E8F0FE" }}
+                style={{ backgroundColor: "#E8F0FE", marginLeft: "-5px" }}
                 onChange={(e) => setBidLowerRangeRef(e.target.value)}
                 value={bidLowerRangeRef}
                 disabled={isDisable}
@@ -468,7 +514,10 @@ const CreateList = ({
               </label>
             </div>
             <div className="col-lg-7">
-              <div className="form-group input-group ui_kit_select_search mb-3">
+              <div
+                className="form-group input-group ui_kit_select_search mb-3"
+                style={{ marginLeft: "-5px" }}
+              >
                 <select
                   className="form-select"
                   data-live-search="true"

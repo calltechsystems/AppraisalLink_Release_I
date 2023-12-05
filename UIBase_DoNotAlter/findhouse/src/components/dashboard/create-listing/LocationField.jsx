@@ -31,7 +31,7 @@ const LocationField = ({
     <>
       {/* Old Form */}
 
-      <div className="row offset-1">
+      <div className="row">
         <div className="col-lg-12">
           <div className="row" style={{ marginBottom: "10px" }}>
             <div className="col-lg-3 my_profile_setting_input form-group">
