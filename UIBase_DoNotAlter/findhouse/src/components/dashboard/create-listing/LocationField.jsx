@@ -56,6 +56,7 @@ const LocationField = ({
                 onChange={(e) => setStreetNumberRef(e.target.value)}
                 value={streetNumberRef}
                 disabled={isDisable}
+                maxLength={30}
               />
             </div>
           </div>
@@ -82,6 +83,7 @@ const LocationField = ({
                 onChange={(e) => setStreetNameRef(e.target.value)}
                 value={streetNameRef}
                 disabled={isDisable}
+                maxLength={30}
               />
             </div>
           </div>
@@ -96,7 +98,7 @@ const LocationField = ({
                   fontWeight: "",
                 }}
               >
-                Unit/Apartment Number
+                Unit / Apt. No.
               </label>
             </div>
             <div className="col-lg-7">
@@ -105,6 +107,7 @@ const LocationField = ({
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
+                maxLength={30}
                 // onChange={(e) => setStreetNumberRef(e.target.value)}
                 // value={streetNumberRef}
                 // disabled={isDisable}
@@ -134,6 +137,7 @@ const LocationField = ({
                 onChange={(e) => setCityRef(e.target.value)}
                 value={cityRef}
                 disabled={isDisable}
+                maxLength={30}
               />
             </div>
           </div>
@@ -160,6 +164,7 @@ const LocationField = ({
                 onChange={(e) => setStateRef(e.target.value)}
                 value={stateRef}
                 disabled={isDisable}
+                maxLength={30}
               />
             </div>
           </div>
@@ -186,6 +191,7 @@ const LocationField = ({
                 onChange={(e) => handleZipCodeChange(e)}
                 value={zipCodeRef}
                 disabled={isDisable}
+                maxLength={30}
               />
             </div>
           </div>

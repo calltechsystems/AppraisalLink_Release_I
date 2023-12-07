@@ -12,7 +12,217 @@ const Form = () => {
   return (
     <form className="contact_form" action="#">
       <div className="row">
-        <div className="col-md-6">
+        <div className="col-lg-12">
+          <div className="row">
+            <div className="col-md-6">
+              <div className="row form-group">
+                <div className="col-lg-4">
+                  <label
+                    htmlFor="first-name"
+                    className="mt-3 text-dark fw-bold"
+                  >
+                    First Name <span class="req-btn">*</span>
+                  </label>
+                </div>
+                <div className="col-lg-8">
+                  <input
+                    id="form_name"
+                    name="form_name"
+                    className="form-control"
+                    required="required"
+                    type="text"
+                    maxLength={30}
+                    style={{
+                      // paddingTop: "15px",
+                      // paddingBottom: "15px",
+                      backgroundColor: "#E8F0FE",
+                      // //color: "white",
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="row form-group">
+                <div className="col-lg-4">
+                  <label
+                    htmlFor="first-name"
+                    className="mt-3 text-dark fw-bold"
+                  >
+                    Last Name <span class="req-btn">*</span>
+                  </label>
+                </div>
+                <div className="col-lg-8">
+                  <input
+                    id="form_name"
+                    name="form_name"
+                    className="form-control"
+                    required="required"
+                    type="text"
+                    maxLength={30}
+                    style={{
+                      // paddingTop: "15px",
+                      // paddingBottom: "15px",
+                      backgroundColor: "#E8F0FE",
+                      // //color: "white",
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="col-lg-12">
+          <div className="row">
+            <div className="col-md-6">
+              <div className="row form-group">
+                <div className="col-lg-4">
+                  <label
+                    htmlFor="first-name"
+                    className="mt-3 text-dark fw-bold"
+                  >
+                    Email Address<span class="req-btn">*</span>
+                  </label>
+                </div>
+                <div className="col-lg-8">
+                  <input
+                    id="form_email"
+                    name="form_email"
+                    className="form-control required email"
+                    required="required"
+                    type="email"
+                    maxLength={30}
+                    style={{
+                      // paddingTop: "15px",
+                      // paddingBottom: "15px",
+                      backgroundColor: "#E8F0FE",
+                      // //color: "white",
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="row form-group">
+                <div className="col-lg-4">
+                  <label
+                    htmlFor="first-name"
+                    className="mt-3 text-dark fw-bold"
+                  >
+                    Phone No. <span class="req-btn">*</span>
+                  </label>
+                </div>
+                <div className="col-lg-8">
+                  <input
+                    id="form_phone"
+                    name="form_phone"
+                    className="form-control required phone"
+                    required="required"
+                    type="number"
+                    maxLength={10}
+                    style={{
+                      // paddingTop: "15px",
+                      // paddingBottom: "15px",
+                      backgroundColor: "#E8F0FE",
+                      // //color: "white",
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="col-lg-12">
+          <div className="row">
+            <div className="col-md-6">
+              <div className="row form-group">
+                <div className="col-lg-4">
+                  <label
+                    htmlFor="first-name"
+                    className="mt-3 text-dark fw-bold"
+                  >
+                    Company <span class="req-btn"></span>
+                  </label>
+                </div>
+                <div className="col-lg-8">
+                  <input
+                    id="form_subject"
+                    name="form_subject"
+                    className="form-control required"
+                    type="text"
+                    maxLength={30}
+                    style={{
+                      // paddingTop: "15px",
+                      // paddingBottom: "15px",
+                      backgroundColor: "#E8F0FE",
+                      // //color: "white",
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="row form-group">
+                <div className="col-lg-4">
+                  <label
+                    htmlFor="first-name"
+                    className="mt-3 text-dark fw-bold"
+                  >
+                    Province <span class="req-btn"></span>
+                  </label>
+                </div>
+                <div className="col-lg-8">
+                  <input
+                    id="form_subject"
+                    name="form_subject"
+                    className="form-control required"
+                    type="text"
+                    maxLength={30}
+                    style={{
+                      // paddingTop: "15px",
+                      // paddingBottom: "15px",
+                      backgroundColor: "#E8F0FE",
+                      // //color: "white",
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="col-lg-12">
+          <div className="row">
+            <div className="col-md-12">
+              <div className="row form-group">
+                <div className="col-lg-2">
+                  <label
+                    htmlFor="first-name"
+                    className="mb-2 text-dark fw-bold"
+                  >
+                    Subject <span class="req-btn">*</span>
+                  </label>
+                </div>
+                <div className="col-lg-10">
+                  <input
+                    id="form_subject"
+                    required
+                    name="form_subject"
+                    className="form-control required"
+                    type="text"
+                    maxLength={30}
+                    style={{
+                      // paddingTop: "15px",
+                      // paddingBottom: "15px",
+                      backgroundColor: "#E8F0FE",
+                      // //color: "white",
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* <div className="col-md-6">
           <div className="form-group">
             <label htmlFor="first-name" className="mb-2 text-dark fw-bold">
               First Name <span class="req-btn">*</span>
@@ -31,10 +241,10 @@ const Form = () => {
               }}
             />
           </div>
-        </div>
+        </div> */}
         {/* End .col */}
 
-        <div className="col-md-6">
+        {/* <div className="col-md-6">
           <div className="form-group">
             <label htmlFor="first-name" className="mb-2 text-dark fw-bold">
               Last Name <span class="req-btn">*</span>
@@ -53,10 +263,10 @@ const Form = () => {
               }}
             />
           </div>
-        </div>
+        </div> */}
         {/* End .col */}
 
-        <div className="col-md-6">
+        {/* <div className="col-md-6">
           <div className="form-group">
             <label htmlFor="first-name" className="mb-2 text-dark fw-bold">
               Email Address <span class="req-btn">*</span>
@@ -75,10 +285,10 @@ const Form = () => {
               }}
             />
           </div>
-        </div>
+        </div> */}
         {/* End .col */}
 
-        <div className="col-md-6">
+        {/* <div className="col-md-6">
           <div className="form-group">
             <label htmlFor="first-name" className="mb-2 text-dark fw-bold">
               Phone Number <span class="req-btn">*</span>
@@ -97,10 +307,10 @@ const Form = () => {
               }}
             />
           </div>
-        </div>
+        </div> */}
         {/* End .col */}
 
-        <div className="col-md-6">
+        {/* <div className="col-md-6">
           <div className="form-group">
             <label htmlFor="first-name" className="mb-2 text-dark fw-bold">
               Company <span class="req-btn"></span>
@@ -118,7 +328,7 @@ const Form = () => {
               }}
             />
           </div>
-        </div>
+        </div> */}
         {/* End .col */}
 
         {/* <div className="col-md-6">
@@ -149,7 +359,7 @@ const Form = () => {
         </div> */}
         {/* End .col */}
 
-        <div className="col-md-6">
+        {/* <div className="col-md-6">
           <div className="form-group">
             <label htmlFor="first-name" className="mb-2 text-dark fw-bold">
               Province/State <span class="req-btn"></span>
@@ -167,10 +377,10 @@ const Form = () => {
               }}
             />
           </div>
-        </div>
+        </div> */}
         {/* End .col */}
 
-        <div className="col-md-12">
+        {/* <div className="col-md-12">
           <div className="form-group">
             <label htmlFor="first-name" className="mb-2 text-dark fw-bold">
               Subject <span class="req-btn">*</span>
@@ -189,7 +399,7 @@ const Form = () => {
               }}
             />
           </div>
-        </div>
+        </div> */}
         {/* End .col */}
 
         {/* <div className="col-md-12">
@@ -206,7 +416,7 @@ const Form = () => {
         </div> */}
         {/* End .col */}
 
-        <div className="col-sm-12">
+        <div className="col-lg-12">
           <div className="form-group">
             <label htmlFor="first-name" className="mb-2 text-dark fw-bold">
               Description <span class="req-btn">*</span>
@@ -226,20 +436,25 @@ const Form = () => {
             ></textarea>
           </div>
           {/* End .col */}
-          <ReCAPTCHA
-            sitekey="6LcyCiApAAAAAGqvFl6wWf8hqjDjO6ZyLuK4mmFe"
-            onChange={onChange}
-          />
-          ,
-          <div className="form-group mb0 text-end">
-            <button
-              type="submit"
-              className="btn btn-lg btn-thm"
-              disabled={!verified}
+        </div>
+        <div className="col-lg-12">
+          <div className="row">
+            <div className="col-lg-6">
+              <ReCAPTCHA
+                sitekey="6LcyCiApAAAAAGqvFl6wWf8hqjDjO6ZyLuK4mmFe"
+                onChange={onChange}
+              />
+            </div>
+            <div
+              className="col-lg-6 form-group my_profile_setting_input"
+              style={{ textAlign: "end" }}
             >
-              Submit
-            </button>
+              <button type="submit" className="btn btn2" disabled={!verified}>
+                Submit
+              </button>
+            </div>
           </div>
+
           {/* End button submit */}
         </div>
       </div>

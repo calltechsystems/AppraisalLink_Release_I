@@ -12,6 +12,8 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/router";
 import Exemple from "./Exemple";
+import { FaRedo } from "react-icons/fa";
+
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -276,6 +278,13 @@ const Index = () => {
                       <li className="list-inline-item">
                         <div className="candidate_revew_search_box course fn-520">
                           <SearchBox setSearchInput={setSearchInput} />
+                        </div>
+                      </li>
+                      <li className="list-inline-item" style={{textAlign:"end"}} title="Refresh Page">
+                        <div className="fn-520">
+                          <button className="btn btn-color">
+                            <FaRedo/>
+                          </button>
                         </div>
                       </li>
                       {/* End li */}

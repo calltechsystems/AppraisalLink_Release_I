@@ -31,6 +31,11 @@ function SmartTable(props) {
     window.print();
     toast.success("Data added");
   };
+
+  const refreshHandler=()=>{
+    const refresh = !props.refresh;
+    props.setRefresh(refresh);
+  }
   const fetchData = useCallback(
     async (queryString) => {
       setLoading(true);
@@ -218,6 +223,12 @@ function SmartTable(props) {
               onClick={() => handlePrint()}
             >
               Generate PDF
+            </button>
+            <button
+              className="btn btn-color w-25 h-10"
+              onClick={() => props.refreshHandler()}
+            >
+              Refresh
             </button>
           </div>
           {props.data.length > 0 ? (

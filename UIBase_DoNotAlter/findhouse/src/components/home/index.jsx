@@ -5,6 +5,7 @@ import MobileMenu from "../common/header/MobileMenu";
 import Partners from "../common/Partners";
 // import Header from "./Header";
 import Hero from "./Hero";
+import Link from "next/link";
 import WhyChoose from "../common/WhyChoose";
 import Team from "../about-us/Team";
 import HeroSlider from "./HeroSlider";
@@ -153,6 +154,27 @@ const Index = () => {
         <div className="container">
           <div className="row">
             <WhyChoose />
+          </div>
+        </div>
+      </section>
+
+      {/* <!-- Property Search --> */}
+      <section
+        id="property-search"
+        className="property-search home1-overlay bg-img4"
+      >
+        <div className="row">
+          <div className="col-lg-12">
+            <div className="search_smart_property text-center">
+              <h2 className="text-light">Where Accuracy Meets Expertise</h2>
+              <p className="text-light">
+                Throughout the mortgage process, brokers serve as a point of
+                contact between the borrower and the lender.
+              </p>
+              <Link href="/register" className="my_profile_setting_input">
+                <button className="btn btn2">Register</button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>

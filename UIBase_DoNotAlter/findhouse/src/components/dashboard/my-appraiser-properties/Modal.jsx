@@ -22,10 +22,7 @@ const Modal = ({ modalOpen, closeModal , lowRangeBid , propertyId}) => {
 
     console.log(bidAmount,description,propertyId , user.userId);
 
-    if(bidAmount < 1 || bidAmount < lowRangeBid ){
-      toast.error("Amount should be in a range");
-    }
-    else{
+   
       const formData = {
         propertyId : propertyId,
         userId : user.userId,
@@ -46,7 +43,7 @@ const Modal = ({ modalOpen, closeModal , lowRangeBid , propertyId}) => {
         toast.dismiss();
         toast.error("Try Again");
       });
-    }
+    
   }
   console.log(closeModal);
   return (

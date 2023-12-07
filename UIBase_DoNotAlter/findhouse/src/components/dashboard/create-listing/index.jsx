@@ -42,7 +42,7 @@ const Index = ({ isView, propertyData }) => {
   );
   const [urgencyRef, setUrgencyRef] = useState(propertyData?.urgency || 0);
   const [bidLowerRangeRef, setBidLowerRangeRef] = useState(
-    propertyData?.bidLowerRange || 0
+    propertyData?.bidLowerRange || null
   );
 
   const [applicantFirstName, setApplicantFirstName] = useState(

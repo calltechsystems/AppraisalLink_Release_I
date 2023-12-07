@@ -1069,7 +1069,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                   onMouseEnter={() => setHovered()}
                 >
                   <span className="fs-13"></span>
-                  <span className="dn-lg fs-13" onMouseEnter={() => setPlan()}>
+                  <span className="fs-13 text-light" onMouseEnter={() => setPlan()}>
                     {" "}
                     GET IN TOUCH
                   </span>

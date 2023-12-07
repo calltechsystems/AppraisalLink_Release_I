@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { encryptionData } from "../../../utils/dataEncryption";
 import { useRouter } from "next/router";
+import Loader from "./Loader";
 // import "./SmartTable.css";
 
 const headCells = [
@@ -60,29 +61,6 @@ const headCells = [
   },
 ];
 
-const data = [
-  {
-    title: "6144e83a966145976c75cdfe",
-    date: "minagerges123@gmail.com",
-    urgency: "Pending",
-    bid: "+96170345114",
-    action: "ahlannn",
-  },
-  {
-    title: "6144e83a966145976c75cdfe",
-    date: "minagerges123@gmail.com",
-    urgency: "Pending",
-    bid: "+96170345114",
-    action: "ahlannn",
-  },
-  {
-    title: "6144e83a966145976c75cdfe",
-    date: "minagerges123@gmail.com",
-    urgency: "Pending",
-    bid: "+96170345114",
-    action: "ahlannn",
-  },
-];
 
 export default function Exemple({
   userData,
@@ -97,8 +75,8 @@ export default function Exemple({
   openModalBroker,
   setErrorMessage,
   setModalIsOpenError,
-  setReload,
-  reload
+  setRefresh,
+  refresh
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [wishlist, setWishlist] = useState([]);
@@ -284,13 +262,13 @@ export default function Exemple({
     setUpdatedCode(true);
   },[updatedData])
 
-  useEffect(() => {
-    setReload(false);
+  const refreshHandler = ()=>{
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
       token: userData.token,
     };
+    let tempProperties = [],tempWishlist=[];
     axios
       .get("/api/getPropertiesById", {
         headers: {
@@ -302,12 +280,9 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        toast.dismiss();
-
-        setProperties(res.data.data.property.$values);
+        tempProperties=(res.data.data.property.$values);
       })
       .catch((err) => {
-        toast.dismiss();
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
@@ -331,7 +306,7 @@ export default function Exemple({
         });
         const tempId = responseData;
         console.log("wishlist", responseData);
-        setWishlist(responseData);
+        tempWishlist=(responseData);
       })
       .catch((err) => {
         toast.error(err?.response);
@@ -361,7 +336,8 @@ export default function Exemple({
             return false;
           }
         });
-        console.log(updated24HoursBid);
+        setProperties(tempProperties);
+        setWishlist(tempWishlist);
         setBids(responseData);
       })
       .catch((err) => {
@@ -369,12 +345,102 @@ export default function Exemple({
         // setErrorMessage(err?.response?.data?.error);
         // setModalIsOpenError(true);
       });
-  }, [reload]);
+  }
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("user"));
+
+    const payload = {
+      token: userData.token,
+    };
+    let tempProperties = [],tempWishlist=[];
+    axios
+      .get("/api/getPropertiesById", {
+        headers: {
+          Authorization: `Bearer ${data?.token}`,
+          "Content-Type": "application/json",
+        },
+        params: {
+          userId: data?.userId,
+        },
+      })
+      .then((res) => {
+        tempProperties=(res.data.data.property.$values);
+      })
+      .catch((err) => {
+        setErrorMessage(err?.response?.data?.error);
+        setModalIsOpenError(true);
+      });
+    axios
+      .get("/api/appraiserWishlistedProperties", {
+        headers: {
+          Authorization: `Bearer ${data?.token}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        const tempData = res.data.data.$values;
+
+        // setAllWishlistedProperties(res.data.data.$values);
+        const responseData = tempData.filter((prop, index) => {
+          if (prop.userId === data.userId) {
+            return true;
+          } else {
+            return false;
+          }
+        });
+        const tempId = responseData;
+        console.log("wishlist", responseData);
+        tempWishlist=(responseData);
+      })
+      .catch((err) => {
+        toast.error(err?.response);
+        setErrorMessage(err?.response);
+        setModalIsOpenError(true);
+      });
+    axios
+      .get("/api/getAllBids", {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+      })
+      .then((res) => {
+        toast.dismiss();
+        const tempData = res.data.data.result.$values;
+        const responseData = tempData.filter((prop, index) => {
+          if (prop.userId === data.userId) {
+            return true;
+          } else {
+            return false;
+          }
+        });
+        const updated24HoursBid = responseData.filter((prop, index) => {
+          if (filterBidsWithin24Hours(prop)) {
+            return true;
+          } else {
+            return false;
+          }
+        });
+        setProperties(tempProperties);
+        setWishlist(tempWishlist);
+        setBids(responseData);
+      })
+      .catch((err) => {
+        toast.dismiss();
+        // setErrorMessage(err?.response?.data?.error);
+        // setModalIsOpenError(true);
+      });
+  }, [refresh]);
+  console.log(properties);
   return (
     <>
-      {updatedData && (
-        <SmartTable title="" data={updatedData} headCells={headCells} />
-      )}
+      {properties.length > 0 ?  (
+        <SmartTable title="" data={updatedData} headCells={headCells}
+        setRefresh={setRefresh}
+        setProperties={setProperties}
+        refresh={refresh} 
+        refreshHandler={refreshHandler}/>
+        
+      ) : <Loader/>}
     </>
   );
 }

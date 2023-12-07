@@ -8946,7 +8946,7 @@ form.home5_advanced_search_form
 .my_profile_setting_input .btn2:hover {
   color: rgb(255, 90, 95);
   background-color: #ffffff;
-  border: 2px solid rgb(255, 90, 95);
+  border: 2px solid #97d700;
 }
 
 .my_profile_setting_input .btn3 {
@@ -16640,7 +16640,7 @@ legend span {
   border-radius: 8px;
   background-color: #ffffff;
   color: #484848;
-  font-size: 18px;
+  font-size: 15px;
   height: 50px;
   line-height: 1.2;
   margin-bottom: 20px;
@@ -16687,7 +16687,9 @@ legend span {
 }
 
 .contact_localtion:hover{
+  background-color: #97d700;
   border: 2px solid #97d700;
+  color: white;
   transform: scale(1.1);
 }
 
@@ -21385,6 +21387,12 @@ header.header-nav.menu_style_home_one ul.ace-responsive-menu li.add_listing {
   /* margin-top: 5px !important; */
 }
 
+header.header-nav.menu_style_home_one ul.ace-responsive-menu li.add_listing:hover{
+  background-color: #97d700 !important ;
+  color: #ffffff !important;
+  border: 1px solid #97d700 !important;
+}
+
 .bgc-thm {
   background-color: #084c61 !important ;
 }
@@ -21421,9 +21429,9 @@ header.header-nav.menu_style_home_one ul.ace-responsive-menu li.add_listing {
 }
 
 .my_profile_setting_input .btn2:hover {
-  background-color: #fff !important ;
-  color: #2e008b !important;
-  border: 1px solid #2e008b !important;
+  background-color: #97d700 !important ;
+  color: #fff !important;
+  border: 1px solid #97d700 !important;
 }
 
 .sign_up_form .btn-log {
@@ -22529,4 +22537,11 @@ input:checked + .slider:before {
   background-color: #97d700;
   color: #000000 !important;
   font-weight: bold;
+}
+ 
+.link-color{
+  color: #2e008b;
+}
+.link-color:hover{
+  color: #97d700;
 }

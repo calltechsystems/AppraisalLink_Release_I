@@ -24,12 +24,7 @@ const Modal = ({ modalOpen, closeModal , lowRangeBid , propertyId}) => {
 
     const user = JSON.parse(localStorage.getItem("user"));
 
-    console.log(bidAmount,description,propertyId , user.userId);
-
-    if(bidAmount < 1 || bidAmount < lowRangeBid ){
-      toast.error("Amount should be in a range");
-    }
-    else{
+    
       const formData = {
         propertyId : propertyId,
         userId : user.userId,
@@ -51,7 +46,7 @@ const Modal = ({ modalOpen, closeModal , lowRangeBid , propertyId}) => {
         toast.dismiss();
         toast.error("Try Again");
       });
-    }
+    
   }
   return (
     <div>

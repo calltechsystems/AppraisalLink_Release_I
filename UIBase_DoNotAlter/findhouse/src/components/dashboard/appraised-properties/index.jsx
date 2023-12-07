@@ -36,7 +36,7 @@ const Index = () => {
 
   const [isLoading, setIsLoading] = useState(true);
 
-  const [reload, setReload] = useState(false);
+  const [refresh, setRefresh] = useState(false);
 
   const closeErrorModal = () => {
     setModalIsOpenError(false);
@@ -102,9 +102,6 @@ const Index = () => {
     setModalOpen(false);
   };
 
-  useEffect(() => {
-    setReload(false);
-  }, [reload]);
 
   useEffect(() => {
     const filterProperties = (propertys, searchInput) => {
@@ -369,9 +366,7 @@ const Index = () => {
                   <div className="">
                     <div className="property_table">
                       <div className="table-responsive mt0">
-                        {isLoading ? (
-                          <Loader />
-                        ) : (
+                        
                           <TableData
                             userData={userData}
                             setModalOpen={openModal}
@@ -385,11 +380,11 @@ const Index = () => {
                             participateHandler={participateHandler}
                             setErrorMessage={setErrorMessage}
                             setModalIsOpenError={setModalIsOpenError}
-                            setReload={setReload}
-                            reload={reload}
+                            setRefresh={setRefresh}
+                            refresh={refresh}
                             openModalBroker={openModalBroker}
                           />
-                        )}
+                        
                         {modalIsOpenError && (
                           <div className="modal">
                             <div

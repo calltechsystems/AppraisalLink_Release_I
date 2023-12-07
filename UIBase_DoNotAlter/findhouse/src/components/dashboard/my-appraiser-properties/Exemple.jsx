@@ -4,6 +4,7 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { encryptionData } from "../../../utils/dataEncryption";
+import Loader from "../appraised-properties/Loader";
 // import "./SmartTable.css";
 
 
@@ -370,11 +371,11 @@ export default function Exemple({userData , open ,close , closeBrokerModal ,open
   },[]);
   return (
     <>
-    { updatedData && (<SmartTable
+    { properties.length > 0 ? (<SmartTable
       title=""
       data={updatedData}
       headCells={headCells}
-    />)}
+    />) : <Loader/>}
     </>
   );
 }

@@ -355,6 +355,7 @@ const DetailedInfo = ({
                 onChange={(e) => setApplicantFirstName(e.target.value)}
                 value={applicantFirstName}
                 disabled={isDisable}
+                maxLength={30}
               />
             </div>
           </div>
@@ -381,6 +382,7 @@ const DetailedInfo = ({
                 onChange={(e) => setApplicantLastName(e.target.value)}
                 value={applicantLatsName}
                 disabled={isDisable}
+                maxLength={30}
               />
             </div>
           </div>
@@ -407,6 +409,7 @@ const DetailedInfo = ({
                 onChange={(e) => setApplicantNumber(e.target.value)}
                 value={applicantNumber}
                 disabled={isDisable}
+                maxLength={10}
               />
             </div>
           </div>
@@ -433,6 +436,7 @@ const DetailedInfo = ({
                 onChange={(e) => setApplicantEmail(e.target.value)}
                 value={applicantEmail}
                 disabled={isDisable}
+                maxLength={30}
               />
             </div>
           </div>
@@ -457,6 +461,7 @@ const DetailedInfo = ({
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
+                maxLength={30}
                 // onChange={(e) => setApplicantEmail(e.target.value)}
                 // value={applicantEmail}
                 // disabled={isDisable}
@@ -464,6 +469,38 @@ const DetailedInfo = ({
             </div>
           </div>
 
+          <div className="">
+            <div className="row my_profile_setting_textarea">
+              <div className="col-lg-3">
+                <label
+                  htmlFor="propertyDescription"
+                  className="text-color"
+                  style={{
+                    paddingTop: "15px",
+                    color: "#1560bd",
+                    fontWeight: "",
+                  }}
+                >
+                  Remark / Additional Information
+                </label>
+              </div>
+
+              <div className="col-lg-7">
+                <textarea
+                  style={{
+                    // paddingTop: "15px",
+                    // paddingBottom: "15px",
+                    backgroundColor: "#E8F0FE",
+                    //color: "white",
+                  }}
+                  className="form-control"
+                  id="propertyDescription"
+                  rows="4"
+                  maxLength={200}
+                ></textarea>
+              </div>
+            </div>
+          </div>
           <div className="">
             <div className="row my_profile_setting_input form-group">
               <div className="col-lg-3">
@@ -497,42 +534,9 @@ const DetailedInfo = ({
               </div>
             </div>
           </div>
-
-          <div className="">
-            <div className="row my_profile_setting_textarea">
-              <div className="col-lg-3">
-                <label
-                  htmlFor="propertyDescription"
-                  className="text-color"
-                  style={{
-                    paddingTop: "15px",
-                    color: "#1560bd",
-                    fontWeight: "",
-                  }}
-                >
-                  Remark / Additional Information
-                </label>
-              </div>
-
-              <div className="col-lg-7">
-                <textarea
-                  style={{
-                    // paddingTop: "15px",
-                    // paddingBottom: "15px",
-                    backgroundColor: "#E8F0FE",
-                    //color: "white",
-                  }}
-                  className="form-control"
-                  id="propertyDescription"
-                  rows="4"
-                ></textarea>
-              </div>
-            </div>
-          </div>
-
           <div className="col-xl-12">
             <div className="my_profile_setting_input overflow-hidden mt20 text-center">
-              <button className="btn btn5 m-1">Cancel</button>
+              <button className="btn btn5 m-1">Reset</button>
               {!isDisable &&
                 (propertyData ? (
                   <button className="btn btn5" onClick={updateHandler}>

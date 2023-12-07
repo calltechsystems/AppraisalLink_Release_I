@@ -1,7 +1,7 @@
 export const typeOfBuilding = [
   {
     id: 0,
-    type: "Choose..",
+    type: "Select..",
     value: "",
   },
   {
@@ -11,18 +11,18 @@ export const typeOfBuilding = [
   },
   {
     id: 2,
+    type: "Commercial",
+    value: "Commercial",
+  },
+  {
+    id: 3,
     type: "Condo Townhouse",
     value: "Condo Townhouse",
   },
   {
-    id: 3,
+    id: 4,
     type: "Detached",
     value: "Detached",
-  },
-  {
-    id: 4,
-    type: "Semi-Detached",
-    value: "Semi-Detached",
   },
   {
     id: 5,
@@ -31,31 +31,31 @@ export const typeOfBuilding = [
   },
   {
     id: 6,
-    type: "Commercial",
-    value: "Commercial",
-  },
-  {
-    id: 7,
     type: "Industrial",
     value: "Industrial",
   },
   {
-    id: 8,
+    id: 7,
     type: "Other",
     value: "Other",
+  },
+  {
+    id: 8,
+    type: "Semi-Detached",
+    value: "Semi-Detached",
   },
 ];
 
 export const typeOfAppraisal = [
   {
     id: 0,
-    type: "Choose...",
+    type: "Select...",
     value: "",
   },
   {
     id: 1,
-    type: "Full Appraisal",
-    value: "Full Appraisal",
+    type: "Desktop",
+    value: "Desktop",
   },
   {
     id: 2,
@@ -64,8 +64,8 @@ export const typeOfAppraisal = [
   },
   {
     id: 3,
-    type: "Desktop",
-    value: "Desktop",
+    type: "Full Appraisal",
+    value: "Full Appraisal",
   },
   {
     id: 3,
@@ -77,45 +77,45 @@ export const typeOfAppraisal = [
 export const Purpose = [
   {
     id: 0,
-    type: "Choose...",
+    type: "Select...",
     value: "",
   },
   {
     id: 1,
-    type: "Refinance",
-    value: "Refinance",
-  },
-  {
-    id: 2,
-    type: "Purchase",
-    value: "Purchase",
-  },
-  {
-    id: 3,
     type: "Asset Valuation",
     value: "Asset Valuation",
   },
   {
-    id: 4,
+    id: 2,
     type: "Capital Gain",
     value: "Capital Gain",
   },
   {
-    id: 5,
+    id: 3,
     type: "Matrimonial",
     value: "Matrimonial",
   },
   {
-    id: 6,
+    id: 4,
     type: "Other",
     value: "Other",
+  },
+  {
+    id: 5,
+    type: "Purchase",
+    value: "Purchase",
+  },
+  {
+    id: 6,
+    type: "Refinance",
+    value: "Refinance",
   },
 ];
 
 export const Urgency = [
   {
     id: 0,
-    type: "Choose...",
+    type: "Select...",
     value: "",
   },
   {

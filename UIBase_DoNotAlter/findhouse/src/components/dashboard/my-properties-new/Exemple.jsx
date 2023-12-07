@@ -42,12 +42,48 @@ const headCells = [
     label: "Property Address",
     width: 200,
   },
-  // {
-  //   id: "amount",
-  //   numeric: false,
-  //   label: "Quote",
-  //   width: 200,
-  // },
+  {
+    id: "type_of_building",
+    numeric: false,
+    label: "Type Of Building",
+    width: 200,
+  },
+  {
+    id: "amount",
+    numeric: false,
+    label: "Estimated Value / Purchase Price",
+    width: 200,
+  },
+  {
+    id: "purpose",
+    numeric: false,
+    label: "Purpose",
+    width: 200,
+  },
+  {
+    id: "type_f_appraisal",
+    numeric: false,
+    label: "Type Of Appraisal",
+    width: 200,
+  },
+  {
+    id: "lender_information",
+    numeric: false,
+    label: "Lender Information",
+    width: 200,
+  },
+  {
+    id: "urgency",
+    numeric: false,
+    label: "Urgency",
+    width: 200,
+  },
+  {
+    id: "quote_required_by",
+    numeric: false,
+    label: "Quote Required By",
+    width: 200,
+  },
   {
     id: "actions",
     numeric: false,
@@ -131,13 +167,15 @@ export default function Exemple({
           ),
           address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.state}, ${property.zipCode}`,
           // user: property.applicantEmailAddress,
+          type_of_building :property.typeOfBuilding,
+          urgency : property.urgency,
           amount: ` $${property.bidLowerRange}`,
           actions: (
             // <ul className="view_edit_delete_list mb0">
             <ul className="mb0">
               <li>
                 <Link href={"#"}>
-                  <span onClick={() => openPopupModal(property)}>
+                  <span className="link-color" onClick={() => openPopupModal(property)}>
                     {" "}
                     Property Details{" "}
                   </span>
@@ -153,7 +191,7 @@ export default function Exemple({
               </li>
               <li>
                 <Link href={`/my-property-bids/${property.propertyId}`}>
-                  <span> Quotes </span>
+                  <span className="link-color"> Quotes </span>
                 </Link>{" "}
                 <Link
                   className="btn btn-color-table"
@@ -249,7 +287,7 @@ export default function Exemple({
               {!isEditable && (
                 <li>
                   <Link href={`/archive-property`}>
-                    <span
+                    <span className="link-color"
                       onClick={() =>
                         archievePropertyHandler(property.propertyId)
                       }

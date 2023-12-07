@@ -3,6 +3,7 @@ import SmartTable from "./SmartTable";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import axios from "axios";
+import Loader from "../appraised-properties/Loader";
 // import "./SmartTable.css";
 
 
@@ -109,8 +110,10 @@ export default function Exemple({setModalIsOpenError,allProps,setUpdatedCode,set
       } else {
       }
     });
+    console.log(prop);
     return prop;
   };
+
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
   
@@ -229,11 +232,11 @@ export default function Exemple({setModalIsOpenError,allProps,setUpdatedCode,set
   },[]);
   return (
     <>
-    { updatedData && (<SmartTable
+    { properties.length > 0 ? (<SmartTable
       title=""
       data={updatedData}
       headCells={headCells}
-    />)}
+    />): <Loader/>}
     </>
   );
 }
