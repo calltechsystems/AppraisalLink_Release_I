@@ -1,6 +1,7 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Urgency, typeOfAppraisal, Purpose } from "./data";
 import { typeOfBuilding } from "./data";
+import moment from "moment";
 
 const CreateList = ({
   isDisable,
@@ -76,6 +77,7 @@ const CreateList = ({
       otherDiv.style.display = "none";
     }
   };
+
   return (
     <>
       {/* <div className="row">
@@ -284,7 +286,7 @@ const CreateList = ({
                 </select>
               </div>
             </div>
-            <div className="col-lg-6">
+            <div className="col-lg-4">
               <div id="other-div" style={{ display: "none" }}>
                 {/* Content for the "Other" option */}
                 <input
@@ -375,7 +377,7 @@ const CreateList = ({
                 </select>
               </div>
             </div>
-            <div className="col-lg-6">
+            <div className="col-lg-4">
               <div id="other-div_02" style={{ display: "none" }}>
                 {/* Content for the "Other" option */}
                 <input
@@ -451,7 +453,7 @@ const CreateList = ({
                 </select>
               </div>
             </div>
-            <div className="col-lg-6">
+            <div className="col-lg-4">
               <div id="other-div_01" style={{ display: "none" }}>
                 {/* Content for the "Other" option */}
                 <input
@@ -569,18 +571,19 @@ const CreateList = ({
               </div>
             </div>
             <div
-              className="col-lg-6"
+              className="col-lg-4"
               style={{ display: "none" }}
               id="other-div_03"
             >
               <input
                 required
                 type="date"
+                pattern="\d{4}-\d{2}-\d{2}"
                 className="form-control"
                 id="formGroupExampleInput3"
                 style={{ backgroundColor: "#E8F0FE" }}
-                onChange={(e) => setCommunityRef(e.target.value)}
-                value={communityRef}
+                onChange={(e) => setUrgencyRef(e.target.value)}
+                value={urgencyRef}
                 disabled={isDisable}
               />
             </div>

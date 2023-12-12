@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import MyAccount from "./MyAccount_01";
 import Image from "next/image";
 
-const HeaderMenuContent = ({ float = "", hide, userData }) => {
+const HeaderMenuContent = ({ float = "", hide, userData,  setProfileCount , profileCount , userInfo }) => {
   const route = useRouter();
 
   const home = [
@@ -517,7 +517,10 @@ const HeaderMenuContent = ({ float = "", hide, userData }) => {
               width={45}
               height={45}
               className="rounded-circle"
-              src="/assets/images/home/placeholder_01.jpg"
+              src={userInfo?.brokerage_Details?.profileImage
+                ? userInfo?.brokerage_Details?.profileImage
+                : `/assets/images/home/placeholder_01.jpg`
+            }
               alt="e1.png"
             />
             <span className="dn-1199 ms-1 text-dark">

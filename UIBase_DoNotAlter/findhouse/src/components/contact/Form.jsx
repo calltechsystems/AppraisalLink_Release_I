@@ -116,10 +116,10 @@ const Form = () => {
                   <input
                     id="form_phone"
                     name="form_phone"
-                    className="form-control required phone"
+                    className="form-control"
                     required="required"
                     type="number"
-                    maxLength={10}
+                    pattern="\d{1,10}"
                     style={{
                       // paddingTop: "15px",
                       // paddingBottom: "15px",
@@ -197,7 +197,7 @@ const Form = () => {
                 <div className="col-lg-2">
                   <label
                     htmlFor="first-name"
-                    className="mb-2 text-dark fw-bold"
+                    className="mt-2 text-dark fw-bold"
                   >
                     Subject <span class="req-btn">*</span>
                   </label>
@@ -427,6 +427,7 @@ const Form = () => {
               name="form_message"
               className="form-control required"
               rows="4"
+              maxLength={300}
               style={{
                 // paddingTop: "15px",
                 // paddingBottom: "15px",

@@ -9,9 +9,9 @@ import { useRouter } from "next/router";
 
 const headCells = [
   {
-    id: "id",
+    id: "order_id",
     numeric: false,
-    label: "Id",
+    label: "Order Id",
     width: 200,
   },
   {
@@ -56,7 +56,7 @@ const headCells = [
     numeric: false,
     label: "Actions",
     width: 200,
-  }
+  },
 ];
 
 const data = [
@@ -89,62 +89,72 @@ const data = [
   },
 ];
 
-export default function Exemple({userData , open ,close , propertyId , properties, setProperties,deletePropertyHandler}) {
-  
-
-
-  const [updatedData , setUpdatedData] = useState([]);
-  const [allProperties,setAllProperties]=useState([]);
-  const [show , setShow] = useState(false);
-  const [all,setAll]=useState([]);
+export default function Exemple({
+  userData,
+  openModal,
+  closeModal,
+  open,
+  close,
+  setIsModalOpen,
+  propertyId,
+  properties,
+  setProperties,
+  deletePropertyHandler,
+}) {
+  const [updatedData, setUpdatedData] = useState([]);
+  const [allProperties, setAllProperties] = useState([]);
+  const [show, setShow] = useState(false);
+  const [all, setAll] = useState([]);
 
   const router = useRouter();
   let tempData = [];
 
+  const openPopupModal = () => {
+    setIsModalOpen(true);
+    // setCurrentProperty(property);
+  };
+
   const formatDate = (dateString) => {
     const options = {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     };
-  
-    const formattedDate = new Date(dateString).toLocaleString('en-US', options);
-  
+
+    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
+
     return formattedDate;
   };
 
-  const getPropertyHandler=(currentProperty)=>{
+  const getPropertyHandler = (currentProperty) => {
     let temp = {};
-    allProperties.forEach((prop)=>{
-      if(prop.propertyId === currentProperty.propertyId ){
+    allProperties.forEach((prop) => {
+      if (prop.propertyId === currentProperty.propertyId) {
         temp = prop;
       }
     });
 
     const id = currentProperty.appraiserUserId;
-   
+
     // sconsole.log(allProperties,temp);
     return temp;
-  }
+  };
 
-  const acceptRequestHandler = (id)=>{
-    const data = (JSON.parse(localStorage.getItem("user")));
+  const acceptRequestHandler = (id) => {
+    const data = JSON.parse(localStorage.getItem("user"));
     toast.loading("Accepting the bid ...");
     const payload = {
-      bidId : id,
-      token : data.token
+      bidId: id,
+      token: data.token,
     };
-
-   
 
     const encryptedBody = encryptionData(payload);
     axios
-      .post("/api/acceptBid",encryptedBody,
-       {
+      .post("/api/acceptBid", encryptedBody, {
         headers: {
-          Authorization:`Bearer ${data?.token}`,
-          "Content-Type":"application/json"
-        }
+          Authorization: `Bearer ${data?.token}`,
+          "Content-Type": "application/json",
+        },
       })
       .then((res) => {
         toast.dismiss();
@@ -156,23 +166,21 @@ export default function Exemple({userData , open ,close , propertyId , propertie
         console.log(err);
         toast.error(err?.response?.data?.error);
       });
-      
-  }
+  };
 
-  const rejectRequestHandler=(id)=>{
-    const data = (JSON.parse(localStorage.getItem("user")));
+  const rejectRequestHandler = (id) => {
+    const data = JSON.parse(localStorage.getItem("user"));
     toast.loading("Declining the bid ...");
     const payload = {
-      bidId : id
+      bidId: id,
     };
     const encryptedBody = encryptionData(payload);
     axios
-      .post("/api/declineBid",encryptedBody,
-       {
+      .post("/api/declineBid", encryptedBody, {
         headers: {
-          Authorization:`Bearer ${data?.token}`,
-          "Content-Type":"application/json"
-        }
+          Authorization: `Bearer ${data?.token}`,
+          "Content-Type": "application/json",
+        },
       })
       .then((res) => {
         toast.dismiss();
@@ -183,116 +191,120 @@ export default function Exemple({userData , open ,close , propertyId , propertie
         toast.dismiss();
         toast.error(err?.response?.data?.error);
       });
-  }
-  
-  useEffect(()=>{
-    const getData = ()=>{
+  };
 
-      properties.map((property,index)=>{
+  useEffect(() => {
+    const getData = () => {
+      properties.map((property, index) => {
         const prop = getPropertyHandler(property);
         const updatedRow = {
-          id :  prop.orderId,
-          AppraiserId : property.appraiserUserId,
-          quote : property.bidLowerRange,
-          amount : property.bidAmount,
+          id: prop.orderId,
+          AppraiserId: property.appraiserUserId,
+          quote: property.bidLowerRange,
+          amount: property.bidAmount,
           description: property.description != "" ? property.description : "NA",
-        date : formatDate(property.requestTime),
-        appraiser:<a href="#"><button style={{border:"0px",color:"blue",backgroundColor:"white"}} onClick={""}>{property.applicantFirstName}</button></a>,
-         
-        action : <ul className=""><li
-        className="list-inline-item"
-       
-      >
-      <div
-      className="fp_pdate float-end mt-1 fw-bold"
-      onClick={()=>acceptRequestHandler(property.bidId)}
-      
-    >
-      <a href="#" className="text-color-green" >
-        Accept
-      </a>
-    </div>  
-      </li>
-   
-    {/* <div className="fp_pdate float-end">{item.postedYear}</div> */}
-    
-  <li
-    className="list-inline-item"
-    data-toggle="tooltip"
-    data-placement="top"
-    title="Delete"
-  >
-    <div
-      className="fp_pdate float-end mt-1 fw-bold"
-      onClick={()=>rejectRequestHandler(property.bidId)}
-    >
-      <a href="#" className="text-color-red">
-        Decline
-      </a>
-    </div>   
-  </li>
-  </ul>
-  
-        }
+          date: formatDate(property.requestTime),
+          appraiser: (
+            <a href="#">
+              <button
+                style={{
+                  border: "0px",
+                  color: "blue",
+                  backgroundColor: "white",
+                }}
+                onClick={""}
+              >
+                {property.applicantFirstName}
+              </button>
+            </a>
+          ),
+
+          action: (
+            <ul className="">
+              <li className="list-inline-item">
+                <div
+                  className="fp_pdate float-end mt-1 fw-bold"
+                  onClick={() => openPopupModal()}
+                >
+                  <a href="#" className="text-color-green">
+                    Accept
+                  </a>
+                </div>
+              </li>
+
+              {/* <div className="fp_pdate float-end">{item.postedYear}</div> */}
+
+              <li
+                className="list-inline-item"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="Delete"
+              >
+                <div
+                  className="fp_pdate float-end mt-1 fw-bold"
+                  onClick={() => rejectRequestHandler(property.bidId)}
+                >
+                  <a href="#" className="text-color-red">
+                    Decline
+                  </a>
+                </div>
+              </li>
+            </ul>
+          ),
+        };
         tempData.push(updatedRow);
       });
       setUpdatedData(tempData);
-      
     };
     getData();
-  },[properties]);
+  }, [properties]);
 
-  useEffect(()=>{
-    
-   
-
-    const data = (JSON.parse(localStorage.getItem("user")));
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
-      token : userData.token
+      token: userData.token,
     };
-
 
     toast.loading("Getting properties...");
     axios
-      .get("/api/getAllBids",
-       {
+      .get("/api/getAllBids", {
         headers: {
-          Authorization:`Bearer ${data?.token}`,
-          "Content-Type":"application/json"
+          Authorization: `Bearer ${data?.token}`,
+          "Content-Type": "application/json",
         },
-        params : {
-          userId : data?.userId
-        }
+        params: {
+          userId: data?.userId,
+        },
       })
       .then((res) => {
-   
         toast.dismiss();
         const tempBids = res.data.data.result.$values;
-        console.log(tempBids,propertyId);
+        console.log(tempBids, propertyId);
         let updatedBids = [];
-         tempBids.filter((bid,index)=>{
-          if(String(bid.propertyId) === String(propertyId)){
+        tempBids.filter((bid, index) => {
+          if (String(bid.propertyId) === String(propertyId)) {
             updatedBids.push(bid);
           }
-        })
-        
+        });
+
         setProperties(updatedBids);
       })
       .catch((err) => {
         toast.dismiss();
         toast.error(err?.response?.data?.error);
       });
-      
-      axios.get("/api/getAllListedProperties", {
+
+    axios
+      .get("/api/getAllListedProperties", {
         headers: {
           Authorization: `Bearer ${data?.token}`,
-          "Content-Type":"application/json",
-        }
+          "Content-Type": "application/json",
+        },
       })
       .then((res) => {
         console.log(res);
-        console.log("Properties",res.data.data.properties.$values);
+        console.log("Properties", res.data.data.properties.$values);
         setAllProperties(res.data.data.properties.$values);
       })
       .catch((err) => {
@@ -300,14 +312,12 @@ export default function Exemple({userData , open ,close , propertyId , propertie
         // setErrorMessage(err?.response?.data?.error);
         // setModalIsOpenError(true);
       });
-  },[]);
+  }, []);
   return (
     <>
-    { updatedData && (<SmartTable
-      title=""
-      data={updatedData}
-      headCells={headCells}
-    />)}
+      {updatedData && (
+        <SmartTable title="" data={updatedData} headCells={headCells} />
+      )}
     </>
   );
 }

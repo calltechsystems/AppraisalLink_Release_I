@@ -40,7 +40,7 @@ const Index = ({ isView, propertyData }) => {
   const [buildinRef, setBuildinRef] = useState(
     propertyData?.typeOfBuilding || null
   );
-  const [urgencyRef, setUrgencyRef] = useState(propertyData?.urgency || 0);
+  const [urgencyRef, setUrgencyRef] = useState(propertyData?.urgency || null);
   const [bidLowerRangeRef, setBidLowerRangeRef] = useState(
     propertyData?.bidLowerRange || null
   );
@@ -112,8 +112,8 @@ const Index = ({ isView, propertyData }) => {
       !payload.state ||
       !payload.zipCode ||
       !payload.typeOfBuilding ||
-      !payload.community ||
-      !payload.area
+      !payload.community 
+      // !payload.area
     ) {
       toast.error("All required fields must be filled");
     } else {
@@ -162,11 +162,13 @@ const Index = ({ isView, propertyData }) => {
 
     if (
       (!nameRegex.test(applicantFirstName) && applicantFirstName) ||
-      (!nameRegex.test(applicantLatsName) && applicantLatsName) ||
-      (!phoneNumberRegex.test(applicantNumber) && applicantNumber) ||
-      (!emailRegex.test(applicantEmail) && applicantEmail)
+      (!nameRegex.test(applicantLatsName) && applicantLatsName)
     ) {
-      toast.error("Please provide a valid applicant Information");
+      toast.error("Please provide a valid applicant name");
+    } else if (!emailRegex.test(applicantEmail) && applicantEmail) {
+      toast.error("Please provide a valid email address");
+    } else if (!phoneNumberRegex.test(applicantNumber) && applicantNumber) {
+      toast.error("Please provide a valid phone number");
     } else {
       const payload = {
         userId: userInfo.userId,
@@ -695,9 +697,7 @@ const Index = ({ isView, propertyData }) => {
                                 color: "#2e008b",
                               }}
                             >
-                              <span className="text-start">
-                                Address
-                              </span>
+                              <span className="text-start">Address</span>
                             </td>
                             <td
                               style={{
@@ -706,7 +706,7 @@ const Index = ({ isView, propertyData }) => {
                               }}
                             >
                               {" "}
-                               {bidLowerRangeRef}
+                              {bidLowerRangeRef}
                             </td>
                           </tr>
                           <tr>

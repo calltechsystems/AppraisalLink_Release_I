@@ -9,20 +9,20 @@ import Form from "./Form";
 import { useState } from "react";
 
 const Index = () => {
-  const [modalIsOpen , setModalIsOpen] = useState(false);
-  const [modalIsOpenError , setModalIsOpenError] = useState(false);
-  const [errorMessage , setErrorMessage ] = useState("");
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalIsOpenError, setModalIsOpenError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
 
-  const closeModal = ()=>{
+  const closeModal = () => {
     setModalIsOpen(false);
     router.push("/login");
-  }
+  };
 
-  const closeErrorModal = ()=>{
+  const closeErrorModal = () => {
     setModalIsOpenError(false);
     window.location.reload();
-  }
+  };
 
   return (
     <>
@@ -44,7 +44,11 @@ const Index = () => {
           <div className="row  ">
             <div className="col-sm-12 col-lg-12 offset-lg-0">
               <div className="login_form  inner_page">
-                <Form setModalIsOpen={setModalIsOpen} setModalIsOpenError={setModalIsOpenError} setErrorMessage={setErrorMessage}/>
+                <Form
+                  setModalIsOpen={setModalIsOpen}
+                  setModalIsOpenError={setModalIsOpenError}
+                  setErrorMessage={setErrorMessage}
+                />
               </div>
             </div>
           </div>
@@ -53,22 +57,25 @@ const Index = () => {
 
       {modalIsOpen && (
         <div className="modal">
-          <div className="modal-content" style={{borderColor:"green",width:"20%"}}>
-            <h3 className="text-center" style={{color:"green"}}>Success</h3>
-            <div style={{borderWidth:"2px",borderColor:"green"}}><br/></div>
-            <h5 className="text-center">
-              You are Successfully registered !!
-            </h5>
+          <div
+            className="modal-content"
+            style={{ borderColor: "green", width: "20%" }}
+          >
+            <h3 className="text-center" style={{ color: "green" }}>
+              Success
+            </h3>
+            <div style={{ borderWidth: "2px", borderColor: "green" }}>
+              <br />
+            </div>
+            <h5 className="text-center">You are Successfully registered !!</h5>
             <div
               className="text-center"
               style={{ display: "flex", flexDirection: "column" }}
             >
-              
-
               <button
                 className="btn w-35 btn-white"
-                onClick={()=>closeModal()}
-                style={{borderColor:"green",color:"green"}}
+                onClick={() => closeModal()}
+                style={{ borderColor: "green", color: "green" }}
               >
                 Ok
               </button>
@@ -79,22 +86,25 @@ const Index = () => {
 
       {modalIsOpenError && (
         <div className="modal">
-          <div className="modal-content" style={{borderColor:"orangered",width:"20%"}}>
-            <h3 className="text-center" style={{color:"orangered"}}>Error</h3>
-            <div style={{borderWidth:"2px",borderColor:"orangered"}}><br/></div>
-            <h5 className="text-center">
-              {errorMessage}
-            </h5>
+          <div
+            className="modal-content"
+            style={{ borderColor: "orangered", width: "20%" }}
+          >
+            <h3 className="text-center" style={{ color: "orangered" }}>
+              Error
+            </h3>
+            <div style={{ borderWidth: "2px", borderColor: "orangered" }}>
+              <br />
+            </div>
+            <h5 className="text-center">{errorMessage}</h5>
             <div
               className="text-center"
               style={{ display: "flex", flexDirection: "column" }}
             >
-              
-
               <button
                 className="btn w-35 btn-white"
-                onClick={()=>closeErrorModal()}
-                style={{borderColor:"orangered",color:"orangered"}}
+                onClick={() => closeErrorModal()}
+                style={{ borderColor: "orangered", color: "orangered" }}
               >
                 Cancel
               </button>
@@ -102,7 +112,6 @@ const Index = () => {
           </div>
         </div>
       )}
-      
 
       {/* <!-- Our Footer --> */}
       <section className="footer_one p20">

@@ -22136,9 +22136,9 @@ input[type=text] {
 .profile_edit_button_01 {
   width: max-content;
   border-radius: 4px;
-  margin-left: 90%;
-  margin-bottom: 4px;
-  margin-top: 20px;
+  /* margin-left: 90%; */
+  /* margin-bottom: 4px; */
+  /* margin-top: 20px; */
 }
 
 /* The Modal (background) */
@@ -22535,7 +22535,7 @@ input:checked + .slider:before {
 
 .link-hover:hover {
   background-color: #97d700;
-  color: #000000 !important;
+  color: black !important;
   font-weight: bold;
 }
  

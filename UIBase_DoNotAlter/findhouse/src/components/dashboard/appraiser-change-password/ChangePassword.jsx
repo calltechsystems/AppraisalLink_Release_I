@@ -44,10 +44,10 @@ const ChangePassword = () => {
                           backgroundColor: "#E8F0FE",
                           //color: "white",
                         }}
-                        type="text"
+                        type="password"
                         className="form-control"
                         id="formGroupExampleOldPass"
-                        placeholder="alitfn"
+                        // placeholder="alitfn"
                       />
                     </div>
                   </div>
@@ -72,7 +72,7 @@ const ChangePassword = () => {
                           backgroundColor: "#E8F0FE",
                           //color: "white",
                         }}
-                        type="text"
+                        type="password"
                         className="form-control"
                         id="formGroupExampleNewPass"
                       />
@@ -99,7 +99,7 @@ const ChangePassword = () => {
                           backgroundColor: "#E8F0FE",
                           //color: "white",
                         }}
-                        type="text"
+                        type="password"
                         className="form-control"
                         id="formGroupExampleConfPass"
                       />

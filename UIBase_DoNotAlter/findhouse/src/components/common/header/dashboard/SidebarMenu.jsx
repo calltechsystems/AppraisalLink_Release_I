@@ -240,7 +240,7 @@ const SidebarMenu = () => {
             ))}
           </ul>
         </li>
-        <li className="link-hover sidebar-menu ">
+        <li className="link-hover sidebar-menu">
           <Link href="mailto:patelshubhendra@gmail.com">
             <i className="flaticon-envelope"></i>
             <span>Contact Us</span>

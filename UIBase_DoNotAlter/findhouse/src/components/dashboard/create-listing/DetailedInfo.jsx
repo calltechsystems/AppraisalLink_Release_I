@@ -1,4 +1,5 @@
 import React, { Component, useState } from "react";
+import { useRouter } from "next/router";
 
 // const DetailedInfo = () =>{
 
@@ -94,6 +95,10 @@ const DetailedInfo = ({
   submitHandler,
   setDisable,
 }) => {
+  const router = useRouter();
+  const cancelHandler = () => {
+    router.push("/my-profile");
+  };
   console.log(applicantEmail);
   return (
     <>
@@ -403,13 +408,14 @@ const DetailedInfo = ({
                   backgroundColor: "#E8F0FE",
                   //color: "white",
                 }}
-                type="text"
+                type="number"
+                min={10}
+                max={10}
                 className="form-control"
                 id="formGroupExampleInput3"
                 onChange={(e) => setApplicantNumber(e.target.value)}
                 value={applicantNumber}
                 disabled={isDisable}
-                maxLength={10}
               />
             </div>
           </div>
@@ -536,7 +542,9 @@ const DetailedInfo = ({
           </div>
           <div className="col-xl-12">
             <div className="my_profile_setting_input overflow-hidden mt20 text-center">
-              <button className="btn btn5 m-1">Reset</button>
+              <button className="btn btn5 m-1" onClick={cancelHandler}>
+                Reset
+              </button>
               {!isDisable &&
                 (propertyData ? (
                   <button className="btn btn5" onClick={updateHandler}>

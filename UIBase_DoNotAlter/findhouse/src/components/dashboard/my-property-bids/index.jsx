@@ -270,6 +270,7 @@ const Index = ({ propertyId }) => {
                         <TableData
                           userData={userData}
                           open={openModal}
+                          setIsModalOpen={setIsModalOpen}
                           close={closeModal}
                           setProperties={setProperties}
                           properties={
@@ -360,21 +361,20 @@ const Index = ({ propertyId }) => {
             {isModalOpen && (
               <div className="modal">
                 <div className="modal-content">
-                  <h3 className="text-center">Delete Confirmation</h3>
+                  <h3 className="text-center">Accept Bid Confirmation</h3>
                   <h5 className="text-center">
-                    Are you sure you want to delete the property :{" "}
-                    {property.area} ?
+                    Are you sure you want to accept the quote.
                   </h5>
                   {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
-                  <div className="text-center" style={{}}>
+                  <div className="" style={{display:'flex'}}>
                     <button
-                      className="btn w-35 btn-thm3 m-2"
-                      onClick={handleDelete}
+                      className="btn btn-color"
+                      onClick={() => acceptRequestHandler(property.bidId)}
                     >
-                      Delete
+                      Yes
                     </button>
-                    <button className="btn w-35 btn-white" onClick={closeModal}>
-                      Cancel
+                    <button className="btn btn-color" onClick={closeModal}>
+                      No
                     </button>
                   </div>
                 </div>

@@ -51,10 +51,10 @@ const Footer = () => {
               <a href="#">Brampton, LX23Y2, Ontario</a>
             </li>
             <li>
-              <a href="#">info@appraisallink.ca</a>
+              <Link href="mailto:info@appraisallink.ca">info@appraisallink.ca</Link>
             </li>
             <li>
-              <a href="#">+1 302-000-1111</a>
+              <a href="tel:+13020001111">+1 302-000-1111</a>
             </li>
           </ul>
         </div>
