@@ -93,6 +93,8 @@ export default function Exemple({
   userData,
   openModal,
   closeModal,
+  property,
+  setProperty,
   open,
   close,
   setIsModalOpen,
@@ -109,9 +111,9 @@ export default function Exemple({
   const router = useRouter();
   let tempData = [];
 
-  const openPopupModal = () => {
+  const openPopupModal = (prop) => {
+    setProperty(prop);
     setIsModalOpen(true);
-    // setCurrentProperty(property);
   };
 
   const formatDate = (dateString) => {
@@ -219,38 +221,43 @@ export default function Exemple({
             </a>
           ),
 
-          action: (
-            <ul className="">
-              <li className="list-inline-item">
-                <div
-                  className="fp_pdate float-end mt-1 fw-bold"
-                  onClick={() => openPopupModal()}
-                >
-                  <a href="#" className="text-color-green">
-                    Accept
-                  </a>
-                </div>
-              </li>
+          action:
+            property.status === 1 ? (
+              <h5>Accepted</h5>
+            ) : property.status === 0 ? (
+              <ul className="">
+                <li className="list-inline-item">
+                  <div
+                    className="fp_pdate float-end mt-1 fw-bold"
+                    onClick={() => openPopupModal(property)}
+                  >
+                    <a href="#" className="text-color-green">
+                      Accept
+                    </a>
+                  </div>
+                </li>
 
-              {/* <div className="fp_pdate float-end">{item.postedYear}</div> */}
+                {/* <div className="fp_pdate float-end">{item.postedYear}</div> */}
 
-              <li
-                className="list-inline-item"
-                data-toggle="tooltip"
-                data-placement="top"
-                title="Delete"
-              >
-                <div
-                  className="fp_pdate float-end mt-1 fw-bold"
-                  onClick={() => rejectRequestHandler(property.bidId)}
+                <li
+                  className="list-inline-item"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Delete"
                 >
-                  <a href="#" className="text-color-red">
-                    Decline
-                  </a>
-                </div>
-              </li>
-            </ul>
-          ),
+                  <div
+                    className="fp_pdate float-end mt-1 fw-bold"
+                    onClick={() => setProperty(property)}
+                  >
+                    <a href="#" className="text-color-red">
+                      Decline
+                    </a>
+                  </div>
+                </li>
+              </ul>
+            ) : (
+              <h5>Declined</h5>
+            ),
         };
         tempData.push(updatedRow);
       });

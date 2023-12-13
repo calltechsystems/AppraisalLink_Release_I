@@ -1,16 +1,72 @@
+
 import { useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
+import toast from "react-hot-toast";
+import { encryptionData } from "../../utils/dataEncryption";
+import axios from "axios";
 
 const Form = () => {
   const [verified, setVerified] = useState(false);
+ 
+
+  const [firstName,setFirstName] = useState("");
+  const [lastName,setLastName] = useState("");
+  const [emailAddress,setEmailAddress] = useState("");
+  const [phoneNumber,setPhoneNumber] = useState("");
+  const [company,setCompany]=useState("");
+  const [state,setState]=useState("");
+  const [subject,setSubject] = useState("");
+  const [description,setDescription]=useState("");
+
+
+  const submitHnadler = ()=>{
+
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if(!firstName || !lastName || !emailAddress || !phoneNumber || !subject || !description || !verified){
+      toast.error("All required field must be filled!");
+    }
+    else{
+      const payload = {
+        firstName : firstName,
+        lastName : lastName,
+        emailAddress : emailAddress,
+        phoneNumber : phoneNumber,
+        company : company ,
+        state : state,
+        subject : subject,
+        userLoggedIn : userData ? true : false, 
+        description : description,
+        token : userData?.token
+      };
+
+      const encryptedBody = encryptionData(payload);
+      toast.loading("Submitting the response...");
+      axios.post("/api/contactUs",encryptedBody, {
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        toast.dismiss();
+        toast.success("Successfully submitted !! Thankyou for reaching us!!")
+        window.location.reload();
+      })
+      .catch((err) => {
+        toast.dismiss();
+        toast.error(err.response.data.error);
+      });
+    }
+  }
 
   function onChange(value) {
     console.log("Captcha value:", value);
     setVerified(true);
   }
 
+
   return (
-    <form className="contact_form" action="#">
+    <div className="contact_form" >
       <div className="row">
         <div className="col-lg-12">
           <div className="row">
@@ -31,6 +87,8 @@ const Form = () => {
                     className="form-control"
                     required="required"
                     type="text"
+                    value={firstName}
+                    onChange={(e)=>setFirstName(e.target.value)}
                     maxLength={30}
                     style={{
                       // paddingTop: "15px",
@@ -59,6 +117,8 @@ const Form = () => {
                     className="form-control"
                     required="required"
                     type="text"
+                    value={lastName}
+                    onChange={(e)=>setLastName(e.target.value)}
                     maxLength={30}
                     style={{
                       // paddingTop: "15px",
@@ -91,6 +151,8 @@ const Form = () => {
                     className="form-control required email"
                     required="required"
                     type="email"
+                    value={emailAddress}
+                    onChange={(e)=>setEmailAddress(e.target.value)}
                     maxLength={30}
                     style={{
                       // paddingTop: "15px",
@@ -119,6 +181,8 @@ const Form = () => {
                     className="form-control"
                     required="required"
                     type="number"
+                    value={phoneNumber}
+                    onChange={(e)=>setPhoneNumber(e.target.value)}
                     pattern="\d{1,10}"
                     style={{
                       // paddingTop: "15px",
@@ -151,6 +215,8 @@ const Form = () => {
                     className="form-control required"
                     type="text"
                     maxLength={30}
+                    value={company}
+                    onChange={(e)=>setCompany(e.target.value)}
                     style={{
                       // paddingTop: "15px",
                       // paddingBottom: "15px",
@@ -178,6 +244,8 @@ const Form = () => {
                     className="form-control required"
                     type="text"
                     maxLength={30}
+                    value={state}
+                    onChange={(e)=>setState(e.target.value)}
                     style={{
                       // paddingTop: "15px",
                       // paddingBottom: "15px",
@@ -207,6 +275,8 @@ const Form = () => {
                     id="form_subject"
                     required
                     name="form_subject"
+                    value={subject}
+                    onChange={(e)=>setSubject(e.target.value)}
                     className="form-control required"
                     type="text"
                     maxLength={30}
@@ -427,6 +497,8 @@ const Form = () => {
               name="form_message"
               className="form-control required"
               rows="4"
+              value={description}
+              onChange={(e)=>setDescription(e.target.value)}
               maxLength={300}
               style={{
                 // paddingTop: "15px",
@@ -450,7 +522,7 @@ const Form = () => {
               className="col-lg-6 form-group my_profile_setting_input"
               style={{ textAlign: "end" }}
             >
-              <button type="submit" className="btn btn2" disabled={!verified}>
+              <button onClick={submitHnadler} className="btn btn2" disabled={!verified}>
                 Submit
               </button>
             </div>
@@ -459,7 +531,7 @@ const Form = () => {
           {/* End button submit */}
         </div>
       </div>
-    </form>
+    </div>
   );
 };
 

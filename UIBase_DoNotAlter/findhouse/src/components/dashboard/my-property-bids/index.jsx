@@ -12,11 +12,13 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/router";
 import Exemple from "./Exemple";
+import { encryptionData } from "../../../utils/dataEncryption";
 
 const Index = ({ propertyId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
-  const [property, setProperty] = useState("");
+  
+  const [property, setProperty] = useState([]);
   const [filterProperty, setFilterProperty] = useState("");
   const [filterQuery, setFilterQuery] = useState("Last 30 Days");
   const [properties, setProperties] = useState([]);
@@ -29,6 +31,61 @@ const Index = ({ propertyId }) => {
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
   );
+
+  const acceptRequestHandler = (id) => {
+    const data = JSON.parse(localStorage.getItem("user"));
+    toast.loading("Accepting the bid ...");
+    const payload = {
+      bidId: id,
+      token: data.token,
+    };
+
+    const encryptedBody = encryptionData(payload);
+    axios
+      .post("/api/acceptBid", encryptedBody, {
+        headers: {
+          Authorization: `Bearer ${data?.token}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        toast.dismiss();
+
+  
+        toast.success("Successfully accepted the requested Bid");
+        router.push("/my-properties");
+      })
+      .catch((err) => {
+        toast.dismiss();
+        console.log(err);
+        toast.error(err?.response?.data?.error);
+      });
+  };
+
+  const rejectRequestHandler = (id) => {
+    const data = JSON.parse(localStorage.getItem("user"));
+    toast.loading("Declining the bid ...");
+    const payload = {
+      bidId: id,
+    };
+    const encryptedBody = encryptionData(payload);
+    axios
+      .post("/api/declineBid", encryptedBody, {
+        headers: {
+          Authorization: `Bearer ${data?.token}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        toast.dismiss();
+        toast.success("Successfully declined the requested Bid");
+        router.push("/my-properties");
+      })
+      .catch((err) => {
+        toast.dismiss();
+        toast.error(err?.response?.data?.error);
+      });
+  };
 
   useEffect(() => {
     const activityHandler = () => {
@@ -276,6 +333,8 @@ const Index = ({ propertyId }) => {
                           properties={
                             searchInput === "" ? properties : filterProperty
                           }
+                          property={property}
+                          setProperty={setProperty}
                           propertyId={propertyId}
                           setModalIsOpenError={setModalIsOpenError}
                           setErrorMessage={setErrorMessage}
@@ -363,8 +422,10 @@ const Index = ({ propertyId }) => {
                 <div className="modal-content">
                   <h3 className="text-center">Accept Bid Confirmation</h3>
                   <h5 className="text-center">
-                    Are you sure you want to accept the quote.
+                    Are you sure you want to accept the quote with value
                   </h5>
+                  <h3>${property.bidAmount}</h3>
+
                   {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                   <div className="" style={{display:'flex'}}>
                     <button

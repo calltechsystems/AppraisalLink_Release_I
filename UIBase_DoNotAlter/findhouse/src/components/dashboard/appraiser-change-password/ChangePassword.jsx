@@ -1,4 +1,66 @@
+import axios from "axios";
+import { useRef, useState } from "react";
+import { useReducer } from "react";
+import { FaEye } from "react-icons/fa";
+import { encryptionData } from "../../../utils/dataEncryption";
+import { useRouter } from "next/router";
+import toast from "react-hot-toast";
+
 const ChangePassword = () => {
+  const oldPasswordRef = useRef("");
+  const newPasswordRef = useRef("");
+  const confirmPasswordRef = useRef("");
+  const emailRef = useRef("");
+
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
+  const userData = JSON.parse(localStorage.getItem("user")) || {};
+
+  const router = useRouter();
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
+
+
+  const submitHandler = async () => {
+    const email = userData.userEmail;
+    const newPassword = newPasswordRef.current.value;
+    const oldPassword = oldPasswordRef.current.value;
+    const confirmPassword = confirmPasswordRef.current.value;
+
+    console.log(oldPassword, newPassword, confirmPassword);
+    if (String(newPassword) !== String(confirmPassword)) {
+      toast.error("Both the passwords should be same ");
+    } else {
+      try {
+        const payload = {
+          email: email,
+          oldPassword: oldPassword,
+          newPassword: newPassword,
+          token: userData.token,
+        };
+
+        const encryptedData = encryptionData(payload);
+
+        toast.loading("Changing the password");
+        const response = await axios.post(
+          "/api/change-broker-password",
+          encryptedData
+        );
+        if (!response) {
+          toast.dismiss();
+          toast.error("Failed Try Again");
+        } else {
+          toast.dismiss();
+          localStorage.removeItem("user");
+          router.push("/login");
+        }
+      } catch (err) {
+        toast.error(err.response.data.error);
+      }
+    }
+  };
   return (
     <>
       <div className="row">
@@ -14,7 +76,7 @@ const ChangePassword = () => {
                 aria-expanded="false"
                 aria-controls="collapseThree"
               >
-                Change Password
+                Manage Password
               </button>
             </h2>
             <div
@@ -38,17 +100,24 @@ const ChangePassword = () => {
                         Old Password
                       </label>
                       <input
-                        style={{
-                          // paddingTop: "15px",
-                          // paddingBottom: "15px",
-                          backgroundColor: "#E8F0FE",
-                          //color: "white",
-                        }}
-                        type="password"
-                        className="form-control"
-                        id="formGroupExampleOldPass"
-                        // placeholder="alitfn"
-                      />
+                      type={passwordVisible ? "text" : "password"} // Conditionally set the input type
+                      className="form-control"
+                      id="exampleInputPassword1"
+                      placeholder="Old Password"
+                      required
+                      ref={oldPasswordRef}
+                      style={{ paddingRight: "40px" }} // Add right padding to accommodate the button
+                    />
+                    <div className="input-group-prepend">
+                      <div
+                        className="input-group-text m-1"
+                        style={{ border: "1px solid #2e008b", cursor: "pointer" }}
+                        onMouseEnter={togglePasswordVisibility}
+                        onMouseLeave={togglePasswordVisibility}
+                      >
+                        <FaEye />
+                      </div>
+                    </div>
                     </div>
                   </div>
                   {/* End .col */}
@@ -66,16 +135,24 @@ const ChangePassword = () => {
                         New Password
                       </label>
                       <input
-                        style={{
-                          // paddingTop: "15px",
-                          // paddingBottom: "15px",
-                          backgroundColor: "#E8F0FE",
-                          //color: "white",
-                        }}
-                        type="password"
-                        className="form-control"
-                        id="formGroupExampleNewPass"
-                      />
+                      type={passwordVisible ? "text" : "password"} // Conditionally set the input type
+                      className="form-control"
+                      id="exampleInputPassword1"
+                      placeholder="New Password"
+                      required
+                      ref={newPasswordRef}
+                      style={{ paddingRight: "40px" }} // Add right padding to accommodate the button
+                    />
+                    <div className="input-group-prepend">
+                      <div
+                        className="input-group-text m-1"
+                        style={{ border: "1px solid #2e008b", cursor: "pointer" }}
+                        onMouseEnter={togglePasswordVisibility}
+                        onMouseLeave={togglePasswordVisibility}
+                      >
+                        <FaEye />
+                      </div>
+                    </div>
                     </div>
                   </div>
                   {/* End .col */}
@@ -93,23 +170,33 @@ const ChangePassword = () => {
                         Confirm New Password
                       </label>
                       <input
-                        style={{
-                          // paddingTop: "15px",
-                          // paddingBottom: "15px",
-                          backgroundColor: "#E8F0FE",
-                          //color: "white",
-                        }}
-                        type="password"
-                        className="form-control"
-                        id="formGroupExampleConfPass"
-                      />
+                      type={passwordVisible ? "text" : "password"} // Conditionally set the input type
+                      className="form-control"
+                      id="exampleInputPassword1"
+                      placeholder="Confirm New Password"
+                      required
+                      ref={confirmPasswordRef}
+                      style={{ paddingRight: "40px" }} // Add right padding to accommodate the button
+                    />
+                    <div className="input-group-prepend">
+                      <div
+                        className="input-group-text m-1"
+                        style={{ border: "1px solid #2e008b", cursor: "pointer" }}
+                        onMouseEnter={togglePasswordVisibility}
+                        onMouseLeave={togglePasswordVisibility}
+                      >
+                        <FaEye />
+                      </div>
+                    </div>
                     </div>
                   </div>
                   {/* End .col */}
 
                   <div className="col-xl-12">
                     <div className="my_profile_setting_input float-end fn-520 mt-4">
-                      <button className="btn btn-color">Update Password</button>
+                      <button className="btn btn-color" onClick={submitHandler}>
+                        Update
+                      </button>
                     </div>
                   </div>
                   {/* End .col */}
@@ -120,8 +207,6 @@ const ChangePassword = () => {
         </div>
       </div>
       {/* End .row */}
-
-      <div className="row"></div>
     </>
   );
 };

@@ -15,6 +15,8 @@ const TableData = ({
   propertyId,
   setModalIsOpenError,
   setErrorMessage,
+  property,
+  setProperty
 }) => {
   console.log(properties);
 
@@ -211,6 +213,8 @@ const TableData = ({
           setErrorMessage={setErrorMessage}
           deletePropertyHandler={deletePropertyHandler}
           setIsModalOpen={setIsModalOpen}
+          property={property}
+          setProperty={setProperty}
         />
       )}
     </>
