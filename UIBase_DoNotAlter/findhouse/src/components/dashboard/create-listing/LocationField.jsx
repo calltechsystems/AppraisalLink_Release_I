@@ -15,6 +15,7 @@ const LocationField = ({
   setStateRef,
   handleZipCodeChange,
   zipCodeRef,
+  errorLabel,
   areaRef,
   setAreaRef,
   setBuildinRef,
@@ -27,6 +28,18 @@ const LocationField = ({
   setCommunityRef,
   setUrgencyRef,
 }) => {
+
+  const errorLabelStyle = {borderWidth:"2px",borderColor:"red"};
+
+  const checkIsError = (value)=>{
+    let isError = false;
+    errorLabel.map((err,index)=>{
+      if(String(err) === String(value)){
+        isError = true;
+      }
+    })
+    return isError;
+  }
   return (
     <>
       {/* Old Form */}
@@ -49,7 +62,7 @@ const LocationField = ({
             </div>
             <div className="col-lg-7">
               <input
-                style={{ backgroundColor: "#E8F0FE" }}
+                style={checkIsError("streetNumber") ? errorLabelStyle : { backgroundColor: "#E8F0FE" }}
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
@@ -76,7 +89,7 @@ const LocationField = ({
             </div>
             <div className="col-lg-7">
               <input
-                style={{ backgroundColor: "#E8F0FE" }}
+              style={checkIsError("streetName") ? errorLabelStyle : { backgroundColor: "#E8F0FE" }}
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
@@ -130,7 +143,7 @@ const LocationField = ({
             </div>
             <div className="col-lg-7">
               <input
-                style={{ backgroundColor: "#E8F0FE" }}
+              style={checkIsError("city") ? errorLabelStyle : { backgroundColor: "#E8F0FE" }}
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
@@ -157,7 +170,7 @@ const LocationField = ({
             </div>
             <div className="col-lg-7">
               <input
-                style={{ backgroundColor: "#E8F0FE" }}
+              style={checkIsError("state") ? errorLabelStyle : { backgroundColor: "#E8F0FE" }}
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
@@ -184,7 +197,7 @@ const LocationField = ({
             </div>
             <div className="col-lg-7">
               <input
-                style={{ backgroundColor: "#E8F0FE" }}
+              style={checkIsError("zipCode") ? errorLabelStyle : { backgroundColor: "#E8F0FE" }}
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"

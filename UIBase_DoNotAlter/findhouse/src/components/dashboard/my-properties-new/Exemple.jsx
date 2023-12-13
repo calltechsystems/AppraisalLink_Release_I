@@ -61,7 +61,7 @@ const headCells = [
     width: 200,
   },
   {
-    id: "type_f_appraisal",
+    id: "type_of_appraisal",
     numeric: false,
     label: "Type Of Appraisal",
     width: 200,
@@ -167,15 +167,21 @@ export default function Exemple({
           ),
           address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.state}, ${property.zipCode}`,
           // user: property.applicantEmailAddress,
-          type_of_building :property.typeOfBuilding,
-          urgency : property.urgency,
-          amount: ` $${property.bidLowerRange}`,
+          type_of_building: property.typeOfBuilding,
+          amount: ` $${property.estimatedValue}`,
+          purpose: property.purpose,
+          type_of_appraisal: property.typeOfAppraisal,
+          lender_information: property.lenderInformation ? property.lenderInformationm : "NA",
+          urgency: property.urgency,
           actions: (
             // <ul className="view_edit_delete_list mb0">
             <ul className="mb0">
               <li>
                 <Link href={"#"}>
-                  <span className="link-color" onClick={() => openPopupModal(property)}>
+                  <span
+                    className="link-color"
+                    onClick={() => openPopupModal(property)}
+                  >
                     {" "}
                     Property Details{" "}
                   </span>
@@ -287,7 +293,8 @@ export default function Exemple({
               {!isEditable && (
                 <li>
                   <Link href={`/archive-property`}>
-                    <span className="link-color"
+                    <span
+                      className="link-color"
                       onClick={() =>
                         archievePropertyHandler(property.propertyId)
                       }

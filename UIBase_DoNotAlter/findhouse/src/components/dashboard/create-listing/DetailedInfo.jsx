@@ -93,6 +93,13 @@ const DetailedInfo = ({
   setApplicantEmail,
   propertyData,
   submitHandler,
+  setApplicantAddress,
+  applicantAddress,
+  attachment,
+  errorLabel,
+  image,
+  setImage,
+  setAttachment,                  
   setDisable,
 }) => {
   const router = useRouter();
@@ -100,6 +107,20 @@ const DetailedInfo = ({
     router.push("/my-profile");
   };
   console.log(applicantEmail);
+
+  const errorLabelStyle = {borderWidth:"2px",borderColor:"red"};
+
+  const checkIsError = (value)=>{
+    let isError = false;
+    errorLabel.map((err,index)=>{
+      console.log(err,value);
+      if(String(err) === String(value)){
+        isError = true;
+      }
+    })
+    console.log(isError);
+    return isError;
+  }
   return (
     <>
       {/* <div className="row">
@@ -348,7 +369,7 @@ const DetailedInfo = ({
             </div>
             <div className="col-lg-7">
               <input
-                style={{
+              style={checkIsError("applicantFirstName") ? errorLabelStyle :{
                   // paddingTop: "15px",
                   // paddingBottom: "15px",
                   backgroundColor: "#E8F0FE",
@@ -375,7 +396,7 @@ const DetailedInfo = ({
             </div>
             <div className="col-lg-7">
               <input
-                style={{
+              style={checkIsError("applicantLastName") ? errorLabelStyle :{
                   // paddingTop: "15px",
                   // paddingBottom: "15px",
                   backgroundColor: "#E8F0FE",
@@ -402,7 +423,7 @@ const DetailedInfo = ({
             </div>
             <div className="col-lg-7">
               <input
-                style={{
+              style={checkIsError("applicantPhoneNumber") ? errorLabelStyle :{
                   // paddingTop: "15px",
                   // paddingBottom: "15px",
                   backgroundColor: "#E8F0FE",
@@ -430,7 +451,7 @@ const DetailedInfo = ({
             </div>
             <div className="col-lg-7">
               <input
-                style={{
+              style={{
                   // paddingTop: "15px",
                   // paddingBottom: "15px",
                   backgroundColor: "#E8F0FE",
@@ -468,6 +489,8 @@ const DetailedInfo = ({
                 className="form-control"
                 id="formGroupExampleInput3"
                 maxLength={30}
+                onChange={(e)=>setApplicantAddress(e.target.value)}
+                value={applicantAddress}
                 // onChange={(e) => setApplicantEmail(e.target.value)}
                 // value={applicantEmail}
                 // disabled={isDisable}
@@ -534,6 +557,7 @@ const DetailedInfo = ({
                       }}
                       className="form-control"
                       type="file"
+                      onChange={(e)=>setAttachment(e.target.value)}
                     />
                   </label>
                 </form>

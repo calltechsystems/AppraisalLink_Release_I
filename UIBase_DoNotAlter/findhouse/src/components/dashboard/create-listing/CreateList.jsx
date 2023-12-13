@@ -17,8 +17,29 @@ const CreateList = ({
   communityRef,
   setCommunityRef,
   setUrgencyRef,
+  setEstimatedValue,
+  estimatedValue,
+  setPurpose,
+  setOtherTypeOfBuilding,
+  purpose,
+  lenderInformation,
+  setLenderInformation,
+  setTypeOfAppraisal,
+  typeOffAppraisal,
+  otherPurpose,
+  otherTypeOfAppraisal,
+  otherUrgency,
+  otherTypeOfBuilding,
+  errorLabel,
+  urgencyType,
+
+  setUrgencyType,
+  onChangeHandler,
 }) => {
   const [selectedOption, setSelectedOption] = useState("");
+
+  const hiddenStyle = { backgroundColor: "#E8F0FE", display: "none" };
+  const viewStyle = { backgroundColor: "#E8F0FE", display: "block" };
 
   const check = (e) => {
     const selectedIndex = e.target.selectedIndex;
@@ -32,6 +53,65 @@ const CreateList = ({
       otherDiv.style.display = "none";
     }
   };
+
+  const setDate = (value) => {
+    if (urgencyRef === "Rush") {
+      setUrgencyRef(value);
+    } else {
+      const parts = value;
+      const day = parseInt(parts[0], 10);
+      const month = parseInt(parts[1], 10) - 1; // Months are 0-based in JavaScript
+      const year = parseInt(parts[2], 10);
+
+      const originalDate = new Date(year, month, day);
+
+      // Step 2: Add 30 days to the date
+      const newDate = new Date(originalDate);
+      newDate.setDate(newDate.getDate() + 30);
+
+      // Step 3: Format the resulting date as "dd-mm-yyyy"
+      const formattedDate = `${newDate
+        .getDate()
+        .toString()
+        .padStart(2, "0")}-${(newDate.getMonth() + 1)
+        .toString()
+        .padStart(2, "0")}-${newDate.getFullYear()}`;
+
+      console.log(formattedDate);
+      setUrgencyRef(formattedDate);
+    }
+  };
+
+  const errorLabelStyle = { borderWidth: "2px", borderColor: "red" };
+
+  const checkIsError = (value) => {
+    let isError = false;
+    errorLabel.map((err, index) => {
+      console.log(err, value);
+      if (String(err) === String(value)) {
+        isError = true;
+      }
+    });
+    console.log(isError);
+    return isError;
+  };
+
+  // let formatteddate= new Date();
+
+  // const handleChange = (event) => {
+  //   const selectedDate = event.target.value;
+
+  //   // Convert the selected date to the desired format
+  //   const formattedDate = new Date(selectedDate).toLocaleDateString('en-US', {
+  //     year: 'numeric',
+  //     month: '2-digit',
+  //     day: '2-digit',
+  //   });
+
+  //   formatteddate=formattedDate;
+  //   // Now, you can use formattedDate for further processing or set it to state
+  //   setUrgencyRef(formattedDate);
+  // };
 
   const [selectedOption_01, setSelectedOption_01] = useState("");
 
@@ -265,16 +345,20 @@ const CreateList = ({
                   className="form-select"
                   data-live-search="true"
                   data-width="100%"
-                  value={selectedOption}
-                  onChange={check}
+                  value={buildinRef}
+                  onChange={(e) => setBuildinRef(e.target.value)}
                   // onChange={(e) => setBuildinRef(e.target.value)}
                   disabled={isDisable}
-                  style={{
-                    paddingTop: "15px",
-                    paddingBottom: "15px",
-                    backgroundColor: "#E8F0FE",
-                    // color:"white"
-                  }}
+                  style={
+                    checkIsError("typeOfBuilding")
+                      ? errorLabelStyle
+                      : {
+                          paddingTop: "15px",
+                          paddingBottom: "15px",
+                          backgroundColor: "#E8F0FE",
+                          // color:"white"
+                        }
+                  }
                 >
                   {typeOfBuilding.map((item, index) => {
                     return (
@@ -287,11 +371,11 @@ const CreateList = ({
               </div>
             </div>
             <div className="col-lg-4">
-              <div id="other-div" style={{ display: "none" }}>
+              <div id="other-div">
                 {/* Content for the "Other" option */}
                 <input
                   required
-                  style={{ backgroundColor: "#E8F0FE" }}
+                  style={otherTypeOfBuilding ? viewStyle : hiddenStyle}
                   onChange={(e) => setBuildinRef(e.target.value)}
                   type="text"
                   className="form-control"
@@ -324,9 +408,13 @@ const CreateList = ({
                 type="number"
                 className="form-control"
                 id="formGroupExampleInput3"
-                style={{ backgroundColor: "#E8F0FE", marginLeft: "-5px" }}
-                onChange={(e) => setBidLowerRangeRef(e.target.value)}
-                value={bidLowerRangeRef}
+                style={
+                  checkIsError("estimatedValue")
+                    ? errorLabelStyle
+                    : { backgroundColor: "#E8F0FE", marginLeft: "-5px" }
+                }
+                onChange={(e) => setEstimatedValue(e.target.value)}
+                value={estimatedValue}
                 disabled={isDisable}
                 maxLength={30}
               />
@@ -356,16 +444,20 @@ const CreateList = ({
                   className="form-select"
                   data-live-search="true"
                   data-width="100%"
-                  value={selectedOption_02}
-                  onChange={check_02}
+                  value={purpose}
+                  onChange={(e) => setPurpose(e.target.value)}
                   // onChange={(e) => setBuildinRef(e.target.value)}
-                  // disabled={isDisable}
-                  style={{
-                    paddingTop: "15px",
-                    paddingBottom: "15px",
-                    backgroundColor: "#E8F0FE",
-                    // color:"white"
-                  }}
+                  disabled={isDisable}
+                  style={
+                    checkIsError("purpose")
+                      ? errorLabelStyle
+                      : {
+                          paddingTop: "15px",
+                          paddingBottom: "15px",
+                          backgroundColor: "#E8F0FE",
+                          // color:"white"
+                        }
+                  }
                 >
                   {Purpose.map((item, index) => {
                     return (
@@ -378,15 +470,16 @@ const CreateList = ({
               </div>
             </div>
             <div className="col-lg-4">
-              <div id="other-div_02" style={{ display: "none" }}>
+              <div id="other-div_02">
                 {/* Content for the "Other" option */}
                 <input
                   required
-                  style={{ backgroundColor: "#E8F0FE" }}
                   type="text"
                   className="form-control"
                   id="otherInput"
                   name="otherInput"
+                  style={otherPurpose ? viewStyle : hiddenStyle}
+                  onChange={(e) => setPurpose(e.target.value)}
                   maxLength={30}
                 />
               </div>
@@ -432,16 +525,20 @@ const CreateList = ({
                   className="form-select"
                   data-live-search="true"
                   data-width="100%"
-                  value={selectedOption_01}
-                  onChange={check_01}
+                  value={typeOffAppraisal}
+                  onChange={(e) => setTypeOfAppraisal(e.target.value)}
                   // onChange={(e) => setBuildinRef(e.target.value)}
                   // disabled={isDisable}
-                  style={{
-                    paddingTop: "15px",
-                    paddingBottom: "15px",
-                    backgroundColor: "#E8F0FE",
-                    // color:"white"
-                  }}
+                  style={
+                    checkIsError("typeOfAppraisal")
+                      ? errorLabelStyle
+                      : {
+                          paddingTop: "15px",
+                          paddingBottom: "15px",
+                          backgroundColor: "#E8F0FE",
+                          // color:"white"
+                        }
+                  }
                 >
                   {typeOfAppraisal.map((item, index) => {
                     return (
@@ -454,11 +551,12 @@ const CreateList = ({
               </div>
             </div>
             <div className="col-lg-4">
-              <div id="other-div_01" style={{ display: "none" }}>
+              <div id="other-div_01">
                 {/* Content for the "Other" option */}
                 <input
                   required
-                  style={{ backgroundColor: "#E8F0FE" }}
+                  style={otherTypeOfAppraisal ? viewStyle : hiddenStyle}
+                  onChange={(e) => setTypeOfAppraisal(e.target.value)}
                   type="text"
                   className="form-control"
                   id="otherInput"
@@ -520,9 +618,9 @@ const CreateList = ({
                 id="formGroupExampleInput3"
                 style={{ backgroundColor: "#E8F0FE", marginLeft: "-5px" }}
                 maxLength={30}
-                // onChange={(e) => setCommunityRef(e.target.value)}
-                // value={communityRef}
-                // disabled={isDisable}
+                onChange={(e) => setLenderInformation(e.target.value)}
+                value={lenderInformation}
+                disabled={isDisable}
               />
             </div>
           </div>
@@ -550,8 +648,8 @@ const CreateList = ({
                   className="form-select"
                   data-live-search="true"
                   data-width="100%"
-                  // onChange={(e) => setUrgencyRef(e.target.value)}
-                  onChange={check_03}
+                  onChange={(e) => setUrgencyRef(e.target.value)}
+                  // onChange={check_03}
                   disabled={isDisable}
                   style={{
                     paddingTop: "15px",
@@ -570,18 +668,14 @@ const CreateList = ({
                 </select>
               </div>
             </div>
-            <div
-              className="col-lg-4"
-              style={{ display: "none" }}
-              id="other-div_03"
-            >
+            <div className="col-lg-4" id="other-div_03">
               <input
                 required
                 type="date"
                 pattern="\d{4}-\d{2}-\d{2}"
                 className="form-control"
                 id="formGroupExampleInput3"
-                style={{ backgroundColor: "#E8F0FE" }}
+                style={otherUrgency ? viewStyle : hiddenStyle}
                 onChange={(e) => setUrgencyRef(e.target.value)}
                 value={urgencyRef}
                 disabled={isDisable}

@@ -31,11 +31,13 @@ const Index = ({ isView, propertyData }) => {
     propertyData?.streetNumber || ""
   );
   const [cityRef, setCityRef] = useState(propertyData?.city || "");
-  const [stateRef, setStateRef] = useState(propertyData?.state || "");
+  const [stateRef, setStateRef] = useState(propertyData?.province || "");
   const [zipCodeRef, setZipCodeRef] = useState(propertyData?.zipCode || null);
+  const [errorLabel, setErrorLabel] = useState([]);
+  const [urgencyType, setUrgencyType] = useState("");
   // const [areaRef, setAreaRef] = useState(propertyData?.area || 0);
   const [communityRef, setCommunityRef] = useState(
-    propertyData?.community || null
+    propertyData?.community || ""
   );
   const [buildinRef, setBuildinRef] = useState(
     propertyData?.typeOfBuilding || null
@@ -58,6 +60,111 @@ const Index = ({ isView, propertyData }) => {
     propertyData?.applicantEmailAddress || null
   );
 
+  const [estimatedValue, setEstimatedValue] = useState(
+    propertyData?.estimatedValue || 0
+  );
+  const [typeOfAppraisal, setTypeOfAppraisal] = useState(
+    propertyData?.typeOfAppraisal || ""
+  );
+  const [lenderInformation, setLenderInformation] = useState(
+    propertyData?.lenderInformation || ""
+  );
+  const [applicantAddress, setApplicantAddress] = useState(
+    propertyData?.applicantAddress || ""
+  );
+  const [attachment, setAttachment] = useState(propertyData?.attachment || "");
+  const [purpose, setPurpose] = useState(propertyData?.purpose || "");
+
+  const [otherTypeOfBuilding, setOtherTypeOfBuilding] = useState(false);
+  const [otherPurpose, setOtherPurpose] = useState(false);
+
+  const [otherTypeOfAppraisal, setOtherTypeOfAppraisal] = useState(false);
+
+  const [otherUrgency, setOtherUrgency] = useState(false);
+
+  const [image, setImage] = useState(propertyData?.image || "");
+
+  const onChangeHandler = (value, field, otherField) => {
+    console.log(value, field, otherField);
+    if (String(value) === "Other") {
+      otherField(true);
+    } else {
+      field(value);
+    }
+  };
+
+  useEffect(() => {
+    if (streetNameRef !== "") {
+      let updatedError = errorLabel.filter((err) => {
+        if (String(err) === "streetName") return false;
+        else return true;
+      });
+      setErrorLabel(updatedError);
+    }
+  }, [streetNameRef]);
+
+  useEffect(() => {
+    if (streetNumberRef !== "") {
+      let updatedError = errorLabel.filter((err) => {
+        if (String(err) === "streetNumber") return false;
+        else return true;
+      });
+      setErrorLabel(updatedError);
+    }
+  }, [streetNumberRef]);
+
+  useEffect(() => {
+    if (buildinRef !== "") {
+      let updatedError = errorLabel.filter((err) => {
+        if (String(err) === "buildinRef") return false;
+        else return true;
+      });
+      setErrorLabel(updatedError);
+    }
+    if (String(buildinRef) === "Other") {
+      setOtherTypeOfBuilding(true);
+    } else {
+      setOtherTypeOfBuilding(false);
+    }
+  }, [buildinRef]);
+
+  useEffect(() => {
+    if (typeOfAppraisal !== "") {
+      let updatedError = errorLabel.filter((err) => {
+        if (String(err) === "typeOfAppraisal") return false;
+        else return true;
+      });
+      setErrorLabel(updatedError);
+    }
+    if (String(typeOfAppraisal) === "Other") {
+      setOtherTypeOfAppraisal(true);
+    } else {
+      setOtherTypeOfAppraisal(false);
+    }
+  }, [typeOfAppraisal]);
+
+  useEffect(() => {
+    if (purpose !== "") {
+      let updatedError = errorLabel.filter((err) => {
+        if (String(err) === "purpose") return false;
+        else return true;
+      });
+      setErrorLabel(updatedError);
+    }
+    if (String(purpose) === "Other") {
+      setOtherPurpose(true);
+    } else {
+      setOtherPurpose(false);
+    }
+  }, [purpose]);
+
+  useEffect(() => {
+    if (String(urgencyRef) === "Rush") {
+      setOtherUrgency(true);
+    } else if (String(urgencyRef) === "Regular") {
+      setOtherUrgency(false);
+    }
+  }, [urgencyRef]);
   useEffect(() => {
     userData = JSON.parse(localStorage.getItem("user"));
     console.log(userData.userSubscription.$values);
@@ -111,12 +218,54 @@ const Index = ({ isView, propertyData }) => {
       !payload.city ||
       !payload.state ||
       !payload.zipCode ||
-      !payload.typeOfBuilding ||
-      !payload.community 
+      !payload.typeOfBuilding
       // !payload.area
     ) {
-      toast.error("All required fields must be filled");
+      let tempError = errorLabel;
+
+      if (!payload.streetName) {
+        tempError.push("streetName");
+      }
+      if (!payload.streetNumber) {
+        tempError.push("streetNumber");
+      }
+      if (!payload.city) {
+        tempError.push("city");
+      }
+      if (!payload.state) {
+        tempError.push("state");
+      }
+      if (!payload.zipCode) {
+        tempError.push("zipCode");
+      }
+      if (!payload.typeOfBuilding) {
+        tempError.push("typeOfBuilding");
+      }
+      if (!payload.estimatedValue) {
+        tempError.push("estimatedValue");
+      }
+      if (!payload.purpose) {
+        tempError.push("purpose");
+      }
+      if (!payload.typeOfAppraisal) {
+        tempError.push("typeOfAppraisal");
+      }
+      if (!payload.applicantLastName) {
+        tempError.push("applicantLastName");
+      }
+      if (!payload.applicantFirstName) {
+        tempError.push("applicantFirstName");
+      }
+      if (!payload.applicantPhoneNumber) {
+        tempError.push("applicantPhoneNumber");
+      }
+      if (!payload.applicantEmail) {
+        tempError.push("applicantEmailAddress");
+      }
+
+      setErrorLabel(tempError);
     } else {
+      setErrorLabel([]);
       const encryptedData = encryptionData(payload);
 
       toast.loading("Updating the property..");
@@ -149,7 +298,89 @@ const Index = ({ isView, propertyData }) => {
   };
 
   const submitHandler = () => {
-    setModalIsOpen(true);
+    const payload = {
+      streetName: streetNameRef,
+      streetNumber: streetNumberRef,
+      city: cityRef,
+      state: stateRef,
+      zipCode: zipCodeRef,
+      // area: areaRef,
+      community: communityRef,
+      typeOfBuilding: buildinRef,
+      applicantFirstName: applicantFirstName,
+      applicantLastName: applicantLatsName,
+      applicantPhoneNumber: applicantNumber,
+      bidLowerRange: Number(bidLowerRangeRef),
+      bidUpperRange: Number(bidLowerRangeRef),
+      urgency: urgencyRef,
+      propertyStatus: true,
+      estimatedValue: estimatedValue,
+      purpose: purpose,
+      typeOfAppraisal: typeOfAppraisal,
+      lenderInformation: lenderInformation,
+      applicantAddress: applicantAddress,
+    };
+    if (
+      !payload.streetName ||
+      !payload.streetNumber ||
+      !payload.city ||
+      !payload.state ||
+      !payload.zipCode ||
+      !payload.typeOfBuilding ||
+      !payload.typeOfAppraisal ||
+      !payload.purpose ||
+      !payload.estimatedValue
+    ) {
+      let tempError = [];
+
+      if (!payload.streetName) {
+        tempError.push("streetName");
+      }
+      if (!payload.streetNumber) {
+        tempError.push("streetNumber");
+      }
+      if (!payload.city) {
+        tempError.push("city");
+      }
+      if (!payload.state) {
+        tempError.push("state");
+      }
+      if (!payload.zipCode) {
+        tempError.push("zipCode");
+      }
+      if (!payload.typeOfBuilding) {
+        tempError.push("typeOfBuilding");
+      }
+      if (!payload.estimatedValue) {
+        tempError.push("estimatedValue");
+      }
+      if (!payload.purpose) {
+        tempError.push("purpose");
+      }
+      if (!payload.typeOfAppraisal) {
+        tempError.push("typeOfAppraisal");
+      }
+      if (!payload.applicantLastName) {
+        tempError.push("applicantLastName");
+      }
+      if (!payload.applicantFirstName) {
+        tempError.push("applicantFirstName");
+      }
+      if (!payload.applicantPhoneNumber) {
+        tempError.push("applicantPhoneNumber");
+      }
+      if (!payload.applicantEmail) {
+        tempError.push("applicantEmailAddress");
+      }
+
+      setErrorLabel(tempError);
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth", // Optional: Add smooth scrolling behavior
+      });
+    } else {
+      setModalIsOpen(true);
+    }
   };
 
   const finalSubmitHandler = () => {
@@ -177,7 +408,7 @@ const Index = ({ isView, propertyData }) => {
         city: cityRef,
         state: stateRef,
         zipCode: zipCodeRef,
-        // area: areaRef,
+        area: "",
         community: communityRef,
         typeOfBuilding: buildinRef,
         applicantFirstName: applicantFirstName,
@@ -188,6 +419,13 @@ const Index = ({ isView, propertyData }) => {
         bidUpperRange: Number(bidLowerRangeRef),
         urgency: propertyData?.urgency === 0 ? 0 : 1,
         propertyStatus: true,
+        estimatedValue: Number(estimatedValue),
+        purpose: purpose,
+        typeOfAppraisal: typeOfAppraisal,
+        lenderInformation: lenderInformation,
+        applicantAddress: applicantAddress,
+        attachment: "",
+        image: "",
         token: userInfo.token,
       };
 
@@ -200,10 +438,53 @@ const Index = ({ isView, propertyData }) => {
         !payload.state ||
         !payload.zipCode ||
         !payload.typeOfBuilding ||
-        !payload.community
-        // !payload.area
+        !payload.typeOfAppraisal ||
+        !payload.purpose ||
+        !payload.estimatedValue
       ) {
-        toast.error("All required fields must be filled");
+        let tempError = errorLabel;
+
+        if (!payload.streetName) {
+          tempError.push("streetName");
+        }
+        if (!payload.streetNumber) {
+          tempError.push("streetNumber");
+        }
+        if (!payload.city) {
+          tempError.push("city");
+        }
+        if (!payload.state) {
+          tempError.push("state");
+        }
+        if (!payload.zipCode) {
+          tempError.push("zipCode");
+        }
+        if (!payload.typeOfBuilding) {
+          tempError.push("typeOfBuilding");
+        }
+        if (!payload.estimatedValue) {
+          tempError.push("estimatedValue");
+        }
+        if (!payload.purpose) {
+          tempError.push("purpose");
+        }
+        if (!payload.typeOfAppraisal) {
+          tempError.push("typeOfAppraisal");
+        }
+        if (!payload.applicantLastName) {
+          tempError.push("applicantLastName");
+        }
+        if (!payload.applicantFirstName) {
+          tempError.push("applicantFirstName");
+        }
+        if (!payload.applicantPhoneNumber) {
+          tempError.push("applicantPhoneNumber");
+        }
+        if (!payload.applicantEmail) {
+          tempError.push("applicantEmailAddress");
+        }
+
+        setErrorLabel(tempError);
       } else {
         const encryptedData = encryptionData(payload);
 
@@ -342,8 +623,7 @@ const Index = ({ isView, propertyData }) => {
                         setStateRef={setStateRef}
                         handleZipCodeChange={handleZipCodeChange}
                         zipCodeRef={zipCodeRef}
-                        // areaRef={areaRef}
-                        // setAreaRef={setAreaRef}
+                        errorLabel={errorLabel}
                         setZipCodeRef={setZipCodeRef}
                         propertyData={propertyData}
                         setDisable={setDisable}
@@ -370,6 +650,7 @@ const Index = ({ isView, propertyData }) => {
                     <hr style={{ color: "#2e008b" }} />
                     <CreateList
                       isDisable={isDisable}
+                      errorLabel={errorLabel}
                       // areaRef={areaRef}
                       // setAreaRef={setAreaRef}
                       communityRef={communityRef}
@@ -381,6 +662,22 @@ const Index = ({ isView, propertyData }) => {
                       propertyData={propertyData}
                       bidLowerRangeRef={bidLowerRangeRef}
                       setBidLowerRangeRef={setBidLowerRangeRef}
+                      setEstimatedValue={setEstimatedValue}
+                      setPurpose={setPurpose}
+                      estimatedValue={estimatedValue}
+                      purpose={purpose}
+                      urgencyType={urgencyType}
+                      setUrgencyType={setUrgencyType}
+                      lenderInformation={lenderInformation}
+                      typeOffAppraisal={typeOfAppraisal}
+                      setLenderInformation={setLenderInformation}
+                      setTypeOfAppraisal={setTypeOfAppraisal}
+                      otherPurpose={otherPurpose}
+                      setOtherTypeOfBuilding={setOtherTypeOfBuilding}
+                      otherTypeOfAppraisal={otherTypeOfAppraisal}
+                      otherUrgency={otherUrgency}
+                      otherTypeOfBuilding={otherTypeOfBuilding}
+                      onChangeHandler={onChangeHandler}
                       setDisable={setDisable}
                     />
                   </div>
@@ -404,6 +701,13 @@ const Index = ({ isView, propertyData }) => {
                         isDisable={isDisable}
                         applicantFirstName={applicantFirstName}
                         setApplicantFirstName={setApplicantFirstName}
+                        setApplicantAddress={setApplicantAddress}
+                        applicantAddress={applicantAddress}
+                        attachment={attachment}
+                        image={image}
+                        setImage={setImage}
+                        setAttachment={setAttachment}
+                        errorLabel={errorLabel}
                         applicantLatsName={applicantLatsName}
                         setApplicantLastName={setApplicantLastName}
                         applicantNumber={applicantNumber}
@@ -531,7 +835,7 @@ const Index = ({ isView, propertyData }) => {
                                 width: "250px",
                               }}
                             >
-                              {buildinRef}
+                              {typeOfAppraisal}
                             </td>
                           </tr>
                           <tr>
@@ -549,49 +853,53 @@ const Index = ({ isView, propertyData }) => {
                                 width: "250px",
                               }}
                             >
-                              {buildinRef}
+                              {purpose}
                             </td>
                           </tr>
-                          <tr>
-                            <td
-                              style={{
-                                border: "1px solid grey",
-                                color: "#2e008b",
-                              }}
-                            >
-                              <span className="text-start">
-                                {" "}
-                                Lender Information
-                              </span>
-                            </td>
-                            <td
-                              style={{
-                                border: "1px solid grey",
-                                width: "250px",
-                              }}
-                            >
-                              {buildinRef}
-                            </td>
-                          </tr>
+                          {lenderInformation && (
+                            <tr>
+                              <td
+                                style={{
+                                  border: "1px solid grey",
+                                  color: "#2e008b",
+                                }}
+                              >
+                                <span className="text-start">
+                                  {" "}
+                                  Lender Information
+                                </span>
+                              </td>
+                              <td
+                                style={{
+                                  border: "1px solid grey",
+                                  width: "250px",
+                                }}
+                              >
+                                {lenderInformation}
+                              </td>
+                            </tr>
+                          )}
 
-                          <tr>
-                            <td
-                              style={{
-                                border: "1px solid grey",
-                                color: "#2e008b",
-                              }}
-                            >
-                              <span className="text-start">Community</span>
-                            </td>
-                            <td
-                              style={{
-                                border: "1px solid grey",
-                                width: "250px",
-                              }}
-                            >
-                              {communityRef}
-                            </td>
-                          </tr>
+                          {communityRef && (
+                            <tr>
+                              <td
+                                style={{
+                                  border: "1px solid grey",
+                                  color: "#2e008b",
+                                }}
+                              >
+                                <span className="text-start">Community</span>
+                              </td>
+                              <td
+                                style={{
+                                  border: "1px solid grey",
+                                  width: "250px",
+                                }}
+                              >
+                                {communityRef}
+                              </td>
+                            </tr>
+                          )}
                           <tr>
                             <td
                               style={{
@@ -610,7 +918,7 @@ const Index = ({ isView, propertyData }) => {
                               }}
                             >
                               {" "}
-                              $ {bidLowerRangeRef}
+                              $ {estimatedValue}
                             </td>
                           </tr>
                           <tr>
@@ -690,46 +998,50 @@ const Index = ({ isView, propertyData }) => {
                               {applicantNumber}
                             </td>
                           </tr>
-                          <tr>
-                            <td
-                              style={{
-                                border: "1px solid grey",
-                                color: "#2e008b",
-                              }}
-                            >
-                              <span className="text-start">Address</span>
-                            </td>
-                            <td
-                              style={{
-                                border: "1px solid grey",
-                                width: "250px",
-                              }}
-                            >
-                              {" "}
-                              {bidLowerRangeRef}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td
-                              style={{
-                                border: "1px solid grey",
-                                color: "#2e008b",
-                              }}
-                            >
-                              <span className="text-start">
-                                Remark / Additional Information
-                              </span>
-                            </td>
-                            <td
-                              style={{
-                                border: "1px solid grey",
-                                width: "250px",
-                              }}
-                            >
-                              {" "}
-                              {bidLowerRangeRef}
-                            </td>
-                          </tr>
+                          {applicantAddress && (
+                            <tr>
+                              <td
+                                style={{
+                                  border: "1px solid grey",
+                                  color: "#2e008b",
+                                }}
+                              >
+                                <span className="text-start">Address</span>
+                              </td>
+                              <td
+                                style={{
+                                  border: "1px solid grey",
+                                  width: "250px",
+                                }}
+                              >
+                                {" "}
+                                {bidLowerRangeRef}
+                              </td>
+                            </tr>
+                          )}
+                          {false && (
+                            <tr>
+                              <td
+                                style={{
+                                  border: "1px solid grey",
+                                  color: "#2e008b",
+                                }}
+                              >
+                                <span className="text-start">
+                                  Remark / Additional Information
+                                </span>
+                              </td>
+                              <td
+                                style={{
+                                  border: "1px solid grey",
+                                  width: "250px",
+                                }}
+                              >
+                                {" "}
+                                {bidLowerRangeRef}
+                              </td>
+                            </tr>
+                          )}
                         </table>
                       </div>
                       <div className="row text-center mt-3">
