@@ -22,6 +22,7 @@ const Index = () => {
   const [toggleWishlist,setToggleWishlist]=useState(0);
   const [searchResult, setSearchResult] = useState([]);
   const [property, setProperty] = useState("");
+  const [startLoading,setStartLoading] = useState(false);
   const [filterProperty, setFilterProperty] = useState("");
   const [filterQuery, setFilterQuery] = useState("Last 30 Days");
   const [searchQuery, setSearchQuery] = useState("city");
@@ -117,7 +118,7 @@ const Index = () => {
           property.zipCode.toLowerCase().includes(searchTerm) ||
           property.area.toLowerCase().includes(searchTerm) ||
           property.city.toLowerCase().includes(searchTerm) ||
-          property.state.toLowerCase().includes(searchTerm) ||
+          property.province.toLowerCase().includes(searchTerm) ||
           property.streetName.toLowerCase().includes(searchTerm) ||
           property.streetNumber.toLowerCase().includes(searchTerm) ||
           property.typeOfBuilding.toLowerCase().includes(searchTerm)
@@ -382,8 +383,10 @@ const Index = () => {
                             setModalIsOpenError={setModalIsOpenError}
                             setRefresh={setRefresh}
                             refresh={refresh}
+                            setStartLoading={setStartLoading}
                             openModalBroker={openModalBroker}
                           />
+                          
                         
                         {modalIsOpenError && (
                           <div className="modal">
@@ -477,7 +480,6 @@ const Index = () => {
                 {/* End .col */}
               </div>
 
-              <Loader />
 
               <div className="row">
                 <Modal

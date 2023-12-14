@@ -418,7 +418,7 @@ const Index = () => {
                                           width: "250px",
                                         }}
                                       >
-                                        {currentProperty.typeOfBuilding}
+                                        {currentProperty.typeOfAppraisal}
                                       </td>
                                     </tr>
                                     <tr>
@@ -439,7 +439,7 @@ const Index = () => {
                                           width: "250px",
                                         }}
                                       >
-                                        {currentProperty.typeOfBuilding}
+                                        {currentProperty.purpose}
                                       </td>
                                     </tr>
                                     <tr>
@@ -460,7 +460,7 @@ const Index = () => {
                                           width: "250px",
                                         }}
                                       >
-                                        {currentProperty.typeOfBuilding}
+                                        {currentProperty.lenderInformation ? currentProperty.lenderInformation : "NA"}
                                       </td>
                                     </tr>
                                     <tr>
@@ -481,7 +481,7 @@ const Index = () => {
                                         }}
                                       >
                                         {" "}
-                                        {currentProperty.community}
+                                        {currentProperty.community ? currentProperty.community : "NA"}
                                       </td>
                                     </tr>
                                     <tr>
@@ -501,7 +501,7 @@ const Index = () => {
                                           width: "250px",
                                         }}
                                       >
-                                        ${currentProperty.bidLowerRange}
+                                        ${currentProperty.estimatedValue}
                                       </td>
                                     </tr>
                                     <tr>
@@ -526,7 +526,7 @@ const Index = () => {
                                           ? "Rush"
                                           : currentProperty.urgency === 1
                                           ? "Regular"
-                                          : ""}
+                                          : "NA"}
                                       </td>
                                     </tr>
                                     <tr>
@@ -613,10 +613,10 @@ const Index = () => {
                                         }}
                                       >
                                         {" "}
-                                        {currentProperty.applicantLatsName}
+                                        {currentProperty.applicantAddress ? currentProperty.applicantAddress : "NA"}
                                       </td>
                                     </tr>
-                                    <tr>
+                                    {/* <tr>
                                       <td
                                         style={{
                                           border: "1px solid grey",
@@ -636,7 +636,7 @@ const Index = () => {
                                         {" "}
                                         {currentProperty.applicantFirstName}
                                       </td>
-                                    </tr>
+                                    </tr> */}
                                   </table>
                                 </div>
                                 <div className="row text-center mt-3">

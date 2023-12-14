@@ -76,7 +76,7 @@ const data = [
   },
 ];
 
-export default function Exemple({setModalIsOpenError,allProps,setUpdatedCode,setViewPropertyHandler,setErrorMessage}) {
+export default function Exemple({setModalIsOpenError,allProps,setUpdatedCode,setViewPropertyHandler,setRefresh,refresh,setErrorMessage}) {
   
   const userData = (JSON.parse(localStorage.getItem("user")));
   const [properties , setProperties] = useState([]);
@@ -87,12 +87,17 @@ export default function Exemple({setModalIsOpenError,allProps,setUpdatedCode,set
   const [show , setShow] = useState(false);
   let tempData = [];
 
+  const refreshHandler=()=>{
+    setRefresh(true);
+  }
   const formatDate = (dateString) => {
     const options = {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
     };
+
+   
   
     const formattedDate = new Date(dateString).toLocaleString('en-US', options);
   
@@ -229,14 +234,16 @@ export default function Exemple({setModalIsOpenError,allProps,setUpdatedCode,set
   }
       
       getData();
-  },[]);
+      setRefresh(false);
+  },[refresh]);
   return (
     <>
-    { properties.length > 0 ? (<SmartTable
+    { refresh ? <Loader/> : (<SmartTable
       title=""
       data={updatedData}
       headCells={headCells}
-    />): <Loader/>}
+      refreshHandler = {refreshHandler}
+    />)}
     </>
   );
 }

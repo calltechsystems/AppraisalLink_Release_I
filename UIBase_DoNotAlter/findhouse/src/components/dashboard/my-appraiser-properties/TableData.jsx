@@ -6,7 +6,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import Exemple from "./Exemple";
-const TableData = ({userData ,reload,setReload, open ,close ,setViewProperty, closeBrokerModal,openModalBroker,setUpdatedCode,openViewModal, onWishlistHandler , participateHandler , properties, setProperties , setErrorMessage,setModalIsOpenError}) => {
+const TableData = ({userData ,refresh,reload,setRefresh,setReload, open ,close ,setViewProperty, closeBrokerModal,openModalBroker,setUpdatedCode,openViewModal, onWishlistHandler , participateHandler , properties, setProperties , setErrorMessage,setModalIsOpenError}) => {
 
   let userInfo = {};
   const [Id,setId] = useState(-1);
@@ -286,6 +286,8 @@ const TableData = ({userData ,reload,setReload, open ,close ,setViewProperty, cl
       onWishlistHandler={onWishlistHandler}
       reload={reload}
       setReload={setReload}
+      setRefresh={setRefresh}
+      refresh={refresh}
       participateHandler={participateHandler}
       closeBrokerModal = {closeBrokerModal}
       openModalBroker={openModalBroker}

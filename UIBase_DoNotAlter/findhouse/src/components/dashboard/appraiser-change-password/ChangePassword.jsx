@@ -100,7 +100,8 @@ const ChangePassword = () => {
                         Old Password
                       </label>
                       <input
-                      type={passwordVisible ? "text" : "password"} // Conditionally set the input type
+                      
+                      type="password"
                       className="form-control"
                       id="exampleInputPassword1"
                       placeholder="Old Password"
@@ -108,16 +109,7 @@ const ChangePassword = () => {
                       ref={oldPasswordRef}
                       style={{ paddingRight: "40px" }} // Add right padding to accommodate the button
                     />
-                    <div className="input-group-prepend">
-                      <div
-                        className="input-group-text m-1"
-                        style={{ border: "1px solid #2e008b", cursor: "pointer" }}
-                        onMouseEnter={togglePasswordVisibility}
-                        onMouseLeave={togglePasswordVisibility}
-                      >
-                        <FaEye />
-                      </div>
-                    </div>
+                   
                     </div>
                   </div>
                   {/* End .col */}

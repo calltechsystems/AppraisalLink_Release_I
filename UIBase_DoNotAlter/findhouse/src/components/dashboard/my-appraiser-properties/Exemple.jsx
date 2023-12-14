@@ -92,7 +92,7 @@ const data = [
   },
 ];
 
-export default function Exemple({userData , open ,close , closeBrokerModal ,openModalBroker,setUpdatedCode,setViewProperty,openViewModal,participateHandler,onWishlistHandler, properties, setProperties,setModalIsOpenError,setErrorMessage}) {
+export default function Exemple({userData , open ,close , closeBrokerModal ,refresh,setRefresh,openModalBroker,setUpdatedCode,setViewProperty,openViewModal,participateHandler,onWishlistHandler, properties, setProperties,setModalIsOpenError,setErrorMessage}) {
   
 
   const [updatedData, setUpdatedData] = useState([]);
@@ -105,9 +105,14 @@ export default function Exemple({userData , open ,close , closeBrokerModal ,open
   let tempData = [];
   let status = 0;
 
+  const refreshHandler = ()=>{
+    setRefresh(true);
+   }
+
   const filterBidsWithin24Hours = (property) => {
     const userData = JSON.parse(localStorage.getItem("user"));
     let tempBid = 0,bidValues = {};
+ 
     bids.filter((bid) => {
       if (
         bid.appraiserUserId === userData.userId &&
@@ -118,7 +123,7 @@ export default function Exemple({userData , open ,close , closeBrokerModal ,open
       } else {
       }
     });
-    console.log(bidValues.status);
+    console.log(bidValues);
     setStatus(bidValues.status );
     status = bidValues.status;
     return tempBid > 0 ? true : false;
@@ -170,7 +175,8 @@ export default function Exemple({userData , open ,close , closeBrokerModal ,open
   const checkWishlistedHandler = (data) => {
     let temp = false;
     wishlist.map((prop, index) => {
-      if (prop.propertyId === data.propertyId) temp = true;
+ 
+      if (String(prop.propertyId) === String(data.propertyId)) temp = true;
     });
     return temp ? true : false;
   };
@@ -188,7 +194,7 @@ export default function Exemple({userData , open ,close , closeBrokerModal ,open
       properties.map((property,index)=>{
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
-        console.log(property);
+        console.log(isBidded);
       
         if(isWishlist ){
         const updatedRow = {
@@ -291,7 +297,7 @@ export default function Exemple({userData , open ,close , closeBrokerModal ,open
    
 
     const data = JSON.parse(localStorage.getItem("user"));
-
+    setRefresh(false);
     
     axios
       .get("/api/appraiserWishlistedProperties", {
@@ -368,14 +374,16 @@ export default function Exemple({userData , open ,close , closeBrokerModal ,open
         // setErrorMessage(err?.response?.data?.error);
         // setModalIsOpenError(true);
       });
-  },[]);
+      
+  },[refresh]);
   return (
     <>
-    { properties.length > 0 ? (<SmartTable
+    { refresh ? <Loader/> : (<SmartTable
       title=""
       data={updatedData}
+      refreshHandler={refreshHandler}
       headCells={headCells}
-    />) : <Loader/>}
+    />) }
     </>
   );
 }

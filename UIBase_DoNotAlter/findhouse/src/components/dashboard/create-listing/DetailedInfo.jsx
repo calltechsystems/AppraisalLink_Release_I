@@ -104,11 +104,11 @@ const DetailedInfo = ({
 }) => {
   const router = useRouter();
   const cancelHandler = () => {
-    router.push("/my-profile");
+    router.push("/my-properties");
   };
   console.log(applicantEmail);
 
-  const errorLabelStyle = {borderWidth:"2px",borderColor:"red"};
+  const errorLabelStyle = {borderColor:"red"};
 
   const checkIsError = (value)=>{
     let isError = false;

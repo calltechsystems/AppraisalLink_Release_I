@@ -31,6 +31,7 @@ const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [lowRangeBid, setLowRangeBid] = useState("");
   const [propertyId, setPropertyId] = useState(null);
+  const [refresh , setRefresh] = useState(false);
   const [openViewModal, setOpenViewModal] = useState(false);
   
   const [viewProperty, setViewProperty] = useState({});
@@ -123,7 +124,7 @@ const Index = () => {
           property.zipCode.toLowerCase().includes(searchTerm) ||
           property.area.toLowerCase().includes(searchTerm) ||
           property.city.toLowerCase().includes(searchTerm) ||
-          property.state.toLowerCase().includes(searchTerm) ||
+          property.province.toLowerCase().includes(searchTerm) ||
           property.streetName.toLowerCase().includes(searchTerm) ||
           property.streetNumber.toLowerCase().includes(searchTerm) ||
           property.typeOfBuilding.toLowerCase().includes(searchTerm)
@@ -380,6 +381,7 @@ const Index = () => {
                             properties={
                               searchInput === "" ? properties : filterProperty
                             }
+                            setRefresh={setRefresh}
                             setUpdatedCode={setUpdatedCode}
                             reload={reload}
                             setReload={setReload}
@@ -392,6 +394,7 @@ const Index = () => {
                             setModalIsOpenError={setModalIsOpenError}
                             closeBrokerModal = {closeBrokerModal}
                             openModalBroker={openModalBroker}
+                            refresh={refresh}
                           />
                         )}
                         {modalIsOpenError && (

@@ -10,6 +10,7 @@ const CreateList = ({
   setAreaRef,
   setBuildinRef,
   propertyData,
+  otherUrgencyValue,
   setDisable,
   buildinRef,
   bidLowerRangeRef,
@@ -32,7 +33,10 @@ const CreateList = ({
   otherTypeOfBuilding,
   errorLabel,
   urgencyType,
-
+  setOtherPurposeValue,
+  setOtherTypeOfAppraisalValue,
+  setOtherTypeOfBuildingValue,
+  setOtherUrgencyValue,
   setUrgencyType,
   onChangeHandler,
 }) => {
@@ -82,7 +86,7 @@ const CreateList = ({
     }
   };
 
-  const errorLabelStyle = { borderWidth: "2px", borderColor: "red" };
+  const errorLabelStyle = { borderColor: "red" };
 
   const checkIsError = (value) => {
     let isError = false;
@@ -376,7 +380,7 @@ const CreateList = ({
                 <input
                   required
                   style={otherTypeOfBuilding ? viewStyle : hiddenStyle}
-                  onChange={(e) => setBuildinRef(e.target.value)}
+                  onChange={(e) => setOtherTypeOfBuildingValue(e.target.value)}
                   type="text"
                   className="form-control"
                   id="otherInput"
@@ -479,7 +483,7 @@ const CreateList = ({
                   id="otherInput"
                   name="otherInput"
                   style={otherPurpose ? viewStyle : hiddenStyle}
-                  onChange={(e) => setPurpose(e.target.value)}
+                  onChange={(e) => setOtherPurposeValue(e.target.value)}
                   maxLength={30}
                 />
               </div>
@@ -556,7 +560,7 @@ const CreateList = ({
                 <input
                   required
                   style={otherTypeOfAppraisal ? viewStyle : hiddenStyle}
-                  onChange={(e) => setTypeOfAppraisal(e.target.value)}
+                  onChange={(e) => setOtherTypeOfAppraisalValue(e.target.value)}
                   type="text"
                   className="form-control"
                   id="otherInput"
@@ -676,8 +680,8 @@ const CreateList = ({
                 className="form-control"
                 id="formGroupExampleInput3"
                 style={otherUrgency ? viewStyle : hiddenStyle}
-                onChange={(e) => setUrgencyRef(e.target.value)}
-                value={urgencyRef}
+                onChange={(e) => setOtherUrgencyValue(e.target.value)}
+                value={otherUrgencyValue}
                 disabled={isDisable}
               />
             </div>

@@ -22,6 +22,8 @@ const Index = () => {
   const [viewProperty, setViewProperty] = useState({});
   const [allProps,setAllProps]=useState([]);
 
+  const [refresh,setRefresh]=useState(false);
+
   const closeErrorModal = () => {
     setModalIsOpenError(false);
   };
@@ -216,6 +218,8 @@ const Index = () => {
                               setErrorMessage={setErrorMessage}
                               setUpdatedCode={setUpdatedCode}
                               props={allProps}
+                              setRefresh={setRefresh}
+                              refresh={refresh}
                               setViewPropertyHandler={setViewPropertyHandler}
                             />
                           )}

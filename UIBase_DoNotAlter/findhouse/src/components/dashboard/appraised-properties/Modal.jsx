@@ -33,6 +33,8 @@ const Modal = ({ modalOpen, closeModal , lowRangeBid , propertyId}) => {
         token : user.token
       };
 
+     
+
       const payload = encryptionData(formData);
 
       toast.loading("Setting a bid");

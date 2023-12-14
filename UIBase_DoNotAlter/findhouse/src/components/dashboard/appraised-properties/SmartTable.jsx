@@ -69,10 +69,40 @@ function SmartTable(props) {
     printWindow.document.write(
       '<button style="display:none;" onclick="window.print()">Print</button>'
     );
-    // console.log(document.getElementById('table-container').innerHTML);
-    printWindow.document.write(
-      document.getElementById("table-container").innerHTML
-    );
+
+    // Clone the table-container and remove the action column
+    const tableContainer = document.getElementById("table-container");
+    const table = tableContainer.querySelector("table");
+    const clonedTable = table.cloneNode(true);
+    const rows = clonedTable.querySelectorAll("tr");
+    rows.forEach(row => {
+        const lastCell = row.querySelector("td:last-child");
+        if (lastCell) {
+            row.removeChild(lastCell);
+        }
+    });
+
+    // Remove the action heading from the table
+    const tableHead = clonedTable.querySelector("thead");
+    const tableHeadRows = tableHead.querySelectorAll("tr");
+    tableHeadRows.forEach(row => {
+        const lastCell = row.querySelector("th:last-child");
+        if (lastCell) {
+            row.removeChild(lastCell);
+        }
+    });
+
+    // Make the table responsive for all fields
+    const tableRows = clonedTable.querySelectorAll("tr");
+    tableRows.forEach(row => {
+        const firstCell = row.querySelector("td:first-child");
+        if (firstCell) {
+            const columnHeading = tableHeadRows[0].querySelector("th:nth-child(" + (firstCell.cellIndex + 1) + ")").innerText;
+            firstCell.setAttribute("data-th", columnHeading);
+        }
+    });
+
+    printWindow.document.write(clonedTable.outerHTML);
     printWindow.document.write("</body></html>");
     printWindow.document.close();
     printWindow.print();
@@ -80,9 +110,7 @@ function SmartTable(props) {
       printWindow.close();
       toast.success("Saved the data");
     };
-  };
-
-  console.log(props.data);
+};
   const handleExcelPrint = () => {
     const twoDData = props.data.map((item, index) => {
       return [item.bid, item.date, item.title, item.urgency];
@@ -218,14 +246,14 @@ function SmartTable(props) {
           )}
           <div className="row">
             <div className="col-12">{props.title}</div>
-            <button
-              className="btn btn-color w-25"
+            <div
+              className="btn btn-color w-25 m-1"
               onClick={() => handlePrint()}
             >
-              Generate PDF
-            </button>
+            <span className="flaticon-pdf "></span>
+            </div>
             <button
-              className="btn btn-color w-25 h-10"
+              className="btn btn-color w-25 h-10 m-1"
               onClick={() => props.refreshHandler()}
             >
               Refresh

@@ -29,7 +29,7 @@ const LocationField = ({
   setUrgencyRef,
 }) => {
 
-  const errorLabelStyle = {borderWidth:"2px",borderColor:"red"};
+  const errorLabelStyle = {borderColor:"red"};
 
   const checkIsError = (value)=>{
     let isError = false;

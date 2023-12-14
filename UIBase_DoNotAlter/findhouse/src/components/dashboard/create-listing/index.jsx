@@ -12,6 +12,7 @@ import LocationField from "./LocationField";
 import { encryptionData } from "../../../utils/dataEncryption";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { typeOfBuilding } from "./data";
 
 const Index = ({ isView, propertyData }) => {
   const router = useRouter();
@@ -78,6 +79,15 @@ const Index = ({ isView, propertyData }) => {
   const [otherTypeOfBuilding, setOtherTypeOfBuilding] = useState(false);
   const [otherPurpose, setOtherPurpose] = useState(false);
 
+  const [otherTypeOfAppraisalValue, setOtherTypeOfAppraisalValue] =
+    useState(false);
+
+  const [otherUrgencyValue, setOtherUrgencyValue] = useState(false);
+
+  const [otherTypeOfBuildingValue, setOtherTypeOfBuildingValue] =
+    useState(false);
+  const [otherPurposeValue, setOtherPurposeValue] = useState(false);
+
   const [otherTypeOfAppraisal, setOtherTypeOfAppraisal] = useState(false);
 
   const [otherUrgency, setOtherUrgency] = useState(false);
@@ -112,6 +122,106 @@ const Index = ({ isView, propertyData }) => {
       setErrorLabel(updatedError);
     }
   }, [streetNumberRef]);
+
+  useEffect(() => {
+    if (cityRef !== "") {
+      let updatedError = errorLabel.filter((err) => {
+        if (String(err) === "city") return false;
+        else return true;
+      });
+      setErrorLabel(updatedError);
+    }
+  }, [cityRef]);
+
+  useEffect(() => {
+    if (stateRef !== "") {
+      let updatedError = errorLabel.filter((err) => {
+        if (String(err) === "state") return false;
+        else return true;
+      });
+      setErrorLabel(updatedError);
+    }
+  }, [stateRef]);
+
+  useEffect(() => {
+    if (zipCodeRef !== "") {
+      let updatedError = errorLabel.filter((err) => {
+        if (String(err) === "zipCode") return false;
+        else return true;
+      });
+      setErrorLabel(updatedError);
+    }
+  }, [zipCodeRef]);
+
+  useEffect(() => {
+    if (buildinRef !== "") {
+      let updatedError = errorLabel.filter((err) => {
+        if (String(err) === "typeofBuilding") return false;
+        else return true;
+      });
+      setErrorLabel(updatedError);
+    }
+  }, [buildinRef]);
+
+  useEffect(() => {
+    if (purpose !== "") {
+      let updatedError = errorLabel.filter((err) => {
+        if (String(err) === "purpose") return false;
+        else return true;
+      });
+      setErrorLabel(updatedError);
+    }
+  }, [purpose]);
+
+  useEffect(() => {
+    if (estimatedValue !== "") {
+      let updatedError = errorLabel.filter((err) => {
+        if (String(err) === "estimatedValue") return false;
+        else return true;
+      });
+      setErrorLabel(updatedError);
+    }
+  }, [estimatedValue]);
+
+  useEffect(() => {
+    if (typeOfAppraisal !== "") {
+      let updatedError = errorLabel.filter((err) => {
+        if (String(err) === "typeOfAppraisal") return false;
+        else return true;
+      });
+      setErrorLabel(updatedError);
+    }
+  }, [typeOfAppraisal]);
+
+  useEffect(() => {
+    if (applicantFirstName !== "") {
+      let updatedError = errorLabel.filter((err) => {
+        if (String(err) === "applicantFirstName") return false;
+        else return true;
+      });
+      setErrorLabel(updatedError);
+    }
+  }, [applicantFirstName]);
+
+  useEffect(() => {
+    if (applicantLatsName !== "") {
+      let updatedError = errorLabel.filter((err) => {
+        if (String(err) === "applicantLastName") return false;
+        else return true;
+      });
+      setErrorLabel(updatedError);
+    }
+  }, [applicantLatsName]);
+
+  useEffect(() => {
+    if (applicantNumber !== "") {
+      let updatedError = errorLabel.filter((err) => {
+        if (String(err) === "applicantPhoneNumber") return false;
+        else return true;
+      });
+      setErrorLabel(updatedError);
+    }
+  }, [applicantNumber]);
 
   useEffect(() => {
     if (buildinRef !== "") {
@@ -306,17 +416,21 @@ const Index = ({ isView, propertyData }) => {
       zipCode: zipCodeRef,
       // area: areaRef,
       community: communityRef,
-      typeOfBuilding: buildinRef,
+      typeOfBuilding:
+        String(buildinRef) === "Other" ? otherTypeOfBuildingValue : buildinRef,
       applicantFirstName: applicantFirstName,
       applicantLastName: applicantLatsName,
       applicantPhoneNumber: applicantNumber,
       bidLowerRange: Number(bidLowerRangeRef),
       bidUpperRange: Number(bidLowerRangeRef),
-      urgency: urgencyRef,
+      urgency: String(urgencyRef) === "Other" ? otherUrgencyValue : urgencyRef,
       propertyStatus: true,
       estimatedValue: estimatedValue,
-      purpose: purpose,
-      typeOfAppraisal: typeOfAppraisal,
+      purpose: String(purpose) === "Other" ? otherPurposeValue : purpose,
+      typeOfAppraisal:
+        String(typeOfAppraisal) === "Other"
+          ? otherTypeOfAppraisalValue
+          : typeOfAppraisal,
       lenderInformation: lenderInformation,
       applicantAddress: applicantAddress,
     };
@@ -499,6 +613,7 @@ const Index = ({ isView, propertyData }) => {
           })
           .then((res) => {
             toast.dismiss();
+            toast.success("Property Added Successfully");
             // setModalIsOpen(true);
             router.push("/my-properties");
           })
@@ -679,6 +794,13 @@ const Index = ({ isView, propertyData }) => {
                       otherTypeOfBuilding={otherTypeOfBuilding}
                       onChangeHandler={onChangeHandler}
                       setDisable={setDisable}
+                      setOtherPurposeValue={setOtherPurposeValue}
+                      setOtherTypeOfAppraisalValue={
+                        setOtherTypeOfAppraisalValue
+                      }
+                      otherUrgencyValue={otherUrgencyValue}
+                      setOtherTypeOfBuildingValue={setOtherTypeOfBuildingValue}
+                      setOtherUrgencyValue={setOtherUrgencyValue}
                     />
                   </div>
 
@@ -814,7 +936,9 @@ const Index = ({ isView, propertyData }) => {
                                 width: "250px",
                               }}
                             >
-                              {buildinRef}
+                              {String(buildinRef) === "Other"
+                                ? otherTypeOfBuildingValue
+                                : buildinRef}
                             </td>
                           </tr>
                           <tr>
@@ -835,7 +959,9 @@ const Index = ({ isView, propertyData }) => {
                                 width: "250px",
                               }}
                             >
-                              {typeOfAppraisal}
+                              {String(typeOfAppraisal) === "Other"
+                                ? otherTypeOfAppraisalValue
+                                : typeOfAppraisal}
                             </td>
                           </tr>
                           <tr>
@@ -853,7 +979,9 @@ const Index = ({ isView, propertyData }) => {
                                 width: "250px",
                               }}
                             >
-                              {purpose}
+                              {String(purpose) === "Other"
+                                ? otherPurposeValue
+                                : purpose}
                             </td>
                           </tr>
                           {lenderInformation && (
@@ -937,7 +1065,9 @@ const Index = ({ isView, propertyData }) => {
                               }}
                             >
                               {" "}
-                              {urgencyRef}
+                              {String(urgencyRef) === "Other"
+                                ? otherUrgencyValue
+                                : urgencyRef}
                             </td>
                           </tr>
 

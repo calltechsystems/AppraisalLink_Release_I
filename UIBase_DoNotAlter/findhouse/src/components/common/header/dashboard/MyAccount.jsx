@@ -171,7 +171,7 @@ const MyAccount = ({ user, profileCount, setProfile, userData }) => {
           <Link
             href={item.ruterPath}
             key={item.id}
-            className="dropdown-item"
+            className="dropdown-item link-hover"
             style={
               isSinglePageActive(`${item.ruterPath}`, route.pathname)
                 ? { color: "#ff5a5f" }
@@ -179,7 +179,7 @@ const MyAccount = ({ user, profileCount, setProfile, userData }) => {
             }
           >
             {item.id === 5 ? (
-              <span style={{ color: "#2e008b" }} onClick={logout}>
+              <span className="" style={{ color: "#2e008b" }} onClick={logout}>
                 Logout
               </span>
             ) : (

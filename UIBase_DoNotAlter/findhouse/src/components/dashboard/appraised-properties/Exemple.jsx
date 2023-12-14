@@ -61,6 +61,8 @@ const headCells = [
   },
 ];
 
+let count =0;
+
 
 export default function Exemple({
   userData,
@@ -76,6 +78,7 @@ export default function Exemple({
   setErrorMessage,
   setModalIsOpenError,
   setRefresh,
+  setStartLoading,
   refresh
 }) {
   const [updatedData, setUpdatedData] = useState([]);
@@ -153,8 +156,11 @@ export default function Exemple({
 
   const checkWishlistedHandler = (data) => {
     let temp = false;
+    console.log(wishlist,data);
     wishlist.map((prop, index) => {
-      if (prop.propertyId === data.propertyId) temp = true;
+      if (String(prop.propertyId) === String(data.propertyId)){
+         
+        temp = true;}
     });
     return temp ? true : false;
   };
@@ -169,7 +175,7 @@ export default function Exemple({
       properties.map((property, index) => {
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
-        console.log("isBidded", isBidded, index);
+        console.log("iswishliste", isWishlist, index);
 
         const updatedRow = {
           orderId: property.orderId,
@@ -263,90 +269,12 @@ export default function Exemple({
   },[updatedData])
 
   const refreshHandler = ()=>{
-    const data = JSON.parse(localStorage.getItem("user"));
-
-    const payload = {
-      token: userData.token,
-    };
-    let tempProperties = [],tempWishlist=[];
-    axios
-      .get("/api/getPropertiesById", {
-        headers: {
-          Authorization: `Bearer ${data?.token}`,
-          "Content-Type": "application/json",
-        },
-        params: {
-          userId: data?.userId,
-        },
-      })
-      .then((res) => {
-        tempProperties=(res.data.data.property.$values);
-      })
-      .catch((err) => {
-        setErrorMessage(err?.response?.data?.error);
-        setModalIsOpenError(true);
-      });
-    axios
-      .get("/api/appraiserWishlistedProperties", {
-        headers: {
-          Authorization: `Bearer ${data?.token}`,
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => {
-        const tempData = res.data.data.$values;
-
-        // setAllWishlistedProperties(res.data.data.$values);
-        const responseData = tempData.filter((prop, index) => {
-          if (prop.userId === data.userId) {
-            return true;
-          } else {
-            return false;
-          }
-        });
-        const tempId = responseData;
-        console.log("wishlist", responseData);
-        tempWishlist=(responseData);
-      })
-      .catch((err) => {
-        toast.error(err?.response);
-        setErrorMessage(err?.response);
-        setModalIsOpenError(true);
-      });
-    axios
-      .get("/api/getAllBids", {
-        headers: {
-          Authorization: `Bearer ${data.token}`,
-        },
-      })
-      .then((res) => {
-        toast.dismiss();
-        const tempData = res.data.data.result.$values;
-        const responseData = tempData.filter((prop, index) => {
-          if (prop.userId === data.userId) {
-            return true;
-          } else {
-            return false;
-          }
-        });
-        const updated24HoursBid = responseData.filter((prop, index) => {
-          if (filterBidsWithin24Hours(prop)) {
-            return true;
-          } else {
-            return false;
-          }
-        });
-        setProperties(tempProperties);
-        setWishlist(tempWishlist);
-        setBids(responseData);
-      })
-      .catch((err) => {
-        toast.dismiss();
-        // setErrorMessage(err?.response?.data?.error);
-        // setModalIsOpenError(true);
-      });
+   setRefresh(true);
+   setStartLoading(true);
   }
   useEffect(() => {
+    
+    console.log("inside");
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -389,58 +317,45 @@ export default function Exemple({
           }
         });
         const tempId = responseData;
-        console.log("wishlist", responseData);
-        tempWishlist=(responseData);
+        setWishlist(responseData);
       })
       .catch((err) => {
         toast.error(err?.response);
         setErrorMessage(err?.response);
         setModalIsOpenError(true);
       });
-    axios
-      .get("/api/getAllBids", {
-        headers: {
-          Authorization: `Bearer ${data.token}`,
-        },
+      let tempBids = [];
+      axios.get("/api/getAllBids",{
+        headers : {
+          Authorization : `Bearer ${data.token}`
+        }
       })
-      .then((res) => {
-        toast.dismiss();
-        const tempData = res.data.data.result.$values;
-        const responseData = tempData.filter((prop, index) => {
-          if (prop.userId === data.userId) {
-            return true;
-          } else {
-            return false;
-          }
+      .then((res)=>{
+        console.log(res);
+        tempBids =res.data.data.result.$values;
+        setBids(tempBids);
+        })
+        .catch((err) => {
+          setErrorMessage(err?.response?.data?.error);
+          setModalIsOpenError(true);
         });
-        const updated24HoursBid = responseData.filter((prop, index) => {
-          if (filterBidsWithin24Hours(prop)) {
-            return true;
-          } else {
-            return false;
-          }
-        });
-        setProperties(tempProperties);
-        setWishlist(tempWishlist);
-        setBids(responseData);
-      })
-      .catch((err) => {
-        toast.dismiss();
-        // setErrorMessage(err?.response?.data?.error);
-        // setModalIsOpenError(true);
-      });
+
+        console.log("end",bids,properties,wishlist);
+        setRefresh(false);
+        
+        
   }, [refresh]);
-  console.log(properties);
   return (
     <>
-      {properties.length > 0 ?  (
-        <SmartTable title="" data={updatedData} headCells={headCells}
+     
+        {refresh ? <Loader/> : <SmartTable title="" data={updatedData} headCells={headCells}
         setRefresh={setRefresh}
         setProperties={setProperties}
         refresh={refresh} 
-        refreshHandler={refreshHandler}/>
+        refreshHandler={refreshHandler}
+        setStartLoading={setStartLoading}/>
+  }
         
-      ) : <Loader/>}
     </>
   );
 }

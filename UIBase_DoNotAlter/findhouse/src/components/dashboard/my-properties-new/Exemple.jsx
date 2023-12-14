@@ -171,7 +171,7 @@ export default function Exemple({
           amount: ` $${property.estimatedValue}`,
           purpose: property.purpose,
           type_of_appraisal: property.typeOfAppraisal,
-          lender_information: property.lenderInformation ? property.lenderInformationm : "NA",
+          lender_information: property.lenderInformation ? property.lenderInformation : "NA",
           urgency: property.urgency,
           actions: (
             // <ul className="view_edit_delete_list mb0">

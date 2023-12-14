@@ -176,7 +176,7 @@ const MyAccount = ({ user, profileCount, setProfile }) => {
       </div>
       {/* End user_set_header */}
 
-      <div className="user_setting_content">
+      <div className="user_setting_content link-hover">
         {profileMenuItems.map((item) => (
           <Link
             href={item.ruterPath}
