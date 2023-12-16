@@ -176,12 +176,12 @@ const MyAccount = ({ user, profileCount, setProfile }) => {
       </div>
       {/* End user_set_header */}
 
-      <div className="user_setting_content link-hover">
+      <div className="user_setting_content">
         {profileMenuItems.map((item) => (
           <Link
             href={item.ruterPath}
             key={item.id}
-            className="dropdown-item"
+            className="dropdown-item link-hover"
             style={
               isSinglePageActive(`${item.ruterPath}`, route.pathname)
                 ? { color: "#ff5a5f" }

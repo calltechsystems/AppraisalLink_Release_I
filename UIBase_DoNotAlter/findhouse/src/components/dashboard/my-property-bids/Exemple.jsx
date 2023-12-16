@@ -95,8 +95,13 @@ export default function Exemple({
   closeModal,
   property,
   setProperty,
+  setId,
+  setAppInfo,
   open,
   close,
+  setRefresh,
+  refresh,
+  setOpenBrokerModal,
   setIsModalOpen,
   propertyId,
   properties,
@@ -111,7 +116,9 @@ export default function Exemple({
   const router = useRouter();
   let tempData = [];
 
-  const openPopupModal = (prop) => {
+  const openPopupModal = (prop, id) => {
+    // console.log(prop);
+    setId(id);
     setProperty(prop);
     setIsModalOpen(true);
   };
@@ -128,17 +135,43 @@ export default function Exemple({
     return formattedDate;
   };
 
+  const refreshHandler = () => {
+    setRefresh(true);
+  };
+
+  const triggerAppraiserInfo = (id) => {
+    const data = JSON.parse(localStorage.getItem("user"));
+    axios
+      .get("/api/getAppraiserById", {
+        headers: {
+          Authorization: `Bearer ${data?.token}`,
+          "Content-Type": "application/json",
+        },
+        params: {
+          Id: id,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+
+        setAppInfo(res.data.data);
+        setOpenBrokerModal(true);
+      })
+      .catch((err) => {
+        toast.dismiss();
+        toast.error(err?.response?.data?.error);
+      });
+    setOpenBrokerModal(true);
+  };
+
   const getPropertyHandler = (currentProperty) => {
     let temp = {};
+
     allProperties.forEach((prop) => {
       if (prop.propertyId === currentProperty.propertyId) {
         temp = prop;
       }
     });
-
-    const id = currentProperty.appraiserUserId;
-
-    // sconsole.log(allProperties,temp);
     return temp;
   };
 
@@ -199,67 +232,74 @@ export default function Exemple({
     const getData = () => {
       properties.map((property, index) => {
         const prop = getPropertyHandler(property);
-        const updatedRow = {
-          id: prop.orderId,
-          AppraiserId: property.appraiserUserId,
-          quote: property.bidLowerRange,
-          amount: property.bidAmount,
-          description: property.description != "" ? property.description : "NA",
-          date: formatDate(property.requestTime),
-          appraiser: (
-            <a href="#">
-              <button
-                style={{
-                  border: "0px",
-                  color: "blue",
-                  backgroundColor: "white",
-                }}
-                onClick={""}
-              >
-                {property.applicantFirstName}
-              </button>
-            </a>
-          ),
+        console.log(prop);
 
-          action:
-            property.status === 1 ? (
-              <h5>Accepted</h5>
-            ) : property.status === 0 ? (
-              <ul className="">
-                <li className="list-inline-item">
-                  <div
-                    className="fp_pdate float-end mt-1 fw-bold"
-                    onClick={() => openPopupModal(property)}
-                  >
-                    <a href="#" className="text-color-green">
-                      Accept
-                    </a>
-                  </div>
-                </li>
-
-                {/* <div className="fp_pdate float-end">{item.postedYear}</div> */}
-
-                <li
-                  className="list-inline-item"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Delete"
+        if (prop) {
+          const updatedRow = {
+            order_id: prop.orderId,
+            AppraiserId: property.appraiserUserId
+              ? property.appraiserUserId
+              : 0,
+            quote: property.bidLowerRange,
+            amount: property.bidAmount,
+            description:
+              property.description != "" ? property.description : "NA",
+            date: formatDate(property.requestTime),
+            appraiser: (
+              <a href="#">
+                <button
+                  style={{
+                    border: "0px",
+                    color: "blue",
+                    backgroundColor: "white",
+                  }}
+                  onClick={() => triggerAppraiserInfo(property.appraiserUserId)}
                 >
-                  <div
-                    className="fp_pdate float-end mt-1 fw-bold"
-                    onClick={() => setProperty(property)}
-                  >
-                    <a href="#" className="text-color-red">
-                      Decline
-                    </a>
-                  </div>
-                </li>
-              </ul>
-            ) : (
-              <h5>Declined</h5>
+                  get Info
+                </button>
+              </a>
             ),
-        };
-        tempData.push(updatedRow);
+
+            action:
+              property.status === 1 ? (
+                <h5>Accepted</h5>
+              ) : property.status === 0 ? (
+                <ul className="">
+                  <li className="list-inline-item">
+                    <div
+                      className="fp_pdate float-end mt-1 fw-bold"
+                      onClick={() => openPopupModal(prop, property.bidId)}
+                    >
+                      <a href="#" className="text-color-green">
+                        Accept
+                      </a>
+                    </div>
+                  </li>
+
+                  {/* <div className="fp_pdate float-end">{item.postedYear}</div> */}
+
+                  <li
+                    className="list-inline-item"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Delete"
+                  >
+                    <div
+                      className="fp_pdate float-end mt-1 fw-bold"
+                      onClick={() => setProperty(property)}
+                    >
+                      <a href="#" className="text-color-red">
+                        Decline
+                      </a>
+                    </div>
+                  </li>
+                </ul>
+              ) : (
+                <h5>Declined</h5>
+              ),
+          };
+          tempData.push(updatedRow);
+        }
       });
       setUpdatedData(tempData);
     };
@@ -273,6 +313,23 @@ export default function Exemple({
       token: userData.token,
     };
 
+    axios
+      .get("/api/getAllListedProperties", {
+        headers: {
+          Authorization: `Bearer ${data?.token}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        console.log("Properties", res.data.data.properties.$values);
+        setAllProperties(res.data.data.properties.$values);
+      })
+      .catch((err) => {
+        toast.dismiss();
+        // setErrorMessage(err?.response?.data?.error);
+        // setModalIsOpenError(true);
+      });
     toast.loading("Getting properties...");
     axios
       .get("/api/getAllBids", {
@@ -302,28 +359,12 @@ export default function Exemple({
         toast.error(err?.response?.data?.error);
       });
 
-    axios
-      .get("/api/getAllListedProperties", {
-        headers: {
-          Authorization: `Bearer ${data?.token}`,
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => {
-        console.log(res);
-        console.log("Properties", res.data.data.properties.$values);
-        setAllProperties(res.data.data.properties.$values);
-      })
-      .catch((err) => {
-        toast.dismiss();
-        // setErrorMessage(err?.response?.data?.error);
-        // setModalIsOpenError(true);
-      });
-  }, []);
+    setRefresh(false);
+  }, [refresh]);
   return (
     <>
       {updatedData && (
-        <SmartTable title="" data={updatedData} headCells={headCells} />
+        <SmartTable title="" data={updatedData} headCells={headCells} refreshHandler={refreshHandler} />
       )}
     </>
   );

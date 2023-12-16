@@ -1,53 +1,72 @@
-import { useEffect } from "react";
 import Header from "../../common/header/dashboard/Header_02";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenu_01";
 import MobileMenu from "../../common/header/MobileMenu_01";
-import PackageData from "./PackageData";
+import TableData from "./TableData";
+import Filtering from "./Filtering";
+import FilteringBy from "./FilteringBy";
+import Pagination from "./Pagination";
+import SearchBox from "./SearchBox";
+import { useEffect, useRef } from "react";
 import { useState } from "react";
-import Loader from "../appraised-properties/Loader";
-import { useRouter } from "next/router";
-import axios from "axios";
 import toast from "react-hot-toast";
+import axios from "axios";
+import { useRouter } from "next/router";
+import Modal from "./Modal";
+import { encryptionData } from "../../../utils/dataEncryption";
+import Loader from "./Loader";
 
 const Index = () => {
-  const [show, setShow] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
+  const [toggleId, setToggleId] = useState(-1);
+  const [toggleWishlist, setToggleWishlist] = useState(0);
+  const [searchResult, setSearchResult] = useState([]);
+  const [property, setProperty] = useState("");
+  const [startLoading, setStartLoading] = useState(false);
+  const [filterProperty, setFilterProperty] = useState("");
+  const [showPropDetails, setShowPropDetails] = useState(false);
+  const [filterQuery, setFilterQuery] = useState("Last 30 Days");
+  const [searchQuery, setSearchQuery] = useState("city");
+  const [properties, setProperties] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [lowRangeBid, setLowRangeBid] = useState("");
+  const [propertyId, setPropertyId] = useState(null);
+  const [updatedCode, setUpdatedCode] = useState(false);
+  const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
 
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [updatedCode, setUpdatedCode] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  
-  const [openViewModal, setOpenViewModal] = useState(false);
-  
-  const [viewProperty, setViewProperty] = useState({});
-  const [allProps,setAllProps]=useState([]);
 
-  const [refresh,setRefresh]=useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const [refresh, setRefresh] = useState(false);
 
   const closeErrorModal = () => {
     setModalIsOpenError(false);
   };
 
-  const setViewPropertyHandler = (property)=>{
-  
-    setViewProperty(property);
-    setOpenViewModal(true);
-  }
+  const [openBrokerModal, setOpenBrokerModal] = useState(false);
+  const [broker, setBroker] = useState({});
 
-  const closeViewModal = ()=>{
-    setOpenViewModal(false);
-  }
-  useEffect(() => {
-    setIsLoading(false);
-  }, [updatedCode]);
-
-  const onClickHandler = () => {
-    setShow(false);
+  const closeBrokerModal = () => {
+    setOpenBrokerModal(false);
   };
 
- 
-  const router = useRouter();
+  const closeQuoteModal = () => {
+    setIsQuoteModalOpen(false);
+  };
 
+  const openQuoteModal = () => {
+    setIsModalOpen(false);
+    setIsQuoteModalOpen(true);
+  };
+
+  const openModalBroker = (property, status) => {
+    setBroker(property);
+    setShowPropDetails(status);
+    setOpenBrokerModal(true);
+  };
+  const router = useRouter();
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
   );
@@ -86,6 +105,199 @@ const Index = () => {
     // Cleanup the interval when the component is unmounted
     return () => clearInterval(inactivityCheckInterval);
   }, [lastActivityTimestamp]);
+
+  const openModal = (property, status) => {
+    setProperty(property);
+    if (status === 1) {
+      setShowPropDetails(true);
+    }
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setShowPropDetails(false);
+  };
+
+  useEffect(() => {
+    const filterProperties = (propertys, searchInput) => {
+      if (searchInput === "") {
+        return propertys;
+      }
+      const filteredProperties = propertys.filter((property) => {
+        // Convert the search input to lowercase for a case-insensitive search
+        const searchTerm = searchInput.toLowerCase();
+
+        // Check if any of the fields contain the search term
+        return (
+          property.zipCode.toLowerCase().includes(searchTerm) ||
+          property.area.toLowerCase().includes(searchTerm) ||
+          property.city.toLowerCase().includes(searchTerm) ||
+          property.province.toLowerCase().includes(searchTerm) ||
+          property.streetName.toLowerCase().includes(searchTerm) ||
+          property.streetNumber.toLowerCase().includes(searchTerm) ||
+          property.typeOfBuilding.toLowerCase().includes(searchTerm)
+        );
+      });
+
+      return filteredProperties;
+    };
+    const filteredData = filterProperties(properties, searchInput);
+    setFilterProperty(filteredData);
+  }, [searchInput]);
+
+  const filterData = (tempData) => {
+    const currentDate = new Date();
+    const oneYearAgo = new Date(currentDate);
+    oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
+
+    switch (filterQuery) {
+      case "Last 30 Days":
+        const thirtyDaysAgo = new Date(currentDate);
+        thirtyDaysAgo.setDate(currentDate.getDate() - 30);
+        return tempData.filter(
+          (item) => new Date(item.addedDatetime) >= thirtyDaysAgo
+        );
+      case "Last 1 month":
+        const oneMonthAgo = new Date(currentDate);
+        oneMonthAgo.setMonth(currentDate.getMonth() - 1);
+        return tempData.filter(
+          (item) => new Date(item.addedDatetime) >= oneMonthAgo
+        );
+      case "Last 6 months":
+        const sixMonthsAgo = new Date(currentDate);
+        sixMonthsAgo.setMonth(currentDate.getMonth() - 6);
+        return tempData.filter(
+          (item) => new Date(item.addedDatetime) >= sixMonthsAgo
+        );
+      case "Last 1 year":
+        return tempData.filter(
+          (item) => new Date(item.addedDatetime) >= oneYearAgo
+        );
+      default:
+        return tempData; // Return all data if no valid timeFrame is specified
+    }
+  };
+
+  useEffect(() => {
+    const tmpData = filterData(properties);
+    setProperties(tmpData);
+  }, [filterQuery]);
+
+  const handleDelete = () => {
+    const data = JSON.parse(localStorage.getItem("user"));
+
+    toast.loading("deleting this property");
+    axios
+      .delete("/api/deleteBrokerPropertyById", {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+          "Content-Type": "application/json",
+        },
+        params: {
+          propertyId: property.propertyId,
+        },
+      })
+      .then((res) => {
+        setRerender(true);
+      })
+      .catch((err) => {
+        toast.error(err);
+      });
+    toast.dismiss();
+    closeModal();
+  };
+
+  useEffect(() => {
+    setIsLoading(false);
+  }, [updatedCode]);
+
+  const [userData, setUserData] = useState({});
+
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("user"));
+    if (!data) {
+      router.push("/login");
+    } else if (!data?.brokerage_Details.firstName) {
+      router.push("/appraiser-profile");
+    }
+    if (!data) {
+      router.push("/login");
+    }
+    const fetchData = () => {
+      if (data) {
+        setUserData(data);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const participateHandler = (val, id) => {
+    setLowRangeBid(val);
+    setPropertyId(id);
+    setModalOpen(true);
+  };
+
+  const onWishlistHandler = (id) => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+
+    const formData = {
+      userId: userData.userId,
+      propertyId: id,
+      token: userData.token,
+    };
+
+    const payload = encryptionData(formData);
+
+    toast.loading("Setting this property into your wishlist");
+    axios
+      .post("/api/addToWishlist", payload)
+      .then((res) => {
+        toast.dismiss();
+        toast.success("Successfully added !!! ");
+        window.location.reload();
+      })
+      .catch((err) => {
+        toast.dismiss();
+        toast.error(err?.response?.data?.error);
+      });
+  };
+
+  useEffect(() => {
+    console.log(searchQuery);
+    const tempData = properties;
+    if (searchInput === "") {
+      return;
+    } else if (searchQuery === "city") {
+      const newProperties = tempData.filter((item) => {
+        if (item.city.toLowerCase() === searchInput.toLowerCase()) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      setSearchResult(newProperties);
+    } else if (searchQuery === "state") {
+      const newProperties = tempData.filter((item) => {
+        if (item.state.toLowerCase() === searchInput.toLowerCase()) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      setSearchResult(newProperties);
+    } else {
+      const newProperties = tempData.filter((item) => {
+        if (item.zipCode.toLowerCase() === searchInput.toLowerCase()) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      setSearchResult(newProperties);
+    }
+  }, [searchInput]);
+
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -108,7 +320,10 @@ const Index = () => {
 
       {/* <!-- Our Dashbord --> */}
       <section className="our-dashbord dashbord bgc-f7 pb50">
-        <div className="container-fluid ovh">
+        <div
+          className="container-fluid ovh"
+          style={{ marginLeft: "-10px", marginTop: "" }}
+        >
           <div className="row">
             <div className="col-lg-12 maxw100flex-992">
               <div className="row">
@@ -128,172 +343,238 @@ const Index = () => {
                   </div>
                 </div> */}
                 {/* End Dashboard Navigation */}
-              </div>
-              {/* End .row */}
 
-              <div className="row align-items-center">
-                <div className="col-md-8 col-lg-8 col-xl-9 ">
-                  <div className="breadcrumb_content style2 mb30-991">
-                    <h2 className="breadcrumb_title">Biding History</h2>
-                    {/* <p>You can see your transactions history here!</p> */}
+                <div className="col-lg-4 col-xl-4 mb10">
+                  <div className="style2 mb30-991">
+                    <h3 className="breadcrumb_title">Quote Transactions</h3>
+                    {/* <p>We are glad to see you again!</p>                                                             */}
                   </div>
                 </div>
                 {/* End .col */}
-                <div className="col-md-4 col-lg-4 col-xl-3 mb20">
-                  <ul className="sasw_list mb0">
-                    <li className="search_area">{/* <SearchBox /> */}</li>
-                  </ul>
+
+                <div className="col-lg-12 col-xl-12">
+                  <div className="candidate_revew_select style2 mb30-991">
+                    <ul className="mb0">
+                      <li className="list-inline-item">
+                        <Filtering setFilterQuery={setFilterQuery} />
+                      </li>
+                      <li className="list-inline-item">
+                        <FilteringBy setFilterQuery={setSearchQuery} />
+                      </li>
+                      <li className="list-inline-item">
+                        <div className="candidate_revew_search_box course fn-520">
+                          <SearchBox setSearchInput={setSearchInput} />
+                        </div>
+                      </li>
+                      {/* End li */}
+
+                      {/* <li className="list-inline-item">
+                        <Filtering setFilterQuery={setFilterQuery} />
+                      </li> */}
+                      {/* End li */}
+                    </ul>
+                  </div>
+                </div>
+                {/* End .col */}
+
+                <div className="col-lg-12">
+                  <div className="">
+                    <div className="property_table">
+                      <div className="mt0">
+                        <TableData
+                          userData={userData}
+                          setModalOpen={openModal}
+                          close={closeModal}
+                          setProperties={setProperties}
+                          properties={
+                            searchInput === "" ? properties : filterProperty
+                          }
+                          setUpdatedCode={setUpdatedCode}
+                          onWishlistHandler={onWishlistHandler}
+                          participateHandler={participateHandler}
+                          setErrorMessage={setErrorMessage}
+                          setModalIsOpenError={setModalIsOpenError}
+                          setRefresh={setRefresh}
+                          refresh={refresh}
+                          setStartLoading={setStartLoading}
+                          openModalBroker={openModalBroker}
+                        />
+
+                        {modalIsOpenError && (
+                          <div className="modal">
+                            <div
+                              className="modal-content"
+                              style={{ borderColor: "orangered", width: "20%" }}
+                            >
+                              <h3
+                                className="text-center"
+                                style={{ color: "orangered" }}
+                              >
+                                Error
+                              </h3>
+                              <div
+                                style={{
+                                  borderWidth: "2px",
+                                  borderColor: "orangered",
+                                }}
+                              >
+                                <br />
+                              </div>
+                              <h5 className="text-center">{errorMessage}</h5>
+                              <div
+                                className="text-center"
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "column",
+                                }}
+                              >
+                                <button
+                                  className="btn w-35 btn-white"
+                                  onClick={() => closeErrorModal()}
+                                  style={{
+                                    borderColor: "orangered",
+                                    color: "orangered",
+                                  }}
+                                >
+                                  Cancel
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {openBrokerModal && (
+                          <div className="modal">
+                            <div className="modal-content">
+                              <span style={{ fontWeight: "bold" }}>
+                                <h5 className="text-center">
+                                  This is a Broker Details :
+                                </h5>
+                              </span>
+                              <h5>
+                                <span>Broker Name :</span>{" "}
+                                {broker.applicantFirstName}{" "}
+                                {broker.applicantLastName}
+                              </h5>
+                              <h5>
+                                <span>Broker Phone Number :</span>{" "}
+                                {broker.applicantPhoneNumber}{" "}
+                              </h5>
+                              <h5>
+                                <span>Broker Email :</span>{" "}
+                                {broker.applicantEmailAddress}
+                              </h5>
+                              {showPropDetails && (
+                                <div>
+                                  <span style={{ fontWeight: "bold" }}>
+                                    <h5 className="text-center">
+                                      This is a Property Details :
+                                    </h5>
+                                  </span>
+                                  <h5>
+                                    <span>Property Cost ($) :</span>{" "}
+                                    {broker.estimatedValue}
+                                  </h5>
+                                  <h5>
+                                    <span>Property Locality :</span>{" "}
+                                    {broker.streetName} {broker.streetNumber}
+                                  </h5>
+                                  <h5>
+                                    <span>Property purpose :</span>{" "}
+                                    {broker.purpose}
+                                  </h5>
+                                  <h5>
+                                    <span>Property Type :</span>{" "}
+                                    {broker.typeOfBuilding}
+                                  </h5>
+                                  <h5>
+                                    <span>Appraisal Info :</span>{" "}
+                                    {broker.typeOfBuilding}
+                                  </h5>
+                                </div>
+                              )}
+
+                              {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
+                              <div className="text-center" style={{}}>
+                                <button
+                                  className="btn w-35 btn-white"
+                                  onClick={closeBrokerModal}
+                                >
+                                  Ok
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* End .table-responsive */}
+
+                      {/* End .mbp_pagination */}
+                    </div>
+                    {/* End .property_table */}
+                  </div>
                 </div>
                 {/* End .col */}
               </div>
-              {/* End .row */}
-
-              {openViewModal && (
+              {isQuoteModalOpen && (
                 <div className="modal">
                   <div className="modal-content">
-                    <h3 className="text-center">Property Details</h3>
-                    <span style={{ fontWeight: "bold" }}>
-                      <h5 className="text-center">
-                        This is a Property Details :
-                      </h5>
-                    </span>
-                    <h5>
-                      <span>Property Address :</span> {viewProperty.streetName}-
-                      {viewProperty.streetNumber},{viewProperty.city}
+                    <h3 className="text-center">Quote Confirmation</h3>
+                    <h5 className="text-center">
+                      Are you sure you want to quote this property over this
+                      amount :{valueRef?.current?.value} ?
                     </h5>
-                    <h5>
-                      <span>Sq Ft.:</span> {viewProperty.area}{" "}
-                    </h5>
-                    <h5>
-                      <span>Property Type :</span> {viewProperty.typeOfBuilding}
-                    </h5>
-                    <h5>
-                      <span>Property Area Type:</span> {viewProperty.community}
-                    </h5>
-
-                    <span style={{ fontWeight: "bold" }}>
-                      <h5 className="text-center">
-                        This is a Broker Details :
-                      </h5>
-                    </span>
-                    <h5>
-                      <span>Broker Name :</span>{" "}
-                      {viewProperty.applicantFirstName}{" "}
-                      {viewProperty.applicantLastName}
-                    </h5>
-                    <h5>
-                      <span>Broker Phone Number :</span>{" "}
-                      {viewProperty.applicantPhoneNumber}{" "}
-                    </h5>
-                    <h5>
-                      <span>Broker Email :</span>{" "}
-                      {viewProperty.applicantEmailAddress}
-                    </h5>
-
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
                       <button
-                        className="btn w-35 btn-white"
-                        onClick={closeViewModal}
+                        className="btn w-35 btn-thm3 m-2"
+                        onClick={handleSubmit}
                       >
-                        Ok
+                        Submit
+                      </button>
+                      <button
+                        className="btn w-35 btn-white"
+                        onClick={closeQuoteModal}
+                      >
+                        Cancel
                       </button>
                     </div>
                   </div>
                 </div>
               )}
-
-
               <div className="row">
-                <div className="col-lg-12">
-                  <div className="">
-                    <div className="col-lg-12">
-                      <div className="packages_table">
-                        <div className="table-responsive mt0">
-                          {isLoading ? (
-                            <Loader />
-                          ) : (
-                            <PackageData
-                              setModalIsOpenError={setModalIsOpenError}
-                              setErrorMessage={setErrorMessage}
-                              setUpdatedCode={setUpdatedCode}
-                              props={allProps}
-                              setRefresh={setRefresh}
-                              refresh={refresh}
-                              setViewPropertyHandler={setViewPropertyHandler}
-                            />
-                          )}
-                          {modalIsOpenError && (
-                            <div className="modal">
-                              <div
-                                className="modal-content"
-                                style={{
-                                  borderColor: "orangered",
-                                  width: "20%",
-                                }}
-                              >
-                                <h3
-                                  className="text-center"
-                                  style={{ color: "orangered" }}
-                                >
-                                  Error
-                                </h3>
-                                <div
-                                  style={{
-                                    borderWidth: "2px",
-                                    borderColor: "orangered",
-                                  }}
-                                >
-                                  <br />
-                                </div>
-                                <h5 className="text-center">{errorMessage}</h5>
-                                <div
-                                  className="text-center"
-                                  style={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                  }}
-                                >
-                                  <button
-                                    className="btn w-35 btn-white"
-                                    onClick={() => closeErrorModal()}
-                                    style={{
-                                      borderColor: "orangered",
-                                      color: "orangered",
-                                    }}
-                                  >
-                                    Cancel
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                      {/* End .packages_table */}
-
-                      {/* <div className="pck_chng_btn text-end">
-                        <button className="btn btn-lg">
-                          Update Package
-                        </button>
-                      </div> */}
-                    </div>
+                <Modal
+                  modalOpen={modalOpen}
+                  setIsModalOpen={setIsModalOpen}
+                  closeModal={closeModal}
+                  lowRangeBid={lowRangeBid}
+                  propertyId={propertyId}
+                  openQuoteModal={openQuoteModal}
+                  closeQuoteModal={closeQuoteModal}
+                />
+              </div>
+              <div className="row">
+                {/* <div className="col-lg-12 mt20">
+                  <div className="mbp_pagination">
+                    <Pagination
+                      properties={properties}
+                      setProperties={setProperties}
+                    />
                   </div>
-                </div>
+                </div> */}
+                {/* End paginaion .col */}
               </div>
               {/* End .row */}
+            </div>
+            {/* End .row */}
 
-              <div className="row mt50">
-                <div className="col-lg-12">
-                  <div className="copyright-widget text-center">
-                    <p>
-                      &copy; {new Date().getFullYear()} Appraisal Link. All
-                      Rights Reserved.
-                    </p>
-                  </div>
+            <div className="row mt50">
+              <div className="col-lg-12">
+                <div className="copyright-widget text-center">
+                  <p>© 2020 Find House. Made with love.</p>
                 </div>
               </div>
-              {/* End .row */}
             </div>
             {/* End .col */}
           </div>

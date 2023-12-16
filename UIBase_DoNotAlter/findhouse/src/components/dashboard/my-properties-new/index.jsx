@@ -14,7 +14,6 @@ import { useRouter } from "next/router";
 import Exemple from "./Exemple";
 import { FaRedo } from "react-icons/fa";
 
-
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
@@ -84,7 +83,7 @@ const Index = () => {
 
     toast.loading("archeiving this property");
     axios
-      .put("/api/propertyArcheive", {
+      .get("/api/propertyArcheive", {
         headers: {
           Authorization: `Bearer ${data.token}`,
           "Content-Type": "application/json",
@@ -94,13 +93,14 @@ const Index = () => {
         },
       })
       .then((res) => {
-        setRerender(true);
+        toast.dismiss();
+        toast.success("Successfully added to archived properties!!");
+        window.location.reload();
       })
       .catch((err) => {
         toast.error(err);
       });
-    toast.dismiss();
-    closeModal();
+    // closeModal();
   };
 
   useEffect(() => {
@@ -258,12 +258,12 @@ const Index = () => {
                 </div> */}
                 {/* End Dashboard Navigation */}
 
-                {/* <div className="col-lg-4 col-xl-4 mb10">
-                  <div className="breadcrumb_content style2 mb30-991">
-                    <h2 className="breadcrumb_title">My Properties</h2>
-                    <p>We are glad to see you again!</p>                                                            
+                <div className="col-lg-4 col-xl-4">
+                  <div className=" style2 mb30-991">
+                    <h3 className="breadcrumb_title">My Properties</h3>
+                    {/* <p>We are glad to see you again!</p>                                                             */}
                   </div>
-                </div> */}
+                </div>
                 {/* End .col */}
 
                 <div className="col-lg-12 col-xl-12">
@@ -280,13 +280,17 @@ const Index = () => {
                           <SearchBox setSearchInput={setSearchInput} />
                         </div>
                       </li>
-                      <li className="list-inline-item" style={{textAlign:"end"}} title="Refresh Page">
+                      {/* <li
+                        className="list-inline-item"
+                        style={{ textAlign: "end" }}
+                        title="Refresh Page"
+                      >
                         <div className="fn-520">
                           <button className="btn btn-color">
-                            <FaRedo/>
+                            <FaRedo />
                           </button>
                         </div>
-                      </li>
+                      </li> */}
                       {/* End li */}
 
                       {/* <li className="list-inline-item">
@@ -460,7 +464,9 @@ const Index = () => {
                                           width: "250px",
                                         }}
                                       >
-                                        {currentProperty.lenderInformation ? currentProperty.lenderInformation : "NA"}
+                                        {currentProperty.lenderInformation
+                                          ? currentProperty.lenderInformation
+                                          : "NA"}
                                       </td>
                                     </tr>
                                     <tr>
@@ -481,7 +487,9 @@ const Index = () => {
                                         }}
                                       >
                                         {" "}
-                                        {currentProperty.community ? currentProperty.community : "NA"}
+                                        {currentProperty.community
+                                          ? currentProperty.community
+                                          : "NA"}
                                       </td>
                                     </tr>
                                     <tr>
@@ -613,7 +621,9 @@ const Index = () => {
                                         }}
                                       >
                                         {" "}
-                                        {currentProperty.applicantAddress ? currentProperty.applicantAddress : "NA"}
+                                        {currentProperty.applicantAddress
+                                          ? currentProperty.applicantAddress
+                                          : "NA"}
                                       </td>
                                     </tr>
                                     {/* <tr>

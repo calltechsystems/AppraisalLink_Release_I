@@ -6,9 +6,10 @@ import SVGChevronLeft from "./icons/SVGChevronLeft";
 import SVGChevronRight from "./icons/SVGChevronRight";
 
 import * as XLSX from "xlsx";
-
+import Image from "next/image";
 import { useReactToPrint } from "react-to-print";
 import toast from "react-hot-toast";
+import { FaRedo } from "react-icons/fa";
 
 function SmartTable(props) {
   const [loading, setLoading] = useState(false);
@@ -32,10 +33,10 @@ function SmartTable(props) {
     toast.success("Data added");
   };
 
-  const refreshHandler=()=>{
+  const refreshHandler = () => {
     const refresh = !props.refresh;
     props.setRefresh(refresh);
-  }
+  };
   const fetchData = useCallback(
     async (queryString) => {
       setLoading(true);
@@ -75,31 +76,33 @@ function SmartTable(props) {
     const table = tableContainer.querySelector("table");
     const clonedTable = table.cloneNode(true);
     const rows = clonedTable.querySelectorAll("tr");
-    rows.forEach(row => {
-        const lastCell = row.querySelector("td:last-child");
-        if (lastCell) {
-            row.removeChild(lastCell);
-        }
+    rows.forEach((row) => {
+      const lastCell = row.querySelector("td:last-child");
+      if (lastCell) {
+        row.removeChild(lastCell);
+      }
     });
 
     // Remove the action heading from the table
     const tableHead = clonedTable.querySelector("thead");
     const tableHeadRows = tableHead.querySelectorAll("tr");
-    tableHeadRows.forEach(row => {
-        const lastCell = row.querySelector("th:last-child");
-        if (lastCell) {
-            row.removeChild(lastCell);
-        }
+    tableHeadRows.forEach((row) => {
+      const lastCell = row.querySelector("th:last-child");
+      if (lastCell) {
+        row.removeChild(lastCell);
+      }
     });
 
     // Make the table responsive for all fields
     const tableRows = clonedTable.querySelectorAll("tr");
-    tableRows.forEach(row => {
-        const firstCell = row.querySelector("td:first-child");
-        if (firstCell) {
-            const columnHeading = tableHeadRows[0].querySelector("th:nth-child(" + (firstCell.cellIndex + 1) + ")").innerText;
-            firstCell.setAttribute("data-th", columnHeading);
-        }
+    tableRows.forEach((row) => {
+      const firstCell = row.querySelector("td:first-child");
+      if (firstCell) {
+        const columnHeading = tableHeadRows[0].querySelector(
+          "th:nth-child(" + (firstCell.cellIndex + 1) + ")"
+        ).innerText;
+        firstCell.setAttribute("data-th", columnHeading);
+      }
     });
 
     printWindow.document.write(clonedTable.outerHTML);
@@ -110,7 +113,7 @@ function SmartTable(props) {
       printWindow.close();
       toast.success("Saved the data");
     };
-};
+  };
   const handleExcelPrint = () => {
     const twoDData = props.data.map((item, index) => {
       return [item.bid, item.date, item.title, item.urgency];
@@ -218,20 +221,21 @@ function SmartTable(props) {
   const sortData = (cell) => {
     let tempData = data.length > 0 ? [...data] : [...props.data];
 
-      tempData.sort((a, b) => {
-        const valueA = typeof a[cell] === 'string' ? a[cell].toLowerCase() : a[cell];
-        const valueB = typeof b[cell] === 'string' ? b[cell].toLowerCase() : b[cell];
-    
-        if (sortDesc[cell]) {
-          return valueA < valueB ? 1 : -1;
-        } else {
-          return valueA > valueB ? 1 : -1;
-        }
-      });
-      setSortDesc({ [cell]: !sortDesc[cell] });
+    tempData.sort((a, b) => {
+      const valueA =
+        typeof a[cell] === "string" ? a[cell].toLowerCase() : a[cell];
+      const valueB =
+        typeof b[cell] === "string" ? b[cell].toLowerCase() : b[cell];
 
-      setData(tempData);
-    
+      if (sortDesc[cell]) {
+        return valueA < valueB ? 1 : -1;
+      } else {
+        return valueA > valueB ? 1 : -1;
+      }
+    });
+    setSortDesc({ [cell]: !sortDesc[cell] });
+
+    setData(tempData);
   };
   console.log(data.length > 0, data);
 
@@ -246,18 +250,22 @@ function SmartTable(props) {
           )}
           <div className="row">
             <div className="col-12">{props.title}</div>
-            <div
-              className="btn btn-color w-25 m-1"
-              onClick={() => handlePrint()}
-            >
-            <span className="flaticon-pdf "></span>
+            <div className="col-lg-4 offset-9">
+              <div
+                className="btn btn-color w-25 m-1"
+                onClick={() => handlePrint()}
+                title="Download Pdf"
+              >
+                <span className="flaticon-download "></span>
+              </div>
+              <button
+                className="btn btn-color w-25 h-10 m-1"
+                onClick={() => props.refreshHandler()}
+                title="Refresh"
+              >
+                <FaRedo />
+              </button>
             </div>
-            <button
-              className="btn btn-color w-25 h-10 m-1"
-              onClick={() => props.refreshHandler()}
-            >
-              Refresh
-            </button>
           </div>
           {props.data.length > 0 ? (
             <div className="row mt-3">
@@ -340,17 +348,23 @@ function SmartTable(props) {
               </div>
             </div>
           ) : (
-            <div className="row p-4">
-              <div className="smartTable-noDataFound col-12">
-                <h4>NO DATA FOUND</h4>
+            <div className="row">
+              <div
+                className="smartTable-noDataFound col-12"
+                style={{ marginTop: "50px", marginBottom: "40px" }}
+              >
+                <div className="ring">
+                  Loading
+                  <span className="load"></span>
+                </div>
               </div>
             </div>
           )}
           {props.noPagination || data.length === 0 || !props.url ? (
             <div className="row">
-              <div className="col-12 text-end p-3">
+              {/* <div className="col-12 text-end p-3">
                 {props.data.length > 0 ? props.data.length : 0} Rows
-              </div>
+              </div> */}
             </div>
           ) : (
             <div className="row">

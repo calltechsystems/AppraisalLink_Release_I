@@ -95,6 +95,7 @@ export default function Exemple({
   deletePropertyHandler,
 }) {
   const [updatedData, setUpdatedData] = useState([]);
+  const [allBids,setBids] = useState([]);
   const [show, setShow] = useState(false);
   let tempData = [];
 
@@ -110,17 +111,40 @@ export default function Exemple({
     return formattedDate;
   };
 
+  
+  const getPropertyStatusHandler = (property)=>{
+    let isInProgress = true ;
+    let isQuoteProvided = false;
+    let isCompleted = false;
+    allBids.map((bid,index)=>{
+      if(bid.propertyId === property.propertyId && bid.status === 1){
+        isCompleted =true;
+      }
+      else if (bid.propertyId === property.propertyId ){
+        isQuoteProvided = true
+      }
+    })
+    return isCompleted ? 2 : isQuoteProvided ? 1 : 0 ;
+  }
+
+
   useEffect(() => {
     const getData = () => {
       properties.map((property, index) => {
-        const isEditable = !property.propertyStatus;
-        const updatedRow = {
+        const isStatus = getPropertyStatusHandler(property);
+        
+        const isEditable = isStatus === 0 ? true : false ;
+        if(property.isArchive) {const updatedRow = {
           order_id: property.orderId,
-          status: property.propertyStatus ? (
+          status: isStatus === 2  ? (
             <span className="btn bg-success text-light">Completed</span>
-          ) : (
+          ) : isStatus === 0 ? (
             <span className="btn bg-primary text-light">In Progress</span>
-          ),
+          ):
+            (
+              <span className="btn bg-primary text-light">Quote Provided</span>
+            )
+          ,
           address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.state}, ${property.zipCode}`,
           user: property.applicantEmailAddress,
           name: `${property.applicantFirstName}, ${property.applicantLastName}`,
@@ -177,8 +201,10 @@ export default function Exemple({
           ),
         };
         tempData.push(updatedRow);
+      }
       });
       setUpdatedData(tempData);
+    
     };
     getData();
   }, [properties]);
@@ -210,6 +236,23 @@ export default function Exemple({
         toast.dismiss();
         toast.error(err?.response?.data?.error);
       });
+
+      let tempBids = [];
+      axios
+        .get("/api/getAllBids", {
+          headers: {
+            Authorization: `Bearer ${data.token}`,
+          },
+        })
+        .then((res) => {
+          // console.log(res);
+          tempBids = res.data.data.result.$values;
+          setBids(tempBids);
+        })
+        .catch((err) => {
+          setErrorMessage(err?.response?.data?.error);
+          setModalIsOpenError(true);
+        });
   }, []);
   return (
     <>

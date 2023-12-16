@@ -164,12 +164,12 @@ const Modal = ({
                 </button> */}
               <button
                 className="btn btn-log w-35 mr-20"
-                onClick={closeModal}
+                onClick={closeQuoteModal}
               >
                 Cancel
               </button>
               <button
-                className="btn btn-color w-35 btn-thm"
+                className="btn btn-log w-35 btn-thm"
                 onClick={toggle ? onSubmitHnadler : openConfirmModal}
               >
                 Continue

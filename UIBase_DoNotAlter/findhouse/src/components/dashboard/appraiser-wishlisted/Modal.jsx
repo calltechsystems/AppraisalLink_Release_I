@@ -126,7 +126,7 @@ const Modal = ({ modalOpen, closeModal, lowRangeBid, propertyId }) => {
                 </button> */}
               <button
                 className="btn btn-log w-35 mr-20"
-                onClick={onCancelHandler}
+                onClick={closeModal}
               >
                 Cancel
               </button>

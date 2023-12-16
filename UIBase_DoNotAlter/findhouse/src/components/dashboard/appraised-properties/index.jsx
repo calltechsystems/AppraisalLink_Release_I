@@ -6,7 +6,7 @@ import Filtering from "./Filtering";
 import FilteringBy from "./FilteringBy";
 import Pagination from "./Pagination";
 import SearchBox from "./SearchBox";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
@@ -18,11 +18,11 @@ import Loader from "./Loader";
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
-  const [toggleId,setToggleId]=useState(-1)
-  const [toggleWishlist,setToggleWishlist]=useState(0);
+  const [toggleId, setToggleId] = useState(-1);
+  const [toggleWishlist, setToggleWishlist] = useState(0);
   const [searchResult, setSearchResult] = useState([]);
   const [property, setProperty] = useState("");
-  const [startLoading,setStartLoading] = useState(false);
+  const [startLoading, setStartLoading] = useState(false);
   const [filterProperty, setFilterProperty] = useState("");
   const [filterQuery, setFilterQuery] = useState("Last 30 Days");
   const [searchQuery, setSearchQuery] = useState("city");
@@ -31,6 +31,7 @@ const Index = () => {
   const [lowRangeBid, setLowRangeBid] = useState("");
   const [propertyId, setPropertyId] = useState(null);
   const [updatedCode, setUpdatedCode] = useState(false);
+  const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
 
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -43,17 +44,26 @@ const Index = () => {
     setModalIsOpenError(false);
   };
 
-  const [openBrokerModal,setOpenBrokerModal]=useState(false);
-  const [broker,setBroker]=useState({});
+  const [openBrokerModal, setOpenBrokerModal] = useState(false);
+  const [broker, setBroker] = useState({});
 
-  const closeBrokerModal = ()=>{
+  const closeBrokerModal = () => {
     setOpenBrokerModal(false);
-  }
+  };
 
-  const openModalBroker = (property)=>{
+  const closeQuoteModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const openQuoteModal = () => {
+    setIsModalOpen(false);
+    setIsQuoteModalOpen(true);
+  };
+
+  const openModalBroker = (property) => {
     setBroker(property);
     setOpenBrokerModal(true);
-  }
+  };
   const router = useRouter();
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
@@ -102,7 +112,6 @@ const Index = () => {
   const closeModal = () => {
     setModalOpen(false);
   };
-
 
   useEffect(() => {
     const filterProperties = (propertys, searchInput) => {
@@ -163,7 +172,6 @@ const Index = () => {
         return tempData; // Return all data if no valid timeFrame is specified
     }
   };
-
 
   useEffect(() => {
     const tmpData = filterData(properties);
@@ -241,7 +249,7 @@ const Index = () => {
       .then((res) => {
         toast.dismiss();
         toast.success("Successfully added !!! ");
-        router.push("/appraiser-wishlisted");
+        window.location.reload();
       })
       .catch((err) => {
         toast.dismiss();
@@ -330,12 +338,12 @@ const Index = () => {
                 </div> */}
                 {/* End Dashboard Navigation */}
 
-                {/* <div className="col-lg-4 col-xl-4 mb10">
-                  <div className="breadcrumb_content style2 mb30-991">
-                    <h2 className="breadcrumb_title">My Properties</h2>
-                    <p>We are glad to see you again!</p>                                                            
+                <div className="col-lg-4 col-xl-4 ">
+                  <div className="style2 mb30-991">
+                    <h3 className="breadcrumb_title">Appraise Properties</h3>
+                    {/* <p>We are glad to see you again!</p>                                                             */}
                   </div>
-                </div> */}
+                </div>
                 {/* End .col */}
 
                 <div className="col-lg-12 col-xl-12">
@@ -366,28 +374,26 @@ const Index = () => {
                 <div className="col-lg-12">
                   <div className="">
                     <div className="property_table">
-                      <div className="table-responsive mt0">
-                        
-                          <TableData
-                            userData={userData}
-                            setModalOpen={openModal}
-                            close={closeModal}
-                            setProperties={setProperties}
-                            properties={
-                              searchInput === "" ? properties : filterProperty
-                            }
-                            setUpdatedCode={setUpdatedCode}
-                            onWishlistHandler={onWishlistHandler}
-                            participateHandler={participateHandler}
-                            setErrorMessage={setErrorMessage}
-                            setModalIsOpenError={setModalIsOpenError}
-                            setRefresh={setRefresh}
-                            refresh={refresh}
-                            setStartLoading={setStartLoading}
-                            openModalBroker={openModalBroker}
-                          />
-                          
-                        
+                      <div className="mt0">
+                        <TableData
+                          userData={userData}
+                          setModalOpen={openModal}
+                          close={closeModal}
+                          setProperties={setProperties}
+                          properties={
+                            searchInput === "" ? properties : filterProperty
+                          }
+                          setUpdatedCode={setUpdatedCode}
+                          onWishlistHandler={onWishlistHandler}
+                          participateHandler={participateHandler}
+                          setErrorMessage={setErrorMessage}
+                          setModalIsOpenError={setModalIsOpenError}
+                          setRefresh={setRefresh}
+                          refresh={refresh}
+                          setStartLoading={setStartLoading}
+                          openModalBroker={openModalBroker}
+                        />
+
                         {modalIsOpenError && (
                           <div className="modal">
                             <div
@@ -434,30 +440,43 @@ const Index = () => {
                         {openBrokerModal && (
                           <div className="modal">
                             <div className="modal-content">
-                              
-                              <span style={{ fontWeight: "bold" }}>
-                                <h5 className="text-center">
-                                  This is a Broker Details :
-                                </h5>
+                              <span>
+                                <h4 className="text-center">Broker Details</h4>
                               </span>
-                              <h5>
-                                <span>Broker Name :</span>{" "}
-                                {broker.applicantFirstName}{" "}
-                                {broker.applicantLastName}
-                              </h5>
-                              <h5>
-                                <span>Broker Phone Number :</span>{" "}
-                                {broker.applicantPhoneNumber}{" "}
-                              </h5>
-                              <h5>
-                                <span>Broker Email :</span>{" "}
-                                {broker.applicantEmailAddress}
-                              </h5>
-          
-                              {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
-                              <div className="text-center" style={{}}>
+                              <hr />
+                              <div className=" col-lg-12">
+                                <div className="row">
+                                  <h5 className="col-lg-4 mt-1 text-end">
+                                    <span className="">Broker Name :</span>{" "}
+                                  </h5>
+                                  <span className="col-lg-3">
+                                    {broker.applicantFirstName}{" "}
+                                    {broker.applicantLastName}
+                                  </span>
+                                </div>
+                                <div className="row">
+                                  <h5 className="col-lg-4 mt-1">
+                                    <span className="">
+                                      Broker Phone Number :
+                                    </span>{" "}
+                                  </h5>
+                                  <span className="col-lg-3">
+                                    {broker.applicantPhoneNumber}
+                                  </span>
+                                </div>
+                                <div className="row">
+                                  <h5 className="col-lg-4 mt-1 text-end">
+                                    <span className="">Broker Email :</span>{" "}
+                                  </h5>
+                                  <span className="col-lg-3">
+                                    {broker.applicantEmailAddress}
+                                  </span>
+                                </div>
+                              </div>
+                              <hr />
+                              <div className="col-lg-12 text-center" style={{}}>
                                 <button
-                                  className="btn w-35 btn-white"
+                                  className="btn btn-color w-25 mt-2"
                                   onClick={closeBrokerModal}
                                 >
                                   Ok
@@ -466,8 +485,6 @@ const Index = () => {
                             </div>
                           </div>
                         )}
-          
-          
                       </div>
 
                       {/* End .table-responsive */}
@@ -479,25 +496,52 @@ const Index = () => {
                 </div>
                 {/* End .col */}
               </div>
-
-
+              {isQuoteModalOpen && (
+                <div className="modal">
+                  <div className="modal-content">
+                    <h3 className="text-center">Quote Confirmation</h3>
+                    <h5 className="text-center">
+                      Are you sure you want to quote this property over this
+                      amount :{valueRef?.current?.value} ?
+                    </h5>
+                    {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
+                    <div className="text-center" style={{}}>
+                      <button
+                        className="btn w-35 btn-thm3 m-2"
+                        onClick={handleSubmit}
+                      >
+                        Submit
+                      </button>
+                      <button
+                        className="btn w-35 btn-white"
+                        onClick={closeQuoteModal}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
               <div className="row">
                 <Modal
                   modalOpen={modalOpen}
+                  setIsModalOpen={setIsModalOpen}
                   closeModal={closeModal}
                   lowRangeBid={lowRangeBid}
                   propertyId={propertyId}
+                  openQuoteModal={openQuoteModal}
+                  closeQuoteModal={closeQuoteModal}
                 />
               </div>
               <div className="row">
-                <div className="col-lg-12 mt20">
+                {/* <div className="col-lg-12 mt20">
                   <div className="mbp_pagination">
                     <Pagination
                       properties={properties}
                       setProperties={setProperties}
                     />
                   </div>
-                </div>
+                </div> */}
                 {/* End paginaion .col */}
               </div>
               {/* End .row */}

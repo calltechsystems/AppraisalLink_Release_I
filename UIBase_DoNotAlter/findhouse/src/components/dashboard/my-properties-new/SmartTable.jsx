@@ -4,6 +4,7 @@ import SVGArrowDown from "./icons/SVGArrowDown";
 import SVGArrowUp from "./icons/SVGArrowUp";
 import SVGChevronLeft from "./icons/SVGChevronLeft";
 import SVGChevronRight from "./icons/SVGChevronRight";
+import { FaRedo } from "react-icons/fa";
 
 function SmartTable(props) {
   const [loading, setLoading] = useState(false);
@@ -135,17 +136,25 @@ function SmartTable(props) {
               <div className="spinner-border" role="status"></div>
             </div>
           )}
-          {/* <div className="row">
-            <div className="col-6 h3">{props.title}</div>
-            <div className="col-6 text-end">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Search..."
-                onChange={handleSearch}
-              />
+          <div className="row">
+            <div className="col-12">{props.title}</div>
+            <div className="col-lg-4 offset-9">
+              <div
+                className="btn btn-color w-25 m-1"
+                onClick={() => handlePrint()}
+                title="Download Pdf"
+              >
+                <span className="flaticon-download "></span>
+              </div>
+              <button
+                className="btn btn-color w-25 h-10 m-1"
+                onClick={() => props.refreshHandler()}
+                title="Refresh"
+              >
+                <FaRedo />
+              </button>
             </div>
-          </div> */}
+          </div>
           {props.data.length > 0 ? (
             <div className="row mt-3">
               <div className="smartTable-tableContainer">
@@ -228,8 +237,14 @@ function SmartTable(props) {
             </div>
           ) : (
             <div className="row p-4">
-              <div className="smartTable-noDataFound col-12">
-                <h4>NO DATA FOUND</h4>
+              <div
+                className="smartTable-noDataFound col-12"
+                style={{ marginTop: "50px", marginBottom: "40px" }}
+              >
+                <div className="ring">
+                  Loading
+                  <span className="load"></span>
+                </div>
               </div>
             </div>
           )}

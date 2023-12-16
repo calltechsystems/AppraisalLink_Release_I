@@ -1,15 +1,16 @@
-const SearchBox = () => {
+const SearchBox = ({setSearchInput}) => {
   return (
-    <form className="form-group">
+    <form className="d-flex flex-wrap align-items-center my-2">
       <input
-        type="text"
-        className="form-control"
-        id="exampleInputName1"
-        placeholder="Search"
+        className="form-control mr-sm-2"
+        type="search"
+        placeholder="Search "
+        aria-label="Search"
+        onChange={(e)=>setSearchInput(e.target.value)}
       />
-      <label htmlFor="exampleInputEmail">
+      <button className=" my-2 my-sm-0" type="submit">
         <span className="flaticon-magnifying-glass"></span>
-      </label>
+      </button>
     </form>
   );
 };

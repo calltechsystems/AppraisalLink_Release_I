@@ -571,7 +571,7 @@ const DetailedInfo = ({
               </button>
               {!isDisable &&
                 (propertyData ? (
-                  <button className="btn btn5" onClick={updateHandler}>
+                  <button className="btn btn5" onClick={submitHandler}>
                     Update
                   </button>
                 ) : (

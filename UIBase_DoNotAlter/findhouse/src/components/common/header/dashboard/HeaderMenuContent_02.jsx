@@ -523,10 +523,10 @@ const HeaderMenuContent = ({ float = "", hide, userData,  setProfileCount , prof
             }
               alt="e1.png"
             />
-            <span className="dn-1199 ms-1 text-dark">
+            <span className="dn-1199 ms-1 text-light">
               {userData?.brokerage_Details?.firstName
-                ? `${userData.brokerage_Details?.firstName} ${userData?.brokerage_Details?.lastName}`
-                : "xyz"}
+                ? userData.brokerage_Details?.firstName 
+                : "User"}
             </span>
           </a>
           <div className="dropdown-menu">

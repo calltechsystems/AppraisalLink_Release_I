@@ -17,7 +17,12 @@ import { encryptionData } from "../../../utils/dataEncryption";
 const Index = ({ propertyId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
-  
+  const [appInfo, setAppInfo] = useState({});
+  const [refresh ,setRefresh] = useState(false)
+  const [id, setId] = useState(0);
+
+  const [openBrokerModal, setOpenBrokerModal] = useState(false);
+
   const [property, setProperty] = useState([]);
   const [filterProperty, setFilterProperty] = useState("");
   const [filterQuery, setFilterQuery] = useState("Last 30 Days");
@@ -32,7 +37,7 @@ const Index = ({ propertyId }) => {
     Date.now()
   );
 
-  const acceptRequestHandler = (id) => {
+  const acceptRequestHandler = () => {
     const data = JSON.parse(localStorage.getItem("user"));
     toast.loading("Accepting the bid ...");
     const payload = {
@@ -51,7 +56,6 @@ const Index = ({ propertyId }) => {
       .then((res) => {
         toast.dismiss();
 
-  
         toast.success("Successfully accepted the requested Bid");
         router.push("/my-properties");
       })
@@ -287,12 +291,14 @@ const Index = ({ propertyId }) => {
                 </div> */}
                 {/* End Dashboard Navigation */}
 
-                {/* <div className="col-lg-4 col-xl-4 mb10">
-                  <div className="breadcrumb_content style2 mb30-991">
-                    <h2 className="breadcrumb_title">My Properties</h2>
-                    <p>We are glad to see you again!</p>                                                            
+                <div className="col-lg-4 col-xl-4">
+                  <div className="style2 mb30-991">
+                    <h3 className="breadcrumb_title">
+                      Provided Bids On Property
+                    </h3>
+                    {/* <p>We are glad to see you again!</p>                                                             */}
                   </div>
-                </div> */}
+                </div>
                 {/* End .col */}
 
                 <div className="col-lg-12 col-xl-12">
@@ -321,9 +327,9 @@ const Index = ({ propertyId }) => {
                 {/* End .col */}
 
                 <div className="col-lg-12">
-                  <div className="my_dashboard_review mb40">
+                  <div className="mb40">
                     <div className="property_table">
-                      <div className="table-responsive mt0">
+                      <div className=" mt0">
                         <TableData
                           userData={userData}
                           open={openModal}
@@ -333,11 +339,16 @@ const Index = ({ propertyId }) => {
                           properties={
                             searchInput === "" ? properties : filterProperty
                           }
+                          setid={setId}
                           property={property}
                           setProperty={setProperty}
                           propertyId={propertyId}
                           setModalIsOpenError={setModalIsOpenError}
+                          setOpenBrokerModal={setOpenBrokerModal}
                           setErrorMessage={setErrorMessage}
+                          setAppInfo={setAppInfo}
+                          refresh={refresh}
+                          setRefresh={setRefresh}
                         />
 
                         {modalIsOpenError && (
@@ -395,14 +406,14 @@ const Index = ({ propertyId }) => {
               </div>
 
               <div className="row">
-                <div className="col-lg-12 mt20">
+                {/* <div className="col-lg-12 mt20">
                   <div className="mbp_pagination">
                     <Pagination
                       properties={properties}
                       setProperties={setProperties}
                     />
                   </div>
-                </div>
+                </div> */}
                 {/* End paginaion .col */}
               </div>
               {/* End .row */}
@@ -417,6 +428,52 @@ const Index = ({ propertyId }) => {
               </div>
             </div>
             {/* End .col */}
+
+            {openBrokerModal && (
+              <div className="modal">
+                <div className="modal-content">
+                  <span style={{ fontWeight: "bold" }}>
+                    <h5 className="text-center"> Appraiser Details </h5>
+                  </span>
+                  <hr />
+                  <div className=" col-lg-12">
+                    <div className="row">
+                      <h5 className="col-lg-4 mt-1 text-end">
+                        <span className="">Appraiser Name :</span>{" "}
+                      </h5>
+                      <span className="col-lg-3">
+                        {/* {broker.applicantFirstName} {broker.applicantLastName} */}
+                      </span>
+                    </div>
+                    <div className="row">
+                      <h5 className="col-lg-4 mt-1">
+                        <span className="">Appraiser Phone Number :</span>{" "}
+                      </h5>
+                      <span className="col-lg-3">
+                        {/* {broker.applicantPhoneNumber} */}
+                      </span>
+                    </div>
+                    <div className="row">
+                      <h5 className="col-lg-4 mt-1 text-end">
+                        <span className="">Appraiser Email :</span>{" "}
+                      </h5>
+                      <span className="col-lg-3">
+                        {/* {broker.applicantEmailAddress} */}
+                      </span>
+                    </div>
+                  </div>
+                  <hr />
+                  <div className="text-center" style={{}}>
+                    <button
+                      className="btn btn-color w-35"
+                      onClick={() => setOpenBrokerModal(false)}
+                    >
+                      Ok
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
             {isModalOpen && (
               <div className="modal">
                 <div className="modal-content">
@@ -424,10 +481,10 @@ const Index = ({ propertyId }) => {
                   <h5 className="text-center">
                     Are you sure you want to accept the quote with value
                   </h5>
-                  <h3>${property.bidAmount}</h3>
+                  <h3>${property.estimatedValue}</h3>
 
                   {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
-                  <div className="" style={{display:'flex'}}>
+                  <div className="" style={{ display: "flex" }}>
                     <button
                       className="btn btn-color"
                       onClick={() => acceptRequestHandler(property.bidId)}

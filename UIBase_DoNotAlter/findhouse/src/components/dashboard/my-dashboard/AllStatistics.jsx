@@ -1,4 +1,4 @@
-const AllStatistics = ({properties , views , bids , favourites}) => {
+const AllStatistics = ({ properties, views, bids, favourites }) => {
   const allStatistics = [
     {
       id: 1,
@@ -12,28 +12,28 @@ const AllStatistics = ({properties , views , bids , favourites}) => {
       blockStyle: "style2",
       icon: "flaticon-view",
       timer: views,
-      name: "Total Views",
+      name: "Total Bids",
     },
     {
       id: 3,
       blockStyle: "style3",
-      icon: "flaticon-chat",
+      icon: "flaticon-tick",
       timer: bids,
-      name: "Bids",
+      name: "Accepted Bids",
     },
-    {
-      id: 4,
-      blockStyle: "style4",
-      icon: "flaticon-heart",
-      timer: favourites,
-      name: "Favorites",
-    },
+    // {
+    //   id: 4,
+    //   blockStyle: "style4",
+    //   icon: "flaticon-heart",
+    //   timer: favourites,
+    //   name: "Favorites",
+    // },
   ];
 
   return (
     <>
       {allStatistics.map((item) => (
-        <div className="col-sm-6 col-md-6 col-lg-6 col-xl-3" key={item.id}>
+        <div className="col-sm-6 col-md-6 col-lg-6 col-xl-4" key={item.id}>
           <div className={`ff_one ${item.blockStyle}`}>
             <div className="detais">
               <div className="timer">{item.timer}</div>

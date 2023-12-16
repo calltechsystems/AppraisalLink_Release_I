@@ -55,7 +55,7 @@ const SidebarMenu = () => {
       <ul className="sidebar-menu">
         <li
           className="sidebar_header header"
-          style={{ backgroundColor: "white", padding:"30px" }}
+          style={{ backgroundColor: "white", padding: "30px" }}
         >
           <Link href="/">
             <Image
@@ -88,13 +88,13 @@ const SidebarMenu = () => {
 
             <li
               className={`treeview ${
-                isSinglePageActive("/appraiser-dashboard", route.pathname)
+                isSinglePageActive("/appraise-properties", route.pathname)
                   ? "active"
                   : ""
               }`}
             >
               <Link href="/appraise-properties">
-                <i className="flaticon-home"></i>
+                <i className="flaticon-house"></i>
                 <span>Appraise Properties</span>
               </Link>
             </li>

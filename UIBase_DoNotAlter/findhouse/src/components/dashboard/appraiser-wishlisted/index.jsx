@@ -18,7 +18,7 @@ import Loader from "../appraised-properties/Loader";
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
-  const [isBidded,setIsBidded]=useState(false);
+  const [isBidded, setIsBidded] = useState(false);
   const [searchResult, setSearchResult] = useState([]);
   const [updatedCode, setUpdatedCode] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -82,11 +82,10 @@ const Index = () => {
   const openModal = (property) => {
     setProperty(property);
     setIsModalOpen(true);
-    if(isBidded ){
+    if (isBidded) {
       setIsBidded(false);
       router.push("/biding-history");
-    }
-    else{
+    } else {
       setIsBidded(false);
     }
   };
@@ -320,12 +319,12 @@ const Index = () => {
                 </div> */}
                 {/* End Dashboard Navigation */}
 
-                {/* <div className="col-lg-4 col-xl-4 mb10">
-                  <div className="breadcrumb_content style2 mb30-991">
-                    <h2 className="breadcrumb_title">My Properties</h2>
-                    <p>We are glad to see you again!</p>                                                            
+                <div className="col-lg-4 col-xl-4 ">
+                  <div className="style2 mb30-991">
+                    <h2 className="breadcrumb_title">Wishlist Properties</h2>
+                    {/* <p>We are glad to see you again!</p>                                                             */}
                   </div>
-                </div> */}
+                </div>
                 {/* End .col */}
 
                 <div className="col-lg-12 col-xl-12">
@@ -356,7 +355,7 @@ const Index = () => {
                 <div className="col-lg-12">
                   <div className="">
                     <div className="property_table">
-                      <div className="table-responsive mt0">
+                      <div className="mt0">
                         {isLoading ? (
                           <Loader />
                         ) : (
@@ -439,14 +438,14 @@ const Index = () => {
                 />
               </div>
               <div className="row">
-                <div className="col-lg-12 mt20">
+                {/* <div className="col-lg-12 mt20">
                   <div className="mbp_pagination">
                     <Pagination
                       properties={properties}
                       setProperties={setProperties}
                     />
                   </div>
-                </div>
+                </div> */}
                 {/* End paginaion .col */}
               </div>
               {/* End .row */}

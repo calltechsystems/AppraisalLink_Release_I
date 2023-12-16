@@ -4,41 +4,73 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { encryptionData } from "../../../utils/dataEncryption";
-import Loader from "../appraised-properties/Loader";
+import { useRouter } from "next/router";
+import Loader from "./Loader";
 // import "./SmartTable.css";
-
 
 const headCells = [
   {
     id: "orderId",
     numeric: false,
-    label: "Order Id",
-    width: 200,
+    label: "Order ID",
+    width: 100,
   },
-  {
-    id: "address",
-    numeric: false,
-    label: "Address",
-    width: 200,
-  },
-  ,
   {
     id: "community",
     numeric: false,
     label: "Community",
     width: 200,
   },
+
   {
-    id: "bidAmount",
+    id: "typeOfBuilding",
+    numeric: false,
+    label: "Type of Building",
+    width: 200,
+  },
+  {
+    id: "type_of_appraisal",
+    numeric: false,
+    label: "Type Of Appraisal",
+    width: 200,
+  },
+  {
+    id: "address",
+    numeric: false,
+    label: "Property Address",
+    width: 200,
+  },
+
+  {
+    id: "estimatedValue",
     numeric: false,
     label: "Estimated Property Value ($)",
     width: 200,
   },
-  ,
+
   {
-    id: "propertyType",
+    id: "purpose",
     numeric: false,
-    label: "Property Type ",
+    label: "Purpose",
+    width: 200,
+  },
+
+  {
+    id: "lender_information",
+    numeric: false,
+    label: "Lender Information",
+    width: 200,
+  },
+  {
+    id: "status",
+    numeric: false,
+    label: "Status",
+    width: 200,
+  },
+  {
+    id: "urgency",
+    numeric: false,
+    label: "Urgency",
     width: 200,
   },
   {
@@ -48,12 +80,17 @@ const headCells = [
     width: 200,
   },
   {
+    id: "quote_required_by",
+    numeric: false,
+    label: "Quote Required By",
+    width: 200,
+  },
+  {
     id: "broker",
     numeric: false,
     label: "Broker",
     width: 200,
   },
-  
   {
     id: "action",
     numeric: false,
@@ -62,91 +99,57 @@ const headCells = [
   },
 ];
 
-const data = [
-  {
-    _id: "6144e83a966145976c75cdfe",
-    email: "minagerges123@gmail.com",
-    name: "Pending",
-    date: "2021-09-17 19:10:50",
-    subject: "23456",
-    phone: "+96170345114",
-    message: "ahlannn",
-  },
-  {
-    _id: "61439914086a4f4e9f9d87cd",
-    email: "amineamine1996@gmail.com",
-    name: "Completed",
-    phone: "+96176466341",
-    subject: "12345",
-    message: "121212121212121",
-    date: "2021-09-16 22:20:52",
-  },
-  {
-    _id: "61439887086a4f4e9f9d87cc",
-    email: "as@a.com",
-    name: "Progress",
-    phone: "+96176466341",
-    subject: "54321",
-    message: "as",
-    date: "2021-09-16 22:18:31",
-  },
-];
+let count = 0;
 
-export default function Exemple({userData , open ,close , closeBrokerModal ,refresh,setRefresh,openModalBroker,setUpdatedCode,setViewProperty,openViewModal,participateHandler,onWishlistHandler, properties, setProperties,setModalIsOpenError,setErrorMessage}) {
-  
-
+export default function Exemple({
+  userData,
+  open,
+  close,
+  setUpdatedCode,
+  properties,
+  setProperties,
+  deletePropertyHandler,
+  onWishlistHandler,
+  participateHandler,
+  openModalBroker,
+  setErrorMessage,
+  setModalIsOpenError,
+  setRefresh,
+  setStartLoading,
+  refresh,
+}) {
   const [updatedData, setUpdatedData] = useState([]);
   const [wishlist, setWishlist] = useState([]);
   const [bids, setBids] = useState([]);
   const [hideAction, setHideAction] = useState(false);
   const [hideClass, setHideClass] = useState("");
-  const [isStatus,setStatus]=useState(false);
   const [show, setShow] = useState(false);
   let tempData = [];
-  let status = 0;
-
-  const refreshHandler = ()=>{
-    setRefresh(true);
-   }
 
   const filterBidsWithin24Hours = (property) => {
     const userData = JSON.parse(localStorage.getItem("user"));
-    let tempBid = 0,bidValues = {};
- 
+    let tempBid = 0,
+      bidValue = {};
+
+    console.log(bids);
     bids.filter((bid) => {
-      if (
-        bid.appraiserUserId === userData.userId &&
-        bid.propertyId === property.propertyId
-      ) {
-        bidValues = bid;
+      if (bid.propertyId === property.propertyId) {
+        console.log("matched", bid);
         tempBid = tempBid + 1;
+        bidValue = bid;
       } else {
       }
     });
-    console.log(bidValues);
-    setStatus(bidValues.status );
-    status = bidValues.status;
-    return tempBid > 0 ? true : false;
-    
+    return tempBid > 0 ? bidValue : {};
     // const currentTime = new Date();
     // const twentyFourHoursAgo = currentTime - 24 * 60 * 60 * 1000; // Subtracting milliseconds for 24 hours
     //    const requestTime = new Date(tempBid.requestTime);
     //   return requestTime >= twentyFourHoursAgo && requestTime <= currentTime;
   };
 
-  const formatDate = (dateString) => {
-    const options = {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    };
+  const router = useRouter();
 
-    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
-
-    return formattedDate;
-  };
-
-  const removeWishlistHandler = (id)=>{
+  const removeWishlistHandler = (id) => {
     const userData = JSON.parse(localStorage.getItem("user"));
 
     const formData = {
@@ -158,147 +161,222 @@ export default function Exemple({userData , open ,close , closeBrokerModal ,refr
     const payload = encryptionData(formData);
     toast.loading("removing this property into your wishlist");
     axios
-      .delete("/api/deleteToWishlist", payload)
+      .delete("/api/removeWishlistProperty", {
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+        },
+        params: {
+          userId: id,
+        },
+      })
       .then((res) => {
         toast.dismiss();
         toast.success("Successfully removed !!! ");
-        router.push("/my-appraiser-properties")
-        
+        window.location.reload();
       })
       .catch((err) => {
         toast.dismiss();
         toast.error(err?.response?.data?.error);
       });
-   }
-
-
-  const checkWishlistedHandler = (data) => {
-    let temp = false;
-    wishlist.map((prop, index) => {
- 
-      if (String(prop.propertyId) === String(data.propertyId)) temp = true;
-    });
-    return temp ? true : false;
   };
 
-  const setViewPropertyHandler = (property)=>{
-    setViewProperty(property);
-    openViewModal(true);
-  }
+  const onDeletePropertyHandler = () => {};
 
-  
-  useEffect(()=>{
-    const getData = ()=>{
+  const formatDate = (dateString) => {
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+    };
 
-     
-      properties.map((property,index)=>{
+    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
+    return formattedDate;
+  };
+
+  const checkWishlistedHandler = (data) => {
+    let temp = {};
+    console.log(wishlist, data);
+    wishlist.map((prop, index) => {
+      if (String(prop.propertyId) === String(data.propertyId)) {
+        temp = prop;
+      }
+    });
+    return temp ? temp : {};
+  };
+
+  const checkCanBidAgainHandler = (data) => {
+    let temp = true;
+    return temp;
+  };
+
+  useEffect(() => {
+    const getData = () => {
+      properties.map((property, index) => {
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
-        console.log(isBidded);
-      
-        if(isWishlist ){
-        const updatedRow = {
-          orderId: property.orderId,
-          address: `${property.city}-${property.state},${property.zipCode}`,
-          community: `${property.community}`,
-          propertyType : property.typeOfBuilding > 0 ? "Apartment" : property.typeOfBuilding ,
-          date: formatDate(property.addedDatetime),
-          bidAmount: property.bidLowerRange,
-          broker:<a href="#"><button style={{border:"0px",color:"blue",backgroundColor:"white"}} onClick={()=>openModalBroker(property)}>{property.applicantFirstName}</button></a>,
-          urgency:
-            property.urgency === 0
-              ? "Low"
-              : property.urgency === 1
-              ? "Medium"
-              : "High",
-          action: (
-            <div className="print-hidden-column">
-              <ul className="">
-            
-                {!isWishlist  && (
-                  <li
-                    className="list-inline-item"
-                    style={{
-                      width: "30px",
-                      // border: "1px solid black",
-                      textAlign: "center",
-                      borderRadius: "5px",
-                    }}
-                  >
-                    {/* <Link href="/agent-v1">{item.posterName}</Link> */}
-                    {
-                      <button
-                        onClick={() => onWishlistHandler(property.propertyId)}
-                      >
-                        <span className="flaticon-heart text-color "></span>
-                      </button>
-                    }
-                  </li>
-                )}
+        console.log("isBidded", isBidded);
 
-                {/* <div className="fp_pdate float-end">{item.postedYear}</div> */}
-
-                {!isBidded && (
-                  <li
-                    className="list-inline-item"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title="Delete"
-                  >
-                    <div
-                      className="mt-1 fw-bold"
-                      onClick={() =>
-                        participateHandler(
-                          property.bidLowerRange,
-                          property.propertyId
-                        )
-                      }
-                    >
-                      <a
-                        href="#"
-                        className="text-color"
-                        style={{ marginLeft: "10px" }}
-                      >
-                        Provide Qoute
-                      </a>
-                    </div>
-                  </li>
-                )}
-                {status ===1 && <li
-                  className="list-inline-item"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="View"
+        if (isWishlist.id) {
+          const updatedRow = {
+            orderId: property.orderId,
+            address: `${property.city}-${property.province},${property.zipCode}`,
+            community: `${property.community ? property.community : "NA"}`,
+            estimatedValue: property.estimatedValue
+              ? property.estimatedValue
+              : 0,
+            purpose: property.purpose ? property.purpose : "NA",
+            status: isBidded.bidId ? (
+              isBidded.status === 0 ? (
+                <span className="btn btn-primary">Quote Provided</span>
+              ) : isBidded.status === 1 ? (
+                <span className="btn btn-success">Accepted</span>
+              ) : (
+                <span className="btn btn-danger">Rejected</span>
+              )
+            ) : (
+              <span className="btn btn-warning">New</span>
+            ),
+            broker: (
+              <a href="#">
+                <button
+                  style={{
+                    border: "0px",
+                    color: "#2e008b",
+                    textDecoration: "underline",
+                    // fontWeight: "bold",
+                    backgroundColor: "transparent",
+                  }}
+                  onClick={() => openModalBroker(property)}
                 >
-                  <button onClick={()=>setViewPropertyHandler(property)}>
-                    <span className="flaticon-view"></span>
-                  </button>
-                </li>}
-               
-              </ul>
-            </div>
-          ),
-        };
+                  {`${property.applicantFirstName} ${property.applicantLastName}`}
+                </button>
+              </a>
+            ),
+            type_of_appraisal: property.typeOfAppraisal
+              ? property.typeOfAppraisal
+              : "NA",
+            typeOfBuilding:
+              property.typeOfBuilding > 0
+                ? "Apartment"
+                : property.typeOfBuilding,
+            quote_required_by: formatDate(property.addedDatetime),
+            date: formatDate(property.addedDatetime),
+            bidAmount: property.bidLowerRange,
+            lender_information: property.lenderInformation
+              ? property.lenderInformation
+              : "NA",
+            urgency:
+              property.urgency === 0
+                ? "Rush"
+                : property.urgency === 1
+                ? "Regular"
+                : "High",
 
-        tempData.push(updatedRow);
-      }
+            action: (
+              <div className="print-hidden-column">
+                {isBidded && isBidded.status !== 1 ? (
+                  <ul className="">
+                    {!isBidded.$id && (
+                      <li
+                        className="list-inline-item"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="Provide Quote"
+                      >
+                        <div
+                          className=" fw-bold"
+                          onClick={() =>
+                            participateHandler(
+                              property.bidLowerRange,
+                              property.propertyId
+                            )
+                          }
+                        >
+                          <a
+                            href="#"
+                            className="btn btn-color w-15"
+                            style={{ marginLeft: "10px" }}
+                          >
+                            Provide Quote
+                          </a>
+                        </div>
+                      </li>
+                    )}
+                    <li
+                      className="list-inline-item"
+                      title="Delete Property"
+                      style={{
+                        width: "30px",
+                        border: "none",
+                        textAlign: "center",
+                        borderRadius: "5px",
+                      }}
+                    >
+                      {
+                        <button
+                          className="btn"
+                          style={{ border: "1px solid grey" }}
+                          onClick={() =>
+                            onDeletePropertyHandler(property.propertyId)
+                          }
+                        >
+                          <span className="flaticon-garbage text-danger"></span>
+                        </button>
+                      }
+                    </li>
+                  </ul>
+                ) : (
+                  <h4 style={{ color: "green" }}>Completed</h4>
+                )}
+              </div>
+            ),
+          };
+
+          tempData.push(updatedRow);
+        }
       });
       setUpdatedData(tempData);
     };
     getData();
-  },[properties]);
+  }, [properties]);
 
-  useEffect(()=>{
+  useEffect(() => {
     setUpdatedCode(true);
-  },[updatedData]);
+  }, [updatedData]);
 
-  useEffect(()=>{
-    
-   
-
+  const refreshHandler = () => {
+    setRefresh(true);
+    setStartLoading(true);
+  };
+  useEffect(() => {
+    console.log("inside");
     const data = JSON.parse(localStorage.getItem("user"));
-    setRefresh(false);
-    
+
+    const payload = {
+      token: userData.token,
+    };
+    let tempProperties = [],
+      tempWishlist = [];
+    axios
+      .get("/api/getPropertiesById", {
+        headers: {
+          Authorization: `Bearer ${data?.token}`,
+          "Content-Type": "application/json",
+        },
+        params: {
+          userId: data?.userId,
+        },
+      })
+      .then((res) => {
+        tempProperties = res.data.data.property.$values;
+      })
+      .catch((err) => {
+        setErrorMessage(err?.response?.data?.error);
+        setModalIsOpenError(true);
+      });
     axios
       .get("/api/appraiserWishlistedProperties", {
         headers: {
@@ -307,7 +385,6 @@ export default function Exemple({userData , open ,close , closeBrokerModal ,refr
         },
       })
       .then((res) => {
-        toast.dismiss();
         const tempData = res.data.data.$values;
 
         // setAllWishlistedProperties(res.data.data.$values);
@@ -319,7 +396,6 @@ export default function Exemple({userData , open ,close , closeBrokerModal ,refr
           }
         });
         const tempId = responseData;
-        console.log("wishlist", responseData);
         setWishlist(responseData);
       })
       .catch((err) => {
@@ -327,6 +403,7 @@ export default function Exemple({userData , open ,close , closeBrokerModal ,refr
         setErrorMessage(err?.response);
         setModalIsOpenError(true);
       });
+    let tempBids = [];
     axios
       .get("/api/getAllBids", {
         headers: {
@@ -334,56 +411,34 @@ export default function Exemple({userData , open ,close , closeBrokerModal ,refr
         },
       })
       .then((res) => {
-        toast.dismiss();
-        const tempData = res.data.data.result.$values;
-        const responseData = tempData.filter((prop, index) => {
-          if (prop.userId === data.userId) {
-            return true;
-          } else {
-            return false;
-          }
-        });
-        const updated24HoursBid = responseData.filter((prop, index) => {
-          if (filterBidsWithin24Hours(prop)) {
-            return true;
-          } else {
-            return false;
-          }
-        });
-        console.log("bids",responseData);
-        setBids(responseData);
-      })
-      .catch((err) => {
-        toast.dismiss();
-        // setErrorMessage(err?.response?.data?.error);
-        // setModalIsOpenError(true);
-      });
-         axios.get("/api/getAllListedProperties", {
-        headers: {
-          Authorization: `Bearer ${data?.token}`,
-          "Content-Type":"application/json",
-        }
-      })
-      .then((res) => {
         console.log(res);
-        console.log("Properties",res.data.data.properties.$values);
-        setProperties(res.data.data.properties.$values);
+        tempBids = res.data.data.result.$values;
+        setBids(tempBids);
       })
       .catch((err) => {
-        toast.dismiss();
-        // setErrorMessage(err?.response?.data?.error);
-        // setModalIsOpenError(true);
+        setErrorMessage(err?.response?.data?.error);
+        setModalIsOpenError(true);
       });
-      
-  },[refresh]);
+
+    console.log("end", bids, properties, wishlist);
+    setRefresh(false);
+  }, [refresh]);
   return (
     <>
-    { refresh ? <Loader/> : (<SmartTable
-      title=""
-      data={updatedData}
-      refreshHandler={refreshHandler}
-      headCells={headCells}
-    />) }
+      {refresh ? (
+        <Loader />
+      ) : (
+        <SmartTable
+          title=""
+          data={updatedData}
+          headCells={headCells}
+          setRefresh={setRefresh}
+          setProperties={setProperties}
+          refresh={refresh}
+          refreshHandler={refreshHandler}
+          setStartLoading={setStartLoading}
+        />
+      )}
     </>
   );
 }

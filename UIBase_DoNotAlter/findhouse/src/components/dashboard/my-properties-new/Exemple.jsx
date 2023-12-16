@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import SmartTable from "./SmartTable";
 import Link from "next/link";
 import toast from "react-hot-toast";
-import axios from "axios";
+import axios, { all } from "axios";
 // import "./SmartTable.css";
 
 const headCells = [
@@ -134,6 +134,7 @@ export default function Exemple({
   deletePropertyHandler,
 }) {
   const [updatedData, setUpdatedData] = useState([]);
+  const [allBids, setBids] = useState([]);
   const [show, setShow] = useState(false);
   let tempData = [];
 
@@ -142,11 +143,27 @@ export default function Exemple({
       year: "numeric",
       month: "long",
       day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
     };
 
     const formattedDate = new Date(dateString).toLocaleString("en-US", options);
-
     return formattedDate;
+  };
+
+  const getPropertyStatusHandler = (property) => {
+    let isInProgress = true;
+    let isQuoteProvided = false;
+    let isCompleted = false;
+    allBids.map((bid, index) => {
+      if (bid.propertyId === property.propertyId && bid.status === 1) {
+        isCompleted = true;
+      } else if (bid.propertyId === property.propertyId) {
+        isQuoteProvided = true;
+      }
+    });
+    return isCompleted ? 2 : isQuoteProvided ? 1 : 0;
   };
 
   const openPopupModal = (property) => {
@@ -156,58 +173,74 @@ export default function Exemple({
   useEffect(() => {
     const getData = () => {
       properties.map((property, index) => {
-        const isEditable = !property.propertyStatus;
-        const updatedRow = {
-          order_id: property.orderId,
-          sub_date: formatDate(property.addedDatetime),
-          status: property.propertyStatus ? (
-            <span className="btn bg-success text-light">Completed</span>
-          ) : (
-            <span className="btn bg-primary text-light">In Progress</span>
-          ),
-          address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.state}, ${property.zipCode}`,
-          // user: property.applicantEmailAddress,
-          type_of_building: property.typeOfBuilding,
-          amount: ` $${property.estimatedValue}`,
-          purpose: property.purpose,
-          type_of_appraisal: property.typeOfAppraisal,
-          lender_information: property.lenderInformation ? property.lenderInformation : "NA",
-          urgency: property.urgency,
-          actions: (
-            // <ul className="view_edit_delete_list mb0">
-            <ul className="mb0">
-              <li>
-                <Link href={"#"}>
-                  <span
-                    className="link-color"
-                    onClick={() => openPopupModal(property)}
-                  >
-                    {" "}
-                    Property Details{" "}
-                  </span>
-                </Link>{" "}
-                <span
-                  className="btn btn-color-table m-1"
-                  onClick={() => openPopupModal(property)}
-                >
-                  <Link href={"#"}>
-                    <span className="text-light flaticon-view"></span>
-                  </Link>
+        const isStatus = getPropertyStatusHandler(property);
+        console.log(isStatus);
+        const isEditable = isStatus === 0 ? true : false;
+        if (!property.isArchive) {
+          const updatedRow = {
+            order_id: property.orderId,
+            sub_date: formatDate(property.addedDatetime),
+            quote_required_by: formatDate(property.addedDatetime),
+            status:
+              isStatus === 2 ? (
+                <span className="btn bg-success text-light">Completed</span>
+              ) : isStatus === 0 ? (
+                <span className="btn bg-primary text-light">In Progress</span>
+              ) : (
+                <span className="btn bg-primary text-light">
+                  Quote Provided
                 </span>
-              </li>
-              <li>
-                <Link href={`/my-property-bids/${property.propertyId}`}>
-                  <span className="link-color"> Quotes </span>
-                </Link>{" "}
-                <Link
-                  className="btn btn-color-table"
-                  style={{ marginLeft: "4.3rem" }}
-                  href={`/my-property-bids/${property.propertyId}`}
-                >
-                  <span className="flaticon-invoice"></span>
-                </Link>
-              </li>
-              {/* <li
+              ),
+            address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.state}, ${property.zipCode}`,
+            // user: property.applicantEmailAddress,
+            type_of_building: property.typeOfBuilding,
+            amount: ` $${property.estimatedValue}`,
+            purpose: property.purpose,
+            type_of_appraisal: property.typeOfAppraisal,
+            lender_information: property.lenderInformation
+              ? property.lenderInformation
+              : "NA",
+            urgency: property.urgency,
+            actions: (
+              // <ul className="view_edit_delete_list mb0">
+              <ul className="mb0">
+                {!isEditable && (
+                  <li>
+                    <Link href={"#"}>
+                      <span
+                        className="link-color"
+                        onClick={() => openPopupModal(property)}
+                      >
+                        {" "}
+                        Property Details{" "}
+                      </span>
+                    </Link>{" "}
+                    <span
+                      className="btn btn-color-table m-1"
+                      onClick={() => openPopupModal(property)}
+                    >
+                      <Link href={"#"}>
+                        <span className="text-light flaticon-view"></span>
+                      </Link>
+                    </span>
+                  </li>
+                )}
+
+                {!isEditable && (
+                  <li>
+                    <Link href={`/my-property-bids/${property.propertyId}`}>
+                      <span className="link-color"> Quotes </span>
+                    </Link>{" "}
+                    <Link
+                      className="btn btn-color-table"
+                      style={{ marginLeft: "4.3rem" }}
+                      href={`/my-property-bids/${property.propertyId}`}
+                    >
+                      <span className="flaticon-invoice"></span>
+                    </Link>
+                  </li>
+                )}
+                {/* <li
                 className="list-inline-item"
                 data-toggle="tooltip"
                 data-placement="top"
@@ -237,43 +270,44 @@ export default function Exemple({
                 </Link>
               </li> */}
 
-              {isEditable && (
-                <li
-                  className="list-inline-item"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Edit"
-                >
-                  <Link
-                    className="btn btn-color-table"
-                    href={`/create-listing/${property.propertyId}`}
+                {isEditable && (
+                  <li
+                    className="list-inline-item"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Edit"
                   >
-                    <span className="flaticon-edit"></span>
-                  </Link>
-                </li>
-              )}
-
-              {/* End li */}
-
-              {isEditable && (
-                <li
-                  className="list-inline-item"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Delete"
-                >
-                  <button
-                    style={{ border: "none", backgroundColor: "white" }}
-                    onClick={() => open(property)}
-                  >
-                    <Link href="#">
-                      <span className="flaticon-garbage"></span>
+                    <Link
+                      className="btn btn-color-table"
+                      href={`/create-listing/${property.propertyId}`}
+                    >
+                      <span className="flaticon-edit"></span>
                     </Link>
-                  </button>
-                </li>
-              )}
+                  </li>
+                )}
 
-              {/* {!isEditable && (
+                {/* End li */}
+
+                {isEditable && (
+                  <li
+                    className="list-inline-item"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Delete"
+                  >
+                    <button
+                      className="btn"
+                      style={{ border: "1px solid grey" }}
+                      onClick={() => open(property)}
+                    >
+                      <Link href="#">
+                        <span className="flaticon-garbage text-danger"></span>
+                      </Link>
+                    </button>
+                  </li>
+                )}
+
+                {/* {!isEditable && (
                 <li
                   className="list-inline-item"
                   data-toggle="tooltip"
@@ -290,34 +324,30 @@ export default function Exemple({
                   </span>
                 </li>
               )} */}
-              {!isEditable && (
-                <li>
-                  <Link href={`/archive-property`}>
+                {!isEditable && (
+                  <li>
+                    <Link href="#">
+                      <span className="link-color"> Archive Property </span>
+                    </Link>
                     <span
-                      className="link-color"
+                      className="btn btn-color-table m-1"
                       onClick={() =>
                         archievePropertyHandler(property.propertyId)
                       }
                     >
-                      {" "}
-                      Archive Property{" "}
+                      <Link className="color-light" href={`/archive-property`}>
+                        <span className="flaticon-box text-light"></span>
+                      </Link>
                     </span>
-                  </Link>{" "}
-                  <span
-                    className="btn btn-color-table m-1"
-                    onClick={() => archievePropertyHandler(property.propertyId)}
-                  >
-                    <Link className="color-light" href={`/archive-property`}>
-                      <span className="flaticon-box text-light"></span>
-                    </Link>
-                  </span>
-                </li>
-              )}
-              {/* End li */}
-            </ul>
-          ),
-        };
-        tempData.push(updatedRow);
+                  </li>
+                )}
+
+                {/* End li */}
+              </ul>
+            ),
+          };
+          tempData.push(updatedRow);
+        }
       });
       setUpdatedData(tempData);
     };
@@ -350,6 +380,23 @@ export default function Exemple({
       .catch((err) => {
         toast.dismiss();
         toast.error(err?.response?.data?.error);
+      });
+
+    let tempBids = [];
+    axios
+      .get("/api/getAllBids", {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+      })
+      .then((res) => {
+        // console.log(res);
+        tempBids = res.data.data.result.$values;
+        setBids(tempBids);
+      })
+      .catch((err) => {
+        setErrorMessage(err?.response?.data?.error);
+        setModalIsOpenError(true);
       });
   }, []);
   return (

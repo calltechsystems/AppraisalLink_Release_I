@@ -17,7 +17,7 @@ import { typeOfBuilding } from "./data";
 const Index = ({ isView, propertyData }) => {
   const router = useRouter();
 
-  const [isDisable, setDisable] = useState(isView);
+  const [isDisable, setDisable] = useState(propertyData ? true : false);
   const [modalOpen, setModalOpen] = useState(false);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -294,120 +294,136 @@ const Index = ({ isView, propertyData }) => {
     window.location.reload();
   };
   const updateHandler = () => {
+    setModalIsOpen(false);
     const nameRegex = /^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-
-    const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
-
     const userInfo = JSON.parse(localStorage.getItem("user"));
 
-    const payload = {
-      userId: userInfo.userId,
-      propertyId: propertyData?.propertyId,
-      streetName: streetNameRef,
-      streetNumber: streetNumberRef,
-      city: cityRef,
-      state: stateRef,
-      zipCode: zipCodeRef,
-      // area: areaRef,
-      community: communityRef,
-      typeOfBuilding: buildinRef,
-      applicantFirstName: applicantFirstName,
-      applicantLastName: applicantLatsName,
-      applicantPhoneNumber: applicantNumber,
-      applicantEmail: applicantEmail || propertyData?.applicantEmail,
-      bidLowerRange: Number(bidLowerRangeRef),
-      bidUpperRange: Number(bidLowerRangeRef),
-      urgency: propertyData?.urgency === 0 ? 0 : 1,
-      propertyStatus: true,
-      token: userInfo.token,
-    };
+    const phoneNumberRegex = /^\d{10}$/;
+
     if (
-      !payload.streetName ||
-      !payload.streetNumber ||
-      !payload.city ||
-      !payload.state ||
-      !payload.zipCode ||
-      !payload.typeOfBuilding
-      // !payload.area
+      (!nameRegex.test(applicantFirstName) && applicantFirstName) ||
+      (!nameRegex.test(applicantLatsName) && applicantLatsName)
     ) {
-      let tempError = errorLabel;
-
-      if (!payload.streetName) {
-        tempError.push("streetName");
-      }
-      if (!payload.streetNumber) {
-        tempError.push("streetNumber");
-      }
-      if (!payload.city) {
-        tempError.push("city");
-      }
-      if (!payload.state) {
-        tempError.push("state");
-      }
-      if (!payload.zipCode) {
-        tempError.push("zipCode");
-      }
-      if (!payload.typeOfBuilding) {
-        tempError.push("typeOfBuilding");
-      }
-      if (!payload.estimatedValue) {
-        tempError.push("estimatedValue");
-      }
-      if (!payload.purpose) {
-        tempError.push("purpose");
-      }
-      if (!payload.typeOfAppraisal) {
-        tempError.push("typeOfAppraisal");
-      }
-      if (!payload.applicantLastName) {
-        tempError.push("applicantLastName");
-      }
-      if (!payload.applicantFirstName) {
-        tempError.push("applicantFirstName");
-      }
-      if (!payload.applicantPhoneNumber) {
-        tempError.push("applicantPhoneNumber");
-      }
-      if (!payload.applicantEmail) {
-        tempError.push("applicantEmailAddress");
-      }
-
-      setErrorLabel(tempError);
+      toast.error("Please provide a valid applicant name");
+    } else if (!emailRegex.test(applicantEmail) && applicantEmail) {
+      toast.error("Please provide a valid email address");
+    } else if (!phoneNumberRegex.test(applicantNumber) && applicantNumber) {
+      toast.error("Please provide a valid phone number");
     } else {
-      setErrorLabel([]);
-      const encryptedData = encryptionData(payload);
+      const payload = {
+        userId: userInfo.userId,
+        streetName: streetNameRef,
+        streetNumber: streetNumberRef,
+        city: cityRef,
+        state: stateRef,
+        zipCode: zipCodeRef,
+        area: "",
+        community: communityRef,
+        applicantFirstName: applicantFirstName,
+        applicantLastName: applicantLatsName,
+        applicantPhoneNumber: applicantNumber,
+        applicantEmail: applicantEmail || userData.userEmail,
+        bidLowerRange: Number(bidLowerRangeRef),
+        bidUpperRange: Number(bidLowerRangeRef),
+        propertyStatus: true,
+        estimatedValue: Number(estimatedValue),
+        lenderInformation: lenderInformation,
+        applicantAddress: applicantAddress,
+        typeOfBuilding:
+          String(buildinRef) === "Other"
+            ? otherTypeOfBuildingValue
+            : buildinRef,
+        urgency:
+          String(urgencyRef) === "Other" ? otherUrgencyValue : urgencyRef,
+        typeOfAppraisal:
+          String(typeOfAppraisal) === "Other"
+            ? otherTypeOfAppraisalValue
+            : typeOfAppraisal,
+        purpose: String(purpose) === "Other" ? otherPurposeValue : purpose,
 
-      toast.loading("Updating the property..");
-      axios
-        .put("/api/addPropertyByBroker", encryptedData, {
-          headers: {
-            Authorization: `Bearer ${userData.token}`,
-            "Content-Type": "application/json",
-          },
-        })
-        .then((res) => {
-          toast.dismiss();
-          setModalIsOpen(true);
-          // router.push("/my-properties");
-        })
-        .catch((err) => {
-          toast.dismiss();
-          toast.error(err.response.data.error);
-        });
+        attachment: "",
+        image: "",
+        token: userInfo.token,
+      };
+      if (
+        !payload.streetName ||
+        !payload.streetNumber ||
+        !payload.city ||
+        !payload.state ||
+        !payload.zipCode ||
+        !payload.typeOfBuilding
+        // !payload.area
+      ) {
+        let tempError = errorLabel;
+
+        if (!payload.streetName) {
+          tempError.push("streetName");
+        }
+        if (!payload.streetNumber) {
+          tempError.push("streetNumber");
+        }
+        if (!payload.city) {
+          tempError.push("city");
+        }
+        if (!payload.state) {
+          tempError.push("state");
+        }
+        if (!payload.zipCode) {
+          tempError.push("zipCode");
+        }
+        if (!payload.typeOfBuilding) {
+          tempError.push("typeOfBuilding");
+        }
+        if (!payload.estimatedValue) {
+          tempError.push("estimatedValue");
+        }
+        if (!payload.purpose) {
+          tempError.push("purpose");
+        }
+        if (!payload.typeOfAppraisal) {
+          tempError.push("typeOfAppraisal");
+        }
+        if (!payload.applicantLastName) {
+          tempError.push("applicantLastName");
+        }
+        if (!payload.applicantFirstName) {
+          tempError.push("applicantFirstName");
+        }
+        if (!payload.applicantPhoneNumber) {
+          tempError.push("applicantPhoneNumber");
+        }
+        if (!payload.applicantEmail) {
+          tempError.push("applicantEmailAddress");
+        }
+
+        setErrorLabel(tempError);
+      } else {
+        setErrorLabel([]);
+        const encryptedData = encryptionData(payload);
+
+        toast.loading("Updating the property..");
+        axios
+          .put("/api/addPropertyByBroker", encryptedData, {
+            headers: {
+              Authorization: `Bearer ${userData.token}`,
+              "Content-Type": "application/json",
+            },
+          })
+          .then((res) => {
+            toast.dismiss();
+            setModalIsOpen(true);
+            // router.push("/my-properties");
+          })
+          .catch((err) => {
+            toast.dismiss();
+            toast.error(err.response.data.error);
+          });
+      }
     }
   };
 
-  const closeModal = () => {
-    setModalOpen(false);
-  };
-
-  const onCancelHandler = () => {
-    setModalIsOpen(false);
-    router.push("/create-listing");
-  };
-
-  const submitHandler = () => {
+  const openModalForUpdateHandler = () => {
     const payload = {
       streetName: streetNameRef,
       streetNumber: streetNumberRef,
@@ -416,21 +432,21 @@ const Index = ({ isView, propertyData }) => {
       zipCode: zipCodeRef,
       // area: areaRef,
       community: communityRef,
-      typeOfBuilding:
-        String(buildinRef) === "Other" ? otherTypeOfBuildingValue : buildinRef,
       applicantFirstName: applicantFirstName,
       applicantLastName: applicantLatsName,
       applicantPhoneNumber: applicantNumber,
       bidLowerRange: Number(bidLowerRangeRef),
       bidUpperRange: Number(bidLowerRangeRef),
+      typeOfBuilding:
+        String(buildinRef) === "Other" ? otherTypeOfBuildingValue : buildinRef,
       urgency: String(urgencyRef) === "Other" ? otherUrgencyValue : urgencyRef,
-      propertyStatus: true,
-      estimatedValue: estimatedValue,
-      purpose: String(purpose) === "Other" ? otherPurposeValue : purpose,
       typeOfAppraisal:
         String(typeOfAppraisal) === "Other"
           ? otherTypeOfAppraisalValue
           : typeOfAppraisal,
+      purpose: String(purpose) === "Other" ? otherPurposeValue : purpose,
+      propertyStatus: true,
+      estimatedValue: estimatedValue,
       lenderInformation: lenderInformation,
       applicantAddress: applicantAddress,
     };
@@ -497,6 +513,104 @@ const Index = ({ isView, propertyData }) => {
     }
   };
 
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
+  const onCancelHandler = () => {
+    setModalIsOpen(false);
+    router.push("/create-listing");
+  };
+
+  const submitHandler = () => {
+    const payload = {
+      streetName: streetNameRef,
+      streetNumber: streetNumberRef,
+      city: cityRef,
+      state: stateRef,
+      zipCode: zipCodeRef,
+      community: communityRef,
+      applicantFirstName: applicantFirstName,
+      applicantLastName: applicantLatsName,
+      applicantPhoneNumber: applicantNumber,
+      bidLowerRange: Number(bidLowerRangeRef),
+      bidUpperRange: Number(bidLowerRangeRef),
+      typeOfBuilding:
+        String(buildinRef) === "Other" ? otherTypeOfBuildingValue : buildinRef,
+      urgency: String(urgencyRef) === "Other" ? otherUrgencyValue : urgencyRef,
+      typeOfAppraisal:
+        String(typeOfAppraisal) === "Other"
+          ? otherTypeOfAppraisalValue
+          : typeOfAppraisal,
+      purpose: String(purpose) === "Other" ? otherPurposeValue : purpose,
+      propertyStatus: true,
+      estimatedValue: estimatedValue,
+      lenderInformation: lenderInformation,
+      applicantAddress: applicantAddress,
+    };
+    if (
+      !payload.streetName ||
+      !payload.streetNumber ||
+      !payload.city ||
+      !payload.state ||
+      !payload.zipCode ||
+      !payload.typeOfBuilding ||
+      !payload.typeOfAppraisal ||
+      !payload.purpose ||
+      !payload.estimatedValue
+    ) {
+      let tempError = [];
+
+      if (!payload.streetName) {
+        tempError.push("streetName");
+      }
+      if (!payload.streetNumber) {
+        tempError.push("streetNumber");
+      }
+      if (!payload.city) {
+        tempError.push("city");
+      }
+      if (!payload.state) {
+        tempError.push("state");
+      }
+      if (!payload.zipCode) {
+        tempError.push("zipCode");
+      }
+      if (!payload.typeOfBuilding) {
+        tempError.push("typeOfBuilding");
+      }
+      if (!payload.estimatedValue) {
+        tempError.push("estimatedValue");
+      }
+      if (!payload.purpose) {
+        tempError.push("purpose");
+      }
+      if (!payload.typeOfAppraisal) {
+        tempError.push("typeOfAppraisal");
+      }
+      if (!payload.applicantLastName) {
+        tempError.push("applicantLastName");
+      }
+      if (!payload.applicantFirstName) {
+        tempError.push("applicantFirstName");
+      }
+      if (!payload.applicantPhoneNumber) {
+        tempError.push("applicantPhoneNumber");
+      }
+      if (!payload.applicantEmail) {
+        tempError.push("applicantEmailAddress");
+      }
+
+      setErrorLabel(tempError);
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    } else {
+      setModalIsOpen(true);
+    }
+  };
+
   const finalSubmitHandler = () => {
     setModalIsOpen(false);
     const nameRegex = /^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$/;
@@ -524,20 +638,28 @@ const Index = ({ isView, propertyData }) => {
         zipCode: zipCodeRef,
         area: "",
         community: communityRef,
-        typeOfBuilding: buildinRef,
         applicantFirstName: applicantFirstName,
         applicantLastName: applicantLatsName,
         applicantPhoneNumber: applicantNumber,
         applicantEmail: applicantEmail || userData.userEmail,
         bidLowerRange: Number(bidLowerRangeRef),
         bidUpperRange: Number(bidLowerRangeRef),
-        urgency: propertyData?.urgency === 0 ? 0 : 1,
         propertyStatus: true,
         estimatedValue: Number(estimatedValue),
-        purpose: purpose,
-        typeOfAppraisal: typeOfAppraisal,
         lenderInformation: lenderInformation,
         applicantAddress: applicantAddress,
+        typeOfBuilding:
+          String(buildinRef) === "Other"
+            ? otherTypeOfBuildingValue
+            : buildinRef,
+        urgency:
+          String(urgencyRef) === "Other" ? otherUrgencyValue : urgencyRef,
+        typeOfAppraisal:
+          String(typeOfAppraisal) === "Other"
+            ? otherTypeOfAppraisalValue
+            : typeOfAppraisal,
+        purpose: String(purpose) === "Other" ? otherPurposeValue : purpose,
+
         attachment: "",
         image: "",
         token: userInfo.token,
@@ -602,25 +724,48 @@ const Index = ({ isView, propertyData }) => {
       } else {
         const encryptedData = encryptionData(payload);
 
-        console.log(payload);
-        toast.loading("Appraising property ..");
-        axios
-          .post("/api/addBrokerProperty", encryptedData, {
-            headers: {
-              Authorization: `Bearer ${userData.token}`,
-              "Content-Type": "application/json",
-            },
-          })
-          .then((res) => {
-            toast.dismiss();
-            toast.success("Property Added Successfully");
-            // setModalIsOpen(true);
-            router.push("/my-properties");
-          })
-          .catch((err) => {
-            toast.dismiss();
-            toast.error(err.message);
-          });
+        if (propertyData) {
+          toast.loading("Updating the property..");
+          axios
+            .put("/api/addPropertyByBroker", encryptedData, {
+              headers: {
+                Authorization: `Bearer ${userData.token}`,
+                "Content-Type": "application/json",
+              },
+              params: {
+                propertyId: propertyData.propertyId,
+              },
+            })
+            .then((res) => {
+              toast.dismiss();
+              toast.success("Successfully submitted !!");
+              setModalIsOpen(false);
+              router.push("/my-properties");
+            })
+            .catch((err) => {
+              toast.dismiss();
+              toast.error(err.response.data.error);
+            });
+        } else {
+          toast.loading("Appraising property ..");
+          axios
+            .post("/api/addBrokerProperty", encryptedData, {
+              headers: {
+                Authorization: `Bearer ${userData.token}`,
+                "Content-Type": "application/json",
+              },
+            })
+            .then((res) => {
+              toast.dismiss();
+              toast.success("Property Added Successfully");
+              // setModalIsOpen(true);
+              router.push("/my-properties");
+            })
+            .catch((err) => {
+              toast.dismiss();
+              toast.error(err.message);
+            });
+        }
       }
     }
   };
@@ -819,6 +964,7 @@ const Index = ({ isView, propertyData }) => {
                         </h4>
                       </div>
                       <hr style={{ color: "#2e008b" }} />
+
                       <DetailedInfo
                         isDisable={isDisable}
                         applicantFirstName={applicantFirstName}
@@ -1186,7 +1332,9 @@ const Index = ({ isView, propertyData }) => {
                         <div className="col-lg-6">
                           <button
                             className="w-50 btn-color"
-                            onClick={() => finalSubmitHandler()}
+                            onClick={
+                              propertyData ? finalSubmitHandler : updateHandler
+                            }
                           >
                             Continue
                           </button>

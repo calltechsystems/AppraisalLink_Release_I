@@ -144,14 +144,14 @@ const Index = () => {
               {/* End .row */}
 
               <div className="row align-items-center">
-                <div className="col-md-8 col-lg-8 col-xl-9 mb20">
+                <div className="col-md-8 col-lg-8 col-xl-9">
                   <div className="breadcrumb_content style2 mb30-991">
-                    <h2 className="breadcrumb_title">My Transactions</h2>
-                    <p>You can see your transactions history here!</p>
+                    <h2 className="breadcrumb_title">Transactions</h2>
+                    {/* <p>You can see your transactions history here!</p> */}
                   </div>
                 </div>
                 {/* End .col */}
-                <div className="col-md-4 col-lg-4 col-xl-3 mb20">
+                <div className="col-md-4 col-lg-4 col-xl-3">
                   <ul className="sasw_list mb0">
                     <li className="search_area">{/* <SearchBox /> */}</li>
                   </ul>
@@ -217,7 +217,7 @@ const Index = () => {
                       {/* End .packages_table */}
 
                       <div className="pck_chng_btn text-end">
-                        <button className="btn btn-lg" onClick={updatePlan}>
+                        <button className="btn btn-color" onClick={updatePlan}>
                           Update Package
                         </button>
                       </div>
