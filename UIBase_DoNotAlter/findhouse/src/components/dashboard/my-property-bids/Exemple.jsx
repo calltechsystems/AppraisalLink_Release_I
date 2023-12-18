@@ -11,46 +11,46 @@ const headCells = [
   {
     id: "order_id",
     numeric: false,
-    label: "Order Id",
-    width: 200,
+    label: "Order ID",
+    width: 100,
   },
   {
     id: "AppraiserId",
     numeric: false,
-    label: "Appraiser Id",
+    label: "Appraiser ID",
+    width: 150,
+  },
+  {
+    id: "appraiser",
+    numeric: false,
+    label: "Appraiser Name",
     width: 200,
   },
   {
     id: "quote",
     numeric: false,
-    label: "Provided Quote",
-    width: 200,
+    label: "Quote Amount",
+    width: 150,
   },
-  {
-    id: "amount",
-    numeric: false,
-    label: "Bid Amount",
-    width: 200,
-  },
+  // {
+  //   id: "amount",
+  //   numeric: false,
+  //   label: "Bid Amount",
+  //   width: 200,
+  // },
   {
     id: "description",
     numeric: false,
-    label: "Description",
+    label: "Remark",
     width: 200,
   },
   {
     id: "date",
     numeric: false,
-    label: "Date",
-    width: 200,
+    label: "Appraisal Submitted Date",
+    width: 220,
   },
   ,
-  {
-    id: "appraiser",
-    numeric: false,
-    label: "Appraiser",
-    width: 200,
-  },
   {
     id: "action",
     numeric: false,
@@ -270,7 +270,7 @@ export default function Exemple({
                       className="fp_pdate float-end mt-1 fw-bold"
                       onClick={() => openPopupModal(prop, property.bidId)}
                     >
-                      <a href="#" className="text-color-green">
+                      <a href="#" className="text-success">
                         Accept
                       </a>
                     </div>
@@ -288,7 +288,7 @@ export default function Exemple({
                       className="fp_pdate float-end mt-1 fw-bold"
                       onClick={() => setProperty(property)}
                     >
-                      <a href="#" className="text-color-red">
+                      <a href="#" className="text-danger">
                         Decline
                       </a>
                     </div>
@@ -364,7 +364,12 @@ export default function Exemple({
   return (
     <>
       {updatedData && (
-        <SmartTable title="" data={updatedData} headCells={headCells} refreshHandler={refreshHandler} />
+        <SmartTable
+          title=""
+          data={updatedData}
+          headCells={headCells}
+          refreshHandler={refreshHandler}
+        />
       )}
     </>
   );

@@ -23,6 +23,8 @@ const Index = () => {
   const [filterQuery, setFilterQuery] = useState("Last 30 Days");
   const [properties, setProperties] = useState([]);
 
+  const [refresh, setRefresh] = useState(false);
+
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [modalIsPopupOpen, setModalIsPopupOpen] = useState(false);
@@ -319,6 +321,8 @@ const Index = () => {
                           setModalIsPopupOpen={setModalIsPopupOpen}
                           setCurrentProperty={setCurrentProperty}
                           archievePropertyHandler={archievePropertyHandler}
+                          setRefresh={setRefresh}
+                          refresh={refresh}
                         />
 
                         <div>

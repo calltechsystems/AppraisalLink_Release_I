@@ -10,28 +10,10 @@ const headCells = [
     id: "order_id",
     numeric: false,
     label: "Order ID",
-    width: 200,
-  },
-  {
-    id: "sub_date",
-    numeric: false,
-    label: "Submission Date",
-    width: 200,
-  },
-  {
-    id: "status",
-    numeric: false,
-    label: "Status",
-    width: 200,
-  },
-  {
-    id: "address",
-    numeric: false,
-    label: "Property Address",
-    width: 200,
+    width: 100,
   },
   // {
-  //   id: "name",
+  //   id: "user",
   //   numeric: false,
   //   label: "Appraiser",
   //   width: 200,
@@ -42,17 +24,71 @@ const headCells = [
   //   label: "Quote Amount",
   //   width: 200,
   // },
-  // {
-  //   id: "quote_date",
-  //   numeric: false,
-  //   label: "Quote Date",
-  //   width: 200,
-  // },
+  {
+    id: "sub_date",
+    numeric: false,
+    label: "Quote Submitted Date",
+    width: 200,
+  },
+  {
+    id: "status",
+    numeric: false,
+    label: "Status",
+    width: 170,
+  },
+  {
+    id: "address",
+    numeric: false,
+    label: "Property Address",
+    width: 250,
+  },
+  {
+    id: "type_of_building",
+    numeric: false,
+    label: "Type Of Building",
+    width: 140,
+  },
+  {
+    id: "amount",
+    numeric: false,
+    label: "Estimated Value / Purchase Price",
+    width: 150,
+  },
+  {
+    id: "purpose",
+    numeric: false,
+    label: "Purpose",
+    width: 130,
+  },
+  {
+    id: "type_of_appraisal",
+    numeric: false,
+    label: "Type Of Appraisal",
+    width: 160,
+  },
+  {
+    id: "lender_information",
+    numeric: false,
+    label: "Lender Information",
+    width: 160,
+  },
+  {
+    id: "urgency",
+    numeric: false,
+    label: "Urgency",
+    width: 100,
+  },
+  {
+    id: "quote_required_by",
+    numeric: false,
+    label: "Appraisal Report Required By",
+    width: 200,
+  },
   {
     id: "actions",
     numeric: false,
     label: "Actions",
-    width: 200,
+    width: 170,
   },
 ];
 
@@ -91,13 +127,19 @@ export default function Exemple({
   open,
   close,
   properties,
+  setRefresh,
+  refresh,
   setProperties,
   deletePropertyHandler,
 }) {
   const [updatedData, setUpdatedData] = useState([]);
-  const [allBids,setBids] = useState([]);
+  const [allBids, setBids] = useState([]);
   const [show, setShow] = useState(false);
   let tempData = [];
+
+  const refreshHandler = ()=>{
+    setRefresh(true)
+  }
 
   const formatDate = (dateString) => {
     const options = {
@@ -111,100 +153,104 @@ export default function Exemple({
     return formattedDate;
   };
 
-  
-  const getPropertyStatusHandler = (property)=>{
-    let isInProgress = true ;
+  const getPropertyStatusHandler = (property) => {
+    let isInProgress = true;
     let isQuoteProvided = false;
     let isCompleted = false;
-    allBids.map((bid,index)=>{
-      if(bid.propertyId === property.propertyId && bid.status === 1){
-        isCompleted =true;
+    allBids.map((bid, index) => {
+      if (bid.propertyId === property.propertyId && bid.status === 1) {
+        isCompleted = true;
+      } else if (bid.propertyId === property.propertyId) {
+        isQuoteProvided = true;
       }
-      else if (bid.propertyId === property.propertyId ){
-        isQuoteProvided = true
-      }
-    })
-    return isCompleted ? 2 : isQuoteProvided ? 1 : 0 ;
-  }
-
+    });
+    return isCompleted ? 2 : isQuoteProvided ? 1 : 0;
+  };
 
   useEffect(() => {
     const getData = () => {
       properties.map((property, index) => {
         const isStatus = getPropertyStatusHandler(property);
-        
-        const isEditable = isStatus === 0 ? true : false ;
-        if(property.isArchive) {const updatedRow = {
-          order_id: property.orderId,
-          status: isStatus === 2  ? (
-            <span className="btn bg-success text-light">Completed</span>
-          ) : isStatus === 0 ? (
-            <span className="btn bg-primary text-light">In Progress</span>
-          ):
-            (
-              <span className="btn bg-primary text-light">Quote Provided</span>
-            )
-          ,
-          address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.state}, ${property.zipCode}`,
-          user: property.applicantEmailAddress,
-          name: `${property.applicantFirstName}, ${property.applicantLastName}`,
-          amount: ` $${property.bidLowerRange}`,
-          sub_date: formatDate(property.addedDatetime),
-          quote_date: formatDate(property.addedDatetime),
-          actions: (
-            <ul className="view_edit_delete_list mb0">
-              <li
-                className="list-inline-item"
-                data-toggle="tooltip"
-                data-placement="top"
-                title="View"
-              >
-                <Link
-                  href={`/my-property-bids/${property.propertyId}`}
-                  className="btn btn-color-table"
-                >
-                  <span className="flaticon-view"></span>
-                </Link>
-              </li>
-              {isEditable && (
+
+        const isEditable = isStatus === 0 ? true : false;
+        if (property.isArchive) {
+          const updatedRow = {
+            order_id: property.orderId,
+            sub_date: formatDate(property.addedDatetime),
+            quote_required_by: formatDate(property.addedDatetime),
+            status:
+              isStatus === 2 ? (
+                <span className="btn bg-success text-light">Completed</span>
+              ) : isStatus === 0 ? (
+                <span className="btn bg-primary text-light">In Progress</span>
+              ) : (
+                <span className="btn bg-info text-light">
+                  Quote Provided
+                </span>
+              ),
+            address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.state}, ${property.zipCode}`,
+            // user: property.applicantEmailAddress,
+            type_of_building: property.typeOfBuilding,
+            amount: ` $${property.estimatedValue}`,
+            purpose: property.purpose,
+            type_of_appraisal: property.typeOfAppraisal,
+            lender_information: property.lenderInformation
+              ? property.lenderInformation
+              : "NA",
+            urgency: property.urgency === 0 ? "Rush" : "Regular",
+            actions: (
+              <ul className="view_edit_delete_list mb0">
                 <li
                   className="list-inline-item"
                   data-toggle="tooltip"
                   data-placement="top"
-                  title="Edit"
+                  title="View"
                 >
-                  <Link href={`/create-listing/${property.propertyId}`}>
-                    <span className="flaticon-edit"></span>
+                  <Link
+                    href={`/my-property-bids/${property.propertyId}`}
+                    className="btn btn-color-table"
+                  >
+                    <span className="flaticon-view"></span>
                   </Link>
                 </li>
-              )}
-              {/* End li */}
-
-              {isEditable && (
-                <li
-                  className="list-inline-item"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Delete"
-                >
-                  <button
-                    style={{ border: "none", backgroundColor: "white" }}
-                    onClick={() => open(property)}
+                {isEditable && (
+                  <li
+                    className="list-inline-item"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Edit"
                   >
-                    <Link href="#">
-                      <span className="flaticon-garbage"></span>
+                    <Link href={`/create-listing/${property.propertyId}`}>
+                      <span className="flaticon-edit"></span>
                     </Link>
-                  </button>
-                </li>
-              )}
-            </ul>
-          ),
-        };
-        tempData.push(updatedRow);
-      }
+                  </li>
+                )}
+                {/* End li */}
+
+                {isEditable && (
+                  <li
+                    className="list-inline-item"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Delete"
+                  >
+                    <button
+                      style={{ border: "none", backgroundColor: "white" }}
+                      onClick={() => open(property)}
+                    >
+                      <Link href="#">
+                        <span className="flaticon-garbage"></span>
+                      </Link>
+                    </button>
+                  </li>
+                )}
+              </ul>
+            ),
+          };
+          tempData.push(updatedRow);
+        }
       });
       setUpdatedData(tempData);
-    
     };
     getData();
   }, [properties]);
@@ -237,27 +283,28 @@ export default function Exemple({
         toast.error(err?.response?.data?.error);
       });
 
-      let tempBids = [];
-      axios
-        .get("/api/getAllBids", {
-          headers: {
-            Authorization: `Bearer ${data.token}`,
-          },
-        })
-        .then((res) => {
-          // console.log(res);
-          tempBids = res.data.data.result.$values;
-          setBids(tempBids);
-        })
-        .catch((err) => {
-          setErrorMessage(err?.response?.data?.error);
-          setModalIsOpenError(true);
-        });
-  }, []);
+    let tempBids = [];
+    axios
+      .get("/api/getAllBids", {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+      })
+      .then((res) => {
+        // console.log(res);
+        tempBids = res.data.data.result.$values;
+        setBids(tempBids);
+      })
+      .catch((err) => {
+        setErrorMessage(err?.response?.data?.error);
+        setModalIsOpenError(true);
+      });
+      setRefresh(false)
+  }, [refresh]);
   return (
     <>
       {updatedData && (
-        <SmartTable title="" data={updatedData} headCells={headCells} />
+        <SmartTable title="" data={updatedData} headCells={headCells}  refreshHandler={refreshHandler}/>
       )}
     </>
   );

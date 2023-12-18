@@ -10,7 +10,7 @@ const headCells = [
     id: "order_id",
     numeric: false,
     label: "Order ID",
-    width: 200,
+    width: 100,
   },
   // {
   //   id: "user",
@@ -34,49 +34,49 @@ const headCells = [
     id: "status",
     numeric: false,
     label: "Status",
-    width: 200,
+    width: 170,
   },
   {
     id: "address",
     numeric: false,
     label: "Property Address",
-    width: 200,
+    width: 250,
   },
   {
     id: "type_of_building",
     numeric: false,
     label: "Type Of Building",
-    width: 200,
+    width: 140,
   },
   {
     id: "amount",
     numeric: false,
     label: "Estimated Value / Purchase Price",
-    width: 200,
+    width: 150,
   },
   {
     id: "purpose",
     numeric: false,
     label: "Purpose",
-    width: 200,
+    width: 130,
   },
   {
     id: "type_of_appraisal",
     numeric: false,
     label: "Type Of Appraisal",
-    width: 200,
+    width: 160,
   },
   {
     id: "lender_information",
     numeric: false,
     label: "Lender Information",
-    width: 200,
+    width: 160,
   },
   {
     id: "urgency",
     numeric: false,
     label: "Urgency",
-    width: 200,
+    width: 100,
   },
   {
     id: "quote_required_by",
@@ -88,7 +88,7 @@ const headCells = [
     id: "actions",
     numeric: false,
     label: "Actions",
-    width: 200,
+    width: 170,
   },
 ];
 
@@ -129,6 +129,8 @@ export default function Exemple({
   setModalIsPopupOpen,
   close,
   properties,
+  refresh,
+  setRefresh,
   setProperties,
   setCurrentProperty,
   deletePropertyHandler,
@@ -151,6 +153,10 @@ export default function Exemple({
 
     const formattedDate = new Date(dateString).toLocaleString("en-US", options);
     return formattedDate;
+  };
+
+  const refreshHandler = () => {
+    setRefresh(true);
   };
 
   const getPropertyStatusHandler = (property) => {
@@ -191,10 +197,12 @@ export default function Exemple({
                 <span className="btn bg-primary w-100 text-light">
                   In Progress
                 </span>
-              ) : (
-                <span className="btn bg-warning w-100 text-light">
+              ) : isStatus === 1 ? (
+                <span className="btn bg-info w-100 text-light">
                   Quote Provided
                 </span>
+              ) : (
+                <span className="btn bg-info w-100 text-light">Rejected</span>
               ),
             address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.state}, ${property.zipCode}`,
             // user: property.applicantEmailAddress,
@@ -275,7 +283,7 @@ export default function Exemple({
                 </Link>
               </li> */}
 
-                {isEditable && (
+                {(isEditable || isStatus === 1) && (
                   <li>
                     <Link href={`/create-listing/${property.propertyId}`}>
                       <span className="btn btn-color w-100 mb-1"> Edit </span>
@@ -390,7 +398,6 @@ export default function Exemple({
       token: userData.token,
     };
 
-    toast.loading("Getting properties...");
     axios
       .get("/api/getPropertiesById", {
         headers: {
@@ -427,11 +434,17 @@ export default function Exemple({
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
-  }, []);
+    setRefresh(false);
+  }, [refresh]);
   return (
     <>
       {updatedData && (
-        <SmartTable title="" data={updatedData} headCells={headCells} />
+        <SmartTable
+          title=""
+          data={updatedData}
+          headCells={headCells}
+          refreshHandler={refreshHandler}
+        />
       )}
     </>
   );

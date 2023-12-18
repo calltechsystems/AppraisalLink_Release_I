@@ -16,6 +16,7 @@ import Exemple from "./Exemple";
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
+  const [refresh, setRefresh] = useState(false);
   const [property, setProperty] = useState("");
   const [filterProperty, setFilterProperty] = useState("");
   const [filterQuery, setFilterQuery] = useState("Last 30 Days");
@@ -277,6 +278,8 @@ const Index = () => {
                           }
                           setModalIsOpenError={setModalIsOpenError}
                           setErrorMessage={setErrorMessage}
+                          setRefresh={setRefresh}
+                          refresh={refresh}
                         />
 
                         {modalIsOpenError && (

@@ -18,7 +18,7 @@ const Index = ({ propertyId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [appInfo, setAppInfo] = useState({});
-  const [refresh ,setRefresh] = useState(false)
+  const [refresh, setRefresh] = useState(false);
   const [id, setId] = useState(0);
 
   const [openBrokerModal, setOpenBrokerModal] = useState(false);
