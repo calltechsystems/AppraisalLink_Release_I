@@ -17,13 +17,17 @@ import { typeOfBuilding } from "./data";
 const Index = ({ isView, propertyData }) => {
   const router = useRouter();
 
-  const [isDisable, setDisable] = useState(propertyData ? true : false);
+ 
+  const [updateView , setUpdateView] = useState(propertyData);
+  const [isDisable, setDisable] = useState(updateView);
   const [modalOpen, setModalOpen] = useState(false);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   let userData = {};
   const [updatedProperty, setUpdatedProperty] = useState([]);
+
+  const [remark,setRemark] = useState("");
 
   const [streetNameRef, setStreetNameRef] = useState(
     propertyData?.streetName ? propertyData?.streetName : ""
@@ -43,7 +47,7 @@ const Index = ({ isView, propertyData }) => {
   const [buildinRef, setBuildinRef] = useState(
     propertyData?.typeOfBuilding || null
   );
-  const [urgencyRef, setUrgencyRef] = useState(propertyData?.urgency || null);
+  const [urgencyRef, setUrgencyRef] = useState(propertyData?.urgency === 0 ? "Rush" : "Regular");
   const [bidLowerRangeRef, setBidLowerRangeRef] = useState(
     propertyData?.bidLowerRange || null
   );
@@ -269,11 +273,14 @@ const Index = ({ isView, propertyData }) => {
   }, [purpose]);
 
   useEffect(() => {
-    if (String(urgencyRef) === "Rush") {
-      setOtherUrgency(true);
-    } else if (String(urgencyRef) === "Regular") {
-      setOtherUrgency(false);
+    if(urgencyRef ){
+      let updatedError = errorLabel.filter((err) => {
+        if (String(err) === "urgency") return false;
+        else return true;
+      });
+      setErrorLabel(updatedError);
     }
+    
   }, [urgencyRef]);
   useEffect(() => {
     userData = JSON.parse(localStorage.getItem("user"));
@@ -289,6 +296,10 @@ const Index = ({ isView, propertyData }) => {
       router.push("/my-profile");
     }
   }, []);
+
+  const calculateDateHandler = ()=>{
+    const type = urgencyRef;
+  }
 
   const onCancelModalHandler = () => {
     window.location.reload();
@@ -335,7 +346,7 @@ const Index = ({ isView, propertyData }) => {
             ? otherTypeOfBuildingValue
             : buildinRef,
         urgency:
-          String(urgencyRef) === "Other" ? otherUrgencyValue : urgencyRef,
+        String(urgencyRef) ==="Rush" ? 0 : 1,
         typeOfAppraisal:
           String(typeOfAppraisal) === "Other"
             ? otherTypeOfAppraisalValue
@@ -344,16 +355,23 @@ const Index = ({ isView, propertyData }) => {
 
         attachment: "",
         image: "",
+        quoteRequiredDate:"",
+        remark : remark ? remark : "",
         token: userInfo.token,
       };
+
+      console.log(payload);
+
       if (
         !payload.streetName ||
         !payload.streetNumber ||
         !payload.city ||
         !payload.state ||
         !payload.zipCode ||
-        !payload.typeOfBuilding
-        // !payload.area
+        !payload.typeOfBuilding ||
+        !payload.typeOfAppraisal ||
+        !payload.purpose ||
+        !payload.estimatedValue
       ) {
         let tempError = errorLabel;
 
@@ -396,34 +414,38 @@ const Index = ({ isView, propertyData }) => {
         if (!payload.applicantEmail) {
           tempError.push("applicantEmailAddress");
         }
-
         setErrorLabel(tempError);
       } else {
-        setErrorLabel([]);
         const encryptedData = encryptionData(payload);
-
+        
+        console.log(updateView,propertyData);
+        
         toast.loading("Updating the property..");
-        axios
-          .put("/api/addPropertyByBroker", encryptedData, {
+        axios.put("/api/addPropertyByBroker", encryptedData, {
             headers: {
               Authorization: `Bearer ${userData.token}`,
               "Content-Type": "application/json",
             },
+            params:{
+              propertyId : propertyData.propertyId
+            }
           })
           .then((res) => {
             toast.dismiss();
-            setModalIsOpen(true);
-            // router.push("/my-properties");
+            toast.success("Successfully submitted !!");
+            setModalIsOpen(false);
+            router.push("/my-properties");
           })
           .catch((err) => {
             toast.dismiss();
             toast.error(err.response.data.error);
           });
-      }
+        }
     }
+  
   };
 
-  const openModalForUpdateHandler = () => {
+  const openModalForUpdateHandler = ()=>{
     const payload = {
       streetName: streetNameRef,
       streetNumber: streetNumberRef,
@@ -511,7 +533,7 @@ const Index = ({ isView, propertyData }) => {
     } else {
       setModalIsOpen(true);
     }
-  };
+  }
 
   const closeModal = () => {
     setModalOpen(false);
@@ -537,7 +559,7 @@ const Index = ({ isView, propertyData }) => {
       bidUpperRange: Number(bidLowerRangeRef),
       typeOfBuilding:
         String(buildinRef) === "Other" ? otherTypeOfBuildingValue : buildinRef,
-      urgency: String(urgencyRef) === "Other" ? otherUrgencyValue : urgencyRef,
+      urgency:  urgencyRef === "Rush" ? 0 : 1,
       typeOfAppraisal:
         String(typeOfAppraisal) === "Other"
           ? otherTypeOfAppraisalValue
@@ -547,7 +569,12 @@ const Index = ({ isView, propertyData }) => {
       estimatedValue: estimatedValue,
       lenderInformation: lenderInformation,
       applicantAddress: applicantAddress,
+      attachment: "",
+        image: "",
+        quoteRequiredDate:"",
+        remark : remark ? remark : ""
     };
+    console.log(payload)
     if (
       !payload.streetName ||
       !payload.streetNumber ||
@@ -557,7 +584,7 @@ const Index = ({ isView, propertyData }) => {
       !payload.typeOfBuilding ||
       !payload.typeOfAppraisal ||
       !payload.purpose ||
-      !payload.estimatedValue
+      !payload.estimatedValue 
     ) {
       let tempError = [];
 
@@ -600,11 +627,11 @@ const Index = ({ isView, propertyData }) => {
       if (!payload.applicantEmail) {
         tempError.push("applicantEmailAddress");
       }
-
       setErrorLabel(tempError);
+      console.log(tempError);
       window.scrollTo({
         top: 0,
-        behavior: "smooth",
+        behavior: "smooth", 
       });
     } else {
       setModalIsOpen(true);
@@ -653,7 +680,7 @@ const Index = ({ isView, propertyData }) => {
             ? otherTypeOfBuildingValue
             : buildinRef,
         urgency:
-          String(urgencyRef) === "Other" ? otherUrgencyValue : urgencyRef,
+        String(urgencyRef) ==="Rush" ? 0 : 1,
         typeOfAppraisal:
           String(typeOfAppraisal) === "Other"
             ? otherTypeOfAppraisalValue
@@ -663,6 +690,8 @@ const Index = ({ isView, propertyData }) => {
         attachment: "",
         image: "",
         token: userInfo.token,
+        quoteRequiredDate:"",
+        remark : remark ? remark : ""
       };
 
       console.log(payload);
@@ -719,54 +748,32 @@ const Index = ({ isView, propertyData }) => {
         if (!payload.applicantEmail) {
           tempError.push("applicantEmailAddress");
         }
-
         setErrorLabel(tempError);
       } else {
         const encryptedData = encryptionData(payload);
-
-        if (propertyData) {
-          toast.loading("Updating the property..");
-          axios
-            .put("/api/addPropertyByBroker", encryptedData, {
-              headers: {
-                Authorization: `Bearer ${userData.token}`,
-                "Content-Type": "application/json",
-              },
-              params: {
-                propertyId: propertyData.propertyId,
-              },
-            })
-            .then((res) => {
-              toast.dismiss();
-              toast.success("Successfully submitted !!");
-              setModalIsOpen(false);
-              router.push("/my-properties");
-            })
-            .catch((err) => {
-              toast.dismiss();
-              toast.error(err.response.data.error);
-            });
-        } else {
-          toast.loading("Appraising property ..");
-          axios
-            .post("/api/addBrokerProperty", encryptedData, {
-              headers: {
-                Authorization: `Bearer ${userData.token}`,
-                "Content-Type": "application/json",
-              },
-            })
-            .then((res) => {
-              toast.dismiss();
-              toast.success("Property Added Successfully");
-              // setModalIsOpen(true);
-              router.push("/my-properties");
-            })
-            .catch((err) => {
-              toast.dismiss();
-              toast.error(err.message);
-            });
+        
+        // console.log(updateView,propertyData);
+        
+        toast.loading("Appraising property ..");
+        axios.post("/api/addBrokerProperty", encryptedData, {
+            headers: {
+              Authorization: `Bearer ${userData.token}`,
+              "Content-Type": "application/json",
+            },
+          })
+          .then((res) => {
+            toast.dismiss();
+            toast.success("Property Added Successfully");
+            // setModalIsOpen(true);
+            router.push("/my-properties");
+          })
+          .catch((err) => {
+            toast.dismiss();
+            toast.error(err.message);
+          });
         }
-      }
+        
+      
     }
   };
 
@@ -964,7 +971,7 @@ const Index = ({ isView, propertyData }) => {
                         </h4>
                       </div>
                       <hr style={{ color: "#2e008b" }} />
-
+                     
                       <DetailedInfo
                         isDisable={isDisable}
                         applicantFirstName={applicantFirstName}
@@ -976,6 +983,8 @@ const Index = ({ isView, propertyData }) => {
                         setImage={setImage}
                         setAttachment={setAttachment}
                         errorLabel={errorLabel}
+                        setRemark={setRemark}
+                        remark={remark}
                         applicantLatsName={applicantLatsName}
                         setApplicantLastName={setApplicantLastName}
                         applicantNumber={applicantNumber}
@@ -1332,9 +1341,7 @@ const Index = ({ isView, propertyData }) => {
                         <div className="col-lg-6">
                           <button
                             className="w-50 btn-color"
-                            onClick={
-                              propertyData ? finalSubmitHandler : updateHandler
-                            }
+                            onClick={  updateView ? updateHandler : finalSubmitHandler }
                           >
                             Continue
                           </button>

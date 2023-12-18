@@ -83,6 +83,8 @@ const DetailedInfo = ({
   onCancelHandler,
   isDisable,
   updateHandler,
+  remark,
+  setRemark,
   applicantFirstName,
   setApplicantFirstName,
   applicantLatsName,
@@ -468,7 +470,7 @@ const DetailedInfo = ({
             </div>
           </div>
 
-          <div className="row" style={{ marginBottom: "10px" }}>
+          {/*<div className="row" style={{ marginBottom: "10px" }}>
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
                 className="text-color"
@@ -496,7 +498,7 @@ const DetailedInfo = ({
                 // disabled={isDisable}
               />
             </div>
-          </div>
+              </div>*/}
 
           <div className="">
             <div className="row my_profile_setting_textarea">
@@ -522,6 +524,8 @@ const DetailedInfo = ({
                     backgroundColor: "#E8F0FE",
                     //color: "white",
                   }}
+                  onChange={(e)=>setRemark(e.target.value)}
+                  value={remark}
                   className="form-control"
                   id="propertyDescription"
                   rows="4"

@@ -6,6 +6,7 @@ import { encryptionData } from "../../../utils/dataEncryption";
 import axios from "axios";
 import { CldUploadWidget } from "next-cloudinary";
 import toast from "react-hot-toast";
+import { province } from "../create-listing/data";
 
 const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   const [profilePhoto, setProfilePhoto] = useState(null);
@@ -418,7 +419,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           htmlFor=""
                           style={{ paddingTop: "5px" }}
                         >
-                          Phone Number <span class="req-btn">*</span>
+                          Phone Number(Primary) <span class="req-btn">*</span>
                         </label>
                       </div>
                       <div className="col-lg-7">
@@ -430,6 +431,31 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           id="formGroupExampleInput3"
                           value={phoneNumberRef}
                           onChange={(e) => setPhoneNumberRef(e.target.value)}
+                          disabled={!edit}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-lg-12 mb-3">
+                    <div className="row">
+                      <div className="col-lg-4">
+                        <label
+                          className="text-color"
+                          htmlFor=""
+                          style={{ paddingTop: "5px" }}
+                        >
+                          Cell Number
+                        </label>
+                      </div>
+                      <div className="col-lg-7">
+                        <input
+                          type="text"
+                          required
+                          className="form-control"
+                          style={{ backgroundColor: "#E8F0FE" }}
+                          id="formGroupExampleInput3"
+                          // value={phoneNumberRef}
+                          // onChange={(e) => setPhoneNumberRef(e.target.value)}
                           disabled={!edit}
                         />
                       </div>
@@ -627,7 +653,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                         </label>
                       </div>
                       <div className="col-lg-7">
-                        <input
+                        {/* <input
                           type="text"
                           className="form-control"
                           style={{ backgroundColor: "#E8F0FE" }}
@@ -636,7 +662,35 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           value={stateRef}
                           onChange={(e) => setStateRef(e.target.value)}
                           disabled={!edit}
-                        />
+                        /> */}
+                        <div
+                          className="form-group input-group ui_kit_select_search"
+                          // style={{ marginLeft: "-5px" }}
+                        >
+                          <select
+                            required
+                            className="form-select"
+                            data-live-search="true"
+                            data-width="100%"
+                            value={stateRef}
+                            onChange={(e) => setStateRef(e.target.value)}
+                            disabled={!edit}
+                            style={{
+                              paddingTop: "15px",
+                              paddingBottom: "15px",
+                              backgroundColor: "#E8F0FE",
+                              // color:"white"
+                            }}
+                          >
+                            {province.map((item, index) => {
+                              return (
+                                <option key={item.id} value={item.value}>
+                                  {item.type}
+                                </option>
+                              );
+                            })}
+                          </select>
+                        </div>
                       </div>
                     </div>
                   </div>

@@ -298,7 +298,7 @@ const CreateList = ({
               />
             </div>
           </div> */}
-          <div className="row" style={{ marginBottom: "10px" }}>
+          {/*<div className="row" style={{ marginBottom: "10px" }}>
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
                 htmlFor=""
@@ -325,6 +325,7 @@ const CreateList = ({
               />
             </div>
           </div>
+          */}
           <div className="row" style={{ marginBottom: "10px" }}>
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
@@ -640,7 +641,7 @@ const CreateList = ({
                   fontWeight: "",
                 }}
               >
-                Urgency
+                Urgency <span class="req-btn">*</span>
               </label>
             </div>
             <div className="col-lg-3">

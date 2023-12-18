@@ -1,5 +1,5 @@
 import { current } from "@reduxjs/toolkit";
-import { typeOfBuilding } from "./data";
+import { province, typeOfBuilding } from "./data";
 import { Urgency } from "./data";
 
 const LocationField = ({
@@ -169,7 +169,7 @@ const LocationField = ({
               </label>
             </div>
             <div className="col-lg-7">
-              <input
+             {/*<input
               style={checkIsError("state") ? errorLabelStyle : { backgroundColor: "#E8F0FE" }}
                 type="text"
                 className="form-control"
@@ -178,7 +178,38 @@ const LocationField = ({
                 value={stateRef}
                 disabled={isDisable}
                 maxLength={30}
-              />
+              />*/} 
+              <div
+                className="form-group input-group ui_kit_select_search"
+                // style={{ marginLeft: "-5px" }}
+              >
+                <select
+                  className="form-select"
+                  data-live-search="true"
+                  data-width="100%"
+                  onChange={(e) => setStateRef(e.target.value)}
+                  // onChange={check_03}
+                  disabled={isDisable}
+                  style={
+                    checkIsError("typeOfAppraisal")
+                      ? errorLabelStyle
+                      : {
+                          paddingTop: "15px",
+                          paddingBottom: "15px",
+                          backgroundColor: "#E8F0FE",
+                          // color:"white"
+                        }
+                  }
+                >
+                  {province.map((item, index) => {
+                    return (
+                      <option key={item.id} value={item.value}>
+                        {item.type}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
             </div>
           </div>
           <div className="row" style={{ marginBottom: "10px" }}>

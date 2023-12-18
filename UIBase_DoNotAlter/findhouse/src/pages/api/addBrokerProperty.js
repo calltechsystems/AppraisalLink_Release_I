@@ -69,6 +69,8 @@ async function handler(request, response) {
       applicantAddress: applicantAddress,
       attachment: attachment,
       image: image,
+      quoteRequiredDate: "",
+      remark: "",
     };
 
     const userResponse = await axios.post(

@@ -27,7 +27,7 @@ const headCells = [
   {
     id: "sub_date",
     numeric: false,
-    label: "Submission Date",
+    label: "Quote Submitted Date",
     width: 200,
   },
   {
@@ -81,7 +81,7 @@ const headCells = [
   {
     id: "quote_required_by",
     numeric: false,
-    label: "Quote Required By",
+    label: "Appraisal Report Required By",
     width: 200,
   },
   {
@@ -146,6 +146,7 @@ export default function Exemple({
       hour: "numeric",
       minute: "numeric",
       second: "numeric",
+      hour12: false, // Set to false for 24-hour format
     };
 
     const formattedDate = new Date(dateString).toLocaleString("en-US", options);
@@ -183,11 +184,15 @@ export default function Exemple({
             quote_required_by: formatDate(property.addedDatetime),
             status:
               isStatus === 2 ? (
-                <span className="btn bg-success text-light">Completed</span>
+                <span className="btn bg-success w-100 text-light">
+                  Completed
+                </span>
               ) : isStatus === 0 ? (
-                <span className="btn bg-primary text-light">In Progress</span>
+                <span className="btn bg-primary w-100 text-light">
+                  In Progress
+                </span>
               ) : (
-                <span className="btn bg-primary text-light">
+                <span className="btn bg-warning w-100 text-light">
                   Quote Provided
                 </span>
               ),
@@ -200,7 +205,7 @@ export default function Exemple({
             lender_information: property.lenderInformation
               ? property.lenderInformation
               : "NA",
-            urgency: property.urgency,
+            urgency: property.urgency === 0 ? "Rush" : "Regular",
             actions: (
               // <ul className="view_edit_delete_list mb0">
               <ul className="mb0">
@@ -208,36 +213,36 @@ export default function Exemple({
                   <li>
                     <Link href={"#"}>
                       <span
-                        className="link-color"
+                        className="btn btn-color w-100 mb-1"
                         onClick={() => openPopupModal(property)}
                       >
                         {" "}
                         Property Details{" "}
                       </span>
                     </Link>{" "}
-                    <span
+                    {/* <span
                       className="btn btn-color-table m-1"
                       onClick={() => openPopupModal(property)}
                     >
                       <Link href={"#"}>
                         <span className="text-light flaticon-view"></span>
                       </Link>
-                    </span>
+                    </span> */}
                   </li>
                 )}
 
                 {!isEditable && (
                   <li>
                     <Link href={`/my-property-bids/${property.propertyId}`}>
-                      <span className="link-color"> Quotes </span>
+                      <span className="btn btn-color w-100 mb-1"> Quotes </span>
                     </Link>{" "}
-                    <Link
+                    {/* <Link
                       className="btn btn-color-table"
                       style={{ marginLeft: "4.3rem" }}
                       href={`/my-property-bids/${property.propertyId}`}
                     >
                       <span className="flaticon-invoice"></span>
-                    </Link>
+                    </Link> */}
                   </li>
                 )}
                 {/* <li
@@ -271,31 +276,30 @@ export default function Exemple({
               </li> */}
 
                 {isEditable && (
-                  <li
-                    className="list-inline-item"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title="Edit"
-                  >
-                    <Link
+                  <li>
+                    <Link href={`/create-listing/${property.propertyId}`}>
+                      <span className="btn btn-color w-100 mb-1"> Edit </span>
+                    </Link>{" "}
+                    {/* <Link
                       className="btn btn-color-table"
                       href={`/create-listing/${property.propertyId}`}
                     >
                       <span className="flaticon-edit"></span>
-                    </Link>
+                    </Link> */}
                   </li>
                 )}
 
                 {/* End li */}
 
                 {isEditable && (
-                  <li
-                    className="list-inline-item"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title="Delete"
-                  >
-                    <button
+                  <li>
+                    <Link href="#" onClick={() => open(property)}>
+                      <span className="btn btn-color w-100 mb-1">
+                        {" "}
+                        Order Cancel{" "}
+                      </span>
+                    </Link>{" "}
+                    {/* <button
                       className="btn"
                       style={{ border: "1px solid grey" }}
                       onClick={() => open(property)}
@@ -303,7 +307,24 @@ export default function Exemple({
                       <Link href="#">
                         <span className="flaticon-garbage text-danger"></span>
                       </Link>
-                    </button>
+                    </button> */}
+                  </li>
+                )}
+
+                {isEditable && (
+                  <li>
+                    <Link href="#">
+                      <span className="btn btn-color w-100 mb-1">
+                        {" "}
+                        On Hold{" "}
+                      </span>
+                    </Link>{" "}
+                    {/* <Link
+                      className="btn btn-color-table"
+                      href={`/create-listing/${property.propertyId}`}
+                    >
+                      <span className="flaticon-edit"></span>
+                    </Link> */}
                   </li>
                 )}
 
@@ -326,10 +347,18 @@ export default function Exemple({
               )} */}
                 {!isEditable && (
                   <li>
-                    <Link href="#">
-                      <span className="link-color"> Archive Property </span>
+                    <Link
+                      href="#"
+                      onClick={() =>
+                        archievePropertyHandler(property.propertyId)
+                      }
+                    >
+                      <span className="btn btn-color w-100">
+                        {" "}
+                        Archive Property{" "}
+                      </span>
                     </Link>
-                    <span
+                    {/* <span
                       className="btn btn-color-table m-1"
                       onClick={() =>
                         archievePropertyHandler(property.propertyId)
@@ -338,7 +367,7 @@ export default function Exemple({
                       <Link className="color-light" href={`/archive-property`}>
                         <span className="flaticon-box text-light"></span>
                       </Link>
-                    </span>
+                    </span> */}
                   </li>
                 )}
 

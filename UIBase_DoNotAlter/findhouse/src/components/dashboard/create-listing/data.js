@@ -54,18 +54,18 @@ export const typeOfAppraisal = [
   },
   {
     id: 1,
-    type: "Desktop",
-    value: "Desktop",
+    type: "Desktop with market rent",
+    value: "Desktop with market rent",
   },
   {
     id: 2,
-    type: "Driveby",
-    value: "Driveby",
+    type: "Drive by with market rent",
+    value: "Drive by with market rent",
   },
   {
     id: 3,
-    type: "Full Appraisal",
-    value: "Full Appraisal",
+    type: "Full Appraisal with market rent",
+    value: "Full Appraisal with market rent",
   },
   {
     id: 3,
@@ -133,4 +133,107 @@ export const Urgency = [
   //     type : "High",
   //     value : 3,
   // },
+];
+
+export const AppraiserStatusOptions = [
+  {
+    id: 0,
+    type: "Select...",
+    value: "",
+  },
+  {
+    id: 1,
+    type: "Applicant Contacted by appraiser",
+    value: "Applicant Contacted by appraiser",
+  },
+  {
+    id: 2,
+    type: "Appraisal Visit Confirmed",
+    value: "Appraisal Visit Confirmed",
+  },
+  {
+    id: 2,
+    type: "Appraisal Report Writing in Progress",
+    value: "Appraisal Report Writing in Progress",
+  },
+  {
+    id: 2,
+    type: "Appraisal Report Writing Completed and Submitted",
+    value: "Appraisal Report Writing Completed and Submitted",
+  },
+];
+
+
+
+export const province = [
+  {
+    id: 0,
+    type: "Select...",
+    value: "",
+  },
+  {
+    id: 1,
+    type: "Alberta-AB",
+    value: "Alberta-AB",
+  },
+  {
+    id: 2,
+    type: "British Columbia-BC",
+    value: "British Columbia-BC",
+  },
+  {
+    id: 3,
+    type: "Manitoba-MB",
+    value: "Manitoba-MB",
+  },
+  {
+    id: 3,
+    type: "New Brunswick-NB",
+    value: "New Brunswick-NB",
+  },
+  {
+    id: 7,
+    type: "Newfoundland and Labrador-NL",
+    value: "Newfoundland and Labrador-NL",
+  },
+  {
+    id: 7,
+    type: "Northwest Territories-NT",
+    value: "Northwest Territories-NT",
+  },
+  {
+    id: 7,
+    type: "Nova Scotia-NS",
+    value: "Nova Scotia-NS",
+  },
+  {
+    id: 7,
+    type: "Nunavut-NU",
+    value: "Nunavut-NU",
+  },
+  {
+    id: 7,
+    type: "Ontario-ON",
+    value: "Ontario-ON",
+  },
+  {
+    id: 7,
+    type: "Prince Edward Island-PE",
+    value: "Prince Edward Island-PE",
+  },
+  {
+    id: 7,
+    type: "Quebec-QC",
+    value: "Quebec-QC",
+  },
+  {
+    id: 7,
+    type: "Saskatchewan-SK",
+    value: "Saskatchewan-SK",
+  },
+  {
+    id: 7,
+    type: "Yukon-YT",
+    value: "Yukon-YT",
+  },
 ];
