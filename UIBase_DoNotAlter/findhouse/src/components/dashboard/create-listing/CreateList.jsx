@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { Urgency, typeOfAppraisal, Purpose } from "./data";
 import { typeOfBuilding } from "./data";
 import moment from "moment";
-import { FaInfo } from "react-icons/fa";
 
 const CreateList = ({
   isDisable,
@@ -642,38 +641,14 @@ const CreateList = ({
                   fontWeight: "",
                 }}
               >
-                Urgency <span class="req-btn">*</span>
+                Urgency
               </label>
             </div>
-
             <div className="col-lg-3">
               <div
                 className="form-group input-group ui_kit_select_search mb-3"
                 style={{ marginLeft: "-5px" }}
               >
-                <div className="hover-text">
-                  <span
-                    className=""
-                    style={{ marginLeft: "-25px", marginRight: "10px" }}
-                  >
-                    <FaInfo
-                      className="text-light mt-4 bg-dark"
-                      style={{ width:"20px", height:"20px", border: "1px solid #2e008b", borderRadius:"50%" }}
-                    />
-                  </span>
-                  <span className="tooltip-text" id="top">
-                    <ul>
-                      <li>
-                        Rush Request: Timeline for the appraisal report is 1 – 2
-                        Days
-                      </li>
-                      <li>
-                        Regular request: Timeline for the appraisal report is 3
-                        – 4 days.
-                      </li>
-                    </ul>
-                  </span>
-                </div>
                 <select
                   className="form-select"
                   data-live-search="true"
@@ -685,8 +660,6 @@ const CreateList = ({
                     paddingTop: "15px",
                     paddingBottom: "15px",
                     backgroundColor: "#E8F0FE",
-                    borderBottomLeftRadius: "5px",
-                    borderTopLeftRadius: "5px",
                     // color: "white",
                   }}
                 >
@@ -697,7 +670,7 @@ const CreateList = ({
                       </option>
                     );
                   })}
-                </select>{" "}
+                </select>
               </div>
             </div>
             <div className="col-lg-4" id="other-div_03">

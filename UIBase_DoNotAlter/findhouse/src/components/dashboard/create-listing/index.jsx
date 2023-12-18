@@ -24,6 +24,11 @@ const Index = ({ isView, propertyData }) => {
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
+  const changeStringUrlHandler = (inputString)=>{
+    const resultArray = inputString?.split(',');
+    return resultArray;
+  }
+
   let userData = {};
   const [updatedProperty, setUpdatedProperty] = useState([]);
 
@@ -78,6 +83,7 @@ const Index = ({ isView, propertyData }) => {
     propertyData?.applicantAddress || ""
   );
   const [attachment, setAttachment] = useState(propertyData?.attachment || "");
+  const [filesUrl,setFilesUrl] = useState([]);
   const [purpose, setPurpose] = useState(propertyData?.purpose || "");
 
   const [otherTypeOfBuilding, setOtherTypeOfBuilding] = useState(false);
@@ -97,6 +103,19 @@ const Index = ({ isView, propertyData }) => {
   const [otherUrgency, setOtherUrgency] = useState(false);
 
   const [image, setImage] = useState(propertyData?.image || "");
+
+  const changeUrlToStringHandler = ()=>{
+
+    const resultString = filesUrl.join(',');
+    if(updateView){
+      return attachment+","+resultString;
+    }
+    return resultString;
+
+  }
+
+  
+
 
   const onChangeHandler = (value, field, otherField) => {
     console.log(value, field, otherField);
@@ -196,6 +215,11 @@ const Index = ({ isView, propertyData }) => {
       setErrorLabel(updatedError);
     }
   }, [typeOfAppraisal]);
+  
+
+  useEffect(()=>{
+    console.log(filesUrl);
+  },[filesUrl]);
 
   useEffect(() => {
     if (applicantFirstName !== "") {
@@ -353,7 +377,7 @@ const Index = ({ isView, propertyData }) => {
             : typeOfAppraisal,
         purpose: String(purpose) === "Other" ? otherPurposeValue : purpose,
 
-        attachment: "",
+        attachment: changeUrlToStringHandler(),
         image: "",
         quoteRequiredDate:"",
         remark : remark ? remark : "",
@@ -569,7 +593,7 @@ const Index = ({ isView, propertyData }) => {
       estimatedValue: estimatedValue,
       lenderInformation: lenderInformation,
       applicantAddress: applicantAddress,
-      attachment: "",
+      attachment: changeUrlToStringHandler(),
         image: "",
         quoteRequiredDate:"",
         remark : remark ? remark : ""
@@ -687,7 +711,7 @@ const Index = ({ isView, propertyData }) => {
             : typeOfAppraisal,
         purpose: String(purpose) === "Other" ? otherPurposeValue : purpose,
 
-        attachment: "",
+        attachment: changeUrlToStringHandler(),
         image: "",
         token: userInfo.token,
         quoteRequiredDate:"",
@@ -978,13 +1002,17 @@ const Index = ({ isView, propertyData }) => {
                         setApplicantFirstName={setApplicantFirstName}
                         setApplicantAddress={setApplicantAddress}
                         applicantAddress={applicantAddress}
-                        attachment={attachment}
+                        setFilesUrl={setFilesUrl}
+                        changeUrlToStringHandler={changeUrlToStringHandler}
+                        changeStringUrlHandler={changeStringUrlHandler}
+                        filesUrl={filesUrl}
                         image={image}
                         setImage={setImage}
                         setAttachment={setAttachment}
                         errorLabel={errorLabel}
                         setRemark={setRemark}
                         remark={remark}
+                        attachment={changeStringUrlHandler(attachment)}
                         applicantLatsName={applicantLatsName}
                         setApplicantLastName={setApplicantLastName}
                         applicantNumber={applicantNumber}

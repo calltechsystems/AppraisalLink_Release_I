@@ -1,5 +1,6 @@
 import React, { Component, useState } from "react";
 import { useRouter } from "next/router";
+import { CldUploadWidget } from "next-cloudinary";
 
 // const DetailedInfo = () =>{
 
@@ -82,6 +83,7 @@ import CheckBoxFilter from "../../common/CheckBoxFilter";
 const DetailedInfo = ({
   onCancelHandler,
   isDisable,
+  changeUrlToStringHandler,
   updateHandler,
   remark,
   setRemark,
@@ -95,20 +97,64 @@ const DetailedInfo = ({
   setApplicantEmail,
   propertyData,
   submitHandler,
+  changeStringUrlHandler,
   setApplicantAddress,
   applicantAddress,
   attachment,
   errorLabel,
+  filesUrl,
   image,
   setImage,
+  setFilesUrl,
   setAttachment,                  
   setDisable,
 }) => {
   const router = useRouter();
+  console.log(filesUrl);
+
+  const [uploadedFiles, setUploadedFiles] = useState([]);
+
   const cancelHandler = () => {
     router.push("/my-properties");
   };
   console.log(applicantEmail);
+
+  const handleOpen = (event) => {
+    const files = event.originalEvent.target.files;
+
+    // Filter the selected images
+    const images = Array.from(files).filter((file) =>
+      ['image/jpeg', 'image/png', 'image/gif'].includes(file.type)
+    );
+
+    // Update the state with the selected images
+    setSelectedImages(images);
+
+    // Log the count of selected images
+    console.log('Number of selected images:', images.length);
+  };
+
+  const handleUpload=(result)=>{
+    
+    try {
+      const fileUrl = result.info.secure_url;
+      console.log('File uploaded:', fileUrl);
+  
+      let olderUrl = filesUrl;
+      olderUrl.push(fileUrl);
+      console.log(olderUrl);
+      setFilesUrl(olderUrl);
+    
+      // console.log(changeUrlToStringHandler());
+
+      setAttachment(fileUrl);
+
+  
+    } catch (error) {
+      console.error('Error handling upload:', error);
+    }
+  }
+
 
   const errorLabelStyle = {borderColor:"red"};
 
@@ -550,24 +596,43 @@ const DetailedInfo = ({
                 </label>
               </div>
               <div className="col-lg-7 mb-2">
-                <form className="form-inline d-flex flex-wrap wrap">
                   <label className="upload">
-                    <input
-                      style={{
-                        // paddingTop: "15px",
-                        // paddingBottom: "15px",
-                        backgroundColor: "#E8F0FE",
-                        //color: "white",
-                      }}
-                      className="form-control"
-                      type="file"
-                      onChange={(e)=>setAttachment(e.target.value)}
-                    />
+                  <CldUploadWidget
+                  onUpload={handleUpload}
+                  uploadPreset="mpbjdclg"
+                  options={{
+                    cloudName: "dcrq3m6dx", // Your Cloudinary cloud name
+                    allowedFormats: ['jpg',  'png', 'pdf','csv','word','excel'], // Specify allowed formats
+                    maxFiles:50
+                  }}
+                >
+                  {({ open }) => (    
+                    <div>
+                      <button
+                        className="btn btn-color profile_edit_button mb-5"
+                        style={{}}
+                        onClick={open} // This will open the upload widget
+                        disabled={isDisable}
+                      >
+                        Upload Files
+                      </button>
+                    </div>
+                  )}
+                </CldUploadWidget>
                   </label>
-                </form>
               </div>
             </div>
           </div>
+          <div className="col-xl-12">
+          <div className="my_profile_setting_input overflow-hidden mt20 text-center">
+            {filesUrl.length > 0 ?  filesUrl.map((url,index)=>{
+          <div className="" style={{width:"20px", height:"20px", cursor:"pointer"}}><span className="flaticon-garbage text-danger"></span></div>
+          return<><img key={index} src={url} width={120} height={120}  />
+              </>}) : attachment.map((url,index)=>{
+              return<img key={index} src={url} width={120} height={120}  />
+            })}
+          </div>
+        </div>
           <div className="col-xl-12">
             <div className="my_profile_setting_input overflow-hidden mt20 text-center">
               <button className="btn btn5 m-1" onClick={cancelHandler}>
