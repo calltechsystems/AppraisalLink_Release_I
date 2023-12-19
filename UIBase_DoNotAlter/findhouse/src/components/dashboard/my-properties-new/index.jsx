@@ -360,10 +360,10 @@ const Index = () => {
                                         }}
                                       >
                                         {" "}
-                                        {currentProperty.streetName}{" "}
                                         {currentProperty.streetNumber}{" "}
+                                        {currentProperty.streetName}{" "}
                                         {currentProperty.city}{" "}
-                                        {currentProperty.state}
+                                        {currentProperty.province}{" "}
                                         {currentProperty.zipCode}
                                       </td>
                                     </tr>
@@ -473,7 +473,7 @@ const Index = () => {
                                           : "NA"}
                                       </td>
                                     </tr>
-                                    <tr>
+                                    {/* <tr>
                                       <td
                                         style={{
                                           border: "1px solid grey",
@@ -495,7 +495,7 @@ const Index = () => {
                                           ? currentProperty.community
                                           : "NA"}
                                       </td>
-                                    </tr>
+                                    </tr> */}
                                     <tr>
                                       <td
                                         style={{
@@ -549,7 +549,27 @@ const Index = () => {
                                         }}
                                       >
                                         <span className="text-start">
-                                          Property By
+                                          Appraisal Report Required By
+                                        </span>
+                                      </td>
+                                      <td
+                                        style={{
+                                          border: "1px solid grey",
+                                          width: "250px",
+                                        }}
+                                      >
+                                        {currentProperty.quoteRequiredDate}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        style={{
+                                          border: "1px solid grey",
+                                          color: "#2e008b",
+                                        }}
+                                      >
+                                        <span className="text-start">
+                                          Applicant Name
                                         </span>
                                       </td>
                                       <td
@@ -562,7 +582,7 @@ const Index = () => {
                                         {
                                           currentProperty.applicantFirstName
                                         }{" "}
-                                        {currentProperty.applicantLatsName}
+                                        {currentProperty.applicantLastName}
                                       </td>
                                     </tr>
                                     <tr>
@@ -607,7 +627,7 @@ const Index = () => {
                                         {currentProperty.applicantPhoneNumber}
                                       </td>
                                     </tr>
-                                    <tr>
+                                    {/* <tr>
                                       <td
                                         style={{
                                           border: "1px solid grey",
@@ -629,8 +649,8 @@ const Index = () => {
                                           ? currentProperty.applicantAddress
                                           : "NA"}
                                       </td>
-                                    </tr>
-                                    {/* <tr>
+                                    </tr> */}
+                                    <tr>
                                       <td
                                         style={{
                                           border: "1px solid grey",
@@ -638,7 +658,7 @@ const Index = () => {
                                         }}
                                       >
                                         <span className="text-start">
-                                          Remark / Additional Information
+                                          Remark / Summary
                                         </span>
                                       </td>
                                       <td
@@ -648,9 +668,11 @@ const Index = () => {
                                         }}
                                       >
                                         {" "}
-                                        {currentProperty.applicantFirstName}
+                                        {currentProperty.remark
+                                          ? currentProperty.remark
+                                          : "NA"}
                                       </td>
-                                    </tr> */}
+                                    </tr>
                                   </table>
                                 </div>
                                 <div className="row text-center mt-3">

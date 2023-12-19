@@ -5,9 +5,11 @@ const Pricing = ({
   hideButton,
   selectedId,
   setModalOpen,
+  selectedplan,
   data,
   setPrice,
 }) => {
+  console.log(selectedplan);
   // let userData = {};
   // useEffect(() => {
   //   userData = JSON.parse(localStorage.getItem("user"));
@@ -17,31 +19,19 @@ const Pricing = ({
       id: 1,
       price: "11",
       title: "Lite",
-      features: [
-        "30 Days Validity",
-        "No Roll Over",
-        "Limited Support",
-      ],
+      features: ["30 Days Validity", "No Roll Over", "Limited Support"],
     },
     {
       id: 2,
       price: "19",
       title: "Pro",
-      features: [
-        "30 Days Validity",
-        "Partial Roll Over",
-        "Enhanced Support",
-      ],
+      features: ["30 Days Validity", "Partial Roll Over", "Enhanced Support"],
     },
     {
       id: 3,
       price: "35",
       title: "Ultimate",
-      features: [
-        "30 Days Validity",
-        "Unlimited Roll Over",
-        "Complete Support",
-      ],
+      features: ["30 Days Validity", "Unlimited Roll Over", "Complete Support"],
     },
   ];
 
@@ -50,21 +40,13 @@ const Pricing = ({
       id: 1,
       price: "132",
       title: "Lite",
-      features: [
-        "365 Days Validity",
-        "Partial Roll Over",
-        "Limited Support",
-      ],
+      features: ["365 Days Validity", "Partial Roll Over", "Limited Support"],
     },
     {
       id: 2,
       price: "228",
       title: "Pro",
-      features: [
-        "365 Days Validity",
-        "Partial Roll Over",
-        "Complete Support",
-      ],
+      features: ["365 Days Validity", "Partial Roll Over", "Complete Support"],
     },
     {
       id: 3,
@@ -141,7 +123,7 @@ const Pricing = ({
               <div className="pricing_header">
                 <h2 className="" style={{ color: "#2e008b" }}>
                   $
-                  {isPlan === 1
+                  {selectedplan === "Monthly"
                     ? item.monthlyAmount - item.discount
                     : item.yearlyAmount - item.discount}
                 </h2>

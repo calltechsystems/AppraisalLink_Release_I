@@ -15,12 +15,6 @@ const headCells = [
     label: "Order ID",
     width: 100,
   },
-  {
-    id: "community",
-    numeric: false,
-    label: "Community",
-    width: 200,
-  },
 
   {
     id: "typeOfBuilding",
@@ -82,7 +76,7 @@ const headCells = [
   {
     id: "quote_required_by",
     numeric: false,
-    label: "Quote Required By",
+    label: "Appraisal Report Required By",
     width: 200,
   },
   {
@@ -149,6 +143,11 @@ export default function Exemple({
   };
 
   const router = useRouter();
+
+  const sortObjectsByOrderIdDescending = (data) => {
+    return data.sort((a, b) => b.order_id - a.order_id);
+  };
+
 
   const removeWishlistHandler = (id) => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -224,10 +223,9 @@ export default function Exemple({
           const updatedRow = {
             orderId: property.orderId,
             address: `${property.city}-${property.province},${property.zipCode}`,
-            community: `${property.community ? property.community : "NA"}`,
             estimatedValue: property.estimatedValue
-              ? property.estimatedValue
-              : 0,
+              ? `$ ${property.estimatedValue}`
+              : "$ 0",
             purpose: property.purpose ? property.purpose : "NA",
             status: isBidded.bidId ? (
               isBidded.status === 0 ? (
@@ -240,22 +238,25 @@ export default function Exemple({
             ) : (
               <span className="btn btn-warning">New</span>
             ),
-            broker: (
-              <a href="#">
-                <button
-                  style={{
-                    border: "0px",
-                    color: "#2e008b",
-                    textDecoration: "underline",
-                    // fontWeight: "bold",
-                    backgroundColor: "transparent",
-                  }}
-                  onClick={() => openModalBroker(property, isBidded.status)}
-                >
-                  {`${property.applicantFirstName} ${property.applicantLastName}`}
-                </button>
-              </a>
-            ),
+            broker: 
+            <div>{isBidded.status === 1 ? <a href="#">
+              <button
+                className=""
+                style={{
+                  border: "0px",
+                  color: "#2e008b",
+                  textDecoration:"underline",
+                  // fontWeight: "bold",
+                  backgroundColor: "transparent",
+                }}
+                onClick={() => openModalBroker(property)}
+              >
+                {`${property.applicantFirstName} ${property.applicantLastName}`}
+              </button>
+            </a>
+            : isBidded.status === 2 ?  <h6 style={{color:"red"}}> Rejected</h6> : <h6>Broker Information will be available post the quote acceptance</h6>}
+            </div>
+          ,
             type_of_appraisal: property.typeOfAppraisal
               ? property.typeOfAppraisal
               : "NA",
@@ -384,7 +385,7 @@ export default function Exemple({
       ) : (
         <SmartTable
           title=""
-          data={updatedData}
+          data={ sortObjectsByOrderIdDescending(updatedData)}
           headCells={headCells}
           setRefresh={setRefresh}
           setProperties={setProperties}

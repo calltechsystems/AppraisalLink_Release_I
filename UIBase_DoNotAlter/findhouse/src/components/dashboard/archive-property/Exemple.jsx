@@ -24,18 +24,8 @@ const headCells = [
   //   label: "Quote Amount",
   //   width: 200,
   // },
-  {
-    id: "sub_date",
-    numeric: false,
-    label: "Quote Submitted Date",
-    width: 200,
-  },
-  {
-    id: "status",
-    numeric: false,
-    label: "Status",
-    width: 170,
-  },
+  
+  
   {
     id: "address",
     numeric: false,
@@ -79,9 +69,21 @@ const headCells = [
     width: 100,
   },
   {
+    id: "status",
+    numeric: false,
+    label: "Status",
+    width: 170,
+  },
+  {
     id: "quote_required_by",
     numeric: false,
     label: "Appraisal Report Required By",
+    width: 200,
+  },
+  {
+    id: "sub_date",
+    numeric: false,
+    label: "Quote Submitted Date",
     width: 200,
   },
   {
@@ -137,9 +139,9 @@ export default function Exemple({
   const [show, setShow] = useState(false);
   let tempData = [];
 
-  const refreshHandler = ()=>{
-    setRefresh(true)
-  }
+  const refreshHandler = () => {
+    setRefresh(true);
+  };
 
   const formatDate = (dateString) => {
     const options = {
@@ -180,15 +182,13 @@ export default function Exemple({
             quote_required_by: formatDate(property.addedDatetime),
             status:
               isStatus === 2 ? (
-                <span className="btn bg-success text-light">Completed</span>
+                <span className="btn bg-success text-light">Accepted By Broker</span>
               ) : isStatus === 0 ? (
                 <span className="btn bg-primary text-light">In Progress</span>
               ) : (
-                <span className="btn bg-info text-light">
-                  Quote Provided
-                </span>
+                <span className="btn bg-info text-light">Quote Provided</span>
               ),
-            address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.state}, ${property.zipCode}`,
+            address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
             // user: property.applicantEmailAddress,
             type_of_building: property.typeOfBuilding,
             amount: ` $${property.estimatedValue}`,
@@ -213,7 +213,7 @@ export default function Exemple({
                     <span className="flaticon-view"></span>
                   </Link>
                 </li>
-                {isEditable && (
+                {/* {isEditable && (
                   <li
                     className="list-inline-item"
                     data-toggle="tooltip"
@@ -224,10 +224,10 @@ export default function Exemple({
                       <span className="flaticon-edit"></span>
                     </Link>
                   </li>
-                )}
+                )} */}
                 {/* End li */}
 
-                {isEditable && (
+                {/* {isEditable && (
                   <li
                     className="list-inline-item"
                     data-toggle="tooltip"
@@ -243,7 +243,7 @@ export default function Exemple({
                       </Link>
                     </button>
                   </li>
-                )}
+                )} */}
               </ul>
             ),
           };
@@ -299,12 +299,17 @@ export default function Exemple({
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
-      setRefresh(false)
+    setRefresh(false);
   }, [refresh]);
   return (
     <>
       {updatedData && (
-        <SmartTable title="" data={updatedData} headCells={headCells}  refreshHandler={refreshHandler}/>
+        <SmartTable
+          title=""
+          data={updatedData}
+          headCells={headCells}
+          refreshHandler={refreshHandler}
+        />
       )}
     </>
   );

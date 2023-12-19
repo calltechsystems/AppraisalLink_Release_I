@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 
 const Modal = ({
   modalOpen,
+  setModalOpen,
   closeModal,
   lowRangeBid,
   setIsModalOpen,
@@ -32,6 +33,11 @@ const Modal = ({
   const handleToggle = () => {
     setToggle(true);
   };
+
+  const onCloseModalHandler = ()=>{
+    setModalOpen(false);
+    setToggle(false);
+  }
 
   const onSubmitHnadler = () => {
     const bidAmount = value;
@@ -76,7 +82,7 @@ const Modal = ({
       {modalOpen && (
         <div className="modal">
           <div className="modal-content">
-            <span className="close" onClick={closeModal}>
+            <span className="close" onClick={onCloseModalHandler}>
               &times;
             </span>
             <div style={{ display: "flex", flexDirection: "column" }}>
@@ -88,8 +94,8 @@ const Modal = ({
                     fontSize: "29px",
                     color: "#2e008b",
                   }}
-                >
-                  {!toggle ? "Appraisal Quote Form" : "Confirmation Form"}
+                > 
+                  {!toggle ? "Appraisal Quote Form" : "Appraisal Quote Confirmation"}
                 </span>
               </h2>
             </div>
@@ -157,7 +163,7 @@ const Modal = ({
               ) : (
                 <p className="m-3 text-center" style={{ fontSize: "18px" }}>
                   Are you confirm to quote this property on this provided amount
-                  ? : {value}{" "}
+                   : {value}{" "} ?
                 </p>
               )}
             </div>
@@ -167,7 +173,7 @@ const Modal = ({
                 </button> */}
               <button
                 className="btn btn-cancel w-35 mr-20"
-                onClick={closeModal}
+                onClick={onCloseModalHandler}
               >
                 Cancel
               </button>

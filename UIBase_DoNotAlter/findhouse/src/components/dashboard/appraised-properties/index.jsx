@@ -14,6 +14,7 @@ import { useRouter } from "next/router";
 import Modal from "./Modal";
 import { encryptionData } from "../../../utils/dataEncryption";
 import Loader from "./Loader";
+import { AppraiserStatusOptions } from "../create-listing/data";
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -32,6 +33,16 @@ const Index = () => {
   const [propertyId, setPropertyId] = useState(null);
   const [updatedCode, setUpdatedCode] = useState(false);
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
+
+  const [isStatusModal,setIsStatusModal] = useState(false);
+  
+  const handleStatusUpdateHandler = ()=>{
+
+  }
+
+  const closeStatusUpdateHandler = ()=>{
+    setIsStatusModal(false);
+  }
 
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -112,6 +123,7 @@ const Index = () => {
   const closeModal = () => {
     setModalOpen(false);
   };
+
 
   useEffect(() => {
     const filterProperties = (propertys, searchInput) => {
@@ -392,6 +404,7 @@ const Index = () => {
                           refresh={refresh}
                           setStartLoading={setStartLoading}
                           openModalBroker={openModalBroker}
+                          setIsStatusModal={setIsStatusModal}
                         />
 
                         {modalIsOpenError && (
@@ -502,7 +515,7 @@ const Index = () => {
                     <h3 className="text-center">Quote Confirmation</h3>
                     <h5 className="text-center">
                       Are you sure you want to quote this property over this
-                      amount :{valueRef?.current?.value} ?
+                      amount :{valueRef?.current?.value}?
                     </h5>
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
@@ -522,9 +535,59 @@ const Index = () => {
                   </div>
                 </div>
               )}
+
+              {isStatusModal && (
+                <div className="modal">
+                  <div className="modal-content">
+                    <h3 className="text-center">Quote Status Updation</h3>
+                    <h5 className="text-center">
+                     These are the options :
+                    </h5>
+                    <select
+                  required
+                  className="form-select"
+                  data-live-search="true"
+                  data-width="100%"
+                  // value={buildinRef}
+                  // onChange={(e) => setBuildinRef(e.target.value)}
+                  // onChange={(e) => setBuildinRef(e.target.value)}
+                  // disabled={isDisable}
+                  style={{
+                          paddingTop: "15px",
+                          paddingBottom: "15px",
+                          backgroundColor: "#E8F0FE"
+                        }}
+                >
+                  {AppraiserStatusOptions.map((item, index) => {
+                    return (
+                      <option key={item.id} value={item.value}>
+                        {item.type}
+                      </option>
+                    );
+                  })}
+                </select>
+                    {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
+                    <div className="text-center" style={{}}>
+                      <button
+                        className="btn w-35 btn-thm3 btn5  m-2"
+                        onClick={handleStatusUpdateHandler}
+                      >
+                        Submit
+                      </button>        
+                      <button
+                        className="btn w-35 btn-white"
+                        onClick={closeStatusUpdateHandler}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
               <div className="row">
                 <Modal
                   modalOpen={modalOpen}
+                  setModalOpen = {setModalOpen}
                   setIsModalOpen={setIsModalOpen}
                   closeModal={closeModal}
                   lowRangeBid={lowRangeBid}

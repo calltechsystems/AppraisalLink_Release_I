@@ -140,6 +140,10 @@ export default function Exemple({
   const [show, setShow] = useState(false);
   let tempData = [];
 
+  const sortObjectsByOrderIdDescending = (data) => {
+    return data.sort((a, b) => b.order_id - a.order_id);
+  };
+
   const formatDate = (dateString) => {
     const options = {
       year: "numeric",
@@ -187,11 +191,11 @@ export default function Exemple({
           const updatedRow = {
             order_id: property.orderId,
             sub_date: formatDate(property.addedDatetime),
-            quote_required_by: formatDate(property.addedDatetime),
+            quote_required_by: property.quoteRequiredDate ? formatDate(property.quoteRequiredDate) :  formatDate(property.addedDatetime),
             status:
               isStatus === 2 ? (
                 <span className="btn bg-success w-100 text-light">
-                  Completed
+                  Accepted By Broker
                 </span>
               ) : isStatus === 0 ? (
                 <span className="btn bg-primary w-100 text-light">
@@ -202,9 +206,9 @@ export default function Exemple({
                   Quote Provided
                 </span>
               ) : (
-                <span className="btn bg-info w-100 text-light">Rejected</span>
+                <span className="btn bg-info w-100 text-light">Cancelled</span>
               ),
-            address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.state}, ${property.zipCode}`,
+            address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
             // user: property.applicantEmailAddress,
             type_of_building: property.typeOfBuilding,
             amount: ` $${property.estimatedValue}`,
@@ -441,7 +445,7 @@ export default function Exemple({
       {updatedData && (
         <SmartTable
           title=""
-          data={updatedData}
+          data={sortObjectsByOrderIdDescending(updatedData)}
           headCells={headCells}
           refreshHandler={refreshHandler}
         />

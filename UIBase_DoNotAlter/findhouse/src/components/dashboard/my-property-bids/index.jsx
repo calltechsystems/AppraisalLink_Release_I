@@ -116,7 +116,7 @@ const Index = ({ propertyId }) => {
       const timeSinceLastActivity = currentTime - lastActivityTimestamp;
 
       // Check if there has been no activity in the last 10 minutes (600,000 milliseconds)
-      if (timeSinceLastActivity > 600000) {
+      if (timeSinceLastActivity > 1200000) {
         localStorage.removeItem("user");
         router.push("/login");
       }
@@ -478,22 +478,31 @@ const Index = ({ propertyId }) => {
               <div className="modal">
                 <div className="modal-content">
                   <h3 className="text-center">Accept Bid Confirmation</h3>
-                  <h5 className="text-center">
-                    Are you sure you want to accept the quote with value
-                  </h5>
-                  <h3>${property.estimatedValue}</h3>
+                  <hr />
+                  <p className="text-center fs-6">
+                    Are you sure you want to accept the quote with value?
+                  </p>
+                  <h4 className="text-center">
+                    Quote Amount : ${property.bidAmount}
+                  </h4>
+                  <hr />
 
                   {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
-                  <div className="" style={{ display: "flex" }}>
-                    <button
-                      className="btn btn-color"
-                      onClick={() => acceptRequestHandler(property.bidId)}
-                    >
-                      Yes
-                    </button>
-                    <button className="btn btn-color" onClick={closeModal}>
-                      No
-                    </button>
+                  <div className="col-lg-12">
+                    <div className="row">
+                      <div className="col-lg-12 text-center m-1">
+                        <button
+                          className="btn btn-color"
+                          style={{ marginRight: "5px" }}
+                          onClick={() => acceptRequestHandler(property.bidId)}
+                        >
+                          Submit
+                        </button>
+                        <button className="btn btn-color" onClick={closeModal}>
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

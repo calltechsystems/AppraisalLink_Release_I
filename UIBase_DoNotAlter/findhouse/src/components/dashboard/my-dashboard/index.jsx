@@ -16,10 +16,13 @@ const Index = () => {
   const [userData, setUserData] = useState({});
   const [showNotification, setShowNotification] = useState(false);
   const [data, setData] = useState([]);
+  const [bids,setBids]=useState([]);
   const [unfilteredData, setUnfilteredData] = useState([]);
   const [showLineGraph, setShowLineGraph] = useState(false);
   const [filterQuery, setFilterQuery] = useState("monthly");
+  const [wishlist,setWishlist]=useState([]);
   const [lineData, setLineData] = useState([]);
+  const [acceptedBids,setAcceptedBids] = useState(0);
   const router = useRouter();
 
   const closeModal = () => {
@@ -143,6 +146,7 @@ const Index = () => {
     }
 
     const func = () => {
+      const data = JSON.parse(localStorage.getItem("user"));
       axios
         .get("/api/getPropertiesById", {
           headers: {
@@ -163,6 +167,97 @@ const Index = () => {
         .catch((err) => {
           toast.error(err?.response?.data?.error);
         });
+
+        axios
+        .get("/api/getPropertiesById", {
+          headers: {
+            Authorization: `Bearer ${data?.token}`,
+            "Content-Type": "application/json",
+          },
+          params: {
+            userId: data?.userId,
+          },
+        })
+        .then((res) => {
+          // console.log(categorizeDataByMonth(res.data.data.property.$values));
+
+          setData(res.data.data.property.$values);
+          setShowLineGraph(true);
+          setRerender(false);
+        })
+        .catch((err) => {
+          toast.error(err?.response?.data?.error);
+        });
+
+        axios
+        .get("/api/getPropertiesById", {
+          headers: {
+            Authorization: `Bearer ${data?.token}`,
+            "Content-Type": "application/json",
+          },
+          params: {
+            userId: data?.userId,
+          },
+        })
+        .then((res) => {
+          // console.log(categorizeDataByMonth(res.data.data.property.$values));
+
+          setData(res.data.data.property.$values);
+          setShowLineGraph(true);
+          setRerender(false);
+        })
+        .catch((err) => {
+          toast.error(err?.response?.data?.error);
+        });
+
+        axios
+      .get("/api/appraiserWishlistedProperties", {
+        headers: {
+          Authorization: `Bearer ${data?.token}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        const tempData = res.data.data.$values;
+
+        // setAllWishlistedProperties(res.data.data.$values);
+        const responseData = tempData.filter((prop, index) => {
+          if (prop.userId === data.userId) {
+            return true;
+          } else {
+            return false;
+          }
+        });
+        const tempId = responseData;
+        setWishlist(responseData);
+      })
+      .catch((err) => {
+        toast.error(err?.response);
+        setErrorMessage(err?.response);
+        setModalIsOpenError(true);
+      });
+
+        axios
+      .get("/api/getAllBids", {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+      })
+      .then((res) => {
+        // console.log(res);
+        const tempBids = res.data.data.result.$values;
+        let acceptedBid = 0 ;
+        tempBids.map((bids,index)=>{
+          if(bids.userId === data.userId && bids.status === 2)
+          acceptedBid = acceptedBid + 1 ;
+        })
+        setAcceptedBids(acceptedBid)
+        setBids(tempBids);
+      })
+      .catch((err) => {
+        setErrorMessage(err?.response?.data?.error);
+        setModalIsOpenError(true);
+      });
     };
     func();
   }, []);
@@ -267,9 +362,9 @@ const Index = () => {
               <div className="row">
                 <AllStatistics
                   properties={data.length}
-                  views={0}
-                  bids={0}
-                  favourites={0}
+                  views={bids.length}
+                  bids={acceptedBids}
+                  favourites={wishlist.length}
                 />
               </div>
               {/* End .row Dashboard top statistics */}

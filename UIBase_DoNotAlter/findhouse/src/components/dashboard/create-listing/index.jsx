@@ -17,22 +17,23 @@ import { typeOfBuilding } from "./data";
 const Index = ({ isView, propertyData }) => {
   const router = useRouter();
 
- 
-  const [updateView , setUpdateView] = useState(propertyData);
+  const [updateView, setUpdateView] = useState(propertyData);
   const [isDisable, setDisable] = useState(updateView);
+
+  const [appraisalQuoteDate,setAppraisalQuoteDate]=useState(propertyData ? propertyData.quoteRequiredDate : "");
   const [modalOpen, setModalOpen] = useState(false);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  const changeStringUrlHandler = (inputString)=>{
-    const resultArray = inputString?.split(',');
+  const changeStringUrlHandler = (inputString) => {
+    const resultArray = inputString?.split(",");
     return resultArray;
-  }
+  };
 
   let userData = {};
   const [updatedProperty, setUpdatedProperty] = useState([]);
 
-  const [remark,setRemark] = useState("");
+  const [remark, setRemark] = useState("");
 
   const [streetNameRef, setStreetNameRef] = useState(
     propertyData?.streetName ? propertyData?.streetName : ""
@@ -52,7 +53,9 @@ const Index = ({ isView, propertyData }) => {
   const [buildinRef, setBuildinRef] = useState(
     propertyData?.typeOfBuilding || null
   );
-  const [urgencyRef, setUrgencyRef] = useState(propertyData?.urgency === 0 ? "Rush" : "Regular");
+  const [urgencyRef, setUrgencyRef] = useState(
+    propertyData?.urgency === 0 ? "Rush" : propertyData?.urgency === 1 ? "Regular" : ""
+  );
   const [bidLowerRangeRef, setBidLowerRangeRef] = useState(
     propertyData?.bidLowerRange || null
   );
@@ -71,7 +74,7 @@ const Index = ({ isView, propertyData }) => {
   );
 
   const [estimatedValue, setEstimatedValue] = useState(
-    propertyData?.estimatedValue || 0
+    propertyData?.estimatedValue || ""
   );
   const [typeOfAppraisal, setTypeOfAppraisal] = useState(
     propertyData?.typeOfAppraisal || ""
@@ -83,7 +86,7 @@ const Index = ({ isView, propertyData }) => {
     propertyData?.applicantAddress || ""
   );
   const [attachment, setAttachment] = useState(propertyData?.attachment || "");
-  const [filesUrl,setFilesUrl] = useState([]);
+  const [filesUrl, setFilesUrl] = useState([]);
   const [purpose, setPurpose] = useState(propertyData?.purpose || "");
 
   const [otherTypeOfBuilding, setOtherTypeOfBuilding] = useState(false);
@@ -104,18 +107,13 @@ const Index = ({ isView, propertyData }) => {
 
   const [image, setImage] = useState(propertyData?.image || "");
 
-  const changeUrlToStringHandler = ()=>{
-
-    const resultString = filesUrl.join(',');
-    if(updateView){
-      return attachment+","+resultString;
+  const changeUrlToStringHandler = () => {
+    const resultString = filesUrl.join(",");
+    if (updateView) {
+      return attachment + "," + resultString;
     }
     return resultString;
-
-  }
-
-  
-
+  };
 
   const onChangeHandler = (value, field, otherField) => {
     console.log(value, field, otherField);
@@ -179,7 +177,7 @@ const Index = ({ isView, propertyData }) => {
   useEffect(() => {
     if (buildinRef !== "") {
       let updatedError = errorLabel.filter((err) => {
-        if (String(err) === "typeofBuilding") return false;
+        if (String(err) === "typeOfBuilding") return false;
         else return true;
       });
       setErrorLabel(updatedError);
@@ -195,6 +193,17 @@ const Index = ({ isView, propertyData }) => {
       setErrorLabel(updatedError);
     }
   }, [purpose]);
+
+  useEffect(() => {
+    setOtherUrgency(true);
+    if (urgencyRef !== "") {
+      let updatedError = errorLabel.filter((err) => {
+        if (String(err) === "urgency") return false;
+        else return true;
+      });
+      setErrorLabel(updatedError);
+    }
+  }, [urgencyRef]);
 
   useEffect(() => {
     if (estimatedValue !== "") {
@@ -215,11 +224,10 @@ const Index = ({ isView, propertyData }) => {
       setErrorLabel(updatedError);
     }
   }, [typeOfAppraisal]);
-  
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log(filesUrl);
-  },[filesUrl]);
+  }, [filesUrl]);
 
   useEffect(() => {
     if (applicantFirstName !== "") {
@@ -250,6 +258,16 @@ const Index = ({ isView, propertyData }) => {
       setErrorLabel(updatedError);
     }
   }, [applicantNumber]);
+
+  useEffect(() => {
+    if (appraisalQuoteDate !== "") {
+      let updatedError = errorLabel.filter((err) => {
+        if (String(err) === "quoteRequiredDate") return false;
+        else return true;
+      });
+      setErrorLabel(updatedError);
+    }
+  }, [appraisalQuoteDate]);
 
   useEffect(() => {
     if (buildinRef !== "") {
@@ -296,16 +314,7 @@ const Index = ({ isView, propertyData }) => {
     }
   }, [purpose]);
 
-  useEffect(() => {
-    if(urgencyRef ){
-      let updatedError = errorLabel.filter((err) => {
-        if (String(err) === "urgency") return false;
-        else return true;
-      });
-      setErrorLabel(updatedError);
-    }
-    
-  }, [urgencyRef]);
+
   useEffect(() => {
     userData = JSON.parse(localStorage.getItem("user"));
     console.log(userData.userSubscription.$values);
@@ -321,9 +330,9 @@ const Index = ({ isView, propertyData }) => {
     }
   }, []);
 
-  const calculateDateHandler = ()=>{
+  const calculateDateHandler = () => {
     const type = urgencyRef;
-  }
+  };
 
   const onCancelModalHandler = () => {
     window.location.reload();
@@ -369,8 +378,7 @@ const Index = ({ isView, propertyData }) => {
           String(buildinRef) === "Other"
             ? otherTypeOfBuildingValue
             : buildinRef,
-        urgency:
-        String(urgencyRef) ==="Rush" ? 0 : 1,
+        urgency: String(urgencyRef) === "Rush" ? 0 : 1,
         typeOfAppraisal:
           String(typeOfAppraisal) === "Other"
             ? otherTypeOfAppraisalValue
@@ -379,8 +387,8 @@ const Index = ({ isView, propertyData }) => {
 
         attachment: changeUrlToStringHandler(),
         image: "",
-        quoteRequiredDate:"",
-        remark : remark ? remark : "",
+        quoteRequiredDate: appraisalQuoteDate,
+        remark: remark ? remark : "",
         token: userInfo.token,
       };
 
@@ -395,7 +403,8 @@ const Index = ({ isView, propertyData }) => {
         !payload.typeOfBuilding ||
         !payload.typeOfAppraisal ||
         !payload.purpose ||
-        !payload.estimatedValue
+        !payload.estimatedValue ||
+        !payload.quoteRequiredDate
       ) {
         let tempError = errorLabel;
 
@@ -438,21 +447,25 @@ const Index = ({ isView, propertyData }) => {
         if (!payload.applicantEmail) {
           tempError.push("applicantEmailAddress");
         }
+        if(!payload.quoteRequiredDate){
+          tempError.push("quoteRequiredDate");
+        }
         setErrorLabel(tempError);
       } else {
         const encryptedData = encryptionData(payload);
-        
-        console.log(updateView,propertyData);
-        
+
+        console.log(updateView, propertyData);
+
         toast.loading("Updating the property..");
-        axios.put("/api/addPropertyByBroker", encryptedData, {
+        axios
+          .put("/api/addPropertyByBroker", encryptedData, {
             headers: {
               Authorization: `Bearer ${userData.token}`,
               "Content-Type": "application/json",
             },
-            params:{
-              propertyId : propertyData.propertyId
-            }
+            params: {
+              propertyId: propertyData.propertyId,
+            },
           })
           .then((res) => {
             toast.dismiss();
@@ -464,104 +477,11 @@ const Index = ({ isView, propertyData }) => {
             toast.dismiss();
             toast.error(err.response.data.error);
           });
-        }
+      }
     }
-  
   };
 
-  const openModalForUpdateHandler = ()=>{
-    const payload = {
-      streetName: streetNameRef,
-      streetNumber: streetNumberRef,
-      city: cityRef,
-      state: stateRef,
-      zipCode: zipCodeRef,
-      // area: areaRef,
-      community: communityRef,
-      applicantFirstName: applicantFirstName,
-      applicantLastName: applicantLatsName,
-      applicantPhoneNumber: applicantNumber,
-      bidLowerRange: Number(bidLowerRangeRef),
-      bidUpperRange: Number(bidLowerRangeRef),
-      typeOfBuilding:
-        String(buildinRef) === "Other" ? otherTypeOfBuildingValue : buildinRef,
-      urgency: String(urgencyRef) === "Other" ? otherUrgencyValue : urgencyRef,
-      typeOfAppraisal:
-        String(typeOfAppraisal) === "Other"
-          ? otherTypeOfAppraisalValue
-          : typeOfAppraisal,
-      purpose: String(purpose) === "Other" ? otherPurposeValue : purpose,
-      propertyStatus: true,
-      estimatedValue: estimatedValue,
-      lenderInformation: lenderInformation,
-      applicantAddress: applicantAddress,
-    };
-    if (
-      !payload.streetName ||
-      !payload.streetNumber ||
-      !payload.city ||
-      !payload.state ||
-      !payload.zipCode ||
-      !payload.typeOfBuilding ||
-      !payload.typeOfAppraisal ||
-      !payload.purpose ||
-      !payload.estimatedValue
-    ) {
-      let tempError = [];
 
-      if (!payload.streetName) {
-        tempError.push("streetName");
-      }
-      if (!payload.streetNumber) {
-        tempError.push("streetNumber");
-      }
-      if (!payload.city) {
-        tempError.push("city");
-      }
-      if (!payload.state) {
-        tempError.push("state");
-      }
-      if (!payload.zipCode) {
-        tempError.push("zipCode");
-      }
-      if (!payload.typeOfBuilding) {
-        tempError.push("typeOfBuilding");
-      }
-      if (!payload.estimatedValue) {
-        tempError.push("estimatedValue");
-      }
-      if (!payload.purpose) {
-        tempError.push("purpose");
-      }
-      if (!payload.typeOfAppraisal) {
-        tempError.push("typeOfAppraisal");
-      }
-      if (!payload.applicantLastName) {
-        tempError.push("applicantLastName");
-      }
-      if (!payload.applicantFirstName) {
-        tempError.push("applicantFirstName");
-      }
-      if (!payload.applicantPhoneNumber) {
-        tempError.push("applicantPhoneNumber");
-      }
-      if (!payload.applicantEmail) {
-        tempError.push("applicantEmailAddress");
-      }
-
-      setErrorLabel(tempError);
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth", // Optional: Add smooth scrolling behavior
-      });
-    } else {
-      setModalIsOpen(true);
-    }
-  }
-
-  const closeModal = () => {
-    setModalOpen(false);
-  };
 
   const onCancelHandler = () => {
     setModalIsOpen(false);
@@ -583,22 +503,22 @@ const Index = ({ isView, propertyData }) => {
       bidUpperRange: Number(bidLowerRangeRef),
       typeOfBuilding:
         String(buildinRef) === "Other" ? otherTypeOfBuildingValue : buildinRef,
-      urgency:  urgencyRef === "Rush" ? 0 : 1,
+      urgency: urgencyRef === "Rush" ? 0 : 1,
       typeOfAppraisal:
         String(typeOfAppraisal) === "Other"
           ? otherTypeOfAppraisalValue
           : typeOfAppraisal,
       purpose: String(purpose) === "Other" ? otherPurposeValue : purpose,
       propertyStatus: true,
-      estimatedValue: estimatedValue,
+      estimatedValue: Number(estimatedValue),
       lenderInformation: lenderInformation,
       applicantAddress: applicantAddress,
       attachment: changeUrlToStringHandler(),
-        image: "",
-        quoteRequiredDate:"",
-        remark : remark ? remark : ""
+      image: "",
+      quoteRequiredDate: appraisalQuoteDate,
+      remark: remark ? remark : "",
     };
-    console.log(payload)
+    console.log(payload);
     if (
       !payload.streetName ||
       !payload.streetNumber ||
@@ -608,7 +528,9 @@ const Index = ({ isView, propertyData }) => {
       !payload.typeOfBuilding ||
       !payload.typeOfAppraisal ||
       !payload.purpose ||
-      !payload.estimatedValue 
+      !payload.estimatedValue ||
+      !payload.quoteRequiredDate ||
+       !payload.urgency
     ) {
       let tempError = [];
 
@@ -651,11 +573,18 @@ const Index = ({ isView, propertyData }) => {
       if (!payload.applicantEmail) {
         tempError.push("applicantEmailAddress");
       }
+      if(!urgencyRef){
+        tempError.push("urgency");
+      }
+      if(!appraisalQuoteDate){
+        tempError.push("quoteRequiredDate");
+      }
       setErrorLabel(tempError);
       console.log(tempError);
+      console.log(urgencyRef,appraisalQuoteDate);
       window.scrollTo({
         top: 0,
-        behavior: "smooth", 
+        behavior: "smooth",
       });
     } else {
       setModalIsOpen(true);
@@ -703,8 +632,7 @@ const Index = ({ isView, propertyData }) => {
           String(buildinRef) === "Other"
             ? otherTypeOfBuildingValue
             : buildinRef,
-        urgency:
-        String(urgencyRef) ==="Rush" ? 0 : 1,
+        urgency: String(urgencyRef) === "Rush" ? 0 : 1,
         typeOfAppraisal:
           String(typeOfAppraisal) === "Other"
             ? otherTypeOfAppraisalValue
@@ -714,8 +642,8 @@ const Index = ({ isView, propertyData }) => {
         attachment: changeUrlToStringHandler(),
         image: "",
         token: userInfo.token,
-        quoteRequiredDate:"",
-        remark : remark ? remark : ""
+        quoteRequiredDate: appraisalQuoteDate,
+        remark: remark ? remark : "",
       };
 
       console.log(payload);
@@ -775,11 +703,12 @@ const Index = ({ isView, propertyData }) => {
         setErrorLabel(tempError);
       } else {
         const encryptedData = encryptionData(payload);
-        
+
         // console.log(updateView,propertyData);
-        
+
         toast.loading("Appraising property ..");
-        axios.post("/api/addBrokerProperty", encryptedData, {
+        axios
+          .post("/api/addBrokerProperty", encryptedData, {
             headers: {
               Authorization: `Bearer ${userData.token}`,
               "Content-Type": "application/json",
@@ -795,9 +724,7 @@ const Index = ({ isView, propertyData }) => {
             toast.dismiss();
             toast.error(err.message);
           });
-        }
-        
-      
+      }
     }
   };
 
@@ -949,6 +876,8 @@ const Index = ({ isView, propertyData }) => {
                       buildinRef={buildinRef}
                       setBuildinRef={setBuildinRef}
                       urgencyRef={urgencyRef}
+                      appraisalQuoteDate={appraisalQuoteDate}
+                      setAppraisalQuoteDate={setAppraisalQuoteDate}
                       setUrgencyRef={setUrgencyRef}
                       propertyData={propertyData}
                       bidLowerRangeRef={bidLowerRangeRef}
@@ -995,7 +924,7 @@ const Index = ({ isView, propertyData }) => {
                         </h4>
                       </div>
                       <hr style={{ color: "#2e008b" }} />
-                     
+
                       <DetailedInfo
                         isDisable={isDisable}
                         applicantFirstName={applicantFirstName}
@@ -1055,7 +984,7 @@ const Index = ({ isView, propertyData }) => {
                       <div className="d-flex justify-content-center mt-2">
                         <table
                           style={{
-                            width: "550px",
+                            width: "510px",
                             textAlign: "center",
                             borderRadius: "5px",
                           }}
@@ -1255,13 +1184,33 @@ const Index = ({ isView, propertyData }) => {
                           </tr>
 
                           <tr>
+                          <td
+                            style={{
+                              border: "1px solid grey",
+                              color: "#2e008b",
+                            }}
+                          >
+                            <span className="text-start">Quote Required Date</span>
+                          </td>
+                          <td
+                            style={{
+                              border: "1px solid grey",
+                              width: "250px",
+                            }}
+                          >
+                            {" "}
+                            {appraisalQuoteDate}
+                          </td>
+                        </tr>
+
+                          <tr>
                             <td
                               style={{
                                 border: "1px solid grey",
                                 color: "#2e008b",
                               }}
                             >
-                              <span className="text-start">Property By</span>
+                              <span className="text-start">Applicant Name</span>
                             </td>
                             <td
                               style={{
@@ -1311,7 +1260,7 @@ const Index = ({ isView, propertyData }) => {
                               {applicantNumber}
                             </td>
                           </tr>
-                          {applicantAddress && (
+                          {/* {applicantAddress && (
                             <tr>
                               <td
                                 style={{
@@ -1331,7 +1280,7 @@ const Index = ({ isView, propertyData }) => {
                                 {bidLowerRangeRef}
                               </td>
                             </tr>
-                          )}
+                          )} */}
                           {false && (
                             <tr>
                               <td
@@ -1341,7 +1290,7 @@ const Index = ({ isView, propertyData }) => {
                                 }}
                               >
                                 <span className="text-start">
-                                  Remark / Additional Information
+                                  Remark / Summary
                                 </span>
                               </td>
                               <td
@@ -1358,18 +1307,18 @@ const Index = ({ isView, propertyData }) => {
                         </table>
                       </div>
                       <div className="row text-center mt-3">
-                        <div className="col-lg-6">
+                        <div className="col-lg-12">
                           <button
-                            className="w-50 btn-color"
+                            className="btn btn-color w-25 m-2"
                             onClick={onCancelHandler}
                           >
                             Cancel
                           </button>
-                        </div>
-                        <div className="col-lg-6">
                           <button
-                            className="w-50 btn-color"
-                            onClick={  updateView ? updateHandler : finalSubmitHandler }
+                            className="btn btn-color w-25"
+                            onClick={
+                              updateView ? updateHandler : finalSubmitHandler
+                            }
                           >
                             Continue
                           </button>

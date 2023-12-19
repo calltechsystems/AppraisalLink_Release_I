@@ -17,6 +17,7 @@ function SmartTable(props) {
   const [rowsPerPageOptions] = useState(
     props.rowsPerPageOptions ?? [5, 10, 25, 50]
   );
+
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(props.total ?? 0);
 

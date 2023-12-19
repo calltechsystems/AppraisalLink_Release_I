@@ -54,21 +54,36 @@ export const typeOfAppraisal = [
   },
   {
     id: 1,
+    type: "Desktop",
+    value: "Desktop",
+  },
+  {
+    id: 2,
+    type: "Driveby",
+    value: "Driveby",
+  },
+  {
+    id: 3,
+    type: "Full Appraisal",
+    value: "Full Appraisal",
+  },
+  {
+    id: 4,
     type: "Desktop with market rent",
     value: "Desktop with market rent",
   },
   {
-    id: 2,
-    type: "Drive by with market rent",
-    value: "Drive by with market rent",
+    id: 5,
+    type: "Driveby with market rent",
+    value: "Driveby with market rent",
   },
   {
-    id: 3,
+    id: 6,
     type: "Full Appraisal with market rent",
     value: "Full Appraisal with market rent",
   },
   {
-    id: 3,
+    id: 7,
     type: "Other",
     value: "Other",
   },
@@ -152,18 +167,22 @@ export const AppraiserStatusOptions = [
     value: "Appraisal Visit Confirmed",
   },
   {
-    id: 2,
+    id: 3,
     type: "Appraisal Report Writing in Progress",
     value: "Appraisal Report Writing in Progress",
   },
   {
-    id: 2,
+    id: 4,
     type: "Appraisal Report Writing Completed and Submitted",
     value: "Appraisal Report Writing Completed and Submitted",
   },
+
+  {
+    id :5,
+    type : "Appraisal Visit Confirmed – We can add a DATE and TIME for the VISIT",
+    value:"Appraisal Visit Confirmed – We can add a DATE and TIME for the VISIT"
+  }
 ];
-
-
 
 export const province = [
   {

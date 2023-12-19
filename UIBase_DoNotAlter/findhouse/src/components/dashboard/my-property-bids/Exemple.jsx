@@ -240,7 +240,7 @@ export default function Exemple({
             AppraiserId: property.appraiserUserId
               ? property.appraiserUserId
               : 0,
-            quote: property.bidLowerRange,
+            quote: property.bidAmount,
             amount: property.bidAmount,
             description:
               property.description != "" ? property.description : "NA",
@@ -265,12 +265,17 @@ export default function Exemple({
                 <h5>Accepted</h5>
               ) : property.status === 0 ? (
                 <ul className="">
-                  <li className="list-inline-item">
+                  <li
+                    className="list-inline-item"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Accept"
+                  >
                     <div
                       className="fp_pdate float-end mt-1 fw-bold"
                       onClick={() => openPopupModal(prop, property.bidId)}
                     >
-                      <a href="#" className="text-success">
+                      <a href="#" className="btn btn-success">
                         Accept
                       </a>
                     </div>
@@ -288,7 +293,7 @@ export default function Exemple({
                       className="fp_pdate float-end mt-1 fw-bold"
                       onClick={() => setProperty(property)}
                     >
-                      <a href="#" className="text-danger">
+                      <a href="#" className="btn btn-danger">
                         Decline
                       </a>
                     </div>

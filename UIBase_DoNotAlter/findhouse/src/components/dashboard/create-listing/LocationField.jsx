@@ -28,18 +28,17 @@ const LocationField = ({
   setCommunityRef,
   setUrgencyRef,
 }) => {
+  const errorLabelStyle = { borderColor: "red" };
 
-  const errorLabelStyle = {borderColor:"red"};
-
-  const checkIsError = (value)=>{
+  const checkIsError = (value) => {
     let isError = false;
-    errorLabel.map((err,index)=>{
-      if(String(err) === String(value)){
+    errorLabel.map((err, index) => {
+      if (String(err) === String(value)) {
         isError = true;
       }
-    })
+    });
     return isError;
-  }
+  };
   return (
     <>
       {/* Old Form */}
@@ -62,7 +61,11 @@ const LocationField = ({
             </div>
             <div className="col-lg-7">
               <input
-                style={checkIsError("streetNumber") ? errorLabelStyle : { backgroundColor: "#E8F0FE" }}
+                style={
+                  checkIsError("streetNumber")
+                    ? errorLabelStyle
+                    : { backgroundColor: "#E8F0FE" }
+                }
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
@@ -89,7 +92,11 @@ const LocationField = ({
             </div>
             <div className="col-lg-7">
               <input
-              style={checkIsError("streetName") ? errorLabelStyle : { backgroundColor: "#E8F0FE" }}
+                style={
+                  checkIsError("streetName")
+                    ? errorLabelStyle
+                    : { backgroundColor: "#E8F0FE" }
+                }
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
@@ -143,7 +150,11 @@ const LocationField = ({
             </div>
             <div className="col-lg-7">
               <input
-              style={checkIsError("city") ? errorLabelStyle : { backgroundColor: "#E8F0FE" }}
+                style={
+                  checkIsError("city")
+                    ? errorLabelStyle
+                    : { backgroundColor: "#E8F0FE" }
+                }
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
@@ -169,7 +180,7 @@ const LocationField = ({
               </label>
             </div>
             <div className="col-lg-7">
-             {/*<input
+              {/*<input
               style={checkIsError("state") ? errorLabelStyle : { backgroundColor: "#E8F0FE" }}
                 type="text"
                 className="form-control"
@@ -178,7 +189,7 @@ const LocationField = ({
                 value={stateRef}
                 disabled={isDisable}
                 maxLength={30}
-              />*/} 
+              />*/}
               <div
                 className="form-group input-group ui_kit_select_search"
                 // style={{ marginLeft: "-5px" }}
@@ -188,6 +199,7 @@ const LocationField = ({
                   data-live-search="true"
                   data-width="100%"
                   onChange={(e) => setStateRef(e.target.value)}
+                  value={stateRef}
                   // onChange={check_03}
                   disabled={isDisable}
                   style={
@@ -228,7 +240,11 @@ const LocationField = ({
             </div>
             <div className="col-lg-7">
               <input
-              style={checkIsError("zipCode") ? errorLabelStyle : { backgroundColor: "#E8F0FE" }}
+                style={
+                  checkIsError("zipCode")
+                    ? errorLabelStyle
+                    : { backgroundColor: "#E8F0FE" }
+                }
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"

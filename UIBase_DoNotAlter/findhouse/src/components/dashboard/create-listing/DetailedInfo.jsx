@@ -106,11 +106,11 @@ const DetailedInfo = ({
   image,
   setImage,
   setFilesUrl,
-  setAttachment,                  
+  setAttachment,
   setDisable,
 }) => {
   const router = useRouter();
-  console.log(filesUrl);
+  console.log(filesUrl,attachment);
 
   const [uploadedFiles, setUploadedFiles] = useState([]);
 
@@ -124,51 +124,64 @@ const DetailedInfo = ({
 
     // Filter the selected images
     const images = Array.from(files).filter((file) =>
-      ['image/jpeg', 'image/png', 'image/gif'].includes(file.type)
+      ["image/jpeg", "image/png", "image/gif"].includes(file.type)
     );
 
     // Update the state with the selected images
     setSelectedImages(images);
 
     // Log the count of selected images
-    console.log('Number of selected images:', images.length);
+    console.log("Number of selected images:", images.length);
   };
 
-  const handleUpload=(result)=>{
-    
+  const handleUpload = (result) => {
     try {
       const fileUrl = result.info.secure_url;
-      console.log('File uploaded:', fileUrl);
-  
+      console.log("File uploaded:", fileUrl);
+
       let olderUrl = filesUrl;
       olderUrl.push(fileUrl);
       console.log(olderUrl);
       setFilesUrl(olderUrl);
-    
+
       // console.log(changeUrlToStringHandler());
 
       setAttachment(fileUrl);
-
-  
     } catch (error) {
-      console.error('Error handling upload:', error);
+      console.error("Error handling upload:", error);
     }
-  }
+  };
 
+  const errorLabelStyle = { borderColor: "red" };
 
-  const errorLabelStyle = {borderColor:"red"};
-
-  const checkIsError = (value)=>{
+  const checkIsError = (value) => {
     let isError = false;
-    errorLabel.map((err,index)=>{
-      console.log(err,value);
-      if(String(err) === String(value)){
+    errorLabel.map((err, index) => {
+      console.log(err, value);
+      if (String(err) === String(value)) {
         isError = true;
       }
-    })
+    });
     console.log(isError);
     return isError;
-  }
+  };
+
+  const [phoneNumber, setPhoneNumber] = useState("");
+
+  const handleInputChange = (e) => {
+    const inputValue = e.target.value;
+
+    // Allow only numeric input
+    const numericValue = inputValue.replace(/\D/g, "");
+
+    // Restrict to 10 digits
+    const truncatedValue = numericValue.slice(0, 10);
+    if (truncatedValue.length === 10) {
+      setApplicantNumber(truncatedValue);
+    }
+
+    setPhoneNumber(truncatedValue);
+  };
   return (
     <>
       {/* <div className="row">
@@ -417,12 +430,16 @@ const DetailedInfo = ({
             </div>
             <div className="col-lg-7">
               <input
-              style={checkIsError("applicantFirstName") ? errorLabelStyle :{
-                  // paddingTop: "15px",
-                  // paddingBottom: "15px",
-                  backgroundColor: "#E8F0FE",
-                  //color: "white",
-                }}
+                style={
+                  checkIsError("applicantFirstName")
+                    ? errorLabelStyle
+                    : {
+                        // paddingTop: "15px",
+                        // paddingBottom: "15px",
+                        backgroundColor: "#E8F0FE",
+                        //color: "white",
+                      }
+                }
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
@@ -444,12 +461,16 @@ const DetailedInfo = ({
             </div>
             <div className="col-lg-7">
               <input
-              style={checkIsError("applicantLastName") ? errorLabelStyle :{
-                  // paddingTop: "15px",
-                  // paddingBottom: "15px",
-                  backgroundColor: "#E8F0FE",
-                  //color: "white",
-                }}
+                style={
+                  checkIsError("applicantLastName")
+                    ? errorLabelStyle
+                    : {
+                        // paddingTop: "15px",
+                        // paddingBottom: "15px",
+                        backgroundColor: "#E8F0FE",
+                        //color: "white",
+                      }
+                }
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
@@ -471,21 +492,40 @@ const DetailedInfo = ({
             </div>
             <div className="col-lg-7">
               <input
-              style={checkIsError("applicantPhoneNumber") ? errorLabelStyle :{
-                  // paddingTop: "15px",
-                  // paddingBottom: "15px",
-                  backgroundColor: "#E8F0FE",
-                  //color: "white",
-                }}
-                type="number"
-                min={10}
-                max={10}
+                style={
+                  checkIsError("applicantPhoneNumber")
+                    ? errorLabelStyle
+                    : {
+                        // paddingTop: "15px",
+                        // paddingBottom: "15px",
+                        backgroundColor: "#E8F0FE",
+                        //color: "white",
+                      }
+                }
+                type="text"
+                // min={10}
+                maxLength={10}
                 className="form-control"
                 id="formGroupExampleInput3"
-                onChange={(e) => setApplicantNumber(e.target.value)}
-                value={applicantNumber}
+                // onChange={(e) => setApplicantNumber(e.target.value)}
+                onChange={handleInputChange}
+                pattern="[0-9]*"
+                title="Please enter only 10 digits"
+                value={applicantNumber ? applicantNumber : phoneNumber}
                 disabled={isDisable}
               />
+              {/* <input
+                type="text"
+                id="phoneNumber"
+                name="phoneNumber"
+                value={phoneNumber}
+                onChange={handleInputChange}
+                pattern="[0-9]*"
+                maxLength="10"
+                placeholder="Enter 10 digits"
+                title="Please enter only 10 digits"
+                required
+              /> */}
             </div>
           </div>
           <div className="row" style={{ marginBottom: "10px" }}>
@@ -499,7 +539,7 @@ const DetailedInfo = ({
             </div>
             <div className="col-lg-7">
               <input
-              style={{
+                style={{
                   // paddingTop: "15px",
                   // paddingBottom: "15px",
                   backgroundColor: "#E8F0FE",
@@ -570,7 +610,7 @@ const DetailedInfo = ({
                     backgroundColor: "#E8F0FE",
                     //color: "white",
                   }}
-                  onChange={(e)=>setRemark(e.target.value)}
+                  onChange={(e) => setRemark(e.target.value)}
                   value={remark}
                   className="form-control"
                   id="propertyDescription"
@@ -587,7 +627,7 @@ const DetailedInfo = ({
                   className="text-color"
                   htmlFor=""
                   style={{
-                    paddingTop: "10px",
+                    paddingTop: "25px",
                     color: "#1560bd",
                     fontWeight: "",
                   }}
@@ -596,43 +636,67 @@ const DetailedInfo = ({
                 </label>
               </div>
               <div className="col-lg-7 mb-2">
-                  <label className="upload">
+                <label className="upload">
                   <CldUploadWidget
-                  onUpload={handleUpload}
-                  uploadPreset="mpbjdclg"
-                  options={{
-                    cloudName: "dcrq3m6dx", // Your Cloudinary cloud name
-                    allowedFormats: ['jpg',  'png', 'pdf','csv','word','excel'], // Specify allowed formats
-                    maxFiles:50
-                  }}
-                >
-                  {({ open }) => (    
-                    <div>
-                      <button
-                        className="btn btn-color profile_edit_button mb-5"
-                        style={{}}
-                        onClick={open} // This will open the upload widget
-                        disabled={isDisable}
-                      >
-                        Upload Files
-                      </button>
-                    </div>
-                  )}
-                </CldUploadWidget>
-                  </label>
+                    onUpload={handleUpload}
+                    uploadPreset="mpbjdclg"
+                    options={{
+                      cloudName: "dcrq3m6dx", // Your Cloudinary cloud name
+                      allowedFormats: [
+                        "jpg",
+                        "png",
+                        "pdf",
+                        "csv",
+                        "word",
+                        "excel",
+                      ], // Specify allowed formats
+                      maxFiles: 50,
+                    }}
+                  >
+                    {({ open }) => (
+                      <div>
+                        <button
+                          className="btn btn-color profile_edit_button mb-5"
+                          style={{}}
+                          onClick={open} // This will open the upload widget
+                          disabled={isDisable}
+                        >
+                          Upload Files
+                        </button>
+                      </div>
+                    )}
+                  </CldUploadWidget>
+                </label>
               </div>
             </div>
           </div>
           <div className="col-xl-12">
-          <div className="my_profile_setting_input overflow-hidden mt20 text-center">
-            {filesUrl.length > 0 ?  filesUrl.map((url,index)=>{
-          <div className="" style={{width:"20px", height:"20px", cursor:"pointer"}}><span className="flaticon-garbage text-danger"></span></div>
-          return<><img key={index} src={url} width={120} height={120}  />
-              </>}) : attachment.map((url,index)=>{
-              return<img key={index} src={url} width={120} height={120}  />
-            })}
+            <div className="my_profile_setting_input overflow-hidden mt20 text-center">
+              {filesUrl.length > 0
+                ? filesUrl.map((url, index) => {
+                    <div
+                      className=""
+                      style={{
+                        width: "20px",
+                        height: "20px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <span className="flaticon-garbage text-danger"></span>
+                    </div>;
+                    return (
+                      <>
+                        <img key={index} src={url} width={120} height={120} />
+                      </>
+                    );
+                  })
+                : attachment[0]!== "" ? attachment.map((url, index) => {
+                    return (
+                       <img key={index} src={url} width={120} height={120} /> 
+                    );
+                  }) : ""}
+            </div>
           </div>
-        </div>
           <div className="col-xl-12">
             <div className="my_profile_setting_input overflow-hidden mt20 text-center">
               <button className="btn btn5 m-1" onClick={cancelHandler}>

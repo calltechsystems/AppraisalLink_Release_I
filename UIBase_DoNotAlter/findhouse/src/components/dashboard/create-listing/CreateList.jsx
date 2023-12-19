@@ -9,6 +9,8 @@ const CreateList = ({
   areaRef,
   setAreaRef,
   setBuildinRef,
+  appraisalQuoteDate,
+   setAppraisalQuoteDate,
   propertyData,
   otherUrgencyValue,
   setDisable,
@@ -641,7 +643,7 @@ const CreateList = ({
                   fontWeight: "",
                 }}
               >
-                Urgency
+                Urgency <span class="req-btn">*</span>
               </label>
             </div>
             <div className="col-lg-3">
@@ -655,13 +657,17 @@ const CreateList = ({
                   data-width="100%"
                   onChange={(e) => setUrgencyRef(e.target.value)}
                   // onChange={check_03}
+                  value={urgencyRef}
                   disabled={isDisable}
-                  style={{
-                    paddingTop: "15px",
-                    paddingBottom: "15px",
-                    backgroundColor: "#E8F0FE",
-                    // color: "white",
-                  }}
+                  style={
+                    checkIsError("urgency")
+                      ? errorLabelStyle
+                      : {
+                          paddingTop: "15px",
+                          paddingBottom: "15px",
+                          backgroundColor: "#E8F0FE"
+                        }
+                  }
                 >
                   {Urgency.map((item, index) => {
                     return (
@@ -673,51 +679,42 @@ const CreateList = ({
                 </select>
               </div>
             </div>
-            <div className="col-lg-4" id="other-div_03">
-              <input
-                required
-                type="date"
-                pattern="\d{4}-\d{2}-\d{2}"
-                className="form-control"
-                id="formGroupExampleInput3"
-                style={otherUrgency ? viewStyle : hiddenStyle}
-                onChange={(e) => setOtherUrgencyValue(e.target.value)}
-                value={otherUrgencyValue}
-                disabled={isDisable}
-              />
-            </div>
+           
           </div>
-          {/* <div
+          <div
             className="row"
-            style={{ marginBottom: "10px", display: "none" }}
+            style={{ marginBottom: "10px" }}
             id="other-div_03"
           >
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label
                 htmlFor=""
-                className="text-color"
-                style={{
-                  paddingTop: "15px",
-                  color: "#1560bd",
-                  fontWeight: "",
-                }}
+                className="text-color bg-transparent mt-1"
               >
-                Quote Required By <span class="req-btn">*</span>
+                Appraisal Report Required By <span class="req-btn">*</span>
               </label>
             </div>
-            <div className="col-lg-7">
+            <div className="col-lg-3" >
               <input
                 required
-                type="date"
+                style={
+                  checkIsError("quoteRequiredDate")
+                    ? errorLabelStyle
+                    : {
+                        paddingTop: "15px",
+                        paddingBottom: "15px",
+                        backgroundColor: "#E8F0FE"
+                      }
+                }
+                type="datetime-local"
                 className="form-control"
                 id="formGroupExampleInput3"
-                style={{ backgroundColor: "#E8F0FE" }}
-                onChange={(e) => setCommunityRef(e.target.value)}
-                value={communityRef}
+                onChange={(e) => setAppraisalQuoteDate(e.target.value)}
+                value={appraisalQuoteDate}
                 disabled={isDisable}
               />
             </div>
-          </div> */}
+          </div>
         </div>
       </div>
     </>
