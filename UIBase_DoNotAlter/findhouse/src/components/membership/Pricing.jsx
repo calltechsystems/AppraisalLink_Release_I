@@ -9,7 +9,7 @@ const Pricing = ({
   data,
   setPrice,
 }) => {
-  console.log(selectedplan);
+  console.log(selectedplan, isPlan);
   // let userData = {};
   // useEffect(() => {
   //   userData = JSON.parse(localStorage.getItem("user"));
@@ -66,6 +66,7 @@ const Pricing = ({
 
   const selectPackageHandler = (id, title, price) => {
     setModalOpen(true);
+    console.log(price);
     setPrice({
       id: id,
       title: title,
@@ -136,7 +137,7 @@ const Pricing = ({
                   selectPackageHandler(
                     item.id,
                     item.description,
-                    isPlan === 1
+                    isPlan === "Monthly"
                       ? item.monthlyAmount - item.discount
                       : item.yearlyAmount - item.discount
                   )

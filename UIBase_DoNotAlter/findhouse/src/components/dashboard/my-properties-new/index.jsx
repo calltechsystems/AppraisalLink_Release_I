@@ -185,7 +185,7 @@ const Index = () => {
         },
       })
       .then((res) => {
-        setRerender(true);
+        window.location.reload();
       })
       .catch((err) => {
         toast.error(err);
@@ -799,21 +799,26 @@ const Index = () => {
             {isModalOpen && (
               <div className="modal">
                 <div className="modal-content">
-                  <h3 className="text-center">Delete Confirmation</h3>
-                  <h5 className="text-center">
+                  <h4 className="text-center">Delete Confirmation</h4>
+                  <hr />
+                  <p className="text-center" style={{ fontSize: "16px" }}>
                     Are you sure you want to delete the property :{" "}
                     {property.area} ?
-                  </h5>
+                  </p>
+                  <hr />
                   {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
-                  <div className="text-center" style={{}}>
+                  <div className=" col-lg-12 text-center" style={{}}>
                     <button
-                      className="btn w-35 btn-thm3 m-2"
+                      className="btn w-25 btn-color m-1"
+                      onClick={closeModal}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      className="btn w-25 btn-color"
                       onClick={handleDelete}
                     >
                       Delete
-                    </button>
-                    <button className="btn w-35 btn-white" onClick={closeModal}>
-                      Cancel
                     </button>
                   </div>
                 </div>

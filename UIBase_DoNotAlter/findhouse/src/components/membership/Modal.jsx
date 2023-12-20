@@ -3,33 +3,32 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 
-const Modal = ({ modalOpen, closeModal, price }) => {
+const Modal = ({ modalOpen, closeModal, price, selectedPlan }) => {
   const router = useRouter();
   let user = {};
   const loginHandler = () => {
     const userData = JSON.parse(localStorage.getItem("user"));
-    if(userData?.userType === 1){
+    if (userData?.userType === 1) {
       router.push("/my-plans");
-    }
-    else{
+    } else {
       router.push("/login");
     }
   };
 
-  useEffect(()=>{
-    user = (JSON.parse(localStorage.getItem("user")));
-  },[]);
+  useEffect(() => {
+    user = JSON.parse(localStorage.getItem("user"));
+  }, []);
   return (
     <>
       <div>
         {modalOpen && (
           <div className="modal">
             <div className="modal-content">
-              <span className="close" onClick={closeModal}>
+              {/* <span className="close" onClick={closeModal}>
                 &times;
-              </span>
+              </span> */}
               <div style={{ display: "flex", flexDirection: "column" }}>
-                <h2 className="text-center">
+                <h3 className="text-center">
                   Get subscription to our{" "}
                   <span
                     style={{
@@ -40,21 +39,15 @@ const Modal = ({ modalOpen, closeModal, price }) => {
                   >
                     {price.title} Plan
                   </span>
-                </h2>
+                </h3>
               </div>
-              <div
-                style={{
-                  border: "1px",
-                  borderStyle: "solid",
-                  borderColor: "gray",
-                }}
-              ></div>
-              <div style={{ marginLeft: "14%" }}>
-                <p className="m-3" style={{ fontSize: "17px" }}>
-                  Please click checkout to login 
+              <hr />
+              <div className="text-center">
+                <p className="m-3" style={{ fontSize: "16px" }}>
+                  Please click continue to login
                 </p>
-                <p className="m-3" style={{ fontSize: "17px" }}>
-                  Your selected Package . 
+                <p className="m-3" style={{ fontSize: "16px" }}>
+                  Your selected Package {" "}
                   <span
                     style={{
                       fontWeight: "bold",
@@ -76,18 +69,16 @@ const Modal = ({ modalOpen, closeModal, price }) => {
                   </span>
                 </p>
               </div>
-              <div className="button-container">
+              <hr />
+              <div className="col-lg-12 text-center">
                 {/* <button className="cancel-button" onClick={closeModal}>
                   Cancel
                 </button> */}
-                <button
-                  className="btn w-35 btn-cancel m-1"
-                  onClick={closeModal}
-                >
+                <button className="btn w-25 btn-color m-1" onClick={closeModal}>
                   Cancel
                 </button>
                 <button
-                  className="btn btn-log w-35 btn-thm m-1"
+                  className="btn btn-color w-25 m-1"
                   onClick={loginHandler}
                 >
                   Continue

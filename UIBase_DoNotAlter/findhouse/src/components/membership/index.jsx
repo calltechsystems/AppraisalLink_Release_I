@@ -155,7 +155,9 @@ const Index = () => {
               <Modal
                 modalOpen={modalOpen}
                 closeModal={closeModal}
+                
                 price={price}
+                selectedPlan={selectedPlan}
               />
               {/* <Pricing hideButton={false}/> */}
             </div>
