@@ -255,14 +255,14 @@ export default function Exemple({
                   }}
                   onClick={() => triggerAppraiserInfo(property.appraiserUserId)}
                 >
-                  get Info
+                  Get Info
                 </button>
               </a>
             ),
 
             action:
               property.status === 1 ? (
-                <h5>Accepted</h5>
+                <h5 className="btn btn-success">Accepted</h5>
               ) : property.status === 0 ? (
                 <ul className="">
                   <li
@@ -300,7 +300,7 @@ export default function Exemple({
                   </li>
                 </ul>
               ) : (
-                <h5>Declined</h5>
+                <h5 className="btn btn-danger">Declined</h5>
               ),
           };
           tempData.push(updatedRow);

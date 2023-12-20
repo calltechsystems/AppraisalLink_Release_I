@@ -144,9 +144,9 @@ export default function Exemple({
 
   const router = useRouter();
 
-  const openStatusUpdateHandler = ()=>{
+  const openStatusUpdateHandler = () => {
     setIsStatusModal(true);
-  }
+  };
 
   const removeWishlistHandler = (id) => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -212,8 +212,7 @@ export default function Exemple({
   };
 
   const sortObjectsByOrderIdDescending = (data) => {
-     data.sort((a, b) => b.order_id - a.order_id);
-     return data.reverse();
+    return data.sort((a, b) => b.orderId - a.orderId);
   };
 
   useEffect(() => {
@@ -226,38 +225,58 @@ export default function Exemple({
         const updatedRow = {
           orderId: property.orderId,
           address: `${property.city}-${property.province},${property.zipCode}`,
-          estimatedValue: property.estimatedValue ? `$ ${property.estimatedValue}` : "$ 0",
+          estimatedValue: property.estimatedValue
+            ? `$ ${property.estimatedValue}`
+            : "$ 0",
           purpose: property.purpose ? property.purpose : "NA",
           status: isBidded.bidId ? (
             isBidded.status === 0 ? (
-              <span className="btn btn-primary" onClick={openStatusUpdateHandler}>Quote Provided</span>
+              <span
+                className="btn btn-primary"
+                onClick={openStatusUpdateHandler}
+              >
+                Quote Provided
+              </span>
             ) : isBidded.status === 1 ? (
-              <span className="btn btn-success" onClick={openStatusUpdateHandler}>Accepted</span>
+              <span
+                className="btn btn-success"
+                onClick={openStatusUpdateHandler}
+              >
+                Accepted
+              </span>
             ) : (
               <span className="btn btn-danger">Rejected</span>
             )
           ) : (
             <span className="btn btn-warning">New</span>
           ),
-          broker: 
-            <div>{isBidded.status === 1 ? <a href="#">
-              <button
-                className=""
-                style={{
-                  border: "0px",
-                  color: "#2e008b",
-                  textDecoration:"underline",
-                  // fontWeight: "bold",
-                  backgroundColor: "transparent",
-                }}
-                onClick={() => openModalBroker(property)}
-              >
-                {`${property.applicantFirstName} ${property.applicantLastName}`}
-              </button>
-            </a>
-            : isBidded.status === 2 ?  <h6 style={{color:"red"}}> Rejected</h6> : <h6>Broker Information will be available post the quote acceptance</h6>}
+          broker: (
+            <div>
+              {isBidded.status === 1 ? (
+                <a href="#">
+                  <button
+                    className=""
+                    style={{
+                      border: "0px",
+                      color: "#2e008b",
+                      textDecoration: "underline",
+                      // fontWeight: "bold",
+                      backgroundColor: "transparent",
+                    }}
+                    onClick={() => openModalBroker(property)}
+                  >
+                    {`${property.applicantFirstName} ${property.applicantLastName}`}
+                  </button>
+                </a>
+              ) : isBidded.status === 2 ? (
+                <h6 style={{ color: "red" }}> Rejected</h6>
+              ) : (
+                <h6>
+                  Broker Information will be available post the quote acceptance
+                </h6>
+              )}
             </div>
-          ,
+          ),
           type_of_appraisal: property.typeOfAppraisal
             ? property.typeOfAppraisal
             : "NA",

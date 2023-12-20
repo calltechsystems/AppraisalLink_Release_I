@@ -195,7 +195,7 @@ export default function Exemple({
             status:
               isStatus === 2 ? (
                 <span className="btn bg-success w-100 text-light">
-                  Accepted By Broker
+                  Accepted
                 </span>
               ) : isStatus === 0 ? (
                 <span className="btn bg-primary w-100 text-light">

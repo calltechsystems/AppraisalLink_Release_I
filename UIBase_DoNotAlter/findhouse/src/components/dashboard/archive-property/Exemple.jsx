@@ -24,8 +24,7 @@ const headCells = [
   //   label: "Quote Amount",
   //   width: 200,
   // },
-  
-  
+
   {
     id: "address",
     numeric: false,
@@ -169,6 +168,10 @@ export default function Exemple({
     return isCompleted ? 2 : isQuoteProvided ? 1 : 0;
   };
 
+  const sortObjectsByOrderIdDescending = (data) => {
+    return data.sort((a, b) => b.order_id - a.order_id);
+  };
+
   useEffect(() => {
     const getData = () => {
       properties.map((property, index) => {
@@ -182,7 +185,7 @@ export default function Exemple({
             quote_required_by: formatDate(property.addedDatetime),
             status:
               isStatus === 2 ? (
-                <span className="btn bg-success text-light">Accepted By Broker</span>
+                <span className="btn bg-success text-light">Accepted</span>
               ) : isStatus === 0 ? (
                 <span className="btn bg-primary text-light">In Progress</span>
               ) : (
@@ -306,7 +309,7 @@ export default function Exemple({
       {updatedData && (
         <SmartTable
           title=""
-          data={updatedData}
+          data={sortObjectsByOrderIdDescending(updatedData)}
           headCells={headCells}
           refreshHandler={refreshHandler}
         />

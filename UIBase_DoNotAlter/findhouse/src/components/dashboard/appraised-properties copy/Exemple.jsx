@@ -82,14 +82,14 @@ const headCells = [
   {
     id: "broker",
     numeric: false,
-    label: "Details",
+    label: "Broker",
     width: 200,
   },
   {
     id: "action",
     numeric: false,
     label: "Action",
-    width: 200,
+    width: 300,
   },
 ];
 
@@ -102,7 +102,6 @@ export default function Exemple({
   setUpdatedCode,
   properties,
   setProperties,
-  setDetails,
   deletePropertyHandler,
   onWishlistHandler,
   participateHandler,
@@ -120,6 +119,10 @@ export default function Exemple({
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
   let tempData = [];
+
+  const sortObjectsByOrderIdDescending = (data) => {
+    return data.sort((a, b) => b.orderId - a.orderId);
+  };
 
   const filterBidsWithin24Hours = (property) => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -143,10 +146,6 @@ export default function Exemple({
   };
 
   const router = useRouter();
-
-  const sortObjectsByOrderIdDescending = (data) => {
-    return data.sort((a, b) => b.orderId - a.orderId);
-  };
 
   const removeWishlistHandler = (id) => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -218,87 +217,163 @@ export default function Exemple({
         const isBidded = filterBidsWithin24Hours(property);
         console.log("isBidded", isBidded);
 
-        if (isBidded.$id) {
-          const updatedRow = {
-            orderId: property.orderId,
-            address: `${property.city}-${property.province},${property.zipCode}`,
-            estimatedValue: property.estimatedValue
-              ? `$ ${property.estimatedValue}`
-              : "$ 0",
-            purpose: property.purpose ? property.purpose : "NA",
-            status: isBidded.bidId ? (
-              isBidded.status === 0 ? (
-                <span className="btn btn-primary">Quote Provided</span>
-              ) : isBidded.status === 1 ? (
-                <span className="btn btn-success">Accepted</span>
-              ) : (
-                <span className="btn btn-danger">Rejected</span>
-              )
+        const updatedRow = {
+          orderId: property.orderId,
+          address: `${property.city}-${property.province},${property.zipCode}`,
+          estimatedValue: property.estimatedValue ? property.estimatedValue : 0,
+          purpose: property.purpose ? property.purpose : "NA",
+          status: isBidded.bidId ? (
+            isBidded.status === 0 ? (
+              <span className="btn btn-primary">Quote Provided</span>
+            ) : isBidded.status === 1 ? (
+              <span className="btn btn-success">Accepted</span>
             ) : (
-              <span className="btn btn-warning">New</span>
-            ),
-            broker: (
-              <div>
-                {isBidded.status === 1 ? (
-                  <a href="#">
-                    <button
-                      className=""
-                      style={{
-                        border: "0px",
-                        color: "#2e008b",
-                        textDecoration: "underline",
-                        // fontWeight: "bold",
-                        backgroundColor: "transparent",
-                      }}
-                      onClick={() => openModalBroker(property)}
-                    >
-                      {`${property.applicantFirstName} ${property.applicantLastName}`}
-                    </button>
-                  </a>
-                ) : isBidded.status === 2 ? (
-                  <h6 style={{ color: "red" }}> Rejected</h6>
-                ) : (
-                  <h6>
-                    Broker Information will be available post the quote
-                    acceptance
-                  </h6>
-                )}
-              </div>
-            ),
-            type_of_appraisal: property.typeOfAppraisal
-              ? property.typeOfAppraisal
+              <span className="btn btn-danger">Rejected</span>
+            )
+          ) : (
+            <span className="btn btn-warning">New</span>
+          ),
+          broker: (
+            <div>
+              {isBidded.status === 1 ? (
+                <a href="#">
+                  <button
+                    className=""
+                    style={{
+                      border: "0px",
+                      color: "#2e008b",
+                      textDecoration: "underline",
+                      // fontWeight: "bold",
+                      backgroundColor: "transparent",
+                    }}
+                    onClick={() => openModalBroker(property)}
+                  >
+                    {`${property.applicantFirstName} ${property.applicantLastName}`}
+                  </button>
+                </a>
+              ) : isBidded.status === 2 ? (
+                <h6 style={{ color: "red" }}> Rejected</h6>
+              ) : (
+                <h6>
+                  Broker Information will be available post the quote acceptance
+                </h6>
+              )}
+            </div>
+          ),
+          type_of_appraisal: property.typeOfAppraisal
+            ? property.typeOfAppraisal
+            : "NA",
+          typeOfBuilding:
+            property.typeOfBuilding > 0 ? "Apartment" : property.typeOfBuilding,
+          quote_required_by: formatDate(property.addedDatetime),
+          date: formatDate(property.addedDatetime),
+          bidAmount: property.bidLowerRange,
+          lender_information: property.lenderInformation
+            ? property.lenderInformation
+            : "NA",
+          urgency:
+            property.urgency === 0
+              ? "Rush"
+              : property.urgency === 1
+              ? "Regular"
               : "NA",
-            typeOfBuilding:
-              property.typeOfBuilding > 0
-                ? "Apartment"
-                : property.typeOfBuilding,
-            quote_required_by: formatDate(property.addedDatetime),
-            date: formatDate(property.addedDatetime),
-            bidAmount: property.bidLowerRange,
-            lender_information: property.lenderInformation
-              ? property.lenderInformation
-              : "NA",
-            urgency:
-              property.urgency === 0
-                ? "Rush"
-                : property.urgency === 1
-                ? "Regular"
-                : "NA",
 
-            action: (
-              <div className="print-hidden-column">
-                {isBidded && isBidded.status === 0 ? (
-                  <h4 className="text-warning">Pending</h4>
-                ) : isBidded.status === 1 ? (
-                  <h4 className="text-success">Completed</h4>
-                ) : (
-                  <h4 className="text-danger">Rejected</h4>
-                )}
-              </div>
-            ),
-          };
-          tempData.push(updatedRow);
-        }
+          action: (
+            <div className="print-hidden-column">
+              {isBidded && isBidded.status !== 1 ? (
+                <ul className="">
+                  {!isBidded.$id && (
+                    <li
+                      className="list-inline-item"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Provide Quote"
+                    >
+                      <div
+                        className=" fw-bold"
+                        onClick={() =>
+                          participateHandler(
+                            property.bidLowerRange,
+                            property.propertyId
+                          )
+                        }
+                      >
+                        <a
+                          href="#"
+                          className="btn btn-color w-15"
+                          style={{ marginLeft: "10px" }}
+                        >
+                          Provide Quote
+                        </a>
+                      </div>
+                    </li>
+                  )}
+
+                  {isWishlist.id ? (
+                    <button
+                      className="btn "
+                      style={{ border: "1px solid grey" }}
+                      onClick={() => removeWishlistHandler(isWishlist.id)}
+                    >
+                      <img
+                        width={26}
+                        height={26}
+                        src="https://png.pngtree.com/png-clipart/20200226/original/pngtree-3d-red-heart-cute-valentine-romantic-glossy-shine-heart-shape-png-image_5315044.jpg"
+                      />
+                    </button>
+                  ) : (
+                    <li
+                      className="list-inline-item"
+                      title="Wishlist Property"
+                      style={{
+                        width: "30px",
+                        border: "none",
+                        textAlign: "center",
+                        borderRadius: "5px",
+                      }}
+                    >
+                      {
+                        <button
+                          className="btn"
+                          style={{ border: "1px solid grey" }}
+                          onClick={() => onWishlistHandler(property.propertyId)}
+                        >
+                          <span className="flaticon-heart text-color"></span>
+                        </button>
+                      }
+                    </li>
+                  )}
+
+                  <li
+                    className="list-inline-item m-1"
+                    title="Delete Property"
+                    style={{
+                      width: "30px",
+                      border: "none",
+                      textAlign: "center",
+                      borderRadius: "5px",
+                    }}
+                  >
+                    {
+                      <button
+                        className="btn"
+                        style={{ border: "1px solid grey" }}
+                        onClick={() =>
+                          onDeletePropertyHandler(property.propertyId)
+                        }
+                      >
+                        <span className="flaticon-garbage text-danger"></span>
+                      </button>
+                    }
+                  </li>
+                </ul>
+              ) : (
+                <h4 style={{ color: "green" }}>Completed</h4>
+              )}
+            </div>
+          ),
+        };
+        tempData.push(updatedRow);
       });
       setUpdatedData(tempData);
     };
@@ -385,7 +460,6 @@ export default function Exemple({
     console.log("end", bids, properties, wishlist);
     setRefresh(false);
   }, [refresh]);
-
   return (
     <>
       {refresh ? (
