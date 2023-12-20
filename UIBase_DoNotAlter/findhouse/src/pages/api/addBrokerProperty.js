@@ -38,7 +38,8 @@ async function handler(request, response) {
       typeOfAppraisal,
       lenderInformation,
       purpose,
-      applicantAddress,
+      quoteRequiredDate,
+      applicantEmailAddress,
       attachment,
       image,
       token,
@@ -56,7 +57,7 @@ async function handler(request, response) {
       typeOfBuilding: typeOfBuilding,
       applicantFirstName: applicantFirstName,
       applicantLastName: applicantLastName,
-      applicantEmailAddress: applicantEmail,
+      applicantEmailAddress: applicantEmailAddress,
       applicantPhoneNumber: applicantPhoneNumber,
       bidLowerRange: bidLowerRange,
       bidUpperRange: bidUpperRange,
@@ -66,12 +67,14 @@ async function handler(request, response) {
       purpose: purpose,
       typeOfAppraisal: typeOfAppraisal,
       lenderInformation: lenderInformation,
-      applicantAddress: applicantAddress,
+      applicantAddress: "",
       attachment: attachment,
       image: image,
-      quoteRequiredDate: "",
+      quoteRequiredDate: quoteRequiredDate,
       remark: "",
     };
+
+    console.log(formData);
 
     const userResponse = await axios.post(
       `${domain}/Registration/RegisterProperty`,

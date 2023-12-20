@@ -20,7 +20,9 @@ const Index = ({ isView, propertyData }) => {
   const [updateView, setUpdateView] = useState(propertyData);
   const [isDisable, setDisable] = useState(updateView);
 
-  const [appraisalQuoteDate,setAppraisalQuoteDate]=useState(propertyData ? propertyData.quoteRequiredDate : "");
+  const [appraisalQuoteDate, setAppraisalQuoteDate] = useState(
+    propertyData ? propertyData.quoteRequiredDate : ""
+  );
   const [modalOpen, setModalOpen] = useState(false);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -54,7 +56,11 @@ const Index = ({ isView, propertyData }) => {
     propertyData?.typeOfBuilding || null
   );
   const [urgencyRef, setUrgencyRef] = useState(
-    propertyData?.urgency === 0 ? "Rush" : propertyData?.urgency === 1 ? "Regular" : ""
+    propertyData?.urgency === 0
+      ? "Rush"
+      : propertyData?.urgency === 1
+      ? "Regular"
+      : ""
   );
   const [bidLowerRangeRef, setBidLowerRangeRef] = useState(
     propertyData?.bidLowerRange || null
@@ -156,10 +162,12 @@ const Index = ({ isView, propertyData }) => {
 
   useEffect(() => {
     if (stateRef !== "") {
+      
       let updatedError = errorLabel.filter((err) => {
         if (String(err) === "state") return false;
         else return true;
       });
+      console.log("stateRef",stateRef,updatedError)
       setErrorLabel(updatedError);
     }
   }, [stateRef]);
@@ -180,6 +188,7 @@ const Index = ({ isView, propertyData }) => {
         if (String(err) === "typeOfBuilding") return false;
         else return true;
       });
+      console.log("building",buildinRef,updatedError)
       setErrorLabel(updatedError);
     }
   }, [buildinRef]);
@@ -195,7 +204,6 @@ const Index = ({ isView, propertyData }) => {
   }, [purpose]);
 
   useEffect(() => {
-    setOtherUrgency(true);
     if (urgencyRef !== "") {
       let updatedError = errorLabel.filter((err) => {
         if (String(err) === "urgency") return false;
@@ -314,7 +322,6 @@ const Index = ({ isView, propertyData }) => {
     }
   }, [purpose]);
 
-
   useEffect(() => {
     userData = JSON.parse(localStorage.getItem("user"));
     console.log(userData.userSubscription.$values);
@@ -367,7 +374,7 @@ const Index = ({ isView, propertyData }) => {
         applicantFirstName: applicantFirstName,
         applicantLastName: applicantLatsName,
         applicantPhoneNumber: applicantNumber,
-        applicantEmail: applicantEmail || userData.userEmail,
+        applicantEmailAddress: applicantEmail || userData.userEmail,
         bidLowerRange: Number(bidLowerRangeRef),
         bidUpperRange: Number(bidLowerRangeRef),
         propertyStatus: true,
@@ -447,7 +454,7 @@ const Index = ({ isView, propertyData }) => {
         if (!payload.applicantEmail) {
           tempError.push("applicantEmailAddress");
         }
-        if(!payload.quoteRequiredDate){
+        if (!payload.quoteRequiredDate) {
           tempError.push("quoteRequiredDate");
         }
         setErrorLabel(tempError);
@@ -481,8 +488,6 @@ const Index = ({ isView, propertyData }) => {
     }
   };
 
-
-
   const onCancelHandler = () => {
     setModalIsOpen(false);
     router.push("/create-listing");
@@ -499,11 +504,12 @@ const Index = ({ isView, propertyData }) => {
       applicantFirstName: applicantFirstName,
       applicantLastName: applicantLatsName,
       applicantPhoneNumber: applicantNumber,
+      applicantEmailAddress: applicantEmail,
       bidLowerRange: Number(bidLowerRangeRef),
       bidUpperRange: Number(bidLowerRangeRef),
       typeOfBuilding:
         String(buildinRef) === "Other" ? otherTypeOfBuildingValue : buildinRef,
-      urgency: urgencyRef === "Rush" ? 0 : 1,
+      urgency: urgencyRef,
       typeOfAppraisal:
         String(typeOfAppraisal) === "Other"
           ? otherTypeOfAppraisalValue
@@ -512,7 +518,7 @@ const Index = ({ isView, propertyData }) => {
       propertyStatus: true,
       estimatedValue: Number(estimatedValue),
       lenderInformation: lenderInformation,
-      applicantAddress: applicantAddress,
+      applicantAddress: "",
       attachment: changeUrlToStringHandler(),
       image: "",
       quoteRequiredDate: appraisalQuoteDate,
@@ -530,7 +536,11 @@ const Index = ({ isView, propertyData }) => {
       !payload.purpose ||
       !payload.estimatedValue ||
       !payload.quoteRequiredDate ||
-       !payload.urgency
+      !payload.urgency ||
+      !payload.applicantEmailAddress ||
+      !payload.applicantFirstName ||
+      !payload.applicantPhoneNumber ||
+      !payload.applicantLastName
     ) {
       let tempError = [];
 
@@ -570,18 +580,17 @@ const Index = ({ isView, propertyData }) => {
       if (!payload.applicantPhoneNumber) {
         tempError.push("applicantPhoneNumber");
       }
-      if (!payload.applicantEmail) {
+      if (!payload.applicantEmailAddress) {
         tempError.push("applicantEmailAddress");
       }
-      if(!urgencyRef){
+      if (!payload.urgency) {
         tempError.push("urgency");
       }
-      if(!appraisalQuoteDate){
+      if (!payload.quoteRequiredDate) {
         tempError.push("quoteRequiredDate");
       }
       setErrorLabel(tempError);
       console.log(tempError);
-      console.log(urgencyRef,appraisalQuoteDate);
       window.scrollTo({
         top: 0,
         behavior: "smooth",
@@ -621,7 +630,7 @@ const Index = ({ isView, propertyData }) => {
         applicantFirstName: applicantFirstName,
         applicantLastName: applicantLatsName,
         applicantPhoneNumber: applicantNumber,
-        applicantEmail: applicantEmail || userData.userEmail,
+        applicantEmailAddress: applicantEmail || userData.userEmail,
         bidLowerRange: Number(bidLowerRangeRef),
         bidUpperRange: Number(bidLowerRangeRef),
         propertyStatus: true,
@@ -645,8 +654,6 @@ const Index = ({ isView, propertyData }) => {
         quoteRequiredDate: appraisalQuoteDate,
         remark: remark ? remark : "",
       };
-
-      console.log(payload);
 
       if (
         !payload.streetName ||
@@ -1184,24 +1191,26 @@ const Index = ({ isView, propertyData }) => {
                           </tr>
 
                           <tr>
-                          <td
-                            style={{
-                              border: "1px solid grey",
-                              color: "#2e008b",
-                            }}
-                          >
-                            <span className="text-start">Quote Required Date</span>
-                          </td>
-                          <td
-                            style={{
-                              border: "1px solid grey",
-                              width: "250px",
-                            }}
-                          >
-                            {" "}
-                            {appraisalQuoteDate}
-                          </td>
-                        </tr>
+                            <td
+                              style={{
+                                border: "1px solid grey",
+                                color: "#2e008b",
+                              }}
+                            >
+                              <span className="text-start">
+                                Quote Required Date
+                              </span>
+                            </td>
+                            <td
+                              style={{
+                                border: "1px solid grey",
+                                width: "250px",
+                              }}
+                            >
+                              {" "}
+                              {appraisalQuoteDate}
+                            </td>
+                          </tr>
 
                           <tr>
                             <td

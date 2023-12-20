@@ -59,7 +59,7 @@ const headCells = [
     id: "status",
     numeric: false,
     label: "Status",
-    width: 200,
+    width: 160,
   },
   {
     id: "urgency",
@@ -89,7 +89,7 @@ const headCells = [
     id: "action",
     numeric: false,
     label: "Action",
-    width: 300,
+    width: 180,
   },
 ];
 
@@ -232,23 +232,23 @@ export default function Exemple({
           status: isBidded.bidId ? (
             isBidded.status === 0 ? (
               <span
-                className="btn btn-primary"
+                className="btn btn-primary  w-100"
                 onClick={openStatusUpdateHandler}
               >
                 Quote Provided
               </span>
             ) : isBidded.status === 1 ? (
               <span
-                className="btn btn-success"
+                className="btn btn-success  w-100"
                 onClick={openStatusUpdateHandler}
               >
                 Accepted
               </span>
             ) : (
-              <span className="btn btn-danger">Rejected</span>
+              <span className="btn btn-danger  w-100">Rejected</span>
             )
           ) : (
-            <span className="btn btn-warning">New</span>
+            <span className="btn btn-warning  w-100">New</span>
           ),
           broker: (
             <div>
@@ -271,9 +271,9 @@ export default function Exemple({
               ) : isBidded.status === 2 ? (
                 <h6 style={{ color: "red" }}> Rejected</h6>
               ) : (
-                <h6>
+                <p>
                   Broker Information will be available post the quote acceptance
-                </h6>
+                </p>
               )}
             </div>
           ),
@@ -299,33 +299,6 @@ export default function Exemple({
             <div className="print-hidden-column">
               {isBidded && isBidded.status !== 1 ? (
                 <ul className="">
-                  {!isBidded.$id && (
-                    <li
-                      className="list-inline-item"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Provide Quote"
-                    >
-                      <div
-                        className=" fw-bold"
-                        onClick={() =>
-                          participateHandler(
-                            property.bidLowerRange,
-                            property.propertyId
-                          )
-                        }
-                      >
-                        <a
-                          href="#"
-                          className="btn btn-color w-15"
-                          style={{ marginLeft: "10px" }}
-                        >
-                          Provide Quote
-                        </a>
-                      </div>
-                    </li>
-                  )}
-
                   {isWishlist.id ? (
                     <button
                       className="btn "
@@ -361,25 +334,49 @@ export default function Exemple({
                     </li>
                   )}
 
+                  {!isBidded.$id && (
+                    <li
+                      className="list-inline-item"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Provide Quote"
+                    >
+                      <div
+                        className="w-100"
+                        onClick={() =>
+                          participateHandler(
+                            property.bidLowerRange,
+                            property.propertyId
+                          )
+                        }
+                      >
+                        <button
+                          href="#"
+                          className="btn btn-color w-100 mt-1"
+                          style={{ marginLeft: "12px" }}
+                        >
+                          Provide Quote
+                        </button>
+                      </div>
+                    </li>
+                  )}
+
                   <li
-                    className="list-inline-item m-1"
-                    title="Delete Property"
-                    style={{
-                      width: "30px",
-                      border: "none",
-                      textAlign: "center",
-                      borderRadius: "5px",
-                    }}
+                    className="list-inline-item"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Archive Property"
                   >
                     {
                       <button
-                        className="btn"
-                        style={{ border: "1px solid grey" }}
+                        className="btn btn-color w-100 mt-1"
+                        style={{ marginLeft: "10px" }}
                         onClick={() =>
                           onDeletePropertyHandler(property.propertyId)
                         }
                       >
-                        <span className="flaticon-garbage text-danger"></span>
+                        Archive Property
+                        {/* <span className="flaticon-garbage text-danger"></span> */}
                       </button>
                     }
                   </li>

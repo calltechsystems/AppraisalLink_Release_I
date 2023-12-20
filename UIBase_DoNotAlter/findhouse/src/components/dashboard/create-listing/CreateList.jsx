@@ -10,7 +10,7 @@ const CreateList = ({
   setAreaRef,
   setBuildinRef,
   appraisalQuoteDate,
-   setAppraisalQuoteDate,
+  setAppraisalQuoteDate,
   propertyData,
   otherUrgencyValue,
   setDisable,
@@ -342,7 +342,7 @@ const CreateList = ({
                 Type of Building <span class="req-btn">*</span>
               </label>
             </div>
-            <div className="col-lg-3">
+            <div className="col-lg-4">
               <div
                 className="form-group input-group ui_kit_select_search"
                 style={{ marginLeft: "-5px" }}
@@ -409,7 +409,7 @@ const CreateList = ({
                 <span class="req-btn">*</span>
               </label>
             </div>
-            <div className="col-lg-7">
+            <div className="col-lg-4">
               <input
                 required
                 type="number"
@@ -441,7 +441,7 @@ const CreateList = ({
                 Purpose <span class="req-btn">*</span>
               </label>
             </div>
-            <div className="col-lg-3">
+            <div className="col-lg-4">
               <div
                 className="form-group input-group ui_kit_select_search"
                 style={{ marginLeft: "-5px" }}
@@ -522,7 +522,7 @@ const CreateList = ({
                 Type of Appraisal <span class="req-btn">*</span>
               </label>
             </div>
-            <div className="col-lg-3">
+            <div className="col-lg-4">
               <div
                 className="form-group input-group ui_kit_select_search"
                 style={{ marginLeft: "-5px" }}
@@ -618,7 +618,7 @@ const CreateList = ({
                 Lender Information
               </label>
             </div>
-            <div className="col-lg-7">
+            <div className="col-lg-4">
               <input
                 type="text"
                 className="form-control"
@@ -646,7 +646,7 @@ const CreateList = ({
                 Urgency <span class="req-btn">*</span>
               </label>
             </div>
-            <div className="col-lg-3">
+            <div className="col-lg-4">
               <div
                 className="form-group input-group ui_kit_select_search mb-3"
                 style={{ marginLeft: "-5px" }}
@@ -665,7 +665,7 @@ const CreateList = ({
                       : {
                           paddingTop: "15px",
                           paddingBottom: "15px",
-                          backgroundColor: "#E8F0FE"
+                          backgroundColor: "#E8F0FE",
                         }
                   }
                 >
@@ -679,7 +679,6 @@ const CreateList = ({
                 </select>
               </div>
             </div>
-           
           </div>
           <div
             className="row"
@@ -687,14 +686,11 @@ const CreateList = ({
             id="other-div_03"
           >
             <div className="col-lg-3 my_profile_setting_input form-group">
-              <label
-                htmlFor=""
-                className="text-color bg-transparent mt-1"
-              >
+              <label htmlFor="" className="text-color bg-transparent mt-1">
                 Appraisal Report Required By <span class="req-btn">*</span>
               </label>
             </div>
-            <div className="col-lg-3" >
+            <div className="col-lg-4">
               <input
                 required
                 style={
@@ -703,7 +699,8 @@ const CreateList = ({
                     : {
                         paddingTop: "15px",
                         paddingBottom: "15px",
-                        backgroundColor: "#E8F0FE"
+                        backgroundColor: "#E8F0FE",
+                        marginLeft:"-5px"
                       }
                 }
                 type="datetime-local"

@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 
 const Modal = ({
   modalOpen,
+  setModalOpen,
   closeModal,
   lowRangeBid,
   setIsModalOpen,
@@ -17,12 +18,15 @@ const Modal = ({
   openQuoteModal,
 }) => {
   const router = useRouter();
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(null);
   const [description, setDescription] = useState("");
 
   const [toggle, setToggle] = useState(false);
 
   const onCancelHandler = () => {
+    setToggle(false);
+    setValue(0);
+    setDescription("");
     closeModal();
   };
 
@@ -30,11 +34,17 @@ const Modal = ({
     setToggle(true);
   };
 
+  const onCloseModalHandler = () => {
+    setValue("");
+    setModalOpen(false);
+    setToggle(false);
+  };
+
   const onSubmitHnadler = () => {
     const bidAmount = value;
     const desp = description;
 
-    if (bidAmount <= 0) {
+    if (bidAmount <= 0 || bidAmount === "") {
       toast.error("Quoted amount should be filled !");
     } else {
       const user = JSON.parse(localStorage.getItem("user"));
@@ -66,14 +76,18 @@ const Modal = ({
   };
 
   const openConfirmModal = () => {
-    setToggle(true);
+    if (value === null) {
+      toast.error("Quoted amount should be filled !");
+    } else {
+      setToggle(true);
+    }
   };
   return (
     <div>
       {modalOpen && (
         <div className="modal">
           <div className="modal-content">
-            <span className="close" onClick={closeModal}>
+            <span className="close" onClick={onCloseModalHandler}>
               &times;
             </span>
             <div style={{ display: "flex", flexDirection: "column" }}>
@@ -82,21 +96,19 @@ const Modal = ({
                 <span
                   style={{
                     fontWeight: "bold",
-                    fontSize: "29px",
+                    fontSize: "27px",
                     color: "#2e008b",
                   }}
                 >
-                  {!toggle ? "Appraisal Quote Form" : "Confirmation Form"}
+                  {!toggle
+                    ? "Appraisal Quote Form"
+                    : "Appraisal Quote Confirmation"}
                 </span>
               </h2>
             </div>
-            <div
-              style={{
-                border: "1px",
-                borderStyle: "solid",
-                borderColor: "gray",
-              }}
-            ></div>
+            <div>
+              <hr />
+            </div>
             <div>
               {!toggle ? (
                 <div className="row">
@@ -133,7 +145,7 @@ const Modal = ({
                               fontWeight: "lighter",
                             }}
                           >
-                            Description
+                            Remark
                           </label>
                         </div>
                         <div className="col-lg-7">
@@ -152,24 +164,29 @@ const Modal = ({
                   </div>
                 </div>
               ) : (
-                <h4>
-                  Are you confirm to quote this property on this provided amount
-                  ? : {value}{" "}
-                </h4>
+                <p className="m-3 text-center" style={{ fontSize: "18px" }}>
+                  Are you confirming that you will quote this property for the
+                  given amount : <br />
+                  <h3 className="mt-2 text-color"> $ {value}</h3>
+                </p>
               )}
             </div>
-            <div className="button-container" style={{ marginRight: "4%" }}>
+            <hr />
+            <div
+              className="col-lg-12 text-center"
+              style={{ marginRight: "4%" }}
+            >
               {/* <button className="cancel-button" onClick={closeModal}>
                   Cancel
                 </button> */}
               <button
-                className="btn btn-log w-35 mr-20"
-                onClick={closeModal}
+                className="btn btn-color w-25"
+                onClick={onCloseModalHandler}
               >
                 Cancel
               </button>
               <button
-                className="btn btn-color w-35 btn-thm"
+                className="btn btn-color w-25 m-1"
                 onClick={toggle ? onSubmitHnadler : openConfirmModal}
               >
                 Continue

@@ -203,7 +203,7 @@ const LocationField = ({
                   // onChange={check_03}
                   disabled={isDisable}
                   style={
-                    checkIsError("typeOfAppraisal")
+                    checkIsError("state")
                       ? errorLabelStyle
                       : {
                           paddingTop: "15px",

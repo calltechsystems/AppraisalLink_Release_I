@@ -39,7 +39,8 @@ async function handler(request, response) {
       typeOfAppraisal,
       lenderInformation,
       purpose,
-      applicantAddress,
+      applicantEmailAddress,
+      quoteRequiredDate,
       attachment,
       image,
       token,
@@ -47,7 +48,6 @@ async function handler(request, response) {
 
     const formData = {
       userId: userId,
-      propertyId: propertyId,
       streetName: streetName,
       streetNumber: streetNumber,
       city: city,
@@ -58,7 +58,7 @@ async function handler(request, response) {
       typeOfBuilding: typeOfBuilding,
       applicantFirstName: applicantFirstName,
       applicantLastName: applicantLastName,
-      applicantEmailAddress: applicantEmail,
+      applicantEmailAddress: applicantEmailAddress,
       applicantPhoneNumber: applicantPhoneNumber,
       bidLowerRange: bidLowerRange,
       bidUpperRange: bidUpperRange,
@@ -68,9 +68,11 @@ async function handler(request, response) {
       purpose: purpose,
       typeOfAppraisal: typeOfAppraisal,
       lenderInformation: lenderInformation,
-      applicantAddress: applicantAddress,
+      applicantAddress: "",
       attachment: attachment,
       image: image,
+      quoteRequiredDate: quoteRequiredDate,
+      remark: "",
     };
 
     const userResponse = await axios.put(
