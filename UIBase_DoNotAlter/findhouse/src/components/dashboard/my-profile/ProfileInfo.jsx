@@ -721,10 +721,10 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   </div>
 
                   <div className="mt-5">
-                    <p>
+                    {/* <p>
                       If you have an Administrative Assistant, fill in the
                       following:
-                    </p>
+                    </p> */}
                     <h3>Assistant#1 Information</h3>
                     <hr />
                   </div>

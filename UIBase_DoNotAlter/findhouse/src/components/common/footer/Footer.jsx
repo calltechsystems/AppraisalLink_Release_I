@@ -7,7 +7,7 @@ const Footer = () => {
     <>
       <div className="col-sm-6 col-md-6 col-lg-3 col-xl-3 pr0 pl0">
         <div className="footer_about_widget">
-          <h4>About Appraisal Link</h4>
+          <h4>About Appraisal Land</h4>
           <p>
             We are a Ontario based buisness working with brokers and appraisers
             providing services in real estate sector.
@@ -51,7 +51,7 @@ const Footer = () => {
               <a href="#">Brampton, LX23Y2, Ontario</a>
             </li>
             <li>
-              <Link href="mailto:info@appraisallink.ca">info@appraisallink.ca</Link>
+              <Link href="mailto:info@appraisalLand.ca">info@appraisalLand.ca</Link>
             </li>
             <li>
               <a href="tel:+13020001111">+1 302-000-1111</a>

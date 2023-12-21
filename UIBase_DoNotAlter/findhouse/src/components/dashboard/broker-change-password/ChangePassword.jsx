@@ -13,6 +13,7 @@ const ChangePassword = () => {
   const emailRef = useRef("");
 
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [passwordVisible_01, setPasswordVisible_01] = useState(false);
 
   const userData = JSON.parse(localStorage.getItem("user")) || {};
 
@@ -20,6 +21,10 @@ const ChangePassword = () => {
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
+  };
+
+  const togglePasswordVisibility_01 = () => {
+    setPasswordVisible_01(!passwordVisible_01);
   };
 
   const submitHandler = async () => {
@@ -75,7 +80,7 @@ const ChangePassword = () => {
                 aria-expanded="false"
                 aria-controls="collapseThree"
               >
-                Manage Password
+                {/* Manage Password */}
               </button>
             </h2>
             <div

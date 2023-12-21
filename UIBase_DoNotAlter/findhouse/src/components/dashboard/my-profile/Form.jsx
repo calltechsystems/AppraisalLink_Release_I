@@ -14,15 +14,10 @@ const Form = ({ userData, chnageShowCardHandler }) => {
     >
       <div className="d-flex justify-content-end">
         <button
-          className="btn btn2 btn-color profile_edit_button_01"
+          className="btn btn-color profile_edit_button_01"
           onClick={() => chnageShowCardHandler(false)}
         >
-          <span
-            className="flaticon-edit"
-            data-toggle="tooltip"
-            data-placement="top"
-            title="Edit Profile"
-          ></span>
+         Edit Profile
         </button>
       </div>
 

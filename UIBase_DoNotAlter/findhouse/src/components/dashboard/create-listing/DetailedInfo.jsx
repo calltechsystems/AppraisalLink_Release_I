@@ -110,7 +110,7 @@ const DetailedInfo = ({
   setDisable,
 }) => {
   const router = useRouter();
-  console.log(filesUrl,attachment);
+  console.log(filesUrl, attachment);
 
   const [uploadedFiles, setUploadedFiles] = useState([]);
 
@@ -690,18 +690,22 @@ const DetailedInfo = ({
                       </>
                     );
                   })
-                : attachment[0]!== "" ? attachment.map((url, index) => {
+                : attachment[0] !== ""
+                ? attachment.map((url, index) => {
                     return (
-                       <img key={index} src={url} width={120} height={120} /> 
+                      <img key={index} src={url} width={120} height={120} />
                     );
-                  }) : ""}
+                  })
+                : ""}
             </div>
           </div>
           <div className="col-xl-12">
             <div className="my_profile_setting_input overflow-hidden mt20 text-center">
-              <button className="btn btn5 m-1" onClick={cancelHandler}>
-                Reset
-              </button>
+              {isDisable && (
+                <button className="btn btn5 m-1" onClick={cancelHandler}>
+                  Cancel
+                </button>
+              )}
               {!isDisable &&
                 (propertyData ? (
                   <button className="btn btn5" onClick={submitHandler}>

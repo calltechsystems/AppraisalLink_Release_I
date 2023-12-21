@@ -100,9 +100,9 @@ const Index = () => {
                 >
                   Ready to get started?
                 </h2>
-                <p className="text-dark">
+                {/* <p className="text-dark">
                   Choose a plan tailored to your needs.
-                </p>
+                </p> */}
                 <div className="toggleContainer mt-3">
                   <span
                     className="fw-bold text-dark"

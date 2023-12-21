@@ -97,15 +97,15 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
 
     if (password !== reEnterPassword) {
       setChange(true);
-      setErrorMessage("Password are meant to be same ");
+      setErrorMessage("Passwords should always be the same.");
       setModalIsOpenError(true);
     } else if (user === "") {
       setChange(true);
-      setErrorMessage("User Type must be selected for registration!!");
+      setErrorMessage("Selecting a User Type is required for registration!!");
       setModalIsOpenError(true);
     } else if (!email) {
       setChange(true);
-      setErrorMessage("Email cant be empty or non valid.");
+      setErrorMessage("Email cannot be invalid or empty..");
       setModalIsOpenError(true);
     } else if (!captchaVerfied) {
       setChange(true);
@@ -370,8 +370,8 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
                 <div
                   className="input-group-text m-1"
                   style={{ border: "1px solid #2e008b" }}
-                  onMouseEnter={togglePasswordVisibility}
-                  onMouseLeave={togglePasswordVisibility}
+                  onMouseEnter={togglePasswordVisibility_01}
+                  onMouseLeave={togglePasswordVisibility_01}
                 >
                   <FaEye />
                 </div>

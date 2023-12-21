@@ -162,12 +162,11 @@ const Index = ({ isView, propertyData }) => {
 
   useEffect(() => {
     if (stateRef !== "") {
-      
       let updatedError = errorLabel.filter((err) => {
         if (String(err) === "state") return false;
         else return true;
       });
-      console.log("stateRef",stateRef,updatedError)
+      console.log("stateRef", stateRef, updatedError);
       setErrorLabel(updatedError);
     }
   }, [stateRef]);
@@ -188,7 +187,7 @@ const Index = ({ isView, propertyData }) => {
         if (String(err) === "typeOfBuilding") return false;
         else return true;
       });
-      console.log("building",buildinRef,updatedError)
+      console.log("building", buildinRef, updatedError);
       setErrorLabel(updatedError);
     }
   }, [buildinRef]);
@@ -805,7 +804,16 @@ const Index = ({ isView, propertyData }) => {
                   </div>
                 </div>
                 {/* End .col */}
-
+                {isDisable && (
+                  <div className="col-lg-12 text-end_01">
+                    <button
+                      className="btn btn-color mb-2 text-end"
+                      onClick={() => setDisable(false)}
+                    >
+                      Edit Property
+                    </button>
+                  </div>
+                )}
                 <div className="col-lg-12">
                   <div className="my_dashboard_review">
                     <div className="row">
@@ -822,20 +830,7 @@ const Index = ({ isView, propertyData }) => {
                         </h4>
                       </div>
                       <hr style={{ color: "#2e008b" }} />
-                      {isDisable && (
-                        <div style={{ marginLeft: "80%", marginBottom: "1%" }}>
-                          <button
-                            style={{
-                              borderRadius: "10%",
-                              backgroundColor: "#2e008b",
-                              color: "white",
-                            }}
-                            onClick={() => setDisable(false)}
-                          >
-                            Edit
-                          </button>
-                        </div>
-                      )}
+
                       <LocationField
                         isDisable={isDisable}
                         streetNameRef={streetNameRef}

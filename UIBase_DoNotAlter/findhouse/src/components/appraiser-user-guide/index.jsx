@@ -104,12 +104,12 @@ const Index = () => {
                   Appraising properties, simplifying the appraisal process.
                 </h2>
                 <p className="text-light">
-                  Throughout the home appraisal process of appraisal link serves
+                  Throughout the home appraisal process of appraisal Land serves
                   as a point of contact between the broker and the appraiser.
                 </p>
-                <Link href="/register" className="my_profile_setting_input">
+                <Land href="/register" className="my_profile_setting_input">
                   <button className="btn btn2">Register</button>
-                </Link>
+                </Land>
               </div>
             </div>
           </div>

@@ -13,6 +13,7 @@ const ChangePassword = () => {
   const emailRef = useRef("");
 
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [passwordVisible_01, setPasswordVisible_01] = useState(false);
 
   const userData = JSON.parse(localStorage.getItem("user")) || {};
 
@@ -22,6 +23,9 @@ const ChangePassword = () => {
     setPasswordVisible(!passwordVisible);
   };
 
+  const togglePasswordVisibility_01 = () => {
+    setPasswordVisible_01(!passwordVisible_01);
+  };
 
   const submitHandler = async () => {
     const email = userData.userEmail;
@@ -76,7 +80,7 @@ const ChangePassword = () => {
                 aria-expanded="false"
                 aria-controls="collapseThree"
               >
-                Manage Password
+                {/* Manage Password */}
               </button>
             </h2>
             <div
@@ -87,7 +91,7 @@ const ChangePassword = () => {
             >
               <div class="accordion-body">
                 <div className="row">
-                  <div className="col-xl-4">
+                  <div className="col-lg-6 col-xl-3">
                     <div className="my_profile_setting_input form-group">
                       <label
                         htmlFor="formGroupExampleOldPass"
@@ -100,21 +104,35 @@ const ChangePassword = () => {
                         Old Password
                       </label>
                       <input
-                      
-                      type="password"
-                      className="form-control"
-                      id="exampleInputPassword1"
-                      placeholder="Old Password"
-                      required
-                      ref={oldPasswordRef}
-                      style={{ paddingRight: "40px" }} // Add right padding to accommodate the button
-                    />
-                   
+                        type={passwordVisible ? "text" : "password"} // Conditionally set the input type
+                        className="form-control"
+                        id="exampleInputPassword1"
+                        // placeholder="Old Password"
+                        required
+                        ref={oldPasswordRef}
+                        style={{ paddingRight: "40px" }} // Add right padding to accommodate the button
+                      />
+                    </div>
+                  </div>
+                  <div
+                    className="col-lg-1"
+                    style={{
+                      width: "fit-content",
+                      marginTop: "37px",
+                      marginLeft: "-15px",
+                    }}
+                  >
+                    <div
+                      className="input-group-text"
+                      style={{ border: "", cursor: "pointer" }}
+                      onMouseEnter={togglePasswordVisibility}
+                      onMouseLeave={togglePasswordVisibility}
+                    >
+                      <FaEye />
                     </div>
                   </div>
                   {/* End .col */}
-
-                  <div className="col-lg-6 col-xl-4">
+                  <div className="col-lg-6 col-xl-3">
                     <div className="my_profile_setting_input form-group">
                       <label
                         htmlFor="formGroupExampleNewPass"
@@ -127,29 +145,38 @@ const ChangePassword = () => {
                         New Password
                       </label>
                       <input
-                      type={passwordVisible ? "text" : "password"} // Conditionally set the input type
-                      className="form-control"
-                      id="exampleInputPassword1"
-                      placeholder="New Password"
-                      required
-                      ref={newPasswordRef}
-                      style={{ paddingRight: "40px" }} // Add right padding to accommodate the button
-                    />
-                    <div className="input-group-prepend">
-                      <div
-                        className="input-group-text m-1"
-                        style={{ border: "1px solid #2e008b", cursor: "pointer" }}
-                        onMouseEnter={togglePasswordVisibility}
-                        onMouseLeave={togglePasswordVisibility}
-                      >
-                        <FaEye />
-                      </div>
+                        type={passwordVisible ? "text" : "password"} // Conditionally set the input type
+                        className="form-control"
+                        id="exampleInputPassword1"
+                        // placeholder="New Password"
+                        required
+                        ref={newPasswordRef}
+                        style={{ paddingRight: "40px" }} // Add right padding to accommodate the button
+                      />
                     </div>
+                  </div>
+                  <div
+                    className="col-lg-1"
+                    style={{
+                      width: "fit-content",
+                      marginTop: "37px",
+                      marginLeft: "-15px",
+                    }}
+                  >
+                    <div
+                      className="input-group-text"
+                      style={{
+                        border: "",
+                        cursor: "pointer",
+                      }}
+                      onMouseEnter={togglePasswordVisibility}
+                      onMouseLeave={togglePasswordVisibility}
+                    >
+                      <FaEye />
                     </div>
                   </div>
                   {/* End .col */}
-
-                  <div className="col-lg-6 col-xl-4">
+                  <div className="col-lg-6 col-xl-3">
                     <div className="my_profile_setting_input form-group">
                       <label
                         htmlFor="formGroupExampleConfPass"
@@ -162,28 +189,37 @@ const ChangePassword = () => {
                         Confirm New Password
                       </label>
                       <input
-                      type={passwordVisible ? "text" : "password"} // Conditionally set the input type
-                      className="form-control"
-                      id="exampleInputPassword1"
-                      placeholder="Confirm New Password"
-                      required
-                      ref={confirmPasswordRef}
-                      style={{ paddingRight: "40px" }} // Add right padding to accommodate the button
-                    />
-                    <div className="input-group-prepend">
-                      <div
-                        className="input-group-text m-1"
-                        style={{ border: "1px solid #2e008b", cursor: "pointer" }}
-                        onMouseEnter={togglePasswordVisibility}
-                        onMouseLeave={togglePasswordVisibility}
-                      >
-                        <FaEye />
-                      </div>
+                        type={passwordVisible ? "text" : "password"} // Conditionally set the input type
+                        className="form-control"
+                        id="exampleInputPassword1"
+                        // placeholder="Confirm New Password"
+                        required
+                        ref={confirmPasswordRef}
+                        style={{ paddingRight: "40px" }} // Add right padding to accommodate the button
+                      />
                     </div>
+                  </div>{" "}
+                  <div
+                    className="col-lg-1"
+                    style={{
+                      width: "fit-content",
+                      marginTop: "37px",
+                      marginLeft: "-15px",
+                    }}
+                  >
+                    <div
+                      className="input-group-text"
+                      style={{
+                        border: "",
+                        cursor: "pointer",
+                      }}
+                      onMouseEnter={togglePasswordVisibility}
+                      onMouseLeave={togglePasswordVisibility}
+                    >
+                      <FaEye />
                     </div>
                   </div>
                   {/* End .col */}
-
                   <div className="col-xl-12">
                     <div className="my_profile_setting_input float-end fn-520 mt-4">
                       <button className="btn btn-color" onClick={submitHandler}>

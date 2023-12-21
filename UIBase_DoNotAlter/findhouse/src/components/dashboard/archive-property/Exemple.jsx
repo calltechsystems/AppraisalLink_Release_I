@@ -202,52 +202,182 @@ export default function Exemple({
               : "NA",
             urgency: property.urgency === 0 ? "Rush" : "Regular",
             actions: (
-              <ul className="view_edit_delete_list mb0">
+              <ul className="mb0">
+                {!isEditable && (
+                  <li>
+                    <Link href={"#"}>
+                      <span
+                        className="btn btn-color w-100 mb-1"
+                        onClick={() => openPopupModal(property)}
+                      >
+                        {" "}
+                        Property Details{" "}
+                      </span>
+                    </Link>{" "}
+                    {/* <span
+                      className="btn btn-color-table m-1"
+                      onClick={() => openPopupModal(property)}
+                    >
+                      <Link href={"#"}>
+                        <span className="text-light flaticon-view"></span>
+                      </Link>
+                    </span> */}
+                  </li>
+                )}
+
+                {!isEditable && (
+                  <li>
+                    <Link href={`/my-property-bids/${property.propertyId}`}>
+                      <span className="btn btn-color w-100 mb-1"> Quotes </span>
+                    </Link>{" "}
+                    {/* <Link
+                      className="btn btn-color-table"
+                      style={{ marginLeft: "4.3rem" }}
+                      href={`/my-property-bids/${property.propertyId}`}
+                    >
+                      <span className="flaticon-invoice"></span>
+                    </Link> */}
+                  </li>
+                )}
+                {/* <li
+                className="list-inline-item"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="Property Details"
+              >
+                <span
+                  className="btn btn-color-table"
+                  onClick={() => openPopupModal(property)}
+                >
+                  <Link href={"#"}>
+                    <span className="flaticon-view"></span>
+                  </Link>
+                </span>
+              </li>
+
+              <li
+                className="list-inline-item"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="Bids"
+              >
+                <Link
+                  className="btn btn-color-table"
+                  href={`/my-property-bids/${property.propertyId}`}
+                >
+                  <span className="flaticon-invoice"></span>
+                </Link>
+              </li> */}
+
+                {(isEditable || isStatus === 1) && (
+                  <li>
+                    <Link href={`/create-listing/${property.propertyId}`}>
+                      <span className="btn btn-color w-100 mb-1"> Edit </span>
+                    </Link>{" "}
+                    {/* <Link
+                      className="btn btn-color-table"
+                      href={`/create-listing/${property.propertyId}`}
+                    >
+                      <span className="flaticon-edit"></span>
+                    </Link> */}
+                  </li>
+                )}
+
+                {/* End li */}
+
+                {isEditable && (
+                  <li>
+                    <Link href="#" onClick={() => open(property)}>
+                      <span className="btn btn-color w-100 mb-1">
+                        {" "}
+                        Order Cancel{" "}
+                      </span>
+                    </Link>{" "}
+                    {/* <button
+                      className="btn"
+                      style={{ border: "1px solid grey" }}
+                      onClick={() => open(property)}
+                    >
+                      <Link href="#">
+                        <span className="flaticon-garbage text-danger"></span>
+                      </Link>
+                    </button> */}
+                  </li>
+                )}
+
+                {isEditable && (
+                  <li>
+                    <Link href="#">
+                      <span className="btn btn-color w-100 mb-1">
+                        {" "}
+                        On Hold{" "}
+                      </span>
+                    </Link>{" "}
+                    {/* <Link
+                      className="btn btn-color-table"
+                      href={`/create-listing/${property.propertyId}`}
+                    >
+                      <span className="flaticon-edit"></span>
+                    </Link> */}
+                  </li>
+                )}
+
+                {/* {!isEditable && (
                 <li
                   className="list-inline-item"
                   data-toggle="tooltip"
                   data-placement="top"
-                  title="View"
+                  title="Archive Property"
                 >
-                  <Link
-                    href={`/my-property-bids/${property.propertyId}`}
+                  <span
                     className="btn btn-color-table"
+                    onClick={() => archievePropertyHandler(property.propertyId)}
                   >
-                    <span className="flaticon-view"></span>
-                  </Link>
-                </li>
-                {/* {isEditable && (
-                  <li
-                    className="list-inline-item"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title="Edit"
-                  >
-                    <Link href={`/create-listing/${property.propertyId}`}>
-                      <span className="flaticon-edit"></span>
+                    <Link className="color-light" href={`/archive-property`}>
+                      <span className="flaticon-box"></span>
                     </Link>
-                  </li>
-                )} */}
-                {/* End li */}
-
-                {/* {isEditable && (
-                  <li
-                    className="list-inline-item"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title="Delete"
-                  >
-                    <button
-                      style={{ border: "none", backgroundColor: "white" }}
-                      onClick={() => open(property)}
+                  </span>
+                </li>
+              )} */}
+                {!isEditable && (
+                  <li>
+                    <Link href="#">
+                      <span className="btn btn-color w-100">
+                        {" "}
+                        Remove Archive{" "}
+                      </span>
+                    </Link>
+                    {/* <span
+                      className="btn btn-color-table m-1"
+                      onClick={() =>
+                        archievePropertyHandler(property.propertyId)
+                      }
                     >
-                      <Link href="#">
-                        <span className="flaticon-garbage"></span>
+                      <Link className="color-light" href={`/archive-property`}>
+                        <span className="flaticon-box text-light"></span>
                       </Link>
-                    </button>
+                    </span> */}
                   </li>
-                )} */}
+                )}
+
+                {/* End li */}
               </ul>
+              // <ul className="view_edit_delete_list mb0">
+              //   <li
+              //     className="list-inline-item"
+              //     data-toggle="tooltip"
+              //     data-placement="top"
+              //     title="View"
+              //   >
+              //     <Link
+              //       href={`/my-property-bids/${property.propertyId}`}
+              //       className="btn btn-color-table"
+              //     >
+              //       <span className="flaticon-view"></span>
+              //     </Link>
+              //   </li>
+
+              // </ul>
             ),
           };
           tempData.push(updatedRow);

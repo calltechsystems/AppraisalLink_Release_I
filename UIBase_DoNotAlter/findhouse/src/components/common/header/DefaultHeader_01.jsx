@@ -47,7 +47,7 @@ const Header = ({ userData }) => {
           <span
             style={{ marginTop: "25px", color: "#97d700", marginLeft: "-10px" }}
           >
-            Link
+            Land
           </span>
         </Link>
         {/* site logo brand */}

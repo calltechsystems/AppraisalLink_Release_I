@@ -305,7 +305,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                         <div className="row text-end">
                           <div className="col-lg-12 m-5 fw-bold">
                             <span>
-                              Ready to see Appraisal Link help make you more
+                              Ready to see Appraisal Land help make you more
                               money at record speed?
                             </span>
                             <br />
@@ -512,7 +512,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                         <div className="row">
                           <div className="col-lg-8 m-5 fw-bold">
                             <span>
-                              Ready to see Appraisal Link help make you more
+                              Ready to see Appraisal Land help make you more
                               money at record speed?
                             </span>
                             <br />
@@ -647,7 +647,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                               Revolutionize Your Experience : Conquer the real
                               estate buisness with{" "}
                               <span className="text-color fw-bold">
-                                Appraisal Link
+                                Appraisal Land
                               </span>
                               .
                             </span>
@@ -807,7 +807,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                               Experience our platform to the fullest by becoming
                               a subscriber on{" "}
                               <span className="text-color fw-bold">
-                                Appraisal Link
+                                Appraisal Land
                               </span>
                               .
                             </span>
@@ -923,7 +923,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                         <div className="row text-end">
                           <div className="col-lg-12 m-5 fw-bold">
                             <span>
-                              Ready to see Appraisal Link help make you more
+                              Ready to see Appraisal Land help make you more
                               money at record speed?
                             </span>
                             <br />

@@ -43,7 +43,7 @@ const Header = ({ userData }) => {
             src="/assets/images/logo_new.png"
             alt="header-logo2.png"
           />
-          <span style={{ marginTop: "25px" }}>Appraisal Link</span>
+          <span style={{ marginTop: "25px" }}>Appraisal Land</span>
         </Link>
         {/* site logo brand */}
 

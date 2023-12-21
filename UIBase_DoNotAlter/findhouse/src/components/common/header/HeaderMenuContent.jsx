@@ -479,7 +479,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                     <div className="row">
                       <div className="col-lg-8 m-5 fw-bold">
                         <span>
-                          Ready to see Appraisal Link help make you more money
+                          Ready to see Appraisal Land help make you more money
                           at record speed?
                         </span>
                         <br />
@@ -619,7 +619,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                           Revolutionize Your Frieght Experience : conquer the
                           real estate buisness with{" "}
                           <span className="text-color fw-bold">
-                            Appraisal Link
+                            Appraisal Land
                           </span>
                           .
                         </span>

@@ -16,7 +16,7 @@ const MobileMenu = () => {
               src="/assets/images/logo_new.png"
               alt="header-logo2.png"
             />
-            <span className="mt20">Appraisal Link</span>
+            <span className="mt20">Appraisal Land</span>
           </div>
           {/* main_logo_home2 */}
 

@@ -46,7 +46,7 @@ const Header = ({profileCount , setProfileCount , userData }) => {
             src="/assets/images/header-logo2.png"
             alt="header-logo2.png"
           />
-          <span>Appraisal Link</span>
+          <span>Appraisal Land</span>
         </Link>
         {/* site logo brand */}
 

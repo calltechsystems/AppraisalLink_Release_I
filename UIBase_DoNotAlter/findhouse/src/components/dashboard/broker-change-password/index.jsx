@@ -90,7 +90,7 @@ const Index = () => {
 
                 <div className="col-lg-12">
                   <div className="breadcrumb_content style2">
-                    <h3 className="breadcrumb_title">Change Password</h3>
+                    <h3 className="breadcrumb_title">Manage Password</h3>
                     {/* <p>We are glad to see you again!</p> */}
                   </div>
                 </div>
@@ -117,7 +117,7 @@ const Index = () => {
           </div>
         </div>
       </section>
-      <div className="row mt100">
+      <div className="row mt200">
         <div className="col-lg-12">
           <div className="copyright-widget text-end">
             <p>

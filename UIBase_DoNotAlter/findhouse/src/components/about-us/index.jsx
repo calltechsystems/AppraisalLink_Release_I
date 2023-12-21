@@ -77,7 +77,7 @@ const Index = () => {
               }}
             >
               <h2 className="mt0 text-light">
-                Our Mission Is To Appraisal Link
+                Our Mission Is To Appraisal Land
               </h2>
             </div>
           </div>
@@ -176,7 +176,7 @@ const Index = () => {
               </h2>
               <p className="text-light">
                 To learn more about the plans available and how to tailor your
-                Appraisal Link membership to maximize your earning potential,
+                Appraisal Land membership to maximize your earning potential,
                 speak with a product consultant.
               </p>
               <Link href="/contact">

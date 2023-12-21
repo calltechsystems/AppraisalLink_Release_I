@@ -90,7 +90,7 @@ const Index = () => {
 
                 <div className="col-lg-12">
                   <div className="breadcrumb_content style2">
-                    {/* <h2 className="breadcrumb_title">Change Password</h2> */}
+                    <h3 className="breadcrumb_title">Manage Password</h3>
                     {/* <p>We are glad to see you again!</p> */}
                   </div>
                 </div>

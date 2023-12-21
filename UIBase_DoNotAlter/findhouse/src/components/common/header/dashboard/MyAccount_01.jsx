@@ -203,7 +203,7 @@ const MyAccount = ({ user, profileCount, setProfile }) => {
                     paddingLeft: "20px",
                   }}
                 >
-                  {item.id === 1 && <CircularIcon percentage={profileValue} />}
+                  {/* {item.id === 1 && <CircularIcon percentage={profileValue} />} */}
                 </div>
               </div>
             )}

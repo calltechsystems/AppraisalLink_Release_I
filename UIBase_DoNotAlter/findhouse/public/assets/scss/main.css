@@ -9444,7 +9444,8 @@ form.home5_advanced_search_form
 }
 
 .footer_social_widget li:hover a {
-  color: #ffffff;
+  /* color: #ffffff; */
+  color: #97d700;
 }
 
 .home3 .footer_social_widget li:hover a {
@@ -9584,7 +9585,8 @@ form.home5_advanced_search_form
 }
 
 .footer_one {
-  background-color: #24324a;
+  /* background-color: #24324a; */
+  background-color: #2e008b;
 }
 
 .footer_middle_area {
@@ -9760,7 +9762,8 @@ form.home5_advanced_search_form
 .footer_about_widget li:hover a,
 .footer_qlink_widget li:hover a,
 .footer_contact_widget li:hover a {
-  color: #ffffff;
+  /* color: #ffffff; */
+  color: #97d700 !important;
   padding-left: 8px;
 }
 
@@ -22536,8 +22539,8 @@ input:checked + .slider:before {
 }
 
 .link-hover:hover {
-  background-color: #97d700;
-  color: black !important;
+  background-color: #97d700 !important;
+  color: white !important;
   font-weight: bold;
 }
 
@@ -22906,4 +22909,21 @@ input:checked + .slider:before {
   /* margin: 40px; */
   font-family: Arial;
   text-align: center;
+}
+
+.tooltip {
+  position: relative;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  visibility: hidden;
+  padding: 5px;
+  border-radius: 5px;
+}
+.tooltip-arrow {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  border-width: 5px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.7) transparent transparent;
 }

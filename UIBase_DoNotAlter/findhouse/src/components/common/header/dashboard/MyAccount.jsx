@@ -185,7 +185,7 @@ const MyAccount = ({ user, profileCount, setProfile, userData }) => {
             ) : (
               <div className="row">
                 <div className="col-lg-6">{item.name}</div>
-                <div
+                {/* <div
                   className="col-lg-6"
                   style={{
                     marginBottom: "-80px",
@@ -194,7 +194,7 @@ const MyAccount = ({ user, profileCount, setProfile, userData }) => {
                   }}
                 >
                   {item.id === 1 && <CircularIcon percentage={profileValue} />}
-                </div>
+                </div> */}
               </div>
             )}
           </Link>

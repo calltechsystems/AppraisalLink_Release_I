@@ -45,7 +45,7 @@ const SidebarMenu = () => {
               src="/assets/images/logo_new.png"
               alt="header-logo2.png"
             />
-            <span>Appraisal Link</span>
+            <span>Appraisal Land</span>
           </Link>
         </li>
         {/* End header */}
