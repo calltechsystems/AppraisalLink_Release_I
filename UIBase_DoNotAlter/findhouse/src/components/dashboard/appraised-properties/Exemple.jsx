@@ -220,10 +220,10 @@ export default function Exemple({
       properties.map((property, index) => {
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
-        console.log("isBidded", isBidded);
+        console.log("isBidded",property);
 
         const updatedRow = {
-          orderId: property.orderId,
+          orderId: property.orderId ,
           address: `${property.city}-${property.province},${property.zipCode}`,
           estimatedValue: property.estimatedValue
             ? `$ ${property.estimatedValue}`
@@ -233,7 +233,6 @@ export default function Exemple({
             isBidded.status === 0 ? (
               <span
                 className="btn btn-primary  w-100"
-                onClick={openStatusUpdateHandler}
               >
                 Quote Provided
               </span>
@@ -361,25 +360,28 @@ export default function Exemple({
                     </li>
                   )}
 
+                 
                   <li
-                    className="list-inline-item"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title="Archive Property"
-                  >
-                    {
-                      <button
-                        className="btn btn-color w-100 mt-1"
-                        style={{ marginLeft: "10px" }}
-                        onClick={() =>
-                          onDeletePropertyHandler(property.propertyId)
-                        }
-                      >
-                        Archive Property
-                        {/* <span className="flaticon-garbage text-danger"></span> */}
-                      </button>
+                  className="list-inline-item"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Provide Quote"
+                >
+                  <div
+                    className="w-100"
+                    onClick={() =>
+                      onDeletePropertyHandler(property.propertyId)
                     }
-                  </li>
+                  >
+                    <button
+                      href="#"
+                      className="btn btn-color w-100 mt-1"
+                      style={{ marginLeft: "12px" }}
+                    >
+                    Archive Property
+                    </button>
+                  </div>
+                </li>
                 </ul>
               ) : (
                 <h4 style={{ color: "green" }}>Completed</h4>

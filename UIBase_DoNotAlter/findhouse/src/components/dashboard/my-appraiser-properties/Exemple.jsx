@@ -232,11 +232,11 @@ export default function Exemple({
             purpose: property.purpose ? property.purpose : "NA",
             status: isBidded.bidId ? (
               isBidded.status === 0 ? (
-                <span className="btn btn-primary" onClick={statusHandler}>
+                <span className="btn btn-primary" >
                   Quote Provided
                 </span>
               ) : isBidded.status === 1 ? (
-                <span className="btn btn-success">Accepted</span>
+                <span className="btn btn-success" onClick={statusHandler}>Accepted</span>
               ) : (
                 <span className="btn btn-danger">Rejected</span>
               )
@@ -322,27 +322,27 @@ export default function Exemple({
                       </li>
                     )}
                     <li
-                      className="list-inline-item"
-                      title="Delete Property"
-                      style={{
-                        width: "30px",
-                        border: "none",
-                        textAlign: "center",
-                        borderRadius: "5px",
-                      }}
-                    >
-                      {
-                        <button
-                          className="btn"
-                          style={{ border: "1px solid grey" }}
-                          onClick={() =>
-                            onDeletePropertyHandler(property.propertyId)
-                          }
-                        >
-                          <span className="flaticon-garbage text-danger"></span>
-                        </button>
+                    className="list-inline-item"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Provide Quote"
+                  >
+                    <div
+                      className=" fw-bold"
+                      onClick={() =>
+                        onDeletePropertyHandler(property.propertyId)
                       }
-                    </li>
+                    >
+                      <a
+                        href="#"
+                        className="btn btn-color w-15"
+                        style={{ marginLeft: "10px" }}
+                      >
+                        Archive Property 
+                      </a>
+                    </div>
+                  </li>
+                   
                   </ul>
                 ) : (
                   <h4 style={{ color: "green" }}>Completed</h4>
