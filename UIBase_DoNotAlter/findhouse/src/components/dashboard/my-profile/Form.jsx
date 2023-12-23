@@ -14,10 +14,15 @@ const Form = ({ userData, chnageShowCardHandler }) => {
     >
       <div className="d-flex justify-content-end">
         <button
-          className="btn btn-color profile_edit_button_01"
+          className="btn btn2 btn-color profile_edit_button_01"
           onClick={() => chnageShowCardHandler(false)}
         >
-         Edit Profile
+          <span
+            className="flaticon-edit"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Edit Profile"
+          ></span>
         </button>
       </div>
 
@@ -144,8 +149,8 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       className="text-dark"
                       style={{ fontSize: "17px", marginLeft: "4.8rem" }}
                     >
-                      {userData?.broker_Details?.city},{" "}
-                      {userData?.broker_Details?.state}
+                      {userData.broker_Details?.streetName}-{userData.broker_Details?.streetNumber},{userData?.broker_Details?.city},{" "}
+                      {userData?.broker_Details?.province}
                     </p>
                     {/* <span className="text-dark fw-bold">Middle Name</span> :{" "}
                     <span className="text-dark fw-bold"> Devendra </span> */}

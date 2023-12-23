@@ -102,30 +102,6 @@ const CreateList = ({
     return isError;
   };
 
-  // function checkIsError(fieldName) {
-  //   // Implement your error checking logic here
-  //   return false;
-  // }
-
-  function getMinDateTime() {
-    const currentDate = new Date();
-    const year = currentDate.getFullYear();
-    const month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
-    const day = currentDate.getDate().toString().padStart(2, "0");
-    const hours = currentDate.getHours().toString().padStart(2, "0");
-    const minutes = currentDate.getMinutes().toString().padStart(2, "0");
-
-    // Format the date as YYYY-MM-DDTHH:mm
-    return `${year}-${month}-${day}T${hours}:${minutes}`;
-  }
-
-  const errorLabelStyle_01 = {
-    paddingTop: "15px",
-    paddingBottom: "15px",
-    backgroundColor: "#E8F0FE",
-    marginLeft: "-5px",
-  };
-
   // let formatteddate= new Date();
 
   // const handleChange = (event) => {
@@ -733,7 +709,6 @@ const CreateList = ({
                 onChange={(e) => setAppraisalQuoteDate(e.target.value)}
                 value={appraisalQuoteDate}
                 disabled={isDisable}
-                min={getMinDateTime()}
               />
             </div>
           </div>

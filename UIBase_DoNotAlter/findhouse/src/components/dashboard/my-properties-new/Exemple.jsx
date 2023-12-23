@@ -125,6 +125,8 @@ const data = [
 export default function Exemple({
   userData,
   archievePropertyHandler,
+  start,
+  end,
   open,
   setModalIsPopupOpen,
   close,
@@ -448,6 +450,8 @@ export default function Exemple({
           data={sortObjectsByOrderIdDescending(updatedData)}
           headCells={headCells}
           refreshHandler={refreshHandler}
+          start={start}
+          end={end}
         />
       )}
     </>

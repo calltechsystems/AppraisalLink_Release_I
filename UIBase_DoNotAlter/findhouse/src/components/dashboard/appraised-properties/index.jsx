@@ -33,6 +33,10 @@ const Index = () => {
   const [propertyId, setPropertyId] = useState(null);
   const [updatedCode, setUpdatedCode] = useState(false);
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
+  
+  const [start,setStart]=useState(0);
+  
+  const [end,setEnd]=useState(4);
 
   const [isStatusModal,setIsStatusModal] = useState(false);
   
@@ -48,6 +52,7 @@ const Index = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const [isLoading, setIsLoading] = useState(true);
+  const [paginatedRow,setPaginatedRow] = useState([]);
 
   const [refresh, setRefresh] = useState(false);
 
@@ -405,6 +410,8 @@ const Index = () => {
                           setStartLoading={setStartLoading}
                           openModalBroker={openModalBroker}
                           setIsStatusModal={setIsStatusModal}
+                          start={start}
+                          end={end}
                         />
 
                         {modalIsOpenError && (
@@ -963,7 +970,7 @@ const Index = () => {
                     Cancel
                   </button>
                       <button
-                        className="btn w-35 btn-thm3 btn5  m-2"
+                        className="btn w-35 btn-thm3 btn5  m-2" style={{backgroundColor:"blueviolet"}}
                         onClick={handleStatusUpdateHandler}
                       >
                         Submit
@@ -998,8 +1005,17 @@ const Index = () => {
               </div>
               {/* End .row */}
             </div>
-            {/* End .row */}
-
+            <div className="row">
+                 <div className="col-lg-12 mt20">
+                  <div className="mbp_pagination">
+                    <Pagination
+                      setStart={setStart}
+                      setEnd={setEnd}
+                      properties={properties}
+                    />
+                  </div>
+                </div> 
+            </div>
             <div className="row mt50">
               <div className="col-lg-12">
                 <div className="copyright-widget text-center">

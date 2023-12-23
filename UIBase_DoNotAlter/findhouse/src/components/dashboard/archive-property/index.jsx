@@ -31,6 +31,10 @@ const Index = () => {
     Date.now()
   );
 
+  const [start,setStart]=useState(0);
+  
+  const [end,setEnd]=useState(4);
+
   useEffect(() => {
     const activityHandler = () => {
       setLastActivityTimestamp(Date.now());
@@ -273,6 +277,8 @@ const Index = () => {
                           open={openModal}
                           close={closeModal}
                           setProperties={setProperties}
+                          start={start}
+                          end={end}
                           properties={
                             searchInput === "" ? properties : filterProperty
                           }
@@ -350,6 +356,17 @@ const Index = () => {
               {/* End .row */}
             </div>
             {/* End .row */}
+            <div className="row">
+                 <div className="col-lg-12 mt20">
+                  <div className="mbp_pagination">
+                    <Pagination
+                      setStart={setStart}
+                      setEnd={setEnd}
+                      properties={properties}
+                    />
+                  </div>
+                </div> 
+            </div>
 
             <div className="row mt50">
               <div className="col-lg-12">

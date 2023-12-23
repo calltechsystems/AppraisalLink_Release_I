@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 
-const Pagination = ({ properties , setProperties}) => {
+const Pagination = ({ setStart , setEnd,properties}) => {
   const [currentPage, setCurrentPage] = useState(1);
+  
   const propertiesPerPage = 5;
 
-  // Calculate the index range of the properties to display on the current page
   const indexOfLastProperty = currentPage * propertiesPerPage;
   const indexOfFirstProperty = indexOfLastProperty - propertiesPerPage;
   const currentProperties = properties.slice(indexOfFirstProperty, indexOfLastProperty);
 
-  // Create an array of page numbers based on the number of properties
   const pageNumbers = [];
   for (let i = 1; i <= Math.ceil(properties.length / propertiesPerPage); i++) {
     pageNumbers.push(i);
@@ -18,12 +17,14 @@ const Pagination = ({ properties , setProperties}) => {
   const updateDisplayedProperties = (page) => {
     const indexOfLastProperty = page * propertiesPerPage;
     const indexOfFirstProperty = indexOfLastProperty - propertiesPerPage;
-    const currentProperties = properties.slice(indexOfFirstProperty, indexOfLastProperty);
-    setProperties(currentProperties);
+    setStart(indexOfFirstProperty);
+    setEnd(indexOfLastProperty);
+    // console.log(indexOfLastProperty,indexOfFirstProperty);
+    // const currentProperties = properties.slice(indexOfFirstProperty-1, indexOfLastProperty-1);
+    
   };
 
 
-  // Handle page navigation
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
     updateDisplayedProperties(pageNumber);
@@ -48,7 +49,7 @@ const Pagination = ({ properties , setProperties}) => {
         {/* Page numbers */}
         {pageNumbers.map((number) => (
           <li key={number} className={`page-item ${currentPage === number ? 'active' : ''}`}>
-            <a
+            <a 
               className="page-link"
               href="#"
               onClick={() => handlePageChange(number)}

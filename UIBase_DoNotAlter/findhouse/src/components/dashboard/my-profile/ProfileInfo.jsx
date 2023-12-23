@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import { province } from "../create-listing/data";
 
 const ProfileInfo = ({ setProfileCount, setShowCard }) => {
+  
   const [profilePhoto, setProfilePhoto] = useState(null);
   let userData = JSON.parse(localStorage.getItem("user")) || {};
   const router = useRouter();
@@ -49,10 +50,10 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
 
   const [cityRef, setCityRef] = useState(userData?.broker_Details?.city || "");
   const [stateRef, setStateRef] = useState(
-    userData?.broker_Details?.state || ""
+    userData?.broker_Details?.province || ""
   );
   const [zipcodeRef, setZipcodeRef] = useState(
-    userData?.broker_Details?.zipCode || ""
+    userData?.broker_Details?.postalCode || ""
   );
   const [phoneNumberRef, setPhoneNumberRef] = useState(
     userData?.broker_Details?.phoneNumber || ""
@@ -64,6 +65,21 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   const [mortgageBrokerLicNoRef, setMortgageBrokerLicNoRef] = useState(
     userData?.broker_Details?.mortageBrokerLicNo || ""
   );
+
+ 
+
+  const [streetNumber,setStreetNumber] = useState(userData?.broker_Details?.streetNumber || "");
+  const [cellNumber,setCellNumber] = useState(userData?.broker_Details?.cellNumber || "");
+  
+  const [streetName,setStreetName] = useState(userData?.broker_Details?.streetName || "");
+  const [unit,setUnit] = useState(userData?.broker_Details?.apartmentNo || "");
+  const [apartmentNo,setApartmentNo] = useState(userData?.broker_Details?.apartmentNo || "");
+  const [assistantFirstName,setAssistantFirstName] = useState(userData?.broker_Details?.assistantFirstName || "");
+  const [assistantLastName,setAssistantLastName] = useState(userData?.broker_Details?.assistantFirstName || "");
+  const [assistantPhoneNumber,setAssistantPhoneNumber] = useState(userData?.broker_Details?.assistantPhoneNumber || "");
+  const [assistantEmailAddress,setAssistantEmailAddress] = useState(userData?.broker_Details?.assistantEmailAddress || "");
+  
+  
 
   const uploadProfile = (e) => {
     const file = e.target.files[0];
@@ -83,6 +99,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     console.log(typeof profilePhoto);
   };
 
+
   const onUpdatHandler = () => {
     const firstName =
       firstNameRef !== "" ? firstNameRef : userData.broker_Details.firstName;
@@ -93,7 +110,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         ? addressLineRef
         : userData.broker_Details.adressLine1;
     const city = cityRef !== "" ? cityRef : userData.broker_Details.city;
-    const state = stateRef !== "" ? stateRef : userData.broker_Details.state;
+    const state = stateRef !== "" ? stateRef : userData.broker_Details.province;
     const zipCode =
       zipcodeRef !== "" ? zipcodeRef : userData.broker_Details.zipCode;
     const phoneNumber =
@@ -135,7 +152,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     } else if (
       (!firstName ||
         !lastName ||
-        !adressLine1 ||
+        !streetNumber ||
+        !streetName ||
         !city ||
         !state ||
         !zipCode ||
@@ -181,22 +199,22 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         firstName: firstName,
         middleName: middleName,
         lastName: lastName,
+        apartmentNo:unit,
         companyName: companyName,
-        licenseNo: mortageBrokerLicNo,
-        brokerageName: firstName,
-        adressLine1: adressLine1,
-        adressLine2: adressLine2,
+        streetName : streetName,
+        streetNumber : streetNumber,
+        assistantEmailAddress:assistantEmailAddress,
+        assistantFirstName:assistantFirstName,
+        assistantPhoneNumber:assistantPhoneNumber,
         city: city,
         state: state,
-        zipCode: zipCode,
-        area: city,
+        postalCode: zipCode,
         phoneNumber: phoneNumber,
         mortageBrokerLicNo: mortageBrokerLicNo,
-        mortgageBrokerageLicNoRef: mortageBrokerageLicNo,
+        mortgageBrokerageLicNo: mortgageBrokrageLicNoRef,
         profileImage: SelectedImage,
       };
 
-      // console.log(payload);
 
       toast.loading("Updating ...");
       const encryptedData = encryptionData(payload);
@@ -454,8 +472,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           className="form-control"
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
-                          // value={phoneNumberRef}
-                          // onChange={(e) => setPhoneNumberRef(e.target.value)}
+                          value={cellNumber}
+                          onChange={(e) => setCellNumber(e.target.value)}
                           disabled={!edit}
                         />
                       </div>
@@ -560,8 +578,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
                           required
-                          value={addressLineRef}
-                          onChange={(e) => setAddressLineRef(e.target.value)}
+                          value={streetNumber}
+                          onChange={(e) => setStreetNumber(e.target.value)}
                           disabled={!edit}
                         />
                       </div>
@@ -584,8 +602,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           className="form-control"
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
-                          value={addressLineTwoRef}
-                          onChange={(e) => setAddressLineTwoRef(e.target.value)}
+                          value={streetName}
+                          onChange={(e) => setStreetName(e.target.value)}
                           disabled={!edit}
                         />
                       </div>
@@ -605,9 +623,12 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       <div className="col-lg-7">
                         <input
                           type="text"
+                          value={unit}
+                          onChange={(e) => setUnit(e.target.value)}
                           className="form-control"
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
+
                           required
                           // value={cityRef}
                           // onChange={(e) => setCityRef(e.target.value)}
@@ -653,30 +674,20 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                         </label>
                       </div>
                       <div className="col-lg-7">
-                        {/* <input
-                          type="text"
-                          className="form-control"
-                          style={{ backgroundColor: "#E8F0FE" }}
-                          required
-                          id="formGroupExampleInput3"
-                          value={stateRef}
-                          onChange={(e) => setStateRef(e.target.value)}
-                          disabled={!edit}
-                        /> */}
+                       
                         <div
                           className="form-group input-group ui_kit_select_search"
-                          // style={{ marginLeft: "-5px" }}
                         >
                           <select
                             required
                             className="form-select"
                             data-live-search="true"
                             data-width="100%"
-                            value={stateRef}
+                            value={stateRef ? stateRef : userData?.broker_Details?.province}
                             onChange={(e) => setStateRef(e.target.value)}
                             disabled={!edit}
                             style={{
-                              paddingTop: "15px",
+                              paddingTop: "15px", 
                               paddingBottom: "15px",
                               backgroundColor: "#E8F0FE",
                               // color:"white"
@@ -721,10 +732,10 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   </div>
 
                   <div className="mt-5">
-                    {/* <p>
+                    <p>
                       If you have an Administrative Assistant, fill in the
                       following:
-                    </p> */}
+                    </p>
                     <h3>Assistant#1 Information</h3>
                     <hr />
                   </div>
@@ -745,9 +756,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           className="form-control"
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
-                          // value={companyNameRef}
-                          // onChange={(e) => setCompanyNameRef(e.target.value)}
-                          // disabled={!edit}
+                          value={assistantFirstName}
+                          onChange={(e) => setAssistantFirstName(e.target.value)}
+                          disabled={!edit}
                         />
                       </div>
                     </div>
@@ -769,9 +780,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           className="form-control"
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
-                          // value={companyNameRef}
-                          // onChange={(e) => setCompanyNameRef(e.target.value)}
-                          // disabled={!edit}
+                          value={assistantLastName}
+                          onChange={(e) => setAssistantLastName(e.target.value)}
+                          disabled={!edit}
                         />
                       </div>
                     </div>
@@ -794,9 +805,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           className="form-control"
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
-                          // value={phoneNumberRef}
-                          // onChange={(e) => setPhoneNumberRef(e.target.value)}
-                          // disabled={!edit}
+                          value={assistantPhoneNumber}
+                          onChange={(e) => setAssistantPhoneNumber(e.target.value)}
+                          disabled={!edit}
                         />
                       </div>
                     </div>
@@ -818,9 +829,10 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           className="form-control"
                           style={{ backgroundColor: "#E8F0FE" }}
                           required
-                          // id="formGroupExampleInput3"
-                          // value={userData?.userEmail ? userData.userEmail : ""}
-                          // disabled
+                          id="formGroupExampleInput3"
+                          value={assistantEmailAddress}
+                          onChange={(e)=>setAssistantEmailAddress(e.target.value)}
+                          disabled={!edit}
                         />
                       </div>
                     </div>
@@ -846,8 +858,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           className="form-control"
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
-                          // value={companyNameRef}
-                          // onChange={(e) => setCompanyNameRef(e.target.value)}
+                          // value={assistantFirstName}
+                          // onChange={(e) => setAssistantFirstName(e.target.value)}
                           // disabled={!edit}
                         />
                       </div>
@@ -870,7 +882,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           className="form-control"
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
-                          // value={companyNameRef}
+                          // value={assistantPhoneNumber}
                           // onChange={(e) => setCompanyNameRef(e.target.value)}
                           // disabled={!edit}
                         />
@@ -895,8 +907,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           className="form-control"
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
-                          // value={phoneNumberRef}
-                          // onChange={(e) => setPhoneNumberRef(e.target.value)}
+                          // value={assistantPhoneNumber}
+                          // onChange={(e) => setAssistantPhoneNumber(e.target.value)}
                           // disabled={!edit}
                         />
                       </div>
@@ -919,9 +931,10 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           className="form-control"
                           style={{ backgroundColor: "#E8F0FE" }}
                           required
-                          // id="formGroupExampleInput3"
-                          // value={userData?.userEmail ? userData.userEmail : ""}
-                          // disabled
+                          id="formGroupExampleInput3"
+                          // value={assistantEmailAddress}
+                          // onChange={(e) => setAssistantEmailAddress(e.target.value)}
+                          // disabled={!edit}
                         />
                       </div>
                     </div>

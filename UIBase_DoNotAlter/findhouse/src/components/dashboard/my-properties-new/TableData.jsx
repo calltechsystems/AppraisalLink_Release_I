@@ -8,6 +8,8 @@ import Exemple from "./Exemple";
 const TableData = ({
   userData,
   open,
+  start,
+  end,
   close,
   properties,
   refresh,
@@ -217,6 +219,8 @@ const TableData = ({
           setModalIsPopupOpen={setModalIsPopupOpen}
           setCurrentProperty={setCurrentProperty}
           archievePropertyHandler={archievePropertyHandler}
+          start={start}
+          end={end}
         />
       )}
     </>

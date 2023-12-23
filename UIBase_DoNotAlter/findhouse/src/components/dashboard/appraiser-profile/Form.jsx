@@ -7,25 +7,31 @@ import Image from "next/image";
 
 const Form = ({ userData, chnageShowCardHandler }) => {
   return (
-    <form className="contact_form" action="#" style={{ borderRadius: "5px" }}>
+    <form
+      className="contact_form"
+      action="#"
+      style={{ borderRadius: "5px" }}
+    >
       <div className="d-flex justify-content-end">
         <button
           className="btn btn2 btn-color profile_edit_button_01"
           onClick={() => chnageShowCardHandler(false)}
         >
-          Edit Profile
+          <span
+            className="flaticon-edit"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Edit Profile"
+          ></span>
         </button>
       </div>
 
       <div className="row">
-        <div className="col-lg-3 text-center mb-5">
+        <div className="col-lg-3 text-center">
           <div className="wrap-custom-file mt-3 mb-5">
             <img
               style={{ borderRadius: "50%" }}
-              src={
-                userData?.brokerage_Details?.profileImage ||
-                "https://th.bing.com/th?id=OIP.0TsJGYhWWOy_hBFOH0hX-gHaHa&w=249&h=250&c=8&rs=1&qlt=90&o=6&dpr=1.1&pid=3.1&rm=2"
-              }
+              src={userData?.brokerage_Details?.profileImage}
               alt="Uploaded Image"
             />
           </div>
@@ -83,6 +89,30 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                   </li>
                 </ul>
               </div>
+              <div className="form-group">
+                <ul>
+                  <li className="text-dark mt-0">
+                    <p className="text-dark" style={{ fontSize: "17px" }}>
+                      Mortgage Broker Licence No. :{" "}
+                      {userData?.brokerage_Details?.mortageBrokerLicNo}
+                    </p>
+                    {/* <span className="text-dark fw-bold">Last Name</span> :{" "}
+                    <span className="text-dark fw-bold"> Patel </span> */}
+                  </li>
+                </ul>
+              </div>
+              <div className="form-group">
+                <ul>
+                  <li className="text-dark mt-0">
+                    <p className="text-dark" style={{ fontSize: "17px" }}>
+                      Mortgage Brokerge Licence No. :{" "}
+                      {userData?.brokerage_Details?.mortageBrokerageLicNo}
+                    </p>
+                    {/* <span className="text-dark fw-bold">Last Name</span> :{" "}
+                    <span className="text-dark fw-bold"> Patel </span> */}
+                  </li>
+                </ul>
+              </div>
             </div>
             {/* End .col */}
 
@@ -119,8 +149,8 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       className="text-dark"
                       style={{ fontSize: "17px", marginLeft: "4.8rem" }}
                     >
-                      {userData?.brokerage_Details?.city},{" "}
-                      {userData?.brokerage_Details?.state}
+                      {userData.brokerage_Details?.streetName}-{userData.brokerage_Details?.streetNumber},{userData?.brokerage_Details?.city},{" "}
+                      {userData?.brokerage_Details?.province}
                     </p>
                     {/* <span className="text-dark fw-bold">Middle Name</span> :{" "}
                     <span className="text-dark fw-bold"> Devendra </span> */}

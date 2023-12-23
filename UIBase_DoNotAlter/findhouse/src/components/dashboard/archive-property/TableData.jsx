@@ -7,10 +7,11 @@ import toast from "react-hot-toast";
 import Exemple from "./Exemple";
 const TableData = ({
   userData,
-  open,
+  open,start,end,
   close,
   properties,
   refresh,
+  setModalIsPopupOpen,
   setRefresh,
   setProperties,
   setModalIsOpenError,
@@ -211,6 +212,8 @@ const TableData = ({
           setModalIsOpenError={setModalIsOpenError}
           setErrorMessage={setErrorMessage}
           deletePropertyHandler={deletePropertyHandler}
+          start={start}
+          end={end}
         />
       )}
     </>

@@ -6,7 +6,7 @@ import CircularIcon from "./CircularIcon";
 import { use, useEffect } from "react";
 import { useState } from "react";
 
-const MyAccount = ({ user, profileCount, setProfile }) => {
+const MyAccount = ({ user, profileCount, setProfile ,userData}) => {
   const profileMenuItems = [
     { id: 1, name: "Profile", ruterPath: "/appraiser-profile" },
     // { id: 2, name: " My Message", ruterPath: "/my-message" },
@@ -19,10 +19,6 @@ const MyAccount = ({ user, profileCount, setProfile }) => {
     { id: 5, name: "Log out", ruterPath: "/login" },
   ];
 
-  let userData = {};
-  useEffect(() => {
-    userData = JSON.parse(localStorage.getItem("user"));
-  }, []);
   const [profileValue, setProfileValue] = useState(0);
   useEffect(() => {
     let count = 0;
@@ -85,7 +81,7 @@ const MyAccount = ({ user, profileCount, setProfile }) => {
       const change = (count / 18) * 100;
       console.log(change);
       setProfileValue(change);
-    } else if (userData.userType === 2) {
+    } else if (userData?.userType === 2) {
       if (userData.brokerage_Details.firstName) {
         count = count + 1;
       }
@@ -176,12 +172,12 @@ const MyAccount = ({ user, profileCount, setProfile }) => {
       </div>
       {/* End user_set_header */}
 
-      <div className="user_setting_content">
+      <div className="user_setting_content link-hover">
         {profileMenuItems.map((item) => (
           <Link
             href={item.ruterPath}
             key={item.id}
-            className="dropdown-item link-hover"
+            className="dropdown-item"
             style={
               isSinglePageActive(`${item.ruterPath}`, route.pathname)
                 ? { color: "#ff5a5f" }
@@ -203,7 +199,7 @@ const MyAccount = ({ user, profileCount, setProfile }) => {
                     paddingLeft: "20px",
                   }}
                 >
-                  {/* {item.id === 1 && <CircularIcon percentage={profileValue} />} */}
+                  {item.id === 1 && <CircularIcon percentage={profileValue} />}
                 </div>
               </div>
             )}

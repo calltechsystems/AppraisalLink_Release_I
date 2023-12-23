@@ -8,6 +8,8 @@ import Exemple from "./Exemple";
 const TableData = ({
   userData,
   open,
+  start,
+  end,
   close,
   properties,
   setProperties,
@@ -29,7 +31,7 @@ const TableData = ({
 
   const [rerender, setRerender] = useState(false);
 
-  const [data, setData] = useState([]);
+  const [data,setData]=useState([]);
 
   let theadConent = ["Property Title", "Date", "Status", "Bids", "Action"];
 
@@ -212,7 +214,7 @@ const TableData = ({
           open={open}
           close={close}
           setProperties={setProperties}
-          properties={data}
+          properties={properties}
           propertyId={propertyId}
           setModalIsOpenError={setModalIsOpenError}
           setErrorMessage={setErrorMessage}
@@ -224,7 +226,9 @@ const TableData = ({
           setAppInfo={setAppInfo}
           setId={setid}
           refresh={refresh}
-                          setRefresh={setRefresh}
+          start={start}
+          end={end}
+          setRefresh={setRefresh}
         />
       )}
     </>

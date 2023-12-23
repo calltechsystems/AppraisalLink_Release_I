@@ -7,7 +7,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 
-const Index = ({ setModalOpen, setPrice }) => {
+const Index = ({ setModalOpen, setPrice ,disable}) => {
   const [selectedPlan, setSelectedPlan] = useState("Monthly");
   const [planData, setPlanData] = useState([]);
   const [isChecked, setIsChecked] = useState(false);
@@ -62,7 +62,7 @@ const Index = ({ setModalOpen, setPrice }) => {
           id="DashboardOffcanvasMenu"
           data-bs-scroll="true"
         >
-          <SidebarMenu />
+          <SidebarMenu  disable={disable}/>
         </div>
       </div>
       {/* End sidebar_menu */}

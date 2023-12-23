@@ -99,6 +99,8 @@ export default function Exemple({
   setAppInfo,
   open,
   close,
+  start,
+  end,
   setRefresh,
   refresh,
   setOpenBrokerModal,
@@ -374,6 +376,8 @@ export default function Exemple({
           data={updatedData}
           headCells={headCells}
           refreshHandler={refreshHandler}
+          start={start}
+          end={end}
         />
       )}
     </>

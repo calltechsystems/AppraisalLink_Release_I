@@ -22866,7 +22866,6 @@ input:checked + .slider:before {
 
 /* tooltip css end */
 
-
 .tooltip-text {
   visibility: hidden;
   position: absolute;
@@ -22874,9 +22873,10 @@ input:checked + .slider:before {
   width: 400px;
   color: white;
   font-size: 12px;
-  background-color: #192733;
-  border-radius: 10px;
+  background-color: #2e008b;
+  border-radius: 5px;
   padding: 10px 15px 10px 15px;
+
 }
 
 .hover-text:hover .tooltip-text {
@@ -22895,7 +22895,7 @@ input:checked + .slider:before {
 
 #left {
   top: -8px;
-  right: 120%;
+  right: 20%;
 }
 
 #right {
@@ -22906,24 +22906,26 @@ input:checked + .slider:before {
 .hover-text {
   position: relative;
   display: inline-block;
-  /* margin: 40px; */
+  margin: 10px;
   font-family: Arial;
   text-align: center;
+  /* margin-right: -15px; */
+  margin-top: 10px;
 }
 
-.tooltip {
+/* .tooltip {
   position: relative;
   background: rgba(0, 0, 0, 0.7);
   color: white;
   visibility: hidden;
   padding: 5px;
   border-radius: 5px;
-}
-.tooltip-arrow {
+} */
+/* .tooltip-arrow {
   position: absolute;
   top: 100%;
   left: 50%;
   border-width: 5px;
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.7) transparent transparent;
-}
+} */

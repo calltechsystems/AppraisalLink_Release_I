@@ -21,6 +21,10 @@ const Index = ({ propertyId }) => {
   const [refresh, setRefresh] = useState(false);
   const [id, setId] = useState(0);
 
+  const [start,setStart]=useState(0);
+  
+  const [end,setEnd]=useState(4);
+
   const [openBrokerModal, setOpenBrokerModal] = useState(false);
 
   const [property, setProperty] = useState([]);
@@ -339,6 +343,8 @@ const Index = ({ propertyId }) => {
                           properties={
                             searchInput === "" ? properties : filterProperty
                           }
+                          start={start}
+                          end={end}
                           setid={setId}
                           property={property}
                           setProperty={setProperty}
@@ -419,6 +425,18 @@ const Index = ({ propertyId }) => {
               {/* End .row */}
             </div>
             {/* End .row */}
+
+            <div className="row">
+                 <div className="col-lg-12 mt20">
+                  <div className="mbp_pagination">
+                    <Pagination
+                      setStart={setStart}
+                      setEnd={setEnd}
+                      properties={properties}
+                    />
+                  </div>
+                </div> 
+            </div>
 
             <div className="row mt50">
               <div className="col-lg-12">

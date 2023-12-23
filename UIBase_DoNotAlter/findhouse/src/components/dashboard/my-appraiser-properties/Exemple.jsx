@@ -99,6 +99,8 @@ export default function Exemple({
   userData,
   open,
   close,
+  start,
+  end,
   setUpdatedCode,
   properties,
   setProperties,
@@ -453,6 +455,8 @@ export default function Exemple({
           refresh={refresh}
           refreshHandler={refreshHandler}
           setStartLoading={setStartLoading}
+          start={start}
+          end={end}
         />
       )}
     </>

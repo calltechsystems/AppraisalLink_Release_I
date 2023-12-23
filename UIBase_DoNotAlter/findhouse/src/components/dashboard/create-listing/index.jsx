@@ -35,7 +35,7 @@ const Index = ({ isView, propertyData }) => {
   let userData = {};
   const [updatedProperty, setUpdatedProperty] = useState([]);
 
-  const [remark, setRemark] = useState("");
+  const [remark, setRemark] = useState(propertyData?.remark || "");
 
   const [streetNameRef, setStreetNameRef] = useState(
     propertyData?.streetName ? propertyData?.streetName : ""
@@ -76,7 +76,7 @@ const Index = ({ isView, propertyData }) => {
     propertyData?.applicantPhoneNumber || null
   );
   const [applicantEmail, setApplicantEmail] = useState(
-    propertyData?.applicantEmailAddress || null
+    propertyData?.applicantEmailAddress || ""
   );
 
   const [estimatedValue, setEstimatedValue] = useState(
@@ -112,6 +112,7 @@ const Index = ({ isView, propertyData }) => {
   const [otherUrgency, setOtherUrgency] = useState(false);
 
   const [image, setImage] = useState(propertyData?.image || "");
+
 
   const changeUrlToStringHandler = () => {
     const resultString = filesUrl.join(",");
@@ -361,6 +362,7 @@ const Index = ({ isView, propertyData }) => {
     } else if (!phoneNumberRegex.test(applicantNumber) && applicantNumber) {
       toast.error("Please provide a valid phone number");
     } else {
+      
       const payload = {
         userId: userInfo.userId,
         streetName: streetNameRef,
@@ -373,7 +375,7 @@ const Index = ({ isView, propertyData }) => {
         applicantFirstName: applicantFirstName,
         applicantLastName: applicantLatsName,
         applicantPhoneNumber: applicantNumber,
-        applicantEmailAddress: applicantEmail || userData.userEmail,
+        applicantEmailAddress: applicantEmail ,
         bidLowerRange: Number(bidLowerRangeRef),
         bidUpperRange: Number(bidLowerRangeRef),
         propertyStatus: true,
@@ -398,7 +400,9 @@ const Index = ({ isView, propertyData }) => {
         token: userInfo.token,
       };
 
-      console.log(payload);
+
+
+      
 
       if (
         !payload.streetName ||
@@ -489,7 +493,7 @@ const Index = ({ isView, propertyData }) => {
 
   const onCancelHandler = () => {
     setModalIsOpen(false);
-    router.push("/create-listing");
+    window.location.reload();
   };
 
   const submitHandler = () => {
@@ -530,6 +534,8 @@ const Index = ({ isView, propertyData }) => {
       !payload.city ||
       !payload.state ||
       !payload.zipCode ||
+
+
       !payload.typeOfBuilding ||
       !payload.typeOfAppraisal ||
       !payload.purpose ||
@@ -1310,7 +1316,7 @@ const Index = ({ isView, propertyData }) => {
                           )}
                         </table>
                       </div>
-                      <div className="row text-center mt-3">
+                      <div className="row text-center mt-3">  
                         <div className="col-lg-12">
                           <button
                             className="btn btn-color w-25 m-2"

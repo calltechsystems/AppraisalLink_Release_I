@@ -87,7 +87,7 @@ const Modal = ({
       {modalOpen && (
         <div className="modal">
           <div className="modal-content">
-             {/* <span className="close" onClick={onCloseModalHandler}>
+            {/* <span className="close" onClick={onCloseModalHandler}>
               &times;
             </span> */}
             <div style={{ display: "flex", flexDirection: "column" }}>
@@ -106,9 +106,7 @@ const Modal = ({
                 </span>
               </h2>
             </div>
-            <div>
-              <hr />
-            </div>
+            <div><hr /></div>
             <div>
               {!toggle ? (
                 <div className="row">

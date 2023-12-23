@@ -311,8 +311,9 @@ function SmartTable(props) {
                     </tr>
                   </thead>
                   <tbody>
-                    {data.length > 0
-                      ? data.map((row, idx) => {
+                  {data.length > 0
+                    ? data.map((row, idx) => {
+                        if (idx >= props.start && idx <= props.end) {
                           return (
                             <tr key={"tr_" + idx}>
                               {props.headCells.map((headCell, idxx) => {
@@ -326,8 +327,12 @@ function SmartTable(props) {
                               })}
                             </tr>
                           );
-                        })
-                      : props.data.map((row, idx) => {
+                        } else {
+                          return null; // Skip rendering rows that don't meet the condition
+                        }
+                      })
+                    : props.data.map((row, idx) => {
+                        if (idx >= props.start && idx <= props.end) {
                           return (
                             <tr key={"tr_" + idx}>
                               {props.headCells.map((headCell, idxx) => {
@@ -341,7 +346,10 @@ function SmartTable(props) {
                               })}
                             </tr>
                           );
-                        })}
+                        } else {
+                          return null; // Skip rendering rows that don't meet the condition
+                        }
+                      })}
                   </tbody>
                 </table>
               </div>

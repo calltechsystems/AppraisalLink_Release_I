@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 
-const Pagination = ({ properties , setProperties}) => {
+const Pagination = ({ setStart , setEnd,properties}) => {
   const [currentPage, setCurrentPage] = useState(1);
+  
   const propertiesPerPage = 5;
 
   const indexOfLastProperty = currentPage * propertiesPerPage;
@@ -16,8 +17,11 @@ const Pagination = ({ properties , setProperties}) => {
   const updateDisplayedProperties = (page) => {
     const indexOfLastProperty = page * propertiesPerPage;
     const indexOfFirstProperty = indexOfLastProperty - propertiesPerPage;
-    const currentProperties = properties.slice(indexOfFirstProperty, indexOfLastProperty);
-    setProperties(currentProperties);
+    setStart(indexOfFirstProperty);
+    setEnd(indexOfLastProperty);
+    // console.log(indexOfLastProperty,indexOfFirstProperty);
+    // const currentProperties = properties.slice(indexOfFirstProperty-1, indexOfLastProperty-1);
+    
   };
 
 

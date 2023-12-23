@@ -23,6 +23,10 @@ const Index = () => {
   const [filterQuery, setFilterQuery] = useState("Last 30 Days");
   const [properties, setProperties] = useState([]);
 
+  const [start,setStart]=useState(0);
+  
+  const [end,setEnd]=useState(4);
+
   const [refresh, setRefresh] = useState(false);
 
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
@@ -311,6 +315,8 @@ const Index = () => {
                         <TableData
                           userData={userData}
                           open={openModal}
+                          start={start}
+                          end={end}
                           close={closeModal}
                           setProperties={setProperties}
                           properties={
@@ -784,6 +790,18 @@ const Index = () => {
               {/* End .row */}
             </div>
             {/* End .row */}
+
+            <div className="row">
+                 <div className="col-lg-12 mt20">
+                  <div className="mbp_pagination">
+                    <Pagination
+                      setStart={setStart}
+                      setEnd={setEnd}
+                      properties={properties}
+                    />
+                  </div>
+                </div> 
+            </div>
 
             <div className="row mt50">
               <div className="col-lg-12">

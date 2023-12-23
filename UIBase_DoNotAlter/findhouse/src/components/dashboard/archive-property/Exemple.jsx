@@ -126,6 +126,8 @@ const data = [
 export default function Exemple({
   userData,
   open,
+  start,
+  end,
   close,
   properties,
   setRefresh,
@@ -429,7 +431,7 @@ export default function Exemple({
         setBids(tempBids);
       })
       .catch((err) => {
-        setErrorMessage(err?.response?.data?.error);
+        // setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
     setRefresh(false);
@@ -442,6 +444,8 @@ export default function Exemple({
           data={sortObjectsByOrderIdDescending(updatedData)}
           headCells={headCells}
           refreshHandler={refreshHandler}
+          start={start}
+          end={end}
         />
       )}
     </>

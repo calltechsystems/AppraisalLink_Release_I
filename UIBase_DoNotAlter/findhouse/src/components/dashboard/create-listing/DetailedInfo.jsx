@@ -508,10 +508,11 @@ const DetailedInfo = ({
                 className="form-control"
                 id="formGroupExampleInput3"
                 // onChange={(e) => setApplicantNumber(e.target.value)}
-                onChange={handleInputChange}
+                onChange={(e)=>setApplicantNumber(e.target.value)}
                 pattern="[0-9]*"
                 title="Please enter only 10 digits"
-                value={applicantNumber ? applicantNumber : phoneNumber}
+                value={ applicantNumber}
+                
                 disabled={isDisable}
               />
               {/* <input
@@ -703,7 +704,7 @@ const DetailedInfo = ({
             <div className="my_profile_setting_input overflow-hidden mt20 text-center">
               {isDisable && (
                 <button className="btn btn5 m-1" onClick={cancelHandler}>
-                  Cancel
+                  Reset
                 </button>
               )}
               {!isDisable &&

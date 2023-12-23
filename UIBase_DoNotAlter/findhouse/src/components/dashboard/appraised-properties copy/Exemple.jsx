@@ -59,7 +59,7 @@ const headCells = [
     id: "status",
     numeric: false,
     label: "Status",
-    width: 200,
+    width: 160,
   },
   {
     id: "urgency",
@@ -89,7 +89,7 @@ const headCells = [
     id: "action",
     numeric: false,
     label: "Action",
-    width: 300,
+    width: 180,
   },
 ];
 
@@ -101,6 +101,7 @@ export default function Exemple({
   close,
   setUpdatedCode,
   properties,
+  setIsStatusModal,
   setProperties,
   deletePropertyHandler,
   onWishlistHandler,
@@ -109,6 +110,8 @@ export default function Exemple({
   setErrorMessage,
   setModalIsOpenError,
   setRefresh,
+  setStart,
+  setEnd,
   setStartLoading,
   refresh,
 }) {
@@ -119,10 +122,6 @@ export default function Exemple({
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
   let tempData = [];
-
-  const sortObjectsByOrderIdDescending = (data) => {
-    return data.sort((a, b) => b.orderId - a.orderId);
-  };
 
   const filterBidsWithin24Hours = (property) => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -146,6 +145,10 @@ export default function Exemple({
   };
 
   const router = useRouter();
+
+  const openStatusUpdateHandler = () => {
+    setIsStatusModal(true);
+  };
 
   const removeWishlistHandler = (id) => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -210,28 +213,43 @@ export default function Exemple({
     return temp;
   };
 
+  const sortObjectsByOrderIdDescending = (data) => {
+    return data.sort((a, b) => b.orderId - a.orderId);
+  };
+
   useEffect(() => {
     const getData = () => {
       properties.map((property, index) => {
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
-        console.log("isBidded", isBidded);
+        console.log("isBidded",property);
 
         const updatedRow = {
-          orderId: property.orderId,
+          orderId: property.orderId ,
           address: `${property.city}-${property.province},${property.zipCode}`,
-          estimatedValue: property.estimatedValue ? property.estimatedValue : 0,
+          estimatedValue: property.estimatedValue
+            ? `$ ${property.estimatedValue}`
+            : "$ 0",
           purpose: property.purpose ? property.purpose : "NA",
           status: isBidded.bidId ? (
             isBidded.status === 0 ? (
-              <span className="btn btn-primary">Quote Provided</span>
+              <span
+                className="btn btn-primary  w-100"
+              >
+                Quote Provided
+              </span>
             ) : isBidded.status === 1 ? (
-              <span className="btn btn-success">Accepted</span>
+              <span
+                className="btn btn-success  w-100"
+                onClick={openStatusUpdateHandler}
+              >
+                Accepted
+              </span>
             ) : (
-              <span className="btn btn-danger">Rejected</span>
+              <span className="btn btn-danger  w-100">Rejected</span>
             )
           ) : (
-            <span className="btn btn-warning">New</span>
+            <span className="btn btn-warning  w-100">New</span>
           ),
           broker: (
             <div>
@@ -254,9 +272,9 @@ export default function Exemple({
               ) : isBidded.status === 2 ? (
                 <h6 style={{ color: "red" }}> Rejected</h6>
               ) : (
-                <h6>
+                <p>
                   Broker Information will be available post the quote acceptance
-                </h6>
+                </p>
               )}
             </div>
           ),
@@ -282,33 +300,6 @@ export default function Exemple({
             <div className="print-hidden-column">
               {isBidded && isBidded.status !== 1 ? (
                 <ul className="">
-                  {!isBidded.$id && (
-                    <li
-                      className="list-inline-item"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Provide Quote"
-                    >
-                      <div
-                        className=" fw-bold"
-                        onClick={() =>
-                          participateHandler(
-                            property.bidLowerRange,
-                            property.propertyId
-                          )
-                        }
-                      >
-                        <a
-                          href="#"
-                          className="btn btn-color w-15"
-                          style={{ marginLeft: "10px" }}
-                        >
-                          Provide Quote
-                        </a>
-                      </div>
-                    </li>
-                  )}
-
                   {isWishlist.id ? (
                     <button
                       className="btn "
@@ -344,28 +335,55 @@ export default function Exemple({
                     </li>
                   )}
 
-                  <li
-                    className="list-inline-item m-1"
-                    title="Delete Property"
-                    style={{
-                      width: "30px",
-                      border: "none",
-                      textAlign: "center",
-                      borderRadius: "5px",
-                    }}
-                  >
-                    {
-                      <button
-                        className="btn"
-                        style={{ border: "1px solid grey" }}
+                  {!isBidded.$id && (
+                    <li
+                      className="list-inline-item"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Provide Quote"
+                    >
+                      <div
+                        className="w-100"
                         onClick={() =>
-                          onDeletePropertyHandler(property.propertyId)
+                          participateHandler(
+                            property.bidLowerRange,
+                            property.propertyId
+                          )
                         }
                       >
-                        <span className="flaticon-garbage text-danger"></span>
-                      </button>
+                        <button
+                          href="#"
+                          className="btn btn-color w-100 mt-1"
+                          style={{ marginLeft: "12px" }}
+                        >
+                          Provide Quote
+                        </button>
+                      </div>
+                    </li>
+                  )}
+
+                 
+                  <li
+                  className="list-inline-item"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Provide Quote"
+                >
+                  <div
+                    className="w-100"
+                    onClick={() =>
+                      onDeletePropertyHandler(property.propertyId)
                     }
-                  </li>
+                  >
+                    <button
+                      href="#"
+                      className="btn btn-color w-100 mt-1"
+                      style={{ marginLeft: "12px" }}
+                    >
+                    Un-Archive Property
+                    </button>
+                  </div>
+                </li>
                 </ul>
               ) : (
                 <h4 style={{ color: "green" }}>Completed</h4>
@@ -460,6 +478,7 @@ export default function Exemple({
     console.log("end", bids, properties, wishlist);
     setRefresh(false);
   }, [refresh]);
+  console.log(sortObjectsByOrderIdDescending(updatedData));
   return (
     <>
       {refresh ? (
@@ -474,6 +493,8 @@ export default function Exemple({
           refresh={refresh}
           refreshHandler={refreshHandler}
           setStartLoading={setStartLoading}
+          start={setStart}
+          end={setEnd}
         />
       )}
     </>

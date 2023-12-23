@@ -14,10 +14,12 @@ import { useRouter } from "next/router";
 import Modal from "./Modal";
 import { encryptionData } from "../../../utils/dataEncryption";
 import Loader from "./Loader";
+import { AppraiserStatusOptions } from "../create-listing/data";
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
+  const [isStatusModal,setIsStatusModal] = useState(false);
   const [toggleId, setToggleId] = useState(-1);
   const [toggleWishlist, setToggleWishlist] = useState(0);
   const [searchResult, setSearchResult] = useState([]);
@@ -41,9 +43,22 @@ const Index = () => {
 
   const [refresh, setRefresh] = useState(false);
 
+    
+  const [start,setStart]=useState(0);
+  
+  const [end,setEnd]=useState(4);
+
   const closeErrorModal = () => {
     setModalIsOpenError(false);
   };
+
+  const handleStatusUpdateHandler = ()=>{
+
+  }
+
+  const closeStatusUpdateHandler = ()=>{
+    setIsStatusModal(false);
+  }
 
   const [openBrokerModal, setOpenBrokerModal] = useState(false);
   const [broker, setBroker] = useState({});
@@ -301,7 +316,7 @@ const Index = () => {
   return (
     <>
       {/* <!-- Main Header Nav --> */}
-      <Header />
+      <Header userData={userData} />
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
@@ -384,8 +399,11 @@ const Index = () => {
                         <TableData
                           userData={userData}
                           setModalOpen={openModal}
+                          setIsStatusModal={setIsStatusModal}
                           close={closeModal}
                           setProperties={setProperties}
+                          start={start}
+                          end={end}
                           properties={
                             searchInput === "" ? properties : filterProperty
                           }
@@ -841,6 +859,53 @@ const Index = () => {
                   </div>
                 </div>
               )}
+              {isStatusModal && (
+                <div className="modal">
+                  <div className="modal-content">
+                    <h3 className="text-center">Quote Status Updation</h3>
+                    
+                    <select
+                  required
+                  className="form-select"
+                  data-live-search="true"
+                  data-width="100%"
+                  // value={buildinRef}
+                  // onChange={(e) => setBuildinRef(e.target.value)}
+                  // onChange={(e) => setBuildinRef(e.target.value)}
+                  // disabled={isDisable}
+                  style={{
+                          paddingTop: "15px",
+                          paddingBottom: "15px",
+                          backgroundColor: "#E8F0FE"
+                        }}
+                >
+                  {AppraiserStatusOptions.map((item, index) => {
+                    return (
+                      <option key={item.id} value={item.value}>
+                        {item.type}
+                      </option>
+                    );
+                  })}
+                </select>
+                    {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
+                    <div className="text-center" style={{}}>
+                    <button
+                    className="btn w-35 btn-white"
+                    onClick={closeStatusUpdateHandler}
+                  >
+                    Cancel
+                  </button>
+                      <button
+                        className="btn w-35 btn-thm3 btn5  m-2" style={{backgroundColor:"blueviolet"}}
+                        onClick={handleStatusUpdateHandler}
+                      >
+                        Submit
+                      </button>        
+                     
+                    </div>
+                  </div>
+                </div>
+              )}
               <div className="row">
                 <Modal
                   modalOpen={modalOpen}
@@ -866,6 +931,18 @@ const Index = () => {
               {/* End .row */}
             </div>
             {/* End .row */}
+
+            <div className="row">
+                 <div className="col-lg-12 mt20">
+                  <div className="mbp_pagination">
+                    <Pagination
+                      setStart={setStart}
+                      setEnd={setEnd}
+                      properties={properties}
+                    />
+                  </div>
+                </div> 
+            </div>
 
             <div className="row mt50">
               <div className="col-lg-12">

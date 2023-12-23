@@ -99,6 +99,8 @@ export default function Exemple({
   userData,
   open,
   close,
+  start,
+  end,
   setUpdatedCode,
   properties,
   setProperties,
@@ -111,6 +113,7 @@ export default function Exemple({
   setModalIsOpenError,
   setRefresh,
   setStartLoading,
+  setIsStatusModal,
   refresh,
 }) {
   const [updatedData, setUpdatedData] = useState([]);
@@ -195,6 +198,10 @@ export default function Exemple({
     return formattedDate;
   };
 
+  const openStatusUpdateHandler = () => {
+    setIsStatusModal(true);
+  };
+
   const checkWishlistedHandler = (data) => {
     let temp = {};
     console.log(wishlist, data);
@@ -230,7 +237,7 @@ export default function Exemple({
               isBidded.status === 0 ? (
                 <span className="btn btn-primary">Quote Provided</span>
               ) : isBidded.status === 1 ? (
-                <span className="btn btn-success">Accepted</span>
+                <span className="btn btn-success" onClick={openStatusUpdateHandler}>Accepted</span>
               ) : (
                 <span className="btn btn-danger">Rejected</span>
               )
@@ -393,6 +400,8 @@ export default function Exemple({
       ) : (
         <SmartTable
           title=""
+          start={start}
+          end={end}
           data={sortObjectsByOrderIdDescending(updatedData)}
           headCells={headCells}
           setRefresh={setRefresh}
