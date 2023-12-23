@@ -7,7 +7,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 
-const Index = ({ setModalOpen, setPrice ,disable}) => {
+const Index = ({ setModalOpen, setPrice }) => {
   const [selectedPlan, setSelectedPlan] = useState("Monthly");
   const [planData, setPlanData] = useState([]);
   const [isChecked, setIsChecked] = useState(false);
@@ -62,7 +62,7 @@ const Index = ({ setModalOpen, setPrice ,disable}) => {
           id="DashboardOffcanvasMenu"
           data-bs-scroll="true"
         >
-          <SidebarMenu  disable={disable}/>
+          <SidebarMenu />
         </div>
       </div>
       {/* End sidebar_menu */}
@@ -75,16 +75,16 @@ const Index = ({ setModalOpen, setPrice ,disable}) => {
           <div className="row">
             <div className="col-lg-12 col-lg-6 maxw100flex-992">
               <div className="main-title text-center">
-                {/* <h2 className="text-dark">Ready to get started?</h2> */}
-                <h5 className="text-dark mb-3">
-                  Choose a plan tailored to your needs.
-                </h5>
+                <h2 className="text-dark">Ready to get started?</h2>
+                <p className="text-dark">
+                  Choose a plan tailored to your needs {selectedPlan}
+                </p>
                 <div className="toggleContainer">
-                  <span className="fw-bold text-dark ">Monthly</span>
-                  <div style={{ width: "20%", height: "50%" }}>
+                  <span>Monthly</span>
+                  <div style={{ width: "20%", height: "70%" }}>
                     <label
-                    // className={`toggleLabel ${selectedPlan}`}
-                    // onClick={togglePlan}
+                      // className={`toggleLabel ${selectedPlan}`}
+                      // onClick={togglePlan}
                     >
                       <button className="toggleSwitch"></button>
 
@@ -101,7 +101,8 @@ const Index = ({ setModalOpen, setPrice ,disable}) => {
                       </div>
                     </label>
                   </div>
-                  <span className="fw-bold text-dark">Yearly</span>
+
+                  <span>Yearly</span>
                 </div>
               </div>
             </div>

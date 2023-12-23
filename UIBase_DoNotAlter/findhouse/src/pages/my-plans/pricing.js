@@ -72,13 +72,13 @@ const Pricing = ({
           <div
             className={`pricing_table  ${
               String(selectedIdStyle) === String(item.id)
-                ? "pricing_table"
+                ? "pricing_table_border_style"
                 : ""
             }`}
           >
             <div className="pricing_header">
               <div className="price">{item.description}</div>
-              {/* {String(selectedIdStyle) === String(item.id) ? (
+              {String(selectedIdStyle) === String(item.id) ? (
                 <div
                   className="p-1 fw-bold"
                   style={{
@@ -103,7 +103,8 @@ const Pricing = ({
               >
                   Recommended Plan{" "}
               </div>
-              )} */}
+                
+              )}
             </div>
             <div className="pricing_content">
               <ul className="mb0">
@@ -113,7 +114,7 @@ const Pricing = ({
                 ))}
               </ul>
               <div className="pricing_header">
-                <h2 className="" style={{ color: "#2e008b" }}>
+                <h2 className="text-light">
                   $
                   {isPlan === 1
                     ? item.monthlyAmount - item.discount
@@ -134,7 +135,7 @@ const Pricing = ({
                   )
                 }
               >
-                <a className={`btn btn-color_1 btn-block w-100`} href="#">
+                <a className={`btn btn-color_01 btn-block w-100`} href="#">
                   {selectedId !== item.id
                     ? !selectedId
                       ? "Get Started"
