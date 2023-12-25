@@ -114,7 +114,7 @@ const Pricing = ({
                 ))}
               </ul>
               <div className="pricing_header">
-                <h2 className="text-light">
+                <h2 className="text-dark">
                   $
                   {isPlan === 1
                     ? item.monthlyAmount - item.discount
@@ -135,7 +135,7 @@ const Pricing = ({
                   )
                 }
               >
-                <a className={`btn btn-color_01 btn-block w-100`} href="#">
+                <a className={`btn btn-color_01 w-100`} href="#">
                   {selectedId !== item.id
                     ? !selectedId
                       ? "Get Started"

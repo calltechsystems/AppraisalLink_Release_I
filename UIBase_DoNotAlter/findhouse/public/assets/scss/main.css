@@ -22051,8 +22051,9 @@ input[type=text] {
 }
 
 .btn-color_2 {
-  background-color: #2e008b;
-  color: white;
+  background-color: #fff;
+  color: #2e008b;
+  font-weight: 700;
 }
 
 .btn-color_2:hover {
@@ -22062,8 +22063,8 @@ input[type=text] {
 }
 
 .btn-color_01 {
-  background-color: #fff;
-  color: #2e008b;
+  background-color: #2e008b;
+  color: #ffffff;
   font-weight: 700;
 }
 
@@ -22876,7 +22877,6 @@ input:checked + .slider:before {
   background-color: #2e008b;
   border-radius: 5px;
   padding: 10px 15px 10px 15px;
-
 }
 
 .hover-text:hover .tooltip-text {

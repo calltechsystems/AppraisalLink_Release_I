@@ -75,12 +75,12 @@ const Index = ({ setModalOpen, setPrice }) => {
           <div className="row">
             <div className="col-lg-12 col-lg-6 maxw100flex-992">
               <div className="main-title text-center">
-                <h2 className="text-dark">Ready to get started?</h2>
-                <p className="text-dark">
+                {/* <h2 className="text-dark">Ready to get started?</h2> */}
+                {/* <p className="text-dark mb-2">
                   Choose a plan tailored to your needs {selectedPlan}
-                </p>
+                </p> */}
                 <div className="toggleContainer">
-                  <span>Monthly</span>
+                  <span className="fw-bold text-dark">Monthly</span>
                   <div style={{ width: "20%", height: "70%" }}>
                     <label
                       // className={`toggleLabel ${selectedPlan}`}
@@ -102,7 +102,7 @@ const Index = ({ setModalOpen, setPrice }) => {
                     </label>
                   </div>
 
-                  <span>Yearly</span>
+                  <span className="fw-bold text-dark">Yearly</span>
                 </div>
               </div>
             </div>
