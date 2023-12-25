@@ -217,6 +217,16 @@ export default function Exemple({
     return data.sort((a, b) => b.orderId - a.orderId);
   };
 
+  
+  const checkData = (properties && !updatedData) ? true : false;
+  useEffect(()=>{
+    setProperties([]);
+  },[checkData])
+
+  useEffect(()=>{
+    setRefresh(true);
+  },[!updatedData]);
+
   useEffect(() => {
     const getData = () => {
       properties.map((property, index) => {

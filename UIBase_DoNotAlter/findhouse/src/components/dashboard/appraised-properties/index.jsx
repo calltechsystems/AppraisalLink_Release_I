@@ -86,6 +86,7 @@ const Index = () => {
   );
 
   useEffect(() => {
+    
     const activityHandler = () => {
       setLastActivityTimestamp(Date.now());
     };
@@ -312,7 +313,7 @@ const Index = () => {
   return (
     <>
       {/* <!-- Main Header Nav --> */}
-      <Header />
+      <Header userData={userData}/>
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />

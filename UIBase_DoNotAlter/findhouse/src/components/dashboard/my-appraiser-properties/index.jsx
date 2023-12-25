@@ -15,6 +15,7 @@ import Modal from "./Modal";
 import { encryptionData } from "../../../utils/dataEncryption";
 import Loader from "./Loader";
 import { AppraiserStatusOptions } from "../create-listing/data";
+import TransitionDetector from "../../../utils/higherOrderFunction";
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -309,10 +310,14 @@ const Index = () => {
     }
   }, [searchInput]);
 
+  const onTransitionHandler = ()=>{
+    setRefresh(true);
+  }
+
   return (
     <>
       {/* <!-- Main Header Nav --> */}
-      <Header />
+      <Header userData={userData}/>
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />

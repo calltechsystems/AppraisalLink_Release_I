@@ -123,6 +123,7 @@ export default function Exemple({
   const [show, setShow] = useState(false);
   let tempData = [];
 
+  
   const filterBidsWithin24Hours = (property) => {
     const userData = JSON.parse(localStorage.getItem("user"));
     let tempBid = 0,
@@ -197,6 +198,8 @@ export default function Exemple({
     return formattedDate;
   };
 
+  const check = updatedData ? false : true;
+
   const checkWishlistedHandler = (data) => {
     let temp = {};
     console.log(wishlist, data);
@@ -216,6 +219,15 @@ export default function Exemple({
   const sortObjectsByOrderIdDescending = (data) => {
     return data.sort((a, b) => b.orderId - a.orderId);
   };
+
+  const checkData = (properties && !updatedData) ? true : false;
+  useEffect(()=>{
+    setProperties([]);
+  },[checkData])
+
+  useEffect(()=>{
+    setRefresh(true);
+  },[!updatedData]);
 
   useEffect(() => {
     const getData = () => {
@@ -439,8 +451,11 @@ export default function Exemple({
       });
 
     console.log("end", bids, properties, wishlist);
+    console.log(wishlist,bids);
     setRefresh(false);
+
   }, [refresh]);
+  console.log(updatedData)
   return (
     <>
       {refresh ? (

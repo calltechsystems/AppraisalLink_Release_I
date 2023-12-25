@@ -14,6 +14,7 @@ const Index = () => {
   let userData =  JSON.parse(localStorage.getItem("user"));
   const router = useRouter();
   const [properties, setProperties] = useState([]);
+  const [refresh,setRefresh]=useState(false);
 
   const [allProperties, setAllProperties] = useState([]);
 
@@ -80,7 +81,6 @@ const Index = () => {
       router.push("/login");
     }
 
-    let tempId = [];
     const func = () => {
       const data = JSON.parse(localStorage.getItem("user"))
       axios
@@ -96,12 +96,14 @@ const Index = () => {
       .then((res) => {
         // console.log(categorizeDataByMonth(res.data.data.property.$values));
 
-        setAllProperties(res.data.data.property.$values);
-        console.log(res.data.data);
-        setShowLineGraph(true);
-        setRerender(false);
+        // console.log(res.data.data.properties.$values)
+        setProperties(res.data.data.properties.$values);
+        
+        // setShowLineGraph(true);
+        // setRerender(false);
       })
       .catch((err) => {
+        console.log(err);
         toast.error(err?.response?.data?.error);
       });
 
@@ -154,7 +156,8 @@ const Index = () => {
     });
     };
     func();
-  }, []);
+    setRefresh(false);
+  }, [refresh]);
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("user"));
@@ -166,32 +169,32 @@ const Index = () => {
     if (!data) {
       router.push("/login");
     }
-    const func2 = () => {
-      axios
-        .get("/api/getAllListedProperties", {
-          headers: {
-            Authorization: `Bearer ${data?.token}`,
-            "Content-Type": "application/json",
-          },
-        })
-        .then((res) => {
-          toast.dismiss();
+    // const func2 = () => {
+    //   axios
+    //     .get("/api/getAllListedProperties", {
+    //       headers: {
+    //         Authorization: `Bearer ${data?.token}`,
+    //         "Content-Type": "application/json",
+    //       },
+    //     })
+    //     .then((res) => {
+    //       toast.dismiss();
 
-          const tempData = res.data.data.properties.$values;
-          const responseData = tempData.filter((prop) => {
-            return properties.some((data) => {
-              return data.propertyId === prop.propertyId;
-            });
-          });
-          setAllProperties(responseData);
-        })
-        .catch((err) => {
-          toast.dismiss();
-          setErrorMessage(err?.response?.data?.error);
-          setModalIsOpenError(true);
-        });
-    };
-    func2();
+    //       const tempData = res.data.data.properties.$values;
+    //       const responseData = tempData.filter((prop) => {
+    //         return properties.some((data) => {
+    //           return data.propertyId === prop.propertyId;
+    //         });
+    //       });
+    //       setAllProperties(responseData);
+    //     })
+    //     .catch((err) => {
+    //       toast.dismiss();
+    //       setErrorMessage(err?.response?.data?.error);
+    //       setModalIsOpenError(true);
+    //     });
+    // };
+    // func2();
   }, [properties]);
 
   useEffect(() => {
@@ -215,10 +218,10 @@ const Index = () => {
 
       return countsByMonth;
     };
-    const temp = categorizeDataByMonth(allProperties);
+    const temp = categorizeDataByMonth(properties);
     setChartData(temp);
-    console.log(temp);
-  }, [allProperties]);
+   
+  }, [properties]);
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -280,7 +283,7 @@ const Index = () => {
                     <p>We are glad to see you again!</p>
                   </div>
                   <div>
-                    <Filtering />
+                    <Filtering setRefresh={setRefresh}/>
                   </div>
                 </div>
               </div>

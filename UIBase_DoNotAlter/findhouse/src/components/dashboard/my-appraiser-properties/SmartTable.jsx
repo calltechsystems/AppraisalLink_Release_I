@@ -11,6 +11,7 @@ import { useReactToPrint } from "react-to-print";
 import toast from "react-hot-toast";
 
 function SmartTable(props) {
+ 
   const [loading, setLoading] = useState(false);
   const [sortDesc, setSortDesc] = useState({});
   const [tableWidth, setTableWidth] = useState(1000);
@@ -278,6 +279,7 @@ function SmartTable(props) {
                       {props.headCells.map((headCell) => {
                         return (
                           <th
+
                             id={headCell.id}
                             key={headCell.id}
                             scope="col"
