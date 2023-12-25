@@ -152,7 +152,7 @@ const MyAccount = ({ user, profileCount, setProfile ,userData}) => {
         <Image
           width={40}
           height={40}
-          className="float-start"
+          className="float-center mb-1"
           src={
             userData?.brokerage_Details?.profileImage
               ? userData.brokerage_Details?.profileImage
@@ -172,12 +172,12 @@ const MyAccount = ({ user, profileCount, setProfile ,userData}) => {
       </div>
       {/* End user_set_header */}
 
-      <div className="user_setting_content link-hover">
+      <div className="user_setting_content">
         {profileMenuItems.map((item) => (
           <Link
             href={item.ruterPath}
             key={item.id}
-            className="dropdown-item"
+            className="dropdown-item link-hover"
             style={
               isSinglePageActive(`${item.ruterPath}`, route.pathname)
                 ? { color: "#ff5a5f" }
@@ -191,7 +191,7 @@ const MyAccount = ({ user, profileCount, setProfile ,userData}) => {
             ) : (
               <div className="row">
                 <div className="col-lg-6">{item.name}</div>
-                <div
+                {/* <div
                   className="col-lg-6"
                   style={{
                     marginBottom: "-80px",
@@ -200,7 +200,7 @@ const MyAccount = ({ user, profileCount, setProfile ,userData}) => {
                   }}
                 >
                   {item.id === 1 && <CircularIcon percentage={profileValue} />}
-                </div>
+                </div> */}
               </div>
             )}
           </Link>

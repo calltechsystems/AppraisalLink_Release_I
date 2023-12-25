@@ -19,7 +19,7 @@ import { AppraiserStatusOptions } from "../create-listing/data";
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
-  const [isStatusModal,setIsStatusModal] = useState(false);
+  const [isStatusModal, setIsStatusModal] = useState(false);
   const [toggleId, setToggleId] = useState(-1);
   const [toggleWishlist, setToggleWishlist] = useState(0);
   const [searchResult, setSearchResult] = useState([]);
@@ -43,22 +43,19 @@ const Index = () => {
 
   const [refresh, setRefresh] = useState(false);
 
-    
-  const [start,setStart]=useState(0);
-  
-  const [end,setEnd]=useState(4);
+  const [start, setStart] = useState(0);
+
+  const [end, setEnd] = useState(4);
 
   const closeErrorModal = () => {
     setModalIsOpenError(false);
   };
 
-  const handleStatusUpdateHandler = ()=>{
+  const handleStatusUpdateHandler = () => {};
 
-  }
-
-  const closeStatusUpdateHandler = ()=>{
+  const closeStatusUpdateHandler = () => {
     setIsStatusModal(false);
-  }
+  };
 
   const [openBrokerModal, setOpenBrokerModal] = useState(false);
   const [broker, setBroker] = useState({});
@@ -87,6 +84,14 @@ const Index = () => {
   );
 
   useEffect(() => {
+    if (!localStorage.getItem("pageLoaded")) {
+      // Perform a hard reload
+
+      window.location.reload(true);
+      // Set a flag in localStorage to indicate that the page has been loaded
+
+      localStorage.setItem("pageLoaded", "true");
+    }
     const activityHandler = () => {
       setLastActivityTimestamp(Date.now());
     };
@@ -113,6 +118,7 @@ const Index = () => {
       // Check if there has been no activity in the last 10 minutes (600,000 milliseconds)
       if (timeSinceLastActivity > 600000) {
         localStorage.removeItem("user");
+        localStorage.removeItem("pageLoaded");
         router.push("/login");
       }
     }, 60000); // Check every minute
@@ -466,8 +472,8 @@ const Index = () => {
                             <div className="modal-content">
                               <h3 className="text-center">Property View</h3>
                               <p className="text-center mb-3">
-                                All of the details on the assessed property
-                                are here.
+                                All of the details on the assessed property are
+                                here.
                               </p>
                               <div className="d-flex justify-content-center">
                                 <table
@@ -495,10 +501,8 @@ const Index = () => {
                                       }}
                                     >
                                       {" "}
-                                      {broker.streetNumber}{" "}
-                                      {broker.streetName}{" "}
-                                      {broker.city}{" "}
-                                      {broker.province}{" "}
+                                      {broker.streetNumber} {broker.streetName}{" "}
+                                      {broker.city} {broker.province}{" "}
                                       {broker.zipCode}
                                     </td>
                                   </tr>
@@ -714,9 +718,7 @@ const Index = () => {
                                       }}
                                     >
                                       {" "}
-                                      {
-                                        broker.applicantFirstName
-                                      }{" "}
+                                      {broker.applicantFirstName}{" "}
                                       {broker.applicantLastName}
                                     </td>
                                   </tr>
@@ -803,9 +805,7 @@ const Index = () => {
                                       }}
                                     >
                                       {" "}
-                                      {broker.remark
-                                        ? broker.remark
-                                        : "NA"}
+                                      {broker.remark ? broker.remark : "NA"}
                                     </td>
                                   </tr>
                                 </table>
@@ -820,8 +820,9 @@ const Index = () => {
                                   </button>
                                 </div>
                               </div>
-                              </div>
-                              </div>)}
+                            </div>
+                          </div>
+                        )}
                       </div>
 
                       {/* End .table-responsive */}
@@ -863,45 +864,45 @@ const Index = () => {
                 <div className="modal">
                   <div className="modal-content">
                     <h3 className="text-center">Quote Status Updation</h3>
-                    
+
                     <select
-                  required
-                  className="form-select"
-                  data-live-search="true"
-                  data-width="100%"
-                  // value={buildinRef}
-                  // onChange={(e) => setBuildinRef(e.target.value)}
-                  // onChange={(e) => setBuildinRef(e.target.value)}
-                  // disabled={isDisable}
-                  style={{
-                          paddingTop: "15px",
-                          paddingBottom: "15px",
-                          backgroundColor: "#E8F0FE"
-                        }}
-                >
-                  {AppraiserStatusOptions.map((item, index) => {
-                    return (
-                      <option key={item.id} value={item.value}>
-                        {item.type}
-                      </option>
-                    );
-                  })}
-                </select>
+                      required
+                      className="form-select"
+                      data-live-search="true"
+                      data-width="100%"
+                      // value={buildinRef}
+                      // onChange={(e) => setBuildinRef(e.target.value)}
+                      // onChange={(e) => setBuildinRef(e.target.value)}
+                      // disabled={isDisable}
+                      style={{
+                        paddingTop: "15px",
+                        paddingBottom: "15px",
+                        backgroundColor: "#E8F0FE",
+                      }}
+                    >
+                      {AppraiserStatusOptions.map((item, index) => {
+                        return (
+                          <option key={item.id} value={item.value}>
+                            {item.type}
+                          </option>
+                        );
+                      })}
+                    </select>
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
-                    <button
-                    className="btn w-35 btn-white"
-                    onClick={closeStatusUpdateHandler}
-                  >
-                    Cancel
-                  </button>
                       <button
-                        className="btn w-35 btn-thm3 btn5  m-2" style={{backgroundColor:"blueviolet"}}
+                        className="btn w-35 btn-white"
+                        onClick={closeStatusUpdateHandler}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        className="btn w-35 btn-thm3 btn5  m-2"
+                        style={{ backgroundColor: "blueviolet" }}
                         onClick={handleStatusUpdateHandler}
                       >
                         Submit
-                      </button>        
-                     
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -933,15 +934,15 @@ const Index = () => {
             {/* End .row */}
 
             <div className="row">
-                 <div className="col-lg-12 mt20">
-                  <div className="mbp_pagination">
-                    <Pagination
-                      setStart={setStart}
-                      setEnd={setEnd}
-                      properties={properties}
-                    />
-                  </div>
-                </div> 
+              <div className="col-lg-12 mt20">
+                <div className="mbp_pagination">
+                  <Pagination
+                    setStart={setStart}
+                    setEnd={setEnd}
+                    properties={properties}
+                  />
+                </div>
+              </div>
             </div>
 
             <div className="row mt50">
