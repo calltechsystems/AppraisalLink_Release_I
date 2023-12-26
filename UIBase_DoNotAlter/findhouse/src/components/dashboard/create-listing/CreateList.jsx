@@ -645,6 +645,24 @@ const CreateList = ({
               >
                 Urgency <span class="req-btn">*</span>
               </label>
+              <div className="hover-text">
+                <div
+                  className="tooltip-text"
+                  style={{ marginTop: "-60px", marginLeft: "-100px" }}
+                >
+                  <ul>
+                    <li>
+                      Rush Request : Timeline for the appraisal report is 1 – 2
+                      Days.
+                    </li>
+                    <li>
+                      Regular Request : Timeline for the appraisal report is 3 –
+                      4 days.
+                    </li>
+                  </ul>
+                </div>
+                <i class="fa fa-info-circle" aria-hidden="true"></i>
+              </div>
             </div>
             <div className="col-lg-4">
               <div
