@@ -367,8 +367,20 @@ const Index = () => {
                 </div>
                 {/* End .col */}
 
+                <div className="row">
+                <div className="col-lg-12 mt20">
+                 <div className="mbp_pagination">
+                   <Pagination
+                     setStart={setStart}
+                     setEnd={setEnd}
+                     properties={properties}
+                   />
+                 </div>
+               </div> 
+           </div>
+
                 <div className="col-lg-12 col-xl-12">
-                  <div className="candidate_revew_select style2 mb30-991">
+                 {/* <div className="candidate_revew_select style2 mb30-991">
                     <ul className="mb0">
                       <li className="list-inline-item">
                         <Filtering setFilterQuery={setFilterQuery} />
@@ -381,14 +393,9 @@ const Index = () => {
                           <SearchBox setSearchInput={setSearchInput} />
                         </div>
                       </li>
-                      {/* End li */}
-
-                      {/* <li className="list-inline-item">
-                        <Filtering setFilterQuery={setFilterQuery} />
-                      </li> */}
-                      {/* End li */}
+                    
                     </ul>
-                  </div>
+                  </div> */}
                 </div>
                 {/* End .col */}
 
@@ -413,6 +420,8 @@ const Index = () => {
                           setErrorMessage={setErrorMessage}
                           setModalIsOpenError={setModalIsOpenError}
                           setRefresh={setRefresh}
+                          setFilterQuery={setFilterQuery}
+                          setSearchInput={setSearchInput}
                           refresh={refresh}
                           setStartLoading={setStartLoading}
                           openModalBroker={openModalBroker}
@@ -464,11 +473,8 @@ const Index = () => {
                         {openBrokerModal && (
                           <div className="modal">
                             <div className="modal-content">
-                              <h3 className="text-center">Property View</h3>
-                              <p className="text-center mb-3">
-                                All of the details on the assessed property
-                                are here.
-                              </p>
+                              <h3 className="text-center">Property Details</h3>
+                             
                               <div className="d-flex justify-content-center">
                                 <table
                                   style={{
@@ -810,6 +816,85 @@ const Index = () => {
                                   </tr>
                                 </table>
                               </div>
+                              
+  
+                              <h3 className="text-center">Broker Details</h3>
+                             
+                              <div className="d-flex justify-content-center">
+                                <table
+                                  style={{
+                                    width: "550px",
+                                    textAlign: "center",
+                                    borderRadius: "5px",
+                                  }}
+                                >
+                                  <tr>
+                                    <td
+                                      style={{
+                                        border: "1px solid grey",
+                                        color: "#2e008b",
+                                      }}
+                                    >
+                                      <span className="text-start">
+                                        Broker Name
+                                      </span>
+                                    </td>
+                                    <td
+                                      style={{
+                                        border: "1px solid grey",
+                                        width: "250px",
+                                      }}
+                                    >
+                                      {" "}
+                                      {broker.applicantFirstName}{" "}
+                                      {broker.applicantLastName}
+                                    </td>
+                                  </tr>
+                                 
+                                  <tr>
+                                    <td
+                                      style={{
+                                        border: "1px solid grey",
+                                        color: "#2e008b",
+                                      }}
+                                    >
+                                      <span className="text-start">
+                                        {" "}
+                                        Email Address{" "}
+                                      </span>
+                                    </td>
+                                    <td
+                                      style={{
+                                        border: "1px solid grey",
+                                        width: "250px",
+                                      }}
+                                    >
+                                      {broker.applicantEmailAddress}
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td
+                                      style={{
+                                        border: "1px solid grey",
+                                        color: "#2e008b",
+                                      }}
+                                    >
+                                      <span className="text-start">
+                                        Phone Number
+                                      </span>
+                                    </td>
+                                    <td
+                                      style={{
+                                        border: "1px solid grey",
+                                        width: "250px",
+                                      }}
+                                    >
+                                      {" "}
+                                      {broker.applicantPhoneNumber}
+                                    </td>
+                                  </tr>
+                                </table>
+                              </div>
                               <div className="row text-center mt-3">
                                 <div className="col-lg-12">
                                   <button
@@ -820,8 +905,11 @@ const Index = () => {
                                   </button>
                                 </div>
                               </div>
-                              </div>
-                              </div>)}
+  
+                             
+                            </div>
+                          </div>
+                        )}
                       </div>
 
                       {/* End .table-responsive */}
@@ -932,7 +1020,7 @@ const Index = () => {
             </div>
             {/* End .row */}
 
-            <div className="row">
+           {/* <div className="row">
                  <div className="col-lg-12 mt20">
                   <div className="mbp_pagination">
                     <Pagination
@@ -942,7 +1030,7 @@ const Index = () => {
                     />
                   </div>
                 </div> 
-            </div>
+            </div>*/}
 
             <div className="row mt50">
               <div className="col-lg-12">

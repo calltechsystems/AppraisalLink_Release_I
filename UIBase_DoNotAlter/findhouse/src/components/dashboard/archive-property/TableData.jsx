@@ -11,6 +11,8 @@ const TableData = ({
   close,
   properties,
   refresh,
+  setFilterQuery,
+  setSearchInput,
   setModalIsPopupOpen,
   setRefresh,
   setProperties,
@@ -204,6 +206,8 @@ const TableData = ({
         <Exemple
           userData={userData}
           open={open}
+          setFilterQuery={setFilterQuery}
+          setSearchInput={setSearchInput}
           close={close}
           setProperties={setProperties}
           properties={data}

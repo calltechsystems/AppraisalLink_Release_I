@@ -132,6 +132,8 @@ export default function Exemple({
   properties,
   setRefresh,
   refresh,
+  setFilterQuery,
+  setSearchInput,
   setProperties,
   deletePropertyHandler,
 }) {
@@ -441,6 +443,8 @@ export default function Exemple({
       {updatedData && (
         <SmartTable
           title=""
+          setFilterQuery={setFilterQuery}
+          setSearchInput={setSearchInput}
           data={sortObjectsByOrderIdDescending(updatedData)}
           headCells={headCells}
           refreshHandler={refreshHandler}

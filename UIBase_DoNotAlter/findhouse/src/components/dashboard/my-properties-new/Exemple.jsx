@@ -135,6 +135,8 @@ export default function Exemple({
   setRefresh,
   setProperties,
   setCurrentProperty,
+  setFilterQuery,
+  setSearchInput,
   deletePropertyHandler,
 }) {
   const [updatedData, setUpdatedData] = useState([]);
@@ -447,6 +449,8 @@ export default function Exemple({
       {updatedData && (
         <SmartTable
           title=""
+          setFilterQuery={setFilterQuery}
+          setSearchInput={setSearchInput}
           data={sortObjectsByOrderIdDescending(updatedData)}
           headCells={headCells}
           refreshHandler={refreshHandler}

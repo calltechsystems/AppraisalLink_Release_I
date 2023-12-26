@@ -18,6 +18,8 @@ const TableData = ({
   archievePropertyHandler,
   setCurrentProperty,
   setProperties,
+  setFilterQuery,
+  setSearchInput,
   setModalIsOpenError,
   setErrorMessage,
 }) => {
@@ -221,6 +223,8 @@ const TableData = ({
           archievePropertyHandler={archievePropertyHandler}
           start={start}
           end={end}
+          setFilterQuery={setFilterQuery}
+          setSearchInput={setSearchInput}
         />
       )}
     </>

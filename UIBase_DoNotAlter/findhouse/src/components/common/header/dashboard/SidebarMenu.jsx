@@ -5,9 +5,15 @@ import {
   isSinglePageActive,
 } from "../../../../utils/daynamicNavigation";
 import Image from "next/image";
+import { useState } from "react";
 
 const SidebarMenu = () => {
   const route = useRouter();
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const toggleCollapse = () => {
+    setIsCollapsed(!isCollapsed);
+  };
 
   const myProperties = [
     { id: 1, name: "General Elements", route: "/my-properties" },
@@ -38,7 +44,10 @@ const SidebarMenu = () => {
 
   return (
     <>
-      <ul className="sidebar-menu">
+     {/* <button className="collapse-btn flaticon-home" onClick={toggleCollapse}>
+        {isCollapsed ? "Expand" : "Collapse"}
+      </button> */}
+      <ul className={`sidebar-menu ${isCollapsed ? "collapsed" : ""}`}>
         <li
           className="sidebar_header header"
           style={{ backgroundColor: "white" }}

@@ -23,9 +23,9 @@ const Index = () => {
   const [filterQuery, setFilterQuery] = useState("Last 30 Days");
   const [properties, setProperties] = useState([]);
 
-  const [start,setStart]=useState(0);
-  
-  const [end,setEnd]=useState(4);
+  const [start, setStart] = useState(0);
+
+  const [end, setEnd] = useState(4);
 
   const [refresh, setRefresh] = useState(false);
 
@@ -123,7 +123,7 @@ const Index = () => {
           property.zipCode.toLowerCase().includes(searchTerm) ||
           property.area.toLowerCase().includes(searchTerm) ||
           property.city.toLowerCase().includes(searchTerm) ||
-          property.state.toLowerCase().includes(searchTerm) ||
+          property.province.toLowerCase().includes(searchTerm) ||
           property.streetName.toLowerCase().includes(searchTerm) ||
           property.streetNumber.toLowerCase().includes(searchTerm) ||
           property.typeOfBuilding.toLowerCase().includes(searchTerm)
@@ -264,21 +264,20 @@ const Index = () => {
                 </div> */}
                 {/* End Dashboard Navigation */}
 
-                <div className="col-lg-4 col-xl-4">
+                {/* <div className="col-lg-4 col-xl-4">
                   <div className=" style2 mb30-991">
                     <h3 className="breadcrumb_title">My Properties</h3>
-                    {/* <p>We are glad to see you again!</p>                                                             */}
                   </div>
-                </div>
+                </div> */}
                 {/* End .col */}
 
                 <div className="col-lg-12 col-xl-12">
-                  <div className="candidate_revew_select style2 mb30-991">
+                 {/*<div className="candidate_revew_select style2 mb30-991">
                     <ul className="mb0">
                       <li className="list-inline-item">
                         <Filtering setFilterQuery={setFilterQuery} />
                       </li>
-                      <li className="list-inline-item">
+                      <li className="list-inline-item"> 
                         <FilteringBy setFilterQuery={setFilterQuery} />
                       </li>
                       <li className="list-inline-item">
@@ -286,27 +285,50 @@ const Index = () => {
                           <SearchBox setSearchInput={setSearchInput} />
                         </div>
                       </li>
-                      {/* <li
+                      <li
                         className="list-inline-item"
-                        style={{ textAlign: "end" }}
-                        title="Refresh Page"
+                        style={{ textAlign: "end", marginLeft: "10px" }}
+                        // title="Refresh Page"
                       >
-                        <div className="fn-520">
-                          <button className="btn btn-color">
-                            <FaRedo />
-                          </button>
+                        <div className="col-lg-12">
+                          <div className="row">
+                            <div
+                              className="col-lg-6 btn btn-color w-50"
+                              onClick={() => handlePrint()}
+                              title="Download Pdf"
+                            >
+                              <span className="flaticon-download "></span>
+                            </div>
+                            <div className="col-lg-6 w-50">
+                              <button
+                                className="btn btn-color"
+                                onClick={() => props.refreshHandler()}
+                                title="Refresh"
+                              >
+                                <FaRedo />
+                              </button>
+                            </div>
+                          </div>
                         </div>
-                      </li> */}
-                      {/* End li */}
 
-                      {/* <li className="list-inline-item">
-                        <Filtering setFilterQuery={setFilterQuery} />
-                      </li> */}
-                      {/* End li */}
+                        
+                      </li>
+                      
                     </ul>
+                  </div>*/}
+                </div>  
+                {/* End .col */}
+                <div className="row">
+                  <div className="col-lg-12 mt20">
+                    <div className="mbp_pagination">
+                      <Pagination
+                        setStart={setStart}
+                        setEnd={setEnd}
+                        properties={properties}
+                      />
+                    </div>
                   </div>
                 </div>
-                {/* End .col */}
 
                 <div className="col-lg-12">
                   <div className="">
@@ -318,6 +340,8 @@ const Index = () => {
                           start={start}
                           end={end}
                           close={closeModal}
+                          setFilterQuery={setFilterQuery}
+                          setSearchInput={setSearchInput}
                           setProperties={setProperties}
                           properties={
                             searchInput === "" ? properties : filterProperty
@@ -791,17 +815,17 @@ const Index = () => {
             </div>
             {/* End .row */}
 
-            <div className="row">
-                 <div className="col-lg-12 mt20">
-                  <div className="mbp_pagination">
-                    <Pagination
-                      setStart={setStart}
-                      setEnd={setEnd}
-                      properties={properties}
-                    />
-                  </div>
-                </div> 
-            </div>
+           {/* <div className="row">
+              <div className="col-lg-12 mt20">
+                <div className="mbp_pagination">
+                  <Pagination
+                    setStart={setStart}
+                    setEnd={setEnd}
+                    properties={properties}
+                  />
+                </div>
+              </div>
+            </div>*/}
 
             <div className="row mt50">
               <div className="col-lg-12">
@@ -817,11 +841,18 @@ const Index = () => {
             {isModalOpen && (
               <div className="modal">
                 <div className="modal-content">
-                  <h4 className="text-center">Delete Confirmation</h4>
+                  <h4 className="text-center">Cancel Confirmation</h4>
                   <hr />
                   <p className="text-center" style={{ fontSize: "16px" }}>
-                    Are you sure you want to delete the property :{" "}
-                    {property.area} ?
+                    Are you sure you want to cancel the property : <br />
+                    <span className="fw-bold">
+                      {property.streetNumber}
+                      {property.streetName}
+                      {property.city}
+                      {property.province}
+                      {property.zipCode}
+                    </span>
+                    ?
                   </p>
                   <hr />
                   {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
@@ -836,7 +867,7 @@ const Index = () => {
                       className="btn w-25 btn-color"
                       onClick={handleDelete}
                     >
-                      Delete
+                      Confirm
                     </button>
                   </div>
                 </div>

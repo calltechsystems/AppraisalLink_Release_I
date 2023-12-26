@@ -109,6 +109,8 @@ export default function Exemple({
   onWishlistHandler,
   participateHandler,
   openModalBroker,
+  setSearchInput,
+  setFilterQuery,
   setErrorMessage,
   setModalIsOpenError,
   setRefresh,
@@ -416,6 +418,8 @@ export default function Exemple({
           headCells={headCells}
           setRefresh={setRefresh}
           setProperties={setProperties}
+          setFilterQuery={setFilterQuery}
+                          setSearchInput={setSearchInput}
           refresh={refresh}
           refreshHandler={refreshHandler}
           setStartLoading={setStartLoading}

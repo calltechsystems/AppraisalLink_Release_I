@@ -9,8 +9,12 @@ import * as XLSX from "xlsx";
 
 import { useReactToPrint } from "react-to-print";
 import toast from "react-hot-toast";
+import SearchBox from "./SearchBox";
+import FilteringBy from "./FilteringBy";
+import Filtering from "./Filtering";
 
 function SmartTable(props) {
+ 
   const [loading, setLoading] = useState(false);
   const [sortDesc, setSortDesc] = useState({});
   const [tableWidth, setTableWidth] = useState(1000);
@@ -241,6 +245,22 @@ function SmartTable(props) {
   return (
     <div className="col-12 p-4">
       <div className="smartTable-container row">
+      <div className="candidate_revew_select style2 mb30-991">
+                    <ul className="mb0">
+                      <li className="list-inline-item">
+                        <Filtering setFilterQuery={props.setFilterQuery} />
+                      </li>
+                      <li className="list-inline-item">
+                        <FilteringBy setFilterQuery={props.setSearchQuery} />
+                      </li>
+                      <li className="list-inline-item">
+                        <div className="candidate_revew_search_box course fn-520">
+                          <SearchBox setSearchInput={props.setSearchInput} />
+                        </div>
+                      </li>
+                    
+                    </ul>
+                  </div>
         <div className="col-12">
           {loading && (
             <div className="smartTable-loaderContainer text-primary">
@@ -278,6 +298,7 @@ function SmartTable(props) {
                       {props.headCells.map((headCell) => {
                         return (
                           <th
+
                             id={headCell.id}
                             key={headCell.id}
                             scope="col"

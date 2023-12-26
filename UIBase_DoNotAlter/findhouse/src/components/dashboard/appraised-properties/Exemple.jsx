@@ -108,6 +108,8 @@ export default function Exemple({
   deletePropertyHandler,
   onWishlistHandler,
   participateHandler,
+  setFilterQuery,
+  setSearchInput,
   openModalBroker,
   setErrorMessage,
   setModalIsOpenError,
@@ -492,6 +494,9 @@ export default function Exemple({
       ) : (
         <SmartTable
           title=""
+
+          setSearchInput={setSearchInput}
+          setFilterQuery={setFilterQuery}
           data={sortObjectsByOrderIdDescending(updatedData)}
           headCells={headCells}
           setRefresh={setRefresh}

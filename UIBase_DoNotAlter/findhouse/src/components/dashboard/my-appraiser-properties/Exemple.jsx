@@ -106,6 +106,8 @@ export default function Exemple({
   setProperties,
   deletePropertyHandler,
   onWishlistHandler,
+  setFilterQuery,
+  setSearchInput,
   participateHandler,
   openModalBroker,
   setErrorMessage,
@@ -468,6 +470,8 @@ export default function Exemple({
           setRefresh={setRefresh}
           setProperties={setProperties}
           refresh={refresh}
+          setFilterQuery={setFilterQuery}
+          setSearchInput={setSearchInput}
           refreshHandler={refreshHandler}
           setStartLoading={setStartLoading}
           start={start}

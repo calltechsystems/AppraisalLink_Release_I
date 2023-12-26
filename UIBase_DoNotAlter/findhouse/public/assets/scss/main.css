@@ -22402,7 +22402,7 @@ input:checked + .slider:before {
 }
 
 .smartTable-tableContainer {
-  max-height: 83vh !important;
+  /* max-height: 83vh !important; */
   overflow: scroll;
   padding-right: 0 !important;
   padding-left: 0 !important;
@@ -22410,7 +22410,7 @@ input:checked + .slider:before {
 
 .smartTable-tableContainer::-webkit-scrollbar {
   -webkit-appearance: none;
-  width: 15px;
+  width: 0px;
   height: 15px;
 }
 
