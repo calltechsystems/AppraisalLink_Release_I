@@ -93,7 +93,7 @@ const SidebarMenu = () => {
 
             <li
               className={`treeview ${
-                isSinglePageActive("/appraiser-properties", route.pathname)
+                isSinglePageActive("/appraise-properties", route.pathname)
                   ? "active"
                   : ""
               }`}

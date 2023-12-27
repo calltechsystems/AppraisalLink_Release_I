@@ -337,8 +337,8 @@ const Index = () => {
       {/* <!-- Our Dashbord --> */}
       <section className="our-dashbord dashbord bgc-f7 pb50">
         <div
-          className="container-fluid ovh"
-          style={{ marginLeft: "-10px", marginTop: "" }}
+          className="container-fluid ovh table-padding"
+          style={{ }}
         >
           <div className="row">
             <div className="col-lg-12 maxw100flex-992">
@@ -360,15 +360,14 @@ const Index = () => {
                 </div> */}
                 {/* End Dashboard Navigation */}
 
-                <div className="col-lg-4 col-xl-4 mb10">
+                {/* <div className="col-lg-4 col-xl-4 mb10">
                   <div className="style2 mb30-991">
                     <h3 className="breadcrumb_title">Wishlist Properties</h3>
-                    {/* <p>We are glad to see you again!</p> */}
                   </div>
-                </div>
+                </div> */}
 
                 <div className="row">
-                <div className="col-lg-12 mt20">
+                <div className="col-lg-12 mt0">
                  <div className="mbp_pagination">
                    <Pagination
                      setStart={setStart}
