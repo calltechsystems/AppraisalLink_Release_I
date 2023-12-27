@@ -14133,7 +14133,7 @@ legend span {
 }
 
 .our-dashbord.dashbord {
-  padding-top: 145px;
+  padding-top: 100px;
   padding-left: 295px;
 }
 
@@ -14142,6 +14142,11 @@ legend span {
   padding-right: 60px;
 }
 
+.container-padding{
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+  /* padding-top: 100px !important; */
+}
 .breadcrumb_widgets {
   border-radius: 5px;
   background-color: rgb(225, 230, 239);
@@ -21525,8 +21530,8 @@ header.header-nav.menu_style_home_one .ace-responsive-menu > li > a {
   color: white !important;
 }
 
-.our-dashbord.dashbord {
-  padding-top: 100px !important;
+.dashboard-height {
+  padding-top: 70px !important;
   padding-left: 295px !important;
 }
 

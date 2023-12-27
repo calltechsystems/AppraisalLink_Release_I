@@ -70,7 +70,7 @@ const SidebarMenu = () => {
               alt="header-logo2.png"
             />
             <span style={{ color: "#2e008b" }}>Appraisal </span>&nbsp;
-            <span style={{ color: "#97d700" }}> Link</span>
+            <span style={{ color: "#97d700" }}> Land</span>
           </Link>
         </li>
         {/* End header */}
@@ -93,7 +93,7 @@ const SidebarMenu = () => {
 
             <li
               className={`treeview ${
-                isSinglePageActive("/appraise-properties", route.pathname)
+                isSinglePageActive("/appraiser-properties", route.pathname)
                   ? "active"
                   : ""
               }`}
@@ -293,7 +293,7 @@ const SidebarMenu = () => {
           </ul>
         </li> */}
       <li className="title">
-          <span>Manage Account</span>
+          <span>Contact Us</span>
           <ul>
             {manageAccountTag.map((item) => (
               <li

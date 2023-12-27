@@ -97,15 +97,15 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
 
     if (password !== reEnterPassword) {
       setChange(true);
-      setErrorMessage("Passwords should always be the same.");
+      setErrorMessage("Password are meant to be same ");
       setModalIsOpenError(true);
     } else if (user === "") {
       setChange(true);
-      setErrorMessage("Selecting a User Type is required for registration!!");
+      setErrorMessage("User Type must be selected for registration!!");
       setModalIsOpenError(true);
     } else if (!email) {
       setChange(true);
-      setErrorMessage("Email cannot be invalid or empty..");
+      setErrorMessage("Email cant be empty or non valid.");
       setModalIsOpenError(true);
     } else if (!captchaVerfied) {
       setChange(true);
@@ -124,13 +124,22 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
         .post("/api/register", encryptedData)
         .then((res) => {
           console.log(res);
+          const isAdding = JSON.parse(localStorage.getItem("addAppraiser"));
           toast.dismiss();
+          if(isAdding){
+            const userData = isAdding.user;
+            localStorage.setItem("user",JSON.stringify(userData));
+            localStorage.removeItem("addAppraiser");
+            router.push("/all-appraisers");
+          }
+          else{
           // setModalIsOpen(true);
           router.push("/login");
+          }
         })
         .catch((err) => {
           toast.dismiss();
-          setErrorMessage(err.response.data.error);
+          setErrorMessage(err.response);
           setModalIsOpenError(true);
           // toast.error(
           //   err.response.data.error
@@ -370,8 +379,8 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
                 <div
                   className="input-group-text m-1"
                   style={{ border: "1px solid #2e008b" }}
-                  onMouseEnter={togglePasswordVisibility_01}
-                  onMouseLeave={togglePasswordVisibility_01}
+                  onMouseEnter={togglePasswordVisibility}
+                  onMouseLeave={togglePasswordVisibility}
                 >
                   <FaEye />
                 </div>
