@@ -178,10 +178,11 @@ export const AppraiserStatusOptions = [
   },
 
   {
-    id :5,
-    type : "Appraisal Visit Confirmed – We can add a DATE and TIME for the VISIT",
-    value:"Appraisal Visit Confirmed – We can add a DATE and TIME for the VISIT"
-  }
+    id: 5,
+    type: "Appraisal Visit Confirmed – We can add a DATE and TIME for the VISIT",
+    value:
+      "Appraisal Visit Confirmed – We can add a DATE and TIME for the VISIT",
+  },
 ];
 
 export const province = [
@@ -254,5 +255,38 @@ export const province = [
     id: 7,
     type: "Yukon-YT",
     value: "Yukon-YT",
+  },
+];
+
+export const AppraiserList = [
+  {
+    id: 0,
+    type: "Select...",
+    value: "",
+  },
+  {
+    id: 2,
+    type: "appraiser1",
+    value: "appraiser1",
+  },
+  {
+    id: 3,
+    type: "appraiser2",
+    value: "appraiser2",
+  },
+  {
+    id: 4,
+    type: "appraiser3",
+    value: "appraiser3",
+  },
+  {
+    id: 5,
+    type: "appraiser4",
+    value: "appraiser4",
+  },
+  {
+    id: 6,
+    type: "appraiser5",
+    value: "appraiser5",
   },
 ];
