@@ -102,6 +102,18 @@ const CreateList = ({
     return isError;
   };
 
+  function getMinDateTime() {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
+    const day = currentDate.getDate().toString().padStart(2, "0");
+    // const hours = currentDate.getHours().toString().padStart(2, "0");
+    // const minutes = currentDate.getMinutes().toString().padStart(2, "0");
+
+    // Format the date as YYYY-MM-DDTHH:mm
+    return `${year}-${month}-${day}`;
+  }
+
   // let formatteddate= new Date();
 
   // const handleChange = (event) => {
@@ -721,12 +733,13 @@ const CreateList = ({
                         marginLeft: "-5px",
                       }
                 }
-                type="datetime-local"
+                type="date"
                 className="form-control"
                 id="formGroupExampleInput3"
                 onChange={(e) => setAppraisalQuoteDate(e.target.value)}
                 value={appraisalQuoteDate}
                 disabled={isDisable}
+                min={getMinDateTime()}
               />
             </div>
           </div>
