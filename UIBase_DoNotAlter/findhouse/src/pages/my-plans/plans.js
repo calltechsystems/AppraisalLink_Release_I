@@ -69,7 +69,7 @@ const Index = ({ setModalOpen, setPrice }) => {
 
       <section
         className="our-dashbord dashbord bgc-f7 pb50"
-        style={{ marginLeft: "" }}
+        style={{ }}
       >
         <div className="container-fluid ovh">
           <div className="row">

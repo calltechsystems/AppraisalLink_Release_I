@@ -31,9 +31,17 @@
   .mouse_scroll {
     right: -120px;
   }
-  .our-dashbord.dashbord .container-fluid {
+  /* .our-dashbord.dashbord .container-fluid {
     padding-left: 0.5%;
     padding-right: 1px;
+  } */
+  .our-dashbord.dashbord .container-fluid {
+    padding-left: 5%;
+    padding-right: 20px;
+  }
+  .table-padding {
+    padding-left: 0.5% !important;
+    padding-right: 0.5px !important;
   }
   .home1-mainslider {
     overflow-x: hidden;

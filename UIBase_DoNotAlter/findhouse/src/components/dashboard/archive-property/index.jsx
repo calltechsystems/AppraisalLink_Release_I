@@ -212,7 +212,7 @@ const Index = () => {
       {/* <!-- Our Dashbord --> */}
       <section className="our-dashbord dashbord bgc-f7 pb50">
         <div
-          className="container-fluid ovh"
+          className="container-fluid ovh table-padding"
           style={{ marginLeft: "-10px", marginTop: "" }}
         >
           <div className="row">
@@ -245,7 +245,7 @@ const Index = () => {
                 {/* End .col */}
 
                 <div className="row">
-                <div className="col-lg-12 mt20">
+                <div className="col-lg-12 mt0">
                  <div className="mbp_pagination">
                    <Pagination
                      setStart={setStart}

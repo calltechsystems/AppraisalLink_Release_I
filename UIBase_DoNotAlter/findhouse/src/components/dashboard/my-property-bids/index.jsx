@@ -21,9 +21,9 @@ const Index = ({ propertyId }) => {
   const [refresh, setRefresh] = useState(false);
   const [id, setId] = useState(0);
 
-  const [start,setStart]=useState(0);
-  
-  const [end,setEnd]=useState(4);
+  const [start, setStart] = useState(0);
+
+  const [end, setEnd] = useState(4);
 
   const [openBrokerModal, setOpenBrokerModal] = useState(false);
 
@@ -272,7 +272,7 @@ const Index = ({ propertyId }) => {
       {/* <!-- Our Dashbord --> */}
       <section className="our-dashbord dashbord bgc-f7 pb50">
         <div
-          className="container-fluid ovh"
+          className="container-fluid ovh table-padding"
           style={{ marginLeft: "-10px", marginTop: "" }}
         >
           <div className="row">
@@ -297,7 +297,7 @@ const Index = ({ propertyId }) => {
 
                 <div className="col-lg-4 col-xl-4">
                   <div className="style2 mb30-991">
-                    <h3 className="breadcrumb_title">
+                    <h3 className="breadcrumb_title offset-1">
                       Provided Bids On Property
                     </h3>
                     {/* <p>We are glad to see you again!</p>                                                             */}
@@ -305,7 +305,7 @@ const Index = ({ propertyId }) => {
                 </div>
                 {/* End .col */}
 
-                <div className="col-lg-12 col-xl-12">
+                {/* <div className="col-lg-12 col-xl-12">
                   <div className="candidate_revew_select style2 mb30-991">
                     <ul className="mb0">
                       <li className="list-inline-item">
@@ -319,16 +319,26 @@ const Index = ({ propertyId }) => {
                           <SearchBox setSearchInput={setSearchInput} />
                         </div>
                       </li>
-                      {/* End li */}
 
-                      {/* <li className="list-inline-item">
+                      <li className="list-inline-item">
                         <Filtering setFilterQuery={setFilterQuery} />
-                      </li> */}
-                      {/* End li */}
+                      </li>
                     </ul>
                   </div>
-                </div>
+                </div> */}
                 {/* End .col */}
+
+                <div className="row">
+                  <div className="col-lg-12 mt0">
+                    <div className="mbp_pagination">
+                      <Pagination
+                        setStart={setStart}
+                        setEnd={setEnd}
+                        properties={properties}
+                      />
+                    </div>
+                  </div>
+                </div>
 
                 <div className="col-lg-12">
                   <div className="mb40">
@@ -425,23 +435,26 @@ const Index = ({ propertyId }) => {
               {/* End .row */}
             </div>
             {/* End .row */}
-
+            {/* 
             <div className="row">
-                 <div className="col-lg-12 mt20">
-                  <div className="mbp_pagination">
-                    <Pagination
-                      setStart={setStart}
-                      setEnd={setEnd}
-                      properties={properties}
-                    />
-                  </div>
-                </div> 
-            </div>
+              <div className="col-lg-12 mt20">
+                <div className="mbp_pagination">
+                  <Pagination
+                    setStart={setStart}
+                    setEnd={setEnd}
+                    properties={properties}
+                  />
+                </div>
+              </div>
+            </div> */}
 
             <div className="row mt50">
               <div className="col-lg-12">
                 <div className="copyright-widget text-center">
-                  <p>© 2020 Find House. Made with love.</p>
+                  <p>
+                    &copy; {new Date().getFullYear()} Appraisal Land. All Rights
+                    Reserved.
+                  </p>
                 </div>
               </div>
             </div>

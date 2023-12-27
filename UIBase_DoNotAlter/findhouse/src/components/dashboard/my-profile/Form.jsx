@@ -193,7 +193,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                         {" "}
                         <span className="fw-bold">Assistant Name</span> :{" "}
                         {userData?.broker_Details?.assistantFirstName}{" "}
-                        {userData?.broker_Details?.assistantLastName}
+                        {userData?.broker_Details?.assistantLatsName}
                       </span>
                     </li>
                   </td>

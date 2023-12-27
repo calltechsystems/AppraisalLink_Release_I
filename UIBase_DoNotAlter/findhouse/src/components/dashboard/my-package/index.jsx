@@ -145,7 +145,7 @@ const Index = () => {
 
               <div className="row align-items-center">
                 <div className="col-md-8 col-lg-8 col-xl-9">
-                  <div className="breadcrumb_content style2 mb30-991">
+                  <div className="breadcrumb_content mb30-991">
                     <h2 className="breadcrumb_title">Transactions</h2>
                     {/* <p>You can see your transactions history here!</p> */}
                   </div>
@@ -231,7 +231,7 @@ const Index = () => {
                 <div className="col-lg-12">
                   <div className="copyright-widget text-center">
                     <p>
-                      &copy; {new Date().getFullYear()} Appraisal Link. All
+                      &copy; {new Date().getFullYear()} Appraisal Land. All
                       Rights Reserved.
                     </p>
                   </div>
