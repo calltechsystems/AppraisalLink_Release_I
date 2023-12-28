@@ -33,7 +33,13 @@ const headCells = [
   {
     id: "status",
     numeric: false,
-    label: "Status",
+    label: "Order Status",
+    width: 170,
+  },
+  {
+    id: "status",
+    numeric: false,
+    label: "Appraisal Status",
     width: 170,
   },
   {
@@ -45,7 +51,7 @@ const headCells = [
   {
     id: "type_of_building",
     numeric: false,
-    label: "Type Of Building",
+    label: "Property Type",
     width: 140,
   },
   {

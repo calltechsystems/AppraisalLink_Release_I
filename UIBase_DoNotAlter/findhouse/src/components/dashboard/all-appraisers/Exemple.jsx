@@ -10,79 +10,42 @@ import Loader from "./Loader";
 
 const headCells = [
   {
-    id: "orderId",
+    id: "email",
     numeric: false,
-    label: "Order ID",
+    label: "Email",
     width: 100,
   },
 
   {
-    id: "typeOfBuilding",
+    id: "firstname",
     numeric: false,
-    label: "Type of Building",
+    label: "First Name",
     width: 200,
   },
   {
-    id: "type_of_appraisal",
+    id: "lastname",
     numeric: false,
-    label: "Type Of Appraisal",
+    label: "Last Name",
     width: 200,
   },
   {
-    id: "address",
+    id: "company",
     numeric: false,
-    label: "Property Address",
-    width: 200,
-  },
-
-  {
-    id: "estimatedValue",
-    numeric: false,
-    label: "Estimated Property Value ($)",
+    label: "Company",
     width: 200,
   },
 
   {
-    id: "purpose",
+    id: "phone",
     numeric: false,
-    label: "Purpose",
+    label: "Phone",
     width: 200,
   },
 
-  {
-    id: "lender_information",
-    numeric: false,
-    label: "Lender Information",
-    width: 200,
-  },
-  {
-    id: "status",
-    numeric: false,
-    label: "Status",
-    width: 160,
-  },
-  {
-    id: "urgency",
-    numeric: false,
-    label: "Urgency",
-    width: 200,
-  },
   {
     id: "date",
     numeric: false,
-    label: "Submission Date",
-    width: 200,
-  },
-  {
-    id: "quote_required_by",
-    numeric: false,
-    label: "Appraisal Report Required By",
-    width: 200,
-  },
-  {
-    id: "broker",
-    numeric: false,
-    label: "Broker",
+    label: "Date",
     width: 200,
   },
   {
@@ -93,6 +56,48 @@ const headCells = [
   },
 ];
 
+const temporaryData = [
+  {
+    email:"test@gmail.com",
+    firstname:"Joe",
+    lastname:"Doe",
+    company:"Appraiser Company 1",
+    phone:"+91 12324 235644",
+    date:" 29 December 2023"
+  },
+  {
+    email:"test@gmail.com",
+    firstname:"Joe",
+    lastname:"Doe",
+    company:"Appraiser Company 1",
+    phone:"+91 12324 235644",
+    date:" 29 December 2023"
+  },
+  {
+    email:"test@gmail.com",
+    firstname:"Joe",
+    lastname:"Doe",
+    company:"Appraiser Company 1",
+    phone:"+91 12324 235644",
+    date:" 29 December 2023"
+  },
+  {
+    email:"test@gmail.com",
+    firstname:"Joe",
+    lastname:"Doe",
+    company:"Appraiser Company 1",
+    phone:"+91 12324 235644",
+    date:" 29 December 2023"
+  },
+  {
+    email:"test@gmail.com",
+    firstname:"Joe",
+    lastname:"Doe",
+    company:"Appraiser Company 1",
+    phone:"+91 12324 235644",
+    date:" 29 December 2023"
+  },
+]
 let count = 0;
 
 export default function Exemple({
@@ -227,185 +232,91 @@ export default function Exemple({
 
   useEffect(() => {
     const getData = () => {
-      properties.map((property, index) => {
-        const isWishlist = checkWishlistedHandler(property);
-        const isBidded = filterBidsWithin24Hours(property);
-        console.log("isBidded",property);
+      temporaryData.map((data, index) => {
+        // const isWishlist = checkWishlistedHandler(property);
+        // const isBidded = filterBidsWithin24Hours(property);
+        // console.log("isBidded",property);
 
         const updatedRow = {
-          orderId: property.orderId ,
-          address: `${property.city}-${property.province},${property.zipCode}`,
-          estimatedValue: property.estimatedValue
-            ? `$ ${property.estimatedValue}`
-            : "$ 0",
-          purpose: property.purpose ? property.purpose : "NA",
-          status: isBidded.bidId ? (
-            isBidded.status === 0 ? (
-              <span
-                className="btn btn-primary  w-100"
-              >
-                Quote Provided
-              </span>
-            ) : isBidded.status === 1 ? (
-              <span
-                className="btn btn-success  w-100"
-                
-              >
-                Accepted
-              </span>
-            ) : (
-              <span className="btn btn-danger  w-100">Rejected</span>
-            )
-          ) : (
-            <span className="btn btn-warning  w-100">New</span>
-          ),
-          broker: (
-            <div>
-              {isBidded.status === 1 ? (
-                <a href="#">
-                  <button
-                    className=""
-                    style={{
-                      border: "0px",
-                      color: "#2e008b",
-                      textDecoration: "underline",
-                      // fontWeight: "bold",
-                      backgroundColor: "transparent",
-                    }}
-                    onClick={() => openModalBroker(property)}
-                  >
-                    {`${property.applicantFirstName} ${property.applicantLastName}`}
-                  </button>
-                </a>
-              ) : isBidded.status === 2 ? (
-                <h6 style={{ color: "red" }}> Rejected</h6>
-              ) : (
-                <p>
-                  Broker Information will be available post the quote acceptance
-                </p>
-              )}
-            </div>
-          ),
-          type_of_appraisal: property.typeOfAppraisal
-            ? property.typeOfAppraisal
-            : "NA",
-          typeOfBuilding:
-            property.typeOfBuilding > 0 ? "Apartment" : property.typeOfBuilding,
-          quote_required_by: formatDate(property.addedDatetime),
-          date: formatDate(property.addedDatetime),
-          bidAmount: property.bidLowerRange,
-          lender_information: property.lenderInformation
-            ? property.lenderInformation
-            : "NA",
-          urgency:
-            property.urgency === 0
-              ? "Rush"
-              : property.urgency === 1
-              ? "Regular"
-              : "NA",
+          email:data.email,
+          firstname:data.firstname,
+          lastname:data.lastname,
+          company:data.company,
+          phone:data.phone,
+          date:data.date,
+          // broker: (
+          //   <div>
+          //     {isBidded.status === 1 ? (
+          //       <a href="#">
+          //         <button
+          //           className=""
+          //           style={{
+          //             border: "0px",
+          //             color: "#2e008b",
+          //             textDecoration: "underline",
+          //             // fontWeight: "bold",
+          //             backgroundColor: "transparent",
+          //           }}
+          //           onClick={() => openModalBroker(property)}
+          //         >
+          //           {`${property.applicantFirstName} ${property.applicantLastName}`}
+          //         </button>
+          //       </a>
+          //     ) : isBidded.status === 2 ? (
+          //       <h6 style={{ color: "red" }}> Rejected</h6>
+          //     ) : (
+          //       <p>
+          //         Broker Information will be available post the quote acceptance
+          //       </p>
+          //     )}
+          //   </div>
+          // ),
+          // type_of_appraisal: property.typeOfAppraisal
+          //   ? property.typeOfAppraisal
+          //   : "NA",
+          // typeOfBuilding:
+          //   property.typeOfBuilding > 0 ? "Apartment" : property.typeOfBuilding,
+          // quote_required_by: formatDate(property.addedDatetime),
+          // date: formatDate(property.addedDatetime),
+          // bidAmount: property.bidLowerRange,
+          // lender_information: property.lenderInformation
+          //   ? property.lenderInformation
+          //   : "NA",
+          // urgency:
+          //   property.urgency === 0
+          //     ? "Rush"
+          //     : property.urgency === 1
+          //     ? "Regular"
+          //     : "NA",
 
           action: (
             <div className="print-hidden-column">
-              {isBidded && isBidded.status !== 1 ? (
-                <ul className="">
-                  {isWishlist.id ? (
-                    <button
-                      className="btn "
-                      style={{ border: "1px solid grey" }}
-                      onClick={() => removeWishlistHandler(isWishlist.id)}
-                    >
-                      <img
-                        width={26}
-                        height={26}
-                        src="https://png.pngtree.com/png-clipart/20200226/original/pngtree-3d-red-heart-cute-valentine-romantic-glossy-shine-heart-shape-png-image_5315044.jpg"
-                      />
-                    </button>
-                  ) : (
-                    <li
-                      className="list-inline-item"
-                      title="Wishlist Property"
-                      style={{
-                        width: "30px",
-                        border: "none",
-                        textAlign: "center",
-                        borderRadius: "5px",
-                      }}
-                    >
-                      {
-                        <button
-                          className="btn"
-                          style={{ border: "1px solid grey" }}
-                          onClick={() => onWishlistHandler(property.propertyId)}
-                        >
-                          <span className="flaticon-heart text-color"></span>
-                        </button>
-                      }
-                    </li>
-                  )}
-
-                  {!isBidded.$id && (
-                    <li
-                      className="list-inline-item"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Provide Quote"
-                    >
-                      <div
-                        className="w-100"
-                        onClick={() =>
-                          participateHandler(
-                            property.bidLowerRange,
-                            property.propertyId
-                          )
-                        }
-                      >
-                        <button
-                          href="#"
-                          className="btn btn-color w-100 mt-1"
-                          style={{ marginLeft: "12px" }}
-                        >
-                          Provide Quote
-                        </button>
-                      </div>
-                    </li>
-                  )}
-
+             
+               
                  
-                  <li
-                  className="list-inline-item"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Provide Quote"
-                >
-                  <div
-                    className="w-100"
-                    onClick={() =>
-                      onDeletePropertyHandler(property.propertyId)
-                    }
-                  >
-                    <button
-                      href="#"
-                      className="btn btn-color w-100 mt-1"
-                      style={{ marginLeft: "12px" }}
-                    >
-                    Archive Property
-                    </button>
-                  </div>
-                </li>
-                </ul>
-              ) : (
-                 <button
-                          href="#"
-                          className="btn btn-color w-100 mt-1"
-                          style={{ marginLeft: "12px" }}
-                          onClick={openStatusUpdateHandler}
-                        >
-                          Quote Update
-                        </button>
-              )}
+                    
+                    <button >
+                    <i className="flaticon-edit"></i>
+                  </button>
+                  <button >
+                  <i className="flaticon-garbage"></i>
+                </button>
+                 
+
+              
             </div>
           ),
         };
+
+        // const updatedRow = {
+        //   email:data.email,
+        //   firstname:data.firstname,
+        //   lastname:data.lastname,
+        //   company:data.company,
+        //   phone:data.phone,
+        //   date:data.date
+
+        // };
         tempData.push(updatedRow);
       });
       setUpdatedData(tempData);

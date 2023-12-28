@@ -58,7 +58,7 @@ const headCells = [
   {
     id: "status",
     numeric: false,
-    label: "Status",
+    label: "Quote Status",
     width: 160,
   },
   {
@@ -416,7 +416,7 @@ export default function Exemple({
                           style={{ marginLeft: "12px" }}
                           onClick={()=>openStatusUpdateHandler(1)}
                         >
-                          Quote Update
+                          Order Update
                         </button>
               )}
             </div>

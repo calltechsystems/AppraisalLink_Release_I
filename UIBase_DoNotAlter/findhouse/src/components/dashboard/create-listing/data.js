@@ -290,3 +290,36 @@ export const AppraiserList = [
     value: "appraiser5",
   },
 ];
+
+export const designation = [
+  {
+    id: "0",
+    type: "Candidate Appraiser",
+    value: "Candidate Appraiser",
+  },
+  {
+    id: "1",
+    type: "CRA, P. APP",
+    value: "CRA, P. APP",
+  },
+  {
+    id: "2",
+    type: "AACI, P. APP",
+    value: "AACI, P. APP",
+  },
+  {
+    id: "3",
+    type: "DAR",
+    value: "DAR",
+  },
+  {
+    id: "4",
+    type: "DAC",
+    value: "DAC",
+  },
+  {
+    id: "5",
+    type: "Other",
+    value: "Other",
+  },
+];

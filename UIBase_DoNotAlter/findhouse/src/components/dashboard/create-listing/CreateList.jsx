@@ -351,7 +351,7 @@ const CreateList = ({
                   fontWeight: "",
                 }}
               >
-                Type of Building <span class="req-btn">*</span>
+                Property Type <span class="req-btn">*</span>
               </label>
             </div>
             <div className="col-lg-4">

@@ -1,12 +1,12 @@
 import dynamic from "next/dynamic";
 import Seo from "../../components/common/seo";
-import AppraiserProfile from "../../components/dashboard/appraiser-profile";
+import AppraiserCompanyProfile from "../../components/dashboard/appraiser-company-profile";
 
 const index = () => {
   return (
     <>
-      <Seo pageTitle="Appraiser Profile" />
-      <AppraiserProfile />
+      <Seo pageTitle="Appraiser Company Profile" />
+      <AppraiserCompanyProfile />
     </>
   );
 };

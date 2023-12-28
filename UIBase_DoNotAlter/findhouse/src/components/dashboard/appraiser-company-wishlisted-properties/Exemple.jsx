@@ -104,6 +104,7 @@ export default function Exemple({
   setUpdatedCode,
   properties,
   setProperties,
+  wishlistedProperties,
   deletePropertyHandler,
   onWishlistHandler,
   setFilterQuery,
@@ -113,6 +114,7 @@ export default function Exemple({
   setErrorMessage,
   setModalIsOpenError,
   setRefresh,
+  setWishlishtedProperties,
   setIsStatusModal,
   setStartLoading,
   refresh,
@@ -232,6 +234,7 @@ export default function Exemple({
   },[!updatedData]);
 
   useEffect(() => {
+    let page = [];
     const getData = () => {
       properties.map((property, index) => {
         const isWishlist = checkWishlistedHandler(property);
@@ -239,145 +242,146 @@ export default function Exemple({
         console.log("isBidded", isBidded);
 
         if (isWishlist.id) {
+          page.push(property);
           const updatedRow = {
-            orderId: property.orderId,
-            address: `${property.city}-${property.province},${property.zipCode}`,
-            estimatedValue: property.estimatedValue
-              ? property.estimatedValue
-              : 0,
-            purpose: property.purpose ? property.purpose : "NA",
-            status: isBidded.bidId ? (
-              isBidded.status === 0 ? (
-                <span className="btn btn-primary" >
-                  Quote Provided
-                </span>
-              ) : isBidded.status === 1 ? (
-                <span className="btn btn-success">Accepted</span>
-              ) : (
-                <span className="btn btn-danger">Rejected</span>
-              )
-            ) : (
-              <span className="btn btn-warning">New</span>
-            ),
-            broker: (
-              <div>
-                {isBidded.status === 1 ? (
-                  <a href="#">
-                    <button
-                      className=""
-                      style={{
-                        border: "0px",
-                        color: "#2e008b",
-                        textDecoration: "underline",
-                        // fontWeight: "bold",
-                        backgroundColor: "transparent",
-                      }}
-                      onClick={() => openModalBroker(property)}
-                    >
-                      {`${property.applicantFirstName} ${property.applicantLastName}`}
-                    </button>
-                  </a>
-                ) : isBidded.status === 2 ? (
-                  <h6 style={{ color: "red" }}> Rejected</h6>
-                ) : (
-                  <h6>
-                    Broker Information will be available post the quote
-                    acceptance
-                  </h6>
-                )}
-              </div>
-            ),
-            type_of_appraisal: property.typeOfAppraisal
-              ? property.typeOfAppraisal
-              : "NA",
-            typeOfBuilding:
-              property.typeOfBuilding > 0
-                ? "Apartment"
-                : property.typeOfBuilding,
-            quote_required_by: formatDate(property.addedDatetime),
-            date: formatDate(property.addedDatetime),
-            bidAmount: property.bidLowerRange,
-            lender_information: property.lenderInformation
-              ? property.lenderInformation
-              : "NA",
-            urgency:
-              property.urgency === 0
-                ? "Rush"
-                : property.urgency === 1
-                ? "Regular"
-                : "High",
+            // orderId: property.orderId,
+            // address: `${property.city}-${property.province},${property.zipCode}`,
+            // estimatedValue: property.estimatedValue
+            //   ? property.estimatedValue
+            //   : 0,
+            // purpose: property.purpose ? property.purpose : "NA",
+            // status: isBidded.bidId ? (
+            //   isBidded.status === 0 ? (
+            //     <span className="btn btn-primary" >
+            //       Quote Provided
+            //     </span>
+            //   ) : isBidded.status === 1 ? (
+            //     <span className="btn btn-success">Accepted</span>
+            //   ) : (
+            //     <span className="btn btn-danger">Rejected</span>
+            //   )
+            // ) : (
+            //   <span className="btn btn-warning">New</span>
+            // ),
+            // broker: (
+            //   <div>
+            //     {isBidded.status === 1 ? (
+            //       <a href="#">
+            //         <button
+            //           className=""
+            //           style={{
+            //             border: "0px",
+            //             color: "#2e008b",
+            //             textDecoration: "underline",
+            //             // fontWeight: "bold",
+            //             backgroundColor: "transparent",
+            //           }}
+            //           onClick={() => openModalBroker(property)}
+            //         >
+            //           {`${property.applicantFirstName} ${property.applicantLastName}`}
+            //         </button>
+            //       </a>
+            //     ) : isBidded.status === 2 ? (
+            //       <h6 style={{ color: "red" }}> Rejected</h6>
+            //     ) : (
+            //       <h6>
+            //         Broker Information will be available post the quote
+            //         acceptance
+            //       </h6>
+            //     )}
+            //   </div>
+            // ),
+            // type_of_appraisal: property.typeOfAppraisal
+            //   ? property.typeOfAppraisal
+            //   : "NA",
+            // typeOfBuilding:
+            //   property.typeOfBuilding > 0
+            //     ? "Apartment"
+            //     : property.typeOfBuilding,
+            // quote_required_by: formatDate(property.addedDatetime),
+            // date: formatDate(property.addedDatetime),
+            // bidAmount: property.bidLowerRange,
+            // lender_information: property.lenderInformation
+            //   ? property.lenderInformation
+            //   : "NA",
+            // urgency:
+            //   property.urgency === 0
+            //     ? "Rush"
+            //     : property.urgency === 1
+            //     ? "Regular"
+            //     : "High",
 
-            action: (
-              <div className="print-hidden-column">
-                {isBidded && isBidded.status !== 1 ? (
-                  <ul className="">
-                    {!isBidded.$id && (
-                      <li
-                        className="list-inline-item"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title="Provide Quote"
-                      >
-                        <div
-                          className=" fw-bold"
-                          onClick={() =>
-                            participateHandler(
-                              property.bidLowerRange,
-                              property.propertyId
-                            )
-                          }
-                        >
-                          <a
-                            href="#"
-                            className="btn btn-color w-15"
-                            style={{ marginLeft: "10px" }}
-                          >
-                            Provide Quote
-                          </a>
-                        </div>
-                      </li>
-                    )}
-                    <li
-                    className="list-inline-item"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title="Provide Quote"
-                  >
-                    <div
-                      className=" fw-bold"
-                      onClick={() =>
-                        onDeletePropertyHandler(property.propertyId)
-                      }
-                    >
-                      <a
-                        href="#"
-                        className="btn btn-color w-15"
-                        style={{ marginLeft: "10px" }}
-                      >
-                        Archive Property 
-                      </a>
-                    </div>
-                  </li>
+            // action: (
+            //   <div className="print-hidden-column">
+            //     {isBidded && isBidded.status !== 1 ? (
+            //       <ul className="">
+            //         {!isBidded.$id && (
+            //           <li
+            //             className="list-inline-item"
+            //             data-toggle="tooltip"
+            //             data-placement="top"
+            //             title="Provide Quote"
+            //           >
+            //             <div
+            //               className=" fw-bold"
+            //               onClick={() =>
+            //                 participateHandler(
+            //                   property.bidLowerRange,
+            //                   property.propertyId
+            //                 )
+            //               }
+            //             >
+            //               <a
+            //                 href="#"
+            //                 className="btn btn-color w-15"
+            //                 style={{ marginLeft: "10px" }}
+            //               >
+            //                 Provide Quote
+            //               </a>
+            //             </div>
+            //           </li>
+            //         )}
+            //         <li
+            //         className="list-inline-item"
+            //         data-toggle="tooltip"
+            //         data-placement="top"
+            //         title="Provide Quote"
+            //       >
+            //         <div
+            //           className=" fw-bold"
+            //           onClick={() =>
+            //             onDeletePropertyHandler(property.propertyId)
+            //           }
+            //         >
+            //           <a
+            //             href="#"
+            //             className="btn btn-color w-15"
+            //             style={{ marginLeft: "10px" }}
+            //           >
+            //             Archive Property 
+            //           </a>
+            //         </div>
+            //       </li>
                    
-                  </ul>
-                ) : (
-                  <div
-                  className=" fw-bold"
-                  onClick={() =>
-                    statusHandler()
-                  }
-                >
-                  <a
-                    href="#"
-                    className="btn btn-color w-15"
-                    style={{ marginLeft: "10px" }}
-                  >
-                    Quote Update
-                  </a>
-                </div>
-                )}
-              </div>
-            ),
+            //       </ul>
+            //     ) : (
+            //       <div
+            //       className=" fw-bold"
+            //       onClick={() =>
+            //         statusHandler()
+            //       }
+            //     >
+            //       <a
+            //         href="#"
+            //         className="btn btn-color w-15"
+            //         style={{ marginLeft: "10px" }}
+            //       >
+            //         Quote Update
+            //       </a>
+            //     </div>
+            //     )}
+            //   </div>
+            // ),
           };
 
           tempData.push(updatedRow);
@@ -386,6 +390,7 @@ export default function Exemple({
       setUpdatedData(tempData);
     };
     getData();
+    setWishlishtedProperties(page);
   }, [properties]);
 
   useEffect(() => {
@@ -470,7 +475,7 @@ export default function Exemple({
     setRefresh(false);
 
   }, [refresh]);
-  console.log(updatedData)
+  console.log(updatedData);
   return (
     <>
       {refresh ? (
@@ -478,7 +483,7 @@ export default function Exemple({
       ) : (
         <SmartTable
           title=""
-          data={sortObjectsByOrderIdDescending(updatedData)}
+          data={updatedData.length > 0 ? sortObjectsByOrderIdDescending(updatedData) : wishlistedProperties}
           headCells={headCells}
           setRefresh={setRefresh}
           setProperties={setProperties}

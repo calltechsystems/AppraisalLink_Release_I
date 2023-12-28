@@ -58,7 +58,7 @@ const headCells = [
   {
     id: "status",
     numeric: false,
-    label: "Status",
+    label: "Quote Status",
     width: 200,
   },
   {
@@ -110,6 +110,7 @@ export default function Exemple({
   setSearchInput,
   participateHandler,
   openModalBroker,
+  setWishlistedProperties,
   setErrorMessage,
   setModalIsOpenError,
   setRefresh,
@@ -232,6 +233,7 @@ export default function Exemple({
   },[!updatedData]);
 
   useEffect(() => {
+    let page = [];
     const getData = () => {
       properties.map((property, index) => {
         const isWishlist = checkWishlistedHandler(property);
@@ -239,6 +241,8 @@ export default function Exemple({
         console.log("isBidded", isBidded);
 
         if (isWishlist.id) {
+          page.push(property);
+
           const updatedRow = {
             orderId: property.orderId,
             address: `${property.city}-${property.province},${property.zipCode}`,
@@ -386,6 +390,7 @@ export default function Exemple({
       setUpdatedData(tempData);
     };
     getData();
+    setWishlistedProperties(page)
   }, [properties]);
 
   useEffect(() => {

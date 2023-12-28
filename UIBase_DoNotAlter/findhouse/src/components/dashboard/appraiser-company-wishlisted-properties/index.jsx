@@ -15,7 +15,7 @@ import Modal from "./Modal";
 import { encryptionData } from "../../../utils/dataEncryption";
 import Loader from "./Loader";
 import { AppraiserStatusOptions } from "../create-listing/data";
-// import TransitionDetector from "../../../utils/higherOrderFunction";
+import TransitionDetector from "../../../utils/higherOrderFunction";
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -37,6 +37,7 @@ const Index = () => {
 
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [wishlistedProperties,setWishlishtedProperties] = useState([]);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -408,6 +409,8 @@ const Index = () => {
                           setModalOpen={openModal}
                           close={closeModal}
                           setProperties={setProperties}
+                          setWishlishtedProperties={setWishlishtedProperties}
+                          wishlistedProperties={wishlistedProperties}
                           properties={
                             searchInput === "" ? properties : filterProperty
                           }
@@ -1094,7 +1097,7 @@ const Index = () => {
                     <Pagination
                       setStart={setStart}
                       setEnd={setEnd}
-                      properties={properties}
+                      properties={wishlistedProperties}
                     />
                   </div>
                 </div> 

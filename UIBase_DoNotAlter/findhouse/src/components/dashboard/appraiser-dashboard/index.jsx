@@ -249,7 +249,7 @@ const Index = () => {
             <div className="col-lg-12 maxw100flex-992">
               <div className="row">
                 {/* Start Dashboard Navigation */}
-                {/* <div className="col-lg-12">
+                <div className="col-lg-12">
                   <div className="dashboard_navigationbar dn db-1024">
                     <div className="dropdown">
                       <button
@@ -262,7 +262,7 @@ const Index = () => {
                       </button>
                     </div>
                   </div>
-                </div> */}
+                </div>
                 {/* End Dashboard Navigation */}
 
                 <div
@@ -280,7 +280,7 @@ const Index = () => {
                         ? `${userData?.brokerage_Details?.firstName} ${userData?.brokerage_Details?.lastName}`
                         : ""}
                     </h2>
-                    <p>We are glad to see you again!</p>
+                    {/* <p>We are glad to see you again!</p> */}
                   </div>
                   <div>
                     <Filtering setRefresh={setRefresh}/>

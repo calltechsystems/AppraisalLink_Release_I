@@ -7,6 +7,7 @@ import axios from "axios";
 import { CldUploadWidget } from "next-cloudinary";
 import toast from "react-hot-toast";
 import { province } from "../create-listing/data";
+import { designation } from "../create-listing/data";
 
 const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   const [profilePhoto, setProfilePhoto] = useState(null);
@@ -18,6 +19,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
       "/assets/images/home/placeholder_01.jpg"
   );
 
+
+  const hiddenStyle = { backgroundColor: "#E8F0FE", display: "none" };
+  const viewStyle = { backgroundColor: "#E8F0FE", display: "block" };
   const [edit, setEdit] = useState(!userData.broker_Details?.firstName);
 
   const [firstNameRef, setFirstNameRef] = useState(
@@ -57,14 +61,28 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     userData?.brokerage_Details?.phoneNumber || ""
   );
 
-  const [commissionRate,setCommissionRate]=useState(userData.brokerage_Details?.commissionRate||"");
+  const [commissionRate, setCommissionRate] = useState(
+    userData.brokerage_Details?.commissionRate || ""
+  );
 
-  const [maxNumberOfAssignedOrders,setMaxNumberOfAssignedOrders]=useState(userData?.brokerage_Details?.maxNumberOfAssignedOrders||"");
+  const [maxNumberOfAssignedOrders, setMaxNumberOfAssignedOrders] = useState(
+    userData?.brokerage_Details?.maxNumberOfAssignedOrders || ""
+  );
 
-  const [designation,setDesignation]=useState(userData?.brokerage_Details?.designation||"");
-  
-  const [streetName,setStreetName]=useState(userData?.brokerage_Details?.streetName||"");
-  const [streetNumber,setStreetNumber]=useState(userData.brokerage_Details?.streetNumber||"");
+  const [otherDesignation, setOtherDesignation] = useState(false);
+
+
+  // const [designation, setDesignation] = useState(
+  //   userData?.brokerage_Details?.designation || ""
+  // );
+
+  const [streetName, setStreetName] = useState(
+    userData?.brokerage_Details?.streetName || ""
+  );
+  const [streetNumber, setStreetNumber] = useState(
+    userData.brokerage_Details?.streetNumber || ""
+  );
+  const [unit, setUnit] = useState(userData?.broker_Details?.apartmentNo || "");
 
   const uploadProfile = (e) => {
     const file = e.target.files[0];
@@ -111,7 +129,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
       (!firstName ||
         !lastName ||
         !streetName ||
-        !streetNumber||
+        !streetNumber ||
         !city ||
         !state ||
         !zipCode ||
@@ -148,8 +166,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
 
       // const percentage = Math.floor(count / 13) * 100;
       // setProfileCount(percentage);
-      
-    
+
       const payload = {
         id: userData.userId,
         token: userData.token,
@@ -157,12 +174,12 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         middleName: middleName,
         lastName: lastName,
         companyName: companyName,
-        streetNumber : streetNumber,
-        apartmentNo : "",
-        streetName : streetName,
-        commissionRate : commissionRate,
-        maxNumberOfAssignedOrders:maxNumberOfAssignedOrders,
-        designation : designation,
+        streetNumber: streetNumber,
+        apartmentNo: "",
+        streetName: streetName,
+        commissionRate: commissionRate,
+        maxNumberOfAssignedOrders: maxNumberOfAssignedOrders,
+        designation: designation,
         city: city,
         province: state,
         postalCode: zipCode,
@@ -298,7 +315,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
               </div>
               <div className="col-lg-9">
                 <div className="row mb-2">
-                  <h3>Personal Information</h3>
+                  <h3>Appraiser Information</h3>
                   <hr />
                   <div className="col-lg-12 mb-3">
                     <div className="row">
@@ -367,7 +384,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                     <div className="row">
                       <div className="col-lg-4">
                         <label htmlFor="" style={{ paddingTop: "10px" }}>
-                          Appraiser Company Name{" "}
+                          Company Name{" "}
                         </label>
                       </div>
                       <div className="col-lg-7">
@@ -424,6 +441,57 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       </div>
                     </div>
                   </div>
+                  <div className="col-lg-12 mb-3">
+                    <div className="row">
+                      <div className="col-lg-4">
+                        <label htmlFor="" style={{ paddingTop: "10px" }}>
+                          Designation <span class="req-btn">*</span>
+                        </label>
+                      </div>
+                      <div className="col-lg-4">
+                        <select
+                          required
+                          className="form-select"
+                          data-live-search="true"
+                          data-width="100%"
+                          // value={stateRef}
+                          // onChange={(e) => setStateRef(e.target.value)}
+                          // disabled={!edit}
+                          style={{
+                            paddingTop: "15px",
+                            paddingBottom: "15px",
+                            backgroundColor: "#E8F0FE",
+                            // color:"white"
+                          }}
+                        >
+                          {designation.map((item, index) => {
+                            return (
+                              <option key={item.id} value={item.value}>
+                                {item.type}
+                              </option>
+                            );
+                          })}
+                        </select>
+                      </div>
+                    </div>
+                    <div className="col-lg-4">
+                      <div id="other-div">
+                        {/* Content for the "Other" option */}
+                        <input
+                          required
+                          style={otherDesignation ? viewStyle : hiddenStyle}
+                          onChange={(e) =>
+                            setOtherDesignation(e.target.value)
+                          }
+                          type="text"
+                          className="form-control"
+                          id="otherInput"
+                          name="otherInput"
+                          maxLength={30}
+                        />
+                      </div>
+                    </div>
+                  </div>
                   <h3 className="mt-4">Address</h3>
                   <hr />
                   <div className="col-lg-12 mb-3">
@@ -470,6 +538,33 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   <div className="col-lg-12 mb-3">
                     <div className="row">
                       <div className="col-lg-4">
+                        <label
+                          className="text-color"
+                          htmlFor=""
+                          style={{ paddingTop: "5px" }}
+                        >
+                          Unit / Apt. No.
+                        </label>
+                      </div>
+                      <div className="col-lg-7">
+                        <input
+                          type="text"
+                          value={unit}
+                          onChange={(e) => setUnit(e.target.value)}
+                          className="form-control"
+                          style={{ backgroundColor: "#E8F0FE" }}
+                          id="formGroupExampleInput3"
+                          required
+                          // value={cityRef}
+                          // onChange={(e) => setCityRef(e.target.value)}
+                          disabled={!edit}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-lg-12 mb-3">
+                    <div className="row">
+                      <div className="col-lg-4">
                         <label htmlFor="" style={{ paddingTop: "10px" }}>
                           City <span class="req-btn">*</span>
                         </label>
@@ -496,29 +591,29 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                         </label>
                       </div>
                       <div className="col-lg-7">
-                      <select
-                      required
-                      className="form-select"
-                      data-live-search="true"
-                      data-width="100%"
-                      value={stateRef }
-                      onChange={(e) => setStateRef(e.target.value)}
-                      disabled={!edit}
-                      style={{
-                        paddingTop: "15px", 
-                        paddingBottom: "15px",
-                        backgroundColor: "#E8F0FE",
-                        // color:"white"
-                      }}
-                    >
-                      {province.map((item, index) => {
-                        return (
-                          <option key={item.id} value={item.value}>
-                            {item.type}
-                          </option>
-                        );
-                      })}
-                    </select>
+                        <select
+                          required
+                          className="form-select"
+                          data-live-search="true"
+                          data-width="100%"
+                          value={stateRef}
+                          onChange={(e) => setStateRef(e.target.value)}
+                          disabled={!edit}
+                          style={{
+                            paddingTop: "15px",
+                            paddingBottom: "15px",
+                            backgroundColor: "#E8F0FE",
+                            // color:"white"
+                          }}
+                        >
+                          {province.map((item, index) => {
+                            return (
+                              <option key={item.id} value={item.value}>
+                                {item.type}
+                              </option>
+                            );
+                          })}
+                        </select>
                       </div>
                     </div>
                   </div>
@@ -543,7 +638,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       </div>
                     </div>
                   </div>
-                  <h3 className="mt-4">Other Details</h3>
+                  {/* <h3 className="mt-4">Other Details</h3>
                   <hr />
 
                   <div className="col-lg-12 mb-3">
@@ -627,7 +722,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                         />
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                   {/* <div className="row">
                   <div className="col-lg-6">
                     <div className="col-12 mb-2">

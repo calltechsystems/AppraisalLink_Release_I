@@ -77,7 +77,7 @@ function SmartTable(props) {
 
     localStorage.setItem("addAppraiser",JSON.stringify(newLocalData));
     localStorage.removeItem("user");
-    router.push("/register");
+    router.push("/appraiser-register");
   }
 
   const handlePrint = () => {

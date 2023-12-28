@@ -86,7 +86,7 @@ const SidebarMenu = () => {
               }`}
             >
               <Link href="/appraiser-dashboard">
-                <i className="flaticon-home"></i>
+                <i className="flaticon-box"></i>
                 <span>Dashboard</span>
               </Link>
             </li>
@@ -129,6 +129,19 @@ const SidebarMenu = () => {
             <span>Quote History</span>
           </Link>
         </li>
+
+        <li
+        className={`treeview ${
+          isSinglePageActive("/appraiser-completed-properties", route.pathname)
+            ? "active"
+            : ""
+        }`}
+      >
+        <Link href="/appraiser-completed-properties">
+          <i className="flaticon-home"></i>
+          <span>Completed Properties</span>
+        </Link>
+      </li>
 
         <li
         className={`treeview ${

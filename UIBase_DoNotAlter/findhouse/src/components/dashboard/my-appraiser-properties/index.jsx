@@ -15,7 +15,7 @@ import Modal from "./Modal";
 import { encryptionData } from "../../../utils/dataEncryption";
 import Loader from "./Loader";
 import { AppraiserStatusOptions } from "../create-listing/data";
-// import TransitionDetector from "../../../utils/higherOrderFunction";
+import TransitionDetector from "../../../utils/higherOrderFunction";
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -29,6 +29,7 @@ const Index = () => {
   const [filterQuery, setFilterQuery] = useState("Last 30 Days");
   const [searchQuery, setSearchQuery] = useState("city");
   const [properties, setProperties] = useState([]);
+  const [wishlistedProperties,setWishlistedProperties] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [lowRangeBid, setLowRangeBid] = useState("");
   const [propertyId, setPropertyId] = useState(null);
@@ -72,6 +73,19 @@ const Index = () => {
     setOpenBrokerModal(true);
   };
 
+   
+  const [openDate,setOpenDate] = useState(false);
+  const [statusDate,setStatusDate]=useState("");
+
+  
+
+  const handleStatusSelect = (value)=>{
+    if(String(value) === "Appraisal Visit Confirmed"){
+      setOpenDate(true);
+    }
+
+  }
+
   const [isStatusModal,setIsStatusModal] = useState(false);
   
   const handleStatusUpdateHandler = ()=>{
@@ -79,6 +93,7 @@ const Index = () => {
   }
 
   const closeStatusUpdateHandler = ()=>{
+    setOpenDate(false);
     setIsStatusModal(false);
   }
 
@@ -410,6 +425,7 @@ const Index = () => {
                           properties={
                             searchInput === "" ? properties : filterProperty
                           }
+                          setWishlistedProperties={setWishlistedProperties}
                           start={start}
                           end={end}
                           setUpdatedCode={setUpdatedCode}
@@ -1023,6 +1039,7 @@ const Index = () => {
                   className="form-select"
                   data-live-search="true"
                   data-width="100%"
+                  onChange={(e)=>handleStatusSelect(e.target.value)}
                   // value={buildinRef}
                   // onChange={(e) => setBuildinRef(e.target.value)}
                   // onChange={(e) => setBuildinRef(e.target.value)}
@@ -1041,6 +1058,18 @@ const Index = () => {
                     );
                   })}
                 </select>
+                {openDate && <div className="col-lg-4">
+                <input
+                  required
+                 
+                  type="datetime-local"
+                  className="form-control"
+                  id="formGroupExampleInput3"
+                  onChange={(e) => setStatusDate(e.target.value)}
+                  value={statusDate}
+                />
+              </div>}
+            
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
                     <button
@@ -1093,7 +1122,7 @@ const Index = () => {
                     <Pagination
                       setStart={setStart}
                       setEnd={setEnd}
-                      properties={properties}
+                      properties={wishlistedProperties}
                     />
                   </div>
                 </div> 
