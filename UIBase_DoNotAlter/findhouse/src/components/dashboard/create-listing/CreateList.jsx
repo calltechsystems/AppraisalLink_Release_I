@@ -733,7 +733,7 @@ const CreateList = ({
                         marginLeft: "-5px",
                       }
                 }
-                type="date"
+                type="datetime-local"
                 className="form-control"
                 id="formGroupExampleInput3"
                 onChange={(e) => setAppraisalQuoteDate(e.target.value)}
