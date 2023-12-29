@@ -345,6 +345,7 @@ const Index = ({ isView, propertyData }) => {
     window.location.reload();
   };
   const updateHandler = () => {
+
     setModalIsOpen(false);
     const nameRegex = /^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -361,7 +362,11 @@ const Index = ({ isView, propertyData }) => {
       toast.error("Please provide a valid email address");
     } else if (!phoneNumberRegex.test(applicantNumber) && applicantNumber) {
       toast.error("Please provide a valid phone number");
-    } else {
+    }
+    else if ((String(purpose) === "Purchase" || String(purpose) === "Refinance") && lenderInformation === "") {
+      toast.error("Please fill the lender Information for this purpose option");
+    }  
+    else {
       
       const payload = {
         userId: userInfo.userId,
@@ -497,6 +502,11 @@ const Index = ({ isView, propertyData }) => {
   };
 
   const submitHandler = () => {
+
+    if ((String(purpose) === "Purchase" || String(purpose) === "Refinance") && lenderInformation === "") {
+      toast.error("Please fill the lender Information for this purpose option");
+    } 
+    else{
     const payload = {
       streetName: streetNameRef,
       streetNumber: streetNumberRef,
@@ -603,6 +613,7 @@ const Index = ({ isView, propertyData }) => {
     } else {
       setModalIsOpen(true);
     }
+  }
   };
 
   const finalSubmitHandler = () => {
@@ -622,7 +633,11 @@ const Index = ({ isView, propertyData }) => {
       toast.error("Please provide a valid email address");
     } else if (!phoneNumberRegex.test(applicantNumber) && applicantNumber) {
       toast.error("Please provide a valid phone number");
-    } else {
+    } 
+    else if ((String(purpose) === "Purchase" || String(purpose) === "Refinance") && lenderInformation === "") {
+      toast.error("Please fill the lender Information for this purpose option");
+    } 
+    else {
       const payload = {
         userId: userInfo.userId,
         streetName: streetNameRef,
