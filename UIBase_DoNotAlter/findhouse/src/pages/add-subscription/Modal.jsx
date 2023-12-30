@@ -10,7 +10,7 @@ import { userAgent } from 'next/server';
 const Modal = ({ modalOpen, closeModal, price,setDisable,disable }) => {
   const [paypalUrl, setPaypalUrl] = useState('');
   const [status , setStatus] = useState(0);
-  const userData = JSON.parse(localStorage.getItem("user"));
+  // const userData = JSON.parse(localStorage.getItem("user"));
   const checkOutHandler = ()=>{
     const data = (JSON.parse(localStorage.getItem("user")));
 
