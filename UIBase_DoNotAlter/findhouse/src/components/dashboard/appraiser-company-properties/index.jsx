@@ -1,4 +1,4 @@
-import Header from "../../common/header/dashboard/HeaderAppraiserCompany";
+import Header from "../../common/header/dashboard/Header_02";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenu_002";
 import MobileMenu from "../../common/header/MobileMenu_01";
 import TableData from "./TableData";
@@ -90,8 +90,11 @@ const Index = () => {
     setIsQuoteModalOpen(true);
   };
 
-  const openModalBroker = (property) => {
+  const [typeView,setTypeView] = useState(0);
+
+  const openModalBroker = (property,value) => {
     setBroker(property);
+    setTypeView(value);
     setOpenBrokerModal(true);
   };
   const router = useRouter();
@@ -530,7 +533,7 @@ const Index = () => {
                         )}*/}
                       </div>
                       <div>
-                      {openBrokerModal && (
+                      {(openBrokerModal && typeView === 1) && (
                         <div className="modal">
                           <div className="modal-content">
                             <h3 className="text-center">Property Details</h3>
@@ -941,7 +944,26 @@ const Index = () => {
                               </tr>
                               </table>
                             </div>
-                            <h3>{"   "}</h3>
+                            
+                            <div className="row text-center mt-3">
+                              <div className="col-lg-12">
+                                <button
+                                  className="btn btn-color w-25 text-center"
+                                  onClick={closeBrokerModal}
+                                >
+                                  Ok
+                                </button>
+                              </div>
+                            </div>
+
+                           
+                          </div>
+                        </div>
+                      )}
+
+                      {(openBrokerModal && typeView === 2) && (
+                        <div className="modal">
+                          <div className="modal-content">
 
                             <h3 className="text-center">Broker Details</h3>
                            

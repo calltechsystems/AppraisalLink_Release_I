@@ -21,6 +21,7 @@ const Index = () => {
   const [toggleWishlist, setToggleWishlist] = useState(0);
   const [searchResult, setSearchResult] = useState([]);
   const [property, setProperty] = useState("");
+  const [typeView,setTypeView] = useState(0);
   const [startLoading, setStartLoading] = useState(false);
   const [filterProperty, setFilterProperty] = useState("");
   const [showPropDetails, setShowPropDetails] = useState(false);
@@ -88,9 +89,10 @@ const Index = () => {
 
   }
 
-  const openModalBroker = (property, status) => {
+  const openModalBroker = (property, value) => {
     setBroker(property);
     setShowPropDetails(status);
+    setTypeView(value)
     setOpenBrokerModal(true);
   };
   const router = useRouter();
@@ -483,7 +485,7 @@ const Index = () => {
                           </div>
                         )}
 
-                        {openBrokerModal && (
+                        {(openBrokerModal && typeView === 1) && (
                           <div className="modal">
                             <div className="modal-content">
                               <h3 className="text-center">Property Details</h3>
@@ -895,6 +897,27 @@ const Index = () => {
                                 </table>
                               </div>
                               <h3>{"   "}</h3>
+  
+                              <div className="row text-center mt-3">
+                                <div className="col-lg-12">
+                                  <button
+                                    className="btn btn-color w-25 text-center"
+                                    onClick={closeBrokerModal}
+                                  >
+                                    Ok
+                                  </button>
+                                </div>
+                              </div>
+  
+                             
+                            </div>
+                          </div>
+                        )}
+
+                        {(openBrokerModal && typeView === 2) && (
+                          <div className="modal">
+                            <div className="modal-content">
+                             
   
                               <h3 className="text-center">Broker Details</h3>
                              

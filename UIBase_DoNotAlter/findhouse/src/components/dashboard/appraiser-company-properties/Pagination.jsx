@@ -5,6 +5,8 @@ const Pagination = ({ setStart , setEnd,properties}) => {
   
   const propertiesPerPage = 5;
 
+  
+
   const indexOfLastProperty = currentPage * propertiesPerPage;
   const indexOfFirstProperty = indexOfLastProperty - propertiesPerPage;
   const currentProperties = properties.slice(indexOfFirstProperty, indexOfLastProperty);

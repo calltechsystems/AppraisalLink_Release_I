@@ -15,11 +15,14 @@ import Modal from "./Modal";
 import { encryptionData } from "../../../utils/dataEncryption";
 import Loader from "./Loader";
 import { AppraiserStatusOptions } from "../create-listing/data";
+import Form from "../../appraiser-register/Form";
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [toggleId, setToggleId] = useState(-1);
+
+  const [closeRegisterModal,setCloseRegisterModal] = useState(false);
   const [toggleWishlist, setToggleWishlist] = useState(0);
   const [searchResult, setSearchResult] = useState([]);
   const [property, setProperty] = useState("");
@@ -84,6 +87,8 @@ const Index = () => {
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
   );
+
+  console.log(closeRegisterModal);
 
   useEffect(() => {
     
@@ -419,6 +424,7 @@ const Index = () => {
                           setIsStatusModal={setIsStatusModal}
                           setSearchInput={setSearchInput}
                           setFilterQuery={setFilterQuery}
+                          setCloseRegisterModal={setCloseRegisterModal}
                           start={start}
                           end={end}
                         />
@@ -1058,6 +1064,13 @@ const Index = () => {
                   </div>
                 </div>
               )}
+
+              { closeRegisterModal && (<div className="modal">
+                  <div className="modal-content">
+                    <h3 className="text-center">Add Appraiser</h3>
+                    <Form setCloseRegisterModal={setCloseRegisterModal} />
+                  </div>
+                </div>)}
 
               {isStatusModal && (
                 <div className="modal">

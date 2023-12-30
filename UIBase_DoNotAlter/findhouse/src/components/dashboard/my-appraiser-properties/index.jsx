@@ -35,6 +35,7 @@ const Index = () => {
   const [propertyId, setPropertyId] = useState(null);
   const [updatedCode, setUpdatedCode] = useState(false);
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
+  const [typeView,setTypeView] = useState(0);
 
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -68,8 +69,9 @@ const Index = () => {
     setIsQuoteModalOpen(true);
   };
 
-  const openModalBroker = (property) => {
+  const openModalBroker = (property,value) => {
     setBroker(property);
+    setTypeView(value);
     setOpenBrokerModal(true);
   };
 
@@ -137,8 +139,10 @@ const Index = () => {
     return () => clearInterval(inactivityCheckInterval);
   }, [lastActivityTimestamp]);
 
-  const openModal = (property) => {
+  const openModal = (property,value) => {
     setProperty(property);
+    console.log("values",value);
+    setTypeView(value);
     setIsModalOpen(true);
   };
 
@@ -485,7 +489,7 @@ const Index = () => {
                           </div>
                         )}
 
-                        {openBrokerModal && (
+                        {(openBrokerModal && typeView === 1) && (
                           <div className="modal">
                             <div className="modal-content">
                               <h3 className="text-center">Property Details</h3>
@@ -898,7 +902,28 @@ const Index = () => {
                               </div>
                               <h3>{"   "}</h3>
   
+                             
+                              <div className="row text-center mt-3">
+                                <div className="col-lg-12">
+                                  <button
+                                    className="btn btn-color w-25 text-center"
+                                    onClick={closeBrokerModal}
+                                  >
+                                    Ok
+                                  </button>
+                                </div>
+                              </div>
+  
+                             
+                            </div>
+                          </div>
+                        )}
+
+                        {(openBrokerModal && typeView === 2) && (
+                          <div className="modal">
+                            <div className="modal-content">
                               <h3 className="text-center">Broker Details</h3>
+                             
                              
                               <div className="d-flex justify-content-center">
                                 <table

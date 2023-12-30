@@ -288,7 +288,7 @@ function SmartTable(props) {
             <div className="col-lg-4 offset-9">
               <div
                 className="btn btn-color w-50 m-1"
-                onClick={() => allAppraiser()}
+                onClick={() => props.setCloseRegisterModal(true)}
                 title="adding appraiser"
               >
                 Add Appraiser

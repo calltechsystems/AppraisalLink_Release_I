@@ -16,6 +16,9 @@ const SidebarMenu = () => {
   ];
 
   const manageAccountTag = [
+    { id: 3, name: "Add / Modify Subscriptions", route: "/appraiser-company-add-subscription", icon: "flaticon-telephone" },
+    { id: 3, name: "Subscription History", route: "/appraiser-company-subscription-history", icon: "flaticon-telephone" },
+
     { id: 3, name: "Help desk", route: "/contact", icon: "flaticon-telephone" }
   ];
 
@@ -119,6 +122,19 @@ const SidebarMenu = () => {
 
           <li
           className={`treeview ${
+            isSinglePageActive("/appraiser-company-completed-properties", route.pathname)
+              ? "active"
+              : ""
+          }`}
+        >
+          <Link href="/appraiser-company-completed-properties">
+            <i className="flaticon-building"></i>
+            <span>Accepted Orders</span>
+          </Link>
+        </li>
+
+          <li
+          className={`treeview ${
             isSinglePageActive("/company-biding-history", route.pathname)
               ? "active"
               : ""
@@ -142,6 +158,19 @@ const SidebarMenu = () => {
           <span>Archive Properties</span>
         </Link>
       </li>
+
+      <li
+      className={`treeview ${
+        isSinglePageActive("/appraiser-company-allocated-properties", route.pathname)
+          ? "active"
+          : ""
+      }`}
+    >
+      <Link href="/appraiser-company-allocated-properties">
+        <i className="flaticon-building"></i>
+        <span>Allocated  Properties</span>
+      </Link>
+    </li>
 
            
             {/* End Review */}
@@ -304,14 +333,14 @@ const SidebarMenu = () => {
       >
         <Link href="/all-appraisers">
           <i className="flaticon-building"></i>
-          <span>All Appraisers</span>
+          <span> Appraiser Add/View</span>
         </Link>
       </li>
         </ul>
       </li>
       
       <li className="title">
-          <span>Contact Us</span>
+          <span>Manage Account</span>
           <ul>
             {manageAccountTag.map((item) => (
               <li
@@ -327,12 +356,7 @@ const SidebarMenu = () => {
             ))}
           </ul>
         </li>
-        <li className="link-hover sidebar-menu">
-          <Link href="mailto:patelshubhendra@gmail.com">
-            <i className="flaticon-envelope"></i>
-            <span>Contact Us</span>
-          </Link>
-        </li>
+      
       </ul>
     </>
   );

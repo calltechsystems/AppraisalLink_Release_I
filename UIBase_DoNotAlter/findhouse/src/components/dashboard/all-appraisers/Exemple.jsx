@@ -107,6 +107,7 @@ export default function Exemple({
   start,
   end,
   setUpdatedCode,
+  setCloseRegisterModal,
   properties,
   setIsStatusModal,
   setProperties,
@@ -421,6 +422,7 @@ export default function Exemple({
           headCells={headCells}
           setRefresh={setRefresh}
           setProperties={setProperties}
+          setCloseRegisterModal={setCloseRegisterModal}
           refresh={refresh}
           refreshHandler={refreshHandler}
           setStartLoading={setStartLoading}

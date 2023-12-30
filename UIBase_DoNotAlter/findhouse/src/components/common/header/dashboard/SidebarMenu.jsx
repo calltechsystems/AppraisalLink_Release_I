@@ -29,13 +29,13 @@ const SidebarMenu = () => {
   const manageAccount = [
     {
       id: 1,
-      name: "Package",
+      name: "Add / Modify Subscriptions",
       route: "/my-plans",
       icon: "flaticon-box",
     },
     {
       id: 2,
-      name: "Transactions",
+      name: "Subscription History",
       route: "/my-package",
       icon: "flaticon-box",
     },
@@ -66,7 +66,7 @@ const SidebarMenu = () => {
         {/* End header */}
 
         <li className="title">
-          <span>Main</span>
+          <span>Property Information</span>
           <ul>
             <li
               className={`treeview ${
@@ -149,7 +149,7 @@ const SidebarMenu = () => {
             >
               <Link href="/archive-property">
                 <i className="flaticon-home"></i>
-                <span>Archive Properties</span>
+                <span>Achieved Properties</span>
               </Link>
             </li>
             {/* <li

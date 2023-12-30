@@ -7,18 +7,22 @@ import Image from "next/image";
 
 const Form = ({ userData, chnageShowCardHandler }) => {
   return (
-    <form className="contact_form" action="#" style={{ borderRadius: "5px" }}>
-      <div className="d-flex justify-content-end mb-2">
+    <form
+      className="contact_form"
+      action="#"
+      style={{ borderRadius: "5px" }}
+    >
+      <div className="d-flex justify-content-end">
         <button
           className="btn btn2 btn-color profile_edit_button_01"
           onClick={() => chnageShowCardHandler(false)}
         >
           <span
-            // className="flaticon-edit"
+            className="flaticon-edit"
             data-toggle="tooltip"
             data-placement="top"
             title="Edit Profile"
-          >Edit Profile</span>
+          ></span>
         </button>
       </div>
 
@@ -35,204 +39,11 @@ const Form = ({ userData, chnageShowCardHandler }) => {
         </div>
         <div className="col-lg-9">
           <div className="row mb-2">
-            <div className="col-lg-9">
-              <table
-                className=""
-                style={{
-                  width: "650px",
-                  // textAlign: "center",
-                  borderRadius: "5px",
-                }}
-              >
-                <tr>
-                  <td
-                    style={{
-                      border: "1px solid grey",
-                      color: "#2e008b",
-                    }}
-                  >
-                    <li className="text-dark p-2" style={{ listStyle: "none" }}>
-                      {/* <span className="text-dark fw-bold">First Name</span> :{" "} */}
-                      <span className="text-dark" style={{ fontSize: "17px" }}>
-                        {" "}
-                        <span className="fw-bold">Name</span> :{" "}
-                        {userData?.brokerage_Details?.firstName}{" "}
-                        {userData?.brokerage_Details?.middleName}{" "}
-                        {userData?.brokerage_Details?.lastName}
-                      </span>
-                    </li>
-                  </td>
-                  <td
-                    style={{
-                      border: "1px solid grey",
-                      color: "#2e008b",
-                      // padding:"5px"
-                    }}
-                  >
-                    <li className="text-dark p-2" style={{ listStyle: "none" }}>
-                      <span className="text-dark" style={{ fontSize: "17px" }}>
-                        <span className="fw-bold"> Company</span> :{" "}
-                        {userData?.brokerage_Details?.companyName}
-                      </span>
-                      {/* <span className="text-dark fw-bold">Middle Name</span> :{" "}
-                    <span className="text-dark fw-bold"> Devendra </span> */}
-                    </li>
-                  </td>
-                </tr>
-                <tr>
-                  <td
-                    style={{
-                      border: "1px solid grey",
-                      color: "#2e008b",
-                      // padding:"5px"
-                    }}
-                  >
-                    <li className="text-dark p-2" style={{ listStyle: "none" }}>
-                      <span className="text-dark" style={{ fontSize: "17px" }}>
-                        <span className="fw-bold">Email</span> :{" "}
-                        {userData?.userEmail}
-                      </span>
-                      {/* <span className="text-dark fw-bold">Middle Name</span> :{" "}
-                    <span className="text-dark fw-bold"> Devendra </span> */}
-                    </li>
-                  </td>
-                  <td
-                    style={{
-                      border: "1px solid #2e008b",
-                      color: "#2e008b",
-                    }}
-                  >
-                    <li className="text-dark p-2" style={{ listStyle: "none" }}>
-                      <span className="text-dark" style={{ fontSize: "17px" }}>
-                        <span className="fw-bold"> Phone</span> :{" "}
-                        {userData?.brokerage_Details?.phoneNumber}
-                      </span>
-                      {/* <span className="text-dark fw-bold">Last Name</span> :{" "}
-                    <span className="text-dark fw-bold"> Patel </span> */}
-                    </li>
-                  </td>
-                </tr>
-                <tr>
-                  <td
-                    colSpan="2"
-                    style={{
-                      border: "1px solid grey",
-                      color: "#2e008b",
-                    }}
-                  >
-                    <li className="text-dark p-2" style={{ listStyle: "none" }}>
-                      {/* <span className="text-dark fw-bold">First Name</span> :{" "} */}
-                      <span className="text-dark" style={{ fontSize: "17px" }}>
-                        {" "}
-                        <span className="fw-bold">Designation</span> :{" "}
-                        {userData?.brokerage_Details?.assistantFirstName}{" "}
-                        {userData?.brokerage_Details?.assistantLatsName}
-                      </span>
-                    </li>
-                  </td>
-                </tr>
-                {/* <tr>
-                  <td
-                    colSpan="2"
-                    style={{
-                      border: "1px solid grey",
-                      color: "#2e008b",
-                    }}
-                  >
-                    <li className="text-dark p-2" style={{ listStyle: "none" }}>
-                      <span className="text-dark" style={{ fontSize: "17px" }}>
-                        <span className="fw-bold">
-                          Mortgage Broker Licence No.
-                        </span>{" "}
-                        : {userData?.brokerage_Details?.mortageBrokerLicNo}
-                      </span>
-                     
-                    </li>
-                  </td>
-                </tr>
-                <tr>
-                  <td
-                    colSpan="2"
-                    style={{
-                      border: "1px solid #2e008b",
-                      color: "#2e008b",
-                    }}
-                  >
-                    <li className="text-dark p-2" style={{ listStyle: "none" }}>
-                      <span className="text-dark" style={{ fontSize: "17px" }}>
-                        <span className="fw-bold">
-                          {" "}
-                          Mortgage Brokerge Licence No. :{" "}
-                        </span>
-                        {userData?.brokerage_Details?.phoneNumber}
-                      </span>
-                     
-                    </li>
-                  </td>
-                </tr> */}
-                <tr>
-                  <td
-                    colSpan="2"
-                    style={{
-                      border: "1px solid #2e008b",
-                      color: "#2e008b",
-                    }}
-                  >
-                    <li className="text-dark p-2" style={{ listStyle: "none" }}>
-                      <span className="text-dark" style={{ fontSize: "17px" }}>
-                        <span className="fw-bold"> Address : </span>
-                        {userData.brokerage_Details?.streetNumber},{" "}
-                        {userData.brokerage_Details?.streetName},{" "}
-                        {userData?.brokerage_Details?.city},{" "}
-                        {userData?.brokerage_Details?.province},{" "}
-                        {userData?.brokerage_Details?.zipCode}
-                      </span>
-                      {/* <span className="text-dark fw-bold">Last Name</span> :{" "}
-                    <span className="text-dark fw-bold"> Patel </span> */}
-                    </li>
-                  </td>
-                </tr>
-
-                {/* <tr>
-                  <td
-                    colSpan="2"
-                    style={{
-                      border: "1px solid grey",
-                      color: "#2e008b",
-                    }}
-                  >
-                    <li className="text-dark p-2" style={{ listStyle: "none" }}>
-                      <span className="text-dark" style={{ fontSize: "17px" }}>
-                        {" "}
-                        <span className="fw-bold">Assistant Email</span> :{" "}
-                        {userData?.brokerage_Details?.assistantEmailAddress}{" "}
-                      </span>
-                    </li>
-                  </td>
-                </tr>
-                <tr>
-                  <td
-                    colSpan="2"
-                    style={{
-                      border: "1px solid grey",
-                      color: "#2e008b",
-                    }}
-                  >
-                    <li className="text-dark p-2" style={{ listStyle: "none" }}>
-                      <span className="text-dark" style={{ fontSize: "17px" }}>
-                        {" "}
-                        <span className="fw-bold">Assistant Phone </span> :{" "}
-                        {userData?.brokerage_Details?.assistantPhoneNumber}{" "}
-                      </span>
-                    </li>
-                  </td>
-                </tr> */}
-              </table>
-            </div>
-            {/* <div className="col-lg-6">
+            <div className="col-lg-6">
               <div className="form-group">
                 <ul>
                   <li className="text-dark mt-3">
+                    {/* <span className="text-dark fw-bold">First Name</span> :{" "} */}
                     <span
                       className="text-dark fw-bold"
                       style={{ fontSize: "21px" }}
@@ -251,6 +62,8 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                     <p className="text-dark" style={{ fontSize: "18px" }}>
                       Company : {userData?.brokerage_Details?.companyName}
                     </p>
+                    {/* <span className="text-dark fw-bold">Middle Name</span> :{" "}
+                    <span className="text-dark fw-bold"> Devendra </span> */}
                   </li>
                 </ul>
               </div>
@@ -260,6 +73,8 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                     <p className="text-dark" style={{ fontSize: "17px" }}>
                       Email : {userData?.userEmail}
                     </p>
+                    {/* <span className="text-dark fw-bold">Middle Name</span> :{" "}
+                    <span className="text-dark fw-bold"> Devendra </span> */}
                   </li>
                 </ul>
               </div>
@@ -269,37 +84,39 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                     <p className="text-dark" style={{ fontSize: "17px" }}>
                       Phone : {userData?.brokerage_Details?.phoneNumber}
                     </p>
-                  </li>
+                        </li>
                 </ul>
               </div>
-              <div className="form-group">
+               <div className="form-group">
                 <ul>
                   <li className="text-dark mt-0">
                     <p className="text-dark" style={{ fontSize: "17px" }}>
-                      Mortgage Broker Licence No. :{" "}
-                      {userData?.brokerage_Details?.mortageBrokerLicNo}
+                      Designation. :{" "}
+                      {userData?.brokerage_Details?.designation || "NA"}
                     </p>
+                    
                   </li>
                 </ul>
               </div>
-              <div className="form-group">
+              {/*<div className="form-group">
                 <ul>
                   <li className="text-dark mt-0">
                     <p className="text-dark" style={{ fontSize: "17px" }}>
                       Mortgage Brokerge Licence No. :{" "}
                       {userData?.brokerage_Details?.mortageBrokerageLicNo}
                     </p>
+                     
                   </li>
                 </ul>
-              </div>
-            </div> */}
+                  </div>*/}
+            </div>
             {/* End .col */}
 
-            {/* <div className="col-lg-6">
+            <div className="col-lg-6">
               <div className="form-group">
                 <ul>
                   <li className="text-dark mt-3">
-                  
+                    {/* <span className="text-dark fw-bold">First Name</span> :{" "} */}
                     <span className="text-dark" style={{ fontSize: "17px" }}>
                       {" "}
                       Address : {userData?.brokerage_Details?.adressLine1}
@@ -316,7 +133,8 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                     >
                       {userData?.brokerage_Details?.area}
                     </p>
-                  
+                    {/* <span className="text-dark fw-bold">Middle Name</span> :{" "}
+                    <span className="text-dark fw-bold"> Devendra </span> */}
                   </li>
                 </ul>
               </div>
@@ -327,12 +145,11 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       className="text-dark"
                       style={{ fontSize: "17px", marginLeft: "4.8rem" }}
                     >
-                      {userData.brokerage_Details?.streetName}-
-                      {userData.brokerage_Details?.streetNumber},
-                      {userData?.brokerage_Details?.city},{" "}
+                      {userData.brokerage_Details?.streetName}-{userData.brokerage_Details?.streetNumber},{userData?.brokerage_Details?.city},{" "}
                       {userData?.brokerage_Details?.province}
                     </p>
-                   
+                    {/* <span className="text-dark fw-bold">Middle Name</span> :{" "}
+                    <span className="text-dark fw-bold"> Devendra </span> */}
                   </li>
                 </ul>
               </div>
@@ -345,11 +162,12 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                     >
                       {userData?.brokerage_Details?.zipCode}
                     </p>
-      
+                    {/* <span className="text-dark fw-bold">Last Name</span> :{" "}
+                    <span className="text-dark fw-bold"> Patel </span> */}
                   </li>
                 </ul>
               </div>
-            </div> */}
+            </div>
             {/* End .col */}
           </div>
         </div>

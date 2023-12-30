@@ -19,6 +19,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
       "/assets/images/home/placeholder_01.jpg"
   );
 
+
   const hiddenStyle = { backgroundColor: "#E8F0FE", display: "none" };
   const viewStyle = { backgroundColor: "#E8F0FE", display: "block" };
   const [edit, setEdit] = useState(!userData.broker_Details?.firstName);
@@ -26,6 +27,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   const [firstNameRef, setFirstNameRef] = useState(
     userData?.brokerage_Details?.firstName || ""
   );
+
+  const [designations,setDesignation]= useState("");
   const [middleNameRef, setMiddleNameRef] = useState(
     userData?.brokerage_Details?.middleName || ""
   );
@@ -46,6 +49,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   const [addressLineTwoRef, setAddressLineTwoRef] = useState(
     userData?.brokerage_Details?.adressLine2 || ""
   );
+
+  
 
   const [cityRef, setCityRef] = useState(
     userData?.brokerage_Details?.city || ""
@@ -68,7 +73,21 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     userData?.brokerage_Details?.maxNumberOfAssignedOrders || ""
   );
 
-  const [otherDesignation, setOtherDesignation] = useState(false);
+  const [otherDesignation, setOtherDesignation] = useState("");
+  const [setODesignation, setSetODesignation] = useState(false);
+  
+
+  useEffect(()=>{
+
+    if(String(designations) === "Other"){
+      setSetODesignation(true);
+    }
+    else{
+      setSetODesignation(false);
+    }
+    console.log(setODesignation)
+
+  },[designations]);
 
   // const [designation, setDesignation] = useState(
   //   userData?.brokerage_Details?.designation || ""
@@ -452,14 +471,14 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           className="form-select"
                           data-live-search="true"
                           data-width="100%"
-                          // value={stateRef}
-                          // onChange={(e) => setStateRef(e.target.value)}
+                          value={designations}
+                          onChange={(e) => setDesignation(e.target.value)}
                           // disabled={!edit}
                           style={{
                             paddingTop: "15px",
                             paddingBottom: "15px",
                             backgroundColor: "#E8F0FE",
-                            // color:"white"
+                            color:"black"
                           }}
                         >
                           {designation.map((item, index) => {
@@ -471,62 +490,24 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           })}
                         </select>
                       </div>
-                    </div>
-                    <div className="col-lg-4">
+                      {setODesignation &&
                       <div id="other-div">
-                        {/* Content for the "Other" option */}
                         <input
                           required
-                          style={otherDesignation ? viewStyle : hiddenStyle}
-                          onChange={(e) => setOtherDesignation(e.target.value)}
+                          // style={setODesignation ? viewStyle : hiddenStyle}
+                          onChange={(e) =>
+                            setOtherDesignation(e.target.value)
+                          }
+                          value={otherDesignation}
                           type="text"
                           className="form-control"
-                          id="otherInput"
-                          name="otherInput"
+                          id="formGroupExampleInput3"
+                          style={{ backgroundColor: "#E8F0FE" }}
                           maxLength={30}
                         />
-                      </div>
+                    </div> }
                     </div>
-                  </div>
-                  <div className="col-lg-12 mb-3">
-                    <div className="row">
-                      <div className="col-lg-4">
-                        <label htmlFor="" style={{ paddingTop: "10px" }}>
-                          Reviewer Name <span class="req-btn">*</span>
-                        </label>
-                      </div>
-                      <div className="col-lg-7">
-                        <input
-                          type="text"
-                          className="form-control"
-                          required
-                          id="formGroupExampleInput3"
-                          style={{ backgroundColor: "#E8F0FE" }}
-                          // value={userData?.userEmail ? userData.userEmail : ""}
-                          // disabled
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-12 mb-3">
-                    <div className="row">
-                      <div className="col-lg-4">
-                        <label htmlFor="" style={{ paddingTop: "10px" }}>
-                          Reviewer Designation <span class="req-btn">*</span>
-                        </label>
-                      </div>
-                      <div className="col-lg-7">
-                        <input
-                          type="text"
-                          className="form-control"
-                          required
-                          id="formGroupExampleInput3"
-                          style={{ backgroundColor: "#E8F0FE" }}
-                          // value={userData?.userEmail ? userData.userEmail : ""}
-                          // disabled
-                        />
-                      </div>
-                    </div>
+                   
                   </div>
                   <h3 className="mt-4">Address</h3>
                   <hr />
@@ -632,8 +613,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           className="form-select"
                           data-live-search="true"
                           data-width="100%"
-                          value={stateRef}
+                          
                           onChange={(e) => setStateRef(e.target.value)}
+                          value={stateRef}
                           disabled={!edit}
                           style={{
                             paddingTop: "15px",

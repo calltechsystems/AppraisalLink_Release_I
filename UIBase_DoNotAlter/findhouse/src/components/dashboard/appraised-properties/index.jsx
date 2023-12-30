@@ -31,6 +31,7 @@ const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [lowRangeBid, setLowRangeBid] = useState("");
   const [propertyId, setPropertyId] = useState(null);
+  const [typeView,setTypeView] = useState(0);
   const [updatedCode, setUpdatedCode] = useState(false);
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
   
@@ -60,6 +61,67 @@ const Index = () => {
     }
 
   }
+  {isStatusModal && (
+    <div className="modal">
+      <div className="modal-content">
+        <h3 className="text-center">Quote Status Updation</h3>
+        
+        <select
+      required
+      className="form-select"
+      data-live-search="true"
+      data-width="100%"
+      onChange={(e)=>handleStatusSelect(e.target.value)}
+      // value={buildinRef}
+      // onChange={(e) => setBuildinRef(e.target.value)}
+      // onChange={(e) => setBuildinRef(e.target.value)}
+      // disabled={isDisable}
+      style={{
+              paddingTop: "15px",
+              paddingBottom: "15px",
+              backgroundColor: "#E8F0FE"
+            }}
+    >
+      {AppraiserStatusOptions.map((item, index) => {
+        return (
+          <option key={item.id} value={item.value}>
+            {item.type}
+          </option>
+        );
+      })}
+    </select>
+    {openDate && <div className="col-lg-4">
+    <input
+      required
+     
+      type="datetime-local"
+      className="form-control"
+      id="formGroupExampleInput3"
+      onChange={(e) => setStatusDate(e.target.value)}
+      value={statusDate}
+    />
+  </div>}
+
+        {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
+        <div className="text-center" style={{}}>
+        <button
+        className="btn w-35 btn-white"
+        onClick={closeStatusUpdateHandler}
+      >
+        Cancel
+      </button>
+          <button
+          className="btn btn-color w-10 mt-1"
+          style={{ marginLeft: "12px" }}
+            onClick={handleStatusUpdateHandler}
+          >
+            Submit
+          </button>        
+         
+        </div>
+      </div>
+    </div>
+  )}
 
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -89,8 +151,9 @@ const Index = () => {
     setIsQuoteModalOpen(true);
   };
 
-  const openModalBroker = (property) => {
+  const openModalBroker = (property,type) => {
     setBroker(property);
+    setTypeView(type);
     setOpenBrokerModal(true);
   };
   const router = useRouter();
@@ -528,7 +591,7 @@ const Index = () => {
                         )}*/}
                       </div>
                       <div>
-                      {openBrokerModal && (
+                      {(openBrokerModal && typeView === 1) && (
                         <div className="modal">
                           <div className="modal-content">
                             <h3 className="text-center">Property Details</h3>
@@ -941,6 +1004,27 @@ const Index = () => {
                             </div>
                             <h3>{"   "}</h3>
 
+                            
+                            <div className="row text-center mt-3">
+                              <div className="col-lg-12">
+                                <button
+                                  className="btn btn-color w-25 text-center"
+                                  onClick={closeBrokerModal}
+                                >
+                                  Ok
+                                </button>
+                              </div>
+                            </div>
+
+                           
+                          </div>
+                        </div>
+                      )}
+
+                      {(openBrokerModal && typeView === 2) && (
+                        <div className="modal">
+                          <div className="modal-content">
+                            
                             <h3 className="text-center">Broker Details</h3>
                            
                             <div className="d-flex justify-content-center">

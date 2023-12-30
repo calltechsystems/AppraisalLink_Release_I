@@ -179,9 +179,21 @@ export const AppraiserStatusOptions = [
 
   {
     id: 5,
-    type: "Appraisal Visit Confirmed – We can add a DATE and TIME for the VISIT",
+    type: "Assignment on Hold",
+    value: "Assignment on Hold",
+  },
+
+  {
+    id: 5,
+    type: "Assignment Cancelled new status to be added",
+    value: "Assignment Cancelled new status to be added",
+  },
+
+  {
+    id: 5,
+    type: "Appraisal visit completed; report writing is pending until fee received",
     value:
-      "Appraisal Visit Confirmed – We can add a DATE and TIME for the VISIT",
+      "Appraisal visit completed; report writing is pending until fee received",
   },
 ];
 

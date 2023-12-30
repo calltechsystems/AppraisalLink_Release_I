@@ -1,11 +1,8 @@
-import Header from "../../common/header/dashboard/HeaderAppraiserCompany";
+import Header from "../../common/header/dashboard/Header_02";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenu_002";
 import MobileMenu from "../../common/header/MobileMenu_01";
 import TableData from "./TableData";
-import Filtering from "./Filtering";
-import FilteringBy from "./FilteringBy";
 import Pagination from "./Pagination";
-import SearchBox from "./SearchBox";
 import { useEffect, useRef } from "react";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -24,6 +21,7 @@ const Index = () => {
   const [toggleWishlist, setToggleWishlist] = useState(0);
   const [searchResult, setSearchResult] = useState([]);
   const [property, setProperty] = useState("");
+  const [typeView,setTypeView] = useState(0);
   const [startLoading, setStartLoading] = useState(false);
   const [filterProperty, setFilterProperty] = useState("");
   const [showPropDetails, setShowPropDetails] = useState(false);
@@ -33,6 +31,8 @@ const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [lowRangeBid, setLowRangeBid] = useState("");
   const [propertyId, setPropertyId] = useState(null);
+  
+  const [wishlistedProperties,setWishlistedProperties] = useState([]);
   const [updatedCode, setUpdatedCode] = useState(false);
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
 
@@ -43,8 +43,6 @@ const Index = () => {
 
   const [refresh, setRefresh] = useState(false);
 
-  const [wishlistedProperties,setWishlistedProperties] = useState([]);
-
     
   const [start,setStart]=useState(0);
   
@@ -53,17 +51,6 @@ const Index = () => {
   const closeErrorModal = () => {
     setModalIsOpenError(false);
   };
-  const [openDate,setOpenDate] = useState(false);
-  const [statusDate,setStatusDate]=useState("");
-
-  
-
-  const handleStatusSelect = (value)=>{
-    if(String(value) === "Appraisal Visit Confirmed"){
-      setOpenDate(true);
-    }
-
-  }
 
   const handleStatusUpdateHandler = ()=>{
 
@@ -90,9 +77,22 @@ const Index = () => {
     setIsQuoteModalOpen(true);
   };
 
-  const openModalBroker = (property, status) => {
+  const [openDate,setOpenDate] = useState(false);
+  const [statusDate,setStatusDate]=useState("");
+
+  
+
+  const handleStatusSelect = (value)=>{
+    if(String(value) === "Appraisal Visit Confirmed"){
+      setOpenDate(true);
+    }
+
+  }
+
+  const openModalBroker = (property, value) => {
     setBroker(property);
     setShowPropDetails(status);
+    setTypeView(value)
     setOpenBrokerModal(true);
   };
   const router = useRouter();
@@ -426,7 +426,6 @@ const Index = () => {
                           setProperties={setProperties}
                           start={start}
                           end={end}
-                          setWishlistedProperties={setWishlistedProperties}
                           properties={
                             searchInput === "" ? properties : filterProperty
                           }
@@ -439,6 +438,7 @@ const Index = () => {
                           setFilterQuery={setFilterQuery}
                           setSearchInput={setSearchInput}
                           refresh={refresh}
+                          setWishlistedProperties={setWishlistedProperties}
                           setStartLoading={setStartLoading}
                           openModalBroker={openModalBroker}
                         />
@@ -486,7 +486,7 @@ const Index = () => {
                           </div>
                         )}
 
-                        {openBrokerModal && (
+                        {(openBrokerModal && typeView === 1) && (
                           <div className="modal">
                             <div className="modal-content">
                               <h3 className="text-center">Property Details</h3>
@@ -898,6 +898,27 @@ const Index = () => {
                                 </table>
                               </div>
                               <h3>{"   "}</h3>
+  
+                              <div className="row text-center mt-3">
+                                <div className="col-lg-12">
+                                  <button
+                                    className="btn btn-color w-25 text-center"
+                                    onClick={closeBrokerModal}
+                                  >
+                                    Ok
+                                  </button>
+                                </div>
+                              </div>
+  
+                             
+                            </div>
+                          </div>
+                        )}
+
+                        {(openBrokerModal && typeView === 2) && (
+                          <div className="modal">
+                            <div className="modal-content">
+                             
   
                               <h3 className="text-center">Broker Details</h3>
                              

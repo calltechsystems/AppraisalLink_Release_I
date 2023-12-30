@@ -15,11 +15,51 @@ const headCells = [
     label: "Order ID",
     width: 100,
   },
+  
+  {
+    id: "address",
+    numeric: false,
+    label: "Property Address",
+    width: 200,
+  },
+  
+  {
+    id: "status",
+    numeric: false,
+    label: "Quote Status",
+    width: 160,
+  },
+  {
+    id: "urgency",
+    numeric: false,
+    label: "Urgency",
+    width: 200,
+  },
+  
+  {
+    id: "date",
+    numeric: false,
+    label: "Order Submission Date",
+    width: 200,
+  },
+  {
+    id: "quote_required_by",
+    numeric: false,
+    label: "Appraisal Report Required By",
+    width: 200,
+  },
 
   {
     id: "typeOfBuilding",
     numeric: false,
-    label: "Type of Building",
+    label: "Type of Property",
+    width: 200,
+  },
+  
+  {
+    id: "estimatedValue",
+    numeric: false,
+    label: "Estimated Property Value ($)",
     width: 200,
   },
   {
@@ -28,19 +68,7 @@ const headCells = [
     label: "Type Of Appraisal",
     width: 200,
   },
-  {
-    id: "address",
-    numeric: false,
-    label: "Property Address",
-    width: 200,
-  },
 
-  {
-    id: "estimatedValue",
-    numeric: false,
-    label: "Estimated Property Value ($)",
-    width: 200,
-  },
 
   {
     id: "purpose",
@@ -55,30 +83,7 @@ const headCells = [
     label: "Lender Information",
     width: 200,
   },
-  {
-    id: "status",
-    numeric: false,
-    label: "Quote Status",
-    width: 200,
-  },
-  {
-    id: "urgency",
-    numeric: false,
-    label: "Urgency",
-    width: 200,
-  },
-  {
-    id: "date",
-    numeric: false,
-    label: "Submission Date",
-    width: 200,
-  },
-  {
-    id: "quote_required_by",
-    numeric: false,
-    label: "Appraisal Report Required By",
-    width: 200,
-  },
+ 
   {
     id: "broker",
     numeric: false,
@@ -86,12 +91,20 @@ const headCells = [
     width: 200,
   },
   {
+    id: "property",
+    numeric: false,
+    label: "Property",
+    width: 200,
+  },
+
+  {
     id: "action",
     numeric: false,
     label: "Action",
-    width: 200,
+    width: 180,
   },
 ];
+
 
 let count = 0;
 
@@ -263,6 +276,34 @@ export default function Exemple({
             ) : (
               <span className="btn btn-warning">New</span>
             ),
+            property: (
+              <div>
+                {isBidded.status === 1 ? (
+                  <a href="#">
+                    <button
+                      className=""
+                      style={{
+                        border: "0px",
+                        color: "#2e008b",
+                        textDecoration: "underline",
+                        // fontWeight: "bold",
+                        backgroundColor: "transparent",
+                      }}
+                      onClick={() => openModalBroker(property,1)}
+                    >
+                     Property Info
+                    </button>
+                  </a>
+                ) : isBidded.status === 2 ? (
+                  <h6 style={{ color: "red" }}> Declined</h6>
+                ) : (
+                  <h6>
+                    Broker Information will be available post the quote
+                    acceptance
+                  </h6>
+                )}
+              </div>
+            ),
             broker: (
               <div>
                 {isBidded.status === 1 ? (
@@ -276,13 +317,13 @@ export default function Exemple({
                         // fontWeight: "bold",
                         backgroundColor: "transparent",
                       }}
-                      onClick={() => openModalBroker(property)}
+                      onClick={() => openModalBroker(property,2)}
                     >
-                      {`${property.applicantFirstName} ${property.applicantLastName}`}
+                     Broker Info
                     </button>
                   </a>
                 ) : isBidded.status === 2 ? (
-                  <h6 style={{ color: "red" }}> Rejected</h6>
+                  <h6 style={{ color: "red" }}> Declined</h6>
                 ) : (
                   <h6>
                     Broker Information will be available post the quote
