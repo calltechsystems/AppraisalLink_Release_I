@@ -845,7 +845,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                 onMouseOver={() => setAbout()}
               >
                 <Link
-                  href="#"
+                  href="/login"
                   onMouseOver={() => setInsight()}
                   className={
                     pages.some((page) => page.routerPath === route.pathname)
@@ -1069,7 +1069,10 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                   onMouseEnter={() => setHovered()}
                 >
                   <span className="fs-13"></span>
-                  <span className="fs-13 text-light" onMouseEnter={() => setPlan()}>
+                  <span
+                    className="fs-13 text-light"
+                    onMouseEnter={() => setPlan()}
+                  >
                     {" "}
                     GET IN TOUCH
                   </span>

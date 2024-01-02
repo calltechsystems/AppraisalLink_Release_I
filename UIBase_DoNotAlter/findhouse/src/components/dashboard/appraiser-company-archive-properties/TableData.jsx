@@ -6,7 +6,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import Exemple from "./Exemple"
 import { useDispatch, useSelector } from "react-redux";
-const TableData = ({userData , open ,setWishlistedProperties,setFilterQuery,setSearchInput,setStart,setEnd,close ,setIsStatusModal, onWishlistHandler ,setStartLoading,setUpdatedCode, openModalBroker,participateHandler , properties, setProperties,setErrorMessage,setModalIsOpenError,setRefresh,refresh}) => {
+const TableData = ({userData , open ,close ,setFilterQuery,setSearchInput,setIsStatusModal,start,end, onWishlistHandler ,setStartLoading,setUpdatedCode, openModalBroker,participateHandler , properties, setProperties,setErrorMessage,setModalIsOpenError,setRefresh,refresh}) => {
 
 
   let userInfo = {};
@@ -275,24 +275,23 @@ const TableData = ({userData , open ,setWishlistedProperties,setFilterQuery,setS
       userData={userData}
       open={open}
       close={close}
+      setSearchInput={setSearchInput}
+      setFilterQuery={setFilterQuery}
       setProperties={setProperties}
       properties={data}
       setRefresh={setRefresh}
       refresh={refresh}
-      setFilterQuery={setFilterQuery}
-      setSearchInput={setSearchInput}
       setModalIsOpenError = {setModalIsOpenError}
       setErrorMessage = {setErrorMessage}
       deletePropertyHandler = {deletePropertyHandler}
       onWishlistHandler={onWishlistHandler}
       participateHandler={participateHandler}
       setUpdatedCode={setUpdatedCode}
-      setWishlistedProperties={setWishlistedProperties}
       setStartLoading={setStartLoading}
       openModalBroker={openModalBroker}
       setIsStatusModal={setIsStatusModal}
-      setStart={setStart}
-      setEnd={setEnd}
+      start={start}
+      end={end}
       />)}
     </>
   );

@@ -239,10 +239,10 @@ const Index = () => {
       {/* End sidebar_menu */}
 
       {/* <!-- Our Dashbord --> */}
-      <section className="our-dashbord dashbord bgc-f7 pb50">
+      <section className="our-dashbord dashbord bgc-f7 pb50 dashboard-height">
         <div
-          className="container-fluid ovh"
-          style={{ marginLeft: "-10px", marginTop: "" }}
+          className="container-fluid ovh table-padding container-padding"
+          style={{ }}
         >
           <div className="row">
             <div className="col-lg-12 maxw100flex-992">
@@ -271,8 +271,8 @@ const Index = () => {
                 </div> */}
                 {/* End .col */}
 
-                <div className="col-lg-12 col-xl-12">
-                 {/*<div className="candidate_revew_select style2 mb30-991">
+                {/* <div className="col-lg-12 col-xl-12">
+                 <div className="candidate_revew_select style2 mb30-991">
                     <ul className="mb0">
                       <li className="list-inline-item">
                         <Filtering setFilterQuery={setFilterQuery} />
@@ -315,11 +315,11 @@ const Index = () => {
                       </li>
                       
                     </ul>
-                  </div>*/}
-                </div>  
+                  </div>
+                </div>   */}
                 {/* End .col */}
-                <div className="row">
-                  <div className="col-lg-12 mt20">
+                {/* <div className="row">
+                  <div className="col-lg-12 mt0">
                     <div className="mbp_pagination">
                       <Pagination
                         setStart={setStart}
@@ -328,7 +328,7 @@ const Index = () => {
                       />
                     </div>
                   </div>
-                </div>
+                </div> */}
 
                 <div className="col-lg-12">
                   <div className="">
@@ -367,7 +367,7 @@ const Index = () => {
                                 <div className="d-flex justify-content-center">
                                   <table
                                     style={{
-                                      width: "550px",
+                                      width: "700px",
                                       textAlign: "center",
                                       borderRadius: "5px",
                                     }}
@@ -386,7 +386,7 @@ const Index = () => {
                                       <td
                                         style={{
                                           border: "1px solid grey",
-                                          width: "250px",
+                                          width: "380px",
                                         }}
                                       >
                                         {" "}
@@ -815,7 +815,7 @@ const Index = () => {
             </div>
             {/* End .row */}
 
-           {/* <div className="row">
+           <div className="row">
               <div className="col-lg-12 mt20">
                 <div className="mbp_pagination">
                   <Pagination
@@ -825,13 +825,13 @@ const Index = () => {
                   />
                 </div>
               </div>
-            </div>*/}
+            </div>
 
             <div className="row mt50">
               <div className="col-lg-12">
                 <div className="copyright-widget text-center">
                   <p>
-                    &copy; {new Date().getFullYear()} Appraisal Link. All Rights
+                    &copy; {new Date().getFullYear()} Appraisal Land. All Rights
                     Reserved.
                   </p>
                 </div>

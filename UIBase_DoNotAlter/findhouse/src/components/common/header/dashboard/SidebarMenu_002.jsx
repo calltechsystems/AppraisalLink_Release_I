@@ -5,9 +5,12 @@ import {
   isSinglePageActive,
 } from "../../../../utils/daynamicNavigation";
 import Image from "next/image";
+import { useEffect } from "react";
 
-const SidebarMenu = () => {
+const SidebarMenu = ({userData}) => {
   const route = useRouter();
+
+ 
 
   const myProperties = [
     { id: 1, name: "General Elements", route: "/my-properties" },
@@ -159,7 +162,7 @@ const SidebarMenu = () => {
         </Link>
       </li>
 
-      <li
+     {userData?.userType === 3 && <li
       className={`treeview ${
         isSinglePageActive("/appraiser-company-allocated-properties", route.pathname)
           ? "active"
@@ -170,7 +173,7 @@ const SidebarMenu = () => {
         <i className="flaticon-building"></i>
         <span>Allocated  Properties</span>
       </Link>
-    </li>
+    </li>}
 
            
             {/* End Review */}
@@ -324,7 +327,7 @@ const SidebarMenu = () => {
         <li className="title">
         <span>Manage Appraisers</span>
         <ul>
-        <li
+        {userData?.userType === 3 && <li
         className={`treeview ${
           isSinglePageActive("/all-appraisers", route.pathname)
             ? "active"
@@ -335,7 +338,7 @@ const SidebarMenu = () => {
           <i className="flaticon-building"></i>
           <span> Appraiser Add/View</span>
         </Link>
-      </li>
+      </li>}
         </ul>
       </li>
       

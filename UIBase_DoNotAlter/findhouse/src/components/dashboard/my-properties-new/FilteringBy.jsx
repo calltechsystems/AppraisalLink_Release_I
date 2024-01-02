@@ -4,7 +4,7 @@ const FilteringBy = ({setFilterQuery}) => {
         <option>Search By City</option>
         <option>Search By State</option>
         <option>Search By Postal Code</option>
-        {/* <option>Search By </option> */}
+        <option>Search By </option>
       </select>
     );
   };

@@ -82,7 +82,7 @@ const MyAccount = ({ user, profileCount, setProfile ,userData}) => {
       console.log(change);
       setProfileValue(change);
     } else if (userData?.userType === 2) {
-      if (userData.brokerage_Details.firstName) {
+      if (userData.brokerage_Details?.firstName) {
         count = count + 1;
       }
       if (userData.brokerage_Details.middleName) {

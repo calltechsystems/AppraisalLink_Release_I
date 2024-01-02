@@ -15,7 +15,7 @@ import Modal from "./Modal";
 import { encryptionData } from "../../../utils/dataEncryption";
 import Loader from "./Loader";
 import { AppraiserStatusOptions } from "../create-listing/data";
-// import TransitionDetector from "../../../utils/higherOrderFunction";
+import TransitionDetector from "../../../utils/higherOrderFunction";
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -331,7 +331,7 @@ const Index = () => {
           id="DashboardOffcanvasMenu"
           data-bs-scroll="true"
         >
-          <SidebarMenu />
+          <SidebarMenu userData={userData} />
         </div>
       </div>
       {/* End sidebar_menu */}

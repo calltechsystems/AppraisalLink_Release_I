@@ -346,7 +346,7 @@ const Index = () => {
           id="DashboardOffcanvasMenu"
           data-bs-scroll="true"
         >
-          <SidebarMenu />
+          <SidebarMenu userData={userData}/>
         </div>
       </div>
       {/* End sidebar_menu */}

@@ -8,7 +8,7 @@ import { FaEye } from "react-icons/fa";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
+const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage ,closeRegisterModal, setCloseRegisterModal }) => {
   const [showhide, setShowhide] = useState("");
 
   const [change, setChange] = useState(false);
@@ -170,21 +170,13 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
     }
   };
 
+  const [cancel,setCancel] = useState(false);
+
   return (
-    <div className="row mt-4">
-      <div className="col-lg-6 col-xl-6">
-        <div className="regstr_thumb">
-          <Image
-            width={357}
-            height={659}
-            className="img-fluid w100 h-100 cover mb-5 mt-5"
-            src="/assets/images/home/placeholder-concept-illustration_114360-4983.avif"
-            alt="regstr.jpg"
-          />
-        </div>
-      </div>
+    <>{ <div className="row mt-4">
+      
       <div className="col-lg-6">
-        <form onSubmit={registerHandler}>
+        <div onSubmit={ cancel ? ()=>setCloseRegisterModal(true) : registerHandler}>
           {error && (
             <div
               style={{
@@ -243,7 +235,6 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
           )}
 
           <div className="heading text-center">
-            <h3>Add the Appraiser</h3>
           </div>
           {/* End .heading */}
 
@@ -295,27 +286,6 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
             </div>
             {/* End .form-group */}
           </div>
-          <div className="col-lg-12">
-            <div className="form-group input-group  ">
-              <input
-                type="text"
-                className="form-control"
-                required
-                placeholder="Full Name"
-              
-              />
-              <div className="input-group-prepend">
-                <div
-                  className="input-group-text m-1"
-                  style={{ border: "1px solid #2e008b" }}
-                >
-                  <i className="fa fa-envelope-o"></i>
-                </div>
-              </div>
-            </div>
-            {/* End .form-group */}
-          </div>
-          
 
           <div className="col-lg-12" style={{ marginTop: "10px" }}>
             <div
@@ -435,34 +405,12 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
               />
             </div>
           </div>
-          <div className="form-group form-check custom-checkbox mb-3">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              value=""
-              required
-              id="terms"
-              style={{ border: "1px solid black" }}
-            />
-            <label
-              className="form-check-label form-check-label"
-              htmlFor="terms"
-            >
-              I have read and accept the
-              <Link
-                href="assets/images/Terms & Conditions.pdf"
-                target="_blank"
-                className="form-check-label text-primary"
-              >
-                Terms and Privacy Policy
-              </Link>
-              ?
-            </label>
-          </div>
-          {/* End .form-group */}
 
-          <button type="submit" className="btn btn-log w-100 btn-thm">
-            Add
+          <button onClick={()=>setCloseRegisterModal(false)} className="btn btn-log w-100 " >
+            Cancel
+          </button>
+          <button onClick={()=>registerHandler()} className="btn btn-log w-100 btn-thm">
+           Add
           </button>
           {/*<div
             className="heading text-center"
@@ -498,9 +446,10 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
         <hr />
       </div> */}
           {/* devider */}
-        </form>
+        </div>
       </div>
-    </div>
+    </div>}
+    </>
   );
 };
 

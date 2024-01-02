@@ -10,11 +10,12 @@ import { useRouter } from "next/router";
 const Index = () => {
   const [data, setData] = useState([]);
   const router = useRouter();
-  let userData = {};
+  let userData = {"userType" : 3};
 
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
   );
+
 
   useEffect(() => {
     const activityHandler = () => {
@@ -96,6 +97,7 @@ const Index = () => {
       });
   }, []);
 
+  console.log(userData);
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -111,7 +113,7 @@ const Index = () => {
           id="DashboardOffcanvasMenu"
           data-bs-scroll="true"
         >
-          <SidebarMenu />
+          <SidebarMenu userData = {userData}/>
         </div>
       </div>
       {/* End sidebar_menu */}
@@ -147,7 +149,7 @@ const Index = () => {
               <div className="row align-items-center">
                 <div className="col-md-8 col-lg-8 col-xl-9 mb20">
                   <div className="breadcrumb_content style2 mb30-991">
-                    <h2 className="breadcrumb_title">My Transactions</h2>
+                    <h2 className="breadcrumb_title">Subscription History</h2>
                     <p>You can see your transactions history here!</p>
                   </div>
                 </div>

@@ -251,7 +251,7 @@ function SmartTable(props) {
                         <Filtering setFilterQuery={props.setFilterQuery} />
                       </li>
                       <li className="list-inline-item">
-                        <FilteringBy setFilterQuery={props.setSearchQuery} />
+                        <FilteringBy setFilterQuery={props.setFilterQuery} />
                       </li>
                       <li className="list-inline-item">
                         <div className="candidate_revew_search_box course fn-520">

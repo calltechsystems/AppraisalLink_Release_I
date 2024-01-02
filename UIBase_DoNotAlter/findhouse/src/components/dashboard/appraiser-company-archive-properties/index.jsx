@@ -14,14 +14,12 @@ import { useRouter } from "next/router";
 import Modal from "./Modal";
 import { encryptionData } from "../../../utils/dataEncryption";
 import Loader from "./Loader";
-import { AppraiserStatusOptions } from "../create-listing/data";
-import Form from "../../appraiser-register/Form";
+import { AppraiserStatusOptions, AppraiserList } from "../create-listing/data";
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [toggleId, setToggleId] = useState(-1);
-  const [closeRegisterModal,setCloseRegisterModal]=useState(false);
   const [toggleWishlist, setToggleWishlist] = useState(0);
   const [searchResult, setSearchResult] = useState([]);
   const [property, setProperty] = useState("");
@@ -35,10 +33,12 @@ const Index = () => {
   const [propertyId, setPropertyId] = useState(null);
   const [updatedCode, setUpdatedCode] = useState(false);
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
+  
+  const [start,setStart]=useState(0);
+  
+  const [end,setEnd]=useState(4);
 
-  const [wishlistedProperties,setWishlistedProperties] = useState([]);
-
-  const [isStatusModal,setIsStatusModal] = useState(false);
+  const [isStatusModal,setIsStatusModal] = useState(0);
   
   const handleStatusUpdateHandler = ()=>{
 
@@ -49,16 +49,26 @@ const Index = () => {
     setIsStatusModal(false);
   }
 
+   
+  const [openDate,setOpenDate] = useState(false);
+  const [statusDate,setStatusDate]=useState("");
+
+  
+
+  const handleStatusSelect = (value)=>{
+    if(String(value) === "Appraisal Visit Confirmed"){
+      setOpenDate(true);
+    }
+
+  }
+
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   const [isLoading, setIsLoading] = useState(true);
+  const [paginatedRow,setPaginatedRow] = useState([]);
 
   const [refresh, setRefresh] = useState(false);
-
-  const [start,setStart]=useState(0);
-  
-  const [end,setEnd]=useState(4);
 
   const closeErrorModal = () => {
     setModalIsOpenError(false);
@@ -80,20 +90,11 @@ const Index = () => {
     setIsQuoteModalOpen(true);
   };
 
-  const [openDate,setOpenDate] = useState(false);
-  const [statusDate,setStatusDate]=useState("");
+  const [typeView,setTypeView] = useState(0);
 
-  
-
-  const handleStatusSelect = (value)=>{
-    if(String(value) === "Appraisal Visit Confirmed"){
-      setOpenDate(true);
-    }
-
-  }
-
-  const openModalBroker = (property) => {
+  const openModalBroker = (property,value) => {
     setBroker(property);
+    setTypeView(value);
     setOpenBrokerModal(true);
   };
   const router = useRouter();
@@ -102,6 +103,7 @@ const Index = () => {
   );
 
   useEffect(() => {
+    
     const activityHandler = () => {
       setLastActivityTimestamp(Date.now());
     };
@@ -245,8 +247,8 @@ const Index = () => {
     const data = JSON.parse(localStorage.getItem("user"));
     if (!data) {
       router.push("/login");
-    } 
-    // else if (!data?.brokerage_Details.firstName) {
+    }
+    // } else if (!data?.brokerage_Details?.firstName) {
     //   router.push("/appraiser-profile");
     // }
     if (!data) {
@@ -326,8 +328,6 @@ const Index = () => {
     }
   }, [searchInput]);
 
-  console.log(broker);
-
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -343,7 +343,7 @@ const Index = () => {
           id="DashboardOffcanvasMenu"
           data-bs-scroll="true"
         >
-          <SidebarMenu />
+          <SidebarMenu  userData={userData}/>
         </div>
       </div>
       {/* End sidebar_menu */}
@@ -376,26 +376,25 @@ const Index = () => {
 
                 <div className="col-lg-4 col-xl-4 ">
                   <div className="style2 mb30-991">
-                    <h3 className="breadcrumb_title">Archieve Properties</h3>
+                    <h3 className="breadcrumb_title">Appraising Properties</h3>
                     {/* <p>We are glad to see you again!</p>                                                             */}
                   </div>
                 </div>
                 {/* End .col */}
+                {/*<div className="row">
+                 <div className="col-lg-12 mt20">
+                  <div className="mbp_pagination">
+                    <Pagination
+                      setStart={setStart}
+                      setEnd={setEnd}
+                      properties={properties}
+                    />
+                  </div>
+                </div> 
+            </div>*/}
 
-               {/*<div className="row">
-                <div className="col-lg-12 mt20">
-                 <div className="mbp_pagination">
-                   <Pagination
-                     setStart={setStart}
-                     setEnd={setEnd}
-                     properties={properties}
-                   />
-                   </div>
-                      </div> 
-                    </div>*/ } 
-
-                {/*<div className="col-lg-12 col-xl-12">
-                  <div className="candidate_revew_select style2 mb30-991">
+                <div className="col-lg-12 col-xl-12">
+                  {/*<div className="candidate_revew_select style2 mb30-991">
                     <ul className="mb0">
                       <li className="list-inline-item">
                         <Filtering setFilterQuery={setFilterQuery} />
@@ -409,8 +408,9 @@ const Index = () => {
                         </div>
                       </li>
                     </ul>
-              </div>
-                </div>*/}
+              </div>*/}
+                </div>
+                {/* End .col */}
 
                 <div className="col-lg-12">
                   <div className="">
@@ -427,18 +427,17 @@ const Index = () => {
                           setUpdatedCode={setUpdatedCode}
                           onWishlistHandler={onWishlistHandler}
                           participateHandler={participateHandler}
-                          setWishlistedProperties={setWishlistedProperties}
                           setErrorMessage={setErrorMessage}
                           setModalIsOpenError={setModalIsOpenError}
                           setRefresh={setRefresh}
                           refresh={refresh}
-                          setStart={start}
-                          setEnd={end}
-                          setFilterQuery={setFilterQuery}
-                          setSearchInput={setSearchInput}
                           setStartLoading={setStartLoading}
                           openModalBroker={openModalBroker}
                           setIsStatusModal={setIsStatusModal}
+                          setSearchInput={setSearchInput}
+                          setFilterQuery={setFilterQuery}
+                          start={start}
+                          end={end}
                         />
 
                         {modalIsOpenError && (
@@ -534,7 +533,7 @@ const Index = () => {
                         )}*/}
                       </div>
                       <div>
-                      {openBrokerModal && (
+                      {(openBrokerModal && typeView === 1) && (
                         <div className="modal">
                           <div className="modal-content">
                             <h3 className="text-center">Property Details</h3>
@@ -945,7 +944,26 @@ const Index = () => {
                               </tr>
                               </table>
                             </div>
-                            <h3>{"   "}</h3>
+                            
+                            <div className="row text-center mt-3">
+                              <div className="col-lg-12">
+                                <button
+                                  className="btn btn-color w-25 text-center"
+                                  onClick={closeBrokerModal}
+                                >
+                                  Ok
+                                </button>
+                              </div>
+                            </div>
+
+                           
+                          </div>
+                        </div>
+                      )}
+
+                      {(openBrokerModal && typeView === 2) && (
+                        <div className="modal">
+                          <div className="modal-content">
 
                             <h3 className="text-center">Broker Details</h3>
                            
@@ -1077,15 +1095,6 @@ const Index = () => {
                 </div>
               )}
 
-               
-                { closeRegisterModal && <div className="modal">
-                  <div className="modal-content">
-                    <h3 className="text-center">Add Appraiser</h3>
-                    <Form/>
-                  </div>
-                </div>}
-              
-
               {isStatusModal && (
                 <div className="modal">
                   <div className="modal-content">
@@ -1126,7 +1135,56 @@ const Index = () => {
                   value={statusDate}
                 />
               </div>}
-            
+
+                    {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
+                    <div className="text-center" style={{}}>
+                    <button
+                    className="btn w-35 btn-white"
+                    onClick={closeStatusUpdateHandler}
+                  >
+                    Cancel
+                  </button>
+                      <button
+                      className="btn btn-color w-10 mt-1"
+                      style={{ marginLeft: "12px" }}
+                        onClick={handleStatusUpdateHandler}
+                      >
+                        Submit
+                      </button>        
+                     
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {isStatusModal === 2 && (
+                <div className="modal">
+                  <div className="modal-content">
+                    <h3 className="text-center">Assign the appraiser</h3>
+                    
+                    <select
+                  required
+                  className="form-select"
+                  data-live-search="true"
+                  data-width="100%"
+                  // value={buildinRef}
+                  // onChange={(e) => setBuildinRef(e.target.value)}
+                  // onChange={(e) => setBuildinRef(e.target.value)}
+                  // disabled={isDisable}
+                  style={{
+                          paddingTop: "15px",
+                          paddingBottom: "15px",
+                          backgroundColor: "#E8F0FE"
+                        }}
+                >
+                  {AppraiserList.map((item, index) => {
+                    return (
+                      <option key={item.id} value={item.value}>
+                        {item.type}
+                      </option>
+                    );
+                  })}
+                </select>
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
                     <button
@@ -1159,33 +1217,29 @@ const Index = () => {
                   closeQuoteModal={closeQuoteModal}
                 />
               </div>
-              <div className="row">
-                {/* <div className="col-lg-12 mt20">
+              {/*<div className="row">
+                 <div className="col-lg-12 mt20">
                   <div className="mbp_pagination">
                     <Pagination
                       properties={properties}
                       setProperties={setProperties}
                     />
                   </div>
-                </div> */}
-                {/* End paginaion .col */}
-              </div>
+                </div> 
+              </div>*/}
               {/* End .row */}
             </div>
-            {/* End .row */}
-
             <div className="row">
                  <div className="col-lg-12 mt20">
                   <div className="mbp_pagination">
                     <Pagination
                       setStart={setStart}
                       setEnd={setEnd}
-                      properties={wishlistedProperties}
+                      properties={properties}
                     />
                   </div>
                 </div> 
               </div>
-
             <div className="row mt50">
               <div className="col-lg-12">
                 <div className="copyright-widget text-center">

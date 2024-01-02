@@ -66,9 +66,10 @@ const Index = () => {
     userData = JSON.parse(localStorage.getItem("user"));
     if (!userData) {
       router.push("/login");
-    } else if (!userData?.broker_Details?.firstName) {
-      router.push("/my-profile");
     }
+    //  else if (!userData?.broker_Details?.firstName) {
+    //   router.push("/my-profile");
+    // }
 
     toast.loading("Getting Transactions...");
     axios

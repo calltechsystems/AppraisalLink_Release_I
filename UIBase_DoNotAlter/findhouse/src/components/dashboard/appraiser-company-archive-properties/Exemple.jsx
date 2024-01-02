@@ -15,11 +15,51 @@ const headCells = [
     label: "Order ID",
     width: 100,
   },
+  
+  {
+    id: "address",
+    numeric: false,
+    label: "Property Address",
+    width: 200,
+  },
+  
+  {
+    id: "status",
+    numeric: false,
+    label: "Quote Status",
+    width: 160,
+  },
+  {
+    id: "urgency",
+    numeric: false,
+    label: "Urgency",
+    width: 200,
+  },
+  
+  {
+    id: "date",
+    numeric: false,
+    label: "Order Submission Date",
+    width: 200,
+  },
+  {
+    id: "quote_required_by",
+    numeric: false,
+    label: "Appraisal Report Required By",
+    width: 200,
+  },
 
   {
     id: "typeOfBuilding",
     numeric: false,
-    label: "Type of Building",
+    label: "Type of Property",
+    width: 200,
+  },
+  
+  {
+    id: "estimatedValue",
+    numeric: false,
+    label: "Estimated Property Value ($)",
     width: 200,
   },
   {
@@ -28,19 +68,7 @@ const headCells = [
     label: "Type Of Appraisal",
     width: 200,
   },
-  {
-    id: "address",
-    numeric: false,
-    label: "Property Address",
-    width: 200,
-  },
 
-  {
-    id: "estimatedValue",
-    numeric: false,
-    label: "Estimated Property Value ($)",
-    width: 200,
-  },
 
   {
     id: "purpose",
@@ -55,36 +83,20 @@ const headCells = [
     label: "Lender Information",
     width: 200,
   },
-  {
-    id: "status",
-    numeric: false,
-    label: "Quote Status",
-    width: 160,
-  },
-  {
-    id: "urgency",
-    numeric: false,
-    label: "Urgency",
-    width: 200,
-  },
-  {
-    id: "date",
-    numeric: false,
-    label: "Submission Date",
-    width: 200,
-  },
-  {
-    id: "quote_required_by",
-    numeric: false,
-    label: "Appraisal Report Required By",
-    width: 200,
-  },
+ 
   {
     id: "broker",
     numeric: false,
     label: "Broker",
     width: 200,
   },
+  {
+    id: "property",
+    numeric: false,
+    label: "Property",
+    width: 200,
+  },
+
   {
     id: "action",
     numeric: false,
@@ -99,6 +111,8 @@ export default function Exemple({
   userData,
   open,
   close,
+  start,
+  end,
   setUpdatedCode,
   properties,
   setIsStatusModal,
@@ -106,15 +120,12 @@ export default function Exemple({
   deletePropertyHandler,
   onWishlistHandler,
   participateHandler,
-  openModalBroker,
-  setSearchInput,
   setFilterQuery,
-  setWishlistedProperties,
+  setSearchInput,
+  openModalBroker,
   setErrorMessage,
   setModalIsOpenError,
   setRefresh,
-  setStart,
-  setEnd,
   setStartLoading,
   refresh,
 }) {
@@ -149,8 +160,8 @@ export default function Exemple({
 
   const router = useRouter();
 
-  const openStatusUpdateHandler = () => {
-    setIsStatusModal(true);
+  const openStatusUpdateHandler = (value) => {
+    setIsStatusModal(value);
   };
 
   const removeWishlistHandler = (id) => {
@@ -224,20 +235,15 @@ export default function Exemple({
   const checkData = (properties && !updatedData) ? true : false;
   useEffect(()=>{
     setProperties([]);
-  },[checkData])
-
-  useEffect(()=>{
-    setRefresh(true);
-  },[!updatedData]);
+  },[checkData]);
 
   useEffect(() => {
-    let page = [];
     const getData = () => {
       properties.map((property, index) => {
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
         console.log("isBidded",property);
-        page.push(property);
+
         const updatedRow = {
           orderId: property.orderId ,
           address: `${property.city}-${property.province},${property.zipCode}`,
@@ -255,6 +261,7 @@ export default function Exemple({
             ) : isBidded.status === 1 ? (
               <span
                 className="btn btn-success  w-100"
+                
               >
                 Accepted
               </span>
@@ -263,6 +270,33 @@ export default function Exemple({
             )
           ) : (
             <span className="btn btn-warning  w-100">New</span>
+          ),
+          property: (
+            <div>
+              {isBidded.status === 1 ? (
+                <a href="#">
+                  <button
+                    className=""
+                    style={{
+                      border: "0px",
+                      color: "#2e008b",
+                      textDecoration: "underline",
+                      // fontWeight: "bold",
+                      backgroundColor: "transparent",
+                    }}
+                    onClick={() => openModalBroker(property,1)}
+                  >
+                   Property Info
+                  </button>
+                </a>
+              ) : isBidded.status === 2 ? (
+                <h6 style={{ color: "red" }}> Declined</h6>
+              ) : (
+                <p>
+                  Broker Information will be available post the quote acceptance
+                </p>
+              )}
+            </div>
           ),
           broker: (
             <div>
@@ -277,13 +311,13 @@ export default function Exemple({
                       // fontWeight: "bold",
                       backgroundColor: "transparent",
                     }}
-                    onClick={() => openModalBroker(property)}
+                    onClick={() => openModalBroker(property,2)}
                   >
-                    {`${property.applicantFirstName} ${property.applicantLastName}`}
+                   Broker Info
                   </button>
                 </a>
               ) : isBidded.status === 2 ? (
-                <h6 style={{ color: "red" }}> Rejected</h6>
+                <h6 style={{ color: "red" }}> Declined</h6>
               ) : (
                 <p>
                   Broker Information will be available post the quote acceptance
@@ -355,6 +389,7 @@ export default function Exemple({
                       data-placement="top"
                       title="Provide Quote"
                     >
+                    <>
                       <div
                         className="w-100"
                         onClick={() =>
@@ -372,6 +407,21 @@ export default function Exemple({
                           Provide Quote
                         </button>
                       </div>
+                      <div
+                      className="w-100"
+                      onClick={() =>
+                       openStatusUpdateHandler(2)
+                      }
+                    >
+                      <button
+                        href="#"
+                        className="btn btn-color w-100 mt-1"
+                        style={{ marginLeft: "12px" }}
+                      >
+                        Assign Appraiser
+                      </button>
+                    </div>
+                      </>
                     </li>
                   )}
 
@@ -393,26 +443,20 @@ export default function Exemple({
                       className="btn btn-color w-100 mt-1"
                       style={{ marginLeft: "12px" }}
                     >
-                    Un-Archive Property
+                    Archive Property
                     </button>
                   </div>
                 </li>
                 </ul>
               ) : (
-                <div
-                className="w-100"
-                onClick={() =>
-                  openStatusUpdateHandler()
-                }
-              >
-                <button
-                  href="#"
-                  className="btn btn-color w-100 mt-1"
-                  style={{ marginLeft: "12px" }}
-                >
-                  Order Update
-                </button>
-              </div>
+                 <button
+                          href="#"
+                          className="btn btn-color w-100 mt-1"
+                          style={{ marginLeft: "12px" }}
+                          onClick={()=>openStatusUpdateHandler(1)}
+                        >
+                          Order Update
+                        </button>
               )}
             </div>
           ),
@@ -422,12 +466,13 @@ export default function Exemple({
       setUpdatedData(tempData);
     };
     getData();
-    setWishlistedProperties(page);
   }, [properties]);
 
   useEffect(() => {
     setUpdatedCode(true);
   }, [updatedData]);
+
+
 
   const refreshHandler = () => {
     setRefresh(true);
@@ -513,17 +558,18 @@ export default function Exemple({
       ) : (
         <SmartTable
           title=""
+
+          setSearchInput={setSearchInput}
+          setFilterQuery={setFilterQuery}
           data={sortObjectsByOrderIdDescending(updatedData)}
           headCells={headCells}
-          setFilterQuery={setFilterQuery}
-      setSearchInput={setSearchInput}
           setRefresh={setRefresh}
           setProperties={setProperties}
           refresh={refresh}
           refreshHandler={refreshHandler}
           setStartLoading={setStartLoading}
-          start={setStart}
-          end={setEnd}
+          start={start}
+          end={end}
         />
       )}
     </>
