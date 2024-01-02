@@ -306,7 +306,7 @@ const Index = () => {
     const data = JSON.parse(localStorage.getItem("user"));
     if (!data) {
       router.push("/login");
-    } else if (!data?.brokerage_Details?.firstName) {
+    } else if (!data?.brokerage_Details.firstName) {
       router.push("/appraiser-profile");
     }
     if (!data) {

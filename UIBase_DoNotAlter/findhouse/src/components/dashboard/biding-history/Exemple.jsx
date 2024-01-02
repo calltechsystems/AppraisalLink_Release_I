@@ -437,7 +437,17 @@ export default function Exemple({
       })
       .then((res) => {
         console.log(res);
-        tempBids = res.data.data.result.$values;
+        const temp = res.data.data.result.$values;
+        tempBids = temp.filter((bid,index)=>{
+          if(String(bid.appraiserUserId) === String(data.userId)){
+            return true;
+          }
+          else{
+            return false;
+          }
+        })
+
+        console.log(tempBids);
         setBids(tempBids);
       })
       .catch((err) => {

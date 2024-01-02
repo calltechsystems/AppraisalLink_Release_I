@@ -106,6 +106,7 @@ const TableData = ({userData , open ,close ,setFilterQuery,setSearchInput,setIsS
         toast.dismiss();
         
         console.log(res.data.data.properties.$values);
+        
         setProperties(res.data.data.properties.$values);
         setRerender(false);
       })

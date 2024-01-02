@@ -196,7 +196,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         streetName: streetName,
         commissionRate: commissionRate,
         maxNumberOfAssignedOrders: maxNumberOfAssignedOrders,
-        designation: designation,
+        designation: designations,
         city: city,
         province: state,
         postalCode: zipCode,
@@ -211,9 +211,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         .put("/api/updateAppraiserProfile", encryptedData)
         .then((res) => {
           toast.success("Successfully Updated Profile!");
-
+          console.log(res);
           let data = userData;
-          data.brokerage_Details = res.data.userData.broker;
+          data.brokerage_Details = res.data.userData.appraiser;
           localStorage.removeItem("user");
           localStorage.setItem("user", JSON.stringify(data));
           setShowCard(true);
@@ -614,7 +614,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           data-live-search="true"
                           data-width="100%"
                           
-                          onChange={(e) => setStateRef(e.target.value)}
+                          onChange={(e) => setStateRef(e.target.value.value)}
                           value={stateRef}
                           disabled={!edit}
                           style={{

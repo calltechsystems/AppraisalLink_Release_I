@@ -105,13 +105,14 @@ const headCells = [
   },
 ];
 
-
 let count = 0;
 
 export default function Exemple({
   userData,
   open,
   close,
+  start,
+  end,
   setUpdatedCode,
   properties,
   setIsStatusModal,
@@ -119,15 +120,12 @@ export default function Exemple({
   deletePropertyHandler,
   onWishlistHandler,
   participateHandler,
-  openModalBroker,
-  setSearchInput,
   setFilterQuery,
-  setWishlistedProperties,
+  setSearchInput,
+  openModalBroker,
   setErrorMessage,
   setModalIsOpenError,
   setRefresh,
-  setStart,
-  setEnd,
   setStartLoading,
   refresh,
 }) {
@@ -143,10 +141,9 @@ export default function Exemple({
     const userData = JSON.parse(localStorage.getItem("user"));
     let tempBid = 0,
       bidValue = {};
-
-    console.log(bids);
+      console.log(bids);
     bids.filter((bid) => {
-      if (bid.propertyId === property.propertyId) {
+      if (bid.propertyId === property.propertyId ) {
         console.log("matched", bid);
         tempBid = tempBid + 1;
         bidValue = bid;
@@ -215,9 +212,9 @@ export default function Exemple({
 
   const checkWishlistedHandler = (data) => {
     let temp = {};
-    console.log(wishlist, data);
+    // console.log(wishlist, data);
     wishlist.map((prop, index) => {
-      if (String(prop.propertyId) === String(data.propertyId)) {
+      if (String(prop.propertyId) === String(data.propertyId) && String(prop.userId) === String(userData.userId) ) {
         temp = prop;
       }
     });
@@ -237,21 +234,15 @@ export default function Exemple({
   const checkData = (properties && !updatedData) ? true : false;
   useEffect(()=>{
     setProperties([]);
-  },[checkData])
-
-  useEffect(()=>{
-    setRefresh(true);
-  },[!updatedData]);
+  },[checkData]);
 
   useEffect(() => {
-    let page = [];
     const getData = () => {
       properties.map((property, index) => {
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
-        console.log("isBidded",property);
+        
 
-        page.push(property);
         const updatedRow = {
           orderId: property.orderId ,
           address: `${property.city}-${property.province},${property.zipCode}`,
@@ -269,41 +260,15 @@ export default function Exemple({
             ) : isBidded.status === 1 ? (
               <span
                 className="btn btn-success  w-100"
+                
               >
                 Accepted
               </span>
             ) : (
-              <span className="btn btn-danger  w-100">Declined</span>
+              <span className="btn btn-danger  w-100">Rejected</span>
             )
           ) : (
             <span className="btn btn-warning  w-100">New</span>
-          ),
-          property: (
-            <div>
-              {isBidded.status === 1 ? (
-                <a href="#">
-                  <button
-                    className=""
-                    style={{
-                      border: "0px",
-                      color: "#2e008b",
-                      textDecoration: "underline",
-                      // fontWeight: "bold",
-                      backgroundColor: "transparent",
-                    }}
-                    onClick={() => openModalBroker(property,1)}
-                  >
-                    Property Info
-                  </button>
-                </a>
-              ) : isBidded.status === 2 ? (
-                <h6 style={{ color: "red" }}> Rejected</h6>
-              ) : (
-                <p>
-                  Broker Information will be available post the quote acceptance
-                </p>
-              )}
-            </div>
           ),
           broker: (
             <div>
@@ -318,13 +283,40 @@ export default function Exemple({
                       // fontWeight: "bold",
                       backgroundColor: "transparent",
                     }}
-                    onClick={() => openModalBroker(property,2)}
+                    onClick={() => openModalBroker(property,1)}
                   >
                    Broker Info
                   </button>
                 </a>
               ) : isBidded.status === 2 ? (
-                <h6 style={{ color: "red" }}> Rejected</h6>
+                <h6 style={{ color: "red" }}> Declined</h6>
+              ) : (
+                <p>
+                  Broker Information will be available post the quote acceptance
+                </p>
+              )}
+            </div>
+          ),
+          property: (
+            <div>
+              {isBidded.status === 1 ? (
+                <a href="#">
+                  <button
+                    className=""
+                    style={{
+                      border: "0px",
+                      color: "#2e008b",
+                      textDecoration: "underline",
+                      // fontWeight: "bold",
+                      backgroundColor: "transparent",
+                    }}
+                    onClick={() => openModalBroker(property,2)}
+                  >
+                    Property Info
+                  </button>
+                </a>
+              ) : isBidded.status === 2 ? (
+                <h6 style={{ color: "red" }}> Declined</h6>
               ) : (
                 <p>
                   Broker Information will be available post the quote acceptance
@@ -434,26 +426,20 @@ export default function Exemple({
                       className="btn btn-color w-100 mt-1"
                       style={{ marginLeft: "12px" }}
                     >
-                    Un-Archive Property
+                    Archive Property
                     </button>
                   </div>
                 </li>
                 </ul>
               ) : (
-                <div
-                className="w-100"
-                onClick={() =>
-                  openStatusUpdateHandler()
-                }
-              >
-                <button
-                  href="#"
-                  className="btn btn-color w-100 mt-1"
-                  style={{ marginLeft: "12px" }}
-                >
-                  Order Update
-                </button>
-              </div>
+                 <button
+                          href="#"
+                          className="btn btn-color w-100 mt-1"
+                          style={{ marginLeft: "12px" }}
+                          onClick={openStatusUpdateHandler}
+                        >
+                          Order Update
+                        </button>
               )}
             </div>
           ),
@@ -463,12 +449,13 @@ export default function Exemple({
       setUpdatedData(tempData);
     };
     getData();
-    setWishlistedProperties(page);
   }, [properties]);
 
   useEffect(() => {
     setUpdatedCode(true);
   }, [updatedData]);
+
+
 
   const refreshHandler = () => {
     setRefresh(true);
@@ -494,7 +481,16 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        tempProperties = res.data.data.property.$values;
+        const temp = res.data.data.property.$values;
+
+        tempProperties = temp.filter((prop,index)=>{
+          if(String(prop.userId) === String(data.userId)){
+            return true
+          }
+          else{
+            return false
+          }
+        })
       })
       .catch((err) => {
         setErrorMessage(err?.response?.data?.error);
@@ -512,7 +508,7 @@ export default function Exemple({
 
         // setAllWishlistedProperties(res.data.data.$values);
         const responseData = tempData.filter((prop, index) => {
-          if (prop.userId === data.userId) {
+          if (String(prop.userId) === String(data.userId)) {
             return true;
           } else {
             return false;
@@ -536,7 +532,15 @@ export default function Exemple({
       .then((res) => {
         console.log(res);
         tempBids = res.data.data.result.$values;
-        setBids(tempBids);
+        const updatedBids = tempBids.filter((prop,index)=>{
+          if(String(prop.appraiserUserId) === String(data.userId)){
+            return true;
+          }
+          else{
+            return false;
+          }
+        })
+        setBids(updatedBids);
       })
       .catch((err) => {
         setErrorMessage(err?.response?.data?.error);
@@ -554,17 +558,18 @@ export default function Exemple({
       ) : (
         <SmartTable
           title=""
+
+          setSearchInput={setSearchInput}
+          setFilterQuery={setFilterQuery}
           data={sortObjectsByOrderIdDescending(updatedData)}
           headCells={headCells}
-          setFilterQuery={setFilterQuery}
-      setSearchInput={setSearchInput}
           setRefresh={setRefresh}
           setProperties={setProperties}
           refresh={refresh}
           refreshHandler={refreshHandler}
           setStartLoading={setStartLoading}
-          start={setStart}
-          end={setEnd}
+          start={start}
+          end={end}
         />
       )}
     </>

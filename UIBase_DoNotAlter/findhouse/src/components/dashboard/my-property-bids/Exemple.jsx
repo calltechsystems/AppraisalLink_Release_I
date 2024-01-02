@@ -9,12 +9,6 @@ import { useRouter } from "next/router";
 
 const headCells = [
   {
-    id: "order_id",
-    numeric: false,
-    label: "Order ID",
-    width: 100,
-  },
-  {
     id: "AppraiserId",
     numeric: false,
     label: "Appraiser ID",
@@ -120,8 +114,9 @@ export default function Exemple({
 
   const openPopupModal = (prop, id) => {
     // console.log(prop);
-    setId(id);
     setProperty(prop);
+    setId(id);
+   
     setIsModalOpen(true);
   };
 
@@ -154,9 +149,7 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        console.log(res);
-
-        setAppInfo(res.data.data);
+        setAppInfo(res.data.data.appraiser.result);
         setOpenBrokerModal(true);
       })
       .catch((err) => {
@@ -233,12 +226,8 @@ export default function Exemple({
   useEffect(() => {
     const getData = () => {
       properties.map((property, index) => {
-        const prop = getPropertyHandler(property);
-        console.log(prop);
-
-        if (prop) {
+       
           const updatedRow = {
-            order_id: prop.orderId,
             AppraiserId: property.appraiserUserId
               ? property.appraiserUserId
               : 0,
@@ -275,7 +264,7 @@ export default function Exemple({
                   >
                     <div
                       className="fp_pdate float-end mt-1 fw-bold"
-                      onClick={() => openPopupModal(prop, property.bidId)}
+                      onClick={() => openPopupModal(property, property.bidId)}
                     >
                       <a href="#" className="btn btn-success">
                         Accept
@@ -306,7 +295,7 @@ export default function Exemple({
               ),
           };
           tempData.push(updatedRow);
-        }
+        
       });
       setUpdatedData(tempData);
     };

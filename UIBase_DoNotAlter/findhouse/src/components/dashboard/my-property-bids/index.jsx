@@ -21,9 +21,10 @@ const Index = ({ propertyId }) => {
   const [refresh, setRefresh] = useState(false);
   const [id, setId] = useState(0);
 
-  const [start, setStart] = useState(0);
 
-  const [end, setEnd] = useState(4);
+  const [start,setStart]=useState(0);
+  
+  
 
   const [openBrokerModal, setOpenBrokerModal] = useState(false);
 
@@ -37,9 +38,16 @@ const Index = ({ propertyId }) => {
 
   const router = useRouter();
 
+  const [end,setEnd]=useState(properties);
+
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
   );
+
+  const closeAppraiserHandler = ()=>{
+    setAppInfo({});
+    setOpenBrokerModal(false);
+  }
 
   const acceptRequestHandler = () => {
     const data = JSON.parse(localStorage.getItem("user"));
@@ -249,6 +257,11 @@ const Index = ({ propertyId }) => {
     fetchData();
   }, []);
 
+  useEffect(()=>{
+    console.log(property);
+  },[property])
+
+  console.log(appInfo)
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -272,7 +285,7 @@ const Index = ({ propertyId }) => {
       {/* <!-- Our Dashbord --> */}
       <section className="our-dashbord dashbord bgc-f7 pb50">
         <div
-          className="container-fluid ovh table-padding"
+          className="container-fluid ovh"
           style={{ marginLeft: "-10px", marginTop: "" }}
         >
           <div className="row">
@@ -297,7 +310,7 @@ const Index = ({ propertyId }) => {
 
                 <div className="col-lg-4 col-xl-4">
                   <div className="style2 mb30-991">
-                    <h3 className="breadcrumb_title offset-1">
+                    <h3 className="breadcrumb_title">
                       Provided Bids On Property
                     </h3>
                     {/* <p>We are glad to see you again!</p>                                                             */}
@@ -305,7 +318,7 @@ const Index = ({ propertyId }) => {
                 </div>
                 {/* End .col */}
 
-                {/* <div className="col-lg-12 col-xl-12">
+                <div className="col-lg-12 col-xl-12">
                   <div className="candidate_revew_select style2 mb30-991">
                     <ul className="mb0">
                       <li className="list-inline-item">
@@ -319,26 +332,16 @@ const Index = ({ propertyId }) => {
                           <SearchBox setSearchInput={setSearchInput} />
                         </div>
                       </li>
+                      {/* End li */}
 
-                      <li className="list-inline-item">
+                      {/* <li className="list-inline-item">
                         <Filtering setFilterQuery={setFilterQuery} />
-                      </li>
+                      </li> */}
+                      {/* End li */}
                     </ul>
                   </div>
-                </div> */}
-                {/* End .col */}
-
-                <div className="row">
-                  <div className="col-lg-12 mt0">
-                    <div className="mbp_pagination">
-                      <Pagination
-                        setStart={setStart}
-                        setEnd={setEnd}
-                        properties={properties}
-                      />
-                    </div>
-                  </div>
                 </div>
+                {/* End .col */}
 
                 <div className="col-lg-12">
                   <div className="mb40">
@@ -435,32 +438,29 @@ const Index = ({ propertyId }) => {
               {/* End .row */}
             </div>
             {/* End .row */}
-            {/* 
+
             <div className="row">
-              <div className="col-lg-12 mt20">
-                <div className="mbp_pagination">
-                  <Pagination
-                    setStart={setStart}
-                    setEnd={setEnd}
-                    properties={properties}
-                  />
-                </div>
-              </div>
-            </div> */}
+                 <div className="col-lg-12 mt20">
+                  <div className="mbp_pagination">
+                    <Pagination
+                      setStart={setStart}
+                      setEnd={setEnd}
+                      properties={properties}
+                    />
+                  </div>
+                </div> 
+            </div>
 
             <div className="row mt50">
               <div className="col-lg-12">
                 <div className="copyright-widget text-center">
-                  <p>
-                    &copy; {new Date().getFullYear()} Appraisal Land. All Rights
-                    Reserved.
-                  </p>
+                  <p>© 2020 Find House. Made with love.</p>
                 </div>
               </div>
             </div>
             {/* End .col */}
 
-            {openBrokerModal && (
+            {(openBrokerModal && appInfo.firstName) && (
               <div className="modal">
                 <div className="modal-content">
                   <span style={{ fontWeight: "bold" }}>
@@ -473,31 +473,32 @@ const Index = ({ propertyId }) => {
                         <span className="">Appraiser Name :</span>{" "}
                       </h5>
                       <span className="col-lg-3">
-                        {/* {broker.applicantFirstName} {broker.applicantLastName} */}
-                      </span>
-                    </div>
-                    <div className="row">
-                      <h5 className="col-lg-4 mt-1">
-                        <span className="">Appraiser Phone Number :</span>{" "}
-                      </h5>
-                      <span className="col-lg-3">
-                        {/* {broker.applicantPhoneNumber} */}
+                         {appInfo.firstName} {appInfo.lastName} 
                       </span>
                     </div>
                     <div className="row">
                       <h5 className="col-lg-4 mt-1 text-end">
-                        <span className="">Appraiser Email :</span>{" "}
+                        <span className="">Appraiser Address :</span>{" "}
                       </h5>
                       <span className="col-lg-3">
-                        {/* {broker.applicantEmailAddress} */}
+                         {appInfo.streetName}-{appInfo.streetNumber},{appInfo.area} {appInfo.city} - {appInfo.province} {appInfo.postalCode} 
                       </span>
                     </div>
+                    <div className="row">
+                      <h5 className="col-lg-4 mt-1">
+                        <span className="">Appraiser Number :</span>{" "}
+                      </h5>
+                      <span className="col-lg-3">
+                         {appInfo.phoneNumber} 
+                      </span>
+                    </div>
+                    
                   </div>
                   <hr />
                   <div className="text-center" style={{}}>
                     <button
                       className="btn btn-color w-35"
-                      onClick={() => setOpenBrokerModal(false)}
+                      onClick={() => closeAppraiserHandler()}
                     >
                       Ok
                     </button>

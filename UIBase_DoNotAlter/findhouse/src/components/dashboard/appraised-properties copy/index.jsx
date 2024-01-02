@@ -31,32 +31,105 @@ const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [lowRangeBid, setLowRangeBid] = useState("");
   const [propertyId, setPropertyId] = useState(null);
+  const [typeView,setTypeView] = useState(0);
   const [updatedCode, setUpdatedCode] = useState(false);
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
+  
+  const [start,setStart]=useState(0);
+  
+  const [end,setEnd]=useState(4);
 
   const [isStatusModal,setIsStatusModal] = useState(false);
   
   const handleStatusUpdateHandler = ()=>{
 
   }
-
   const closeStatusUpdateHandler = ()=>{
     setOpenDate(false);
     setIsStatusModal(false);
   }
 
+  
+  const [openDate,setOpenDate] = useState(false);
+  const [statusDate,setStatusDate]=useState("");
+
+  
+
+  const handleStatusSelect = (value)=>{
+    if(String(value) === "Appraisal Visit Confirmed"){
+      setOpenDate(true);
+    }
+
+  }
+  {isStatusModal && (
+    <div className="modal">
+      <div className="modal-content">
+        <h3 className="text-center">Quote Status Updation</h3>
+        
+        <select
+      required
+      className="form-select"
+      data-live-search="true"
+      data-width="100%"
+      onChange={(e)=>handleStatusSelect(e.target.value)}
+      // value={buildinRef}
+      // onChange={(e) => setBuildinRef(e.target.value)}
+      // onChange={(e) => setBuildinRef(e.target.value)}
+      // disabled={isDisable}
+      style={{
+              paddingTop: "15px",
+              paddingBottom: "15px",
+              backgroundColor: "#E8F0FE"
+            }}
+    >
+      {AppraiserStatusOptions.map((item, index) => {
+        return (
+          <option key={item.id} value={item.value}>
+            {item.type}
+          </option>
+        );
+      })}
+    </select>
+    {openDate && <div className="col-lg-4">
+    <input
+      required
+     
+      type="datetime-local"
+      className="form-control"
+      id="formGroupExampleInput3"
+      onChange={(e) => setStatusDate(e.target.value)}
+      value={statusDate}
+    />
+  </div>}
+
+        {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
+        <div className="text-center" style={{}}>
+        <button
+        className="btn w-35 btn-white"
+        onClick={closeStatusUpdateHandler}
+      >
+        Cancel
+      </button>
+          <button
+          className="btn btn-color w-10 mt-1"
+          style={{ marginLeft: "12px" }}
+            onClick={handleStatusUpdateHandler}
+          >
+            Submit
+          </button>        
+         
+        </div>
+      </div>
+    </div>
+  )}
+
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   const [isLoading, setIsLoading] = useState(true);
+  const [paginatedRow,setPaginatedRow] = useState([]);
 
   const [refresh, setRefresh] = useState(false);
-
-  const [wishlistedProperties,setWishlistedProperties] = useState([]);
-
-  const [start,setStart]=useState(0);
-  
-  const [end,setEnd]=useState(4);
 
   const closeErrorModal = () => {
     setModalIsOpenError(false);
@@ -78,23 +151,9 @@ const Index = () => {
     setIsQuoteModalOpen(true);
   };
 
-
-  const [openDate,setOpenDate] = useState(false);
-  const [statusDate,setStatusDate]=useState("");
-
-  
-
-  const handleStatusSelect = (value)=>{
-    if(String(value) === "Appraisal Visit Confirmed"){
-      setOpenDate(true);
-    }
-
-  }
-
-  const [typeView,setTypeView] = useState(0);
-  const openModalBroker = (property,value) => {
+  const openModalBroker = (property,type) => {
     setBroker(property);
-    setTypeView(value);
+    setTypeView(type);
     setOpenBrokerModal(true);
   };
   const router = useRouter();
@@ -102,9 +161,8 @@ const Index = () => {
     Date.now()
   );
 
-
-
   useEffect(() => {
+    
     const activityHandler = () => {
       setLastActivityTimestamp(Date.now());
     };
@@ -328,8 +386,6 @@ const Index = () => {
     }
   }, [searchInput]);
 
-  console.log(broker);
-
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -378,26 +434,25 @@ const Index = () => {
 
                 <div className="col-lg-4 col-xl-4 ">
                   <div className="style2 mb30-991">
-                    <h3 className="breadcrumb_title">Archieve Properties</h3>
+                    <h3 className="breadcrumb_title">Appraising Properties</h3>
                     {/* <p>We are glad to see you again!</p>                                                             */}
                   </div>
                 </div>
                 {/* End .col */}
+                {/*<div className="row">
+                 <div className="col-lg-12 mt20">
+                  <div className="mbp_pagination">
+                    <Pagination
+                      setStart={setStart}
+                      setEnd={setEnd}
+                      properties={properties}
+                    />
+                  </div>
+                </div> 
+            </div>*/}
 
-               {/*<div className="row">
-                <div className="col-lg-12 mt20">
-                 <div className="mbp_pagination">
-                   <Pagination
-                     setStart={setStart}
-                     setEnd={setEnd}
-                     properties={properties}
-                   />
-                   </div>
-                      </div> 
-                    </div>*/ } 
-
-                {/*<div className="col-lg-12 col-xl-12">
-                  <div className="candidate_revew_select style2 mb30-991">
+                <div className="col-lg-12 col-xl-12">
+                  {/*<div className="candidate_revew_select style2 mb30-991">
                     <ul className="mb0">
                       <li className="list-inline-item">
                         <Filtering setFilterQuery={setFilterQuery} />
@@ -411,8 +466,9 @@ const Index = () => {
                         </div>
                       </li>
                     </ul>
-              </div>
-                </div>*/}
+              </div>*/}
+                </div>
+                {/* End .col */}
 
                 <div className="col-lg-12">
                   <div className="">
@@ -433,14 +489,13 @@ const Index = () => {
                           setModalIsOpenError={setModalIsOpenError}
                           setRefresh={setRefresh}
                           refresh={refresh}
-                          setStart={start}
-                          setEnd={end}
-                          setWishlistedProperties={setWishlistedProperties}
-                          setFilterQuery={setFilterQuery}
-                          setSearchInput={setSearchInput}
                           setStartLoading={setStartLoading}
                           openModalBroker={openModalBroker}
                           setIsStatusModal={setIsStatusModal}
+                          setSearchInput={setSearchInput}
+                          setFilterQuery={setFilterQuery}
+                          start={start}
+                          end={end}
                         />
 
                         {modalIsOpenError && (
@@ -949,6 +1004,7 @@ const Index = () => {
                             </div>
                             <h3>{"   "}</h3>
 
+                            
                             <div className="row text-center mt-3">
                               <div className="col-lg-12">
                                 <button
@@ -968,6 +1024,7 @@ const Index = () => {
                       {(openBrokerModal && typeView === 2) && (
                         <div className="modal">
                           <div className="modal-content">
+                            
                             <h3 className="text-center">Broker Details</h3>
                            
                             <div className="d-flex justify-content-center">
@@ -1138,7 +1195,7 @@ const Index = () => {
                   value={statusDate}
                 />
               </div>}
-            
+
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
                     <button
@@ -1171,33 +1228,29 @@ const Index = () => {
                   closeQuoteModal={closeQuoteModal}
                 />
               </div>
-              <div className="row">
-                {/* <div className="col-lg-12 mt20">
+              {/*<div className="row">
+                 <div className="col-lg-12 mt20">
                   <div className="mbp_pagination">
                     <Pagination
                       properties={properties}
                       setProperties={setProperties}
                     />
                   </div>
-                </div> */}
-                {/* End paginaion .col */}
-              </div>
+                </div> 
+              </div>*/}
               {/* End .row */}
             </div>
-            {/* End .row */}
-
             <div className="row">
                  <div className="col-lg-12 mt20">
                   <div className="mbp_pagination">
                     <Pagination
                       setStart={setStart}
                       setEnd={setEnd}
-                      properties={wishlistedProperties}
+                      properties={properties}
                     />
                   </div>
                 </div> 
               </div>
-
             <div className="row mt50">
               <div className="col-lg-12">
                 <div className="copyright-widget text-center">

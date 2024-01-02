@@ -141,10 +141,9 @@ export default function Exemple({
     const userData = JSON.parse(localStorage.getItem("user"));
     let tempBid = 0,
       bidValue = {};
-
-    console.log(bids);
+      console.log(bids);
     bids.filter((bid) => {
-      if (bid.propertyId === property.propertyId) {
+      if (bid.propertyId === property.propertyId ) {
         console.log("matched", bid);
         tempBid = tempBid + 1;
         bidValue = bid;
@@ -213,9 +212,9 @@ export default function Exemple({
 
   const checkWishlistedHandler = (data) => {
     let temp = {};
-    console.log(wishlist, data);
+    // console.log(wishlist, data);
     wishlist.map((prop, index) => {
-      if (String(prop.propertyId) === String(data.propertyId)) {
+      if (String(prop.propertyId) === String(data.propertyId) && String(prop.userId) === String(userData.userId) ) {
         temp = prop;
       }
     });
@@ -242,7 +241,7 @@ export default function Exemple({
       properties.map((property, index) => {
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
-        console.log("isBidded",property);
+        
 
         const updatedRow = {
           orderId: property.orderId ,
@@ -482,7 +481,16 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        tempProperties = res.data.data.property.$values;
+        const temp = res.data.data.property.$values;
+
+        tempProperties = temp.filter((prop,index)=>{
+          if(String(prop.userId) === String(data.userId)){
+            return true
+          }
+          else{
+            return false
+          }
+        })
       })
       .catch((err) => {
         setErrorMessage(err?.response?.data?.error);
@@ -500,7 +508,7 @@ export default function Exemple({
 
         // setAllWishlistedProperties(res.data.data.$values);
         const responseData = tempData.filter((prop, index) => {
-          if (prop.userId === data.userId) {
+          if (String(prop.userId) === String(data.userId)) {
             return true;
           } else {
             return false;
@@ -524,7 +532,15 @@ export default function Exemple({
       .then((res) => {
         console.log(res);
         tempBids = res.data.data.result.$values;
-        setBids(tempBids);
+        const updatedBids = tempBids.filter((prop,index)=>{
+          if(String(prop.appraiserUserId) === String(data.userId)){
+            return true;
+          }
+          else{
+            return false;
+          }
+        })
+        setBids(updatedBids);
       })
       .catch((err) => {
         setErrorMessage(err?.response?.data?.error);

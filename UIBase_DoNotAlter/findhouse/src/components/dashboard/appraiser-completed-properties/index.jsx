@@ -1,5 +1,5 @@
 import Header from "../../common/header/dashboard/Header_02";
-import SidebarMenu from "../../common/header/dashboard/SidebarMenu_002";
+import SidebarMenu from "../../common/header/dashboard/SidebarMenu_01";
 import MobileMenu from "../../common/header/MobileMenu_01";
 import TableData from "./TableData";
 import Filtering from "./Filtering";
@@ -251,9 +251,9 @@ const Index = () => {
     if (!data) {
       router.push("/login");
     } 
-    // else if (!data?.brokerage_Details.firstName) {
-    //   router.push("/appraiser-profile");
-    // }
+    else if (!data?.brokerage_Details.firstName) {
+      router.push("/appraiser-profile");
+    }
     if (!data) {
       router.push("/login");
     }

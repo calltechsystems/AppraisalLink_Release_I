@@ -5,9 +5,6 @@ import SVGArrowUp from "./icons/SVGArrowUp";
 import SVGChevronLeft from "./icons/SVGChevronLeft";
 import SVGChevronRight from "./icons/SVGChevronRight";
 import { FaRedo } from "react-icons/fa";
-import SearchBox from "./SearchBox";
-import FilteringBy from "./FilteringBy";
-import Filtering from "./Filtering";
 
 function SmartTable(props) {
   const [loading, setLoading] = useState(false);
@@ -127,49 +124,31 @@ function SmartTable(props) {
   return (
     <div className="col-12 p-4">
       <div className="smartTable-container row">
-        <div className="candidate_revew_select style2 mb30-991">
-          <ul className="mb0 mt-0">
-            <li className="list-inline-item">
-              <Filtering setFilterQuery={props.setFilterQuery} />
-            </li>
-            <li className="list-inline-item">
-              <FilteringBy setFilterQuery={props.setSearchQuery} />
-            </li>
-            <li className="list-inline-item" style={{ marginRight: "15px" }}>
-              <div className="candidate_revew_search_box course fn-520">
-                <SearchBox setSearchInput={props.setSearchInput} />
-              </div>
-            </li>
-            <li className="list-inline-item">
-              {loading && (
-                <div className="smartTable-loaderContainer text-primary">
-                  <div className="spinner-border" role="status"></div>
-                </div>
-              )}
-              <div className="col-lg-12">
-                <div className="row">
-                  <div
-                    className="col-lg-6 btn btn-color w-50"
-                    onClick={() => handlePrint()}
-                    title="Download Pdf"
-                  >
-                    <span className="flaticon-download "></span>
-                  </div>
-                  <div className="col-lg-6 w-50">
-                    <button
-                      className="btn btn-color"
-                      onClick={() => props.refreshHandler()}
-                      title="Refresh"
-                    >
-                      <FaRedo />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </li>
-          </ul>
-        </div>
         <div className="col-12">
+          {loading && (
+            <div className="smartTable-loaderContainer text-primary">
+              <div className="spinner-border" role="status"></div>
+            </div>
+          )}
+          <div className="row">
+            <div className="col-12">{props.title}</div>
+            <div className="col-lg-4 offset-9">
+              <div
+                className="btn btn-color w-25 m-1"
+                onClick={() => handlePrint()}
+                title="Download Pdf"
+              >
+                <span className="flaticon-download "></span>
+              </div>
+              <button
+                className="btn btn-color w-25 h-10 m-1"
+                onClick={() => props.refreshHandler()}
+                title="Refresh"
+              >
+                <FaRedo />
+              </button>
+            </div>
+          </div>
           {props.data.length > 0 ? (
             <div className="row mt-3">
               <div className="smartTable-tableContainer">
@@ -215,45 +194,45 @@ function SmartTable(props) {
                     </tr>
                   </thead>
                   <tbody>
-                    {data.length > 0
-                      ? data.map((row, idx) => {
-                          if (idx >= props.start && idx <= props.end) {
-                            return (
-                              <tr key={"tr_" + idx}>
-                                {props.headCells.map((headCell, idxx) => {
-                                  return (
-                                    <td key={"td_" + idx + "_" + idxx}>
-                                      {headCell.render
-                                        ? headCell.render(row)
-                                        : row[headCell.id]}
-                                    </td>
-                                  );
-                                })}
+                  {data.length > 0
+                    ? data.map((row, idx) => {
+                        if (idx >= props.start && idx <= props.end) {
+                          return (
+                            <tr key={"tr_" + idx}>
+                              {props.headCells.map((headCell, idxx) => {
+                                return (
+                                  <td key={"td_" + idx + "_" + idxx}>
+                                    {headCell.render
+                                      ? headCell.render(row)
+                                      : row[headCell.id]}
+                                  </td>
+                                );
+                              })}
+                            </tr>
+                          );
+                        } else {
+                          return null; // Skip rendering rows that don't meet the condition
+                        }
+                      })
+                    : props.data.map((row, idx) => {
+                        if (idx >= props.start && idx <= props.end) {
+                          return (
+                            <tr key={"tr_" + idx}>
+                              {props.headCells.map((headCell, idxx) => {
+                                return (
+                                  <td key={"td_" + idx + "_" + idxx}>
+                                    {headCell.render
+                                      ? headCell.render(row)
+                                      : row[headCell.id]}
+                                  </td>
+                                );
+                              })}
                               </tr>
-                            );
-                          } else {
-                            return null; // Skip rendering rows that don't meet the condition
-                          }
-                        })
-                      : props.data.map((row, idx) => {
-                          if (idx >= props.start && idx <= props.end) {
-                            return (
-                              <tr key={"tr_" + idx}>
-                                {props.headCells.map((headCell, idxx) => {
-                                  return (
-                                    <td key={"td_" + idx + "_" + idxx}>
-                                      {headCell.render
-                                        ? headCell.render(row)
-                                        : row[headCell.id]}
-                                    </td>
-                                  );
-                                })}
-                              </tr>
-                            );
-                          } else {
-                            return null; // Skip rendering rows that don't meet the condition
-                          }
-                        })}
+                              );
+                            } else {
+                              return null; // Skip rendering rows that don't meet the condition
+                            }
+                          })}
                   </tbody>
                 </table>
               </div>
@@ -262,7 +241,7 @@ function SmartTable(props) {
             <div className="row p-4">
               <div
                 className="smartTable-noDataFound col-12"
-                style={{ marginTop: "110px", marginBottom: "40px" }}
+                style={{ marginTop: "50px", marginBottom: "40px" }}
               >
                 <div className="ring">
                   Loading

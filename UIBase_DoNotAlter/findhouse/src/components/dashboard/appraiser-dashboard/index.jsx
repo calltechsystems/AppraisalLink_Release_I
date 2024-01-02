@@ -94,13 +94,24 @@ const Index = () => {
         },
       })
       .then((res) => {
-        // console.log(categorizeDataByMonth(res.data.data.property.$values));
+        console.log(res.data.data.properties.$values);
+        
 
-        // console.log(res.data.data.properties.$values)
-        setProperties(res.data.data.properties.$values);
+        const temp = res.data.data.properties.$values;
+
+        const updatedProp = temp.filter((prop,index)=>{
+          if(String(prop.userId) === String(data.userId)){
+            return true;
+          }
+          else{
+            return false;
+          }
+        })
         
         // setShowLineGraph(true);
         // setRerender(false);
+
+        setProperties(updatedProp);
       })
       .catch((err) => {
         console.log(err);
@@ -119,7 +130,7 @@ const Index = () => {
 
       // setAllWishlistedProperties(res.data.data.$values);
       const responseData = tempData.filter((prop, index) => {
-        if (prop.userId === data.userId) {
+        if (String(prop.userId) === String(data.userId)) {
           return true;
         } else {
           return false;
@@ -141,14 +152,20 @@ const Index = () => {
       },
     })
     .then((res) => {
-      // console.log(res);
       const tempBids = res.data.data.result.$values;
       let acceptedBid = 0 ;
-      tempBids.map((bids,index)=>{
-        if(bids.userId === data.userId && bids.status === 2)
-        acceptedBid = acceptedBid + 1 ;
+      
+      const updatedBids =  tempBids.filter((bids,index)=>{
+        if(String(bids.appraiserUserId) === String(data.userId)){
+        // acceptedBid = acceptedBid + 1 ; 
+        return true;
+        }
+        else{
+          return false;
+        }
       })
-      setBids(tempBids);
+      console.log(updatedBids)
+      setBids(updatedBids);
     })
     .catch((err) => {
       setErrorMessage(err?.response?.data?.error);
@@ -249,7 +266,7 @@ const Index = () => {
             <div className="col-lg-12 maxw100flex-992">
               <div className="row">
                 {/* Start Dashboard Navigation */}
-                <div className="col-lg-12">
+                {/* <div className="col-lg-12">
                   <div className="dashboard_navigationbar dn db-1024">
                     <div className="dropdown">
                       <button
@@ -262,7 +279,7 @@ const Index = () => {
                       </button>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 {/* End Dashboard Navigation */}
 
                 <div
@@ -280,7 +297,7 @@ const Index = () => {
                         ? `${userData?.brokerage_Details?.firstName} ${userData?.brokerage_Details?.lastName}`
                         : ""}
                     </h2>
-                    {/* <p>We are glad to see you again!</p> */}
+                    <p>We are glad to see you again!</p>
                   </div>
                   <div>
                     <Filtering setRefresh={setRefresh}/>
@@ -291,8 +308,8 @@ const Index = () => {
 
               <div className="row">
                 <AllStatistics
-                  properties={properties.length}
-                  views={properties.length}
+                  properties={bids.length + wishlist.length}
+                  views={bids.length + wishlist.length}
                   bids={bids.length}
                   wishlist={wishlist.length}
                 />
