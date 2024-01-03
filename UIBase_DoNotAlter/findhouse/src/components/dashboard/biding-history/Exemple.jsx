@@ -266,7 +266,7 @@ export default function Exemple({
               ) : isBidded.status === 1 ? (
                 <span className="btn btn-success" onClick={openStatusUpdateHandler}>Accepted</span>
               ) : (
-                <span className="btn btn-danger">Rejected</span>
+                <span className="btn btn-danger">Declined</span>
               )
             ) : (
               <span className="btn btn-warning">New</span>
@@ -290,7 +290,7 @@ export default function Exemple({
                     </button>
                   </a>
                 ) : isBidded.status === 2 ? (
-                  <h6 style={{ color: "red" }}> Rejected</h6>
+                  <h6 style={{ color: "red" }}> Declined</h6>
                 ) : (
                   <h6>
                     Broker Information will be available post the quote
@@ -318,7 +318,7 @@ export default function Exemple({
                     </button>
                   </a>
                 ) : isBidded.status === 2 ? (
-                  <h6 style={{ color: "red" }}> Rejected</h6>
+                  <h6 style={{ color: "red" }}> Declined</h6>
                 ) : (
                   <h6>
                     Broker Information will be available post the quote
@@ -354,7 +354,7 @@ export default function Exemple({
                 ) : isBidded.status === 1 ? (
                   <h4 className="text-success">Completed</h4>
                 ) : (
-                  <h4 className="text-danger">Rejected</h4>
+                  <h4 className="text-danger">Declined</h4>
                 )}
               </div>
             ),

@@ -265,7 +265,7 @@ export default function Exemple({
                 Accepted
               </span>
             ) : (
-              <span className="btn btn-danger  w-100">Rejected</span>
+              <span className="btn btn-danger  w-100">Declined</span>
             )
           ) : (
             <span className="btn btn-warning  w-100">New</span>

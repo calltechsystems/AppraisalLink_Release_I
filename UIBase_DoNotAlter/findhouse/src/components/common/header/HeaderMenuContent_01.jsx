@@ -420,7 +420,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                       transition: "opacity 0.3s ease", // Add transition for the opacity property
                       position: "absolute",
                       top: "100%",
-                      left: "-820px",
+                      left: "-840px",
                       // right: "-500px",
                       width: "1900px",
                       margin: "-16px",
@@ -510,7 +510,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                         style={{ backgroundColor: "#c2c2c2" }}
                       >
                         <div className="row">
-                          <div className="col-lg-8 m-5 fw-bold">
+                          <div className="col-lg-9 m-5 fw-bold">
                             <span>
                               Ready to see Appraisal Land help make you more
                               money at record speed?
