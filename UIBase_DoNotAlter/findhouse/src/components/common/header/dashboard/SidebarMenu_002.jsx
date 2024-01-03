@@ -162,7 +162,7 @@ const SidebarMenu = ({userData}) => {
         </Link>
       </li>
 
-     {userData?.userType === 3 && <li
+     <li
       className={`treeview ${
         isSinglePageActive("/appraiser-company-allocated-properties", route.pathname)
           ? "active"
@@ -173,7 +173,7 @@ const SidebarMenu = ({userData}) => {
         <i className="flaticon-building"></i>
         <span>Allocated  Properties</span>
       </Link>
-    </li>}
+    </li>
 
            
             {/* End Review */}
@@ -327,7 +327,7 @@ const SidebarMenu = ({userData}) => {
         <li className="title">
         <span>Manage Appraisers</span>
         <ul>
-        {userData?.userType === 3 && <li
+         <li
         className={`treeview ${
           isSinglePageActive("/all-appraisers", route.pathname)
             ? "active"
@@ -338,7 +338,7 @@ const SidebarMenu = ({userData}) => {
           <i className="flaticon-building"></i>
           <span> Appraiser Add/View</span>
         </Link>
-      </li>}
+      </li>
         </ul>
       </li>
       
