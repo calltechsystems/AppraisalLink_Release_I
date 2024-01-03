@@ -283,7 +283,7 @@ const Index = () => {
                 {/* End Dashboard Navigation */}
 
                 <div
-                  className=""
+                  className="mb-2"
                   style={{
                     display: "flex",
                     flexDirection: "row",
@@ -291,13 +291,12 @@ const Index = () => {
                     alignItems: "center",
                   }}
                 >
-                  <div className="breadcrumb_content style2">
+                  <div className="style2">
                     <h2 className="breadcrumb_title">
                       {userData?.brokerage_Details
                         ? `${userData?.brokerage_Details?.firstName} ${userData?.brokerage_Details?.lastName}`
                         : ""}
                     </h2>
-                    <p>We are glad to see you again!</p>
                   </div>
                   <div>
                     <Filtering setRefresh={setRefresh}/>

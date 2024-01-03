@@ -4,26 +4,44 @@ import toast from "react-hot-toast";
 import axios from "axios";
 // import "./SmartTable.css";
 
-
 const headCells = [
   {
     id: "id",
     numeric: false,
     label: "Unique Id",
-    width: 200,
+    width: 250,
   },
   {
     id: "planType",
     numeric: false,
     label: "Selected Plan",
-    width: 200,
+    width: 150,
+  },
+
+  {
+    id: "st_date",
+    numeric: false,
+    label: "Start Date",
+    width: 100,
+  },
+  {
+    id: "end_date",
+    numeric: false,
+    label: "End Date",
+    width: 100,
+  },
+  {
+    id: "amount",
+    numeric: false,
+    label: "Amount",
+    width: 150,
   },
   {
     id: "transactionId",
     numeric: false,
     label: "Transaction Id",
     width: 200,
-  }
+  },
 ];
 
 const data = [
@@ -56,60 +74,82 @@ const data = [
   },
 ];
 
-export default function Exemple({userData , data , open ,close ,deletePropertyHandler,onWishlistHandler,participateHandler,setErrorMessage,setModalIsOpenError}) {
-  
-  
+export default function Exemple({
+  userData,
+  data,
+  open,
+  close,
+  deletePropertyHandler,
+  onWishlistHandler,
+  participateHandler,
+  setErrorMessage,
+  setModalIsOpenError,
+}) {
   console.log(data);
-  const [updatedData , setUpdatedData] = useState([]);
-  const [properties,setProperties] = useState([]);
-  const [show , setShow] = useState(false);
+  const [updatedData, setUpdatedData] = useState([]);
+  const [properties, setProperties] = useState([]);
+  const [show, setShow] = useState(false);
   let tempData = [];
 
   const formatDate = (dateString) => {
     const options = {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     };
-  
-    const formattedDate = new Date(dateString).toLocaleString('en-US', options);
-  
+
+    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
+
     return formattedDate;
   };
 
-  
-  useEffect(()=>{
-    const getData = ()=>{
-      data.map((property,index)=>{
+  const prices = [
+    {
+      "lite":49,
+      "Premium":99,
+      "Ultimate":149
+    }
+  ]
+
+
+  const getTypePrice = (type)=>{
+    return prices[0].type;
+  }
+
+  useEffect(() => {
+    const getData = () => {
+      const date = formatDate(new Date());
+      
+      data.map((property, index) => {
+        
         const updatedRow = {
-          id : property.paymentid ,
-          planType : property.transactionDetail,
-          transactionId : property.transactionId
-        }
+          id: property.paymentid,
+          planType: property.transactionDetail,
+          st_date:date,
+          amount:0,
+          end_date: date,
+          transactionId: property.transactionId,
+        };
         tempData.push(updatedRow);
       });
       setUpdatedData(tempData);
     };
     getData();
-  },[data]);
+  }, [data]);
 
-  useEffect(()=>{
+  useEffect(() => {
     let tempProperties = [];
-    const data = (JSON.parse(localStorage.getItem("user")));
+    const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
-      token : userData.token
+      token: userData.token,
     };
-
-  
-  },[]);
+  }, []);
   return (
     <>
-    { updatedData && (<SmartTable
-      title=""
-      data={updatedData}
-      headCells={headCells}
-    />)}
+      {updatedData && (
+        <SmartTable title="" data={updatedData} headCells={headCells} />
+      )}
     </>
   );
 }

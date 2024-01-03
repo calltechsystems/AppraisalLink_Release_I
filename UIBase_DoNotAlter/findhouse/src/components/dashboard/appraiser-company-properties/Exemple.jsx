@@ -200,7 +200,7 @@ export default function Exemple({
   const formatDate = (dateString) => {
     const options = {
       year: "numeric",
-      month: "long",
+      month: "short",
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
@@ -266,7 +266,7 @@ export default function Exemple({
                 Accepted
               </span>
             ) : (
-              <span className="btn btn-danger  w-100">Rejected</span>
+              <span className="btn btn-danger  w-100">Declined</span>
             )
           ) : (
             <span className="btn btn-warning  w-100">New</span>

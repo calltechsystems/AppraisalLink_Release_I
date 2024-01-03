@@ -1,9 +1,12 @@
+import { useEffect } from "react";
+
 const Pricing = ({
   isPlan,
   hideButton,
   selectedId,
   setModalOpen,
   data,
+  userData,
   setPrice,
 }) => {
   const pricingContentForMonthly = [
@@ -65,9 +68,15 @@ const Pricing = ({
     });
   };
 
+  const Packages = userData.userSubscription?.$values;
+  const len = Packages?.length;
+  const selectedPackage = Packages?.length > 0 ? Packages[len-1] : {};
+  let reverese = [];
+ 
+
   return (
     <>
-      {data?.map((item, idx) => (
+      {data?.reverse().map((item, idx) => (
         <div className="col-sm-4 col-md-4 my_plan_pricing_header" key={item.id}>
           <div
             className={`pricing_table  ${
@@ -122,7 +131,7 @@ const Pricing = ({
                 </h2>
               </div>
             </div>
-            {!hideButton && (
+            {(!hideButton && !selectedPackage) && (
               <div
                 className="pricing_footer"
                 onClick={() =>
@@ -136,11 +145,35 @@ const Pricing = ({
                 }
               >
                 <a className={`btn btn-color_01 w-100`} href="#">
-                  {selectedId !== item.id
-                    ? !selectedId
-                      ? "Get Started"
-                      : "Change Plan"
-                    : "Upgrade"}
+                  Get Started
+                </a>
+              </div>
+            )}
+
+            {(!hideButton && String(selectedPackage.$id) !== String(item.id)) && (
+              <div
+                className="pricing_footer"
+                onClick={() =>
+                  selectPackageHandler(
+                    item.id,
+                    item.description,
+                    isPlan === 1
+                      ? item.monthlyAmount - item.discount
+                      : item.yearlyAmount - item.discount
+                  )
+                }
+              >
+                <a className={`btn btn-color_01 w-100`} href="#">
+                 Change Plan
+                </a>
+              </div>
+            )}
+            {(!hideButton && String(selectedPackage.$id) === String(item.id)) && (
+              <div
+                className="pricing_footer"
+              >
+                <a className={`btn btn-color_01 w-100`} href="#">
+                 Current Package
                 </a>
               </div>
             )}

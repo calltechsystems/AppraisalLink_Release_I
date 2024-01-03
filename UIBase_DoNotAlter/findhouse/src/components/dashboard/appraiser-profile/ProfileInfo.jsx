@@ -465,7 +465,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           Designation <span class="req-btn">*</span>
                         </label>
                       </div>
-                      <div className="col-lg-4">
+                      <div className="col-lg-3">
                         <select
                           required
                           className="form-select"
@@ -491,7 +491,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                         </select>
                       </div>
                       {setODesignation &&
-                      <div id="other-div">
+                      <div className="col-lg-4" id="other-div">
                         <input
                           required
                           // style={setODesignation ? viewStyle : hiddenStyle}

@@ -69,7 +69,7 @@ const Index = ({ propertyId }) => {
         toast.dismiss();
 
         toast.success("Successfully accepted the requested Bid");
-        router.push("/my-properties");
+        router.push("/my-property-bids");
       })
       .catch((err) => {
         toast.dismiss();
@@ -95,7 +95,7 @@ const Index = ({ propertyId }) => {
       .then((res) => {
         toast.dismiss();
         toast.success("Successfully declined the requested Bid");
-        router.push("/my-properties");
+        router.push("/my-property-bids");
       })
       .catch((err) => {
         toast.dismiss();
@@ -283,10 +283,10 @@ const Index = ({ propertyId }) => {
       {/* End sidebar_menu */}
 
       {/* <!-- Our Dashbord --> */}
-      <section className="our-dashbord dashbord bgc-f7 pb50">
+      <section className="our-dashbord dashbord bgc-f7 pb50 dashboard-height">
         <div
-          className="container-fluid ovh"
-          style={{ marginLeft: "-10px", marginTop: "" }}
+          className="container-fluid ovh padding container-padding"
+          style={{ }}
         >
           <div className="row">
             <div className="col-lg-12 maxw100flex-992">
@@ -308,17 +308,16 @@ const Index = ({ propertyId }) => {
                 </div> */}
                 {/* End Dashboard Navigation */}
 
-                <div className="col-lg-4 col-xl-4">
+                <div className="col-lg-4 col-xl-4 m-2">
                   <div className="style2 mb30-991">
                     <h3 className="breadcrumb_title">
                       Provided Bids On Property
                     </h3>
-                    {/* <p>We are glad to see you again!</p>                                                             */}
                   </div>
                 </div>
                 {/* End .col */}
 
-                <div className="col-lg-12 col-xl-12">
+                {/* <div className="col-lg-12 col-xl-12">
                   <div className="candidate_revew_select style2 mb30-991">
                     <ul className="mb0">
                       <li className="list-inline-item">
@@ -332,15 +331,10 @@ const Index = ({ propertyId }) => {
                           <SearchBox setSearchInput={setSearchInput} />
                         </div>
                       </li>
-                      {/* End li */}
-
-                      {/* <li className="list-inline-item">
-                        <Filtering setFilterQuery={setFilterQuery} />
-                      </li> */}
-                      {/* End li */}
+                     
                     </ul>
                   </div>
-                </div>
+                </div> */}
                 {/* End .col */}
 
                 <div className="col-lg-12">
@@ -440,7 +434,7 @@ const Index = ({ propertyId }) => {
             {/* End .row */}
 
             <div className="row">
-                 <div className="col-lg-12 mt20">
+                 <div className="col-lg-12 mt20 mb100">
                   <div className="mbp_pagination">
                     <Pagination
                       setStart={setStart}
@@ -454,7 +448,10 @@ const Index = ({ propertyId }) => {
             <div className="row mt50">
               <div className="col-lg-12">
                 <div className="copyright-widget text-center">
-                  <p>© 2020 Find House. Made with love.</p>
+                  <p>
+                    &copy; {new Date().getFullYear()} Appraisal Land. All Rights
+                    Reserved.
+                  </p>
                 </div>
               </div>
             </div>

@@ -58,46 +58,46 @@ const headCells = [
 
 const temporaryData = [
   {
-    email:"test@gmail.com",
-    firstname:"Joe",
-    lastname:"Doe",
-    company:"Appraiser Company 1",
-    phone:"+91 12324 235644",
-    date:" 29 December 2023"
+    email: "test@gmail.com",
+    firstname: "Joe",
+    lastname: "Doe",
+    company: "Appraiser Company 1",
+    phone: "+91 12324 235644",
+    date: " 29 December 2023",
   },
   {
-    email:"test@gmail.com",
-    firstname:"Joe",
-    lastname:"Doe",
-    company:"Appraiser Company 1",
-    phone:"+91 12324 235644",
-    date:" 29 December 2023"
+    email: "test@gmail.com",
+    firstname: "Joe",
+    lastname: "Doe",
+    company: "Appraiser Company 1",
+    phone: "+91 12324 235644",
+    date: " 29 December 2023",
   },
   {
-    email:"test@gmail.com",
-    firstname:"Joe",
-    lastname:"Doe",
-    company:"Appraiser Company 1",
-    phone:"+91 12324 235644",
-    date:" 29 December 2023"
+    email: "test@gmail.com",
+    firstname: "Joe",
+    lastname: "Doe",
+    company: "Appraiser Company 1",
+    phone: "+91 12324 235644",
+    date: " 29 December 2023",
   },
   {
-    email:"test@gmail.com",
-    firstname:"Joe",
-    lastname:"Doe",
-    company:"Appraiser Company 1",
-    phone:"+91 12324 235644",
-    date:" 29 December 2023"
+    email: "test@gmail.com",
+    firstname: "Joe",
+    lastname: "Doe",
+    company: "Appraiser Company 1",
+    phone: "+91 12324 235644",
+    date: " 29 December 2023",
   },
   {
-    email:"test@gmail.com",
-    firstname:"Joe",
-    lastname:"Doe",
-    company:"Appraiser Company 1",
-    phone:"+91 12324 235644",
-    date:" 29 December 2023"
+    email: "test@gmail.com",
+    firstname: "Joe",
+    lastname: "Doe",
+    company: "Appraiser Company 1",
+    phone: "+91 12324 235644",
+    date: " 29 December 2023",
   },
-]
+];
 let count = 0;
 
 export default function Exemple({
@@ -225,11 +225,10 @@ export default function Exemple({
     return data.sort((a, b) => b.orderId - a.orderId);
   };
 
-  
-  const checkData = (properties && !updatedData) ? true : false;
-  useEffect(()=>{
+  const checkData = properties && !updatedData ? true : false;
+  useEffect(() => {
     setProperties([]);
-  },[checkData]);
+  }, [checkData]);
 
   useEffect(() => {
     const getData = () => {
@@ -239,12 +238,12 @@ export default function Exemple({
         // console.log("isBidded",property);
 
         const updatedRow = {
-          email:data.email,
-          firstname:data.firstname,
-          lastname:data.lastname,
-          company:data.company,
-          phone:data.phone,
-          date:data.date,
+          email: data.email,
+          firstname: data.firstname,
+          lastname: data.lastname,
+          company: data.company,
+          phone: data.phone,
+          date: data.date,
           // broker: (
           //   <div>
           //     {isBidded.status === 1 ? (
@@ -292,19 +291,12 @@ export default function Exemple({
 
           action: (
             <div className="print-hidden-column">
-             
-               
-                 
-                    
-                    <button >
-                    <i className="flaticon-edit"></i>
-                  </button>
-                  <button >
-                  <i className="flaticon-garbage"></i>
-                </button>
-                 
-
-              
+              <button className="btn btn-color m-1">
+                <i className="flaticon-edit"></i>
+              </button>
+              <button className="btn btn-color">
+                <i className="flaticon-garbage"></i>
+              </button>
             </div>
           ),
         };
@@ -328,8 +320,6 @@ export default function Exemple({
   useEffect(() => {
     setUpdatedCode(true);
   }, [updatedData]);
-
-
 
   const refreshHandler = () => {
     setRefresh(true);
@@ -415,7 +405,6 @@ export default function Exemple({
       ) : (
         <SmartTable
           title=""
-
           setSearchInput={setSearchInput}
           setFilterQuery={setFilterQuery}
           data={sortObjectsByOrderIdDescending(updatedData)}

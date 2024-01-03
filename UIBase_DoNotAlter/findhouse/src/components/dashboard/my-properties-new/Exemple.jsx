@@ -109,38 +109,8 @@ const headCells = [
   {
     id: "actions_01",
     numeric: false,
-    label: "Actions_01",
+    label: "Actions",
     width: 170,
-  },
-];
-
-const data = [
-  {
-    _id: "6144e83a966145976c75cdfe",
-    email: "minagerges123@gmail.com",
-    name: "Pending",
-    date: "2021-09-17 19:10:50",
-    subject: "23456",
-    phone: "+96170345114",
-    message: "ahlannn",
-  },
-  {
-    _id: "61439914086a4f4e9f9d87cd",
-    email: "amineamine1996@gmail.com",
-    name: "Completed",
-    phone: "+96176466341",
-    subject: "12345",
-    message: "121212121212121",
-    date: "2021-09-16 22:20:52",
-  },
-  {
-    _id: "61439887086a4f4e9f9d87cc",
-    email: "as@a.com",
-    name: "Progress",
-    phone: "+96176466341",
-    subject: "54321",
-    message: "as",
-    date: "2021-09-16 22:18:31",
   },
 ];
 
@@ -173,11 +143,11 @@ export default function Exemple({
   const formatDate = (dateString) => {
     const options = {
       year: "numeric",
-      month: "long",
+      month: "short",
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
-      second: "numeric",
+      // second: "numeric",
       hour12: false, // Set to false for 24-hour format
     };
 
@@ -249,7 +219,7 @@ export default function Exemple({
             actions: (
               // <ul className="view_edit_delete_list mb0">
               <ul className="mb0">
-                {(!isEditable ) && (
+                {!isEditable && (
                   <li>
                     <Link href={"#"}>
                       <span
@@ -271,7 +241,7 @@ export default function Exemple({
                   </li>
                 )}
 
-                {(!isEditable && isStatus === 1) && (
+                {!isEditable && isStatus === 1 && (
                   <li>
                     <Link href={`/my-property-bids/${property.propertyId}`}>
                       <span className="btn btn-color w-100 mb-1"> Quotes </span>
@@ -418,7 +388,7 @@ export default function Exemple({
               // <ul className="view_edit_delete_list mb0">
               <ul className="mb0 d-flex gap-1">
                 {/* {!isEditable && ( */}
-                <li title="Property Details">
+                <li title="Property Details" className="">
                   {/* <Link href={"#"}>
                       <span
                         className="btn btn-color w-100 mb-1"

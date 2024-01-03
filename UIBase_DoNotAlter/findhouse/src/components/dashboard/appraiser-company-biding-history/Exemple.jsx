@@ -202,7 +202,7 @@ export default function Exemple({
   const formatDate = (dateString) => {
     const options = {
       year: "numeric",
-      month: "long",
+      month: "short",
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
@@ -266,7 +266,7 @@ export default function Exemple({
               ) : isBidded.status === 1 ? (
                 <span className="btn btn-success" onClick={openStatusUpdateHandler}>Accepted</span>
               ) : (
-                <span className="btn btn-danger">Rejected</span>
+                <span className="btn btn-danger">Declined</span>
               )
             ) : (
               <span className="btn btn-warning">New</span>

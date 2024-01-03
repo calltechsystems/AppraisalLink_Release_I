@@ -15,6 +15,13 @@ const headCells = [
     label: "Order ID",
     width: 100,
   },
+
+  {
+    id: "assigned_appraiser",
+    numeric: false,
+    label: "Assigned Appraiser",
+    width: 100,
+  },
   
   {
     id: "address",
@@ -202,7 +209,7 @@ export default function Exemple({
   const formatDate = (dateString) => {
     const options = {
       year: "numeric",
-      month: "long",
+      month: "short",
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
@@ -253,6 +260,7 @@ export default function Exemple({
         page.push(property);
         const updatedRow = {
           orderId: property.orderId ,
+          assigned_appraiser:"Appraiser",
           address: `${property.city}-${property.province},${property.zipCode}`,
           estimatedValue: property.estimatedValue
             ? `$ ${property.estimatedValue}`
@@ -272,7 +280,7 @@ export default function Exemple({
                 Accepted
               </span>
             ) : (
-              <span className="btn btn-danger  w-100">Rejected</span>
+              <span className="btn btn-danger  w-100">Declined</span>
             )
           ) : (
             <span className="btn btn-warning  w-100">New</span>

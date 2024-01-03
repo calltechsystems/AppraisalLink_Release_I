@@ -107,9 +107,6 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage ,closeRegis
       setChange(true);
       setErrorMessage("Email cant be empty or non valid.");
       setModalIsOpenError(true);
-    } else if (!captchaVerfied) {
-      setChange(true);
-      return;
     } else {
       const data = {
         email: email,
@@ -340,7 +337,7 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage ,closeRegis
           <div className="col-lg-12">
             <div
               className="form-group input-group  "
-              style={{ position: "", marginTop: "-10px", marginBottom: "15px" }}
+              style={{ position: "", marginTop: "30px", marginBottom: "15px" }}
             >
               <label htmlFor="passwordInput" style={labelStyle}>
                 Password must have a A-Z,a-z,0-9,!@#$%^& a & 8 - 15 characters
@@ -397,19 +394,13 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage ,closeRegis
                 Captcha doesnt match
               </label>
             )}*/}
-            <div>
-              <Captcha
-                verified={setCaptchaVerified}
-                change={change}
-                setChange={setChange}
-              />
-            </div>
+           
           </div>
 
-          <button onClick={()=>setCloseRegisterModal(false)} className="btn btn-log w-100 " >
+          <button onClick={()=>setCloseRegisterModal(false)} className="btn btn-log w-50 " >
             Cancel
           </button>
-          <button onClick={()=>registerHandler()} className="btn btn-log w-100 btn-thm">
+          <button onClick={()=>registerHandler()} className="btn btn-log w-50 btn-thm">
            Add
           </button>
           {/*<div

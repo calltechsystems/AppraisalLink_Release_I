@@ -21,6 +21,12 @@ const headCells = [
     width: 200,
   },
   {
+    id: "appraiser_company",
+    numeric: false,
+    label: "Appraiser Compnay Name",
+    width: 220,
+  },
+  {
     id: "quote",
     numeric: false,
     label: "Quote Amount",
@@ -116,19 +122,22 @@ export default function Exemple({
     // console.log(prop);
     setProperty(prop);
     setId(id);
-   
+
     setIsModalOpen(true);
   };
 
   const formatDate = (dateString) => {
     const options = {
       year: "numeric",
-      month: "long",
+      month: "short",
       day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      // second: "numeric",
+      hour12: false, // Set to false for 24-hour format
     };
 
     const formattedDate = new Date(dateString).toLocaleString("en-US", options);
-
     return formattedDate;
   };
 
@@ -226,76 +235,85 @@ export default function Exemple({
   useEffect(() => {
     const getData = () => {
       properties.map((property, index) => {
-       
-          const updatedRow = {
-            AppraiserId: property.appraiserUserId
-              ? property.appraiserUserId
-              : 0,
-            quote: property.bidAmount,
-            amount: property.bidAmount,
-            description:
-              property.description != "" ? property.description : "NA",
-            date: formatDate(property.requestTime),
-            appraiser: (
-              <a href="#">
-                <button
-                  style={{
-                    border: "0px",
-                    color: "blue",
-                    backgroundColor: "white",
-                  }}
-                  onClick={() => triggerAppraiserInfo(property.appraiserUserId)}
+        const updatedRow = {
+          AppraiserId: property.appraiserUserId ? property.appraiserUserId : 0,
+          quote: property.bidAmount,
+          amount: property.bidAmount,
+          description: property.description != "" ? property.description : "NA",
+          date: formatDate(property.requestTime),
+          appraiser: (
+            <a href="#">
+              <button
+                style={{
+                  border: "0px",
+                  color: "blue",
+                  backgroundColor: "transparent",
+                }}
+                onClick={() => triggerAppraiserInfo(property.appraiserUserId)}
+              >
+                Get Info
+              </button>
+            </a>
+          ),
+          appraiser_company: (
+            <a href="#">
+              <button
+                style={{
+                  border: "0px",
+                  color: "blue",
+                  backgroundColor: "transparent",
+                }}
+                onClick={() => triggerAppraiserInfo(property.appraiserUserId)}
+              >
+                Get Info
+              </button>
+            </a>
+          ),
+
+          action:
+            property.status === 1 ? (
+              <h5 className="btn btn-success">Accepted</h5>
+            ) : property.status === 0 ? (
+              <ul className="">
+                <li
+                  className="list-inline-item"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Accept"
                 >
-                  Get Info
-                </button>
-              </a>
+                  <div
+                    className="fp_pdate float-end mt-1 fw-bold"
+                    onClick={() => openPopupModal(property, property.bidId)}
+                  >
+                    <a href="#" className="btn btn-success">
+                      Accept
+                    </a>
+                  </div>
+                </li>
+
+                {/* <div className="fp_pdate float-end">{item.postedYear}</div> */}
+
+                <li
+                  className="list-inline-item"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Delete"
+                >
+                  <div
+                    className="fp_pdate float-end mt-1 fw-bold"
+                    onClick={() => setProperty(property)}
+                  >
+                    <a href="#" className="btn btn-danger">
+                      Decline
+                    </a>
+                  </div>
+                </li>
+              </ul>
+            ) : (
+              <h5 className="btn btn-danger">Declined</h5>
             ),
-
-            action:
-              property.status === 1 ? (
-                <h5 className="btn btn-success">Accepted</h5>
-              ) : property.status === 0 ? (
-                <ul className="">
-                  <li
-                    className="list-inline-item"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title="Accept"
-                  >
-                    <div
-                      className="fp_pdate float-end mt-1 fw-bold"
-                      onClick={() => openPopupModal(property, property.bidId)}
-                    >
-                      <a href="#" className="btn btn-success">
-                        Accept
-                      </a>
-                    </div>
-                  </li>
-
-                  {/* <div className="fp_pdate float-end">{item.postedYear}</div> */}
-
-                  <li
-                    className="list-inline-item"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title="Delete"
-                  >
-                    <div
-                      className="fp_pdate float-end mt-1 fw-bold"
-                      onClick={() => setProperty(property)}
-                    >
-                      <a href="#" className="btn btn-danger">
-                        Decline
-                      </a>
-                    </div>
-                  </li>
-                </ul>
-              ) : (
-                <h5 className="btn btn-danger">Declined</h5>
-              ),
-          };
-          tempData.push(updatedRow);
-        
+        };
+        tempData.push(updatedRow);
       });
       setUpdatedData(tempData);
     };

@@ -16,12 +16,12 @@ import { AppraiserStatusOptions } from "../create-listing/data";
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
-  const [isStatusModal,setIsStatusModal] = useState(false);
+  const [isStatusModal, setIsStatusModal] = useState(false);
   const [toggleId, setToggleId] = useState(-1);
   const [toggleWishlist, setToggleWishlist] = useState(0);
   const [searchResult, setSearchResult] = useState([]);
   const [property, setProperty] = useState("");
-  const [typeView,setTypeView] = useState(0);
+  const [typeView, setTypeView] = useState(0);
   const [startLoading, setStartLoading] = useState(false);
   const [filterProperty, setFilterProperty] = useState("");
   const [showPropDetails, setShowPropDetails] = useState(false);
@@ -31,8 +31,8 @@ const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [lowRangeBid, setLowRangeBid] = useState("");
   const [propertyId, setPropertyId] = useState(null);
-  
-  const [wishlistedProperties,setWishlistedProperties] = useState([]);
+
+  const [wishlistedProperties, setWishlistedProperties] = useState([]);
   const [updatedCode, setUpdatedCode] = useState(false);
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
 
@@ -43,23 +43,20 @@ const Index = () => {
 
   const [refresh, setRefresh] = useState(false);
 
-    
-  const [start,setStart]=useState(0);
-  
-  const [end,setEnd]=useState(4);
+  const [start, setStart] = useState(0);
+
+  const [end, setEnd] = useState(4);
 
   const closeErrorModal = () => {
     setModalIsOpenError(false);
   };
 
-  const handleStatusUpdateHandler = ()=>{
+  const handleStatusUpdateHandler = () => {};
 
-  }
-
-  const closeStatusUpdateHandler = ()=>{
+  const closeStatusUpdateHandler = () => {
     setOpenDate(false);
     setIsStatusModal(false);
-  }
+  };
 
   const [openBrokerModal, setOpenBrokerModal] = useState(false);
   const [broker, setBroker] = useState({});
@@ -77,22 +74,19 @@ const Index = () => {
     setIsQuoteModalOpen(true);
   };
 
-  const [openDate,setOpenDate] = useState(false);
-  const [statusDate,setStatusDate]=useState("");
+  const [openDate, setOpenDate] = useState(false);
+  const [statusDate, setStatusDate] = useState("");
 
-  
-
-  const handleStatusSelect = (value)=>{
-    if(String(value) === "Appraisal Visit Confirmed"){
+  const handleStatusSelect = (value) => {
+    if (String(value) === "Appraisal Visit Confirmed") {
       setOpenDate(true);
     }
-
-  }
+  };
 
   const openModalBroker = (property, value) => {
     setBroker(property);
     setShowPropDetails(status);
-    setTypeView(value)
+    setTypeView(value);
     setOpenBrokerModal(true);
   };
   const router = useRouter();
@@ -247,7 +241,7 @@ const Index = () => {
     const data = JSON.parse(localStorage.getItem("user"));
     if (!data) {
       router.push("/login");
-    } 
+    }
     // else if (!data?.brokerage_Details.firstName) {
     //   router.push("/appraiser-profile");
     // }
@@ -343,16 +337,16 @@ const Index = () => {
           id="DashboardOffcanvasMenu"
           data-bs-scroll="true"
         >
-          <SidebarMenu userData={userData}/>
+          <SidebarMenu userData={userData} />
         </div>
       </div>
       {/* End sidebar_menu */}
 
       {/* <!-- Our Dashbord --> */}
-      <section className="our-dashbord dashbord bgc-f7 pb50">
+      <section className="our-dashbord dashbord bgc-f7 pb50 dashboard-height">
         <div
-          className="container-fluid ovh"
-          style={{ marginLeft: "-10px", marginTop: "" }}
+          className="container-fluid ovh table-padding container-padding"
+          style={{}}
         >
           <div className="row">
             <div className="col-lg-12 maxw100flex-992">
@@ -374,12 +368,11 @@ const Index = () => {
                 </div> */}
                 {/* End Dashboard Navigation */}
 
-                <div className="col-lg-4 col-xl-4 mb10">
+                {/* <div className="col-lg-4 col-xl-4 mb10">
                   <div className="style2 mb30-991">
                     <h3 className="breadcrumb_title">Quote History</h3>
-                    {/* <p>We are glad to see you again!</p>                                                             */}
                   </div>
-                </div>
+                </div> */}
                 {/* End .col */}
 
                 {/*<div className="row">
@@ -395,7 +388,7 @@ const Index = () => {
               </div>*/}
 
                 <div className="col-lg-12 col-xl-12">
-                 {/* <div className="candidate_revew_select style2 mb30-991">
+                  {/* <div className="candidate_revew_select style2 mb30-991">
                     <ul className="mb0">
                       <li className="list-inline-item">
                         <Filtering setFilterQuery={setFilterQuery} />
@@ -486,11 +479,11 @@ const Index = () => {
                           </div>
                         )}
 
-                        {(openBrokerModal && typeView === 1) && (
+                        {openBrokerModal && typeView === 1 && (
                           <div className="modal">
                             <div className="modal-content">
                               <h3 className="text-center">Property Details</h3>
-                             
+
                               <div className="d-flex justify-content-center">
                                 <table
                                   style={{
@@ -517,10 +510,8 @@ const Index = () => {
                                       }}
                                     >
                                       {" "}
-                                      {broker.streetNumber}{" "}
-                                      {broker.streetName}{" "}
-                                      {broker.city}{" "}
-                                      {broker.province}{" "}
+                                      {broker.streetNumber} {broker.streetName}{" "}
+                                      {broker.city} {broker.province}{" "}
                                       {broker.zipCode}
                                     </td>
                                   </tr>
@@ -736,9 +727,7 @@ const Index = () => {
                                       }}
                                     >
                                       {" "}
-                                      {
-                                        broker.applicantFirstName
-                                      }{" "}
+                                      {broker.applicantFirstName}{" "}
                                       {broker.applicantLastName}
                                     </td>
                                   </tr>
@@ -825,80 +814,78 @@ const Index = () => {
                                       }}
                                     >
                                       {" "}
-                                      {broker.remark
-                                        ? broker.remark
-                                        : "NA"}
+                                      {broker.remark ? broker.remark : "NA"}
                                     </td>
                                   </tr>
                                   <tr>
-                                  <td
-                                    style={{
-                                      border: "1px solid grey",
-                                      color: "#2e008b",
-                                    }}
-                                  >
-                                    <span className="text-start">
-                                      Applicant Name
-                                    </span>
-                                  </td>
-                                  <td
-                                    style={{
-                                      border: "1px solid grey",
-                                      width: "250px",
-                                    }}
-                                  >
-                                    {" "}
-                                    {broker.applicantFirstName}{" "}
-                                    {broker.applicantLastName}
-                                  </td>
-                                </tr>
-                               
-                                <tr>
-                                  <td
-                                    style={{
-                                      border: "1px solid grey",
-                                      color: "#2e008b",
-                                    }}
-                                  >
-                                    <span className="text-start">
+                                    <td
+                                      style={{
+                                        border: "1px solid grey",
+                                        color: "#2e008b",
+                                      }}
+                                    >
+                                      <span className="text-start">
+                                        Applicant Name
+                                      </span>
+                                    </td>
+                                    <td
+                                      style={{
+                                        border: "1px solid grey",
+                                        width: "250px",
+                                      }}
+                                    >
                                       {" "}
-                                      Applicant Email Address{" "}
-                                    </span>
-                                  </td>
-                                  <td
-                                    style={{
-                                      border: "1px solid grey",
-                                      width: "250px",
-                                    }}
-                                  >
-                                    {broker.applicantEmailAddress}
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td
-                                    style={{
-                                      border: "1px solid grey",
-                                      color: "#2e008b",
-                                    }}
-                                  >
-                                    <span className="text-start">
-                                      Applicant Number
-                                    </span>
-                                  </td>
-                                  <td
-                                    style={{
-                                      border: "1px solid grey",
-                                      width: "250px",
-                                    }}
-                                  >
-                                    {" "}
-                                    {broker.applicantPhoneNumber}
-                                  </td>
-                                </tr>
+                                      {broker.applicantFirstName}{" "}
+                                      {broker.applicantLastName}
+                                    </td>
+                                  </tr>
+
+                                  <tr>
+                                    <td
+                                      style={{
+                                        border: "1px solid grey",
+                                        color: "#2e008b",
+                                      }}
+                                    >
+                                      <span className="text-start">
+                                        {" "}
+                                        Applicant Email Address{" "}
+                                      </span>
+                                    </td>
+                                    <td
+                                      style={{
+                                        border: "1px solid grey",
+                                        width: "250px",
+                                      }}
+                                    >
+                                      {broker.applicantEmailAddress}
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td
+                                      style={{
+                                        border: "1px solid grey",
+                                        color: "#2e008b",
+                                      }}
+                                    >
+                                      <span className="text-start">
+                                        Applicant Number
+                                      </span>
+                                    </td>
+                                    <td
+                                      style={{
+                                        border: "1px solid grey",
+                                        width: "250px",
+                                      }}
+                                    >
+                                      {" "}
+                                      {broker.applicantPhoneNumber}
+                                    </td>
+                                  </tr>
                                 </table>
                               </div>
                               <h3>{"   "}</h3>
-  
+
                               <div className="row text-center mt-3">
                                 <div className="col-lg-12">
                                   <button
@@ -909,19 +896,15 @@ const Index = () => {
                                   </button>
                                 </div>
                               </div>
-  
-                             
                             </div>
                           </div>
                         )}
 
-                        {(openBrokerModal && typeView === 2) && (
+                        {openBrokerModal && typeView === 2 && (
                           <div className="modal">
                             <div className="modal-content">
-                             
-  
                               <h3 className="text-center">Broker Details</h3>
-                             
+
                               <div className="d-flex justify-content-center">
                                 <table
                                   style={{
@@ -952,7 +935,7 @@ const Index = () => {
                                       {broker.applicantLastName}
                                     </td>
                                   </tr>
-                                 
+
                                   <tr>
                                     <td
                                       style={{
@@ -1007,8 +990,6 @@ const Index = () => {
                                   </button>
                                 </div>
                               </div>
-  
-                             
                             </div>
                           </div>
                         )}
@@ -1053,59 +1034,59 @@ const Index = () => {
                 <div className="modal">
                   <div className="modal-content">
                     <h3 className="text-center">Quote Status Updation</h3>
-                    
+
                     <select
-                  required
-                  className="form-select"
-                  data-live-search="true"
-                  data-width="100%"
-                  onChange={(e)=>handleStatusSelect(e.target.value)}
-                  // value={buildinRef}
-                  // onChange={(e) => setBuildinRef(e.target.value)}
-                  // onChange={(e) => setBuildinRef(e.target.value)}
-                  // disabled={isDisable}
-                  style={{
-                          paddingTop: "15px",
-                          paddingBottom: "15px",
-                          backgroundColor: "#E8F0FE"
-                        }}
-                >
-                  {AppraiserStatusOptions.map((item, index) => {
-                    return (
-                      <option key={item.id} value={item.value}>
-                        {item.type}
-                      </option>
-                    );
-                  })}
-                </select>
-                {openDate && <div className="col-lg-4">
-                <input
-                  required
-                 
-                  type="datetime-local"
-                  className="form-control"
-                  id="formGroupExampleInput3"
-                  onChange={(e) => setStatusDate(e.target.value)}
-                  value={statusDate}
-                />
-              </div>}
-            
+                      required
+                      className="form-select"
+                      data-live-search="true"
+                      data-width="100%"
+                      onChange={(e) => handleStatusSelect(e.target.value)}
+                      // value={buildinRef}
+                      // onChange={(e) => setBuildinRef(e.target.value)}
+                      // onChange={(e) => setBuildinRef(e.target.value)}
+                      // disabled={isDisable}
+                      style={{
+                        paddingTop: "15px",
+                        paddingBottom: "15px",
+                        backgroundColor: "#E8F0FE",
+                      }}
+                    >
+                      {AppraiserStatusOptions.map((item, index) => {
+                        return (
+                          <option key={item.id} value={item.value}>
+                            {item.type}
+                          </option>
+                        );
+                      })}
+                    </select>
+                    {openDate && (
+                      <div className="col-lg-4">
+                        <input
+                          required
+                          type="datetime-local"
+                          className="form-control"
+                          id="formGroupExampleInput3"
+                          onChange={(e) => setStatusDate(e.target.value)}
+                          value={statusDate}
+                        />
+                      </div>
+                    )}
+
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
-                    <button
-                    className="btn w-35 btn-white"
-                    onClick={closeStatusUpdateHandler}
-                  >
-                    Cancel
-                  </button>
                       <button
-                      className="btn btn-color w-10 mt-1"
-                      style={{ marginLeft: "12px" }}
+                        className="btn w-35 btn-white"
+                        onClick={closeStatusUpdateHandler}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        className="btn btn-color w-10 mt-1"
+                        style={{ marginLeft: "12px" }}
                         onClick={handleStatusUpdateHandler}
                       >
                         Submit
-                      </button>        
-                     
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -1137,15 +1118,15 @@ const Index = () => {
             {/* End .row */}
 
             <div className="row">
-                 <div className="col-lg-12 mt20">
-                  <div className="mbp_pagination">
-                    <Pagination
-                      setStart={setStart}
-                      setEnd={setEnd}
-                      properties={wishlistedProperties}
-                    />
-                  </div>
-                </div> 
+              <div className="col-lg-12 mt20">
+                <div className="mbp_pagination">
+                  <Pagination
+                    setStart={setStart}
+                    setEnd={setEnd}
+                    properties={wishlistedProperties}
+                  />
+                </div>
+              </div>
             </div>
 
             <div className="row mt50">

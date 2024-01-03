@@ -123,18 +123,7 @@ const SidebarMenu = ({userData}) => {
             </Link>
           </li>
 
-          <li
-          className={`treeview ${
-            isSinglePageActive("/appraiser-company-completed-properties", route.pathname)
-              ? "active"
-              : ""
-          }`}
-        >
-          <Link href="/appraiser-company-completed-properties">
-            <i className="flaticon-building"></i>
-            <span>Accepted Orders</span>
-          </Link>
-        </li>
+         
 
           <li
           className={`treeview ${
@@ -171,7 +160,7 @@ const SidebarMenu = ({userData}) => {
     >
       <Link href="/appraiser-company-allocated-properties">
         <i className="flaticon-building"></i>
-        <span>Allocated  Properties</span>
+        <span>Assigned  Properties</span>
       </Link>
     </li>
 
@@ -324,6 +313,36 @@ const SidebarMenu = ({userData}) => {
             ))}
           </ul>
         </li> */}
+
+        <li className="title">
+        <span>Manage Orders</span>
+        <ul>
+        <li
+        className={`treeview ${
+          isSinglePageActive("/appraiser-company-completed-properties", route.pathname)
+            ? "active"
+            : ""
+        }`}
+      >
+        <Link href="/appraiser-company-completed-properties">
+          <i className="flaticon-building"></i>
+          <span>Accepted Orders</span>
+        </Link>
+      </li>
+      <li
+      className={`treeview ${
+        isSinglePageActive("/appraiser-company-completed-properties", route.pathname)
+          ? "active"
+          : ""
+      }`}
+    >
+      <Link href="/appraiser-company-completed-properties">
+        <i className="flaticon-building"></i>
+        <span>Completed Orders</span>
+      </Link>
+    </li>
+        </ul>
+      </li>
         <li className="title">
         <span>Manage Appraisers</span>
         <ul>
