@@ -82,7 +82,7 @@ const Modal = ({ modalOpen, closeModal, price }) => {
             >
               <p>We have already redirected you to the paypal page.</p>
               <p>
-                Don't <span style={{color:"red"}}>reload</span> or <span style={{color:"red"}}>refresh</span> the page
+                Don&apos;t <span style={{color:"red"}}>reload</span> or <span style={{color:"red"}}>refresh</span> the page
                
               </p>
             </div>: <div
