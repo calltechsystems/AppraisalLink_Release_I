@@ -95,7 +95,7 @@ const Index = ({ propertyId }) => {
       .then((res) => {
         toast.dismiss();
         toast.success("Successfully declined the requested Bid");
-        router.push("/my-property-bids");
+        router.push("/my-properties-new");
       })
       .catch((err) => {
         toast.dismiss();

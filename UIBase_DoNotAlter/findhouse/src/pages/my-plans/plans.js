@@ -7,12 +7,16 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 
-const Index = ({ setModalOpen, setPrice , userData}) => {
+const Index = ({ setModalOpen, setPrice }) => {
   const [selectedPlan, setSelectedPlan] = useState("Monthly");
   const [planData, setPlanData] = useState([]);
   const [isChecked, setIsChecked] = useState(false);
 
   const router = useRouter();
+  let userData = {};
+  useEffect(()=>{
+    userData = JSON.parse(localStorage.getItem("user"));
+  })
 
   useEffect(() => {
     const fetchData = async () => {

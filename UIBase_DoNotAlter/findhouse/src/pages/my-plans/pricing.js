@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const Pricing = ({
   isPlan,
@@ -6,7 +6,6 @@ const Pricing = ({
   selectedId,
   setModalOpen,
   data,
-  userData,
   setPrice,
 }) => {
   const pricingContentForMonthly = [
@@ -54,6 +53,14 @@ const Pricing = ({
       ],
     },
   ];
+  let userData = {};
+  const [selectedPackage,setSelectedPackage]=useState({});
+  useEffect(()=>{
+    userData = JSON.parse(localStorage.getItem("user"));
+    const Packages = userData.userSubscription?.$values;
+    const len = Packages?.length;
+    setSelectedPackage(Packages?.length > 0 ? Packages[len-1] : {});
+  })
 
   const selectedIdStyle = selectedId ? selectedId : "2";
   const content =
@@ -68,15 +75,12 @@ const Pricing = ({
     });
   };
 
-  const Packages = userData.userSubscription?.$values;
-  const len = Packages?.length;
-  const selectedPackage = Packages?.length > 0 ? Packages[len-1] : {};
-  let reverese = [];
+ 
  
 
   return (
     <>
-      {data?.reverse().map((item, idx) => (
+      {data?.map((item, idx) => (
         <div className="col-sm-4 col-md-4 my_plan_pricing_header" key={item.id}>
           <div
             className={`pricing_table  ${
