@@ -23,7 +23,7 @@ const headCells = [
   {
     id: "appraiser_company",
     numeric: false,
-    label: "Appraiser Compnay Name",
+    label: "Appraiser Company Name",
     width: 220,
   },
   {
