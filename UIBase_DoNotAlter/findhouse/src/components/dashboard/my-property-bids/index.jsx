@@ -69,7 +69,7 @@ const Index = ({ propertyId }) => {
         toast.dismiss();
 
         toast.success("Successfully accepted the requested Bid");
-        router.push("/my-properties-new");
+        router.push("/my-properties");
       })
       .catch((err) => {
         toast.dismiss();
@@ -95,7 +95,7 @@ const Index = ({ propertyId }) => {
       .then((res) => {
         toast.dismiss();
         toast.success("Successfully declined the requested Bid");
-        router.push("/my-properties-new");
+        router.push("/my-properties");
       })
       .catch((err) => {
         toast.dismiss();
