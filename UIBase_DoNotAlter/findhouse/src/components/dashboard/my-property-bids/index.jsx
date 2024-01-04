@@ -21,10 +21,7 @@ const Index = ({ propertyId }) => {
   const [refresh, setRefresh] = useState(false);
   const [id, setId] = useState(0);
 
-
-  const [start,setStart]=useState(0);
-  
-  
+  const [start, setStart] = useState(0);
 
   const [openBrokerModal, setOpenBrokerModal] = useState(false);
 
@@ -41,23 +38,23 @@ const Index = ({ propertyId }) => {
   const len = properties.length > 5 ? properties.length : 5;
   console.log(len);
 
-  const [end,setEnd]=useState(len);
+  const [end, setEnd] = useState(len);
 
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
   );
 
-  const closeAppraiserHandler = ()=>{
+  const closeAppraiserHandler = () => {
     setAppInfo({});
     setOpenBrokerModal(false);
-  }
+  };
 
   const acceptRequestHandler = () => {
     const data = JSON.parse(localStorage.getItem("user"));
     toast.loading("Accepting the bid ...");
     const payload = {
       bidId: id,
-      token: data.token
+      token: data.token,
     };
 
     const encryptedBody = encryptionData(payload);
@@ -72,7 +69,7 @@ const Index = ({ propertyId }) => {
         toast.dismiss();
 
         toast.success("Successfully accepted the requested Bid");
-        router.push("/my-property-bids");
+        router.push("/my-properties-new");
       })
       .catch((err) => {
         toast.dismiss();
@@ -260,11 +257,11 @@ const Index = ({ propertyId }) => {
     fetchData();
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log(property);
-  },[property])
+  }, [property]);
 
-  console.log(appInfo)
+  console.log(appInfo);
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -289,7 +286,7 @@ const Index = ({ propertyId }) => {
       <section className="our-dashbord dashbord bgc-f7 pb50 dashboard-height">
         <div
           className="container-fluid ovh padding container-padding"
-          style={{ }}
+          style={{}}
         >
           <div className="row">
             <div className="col-lg-12 maxw100flex-992">
@@ -437,15 +434,15 @@ const Index = ({ propertyId }) => {
             {/* End .row */}
 
             <div className="row">
-                 <div className="col-lg-12 mt20 mb100">
-                  <div className="mbp_pagination">
-                    <Pagination
-                      setStart={setStart}
-                      setEnd={setEnd}
-                      properties={properties}
-                    />
-                  </div>
-                </div> 
+              <div className="col-lg-12 mt20 mb100">
+                <div className="mbp_pagination">
+                  <Pagination
+                    setStart={setStart}
+                    setEnd={setEnd}
+                    properties={properties}
+                  />
+                </div>
+              </div>
             </div>
 
             <div className="row mt50">
@@ -460,7 +457,7 @@ const Index = ({ propertyId }) => {
             </div>
             {/* End .col */}
 
-            {(openBrokerModal && appInfo.firstName) && (
+            {openBrokerModal && appInfo.firstName && (
               <div className="modal">
                 <div className="modal-content">
                   <span style={{ fontWeight: "bold" }}>
@@ -473,7 +470,7 @@ const Index = ({ propertyId }) => {
                         <span className="">Appraiser Name :</span>{" "}
                       </h5>
                       <span className="col-lg-3">
-                         {appInfo.firstName} {appInfo.lastName} 
+                        {appInfo.firstName} {appInfo.lastName}
                       </span>
                     </div>
                     <div className="row">
@@ -481,18 +478,17 @@ const Index = ({ propertyId }) => {
                         <span className="">Appraiser Address :</span>{" "}
                       </h5>
                       <span className="col-lg-3">
-                         {appInfo.streetName}-{appInfo.streetNumber},{appInfo.area} {appInfo.city} - {appInfo.province} {appInfo.postalCode} 
+                        {appInfo.streetName}-{appInfo.streetNumber},
+                        {appInfo.area} {appInfo.city} - {appInfo.province}{" "}
+                        {appInfo.postalCode}
                       </span>
                     </div>
                     <div className="row">
                       <h5 className="col-lg-4 mt-1">
                         <span className="">Appraiser Number :</span>{" "}
                       </h5>
-                      <span className="col-lg-3">
-                         {appInfo.phoneNumber} 
-                      </span>
+                      <span className="col-lg-3">{appInfo.phoneNumber}</span>
                     </div>
-                    
                   </div>
                   <hr />
                   <div className="text-center" style={{}}>
