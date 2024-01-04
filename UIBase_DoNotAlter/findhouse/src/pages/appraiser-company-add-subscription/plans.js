@@ -62,7 +62,7 @@ const Index = ({ setModalOpen, setPrice ,disable,userData}) => {
           id="DashboardOffcanvasMenu"
           data-bs-scroll="true"
         >
-          <SidebarMenu  disable={disable}/>
+          <SidebarMenu  disable={!disable}/>
         </div>
       </div>
       {/* End sidebar_menu */}

@@ -82,7 +82,7 @@ const Modal = ({ modalOpen, closeModal, price }) => {
             >
               <p>We have already redirected you to the paypal page.</p>
               <p>
-                Don&apos;t <span style={{color:"red"}}>reload</span> or <span style={{color:"red"}}>refresh</span> the page
+                Don't <span style={{color:"red"}}>reload</span> or <span style={{color:"red"}}>refresh</span> the page
                
               </p>
             </div>: <div
@@ -135,7 +135,10 @@ const Modal = ({ modalOpen, closeModal, price }) => {
                     </a>
                   </div>
                 ) : (
-                  <label className="btn btn-color w-25"><ClipLoader color="#ffffff" loading={true}  size={40} /></label>
+                  <label className="btn btn-color w-25" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' ,marginLeft:"36%"}}>
+                  <ClipLoader color="#ffffff" loading={true} size={40} />
+                  <span style={{ marginLeft: '10px' }}>Loading...</span>
+                </label>
                 )
               ) : (
                 <button className="btn btn-color w-25" onClick={checkOutHandler}>
@@ -145,7 +148,7 @@ const Modal = ({ modalOpen, closeModal, price }) => {
             </div>
             {status === 2 && (
               <div className="text-center mt-3">
-                <p>Countdown: {Math.floor(countdown / 60)}:{countdown % 60}</p>
+                <p>Left Time: {Math.floor(countdown / 60)}:{countdown % 60}</p>
               </div>
             )}
           </div>

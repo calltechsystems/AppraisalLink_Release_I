@@ -37,6 +37,12 @@ const headCells = [
     width: 160,
   },
   {
+    id: "app_status",
+    numeric: false,
+    label: "Appraisal Status",
+    width: 160,
+  },
+  {
     id: "urgency",
     numeric: false,
     label: "Urgency",
@@ -285,6 +291,25 @@ export default function Exemple({
           ) : (
             <span className="btn btn-warning  w-100">New</span>
           ),
+          app_status: isBidded.bidId ? (
+            isBidded.status === 0 ? (
+              <span
+                className="btn btn-primary  w-100"
+              >
+                Quote Provided
+              </span>
+            ) : isBidded.status === 1 ? (
+              <span
+                className="btn btn-success  w-100"
+              >
+                Accepted
+              </span>
+            ) : (
+              <span className="btn btn-danger  w-100">Declined</span>
+            )
+          ) : (
+            <span className="btn btn-warning  w-100">New</span>
+          ),
           property: (
             <div>
               {isBidded.status === 1 ? (
@@ -422,6 +447,20 @@ export default function Exemple({
                       </div>
                     </li>
                   )}
+
+                  <li
+                      className="list-inline-item"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Property Information"
+                    >
+                    <button
+                    className="btn btn-color w-100 mt-1"
+                    onClick={() => openModalBroker(property,1)}
+                  >
+                    Property Information
+                  </button>
+                    </li>
 
                  
                   <li

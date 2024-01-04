@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../../components/common/header/dashboard/Header";
 import MobileMenu from "../../components/common/header/MobileMenu";
 import Pricing from "./pricing";
-import SidebarMenu from "../../components/common/header/dashboard/SidebarMenu";
+import SidebarMenu from "../../components/common/header/dashboard/SidebarMenuBroker";
 import axios from "axios";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
@@ -66,10 +66,9 @@ const Index = ({ setModalOpen, setPrice }) => {
           id="DashboardOffcanvasMenu"
           data-bs-scroll="true"
         >
-          <SidebarMenu />
+        <SidebarMenu/>
         </div>
       </div>
-      {/* End sidebar_menu */}
 
       <section
         className="our-dashbord dashbord bgc-f7 pb50"

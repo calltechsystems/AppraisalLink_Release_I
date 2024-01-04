@@ -11,7 +11,9 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/router";
+import Image from "next/image";
 import Exemple from "./Exemple";
+import Link from "next/link";
 import { FaRedo } from "react-icons/fa";
 
 const Index = () => {
@@ -242,7 +244,7 @@ const Index = () => {
       <section className="our-dashbord dashbord bgc-f7 pb50 dashboard-height">
         <div
           className="container-fluid ovh table-padding container-padding"
-          style={{ }}
+          style={{}}
         >
           <div className="row">
             <div className="col-lg-12 maxw100flex-992">
@@ -359,17 +361,53 @@ const Index = () => {
                           {modalIsPopupOpen && (
                             <div className="modal">
                               <div className="modal-content">
-                                <h3 className="text-center">Property View</h3>
-                                <p className="text-center mb-3">
+                                <div className="col-lg-12">
+                                  <div className="row">
+                                    <div className="col-lg-6">
+                                      <h3
+                                        className="text-start text-color mt-2"
+                                        style={{ marginBottom: "0px" }}
+                                      >
+                                        Property Details
+                                      </h3>
+                                    </div>
+                                    <div className="col-lg-6 text-end_01" style={{}}>
+                                      <Link
+                                        href="/"
+                                        className=""
+                                      >
+                                        <Image
+                                          width={40}
+                                          height={45}
+                                          className="logo1 img-fluid"
+                                          style={{ }}
+                                          src="/assets/images/logo_new.png"
+                                          alt="header-logo2.png"
+                                        />
+                                        <span style={{ color: "#2e008b", fontWeight:"bold", fontSize:"22px", marginLeft:"10px" }}>
+                                          Appraisal
+                                        </span>
+                                        <span style={{ color: "#97d700", fontWeight:"bold", fontSize:"22px" }}>
+                                          {" "}
+                                          Land
+                                        </span>
+                                      </Link>
+                                    </div>
+                                  </div>
+                                </div>
+                                <hr />
+                                {/* <p className="text-center mb-3">
                                   All of the details on the assessed property
                                   are here.
-                                </p>
+                                </p> */}
                                 <div className="d-flex justify-content-center">
                                   <table
                                     style={{
-                                      width: "700px",
+                                      width: "760px",
                                       textAlign: "center",
                                       borderRadius: "5px",
+                                      fontSize: "17px",
+                                      fontWeight:"bold"
                                     }}
                                   >
                                     <tr>
@@ -386,7 +424,8 @@ const Index = () => {
                                       <td
                                         style={{
                                           border: "1px solid grey",
-                                          width: "380px",
+                                          width: "460px",
+                                          color:"black"
                                         }}
                                       >
                                         {" "}
@@ -433,6 +472,7 @@ const Index = () => {
                                         style={{
                                           border: "1px solid grey",
                                           width: "250px",
+                                          color:"black"
                                         }}
                                       >
                                         {currentProperty.typeOfBuilding}
@@ -454,6 +494,7 @@ const Index = () => {
                                         style={{
                                           border: "1px solid grey",
                                           width: "250px",
+                                          color:"black"
                                         }}
                                       >
                                         {currentProperty.typeOfAppraisal}
@@ -475,6 +516,7 @@ const Index = () => {
                                         style={{
                                           border: "1px solid grey",
                                           width: "250px",
+                                          color:"black"
                                         }}
                                       >
                                         {currentProperty.purpose}
@@ -496,6 +538,7 @@ const Index = () => {
                                         style={{
                                           border: "1px solid grey",
                                           width: "250px",
+                                          color:"black"
                                         }}
                                       >
                                         {currentProperty.lenderInformation
@@ -541,6 +584,7 @@ const Index = () => {
                                         style={{
                                           border: "1px solid grey",
                                           width: "250px",
+                                          color:"black"
                                         }}
                                       >
                                         ${currentProperty.estimatedValue}
@@ -561,6 +605,7 @@ const Index = () => {
                                         style={{
                                           border: "1px solid grey",
                                           width: "250px",
+                                          color:"black"
                                         }}
                                       >
                                         {" "}
@@ -586,6 +631,7 @@ const Index = () => {
                                         style={{
                                           border: "1px solid grey",
                                           width: "250px",
+                                          color:"black"
                                         }}
                                       >
                                         {currentProperty.quoteRequiredDate}
@@ -606,6 +652,7 @@ const Index = () => {
                                         style={{
                                           border: "1px solid grey",
                                           width: "250px",
+                                          color:"black"
                                         }}
                                       >
                                         {" "}
@@ -630,6 +677,7 @@ const Index = () => {
                                         style={{
                                           border: "1px solid grey",
                                           width: "250px",
+                                          color:"black"
                                         }}
                                       >
                                         {" "}
@@ -651,6 +699,7 @@ const Index = () => {
                                         style={{
                                           border: "1px solid grey",
                                           width: "250px",
+                                          color:"black"
                                         }}
                                       >
                                         {" "}
@@ -695,6 +744,7 @@ const Index = () => {
                                         style={{
                                           border: "1px solid grey",
                                           width: "250px",
+                                          color:"black"
                                         }}
                                       >
                                         {" "}
@@ -815,7 +865,7 @@ const Index = () => {
             </div>
             {/* End .row */}
 
-           <div className="row">
+            <div className="row">
               <div className="col-lg-12 mt20">
                 <div className="mbp_pagination">
                   <Pagination
