@@ -38,7 +38,10 @@ const Index = ({ propertyId }) => {
 
   const router = useRouter();
 
-  const [end,setEnd]=useState(properties);
+  const len = properties.length > 5 ? properties.length : 5;
+  console.log(len);
+
+  const [end,setEnd]=useState(len);
 
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
@@ -54,7 +57,7 @@ const Index = ({ propertyId }) => {
     toast.loading("Accepting the bid ...");
     const payload = {
       bidId: id,
-      token: data.token,
+      token: data.token
     };
 
     const encryptedBody = encryptionData(payload);

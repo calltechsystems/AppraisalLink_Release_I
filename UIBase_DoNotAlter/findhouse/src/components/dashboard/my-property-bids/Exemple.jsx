@@ -366,6 +366,7 @@ export default function Exemple({
           }
         });
 
+        console.log(updatedBids)
         setProperties(updatedBids);
       })
       .catch((err) => {
