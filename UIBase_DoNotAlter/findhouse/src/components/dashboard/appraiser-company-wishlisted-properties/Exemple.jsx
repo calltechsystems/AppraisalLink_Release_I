@@ -145,10 +145,10 @@ export default function Exemple({
     let tempBid = 0,
       bidValue = {};
 
-    console.log(bids);
+    // console.log(bids);
     bids.filter((bid) => {
-      if (bid.propertyId === property.propertyId) {
-        console.log("matched", bid);
+      if (bid.propertyId === property.propertyId && String(bid.appraiserUserId) === String(userData.userId))   {
+        // console.log("matched", bid);
         tempBid = tempBid + 1;
         bidValue = bid;
       } else {
@@ -218,7 +218,7 @@ export default function Exemple({
 
   const checkWishlistedHandler = (data) => {
     let temp = {};
-    console.log(wishlist, data);
+    // console.log(wishlist, data);
     wishlist.map((prop, index) => {
       if (String(prop.propertyId) === String(data.propertyId)) {
         temp = prop;
@@ -251,149 +251,150 @@ export default function Exemple({
       properties.map((property, index) => {
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
-        console.log("isBidded", isBidded);
+        // console.log("isBidded", isBidded);
 
         if (isWishlist.id) {
+          console.log("wishlisted",property,isBidded,isWishlist)
           page.push(property);
           const updatedRow = {
-            // orderId: property.orderId,
-            // address: `${property.city}-${property.province},${property.zipCode}`,
-            // estimatedValue: property.estimatedValue
-            //   ? property.estimatedValue
-            //   : 0,
-            // purpose: property.purpose ? property.purpose : "NA",
-            // status: isBidded.bidId ? (
-            //   isBidded.status === 0 ? (
-            //     <span className="btn btn-primary" >
-            //       Quote Provided
-            //     </span>
-            //   ) : isBidded.status === 1 ? (
-            //     <span className="btn btn-success">Accepted</span>
-            //   ) : (
-            //     <span className="btn btn-danger">Rejected</span>
-            //   )
-            // ) : (
-            //   <span className="btn btn-warning">New</span>
-            // ),
-            // broker: (
-            //   <div>
-            //     {isBidded.status === 1 ? (
-            //       <a href="#">
-            //         <button
-            //           className=""
-            //           style={{
-            //             border: "0px",
-            //             color: "#2e008b",
-            //             textDecoration: "underline",
-            //             // fontWeight: "bold",
-            //             backgroundColor: "transparent",
-            //           }}
-            //           onClick={() => openModalBroker(property)}
-            //         >
-            //           {`${property.applicantFirstName} ${property.applicantLastName}`}
-            //         </button>
-            //       </a>
-            //     ) : isBidded.status === 2 ? (
-            //       <h6 style={{ color: "red" }}> Rejected</h6>
-            //     ) : (
-            //       <h6>
-            //         Broker Information will be available post the quote
-            //         acceptance
-            //       </h6>
-            //     )}
-            //   </div>
-            // ),
-            // type_of_appraisal: property.typeOfAppraisal
-            //   ? property.typeOfAppraisal
-            //   : "NA",
-            // typeOfBuilding:
-            //   property.typeOfBuilding > 0
-            //     ? "Apartment"
-            //     : property.typeOfBuilding,
-            // quote_required_by: formatDate(property.addedDatetime),
-            // date: formatDate(property.addedDatetime),
-            // bidAmount: property.bidLowerRange,
-            // lender_information: property.lenderInformation
-            //   ? property.lenderInformation
-            //   : "NA",
-            // urgency:
-            //   property.urgency === 0
-            //     ? "Rush"
-            //     : property.urgency === 1
-            //     ? "Regular"
-            //     : "High",
+            orderId: property.orderId,
+            address: `${property.city}-${property.province},${property.zipCode}`,
+            estimatedValue: property.estimatedValue
+              ? property.estimatedValue
+              : 0,
+            purpose: property.purpose ? property.purpose : "NA",
+            status: isBidded.bidId ? (
+              isBidded.status === 0 ? (
+                <span className="btn btn-primary" >
+                  Quote Provided
+                </span>
+              ) : isBidded.status === 1 ? (
+                <span className="btn btn-success">Accepted</span>
+              ) : (
+                <span className="btn btn-danger">Declined</span>
+              )
+            ) : (
+              <span className="btn btn-warning">New</span>
+            ),
+            broker: (
+              <div>
+                {isBidded.status === 1 ? (
+                  <a href="#">
+                    <button
+                      className=""
+                      style={{
+                        border: "0px",
+                        color: "#2e008b",
+                        textDecoration: "underline",
+                        // fontWeight: "bold",
+                        backgroundColor: "transparent",
+                      }}
+                      onClick={() => openModalBroker(property)}
+                    >
+                      {`${property.applicantFirstName} ${property.applicantLastName}`}
+                    </button>
+                  </a>
+                ) : isBidded.status === 2 ? (
+                  <h6 style={{ color: "red" }}> Declined</h6>
+                ) : (
+                  <h6>
+                    Broker Information will be available post the quote
+                    acceptance
+                  </h6>
+                )}
+              </div>
+            ),
+            type_of_appraisal: property.typeOfAppraisal
+              ? property.typeOfAppraisal
+              : "NA",
+            typeOfBuilding:
+              property.typeOfBuilding > 0
+                ? "Apartment"
+                : property.typeOfBuilding,
+            quote_required_by: formatDate(property.addedDatetime),
+            date: formatDate(property.addedDatetime),
+            bidAmount: property.bidLowerRange,
+            lender_information: property.lenderInformation
+              ? property.lenderInformation
+              : "NA",
+            urgency:
+              property.urgency === 0
+                ? "Rush"
+                : property.urgency === 1
+                ? "Regular"
+                : "High",
 
-            // action: (
-            //   <div className="print-hidden-column">
-            //     {isBidded && isBidded.status !== 1 ? (
-            //       <ul className="">
-            //         {!isBidded.$id && (
-            //           <li
-            //             className="list-inline-item"
-            //             data-toggle="tooltip"
-            //             data-placement="top"
-            //             title="Provide Quote"
-            //           >
-            //             <div
-            //               className=" fw-bold"
-            //               onClick={() =>
-            //                 participateHandler(
-            //                   property.bidLowerRange,
-            //                   property.propertyId
-            //                 )
-            //               }
-            //             >
-            //               <a
-            //                 href="#"
-            //                 className="btn btn-color w-15"
-            //                 style={{ marginLeft: "10px" }}
-            //               >
-            //                 Provide Quote
-            //               </a>
-            //             </div>
-            //           </li>
-            //         )}
-            //         <li
-            //         className="list-inline-item"
-            //         data-toggle="tooltip"
-            //         data-placement="top"
-            //         title="Provide Quote"
-            //       >
-            //         <div
-            //           className=" fw-bold"
-            //           onClick={() =>
-            //             onDeletePropertyHandler(property.propertyId)
-            //           }
-            //         >
-            //           <a
-            //             href="#"
-            //             className="btn btn-color w-15"
-            //             style={{ marginLeft: "10px" }}
-            //           >
-            //             Archive Property 
-            //           </a>
-            //         </div>
-            //       </li>
+            action: (
+              <div className="print-hidden-column">
+                {isBidded && isBidded.status !== 1 ? (
+                  <ul className="">
+                    {!isBidded.$id && (
+                      <li
+                        className="list-inline-item"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="Provide Quote"
+                      >
+                        <div
+                          className=" fw-bold"
+                          onClick={() =>
+                            participateHandler(
+                              property.bidLowerRange,
+                              property.propertyId
+                            )
+                          }
+                        >
+                          <a
+                            href="#"
+                            className="btn btn-color w-15"
+                            style={{ marginLeft: "10px" }}
+                          >
+                            Provide Quote
+                          </a>
+                        </div>
+                      </li>
+                    )}
+                    <li
+                    className="list-inline-item"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Provide Quote"
+                  >
+                    <div
+                      className=" fw-bold"
+                      onClick={() =>
+                        onDeletePropertyHandler(property.propertyId)
+                      }
+                    >
+                      <a
+                        href="#"
+                        className="btn btn-color w-15"
+                        style={{ marginLeft: "10px" }}
+                      >
+                        Archive Property 
+                      </a>
+                    </div>
+                  </li>
                    
-            //       </ul>
-            //     ) : (
-            //       <div
-            //       className=" fw-bold"
-            //       onClick={() =>
-            //         statusHandler()
-            //       }
-            //     >
-            //       <a
-            //         href="#"
-            //         className="btn btn-color w-15"
-            //         style={{ marginLeft: "10px" }}
-            //       >
-            //         Quote Update
-            //       </a>
-            //     </div>
-            //     )}
-            //   </div>
-            // ),
+                  </ul>
+                ) : (
+                  <div
+                  className=" fw-bold"
+                  onClick={() =>
+                    statusHandler()
+                  }
+                >
+                  <a
+                    href="#"
+                    className="btn btn-color w-15"
+                    style={{ marginLeft: "10px" }}
+                  >
+                    Quote Update
+                  </a>
+                </div>
+                )}
+              </div>
+            ),
           };
 
           tempData.push(updatedRow);

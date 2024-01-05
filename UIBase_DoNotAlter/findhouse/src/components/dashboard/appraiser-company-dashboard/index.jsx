@@ -1,4 +1,4 @@
-import Header from "../../common/header/dashboard/HeaderAppraiserCompany";
+import Header from "../../common/header/dashboard/Header_02";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenu_002";
 import MobileMenu from "../../common/header/MobileMenu_01";
 import Filtering from "./Filtering";
@@ -74,10 +74,7 @@ const Index = () => {
     const data = JSON.parse(localStorage.getItem("user"));
     if (!data) {
       router.push("/login");
-    }
-    // } else if (!data?.brokerage_Details?.firstName) {
-    //   router.push("/appraiser-profile");
-    // }
+    } 
     if (!data) {
       router.push("/login");
     }
@@ -95,13 +92,24 @@ const Index = () => {
         },
       })
       .then((res) => {
-        // console.log(categorizeDataByMonth(res.data.data.property.$values));
+        console.log(res.data.data.properties.$values);
+        
 
-        // console.log(res.data.data.properties.$values)
-        setProperties(res.data.data.properties.$values);
+        const temp = res.data.data.properties.$values;
+
+        const updatedProp = temp.filter((prop,index)=>{
+          if(String(prop.userId) === String(data.userId)){
+            return true;
+          }
+          else{
+            return false;
+          }
+        })
         
         // setShowLineGraph(true);
         // setRerender(false);
+
+        setProperties(updatedProp);
       })
       .catch((err) => {
         console.log(err);
@@ -120,7 +128,7 @@ const Index = () => {
 
       // setAllWishlistedProperties(res.data.data.$values);
       const responseData = tempData.filter((prop, index) => {
-        if (prop.userId === data.userId) {
+        if (String(prop.userId) === String(data.userId)) {
           return true;
         } else {
           return false;
@@ -142,14 +150,20 @@ const Index = () => {
       },
     })
     .then((res) => {
-      // console.log(res);
       const tempBids = res.data.data.result.$values;
       let acceptedBid = 0 ;
-      tempBids.map((bids,index)=>{
-        if(bids.userId === data.userId && bids.status === 2)
-        acceptedBid = acceptedBid + 1 ;
+      
+      const updatedBids =  tempBids.filter((bids,index)=>{
+        if(String(bids.appraiserUserId) === String(data.userId)){
+        // acceptedBid = acceptedBid + 1 ; 
+        return true;
+        }
+        else{
+          return false;
+        }
       })
-      setBids(tempBids);
+      console.log(updatedBids)
+      setBids(updatedBids);
     })
     .catch((err) => {
       setErrorMessage(err?.response?.data?.error);
@@ -164,10 +178,7 @@ const Index = () => {
     const data = JSON.parse(localStorage.getItem("user"));
     if (!data) {
       router.push("/login");
-    }
-    // } else if (!data?.brokerage_Details?.firstName) {
-    //   router.push("/appraiser-profile");
-    // }
+    } 
     if (!data) {
       router.push("/login");
     }
@@ -293,8 +304,8 @@ const Index = () => {
 
               <div className="row">
                 <AllStatistics
-                  properties={properties.length}
-                  views={properties.length}
+                  properties={bids.length + wishlist.length}
+                  views={bids.length + wishlist.length}
                   bids={bids.length}
                   wishlist={wishlist.length}
                 />

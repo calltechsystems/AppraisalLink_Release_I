@@ -202,7 +202,7 @@ export default function Exemple({
   const formatDate = (dateString) => {
     const options = {
       year: "numeric",
-      month: "short",
+      month: "long",
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
@@ -266,7 +266,7 @@ export default function Exemple({
               ) : isBidded.status === 1 ? (
                 <span className="btn btn-success" onClick={openStatusUpdateHandler}>Accepted</span>
               ) : (
-                <span className="btn btn-danger">Declined</span>
+                <span className="btn btn-danger">Rejected</span>
               )
             ) : (
               <span className="btn btn-warning">New</span>
@@ -437,7 +437,17 @@ export default function Exemple({
       })
       .then((res) => {
         console.log(res);
-        tempBids = res.data.data.result.$values;
+        const temp = res.data.data.result.$values;
+        tempBids = temp.filter((bid,index)=>{
+          if(String(bid.appraiserUserId) === String(data.userId)){
+            return true;
+          }
+          else{
+            return false;
+          }
+        })
+
+        console.log(tempBids);
         setBids(tempBids);
       })
       .catch((err) => {

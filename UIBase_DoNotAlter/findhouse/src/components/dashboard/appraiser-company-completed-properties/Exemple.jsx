@@ -395,7 +395,16 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        tempProperties = res.data.data.property.$values;
+        const temp = res.data.data.property.$values;
+
+        tempProperties = temp.filter((prop,index)=>{
+          if(String(prop.userId) === String(data.userId)){
+            return true
+          }
+          else{
+            return false
+          }
+        })
       })
       .catch((err) => {
         setErrorMessage(err?.response?.data?.error);
@@ -435,9 +444,17 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        console.log(res);
         tempBids = res.data.data.result.$values;
-        setBids(tempBids);
+        const updatedBids = tempBids.filter((prop,index)=>{
+          if(String(prop.appraiserUserId) === String(data.userId)){
+            return true;
+          }
+          else{
+            return false;
+          }
+        })
+        console.log(updatedBids)
+        setBids(updatedBids);
       })
       .catch((err) => {
         setErrorMessage(err?.response?.data?.error);
