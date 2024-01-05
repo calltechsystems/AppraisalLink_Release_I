@@ -147,7 +147,7 @@ export default function Exemple({
 
     console.log(bids);
     bids.filter((bid) => {
-      if (bid.propertyId === property.propertyId) {
+      if (bid.propertyId === property.propertyId && String(bid.appraiserUserId) === String(userData.userId)) {
         console.log("matched", bid);
         tempBid = tempBid + 1;
         bidValue = bid;

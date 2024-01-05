@@ -363,15 +363,15 @@ const Index = () => {
                               <div className="modal-content">
                                 <div className="col-lg-12">
                                   <div className="row">
-                                    <div className="col-lg-6">
+                                    <div className="col-lg-7">
                                       <h3
-                                        className="text-start text-color mt-2"
+                                        className="text-end_01 text-color mt-1"
                                         style={{ marginBottom: "0px" }}
                                       >
                                         Property Details
                                       </h3>
                                     </div>
-                                    <div className="col-lg-6 text-end_01" style={{}}>
+                                    <div className="col-lg-5 text-end_01" style={{}}>
                                       <Link
                                         href="/"
                                         className=""
@@ -380,22 +380,21 @@ const Index = () => {
                                           width={40}
                                           height={45}
                                           className="logo1 img-fluid"
-                                          style={{ }}
-                                          src="/assets/images/logo_new.png"
+                                          style={{marginTop:"-20px" }}
+                                          src="/assets/images/logo.png"
                                           alt="header-logo2.png"
                                         />
-                                        <span style={{ color: "#2e008b", fontWeight:"bold", fontSize:"22px", marginLeft:"10px" }}>
+                                        <span style={{ color: "#2e008b", fontWeight:"bold", fontSize:"18px", marginTop:"20px" }}>
                                           Appraisal
                                         </span>
-                                        <span style={{ color: "#97d700", fontWeight:"bold", fontSize:"22px" }}>
+                                        <span style={{ color: "#97d700", fontWeight:"bold", fontSize:"18px", marginTop:"20px" }}>
                                           {" "}
                                           Land
                                         </span>
                                       </Link>
                                     </div>
-                                  </div>
+                                  </div><hr style={{width:"27%", marginLeft:"227px", color:"#2e008b"}}/>
                                 </div>
-                                <hr />
                                 {/* <p className="text-center mb-3">
                                   All of the details on the assessed property
                                   are here.
@@ -404,7 +403,7 @@ const Index = () => {
                                   <table
                                     style={{
                                       width: "760px",
-                                      textAlign: "center",
+                                      textAlign: "start",
                                       borderRadius: "5px",
                                       fontSize: "17px",
                                       fontWeight:"bold"
@@ -413,8 +412,9 @@ const Index = () => {
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #d1d1d1",
                                           color: "#2e008b",
+                                          padding:"5px"
                                         }}
                                       >
                                         <span className="text-start">
@@ -423,9 +423,11 @@ const Index = () => {
                                       </td>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
-                                          width: "460px",
-                                          color:"black"
+                                          border: "1px solid #d1d1d1",
+                                          width: "470px",
+                                          color:"black",
+                                          padding:"5px"
+
                                         }}
                                       >
                                         {" "}
@@ -438,9 +440,10 @@ const Index = () => {
                                     </tr>
                                     {/* <tr>
                                       <td
-                                        style={{
-                                          border: "1px solid grey",
+                                         style={{
+                                          border: "1px solid #d1d1d1",
                                           color: "#2e008b",
+                                          padding:"5px"
                                         }}
                                       >
                                         <span className="text-start">
@@ -449,7 +452,7 @@ const Index = () => {
                                       </td>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #d1d1d1",
                                           width: "250px",
                                         }}
                                       >
@@ -459,8 +462,9 @@ const Index = () => {
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #d1d1d1",
                                           color: "#2e008b",
+                                          padding:"5px"
                                         }}
                                       >
                                         <span className="text-start">
@@ -469,10 +473,11 @@ const Index = () => {
                                         </span>
                                       </td>
                                       <td
-                                        style={{
-                                          border: "1px solid grey",
+                                       style={{
+                                          border: "1px solid #d1d1d1",
                                           width: "250px",
-                                          color:"black"
+                                          color:"black",
+                                          padding:"5px"
                                         }}
                                       >
                                         {currentProperty.typeOfBuilding}
@@ -480,9 +485,10 @@ const Index = () => {
                                     </tr>
                                     <tr>
                                       <td
-                                        style={{
-                                          border: "1px solid grey",
+                                         style={{
+                                          border: "1px solid #d1d1d1",
                                           color: "#2e008b",
+                                          padding:"5px"
                                         }}
                                       >
                                         <span className="text-start">
@@ -492,9 +498,10 @@ const Index = () => {
                                       </td>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #d1d1d1",
                                           width: "250px",
-                                          color:"black"
+                                          color:"black",
+                                          padding:"5px"
                                         }}
                                       >
                                         {currentProperty.typeOfAppraisal}
@@ -502,9 +509,10 @@ const Index = () => {
                                     </tr>
                                     <tr>
                                       <td
-                                        style={{
-                                          border: "1px solid grey",
+                                         style={{
+                                          border: "1px solid #d1d1d1",
                                           color: "#2e008b",
+                                          padding:"5px"
                                         }}
                                       >
                                         <span className="text-start">
@@ -513,10 +521,11 @@ const Index = () => {
                                         </span>
                                       </td>
                                       <td
-                                        style={{
-                                          border: "1px solid grey",
+                                       style={{
+                                          border: "1px solid #d1d1d1",
                                           width: "250px",
-                                          color:"black"
+                                          color:"black",
+                                          padding:"5px"
                                         }}
                                       >
                                         {currentProperty.purpose}
@@ -524,9 +533,10 @@ const Index = () => {
                                     </tr>
                                     <tr>
                                       <td
-                                        style={{
-                                          border: "1px solid grey",
+                                         style={{
+                                          border: "1px solid #d1d1d1",
                                           color: "#2e008b",
+                                          padding:"5px"
                                         }}
                                       >
                                         <span className="text-start">
@@ -535,22 +545,24 @@ const Index = () => {
                                         </span>
                                       </td>
                                       <td
-                                        style={{
-                                          border: "1px solid grey",
+                                       style={{
+                                          border: "1px solid #d1d1d1",
                                           width: "250px",
-                                          color:"black"
+                                          color:"black",
+                                          padding:"5px"
                                         }}
                                       >
                                         {currentProperty.lenderInformation
                                           ? currentProperty.lenderInformation
-                                          : "NA"}
+                                          : "N.A."}
                                       </td>
                                     </tr>
                                     {/* <tr>
                                       <td
-                                        style={{
-                                          border: "1px solid grey",
+                                         style={{
+                                          border: "1px solid #d1d1d1",
                                           color: "#2e008b",
+                                          padding:"5px"
                                         }}
                                       >
                                         <span className="text-start">
@@ -559,7 +571,7 @@ const Index = () => {
                                       </td>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #d1d1d1",
                                           width: "250px",
                                         }}
                                       >
@@ -571,30 +583,33 @@ const Index = () => {
                                     </tr> */}
                                     <tr>
                                       <td
-                                        style={{
-                                          border: "1px solid grey",
+                                         style={{
+                                          border: "1px solid #d1d1d1",
                                           color: "#2e008b",
+                                          padding:"5px"
                                         }}
                                       >
                                         <span className="text-start">
-                                          Estimated Value / Purchased Price
+                                          Estimated Value 
                                         </span>
                                       </td>
                                       <td
-                                        style={{
-                                          border: "1px solid grey",
+                                       style={{
+                                          border: "1px solid #d1d1d1",
                                           width: "250px",
-                                          color:"black"
+                                          color:"black",
+                                          padding:"5px"
                                         }}
                                       >
-                                        ${currentProperty.estimatedValue}
+                                        $ {currentProperty.estimatedValue}
                                       </td>
                                     </tr>
                                     <tr>
                                       <td
-                                        style={{
-                                          border: "1px solid grey",
+                                         style={{
+                                          border: "1px solid #d1d1d1",
                                           color: "#2e008b",
+                                          padding:"5px"
                                         }}
                                       >
                                         <span className="text-start">
@@ -602,10 +617,11 @@ const Index = () => {
                                         </span>
                                       </td>
                                       <td
-                                        style={{
-                                          border: "1px solid grey",
+                                       style={{
+                                          border: "1px solid #d1d1d1",
                                           width: "250px",
-                                          color:"black"
+                                          color:"black",
+                                          padding:"5px"
                                         }}
                                       >
                                         {" "}
@@ -613,14 +629,15 @@ const Index = () => {
                                           ? "Rush"
                                           : currentProperty.urgency === 1
                                           ? "Regular"
-                                          : "NA"}
+                                          : "N.A."}
                                       </td>
                                     </tr>
                                     <tr>
                                       <td
-                                        style={{
-                                          border: "1px solid grey",
+                                         style={{
+                                          border: "1px solid #d1d1d1",
                                           color: "#2e008b",
+                                          padding:"5px"
                                         }}
                                       >
                                         <span className="text-start">
@@ -628,10 +645,11 @@ const Index = () => {
                                         </span>
                                       </td>
                                       <td
-                                        style={{
-                                          border: "1px solid grey",
+                                       style={{
+                                          border: "1px solid #d1d1d1",
                                           width: "250px",
-                                          color:"black"
+                                          color:"black",
+                                          padding:"5px"
                                         }}
                                       >
                                         {currentProperty.quoteRequiredDate}
@@ -639,9 +657,10 @@ const Index = () => {
                                     </tr>
                                     <tr>
                                       <td
-                                        style={{
-                                          border: "1px solid grey",
+                                         style={{
+                                          border: "1px solid #d1d1d1",
                                           color: "#2e008b",
+                                          padding:"5px"
                                         }}
                                       >
                                         <span className="text-start">
@@ -649,10 +668,11 @@ const Index = () => {
                                         </span>
                                       </td>
                                       <td
-                                        style={{
-                                          border: "1px solid grey",
+                                       style={{
+                                          border: "1px solid #d1d1d1",
                                           width: "250px",
-                                          color:"black"
+                                          color:"black",
+                                          padding:"5px"
                                         }}
                                       >
                                         {" "}
@@ -664,9 +684,10 @@ const Index = () => {
                                     </tr>
                                     <tr>
                                       <td
-                                        style={{
-                                          border: "1px solid grey",
+                                         style={{
+                                          border: "1px solid #d1d1d1",
                                           color: "#2e008b",
+                                          padding:"5px"
                                         }}
                                       >
                                         <span className="text-start">
@@ -674,10 +695,11 @@ const Index = () => {
                                         </span>
                                       </td>
                                       <td
-                                        style={{
-                                          border: "1px solid grey",
+                                       style={{
+                                          border: "1px solid #d1d1d1",
                                           width: "250px",
-                                          color:"black"
+                                          color:"black",
+                                          padding:"5px"
                                         }}
                                       >
                                         {" "}
@@ -686,9 +708,10 @@ const Index = () => {
                                     </tr>
                                     <tr>
                                       <td
-                                        style={{
-                                          border: "1px solid grey",
+                                         style={{
+                                          border: "1px solid #d1d1d1",
                                           color: "#2e008b",
+                                          padding:"5px"
                                         }}
                                       >
                                         <span className="text-start">
@@ -696,10 +719,11 @@ const Index = () => {
                                         </span>
                                       </td>
                                       <td
-                                        style={{
-                                          border: "1px solid grey",
+                                       style={{
+                                          border: "1px solid #d1d1d1",
                                           width: "250px",
-                                          color:"black"
+                                          color:"black",
+                                          padding:"5px"
                                         }}
                                       >
                                         {" "}
@@ -708,9 +732,10 @@ const Index = () => {
                                     </tr>
                                     {/* <tr>
                                       <td
-                                        style={{
-                                          border: "1px solid grey",
+                                         style={{
+                                          border: "1px solid #d1d1d1",
                                           color: "#2e008b",
+                                          padding:"5px"
                                         }}
                                       >
                                         <span className="text-start">
@@ -719,7 +744,7 @@ const Index = () => {
                                       </td>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #d1d1d1",
                                           width: "250px",
                                         }}
                                       >
@@ -731,9 +756,10 @@ const Index = () => {
                                     </tr> */}
                                     <tr>
                                       <td
-                                        style={{
-                                          border: "1px solid grey",
+                                         style={{
+                                          border: "1px solid #d1d1d1",
                                           color: "#2e008b",
+                                          padding:"5px"
                                         }}
                                       >
                                         <span className="text-start">
@@ -741,16 +767,17 @@ const Index = () => {
                                         </span>
                                       </td>
                                       <td
-                                        style={{
-                                          border: "1px solid grey",
+                                       style={{
+                                          border: "1px solid #d1d1d1",
                                           width: "250px",
-                                          color:"black"
+                                          color:"black",
+                                          padding:"5px"
                                         }}
                                       >
                                         {" "}
                                         {currentProperty.remark
                                           ? currentProperty.remark
-                                          : "NA"}
+                                          : "N.A."}
                                       </td>
                                     </tr>
                                   </table>

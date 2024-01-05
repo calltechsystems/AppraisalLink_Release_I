@@ -8,7 +8,13 @@ import { FaEye } from "react-icons/fa";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage ,closeRegisterModal, setCloseRegisterModal }) => {
+const Form = ({
+  setModalIsOpen,
+  setModalIsOpenError,
+  setErrorMessage,
+  closeRegisterModal,
+  setCloseRegisterModal,
+}) => {
   const [showhide, setShowhide] = useState("");
 
   const [change, setChange] = useState(false);
@@ -108,36 +114,28 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage ,closeRegis
       setErrorMessage("Email cant be empty or non valid.");
       setModalIsOpenError(true);
     } else {
+      const userData = JSON.parse(localStorage.getItem("user"));
+
       const data = {
         email: email,
         password: password,
-        userType: 2,
+        companyId: userData.appraiserCompany_Datails.appraiserCompanyId,
       };
 
       const encryptedData = encryptionData(data);
       setLoading(true);
       toast.loading("Registering user...");
       axios
-        .post("/api/register", encryptedData)
+        .post("/api/registerByCompany", encryptedData)
         .then((res) => {
-          console.log(res);
-          const isAdding = JSON.parse(localStorage.getItem("addAppraiser"));
           toast.dismiss();
-          if(isAdding){
-            const userData = isAdding.user;
-            localStorage.setItem("user",JSON.stringify(userData));
-            localStorage.removeItem("addAppraiser");
-            router.push("/all-appraisers");
-          }
-          else{
-          // setModalIsOpen(true);
-          router.push("/login");
-          }
+          toast.success("Successfully added!!");
+          window.location.reload();
         })
         .catch((err) => {
           toast.dismiss();
-          setErrorMessage(err.response);
-          setModalIsOpenError(true);
+          toast.error(err);
+          // setModalIsOpenError(true);
         })
         .finally(() => {
           setLoading(false);
@@ -167,75 +165,79 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage ,closeRegis
     }
   };
 
-  const [cancel,setCancel] = useState(false);
+  const [cancel, setCancel] = useState(false);
 
   return (
-    <>{ <div className="row mt-4">
-      
-      <div className="col-lg-6">
-        <div onSubmit={ cancel ? ()=>setCloseRegisterModal(true) : registerHandler}>
-          {error && (
+    <>
+      {
+        <div className="row mt-4">
+          <div className="col-lg-12">
             <div
-              style={{
-                backgroundColor: "orangered",
-                opacity: "80%",
-                borderColor: "red",
-                borderWidth: "20px",
-                borderRadius: "4px",
-                padding: "1%",
-                justifyContent: "space-between",
-                display: "flex",
-                flexDirection: "row",
-                width: "80%",
-                marginLeft: "10%",
-              }}
+              onSubmit={
+                cancel ? () => setCloseRegisterModal(true) : registerHandler
+              }
             >
-              <h4 style={{ color: "white" }}>Invalid credentials</h4>
-              <div
-                className="input-group-text m-1"
-                style={{ border: "1px solid white" }}
-                onClick={handleErrorModalCancel}
-              >
-                <img
-                  src="https://th.bing.com/th/id/OIP.VirRE_r48DkDvZVNoo6_agHaHZ?w=209&h=208&c=7&r=0&o=5&dpr=1.1&pid=1.7"
-                  width={"20px"}
-                  height={"20px"}
-                />
-              </div>
-            </div>
-          )}
-          {success && (
-            <div
-              style={{
-                backgroundColor: "green",
-                opacity: "80%",
-                borderColor: "green",
-                borderWidth: "20px",
-                borderRadius: "4px",
-                padding: "1%",
-                justifyContent: "space-between",
-                display: "flex",
-                flexDirection: "row",
-                width: "80%",
-                marginLeft: "10%",
-              }}
-            >
-              <h4 style={{ color: "white" }}>Successfully logged in</h4>
-              <div
-                className="input-group-text m-1"
-                style={{ border: "1px solid white" }}
-                onClick={handleSuccessModalCancel}
-              >
-                <h4 style={{ color: "white", marginTop: "20%" }}>OK</h4>
-              </div>
-            </div>
-          )}
+              {error && (
+                <div
+                  style={{
+                    backgroundColor: "orangered",
+                    opacity: "80%",
+                    borderColor: "red",
+                    borderWidth: "20px",
+                    borderRadius: "4px",
+                    padding: "1%",
+                    justifyContent: "space-between",
+                    display: "flex",
+                    flexDirection: "row",
+                    width: "80%",
+                    marginLeft: "10%",
+                  }}
+                >
+                  <h4 style={{ color: "white" }}>Invalid credentials</h4>
+                  <div
+                    className="input-group-text m-1"
+                    style={{ border: "1px solid white" }}
+                    onClick={handleErrorModalCancel}
+                  >
+                    <img
+                      src="https://th.bing.com/th/id/OIP.VirRE_r48DkDvZVNoo6_agHaHZ?w=209&h=208&c=7&r=0&o=5&dpr=1.1&pid=1.7"
+                      width={"20px"}
+                      height={"20px"}
+                    />
+                  </div>
+                </div>
+              )}
+              {success && (
+                <div
+                  style={{
+                    backgroundColor: "green",
+                    opacity: "80%",
+                    borderColor: "green",
+                    borderWidth: "20px",
+                    borderRadius: "4px",
+                    padding: "1%",
+                    justifyContent: "space-between",
+                    display: "flex",
+                    flexDirection: "row",
+                    width: "80%",
+                    marginLeft: "10%",
+                  }}
+                >
+                  <h4 style={{ color: "white" }}>Successfully logged in</h4>
+                  <div
+                    className="input-group-text m-1"
+                    style={{ border: "1px solid white" }}
+                    onClick={handleSuccessModalCancel}
+                  >
+                    <h4 style={{ color: "white", marginTop: "20%" }}>OK</h4>
+                  </div>
+                </div>
+              )}
 
-          <div className="heading text-center">
-          </div>
-          {/* End .heading */}
+              <div className="heading text-center"></div>
+              {/* End .heading */}
 
-         {/*  <div className="col-lg-12">
+              {/*  <div className="col-lg-12">
             <div className="form-group input-group ui_kit_select_search mb-3">
               <select
                 required
@@ -261,129 +263,138 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage ,closeRegis
               </select>
             </div>
           </div>*/}
-          {/* End from-group */}
+              {/* End from-group */}
 
-          <div className="col-lg-12">
-            <div className="form-group input-group  ">
-              <input
-                type="email"
-                className="form-control"
-                required
-                placeholder="Email Address"
-                ref={emailRegisterRef}
-              />
-              <div className="input-group-prepend">
-                <div
-                  className="input-group-text m-1"
-                  style={{ border: "1px solid #2e008b" }}
-                >
-                  <i className="fa fa-envelope-o"></i>
+              <div className="col-lg-12">
+                <div className="form-group input-group  ">
+                  <input
+                    type="email"
+                    className="form-control"
+                    required
+                    placeholder="Username / Email"
+                    ref={emailRegisterRef}
+                  />
+                  <div className="input-group-prepend">
+                    <div
+                      className="input-group-text m-1"
+                      style={{ border: "1px solid #2e008b", padding: "12px" }}
+                    >
+                      <i className="fa fa-envelope"></i>
+                    </div>
+                  </div>
                 </div>
+                {/* End .form-group */}
               </div>
-            </div>
-            {/* End .form-group */}
-          </div>
 
-          <div className="col-lg-12" style={{ marginTop: "10px" }}>
-            <div
-              className="form-group input-group  "
-              style={{ position: "relative", marginBottom: "6px" }}
-            >
-              {/* <label htmlFor="passwordInput" style={labelStyle}>
+              <div className="col-lg-12" style={{ marginTop: "10px" }}>
+                <div
+                  className="form-group input-group  "
+                  style={{ position: "relative", marginBottom: "6px" }}
+                >
+                  {/* <label htmlFor="passwordInput" style={labelStyle}>
                 Password must have a A-Z,a-z,0-9,!@#$%^& a & 8 - 15 characters
                 long.
               </label> */}
-              <input
-                type={passwordVisible ? "text" : "password"} // Conditionally set the input type
-                className="form-control"
-                placeholder="Password"
-                id="passwordInput"
-                style={inputStyle}
-                required
-                value={passwordRegister}
-                onChange={(e) => checkPasswordRegisterHandler(e)}
-                onFocus={() => setIsFocused(true)}
-                onBlur={() => setIsFocused(false)}
-                maxLength={15}
-                minLength={8}
-              />
-              <div className="input-group-prepend">
-                <div
-                  className="input-group-text m-1"
-                  style={{ border: "1px solid #2e008b" }}
-                  onMouseEnter={togglePasswordVisibility}
-                  onMouseLeave={togglePasswordVisibility}
-                >
-                  <FaEye />
+                  <input
+                    type={passwordVisible ? "text" : "password"} // Conditionally set the input type
+                    className="form-control"
+                    placeholder="Password"
+                    id="passwordInput"
+                    style={inputStyle}
+                    required
+                    value={passwordRegister}
+                    onChange={(e) => checkPasswordRegisterHandler(e)}
+                    onFocus={() => setIsFocused(true)}
+                    onBlur={() => setIsFocused(false)}
+                    maxLength={15}
+                    minLength={8}
+                  />
+                  <div className="input-group-prepend">
+                    <div
+                      className="input-group-text m-1"
+                      style={{ border: "1px solid #2e008b", padding: "12px" }}
+                      onMouseEnter={togglePasswordVisibility}
+                      onMouseLeave={togglePasswordVisibility}
+                    >
+                      <FaEye />
+                    </div>
+                  </div>
                 </div>
+                {/* End .form-group */}
               </div>
-            </div>
-            {/* End .form-group */}
-          </div>
-          <div style={{ marginTop: "10px" }}>
-            {isFocused ? (
-              passwordRegisterVerified ? (
-                <span style={{ color: "green" }}>Strong Password &#10004;</span>
-              ) : !firstClick ? (
-                <span style={{ color: "red" }}> Weak Password &#10008;</span>
+              <div style={{ marginTop: "10px" }}>
+                {isFocused ? (
+                  passwordRegisterVerified ? (
+                    <span style={{ color: "green" }}>
+                      Strong Password &#10004;
+                    </span>
+                  ) : !firstClick ? (
+                    <span style={{ color: "red" }}>
+                      {" "}
+                      Weak Password &#10008;
+                    </span>
+                  ) : (
+                    ""
+                  )
+                ) : (
+                  ""
+                )}
+              </div>
+
+              <div className="col-lg-12">
+                <div
+                  className="form-group input-group  "
+                  style={{
+                    position: "",
+                    marginTop: "30px",
+                    marginBottom: "15px",
+                  }}
+                >
+                  <label htmlFor="passwordInput" style={labelStyle}>
+                    Password must have a A-Z,a-z,0-9,!@#$%^& a & 8 - 15
+                    characters long.
+                  </label>
+                  <input
+                    type={passwordVisible_01 ? "text" : "password"} // Conditionally set the input type
+                    className="form-control mt-3"
+                    placeholder="Re enter Password"
+                    required
+                    onChange={(e) => checkConfirmHandler(e)}
+                    onFocus={() => setIs2Focused(true)}
+                    onBlur={() => setIs2Focused(false)}
+                    ref={passwordRegisterRef}
+                    style={{ paddingRight: "40px" }} // Add right padding to accommodate the button
+                  />
+                  <div className="input-group-prepend mt-3">
+                    <div
+                      className="input-group-text m-1"
+                      style={{ border: "1px solid #2e008b", padding: "12px" }}
+                      onMouseEnter={togglePasswordVisibility}
+                      onMouseLeave={togglePasswordVisibility}
+                    >
+                      <FaEye />
+                    </div>
+                  </div>
+                </div>
+                {/* End .form-group */}
+              </div>
+              {is2Focused ? (
+                checkRegisterConfrim ? (
+                  ""
+                ) : (
+                  <div style={{ marginTop: "-2%" }}>
+                    <span style={{ color: "red" }}>
+                      {" "}
+                      Both password arent same &#10008;
+                    </span>{" "}
+                  </div>
+                )
               ) : (
                 ""
-              )
-            ) : (
-              ""
-            )}
-          </div>
+              )}
 
-          <div className="col-lg-12">
-            <div
-              className="form-group input-group  "
-              style={{ position: "", marginTop: "30px", marginBottom: "15px" }}
-            >
-              <label htmlFor="passwordInput" style={labelStyle}>
-                Password must have a A-Z,a-z,0-9,!@#$%^& a & 8 - 15 characters
-                long.
-              </label>
-              <input
-                type={passwordVisible_01 ? "text" : "password"} // Conditionally set the input type
-                className="form-control mt-3"
-                placeholder="Re enter Password"
-                required
-                onChange={(e) => checkConfirmHandler(e)}
-                onFocus={() => setIs2Focused(true)}
-                onBlur={() => setIs2Focused(false)}
-                ref={passwordRegisterRef}
-                style={{ paddingRight: "40px" }} // Add right padding to accommodate the button
-              />
-              <div className="input-group-prepend mt-3">
-                <div
-                  className="input-group-text m-1"
-                  style={{ border: "1px solid #2e008b" }}
-                  onMouseEnter={togglePasswordVisibility}
-                  onMouseLeave={togglePasswordVisibility}
-                >
-                  <FaEye />
-                </div>
-              </div>
-            </div>
-            {/* End .form-group */}
-          </div>
-          {is2Focused ? (
-            checkRegisterConfrim ? (
-              ""
-            ) : (
-              <div style={{ marginTop: "-2%" }}>
-                <span style={{ color: "red" }}>
-                  {" "}
-                  Both password arent same &#10008;
-                </span>{" "}
-              </div>
-            )
-          ) : (
-            ""
-          )}
-
-          <div className="col-lg-12">
-            {/*{captchaVerfied ? (
+              <div className="col-lg-12">
+                {/*{captchaVerfied ? (
               ""
             ) : (
               <label
@@ -394,16 +405,24 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage ,closeRegis
                 Captcha doesnt match
               </label>
             )}*/}
-           
-          </div>
+              </div>
 
-          <button onClick={()=>setCloseRegisterModal(false)} className="btn btn-log w-50 " >
-            Cancel
-          </button>
-          <button onClick={()=>registerHandler()} className="btn btn-log w-50 btn-thm">
-           Add
-          </button>
-          {/*<div
+              <div className="col-lg-12 text-center">
+                <button
+                  onClick={() => setCloseRegisterModal(false)}
+                  className="btn btn-color w-25 m-1"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={(e) => registerHandler(e)}
+                  className="btn btn-color w-25"
+                >
+                  Add
+                </button>
+              </div>
+
+              {/*<div
             className="heading text-center"
             style={{
               display: "flex",
@@ -430,16 +449,17 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage ,closeRegis
               </Link>
             </div>
           </div>*/}
-          {/* login button */}
+              {/* login button */}
 
-          {/* <div className="divide">
+              {/* <div className="divide">
         <span className="lf_divider">Or</span>
         <hr />
       </div> */}
-          {/* devider */}
+              {/* devider */}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>}
+      }
     </>
   );
 };

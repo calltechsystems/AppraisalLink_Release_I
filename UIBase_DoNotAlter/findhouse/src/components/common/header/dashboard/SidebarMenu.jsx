@@ -56,11 +56,11 @@ const SidebarMenu = () => {
             <Image
               width={40}
               height={45}
-              src="/assets/images/logo_new.png"
+              src="/assets/images/logo.png"
               alt="header-logo2.png"
             />
-            <span style={{ color: "#2e008b" }}>Appraisal </span>&nbsp;
-            <span style={{ color: "#97d700" }}> Land</span>
+            <span style={{ color: "#2e008b", marginTop:"20px" }}>Appraisal </span>&nbsp;
+            <span style={{ color: "#97d700", marginTop:"20px" }}> Land</span>
           </Link>
         </li>
         {/* End header */}

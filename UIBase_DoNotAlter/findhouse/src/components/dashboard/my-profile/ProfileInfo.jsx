@@ -413,12 +413,13 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           htmlFor=""
                           style={{ paddingTop: "5px" }}
                         >
-                          Company Name{" "}
+                          Company Name{" "}<span class="req-btn">*</span>
                         </label>
                       </div>
                       <div className="col-lg-7">
                         <input
                           type="text"
+                          required
                           className="form-control"
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
@@ -732,10 +733,10 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   </div>
 
                   <div className="mt-5">
-                    <p>
+                    {/* <p>
                       If you have an Administrative Assistant, fill in the
                       following:
-                    </p>
+                    </p> */}
                     <h3>Assistant#1 Information</h3>
                     <hr />
                   </div>

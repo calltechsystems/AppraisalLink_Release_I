@@ -16,7 +16,7 @@ const SidebarMenu = () => {
   ];
 
   const manageAccountTag = [
-    { id: 3, name: "Help desk", route: "/contact", icon: "flaticon-telephone" }
+    { id: 3, name: "Help desk", route: "/contact", icon: "flaticon-telephone" },
   ];
 
   const appraiserProperties = [
@@ -60,17 +60,20 @@ const SidebarMenu = () => {
       <ul className="sidebar-menu">
         <li
           className="sidebar_header header"
-          style={{ backgroundColor: "white", padding:"30px" }}
+          style={{ backgroundColor: "white", padding: "30px" }}
         >
           <Link href="/">
             <Image
               width={40}
               height={45}
-              src="/assets/images/logo_new.png"
+              src="/assets/images/logo.png"
               alt="header-logo2.png"
             />
-            <span style={{ color: "#2e008b" }}>Appraisal </span>&nbsp;
-            <span style={{ color: "#97d700" }}> Land</span>
+            <span style={{ color: "#2e008b", marginTop: "20px" }}>
+              Appraisal{" "}
+            </span>
+            &nbsp;
+            <span style={{ color: "#97d700", marginTop: "20px" }}> Land</span>
           </Link>
         </li>
         {/* End header */}
@@ -105,58 +108,63 @@ const SidebarMenu = () => {
             </li>
 
             <li
-            className={`treeview ${
-              isSinglePageActive("/my-appraiser-properties", route.pathname)
-                ? "active"
-                : ""
-            }`}
-          >
-            <Link href="/my-appraiser-properties">
-              <i className="flaticon-box"></i>
-              <span>Wishlist</span>
-            </Link>
-          </li>
+              className={`treeview ${
+                isSinglePageActive("/my-appraiser-properties", route.pathname)
+                  ? "active"
+                  : ""
+              }`}
+            >
+              <Link href="/my-appraiser-properties">
+                <i className="flaticon-box"></i>
+                <span>Wishlist</span>
+              </Link>
+            </li>
 
-          <li
-          className={`treeview ${
-            isSinglePageActive("/biding-history", route.pathname)
-              ? "active"
-              : ""
-          }`}
-        >
-          <Link href="/biding-history">
-            <i className="flaticon-building"></i>
-            <span>Quote History</span>
-          </Link>
-        </li>
+            <li
+              className={`treeview ${
+                isSinglePageActive("/biding-history", route.pathname)
+                  ? "active"
+                  : ""
+              }`}
+            >
+              <Link href="/biding-history">
+                <i className="flaticon-building"></i>
+                <span>Quote History</span>
+              </Link>
+            </li>
 
-        <li
-        className={`treeview ${
-          isSinglePageActive("/appraiser-completed-properties", route.pathname)
-            ? "active"
-            : ""
-        }`}
-      >
-        <Link href="/appraiser-completed-properties">
-          <i className="flaticon-home"></i>
-          <span>Completed Properties</span>
-        </Link>
-      </li>
+            <li
+              className={`treeview ${
+                isSinglePageActive(
+                  "/appraiser-completed-properties",
+                  route.pathname
+                )
+                  ? "active"
+                  : ""
+              }`}
+            >
+              <Link href="/appraiser-completed-properties">
+                <i className="flaticon-home"></i>
+                <span>Completed Properties</span>
+              </Link>
+            </li>
 
-        <li
-        className={`treeview ${
-          isSinglePageActive("/appraiser-archive-property", route.pathname)
-            ? "active"
-            : ""
-        }`}
-      >
-        <Link href="/appraiser-archive-property">
-          <i className="flaticon-home"></i>
-          <span>Archive Properties</span>
-        </Link>
-      </li>
+            <li
+              className={`treeview ${
+                isSinglePageActive(
+                  "/appraiser-archive-property",
+                  route.pathname
+                )
+                  ? "active"
+                  : ""
+              }`}
+            >
+              <Link href="/appraiser-archive-property">
+                <i className="flaticon-home"></i>
+                <span>Archive Properties</span>
+              </Link>
+            </li>
 
-           
             {/* End Review */}
 
             {/*<li
@@ -305,7 +313,7 @@ const SidebarMenu = () => {
             ))}
           </ul>
         </li> */}
-      <li className="title">
+        <li className="title">
           <span>Contact Us</span>
           <ul>
             {manageAccountTag.map((item) => (

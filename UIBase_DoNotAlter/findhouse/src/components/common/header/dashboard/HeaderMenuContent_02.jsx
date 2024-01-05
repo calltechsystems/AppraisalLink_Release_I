@@ -6,6 +6,8 @@ import Image from "next/image";
 const HeaderMenuContent = ({ float = "", hide, userData,  setProfileCount , profileCount , userInfo }) => {
   const route = useRouter();
 
+  console.log(userData);
+
   const home = [
     {
       id: 1,
@@ -511,7 +513,7 @@ const HeaderMenuContent = ({ float = "", hide, userData,  setProfileCount , prof
       </li> */}
 
       <li className="user_setting">
-        <div className="">
+        {userData?.userType === 3 ? <div className="">
           <a className="btn dropdown-toggle" href="#" data-bs-toggle="dropdown">
             <Image
               width={45}
@@ -525,14 +527,37 @@ const HeaderMenuContent = ({ float = "", hide, userData,  setProfileCount , prof
             />
             <span className="dn-1199 ms-1 text-light">
               {userData?.brokerage_Details?.firstName
-                ? userData.brokerage_Details?.firstName 
-                : "User"}
+                ? `${userData.brokerage_Details?.firstName} ${userData?.brokerage_Details?.lastName}`
+                : "xyz"}
             </span>
           </a>
           <div className="dropdown-menu">
             <MyAccount userData={userData} />
           </div>
         </div>
+        :
+        <div className="">
+          <a className="btn dropdown-toggle" href="#" data-bs-toggle="dropdown">
+            <Image
+              width={45}
+              height={45}
+              className="rounded-circle"
+              src={userInfo?.appraiserCompany_Datails?.profileImage
+                ? userInfo?.appraiserCompany_Datails?.profileImage
+                : `/assets/images/home/placeholder_01.jpg`
+            }
+              alt="e1.png"
+            />
+            <span className="dn-1199 ms-1 text-light">
+              {userData?.appraiserCompany_Datails?.firstName
+                ? `${userData.appraiserCompany_Datails?.firstName} ${userData?.appraiserCompany_Datails?.lastName}`
+                : "xyz"}
+            </span>
+          </a>
+          <div className="dropdown-menu">
+            <MyAccount userData={userData} />
+          </div>
+        </div>}
       </li>
       {/* End ."user_setting */}
 

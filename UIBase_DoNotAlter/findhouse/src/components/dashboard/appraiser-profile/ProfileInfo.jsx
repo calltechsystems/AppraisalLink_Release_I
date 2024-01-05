@@ -15,62 +15,62 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   const router = useRouter();
 
   const [SelectedImage, setSelectedImage] = useState(
-    userData?.broker_Details?.profileImage ||
+    userData?.appraiserCompany_Datails?.profileImage ||
       "/assets/images/home/placeholder_01.jpg"
   );
 
 
   const hiddenStyle = { backgroundColor: "#E8F0FE", display: "none" };
   const viewStyle = { backgroundColor: "#E8F0FE", display: "block" };
-  const [edit, setEdit] = useState(!userData.broker_Details?.firstName);
+  const [edit, setEdit] = useState(!userData.appraiserCompany_Datails?.firstName);
 
   const [firstNameRef, setFirstNameRef] = useState(
-    userData?.brokerage_Details?.firstName || ""
+    userData?.appraiserCompany_Datails?.firstName || ""
   );
 
   const [designations,setDesignation]= useState("");
   const [middleNameRef, setMiddleNameRef] = useState(
-    userData?.brokerage_Details?.middleName || ""
+    userData?.appraiserCompany_Datails?.middleName || ""
   );
   const [lastNameRef, setLastNameRef] = useState(
-    userData?.brokerage_Details?.lastName || ""
+    userData?.appraiserCompany_Datails?.lastName || ""
   );
   const [companyNameRef, setCompanyNameRef] = useState(
-    userData?.brokerage_Details?.companyName || ""
+    userData?.appraiserCompany_Datails?.companyName || ""
   );
 
   const [profile, setProfile] = useState(
-    userData?.brokerage_Details?.profileImage || null
+    userData?.appraiserCompany_Datails?.profileImage || null
   );
 
   const [addressLineRef, setAddressLineRef] = useState(
-    userData?.brokerage_Details?.adressLine1 || ""
+    userData?.appraiserCompany_Datails?.adressLine1 || ""
   );
   const [addressLineTwoRef, setAddressLineTwoRef] = useState(
-    userData?.brokerage_Details?.adressLine2 || ""
+    userData?.appraiserCompany_Datails?.adressLine2 || ""
   );
 
   
 
   const [cityRef, setCityRef] = useState(
-    userData?.brokerage_Details?.city || ""
+    userData?.appraiserCompany_Datails?.city || ""
   );
   const [stateRef, setStateRef] = useState(
-    userData?.brokerage_Details?.province || ""
+    userData?.appraiserCompany_Datails?.province || ""
   );
   const [zipcodeRef, setZipcodeRef] = useState(
-    userData?.brokerage_Details?.postalCode || ""
+    userData?.appraiserCompany_Datails?.postalCode || ""
   );
   const [phoneNumberRef, setPhoneNumberRef] = useState(
-    userData?.brokerage_Details?.phoneNumber || ""
+    userData?.appraiserCompany_Datails?.phoneNumber || ""
   );
 
   const [commissionRate, setCommissionRate] = useState(
-    userData.brokerage_Details?.commissionRate || ""
+    userData.appraiserCompany_Datails?.commissionRate || ""
   );
 
   const [maxNumberOfAssignedOrders, setMaxNumberOfAssignedOrders] = useState(
-    userData?.brokerage_Details?.maxNumberOfAssignedOrders || ""
+    userData?.appraiserCompany_Datails?.maxNumberOfAssignedOrders || ""
   );
 
   const [otherDesignation, setOtherDesignation] = useState("");
@@ -211,9 +211,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         .put("/api/updateAppraiserProfile", encryptedData)
         .then((res) => {
           toast.success("Successfully Updated Profile!");
-          console.log(res);
+          console.log(res.data.userData);
           let data = userData;
-          data.brokerage_Details = res.data.userData.appraiser;
+          data.appraiser_Details = res.data.userData.appraiser;
           localStorage.removeItem("user");
           localStorage.setItem("user", JSON.stringify(data));
           setShowCard(true);
@@ -465,7 +465,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           Designation <span class="req-btn">*</span>
                         </label>
                       </div>
-                      <div className="col-lg-3">
+                      <div className="col-lg-4">
                         <select
                           required
                           className="form-select"
@@ -491,7 +491,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                         </select>
                       </div>
                       {setODesignation &&
-                      <div className="col-lg-4" id="other-div">
+                      <div id="other-div">
                         <input
                           required
                           // style={setODesignation ? viewStyle : hiddenStyle}

@@ -461,33 +461,65 @@ const Index = ({ propertyId }) => {
               <div className="modal">
                 <div className="modal-content">
                   <span style={{ fontWeight: "bold" }}>
-                    <h5 className="text-center"> Appraiser Details </h5>
+                    <h3 className="text-center"> Appraiser Details </h3>
                   </span>
                   <hr />
                   <div className=" col-lg-12">
-                    <div className="row">
-                      <h5 className="col-lg-4 mt-1 text-end">
-                        <span className="">Appraiser Name :</span>{" "}
+                    <div className="row offset-1">
+                      <h5 className="col-lg-3 mt-1 text-start">
+                        <span className="">Appraiser Name </span>{" "}
                       </h5>
-                      <span className="col-lg-3">
+                      <span className="col-lg-1">:</span>
+                      <span className="col-lg-6 text-start">
                         {appInfo.firstName} {appInfo.lastName}
                       </span>
                     </div>
-                    <div className="row">
-                      <h5 className="col-lg-4 mt-1 text-end">
-                        <span className="">Appraiser Address :</span>{" "}
+                    <div className="row offset-1">
+                      <h5 className="col-lg-3 mt-1 text-start">
+                        <span className="">Email Address</span>{" "}
                       </h5>
-                      <span className="col-lg-3">
+                      <span className="col-lg-1">:</span>
+                      <span className="col-lg-6 text-start">
+                        {appInfo.email}
+                      </span>
+                    </div>
+                    <div className="row offset-1">
+                      <h5 className="col-lg-3 mt-1 text-start">
+                        <span className="">Phone Number </span>{" "}
+                      </h5>
+                      <span className="col-lg-1">:</span>
+                      <span className="col-lg-6 text-start">
+                        {appInfo.phoneNumber}
+                      </span>
+                    </div>
+                    <div className="row offset-1">
+                      <h5 className="col-lg-3 mt-1 text-start">
+                        <span className="">Company Name </span>{" "}
+                      </h5>
+                      <span className="col-lg-1">:</span>
+                      <span className="col-lg-6 text-start">
+                        {appInfo.phoneNumber}
+                      </span>
+                    </div>
+                    <div className="row offset-1">
+                      <h5 className="col-lg-3 mt-1 text-start">
+                        <span className="">Designation</span>{" "}
+                      </h5>
+                      <span className="col-lg-1">:</span>
+                      <span className="col-lg-6 text-start">
+                        {appInfo.phoneNumber}
+                      </span>
+                    </div>
+                    <div className="row offset-1">
+                      <h5 className="col-lg-3 mt-1 text-start">
+                        <span className="">Address </span>{" "}
+                      </h5>
+                      <span className="col-lg-1">:</span>
+                      <span className="col-lg-6">
                         {appInfo.streetName}-{appInfo.streetNumber},
                         {appInfo.area} {appInfo.city} - {appInfo.province}{" "}
                         {appInfo.postalCode}
                       </span>
-                    </div>
-                    <div className="row">
-                      <h5 className="col-lg-4 mt-1">
-                        <span className="">Appraiser Number :</span>{" "}
-                      </h5>
-                      <span className="col-lg-3">{appInfo.phoneNumber}</span>
                     </div>
                   </div>
                   <hr />

@@ -1364,9 +1364,9 @@ header.header-nav.menu_style_home_three a.navbar_brand span,
 header.header-nav.menu_style_home_five a.navbar_brand span {
   color: #ffffff;
   font-weight: bold;
-  font-size: 22px;
+  font-size: 25px;
   margin-top: 9px;
-  padding-left: 15px;
+  /* padding-left: 15px; */
   text-transform: capitalize;
   vertical-align: middle;
 }
@@ -2238,7 +2238,7 @@ header.header-nav.menu_style_home_one.style2 a.navbar_brand {
 header.header-nav.menu_style_home_one.style2 a.navbar_brand span {
   color: #484848;
   font-family: "Nunito";
-  font-size: 22px;
+  font-size: 25px;
   font-weight: bold;
   line-height: 1.2;
 }
@@ -22174,6 +22174,7 @@ input[type=text] {
   border: 1px solid #888;
   width: 50%;
   margin-top: 10%;
+  border: 2px solid #97d700;
 }
 
 /* Close Button */
@@ -22474,7 +22475,8 @@ input:checked + .slider:before {
 .property_table .table th {
   font-size: 16px;
   font-family: "Nunito";
-  color: #484848;
+  /* color: #484848; */
+  color: black;
   font-weight: 600;
   /* line-height: 3; */
   /* padding-left: 30px; */
@@ -22935,3 +22937,17 @@ input:checked + .slider:before {
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.7) transparent transparent;
 } */
+.form-content {
+  background-color: #fefefe;
+  /* margin: 15% auto; */
+  padding: 20px;
+  /* border: 1px solid #888; */
+  /* width: 100%; */
+  width: 800px;
+  margin-top: 0;
+  border: 2px solid #97d700;
+  font-size: 18px;
+}
+.fs-18{
+  font-size: 18px;
+}

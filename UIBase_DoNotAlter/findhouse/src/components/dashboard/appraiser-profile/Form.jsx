@@ -31,7 +31,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
           <div className="wrap-custom-file mt-3 mb-5">
             <img
               style={{ borderRadius: "50%" }}
-              src={userData?.brokerage_Details?.profileImage}
+              src={userData?.appraiser_Details?.profileImage}
               alt="Uploaded Image"
             />
           </div>
@@ -49,9 +49,9 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       style={{ fontSize: "21px" }}
                     >
                       {" "}
-                      Name : {userData?.brokerage_Details?.firstName}{" "}
-                      {userData?.brokerage_Details?.middleName}{" "}
-                      {userData?.brokerage_Details?.lastName}
+                      Name : {userData?.appraiserCompany_Datails?.firstName}{" "}
+                      {userData?.appraiserCompany_Datails?.middleName}{" "}
+                      {userData?.appraiserCompany_Datails?.lastName}
                     </span>
                   </li>
                 </ul>
@@ -60,7 +60,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                 <ul>
                   <li className="text-dark mt-0">
                     <p className="text-dark" style={{ fontSize: "18px" }}>
-                      Company : {userData?.brokerage_Details?.companyName}
+                      Company : {userData?.appraiserCompany_Datails?.companyName}
                     </p>
                     {/* <span className="text-dark fw-bold">Middle Name</span> :{" "}
                     <span className="text-dark fw-bold"> Devendra </span> */}
@@ -82,7 +82,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                 <ul>
                   <li className="text-dark mt-0">
                     <p className="text-dark" style={{ fontSize: "17px" }}>
-                      Phone : {userData?.brokerage_Details?.phoneNumber}
+                      Phone : {userData?.appraiserCompany_Datails?.phoneNumber}
                     </p>
                         </li>
                 </ul>
@@ -92,7 +92,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                   <li className="text-dark mt-0">
                     <p className="text-dark" style={{ fontSize: "17px" }}>
                       Designation. :{" "}
-                      {userData?.brokerage_Details?.designation || "NA"}
+                      {userData?.appraiserCompany_Datails?.designation || "NA"}
                     </p>
                     
                   </li>
@@ -119,7 +119,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                     {/* <span className="text-dark fw-bold">First Name</span> :{" "} */}
                     <span className="text-dark" style={{ fontSize: "17px" }}>
                       {" "}
-                      Address : {userData?.brokerage_Details?.adressLine1}
+                      Address : {userData?.appraiserCompany_Datails?.adressLine1}
                     </span>
                   </li>
                 </ul>
@@ -131,7 +131,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       className="text-dark"
                       style={{ fontSize: "17px", marginLeft: "4.8rem" }}
                     >
-                      {userData?.brokerage_Details?.area}
+                      {userData?.appraiserCompany_Datails?.area}
                     </p>
                     {/* <span className="text-dark fw-bold">Middle Name</span> :{" "}
                     <span className="text-dark fw-bold"> Devendra </span> */}
@@ -145,8 +145,8 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       className="text-dark"
                       style={{ fontSize: "17px", marginLeft: "4.8rem" }}
                     >
-                      {userData.brokerage_Details?.streetName}-{userData.brokerage_Details?.streetNumber},{userData?.brokerage_Details?.city},{" "}
-                      {userData?.brokerage_Details?.province}
+                      {userData.appraiserCompany_Datails?.streetName}-{userData.appraiserCompany_Datails?.streetNumber},{userData?.brokerage_Details?.city},{" "}
+                      {userData?.appraiserCompany_Datails?.province}
                     </p>
                     {/* <span className="text-dark fw-bold">Middle Name</span> :{" "}
                     <span className="text-dark fw-bold"> Devendra </span> */}
@@ -160,7 +160,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       className="text-dark"
                       style={{ fontSize: "17px", marginLeft: "4.8rem" }}
                     >
-                      {userData?.brokerage_Details?.zipCode}
+                      {userData?.appraiserCompany_Datails?.zipCode}
                     </p>
                     {/* <span className="text-dark fw-bold">Last Name</span> :{" "}
                     <span className="text-dark fw-bold"> Patel </span> */}

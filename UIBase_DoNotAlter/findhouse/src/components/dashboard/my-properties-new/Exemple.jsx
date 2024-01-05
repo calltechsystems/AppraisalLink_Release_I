@@ -24,7 +24,7 @@ const headCells = [
     id: "address",
     numeric: false,
     label: "Property Address",
-    width: 250,
+    width: 280,
   },
   {
     id: "status",
@@ -42,19 +42,19 @@ const headCells = [
     id: "sub_date",
     numeric: false,
     label: "Quote Submitted Date",
-    width: 200,
+    width: 220,
   },
   {
     id: "urgency",
     numeric: false,
-    label: "Type of Request",
-    width: 100,
+    label: "Request Type",
+    width: 140,
   },
   {
     id: "quote_required_by",
     numeric: false,
     label: "Appraisal Report Required By",
-    width: 200,
+    width: 220,
   },
   // {
   //   id: "user",
@@ -148,7 +148,7 @@ export default function Exemple({
       hour: "numeric",
       minute: "numeric",
       // second: "numeric",
-      hour12: false, // Set to false for 24-hour format
+      hour12: true, // Set to false for 24-hour format
     };
 
     const formattedDate = new Date(dateString).toLocaleString("en-US", options);
@@ -214,7 +214,7 @@ export default function Exemple({
             type_of_appraisal: property.typeOfAppraisal,
             lender_information: property.lenderInformation
               ? property.lenderInformation
-              : "NA",
+              : "N.A.",
             urgency: property.urgency === 0 ? "Rush" : "Regular",
             actions: (
               // <ul className="view_edit_delete_list mb0">
