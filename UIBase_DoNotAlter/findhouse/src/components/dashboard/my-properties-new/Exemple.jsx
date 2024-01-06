@@ -3,6 +3,7 @@ import SmartTable from "./SmartTable";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import axios, { all } from "axios";
+import millify from "millify";
 import {
   FaArchive,
   FaHandHoldingHeart,
@@ -209,7 +210,7 @@ export default function Exemple({
             address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
             // user: property.applicantEmailAddress,
             type_of_building: property.typeOfBuilding,
-            amount: ` $${property.estimatedValue}`,
+            amount: ` $${millify(property.estimatedValue)}`,
             purpose: property.purpose,
             type_of_appraisal: property.typeOfAppraisal,
             lender_information: property.lenderInformation

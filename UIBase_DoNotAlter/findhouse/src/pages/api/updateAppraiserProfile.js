@@ -21,47 +21,42 @@ async function handler(request, response) {
       firstName,
       middleName,
       lastName,
-      licenseNo,
-      brokerageName,
       companyName,
-      mortageBrokerLicNo,
-      mortageBrokerageLicNo,
-      assistantFirstName,
-      assistantPhoneNumber,
       city,
-      state,
-      zipCode,
-      area,
+      province,
+      postalCode,
       phoneNumber,
-      adressLine1,
-      adressLine2,
+      streetName,
+      streetNumber,
       profileImage,
+      maxNumberOfAssignedOrders,
+      designation,
+      commissionRate
     } = body;
 
     const formData = {
       firstName: firstName,
       middleName : middleName,
       lastName: lastName,
-      licenseNo : licenseNo,
-      brokerageName : brokerageName,
       companyName: companyName,
-      adressLine1: adressLine1,
-      adressLine2: adressLine2,
       city: city,
-      state: state,
-      zipCode: zipCode,
-      area: area,
-      mortageBrokerageLicNo : mortageBrokerageLicNo,
-      mortageBrokerLicNo : mortageBrokerLicNo,
-      assistantFirstName : assistantFirstName,
-      assistantPhoneNumber : assistantPhoneNumber,
+      province: province,
+      postalCode: postalCode,
+      area: "" ,
+      apartmentNo : "",
+      streetName:streetName,
+      streetNumber:streetNumber,
       phoneNumber: phoneNumber,
+      commissionRate : Number(commissionRate),
+      maxNumberOfAssignedOrders:Number(maxNumberOfAssignedOrders),
+      designation : designation,
       profileImage: profileImage,
     };
 
+    console.log(formData);
     
 
-    const userResponse = await axios.put(`${domain}/Brokerage/${id}`, formData, {
+    const userResponse = await axios.put(`${domain}/AppraiserIndividual/${id}`, formData, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",

@@ -568,7 +568,7 @@ export default function Exemple({
                 </li>
               )} */}
 
-                <li title="Archive Property">
+                <li title="Un-Archive Property">
                   {/* <Link
                       href="#"
                       onClick={() =>
@@ -585,8 +585,8 @@ export default function Exemple({
                     onClick={() => archievePropertyHandler(property.propertyId)}
                   >
                     <Link className="color-light" href={`/archive-property`}>
-                      <span className="text-light">
-                        <FaArchive />
+                      <span className="text-light flaticon-close">
+                        {/* <FaArchive /> */}
                       </span>
                     </Link>
                   </span>

@@ -24,6 +24,7 @@
     "i18next": "^23.6.0",
     "i18next-browser-languagedetector": "^7.1.0",
     "i18next-http-backend": "^2.3.1",
+    "millify": "^6.1.0",
     "moment": "^2.29.4",
     "next": "13.2.3",
     "next-cloudinary": "^4.22.0",
