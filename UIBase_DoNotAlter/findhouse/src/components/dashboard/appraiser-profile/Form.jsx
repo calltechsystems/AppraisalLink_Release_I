@@ -49,9 +49,9 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       style={{ fontSize: "21px" }}
                     >
                       {" "}
-                      Name : {userData?.appraiserCompany_Datails?.firstName}{" "}
-                      {userData?.appraiserCompany_Datails?.middleName}{" "}
-                      {userData?.appraiserCompany_Datails?.lastName}
+                      Name : {userData?.appraiser_Details?.firstName}{" "}
+                      {userData?.appraiser_Details?.middleName}{" "}
+                      {userData?.appraiser_Details?.lastName}
                     </span>
                   </li>
                 </ul>
@@ -60,7 +60,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                 <ul>
                   <li className="text-dark mt-0">
                     <p className="text-dark" style={{ fontSize: "18px" }}>
-                      Company : {userData?.appraiserCompany_Datails?.companyName}
+                      Company : {userData?.appraiser_Details?.companyName}
                     </p>
                     {/* <span className="text-dark fw-bold">Middle Name</span> :{" "}
                     <span className="text-dark fw-bold"> Devendra </span> */}
@@ -82,7 +82,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                 <ul>
                   <li className="text-dark mt-0">
                     <p className="text-dark" style={{ fontSize: "17px" }}>
-                      Phone : {userData?.appraiserCompany_Datails?.phoneNumber}
+                      Phone : {userData?.appraiser_Details?.phoneNumber}
                     </p>
                         </li>
                 </ul>
@@ -92,7 +92,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                   <li className="text-dark mt-0">
                     <p className="text-dark" style={{ fontSize: "17px" }}>
                       Designation. :{" "}
-                      {userData?.appraiserCompany_Datails?.designation || "NA"}
+                      {userData?.appraiser_Details?.designation || "NA"}
                     </p>
                     
                   </li>
@@ -119,7 +119,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                     {/* <span className="text-dark fw-bold">First Name</span> :{" "} */}
                     <span className="text-dark" style={{ fontSize: "17px" }}>
                       {" "}
-                      Address : {userData?.appraiserCompany_Datails?.adressLine1}
+                      Address : {userData?.appraiser_Details?.adressLine1}
                     </span>
                   </li>
                 </ul>
@@ -145,8 +145,8 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       className="text-dark"
                       style={{ fontSize: "17px", marginLeft: "4.8rem" }}
                     >
-                      {userData.appraiserCompany_Datails?.streetName}-{userData.appraiserCompany_Datails?.streetNumber},{userData?.brokerage_Details?.city},{" "}
-                      {userData?.appraiserCompany_Datails?.province}
+                      {userData.appraiser_Details?.streetName}-{userData.appraiser_Details?.streetNumber},{userData?.brokerage_Details?.city},{" "}
+                      {userData?.appraiser_Details?.province}
                     </p>
                     {/* <span className="text-dark fw-bold">Middle Name</span> :{" "}
                     <span className="text-dark fw-bold"> Devendra </span> */}
@@ -160,7 +160,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       className="text-dark"
                       style={{ fontSize: "17px", marginLeft: "4.8rem" }}
                     >
-                      {userData?.appraiserCompany_Datails?.zipCode}
+                      {userData?.appraiser_Details?.zipCode}
                     </p>
                     {/* <span className="text-dark fw-bold">Last Name</span> :{" "}
                     <span className="text-dark fw-bold"> Patel </span> */}

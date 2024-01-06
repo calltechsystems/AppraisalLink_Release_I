@@ -30,6 +30,12 @@ const headCells = [
     width: 160,
   },
   {
+    id: "appraisal_status",
+    numeric: false,
+    label: "Appraisal Status",
+    width: 160,
+  },
+  {
     id: "urgency",
     numeric: false,
     label: "Urgency",
@@ -260,6 +266,17 @@ export default function Exemple({
               ? `$ ${property.estimatedValue}`
               : "$ 0",
             purpose: property.purpose ? property.purpose : "NA",
+            appraisal_status: isBidded.bidId ? (
+              isBidded.status === 0 ? (
+                <span className="btn btn-primary">Quote Provided</span>
+              ) : isBidded.status === 1 ? (
+                <span className="btn btn-success" onClick={openStatusUpdateHandler}>Accepted</span>
+              ) : (
+                <span className="btn btn-danger">Rejected</span>
+              )
+            ) : (
+              <span className="btn btn-warning">New</span>
+            ),
             status: isBidded.bidId ? (
               isBidded.status === 0 ? (
                 <span className="btn btn-primary">Quote Provided</span>

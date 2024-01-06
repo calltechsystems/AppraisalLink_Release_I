@@ -6,7 +6,7 @@ import Image from "next/image";
 
 const MyAccount = ({ user, userData }) => {
   const profileMenuItems = [
-    { id: 1, name: "Profile", ruterPath: "/admin-profile" },
+    { id: 1, name: "Profile", ruterPath: "/brokerage-profile" },
     // { id: 2, name: " My Message", ruterPath: "/my-message" },
     // { id: 3, name: " My Favourite", ruterPath: "/my-favourites" },
     {

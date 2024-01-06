@@ -471,7 +471,7 @@ const Index = () => {
 
                 <div className="col-lg-4 col-xl-4 mb10">
                   <div className="style2 mb30-991">
-                    <h3 className="breadcrumb_title">Quote History</h3>
+                    <h3 className="breadcrumb_title">Appraising Properties</h3>
                     {/* <p>We are glad to see you again!</p>                                                             */}
                   </div>
                 </div>
@@ -1226,7 +1226,7 @@ const Index = () => {
                 {openDate && <div className="col-lg-12 pt-20" style={{display:"flex",flexDirection:"row"}}>
                 
                 <label style={{color:"black",fontWeight:"bold"}}>
-                Add Meeting Date and Time <span style={{color:"red"}}>*</span>
+                Date and Time <span style={{color:"red"}}>*</span>
                 </label>
                 <input
                   required

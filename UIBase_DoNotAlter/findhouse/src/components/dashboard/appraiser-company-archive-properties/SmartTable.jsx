@@ -332,8 +332,8 @@ function SmartTable(props) {
                     </tr>
                   </thead>
                   <tbody>
-                    {data.length > 0
-                      ? data.map((row, idx) => {
+                    {props.data.length > 0
+                      ? props.data.map((row, idx) => {
                           if (idx >= props.start && idx <= props.end) {
                             return (
                               <tr key={"tr_" + idx}>

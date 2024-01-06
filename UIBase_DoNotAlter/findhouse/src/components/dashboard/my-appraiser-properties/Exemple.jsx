@@ -203,7 +203,7 @@ export default function Exemple({
   const formatDate = (dateString) => {
     const options = {
       year: "numeric",
-      month: "long",
+      month: "short",
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
@@ -271,7 +271,7 @@ export default function Exemple({
               ) : isBidded.status === 1 ? (
                 <span className="btn btn-success">Accepted</span>
               ) : (
-                <span className="btn btn-danger">Rejected</span>
+                <span className="btn btn-danger">Declined</span>
               )
             ) : (
               <span className="btn btn-warning">New</span>
@@ -377,7 +377,9 @@ export default function Exemple({
                             className="btn btn-color w-15"
                             style={{ marginLeft: "10px" }}
                           >
-                            Provide Quote
+                          <Link href="#">
+                          <span className="flaticon-building text-light"></span>
+                        </Link>
                           </a>
                         </div>
                       </li>
@@ -386,7 +388,7 @@ export default function Exemple({
                     className="list-inline-item"
                     data-toggle="tooltip"
                     data-placement="top"
-                    title="Provide Quote"
+                    title="Archive Property"
                   >
                     <div
                       className=" fw-bold"
@@ -399,7 +401,9 @@ export default function Exemple({
                         className="btn btn-color w-15"
                         style={{ marginLeft: "10px" }}
                       >
-                        Archive Property 
+                      <Link href="#">
+                      <span className="flaticon-home text-light"></span>
+                    </Link>
                       </a>
                     </div>
                   </li>
@@ -417,7 +421,9 @@ export default function Exemple({
                     className="btn btn-color w-15"
                     style={{ marginLeft: "10px" }}
                   >
-                    Quote Update
+                  <Link href="#">
+                  <span className="flaticon-edit text-light"></span>
+                </Link>
                   </a>
                 </div>
                 )}

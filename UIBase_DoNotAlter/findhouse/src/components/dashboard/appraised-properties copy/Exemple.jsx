@@ -30,6 +30,12 @@ const headCells = [
     width: 160,
   },
   {
+    id: "appraisal_status",
+    numeric: false,
+    label: "Appraisal Status",
+    width: 160,
+  },
+  {
     id: "urgency",
     numeric: false,
     label: "Urgency",
@@ -199,7 +205,7 @@ export default function Exemple({
   const formatDate = (dateString) => {
     const options = {
       year: "numeric",
-      month: "long",
+      month: "short",
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
@@ -250,6 +256,26 @@ export default function Exemple({
             ? `$ ${property.estimatedValue}`
             : "$ 0",
           purpose: property.purpose ? property.purpose : "NA",
+          appraisal_status: isBidded.bidId ? (
+            isBidded.status === 0 ? (
+              <span
+                className="btn btn-primary  w-100"
+              >
+                Quote Provided
+              </span>
+            ) : isBidded.status === 1 ? (
+              <span
+                className="btn btn-success  w-100"
+                
+              >
+                Accepted
+              </span>
+            ) : (
+              <span className="btn btn-danger  w-100">Declined</span>
+            )
+          ) : (
+            <span className="btn btn-warning  w-100">New</span>
+          ),
           status: isBidded.bidId ? (
             isBidded.status === 0 ? (
               <span
@@ -265,7 +291,7 @@ export default function Exemple({
                 Accepted
               </span>
             ) : (
-              <span className="btn btn-danger  w-100">Rejected</span>
+              <span className="btn btn-danger  w-100">Declined</span>
             )
           ) : (
             <span className="btn btn-warning  w-100">New</span>
@@ -402,7 +428,9 @@ export default function Exemple({
                           className="btn btn-color w-100 mt-1"
                           style={{ marginLeft: "12px" }}
                         >
-                          Provide Quote
+                        <Link href="#">
+                        <span className="flaticon-building text-light"></span>
+                      </Link>
                         </button>
                       </div>
                     </li>
@@ -413,7 +441,7 @@ export default function Exemple({
                   className="list-inline-item"
                   data-toggle="tooltip"
                   data-placement="top"
-                  title="Provide Quote"
+                  title="Archive Property"
                 >
                   <div
                     className="w-100"
@@ -426,7 +454,9 @@ export default function Exemple({
                       className="btn btn-color w-100 mt-1"
                       style={{ marginLeft: "12px" }}
                     >
-                    Archive Property
+                    <Link href="#">
+                      <span className="flaticon-home text-light"></span>
+                    </Link>
                     </button>
                   </div>
                 </li>
@@ -438,7 +468,9 @@ export default function Exemple({
                           style={{ marginLeft: "12px" }}
                           onClick={openStatusUpdateHandler}
                         >
-                          Order Update
+                        <Link href="#">
+                        <span className="flaticon-edit text-light"></span>
+                      </Link>
                         </button>
               )}
             </div>

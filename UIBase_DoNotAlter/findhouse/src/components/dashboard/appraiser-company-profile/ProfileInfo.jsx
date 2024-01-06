@@ -15,57 +15,57 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   const router = useRouter();
 
   const [SelectedImage, setSelectedImage] = useState(
-    userData?.broker_Details?.profileImage ||
+    userData?.appraiserCompany_Datails?.profileImage ||
       "/assets/images/home/placeholder_01.jpg"
   );
 
   const hiddenStyle = { backgroundColor: "#E8F0FE", display: "none" };
   const viewStyle = { backgroundColor: "#E8F0FE", display: "block" };
-  const [edit, setEdit] = useState(!userData.broker_Details?.firstName);
+  const [edit, setEdit] = useState(!userData.appraiserCompany_Datails?.firstName);
 
   const [firstNameRef, setFirstNameRef] = useState(
-    userData?.brokerage_Details?.firstName || ""
+    userData?.appraiserCompany_Datails?.firstName || ""
   );
   const [middleNameRef, setMiddleNameRef] = useState(
-    userData?.brokerage_Details?.middleName || ""
+    userData?.appraiserCompany_Datails?.middleName || ""
   );
   const [lastNameRef, setLastNameRef] = useState(
-    userData?.brokerage_Details?.lastName || ""
+    userData?.appraiserCompany_Datails?.lastName || ""
   );
   const [companyNameRef, setCompanyNameRef] = useState(
-    userData?.brokerage_Details?.companyName || ""
+    userData?.appraiserCompany_Datails?.companyName || ""
   );
 
   const [profile, setProfile] = useState(
-    userData?.brokerage_Details?.profileImage || null
+    userData?.appraiserCompany_Datails?.profileImage || null
   );
 
   const [addressLineRef, setAddressLineRef] = useState(
-    userData?.brokerage_Details?.adressLine1 || ""
+    userData?.appraiserCompany_Datails?.adressLine1 || ""
   );
   const [addressLineTwoRef, setAddressLineTwoRef] = useState(
-    userData?.brokerage_Details?.adressLine2 || ""
+    userData?.appraiserCompany_Datails?.adressLine2 || ""
   );
 
   const [cityRef, setCityRef] = useState(
-    userData?.brokerage_Details?.city || ""
+    userData?.appraiserCompany_Datails?.city || ""
   );
   const [stateRef, setStateRef] = useState(
-    userData?.brokerage_Details?.province || ""
+    userData?.appraiserCompany_Datails?.province || ""
   );
   const [zipcodeRef, setZipcodeRef] = useState(
-    userData?.brokerage_Details?.postalCode || ""
+    userData?.appraiserCompany_Datails?.postalCode || ""
   );
   const [phoneNumberRef, setPhoneNumberRef] = useState(
-    userData?.brokerage_Details?.phoneNumber || ""
+    userData?.appraiserCompany_Datails?.phoneNumber || ""
   );
 
   const [commissionRate, setCommissionRate] = useState(
-    userData.brokerage_Details?.commissionRate || ""
+    userData.appraiserCompany_Datails?.commissionRate || ""
   );
 
   const [maxNumberOfAssignedOrders, setMaxNumberOfAssignedOrders] = useState(
-    userData?.brokerage_Details?.maxNumberOfAssignedOrders || ""
+    userData?.appraiserCompany_Datails?.maxNumberOfAssignedOrders || ""
   );
 
   const [otherDesignation, setOtherDesignation] = useState(false);
@@ -75,10 +75,10 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   // );
 
   const [streetName, setStreetName] = useState(
-    userData?.brokerage_Details?.streetName || ""
+    userData?.appraiserCompany_Datails?.streetName || ""
   );
   const [streetNumber, setStreetNumber] = useState(
-    userData.brokerage_Details?.streetNumber || ""
+    userData.appraiserCompany_Datails?.streetNumber || ""
   );
   const [unit, setUnit] = useState(userData?.broker_Details?.apartmentNo || "");
 

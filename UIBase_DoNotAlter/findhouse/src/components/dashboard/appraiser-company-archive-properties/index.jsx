@@ -1123,7 +1123,11 @@ const Index = () => {
                     );
                   })}
                 </select>
-                {openDate && <div className="col-lg-4">
+                {openDate && <div className="col-lg-12 pt-20" style={{display:"flex",flexDirection:"row"}}>
+                
+                <label style={{color:"black",fontWeight:"bold"}}>
+                Date and Time <span style={{color:"red"}}>*</span>
+                </label>
                 <input
                   required
                  
@@ -1133,7 +1137,7 @@ const Index = () => {
                   onChange={(e) => setStatusDate(e.target.value)}
                   value={statusDate}
                 />
-              </div>}
+              </div>}  
 
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>

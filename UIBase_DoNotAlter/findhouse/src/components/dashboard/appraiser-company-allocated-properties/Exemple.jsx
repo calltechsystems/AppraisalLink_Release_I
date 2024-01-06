@@ -15,6 +15,13 @@ const headCells = [
     label: "Order ID",
     width: 100,
   },
+
+  {
+    id: "appraiser_name",
+    numeric: false,
+    label: "Appraiser info",
+    width: 200,
+  },
   
   {
     id: "address",
@@ -27,6 +34,12 @@ const headCells = [
     id: "status",
     numeric: false,
     label: "Quote Status",
+    width: 160,
+  },
+  {
+    id: "appraisal_status",
+    numeric: false,
+    label: "Appraisal Status",
     width: 160,
   },
   {
@@ -199,7 +212,7 @@ export default function Exemple({
   const formatDate = (dateString) => {
     const options = {
       year: "numeric",
-      month: "long",
+      month: "short",
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
@@ -249,7 +262,29 @@ export default function Exemple({
           estimatedValue: property.estimatedValue
             ? `$ ${property.estimatedValue}`
             : "$ 0",
+            
           purpose: property.purpose ? property.purpose : "NA",
+          appraiser_name:"",
+          appraisal_status: isBidded.bidId ? (
+            isBidded.status === 0 ? (
+              <span
+                className="btn btn-primary  w-100"
+              >
+                Quote Provided
+              </span>
+            ) : isBidded.status === 1 ? (
+              <span
+                className="btn btn-success  w-100"
+                
+              >
+                Accepted
+              </span>
+            ) : (
+              <span className="btn btn-danger  w-100">Rejected</span>
+            )
+          ) : (
+            <span className="btn btn-warning  w-100">New</span>
+          ),
           status: isBidded.bidId ? (
             isBidded.status === 0 ? (
               <span

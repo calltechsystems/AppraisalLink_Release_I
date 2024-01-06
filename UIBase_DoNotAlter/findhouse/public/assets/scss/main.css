@@ -13110,6 +13110,7 @@ legend span {
 .mbp_pagination ul.page_navigation li.active .page-link {
   background-color: var(--color-primary);
   color: #ffffff;
+  z-index: 0;
 }
 
 .event_counter_plugin_container {

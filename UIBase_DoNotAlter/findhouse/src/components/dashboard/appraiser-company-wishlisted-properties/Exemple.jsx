@@ -30,6 +30,12 @@ const headCells = [
     width: 160,
   },
   {
+    id: "appraisal_status",
+    numeric: false,
+    label: "Appraisal Status",
+    width: 160,
+  },
+  {
     id: "urgency",
     numeric: false,
     label: "Urgency",
@@ -203,7 +209,7 @@ export default function Exemple({
   const formatDate = (dateString) => {
     const options = {
       year: "numeric",
-      month: "long",
+      month: "short",
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
@@ -276,6 +282,19 @@ export default function Exemple({
             ) : (
               <span className="btn btn-warning">New</span>
             ),
+            appraisal_status: isBidded.bidId ? (
+              isBidded.status === 0 ? (
+                <span className="btn btn-primary" >
+                  Quote Provided
+                </span>
+              ) : isBidded.status === 1 ? (
+                <span className="btn btn-success">Accepted</span>
+              ) : (
+                <span className="btn btn-danger">Declined</span>
+              )
+            ) : (
+              <span className="btn btn-warning">New</span>
+            ),
             broker: (
               <div>
                 {isBidded.status === 1 ? (
@@ -289,9 +308,37 @@ export default function Exemple({
                         // fontWeight: "bold",
                         backgroundColor: "transparent",
                       }}
-                      onClick={() => openModalBroker(property)}
+                      onClick={() => openModalBroker(property,2)}
                     >
-                      {`${property.applicantFirstName} ${property.applicantLastName}`}
+                     Broker Info
+                    </button>
+                  </a>
+                ) : isBidded.status === 2 ? (
+                  <h6 style={{ color: "red" }}> Declined</h6>
+                ) : (
+                  <h6>
+                    Broker Information will be available post the quote
+                    acceptance
+                  </h6>
+                )}
+              </div>
+            ),
+            property: (
+              <div>
+                {isBidded.status === 1 ? (
+                  <a href="#">
+                    <button
+                      className=""
+                      style={{
+                        border: "0px",
+                        color: "#2e008b",
+                        textDecoration: "underline",
+                        // fontWeight: "bold",
+                        backgroundColor: "transparent",
+                      }}
+                      onClick={() => openModalBroker(property,1)}
+                    >
+                     Property Info
                     </button>
                   </a>
                 ) : isBidded.status === 2 ? (
@@ -349,7 +396,9 @@ export default function Exemple({
                             className="btn btn-color w-15"
                             style={{ marginLeft: "10px" }}
                           >
-                            Provide Quote
+                          <Link href="#">
+                          <span className="flaticon-building text-light"></span>
+                        </Link>
                           </a>
                         </div>
                       </li>
@@ -358,7 +407,7 @@ export default function Exemple({
                     className="list-inline-item"
                     data-toggle="tooltip"
                     data-placement="top"
-                    title="Provide Quote"
+                    title="Archive Property"
                   >
                     <div
                       className=" fw-bold"
@@ -371,7 +420,9 @@ export default function Exemple({
                         className="btn btn-color w-15"
                         style={{ marginLeft: "10px" }}
                       >
-                        Archive Property 
+                      <Link href="#">
+                      <span className="flaticon-home text-light"></span>
+                    </Link>
                       </a>
                     </div>
                   </li>
@@ -389,7 +440,9 @@ export default function Exemple({
                     className="btn btn-color w-15"
                     style={{ marginLeft: "10px" }}
                   >
-                    Quote Update
+                  <Link href="#">
+                  <span className="flaticon-edit text-light"></span>
+                </Link>
                   </a>
                 </div>
                 )}

@@ -91,7 +91,7 @@ const Index = () => {
 
   const openModalBroker = (property, value) => {
     setBroker(property);
-    setShowPropDetails(status);
+   
     setTypeView(value)
     setOpenBrokerModal(true);
   };

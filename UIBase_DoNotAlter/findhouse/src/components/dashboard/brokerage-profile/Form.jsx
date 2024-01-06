@@ -27,7 +27,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
           <div className="wrap-custom-file mt-3 mb-5">
             <img
               style={{ borderRadius: "50%" }}
-              src={userData?.appraiserCompany_Datails?.profileImage}
+              src={userData?.brokerage_Details?.profileImage}
               alt="Uploaded Image"
             />
           </div>
@@ -56,9 +56,9 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       <span className="text-dark" style={{ fontSize: "17px" }}>
                         {" "}
                         <span className="fw-bold">Name</span> :{" "}
-                        {userData?.appraiserCompany_Datails?.firstName}{" "}
-                        {userData?.appraiserCompany_Datails?.middleName}{" "}
-                        {userData?.appraiserCompany_Datails?.lastName}
+                        {userData?.broker_Details?.firstName}{" "}
+                        {userData?.broker_Details?.middleName}{" "}
+                        {userData?.broker_Details?.lastName}
                       </span>
                     </li>
                   </td>
@@ -72,7 +72,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                     <li className="text-dark p-2" style={{ listStyle: "none" }}>
                       <span className="text-dark" style={{ fontSize: "17px" }}>
                         <span className="fw-bold"> Company</span> :{" "}
-                        {userData?.appraiserCompany_Datails?.companyName}
+                        {userData?.broker_Details?.companyName}
                       </span>
                       {/* <span className="text-dark fw-bold">Middle Name</span> :{" "}
                     <span className="text-dark fw-bold"> Devendra </span> */}
@@ -105,7 +105,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                     <li className="text-dark p-2" style={{ listStyle: "none" }}>
                       <span className="text-dark" style={{ fontSize: "17px" }}>
                         <span className="fw-bold"> Phone</span> :{" "}
-                        {userData?.appraiserCompany_Datails?.phoneNumber}
+                        {userData?.broker_Details?.phoneNumber}
                       </span>
                       {/* <span className="text-dark fw-bold">Last Name</span> :{" "}
                     <span className="text-dark fw-bold"> Patel </span> */}
@@ -126,7 +126,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                         <span className="fw-bold">
                           Mortgage Broker Licence No.
                         </span>{" "}
-                        : {userData?.appraiserCompany_Datails?.mortageBrokerLicNo}
+                        : {userData?.broker_Details?.mortageBrokerLicNo}
                       </span>
                       {/* <span className="text-dark fw-bold">Middle Name</span> :{" "}
                     <span className="text-dark fw-bold"> Devendra </span> */}
@@ -147,7 +147,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                           {" "}
                           Mortgage Brokerge Licence No. :{" "}
                         </span>
-                        {userData?.appraiserCompany_Datails?.phoneNumber}
+                        {userData?.broker_Details?.phoneNumber}
                       </span>
                       {/* <span className="text-dark fw-bold">Last Name</span> :{" "}
                     <span className="text-dark fw-bold"> Patel </span> */}
@@ -165,11 +165,11 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                     <li className="text-dark p-2" style={{ listStyle: "none" }}>
                       <span className="text-dark" style={{ fontSize: "17px" }}>
                         <span className="fw-bold"> Address : </span>
-                        {userData.appraiserCompany_Datails?.streetNumber},{" "}
-                        {userData.appraiserCompany_Datails?.streetName},{" "}
-                        {userData?.appraiserCompany_Datails?.city},{" "}
-                        {userData?.appraiserCompany_Datails?.province},{" "}
-                        {userData?.appraiserCompany_Datails?.zipCode}
+                        {userData.broker_Details?.streetNumber},{" "}
+                        {userData.broker_Details?.streetName},{" "}
+                        {userData?.broker_Details?.city},{" "}
+                        {userData?.broker_Details?.province},{" "}
+                        {userData?.broker_Details?.zipCode}
                       </span>
                       {/* <span className="text-dark fw-bold">Last Name</span> :{" "}
                     <span className="text-dark fw-bold"> Patel </span> */}
@@ -189,8 +189,8 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       <span className="text-dark" style={{ fontSize: "17px" }}>
                         {" "}
                         <span className="fw-bold">Assistant Name</span> :{" "}
-                        {userData?.appraiserCompany_Datails?.assistantFirstName}{" "}
-                        {userData?.appraiserCompany_Datails?.assistantLatsName}
+                        {userData?.broker_Details?.assistantFirstName}{" "}
+                        {userData?.broker_Details?.assistantLatsName}
                       </span>
                     </li>
                   </td>
@@ -208,7 +208,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       <span className="text-dark" style={{ fontSize: "17px" }}>
                         {" "}
                         <span className="fw-bold">Assistant Email</span> :{" "}
-                        {userData?.appraiserCompany_Datails?.assistantEmailAddress}{" "}
+                        {userData?.broker_Details?.assistantEmailAddress}{" "}
                       </span>
                     </li>
                   </td>
@@ -226,7 +226,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       <span className="text-dark" style={{ fontSize: "17px" }}>
                         {" "}
                         <span className="fw-bold">Assistant Phone </span> :{" "}
-                        {userData?.appraiserCompany_Datails?.assistantPhoneNumber}{" "}
+                        {userData?.broker_Details?.assistantPhoneNumber}{" "}
                       </span>
                     </li>
                   </td>
