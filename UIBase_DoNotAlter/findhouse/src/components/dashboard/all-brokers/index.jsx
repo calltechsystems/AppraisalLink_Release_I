@@ -1,5 +1,5 @@
-import Header from "../../common/header/dashboard/Header_02";
-import SidebarMenu from "../../common/header/dashboard/SidebarMenu_002";
+import Header from "../../common/header/dashboard/HeaderBrokerage";
+import SidebarMenu from "../../common/header/dashboard/SidebarMenuBrokerage";
 import MobileMenu from "../../common/header/MobileMenu_01";
 import TableData from "./TableData";
 import Filtering from "./Filtering";
