@@ -476,7 +476,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           htmlFor=""
                           style={{ paddingTop: "10px" }}
                         >
-                          Contact Number <span class="req-btn">*</span>
+                          Phone Number (Primary) <span class="req-btn">*</span>
                         </label>
                       </div>
                       <div className="col-lg-7">
@@ -714,7 +714,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       If you have an Administrative Assistant, fill in the
                       following:
                     </p> */}
-                    <h3>Applicant Information</h3>
+                    <h3>Assistant#1 Information</h3>
                     <hr />
                   </div>
                   <div className="col-lg-12 mb-3">
@@ -725,7 +725,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           htmlFor=""
                           style={{ paddingTop: "5px" }}
                         >
-                          Applicant First Name{" "}
+                          Assistant First Name{" "}
                         </label>
                       </div>
                       <div className="col-7">
@@ -751,7 +751,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           htmlFor=""
                           style={{ paddingTop: "5px" }}
                         >
-                          Applicant Last Name{" "}
+                          Assistant Last Name{" "}
                         </label>
                       </div>
                       <div className="col-7 ">
@@ -775,7 +775,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           htmlFor=""
                           style={{ paddingTop: "5px" }}
                         >
-                          Applicant Phone Number
+                          Assistant Phone Number
                         </label>
                       </div>
                       <div className="col-7">
@@ -802,7 +802,120 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           htmlFor=""
                           style={{ paddingTop: "5px" }}
                         >
-                          Applicant Email Address
+                          Assistant Email Address
+                        </label>
+                      </div>
+                      <div className="col-lg-7">
+                        <input
+                          type="email"
+                          className="form-control"
+                          style={{ backgroundColor: "#E8F0FE" }}
+                          required
+                          id="formGroupExampleInput3"
+                          // value={assistantEmailAddress}
+                          // onChange={(e) =>
+                          //   setAssistantEmailAddress(e.target.value)
+                          // }
+                          // disabled={!edit}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-5">
+                    {/* <p>
+                      If you have an Administrative Assistant, fill in the
+                      following:
+                    </p> */}
+                    <h3>Assistant#2 Information</h3>
+                    <hr />
+                  </div>
+                  <div className="col-lg-12 mb-3">
+                    <div className="row">
+                      <div className="col-4">
+                        <label
+                          className="text-color"
+                          htmlFor=""
+                          style={{ paddingTop: "5px" }}
+                        >
+                          Assistant First Name{" "}
+                        </label>
+                      </div>
+                      <div className="col-7">
+                        <input
+                          type="text"
+                          className="form-control"
+                          style={{ backgroundColor: "#E8F0FE" }}
+                          id="formGroupExampleInput3"
+                          // value={assistantFirstName}
+                          // onChange={(e) =>
+                          //   setAssistantFirstName(e.target.value)
+                          // }
+                          // disabled={!edit}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-lg-12 mb-3">
+                    <div className="row">
+                      <div className="col-4 ">
+                        <label
+                          className="text-color"
+                          htmlFor=""
+                          style={{ paddingTop: "5px" }}
+                        >
+                          Assistant Last Name{" "}
+                        </label>
+                      </div>
+                      <div className="col-7 ">
+                        <input
+                          type="text"
+                          className="form-control"
+                          style={{ backgroundColor: "#E8F0FE" }}
+                          id="formGroupExampleInput3"
+                          // value={assistantLastName}
+                          // onChange={(e) => setAssistantLastName(e.target.value)}
+                          // disabled={!edit}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-lg-12 mb-3">
+                    <div className="row">
+                      <div className="col-4">
+                        <label
+                          className="text-color"
+                          htmlFor=""
+                          style={{ paddingTop: "5px" }}
+                        >
+                          Assistant Phone Number
+                        </label>
+                      </div>
+                      <div className="col-7">
+                        <input
+                          type="text"
+                          required
+                          className="form-control"
+                          style={{ backgroundColor: "#E8F0FE" }}
+                          id="formGroupExampleInput3"
+                          // value={assistantPhoneNumber}
+                          // onChange={(e) =>
+                          //   setAssistantPhoneNumber(e.target.value)
+                          // }
+                          // disabled={!edit}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-lg-12">
+                    <div className="row">
+                      <div className="col-lg-4">
+                        <label
+                          className="text-color"
+                          htmlFor=""
+                          style={{ paddingTop: "5px" }}
+                        >
+                          Assistant Email Address
                         </label>
                       </div>
                       <div className="col-lg-7">
