@@ -255,7 +255,7 @@ const LocationField = ({
               />
             </div>
           </div>
-          <div className="col-lg-6 mt20">
+          {/* <div className="col-lg-6 mt20">
             <div className="form-group form-check custom-checkbox">
               <input
                 className="form-check-input"
@@ -276,8 +276,7 @@ const LocationField = ({
                 Validate Address
               </label>
             </div>
-            {/* End .form-group */}
-          </div>
+          </div> */}
           {/* <div className="row" style={{ marginBottom: "10px" }}>
             <div className="col-lg-3 my_profile_setting_input form-group">
               <label

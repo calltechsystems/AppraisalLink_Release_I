@@ -257,15 +257,26 @@ const Index = ({ isView, propertyData }) => {
     }
   }, [applicantLatsName]);
 
+  const [phoneNumber, setPhoneNumber] = useState("");
   useEffect(() => {
-    if (applicantNumber !== "") {
+    if (phoneNumber !== "") {
       let updatedError = errorLabel.filter((err) => {
         if (String(err) === "applicantPhoneNumber") return false;
         else return true;
       });
       setErrorLabel(updatedError);
     }
-  }, [applicantNumber]);
+  }, [phoneNumber]);
+
+  useEffect(() => {
+    if (applicantEmail !== "") {
+      let updatedError = errorLabel.filter((err) => {
+        if (String(err) === "applicantEmail") return false;
+        else return true;
+      });
+      setErrorLabel(updatedError);
+    }
+  }, [applicantEmail]);
 
   useEffect(() => {
     if (appraisalQuoteDate !== "") {

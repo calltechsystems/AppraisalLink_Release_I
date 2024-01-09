@@ -1,22 +1,24 @@
 import axios from "axios";
 import CryptoJS from "crypto-js";
 
-async function handler(request, response) {
-  const decryptionKey = process.env.CRYPTO_SECRET_KEY;
-  const domain = process.env.BACKEND_DOMAIN;
+
+ async function handler (request,response) {
+
+    const decryptionKey = process.env.CRYPTO_SECRET_KEY;
+    const domain = process.env.BACKEND_DOMAIN;
 
   try {
     const encryptedBody = await request.body.data;
 
     const decryptedBytes = CryptoJS.AES.decrypt(encryptedBody, decryptionKey);
     const body = JSON.parse(decryptedBytes.toString(CryptoJS.enc.Utf8));
-
-    if (!body) {
-      return response.status(403).json({ error: "Not a verified Data" });
+    
+    if(!body){
+        return response.status(403).json({error:"Not a verified Data"})
     }
 
     const propertyId = request.query.propertyId;
-
+   
     const {
       userId,
       streetName,
@@ -29,7 +31,7 @@ async function handler(request, response) {
       typeOfBuilding,
       applicantFirstName,
       applicantLastName,
-      applicantEmail,
+      applicantEmailAddress,
       applicantPhoneNumber,
       bidLowerRange,
       bidUpperRange,
@@ -39,15 +41,17 @@ async function handler(request, response) {
       typeOfAppraisal,
       lenderInformation,
       purpose,
-      applicantEmailAddress,
-      quoteRequiredDate,
+      applicantAddress,
       attachment,
+      remark,
+      quoteRequiredDate,
       image,
       token,
     } = body;
 
     const formData = {
       userId: userId,
+      propertyId:propertyId,
       streetName: streetName,
       streetNumber: streetNumber,
       city: city,
@@ -68,43 +72,45 @@ async function handler(request, response) {
       purpose: purpose,
       typeOfAppraisal: typeOfAppraisal,
       lenderInformation: lenderInformation,
-      applicantAddress: "",
+      applicantAddress: applicantAddress,
       attachment: attachment,
       image: image,
-      quoteRequiredDate: quoteRequiredDate,
-      remark: "",
+      remark : remark,
+      quoteRequiredDate:quoteRequiredDate
     };
 
-    const userResponse = await axios.put(
-      `${domain}/Property/ByPropertyID/${propertyId}`,
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
+  
+    const userResponse = await axios.put(`${domain}/Property/ByPropertyID/${propertyId}`, formData,
+    {
+      headers: {
+        Authorization:`Bearer ${token}`,
+        "Content-Type":"application/json"
       }
+    }
     );
     const user = userResponse.data;
 
-    if (!user) {
-      return response.status(404).json({ error: "User Not Found" });
+
+    if(!user){
+        return response.status(404).json({error:"User Not Found"});
     }
-    return response.status(200).json({ msg: "OK", userData: user });
+    return response.status(200).json({msg:"OK",userData : user});
   } catch (err) {
     console.log(err);
     if (err.response) {
       // If the error is from an axios request (e.g., HTTP 4xx or 5xx error)
       const axiosError = err.response.data;
       const statusCode = err.response.status;
-      console.error(statusCode, axiosError.message); // Log the error for debugging
+      console.error(statusCode,axiosError.message); // Log the error for debugging
 
       return response.status(statusCode).json({ error: axiosError.message });
     } else {
       // Handle other types of errors
       return response.status(500).json({ error: "Internal Server Error" });
     }
+
   }
 }
-
+ 
 export default handler;
+

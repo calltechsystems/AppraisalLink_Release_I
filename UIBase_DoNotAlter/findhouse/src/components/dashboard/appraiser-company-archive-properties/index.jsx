@@ -2,11 +2,8 @@ import Header from "../../common/header/dashboard/Header_02";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenu_002";
 import MobileMenu from "../../common/header/MobileMenu_01";
 import TableData from "./TableData";
-import Filtering from "./Filtering";
-import FilteringBy from "./FilteringBy";
 import Pagination from "./Pagination";
-import SearchBox from "./SearchBox";
-import { useEffect, useRef } from "react";
+import { use, useEffect, useRef } from "react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
@@ -14,65 +11,90 @@ import { useRouter } from "next/router";
 import Modal from "./Modal";
 import { encryptionData } from "../../../utils/dataEncryption";
 import Loader from "./Loader";
-import { AppraiserStatusOptions, AppraiserList } from "../create-listing/data";
+import { AppraiserStatusOptions } from "../create-listing/data";
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
+  const [orderStatus,setOrderStatus]=useState(-1);
+  const [isStatusModal,setIsStatusModal] = useState(false);
+  const [showMore,setShowMore]=useState(false);
+  const [allBrokers,setAllBrokers]=useState([]);
+  const [assignedAppraiser,setAssignedAppraiser]=useState([]);
   const [toggleId, setToggleId] = useState(-1);
   const [toggleWishlist, setToggleWishlist] = useState(0);
   const [searchResult, setSearchResult] = useState([]);
   const [property, setProperty] = useState("");
+  const [typeView,setTypeView] = useState(0);
   const [startLoading, setStartLoading] = useState(false);
   const [filterProperty, setFilterProperty] = useState("");
+  const [showPropDetails, setShowPropDetails] = useState(false);
   const [filterQuery, setFilterQuery] = useState("Last 30 Days");
   const [searchQuery, setSearchQuery] = useState("city");
   const [properties, setProperties] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [lowRangeBid, setLowRangeBid] = useState("");
   const [propertyId, setPropertyId] = useState(null);
+  
+  const [wishlistedProperties,setWishlistedProperties] = useState([]);
   const [updatedCode, setUpdatedCode] = useState(false);
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
+
+  const [modalIsOpenError, setModalIsOpenError] = useState(false);
   
+
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  const [refresh, setRefresh] = useState(false);
+
+    
   const [start,setStart]=useState(0);
   
   const [end,setEnd]=useState(4);
 
-  const [isStatusModal,setIsStatusModal] = useState(0);
+  const closeErrorModal = () => {
+    setModalIsOpenError(false);
+  };
+
   
+  const [currentBid,setCurrentBid]=useState(-1);
+
   const handleStatusUpdateHandler = ()=>{
 
+    const userData = JSON.parse(localStorage.getItem("user"));
+
+    const payload = {
+      token:userData.token,
+      bidid:currentBid,
+      OrderStatus:Number(orderStatus)
+    };
+
+
+
+    const encryptedBody = encryptionData(payload);
+    toast.loading("Updating order status!!");
+    axios.put("/api/updateOrderStatus",encryptedBody).then((res)=>{
+      toast.dismiss();
+      toast.success("Successfully updated!!");
+      window.location.reload();
+    })
+    .catch((err)=>{
+      toast.dismiss();
+      toast.error(err);
+    });
+
+    setCurrentBid(-1);
+    setIsStatusModal(false);
   }
+
+  const [openAssignModal,setOpenAssignModal]=useState(false);
 
   const closeStatusUpdateHandler = ()=>{
     setOpenDate(false);
     setIsStatusModal(false);
   }
-
-   
-  const [openDate,setOpenDate] = useState(false);
-  const [statusDate,setStatusDate]=useState("");
-
-  
-
-  const handleStatusSelect = (value)=>{
-    if(String(value) === "Appraisal Visit Confirmed"){
-      setOpenDate(true);
-    }
-
-  }
-
-  const [modalIsOpenError, setModalIsOpenError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const [isLoading, setIsLoading] = useState(true);
-  const [paginatedRow,setPaginatedRow] = useState([]);
-
-  const [refresh, setRefresh] = useState(false);
-
-  const closeErrorModal = () => {
-    setModalIsOpenError(false);
-  };
 
   const [openBrokerModal, setOpenBrokerModal] = useState(false);
   const [broker, setBroker] = useState({});
@@ -82,7 +104,7 @@ const Index = () => {
   };
 
   const closeQuoteModal = () => {
-    setIsModalOpen(false);
+    setIsQuoteModalOpen(false);
   };
 
   const openQuoteModal = () => {
@@ -90,9 +112,24 @@ const Index = () => {
     setIsQuoteModalOpen(true);
   };
 
-  const [typeView,setTypeView] = useState(0);
+  const [openDate,setOpenDate] = useState(false);
+  const [statusDate,setStatusDate]=useState("");
 
-  const [allBrokers,setAllBrokers]=useState([]);
+  const handleStatusSelect = (value)=>{
+
+    if(String(value) === "Appraisal Visit Confirmed"){
+      setOpenDate(true);
+    }
+
+    console.log(value);
+    setOrderStatus(value);
+
+  }
+
+  const [moreBrokerInfo,setMoreBrokerInfo]=useState({});
+  const [isBroker,setisBroker]=useState(false);
+
+
   let [selectedBroker ,setSelectedBroker]=useState({});
   const openModalBroker = (property, value) => {
  
@@ -108,13 +145,57 @@ const Index = () => {
     setTypeView(value);
     setOpenBrokerModal(true);
   };
+
+  const [assignPropertyId,setAssignPropertyId]=useState(-1);
+  const [assignAppraiserId,setAssignAppraiserId]=useState(-1);
+  const openAppraisalModal = (val)=>{
+    setOpenAssignModal(true);
+    setAssignPropertyId(val);
+  }
+
+  const handleAssignPropertyToAppraiser = ()=>{
+    const userData = JSON.parse(localStorage.getItem("user"));
+
+    const propertyId = Number(assignPropertyId);
+    const appraiserId = Number(assignAppraiserId);
+    const companyId = Number(userData.appraiserCompany_Datails?.appraiserCompanyId);
+
+    const payload = {
+      propertyid : propertyId,
+      companyid:companyId,
+      appraiserid:appraiserId
+    };
+
+    const encryptionPayload = encryptionData(payload);
+
+    toast.loading("Assigning the property");
+    axios.post("/api/assignPropertyToAppraiser",encryptionPayload,{
+      
+        headers: {
+          Authorization:`Bearer ${userData.token}`,
+          "Content-Type":"application/json"
+        }
+      
+    }).then((res)=>{
+      toast.dismiss();
+      toast.success("Successfully assigned");
+    })
+    .catch((err)=>{
+      toast.dismiss();
+      toast.error(err);
+    })
+   
+  }
+
+  console.log(assignedAppraiser);
+  // console.log("data",data);
+
   const router = useRouter();
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
   );
 
   useEffect(() => {
-    
     const activityHandler = () => {
       setLastActivityTimestamp(Date.now());
     };
@@ -149,26 +230,34 @@ const Index = () => {
     return () => clearInterval(inactivityCheckInterval);
   }, [lastActivityTimestamp]);
 
-  const openModal = (property) => {
+  const openModal = (property, status) => {
     setProperty(property);
+    if (status === 1) {
+      setShowPropDetails(true);
+    }
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
     setModalOpen(false);
+    setShowPropDetails(false);
   };
+  const setShowBroker=()=>{
 
+  }
 
+ 
+  const closeAssignModal = ()=>{
+    setOpenAssignModal(false);
+  }
   useEffect(() => {
     const filterProperties = (propertys, searchInput) => {
       if (searchInput === "") {
         return propertys;
       }
       const filteredProperties = propertys.filter((property) => {
-        // Convert the search input to lowercase for a case-insensitive search
         const searchTerm = searchInput.toLowerCase();
 
-        // Check if any of the fields contain the search term
         return (
           property.zipCode.toLowerCase().includes(searchTerm) ||
           property.area.toLowerCase().includes(searchTerm) ||
@@ -185,6 +274,33 @@ const Index = () => {
     const filteredData = filterProperties(properties, searchInput);
     setFilterProperty(filteredData);
   }, [searchInput]);
+
+  useEffect(() => {
+    // console.log("inside");
+    const data = JSON.parse(localStorage.getItem("user"));
+
+      axios
+      .get("/api/getAllAppraiserByCompanyId",{
+        headers: {
+          Authorization: `Bearer ${data?.token}`,
+          "Content-Type": "application/json",
+        },
+        params: {
+          userId: data?.appraiserCompany_Datails?.appraiserCompanyId,
+        },
+      })
+      .then((res) => {
+        console.log("assigned",res.data.data.appraisers.$values);
+        setAssignedAppraiser(res.data.data.appraisers.$values);
+      })
+      .catch((err) => {
+        setErrorMessage(err?.response?.data?.error);
+        setModalIsOpenError(true);
+      });
+
+    // console.log("end", bids, properties, wishlist);
+    setRefresh(false);
+  }, [refresh]);
 
   const filterData = (tempData) => {
     const currentDate = new Date();
@@ -219,6 +335,56 @@ const Index = () => {
     }
   };
 
+  useEffect(() => {
+    const tmpData = filterData(properties);
+    setProperties(tmpData);
+  }, [filterQuery]);
+
+  const handleDelete = () => {
+    const data = JSON.parse(localStorage.getItem("user"));
+
+    toast.loading("deleting this property");
+    axios
+      .delete("/api/deleteBrokerPropertyById", {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+          "Content-Type": "application/json",
+        },
+        params: {
+          propertyId: property.propertyId,
+        },
+      })
+      .then((res) => {
+        setRerender(true);
+      })
+      .catch((err) => {
+        toast.error(err);
+      });
+    toast.dismiss();
+    closeModal();
+  };
+
+  useEffect(() => {
+    setIsLoading(false);
+  }, [updatedCode]);
+
+  const [userData, setUserData] = useState({});
+
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("user"));
+    if (!data) {
+      router.push("/login");
+    } 
+    if (!data) {
+      router.push("/login");
+    }
+    const fetchData = () => {
+      if (data) {
+        setUserData(data);
+      }
+    };
+    fetchData();
+  }, []);
 
   const brokerInfoHandler = (orderId) => {
     const printWindow = window.open("", "_blank");
@@ -230,7 +396,6 @@ const Index = () => {
       '<button style="display:none;" onclick="window.print()">Print</button>'
     );
 
-    // Clone the table-container and remove the action column
     const tableContainer = document.getElementById("broker-info-container");
     const table = tableContainer.querySelector("table");
     const clonedTable = table.cloneNode(true);
@@ -318,60 +483,6 @@ const Index = () => {
     };
   };
 
-  useEffect(() => {
-    const tmpData = filterData(properties);
-    setProperties(tmpData);
-  }, [filterQuery]);
-
-  const handleDelete = () => {
-    const data = JSON.parse(localStorage.getItem("user"));
-
-    toast.loading("deleting this property");
-    axios
-      .delete("/api/deleteBrokerPropertyById", {
-        headers: {
-          Authorization: `Bearer ${data.token}`,
-          "Content-Type": "application/json",
-        },
-        params: {
-          propertyId: property.propertyId,
-        },
-      })
-      .then((res) => {
-        setRerender(true);
-      })
-      .catch((err) => {
-        toast.error(err);
-      });
-    toast.dismiss();
-    closeModal();
-  };
-
-  useEffect(() => {
-    setIsLoading(false);
-  }, [updatedCode]);
-
-  const [userData, setUserData] = useState({});
-
-  useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("user"));
-    if (!data) {
-      router.push("/login");
-    }
-    // } else if (!data?.brokerage_Details?.firstName) {
-    //   router.push("/appraiser-profile");
-    // }
-    if (!data) {
-      router.push("/login");
-    }
-    const fetchData = () => {
-      if (data) {
-        setUserData(data);
-      }
-    };
-    fetchData();
-  }, []);
-
   const participateHandler = (val, id) => {
     setLowRangeBid(val);
     setPropertyId(id);
@@ -441,7 +552,7 @@ const Index = () => {
   return (
     <>
       {/* <!-- Main Header Nav --> */}
-      <Header userData={userData}/>
+      <Header userData={userData} />
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
@@ -453,16 +564,16 @@ const Index = () => {
           id="DashboardOffcanvasMenu"
           data-bs-scroll="true"
         >
-          <SidebarMenu  userData={userData}/>
+          <SidebarMenu />
         </div>
       </div>
       {/* End sidebar_menu */}
 
       {/* <!-- Our Dashbord --> */}
-      <section className="our-dashbord dashbord bgc-f7 pb50 dashboard-height">
+      <section className="our-dashbord dashbord bgc-f7 pb50">
         <div
-          className="container-fluid ovh table-padding container-padding"
-          style={{ }}
+          className="container-fluid ovh"
+          style={{ marginLeft: "-10px", marginTop: "" }}
         >
           <div className="row">
             <div className="col-lg-12 maxw100flex-992">
@@ -484,26 +595,28 @@ const Index = () => {
                 </div> */}
                 {/* End Dashboard Navigation */}
 
-                {/* <div className="col-lg-4 col-xl-4 ">
+                <div className="col-lg-4 col-xl-4 mb10">
                   <div className="style2 mb30-991">
                     <h3 className="breadcrumb_title">Appraising Properties</h3>
+                    {/* <p>We are glad to see you again!</p>                                                             */}
                   </div>
-                </div> */}
+                </div>
                 {/* End .col */}
+
                 {/*<div className="row">
-                 <div className="col-lg-12 mt20">
-                  <div className="mbp_pagination">
-                    <Pagination
-                      setStart={setStart}
-                      setEnd={setEnd}
-                      properties={properties}
-                    />
-                  </div>
-                </div> 
-            </div>*/}
+                <div className="col-lg-12 mt20">
+                 <div className="mbp_pagination">
+                   <Pagination
+                     setStart={setStart}
+                     setEnd={setEnd}
+                     properties={properties}
+                   />
+                 </div>
+               </div> 
+              </div>*/}
 
                 <div className="col-lg-12 col-xl-12">
-                  {/*<div className="candidate_revew_select style2 mb30-991">
+                 {/* <div className="candidate_revew_select style2 mb30-991">
                     <ul className="mb0">
                       <li className="list-inline-item">
                         <Filtering setFilterQuery={setFilterQuery} />
@@ -516,8 +629,9 @@ const Index = () => {
                           <SearchBox setSearchInput={setSearchInput} />
                         </div>
                       </li>
+                    
                     </ul>
-              </div>*/}
+                  </div> */}
                 </div>
                 {/* End .col */}
 
@@ -528,8 +642,12 @@ const Index = () => {
                         <TableData
                           userData={userData}
                           setModalOpen={openModal}
+                          setIsStatusModal={setIsStatusModal}
                           close={closeModal}
                           setProperties={setProperties}
+                          start={start}
+                          end={end}
+                          setAllBrokers={setAllBrokers}
                           properties={
                             searchInput === "" ? properties : filterProperty
                           }
@@ -538,16 +656,18 @@ const Index = () => {
                           participateHandler={participateHandler}
                           setErrorMessage={setErrorMessage}
                           setModalIsOpenError={setModalIsOpenError}
+                          setShowBroker={setShowBroker}
                           setRefresh={setRefresh}
+                          setFilterQuery={setFilterQuery}
+                          setSearchInput={setSearchInput}
+                          setShowMore={setShowMore}
+                          setOpenAssignModal={setOpenAssignModal}
                           refresh={refresh}
-                          setAllBrokers={setAllBrokers}
+                          setCurrentBid={setCurrentBid}
+                          setWishlistedProperties={setWishlistedProperties}
                           setStartLoading={setStartLoading}
                           openModalBroker={openModalBroker}
-                          setIsStatusModal={setIsStatusModal}
-                          setSearchInput={setSearchInput}
-                          setFilterQuery={setFilterQuery}
-                          start={start}
-                          end={end}
+                          setAssignedAppraiser={openAppraisalModal}
                         />
 
                         {modalIsOpenError && (
@@ -593,57 +713,7 @@ const Index = () => {
                           </div>
                         )}
 
-                       {/* {openBrokerModal && (
-                          <div className="modal">
-                            <div className="modal-content">
-                              <span>
-                                <h4 className="text-center">Broker Details</h4>
-                              </span>
-                              <hr />
-                              <div className=" col-lg-12">
-                                <div className="row">
-                                  <h5 className="col-lg-4 mt-1 text-end">
-                                    <span className="">Broker Name :</span>{" "}
-                                  </h5>
-                                  <span className="col-lg-3">
-                                    {broker.applicantFirstName}{" "}
-                                    {broker.applicantLastName}
-                                  </span>
-                                </div>
-                                <div className="row">
-                                  <h5 className="col-lg-4 mt-1">
-                                    <span className="">
-                                      Broker Phone Number :
-                                    </span>{" "}
-                                  </h5>
-                                  <span className="col-lg-3">
-                                    {broker.applicantPhoneNumber}
-                                  </span>
-                                </div>
-                                <div className="row">
-                                  <h5 className="col-lg-4 mt-1 text-end">
-                                    <span className="">Broker Email :</span>{" "}
-                                  </h5>
-                                  <span className="col-lg-3">
-                                    {broker.applicantEmailAddress}
-                                  </span>
-                                </div>
-                              </div>
-                              <hr />
-                              <div className="col-lg-12 text-center" style={{}}>
-                                <button
-                                  className="btn btn-color w-25 mt-2"
-                                  onClick={closeBrokerModal}
-                                >
-                                  Ok
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        )}*/}
-                      </div>
-                      <div>
-                     {(openBrokerModal && typeView === 1) && (
+                        {(openBrokerModal && typeView === 1) && (
                           <div className="modal">
                             <div className="modal-content">
                               <h3 className="text-center">Property Details</h3>
@@ -1345,7 +1415,7 @@ const Index = () => {
                             </div>
                           </div>
                         )}
-                    </div>
+                      </div>
 
                       {/* End .table-responsive */}
 
@@ -1362,7 +1432,7 @@ const Index = () => {
                     <h3 className="text-center">Quote Confirmation</h3>
                     <h5 className="text-center">
                       Are you sure you want to quote this property over this
-                      amount :{valueRef?.current?.value}?
+                      amount :{valueRef?.current?.value} ?
                     </h5>
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
@@ -1382,7 +1452,6 @@ const Index = () => {
                   </div>
                 </div>
               )}
-
               {isStatusModal && (
                 <div className="modal">
                   <div className="modal-content">
@@ -1426,8 +1495,8 @@ const Index = () => {
                   onChange={(e) => setStatusDate(e.target.value)}
                   value={statusDate}
                 />
-              </div>}  
-
+              </div>}
+            
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
                     <button
@@ -1449,7 +1518,7 @@ const Index = () => {
                 </div>
               )}
 
-              {isStatusModal === 2 && (
+              {openAssignModal && (
                 <div className="modal">
                   <div className="modal-content">
                     <h3 className="text-center">Assign the appraiser</h3>
@@ -1459,6 +1528,7 @@ const Index = () => {
                   className="form-select"
                   data-live-search="true"
                   data-width="100%"
+                  onChange={(e)=>setAssignAppraiserId(e.target.value)}
                   // value={buildinRef}
                   // onChange={(e) => setBuildinRef(e.target.value)}
                   // onChange={(e) => setBuildinRef(e.target.value)}
@@ -1469,26 +1539,27 @@ const Index = () => {
                           backgroundColor: "#E8F0FE"
                         }}
                 >
-                  {AppraiserList.map((item, index) => {
+                  {assignedAppraiser?.map((item, index) => {
                     return (
-                      <option key={item.id} value={item.value}>
-                        {item.type}
+                      <option key={item.id} value={item.id}>
+                        {item.firstName ? `${item.firstName} ${item.lastName}` : "Name"}
                       </option>
                     );
                   })}
                 </select>
+                
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
                     <button
                     className="btn w-35 btn-white"
-                    onClick={closeStatusUpdateHandler}
+                    onClick={closeAssignModal}
                   >
                     Cancel
                   </button>
                       <button
                       className="btn btn-color w-10 mt-1"
                       style={{ marginLeft: "12px" }}
-                        onClick={handleStatusUpdateHandler}
+                        onClick={handleAssignPropertyToAppraiser}
                       >
                         Submit
                       </button>        
@@ -1500,7 +1571,6 @@ const Index = () => {
               <div className="row">
                 <Modal
                   modalOpen={modalOpen}
-                  setModalOpen = {setModalOpen}
                   setIsModalOpen={setIsModalOpen}
                   closeModal={closeModal}
                   lowRangeBid={lowRangeBid}
@@ -1509,29 +1579,33 @@ const Index = () => {
                   closeQuoteModal={closeQuoteModal}
                 />
               </div>
-              {/*<div className="row">
-                 <div className="col-lg-12 mt20">
+              <div className="row">
+                {/* <div className="col-lg-12 mt20">
                   <div className="mbp_pagination">
                     <Pagination
                       properties={properties}
                       setProperties={setProperties}
                     />
                   </div>
-                </div> 
-              </div>*/}
+                </div> */}
+                {/* End paginaion .col */}
+              </div>
               {/* End .row */}
             </div>
+            {/* End .row */}
+
             <div className="row">
                  <div className="col-lg-12 mt20">
                   <div className="mbp_pagination">
                     <Pagination
                       setStart={setStart}
                       setEnd={setEnd}
-                      properties={properties}
+                      properties={wishlistedProperties}
                     />
                   </div>
                 </div> 
-              </div>
+            </div>
+
             <div className="row mt50">
               <div className="col-lg-12">
                 <div className="copyright-widget text-center">

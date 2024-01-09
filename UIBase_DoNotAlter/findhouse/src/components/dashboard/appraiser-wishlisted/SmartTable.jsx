@@ -109,43 +109,70 @@ function SmartTable(props) {
     let tempData = data.length > 0 ? [...data] : [...props.data];
 
     tempData.sort((a, b) => {
-      const valueA = typeof a[cell] === 'string' ? a[cell].toLowerCase() : a[cell];
-      const valueB = typeof b[cell] === 'string' ? b[cell].toLowerCase() : b[cell];
-  
+      const valueA =
+        typeof a[cell] === "string" ? a[cell].toLowerCase() : a[cell];
+      const valueB =
+        typeof b[cell] === "string" ? b[cell].toLowerCase() : b[cell];
+
       if (sortDesc[cell]) {
         return valueA < valueB ? 1 : -1;
       } else {
         return valueA > valueB ? 1 : -1;
       }
     });
-      setSortDesc({ [cell]: !sortDesc[cell] });
-      setData(tempData);
-    
+    setSortDesc({ [cell]: !sortDesc[cell] });
+    setData(tempData);
   };
 
   return (
-    <div className="col-12 p-4">
+    <div className="col-12 p-1">
       <div className="smartTable-container row">
+        <div className="candidate_revew_select style2 mb30-991">
+          <ul className="mb0 mt-0">
+            <li className="list-inline-item">
+              <Filtering setFilterQuery={props.setFilterQuery} />
+            </li>
+            {/* <li className="list-inline-item">
+              <FilteringBy setFilterQuery={props.setSearchQuery} />
+            </li> */}
+            <li className="list-inline-item" style={{ marginRight: "15px" }}>
+              <div className="candidate_revew_search_box course fn-520">
+                <SearchBox setSearchInput={props.setSearchInput} />
+              </div>
+            </li>
+            <li className="list-inline-item">
+              {loading && (
+                <div className="smartTable-loaderContainer text-primary">
+                  <div className="spinner-border" role="status"></div>
+                </div>
+              )}
+              <div className="col-lg-12">
+                <div className="row">
+                  <div
+                    className="col-lg-6 btn btn-color w-50"
+                    onClick={() => handlePrint()}
+                    title="Download Pdf"
+                  >
+                    <span className="flaticon-download "></span>
+                  </div>
+                  <div className="col-lg-6 w-50">
+                    <button
+                      className="btn btn-color"
+                      onClick={() => props.refreshHandler()}
+                      title="Refresh"
+                    >
+                      <FaRedo />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
         <div className="col-12">
-          {loading && (
-            <div className="smartTable-loaderContainer text-primary">
-              <div className="spinner-border" role="status"></div>
-            </div>
-          )}
-          <div className="row">
-            <div className="col-6 h3">{props.title}</div>
-            {/*<div className="col-6 text-end">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Search..."
-                onChange={handleSearch}
-              />
-            </div>*/}
-          </div>
           {props.data.length > 0 ? (
             <div className="row mt-3">
-              <div className="smartTable-tableContainer">
+              <div className="smartTable-tableContainer" id="table-container">
                 <table
                   className={"smartTable-table table table-striped border"}
                   style={{ minWidth: tableWidth }}
@@ -188,53 +215,67 @@ function SmartTable(props) {
                     </tr>
                   </thead>
                   <tbody>
-                  {data.length > 0
-                    ? data.map((row, idx) => {
-                        return (
-                          <tr key={"tr_" + idx}>
-                            {props.headCells.map((headCell, idxx) => {
-                              return (
-                                <td key={"td_" + idx + "_" + idxx}>
-                                  {headCell.render
-                                    ? headCell.render(row)
-                                    : row[headCell.id]}
-                                </td>
-                              );
-                            })}
-                          </tr>
-                        );
-                      })
-                    : props.data.map((row, idx) => {
-                        return (
-                          <tr key={"tr_" + idx}>
-                            {props.headCells.map((headCell, idxx) => {
-                              return (
-                                <td key={"td_" + idx + "_" + idxx}>
-                                  {headCell.render
-                                    ? headCell.render(row)
-                                    : row[headCell.id]}
-                                </td>
-                              );
-                            })}
-                          </tr>
-                        );
-                      })}
-                </tbody>
+                    {data.length > 0
+                      ? data.map((row, idx) => {
+                          if (idx >= props.start && idx <= props.end) {
+                            return (
+                              <tr key={"tr_" + idx}>
+                                {props.headCells.map((headCell, idxx) => {
+                                  return (
+                                    <td key={"td_" + idx + "_" + idxx}>
+                                      {headCell.render
+                                        ? headCell.render(row)
+                                        : row[headCell.id]}
+                                    </td>
+                                  );
+                                })}
+                              </tr>
+                            );
+                          } else {
+                            return null; // Skip rendering rows that don't meet the condition
+                          }
+                        })
+                      : props.data.map((row, idx) => {
+                          if (idx >= props.start && idx <= props.end) {
+                            return (
+                              <tr key={"tr_" + idx}>
+                                {props.headCells.map((headCell, idxx) => {
+                                  return (
+                                    <td key={"td_" + idx + "_" + idxx}>
+                                      {headCell.render
+                                        ? headCell.render(row)
+                                        : row[headCell.id]}
+                                    </td>
+                                  );
+                                })}
+                              </tr>
+                            );
+                          } else {
+                            return null; // Skip rendering rows that don't meet the condition
+                          }
+                        })}
+                  </tbody>
                 </table>
               </div>
             </div>
           ) : (
-            <div className="row p-4">
-              <div className="smartTable-noDataFound col-12">
-                <h4>NO DATA FOUND</h4>
+            <div className="row">
+              <div
+                className="smartTable-noDataFound col-12"
+                style={{ marginTop: "110px", marginBottom: "40px" }}
+              >
+                <div className="ring">
+                  Loading
+                  <span className="load"></span>
+                </div>
               </div>
             </div>
           )}
           {props.noPagination || data.length === 0 || !props.url ? (
             <div className="row">
-              <div className="col-12 text-end p-3">
+              {/* <div className="col-12 text-end p-3">
                 {props.data.length > 0 ? props.data.length : 0} Rows
-              </div>
+              </div> */}
             </div>
           ) : (
             <div className="row">

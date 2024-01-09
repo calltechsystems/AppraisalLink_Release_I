@@ -51,10 +51,36 @@ const Index = () => {
   const closeErrorModal = () => {
     setModalIsOpenError(false);
   };
+  const [currentBid,setCurrentBid]=useState(-1);
 
   const handleStatusUpdateHandler = ()=>{
 
+    const userData = JSON.parse(localStorage.getItem("user"));
+
+    const payload = {
+      token:userData.token,
+      bidid:currentBid,
+      OrderStatus:Number(orderStatus)
+    };
+
+
+
+    const encryptedBody = encryptionData(payload);
+    toast.loading("Updating order status!!");
+    axios.put("/api/updateOrderStatus",encryptedBody).then((res)=>{
+      toast.dismiss();
+      toast.success("Successfully updated!!");
+      window.location.reload();
+    })
+    .catch((err)=>{
+      toast.dismiss();
+      toast.error(err);
+    });
+
+    setCurrentBid(-1);
+    setIsStatusModal(false);
   }
+
 
   const closeStatusUpdateHandler = ()=>{
     setOpenDate(false);
@@ -72,6 +98,7 @@ const Index = () => {
     setIsQuoteModalOpen(false);
   };
 
+
   const openQuoteModal = () => {
     setIsModalOpen(false);
     setIsQuoteModalOpen(true);
@@ -82,12 +109,7 @@ const Index = () => {
 
   
 
-  const handleStatusSelect = (value)=>{
-    if(String(value) === "Appraisal Visit Confirmed"){
-      setOpenDate(true);
-    }
-
-  }
+ 
 
   const [allBrokers,setAllBrokers]=useState([]);
   let [selectedBroker ,setSelectedBroker]=useState({});
@@ -159,6 +181,18 @@ const Index = () => {
     setShowPropDetails(false);
   };
 
+  const [orderStatus,setOrderStatus]=useState(-1);
+
+  const handleStatusSelect = (value)=>{
+
+    if(String(value) === "Appraisal Visit Confirmed"){
+      setOpenDate(true);
+    }
+
+    console.log(value);
+    setOrderStatus(value);
+
+  }
   useEffect(() => {
     const filterProperties = (propertys, searchInput) => {
       if (searchInput === "") {
@@ -532,6 +566,7 @@ const Index = () => {
                           setProperties={setProperties}
                           start={start}
                           end={end}
+                          setCurrentBid={setCurrentBid}
                           properties={
                             searchInput === "" ? properties : filterProperty
                           }
@@ -1364,7 +1399,7 @@ const Index = () => {
                 {openDate && <div className="col-lg-12 pt-20" style={{display:"flex",flexDirection:"row"}}>
                 
                 <label style={{color:"black",fontWeight:"bold"}}>
-                Add Meeting Date and Time <span style={{color:"red"}}>*</span>
+                Date and Time <span style={{color:"red"}}>*</span>
                 </label>
                 <input
                   required

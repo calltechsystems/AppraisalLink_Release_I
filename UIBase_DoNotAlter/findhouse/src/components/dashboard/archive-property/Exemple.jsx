@@ -213,11 +213,11 @@ export default function Exemple({
             quote_required_by: formatDate(property.addedDatetime),
             status:
               isStatus === 2 ? (
-                <span className="btn bg-success text-light">Accepted</span>
+                <span className="btn bg-success w-100 text-light">Accepted</span>
               ) : isStatus === 0 ? (
-                <span className="btn bg-primary text-light">In Progress</span>
+                <span className="btn bg-primary w-100 text-light">In Progress</span>
               ) : (
-                <span className="btn bg-info text-light">Quote Provided</span>
+                <span className="btn bg-info w-100 text-light">Quote Provided</span>
               ),
             address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
             // user: property.applicantEmailAddress,
@@ -227,7 +227,7 @@ export default function Exemple({
             type_of_appraisal: property.typeOfAppraisal,
             lender_information: property.lenderInformation
               ? property.lenderInformation
-              : "NA",
+              : "N.A.",
             urgency: property.urgency === 0 ? "Rush" : "Regular",
             actions: (
               <ul className="mb0">

@@ -6,6 +6,7 @@ import axios from "axios";
 import { encryptionData } from "../../../utils/dataEncryption";
 import { useRouter } from "next/router";
 import Loader from "./Loader";
+import { AppraiserStatusOptions } from "../create-listing/data";
 // import "./SmartTable.css";
 
 const headCells = [
@@ -22,6 +23,7 @@ const headCells = [
     label: "Property Address",
     width: 200,
   },
+
   
   {
     id: "status",
@@ -29,6 +31,7 @@ const headCells = [
     label: "Quote Status",
     width: 160,
   },
+  
   {
     id: "appraisal_status",
     numeric: false,
@@ -115,16 +118,15 @@ let count = 0;
 
 export default function Exemple({
   userData,
-  open,
-  close,
   start,
+  setAssignedAppraiser,
   end,
+  setOpenAssignModal,
   setUpdatedCode,
-  setAllBrokers,
   properties,
+  setCurrentBid,
   setIsStatusModal,
   setProperties,
-  deletePropertyHandler,
   onWishlistHandler,
   participateHandler,
   setFilterQuery,
@@ -133,6 +135,7 @@ export default function Exemple({
   setErrorMessage,
   setModalIsOpenError,
   setRefresh,
+  setAllBrokers,
   setStartLoading,
   refresh,
 }) {
@@ -148,10 +151,10 @@ export default function Exemple({
     const userData = JSON.parse(localStorage.getItem("user"));
     let tempBid = 0,
       bidValue = {};
-      console.log(bids);
+      // console.log(bids);
     bids.filter((bid) => {
       if (bid.propertyId === property.propertyId ) {
-        console.log("matched", bid);
+        // console.log("matched", bid);
         tempBid = tempBid + 1;
         bidValue = bid;
       } else {
@@ -166,7 +169,18 @@ export default function Exemple({
 
   const router = useRouter();
 
-  const openStatusUpdateHandler = () => {
+  const getOrderValue = (val)=>{
+    let title = "";
+    AppraiserStatusOptions.map((status)=>{
+      if(String(status.value) === String(val)){
+        title = status.type;
+      }
+    })
+    return title;
+  }
+
+  const openStatusUpdateHandler = (bidId) => {
+    setCurrentBid(bidId);
     setIsStatusModal(true);
   };
 
@@ -237,6 +251,9 @@ export default function Exemple({
     return data.sort((a, b) => b.orderId - a.orderId);
   };
 
+  const [isBroker,setIsBroker]=useState(-1);
+
+  
   
   const checkData = (properties && !updatedData) ? true : false;
   useEffect(()=>{
@@ -248,8 +265,7 @@ export default function Exemple({
       properties.map((property, index) => {
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
-        
-
+       
         const updatedRow = {
           orderId: property.orderId ,
           address: `${property.city}-${property.province},${property.zipCode}`,
@@ -272,31 +288,14 @@ export default function Exemple({
                 Accepted
               </span>
             ) : (
-              <span className="btn btn-danger  w-100">Rejected</span>
+              <span className="btn btn-danger  w-100">Declined</span>
             )
           ) : (
             <span className="btn btn-warning  w-100">New</span>
           ),
-          appraisal_status: isBidded.bidId ? (
-            isBidded.status === 0 ? (
-              <span
-                className="btn btn-primary  w-100"
-              >
-                Quote Provided
-              </span>
-            ) : isBidded.status === 1 ? (
-              <span
-                className="btn btn-success  w-100"
-                
-              >
-                Accepted
-              </span>
-            ) : (
-              <span className="btn btn-danger  w-100">Rejected</span>
-            )
-          ) : (
-            <span className="btn btn-warning  w-100">New</span>
-          ),
+          appraisal_status: isBidded.orderStatus ? (
+            <h5>{getOrderValue(isBidded.orderStatus)}</h5>
+          ):<span className="btn btn-warning  w-100">New</span>,
           broker: (
             <div>
               {isBidded.status === 1 ? (
@@ -409,6 +408,7 @@ export default function Exemple({
                   )}
 
                   {!isBidded.$id && (
+                    <ul>
                     <li
                       className="list-inline-item"
                       data-toggle="tooltip"
@@ -426,7 +426,7 @@ export default function Exemple({
                       >
                         <button
                           href="#"
-                          className="btn btn-color w-100 mt-1"
+                          className = "btn btn-color w-0 mt-1"
                           style={{ marginLeft: "12px" }}
                         >
                         <Link href="#">
@@ -435,14 +435,38 @@ export default function Exemple({
                         </button>
                       </div>
                     </li>
+                    <li
+                      className="list-inline-item"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Assign Appraisers"
+                    >
+                      <div
+                        className="w-100"
+                        onClick={() =>
+                          setAssignedAppraiser(property.propertyId)
+                        }
+                      >
+                        <button
+                          href="#"
+                          className="btn btn-color w-0 mt-1"
+                          style={{ marginLeft: "12px" }}
+                        >
+                        <Link href="#">
+                        <span className="flaticon-box text-light"></span>
+                      </Link>
+                        </button>
+                      </div>
+                    </li>
+                    </ul>
                   )}
-
+                    
                  
                   <li
                   className="list-inline-item"
                   data-toggle="tooltip"
                   data-placement="top"
-                  title="Archive Property"
+                  title="Un-Archive Property"
                 >
                   <div
                     className="w-100"
@@ -452,27 +476,52 @@ export default function Exemple({
                   >
                     <button
                       href="#"
-                      className="btn btn-color w-100 mt-1"
+                      className="btn btn-color w-0 mt-1"
                       style={{ marginLeft: "12px" }}
                     >
-                    <Link href="#">
-                    <span className="flaticon-home text-light"></span>
-                  </Link>
+                    <button
+                          href="#"
+                          className="btn btn-color  mt-1"
+                          style={{ marginLeft: "12px" }}
+                        >
+                        <Link href="#">
+                        <span className="flaticon-home text-light"></span>
+                      </Link>
+                        </button>
                     </button>
                   </div>
                 </li>
                 </ul>
               ) : (
-                 <button
-                          href="#"
-                          className="btn btn-color w-100 mt-1"
-                          style={{ marginLeft: "12px" }}
-                          onClick={openStatusUpdateHandler}
-                        >
-                        <Link href="#">
-                        <span className="flaticon-edit text-light"></span>
-                      </Link>
-                        </button>
+                <li
+                className="list-inline-item"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="Order Update"
+              >
+                <div
+                  className="w-100"
+                  onClick={() =>
+                   openStatusUpdateHandler(isBidded.bidId)
+                  }
+                >
+                  <button
+                    href="#"
+                    className="btn btn-color w-0 mt-1"
+                    style={{ marginLeft: "12px" }}
+                  >
+                  <button
+                        href="#"
+                        className="btn btn-color  mt-1"
+                        style={{ marginLeft: "12px" }}
+                      >
+                      <Link href="#">
+                      <span className="flaticon-edit text-light"></span>
+                    </Link>
+                      </button>
+                  </button>
+                </div>
+              </li>
               )}
             </div>
           ),
@@ -495,7 +544,7 @@ export default function Exemple({
     setStartLoading(true);
   };
   useEffect(() => {
-    console.log("inside");
+    // console.log("inside");
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -524,6 +573,8 @@ export default function Exemple({
             return false
           }
         })
+        
+      // console.log("props",temp)
       })
       .catch((err) => {
         setErrorMessage(err?.response?.data?.error);
@@ -563,7 +614,7 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         tempBids = res.data.data.result.$values;
         const updatedBids = tempBids.filter((prop,index)=>{
           if(String(prop.appraiserUserId) === String(data.userId)){
@@ -573,6 +624,7 @@ export default function Exemple({
             return false;
           }
         })
+        console.log("bids",updatedBids);
         setBids(updatedBids);
       })
       .catch((err) => {
@@ -587,7 +639,6 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        console.log("allBroker",res.data.data.$values);
         setAllBrokers(res.data.data.$values);
        
       })
@@ -595,11 +646,12 @@ export default function Exemple({
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
+     
 
-    console.log("end", bids, properties, wishlist);
+    // console.log("end", bids, properties, wishlist);
     setRefresh(false);
   }, [refresh]);
-  console.log(sortObjectsByOrderIdDescending(updatedData));
+  // console.log(sortObjectsByOrderIdDescending(updatedData));
   return (
     <>
       {refresh ? (

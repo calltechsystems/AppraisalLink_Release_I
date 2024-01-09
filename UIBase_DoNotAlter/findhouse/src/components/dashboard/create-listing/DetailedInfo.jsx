@@ -491,6 +491,27 @@ const DetailedInfo = ({
               </label>
             </div>
             <div className="col-lg-7">
+              {/* <input
+                style={
+                  checkIsError("applicantPhoneNumber")
+                    ? errorLabelStyle
+                    : {
+                        // paddingTop: "15px",
+                        // paddingBottom: "15px",
+                        backgroundColor: "#E8F0FE",
+                        //color: "white",
+                      }
+                }
+                type="text"
+                maxLength={10}
+                className="form-control"
+                id="formGroupExampleInput3"
+                onChange={(e) => setApplicantNumber(e.target.value)}
+                pattern="[0-9]*"
+                title="Please enter only 10 digits"
+                value={applicantNumber}
+                disabled={isDisable}
+              /> */}
               <input
                 style={
                   checkIsError("applicantPhoneNumber")
@@ -503,30 +524,17 @@ const DetailedInfo = ({
                       }
                 }
                 type="text"
-                // min={10}
-                maxLength={10}
-                className="form-control"
-                id="formGroupExampleInput3"
-                // onChange={(e) => setApplicantNumber(e.target.value)}
-                onChange={(e)=>setApplicantNumber(e.target.value)}
-                pattern="[0-9]*"
-                title="Please enter only 10 digits"
-                value={ applicantNumber}
-                
-                disabled={isDisable}
-              />
-              {/* <input
-                type="text"
                 id="phoneNumber"
+                className="form-control"
                 name="phoneNumber"
                 value={phoneNumber}
                 onChange={handleInputChange}
                 pattern="[0-9]*"
                 maxLength="10"
-                placeholder="Enter 10 digits"
+                // placeholder="Enter 10 digits"
                 title="Please enter only 10 digits"
                 required
-              /> */}
+              />
             </div>
           </div>
           <div className="row" style={{ marginBottom: "10px" }}>
@@ -540,12 +548,16 @@ const DetailedInfo = ({
             </div>
             <div className="col-lg-7">
               <input
-                style={{
-                  // paddingTop: "15px",
-                  // paddingBottom: "15px",
-                  backgroundColor: "#E8F0FE",
-                  //color: "white",
-                }}
+                style={
+                  checkIsError("applicantEmail")
+                    ? errorLabelStyle
+                    : {
+                        // paddingTop: "15px",
+                        // paddingBottom: "15px",
+                        backgroundColor: "#E8F0FE",
+                        //color: "white",
+                      }
+                }
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"

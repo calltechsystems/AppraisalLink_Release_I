@@ -6,6 +6,7 @@ import axios from "axios";
 import { encryptionData } from "../../../utils/dataEncryption";
 import { useRouter } from "next/router";
 import Loader from "./Loader";
+import { FaArchive } from "react-icons/fa";
 // import "./SmartTable.css";
 
 const headCells = [
@@ -366,7 +367,7 @@ export default function Exemple({
               ? "Rush"
               : property.urgency === 1
               ? "Regular"
-              : "NA",
+              : "",
 
           action: (
             <div className="print-hidden-column">
@@ -429,7 +430,7 @@ export default function Exemple({
                           style={{ marginLeft: "12px" }}
                         >
                         <Link href="#">
-                        <span className="flaticon-building text-light"></span>
+                        <span className="flaticon-invoice text-light"></span>
                       </Link>
                         </button>
                       </div>
@@ -455,7 +456,7 @@ export default function Exemple({
                       style={{ marginLeft: "12px" }}
                     >
                     <Link href="#">
-                    <span className="flaticon-home text-light"></span>
+                    <span className="text-light"> <FaArchive/></span>
                   </Link>
                     </button>
                   </div>

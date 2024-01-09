@@ -6,6 +6,7 @@ import axios from "axios";
 import { encryptionData } from "../../../utils/dataEncryption";
 import { useRouter } from "next/router";
 import Loader from "./Loader";
+import { AppraiserStatusOptions } from "../create-listing/data";
 // import "./SmartTable.css";
 
 const headCells = [
@@ -123,7 +124,7 @@ export default function Exemple({
   setAllBrokers,
   properties,
   setProperties,
-  setDetails,
+  setCurrentBid,
   deletePropertyHandler,
   onWishlistHandler,
   participateHandler,
@@ -167,8 +168,22 @@ export default function Exemple({
     //   return requestTime >= twentyFourHoursAgo && requestTime <= currentTime;
   };
 
+  const openStatusUpdateHandler = (bidId) => {
+    setCurrentBid(bidId);
+    setIsStatusModal(true);
+  };
+
   const router = useRouter();
 
+  const getOrderValue = (val)=>{
+    let title = "";
+    AppraiserStatusOptions.map((status)=>{
+      if(String(status.value) === String(val)){
+        title = status.type;
+      }
+    })
+    return title;
+  }
   const sortObjectsByOrderIdDescending = (data) => {
     return data.sort((a, b) => b.orderId - a.orderId);
   };
@@ -220,9 +235,7 @@ export default function Exemple({
     return formattedDate;
   };
 
-  const openStatusUpdateHandler = () => {
-    setIsStatusModal(true);
-  };
+
 
   const checkWishlistedHandler = (data) => {
     let temp = {};
@@ -279,17 +292,9 @@ export default function Exemple({
             ) : (
               <span className="btn btn-warning">New</span>
             ),
-            appraisal_status: isBidded.bidId ? (
-              isBidded.status === 0 ? (
-                <span className="btn btn-primary">Quote Provided</span>
-              ) : isBidded.status === 1 ? (
-                <span className="btn btn-success" onClick={openStatusUpdateHandler}>Accepted</span>
-              ) : (
-                <span className="btn btn-danger">Declined</span>
-              )
-            ) : (
-              <span className="btn btn-warning">New</span>
-            ),
+            appraisal_status:isBidded.orderStatus ? (
+              <h5>{getOrderValue(isBidded.orderStatus)}</h5>
+            ):<span className="btn btn-warning  w-100">New</span>,
             property: (
               <div>
                 {isBidded.status === 1 ? (
@@ -371,10 +376,41 @@ export default function Exemple({
                 {isBidded && isBidded.status === 0 ? (
                   <h4 className="text-warning">Pending</h4>
                 ) : isBidded.status === 1 ? (
-                  <h4 className="text-success">Completed</h4>
+                  isBidded.orderStatus !== 7 ?
+                  <li
+                  className="list-inline-item"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Order Update"
+                >
+                  <div
+                    className="w-100"
+                    onClick={() =>
+                     openStatusUpdateHandler(isBidded.bidId)
+                    }
+                  >
+                    <button
+                      href="#"
+                      className="btn btn-color w-0 mt-1"
+                      style={{ marginLeft: "12px" }}
+                    >
+                    <button
+                          href="#"
+                          className="btn btn-color  mt-1"
+                          style={{ marginLeft: "12px" }}
+                        >
+                        <Link href="#">
+                        <span className="flaticon-edit text-light"></span>
+                      </Link>
+                        </button>
+                    </button>
+                  </div>
+                </li>
+                  :<h4 className="text-success">Completed</h4>
                 ) : (
                   <h4 className="text-danger">Rejected</h4>
                 )}
+
               </div>
             ),
           };
