@@ -4,7 +4,9 @@ import SVGArrowDown from "./icons/SVGArrowDown";
 import SVGArrowUp from "./icons/SVGArrowUp";
 import SVGChevronLeft from "./icons/SVGChevronLeft";
 import SVGChevronRight from "./icons/SVGChevronRight";
-
+import { FaRedo } from "react-icons/fa";
+import Filtering from "../appraised-properties/Filtering";
+import SearchBox from "./SearchBox";
 function SmartTable(props) {
   const [loading, setLoading] = useState(false);
   const [sortDesc, setSortDesc] = useState({});
