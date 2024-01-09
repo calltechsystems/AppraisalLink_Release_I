@@ -124,6 +124,7 @@ export default function Exemple({
   setDetails,
   deletePropertyHandler,
   onWishlistHandler,
+  setAllBrokers,
   participateHandler,
   setWishlistedProperties,
   openModalBroker,
@@ -472,6 +473,22 @@ export default function Exemple({
         })
         console.log(updatedBids)
         setBids(updatedBids);
+      })
+      .catch((err) => {
+        setErrorMessage(err?.response?.data?.error);
+        setModalIsOpenError(true);
+      });
+
+      axios
+      .get("/api/getAllBrokers", {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+      })
+      .then((res) => {
+        // console.log("allBroker",res.data.data.$values);
+        setAllBrokers(res.data.data.$values);
+       
       })
       .catch((err) => {
         setErrorMessage(err?.response?.data?.error);

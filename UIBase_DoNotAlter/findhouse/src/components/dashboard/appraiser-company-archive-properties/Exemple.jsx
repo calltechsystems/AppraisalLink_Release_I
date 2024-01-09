@@ -120,6 +120,7 @@ export default function Exemple({
   start,
   end,
   setUpdatedCode,
+  setAllBrokers,
   properties,
   setIsStatusModal,
   setProperties,
@@ -309,7 +310,7 @@ export default function Exemple({
                       // fontWeight: "bold",
                       backgroundColor: "transparent",
                     }}
-                    onClick={() => openModalBroker(property,1)}
+                    onClick={() => openModalBroker(property,2)}
                   >
                    Broker Info
                   </button>
@@ -336,7 +337,7 @@ export default function Exemple({
                       // fontWeight: "bold",
                       backgroundColor: "transparent",
                     }}
-                    onClick={() => openModalBroker(property,2)}
+                    onClick={() => openModalBroker(property,1)}
                   >
                     Property Info
                   </button>
@@ -573,6 +574,22 @@ export default function Exemple({
           }
         })
         setBids(updatedBids);
+      })
+      .catch((err) => {
+        setErrorMessage(err?.response?.data?.error);
+        setModalIsOpenError(true);
+      });
+
+      axios
+      .get("/api/getAllBrokers", {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+      })
+      .then((res) => {
+        console.log("allBroker",res.data.data.$values);
+        setAllBrokers(res.data.data.$values);
+       
       })
       .catch((err) => {
         setErrorMessage(err?.response?.data?.error);

@@ -123,7 +123,7 @@ const SidebarMenu = ({ userData }) => {
             >
               <Link href="/appraise-company-properties">
                 <i className="flaticon-home"></i>
-                <span>Appraise Properties</span>
+                <span>My Properties</span>
               </Link>
             </li>
 
@@ -152,7 +152,7 @@ const SidebarMenu = ({ userData }) => {
             >
               <Link href="/company-biding-history">
                 <i className="flaticon-building"></i>
-                <span>Quote History</span>
+                <span>Order History</span>
               </Link>
             </li>
 
@@ -172,7 +172,7 @@ const SidebarMenu = ({ userData }) => {
               </Link>
             </li>
 
-            <li
+            {/* <li
               className={`treeview ${
                 isSinglePageActive(
                   "/brokerage-allocated-properties",
@@ -186,7 +186,7 @@ const SidebarMenu = ({ userData }) => {
                 <i className="flaticon-building"></i>
                 <span>Assigned Properties</span>
               </Link>
-            </li>
+            </li> */}
 
             {/* End Review */}
 
@@ -373,18 +373,18 @@ const SidebarMenu = ({ userData }) => {
           </ul>
         </li>
         <li className="title">
-          <span>Manage Appraisers</span>
+          <span>Manage Brokers</span>
           <ul>
             <li
               className={`treeview ${
-                isSinglePageActive("/all-appraisers", route.pathname)
+                isSinglePageActive("/all-brokers", route.pathname)
                   ? "active"
                   : ""
               }`}
             >
-              <Link href="/all-appraisers">
+              <Link href="/all-brokers">
                 <i className="flaticon-building"></i>
-                <span> Appraiser Add/View</span>
+                <span> Broker Add/View</span>
               </Link>
             </li>
           </ul>

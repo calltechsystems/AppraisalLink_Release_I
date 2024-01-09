@@ -120,6 +120,7 @@ export default function Exemple({
   start,
   end,
   setUpdatedCode,
+  setAllBrokers,
   properties,
   setProperties,
   setDetails,
@@ -255,7 +256,8 @@ export default function Exemple({
       properties.map((property, index) => {
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
-        console.log("isBidded", isBidded);
+        if(isBidded.status === 1)
+          console.log("isBidded", isBidded);
 
         if (isBidded.$id) {
           page.push(property);
@@ -466,6 +468,22 @@ export default function Exemple({
 
         console.log(tempBids);
         setBids(tempBids);
+      })
+      .catch((err) => {
+        setErrorMessage(err?.response?.data?.error);
+        setModalIsOpenError(true);
+      });
+
+      axios
+      .get("/api/getAllBrokers", {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+      })
+      .then((res) => {
+        console.log("allBroker",res.data.data.$values);
+        setAllBrokers(res.data.data.$values);
+       
       })
       .catch((err) => {
         setErrorMessage(err?.response?.data?.error);

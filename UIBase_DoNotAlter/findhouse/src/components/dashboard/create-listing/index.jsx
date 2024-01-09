@@ -733,7 +733,7 @@ const Index = ({ isView, propertyData }) => {
 
         // console.log(updateView,propertyData);
 
-        toast.loading("Appraising property ..");
+        toast.loading("Added the property for appraising ..");
         axios
           .post("/api/addBrokerProperty", encryptedData, {
             headers: {
