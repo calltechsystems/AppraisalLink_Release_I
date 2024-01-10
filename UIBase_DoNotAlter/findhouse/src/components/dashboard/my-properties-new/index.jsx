@@ -88,7 +88,7 @@ const Index = () => {
   const PropertyInfoHandler = (orderId) => {
     const printWindow = window.open("", "_blank");
     printWindow.document.write(
-      "<html><head><title>Property Information</title></head><body>"
+      "<html><head><title></title></head><body>"
     );
 
     // Add the header section
@@ -112,7 +112,7 @@ const Index = () => {
     `);
 
     printWindow.document.write(
-      "<h3>" + `Property Details of Order No. ${orderId}` + "</h3>"
+      `<h3 style="margin-left:200px;">Property Details of Order No. ${orderId}</h3>`
     );
     printWindow.document.write(
       '<button style="display:none;" onclick="window.print()">Print</button>'
@@ -126,7 +126,8 @@ const Index = () => {
     // ... (rest of your code)
 
     printWindow.document.write(clonedTable.outerHTML);
-    printWindow.document.write("</body></html>");
+    printWindow.document.write(`<p> Appraisal Land. All
+    Rights Reserved.</p></body></html>`);
     printWindow.document.close();
     printWindow.print();
     printWindow.onafterprint = () => {
@@ -899,7 +900,7 @@ const Index = () => {
                                       }
                                       title="Download Pdf"
                                     >
-                                      Download Form
+                                      Download
                                     </div>
                                     <button
                                       className="btn btn-color w-25 text-center"

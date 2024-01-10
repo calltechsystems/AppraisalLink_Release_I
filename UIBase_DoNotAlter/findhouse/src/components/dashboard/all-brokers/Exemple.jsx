@@ -12,47 +12,47 @@ const headCells = [
   {
     id: "email",
     numeric: false,
-    label: "Email",
-    width: 100,
+    label: "Email / Username",
+    width: 200,
   },
 
   {
     id: "firstname",
     numeric: false,
     label: "First Name",
-    width: 200,
+    width: 150,
   },
   {
     id: "lastname",
     numeric: false,
     label: "Last Name",
-    width: 200,
+    width: 150,
   },
   {
-    id: "company",
+    id: "status",
     numeric: false,
-    label: "Company",
-    width: 200,
+    label: "Status",
+    width: 150,
   },
 
   {
     id: "phone",
     numeric: false,
-    label: "Phone",
+    label: "Phone Number",
     width: 200,
   },
 
   {
-    id: "date",
+    id: "emailaddress",
     numeric: false,
-    label: "Date",
+    label: "Email Address",
     width: 200,
   },
   {
     id: "action",
     numeric: false,
     label: "Action",
-    width: 180,
+    width: 100,
   },
 ];
 
@@ -241,9 +241,10 @@ export default function Exemple({
           email: data.email,
           firstname: data.firstname,
           lastname: data.lastname,
-          company: data.company,
+          // company: data.company,
           phone: data.phone,
-          date: data.date,
+          emailaddress: data.email,
+          status:<span className="btn btn-success w-50">Active</span>,
           // broker: (
           //   <div>
           //     {isBidded.status === 1 ? (
@@ -291,12 +292,23 @@ export default function Exemple({
 
           action: (
             <div className="print-hidden-column">
-              <button className="btn btn-color m-1">
+              <button
+                href="#"
+                className="btn btn-color w-50"
+                style={{ marginLeft: "12px" }}
+                onClick={openStatusUpdateHandler}
+                title="Update Status"
+              >
+                <Link href="#">
+                  <span className="flaticon-edit text-light"></span>
+                </Link>
+              </button>
+              {/* <button className="btn btn-color m-1">
                 <i className="flaticon-edit"></i>
               </button>
               <button className="btn btn-color">
                 <i className="flaticon-garbage"></i>
-              </button>
+              </button> */}
             </div>
           ),
         };

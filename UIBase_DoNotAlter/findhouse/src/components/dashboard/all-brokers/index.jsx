@@ -14,7 +14,7 @@ import { useRouter } from "next/router";
 import Modal from "./Modal";
 import { encryptionData } from "../../../utils/dataEncryption";
 import Loader from "./Loader";
-import { AppraiserStatusOptions } from "../create-listing/data";
+import { BrokerStatus } from "../create-listing/data";
 import Form from "../../appraiser-register/Form";
 
 const Index = () => {
@@ -1054,8 +1054,8 @@ const Index = () => {
 
               {closeRegisterModal && (
                 <div className="modal">
-                  <div className="modal-content" style={{width:"500px"}}>
-                    <h3 className="text-center">Add Appraiser</h3>
+                  <div className="modal-content" style={{ width: "500px" }}>
+                    <h3 className="text-center">Add Broker</h3>
                     <hr />
                     <Form setCloseRegisterModal={setCloseRegisterModal} />
                   </div>
@@ -1065,41 +1065,44 @@ const Index = () => {
               {isStatusModal && (
                 <div className="modal">
                   <div className="modal-content">
-                    <h3 className="text-center">Quote Status Updation</h3>
-
-                    <select
-                      required
-                      className="form-select"
-                      data-live-search="true"
-                      data-width="100%"
-                      // value={buildinRef}
-                      // onChange={(e) => setBuildinRef(e.target.value)}
-                      // onChange={(e) => setBuildinRef(e.target.value)}
-                      // disabled={isDisable}
-                      style={{
-                        paddingTop: "15px",
-                        paddingBottom: "15px",
-                        backgroundColor: "#E8F0FE",
-                      }}
-                    >
-                      {AppraiserStatusOptions.map((item, index) => {
-                        return (
-                          <option key={item.id} value={item.value}>
-                            {item.type}
-                          </option>
-                        );
-                      })}
-                    </select>
+                    <h3 className="text-center">Broker Status Update</h3>
+                    <hr />
+                    <div className="d-flex justify-content-center">
+                      <select
+                        className="form-select"
+                        data-live-search="true"
+                        data-width="100%"
+                        // value={buildinRef}
+                        // onChange={(e) => setBuildinRef(e.target.value)}
+                        // onChange={(e) => setBuildinRef(e.target.value)}
+                        // disabled={isDisable}
+                        style={{
+                          paddingTop: "10px",
+                          paddingBottom: "10px",
+                          backgroundColor: "#E8F0FE",
+                          width: "300px",
+                        }}
+                      >
+                        {BrokerStatus.map((item, index) => {
+                          return (
+                            <option key={item.id} value={item.value}>
+                              {item.type}
+                            </option>
+                          );
+                        })}
+                      </select>
+                    </div>
+<hr />
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
                       <button
-                        className="btn w-35 btn-white"
+                        className="btn w-25 btn-color"
                         onClick={closeStatusUpdateHandler}
                       >
                         Cancel
                       </button>
                       <button
-                        className="btn btn-color w-10 mt-1"
+                        className="btn btn-color w-25"
                         style={{ marginLeft: "12px" }}
                         onClick={handleStatusUpdateHandler}
                       >

@@ -9,7 +9,6 @@ import toast from "react-hot-toast";
 import { province } from "../create-listing/data";
 
 const ProfileInfo = ({ setProfileCount, setShowCard }) => {
-  
   const [profilePhoto, setProfilePhoto] = useState(null);
   let userData = JSON.parse(localStorage.getItem("user")) || {};
   const router = useRouter();
@@ -66,20 +65,32 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     userData?.broker_Details?.mortageBrokerLicNo || ""
   );
 
- 
+  const [streetNumber, setStreetNumber] = useState(
+    userData?.broker_Details?.streetNumber || ""
+  );
+  const [cellNumber, setCellNumber] = useState(
+    userData?.broker_Details?.cellNumber || ""
+  );
 
-  const [streetNumber,setStreetNumber] = useState(userData?.broker_Details?.streetNumber || "");
-  const [cellNumber,setCellNumber] = useState(userData?.broker_Details?.cellNumber || "");
-  
-  const [streetName,setStreetName] = useState(userData?.broker_Details?.streetName || "");
-  const [unit,setUnit] = useState(userData?.broker_Details?.apartmentNo || "");
-  const [apartmentNo,setApartmentNo] = useState(userData?.broker_Details?.apartmentNo || "");
-  const [assistantFirstName,setAssistantFirstName] = useState(userData?.broker_Details?.assistantFirstName || "");
-  const [assistantLastName,setAssistantLastName] = useState(userData?.broker_Details?.assistantFirstName || "");
-  const [assistantPhoneNumber,setAssistantPhoneNumber] = useState(userData?.broker_Details?.assistantPhoneNumber || "");
-  const [assistantEmailAddress,setAssistantEmailAddress] = useState(userData?.broker_Details?.assistantEmailAddress || "");
-  
-  
+  const [streetName, setStreetName] = useState(
+    userData?.broker_Details?.streetName || ""
+  );
+  const [unit, setUnit] = useState(userData?.broker_Details?.apartmentNo || "");
+  const [apartmentNo, setApartmentNo] = useState(
+    userData?.broker_Details?.apartmentNo || ""
+  );
+  const [assistantFirstName, setAssistantFirstName] = useState(
+    userData?.broker_Details?.assistantFirstName || ""
+  );
+  const [assistantLastName, setAssistantLastName] = useState(
+    userData?.broker_Details?.assistantFirstName || ""
+  );
+  const [assistantPhoneNumber, setAssistantPhoneNumber] = useState(
+    userData?.broker_Details?.assistantPhoneNumber || ""
+  );
+  const [assistantEmailAddress, setAssistantEmailAddress] = useState(
+    userData?.broker_Details?.assistantEmailAddress || ""
+  );
 
   const uploadProfile = (e) => {
     const file = e.target.files[0];
@@ -98,7 +109,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
 
     console.log(typeof profilePhoto);
   };
-
 
   const onUpdatHandler = () => {
     const firstName =
@@ -199,13 +209,13 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         firstName: firstName,
         middleName: middleName,
         lastName: lastName,
-        apartmentNo:unit,
+        apartmentNo: unit,
         companyName: companyName,
-        streetName : streetName,
-        streetNumber : streetNumber,
-        assistantEmailAddress:assistantEmailAddress,
-        assistantFirstName:assistantFirstName,
-        assistantPhoneNumber:assistantPhoneNumber,
+        streetName: streetName,
+        streetNumber: streetNumber,
+        assistantEmailAddress: assistantEmailAddress,
+        assistantFirstName: assistantFirstName,
+        assistantPhoneNumber: assistantPhoneNumber,
         city: city,
         state: state,
         postalCode: zipCode,
@@ -214,7 +224,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         mortgageBrokerageLicNo: mortgageBrokrageLicNoRef,
         profileImage: SelectedImage,
       };
-
 
       toast.loading("Updating ...");
       const encryptedData = encryptionData(payload);
@@ -286,6 +295,23 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     console.log(url);
   };
 
+  const [phoneNumber_01, setPhoneNumber_01] = useState("");
+
+  const handleInputChange = (e) => {
+    const inputValue = e.target.value;
+
+    // Allow only numeric input
+    const numericValue = inputValue.replace(/\D/g, "");
+
+    // Restrict to 10 digits
+    const truncatedValue = numericValue.slice(0, 10);
+    if (truncatedValue.length === 10) {
+      setPhoneNumberRef(truncatedValue);
+    }
+
+    setPhoneNumber_01(truncatedValue);
+  };
+
   return (
     <>
       <div className="row">
@@ -328,7 +354,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
               </div>
               <div className="col-lg-9">
                 <div className="row mb-2">
-                  <h3>Personal Information</h3>
+                  <h3 className="heading-forms">Personal Information</h3>
                   <hr />
                   <div className="col-lg-12 mb-3">
                     <div className="row">
@@ -413,7 +439,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           htmlFor=""
                           style={{ paddingTop: "5px" }}
                         >
-                          Company Name{" "}<span class="req-btn">*</span>
+                          Company Name <span class="req-btn">*</span>
                         </label>
                       </div>
                       <div className="col-lg-7">
@@ -449,7 +475,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
                           value={phoneNumberRef}
-                          onChange={(e) => setPhoneNumberRef(e.target.value)}
+                          // onChange={(e) => setPhoneNumberRef(e.target.value)}
+                          onChange={handleInputChange}
                           disabled={!edit}
                         />
                       </div>
@@ -469,7 +496,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       <div className="col-lg-7">
                         <input
                           type="text"
-                          required
                           className="form-control"
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
@@ -559,7 +585,61 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                     </div>
                   </div>
 
-                  <h3 className="mt-4">Address</h3>
+                  <h3 className="mt-4 heading-forms">Alerts</h3>
+                  <hr />
+                  <div className="col-lg-12 mb-3">
+                    <div className="row">
+                      <div className="col-lg-4">
+                        <div className="form-group form-check custom-checkbox">
+                          <input
+                            className="form-check-input"
+                            type="checkbox"
+                            value=""
+                            required
+                            id="terms"
+                            checked
+                            style={{ border: "1px solid black" }}
+                          />
+                          <label
+                            className="form-check-label form-check-label"
+                            htmlFor="terms"
+                            style={{
+                              color: "#2e008b",
+                              fontWeight: "bold",
+                              fontSize:""
+                            }}
+                          >
+                            Email Alerts
+                          </label>
+                        </div>
+                      </div>
+                      <div className="col-lg-4">
+                        <div className="form-group form-check custom-checkbox">
+                          <input
+                            className="form-check-input"
+                            type="checkbox"
+                            value=""
+                            required
+                            id="terms"
+                            checked
+                            style={{ border: "1px solid black" }}
+                          />
+                          <label
+                            className="form-check-label form-check-label"
+                            htmlFor="terms"
+                            style={{
+                              color: "#2e008b",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            SMS Alerts
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <h3 className="mt-4 heading-forms">Address</h3>
                   <hr />
                   <div className="col-lg-12 mb-3">
                     <div className="row">
@@ -629,7 +709,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           className="form-control"
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
-
                           required
                           // value={cityRef}
                           // onChange={(e) => setCityRef(e.target.value)}
@@ -675,20 +754,21 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                         </label>
                       </div>
                       <div className="col-lg-7">
-                       
-                        <div
-                          className="form-group input-group ui_kit_select_search"
-                        >
+                        <div className="form-group input-group ui_kit_select_search">
                           <select
                             required
                             className="form-select"
                             data-live-search="true"
                             data-width="100%"
-                            value={stateRef ? stateRef : userData?.broker_Details?.province}
+                            value={
+                              stateRef
+                                ? stateRef
+                                : userData?.broker_Details?.province
+                            }
                             onChange={(e) => setStateRef(e.target.value)}
                             disabled={!edit}
                             style={{
-                              paddingTop: "15px", 
+                              paddingTop: "15px",
                               paddingBottom: "15px",
                               backgroundColor: "#E8F0FE",
                               // color:"white"
@@ -737,7 +817,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       If you have an Administrative Assistant, fill in the
                       following:
                     </p> */}
-                    <h3>Assistant#1 Information</h3>
+                    <h3 className="heading-forms">Assistant#1 Information</h3>
                     <hr />
                   </div>
                   <div className="col-lg-12 mb-3">
@@ -758,7 +838,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
                           value={assistantFirstName}
-                          onChange={(e) => setAssistantFirstName(e.target.value)}
+                          onChange={(e) =>
+                            setAssistantFirstName(e.target.value)
+                          }
                           disabled={!edit}
                         />
                       </div>
@@ -807,7 +889,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
                           value={assistantPhoneNumber}
-                          onChange={(e) => setAssistantPhoneNumber(e.target.value)}
+                          onChange={(e) =>
+                            setAssistantPhoneNumber(e.target.value)
+                          }
                           disabled={!edit}
                         />
                       </div>
@@ -832,14 +916,16 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           required
                           id="formGroupExampleInput3"
                           value={assistantEmailAddress}
-                          onChange={(e)=>setAssistantEmailAddress(e.target.value)}
+                          onChange={(e) =>
+                            setAssistantEmailAddress(e.target.value)
+                          }
                           disabled={!edit}
                         />
                       </div>
                     </div>
                   </div>
                   <div className="mt-4">
-                    <h3>Assistant#2 Information</h3>
+                    <h3 className="heading-forms">Assistant#2 Information</h3>
                     <hr />
                   </div>
                   <div className="col-lg-12 mb-3">

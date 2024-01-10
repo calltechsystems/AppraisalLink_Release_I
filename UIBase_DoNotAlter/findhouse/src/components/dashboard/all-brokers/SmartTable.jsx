@@ -262,9 +262,9 @@ function SmartTable(props) {
       <div className="smartTable-container row">
         <div className="candidate_revew_select style2 mb30-991">
           <ul className="mb0">
-            <li className="list-inline-item">
+            {/* <li className="list-inline-item">
               <Filtering setFilterQuery={props.setFilterQuery} />
-            </li>
+            </li> */}
             {/* <li className="list-inline-item">
               <FilteringBy setFilterQuery={props.setSearchQuery} />
             </li> */}
@@ -282,7 +282,7 @@ function SmartTable(props) {
               <div
                 className="btn btn-color w-100 m-1"
                 onClick={() => props.setCloseRegisterModal(true)}
-                title="adding appraiser"
+                title="adding Broker"
               >
                 Add Brokers
               </div>

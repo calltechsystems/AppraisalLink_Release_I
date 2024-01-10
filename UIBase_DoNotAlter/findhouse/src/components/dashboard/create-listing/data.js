@@ -335,3 +335,17 @@ export const designation = [
     value: "Other",
   },
 ];
+
+export const BrokerStatus = [
+  {
+    id: "0",
+    type: "Active",
+    value: "Active",
+  },
+  {
+    id: "1",
+    type: "Inactive",
+    value: "Inactive",
+  },
+];
+

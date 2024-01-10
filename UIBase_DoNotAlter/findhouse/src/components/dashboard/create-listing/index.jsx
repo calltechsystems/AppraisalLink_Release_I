@@ -113,7 +113,6 @@ const Index = ({ isView, propertyData }) => {
 
   const [image, setImage] = useState(propertyData?.image || "");
 
-
   const changeUrlToStringHandler = () => {
     const resultString = filesUrl.join(",");
     if (updateView) {
@@ -356,7 +355,6 @@ const Index = ({ isView, propertyData }) => {
     window.location.reload();
   };
   const updateHandler = () => {
-
     setModalIsOpen(false);
     const nameRegex = /^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -373,12 +371,12 @@ const Index = ({ isView, propertyData }) => {
       toast.error("Please provide a valid email address");
     } else if (!phoneNumberRegex.test(applicantNumber) && applicantNumber) {
       toast.error("Please provide a valid phone number");
-    }
-    else if ((String(purpose) === "Purchase" || String(purpose) === "Refinance") && lenderInformation === "") {
+    } else if (
+      (String(purpose) === "Purchase" || String(purpose) === "Refinance") &&
+      lenderInformation === ""
+    ) {
       toast.error("Please fill the lender Information for this purpose option");
-    }  
-    else {
-      
+    } else {
       const payload = {
         userId: userInfo.userId,
         streetName: streetNameRef,
@@ -391,7 +389,7 @@ const Index = ({ isView, propertyData }) => {
         applicantFirstName: applicantFirstName,
         applicantLastName: applicantLatsName,
         applicantPhoneNumber: applicantNumber,
-        applicantEmailAddress: applicantEmail ,
+        applicantEmailAddress: applicantEmail,
         bidLowerRange: Number(bidLowerRangeRef),
         bidUpperRange: Number(bidLowerRangeRef),
         propertyStatus: true,
@@ -415,10 +413,6 @@ const Index = ({ isView, propertyData }) => {
         remark: remark ? remark : "",
         token: userInfo.token,
       };
-
-
-
-      
 
       if (
         !payload.streetName ||
@@ -513,118 +507,119 @@ const Index = ({ isView, propertyData }) => {
   };
 
   const submitHandler = () => {
-
-    if ((String(purpose) === "Purchase" || String(purpose) === "Refinance") && lenderInformation === "") {
-      toast.error("Please fill the lender Information for this purpose option");
-    } 
-    else{
-    const payload = {
-      streetName: streetNameRef,
-      streetNumber: streetNumberRef,
-      city: cityRef,
-      state: stateRef,
-      zipCode: zipCodeRef,
-      community: communityRef,
-      applicantFirstName: applicantFirstName,
-      applicantLastName: applicantLatsName,
-      applicantPhoneNumber: applicantNumber,
-      applicantEmailAddress: applicantEmail,
-      bidLowerRange: Number(bidLowerRangeRef),
-      bidUpperRange: Number(bidLowerRangeRef),
-      typeOfBuilding:
-        String(buildinRef) === "Other" ? otherTypeOfBuildingValue : buildinRef,
-      urgency: urgencyRef,
-      typeOfAppraisal:
-        String(typeOfAppraisal) === "Other"
-          ? otherTypeOfAppraisalValue
-          : typeOfAppraisal,
-      purpose: String(purpose) === "Other" ? otherPurposeValue : purpose,
-      propertyStatus: true,
-      estimatedValue: Number(estimatedValue),
-      lenderInformation: lenderInformation,
-      applicantAddress: "",
-      attachment: changeUrlToStringHandler(),
-      image: "",
-      quoteRequiredDate: appraisalQuoteDate,
-      remark: remark ? remark : "",
-    };
-    console.log(payload);
     if (
-      !payload.streetName ||
-      !payload.streetNumber ||
-      !payload.city ||
-      !payload.state ||
-      !payload.zipCode ||
-
-
-      !payload.typeOfBuilding ||
-      !payload.typeOfAppraisal ||
-      !payload.purpose ||
-      !payload.estimatedValue ||
-      !payload.quoteRequiredDate ||
-      !payload.urgency ||
-      !payload.applicantEmailAddress ||
-      !payload.applicantFirstName ||
-      !payload.applicantPhoneNumber ||
-      !payload.applicantLastName
+      (String(purpose) === "Purchase" || String(purpose) === "Refinance") &&
+      lenderInformation === ""
     ) {
-      let tempError = [];
-
-      if (!payload.streetName) {
-        tempError.push("streetName");
-      }
-      if (!payload.streetNumber) {
-        tempError.push("streetNumber");
-      }
-      if (!payload.city) {
-        tempError.push("city");
-      }
-      if (!payload.state) {
-        tempError.push("state");
-      }
-      if (!payload.zipCode) {
-        tempError.push("zipCode");
-      }
-      if (!payload.typeOfBuilding) {
-        tempError.push("typeOfBuilding");
-      }
-      if (!payload.estimatedValue) {
-        tempError.push("estimatedValue");
-      }
-      if (!payload.purpose) {
-        tempError.push("purpose");
-      }
-      if (!payload.typeOfAppraisal) {
-        tempError.push("typeOfAppraisal");
-      }
-      if (!payload.applicantLastName) {
-        tempError.push("applicantLastName");
-      }
-      if (!payload.applicantFirstName) {
-        tempError.push("applicantFirstName");
-      }
-      if (!payload.applicantPhoneNumber) {
-        tempError.push("applicantPhoneNumber");
-      }
-      if (!payload.applicantEmailAddress) {
-        tempError.push("applicantEmailAddress");
-      }
-      if (!payload.urgency) {
-        tempError.push("urgency");
-      }
-      if (!payload.quoteRequiredDate) {
-        tempError.push("quoteRequiredDate");
-      }
-      setErrorLabel(tempError);
-      console.log(tempError);
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
+      toast.error("Please fill the lender Information for this purpose option");
     } else {
-      setModalIsOpen(true);
+      const payload = {
+        streetName: streetNameRef,
+        streetNumber: streetNumberRef,
+        city: cityRef,
+        state: stateRef,
+        zipCode: zipCodeRef,
+        community: communityRef,
+        applicantFirstName: applicantFirstName,
+        applicantLastName: applicantLatsName,
+        applicantPhoneNumber: applicantNumber,
+        applicantEmailAddress: applicantEmail,
+        bidLowerRange: Number(bidLowerRangeRef),
+        bidUpperRange: Number(bidLowerRangeRef),
+        typeOfBuilding:
+          String(buildinRef) === "Other"
+            ? otherTypeOfBuildingValue
+            : buildinRef,
+        urgency: urgencyRef,
+        typeOfAppraisal:
+          String(typeOfAppraisal) === "Other"
+            ? otherTypeOfAppraisalValue
+            : typeOfAppraisal,
+        purpose: String(purpose) === "Other" ? otherPurposeValue : purpose,
+        propertyStatus: true,
+        estimatedValue: Number(estimatedValue),
+        lenderInformation: lenderInformation,
+        applicantAddress: "",
+        attachment: changeUrlToStringHandler(),
+        image: "",
+        quoteRequiredDate: appraisalQuoteDate,
+        remark: remark ? remark : "",
+      };
+      console.log(payload);
+      if (
+        !payload.streetName ||
+        !payload.streetNumber ||
+        !payload.city ||
+        !payload.state ||
+        !payload.zipCode ||
+        !payload.typeOfBuilding ||
+        !payload.typeOfAppraisal ||
+        !payload.purpose ||
+        !payload.estimatedValue ||
+        !payload.quoteRequiredDate ||
+        !payload.urgency ||
+        !payload.applicantEmailAddress ||
+        !payload.applicantFirstName ||
+        !payload.applicantPhoneNumber ||
+        !payload.applicantLastName
+      ) {
+        let tempError = [];
+
+        if (!payload.streetName) {
+          tempError.push("streetName");
+        }
+        if (!payload.streetNumber) {
+          tempError.push("streetNumber");
+        }
+        if (!payload.city) {
+          tempError.push("city");
+        }
+        if (!payload.state) {
+          tempError.push("state");
+        }
+        if (!payload.zipCode) {
+          tempError.push("zipCode");
+        }
+        if (!payload.typeOfBuilding) {
+          tempError.push("typeOfBuilding");
+        }
+        if (!payload.estimatedValue) {
+          tempError.push("estimatedValue");
+        }
+        if (!payload.purpose) {
+          tempError.push("purpose");
+        }
+        if (!payload.typeOfAppraisal) {
+          tempError.push("typeOfAppraisal");
+        }
+        if (!payload.applicantLastName) {
+          tempError.push("applicantLastName");
+        }
+        if (!payload.applicantFirstName) {
+          tempError.push("applicantFirstName");
+        }
+        if (!payload.applicantPhoneNumber) {
+          tempError.push("applicantPhoneNumber");
+        }
+        if (!payload.applicantEmailAddress) {
+          tempError.push("applicantEmailAddress");
+        }
+        if (!payload.urgency) {
+          tempError.push("urgency");
+        }
+        if (!payload.quoteRequiredDate) {
+          tempError.push("quoteRequiredDate");
+        }
+        setErrorLabel(tempError);
+        console.log(tempError);
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      } else {
+        setModalIsOpen(true);
+      }
     }
-  }
   };
 
   const finalSubmitHandler = () => {
@@ -644,11 +639,12 @@ const Index = ({ isView, propertyData }) => {
       toast.error("Please provide a valid email address");
     } else if (!phoneNumberRegex.test(applicantNumber) && applicantNumber) {
       toast.error("Please provide a valid phone number");
-    } 
-    else if ((String(purpose) === "Purchase" || String(purpose) === "Refinance") && lenderInformation === "") {
+    } else if (
+      (String(purpose) === "Purchase" || String(purpose) === "Refinance") &&
+      lenderInformation === ""
+    ) {
       toast.error("Please fill the lender Information for this purpose option");
-    } 
-    else {
+    } else {
       const payload = {
         userId: userInfo.userId,
         streetName: streetNameRef,
@@ -851,11 +847,19 @@ const Index = ({ isView, propertyData }) => {
                     <div className="row">
                       <div
                         className="col-lg-12 bg-head text-center mb-4"
-                        style={{ borderRadius: "5px" }}
+                        style={{
+                          borderRadius: "5px",
+                          backgroundColor: "#97d700",
+                        }}
                       >
                         <h4
-                          className="text-light"
-                          style={{ paddingTop: "10px" }}
+                          className=""
+                          style={{
+                            paddingTop: "10px",
+                            color: "#2e008b",
+                            backgroundColor: "#97d700",
+                            fontSize: "25px",
+                          }}
                         >
                           Property Details
                           {/* <hr style={{ color: "#2e008b" }} /> */}
@@ -895,7 +899,15 @@ const Index = ({ isView, propertyData }) => {
                       className="col-lg-12 bg-head text-center mb-4"
                       style={{ borderRadius: "5px" }}
                     >
-                      <h4 className="p-2 text-white">
+                      <h4
+                        className="p-2"
+                        style={{
+                          color: "#2e008b",
+                          backgroundColor: "#97d700",
+                          fontSize: "25px",
+                          borderRadius: "5px",
+                        }}
+                      >
                         Additional Property Information
                       </h4>
                     </div>
@@ -947,11 +959,20 @@ const Index = ({ isView, propertyData }) => {
                     <div className="row">
                       <div
                         className="col-lg-12 bg-head text-center mb-4"
-                        style={{ borderRadius: "5px" }}
+                        style={{
+                          borderRadius: "5px",
+                          backgroundColor: "#97d700",
+                        }}
                       >
                         <h4
-                          className="text-white"
-                          style={{ paddingTop: "10px" }}
+                          className=""
+                          style={{
+                            paddingTop: "10px",
+                            color: "#2e008b",
+                            backgroundColor: "#97d700",
+                            fontSize: "25px",
+                            borderRadius: "5px",
+                          }}
                         >
                           Applicant / Owner Information
                           {/* <hr style={{ color: "#2e008b" }} /> */}
@@ -1342,7 +1363,7 @@ const Index = ({ isView, propertyData }) => {
                           )}
                         </table>
                       </div>
-                      <div className="row text-center mt-3">  
+                      <div className="row text-center mt-3">
                         <div className="col-lg-12">
                           <button
                             className="btn btn-color w-25 m-2"

@@ -313,7 +313,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
               </div>
               <div className="col-lg-9">
                 <div className="row mb-2">
-                  <h3>Mortgage Brokerage Information</h3>
+                  <h3 className="heading-forms">
+                    Mortgage Brokerage Information
+                  </h3>
                   <hr />
                   <div className="col-lg-12 mb-3">
                     <div className="row">
@@ -542,7 +544,62 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       </div>
                     </div>
                   </div>
-                  <h3 className="mt-4">Address</h3>
+
+                  <h3 className="mt-4 heading-forms">Alerts</h3>
+                  <hr />
+                  <div className="col-lg-12 mb-3">
+                    <div className="row">
+                      <div className="col-lg-4">
+                        <div className="form-group form-check custom-checkbox">
+                          <input
+                            className="form-check-input"
+                            type="checkbox"
+                            value=""
+                            required
+                            id="terms"
+                            checked
+                            style={{ border: "1px solid black" }}
+                          />
+                          <label
+                            className="form-check-label form-check-label"
+                            htmlFor="terms"
+                            style={{
+                              color: "#2e008b",
+                              fontWeight: "bold",
+                              fontSize: "",
+                            }}
+                          >
+                            Email Alerts
+                          </label>
+                        </div>
+                      </div>
+                      <div className="col-lg-4">
+                        <div className="form-group form-check custom-checkbox">
+                          <input
+                            className="form-check-input"
+                            type="checkbox"
+                            value=""
+                            required
+                            id="terms"
+                            checked
+                            style={{ border: "1px solid black" }}
+                          />
+                          <label
+                            className="form-check-label form-check-label"
+                            htmlFor="terms"
+                            style={{
+                              color: "#2e008b",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            SMS Alerts
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <h3 className="heading-forms mt-4">Address</h3>
                   <hr />
                   <div className="col-lg-12 mb-3">
                     <div className="row">
@@ -714,7 +771,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       If you have an Administrative Assistant, fill in the
                       following:
                     </p> */}
-                    <h3>Assistant#1 Information</h3>
+                    <h3 className="heading-forms">Assistant#1 Information</h3>
                     <hr />
                   </div>
                   <div className="col-lg-12 mb-3">
@@ -827,7 +884,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       If you have an Administrative Assistant, fill in the
                       following:
                     </p> */}
-                    <h3>Assistant#2 Information</h3>
+                    <h3 className="heading-forms">Assistant#2 Information</h3>
                     <hr />
                   </div>
                   <div className="col-lg-12 mb-3">

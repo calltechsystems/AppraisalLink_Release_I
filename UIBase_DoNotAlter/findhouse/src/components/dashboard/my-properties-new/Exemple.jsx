@@ -210,7 +210,7 @@ export default function Exemple({
             address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
             // user: property.applicantEmailAddress,
             type_of_building: property.typeOfBuilding,
-            amount: ` $${millify(property.estimatedValue)}`,
+            amount: ` $ ${millify(property.estimatedValue)}`,
             purpose: property.purpose,
             type_of_appraisal: property.typeOfAppraisal,
             lender_information: property.lenderInformation
