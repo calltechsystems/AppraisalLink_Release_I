@@ -2,39 +2,26 @@ import axios from "axios";
 import CryptoJS from "crypto-js";
 
 async function handler(request, response) {
-  const decryptionKey = process.env.CRYPTO_SECRET_KEY;
-  const domain = process.env.BACKEND_DOMAIN;
+    // const decryptionKey = process.env.CRYPTO_SECRET_KEY;
+    const domain = process.env.BACKEND_DOMAIN;
 
   try {
     const encryptedBody = await request.body.data;
 
-    const decryptedBytes = CryptoJS.AES.decrypt(encryptedBody, decryptionKey);
-    const body = JSON.parse(decryptedBytes.toString(CryptoJS.enc.Utf8));
+    const token = request.headers.authorization;
+    const propertyId = request.query.propertyId;
+    const userid =request.query.userid;
 
-    if (!body) {
-      return response.status(403).json({ error: "Not a verified Data" });
-    }
+    console.log(token,propertyId,userid);
 
-    const {
-      token,
-      bidid,
-      remark,
-      OrderStatus
-      
-    } = body;
-
-    console.log(body);
-
-    const userResponse = await axios.put(`${domain}/Bid/UpdateStatus`, {}, {
+    const userResponse = await axios.delete(`${domain}/Property/DeleteArchivePropertyByAppraiser`, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `${token}`,
         "Content-Type": "application/json",
       },
       params:{
-        bidid:bidid,
-        OrderStatus:OrderStatus,
-        remark:remark,
-        
+        userid:userid,
+        PropertyId:propertyId
       }
     });
     const user = userResponse.data;

@@ -118,6 +118,35 @@ const Index = () => {
     };
   }, []);
 
+  const  onArchivePropertyHandler = (propertyId)=>{
+    const data = JSON.parse(localStorage.getItem("user"));
+
+    const payload = {
+      propertyId:propertyId,
+      userid:data.userId,
+      token:data.token
+    };
+
+    toast.loading("Archiving the desired property!!.");
+
+    const encryptedBody = encryptionData(payload);
+
+    axios.post("/api/setArchivePropertyByAppraiser",encryptedBody,{
+      headers:{
+        Authorization:`Bearer ${data.token}`,
+        "Content-Type":"application/json"
+      }
+    }).then((res)=>{
+      toast.dismiss();
+      toast.success("Archived property!");
+      window.location.reload();
+    })
+    .catch((err)=>{
+      toast.dismiss();
+      toast.error(err);
+    })
+  }
+
   useEffect(() => {
     // Check for inactivity every minute
     const inactivityCheckInterval = setInterval(() => {
@@ -446,10 +475,10 @@ const Index = () => {
       {/* End sidebar_menu */}
 
       {/* <!-- Our Dashbord --> */}
-      <section className="our-dashbord dashbord bgc-f7 pb50 dashboard-height">
+      <section className="our-dashbord dashbord bgc-f7 pb50">
         <div
-          className="container-fluid ovh table-padding container-padding"
-          style={{  }}
+          className="container-fluid ovh"
+          style={{ marginLeft: "-10px", marginTop: "" }}
         >
           <div className="row">
             <div className="col-lg-12 maxw100flex-992">
@@ -523,6 +552,7 @@ const Index = () => {
                           setProperties={setProperties}
                           start={start}
                           end={end}
+                          onArchivePropertyHandler={onArchivePropertyHandler}
                           properties={
                             searchInput === "" ? properties : filterProperty
                           }

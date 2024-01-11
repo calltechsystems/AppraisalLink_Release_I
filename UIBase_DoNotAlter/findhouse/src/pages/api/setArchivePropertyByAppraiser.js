@@ -17,24 +17,21 @@ async function handler(request, response) {
 
     const {
       token,
-      bidid,
-      remark,
-      OrderStatus
+      propertyId,
+      userid
       
     } = body;
 
     console.log(body);
 
-    const userResponse = await axios.put(`${domain}/Bid/UpdateStatus`, {}, {
+    const userResponse = await axios.post(`${domain}/Property/SetArchivePropertyByAppraiser`,{}, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
       params:{
-        bidid:bidid,
-        OrderStatus:OrderStatus,
-        remark:remark,
-        
+        userid:userid,
+        PropertyId:propertyId
       }
     });
     const user = userResponse.data;

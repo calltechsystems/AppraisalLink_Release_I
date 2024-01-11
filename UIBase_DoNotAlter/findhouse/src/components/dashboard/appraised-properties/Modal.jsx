@@ -8,11 +8,11 @@ import { useRouter } from "next/router";
 
 const Modal = ({
   modalOpen,
-  setModalOpen,
   closeModal,
   lowRangeBid,
   setIsModalOpen,
   handleSubmit,
+  setIsQuoteModalOpen,
   propertyId,
   closeQuoteModal,
   openQuoteModal,
@@ -27,7 +27,7 @@ const Modal = ({
     setToggle(false);
     setValue(0);
     setDescription("");
-    closeModal();
+    setIsQuoteModalOpen(false);
   };
 
   const handleToggle = () => {
@@ -36,8 +36,9 @@ const Modal = ({
 
   const onCloseModalHandler = () => {
     setValue("");
-    setModalOpen(false);
+   
     setToggle(false);
+    setIsQuoteModalOpen(false);
   };
 
   const onSubmitHnadler = () => {
@@ -179,7 +180,7 @@ const Modal = ({
                 </button> */}
               <button
                 className="btn btn-color w-25"
-                onClick={onCloseModalHandler}
+                onClick={()=>onCloseModalHandler()}
               >
                 Cancel
               </button>

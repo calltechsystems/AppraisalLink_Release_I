@@ -6,6 +6,7 @@ import axios from "axios";
 import { encryptionData } from "../../../utils/dataEncryption";
 import { useRouter } from "next/router";
 import Loader from "./Loader";
+import { AppraiserStatusOptions } from "../create-listing/data";
 // import "./SmartTable.css";
 
 const headCells = [
@@ -27,6 +28,18 @@ const headCells = [
     id: "status",
     numeric: false,
     label: "Quote Status",
+    width: 160,
+  },
+  {
+    id: "appraisal_status",
+    numeric: false,
+    label: "Appraisal Status",
+    width: 160,
+  },
+  {
+    id: "remark",
+    numeric: false,
+    label: "Remark",
     width: 160,
   },
   {
@@ -166,6 +179,17 @@ export default function Exemple({
     //   return requestTime >= twentyFourHoursAgo && requestTime <= currentTime;
   };
 
+  const getOrderValue = (val)=>{
+    let title = "";
+    AppraiserStatusOptions.map((status)=>{
+      if(String(status.value) === String(val)){
+        title = status.type;
+      }
+    })
+    return title;
+  }
+
+
   const router = useRouter();
 
   const sortObjectsByOrderIdDescending = (data) => {
@@ -257,6 +281,8 @@ export default function Exemple({
         const isBidded = filterBidsWithin24Hours(property);
         console.log("isBidded", isBidded);
 
+        const isWait = property.isHold || property.isCancel;
+
         if (isBidded.$id) {
           page.push(property);
           const updatedRow = {
@@ -266,27 +292,38 @@ export default function Exemple({
               ? `$ ${property.estimatedValue}`
               : "$ 0",
             purpose: property.purpose ? property.purpose : "NA",
-            appraisal_status: isBidded.bidId ? (
+            appraisal_status: isBidded.status === 1 && isBidded.orderStatus ? (
+              <h5>{getOrderValue(isBidded.orderStatus)}</h5>
+            ):<span className="btn btn-warning  w-100">New</span>,
+            remark : (isBidded && isBidded.remark) ? isBidded.remark : "NA",
+            
+            status:isWait ? 
+            <span
+            className="btn btn-primary  w-100"
+          >
+            {property.isHold ? "On Hold" : "On Cancel"}
+          </span>
+              : 
+            isBidded.bidId ? (
+              
               isBidded.status === 0 ? (
-                <span className="btn btn-primary">Quote Provided</span>
+                <span
+                  className="btn btn-primary  w-100"
+                >
+                  Quote Provided
+                </span>
               ) : isBidded.status === 1 ? (
-                <span className="btn btn-success" onClick={openStatusUpdateHandler}>Accepted</span>
+                <span
+                  className="btn btn-success  w-100"
+                  
+                >
+                  Accepted
+                </span>
               ) : (
-                <span className="btn btn-danger">Rejected</span>
+                <span className="btn btn-danger  w-100">Rejected</span>
               )
             ) : (
-              <span className="btn btn-warning">New</span>
-            ),
-            status: isBidded.bidId ? (
-              isBidded.status === 0 ? (
-                <span className="btn btn-primary">Quote Provided</span>
-              ) : isBidded.status === 1 ? (
-                <span className="btn btn-success" onClick={openStatusUpdateHandler}>Accepted</span>
-              ) : (
-                <span className="btn btn-danger">Rejected</span>
-              )
-            ) : (
-              <span className="btn btn-warning">New</span>
+              <span className="btn btn-warning  w-100">New</span>
             ),
             property: (
               <div>
@@ -366,7 +403,9 @@ export default function Exemple({
 
             action: (
               <div className="print-hidden-column">
-                {isBidded && isBidded.status === 0 ? (
+                {isWait ?
+                  <p>Cannot perform action because its on hold</p>
+                  : isBidded && isBidded.status === 0 ? (
                   <h4 className="text-warning">Pending</h4>
                 ) : isBidded.status === 1 ? (
                   <h4 className="text-success">Completed</h4>
@@ -456,7 +495,7 @@ export default function Exemple({
         console.log(res);
         const temp = res.data.data.result.$values;
         tempBids = temp.filter((bid,index)=>{
-          if(String(bid.appraiserUserId) === String(data.userId)){
+          if(String(bid.appraiserUserId) === String(data.userId) && bid.status === 1){
             return true;
           }
           else{

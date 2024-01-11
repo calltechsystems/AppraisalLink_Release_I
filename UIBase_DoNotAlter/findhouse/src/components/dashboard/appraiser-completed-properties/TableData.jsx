@@ -6,7 +6,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import Exemple from "./Exemple"
 import { useDispatch, useSelector } from "react-redux";
-const TableData = ({userData ,setWishlistedProperties,setIsStatusModal, open ,setFilterQuery,setSearchInput,start,end,close , onWishlistHandler ,setStartLoading,setUpdatedCode, openModalBroker,participateHandler , properties, setProperties,setErrorMessage,setModalIsOpenError,setRefresh,refresh}) => {
+const TableData = ({userData , open ,close ,setBids,bids,setAssignedAppraiser, onArchivePropertyHandler,setCurrentBid,setShowBroker,setOpenAssignModal,setAllBrokers,setShowMore,setFilterQuery,setSearchInput,setIsStatusModal,start,end, onWishlistHandler ,setStartLoading,setUpdatedCode, openModalBroker,participateHandler , properties, setProperties,setErrorMessage,setModalIsOpenError,setRefresh,refresh}) => {
 
 
   let userInfo = {};
@@ -105,7 +105,7 @@ const TableData = ({userData ,setWishlistedProperties,setIsStatusModal, open ,se
    
         toast.dismiss();
         
-        console.log(res.data.data.properties.$values);
+        console.log("props",res.data.data.properties.$values);
         setProperties(res.data.data.properties.$values);
         setRerender(false);
       })
@@ -275,6 +275,9 @@ const TableData = ({userData ,setWishlistedProperties,setIsStatusModal, open ,se
       userData={userData}
       open={open}
       close={close}
+      setShowBroker={setShowBroker}
+      setSearchInput={setSearchInput}
+      setFilterQuery={setFilterQuery}
       setProperties={setProperties}
       properties={data}
       setRefresh={setRefresh}
@@ -284,15 +287,20 @@ const TableData = ({userData ,setWishlistedProperties,setIsStatusModal, open ,se
       deletePropertyHandler = {deletePropertyHandler}
       onWishlistHandler={onWishlistHandler}
       participateHandler={participateHandler}
-      setWishlistedProperties={setWishlistedProperties}
       setUpdatedCode={setUpdatedCode}
       setStartLoading={setStartLoading}
-      setFilterQuery={setFilterQuery}
-                          setSearchInput={setSearchInput}
-      openModalBroker={openModalBroker}
+      setShowMore={setShowMore}
       setIsStatusModal={setIsStatusModal}
       start={start}
+      onArchivePropertyHandler={ onArchivePropertyHandler}
+      setAssignedAppraiser={setAssignedAppraiser}
+      openModalBroker={openModalBroker}
+      setAllBrokers={setAllBrokers}
+      setCurrentBid={setCurrentBid}
+      setOpenAssignModal={setOpenAssignModal}
       end={end}
+      setBids={setBids}
+      bids={bids}
       />)}
     </>
   );

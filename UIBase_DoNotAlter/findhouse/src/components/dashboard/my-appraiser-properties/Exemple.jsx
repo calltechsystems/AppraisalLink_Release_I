@@ -6,6 +6,7 @@ import axios from "axios";
 import { encryptionData } from "../../../utils/dataEncryption";
 import { useRouter } from "next/router";
 import Loader from "./Loader";
+import { FaArchive } from "react-icons/fa";
 // import "./SmartTable.css";
 
 const headCells = [
@@ -27,6 +28,18 @@ const headCells = [
     id: "status",
     numeric: false,
     label: "Quote Status",
+    width: 160,
+  },
+  {
+    id: "appraisal_status",
+    numeric: false,
+    label: "Appraisal Status",
+    width: 160,
+  },
+  {
+    id: "remark",
+    numeric: false,
+    label: "Remark",
     width: 160,
   },
   {
@@ -123,6 +136,7 @@ export default function Exemple({
   setSearchInput,
   participateHandler,
   openModalBroker,
+  onArchivePropertyHandler,
   setWishlistedProperties,
   setErrorMessage,
   setModalIsOpenError,
@@ -255,26 +269,46 @@ export default function Exemple({
 
         if (isWishlist.id) {
           page.push(property);
-
+          const isWait = property.isHold || property.isCancel;
           const updatedRow = {
             orderId: property.orderId,
             address: `${property.city}-${property.province},${property.zipCode}`,
             estimatedValue: property.estimatedValue
               ? property.estimatedValue
               : 0,
+              appraisal_status: isBidded.status === 1 && isBidded.orderStatus ? (
+                <h5>{getOrderValue(isBidded.orderStatus)}</h5>
+              ):<span className="btn btn-warning  w-100">New</span>,
+              remark : (isBidded && isBidded.remark) ? isBidded.remark : "NA",
+              
             purpose: property.purpose ? property.purpose : "NA",
-            status: isBidded.bidId ? (
+            status:   isWait ? 
+            <span
+            className="btn btn-primary  w-100"
+          >
+            {property.isHold ? "On Hold" : "On Cancel"}
+          </span>
+              : 
+            isBidded.bidId ? (
+              
               isBidded.status === 0 ? (
-                <span className="btn btn-primary" >
+                <span
+                  className="btn btn-primary  w-100"
+                >
                   Quote Provided
                 </span>
               ) : isBidded.status === 1 ? (
-                <span className="btn btn-success">Accepted</span>
+                <span
+                  className="btn btn-success  w-100"
+                  
+                >
+                  Accepted
+                </span>
               ) : (
-                <span className="btn btn-danger">Declined</span>
+                <span className="btn btn-danger  w-100">Rejected</span>
               )
             ) : (
-              <span className="btn btn-warning">New</span>
+              <span className="btn btn-warning  w-100">New</span>
             ),
             property: (
               <div>
@@ -354,80 +388,79 @@ export default function Exemple({
 
             action: (
               <div className="print-hidden-column">
-                {isBidded && isBidded.status !== 1 ? (
-                  <ul className="">
-                    {!isBidded.$id && (
-                      <li
-                        className="list-inline-item"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title="Provide Quote"
-                      >
-                        <div
-                          className=" fw-bold"
-                          onClick={() =>
-                            participateHandler(
-                              property.bidLowerRange,
-                              property.propertyId
-                            )
-                          }
-                        >
-                          <a
-                            href="#"
-                            className="btn btn-color w-15"
-                            style={{ marginLeft: "10px" }}
-                          >
-                          <Link href="#">
-                          <span className="flaticon-building text-light"></span>
-                        </Link>
-                          </a>
-                        </div>
-                      </li>
-                    )}
-                    <li
-                    className="list-inline-item"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title="Archive Property"
-                  >
-                    <div
-                      className=" fw-bold"
-                      onClick={() =>
-                        onDeletePropertyHandler(property.propertyId)
-                      }
+              {isWait ?  
+                <p className="btn btn-danger  w-100">Cannot perform any actions right now!.</p> : isBidded && isBidded.status !== 1 ? (
+                <ul className="">
+                  {isWishlist.id && (
+                    <button
+                      className="btn "
+                      style={{ border: "1px solid grey" }}
+                      onClick={() => removeWishlistHandler(isWishlist.id)}
                     >
-                      <a
-                        href="#"
-                        className="btn btn-color w-15"
-                        style={{ marginLeft: "10px" }}
+                      <img
+                        width={26}
+                        height={26}
+                        src="https://png.pngtree.com/png-clipart/20200226/original/pngtree-3d-red-heart-cute-valentine-romantic-glossy-shine-heart-shape-png-image_5315044.jpg"
+                      />
+                    </button>
+                  ) }
+
+                  {!isBidded.$id && (
+                    <li
+                      className="list-inline-item"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Provide Quote"
+                    >
+                      <div
+                        className="w-100"
+                        onClick={() =>
+                          participateHandler(
+                            property.bidLowerRange,
+                            property.propertyId
+                          )
+                        }
                       >
-                      <Link href="#">
-                      <span className="flaticon-home text-light"></span>
-                    </Link>
-                      </a>
-                    </div>
-                  </li>
-                   
-                  </ul>
-                ) : (
-                  <div
-                  className=" fw-bold"
-                  onClick={() =>
-                    statusHandler()
-                  }
+                        <button
+                          href="#"
+                          className="btn btn-color w-100 mt-1"
+                          style={{ marginLeft: "12px" }}
+                        >
+                        <Link href="#">
+                        <span className="flaticon-invoice text-light"></span>
+                      </Link>
+                        </button>
+                      </div>
+                    </li>
+                  )}
+
+                 
+                  <li
+                  className="list-inline-item"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Archive Property"
                 >
-                  <a
-                    href="#"
-                    className="btn btn-color w-15"
-                    style={{ marginLeft: "10px" }}
+                  <div
+                    className="w-100"
+                    onClick={() =>
+                      onArchivePropertyHandler(property.propertyId)
+                    }
                   >
-                  <Link href="#">
-                  <span className="flaticon-edit text-light"></span>
-                </Link>
-                  </a>
-                </div>
-                )}
-              </div>
+                    <button
+                      href="#"
+                      className="btn btn-color w-100 mt-1"
+                      style={{ marginLeft: "12px" }}
+                    >
+                    <Link href="#">
+                    <span className="text-light"> <FaArchive/></span>
+                  </Link>
+                    </button>
+                  </div>
+                </li>
+                </ul>
+              ) : ""}
+            </div>
             ),
           };
 
