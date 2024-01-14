@@ -16,8 +16,10 @@ import Exemple from "./Exemple";
 import Link from "next/link";
 import millify from "millify";
 import { FaRedo } from "react-icons/fa";
+import { encryptionData } from "../../../utils/dataEncryption";
 
 const Index = () => {
+  const [modalOpen, setModalOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [currentProperty, setCurrentProperty] = useState("");
@@ -26,6 +28,8 @@ const Index = () => {
   const [filterProperty, setFilterProperty] = useState("");
   const [filterQuery, setFilterQuery] = useState("Last 30 Days");
   const [properties, setProperties] = useState([]);
+  const [isHoldProperty, setIsHoldProperty] = useState(0);
+  const [isCancelProperty, setIsCancelProperty] = useState(0);
 
   const [start, setStart] = useState(0);
 
@@ -78,6 +82,14 @@ const Index = () => {
     return () => clearInterval(inactivityCheckInterval);
   }, [lastActivityTimestamp]);
 
+  const modalOpened = () => {
+    setModalOpen(true);
+  };
+
+  const modalClose = () => {
+    setModalOpen(false);
+  };
+
   const openModal = (property, type) => {
     console.log("inside");
     setProperty(property);
@@ -87,9 +99,7 @@ const Index = () => {
 
   const PropertyInfoHandler = (orderId) => {
     const printWindow = window.open("", "_blank");
-    printWindow.document.write(
-      "<html><head><title></title></head><body>"
-    );
+    printWindow.document.write("<html><head><title></title></head><body>");
 
     // Add the header section
     printWindow.document.write(`
@@ -157,6 +167,56 @@ const Index = () => {
       .then((res) => {
         toast.dismiss();
         toast.success("Successfully added to archived properties!!");
+        window.location.reload();
+      })
+      .catch((err) => {
+        toast.error(err);
+      });
+    // closeModal();
+  };
+
+  const onHoldHandler = (propertyid, value) => {
+    const data = JSON.parse(localStorage.getItem("user"));
+
+    const payload = {
+      token: data.token,
+      propertyId: propertyid,
+      value: Boolean(value),
+    };
+
+    const encryptedBody = encryptionData(payload);
+
+    toast.loading("Turning the property status to on hold");
+    axios
+      .put("/api/setPropertyOnHold", encryptedBody)
+      .then((res) => {
+        toast.dismiss();
+        toast.success("Successfully added to on Hold Status!!");
+        window.location.reload();
+      })
+      .catch((err) => {
+        toast.error(err);
+      });
+    // closeModal();
+  };
+
+  const onCancelHandler = (propertyid, value) => {
+    const data = JSON.parse(localStorage.getItem("user"));
+
+    const payload = {
+      token: data.token,
+      propertyId: propertyid,
+      value: Boolean(value),
+    };
+
+    const encryptedBody = encryptionData(payload);
+
+    toast.loading("Turning the property status to on hold");
+    axios
+      .put("/api/setPropertyOnCancel", encryptedBody)
+      .then((res) => {
+        toast.dismiss();
+        toast.success("Successfully added to on Hold Status!!");
         window.location.reload();
       })
       .catch((err) => {
@@ -397,6 +457,8 @@ const Index = () => {
                           end={end}
                           close={closeModal}
                           setFilterQuery={setFilterQuery}
+                          onHoldHandler={onHoldHandler}
+                          onCancelHandler={onCancelHandler}
                           setSearchInput={setSearchInput}
                           setProperties={setProperties}
                           properties={
@@ -409,6 +471,9 @@ const Index = () => {
                           archievePropertyHandler={archievePropertyHandler}
                           setRefresh={setRefresh}
                           refresh={refresh}
+                          setModalOpen={setModalOpen}
+                          setIsCancelProperty={setIsCancelProperty}
+                          setIsHoldProperty={setIsHoldProperty}
                         />
 
                         <div>
@@ -1033,7 +1098,7 @@ const Index = () => {
               </div>
             </div>
             {/* End .col */}
-            {isModalOpen && (
+            {!openModal && (
               <div className="modal">
                 <div className="modal-content">
                   <h4 className="text-center">Cancel Confirmation</h4>
@@ -1066,6 +1131,55 @@ const Index = () => {
                     </button>
                   </div>
                 </div>
+              </div>
+            )}
+
+            {modalOpen && (
+              <div className="modal">
+                <div className="modal-content">
+                  {/* <span className="close" onClick={closeModal}>
+              &times;
+            </span> */}
+
+                  <h2>{isHoldProperty ? "Confirm Hold" : "Cancel"}</h2>
+                </div>
+
+                <hr />
+
+                <div
+                  style={{
+                    marginLeft: "10%",
+                    fontSize: "15px",
+                    marginTop: "2%",
+                  }}
+                >
+                  <p>We have already redirected you to the paypal page.</p>
+                  <p>
+                    Don&apos;t <span style={{ color: "red" }}>reload</span> or{" "}
+                    <span style={{ color: "red" }}>refresh</span> the page
+                  </p>
+                </div>
+
+                <p>Please checkout for further</p>
+                <p>
+                  Your selected Package{" "}
+                  <span
+                    style={{
+                      fontWeight: "bold",
+                      fontSize: "23px",
+                      color: "#2e008b",
+                    }}
+                  ></span>{" "}
+                  with value{" "}
+                  <span
+                    style={{
+                      fontWeight: "bold",
+                      fontSize: "23px",
+                      color: "#2e008b",
+                    }}
+                  ></span>
+                </p>
+                <button onClick={isHoldProperty ? onHoldHandler : onCancelHandler}>Submit</button>
               </div>
             )}
           </div>

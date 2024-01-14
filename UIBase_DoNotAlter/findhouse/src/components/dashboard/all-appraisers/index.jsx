@@ -39,7 +39,7 @@ const Index = () => {
 
   const [start, setStart] = useState(0);
 
-  const [end, setEnd] = useState(4);
+  const [end, setEnd] = useState(5);
 
   const [isStatusModal, setIsStatusModal] = useState(false);
 
@@ -1054,9 +1054,8 @@ const Index = () => {
 
               {closeRegisterModal && (
                 <div className="modal">
-                  <div className="modal-content" style={{width:"500px"}}>
+                  <div className="modal-content">
                     <h3 className="text-center">Add Appraiser</h3>
-                    <hr />
                     <Form setCloseRegisterModal={setCloseRegisterModal} />
                   </div>
                 </div>
@@ -1139,7 +1138,7 @@ const Index = () => {
                   <Pagination
                     setStart={setStart}
                     setEnd={setEnd}
-                    properties={[]}
+                    properties={properties}
                   />
                 </div>
               </div>

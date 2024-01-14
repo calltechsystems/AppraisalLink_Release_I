@@ -1092,7 +1092,7 @@ const Index = () => {
                         })}
                       </select>
                     </div>
-<hr />
+                    <hr />
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
                       <button

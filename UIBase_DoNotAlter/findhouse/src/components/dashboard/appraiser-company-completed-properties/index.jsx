@@ -482,11 +482,11 @@ const Index = () => {
                 </div> */}
                 {/* End Dashboard Navigation */}
 
-                {/* <div className="col-lg-4 col-xl-4 mb10">
+                 <div className="col-lg-4 col-xl-4 mb10">
                   <div className="style2 mb30-991">
-                    <h3 className="breadcrumb_title">Accepted Orders</h3>
+                    <h3 className="breadcrumb_title">Completed Properties</h3>
                   </div>
-                </div> */}
+                </div> 
                 {/* End .col */}
 
                 {/*<div className="row">

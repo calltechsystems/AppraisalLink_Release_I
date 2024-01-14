@@ -79,7 +79,7 @@ const TableData = ({userData , open ,close ,setFilterQuery,setCloseRegisterModal
     "Action",
   ];
 
-  useEffect(()=>{
+  {/*useEffect(()=>{
     
    
 
@@ -114,7 +114,7 @@ const TableData = ({userData , open ,close ,setFilterQuery,setCloseRegisterModal
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
-  },[rerender]);
+  },[rerender]);*/}
   const formatDate = (dateString) => {
     const options = {
       year: 'numeric',

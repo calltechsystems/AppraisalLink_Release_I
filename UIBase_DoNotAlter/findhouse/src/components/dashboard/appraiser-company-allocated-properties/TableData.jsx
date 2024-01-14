@@ -6,7 +6,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import Exemple from "./Exemple"
 import { useDispatch, useSelector } from "react-redux";
-const TableData = ({userData , open ,setWishlistedProperties,setFilterQuery,setSearchInput,setStart,setEnd,close ,setIsStatusModal, onWishlistHandler ,setStartLoading,setUpdatedCode, openModalBroker,participateHandler , properties, setProperties,setErrorMessage,setModalIsOpenError,setRefresh,refresh}) => {
+const TableData = ({userData , open ,close ,setAssignedAppraiser,setCurrentBid,openAppraiserInfoModal,setShowBroker,setOpenAssignModal,setAllBrokers,setShowMore,setFilterQuery,setSearchInput,setIsStatusModal,start,end, onWishlistHandler ,setStartLoading,setUpdatedCode, openModalBroker,participateHandler , properties, setProperties,setErrorMessage,setModalIsOpenError,setRefresh,refresh}) => {
 
 
   let userInfo = {};
@@ -79,42 +79,42 @@ const TableData = ({userData , open ,setWishlistedProperties,setFilterQuery,setS
     "Action",
   ];
 
-  useEffect(()=>{
+  // useEffect(()=>{
     
    
 
-    const data = (JSON.parse(localStorage.getItem("user")));
+  //   const data = (JSON.parse(localStorage.getItem("user")));
 
-    const payload = {
-      token : userData.token
-    };
+  //   const payload = {
+  //     token : userData.token
+  //   };
 
 
-    axios
-      .get("/api/getAllListedProperties",
-       {
-        headers: {
-          Authorization:`Bearer ${data?.token}`,
-          "Content-Type":"application/json"
-        },
-        params : {
-          userId : data?.userId
-        }
-      })
-      .then((res) => {
+  //   axios
+  //     .get("/api/getAllListedProperties",
+  //      {
+  //       headers: {
+  //         Authorization:`Bearer ${data?.token}`,
+  //         "Content-Type":"application/json"
+  //       },
+  //       params : {
+  //         userId : data?.userId
+  //       }
+  //     })
+  //     .then((res) => {
    
-        toast.dismiss();
+  //       toast.dismiss();
         
-        console.log(res.data.data.properties.$values);
-        setProperties(res.data.data.properties.$values);
-        setRerender(false);
-      })
-      .catch((err) => {
-        toast.dismiss();
-        setErrorMessage(err?.response?.data?.error);
-        setModalIsOpenError(true);
-      });
-  },[rerender]);
+  //       console.log("props",res.data.data.properties.$values);
+  //       setProperties(res.data.data.properties.$values);
+  //       setRerender(false);
+  //     })
+  //     .catch((err) => {
+  //       toast.dismiss();
+  //       setErrorMessage(err?.response?.data?.error);
+  //       setModalIsOpenError(true);
+  //     });
+  // },[rerender]);
   const formatDate = (dateString) => {
     const options = {
       year: 'numeric',
@@ -275,24 +275,30 @@ const TableData = ({userData , open ,setWishlistedProperties,setFilterQuery,setS
       userData={userData}
       open={open}
       close={close}
+      setShowBroker={setShowBroker}
+      setSearchInput={setSearchInput}
+      setFilterQuery={setFilterQuery}
       setProperties={setProperties}
       properties={data}
+      openAppraiserInfoModal={openAppraiserInfoModal}
       setRefresh={setRefresh}
       refresh={refresh}
-      setFilterQuery={setFilterQuery}
-      setSearchInput={setSearchInput}
       setModalIsOpenError = {setModalIsOpenError}
       setErrorMessage = {setErrorMessage}
       deletePropertyHandler = {deletePropertyHandler}
       onWishlistHandler={onWishlistHandler}
       participateHandler={participateHandler}
       setUpdatedCode={setUpdatedCode}
-      setWishlistedProperties={setWishlistedProperties}
       setStartLoading={setStartLoading}
-      openModalBroker={openModalBroker}
+      setShowMore={setShowMore}
       setIsStatusModal={setIsStatusModal}
-      setStart={setStart}
-      setEnd={setEnd}
+      start={start}
+      setAssignedAppraiser={setAssignedAppraiser}
+      openModalBroker={openModalBroker}
+      setAllBrokers={setAllBrokers}
+      setCurrentBid={setCurrentBid}
+      setOpenAssignModal={setOpenAssignModal}
+      end={end}
       />)}
     </>
   );

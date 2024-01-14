@@ -119,6 +119,7 @@ export default function Exemple({
   close,
   start,
   end,
+  setAllBrokers,
   setUpdatedCode,
   properties,
   setProperties,
@@ -530,6 +531,21 @@ export default function Exemple({
         console.log(res);
         tempBids = res.data.data.result.$values;
         setBids(tempBids);
+      })
+      .catch((err) => {
+        setErrorMessage(err?.response?.data?.error);
+        setModalIsOpenError(true);
+      });
+
+      axios
+      .get("/api/getAllBrokers", {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+      })
+      .then((res) => {
+        setAllBrokers(res.data.data.$values);
+       
       })
       .catch((err) => {
         setErrorMessage(err?.response?.data?.error);

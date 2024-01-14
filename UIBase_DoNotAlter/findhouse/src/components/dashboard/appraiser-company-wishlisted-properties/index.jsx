@@ -167,8 +167,17 @@ const Index = () => {
     setIsQuoteModalOpen(true);
   };
 
+  let selectedBroker = {};
+  const [allBrokers,setAllBrokers]=useState([]);
+
   const openModalBroker = (property) => {
-    setBroker(property);
+    allBrokers.map((broker)=>{
+      if(String(broker.userId) === String(property.userId)){
+        selectedBroker = broker; 
+      };
+    });
+    setBroker(property,value);
+    setViewType(value)
     setOpenBrokerModal(true);
   };
 
@@ -460,11 +469,11 @@ const Index = () => {
                 </div> */}
                 {/* End Dashboard Navigation */}
 
-                {/* <div className="col-lg-4 col-xl-4 mb10">
+                <div className="col-lg-4 col-xl-4 mb10">
                   <div className="style2 mb30-991">
-                    <h3 className="breadcrumb_title">Wishlist Properties</h3>
+                    <h3 className="breadcrumb_title">Wishlisted Properties</h3>
                   </div>
-                </div> */}
+                </div> 
 
                 {/* <div className="row">
                 <div className="col-lg-12 mt20">
@@ -519,6 +528,7 @@ const Index = () => {
                           setErrorMessage={setErrorMessage}
                           setModalIsOpenError={setModalIsOpenError}
                           setRefresh={setRefresh}
+                          setAllBrokers={setAllBrokers}
                           refresh={refresh}
                           setFilterQuery={setFilterQuery}
                           setSearchInput={setSearchInput}
@@ -1012,7 +1022,7 @@ const Index = () => {
                                 onClick={() => PropertyInfoHandler(broker.orderId)}
                                 title="Download Pdf"
                               >
-                                <span className="flaticon-download "></span>
+                               Download Form
                               </div>
                                   <button
                                     className="btn btn-color w-25 text-center"
@@ -1080,7 +1090,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {broker.applicantFirstName} {broker.applicantLastName}
+                                      {selectedBroker.firstName} {selectedBroker.lastName}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1090,7 +1100,7 @@ const Index = () => {
                                         color: "#2e008b",
                                       }}
                                     >
-                                      <span className="text-start">Email Address</span>
+                                      <span className="text-start">Address</span>
                                     </td>
                                     <td
                                       style={{
@@ -1098,7 +1108,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {broker.applicantEmailAddress}
+                                      {selectedBroker.streetName} {selectedBroker.streetNumber} {selectedBroker.area} , {selectedBroker.city} {selectedBroker.state}-{selectedBroker.postalCode}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1116,7 +1126,133 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {broker.applicantPhoneNumber}
+                                      {selectedBroker.phoneNumber}
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td
+                                      style={{
+                                        border: "1px solid grey",
+                                        color: "#2e008b",
+                                      }}
+                                    >
+                                      <span className="text-start">Mortgage Broker Licence No</span>
+                                    </td>
+                                    <td
+                                      style={{
+                                        border: "1px solid grey",
+                                        width: "250px",
+                                      }}
+                                    >
+                                      {selectedBroker.mortageBrokerLicNo}
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td
+                                      style={{
+                                        border: "1px solid grey",
+                                        color: "#2e008b",
+                                      }}
+                                    >
+                                      <span className="text-start">Mortgage Brokerage Licence No</span>
+                                    </td>
+                                    <td
+                                      style={{
+                                        border: "1px solid grey",
+                                        width: "250px",
+                                      }}
+                                    >
+                                      {selectedBroker.mortageBrokerageLicNo}
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td
+                                      style={{
+                                        border: "1px solid grey",
+                                        color: "#2e008b",
+                                      }}
+                                    >
+                                      <span className="text-start">Brokerage Name</span>
+                                    </td>
+                                    <td
+                                      style={{
+                                        border: "1px solid grey",
+                                        width: "250px",
+                                      }}
+                                    >
+                                      {selectedBroker.brokerageName}
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td
+                                      style={{
+                                        border: "1px solid grey",
+                                        color: "#2e008b",
+                                      }}
+                                    >
+                                      <span className="text-start">Company Name</span>
+                                    </td>
+                                    <td
+                                      style={{
+                                        border: "1px solid grey",
+                                        width: "250px",
+                                      }}
+                                    >
+                                      {selectedBroker.companyName}
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td
+                                      style={{
+                                        border: "1px solid grey",
+                                        color: "#2e008b",
+                                      }}
+                                    >
+                                      <span className="text-start">Applicant Name</span>
+                                    </td>
+                                    <td
+                                      style={{
+                                        border: "1px solid grey",
+                                        width: "250px",
+                                      }}
+                                    >
+                                      {selectedBroker.assistantFirstName}
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td
+                                      style={{
+                                        border: "1px solid grey",
+                                        color: "#2e008b",
+                                      }}
+                                    >
+                                      <span className="text-start">Applicant Phone Number</span>
+                                    </td>
+                                    <td
+                                      style={{
+                                        border: "1px solid grey",
+                                        width: "250px",
+                                      }}
+                                    >
+                                      {selectedBroker.assistantPhoneNumber}
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td
+                                      style={{
+                                        border: "1px solid grey",
+                                        color: "#2e008b",
+                                      }}
+                                    >
+                                      <span className="text-start">Applicant Email Address</span>
+                                    </td>
+                                    <td
+                                      style={{
+                                        border: "1px solid grey",
+                                        width: "250px",
+                                      }}
+                                    >
+                                      {selectedBroker.assistantEmailAddress}
                                     </td>
                                   </tr>
                                 </tbody>
@@ -1131,7 +1267,7 @@ const Index = () => {
                                 onClick={() => brokerInfoHandler(broker.orderId)}
                                 title="Download Pdf"
                               >
-                                <span className="flaticon-download "></span>
+                               Download Form
                               </div>
                                   <button
                                     className="btn btn-color w-25 text-center"

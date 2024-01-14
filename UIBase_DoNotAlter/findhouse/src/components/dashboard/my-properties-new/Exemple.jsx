@@ -4,6 +4,7 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 import axios, { all } from "axios";
 import millify from "millify";
+import AppraiserStatusOptions from "../create-listing/data";
 import {
   FaArchive,
   FaHandHoldingHeart,
@@ -34,9 +35,15 @@ const headCells = [
     width: 170,
   },
   {
-    id: "status",
+    id: "appraisal_status",
     numeric: false,
     label: "Appraisal Status",
+    width: 170,
+  },
+  {
+    id: "remark",
+    numeric: false,
+    label: "Remark",
     width: 170,
   },
   {
@@ -124,6 +131,8 @@ export default function Exemple({
   setModalIsPopupOpen,
   close,
   properties,
+  onHoldHandler,
+  onCancelHandler,
   refresh,
   setRefresh,
   setProperties,
@@ -131,6 +140,9 @@ export default function Exemple({
   setFilterQuery,
   setSearchInput,
   deletePropertyHandler,
+  setModalOpen,
+  setIsCancelProperty,
+  setIsHoldProperty,
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [allBids, setBids] = useState([]);
@@ -139,6 +151,25 @@ export default function Exemple({
 
   const sortObjectsByOrderIdDescending = (data) => {
     return data.sort((a, b) => b.order_id - a.order_id);
+  };
+
+  const getOrderValue = (val) => {
+    let title = "";
+    AppraiserStatusOptions.map((status) => {
+      if (String(status.value) === String(val)) {
+        title = status.type;
+      }
+    });
+    return title;
+  };
+
+  const openModal = (propertyId, value) => {
+    if (String(value) === String(1)) {
+      setIsHoldProperty(propertyId);
+    } else {
+      setIsCancelProperty(propertyId);
+    }
+    setModalOpen(true);
   };
 
   const formatDate = (dateString) => {
@@ -181,6 +212,8 @@ export default function Exemple({
   useEffect(() => {
     const getData = () => {
       properties.map((property, index) => {
+        const isHold = property.isOnHold;
+        const isCancel = property.isOnCancel;
         const isStatus = getPropertyStatusHandler(property);
         console.log(isStatus);
         const isEditable = isStatus === 0 ? true : false;
@@ -192,7 +225,11 @@ export default function Exemple({
               ? formatDate(property.quoteRequiredDate)
               : formatDate(property.addedDatetime),
             status:
-              isStatus === 2 ? (
+              isHold || isCancel ? (
+                <span className="btn bg-warning w-100">
+                  {isHold ? "Hold" : "Cancelled"}
+                </span>
+              ) : isStatus === 2 ? (
                 <span className="btn bg-success w-100 text-light">
                   Accepted
                 </span>
@@ -207,7 +244,18 @@ export default function Exemple({
               ) : (
                 <span className="btn bg-info w-100 text-light">Cancelled</span>
               ),
+            appraisal_status:
+              isHold || isCancel ? (
+                <span className="btn bg-warning  w-100">
+                  {isHold ? "Hold" : "Cancelled"}
+                </span>
+              ) : property.orderStatus ? (
+                <h5>{getOrderValue(isBidded.orderStatus)}</h5>
+              ) : (
+                <span className="btn bg-warning  w-100">New</span>
+              ),
             address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
+            remark: property.remark ? property.remark : "NA",
             // user: property.applicantEmailAddress,
             type_of_building: property.typeOfBuilding,
             amount: ` $ ${millify(property.estimatedValue)}`,
@@ -324,12 +372,16 @@ export default function Exemple({
 
                 {isEditable && (
                   <li>
-                    <Link href="#">
-                      <span className="btn btn-color w-100 mb-1">
-                        {" "}
-                        On Hold{" "}
-                      </span>
-                    </Link>{" "}
+                    <button
+                      onClick={() => onHoldHandler(property.propertyId, true)}
+                    >
+                      <Link href="#">
+                        <span className="btn btn-color w-100 mb-1 text-light">
+                          {" "}
+                          On Hold{" "}
+                        </span>
+                      </Link>{" "}
+                    </button>
                     {/* <Link
                       className="btn btn-color-table"
                       href={`/create-listing/${property.propertyId}`}
@@ -473,41 +525,34 @@ export default function Exemple({
                 {/* End li */}
 
                 {/* {isEditable && ( */}
-                <li title="On Hold">
-                  {/* <Link href="#">
-                      <span className="btn btn-color w-100 mb-1">
-                        {" "}
-                        On Hold{" "}
-                      </span>
-                    </Link>{" "} */}
-                  <Link
-                    className="btn btn-color-table"
-                    href={`/create-listing/${property.propertyId}`}
+                <li title={!isHold ? "On Hold" : "set to remove Hold"}>
+                  <span
+                    className="btn btn-color-table "
+                    style={{ border: "1px solid grey" }}
+                    // onClick={() => onHoldHandler(property.propertyId, !isHold)}
+                    onClick={() => openModal(property.propertyId, 1)}
                   >
-                    <span className="">
+                    <Link href="#" className="text-light">
                       <FaPause />
-                    </span>
-                  </Link>
+                    </Link>
+                  </span>
                 </li>
                 {/* )} */}
 
                 {/* {isEditable && ( */}
-                <li title="Order Cancel">
-                  {/* <Link href="#" onClick={() => open(property)}>
-                      <span className="btn btn-color w-100 mb-1">
-                        {" "}
-                        Order Cancel{" "}
-                      </span>
-                    </Link>{" "} */}
-                  <button
+                <li title={!isCancel ? "Order Cancel" : "set to remove Cancel"}>
+                  <span
                     className="btn btn-color-table"
                     style={{ border: "1px solid grey" }}
-                    onClick={() => open(property)}
+                    // onClick={() =>
+                    //   onCancelHandler(property.propertyId, !isCancel)
+                    // }
+                    onClick={() => openModal(property.propertyId, 2)}
                   >
                     <Link href="#">
                       <span className="flaticon-garbage text-light"></span>
                     </Link>
-                  </button>
+                  </span>
                 </li>
                 {/* )} */}
 

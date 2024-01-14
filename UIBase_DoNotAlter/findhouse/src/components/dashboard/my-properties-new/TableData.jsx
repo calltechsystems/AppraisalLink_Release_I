@@ -11,6 +11,8 @@ const TableData = ({
   start,
   end,
   close,
+  onHoldHandler,
+  onCancelHandler,
   properties,
   refresh,
   setRefresh,
@@ -22,6 +24,9 @@ const TableData = ({
   setSearchInput,
   setModalIsOpenError,
   setErrorMessage,
+  setModalOpen,
+  setIsCancelProperty,
+  setIsHoldProperty,
 }) => {
   console.log(properties);
 
@@ -223,8 +228,13 @@ const TableData = ({
           archievePropertyHandler={archievePropertyHandler}
           start={start}
           end={end}
+          onHoldHandler={onHoldHandler}
+          onCancelHandler={onCancelHandler}
           setFilterQuery={setFilterQuery}
           setSearchInput={setSearchInput}
+          setModalOpen={setModalOpen}
+          setIsCancelProperty={setIsCancelProperty}
+          setIsHoldProperty={setIsHoldProperty}
         />
       )}
     </>

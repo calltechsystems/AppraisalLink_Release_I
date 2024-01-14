@@ -10,9 +10,9 @@ import Loader from "./Loader";
 
 const headCells = [
   {
-    id: "email",
+    id: "appraiser_id",
     numeric: false,
-    label: "Email",
+    label: "Appraiser Id",
     width: 100,
   },
 
@@ -39,6 +39,13 @@ const headCells = [
     id: "phone",
     numeric: false,
     label: "Phone",
+    width: 200,
+  },
+
+  {
+    id: "address",
+    numeric: false,
+    label: "Address",
     width: 200,
   },
 
@@ -222,7 +229,7 @@ export default function Exemple({
   };
 
   const sortObjectsByOrderIdDescending = (data) => {
-    return data.sort((a, b) => b.orderId - a.orderId);
+    return data.sort((a, b) => b.appraisal_id - a.appraisal_id);
   };
 
   const checkData = properties && !updatedData ? true : false;
@@ -232,63 +239,16 @@ export default function Exemple({
 
   useEffect(() => {
     const getData = () => {
-      temporaryData.map((data, index) => {
-        // const isWishlist = checkWishlistedHandler(property);
-        // const isBidded = filterBidsWithin24Hours(property);
-        // console.log("isBidded",property);
-
+      const dateNow = formatDate(new Date());
+      properties.map((data, index) => {
         const updatedRow = {
-          email: data.email,
-          firstname: data.firstname,
-          lastname: data.lastname,
-          company: data.company,
-          phone: data.phone,
-          date: data.date,
-          // broker: (
-          //   <div>
-          //     {isBidded.status === 1 ? (
-          //       <a href="#">
-          //         <button
-          //           className=""
-          //           style={{
-          //             border: "0px",
-          //             color: "#2e008b",
-          //             textDecoration: "underline",
-          //             // fontWeight: "bold",
-          //             backgroundColor: "transparent",
-          //           }}
-          //           onClick={() => openModalBroker(property)}
-          //         >
-          //           {`${property.applicantFirstName} ${property.applicantLastName}`}
-          //         </button>
-          //       </a>
-          //     ) : isBidded.status === 2 ? (
-          //       <h6 style={{ color: "red" }}> Rejected</h6>
-          //     ) : (
-          //       <p>
-          //         Broker Information will be available post the quote acceptance
-          //       </p>
-          //     )}
-          //   </div>
-          // ),
-          // type_of_appraisal: property.typeOfAppraisal
-          //   ? property.typeOfAppraisal
-          //   : "NA",
-          // typeOfBuilding:
-          //   property.typeOfBuilding > 0 ? "Apartment" : property.typeOfBuilding,
-          // quote_required_by: formatDate(property.addedDatetime),
-          // date: formatDate(property.addedDatetime),
-          // bidAmount: property.bidLowerRange,
-          // lender_information: property.lenderInformation
-          //   ? property.lenderInformation
-          //   : "NA",
-          // urgency:
-          //   property.urgency === 0
-          //     ? "Rush"
-          //     : property.urgency === 1
-          //     ? "Regular"
-          //     : "NA",
-
+          appraiser_id: data.id,
+          firstname: data.firstName ? data.firstName : "Not Assigned",
+          lastname: data.lastName ? data.lastName : "Not Assigned",
+          company: data.companyName? data.companyName : "Not Assigned",
+          phone: data.phoneNumber ? data.phoneNumber : "Not Assigned",
+          address :`${data.streetName} ${data.streetNumber},${data.city}-${data.postalCode}`,
+          date: dateNow,
           action: (
             <div className="print-hidden-column">
               <button className="btn btn-color m-1">
@@ -301,15 +261,6 @@ export default function Exemple({
           ),
         };
 
-        // const updatedRow = {
-        //   email:data.email,
-        //   firstname:data.firstname,
-        //   lastname:data.lastname,
-        //   company:data.company,
-        //   phone:data.phone,
-        //   date:data.date
-
-        // };
         tempData.push(updatedRow);
       });
       setUpdatedData(tempData);
@@ -328,74 +279,31 @@ export default function Exemple({
   useEffect(() => {
     console.log("inside");
     const data = JSON.parse(localStorage.getItem("user"));
-
+    console.log(data.appraiserCompany_Datails);
     const payload = {
       token: userData.token,
+      userId : userData.userId
     };
-    let tempProperties = [],
-      tempWishlist = [];
+      const encryptedData = encryptionData(payload);
     axios
-      .get("/api/getPropertiesById", {
+      .get("/api/getAllAppraiserByCompanyId",{
         headers: {
           Authorization: `Bearer ${data?.token}`,
           "Content-Type": "application/json",
         },
         params: {
-          userId: data?.userId,
+          userId: data?.appraiserCompany_Datails?.appraiserCompanyId,
         },
       })
       .then((res) => {
-        tempProperties = res.data.data.property.$values;
+        console.log(res.data.data.appraisers.$values);
+        setProperties(res.data.data.appraisers.$values);
       })
       .catch((err) => {
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
-    axios
-      .get("/api/appraiserWishlistedProperties", {
-        headers: {
-          Authorization: `Bearer ${data?.token}`,
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => {
-        const tempData = res.data.data.$values;
-
-        // setAllWishlistedProperties(res.data.data.$values);
-        const responseData = tempData.filter((prop, index) => {
-          if (prop.userId === data.userId) {
-            return true;
-          } else {
-            return false;
-          }
-        });
-        const tempId = responseData;
-        setWishlist(responseData);
-      })
-      .catch((err) => {
-        toast.error(err?.response);
-        setErrorMessage(err?.response);
-        setModalIsOpenError(true);
-      });
-    let tempBids = [];
-    axios
-      .get("/api/getAllBids", {
-        headers: {
-          Authorization: `Bearer ${data.token}`,
-        },
-      })
-      .then((res) => {
-        console.log(res);
-        tempBids = res.data.data.result.$values;
-        setBids(tempBids);
-      })
-      .catch((err) => {
-        setErrorMessage(err?.response?.data?.error);
-        setModalIsOpenError(true);
-      });
-
-    console.log("end", bids, properties, wishlist);
-    setRefresh(false);
+       setRefresh(false);
   }, [refresh]);
   console.log(sortObjectsByOrderIdDescending(updatedData));
   return (

@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import SmartTable from "./SmartTable";
-import Link from "next/link";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { encryptionData } from "../../../utils/dataEncryption";
 import { useRouter } from "next/router";
 import Loader from "./Loader";
-// import "./SmartTable.css";
 
 const headCells = [
   {
@@ -110,22 +108,14 @@ const headCells = [
     width: 180,
   },
 ];
-let count = 0;
-
 export default function Exemple({
   userData,
-  open,
-  close,
   start,
   end,
   setUpdatedCode,
   properties,
   setProperties,
-  setDetails,
-  deletePropertyHandler,
-  onWishlistHandler,
   setAllBrokers,
-  participateHandler,
   setWishlistedProperties,
   openModalBroker,
   setSearchInput,
@@ -257,8 +247,8 @@ export default function Exemple({
         const isBidded = filterBidsWithin24Hours(property);
         console.log("isBidded", isBidded);
 
-        if (isBidded.$id && isBidded.status === 1) {
-          page.push(property);
+        if (isBidded.$id && isBidded.status === 1 && isBidded.orderStatus === 5) {
+          // page.push(property);
           const updatedRow = {
             orderId: property.orderId,
             address: `${property.city}-${property.province},${property.zipCode}`,
@@ -266,28 +256,11 @@ export default function Exemple({
               ? `$ ${property.estimatedValue}`
               : "$ 0",
             purpose: property.purpose ? property.purpose : "NA",
-            appraisal_status: isBidded.bidId ? (
-              isBidded.status === 0 ? (
-                <span className="btn btn-primary">Quote Provided</span>
-              ) : isBidded.status === 1 ? (
-                <span className="btn btn-success" onClick={openStatusUpdateHandler}>Accepted</span>
-              ) : (
-                <span className="btn btn-danger">Rejected</span>
-              )
-            ) : (
-              <span className="btn btn-warning">New</span>
-            ),
-            status: isBidded.bidId ? (
-              isBidded.status === 0 ? (
-                <span className="btn btn-primary">Quote Provided</span>
-              ) : isBidded.status === 1 ? (
-                <span className="btn btn-success" onClick={openStatusUpdateHandler}>Accepted</span>
-              ) : (
-                <span className="btn btn-danger">Rejected</span>
-              )
-            ) : (
-              <span className="btn btn-warning">New</span>
-            ),
+            appraisal_status: 
+                <span className="btn btn-success" >Accepted</span>
+              
+            ,
+            status: <span className="btn btn-success" >Accepted</span>,
             broker: (
               <div>
                 {isBidded.status === 1 ? (
@@ -508,7 +481,7 @@ export default function Exemple({
           title=""
           start={start}
           end={end}
-          data={sortObjectsByOrderIdDescending(updatedData)}
+          data={!updatedData ? [] :  sortObjectsByOrderIdDescending(updatedData)}
           headCells={headCells}
           setRefresh={setRefresh}
           setProperties={setProperties}
