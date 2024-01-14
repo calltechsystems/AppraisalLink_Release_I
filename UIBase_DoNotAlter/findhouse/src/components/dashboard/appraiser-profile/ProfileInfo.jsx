@@ -527,14 +527,12 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                     </div>
                   </div>
 
-                  <h3 className="mt-4 heading-forms">Alerts</h3>
-                  <hr />
                   <div className="col-lg-12 mb-3">
                     <div className="row">
                       <div className="col-lg-4">
                         <div className="form-group form-check custom-checkbox">
                           <input
-                            className="form-check-input"
+                            className="form-check-input mt-3"
                             type="checkbox"
                             value=""
                             required
@@ -553,12 +551,32 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           >
                             Email Alerts
                           </label>
+                          <div className="hover-text">
+                            <div
+                              className="tooltip-text"
+                              style={{
+                                marginTop: "-60px",
+                                marginLeft: "-100px",
+                              }}
+                            >
+                              <ul>
+                                <li style={{ fontSize: "15px" }}>
+                                  Updates Sends on Your Registered Email Address
+                                </li>
+                                {/* <li>
+                                  Regular Request : Timeline for the appraisal
+                                  report is 3 – 4 days.
+                                </li> */}
+                              </ul>
+                            </div>
+                            <i class="fa fa-info-circle" aria-hidden="true"></i>
+                          </div>
                         </div>
                       </div>
                       <div className="col-lg-4">
                         <div className="form-group form-check custom-checkbox">
                           <input
-                            className="form-check-input"
+                            className="form-check-input mt-3"
                             type="checkbox"
                             value=""
                             required
@@ -576,6 +594,26 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           >
                             SMS Alerts
                           </label>
+                          <div className="hover-text">
+                            <div
+                              className="tooltip-text"
+                              style={{
+                                marginTop: "-60px",
+                                marginLeft: "-100px",
+                              }}
+                            >
+                              <ul>
+                                <li style={{ fontSize: "15px" }}>
+                                  Updates Sends on Your Registered Phone Number
+                                </li>
+                                {/* <li>
+                                  Regular Request : Timeline for the appraisal
+                                  report is 3 – 4 days.
+                                </li> */}
+                              </ul>
+                            </div>
+                            <i class="fa fa-info-circle" aria-hidden="true"></i>
+                          </div>
                         </div>
                       </div>
                     </div>
