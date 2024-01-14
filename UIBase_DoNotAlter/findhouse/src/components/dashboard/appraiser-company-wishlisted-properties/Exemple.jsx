@@ -6,6 +6,7 @@ import axios from "axios";
 import { encryptionData } from "../../../utils/dataEncryption";
 import { useRouter } from "next/router";
 import Loader from "./Loader";
+import { AppraiserStatusOptions } from "../create-listing/data";
 // import "./SmartTable.css";
 
 const headCells = [
@@ -33,6 +34,12 @@ const headCells = [
     id: "appraisal_status",
     numeric: false,
     label: "Appraisal Status",
+    width: 160,
+  },
+  {
+    id: "remark",
+    numeric: false,
+    label: "Remark",
     width: 160,
   },
   {
@@ -120,6 +127,7 @@ export default function Exemple({
   start,
   end,
   setAllBrokers,
+  setCurrentBid,
   setUpdatedCode,
   properties,
   setProperties,
@@ -146,6 +154,18 @@ export default function Exemple({
   const [show, setShow] = useState(false);
   let tempData = [];
 
+
+  const getOrderValue = (val)=>{
+    let title = "Applicant Contacted by Appraiser";
+    AppraiserStatusOptions.map((status)=>{
+      if(String(status.id) === String(val)){
+        title = status.type;
+      }
+    })
+    console.log(title,val)
+    return title;
+  }
+
   
   const filterBidsWithin24Hours = (property) => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -170,7 +190,8 @@ export default function Exemple({
 
   const router = useRouter();
 
-  const statusHandler = () => {
+  const statusHandler = (bidId) => {
+    setCurrentBid(bidId);
     setIsStatusModal(true);
   };
 
@@ -283,19 +304,10 @@ export default function Exemple({
             ) : (
               <span className="btn btn-warning">New</span>
             ),
-            appraisal_status: isBidded.bidId ? (
-              isBidded.status === 0 ? (
-                <span className="btn btn-primary" >
-                  Quote Provided
-                </span>
-              ) : isBidded.status === 1 ? (
-                <span className="btn btn-success">Accepted</span>
-              ) : (
-                <span className="btn btn-danger">Declined</span>
-              )
-            ) : (
-              <span className="btn btn-warning">New</span>
-            ),
+            appraisal_status: isBidded.status === 1 ? (
+              <span className="btn btn-warning  w-100">{getOrderValue(isBidded.orderStatus)}</span>
+            ):<span className="btn btn-warning  w-100">New</span>,
+            remark : <p>{isBidded.remark ? isBidded.remark : "NA"}</p>,
             broker: (
               <div>
                 {isBidded.status === 1 ? (
@@ -433,7 +445,7 @@ export default function Exemple({
                   <div
                   className=" fw-bold"
                   onClick={() =>
-                    statusHandler()
+                    statusHandler(()=>setCurrentBid(isBidded.bidId))
                   }
                 >
                   <a

@@ -24,6 +24,8 @@ const Index = () => {
   const [toggleWishlist, setToggleWishlist] = useState(0);
   const [searchResult, setSearchResult] = useState([]);
   const [property, setProperty] = useState("");
+
+  const [currentBid,setCurrentBid]=useState(-1);
   const [startLoading, setStartLoading] = useState(false);
   const [filterProperty, setFilterProperty] = useState("");
   const [filterQuery, setFilterQuery] = useState("Last 30 Days");
@@ -56,6 +58,8 @@ const Index = () => {
   const [openBrokerModal, setOpenBrokerModal] = useState(false);
   const [broker, setBroker] = useState({});
 
+  const [openDate,setOpenDate] = useState("");
+
   const closeBrokerModal = () => {
     setOpenBrokerModal(false);
   };
@@ -63,6 +67,9 @@ const Index = () => {
   const closeQuoteModal = () => {
     setIsQuoteModalOpen(false);
   };
+
+  const [remark,setRemark]=useState("");
+  const [orderStatus,setOrderStatus]=useState(-1);
 
   const brokerInfoHandler = (orderId) => {
     const printWindow = window.open("", "_blank");
@@ -183,8 +190,39 @@ const Index = () => {
 
   const [isStatusModal, setIsStatusModal] = useState(false);
 
-  const handleStatusUpdateHandler = () => {};
+  const handleStatusUpdateHandler = ()=>{
 
+    const userData = JSON.parse(localStorage.getItem("user"));
+
+    const payload = {
+      token:userData.token,
+      bidid:currentBid,
+      OrderStatus:Number(orderStatus),
+      remark:remark
+    };
+
+    if(!remark){
+      toast.error("Remark should be filled!!");
+    }
+    else{
+
+
+    const encryptedBody = encryptionData(payload);
+    toast.loading("Updating order status!!");
+    axios.put("/api/updateOrderStatus",encryptedBody).then((res)=>{
+      toast.dismiss();
+      toast.success("Successfully updated!!");
+      window.location.reload();
+    })
+    .catch((err)=>{
+      toast.dismiss();
+      toast.error(err);
+    });
+  }
+
+    setCurrentBid(-1);
+    setIsStatusModal(false);
+  }
   const closeStatusUpdateHandler = () => {
     setIsStatusModal(false);
   };
@@ -234,6 +272,26 @@ const Index = () => {
     setViewType(type);
     setIsModalOpen(true);
   };
+
+
+  const handleStatusSelect = (value)=>{
+
+    if(String(value) === "Appraisal Visit Confirmed"){
+      setOpenDate(true);
+    }
+
+    let selectedValue = 0;
+    AppraiserStatusOptions.map((prop,index)=>{
+      if(String(prop.type) === String(value)){
+        console.log(prop.value)
+        setOrderStatus(prop.id);
+      }
+    })
+
+    console.log(selectedValue);
+    setOrderStatus(selectedValue);
+
+  }
 
   const closeModal = () => {
     setModalOpen(false);
@@ -522,6 +580,7 @@ const Index = () => {
                           }
                           start={start}
                           end={end}
+                          setCurrentBid={setCurrentBid}
                           setUpdatedCode={setUpdatedCode}
                           onWishlistHandler={onWishlistHandler}
                           participateHandler={participateHandler}
@@ -1330,8 +1389,8 @@ const Index = () => {
                       className="form-select"
                       data-live-search="true"
                       data-width="100%"
-                      // value={buildinRef}
-                      // onChange={(e) => setBuildinRef(e.target.value)}
+                      // value={orderStatus}
+                      onChange={(e)=>handleStatusSelect(e.target.value)}
                       // onChange={(e) => setBuildinRef(e.target.value)}
                       // disabled={isDisable}
                       style={{
@@ -1363,6 +1422,18 @@ const Index = () => {
                     value={statusDate}
                 />
               </div>}
+              <label style={{color:"black",fontWeight:"bold"}}>
+                Remark <span style={{color:"red"}}>*</span>
+                </label>
+                <input
+                  required
+                 
+                  type="text"
+                  className="form-control"
+                  id="formGroupExampleInput3"
+                  onChange={(e) => setRemark(e.target.value)}
+                  value={remark}
+                />
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
                       <button
@@ -1386,6 +1457,7 @@ const Index = () => {
                 <Modal
                   modalOpen={modalOpen}
                   setIsModalOpen={setIsModalOpen}
+                  setModalOpen={setModalOpen }
                   closeModal={closeModal}
                   lowRangeBid={lowRangeBid}
                   propertyId={propertyId}

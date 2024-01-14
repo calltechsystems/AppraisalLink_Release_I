@@ -37,6 +37,12 @@ const headCells = [
     width: 160,
   },
   {
+    id: "remark",
+    numeric: false,
+    label: "Remark",
+    width: 160,
+  },
+  {
     id: "urgency",
     numeric: false,
     label: "Urgency",
@@ -176,9 +182,9 @@ export default function Exemple({
   const router = useRouter();
 
   const getOrderValue = (val)=>{
-    let title = "";
+    let title = "Applicant Contacted By Appraiser";
     AppraiserStatusOptions.map((status)=>{
-      if(String(status.value) === String(val)){
+      if(String(status.id) === String(val)){
         title = status.type;
       }
     })
@@ -292,9 +298,10 @@ export default function Exemple({
             ) : (
               <span className="btn btn-warning">New</span>
             ),
-            appraisal_status:isBidded.orderStatus ? (
+            appraisal_status:isBidded.status === 1 ? (
               <h5>{getOrderValue(isBidded.orderStatus)}</h5>
             ):<span className="btn btn-warning  w-100">New</span>,
+            remark : <p>{isBidded.remark ? isBidded.remark : "NA"}</p>,
             property: (
               <div>
                 {isBidded.status === 1 ? (

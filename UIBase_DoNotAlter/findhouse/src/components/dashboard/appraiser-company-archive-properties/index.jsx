@@ -58,6 +58,8 @@ const Index = () => {
     setModalIsOpenError(false);
   };
 
+
+  const [remark,setRemark]=useState("");
   
   const [currentBid,setCurrentBid]=useState(-1);
 
@@ -68,7 +70,8 @@ const Index = () => {
     const payload = {
       token:userData.token,
       bidid:currentBid,
-      OrderStatus:Number(orderStatus)
+      OrderStatus:Number(orderStatus),
+      remark:remark
     };
 
 
@@ -121,8 +124,16 @@ const Index = () => {
       setOpenDate(true);
     }
 
-    console.log(value);
-    setOrderStatus(value);
+    let selectedValue = 0;
+    AppraiserStatusOptions.map((prop,index)=>{
+      if(String(prop.type) === String(value)){
+        console.log(prop.value)
+        setOrderStatus(prop.id);
+      }
+    })
+
+    console.log(selectedValue);
+    setOrderStatus(selectedValue);
 
   }
 
@@ -1496,6 +1507,19 @@ const Index = () => {
                   value={statusDate}
                 />
               </div>}
+
+              <label style={{color:"black",fontWeight:"bold"}}>
+                Remark <span style={{color:"red"}}>*</span>
+                </label>
+                <input
+                  required
+                 
+                  type="text"
+                  className="form-control"
+                  id="formGroupExampleInput3"
+                  onChange={(e) => setRemark(e.target.value)}
+                  value={broker.remark ? broker.remark : remark}
+                />
             
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>

@@ -5,12 +5,13 @@ import toast from "react-hot-toast";
 import { encryptionData } from "../../../utils/dataEncryption";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { flip } from "@popperjs/core";
 
 const Modal = ({
   modalOpen,
   setModalOpen,
   closeModal,
-  lowRangeBid,
+  setIsQuoteModalOpen,
   setIsModalOpen,
   handleSubmit,
   propertyId,
@@ -36,8 +37,9 @@ const Modal = ({
 
   const onCloseModalHandler = () => {
     setValue("");
-    setModalOpen(false);
+    setDescription("");
     setToggle(false);
+    setModalOpen(false);
   };
 
   const onSubmitHnadler = () => {
@@ -76,7 +78,7 @@ const Modal = ({
   };
 
   const openConfirmModal = () => {
-    if (value === null) {
+    if (!value) {
       toast.error("Quoted amount should be filled !");
     } else {
       setToggle(true);
@@ -87,9 +89,9 @@ const Modal = ({
       {modalOpen && (
         <div className="modal">
           <div className="modal-content">
-            <span className="close" onClick={onCloseModalHandler}>
+            {/* <span className="close" onClick={onCloseModalHandler}>
               &times;
-            </span>
+            </span> */}
             <div style={{ display: "flex", flexDirection: "column" }}>
               <h2 className="text-center">
                 {" "}
@@ -106,9 +108,7 @@ const Modal = ({
                 </span>
               </h2>
             </div>
-            <div>
-              <hr />
-            </div>
+            <div><hr /></div>
             <div>
               {!toggle ? (
                 <div className="row">

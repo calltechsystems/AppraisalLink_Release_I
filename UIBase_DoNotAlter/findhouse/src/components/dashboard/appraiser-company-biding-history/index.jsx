@@ -31,6 +31,7 @@ const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [lowRangeBid, setLowRangeBid] = useState("");
   const [propertyId, setPropertyId] = useState(null);
+
   
   const [wishlistedProperties,setWishlistedProperties] = useState([]);
   const [updatedCode, setUpdatedCode] = useState(false);
@@ -60,7 +61,8 @@ const Index = () => {
     const payload = {
       token:userData.token,
       bidid:currentBid,
-      OrderStatus:Number(orderStatus)
+      OrderStatus:Number(orderStatus),
+      remark:remark
     };
 
 
@@ -181,7 +183,6 @@ const Index = () => {
     setShowPropDetails(false);
   };
 
-  const [orderStatus,setOrderStatus]=useState(-1);
 
   const handleStatusSelect = (value)=>{
 
@@ -193,6 +194,9 @@ const Index = () => {
     setOrderStatus(value);
 
   }
+
+  const [remark,setRemark]=useState("");
+  const [orderStatus,setOrderStatus]=useState(-1);
   useEffect(() => {
     const filterProperties = (propertys, searchInput) => {
       if (searchInput === "") {
@@ -1411,6 +1415,18 @@ const Index = () => {
                   value={statusDate}
                 />
               </div>}
+              <label style={{color:"black",fontWeight:"bold"}}>
+              Remark <span style={{color:"red"}}>*</span>
+              </label>
+              <input
+                required
+               
+                type="text"
+                className="form-control"
+                id="formGroupExampleInput3"
+                onChange={(e) => setRemark(e.target.value)}
+                value={remark}
+              />
             
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
