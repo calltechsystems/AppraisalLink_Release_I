@@ -160,7 +160,7 @@ export default function Exemple({
   const getOrderValue = (val)=>{
     let title = "";
     AppraiserStatusOptions.map((status)=>{
-      if(String(status.value) === String(val)){
+      if(String(status.id) === String(val)){
         title = status.type;
       }
     })

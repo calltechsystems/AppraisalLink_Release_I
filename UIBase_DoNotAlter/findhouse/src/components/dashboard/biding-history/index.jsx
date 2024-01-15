@@ -86,7 +86,16 @@ const Index = () => {
     if(String(value) === "Appraisal Visit Confirmed"){
       setOpenDate(true);
     }
+    let selectedValue = 0;
+    AppraiserStatusOptions.map((prop,index)=>{
+      if(String(prop.type) === String(value)){
+        console.log(prop.type,value,prop.id)
+        selectedValue = prop.id;
+      }
+    })
 
+    console.log(selectedValue);
+    setOrderStatus(selectedValue);
   }
 
   const openModalBroker = (property, value) => {

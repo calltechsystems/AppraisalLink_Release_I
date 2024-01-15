@@ -42,12 +42,12 @@ const headCells = [
     label: "Remark",
     width: 160,
   },
-  {
-    id: "appraisal_status",
-    numeric: false,
-    label: "Appraisal Status",
-    width: 160,
-  },
+  // {
+  //   id: "appraisal_status",
+  //   numeric: false,
+  //   label: "Appraisal Status",
+  //   width: 160,
+  // },
   {
     id: "urgency",
     numeric: false,
@@ -182,7 +182,7 @@ export default function Exemple({
   const getOrderValue = (val)=>{
     let title = "";
     AppraiserStatusOptions.map((status)=>{
-      if(String(status.value) === String(val)){
+      if(String(status.id) === String(val)){
         title = status.type;
       }
     })
@@ -404,12 +404,14 @@ export default function Exemple({
             action: (
               <div className="print-hidden-column">
                 {isWait ?
-                  <p>Cannot perform action because its on hold</p>
+                  <p>Cannot perform action because its on hold/on Cancel</p>
                   : isBidded && isBidded.status === 0 ? (
                   <h4 className="text-warning">Pending</h4>
                 ) : isBidded.status === 1 ? (
+                  <h4 className="text-success">Accepted By Broker</h4>
+                ) : isBidded.status === 1 && isBidded.orderStatus === 6 ? (
                   <h4 className="text-success">Completed</h4>
-                ) : (
+                ): (
                   <h4 className="text-danger">Rejected</h4>
                 )}
               </div>

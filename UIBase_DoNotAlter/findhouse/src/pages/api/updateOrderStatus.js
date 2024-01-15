@@ -23,7 +23,7 @@ async function handler(request, response) {
       
     } = body;
 
-    console.log(body);
+   
 
     const userResponse = await axios.put(`${domain}/Bid/UpdateStatus`, {}, {
       headers: {

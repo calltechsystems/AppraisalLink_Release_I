@@ -152,33 +152,33 @@ export const Urgency = [
 
 export const AppraiserStatusOptions = [
   {
-    id: 0,
+    id: -1,
     type: "Select...",
     value: "",
   },
   {
-    id: 1,
+    id: 0,
     type: "Applicant Contacted by appraiser",
     value: "Applicant Contacted by appraiser",
   },
   {
-    id: 2,
+    id: 1,
     type: "Appraisal Visit Confirmed",
     value: "Appraisal Visit Confirmed",
   },
   {
-    id: 3,
+    id: 2,
     type: "Appraisal Report Writing in Progress",
     value: "Appraisal Report Writing in Progress",
   },
   {
-    id: 4,
+    id: 3,
     type: "Appraisal Report Writing Completed and Submitted",
     value: "Appraisal Report Writing Completed and Submitted",
   },
 
   {
-    id: 5,
+    id: 4,
     type: "Assignment on Hold",
     value: "Assignment on Hold",
   },
@@ -190,7 +190,7 @@ export const AppraiserStatusOptions = [
   },
 
   {
-    id: 5,
+    id: 6,
     type: "Appraisal visit completed; report writing is pending until fee received",
     value:
       "Appraisal visit completed; report writing is pending until fee received",

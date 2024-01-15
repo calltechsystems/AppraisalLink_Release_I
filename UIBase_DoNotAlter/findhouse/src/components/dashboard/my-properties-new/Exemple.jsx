@@ -247,7 +247,7 @@ export default function Exemple({
             appraisal_status:
               isHold || isCancel ? (
                 <span className="btn bg-warning  w-100">
-                  {isHold ? "Hold" : "Cancelled"}
+                  {isHold ? "On Hold" : "Cancelled"}
                 </span>
               ) : property.orderStatus ? (
                 <h5>{getOrderValue(isBidded.orderStatus)}</h5>

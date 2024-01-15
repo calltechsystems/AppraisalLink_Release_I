@@ -66,6 +66,9 @@ const Index = () => {
     };
 
 
+    // console.log(payload);
+    // return ;
+
 
     const encryptedBody = encryptionData(payload);
     toast.loading("Updating order status!!");
@@ -189,9 +192,17 @@ const Index = () => {
     if(String(value) === "Appraisal Visit Confirmed"){
       setOpenDate(true);
     }
+    let selectedValue = 0;
+    AppraiserStatusOptions.map((prop,index)=>{
+      if(String(prop.type) === String(value)){
+        console.log(prop.type,value,prop.id)
+        selectedValue = prop.id;
+      }
+    })
 
-    console.log(value);
-    setOrderStatus(value);
+    console.log(selectedValue);
+    setOrderStatus(selectedValue);
+
 
   }
 

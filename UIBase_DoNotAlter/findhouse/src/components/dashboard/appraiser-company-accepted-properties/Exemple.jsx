@@ -158,10 +158,10 @@ export default function Exemple({
     let tempBid = 0,
       bidValue = {};
 
-    console.log(bids);
+    // console.log(bids);
     bids.filter((bid) => {
       if (bid.propertyId === property.propertyId) {
-        console.log("matched", bid);
+        // console.log("matched", bid);
         tempBid = tempBid + 1;
         bidValue = bid;
       } else {
@@ -245,7 +245,7 @@ export default function Exemple({
 
   const checkWishlistedHandler = (data) => {
     let temp = {};
-    console.log(wishlist, data);
+    // console.log(wishlist, data);
     wishlist.map((prop, index) => {
       if (String(prop.propertyId) === String(data.propertyId)) {
         temp = prop;
@@ -279,6 +279,7 @@ export default function Exemple({
           console.log("isBidded", isBidded);
 
         if (isBidded.$id && isBidded.status === 1) {
+          console.log(isBidded);
           page.push(property);
           const updatedRow = {
             orderId: property.orderId,

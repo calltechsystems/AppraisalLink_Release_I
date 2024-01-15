@@ -243,10 +243,10 @@ export default function Exemple({
       properties.map((data, index) => {
         const updatedRow = {
           appraiser_id: data.id,
-          firstname: data.firstName ? data.firstName : "Not Assigned",
-          lastname: data.lastName ? data.lastName : "Not Assigned",
-          company: data.companyName? data.companyName : "Not Assigned",
-          phone: data.phoneNumber ? data.phoneNumber : "Not Assigned",
+          firstname: data.firstName ? data.firstName : "-",
+          lastname: data.lastName ? data.lastName : "-",
+          company: data.companyName? data.companyName : "-",
+          phone: data.phoneNumber ? data.phoneNumber : "-",
           address :`${data.streetName} ${data.streetNumber},${data.city}-${data.postalCode}`,
           date: dateNow,
           action: (
@@ -254,9 +254,7 @@ export default function Exemple({
               <button className="btn btn-color m-1">
                 <i className="flaticon-edit"></i>
               </button>
-              <button className="btn btn-color">
-                <i className="flaticon-garbage"></i>
-              </button>
+              
             </div>
           ),
         };
