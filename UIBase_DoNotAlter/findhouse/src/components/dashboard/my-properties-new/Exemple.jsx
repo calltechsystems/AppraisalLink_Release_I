@@ -143,6 +143,7 @@ export default function Exemple({
   setModalOpen,
   setIsCancelProperty,
   setIsHoldProperty,
+  isBidded
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [allBids, setBids] = useState([]);
@@ -227,7 +228,7 @@ export default function Exemple({
             status:
               isHold || isCancel ? (
                 <span className="btn bg-warning w-100">
-                  {isHold ? "Hold" : "Cancelled"}
+                  {isHold ? "On Hold" : "Cancelled"}
                 </span>
               ) : isStatus === 2 ? (
                 <span className="btn bg-success w-100 text-light">
@@ -249,9 +250,11 @@ export default function Exemple({
                 <span className="btn bg-warning  w-100">
                   {isHold ? "On Hold" : "Cancelled"}
                 </span>
-              ) : property.orderStatus ? (
-                <h5>{getOrderValue(isBidded.orderStatus)}</h5>
-              ) : (
+              ) :
+              //  property.orderStatus ? (
+              //   <h5>{getOrderValue(isBidded.orderStatus)}</h5>
+              // )
+                (
                 <span className="btn bg-warning  w-100">New</span>
               ),
             address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
