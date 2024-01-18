@@ -6,7 +6,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import Exemple from "./Exemple"
 import { useDispatch, useSelector } from "react-redux";
-const TableData = ({userData , open ,close ,setFilterQuery,setCloseRegisterModal,setSearchInput,setIsStatusModal,start,end, onWishlistHandler ,setStartLoading,setUpdatedCode, openModalBroker,participateHandler , properties, setProperties,setErrorMessage,setModalIsOpenError,setRefresh,refresh}) => {
+const TableData = ({userData , open ,close ,setAppraiser,setOpenEditModal,setFilterQuery,setCloseRegisterModal,setSearchInput,setIsStatusModal,start,end, onWishlistHandler ,setStartLoading,setUpdatedCode, openModalBroker,participateHandler , properties, setProperties,setErrorMessage,setModalIsOpenError,setRefresh,refresh}) => {
 
 
   let userInfo = {};
@@ -274,12 +274,14 @@ const TableData = ({userData , open ,close ,setFilterQuery,setCloseRegisterModal
     {data && (<Exemple 
       userData={userData}
       open={open}
+      setAppraiser={setAppraiser}
       close={close}
       setSearchInput={setSearchInput}
       setFilterQuery={setFilterQuery}
       setProperties={setProperties}
       properties={data}
       setRefresh={setRefresh}
+      setOpenEditModal={setOpenEditModal}
       refresh={refresh}
       setModalIsOpenError = {setModalIsOpenError}
       setErrorMessage = {setErrorMessage}

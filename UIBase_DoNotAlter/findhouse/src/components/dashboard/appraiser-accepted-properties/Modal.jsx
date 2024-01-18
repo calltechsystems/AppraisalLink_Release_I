@@ -8,46 +8,33 @@ import { useRouter } from "next/router";
 
 const Modal = ({
   modalOpen,
-  setModalOpen,
+  closeModal,
   lowRangeBid,
   setIsModalOpen,
   handleSubmit,
-  bidAmount,
-  isUpdateBid,
-  setIsQuoteModalOpen,
   propertyId,
   closeQuoteModal,
   openQuoteModal,
 }) => {
   const router = useRouter();
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState(0);
   const [description, setDescription] = useState("");
 
   const [toggle, setToggle] = useState(false);
 
   const onCancelHandler = () => {
-    setToggle(false);
-    setValue(0);
-    setDescription("");
-    setIsQuoteModalOpen(false);
+    closeModal();
   };
 
   const handleToggle = () => {
     setToggle(true);
   };
 
-  const onCloseModalHandler = () => {
-    setValue("");
-   
-    setToggle(false);
-    setModalOpen(false);
-  };
-
   const onSubmitHnadler = () => {
     const bidAmount = value;
     const desp = description;
 
-    if (bidAmount <= 0 || bidAmount === "") {
+    if (bidAmount <= 0) {
       toast.error("Quoted amount should be filled !");
     } else {
       const user = JSON.parse(localStorage.getItem("user"));
@@ -79,44 +66,44 @@ const Modal = ({
   };
 
   const openConfirmModal = () => {
-    if (value === null) {
-      toast.error("Quoted amount should be filled !");
-    } else {
-      setToggle(true);
-    }
+    setToggle(true);
   };
   return (
     <div>
       {modalOpen && (
         <div className="modal">
           <div className="modal-content">
-            {/* <span className="close" onClick={onCloseModalHandler}>
+            <span className="close" onClick={closeModal}>
               &times;
-            </span> */}
+            </span>
             <div style={{ display: "flex", flexDirection: "column" }}>
               <h2 className="text-center">
                 {" "}
                 <span
                   style={{
                     fontWeight: "bold",
-                    fontSize: "27px",
+                    fontSize: "29px",
                     color: "#2e008b",
                   }}
                 >
-                  {!toggle
-                    ? `${isUpdateBid ? "Appraisal Quote Update  Form" : "Appraisal Quote Form"}`
-                    : "Appraisal Quote Confirmation"}
+                  {!toggle ? "Appraisal Quote Form" : "Confirmation Form"}
                 </span>
               </h2>
             </div>
-            <div><hr /></div>
+            <div
+              style={{
+                border: "1px",
+                borderStyle: "solid",
+                borderColor: "gray",
+              }}
+            ></div>
             <div>
               {!toggle ? (
                 <div className="row">
                   <div className="col-lg-12">
                     <div className="row mb-2 mt-2 text-center">
                       <div className="row mb-2 mt-2">
-                        <div className="col-lg-3 mb-2" style={{display:"flex",flexDirection:"column"}}>
+                        <div className="col-lg-3 mb-2">
                           <label
                             htmlFor=""
                             style={{
@@ -126,17 +113,6 @@ const Modal = ({
                           >
                             Appraisal Quote <span class="req-btn">*</span> :
                           </label>
-                          
-                          {isUpdateBid && <label
-                            htmlFor=""
-                            style={{
-                              paddingTop: "15px",
-                              fontWeight: "lighter",
-                              paddingLeft:"10%"
-                            }}
-                          >
-                            Earlier Quote Value was  <span style={{color:"green"}}>$</span> {bidAmount}
-                          </label>}
                         </div>
                         <div className="col-lg-7">
                           <input
@@ -157,7 +133,7 @@ const Modal = ({
                               fontWeight: "lighter",
                             }}
                           >
-                            Remark
+                            Description
                           </label>
                         </div>
                         <div className="col-lg-7">
@@ -176,29 +152,24 @@ const Modal = ({
                   </div>
                 </div>
               ) : (
-                <p className="m-3 text-center" style={{ fontSize: "18px" }}>
-                  Are you confirming that you will quote this property for the
-                  given amount : <br />
-                  <h3 className="mt-2 text-color"> $ {value}</h3>
-                </p>
+                <h4>
+                  Are you confirm to quote this property on this provided amount
+                  ? : {value}{" "}
+                </h4>
               )}
             </div>
-            <hr />
-            <div
-              className="col-lg-12 text-center"
-              style={{ marginRight: "4%" }}
-            >
+            <div className="button-container" style={{ marginRight: "4%" }}>
               {/* <button className="cancel-button" onClick={closeModal}>
                   Cancel
                 </button> */}
               <button
-                className="btn btn-color w-25"
-                onClick={()=>onCloseModalHandler()}
+                className="btn btn-log w-35 mr-20"
+                onClick={closeQuoteModal}
               >
                 Cancel
               </button>
               <button
-                className="btn btn-color w-25 m-1"
+                className="btn btn-log w-35 btn-thm"
                 onClick={toggle ? onSubmitHnadler : openConfirmModal}
               >
                 Continue

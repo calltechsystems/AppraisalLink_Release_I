@@ -6,7 +6,7 @@ import Image from "next/image";
 const HeaderMenuContent = ({ float = "", hide, userData,  setProfileCount , profileCount , userInfo }) => {
   const route = useRouter();
 
-  console.log(userData);
+  // console.log(userData);
 
   const home = [
     {
@@ -519,15 +519,15 @@ const HeaderMenuContent = ({ float = "", hide, userData,  setProfileCount , prof
               width={45}
               height={45}
               className="rounded-circle"
-              src={userInfo?.brokerage_Details?.profileImage
-                ? userInfo?.brokerage_Details?.profileImage
+              src={userInfo?.appraiser_Details?.profileImage
+                ? userInfo?.appraiser_Details?.profileImage
                 : `/assets/images/home/placeholder_01.jpg`
             }
               alt="e1.png"
             />
             <span className="dn-1199 ms-1 text-light">
-              {userData?.brokerage_Details?.firstName
-                ? `${userData.brokerage_Details?.firstName} ${userData?.brokerage_Details?.lastName}`
+              {userData?.appraiser_Details?.firstName
+                ? `${userData.appraiser_Details?.firstName} ${userData?.appraiser_Details?.lastName}`
                 : "xyz"}
             </span>
           </a>

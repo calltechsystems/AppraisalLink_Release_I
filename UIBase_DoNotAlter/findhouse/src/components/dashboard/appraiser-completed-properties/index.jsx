@@ -15,11 +15,12 @@ import { AppraiserStatusOptions } from "../create-listing/data";
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
-  const [bids, setBids] = useState([]);
   const [searchInput, setSearchInput] = useState("");
+  
   const [isStatusModal,setIsStatusModal] = useState(false);
   const [toggleId, setToggleId] = useState(-1);
+
+  
   const [toggleWishlist, setToggleWishlist] = useState(0);
   const [searchResult, setSearchResult] = useState([]);
   const [property, setProperty] = useState("");
@@ -43,6 +44,8 @@ const Index = () => {
 
   const [isLoading, setIsLoading] = useState(true);
 
+  const [requiredProp,setRequiredProp]=useState([]);
+
   const [refresh, setRefresh] = useState(false);
 
   const [orderStatus,setOrderStatus]=useState(-1);
@@ -63,11 +66,14 @@ const Index = () => {
     if(remark === "" ){
       toast.error("Remark should be filled!!");
     }
+    else if(orderStatus <= currentBid.orderStatus){
+      toast.error("Select a proper quote status Please !!")
+    }
     else{
     const data = JSON.parse(localStorage.getItem("user"));
     const payload = {
       token:data.token,
-      bidid:currentBid,
+      bidid:currentBid.bidId,
       OrderStatus:Number(orderStatus),
       remark:remark
     };
@@ -86,7 +92,7 @@ const Index = () => {
   }
 
     setRemark("");
-    setCurrentBid(-1);
+    setCurrentBid({});
     setIsStatusModal(false);
   }
 
@@ -120,7 +126,20 @@ const Index = () => {
     if(String(value) === "Appraisal Visit Confirmed"){
       setOpenDate(true);
     }
-    setOrderStatus(value);
+    let selectedValue = 0;
+    AppraiserStatusOptions.map((prop,index)=>{
+      if(String(prop.type) === String(value)){
+        console.log(prop.type,value,prop.id)
+        selectedValue = prop.id;
+      }
+    })
+
+    if(currentBid.orderStatus >= selectedValue){
+      toast.error("Select the next status please !!");
+    }
+    else{
+    setOrderStatus(selectedValue);
+    }
   }
 
   let [selectedBroker ,setSelectedBroker]=useState({});
@@ -431,13 +450,26 @@ const Index = () => {
     };
   };
 
-  const participateHandler = (val, id) => {
+  const [isUpdateBid,setIsUpdateBid] = useState(false);
+  const [bidAmount,setbidAmount] = useState(0);
+
+  const participateHandler = (val, id,isUpdate,value) => {
+    console.log(val,id,isUpdate,value);
+    if(isUpdate){
+    setLowRangeBid(val);
+    setIsUpdateBid(isUpdate);
+    setbidAmount(value);
+    setPropertyId(id);
+    setModalOpen(true);
+    }
+    else{
     setLowRangeBid(val);
     setPropertyId(id);
     setModalOpen(true);
+    }
   };
 
-  const [currentBid,setCurrentBid]=useState(-1);
+  const [currentBid,setCurrentBid]=useState({});
 
   const onWishlistHandler = (id) => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -547,7 +579,7 @@ const Index = () => {
 
                 <div className="col-lg-4 col-xl-4 mb10">
                   <div className="style2 mb30-991">
-                    <h3 className="breadcrumb_title">Accepted Property</h3>
+                    <h3 className="breadcrumb_title">Completed Property</h3>
                     {/* <p>We are glad to see you again!</p>                                                             */}
                   </div>
                 </div>
@@ -601,9 +633,8 @@ const Index = () => {
                           properties={
                             searchInput === "" ? properties : filterProperty
                           }
-                          setBids={setBids}
-                          bids={bids}
                           setCurrentBid={setCurrentBid}
+                          setRequiredProp={setRequiredProp}
                           setUpdatedCode={setUpdatedCode}
                           onWishlistHandler={onWishlistHandler}
                           participateHandler={participateHandler}
@@ -824,7 +855,7 @@ const Index = () => {
                                     >
                                       {broker.lenderInformation
                                         ? broker.lenderInformation
-                                        : "NA"}
+                                        : "N.A."}
                                     </td>
                                   </tr>
                                   {/* <tr>
@@ -892,7 +923,7 @@ const Index = () => {
                                         ? "Rush"
                                         : broker.urgency === 1
                                         ? "Regular"
-                                        : "NA"}
+                                        : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -912,7 +943,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {broker.quoteRequiredDate}
+                                      {broker.quoteRequiredDate ? broker.quoteRequiredDate : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1024,7 +1055,7 @@ const Index = () => {
                                       {" "}
                                       {broker.remark
                                         ? broker.remark
-                                        : "NA"}
+                                        : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1262,7 +1293,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {selectedBroker.brokerageName}
+                                      {selectedBroker.brokerageName ? selectedBroker.brokerageName : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1280,7 +1311,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {selectedBroker.companyName}
+                                      {selectedBroker.companyName  ? selectedBroker.companyName : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1298,7 +1329,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {selectedBroker.assistantFirstName}
+                                      {selectedBroker.assistantFirstName  ? selectedBroker.assistantFirstName : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1316,7 +1347,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {selectedBroker.assistantPhoneNumber}
+                                      {selectedBroker.assistantPhoneNumber  ? selectedBroker.assistantPhoneNumber : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1334,7 +1365,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {selectedBroker.assistantEmailAddress}
+                                      {selectedBroker.assistantEmailAddress  ? selectedBroker.assistantEmailAddress : "N.A."}
                                     </td>
                                   </tr>
                                 </tbody>
@@ -1423,8 +1454,9 @@ const Index = () => {
                         }}
                 >
                   {AppraiserStatusOptions.map((item, index) => {
+                    
                     return (
-                      <option key={item.id} value={item.value}>
+                      <option key={item.id} value={item.value} >
                         {item.type}
                       </option>
                     );
@@ -1488,6 +1520,9 @@ const Index = () => {
                   setIsModalOpen={setIsModalOpen}
                   closeModal={closeModal}
                   lowRangeBid={lowRangeBid}
+                  isUpdateBid={isUpdateBid}
+                  bidAmount={bidAmount}
+                  setModalOpen={setModalOpen}
                   propertyId={propertyId}
                   setIsQuoteModalOpen={setIsQuoteModalOpen}
                   openQuoteModal={openQuoteModal}
@@ -1515,7 +1550,7 @@ const Index = () => {
                     <Pagination
                       setStart={setStart}
                       setEnd={setEnd}
-                      properties={bids}
+                      properties={requiredProp}
                     />
                   </div>
                 </div> 

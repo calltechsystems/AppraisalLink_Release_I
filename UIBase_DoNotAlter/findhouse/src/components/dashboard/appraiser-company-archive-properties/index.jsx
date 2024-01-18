@@ -3,7 +3,7 @@ import SidebarMenu from "../../common/header/dashboard/SidebarMenu_002";
 import MobileMenu from "../../common/header/MobileMenu_01";
 import TableData from "./TableData";
 import Pagination from "./Pagination";
-import { use, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
@@ -16,12 +16,9 @@ import { AppraiserStatusOptions } from "../create-listing/data";
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
-  const [orderStatus,setOrderStatus]=useState(-1);
   const [isStatusModal,setIsStatusModal] = useState(false);
-  const [showMore,setShowMore]=useState(false);
-  const [allBrokers,setAllBrokers]=useState([]);
-  const [assignedAppraiser,setAssignedAppraiser]=useState([]);
   const [toggleId, setToggleId] = useState(-1);
+  const [allArchive,setAllArchive]=useState([]);
   const [toggleWishlist, setToggleWishlist] = useState(0);
   const [searchResult, setSearchResult] = useState([]);
   const [property, setProperty] = useState("");
@@ -41,15 +38,15 @@ const Index = () => {
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
 
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
-  
-
   const [errorMessage, setErrorMessage] = useState("");
 
   const [isLoading, setIsLoading] = useState(true);
 
   const [refresh, setRefresh] = useState(false);
 
+  const [orderStatus,setOrderStatus]=useState(-1);
     
+  const [allBrokers,setAllBrokers]=useState([]);
   const [start,setStart]=useState(0);
   
   const [end,setEnd]=useState(4);
@@ -58,23 +55,21 @@ const Index = () => {
     setModalIsOpenError(false);
   };
 
-
   const [remark,setRemark]=useState("");
-  
-  const [currentBid,setCurrentBid]=useState(-1);
 
   const handleStatusUpdateHandler = ()=>{
-
-    const userData = JSON.parse(localStorage.getItem("user"));
-
+    
+    if(remark === "" ){
+      toast.error("Remark should be filled!!");
+    }
+    else{
+    const data = JSON.parse(localStorage.getItem("user"));
     const payload = {
-      token:userData.token,
+      token:data.token,
       bidid:currentBid,
       OrderStatus:Number(orderStatus),
       remark:remark
     };
-
-
 
     const encryptedBody = encryptionData(payload);
     toast.loading("Updating order status!!");
@@ -85,14 +80,14 @@ const Index = () => {
     })
     .catch((err)=>{
       toast.dismiss();
-      toast.error(err);
+      toast.error(err?.response?.data?.error);
     });
+  }
 
+    setRemark("");
     setCurrentBid(-1);
     setIsStatusModal(false);
   }
-
-  const [openAssignModal,setOpenAssignModal]=useState(false);
 
   const closeStatusUpdateHandler = ()=>{
     setOpenDate(false);
@@ -118,28 +113,23 @@ const Index = () => {
   const [openDate,setOpenDate] = useState(false);
   const [statusDate,setStatusDate]=useState("");
 
-  const handleStatusSelect = (value)=>{
+  
 
+  const handleStatusSelect = (value)=>{
     if(String(value) === "Appraisal Visit Confirmed"){
       setOpenDate(true);
     }
-
     let selectedValue = 0;
     AppraiserStatusOptions.map((prop,index)=>{
       if(String(prop.type) === String(value)){
-        console.log(prop.value)
-        setOrderStatus(prop.id);
+        console.log(prop.type,value,prop.id)
+        selectedValue = prop.id;
       }
     })
 
     console.log(selectedValue);
     setOrderStatus(selectedValue);
-
   }
-
-  const [moreBrokerInfo,setMoreBrokerInfo]=useState({});
-  const [isBroker,setisBroker]=useState(false);
-
 
   let [selectedBroker ,setSelectedBroker]=useState({});
   const openModalBroker = (property, value) => {
@@ -156,55 +146,44 @@ const Index = () => {
     setTypeView(value);
     setOpenBrokerModal(true);
   };
+  const router = useRouter();
+  const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
+    Date.now()
+  );
 
-  const [assignPropertyId,setAssignPropertyId]=useState(-1);
-  const [assignAppraiserId,setAssignAppraiserId]=useState(-1);
-  const openAppraisalModal = (val)=>{
-    setOpenAssignModal(true);
-    setAssignPropertyId(val);
-  }
+  const  unArchivePropertyHandler = (propertyId)=>{
+    const data = JSON.parse(localStorage.getItem("user"));
 
-  const handleAssignPropertyToAppraiser = ()=>{
-    const userData = JSON.parse(localStorage.getItem("user"));
+    // const payload = {
+    //   propertyId:propertyId,
+    //   userid:data.userId,
+    //   token:data.token
+    // };
 
-    const propertyId = Number(assignPropertyId);
-    const appraiserId = Number(assignAppraiserId);
-    const companyId = Number(userData.appraiserCompany_Datails?.appraiserCompanyId);
+    toast.loading("Un-Archiving the desired property!!.");
 
-    const payload = {
-      propertyid : propertyId,
-      companyid:companyId,
-      appraiserid:appraiserId
-    };
+    // const encryptedBody = encryptionData(payload);
 
-    const encryptionPayload = encryptionData(payload);
-
-    toast.loading("Assigning the property");
-    axios.post("/api/assignPropertyToAppraiser",encryptionPayload,{
-      
-        headers: {
-          Authorization:`Bearer ${userData.token}`,
-          "Content-Type":"application/json"
-        }
-      
+    axios.delete("/api/deleteArchivePropertyByAppraiser",{
+      headers:{
+        Authorization:`Bearer ${data.token}`,
+        "Content-Type":"application/json"
+      },
+      params:{
+        userid:data.userId,
+        propertyId:propertyId
+      }
     }).then((res)=>{
       toast.dismiss();
-      toast.success("Successfully assigned");
+      toast.success("Un-Archived property Successfully!");
+      window.location.reload();
     })
     .catch((err)=>{
       toast.dismiss();
       toast.error(err);
     })
-   
   }
 
-  console.log(assignedAppraiser);
-  // console.log("data",data);
-
-  const router = useRouter();
-  const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
-    Date.now()
-  );
 
   useEffect(() => {
     const activityHandler = () => {
@@ -253,22 +232,17 @@ const Index = () => {
     setModalOpen(false);
     setShowPropDetails(false);
   };
-  const setShowBroker=()=>{
 
-  }
-
- 
-  const closeAssignModal = ()=>{
-    setOpenAssignModal(false);
-  }
   useEffect(() => {
     const filterProperties = (propertys, searchInput) => {
       if (searchInput === "") {
         return propertys;
       }
       const filteredProperties = propertys.filter((property) => {
+        // Convert the search input to lowercase for a case-insensitive search
         const searchTerm = searchInput.toLowerCase();
 
+        // Check if any of the fields contain the search term
         return (
           property.zipCode.toLowerCase().includes(searchTerm) ||
           property.area.toLowerCase().includes(searchTerm) ||
@@ -285,33 +259,6 @@ const Index = () => {
     const filteredData = filterProperties(properties, searchInput);
     setFilterProperty(filteredData);
   }, [searchInput]);
-
-  useEffect(() => {
-    // console.log("inside");
-    const data = JSON.parse(localStorage.getItem("user"));
-
-      axios
-      .get("/api/getAllAppraiserByCompanyId",{
-        headers: {
-          Authorization: `Bearer ${data?.token}`,
-          "Content-Type": "application/json",
-        },
-        params: {
-          userId: data?.appraiserCompany_Datails?.appraiserCompanyId,
-        },
-      })
-      .then((res) => {
-        console.log("assigned",res.data.data.appraisers.$values);
-        setAssignedAppraiser(res.data.data.appraisers.$values);
-      })
-      .catch((err) => {
-        setErrorMessage(err?.response?.data?.error);
-        setModalIsOpenError(true);
-      });
-
-    // console.log("end", bids, properties, wishlist);
-    setRefresh(false);
-  }, [refresh]);
 
   const filterData = (tempData) => {
     const currentDate = new Date();
@@ -345,6 +292,35 @@ const Index = () => {
         return tempData; // Return all data if no valid timeFrame is specified
     }
   };
+
+  const  onArchivePropertyHandler = (propertyId)=>{
+    const data = JSON.parse(localStorage.getItem("user"));
+
+    const payload = {
+      propertyId:propertyId,
+      userid:data.userId,
+      token:data.token
+    };
+
+    toast.loading("Archiving the desired property!!.");
+
+    const encryptedBody = encryptionData(payload);
+
+    axios.post("/api/setArchivePropertyByAppraiser",encryptedBody,{
+      headers:{
+        Authorization:`Bearer ${data.token}`,
+        "Content-Type":"application/json"
+      }
+    }).then((res)=>{
+      toast.dismiss();
+      toast.success("Archived property!");
+      window.location.reload();
+    })
+    .catch((err)=>{
+      toast.dismiss();
+      toast.error(err);
+    })
+  }
 
   useEffect(() => {
     const tmpData = filterData(properties);
@@ -385,7 +361,9 @@ const Index = () => {
     const data = JSON.parse(localStorage.getItem("user"));
     if (!data) {
       router.push("/login");
-    } 
+    } else if (!data?.appraiserCompany_Datails.firstName) {
+      router.push("/appraiser-company-profile");
+    }
     if (!data) {
       router.push("/login");
     }
@@ -407,6 +385,7 @@ const Index = () => {
       '<button style="display:none;" onclick="window.print()">Print</button>'
     );
 
+    // Clone the table-container and remove the action column
     const tableContainer = document.getElementById("broker-info-container");
     const table = tableContainer.querySelector("table");
     const clonedTable = table.cloneNode(true);
@@ -500,6 +479,8 @@ const Index = () => {
     setModalOpen(true);
   };
 
+  const [currentBid,setCurrentBid]=useState(-1);
+
   const onWishlistHandler = (id) => {
     const userData = JSON.parse(localStorage.getItem("user"));
 
@@ -581,10 +562,10 @@ const Index = () => {
       {/* End sidebar_menu */}
 
       {/* <!-- Our Dashbord --> */}
-      <section className="our-dashbord dashbord bgc-f7 pb50">
+      <section className="our-dashbord dashbord bgc-f7 pb50 dashboard-height">
         <div
-          className="container-fluid ovh"
-          style={{ marginLeft: "-10px", marginTop: "" }}
+          className="container-fluid ovh table-padding container-padding"
+          style={{ }}
         >
           <div className="row">
             <div className="col-lg-12 maxw100flex-992">
@@ -608,7 +589,7 @@ const Index = () => {
 
                 <div className="col-lg-4 col-xl-4 mb10">
                   <div className="style2 mb30-991">
-                    <h3 className="breadcrumb_title">Archiving Properties</h3>
+                    <h3 className="breadcrumb_title">Archive Property</h3>
                     {/* <p>We are glad to see you again!</p>                                                             */}
                   </div>
                 </div>
@@ -652,33 +633,33 @@ const Index = () => {
                       <div className="mt0">
                         <TableData
                           userData={userData}
+                          setAllArchive={setAllArchive}
+                          allArchive={allArchive}
                           setModalOpen={openModal}
                           setIsStatusModal={setIsStatusModal}
                           close={closeModal}
                           setProperties={setProperties}
                           start={start}
                           end={end}
-                          setAllBrokers={setAllBrokers}
+                          onArchivePropertyHandler={ onArchivePropertyHandler}
                           properties={
                             searchInput === "" ? properties : filterProperty
                           }
+                          setCurrentBid={setCurrentBid}
                           setUpdatedCode={setUpdatedCode}
                           onWishlistHandler={onWishlistHandler}
                           participateHandler={participateHandler}
                           setErrorMessage={setErrorMessage}
                           setModalIsOpenError={setModalIsOpenError}
-                          setShowBroker={setShowBroker}
                           setRefresh={setRefresh}
+                          setAllBrokers={setAllBrokers}
                           setFilterQuery={setFilterQuery}
                           setSearchInput={setSearchInput}
-                          setShowMore={setShowMore}
-                          setOpenAssignModal={setOpenAssignModal}
                           refresh={refresh}
-                          setCurrentBid={setCurrentBid}
+                          unArchivePropertyHandler={unArchivePropertyHandler}
                           setWishlistedProperties={setWishlistedProperties}
                           setStartLoading={setStartLoading}
                           openModalBroker={openModalBroker}
-                          setAssignedAppraiser={openAppraisalModal}
                         />
 
                         {modalIsOpenError && (
@@ -886,7 +867,7 @@ const Index = () => {
                                     >
                                       {broker.lenderInformation
                                         ? broker.lenderInformation
-                                        : "NA"}
+                                        : "N.A."}
                                     </td>
                                   </tr>
                                   {/* <tr>
@@ -954,7 +935,7 @@ const Index = () => {
                                         ? "Rush"
                                         : broker.urgency === 1
                                         ? "Regular"
-                                        : "NA"}
+                                        : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -974,7 +955,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {broker.quoteRequiredDate}
+                                      {broker.quoteRequiredDate ? broker.quoteRequiredDate : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1086,7 +1067,7 @@ const Index = () => {
                                       {" "}
                                       {broker.remark
                                         ? broker.remark
-                                        : "NA"}
+                                        : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1166,7 +1147,7 @@ const Index = () => {
                                 onClick={() => PropertyInfoHandler(broker.orderId)}
                                 title="Download Pdf"
                               >
-                               Download Form
+                                Download Form
                               </div>
                                   <button
                                     className="btn btn-color w-25 text-center"
@@ -1324,7 +1305,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {selectedBroker.brokerageName}
+                                      {selectedBroker.brokerageName ? selectedBroker.brokerageName : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1342,7 +1323,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {selectedBroker.companyName}
+                                      {selectedBroker.companyName  ? selectedBroker.companyName : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1360,7 +1341,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {selectedBroker.assistantFirstName}
+                                      {selectedBroker.assistantFirstName  ? selectedBroker.assistantFirstName : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1378,7 +1359,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {selectedBroker.assistantPhoneNumber}
+                                      {selectedBroker.assistantPhoneNumber  ? selectedBroker.assistantPhoneNumber : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1396,7 +1377,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {selectedBroker.assistantEmailAddress}
+                                      {selectedBroker.assistantEmailAddress  ? selectedBroker.assistantEmailAddress : "N.A."}
                                     </td>
                                   </tr>
                                 </tbody>
@@ -1506,20 +1487,23 @@ const Index = () => {
                   onChange={(e) => setStatusDate(e.target.value)}
                   value={statusDate}
                 />
-              </div>}
-
-              <label style={{color:"black",fontWeight:"bold"}}>
-                Remark <span style={{color:"red"}}>*</span>
-                </label>
-                <input
-                  required
-                 
-                  type="text"
-                  className="form-control"
-                  id="formGroupExampleInput3"
-                  onChange={(e) => setRemark(e.target.value)}
-                  value={broker.remark ? broker.remark : remark}
-                />
+                
+            </div>
+            }
+            <div>
+            <label style={{color:"black",fontWeight:"bold"}}>
+              Remark <span style={{color:"red"}}>*</span>
+              </label>
+              <input
+                required
+               
+                type="text"
+                className="form-control"
+                id="formGroupExampleInput3"
+                onChange={(e) => setRemark(e.target.value)}
+                value={remark}
+              />
+            </div>
             
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
@@ -1541,57 +1525,6 @@ const Index = () => {
                   </div>
                 </div>
               )}
-
-              {openAssignModal && (
-                <div className="modal">
-                  <div className="modal-content">
-                    <h3 className="text-center">Assign the appraiser</h3>
-                    
-                    <select
-                  required
-                  className="form-select"
-                  data-live-search="true"
-                  data-width="100%"
-                  onChange={(e)=>setAssignAppraiserId(e.target.value)}
-                  // value={buildinRef}
-                  // onChange={(e) => setBuildinRef(e.target.value)}
-                  // onChange={(e) => setBuildinRef(e.target.value)}
-                  // disabled={isDisable}
-                  style={{
-                          paddingTop: "15px",
-                          paddingBottom: "15px",
-                          backgroundColor: "#E8F0FE"
-                        }}
-                >
-                  {assignedAppraiser?.map((item, index) => {
-                    return (
-                      <option key={item.id} value={item.id}>
-                        {item.firstName ? `${item.firstName} ${item.lastName}` : "Name"}
-                      </option>
-                    );
-                  })}
-                </select>
-                
-                    {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
-                    <div className="text-center" style={{}}>
-                    <button
-                    className="btn w-35 btn-white"
-                    onClick={closeAssignModal}
-                  >
-                    Cancel
-                  </button>
-                      <button
-                      className="btn btn-color w-10 mt-1"
-                      style={{ marginLeft: "12px" }}
-                        onClick={handleAssignPropertyToAppraiser}
-                      >
-                        Submit
-                      </button>        
-                     
-                    </div>
-                  </div>
-                </div>
-              )}
               <div className="row">
                 <Modal
                   modalOpen={modalOpen}
@@ -1599,6 +1532,7 @@ const Index = () => {
                   closeModal={closeModal}
                   lowRangeBid={lowRangeBid}
                   propertyId={propertyId}
+                  setIsQuoteModalOpen={setIsQuoteModalOpen}
                   openQuoteModal={openQuoteModal}
                   closeQuoteModal={closeQuoteModal}
                 />
@@ -1624,7 +1558,7 @@ const Index = () => {
                     <Pagination
                       setStart={setStart}
                       setEnd={setEnd}
-                      properties={wishlistedProperties}
+                      properties={allArchive}
                     />
                   </div>
                 </div> 

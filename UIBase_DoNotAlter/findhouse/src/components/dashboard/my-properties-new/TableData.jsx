@@ -14,6 +14,8 @@ const TableData = ({
   onHoldHandler,
   onCancelHandler,
   properties,
+  setPropertyId,
+  setPropValue,
   refresh,
   setRefresh,
   setModalIsPopupOpen,
@@ -215,6 +217,8 @@ const TableData = ({
         <Exemple
           userData={userData}
           open={open}
+          setPropValue={setPropValue}
+                          setPropertyId={setPropertyId}
           close={close}
           setProperties={setProperties}
           properties={data}

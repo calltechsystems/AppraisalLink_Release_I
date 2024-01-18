@@ -286,7 +286,7 @@ export default function Exemple({
             estimatedValue: property.estimatedValue
               ? `$ ${property.estimatedValue}`
               : "$ 0",
-            purpose: property.purpose ? property.purpose : "NA",
+            purpose: property.purpose ? property.purpose : "N.A.",
             status: isBidded.bidId ? (
               isBidded.status === 0 ? (
                 <span className="btn btn-primary">Quote Provided</span>
@@ -299,9 +299,9 @@ export default function Exemple({
               <span className="btn btn-warning">New</span>
             ),
             appraisal_status:isBidded.status === 1 ? (
-              <h5>{getOrderValue(isBidded.orderStatus)}</h5>
-            ):<span className="btn btn-warning  w-100">New</span>,
-            remark : <p>{isBidded.remark ? isBidded.remark : "NA"}</p>,
+              <span className="btn btn-warning  w-100">{getOrderValue(isBidded.orderStatus)}</span>
+            ):<span className="btn btn-warning  w-100">N.A.</span>,
+            remark : <p>{isBidded.remark ? isBidded.remark : "N.A."}</p>,
             property: (
               <div>
                 {isBidded.status === 1 ? (
@@ -324,7 +324,7 @@ export default function Exemple({
                   <h6 style={{ color: "red" }}> Rejected</h6>
                 ) : (
                   <h6>
-                    Broker Information will be available post the quote
+                    Property Information will be available post the quote
                     acceptance
                   </h6>
                 )}
@@ -360,7 +360,7 @@ export default function Exemple({
             ),
             type_of_appraisal: property.typeOfAppraisal
               ? property.typeOfAppraisal
-              : "NA",
+              : "N.A.",
             typeOfBuilding:
               property.typeOfBuilding > 0
                 ? "Apartment"
@@ -370,13 +370,13 @@ export default function Exemple({
             bidAmount: property.bidLowerRange,
             lender_information: property.lenderInformation
               ? property.lenderInformation
-              : "NA",
+              : "N.A.",
             urgency:
               property.urgency === 0
                 ? "Rush"
                 : property.urgency === 1
                 ? "Regular"
-                : "NA",
+                : "N.A.",
 
             action: (
               <div className="print-hidden-column">
@@ -384,35 +384,7 @@ export default function Exemple({
                   <h4 className="text-warning">Pending</h4>
                 ) : isBidded.status === 1 ? (
                   isBidded.orderStatus !== 7 ?
-                  <li
-                  className="list-inline-item"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Order Update"
-                >
-                  <div
-                    className="w-100"
-                    onClick={() =>
-                     openStatusUpdateHandler(isBidded.bidId)
-                    }
-                  >
-                    <button
-                      href="#"
-                      className="btn btn-color w-0 mt-1"
-                      style={{ marginLeft: "12px" }}
-                    >
-                    <button
-                          href="#"
-                          className="btn btn-color  mt-1"
-                          style={{ marginLeft: "12px" }}
-                        >
-                        <Link href="#">
-                        <span className="flaticon-edit text-light"></span>
-                      </Link>
-                        </button>
-                    </button>
-                  </div>
-                </li>
+                  <h4 className="text-success">Accepted</h4>
                   :<h4 className="text-success">Completed</h4>
                 ) : (
                   <h4 className="text-danger">Rejected</h4>

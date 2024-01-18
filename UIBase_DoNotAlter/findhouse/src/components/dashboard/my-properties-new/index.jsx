@@ -175,54 +175,69 @@ const Index = () => {
     // closeModal();
   };
 
-  const onHoldHandler = (propertyid, value) => {
+  const [propertyId, setPropertyId] = useState(-1);
+  const [propValue, setPropValue] = useState(0);
+
+  const onHoldHandler = () => {
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
       token: data.token,
-      propertyId: propertyid,
-      value: Boolean(value),
+      propertyId: propertyId,
+      value: Boolean(propValue),
     };
 
     const encryptedBody = encryptionData(payload);
 
-    toast.loading("Turning the property status to on hold");
+    toast.loading("Turning the property status !");
     axios
       .put("/api/setPropertyOnHold", encryptedBody)
       .then((res) => {
         toast.dismiss();
-        toast.success("Successfully added to on Hold Status!!");
+        toast.success("Successfully added status!");
         window.location.reload();
       })
       .catch((err) => {
         toast.error(err);
       });
     // closeModal();
+    setPropValue(0);
+    setIsHoldProperty(false);
+    setPropertyId(-1);
   };
 
-  const onCancelHandler = (propertyid, value) => {
+  const onCancelHandler = () => {
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
       token: data.token,
-      propertyId: propertyid,
-      value: Boolean(value),
+      propertyId: propertyId,
+      value: Boolean(propValue),
     };
 
     const encryptedBody = encryptionData(payload);
 
-    toast.loading("Turning the property status to on hold");
+    toast.loading("Turning the property status...");
     axios
       .put("/api/setPropertyOnCancel", encryptedBody)
       .then((res) => {
         toast.dismiss();
-        toast.success("Successfully added to on Hold Status!!");
+        toast.success("Successfully added status!");
         window.location.reload();
       })
       .catch((err) => {
         toast.error(err);
       });
     // closeModal();
+    setPropValue(0);
+    setPropertyId(-1);
+    setIsCancelProperty(false);
+  };
+
+  const closeCancelHoldHandler = () => {
+    setIsCancelProperty(false);
+    setIsHoldProperty(false);
+    setModalOpen(false);
   };
 
   useEffect(() => {
@@ -461,6 +476,8 @@ const Index = () => {
                           onCancelHandler={onCancelHandler}
                           setSearchInput={setSearchInput}
                           setProperties={setProperties}
+                          setPropValue={setPropValue}
+                          setPropertyId={setPropertyId}
                           properties={
                             searchInput === "" ? properties : filterProperty
                           }
@@ -1125,7 +1142,7 @@ const Index = () => {
                     </button>
                     <button
                       className="btn w-25 btn-color"
-                      onClick={handleDelete}
+                      onClick={onCancelHandler(property.propertyId, !isCancel)}
                     >
                       Confirm
                     </button>
@@ -1137,49 +1154,44 @@ const Index = () => {
             {modalOpen && (
               <div className="modal">
                 <div className="modal-content">
-                  {/* <span className="close" onClick={closeModal}>
-              &times;
-            </span> */}
-
-                  <h2>{isHoldProperty ? "Confirm Hold" : "Cancel"}</h2>
-                </div>
-
-                <hr />
-
-                <div
-                  style={{
-                    marginLeft: "10%",
-                    fontSize: "15px",
-                    marginTop: "2%",
-                  }}
-                >
-                  <p>We have already redirected you to the paypal page.</p>
+                  <h2>
+                    {isHoldProperty
+                      ? `${
+                          propValue
+                            ? "Confirm On Hold Form"
+                            : "Confirm On Hold Removal Form"
+                        }`
+                      : `${
+                          propValue
+                            ? "Confirm On Cancel Form"
+                            : "Confirm On Cancel Removal Form"
+                        }`}
+                  </h2>
+                  <hr />
                   <p>
-                    Don&apos;t <span style={{ color: "red" }}>reload</span> or{" "}
-                    <span style={{ color: "red" }}>refresh</span> the page
+                    On Click Submit the selected property will be on{" "}
+                    <span style={{ color: "red" }}>
+                      {" "}
+                      {isHoldProperty ? "Hold" : "Cancel"}
+                    </span>
                   </p>
-                </div>
 
-                <p>Please checkout for further</p>
-                <p>
-                  Your selected Package{" "}
-                  <span
-                    style={{
-                      fontWeight: "bold",
-                      fontSize: "23px",
-                      color: "#2e008b",
-                    }}
-                  ></span>{" "}
-                  with value{" "}
-                  <span
-                    style={{
-                      fontWeight: "bold",
-                      fontSize: "23px",
-                      color: "#2e008b",
-                    }}
-                  ></span>
-                </p>
-                <button onClick={isHoldProperty ? onHoldHandler : onCancelHandler}>Submit</button>
+                  <hr />
+                  <div style={{ display: "flex", flexDirection: "row" }}>
+                    <button
+                      className="btn w-25 btn-color m-1"
+                      onClick={closeCancelHoldHandler}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      className="btn w-25 btn-color"
+                      onClick={isHoldProperty ? onHoldHandler : onCancelHandler}
+                    >
+                      Confirm
+                    </button>
+                  </div>
+                </div>
               </div>
             )}
           </div>

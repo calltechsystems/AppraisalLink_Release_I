@@ -319,7 +319,7 @@ export default function Exemple({
             ? `$ ${property.estimatedValue}`
             : "$ 0",
           purpose: property.purpose ? property.purpose : "NA",
-          remark: property.remark ? <p>getOrderValue(property.remark)</p> : "NA",
+          remark: property.remark ?  <span className="btn btn-warning  w-100">{getOrderValue(property.remark)}</span> : "N.A.",
           status: isBidded.bidId ? (
             isBidded.status === 0 ? (
               <span
@@ -342,7 +342,7 @@ export default function Exemple({
           ),
           appraisal_status: isBidded.orderStatus ? (
             <h5>{getOrderValue(isBidded.orderStatus)}</h5>
-          ):<span className="btn btn-warning  w-100">New</span>,
+          ):<span className="btn btn-warning  w-100">N.A.</span>,
           broker: (
             <div>
               {isBidded.status === 1 ? (
@@ -408,14 +408,14 @@ export default function Exemple({
                 <h6 style={{ color: "red" }}> Declined</h6>
               ) : (
                 <p>
-                  Broker Information will be available post the quote acceptance
+                  Property Information will be available post the quote acceptance
                 </p>
               )}
             </div>
           ),
           type_of_appraisal: property.typeOfAppraisal
             ? property.typeOfAppraisal
-            : "NA",
+            : "N.A.",
           typeOfBuilding:
             property.typeOfBuilding > 0 ? "Apartment" : property.typeOfBuilding,
           quote_required_by: formatDate(property.addedDatetime),
@@ -423,13 +423,13 @@ export default function Exemple({
           bidAmount: property.bidLowerRange,
           lender_information: property.lenderInformation
             ? property.lenderInformation
-            : "NA",
+            : "N.A.",
           urgency:
             property.urgency === 0
               ? "Rush"
               : property.urgency === 1
               ? "Regular"
-              : "NA",
+              : "N.A.",
 
           action: (
             <div className="print-hidden-column">

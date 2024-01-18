@@ -16,6 +16,7 @@ import { AppraiserStatusOptions } from "../create-listing/data";
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
+  
   const [isStatusModal,setIsStatusModal] = useState(false);
   const [toggleId, setToggleId] = useState(-1);
   const [toggleWishlist, setToggleWishlist] = useState(0);
@@ -61,11 +62,14 @@ const Index = () => {
     if(remark === "" ){
       toast.error("Remark should be filled!!");
     }
+    else if(orderStatus <= currentBid.orderStatus){
+      toast.error("Select a proper quote status Please !!")
+    }
     else{
     const data = JSON.parse(localStorage.getItem("user"));
     const payload = {
       token:data.token,
-      bidid:currentBid,
+      bidid:currentBid.bidId,
       OrderStatus:Number(orderStatus),
       remark:remark
     };
@@ -84,7 +88,7 @@ const Index = () => {
   }
 
     setRemark("");
-    setCurrentBid(-1);
+    setCurrentBid({});
     setIsStatusModal(false);
   }
 
@@ -126,8 +130,12 @@ const Index = () => {
       }
     })
 
-    console.log(selectedValue);
+    if(currentBid.orderStatus >= selectedValue){
+      toast.error("Select the next status please !!");
+    }
+    else{
     setOrderStatus(selectedValue);
+    }
   }
 
   let [selectedBroker ,setSelectedBroker]=useState({});
@@ -438,13 +446,26 @@ const Index = () => {
     };
   };
 
-  const participateHandler = (val, id) => {
+  const [isUpdateBid,setIsUpdateBid] = useState(false);
+  const [bidAmount,setbidAmount] = useState(0);
+
+  const participateHandler = (val, id,isUpdate,value) => {
+    console.log(val,id,isUpdate,value);
+    if(isUpdate){
+    setLowRangeBid(val);
+    setIsUpdateBid(isUpdate);
+    setbidAmount(value);
+    setPropertyId(id);
+    setModalOpen(true);
+    }
+    else{
     setLowRangeBid(val);
     setPropertyId(id);
     setModalOpen(true);
+    }
   };
 
-  const [currentBid,setCurrentBid]=useState(-1);
+  const [currentBid,setCurrentBid]=useState({});
 
   const onWishlistHandler = (id) => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -829,7 +850,7 @@ const Index = () => {
                                     >
                                       {broker.lenderInformation
                                         ? broker.lenderInformation
-                                        : "NA"}
+                                        : "N.A."}
                                     </td>
                                   </tr>
                                   {/* <tr>
@@ -897,7 +918,7 @@ const Index = () => {
                                         ? "Rush"
                                         : broker.urgency === 1
                                         ? "Regular"
-                                        : "NA"}
+                                        : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1029,7 +1050,7 @@ const Index = () => {
                                       {" "}
                                       {broker.remark
                                         ? broker.remark
-                                        : "NA"}
+                                        : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1267,7 +1288,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {selectedBroker.brokerageName}
+                                      {selectedBroker.brokerageName ? selectedBroker.brokerageName : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1285,7 +1306,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {selectedBroker.companyName}
+                                      {selectedBroker.companyName  ? selectedBroker.companyName : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1303,7 +1324,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {selectedBroker.assistantFirstName}
+                                      {selectedBroker.assistantFirstName  ? selectedBroker.assistantFirstName : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1321,7 +1342,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {selectedBroker.assistantPhoneNumber}
+                                      {selectedBroker.assistantPhoneNumber  ? selectedBroker.assistantPhoneNumber : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1339,7 +1360,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {selectedBroker.assistantEmailAddress}
+                                      {selectedBroker.assistantEmailAddress  ? selectedBroker.assistantEmailAddress : "N.A."}
                                     </td>
                                   </tr>
                                 </tbody>
@@ -1428,8 +1449,9 @@ const Index = () => {
                         }}
                 >
                   {AppraiserStatusOptions.map((item, index) => {
+                    
                     return (
-                      <option key={item.id} value={item.value}>
+                      <option key={item.id} value={item.value} >
                         {item.type}
                       </option>
                     );
@@ -1493,6 +1515,9 @@ const Index = () => {
                   setIsModalOpen={setIsModalOpen}
                   closeModal={closeModal}
                   lowRangeBid={lowRangeBid}
+                  isUpdateBid={isUpdateBid}
+                  bidAmount={bidAmount}
+                  setModalOpen={setModalOpen}
                   propertyId={propertyId}
                   setIsQuoteModalOpen={setIsQuoteModalOpen}
                   openQuoteModal={openQuoteModal}

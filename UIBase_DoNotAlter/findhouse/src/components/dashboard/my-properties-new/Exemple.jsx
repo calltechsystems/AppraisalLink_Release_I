@@ -139,7 +139,8 @@ export default function Exemple({
   setCurrentProperty,
   setFilterQuery,
   setSearchInput,
-  deletePropertyHandler,
+  setPropertyId,
+  setPropValue,
   setModalOpen,
   setIsCancelProperty,
   setIsHoldProperty,
@@ -164,11 +165,15 @@ export default function Exemple({
     return title;
   };
 
-  const openModal = (propertyId, value) => {
+  const openModal = (propertyId, value,toggle) => {
     if (String(value) === String(1)) {
-      setIsHoldProperty(propertyId);
+      setIsHoldProperty(true);
+      setPropertyId(propertyId);
+      setPropValue(toggle);
     } else {
-      setIsCancelProperty(propertyId);
+      setIsCancelProperty(true);
+      setPropertyId(propertyId);
+      setPropValue(toggle);
     }
     setModalOpen(true);
   };
@@ -258,7 +263,7 @@ export default function Exemple({
                 <span className="btn bg-warning  w-100">New</span>
               ),
             address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
-            remark: property.remark ? property.remark : "NA",
+            remark: property.remark ? property.remark : "N.A.",
             // user: property.applicantEmailAddress,
             type_of_building: property.typeOfBuilding,
             amount: ` $ ${millify(property.estimatedValue)}`,
@@ -528,12 +533,12 @@ export default function Exemple({
                 {/* End li */}
 
                 {/* {isEditable && ( */}
-                <li title={!isHold ? "On Hold" : "set to remove Hold"}>
+                <li title={!isHold ? "On Hold" : "Remove Hold"}>
                   <span
                     className="btn btn-color-table "
                     style={{ border: "1px solid grey" }}
                     // onClick={() => onHoldHandler(property.propertyId, !isHold)}
-                    onClick={() => openModal(property.propertyId, 1)}
+                    onClick={() => openModal(property.propertyId, 1,isHold ? 0 : 1)}
                   >
                     <Link href="#" className="text-light">
                       <FaPause />
@@ -543,14 +548,15 @@ export default function Exemple({
                 {/* )} */}
 
                 {/* {isEditable && ( */}
-                <li title={!isCancel ? "Order Cancel" : "set to remove Cancel"}>
+                <li 
+                title={!isCancel ? "Order Cancel" : "Remove Cancel"}>
                   <span
                     className="btn btn-color-table"
                     style={{ border: "1px solid grey" }}
                     // onClick={() =>
                     //   onCancelHandler(property.propertyId, !isCancel)
                     // }
-                    onClick={() => openModal(property.propertyId, 2)}
+                    onClick={() => openModal(property.propertyId, 2,isCancel ? 0 : 1)}
                   >
                     <Link href="#">
                       <span className="flaticon-garbage text-light"></span>

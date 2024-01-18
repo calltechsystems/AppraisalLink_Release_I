@@ -6,6 +6,7 @@ import axios from "axios";
 import { encryptionData } from "../../../utils/dataEncryption";
 import { useRouter } from "next/router";
 import Loader from "./Loader";
+import { FaArchive } from "react-icons/fa";
 import { AppraiserStatusOptions } from "../create-listing/data";
 // import "./SmartTable.css";
 
@@ -23,7 +24,6 @@ const headCells = [
     label: "Property Address",
     width: 200,
   },
-
   
   {
     id: "status",
@@ -31,7 +31,6 @@ const headCells = [
     label: "Quote Status",
     width: 160,
   },
-  
   {
     id: "appraisal_status",
     numeric: false,
@@ -124,15 +123,16 @@ let count = 0;
 
 export default function Exemple({
   userData,
+  open,
+  close,
   start,
-  setAssignedAppraiser,
   end,
-  setOpenAssignModal,
   setUpdatedCode,
   properties,
   setCurrentBid,
   setIsStatusModal,
   setProperties,
+  setAllBrokers,
   onWishlistHandler,
   participateHandler,
   setFilterQuery,
@@ -140,8 +140,11 @@ export default function Exemple({
   openModalBroker,
   setErrorMessage,
   setModalIsOpenError,
+  onArchivePropertyHandler,
   setRefresh,
-  setAllBrokers,
+  unArchivePropertyHandler,
+  setAllArchive,
+   allArchive,
   setStartLoading,
   refresh,
 }) {
@@ -152,6 +155,29 @@ export default function Exemple({
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
   let tempData = [];
+
+
+  const getOrderValue = (val)=>{
+    let title = "";
+    AppraiserStatusOptions.map((status)=>{
+      if(String(status.id) === String(val)){
+        title = status.type;
+      }
+    })
+    return title;
+  }
+
+  const foundArchiveHandler = (propertyId)=>{
+    let isArchive = false;
+    allArchive.map((prop,index)=>{
+      console.log("ischeck",propertyId,prop.property);
+      if(String(prop.property.propertyId) === String(propertyId)){
+        isArchive = true;
+      
+      }
+    });
+    return isArchive;
+  }
 
   const filterBidsWithin24Hours = (property) => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -174,18 +200,6 @@ export default function Exemple({
   };
 
   const router = useRouter();
-
-  const getOrderValue = (val)=>{
-    console.log("vlaue",val);
-    let title = "Applicant Contacted By Appraiser";
-    AppraiserStatusOptions.map((status)=>{
-      if(String(status.id) === String(val)){
-        title = status.type;
-      }
-
-    })
-    return title;
-  }
 
   const openStatusUpdateHandler = (bidId) => {
     setCurrentBid(bidId);
@@ -259,9 +273,6 @@ export default function Exemple({
     return data.sort((a, b) => b.orderId - a.orderId);
   };
 
-  const [isBroker,setIsBroker]=useState(-1);
-
-  
   
   const checkData = (properties && !updatedData) ? true : false;
   useEffect(()=>{
@@ -270,18 +281,35 @@ export default function Exemple({
 
   useEffect(() => {
     const getData = () => {
-      properties.map((property, index) => {
+      allArchive.map((prop, index) => {
+        const property = prop.property;
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
-       
+        
+        const isArchive = foundArchiveHandler(property.propertyId);
+
+        const isWait = property.isHold || property.isCancel;
         const updatedRow = {
           orderId: property.orderId ,
           address: `${property.city}-${property.province},${property.zipCode}`,
           estimatedValue: property.estimatedValue
             ? `$ ${property.estimatedValue}`
             : "$ 0",
-          purpose: property.purpose ? property.purpose : "NA",
-          status: isBidded.bidId ? (
+          purpose: property.purpose ? property.purpose : "N.A.",
+          appraisal_status: isBidded.status === 1 && isBidded.orderStatus ? (
+            <span className="btn btn-warning  w-100">{getOrderValue(isBidded.orderStatus)}</span>
+          ):<span className="btn btn-warning  w-100">N.A.</span>,
+          remark : (isBidded && isBidded.remark) ? isBidded.remark : "N.A.",
+          status: 
+          isWait ? 
+          <span
+          className="btn btn-primary  w-100"
+        >
+          {property.isHold ? "On Hold" : "On Cancel"}
+        </span>
+            : 
+          isBidded.bidId ? (
+            
             isBidded.status === 0 ? (
               <span
                 className="btn btn-primary  w-100"
@@ -296,15 +324,11 @@ export default function Exemple({
                 Accepted
               </span>
             ) : (
-              <span className="btn btn-danger  w-100">Declined</span>
+              <span className="btn btn-danger  w-100">Rejected</span>
             )
           ) : (
             <span className="btn btn-warning  w-100">New</span>
           ),
-          appraisal_status: isBidded.status === 1 ? (
-            <span className="btn btn-warning  w-100">{getOrderValue(isBidded.orderStatus)}</span>
-          ):<span className="btn btn-warning  w-100">New</span>,
-          remark : <p>{isBidded.remark ? isBidded.remark : "NA"}</p>,
           broker: (
             <div>
               {isBidded.status === 1 ? (
@@ -354,14 +378,14 @@ export default function Exemple({
                 <h6 style={{ color: "red" }}> Declined</h6>
               ) : (
                 <p>
-                  Broker Information will be available post the quote acceptance
+                  Property Information will be available post the quote acceptance
                 </p>
               )}
             </div>
           ),
           type_of_appraisal: property.typeOfAppraisal
             ? property.typeOfAppraisal
-            : "NA",
+            : "N.A.",
           typeOfBuilding:
             property.typeOfBuilding > 0 ? "Apartment" : property.typeOfBuilding,
           quote_required_by: formatDate(property.addedDatetime),
@@ -369,107 +393,17 @@ export default function Exemple({
           bidAmount: property.bidLowerRange,
           lender_information: property.lenderInformation
             ? property.lenderInformation
-            : "NA",
+            : "N.A.",
           urgency:
             property.urgency === 0
               ? "Rush"
               : property.urgency === 1
               ? "Regular"
-              : "NA",
+              : "N.A.",
 
           action: (
             <div className="print-hidden-column">
-              {isBidded && isBidded.status !== 1 ? (
-                <ul className="">
-                  {isWishlist.id ? (
-                    <button
-                      className="btn "
-                      style={{ border: "1px solid grey" }}
-                      onClick={() => removeWishlistHandler(isWishlist.id)}
-                    >
-                      <img
-                        width={26}
-                        height={26}
-                        src="https://png.pngtree.com/png-clipart/20200226/original/pngtree-3d-red-heart-cute-valentine-romantic-glossy-shine-heart-shape-png-image_5315044.jpg"
-                      />
-                    </button>
-                  ) : (
-                    <li
-                      className="list-inline-item"
-                      title="Wishlist Property"
-                      style={{
-                        width: "30px",
-                        border: "none",
-                        textAlign: "center",
-                        borderRadius: "5px",
-                      }}
-                    >
-                      {
-                        <button
-                          className="btn"
-                          style={{ border: "1px solid grey" }}
-                          onClick={() => onWishlistHandler(property.propertyId)}
-                        >
-                          <span className="flaticon-heart text-color"></span>
-                        </button>
-                      }
-                    </li>
-                  )}
-
-                  {!isBidded.$id && (
-                    <ul>
-                    <li
-                      className="list-inline-item"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Provide Quote"
-                    >
-                      <div
-                        className="w-100"
-                        onClick={() =>
-                          participateHandler(
-                            property.bidLowerRange,
-                            property.propertyId
-                          )
-                        }
-                      >
-                        <button
-                          href="#"
-                          className = "btn btn-color w-0 mt-1"
-                          style={{ marginLeft: "12px" }}
-                        >
-                        <Link href="#">
-                        <span className="flaticon-building text-light"></span>
-                      </Link>
-                        </button>
-                      </div>
-                    </li>
-                    <li
-                      className="list-inline-item"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Assign Appraisers"
-                    >
-                      <div
-                        className="w-100"
-                        onClick={() =>
-                          setAssignedAppraiser(property.propertyId)
-                        }
-                      >
-                        <button
-                          href="#"
-                          className="btn btn-color w-0 mt-1"
-                          style={{ marginLeft: "12px" }}
-                        >
-                        <Link href="#">
-                        <span className="flaticon-box text-light"></span>
-                      </Link>
-                        </button>
-                      </div>
-                    </li>
-                    </ul>
-                  )}
-                    
+              
                  
                   <li
                   className="list-inline-item"
@@ -480,62 +414,27 @@ export default function Exemple({
                   <div
                     className="w-100"
                     onClick={() =>
-                      onDeletePropertyHandler(property.propertyId)
+                      unArchivePropertyHandler(property.propertyId)
                     }
                   >
                     <button
                       href="#"
-                      className="btn btn-color w-0 mt-1"
+                      className="btn btn-color w-100 mt-1"
                       style={{ marginLeft: "12px" }}
                     >
-                    <button
-                          href="#"
-                          className="btn btn-color  mt-1"
-                          style={{ marginLeft: "12px" }}
-                        >
-                        <Link href="#">
-                        <span className="flaticon-home text-light"></span>
-                      </Link>
-                        </button>
+                    <Link href="#">
+                    <span className="text-light"> <FaArchive/></span>
+                  </Link>
                     </button>
                   </div>
                 </li>
-                </ul>
-              ) : (
-                <li
-                className="list-inline-item"
-                data-toggle="tooltip"
-                data-placement="top"
-                title="Order Update"
-              >
-                <div
-                  className="w-100"
-                  onClick={() =>
-                   openStatusUpdateHandler(isBidded.bidId)
-                  }
-                >
-                  <button
-                    href="#"
-                    className="btn btn-color w-0 mt-1"
-                    style={{ marginLeft: "12px" }}
-                  >
-                  <button
-                        href="#"
-                        className="btn btn-color  mt-1"
-                        style={{ marginLeft: "12px" }}
-                      >
-                      <Link href="#">
-                      <span className="flaticon-edit text-light"></span>
-                    </Link>
-                      </button>
-                  </button>
-                </div>
-              </li>
-              )}
+               
+              
             </div>
           ),
         };
         tempData.push(updatedRow);
+      
       });
       setUpdatedData(tempData);
     };
@@ -553,7 +452,7 @@ export default function Exemple({
     setStartLoading(true);
   };
   useEffect(() => {
-    // console.log("inside");
+    console.log("inside");
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -582,8 +481,6 @@ export default function Exemple({
             return false
           }
         })
-        
-      // console.log("props",temp)
       })
       .catch((err) => {
         setErrorMessage(err?.response?.data?.error);
@@ -623,7 +520,7 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        // console.log(res);
+        console.log(res);
         tempBids = res.data.data.result.$values;
         const updatedBids = tempBids.filter((prop,index)=>{
           if(String(prop.appraiserUserId) === String(data.userId)){
@@ -633,7 +530,6 @@ export default function Exemple({
             return false;
           }
         })
-        console.log("bids",updatedBids);
         setBids(updatedBids);
       })
       .catch((err) => {
@@ -655,9 +551,23 @@ export default function Exemple({
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
-     
 
-    // console.log("end", bids, properties, wishlist);
+      axios
+      .get("/api/getArchiveAppraiserProperty", {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+      })
+      .then((res) => {
+        setAllArchive(res.data.data.$values);
+       
+      })
+      .catch((err) => {
+        setErrorMessage(err?.response?.data?.error);
+        setModalIsOpenError(true);
+      });
+
+    console.log("end", bids, properties, wishlist);
     setRefresh(false);
   }, [refresh]);
   // console.log(sortObjectsByOrderIdDescending(updatedData));

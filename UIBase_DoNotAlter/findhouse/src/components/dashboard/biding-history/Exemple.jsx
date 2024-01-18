@@ -42,12 +42,12 @@ const headCells = [
     label: "Remark",
     width: 160,
   },
-  // {
-  //   id: "appraisal_status",
-  //   numeric: false,
-  //   label: "Appraisal Status",
-  //   width: 160,
-  // },
+  {
+    id: "appraisal_status",
+    numeric: false,
+    label: "Appraisal Status",
+    width: 160,
+  },
   {
     id: "urgency",
     numeric: false,
@@ -130,6 +130,7 @@ export default function Exemple({
   userData,
   open,
   close,
+  setRequiredProp,
   start,
   end,
   setUpdatedCode,
@@ -137,7 +138,7 @@ export default function Exemple({
   setProperties,
   setDetails,
   deletePropertyHandler,
-  onWishlistHandler,
+  setAllBrokers,
   participateHandler,
   openModalBroker,
   setSearchInput,
@@ -291,11 +292,11 @@ export default function Exemple({
             estimatedValue: property.estimatedValue
               ? `$ ${property.estimatedValue}`
               : "$ 0",
-            purpose: property.purpose ? property.purpose : "NA",
+            purpose: property.purpose ? property.purpose : "N.A.",
             appraisal_status: isBidded.status === 1 && isBidded.orderStatus ? (
               <h5>{getOrderValue(isBidded.orderStatus)}</h5>
             ):<span className="btn btn-warning  w-100">New</span>,
-            remark : (isBidded && isBidded.remark) ? isBidded.remark : "NA",
+            remark : (isBidded && isBidded.remark) ? <span className="btn btn-warning  w-100">{isBidded.remark}</span> : "N.A.",
             
             status:isWait ? 
             <span
@@ -347,7 +348,7 @@ export default function Exemple({
                   <h6 style={{ color: "red" }}> Rejected</h6>
                 ) : (
                   <h6>
-                    Broker Information will be available post the quote
+                    Property Information will be available post the quote
                     acceptance
                   </h6>
                 )}
@@ -383,7 +384,7 @@ export default function Exemple({
             ),
             type_of_appraisal: property.typeOfAppraisal
               ? property.typeOfAppraisal
-              : "NA",
+              : "N.A.",
             typeOfBuilding:
               property.typeOfBuilding > 0
                 ? "Apartment"
@@ -391,15 +392,15 @@ export default function Exemple({
             quote_required_by: formatDate(property.addedDatetime),
             date: formatDate(property.addedDatetime),
             bidAmount: property.bidLowerRange,
-            lender_information: property.lenderInformation
+            lender_information: property.lenderInformation 
               ? property.lenderInformation
-              : "NA",
+              : "N.A.",
             urgency:
               property.urgency === 0
                 ? "Rush"
                 : property.urgency === 1
                 ? "Regular"
-                : "NA",
+                : "N.A.",
 
             action: (
               <div className="print-hidden-column">
@@ -505,8 +506,23 @@ export default function Exemple({
           }
         })
 
-        console.log(tempBids);
+        setRequiredProp(tempBids);
         setBids(tempBids);
+      })
+      .catch((err) => {
+        setErrorMessage(err?.response?.data?.error);
+        setModalIsOpenError(true);
+      });
+
+      axios
+      .get("/api/getAllBrokers", {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+      })
+      .then((res) => {
+        setAllBrokers(res.data.data.$values);
+       
       })
       .catch((err) => {
         setErrorMessage(err?.response?.data?.error);

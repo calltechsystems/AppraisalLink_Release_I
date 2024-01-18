@@ -70,7 +70,8 @@ const Index = () => {
     const payload = {
       token:userData.token,
       bidid:currentBid,
-      OrderStatus:Number(orderStatus)
+      OrderStatus:Number(orderStatus),
+      remark:""
     };
 
 
@@ -860,7 +861,7 @@ const Index = () => {
                                     >
                                       {broker.lenderInformation
                                         ? broker.lenderInformation
-                                        : "NA"}
+                                        : "N.A."}
                                     </td>
                                   </tr>
                                   {/* <tr>
@@ -928,7 +929,7 @@ const Index = () => {
                                         ? "Rush"
                                         : broker.urgency === 1
                                         ? "Regular"
-                                        : "NA"}
+                                        : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -948,7 +949,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {broker.quoteRequiredDate}
+                                      {broker.quoteRequiredDate ? broker.quoteRequiredDate : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1060,7 +1061,7 @@ const Index = () => {
                                       {" "}
                                       {broker.remark
                                         ? broker.remark
-                                        : "NA"}
+                                        : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1140,7 +1141,7 @@ const Index = () => {
                                 onClick={() => PropertyInfoHandler(broker.orderId)}
                                 title="Download Pdf"
                               >
-                               Download Form
+                                Download Form
                               </div>
                                   <button
                                     className="btn btn-color w-25 text-center"
@@ -1298,7 +1299,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {selectedBroker.brokerageName}
+                                      {selectedBroker.brokerageName ? selectedBroker.brokerageName : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1316,7 +1317,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {selectedBroker.companyName}
+                                      {selectedBroker.companyName  ? selectedBroker.companyName : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1334,7 +1335,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {selectedBroker.assistantFirstName}
+                                      {selectedBroker.assistantFirstName  ? selectedBroker.assistantFirstName : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1352,7 +1353,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {selectedBroker.assistantPhoneNumber}
+                                      {selectedBroker.assistantPhoneNumber  ? selectedBroker.assistantPhoneNumber : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1370,7 +1371,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {selectedBroker.assistantEmailAddress}
+                                      {selectedBroker.assistantEmailAddress  ? selectedBroker.assistantEmailAddress : "N.A."}
                                     </td>
                                   </tr>
                                 </tbody>
@@ -1543,7 +1544,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {appraiser.brokerageName ? appraiser.brokerageName : "NA"}
+                                      {appraiser.brokerageName ? appraiser.brokerageName : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1561,7 +1562,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {appraiser.companyName ? appraiser.companyName : "NA"}
+                                      {appraiser.companyName ? appraiser.companyName : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1579,7 +1580,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {appraiser.assistantFirstName ? appraiser.assistantFirstName : "NA"}
+                                      {appraiser.assistantFirstName ? appraiser.assistantFirstName : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1597,7 +1598,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {appraiser.assistantPhoneNumber ? appraiser.assistantPhoneNumber : "NA"}
+                                      {appraiser.assistantPhoneNumber ? appraiser.assistantPhoneNumber : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>

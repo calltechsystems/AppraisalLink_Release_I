@@ -112,6 +112,7 @@ export default function Exemple({
   open,
   close,
   start,
+  setAppraiser,
   end,
   setUpdatedCode,
   setCloseRegisterModal,
@@ -126,6 +127,7 @@ export default function Exemple({
   openModalBroker,
   setErrorMessage,
   setModalIsOpenError,
+  setOpenEditModal,
   setRefresh,
   setStartLoading,
   refresh,
@@ -196,6 +198,11 @@ export default function Exemple({
       });
   };
 
+  const openModalEdit = (appraiser)=>{
+    setAppraiser(appraiser);
+    setOpenEditModal(true);
+  }
+
   const onDeletePropertyHandler = () => {};
 
   const formatDate = (dateString) => {
@@ -251,7 +258,7 @@ export default function Exemple({
           date: dateNow,
           action: (
             <div className="print-hidden-column">
-              <button className="btn btn-color m-1">
+              <button className="btn btn-color m-1" onClick={()=>openModalEdit(data)}>
                 <i className="flaticon-edit"></i>
               </button>
               

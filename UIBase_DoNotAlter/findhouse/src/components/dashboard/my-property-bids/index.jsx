@@ -542,9 +542,14 @@ const Index = ({ propertyId }) => {
                   <p className="text-center fs-6">
                     Are you sure you want to accept the quote with value?
                   </p>
+
                   <h4 className="text-center">
-                    Quote Amount : ${property.bidAmount}
+                    Quote Amount : $ {property.bidAmount}
                   </h4>
+                  <p className="text-center mt-3 mb-0">
+                    ( Note <span className="text-danger">*</span> : All Other
+                    Quotes from other appriasers will be Rejected.)
+                  </p>
                   <hr />
 
                   {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
@@ -554,12 +559,15 @@ const Index = ({ propertyId }) => {
                         <button
                           className="btn btn-color"
                           style={{ marginRight: "5px" }}
+                          onClick={closeModal}
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          className="btn btn-color"
                           onClick={() => acceptRequestHandler(property.bidId)}
                         >
                           Submit
-                        </button>
-                        <button className="btn btn-color" onClick={closeModal}>
-                          Cancel
                         </button>
                       </div>
                     </div>

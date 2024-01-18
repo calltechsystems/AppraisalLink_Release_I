@@ -1,5 +1,5 @@
 import Header from "../../common/header/dashboard/Header_02";
-import SidebarMenu from "../../common/header/dashboard/SidebarMenu_002";
+import SidebarMenu from "../../common/header/dashboard/SidebarMenu_01";
 import MobileMenu from "../../common/header/MobileMenu_01";
 import TableData from "./TableData";
 import Pagination from "./Pagination";
@@ -21,6 +21,7 @@ const Index = () => {
   const [toggleId, setToggleId] = useState(-1);
 
   
+  const [requiredProp,setRequiredProp]=useState([]);
   const [toggleWishlist, setToggleWishlist] = useState(0);
   const [searchResult, setSearchResult] = useState([]);
   const [property, setProperty] = useState("");
@@ -43,8 +44,6 @@ const Index = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const [isLoading, setIsLoading] = useState(true);
-
-  const [requiredProp,setRequiredProp]=useState([]);
 
   const [refresh, setRefresh] = useState(false);
 
@@ -338,8 +337,8 @@ const Index = () => {
     const data = JSON.parse(localStorage.getItem("user"));
     if (!data) {
       router.push("/login");
-    } else if (!data?.appraiserCompany_Datails.firstName) {
-      router.push("/appraiser-company-profile");
+    } else if (!data?.appraiser_Details.firstName) {
+      router.push("/appraiser-profile");
     }
     if (!data) {
       router.push("/login");
@@ -579,7 +578,7 @@ const Index = () => {
 
                 <div className="col-lg-4 col-xl-4 mb10">
                   <div className="style2 mb30-991">
-                    <h3 className="breadcrumb_title">Completed Property</h3>
+                    <h3 className="breadcrumb_title">Accepted Property</h3>
                     {/* <p>We are glad to see you again!</p>                                                             */}
                   </div>
                 </div>
@@ -634,7 +633,6 @@ const Index = () => {
                             searchInput === "" ? properties : filterProperty
                           }
                           setCurrentBid={setCurrentBid}
-                          setRequiredProp={setRequiredProp}
                           setUpdatedCode={setUpdatedCode}
                           onWishlistHandler={onWishlistHandler}
                           participateHandler={participateHandler}
@@ -648,6 +646,7 @@ const Index = () => {
                           setWishlistedProperties={setWishlistedProperties}
                           setStartLoading={setStartLoading}
                           openModalBroker={openModalBroker}
+                          setRequiredProp={setRequiredProp}
                         />
 
                         {modalIsOpenError && (

@@ -22,6 +22,8 @@ const Index = () => {
   const [searchInput, setSearchInput] = useState("");
   const [toggleId, setToggleId] = useState(-1);
 
+  const [openEditModal,setOpenEditModal]=useState(false);
+
   const [closeRegisterModal, setCloseRegisterModal] = useState(false);
   const [toggleWishlist, setToggleWishlist] = useState(0);
   const [searchResult, setSearchResult] = useState([]);
@@ -35,7 +37,19 @@ const Index = () => {
   const [lowRangeBid, setLowRangeBid] = useState("");
   const [propertyId, setPropertyId] = useState(null);
   const [updatedCode, setUpdatedCode] = useState(false);
+  
+  const [appraiser,setAppraiser] = useState({});
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
+
+  const [firstName,setFirstName]=useState(appraiser?.firstName ? appraiser?.firstName : "" );
+  const [lastName,setLastName]=useState(appraiser?.lastName ? appraiser?.lastName : "");
+  const [companyName,setCompanyName]=useState(appraiser?.companyName ? appraiser?.companyName : "");
+  const [phoneNumber,setPhoneNumber]=useState(appraiser?.phoneNumber ? appraiser?.phoneNumber : "");
+
+  const [streetName,setStreetName]=useState(appraiser?.streetName ? appraiser?.streetName : "");
+  const [streetNumber,setStreetNumber]=useState(appraiser?.streetNumber ? appraiser?.streetNumber : "");
+  const [postalCode,setPostalCode]=useState(appraiser?.postalCode ? appraiser?.postalCode : "");
+  const [city,setCity]=useState(appraiser?.city ? appraiser?.city : "");
 
   const [start, setStart] = useState(0);
 
@@ -64,6 +78,7 @@ const Index = () => {
   const [openBrokerModal, setOpenBrokerModal] = useState(false);
   const [broker, setBroker] = useState({});
 
+
   const closeBrokerModal = () => {
     setOpenBrokerModal(false);
   };
@@ -88,6 +103,47 @@ const Index = () => {
 
   console.log(closeRegisterModal);
 
+  const submitEditHandler = ()=>{
+
+    const userData = JSON.parse(localStorage.getItem("user"));
+    const payload = {
+      firstName: firstName,
+      middleName : "",
+      lastName: lastName,
+      companyName: companyName,
+      city: city,
+      province: "",
+      postalCode: (postalCode),
+      area: "" ,
+      apartmentNo : "",
+      streetName:streetName,
+      streetNumber:(streetNumber),
+      phoneNumber: (phoneNumber),
+      commissionRate : Number(0),
+      maxNumberOfAssignedOrders:Number(0),
+      designation : "",
+      profileImage: "",
+      token:userData.token,
+      id:appraiser.userId
+    };
+
+    toast.loading("Updating the profile!!");
+
+    const encryptedBody = encryptionData(payload);
+
+    axios.put("/api/updateAppraiserProfile",encryptedBody)
+    .then((res)=>{
+      toast.dismiss();
+      toast.success("Successfully updated!!");
+      window.location.reload();
+    })
+    .catch((err)=>{
+      toast.dismiss();
+      toast.error("Try Again!");
+      setAppraiser({});
+      setOpenEditModal(false);
+    })
+  }
   useEffect(() => {
     const activityHandler = () => {
       setLastActivityTimestamp(Date.now());
@@ -407,6 +463,7 @@ const Index = () => {
                           properties={
                             searchInput === "" ? properties : filterProperty
                           }
+                          setAppraiser={setAppraiser}
                           setUpdatedCode={setUpdatedCode}
                           onWishlistHandler={onWishlistHandler}
                           participateHandler={participateHandler}
@@ -419,6 +476,7 @@ const Index = () => {
                           setIsStatusModal={setIsStatusModal}
                           setSearchInput={setSearchInput}
                           setFilterQuery={setFilterQuery}
+                          setOpenEditModal={setOpenEditModal}
                           setCloseRegisterModal={setCloseRegisterModal}
                           start={start}
                           end={end}
@@ -1025,25 +1083,140 @@ const Index = () => {
                 </div>
                 {/* End .col */}
               </div>
-              {isQuoteModalOpen && (
+              {openEditModal && (
                 <div className="modal">
                   <div className="modal-content">
-                    <h3 className="text-center">Quote Confirmation</h3>
+                    <h3 className="text-center">Edit Profile Confirmation</h3>
                     <h5 className="text-center">
-                      Are you sure you want to quote this property over this
-                      amount :{valueRef?.current?.value}?
+                     Please fill all the details to update the profile!
                     </h5>
+
+                    <div style={{display:"flex",flexDirection:"column"}}>
+                      <div style={{display:"flex",flexDirection:"row"}}>
+                      <label style={{color:"black",fontWeight:"bold"}}>
+                      First Name <span style={{color:"red"}}>*</span>
+                      </label>
+                      <input
+                        required
+                       
+                        type="text"
+                        className="form-control"
+                        id="formGroupExampleInput3"
+                        onChange={(e) => setFirstName(e.target.value)}
+                        value={firstName}
+                      />
+                      </div>
+                      <div style={{display:"flex",flexDirection:"row"}}>
+                      <label style={{color:"black",fontWeight:"bold"}}>
+                      Last Name <span style={{color:"red"}}>*</span>
+                      </label>
+                      <input
+                        required
+                       
+                        type="text"
+                        className="form-control"
+                        id="formGroupExampleInput3"
+                        onChange={(e) => setLastName(e.target.value)}
+                        value={lastName}
+                      />
+                      </div>
+                      <div style={{display:"flex",flexDirection:"row"}}>
+                      <label style={{color:"black",fontWeight:"bold"}}>
+                      Phone Number <span style={{color:"red"}}>*</span>
+                      </label>
+                      <input
+                        required
+                       
+                        type="number"
+                        className="form-control"
+                        id="formGroupExampleInput3"
+                        onChange={(e) => setPhoneNumber(e.target.value)}
+                        value={phoneNumber}
+                      />
+                      </div>
+                      <div style={{display:"flex",flexDirection:"row"}}>
+                      <label style={{color:"black",fontWeight:"bold"}}>
+                      Street Name <span style={{color:"red"}}>*</span>
+                      </label>
+                      <input
+                        required
+                       
+                        type="text"
+                        className="form-control"
+                        id="formGroupExampleInput3"
+                        onChange={(e) => setStreetName(e.target.value)}
+                        value={streetName}
+                      />
+                      </div>
+                      <div style={{display:"flex",flexDirection:"row"}}>
+                      <label style={{color:"black",fontWeight:"bold"}}>
+                      Street Number <span style={{color:"red"}}>*</span>
+                      </label>
+                      <input
+                        required
+                       
+                        type="number"
+                        className="form-control"
+                        id="formGroupExampleInput3"
+                        onChange={(e) => setStreetNumber(e.target.value)}
+                        value={streetNumber}
+                      />
+                      </div>
+                      <div style={{display:"flex",flexDirection:"row"}}>
+                      <label style={{color:"black",fontWeight:"bold"}}>
+                      City <span style={{color:"red"}}>*</span>
+                      </label>
+                      <input
+                        required
+                       
+                        type="text"
+                        className="form-control"
+                        id="formGroupExampleInput3"
+                        onChange={(e) => setCity(e.target.value)}
+                        value={city}
+                      />
+                      </div>
+                      <div style={{display:"flex",flexDirection:"row"}}>
+                      <label style={{color:"black",fontWeight:"bold"}}>
+                      Postal Code <span style={{color:"red"}}>*</span>
+                      </label>
+                      <input
+                        required
+                       
+                        type="number"
+                        className="form-control"
+                        id="formGroupExampleInput3"
+                        onChange={(e) => setPostalCode(e.target.value)}
+                        value={postalCode}
+                      />
+                      </div>
+                      <div style={{display:"flex",flexDirection:"row"}}>
+                      <label style={{color:"black",fontWeight:"bold"}}>
+                      Company Name <span style={{color:"red"}}>*</span>
+                      </label>
+                      <input
+                        required
+                       
+                        type="text"
+                        className="form-control"
+                        id="formGroupExampleInput3"
+                        onChange={(e) => setCompanyName(e.target.value)}
+                        value={companyName}
+                      />
+                      </div>
+                    </div>
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
                       <button
                         className="btn w-35 btn-thm3 m-2"
-                        onClick={handleSubmit}
+                        onClick={submitEditHandler}
+                        style={{backgroundColor:"green"}}
                       >
                         Submit
                       </button>
                       <button
                         className="btn w-35 btn-white"
-                        onClick={closeQuoteModal}
+                        onClick={()=>setOpenEditModal(false)}
                       >
                         Cancel
                       </button>

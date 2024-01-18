@@ -6,7 +6,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import Exemple from "./Exemple"
 import { useDispatch, useSelector } from "react-redux";
-const TableData = ({userData , open ,close ,setBids,bids,setAssignedAppraiser, onArchivePropertyHandler,setCurrentBid,setShowBroker,setOpenAssignModal,setAllBrokers,setShowMore,setFilterQuery,setSearchInput,setIsStatusModal,start,end, onWishlistHandler ,setStartLoading,setUpdatedCode, openModalBroker,participateHandler , properties, setProperties,setErrorMessage,setModalIsOpenError,setRefresh,refresh}) => {
+const TableData = ({userData , setRequiredProp,open ,close ,setAssignedAppraiser, onArchivePropertyHandler,setCurrentBid,setShowBroker,setOpenAssignModal,setAllBrokers,setShowMore,setFilterQuery,setSearchInput,setIsStatusModal,start,end, onWishlistHandler ,setStartLoading,setUpdatedCode, openModalBroker,participateHandler , properties, setProperties,setErrorMessage,setModalIsOpenError,setRefresh,refresh}) => {
 
 
   let userInfo = {};
@@ -292,6 +292,7 @@ const TableData = ({userData , open ,close ,setBids,bids,setAssignedAppraiser, o
       setShowMore={setShowMore}
       setIsStatusModal={setIsStatusModal}
       start={start}
+      setRequiredProp={setRequiredProp}
       onArchivePropertyHandler={ onArchivePropertyHandler}
       setAssignedAppraiser={setAssignedAppraiser}
       openModalBroker={openModalBroker}
@@ -299,8 +300,6 @@ const TableData = ({userData , open ,close ,setBids,bids,setAssignedAppraiser, o
       setCurrentBid={setCurrentBid}
       setOpenAssignModal={setOpenAssignModal}
       end={end}
-      setBids={setBids}
-      bids={bids}
       />)}
     </>
   );
