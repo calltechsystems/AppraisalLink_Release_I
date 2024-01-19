@@ -1154,30 +1154,32 @@ const Index = () => {
             {modalOpen && (
               <div className="modal">
                 <div className="modal-content">
-                  <h2>
+                  <h3 className="text-center">
                     {isHoldProperty
                       ? `${
                           propValue
-                            ? "Confirm On Hold Form"
-                            : "Confirm On Hold Removal Form"
+                            ? "Confirmation On Hold Property"
+                            : "Confirmation Remove On Hold Property"
                         }`
                       : `${
                           propValue
-                            ? "Confirm On Cancel Form"
-                            : "Confirm On Cancel Removal Form"
+                            ? "Confirmation On Cancel Property"
+                            : "Confirmation Remove On Cancel Property"
                         }`}
-                  </h2>
+                  </h3>
                   <hr />
-                  <p>
-                    On Click Submit the selected property will be on{" "}
+                  <p className="fs-6 text-center">
+                    Are you sure to confirm to{" "}
                     <span style={{ color: "red" }}>
                       {" "}
                       {isHoldProperty ? "Hold" : "Cancel"}
+                      {" "}
                     </span>
+                    the Property{" "}
                   </p>
 
                   <hr />
-                  <div style={{ display: "flex", flexDirection: "row" }}>
+                  <div className="col-lg-12 text-center">
                     <button
                       className="btn w-25 btn-color m-1"
                       onClick={closeCancelHoldHandler}

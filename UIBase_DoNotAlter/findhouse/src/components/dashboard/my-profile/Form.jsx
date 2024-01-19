@@ -268,7 +268,9 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                   </div>
                   <div className="row">
                     <h5 className="col-lg-5 mt-1 text-start">
-                      <span className="fs-18 text-color">Mortgage Broker Licence No.</span>{" "}
+                      <span className="fs-18 text-color">
+                        Mortgage Broker Licence No.
+                      </span>{" "}
                     </h5>
                     <span className="col-lg-1">:</span>
                     <span className="col-lg-6 text-start text-dark fw-bold">
@@ -330,14 +332,6 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                   </div>
                 </div>
                 <hr />
-                {/* <div className="text-center" style={{}}>
-                  <button
-                    className="btn btn-color w-35"
-                    onClick={() => closeAppraiserHandler()}
-                  >
-                    Ok
-                  </button>
-                </div> */}
               </div>
             </div>
             {/* End .col */}

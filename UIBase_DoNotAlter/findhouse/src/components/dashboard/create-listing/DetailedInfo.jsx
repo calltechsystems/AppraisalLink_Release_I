@@ -716,7 +716,7 @@ const DetailedInfo = ({
             <div className="my_profile_setting_input overflow-hidden mt20 text-center">
               {isDisable && (
                 <button className="btn btn5 m-1" onClick={cancelHandler}>
-                  Reset
+                  Cancel
                 </button>
               )}
               {!isDisable &&

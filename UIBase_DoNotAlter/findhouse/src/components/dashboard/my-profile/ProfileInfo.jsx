@@ -595,9 +595,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                             className="form-check-input mt-3"
                             type="checkbox"
                             value=""
-                            required
                             id="terms"
-                            checked
                             style={{ border: "1px solid black" }}
                           />
                           <label
@@ -639,9 +637,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                             className="form-check-input mt-3"
                             type="checkbox"
                             value=""
-                            required
                             id="terms"
-                            checked
                             style={{ border: "1px solid black" }}
                           />
                           <label
