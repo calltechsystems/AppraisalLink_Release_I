@@ -10,12 +10,11 @@ import { useRouter } from "next/router";
 const Index = () => {
   const [data, setData] = useState([]);
   const router = useRouter();
-  let userData = {"userType" : 3};
+  let userData = { userType: 3 };
 
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
   );
-
 
   useEffect(() => {
     const activityHandler = () => {
@@ -67,7 +66,7 @@ const Index = () => {
     userData = JSON.parse(localStorage.getItem("user"));
     if (!userData) {
       router.push("/login");
-    } 
+    }
     // else if (!userData?.broker_Details?.firstName) {
     //   router.push("/my-profile");
     // }
@@ -113,17 +112,14 @@ const Index = () => {
           id="DashboardOffcanvasMenu"
           data-bs-scroll="true"
         >
-          <SidebarMenu userData = {userData}/>
+          <SidebarMenu userData={userData} />
         </div>
       </div>
       {/* End sidebar_menu */}
 
       {/* <!-- Our Dashbord --> */}
-      <section className="our-dashbord dashbord bgc-f7 pb50">
-        <div
-          className="container-fluid ovh"
-          style={{ marginLeft: "-10px", marginTop: "" }}
-        >
+      <section className="our-dashbord dashbord bgc-f7 pb50 dashboard-height">
+        <div className="container-fluid ovh table-padding container-padding">
           <div className="row">
             <div className="col-lg-12 maxw100flex-992">
               <div className="row">

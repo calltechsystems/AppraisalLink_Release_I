@@ -332,20 +332,20 @@ const Index = ({ isView, propertyData }) => {
     }
   }, [purpose]);
 
-  useEffect(() => {
-    userData = JSON.parse(localStorage.getItem("user"));
-    console.log(userData.userSubscription.$values);
+  // useEffect(() => {
+  //   userData = JSON.parse(localStorage.getItem("user"));
+  //   console.log(userData.userSubscription.$values);
 
-    if (!userData) {
-      router.push("/login");
-    }
-    // else if( userData.userSubscription.$values !== null ){
-    //   router.push("/my-plans");
-    // }
-    else if (userData?.broker_Details?.firstName === "") {
-      router.push("/my-profile");
-    }
-  }, []);
+  //   if (!userData) {
+  //     router.push("/login");
+  //   }
+  //   // else if( userData.userSubscription.$values !== null ){
+  //   //   router.push("/my-plans");
+  //   // }
+  //   else if (userData?.broker_Details?.firstName === "") {
+  //     router.push("/my-profile");
+  //   }
+  // }, []);
 
   const calculateDateHandler = () => {
     const type = urgencyRef;

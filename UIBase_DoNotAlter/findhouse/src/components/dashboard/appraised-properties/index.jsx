@@ -116,6 +116,8 @@ const Index = () => {
   const [openDate,setOpenDate] = useState(false);
   const [statusDate,setStatusDate]=useState("");
 
+  const [allAppraiser,setAllAppraiser]=useState([]);
+  const [assignModal,setAssignModal]=useState(false);
   
 
   const handleStatusSelect = (value)=>{
@@ -153,6 +155,45 @@ const Index = () => {
     setTypeView(value);
     setOpenBrokerModal(true);
   };
+
+  const [selectedAppraiser,setSelectedAppraiser] = useState(-1);
+  const [assignPropertyId,setAssignPropertyId] = useState(-1);
+
+  const assignAppraiserUpdateHandler = ()=>{
+
+ 
+
+    const data = JSON.parse(localStorage.getItem("user"));
+    const payload = {
+    companyid:data.appraiserCompany_Datails.appraiserCompanyId,
+    propertyid:Number(assignPropertyId),
+    appraiserid:Number(selectedAppraiser)
+  };
+
+  const encryptedData = encryptionData(payload);
+  toast.loading("Assigning the property!!....");
+  axios.post("/api/assignPropertyToAppraiser",encryptedData,{
+    headers:{
+      Authorization:`Bearer ${data.token}`
+    }
+  })
+  .then((res)=>{
+    toast.dismiss();
+    toast.success("Successfully assigned the property!");
+    window.location.reload();
+  })
+  .catch((err)=>{
+    toast.dismiss();
+    toast.error(err);
+  })
+  setAssignPropertyId(-1);
+}
+
+
+const closeAssignModal = ()=>{
+  setAssignModal(false);
+  setAssignPropertyId(-1);
+}
   const router = useRouter();
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
@@ -334,8 +375,9 @@ const Index = () => {
     const data = JSON.parse(localStorage.getItem("user"));
     if (!data) {
       router.push("/login");
-    } else if (!data?.appraiser_Details.firstName) {
-      router.push("/appraiser-profile");
+    } 
+    if(!data?.appraiser_Details?.firstName){
+      router.push("appraiser-profile");
     }
     if (!data) {
       router.push("/login");
@@ -448,19 +490,23 @@ const Index = () => {
 
   const [isUpdateBid,setIsUpdateBid] = useState(false);
   const [bidAmount,setbidAmount] = useState(0);
+  const [alreadyBidded,setAlreadyBidded]=useState(false);
 
-  const participateHandler = (val, id,isUpdate,value) => {
+  const participateHandler = (val, id,isUpdate,value,isBidded) => {
     console.log(val,id,isUpdate,value);
     if(isUpdate){
     setLowRangeBid(val);
     setIsUpdateBid(isUpdate);
     setbidAmount(value);
     setPropertyId(id);
+    setAlreadyBidded(isBidded);
     setModalOpen(true);
+
     }
     else{
     setLowRangeBid(val);
     setPropertyId(id);
+    setAlreadyBidded(isBidded);
     setModalOpen(true);
     }
   };
@@ -472,7 +518,7 @@ const Index = () => {
 
     const formData = {
       userId: userData.userId,
-      propertyId: id,
+      propertyId: selectedAppraiser,
       token: userData.token,
     };
 
@@ -625,6 +671,7 @@ const Index = () => {
                           setProperties={setProperties}
                           start={start}
                           end={end}
+                          setAssignPropertyId={setAssignPropertyId}
                           onArchivePropertyHandler={ onArchivePropertyHandler}
                           properties={
                             searchInput === "" ? properties : filterProperty
@@ -636,6 +683,8 @@ const Index = () => {
                           setErrorMessage={setErrorMessage}
                           setModalIsOpenError={setModalIsOpenError}
                           setRefresh={setRefresh}
+                          setAllAppraiser = {setAllAppraiser}
+                          setAssignModal={setAssignModal}
                           setAllBrokers={setAllBrokers}
                           setFilterQuery={setFilterQuery}
                           setSearchInput={setSearchInput}
@@ -1427,6 +1476,59 @@ const Index = () => {
                   </div>
                 </div>
               )}
+
+              {assignModal && (
+                <div className="modal">
+                  <div className="modal-content">
+                    <h3 className="text-center">Quote Status Updation</h3>
+                    
+                    <select
+                  required
+                  className="form-select"
+                  data-live-search="true"
+                  data-width="100%"
+                  onChange={(e)=>setSelectedAppraiser(e.target.value)}
+                  // value={buildinRef}
+                  // onChange={(e) => setBuildinRef(e.target.value)}
+                  // onChange={(e) => setBuildinRef(e.target.value)}
+                  // disabled={isDisable}
+                  style={{
+                          paddingTop: "15px",
+                          paddingBottom: "15px",
+                          backgroundColor: "#E8F0FE"
+                        }}
+                >
+                  {allAppraiser.map((item, index) => {
+                    
+                    <option value={0}>....</option>
+                    return (
+                      <option key={item.id} value={item.$id}>
+                        {item.firstName} {item.lastName}
+                      </option>
+                    );
+                  })}
+                </select>
+              
+                    {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
+                    <div className="text-center" style={{}}>
+                    <button
+                    className="btn w-35 btn-white"
+                    onClick={()=>closeAssignModal()}
+                  >
+                    Cancel
+                  </button>
+                      <button
+                      className="btn btn-color w-10 mt-1"
+                      style={{ marginLeft: "12px" }}
+                        onClick={assignAppraiserUpdateHandler}
+                      >
+                        Submit
+                      </button>        
+                     
+                    </div>
+                  </div>
+                </div>
+              )}
               {isStatusModal && (
                 <div className="modal">
                   <div className="modal-content">
@@ -1451,7 +1553,7 @@ const Index = () => {
                   {AppraiserStatusOptions.map((item, index) => {
                     
                     return (
-                      <option key={item.id} value={item.value} >
+                      <option key={item.id} value={item.value}  disabled={currentBid.orderStatus >= index}>
                         {item.type}
                       </option>
                     );
@@ -1522,6 +1624,10 @@ const Index = () => {
                   setIsQuoteModalOpen={setIsQuoteModalOpen}
                   openQuoteModal={openQuoteModal}
                   closeQuoteModal={closeQuoteModal}
+                  currentBid={currentBid}
+                  setCurrentBid={setCurrentBid}
+                  setBidAmount={setbidAmount}
+                  alreadyBidded={alreadyBidded}
                 />
               </div>
               <div className="row">

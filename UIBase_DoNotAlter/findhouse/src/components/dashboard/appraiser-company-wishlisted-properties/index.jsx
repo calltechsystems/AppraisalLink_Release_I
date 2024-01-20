@@ -336,8 +336,9 @@ const Index = () => {
     const data = JSON.parse(localStorage.getItem("user"));
     if (!data) {
       router.push("/login");
-    } else if (!data?.appraiserCompany_Datails.firstName) {
-      router.push("/appraiser-company-profile");
+    }
+    if(!data?.appraiserCompany_Datails?.firstName){
+      router.push("appraiser-company-profile");
     }
     if (!data) {
       router.push("/login");
@@ -450,9 +451,10 @@ const Index = () => {
 
   const [isUpdateBid,setIsUpdateBid] = useState(false);
   const [bidAmount,setbidAmount] = useState(0);
+  const [isBidded,setIsBidded]=useState(false);
 
-  const participateHandler = (val, id,isUpdate,value) => {
-    console.log(val,id,isUpdate,value);
+  const participateHandler = (val, id,isUpdate,value,isBidded) => {
+    // console.log(val,id,isUpdate,value);
     if(isUpdate){
     setLowRangeBid(val);
     setIsUpdateBid(isUpdate);
@@ -465,6 +467,7 @@ const Index = () => {
     setPropertyId(id);
     setModalOpen(true);
     }
+    setIsBidded(isBidded);
   };
 
   const [currentBid,setCurrentBid]=useState({});
@@ -941,7 +944,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {broker.quoteRequiredDate}
+                                      {broker.quoteRequiredDate ? broker.quoteRequiredDate : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -986,7 +989,7 @@ const Index = () => {
                                       }}
                                     >
                                       {" "}
-                                      {broker.applicantEmailAddress}
+                                      {broker.applicantEmailAddress ? broker.applicantEmailAddress : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1007,7 +1010,7 @@ const Index = () => {
                                       }}
                                     >
                                       {" "}
-                                      {broker.applicantPhoneNumber}
+                                      {broker.applicantPhoneNumber ? broker.applicantPhoneNumber : "N.A."}
                                     </td>
                                   </tr>
                                   {/* <tr>
@@ -1454,7 +1457,7 @@ const Index = () => {
                   {AppraiserStatusOptions.map((item, index) => {
                     
                     return (
-                      <option key={item.id} value={item.value} >
+                      <option key={item.id} value={item.value}  disabled={currentBid.orderStatus >= index}>
                         {item.type}
                       </option>
                     );
@@ -1520,6 +1523,7 @@ const Index = () => {
                   lowRangeBid={lowRangeBid}
                   isUpdateBid={isUpdateBid}
                   bidAmount={bidAmount}
+                  isBidded={isBidded}
                   setModalOpen={setModalOpen}
                   propertyId={propertyId}
                   setIsQuoteModalOpen={setIsQuoteModalOpen}

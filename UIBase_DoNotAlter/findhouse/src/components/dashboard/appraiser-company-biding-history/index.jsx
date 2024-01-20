@@ -296,6 +296,9 @@ const Index = () => {
     const data = JSON.parse(localStorage.getItem("user"));
     if (!data) {
       router.push("/login");
+    }
+    if(!data?.appraiserCompany_Datails?.firstName){
+      router.push("appraiser-company-profile");
     } 
     if (!data) {
       router.push("/login");

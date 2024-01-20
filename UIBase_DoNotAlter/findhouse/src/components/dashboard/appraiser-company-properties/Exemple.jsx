@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import Loader from "./Loader";
 import { FaArchive } from "react-icons/fa";
 import { AppraiserStatusOptions } from "../create-listing/data";
+import millify from "millify";
 // import "./SmartTable.css";
 
 const headCells = [
@@ -130,6 +131,10 @@ export default function Exemple({
   setUpdatedCode,
   properties,
   setCurrentBid,
+  setAllAppraiser,
+  setAssignPropertyId,
+
+  setAssignModal,
   setIsStatusModal,
   setProperties,
   setAllBrokers,
@@ -266,6 +271,11 @@ export default function Exemple({
     return temp;
   };
 
+  const openAssignModalHandler=(property)=>{
+    setAssignPropertyId(property.$id);
+    setAssignModal(true);
+  }
+
   const sortObjectsByOrderIdDescending = (data) => {
     return data.sort((a, b) => b.orderId - a.orderId);
   };
@@ -293,7 +303,7 @@ export default function Exemple({
           orderId: property.orderId ,
           address: `${property.city}-${property.province},${property.zipCode}`,
           estimatedValue: property.estimatedValue
-            ? `$ ${property.estimatedValue}`
+            ? `$ ${millify(property.estimatedValue)}`
             : "$ 0",
           purpose: property.purpose ? property.purpose : "N.A.",
           appraisal_status: isBidded.status === 1 && isBidded.orderStatus ? (
@@ -398,7 +408,7 @@ export default function Exemple({
             property.typeOfBuilding > 0 ? "Apartment" : property.typeOfBuilding,
           quote_required_by: formatDate(property.addedDatetime),
           date: formatDate(property.addedDatetime),
-          bidAmount: property.bidLowerRange,
+          bidAmount: millify(property.bidLowerRange),
           lender_information: property.lenderInformation
             ? property.lenderInformation
             : "NA",
@@ -453,7 +463,7 @@ export default function Exemple({
                       className="list-inline-item"
                       data-toggle="tooltip"
                       data-placement="top"
-                      title="Provide Quote"
+                      title={`${isBidded.$id ? "View/Update Quote" : "Provide Quote"}`}
                     >
                       <div
                         className="w-100"
@@ -462,7 +472,8 @@ export default function Exemple({
                             property.bidLowerRange,
                             property.propertyId,
                             isBidded.status < 1,
-                            isBidded.bidAmount
+                            isBidded.bidAmount,
+                            isBidded.$id ? true : false
                           )
                         }
                       >
@@ -479,6 +490,29 @@ export default function Exemple({
                     </li>
                   )}
 
+                  <li
+                  className="list-inline-item"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Assign Appraiser"
+                >
+                  <div
+                    className="w-100"
+                    onClick={() =>
+                      openAssignModalHandler(property)
+                    }
+                  >
+                    <button
+                      href="#"
+                      className="btn btn-color w-100 mt-1"
+                      style={{ marginLeft: "12px" }}
+                    >
+                    <Link href="#">
+                    <span className="text-light flaticon-edit"></span>
+                  </Link>
+                    </button>
+                  </div>
+                </li>
                  
                   <li
                   className="list-inline-item"
@@ -631,6 +665,21 @@ export default function Exemple({
       })
       .then((res) => {
         setAllBrokers(res.data.data.$values);
+       
+      })
+      .catch((err) => {
+        setErrorMessage(err?.response?.data?.error);
+        setModalIsOpenError(true);
+      });
+
+      axios
+      .get("/api/getAllAppraiser", {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+      })
+      .then((res) => {
+        setAllAppraiser(res.data.data.$values);
        
       })
       .catch((err) => {

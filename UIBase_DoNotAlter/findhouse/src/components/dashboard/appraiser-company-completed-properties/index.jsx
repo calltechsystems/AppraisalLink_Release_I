@@ -338,9 +338,10 @@ const Index = () => {
     const data = JSON.parse(localStorage.getItem("user"));
     if (!data) {
       router.push("/login");
-    } else if (!data?.appraiserCompany_Datails.firstName) {
-      router.push("/appraiser-company-profile");
-    }
+    } 
+    // else if (!data?.appraiserCompany_Datails.firstName) {
+    //   router.push("/appraiser-company-profile");
+    // }
     if (!data) {
       router.push("/login");
     }
@@ -1456,7 +1457,7 @@ const Index = () => {
                   {AppraiserStatusOptions.map((item, index) => {
                     
                     return (
-                      <option key={item.id} value={item.value} >
+                      <option key={item.id} value={item.value}  disabled={currentBid.orderStatus >= index}>
                         {item.type}
                       </option>
                     );

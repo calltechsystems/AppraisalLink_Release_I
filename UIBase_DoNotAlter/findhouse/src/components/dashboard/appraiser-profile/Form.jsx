@@ -7,11 +7,7 @@ import Image from "next/image";
 
 const Form = ({ userData, chnageShowCardHandler }) => {
   return (
-    <form
-      className="contact_form"
-      action="#"
-      style={{ borderRadius: "5px" }}
-    >
+    <form className="contact_form" action="#" style={{ borderRadius: "5px" }}>
       <div className="d-flex justify-content-end">
         <button
           className="btn btn2 btn-color profile_edit_button_01 mb-2"
@@ -22,7 +18,9 @@ const Form = ({ userData, chnageShowCardHandler }) => {
             data-toggle="tooltip"
             data-placement="top"
             title="Edit Profile"
-          >Edit Profile</span>
+          >
+            Edit Profile
+          </span>
         </button>
       </div>
 
@@ -39,11 +37,11 @@ const Form = ({ userData, chnageShowCardHandler }) => {
         </div>
         <div className="col-lg-9">
           <div className="row mb-2">
-          <div className="col-lg-9">
-              {/* <table
+            <div className="col-lg-9">
+              <table
                 className=""
                 style={{
-                  width: "650px",
+                  width: "600px",
                   borderRadius: "5px",
                 }}
               >
@@ -57,10 +55,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                     <li className="text-dark p-2" style={{ listStyle: "none" }}>
                       <span className="text-dark" style={{ fontSize: "17px" }}>
                         {" "}
-                        <span className="fw-bold">Name</span> :{" "}
-                        {userData?.appraiser_Details?.firstName}{" "}
-                        {userData?.appraiser_Details?.middleName}{" "}
-                        {userData?.appraiser_Details?.lastName}
+                        <span className="fw-bold">Name</span> 
                       </span>
                     </li>
                   </td>
@@ -72,7 +67,35 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                   >
                     <li className="text-dark p-2" style={{ listStyle: "none" }}>
                       <span className="text-dark" style={{ fontSize: "17px" }}>
-                        <span className="fw-bold"> Company</span> :{" "}
+                        {userData?.appraiser_Details?.firstName}{" "}
+                        {userData?.appraiser_Details?.middleName}{" "}
+                        {userData?.appraiser_Details?.lastName}
+                      </span>
+                    </li>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    style={{
+                      border: "1px solid grey",
+                      color: "#2e008b",
+                    }}
+                  >
+                    <li className="text-dark p-2" style={{ listStyle: "none" }}>
+                      <span className="text-dark" style={{ fontSize: "17px" }}>
+                        {" "}
+                        <span className="fw-bold">Company</span>
+                      </span>
+                    </li>
+                  </td>
+                  <td
+                    style={{
+                      border: "1px solid grey",
+                      color: "#2e008b",
+                    }}
+                  >
+                    <li className="text-dark p-2" style={{ listStyle: "none" }}>
+                      <span className="text-dark" style={{ fontSize: "17px" }}>
                         {userData?.appraiser_Details?.companyName}
                       </span>
                     </li>
@@ -83,96 +106,147 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                     style={{
                       border: "1px solid grey",
                       color: "#2e008b",
-                      
                     }}
                   >
                     <li className="text-dark p-2" style={{ listStyle: "none" }}>
                       <span className="text-dark" style={{ fontSize: "17px" }}>
-                        <span className="fw-bold">Email</span> :{" "}
-                        {userData?.userEmail}
+                        {" "}
+                        <span className="fw-bold">Email</span>
                       </span>
-                      
                     </li>
                   </td>
                   <td
-                    style={{
-                      border: "1px solid #2e008b",
-                      color: "#2e008b",
-                    }}
-                  >
-                    <li className="text-dark p-2" style={{ listStyle: "none" }}>
-                      <span className="text-dark" style={{ fontSize: "17px" }}>
-                        <span className="fw-bold"> Phone</span> :{" "}
-                        {userData?.appraiser_Details?.phoneNumber}
-                      </span>
-                     
-                    </li>
-                  </td>
-                </tr>
-                <tr>
-                  <td
-                    colSpan="2"
                     style={{
                       border: "1px solid grey",
                       color: "#2e008b",
-                      
                     }}
                   >
                     <li className="text-dark p-2" style={{ listStyle: "none" }}>
                       <span className="text-dark" style={{ fontSize: "17px" }}>
-                        <span className="fw-bold">
-                          Mortgage Broker Licence No.
-                        </span>{" "}
-                        : {userData?.appraiser_Details?.mortageBrokerLicNo}
+                        {userData?.userEmail}
                       </span>
-                      
                     </li>
                   </td>
                 </tr>
                 <tr>
                   <td
-                    colSpan="2"
                     style={{
-                      border: "1px solid #2e008b",
+                      border: "1px solid grey",
                       color: "#2e008b",
                     }}
                   >
                     <li className="text-dark p-2" style={{ listStyle: "none" }}>
                       <span className="text-dark" style={{ fontSize: "17px" }}>
-                        <span className="fw-bold">
-                          {" "}
-                          Mortgage Brokerge Licence No. :{" "}
-                        </span>
+                        {" "}
+                        <span className="fw-bold">Phone</span>
+                      </span>
+                    </li>
+                  </td>
+                  <td
+                    style={{
+                      border: "1px solid grey",
+                      color: "#2e008b",
+                    }}
+                  >
+                    <li className="text-dark p-2" style={{ listStyle: "none" }}>
+                      <span className="text-dark" style={{ fontSize: "17px" }}>
                         {userData?.appraiser_Details?.phoneNumber}
                       </span>
-                    
                     </li>
                   </td>
                 </tr>
                 <tr>
                   <td
-                    colSpan="2"
                     style={{
-                      border: "1px solid #2e008b",
+                      border: "1px solid grey",
                       color: "#2e008b",
                     }}
                   >
                     <li className="text-dark p-2" style={{ listStyle: "none" }}>
                       <span className="text-dark" style={{ fontSize: "17px" }}>
-                        <span className="fw-bold"> Address : </span>
+                        {" "}
+                        <span className="fw-bold">
+                          Mortgage Broker Licence No.
+                        </span>
+                      </span>
+                    </li>
+                  </td>
+                  <td
+                    style={{
+                      border: "1px solid grey",
+                      color: "#2e008b",
+                    }}
+                  >
+                    <li className="text-dark p-2" style={{ listStyle: "none" }}>
+                      <span className="text-dark" style={{ fontSize: "17px" }}>
+                        {userData?.appraiser_Details?.mortageBrokerLicNo}
+                      </span>
+                    </li>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    style={{
+                      border: "1px solid grey",
+                      color: "#2e008b",
+                    }}
+                  >
+                    <li className="text-dark p-2" style={{ listStyle: "none" }}>
+                      <span className="text-dark" style={{ fontSize: "17px" }}>
+                        {" "}
+                        <span className="fw-bold">
+                          {" "}
+                          Mortgage Brokerge Licence No.{" "}
+                        </span>
+                      </span>
+                    </li>
+                  </td>
+                  <td
+                    style={{
+                      border: "1px solid grey",
+                      color: "#2e008b",
+                    }}
+                  >
+                    <li className="text-dark p-2" style={{ listStyle: "none" }}>
+                      <span className="text-dark" style={{ fontSize: "17px" }}>
+                        {userData?.appraiser_Details?.mortageBrokerLicNo}
+                      </span>
+                    </li>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    style={{
+                      border: "1px solid grey",
+                      color: "#2e008b",
+                    }}
+                  >
+                    <li className="text-dark p-2" style={{ listStyle: "none" }}>
+                      <span className="text-dark" style={{ fontSize: "17px" }}>
+                        {" "}
+                        <span className="fw-bold"> Address </span>
+                      </span>
+                    </li>
+                  </td>
+                  <td
+                    style={{
+                      border: "1px solid grey",
+                      color: "#2e008b",
+                    }}
+                  >
+                    <li className="text-dark p-2" style={{ listStyle: "none" }}>
+                      <span className="text-dark" style={{ fontSize: "17px" }}>
                         {userData.appraiser_Details?.streetNumber},{" "}
                         {userData.appraiser_Details?.streetName},{" "}
                         {userData?.appraiser_Details?.city},{" "}
                         {userData?.appraiser_Details?.province},{" "}
                         {userData?.appraiser_Details?.zipCode}
                       </span>
-                      
                     </li>
                   </td>
                 </tr>
                 <tr>
                   <td
-                    colSpan="2"
                     style={{
                       border: "1px solid grey",
                       color: "#2e008b",
@@ -181,16 +255,25 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                     <li className="text-dark p-2" style={{ listStyle: "none" }}>
                       <span className="text-dark" style={{ fontSize: "17px" }}>
                         {" "}
-                        <span className="fw-bold">Assistant Name</span> :{" "}
-                        {userData?.appraiser_Details?.assistantFirstName}{" "}
-                        {userData?.appraiser_Details?.assistantLatsName}
+                        <span className="fw-bold"> Designation </span>
+                      </span>
+                    </li>
+                  </td>
+                  <td
+                    style={{
+                      border: "1px solid grey",
+                      color: "#2e008b",
+                    }}
+                  >
+                    <li className="text-dark p-2" style={{ listStyle: "none" }}>
+                      <span className="text-dark" style={{ fontSize: "17px" }}>
+                        {userData?.appraiser_Details?.mortageBrokerLicNo}
                       </span>
                     </li>
                   </td>
                 </tr>
                 <tr>
                   <td
-                    colSpan="2"
                     style={{
                       border: "1px solid grey",
                       color: "#2e008b",
@@ -199,15 +282,25 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                     <li className="text-dark p-2" style={{ listStyle: "none" }}>
                       <span className="text-dark" style={{ fontSize: "17px" }}>
                         {" "}
-                        <span className="fw-bold">Assistant Email</span> :{" "}
-                        {userData?.appraiser_Details?.assistantEmailAddress}{" "}
+                        <span className="fw-bold"> Reviewer Name </span>
+                      </span>
+                    </li>
+                  </td>
+                  <td
+                    style={{
+                      border: "1px solid grey",
+                      color: "#2e008b",
+                    }}
+                  >
+                    <li className="text-dark p-2" style={{ listStyle: "none" }}>
+                      <span className="text-dark" style={{ fontSize: "17px" }}>
+                        {userData?.appraiser_Details?.mortageBrokerLicNo}
                       </span>
                     </li>
                   </td>
                 </tr>
                 <tr>
                   <td
-                    colSpan="2"
                     style={{
                       border: "1px solid grey",
                       color: "#2e008b",
@@ -216,14 +309,28 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                     <li className="text-dark p-2" style={{ listStyle: "none" }}>
                       <span className="text-dark" style={{ fontSize: "17px" }}>
                         {" "}
-                        <span className="fw-bold">Assistant Phone </span> :{" "}
-                        {userData?.appraiser_Details?.assistantPhoneNumber}{" "}
+                        <span className="fw-bold">
+                          Reviewer Phone
+                          
+                        </span>
+                      </span>
+                    </li>
+                  </td>
+                  <td
+                    style={{
+                      border: "1px solid grey",
+                      color: "#2e008b",
+                    }}
+                  >
+                    <li className="text-dark p-2" style={{ listStyle: "none" }}>
+                      <span className="text-dark" style={{ fontSize: "17px" }}>
+                        {userData?.appraiser_Details?.mortageBrokerLicNo}
                       </span>
                     </li>
                   </td>
                 </tr>
-              </table> */}
-              <div className="form-content">
+              </table>
+              {/* <div className="form-content">
                 <span style={{ fontWeight: "bold" }}>
                   <h3 className="text-center"> Appraiser Details </h3>
                 </span>
@@ -276,12 +383,10 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       {userData?.appraiser_Details?.mortageBrokerLicNo}
                     </span>
                   </div>
-                  
+
                   <div className="row">
                     <h5 className="col-lg-5 mt-1 text-start">
-                      <span className="fs-18 text-color">
-                        Reviewer Name
-                      </span>{" "}
+                      <span className="fs-18 text-color">Reviewer Name</span>{" "}
                     </h5>
                     <span className="col-lg-1">:</span>
                     <span className="col-lg-6 text-start text-dark fw-bold">
@@ -313,45 +418,9 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       {userData?.appraiser_Details?.postalCode}
                     </span>
                   </div>
-                  {/* <div className="row">
-                    <h5 className="col-lg-5 mt-1 text-start">
-                      <span className="fs-18 text-color">Assistant Name </span>{" "}
-                    </h5>
-                    <span className="col-lg-1">:</span>
-                    <span className="col-lg-6 text-start text-dark fw-bold">
-                      {userData?.appraiser_Details?.assistantFirstName}{" "}
-                      {userData?.appraiser_Details?.assistantLastName}
-                    </span>
-                  </div>
-                  <div className="row">
-                    <h5 className="col-lg-5 mt-1 text-start">
-                      <span className="fs-18 text-color">Assistant Email </span>{" "}
-                    </h5>
-                    <span className="col-lg-1">:</span>
-                    <span className="col-lg-6 text-start text-dark fw-bold">
-                      {userData?.appraiser_Details?.assistantEmailAddress}{" "}
-                    </span>
-                  </div>
-                  <div className="row">
-                    <h5 className="col-lg-5 mt-1 text-start">
-                      <span className="fs-18 text-color">Assistant Phone </span>{" "}
-                    </h5>
-                    <span className="col-lg-1">:</span>
-                    <span className="col-lg-6 text-start text-dark fw-bold">
-                      {userData?.appraiser_Details?.assistantPhoneNumber}{" "}
-                    </span>
-                  </div> */}
                 </div>
                 <hr />
-                {/* <div className="text-center" style={{}}>
-                  <button
-                    className="btn btn-color w-35"
-                    onClick={() => closeAppraiserHandler()}
-                  >
-                    Ok
-                  </button>
-                </div> */}
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

@@ -301,9 +301,9 @@ export default function Exemple({
             : "$ 0",
           purpose: property.purpose ? property.purpose : "N.A.",
           appraisal_status: isBidded.status === 1 && isBidded.orderStatus ? (
-            <h5>{getOrderValue(isBidded.orderStatus)}</h5>
-          ):<span className="btn btn-warning  w-100">New</span>,
-          remark : (isBidded && isBidded.remark) ? <span className="btn btn-warning  w-100">{isBidded.remark}</span> : "N.A.",
+            <span className="btn btn-warning  w-100">{getOrderValue(isBidded.orderStatus)}</span>
+          ):<span className="btn btn-warning  w-100">N.A.</span>,
+          remark : (isBidded && isBidded.remark) ? <p >{isBidded.remark}</p> : "N.A.",
           status: 
           isWait ? 
           <span
@@ -508,18 +508,7 @@ export default function Exemple({
                   </div>
                 </li>
                 </ul>
-              ) : ( isBidded.orderStatus <=6 &&
-                 <button
-                          href="#"
-                          className="btn btn-color w-100 mt-1"
-                          style={{ marginLeft: "12px" }}
-                          onClick={()=>openStatusUpdateHandler(isBidded)}
-                        >
-                        <Link href="#">
-                        <span className="flaticon-edit text-light"></span>
-                      </Link>
-                        </button>
-              )}
+              ) : <span  className="btn btn-success  w-100">Completed</span>}
             </div>
           ),
         };

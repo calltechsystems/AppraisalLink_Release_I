@@ -16,8 +16,12 @@ import { AppraiserStatusOptions } from "../create-listing/data";
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
+  
   const [isStatusModal,setIsStatusModal] = useState(false);
   const [toggleId, setToggleId] = useState(-1);
+
+  
+  const [requiredProp,setRequiredProp]=useState([]);
   const [toggleWishlist, setToggleWishlist] = useState(0);
   const [searchResult, setSearchResult] = useState([]);
   const [property, setProperty] = useState("");
@@ -31,7 +35,6 @@ const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [lowRangeBid, setLowRangeBid] = useState("");
   const [propertyId, setPropertyId] = useState(null);
-
   
   const [wishlistedProperties,setWishlistedProperties] = useState([]);
   const [updatedCode, setUpdatedCode] = useState(false);
@@ -44,7 +47,9 @@ const Index = () => {
 
   const [refresh, setRefresh] = useState(false);
 
+  const [orderStatus,setOrderStatus]=useState(-1);
     
+  const [allBrokers,setAllBrokers]=useState([]);
   const [start,setStart]=useState(0);
   
   const [end,setEnd]=useState(4);
@@ -52,23 +57,25 @@ const Index = () => {
   const closeErrorModal = () => {
     setModalIsOpenError(false);
   };
-  const [currentBid,setCurrentBid]=useState(-1);
+
+  const [remark,setRemark]=useState("");
 
   const handleStatusUpdateHandler = ()=>{
-
-    const userData = JSON.parse(localStorage.getItem("user"));
-
+    
+    if(remark === "" ){
+      toast.error("Remark should be filled!!");
+    }
+    else if(orderStatus <= currentBid.orderStatus){
+      toast.error("Select a proper quote status Please !!")
+    }
+    else{
+    const data = JSON.parse(localStorage.getItem("user"));
     const payload = {
-      token:userData.token,
-      bidid:currentBid,
+      token:data.token,
+      bidid:currentBid.bidId,
       OrderStatus:Number(orderStatus),
       remark:remark
     };
-
-
-    // console.log(payload);
-    // return ;
-
 
     const encryptedBody = encryptionData(payload);
     toast.loading("Updating order status!!");
@@ -79,13 +86,14 @@ const Index = () => {
     })
     .catch((err)=>{
       toast.dismiss();
-      toast.error(err);
+      toast.error(err?.response?.data?.error);
     });
-
-    setCurrentBid(-1);
-    setIsStatusModal(false);
   }
 
+    setRemark("");
+    setCurrentBid({});
+    setIsStatusModal(false);
+  }
 
   const closeStatusUpdateHandler = ()=>{
     setOpenDate(false);
@@ -103,7 +111,6 @@ const Index = () => {
     setIsQuoteModalOpen(false);
   };
 
-
   const openQuoteModal = () => {
     setIsModalOpen(false);
     setIsQuoteModalOpen(true);
@@ -114,9 +121,26 @@ const Index = () => {
 
   
 
- 
+  const handleStatusSelect = (value)=>{
+    if(String(value) === "Appraisal Visit Confirmed"){
+      setOpenDate(true);
+    }
+    let selectedValue = 0;
+    AppraiserStatusOptions.map((prop,index)=>{
+      if(String(prop.type) === String(value)){
+        console.log(prop.type,value,prop.id)
+        selectedValue = prop.id;
+      }
+    })
 
-  const [allBrokers,setAllBrokers]=useState([]);
+    if(currentBid.orderStatus >= selectedValue){
+      toast.error("Select the next status please !!");
+    }
+    else{
+    setOrderStatus(selectedValue);
+    }
+  }
+
   let [selectedBroker ,setSelectedBroker]=useState({});
   const openModalBroker = (property, value) => {
  
@@ -132,7 +156,6 @@ const Index = () => {
     setTypeView(value);
     setOpenBrokerModal(true);
   };
-
   const router = useRouter();
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
@@ -186,28 +209,6 @@ const Index = () => {
     setShowPropDetails(false);
   };
 
-
-  const handleStatusSelect = (value)=>{
-
-    if(String(value) === "Appraisal Visit Confirmed"){
-      setOpenDate(true);
-    }
-    let selectedValue = 0;
-    AppraiserStatusOptions.map((prop,index)=>{
-      if(String(prop.type) === String(value)){
-        console.log(prop.type,value,prop.id)
-        selectedValue = prop.id;
-      }
-    })
-
-    console.log(selectedValue);
-    setOrderStatus(selectedValue);
-
-
-  }
-
-  const [remark,setRemark]=useState("");
-  const [orderStatus,setOrderStatus]=useState(-1);
   useEffect(() => {
     const filterProperties = (propertys, searchInput) => {
       if (searchInput === "") {
@@ -268,6 +269,35 @@ const Index = () => {
     }
   };
 
+  const  onArchivePropertyHandler = (propertyId)=>{
+    const data = JSON.parse(localStorage.getItem("user"));
+
+    const payload = {
+      propertyId:propertyId,
+      userid:data.userId,
+      token:data.token
+    };
+
+    toast.loading("Archiving the desired property!!.");
+
+    const encryptedBody = encryptionData(payload);
+
+    axios.post("/api/setArchivePropertyByAppraiser",encryptedBody,{
+      headers:{
+        Authorization:`Bearer ${data.token}`,
+        "Content-Type":"application/json"
+      }
+    }).then((res)=>{
+      toast.dismiss();
+      toast.success("Archived property!");
+      window.location.reload();
+    })
+    .catch((err)=>{
+      toast.dismiss();
+      toast.error(err);
+    })
+  }
+
   useEffect(() => {
     const tmpData = filterData(properties);
     setProperties(tmpData);
@@ -308,6 +338,9 @@ const Index = () => {
     if (!data) {
       router.push("/login");
     } 
+    // else if (!data?.appraiserCompany_Datails.firstName) {
+    //   router.push("/appraiser-company-profile");
+    // }
     if (!data) {
       router.push("/login");
     }
@@ -417,11 +450,26 @@ const Index = () => {
     };
   };
 
-  const participateHandler = (val, id) => {
+  const [isUpdateBid,setIsUpdateBid] = useState(false);
+  const [bidAmount,setbidAmount] = useState(0);
+
+  const participateHandler = (val, id,isUpdate,value) => {
+    console.log(val,id,isUpdate,value);
+    if(isUpdate){
+    setLowRangeBid(val);
+    setIsUpdateBid(isUpdate);
+    setbidAmount(value);
+    setPropertyId(id);
+    setModalOpen(true);
+    }
+    else{
     setLowRangeBid(val);
     setPropertyId(id);
     setModalOpen(true);
+    }
   };
+
+  const [currentBid,setCurrentBid]=useState({});
 
   const onWishlistHandler = (id) => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -504,10 +552,10 @@ const Index = () => {
       {/* End sidebar_menu */}
 
       {/* <!-- Our Dashbord --> */}
-      <section className="our-dashbord dashbord bgc-f7 pb50">
+      <section className="our-dashbord dashbord bgc-f7 pb50 dashboard-height">
         <div
-          className="container-fluid ovh"
-          style={{ marginLeft: "-10px", marginTop: "" }}
+          className="container-fluid ovh table-padding container-padding"
+          style={{ }}
         >
           <div className="row">
             <div className="col-lg-12 maxw100flex-992">
@@ -531,7 +579,7 @@ const Index = () => {
 
                 <div className="col-lg-4 col-xl-4 mb10">
                   <div className="style2 mb30-991">
-                    <h3 className="breadcrumb_title"> Accepted Orders</h3>
+                    <h3 className="breadcrumb_title">Accepted Property</h3>
                     {/* <p>We are glad to see you again!</p>                                                             */}
                   </div>
                 </div>
@@ -581,23 +629,25 @@ const Index = () => {
                           setProperties={setProperties}
                           start={start}
                           end={end}
-                          setCurrentBid={setCurrentBid}
+                          onArchivePropertyHandler={ onArchivePropertyHandler}
                           properties={
                             searchInput === "" ? properties : filterProperty
                           }
+                          setCurrentBid={setCurrentBid}
                           setUpdatedCode={setUpdatedCode}
                           onWishlistHandler={onWishlistHandler}
                           participateHandler={participateHandler}
                           setErrorMessage={setErrorMessage}
                           setModalIsOpenError={setModalIsOpenError}
                           setRefresh={setRefresh}
+                          setAllBrokers={setAllBrokers}
                           setFilterQuery={setFilterQuery}
                           setSearchInput={setSearchInput}
                           refresh={refresh}
-                          setAllBrokers={setAllBrokers}
                           setWishlistedProperties={setWishlistedProperties}
                           setStartLoading={setStartLoading}
                           openModalBroker={openModalBroker}
+                          setRequiredProp={setRequiredProp}
                         />
 
                         {modalIsOpenError && (
@@ -805,7 +855,7 @@ const Index = () => {
                                     >
                                       {broker.lenderInformation
                                         ? broker.lenderInformation
-                                        : "NA"}
+                                        : "N.A."}
                                     </td>
                                   </tr>
                                   {/* <tr>
@@ -873,7 +923,7 @@ const Index = () => {
                                         ? "Rush"
                                         : broker.urgency === 1
                                         ? "Regular"
-                                        : "NA"}
+                                        : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -893,7 +943,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {broker.quoteRequiredDate}
+                                      {broker.quoteRequiredDate ? broker.quoteRequiredDate : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1005,7 +1055,7 @@ const Index = () => {
                                       {" "}
                                       {broker.remark
                                         ? broker.remark
-                                        : "NA"}
+                                        : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1085,7 +1135,7 @@ const Index = () => {
                                 onClick={() => PropertyInfoHandler(broker.orderId)}
                                 title="Download Pdf"
                               >
-                               Download Form
+                                Download Form
                               </div>
                                   <button
                                     className="btn btn-color w-25 text-center"
@@ -1243,7 +1293,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {selectedBroker.brokerageName}
+                                      {selectedBroker.brokerageName ? selectedBroker.brokerageName : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1261,7 +1311,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {selectedBroker.companyName}
+                                      {selectedBroker.companyName  ? selectedBroker.companyName : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1279,7 +1329,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {selectedBroker.assistantFirstName}
+                                      {selectedBroker.assistantFirstName  ? selectedBroker.assistantFirstName : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1297,7 +1347,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {selectedBroker.assistantPhoneNumber}
+                                      {selectedBroker.assistantPhoneNumber  ? selectedBroker.assistantPhoneNumber : "N.A."}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1315,7 +1365,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {selectedBroker.assistantEmailAddress}
+                                      {selectedBroker.assistantEmailAddress  ? selectedBroker.assistantEmailAddress : "N.A."}
                                     </td>
                                   </tr>
                                 </tbody>
@@ -1404,8 +1454,9 @@ const Index = () => {
                         }}
                 >
                   {AppraiserStatusOptions.map((item, index) => {
+                    
                     return (
-                      <option key={item.id} value={item.value}>
+                      <option key={item.id} value={item.value}  disabled={currentBid.orderStatus >= index}>
                         {item.type}
                       </option>
                     );
@@ -1425,8 +1476,11 @@ const Index = () => {
                   onChange={(e) => setStatusDate(e.target.value)}
                   value={statusDate}
                 />
-              </div>}
-              <label style={{color:"black",fontWeight:"bold"}}>
+                
+            </div>
+            }
+            <div>
+            <label style={{color:"black",fontWeight:"bold"}}>
               Remark <span style={{color:"red"}}>*</span>
               </label>
               <input
@@ -1438,6 +1492,7 @@ const Index = () => {
                 onChange={(e) => setRemark(e.target.value)}
                 value={remark}
               />
+            </div>
             
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
@@ -1465,7 +1520,11 @@ const Index = () => {
                   setIsModalOpen={setIsModalOpen}
                   closeModal={closeModal}
                   lowRangeBid={lowRangeBid}
+                  isUpdateBid={isUpdateBid}
+                  bidAmount={bidAmount}
+                  setModalOpen={setModalOpen}
                   propertyId={propertyId}
+                  setIsQuoteModalOpen={setIsQuoteModalOpen}
                   openQuoteModal={openQuoteModal}
                   closeQuoteModal={closeQuoteModal}
                 />
@@ -1491,7 +1550,7 @@ const Index = () => {
                     <Pagination
                       setStart={setStart}
                       setEnd={setEnd}
-                      properties={wishlistedProperties}
+                      properties={requiredProp}
                     />
                   </div>
                 </div> 

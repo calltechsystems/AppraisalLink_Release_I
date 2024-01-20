@@ -15,7 +15,7 @@ import Modal from "./Modal";
 import { encryptionData } from "../../../utils/dataEncryption";
 import Loader from "./Loader";
 import { BrokerStatus } from "../create-listing/data";
-import Form from "../../appraiser-register/Form";
+import Form from "../../broker-register/Form";
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

@@ -43,6 +43,13 @@ const headCells = [
   },
 
   {
+    id: "status",
+    numeric: false,
+    label: "Status",
+    width: 200,
+  },
+
+  {
     id: "address",
     numeric: false,
     label: "Address",
@@ -128,6 +135,7 @@ export default function Exemple({
   setErrorMessage,
   setModalIsOpenError,
   setOpenEditModal,
+  setSelectedAppraiser,
   setRefresh,
   setStartLoading,
   refresh,
@@ -166,6 +174,11 @@ export default function Exemple({
   const openStatusUpdateHandler = () => {
     setIsStatusModal(true);
   };
+
+  const openEditModalHandler = (appraiser)=>{
+      setSelectedAppraiser(appraiser);
+      setOpenEditModal(true);
+  }
 
   const removeWishlistHandler = (id) => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -253,12 +266,24 @@ export default function Exemple({
           firstname: data.firstName ? data.firstName : "-",
           lastname: data.lastName ? data.lastName : "-",
           company: data.companyName? data.companyName : "-",
+          status : data.isActive === 1 ? (<span
+          className="btn btn-success  w-100"
+          
+        >
+          Active
+        </span>
+      ) : data.firstName !== "" && data.isActive === 0 ?  (
+        <span className="btn btn-danger  w-100">In-active</span>)
+      : (
+      <span className="btn btn-warning  w-100">Not Registered</span>
+    ) ,
           phone: data.phoneNumber ? data.phoneNumber : "-",
           address :`${data.streetName} ${data.streetNumber},${data.city}-${data.postalCode}`,
           date: dateNow,
+
           action: (
             <div className="print-hidden-column">
-              <button className="btn btn-color m-1" onClick={()=>openModalEdit(data)}>
+              <button className="btn btn-color m-1" onClick={()=>openEditModalHandler(data)}>
                 <i className="flaticon-edit"></i>
               </button>
               

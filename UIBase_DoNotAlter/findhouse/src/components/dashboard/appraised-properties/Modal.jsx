@@ -5,16 +5,21 @@ import toast from "react-hot-toast";
 import { encryptionData } from "../../../utils/dataEncryption";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { flip } from "@popperjs/core";
 
 const Modal = ({
   modalOpen,
   setModalOpen,
-  lowRangeBid,
+  closeModal,
+  currentBid,
+  
+  alreadyBidded,
+  setIsQuoteModalOpen,
   setIsModalOpen,
   handleSubmit,
+  setCurrentBid,
+  setBidAmount,
   bidAmount,
-  isUpdateBid,
-  setIsQuoteModalOpen,
   propertyId,
   closeQuoteModal,
   openQuoteModal,
@@ -29,7 +34,7 @@ const Modal = ({
     setToggle(false);
     setValue(0);
     setDescription("");
-    setIsQuoteModalOpen(false);
+    closeModal();
   };
 
   const handleToggle = () => {
@@ -38,8 +43,10 @@ const Modal = ({
 
   const onCloseModalHandler = () => {
     setValue("");
-   
+    setDescription("");
     setToggle(false);
+    setCurrentBid({});
+    setBidAmount(0);
     setModalOpen(false);
   };
 
@@ -79,7 +86,7 @@ const Modal = ({
   };
 
   const openConfirmModal = () => {
-    if (value === null) {
+    if (!value) {
       toast.error("Quoted amount should be filled !");
     } else {
       setToggle(true);
@@ -104,8 +111,8 @@ const Modal = ({
                   }}
                 >
                   {!toggle
-                    ? `${isUpdateBid ? "Appraisal Quote Update  Form" : "Appraisal Quote Form"}`
-                    : "Appraisal Quote Confirmation"}
+                    ?  `${ alreadyBidded ? "Appraisal Quote Updation Form " : "Appraisal Quote Form"}`
+                    :  `${ alreadyBidded ? "Confirmation of Quote Updation Form " : "Confirmation of Quote Form"}` }
                 </span>
               </h2>
             </div>
@@ -115,8 +122,21 @@ const Modal = ({
                 <div className="row">
                   <div className="col-lg-12">
                     <div className="row mb-2 mt-2 text-center">
-                      <div className="row mb-2 mt-2">
-                        <div className="col-lg-3 mb-2" style={{display:"flex",flexDirection:"column"}}>
+                    <div className="col-lg-12 mb-2">
+                    <label
+                      htmlFor=""
+                      style={{
+                        paddingTop: "15px",
+                        fontWeight: "lighter",
+                      }}
+                    >
+                     {`${alreadyBidded? `Your Eariler Quote was $ ${bidAmount}` : "Please provide a quote for this property"}`}
+                    </label>
+                  </div>
+                      <div className="row mb-2 mt-2" >
+                     
+                    
+                        <div className="col-lg-3 mb-2">
                           <label
                             htmlFor=""
                             style={{
@@ -124,20 +144,12 @@ const Modal = ({
                               fontWeight: "lighter",
                             }}
                           >
-                            Appraisal Quote <span class="req-btn">*</span> :
+                            {`${ alreadyBidded ? "Appraisal updation Quote " : "Appraisal Quote"}`} <span class="req-btn">*</span> :
                           </label>
-                          
-                          {isUpdateBid && <label
-                            htmlFor=""
-                            style={{
-                              paddingTop: "15px",
-                              fontWeight: "lighter",
-                              paddingLeft:"10%"
-                            }}
-                          >
-                            Earlier Quote Value was  <span style={{color:"green"}}>$</span> {bidAmount}
-                          </label>}
                         </div>
+
+                        
+
                         <div className="col-lg-7">
                           <input
                             type="number"
@@ -176,11 +188,13 @@ const Modal = ({
                   </div>
                 </div>
               ) : (
-                <p className="m-3 text-center" style={{ fontSize: "18px" }}>
+                <><p className="m-3 text-center" style={{ fontSize: "18px" }}>
                   Are you confirming that you will quote this property for the
                   given amount : <br />
                   <h3 className="mt-2 text-color"> $ {value}</h3>
                 </p>
+                {alreadyBidded && (<p className="m-3 text-center" style={{ fontSize: "18px" }}> from <span style={{color:"red"}}>$ {bidAmount}</span></p>)}
+                </>
               )}
             </div>
             <hr />
@@ -193,7 +207,7 @@ const Modal = ({
                 </button> */}
               <button
                 className="btn btn-color w-25"
-                onClick={()=>onCloseModalHandler()}
+                onClick={onCloseModalHandler}
               >
                 Cancel
               </button>

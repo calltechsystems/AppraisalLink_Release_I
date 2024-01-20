@@ -508,18 +508,7 @@ export default function Exemple({
                   </div>
                 </li>
                 </ul>
-              ) : ( isBidded.orderStatus <=6 &&
-                 <button
-                          href="#"
-                          className="btn btn-color w-100 mt-1"
-                          style={{ marginLeft: "12px" }}
-                          onClick={()=>openStatusUpdateHandler(isBidded)}
-                        >
-                        <Link href="#">
-                        <span className="flaticon-edit text-light"></span>
-                      </Link>
-                        </button>
-              )}
+              ) :: <span  className="btn btn-success  w-100">Completed</span>}
             </div>
           ),
         };

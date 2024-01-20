@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import Loader from "./Loader";
 import { FaArchive } from "react-icons/fa";
 import { AppraiserStatusOptions } from "../create-listing/data";
+import millify from "millify";
 // import "./SmartTable.css";
 
 const headCells = [
@@ -295,7 +296,7 @@ export default function Exemple({
           orderId: property.orderId ,
           address: `${property.city}-${property.province},${property.zipCode}`,
           estimatedValue: property.estimatedValue
-            ? `$ ${property.estimatedValue}`
+            ? `$ ${millify(property.estimatedValue)}`
             : "$ 0",
           purpose: property.purpose ? property.purpose : "N.A.",
           appraisal_status: isBidded.status === 1 && isBidded.orderStatus ? (
@@ -403,13 +404,13 @@ export default function Exemple({
           bidAmount: property.bidLowerRange,
           lender_information: property.lenderInformation
             ? property.lenderInformation
-            : "NA",
+            : "N.A.",
           urgency:
             property.urgency === 0
               ? "Rush"
               : property.urgency === 1
               ? "Regular"
-              : "",
+              : "N.A.",
 
           action: (
             <div className="print-hidden-column">
@@ -455,7 +456,7 @@ export default function Exemple({
                       className="list-inline-item"
                       data-toggle="tooltip"
                       data-placement="top"
-                      title="Provide Quote"
+                      title={`${isBidded.$id ? "Update/View Quote" : "Provide Quote"}`}
                     >
                       <div
                         className="w-100"
@@ -464,7 +465,9 @@ export default function Exemple({
                             property.bidLowerRange,
                             property.propertyId,
                             isBidded.status < 1,
-                            isBidded.bidAmount
+                            isBidded.bidAmount,
+                            isBidded.$id  ? true : false
+
                           )
                         }
                       >

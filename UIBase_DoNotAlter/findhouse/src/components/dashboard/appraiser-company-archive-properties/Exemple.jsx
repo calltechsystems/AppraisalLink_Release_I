@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import Loader from "./Loader";
 import { FaArchive } from "react-icons/fa";
 import { AppraiserStatusOptions } from "../create-listing/data";
+import millify from "millify";
 // import "./SmartTable.css";
 
 const headCells = [
@@ -293,7 +294,7 @@ export default function Exemple({
           orderId: property.orderId ,
           address: `${property.city}-${property.province},${property.zipCode}`,
           estimatedValue: property.estimatedValue
-            ? `$ ${property.estimatedValue}`
+            ? `$ ${millify(property.estimatedValue)}`
             : "$ 0",
           purpose: property.purpose ? property.purpose : "N.A.",
           appraisal_status: isBidded.status === 1 && isBidded.orderStatus ? (

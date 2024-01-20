@@ -7,6 +7,7 @@ import { encryptionData } from "../../../utils/dataEncryption";
 import { useRouter } from "next/router";
 import Loader from "./Loader";
 import { AppraiserStatusOptions } from "../create-listing/data";
+import millify from "millify";
 // import "./SmartTable.css";
 
 const headCells = [
@@ -284,7 +285,7 @@ export default function Exemple({
             orderId: property.orderId,
             address: `${property.city}-${property.province},${property.zipCode}`,
             estimatedValue: property.estimatedValue
-              ? `$ ${property.estimatedValue}`
+              ? `$ ${millify(property.estimatedValue)}`
               : "$ 0",
             purpose: property.purpose ? property.purpose : "N.A.",
             status: isBidded.bidId ? (

@@ -144,7 +144,7 @@ export default function Exemple({
   setModalOpen,
   setIsCancelProperty,
   setIsHoldProperty,
-  isBidded
+  isBidded,
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [allBids, setBids] = useState([]);
@@ -165,7 +165,7 @@ export default function Exemple({
     return title;
   };
 
-  const openModal = (propertyId, value,toggle) => {
+  const openModal = (propertyId, value, toggle) => {
     if (String(value) === String(1)) {
       setIsHoldProperty(true);
       setPropertyId(propertyId);
@@ -255,12 +255,11 @@ export default function Exemple({
                 <span className="btn bg-warning  w-100">
                   {isHold ? "On Hold" : "Cancelled"}
                 </span>
-              ) :
-              //  property.orderStatus ? (
-              //   <h5>{getOrderValue(isBidded.orderStatus)}</h5>
-              // )
-                (
-                <span className="btn bg-warning  w-100">New</span>
+              ) : (
+                //  property.orderStatus ? (
+                //   <h5>{getOrderValue(isBidded.orderStatus)}</h5>
+                // )
+                <span className="btn bg-warning  w-100">N.A.</span>
               ),
             address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
             remark: property.remark ? property.remark : "N.A.",
@@ -538,7 +537,9 @@ export default function Exemple({
                     className="btn btn-color-table "
                     style={{ border: "1px solid grey" }}
                     // onClick={() => onHoldHandler(property.propertyId, !isHold)}
-                    onClick={() => openModal(property.propertyId, 1,isHold ? 0 : 1)}
+                    onClick={() =>
+                      openModal(property.propertyId, 1, isHold ? 0 : 1)
+                    }
                   >
                     <Link href="#" className="text-light">
                       <FaPause />
@@ -548,15 +549,16 @@ export default function Exemple({
                 {/* )} */}
 
                 {/* {isEditable && ( */}
-                <li 
-                title={!isCancel ? "Order Cancel" : "Remove Cancel"}>
+                <li title={!isCancel ? "Order Cancel" : "Remove Cancel"}>
                   <span
                     className="btn btn-color-table"
                     style={{ border: "1px solid grey" }}
                     // onClick={() =>
                     //   onCancelHandler(property.propertyId, !isCancel)
                     // }
-                    onClick={() => openModal(property.propertyId, 2,isCancel ? 0 : 1)}
+                    onClick={() =>
+                      openModal(property.propertyId, 2, isCancel ? 0 : 1)
+                    }
                   >
                     <Link href="#">
                       <span className="flaticon-garbage text-light"></span>

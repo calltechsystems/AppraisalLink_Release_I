@@ -404,11 +404,7 @@ export default function Exemple({
                   className="w-100"
                   onClick={() => unArchivePropertyHandler(property.propertyId)}
                 >
-                  <button
-                    href="#"
-                    className="btn btn-color w-100 mt-1"
-                    style={{ marginLeft: "12px" }}
-                  >
+                  <button href="#" className="btn btn-color w-100 mt-1">
                     <Link href="#">
                       <span className="text-light">
                         {" "}
