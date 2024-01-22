@@ -227,13 +227,36 @@ export default function Exemple({
       .then((res) => {
         toast.dismiss();
         toast.success("Successfully removed !!! ");
-        window.location.reload();
+        location.reload(true);
       })
       .catch((err) => {
         toast.dismiss();
         toast.error(err?.response?.data?.error);
       });
   };
+  const formatLargeNumber = (number) => {
+    // Convert the number to a string
+    const numberString = number.toString();
+
+    // Determine the length of the integer part
+    const integerLength = Math.floor(Math.log10(Math.abs(number))) + 1;
+
+    // Choose the appropriate unit based on the length of the integer part
+    let unit = '';
+
+    if (integerLength >= 10) {
+        unit = 'B'; // Billion
+    } else if (integerLength >= 7) {
+        unit = 'M'; // Million
+    } else if (integerLength >= 4) {
+        unit = 'K'; // Thousand
+    }
+
+    // Divide the number by the appropriate factor
+    const formattedNumber = (number / Math.pow(10, (integerLength - 1))).toFixed(2);
+
+    return `${formattedNumber}${unit}`;
+};
 
   const onDeletePropertyHandler = () => {};
 
@@ -247,8 +270,14 @@ export default function Exemple({
       second: "numeric",
     };
 
-    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
-    return formattedDate;
+    const originalDate = new Date(dateString);
+
+    // Adjust for Eastern Standard Time (EST) by subtracting 5 hours
+    const estDate = new Date(originalDate.getTime() - (5 * 60 * 60 * 1000));
+
+    // Format the EST date
+    const formattedDate = estDate.toLocaleString("en-US", options);
+ return formattedDate;
   };
 
   const checkWishlistedHandler = (data) => {
@@ -297,7 +326,7 @@ export default function Exemple({
           orderId: property.orderId ,
           address: `${property.city}-${property.province},${property.zipCode}`,
           estimatedValue: property.estimatedValue
-            ? `$ ${property.estimatedValue}`
+            ? `$ ${formatLargeNumber(property.estimatedValue)}`
             : "$ 0",
           purpose: property.purpose ? property.purpose : "N.A.",
           appraisal_status: isBidded.status === 1 && isBidded.orderStatus ? (
@@ -415,7 +444,15 @@ export default function Exemple({
 
           action: (
             <div className="print-hidden-column">
-              {isWait ?  <p className="btn btn-danger  w-100">Cannot perform any actions right now!.</p> : isBidded && isBidded.status !== 1 ? (
+              {
+                isBidded.orderStatus === 6 ?
+                <span
+                className="btn btn-success  w-100"
+                
+              >
+                Accepted
+              </span>
+                : isWait ?  <p className="btn btn-danger  w-100">Cannot perform any actions right now!.</p> : isBidded && isBidded.status !== 1 ? (
                 <ul className="">
                   {isWishlist.id ? (
                     <button

@@ -127,21 +127,21 @@ const SidebarMenu = ({ userData }) => {
               </Link>
             </li>
 
-            {/* <li
+           <li
               className={`treeview ${
                 isSinglePageActive(
-                  "/brokerage-wishlisted",
+                  "/create-listing-1",
                   route.pathname
                 )
                   ? "active"
                   : ""
               }`}
             >
-              <Link href="/brokerage-wishlisted">
-                <i className="flaticon-box"></i>
-                <span>Wishlist</span>
+              <Link href="/create-listing-1">
+                <i className="flaticon-plus"></i>
+                <span>Add New Property</span>
               </Link>
-            </li> */}
+            </li>
 
             <li
               className={`treeview ${

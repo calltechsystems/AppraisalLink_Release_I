@@ -56,7 +56,7 @@ function SmartTable(props) {
           setTotal(data.data.total, 0);
         }
       } catch (e) {
-        console.log("Fetch error", e.message);
+        // console.log("Fetch error", e.message);
       }
       setLoading(false);
     },
@@ -178,7 +178,7 @@ function SmartTable(props) {
     tableWidthFunc,
     fetchData,
   ]);
-  console.log(props.data);
+  // console.log(props.data);
 
   const buildQueryString = (search, page, rowsPerPage) => {
     const queries = [];
@@ -239,7 +239,7 @@ function SmartTable(props) {
 
     setData(tempData);
   };
-  console.log(data.length > 0, data);
+  // console.log(data.length > 0, data);
 
   return (
     <div className="col-12 p-2">
@@ -275,7 +275,7 @@ function SmartTable(props) {
                   <div className="col-lg-6 w-50">
                     <button
                       className="btn btn-color"
-                      onClick={() => props.refreshHandler()}
+                      onClick={() => location.reload(true)}
                       title="Refresh"
                     >
                       <FaRedo />
@@ -391,7 +391,7 @@ function SmartTable(props) {
           {props.noPagination || data.length === 0 || !props.url ? (
             <div className="row">
               {/* <div className="col-12 text-end p-3">
-                {props.data.length > 0 ? props.data.length : 0} Rows
+               
               </div> */}
             </div>
           ) : (

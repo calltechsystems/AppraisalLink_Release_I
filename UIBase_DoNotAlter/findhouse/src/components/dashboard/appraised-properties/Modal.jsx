@@ -7,12 +7,12 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { flip } from "@popperjs/core";
 
+import { CldUploadWidget } from "next-cloudinary";
 const Modal = ({
   modalOpen,
   setModalOpen,
   closeModal,
   currentBid,
-  
   alreadyBidded,
   setIsQuoteModalOpen,
   setIsModalOpen,
@@ -30,6 +30,22 @@ const Modal = ({
 
   const [toggle, setToggle] = useState(false);
 
+  const [selectedImage,setSelectedImage]=useState({});
+
+  const handleUpload = (result) => {
+      // Handle the image upload result here
+      console.log("handleUpload called",result.info);
+      setSelectedImage({url:result.info.secure_url,name:result.info.original_filename+"."+result.info.format});
+      // if (result.info.secure_url) {
+      //   setSelectedImage(result.info.secure_url);
+      //   setProfilePhoto(result.info.secure_url);
+      //   // You can also save the URL to your state or do other operations here
+      // } else {
+      //   // Handle the case when the upload failed
+      //   console.error("Image upload failed");
+      // }
+    };
+
   const onCancelHandler = () => {
     setToggle(false);
     setValue(0);
@@ -43,6 +59,7 @@ const Modal = ({
 
   const onCloseModalHandler = () => {
     setValue("");
+    setSelectedImage({});
     setDescription("");
     setToggle(false);
     setCurrentBid({});
@@ -56,7 +73,13 @@ const Modal = ({
 
     if (bidAmount <= 0 || bidAmount === "") {
       toast.error("Quoted amount should be filled !");
-    } else {
+      return;
+    } 
+    if(!alreadyBidded && !selectedImage){
+      toast.error("Please upload the lender list document !");
+      return ;
+    }
+    else {
       const user = JSON.parse(localStorage.getItem("user"));
 
       const formData = {
@@ -65,17 +88,18 @@ const Modal = ({
         bidAmount: bidAmount,
         description: desp ? desp : "NA",
         token: user.token,
+        lenderListUrl : selectedImage.url
       };
 
       const payload = encryptionData(formData);
       setIsModalOpen(false);
-      toast.loading("Setting a bid");
+      toast.loading(alreadyBidded ? "Updating a bid!" : "Setting a bid");
       axios
         .post("/api/setBid", payload)
         .then((res) => {
           toast.dismiss();
-          toast.success("Successfully set the bid ");
-          window.location.reload();
+          toast.success(alreadyBidded ? "Successfully Updated a bid!" : "Successfully set a bid");
+          location.reload(true);
         })
         .catch((err) => {
           toast.dismiss();
@@ -85,10 +109,40 @@ const Modal = ({
     }
   };
 
+  const formatLargeNumber = (number) => {
+    // Convert the number to a string
+    const numberString = number.toString();
+
+    // Determine the length of the integer part
+    const integerLength = Math.floor(Math.log10(Math.abs(number))) + 1;
+
+    // Choose the appropriate unit based on the length of the integer part
+    let unit = '';
+
+    if (integerLength >= 10) {
+        unit = 'B'; // Billion
+    } else if (integerLength >= 7) {
+        unit = 'M'; // Million
+    } else if (integerLength >= 4) {
+        unit = 'K'; // Thousand
+    }
+
+    // Divide the number by the appropriate factor
+    const formattedNumber = (number / Math.pow(10, (integerLength - 1))).toFixed(2);
+
+    return `${formattedNumber}${unit}`;
+};
+
+
   const openConfirmModal = () => {
     if (!value) {
       toast.error("Quoted amount should be filled !");
-    } else {
+    }
+    if(!alreadyBidded && !selectedImage){
+      toast.error("Please upload the lender list document !");
+      return ;
+    }
+     else {
       setToggle(true);
     }
   };
@@ -130,7 +184,7 @@ const Modal = ({
                         fontWeight: "lighter",
                       }}
                     >
-                     {`${alreadyBidded? `Your Eariler Quote was $ ${bidAmount}` : "Please provide a quote for this property"}`}
+                     {`${alreadyBidded? `Your Eariler Quote was $ ${formatLargeNumber(bidAmount)}` : "Please provide a quote for this property"}`}
                     </label>
                   </div>
                       <div className="row mb-2 mt-2" >
@@ -148,7 +202,7 @@ const Modal = ({
                           </label>
                         </div>
 
-                        
+                      
 
                         <div className="col-lg-7">
                           <input
@@ -160,6 +214,45 @@ const Modal = ({
                           />
                         </div>
                       </div>
+
+                      {!alreadyBidded && (<div className="row">
+                      <div className="col-lg-3 mb-2"> 
+                      <label
+                            htmlFor=""
+                            style={{
+                              paddingTop: "15px",
+                              fontWeight: "lighter",
+                            }}
+                          >
+                          Add Lender List
+                          </label>
+                          </div> 
+                          <div className="col-lg-7">
+                        <label>{selectedImage.name}</label>
+                          <CldUploadWidget
+                        onUpload={handleUpload}
+                        uploadPreset="mpbjdclg"
+                        options={{
+                          cloudName: "dcrq3m6dx", // Your Cloudinary upload preset
+                          maxFiles: 1,
+                        }}
+                      >
+                        {({ open }) => (
+                          <div>
+                            <button
+                              className="btn btn-color profile_edit_button mb-5"
+                              style={{ marginLeft: "0px" }}
+                              onClick={open} // This will open the upload widget
+                            >
+                              Upload +
+                            </button>
+                          </div>
+                        )}
+                      </CldUploadWidget>
+                      </div>
+                      </div>
+                      )}
+
                       <div className="row">
                         <div className="col-lg-3 mb-2">
                           <label
@@ -193,7 +286,7 @@ const Modal = ({
                   given amount : <br />
                   <h3 className="mt-2 text-color"> $ {value}</h3>
                 </p>
-                {alreadyBidded && (<p className="m-3 text-center" style={{ fontSize: "18px" }}> from <span style={{color:"red"}}>$ {bidAmount}</span></p>)}
+                {alreadyBidded && (<p className="m-3 text-center" style={{ fontSize: "18px" }}> from <span style={{color:"red"}}>$ {formatLargeNumber(bidAmount)}</span></p>)}
                 </>
               )}
             </div>

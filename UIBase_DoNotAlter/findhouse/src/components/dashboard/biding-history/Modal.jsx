@@ -69,13 +69,13 @@ const Modal = ({
 
       const payload = encryptionData(formData);
       setIsModalOpen(false);
-      toast.loading("Setting a bid");
+      toast.loading(alreadyBidded ? "Updating a bid!" : "Setting a bid");
       axios
         .post("/api/setBid", payload)
         .then((res) => {
           toast.dismiss();
-          toast.success("Successfully set the bid ");
-          window.location.reload();
+          toast.success(alreadyBidded ? "Successfully Updated a bid!" : "Successfully set a bid");
+            location.reload(true);
         })
         .catch((err) => {
           toast.dismiss();

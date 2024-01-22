@@ -8,24 +8,24 @@ import { useRouter } from "next/router";
 // import "./SmartTable.css";
 
 const headCells = [
-  {
-    id: "AppraiserId",
-    numeric: false,
-    label: "Appraiser ID",
-    width: 150,
-  },
+  // {
+  //   id: "AppraiserId",
+  //   numeric: false,
+  //   label: "Appraiser ID",
+  //   width: 150,
+  // },
   {
     id: "appraiser",
     numeric: false,
-    label: "Appraiser Name",
-    width: 200,
-  },
-  {
-    id: "appraiser_company",
-    numeric: false,
-    label: "Appraiser Company Name",
+    label: "Appraiser / Appraiser Company",
     width: 220,
   },
+  // {
+  //   id: "appraiser_company",
+  //   numeric: false,
+  //   label: "Appraiser Company Name",
+  //   width: 220,
+  // },
   {
     id: "quote",
     numeric: false,
@@ -272,7 +272,25 @@ export default function Exemple({
 
           action:
             property.status === 1 ? (
-              <h5 className="btn btn-success">Accepted</h5>
+              <div>
+                <h5 className="btn btn-success m-1">Accepted</h5>
+                <li
+                  className="list-inline-item"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Approved Lender List"
+                >
+                  <div className="btn btn-color fw-bold m-1">
+                    <Link
+                      href="assets/images/Terms & Conditions.pdf"
+                      target="_blank"
+                      className="form-check-label text-primary"
+                    >
+                      <span className="flaticon-pdf text-light"></span>
+                    </Link>
+                  </div>
+                </li>
+              </div>
             ) : property.status === 0 ? (
               <ul className="">
                 <li
@@ -306,6 +324,23 @@ export default function Exemple({
                     <a href="#" className="btn btn-danger">
                       Decline
                     </a>
+                  </div>
+                </li>
+
+                <li
+                  className="list-inline-item"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Approved Lender List"
+                >
+                  <div className="btn btn-color fw-bold m-1">
+                    <Link
+                      href="assets/images/Terms & Conditions.pdf"
+                      target="_blank"
+                      className="form-check-label text-primary"
+                    >
+                      <span className="flaticon-pdf text-light"></span>
+                    </Link>
                   </div>
                 </li>
               </ul>
@@ -366,7 +401,7 @@ export default function Exemple({
           }
         });
 
-        console.log(updatedBids)
+        console.log(updatedBids);
         setProperties(updatedBids);
       })
       .catch((err) => {

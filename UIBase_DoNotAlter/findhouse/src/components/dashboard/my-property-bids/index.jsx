@@ -480,7 +480,7 @@ const Index = ({ propertyId }) => {
                       </h5>
                       <span className="col-lg-1">:</span>
                       <span className="col-lg-6 text-start">
-                        {appInfo.email}
+                        {appInfo.email ? appInfo.email : "N.A."}
                       </span>
                     </div>
                     <div className="row offset-1">
@@ -498,7 +498,7 @@ const Index = ({ propertyId }) => {
                       </h5>
                       <span className="col-lg-1">:</span>
                       <span className="col-lg-6 text-start">
-                        {appInfo.phoneNumber}
+                        {appInfo.companyName}
                       </span>
                     </div>
                     <div className="row offset-1">
@@ -507,7 +507,7 @@ const Index = ({ propertyId }) => {
                       </h5>
                       <span className="col-lg-1">:</span>
                       <span className="col-lg-6 text-start">
-                        {appInfo.phoneNumber}
+                        {appInfo.designation}
                       </span>
                     </div>
                     <div className="row offset-1">

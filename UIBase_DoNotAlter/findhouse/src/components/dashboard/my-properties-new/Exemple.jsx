@@ -4,7 +4,6 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 import axios, { all } from "axios";
 import millify from "millify";
-import AppraiserStatusOptions from "../create-listing/data";
 import {
   FaArchive,
   FaHandHoldingHeart,
@@ -155,10 +154,57 @@ export default function Exemple({
     return data.sort((a, b) => b.order_id - a.order_id);
   };
 
+  const AppraiserStatusOptions = [
+    {
+      id: -1,
+      type: "Select...",
+      value: "",
+    },
+    {
+      id: 0,
+      type: "Applicant Contacted by appraiser",
+      value: "Applicant Contacted by appraiser",
+    },
+    {
+      id: 1,
+      type: "Appraisal Visit Confirmed",
+      value: "Appraisal Visit Confirmed",
+    },
+    {
+      id: 2,
+      type: "Appraisal Report Writing in Progress",
+      value: "Appraisal Report Writing in Progress",
+    },
+    {
+      id: 3,
+      type: "Appraisal Report Writing Completed and Submitted",
+      value: "Appraisal Report Writing Completed and Submitted",
+    },
+  
+    {
+      id: 4,
+      type: "Assignment on Hold",
+      value: "Assignment on Hold",
+    },
+  
+    {
+      id: 5,
+      type: "Assignment Cancelled new status to be added",
+      value: "Assignment Cancelled new status to be added",
+    },
+  
+    {
+      id: 6,
+      type: "Appraisal visit completed; report writing is pending until fee received",
+      value:
+        "Appraisal visit completed; report writing is pending until fee received",
+    },
+  ];
+
   const getOrderValue = (val) => {
     let title = "";
-    AppraiserStatusOptions.map((status) => {
-      if (String(status.value) === String(val)) {
+    AppraiserStatusOptions?.map((status) => {
+      if (String(status.id) === String(val)) {
         title = status.type;
       }
     });
@@ -253,12 +299,12 @@ export default function Exemple({
             appraisal_status:
               isHold || isCancel ? (
                 <span className="btn bg-warning  w-100">
-                  {isHold ? "On Hold" : "Cancelled"}
+                  {isHold ? "On Hold" : "OnCancelled"}
                 </span>
               ) : (
-                //  property.orderStatus ? (
-                //   <h5>{getOrderValue(isBidded.orderStatus)}</h5>
-                // )
+                 property.orderStatus ? (
+                  <span className="btn bg-warning  w-100">{getOrderValue(property.orderStatus)}</span>
+                ) :
                 <span className="btn bg-warning  w-100">N.A.</span>
               ),
             address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,

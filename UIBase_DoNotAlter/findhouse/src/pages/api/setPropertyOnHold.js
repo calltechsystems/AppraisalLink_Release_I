@@ -17,23 +17,26 @@ async function handler(request, response) {
 
     const { token, propertyId, value } = body;
 
-
-    const userResponse = await axios.put(`${domain}/Property/UpdateIsOnHold`, {}, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      params:{
-        propertyId:propertyId,
-        value:value
+    const userResponse = await axios.put(
+      `${domain}/Property/UpdateIsOnHold`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        params: {
+          propertyId: propertyId,
+          value: value,
+        },
       }
-    });
+    );
     const user = userResponse.data;
 
     if (!user) {
       return response.status(404).json({ error: "User Not Found" });
     }
-    
+
     return response.status(200).json({ msg: "OK", userData: user });
   } catch (err) {
     console.log(err);

@@ -17,6 +17,7 @@ const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   
+  const [assignAppraiser,setAssignAppraiser]=useState([]);
   const [isStatusModal,setIsStatusModal] = useState(false);
   const [toggleId, setToggleId] = useState(-1);
   const [toggleWishlist, setToggleWishlist] = useState(0);
@@ -32,6 +33,8 @@ const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [lowRangeBid, setLowRangeBid] = useState("");
   const [propertyId, setPropertyId] = useState(null);
+
+  const [assignAppraiserId,setassignAppraiserId] = useState(-1);
   
   const [wishlistedProperties,setWishlistedProperties] = useState([]);
   const [updatedCode, setUpdatedCode] = useState(false);
@@ -62,16 +65,14 @@ const Index = () => {
     if(remark === "" ){
       toast.error("Remark should be filled!!");
     }
-    else if(orderStatus <= currentBid.orderStatus){
-      toast.error("Select a proper quote status Please !!")
-    }
     else{
     const data = JSON.parse(localStorage.getItem("user"));
     const payload = {
       token:data.token,
       bidid:currentBid.bidId,
       OrderStatus:Number(orderStatus),
-      remark:remark
+      remark:remark,
+      modifiedDate : statusDate
     };
 
     const encryptedBody = encryptionData(payload);
@@ -79,7 +80,7 @@ const Index = () => {
     axios.put("/api/updateOrderStatus",encryptedBody).then((res)=>{
       toast.dismiss();
       toast.success("Successfully updated!!");
-      window.location.reload();
+      location.reload(true);
     })
     .catch((err)=>{
       toast.dismiss();
@@ -124,6 +125,9 @@ const Index = () => {
     if(String(value) === "Appraisal Visit Confirmed"){
       setOpenDate(true);
     }
+    if(String(value) !== "Appraisal Visit Confirmed"){
+      setOpenDate(false);
+    }
     let selectedValue = 0;
     AppraiserStatusOptions.map((prop,index)=>{
       if(String(prop.type) === String(value)){
@@ -132,12 +136,8 @@ const Index = () => {
       }
     })
 
-    if(currentBid.orderStatus >= selectedValue){
-      toast.error("Select the next status please !!");
-    }
-    else{
     setOrderStatus(selectedValue);
-    }
+    
   }
 
   let [selectedBroker ,setSelectedBroker]=useState({});
@@ -156,18 +156,23 @@ const Index = () => {
     setOpenBrokerModal(true);
   };
 
+  
+
   const [selectedAppraiser,setSelectedAppraiser] = useState(-1);
   const [assignPropertyId,setAssignPropertyId] = useState(-1);
 
   const assignAppraiserUpdateHandler = ()=>{
 
- 
 
+   if(assignAppraiserId <=0){
+    toast.error("Please select only active and appropriate appraisers!");
+   }
+   else{
     const data = JSON.parse(localStorage.getItem("user"));
     const payload = {
     companyid:data.appraiserCompany_Datails.appraiserCompanyId,
     propertyid:Number(assignPropertyId),
-    appraiserid:Number(selectedAppraiser)
+    appraiserid:Number(assignAppraiserId)
   };
 
   const encryptedData = encryptionData(payload);
@@ -180,13 +185,14 @@ const Index = () => {
   .then((res)=>{
     toast.dismiss();
     toast.success("Successfully assigned the property!");
-    window.location.reload();
+    location.reload(true);
   })
   .catch((err)=>{
     toast.dismiss();
     toast.error(err);
   })
   setAssignPropertyId(-1);
+}
 }
 
 
@@ -216,6 +222,8 @@ const closeAssignModal = ()=>{
       window.removeEventListener("click", activityHandler);
     };
   }, []);
+
+  console.log("appraiser",allBrokers);
 
   useEffect(() => {
     // Check for inactivity every minute
@@ -328,7 +336,7 @@ const closeAssignModal = ()=>{
     }).then((res)=>{
       toast.dismiss();
       toast.success("Archived property!");
-      window.location.reload();
+      location.reload(true);
     })
     .catch((err)=>{
       toast.dismiss();
@@ -392,10 +400,31 @@ const closeAssignModal = ()=>{
 
   const brokerInfoHandler = (orderId) => {
     const printWindow = window.open("", "_blank");
+    printWindow.document.write("<html><head><title></title></head><body>");
+
+    // Add the header section
+    printWindow.document.write(`
+      <div class="col-lg-12">
+        <div class="row">
+          <div class="col-lg-12 text-center" style="margin-left:250px; margin-top:50px" >
+            <a href="/" class="">
+              <img width="40" height="45" class="logo1 img-fluid" style="margin-top:-20px" src="/assets/images/logo.png" alt="header-logo2.png" />
+              <span style="color:#2e008b; font-weight:bold; font-size:18px; margin-top:20px">
+                Appraisal
+              </span>
+              <span style="color:#97d700; font-weight:bold; font-size:18px; margin-top:20px">
+                Land
+              </span>
+            </a>
+          </div>
+        </div>
+        <hr style="width:27%; margin-left:200px; color:#2e008b" />
+      </div>
+    `);
+
     printWindow.document.write(
-      "<html><head><title>Broker Information</title></head><body>"
+      `<h3 style="margin-left:200px;">Broker Details of Order No. ${orderId}</h3>`
     );
-    printWindow.document.write("<h1>" + `Broker info of order ${orderId}` + "</h1>");
     printWindow.document.write(
       '<button style="display:none;" onclick="window.print()">Print</button>'
     );
@@ -441,14 +470,34 @@ const closeAssignModal = ()=>{
   
   const PropertyInfoHandler = (orderId) => {
     const printWindow = window.open("", "_blank");
+    printWindow.document.write("<html><head><title></title></head><body>");
+
+    // Add the header section
+    printWindow.document.write(`
+      <div class="col-lg-12">
+        <div class="row">
+          <div class="col-lg-12 text-center" style="margin-left:250px; margin-top:50px" >
+            <a href="/" class="">
+              <img width="40" height="45" class="logo1 img-fluid" style="margin-top:-20px" src="/assets/images/logo.png" alt="header-logo2.png" />
+              <span style="color:#2e008b; font-weight:bold; font-size:18px; margin-top:20px">
+                Appraisal
+              </span>
+              <span style="color:#97d700; font-weight:bold; font-size:18px; margin-top:20px">
+                Land
+              </span>
+            </a>
+          </div>
+        </div>
+        <hr style="width:27%; margin-left:200px; color:#2e008b" />
+      </div>
+    `);
+
     printWindow.document.write(
-      "<html><head><title>Property Information</title></head><body>"
+      `<h3 style="margin-left:200px;">Property Details of Order No. ${orderId}</h3>`
     );
-    printWindow.document.write("<h1>" + `Property info of order ${orderId}` + "</h1>");
     printWindow.document.write(
       '<button style="display:none;" onclick="window.print()">Print</button>'
     );
-
     // Clone the table-container and remove the action column
     const tableContainer = document.getElementById("property-info-container");
     const table = tableContainer.querySelector("table");
@@ -518,7 +567,7 @@ const closeAssignModal = ()=>{
 
     const formData = {
       userId: userData.userId,
-      propertyId: selectedAppraiser,
+      propertyId: id,
       token: userData.token,
     };
 
@@ -530,7 +579,7 @@ const closeAssignModal = ()=>{
       .then((res) => {
         toast.dismiss();
         toast.success("Successfully added !!! ");
-        window.location.reload();
+        location.reload(true);
       })
       .catch((err) => {
         toast.dismiss();
@@ -676,6 +725,7 @@ const closeAssignModal = ()=>{
                           properties={
                             searchInput === "" ? properties : filterProperty
                           }
+                          setAssignAppraiser={setAssignAppraiser}
                           setCurrentBid={setCurrentBid}
                           setUpdatedCode={setUpdatedCode}
                           onWishlistHandler={onWishlistHandler}
@@ -1480,14 +1530,14 @@ const closeAssignModal = ()=>{
               {assignModal && (
                 <div className="modal">
                   <div className="modal-content">
-                    <h3 className="text-center">Quote Status Updation</h3>
+                    <h3 className="text-center">Assign Appraiser</h3>
                     
                     <select
                   required
                   className="form-select"
                   data-live-search="true"
                   data-width="100%"
-                  onChange={(e)=>setSelectedAppraiser(e.target.value)}
+                  onChange={(e)=>setassignAppraiserId(e.target.value)}
                   // value={buildinRef}
                   // onChange={(e) => setBuildinRef(e.target.value)}
                   // onChange={(e) => setBuildinRef(e.target.value)}
@@ -1497,13 +1547,15 @@ const closeAssignModal = ()=>{
                           paddingBottom: "15px",
                           backgroundColor: "#E8F0FE"
                         }}
+
                 >
-                  {allAppraiser.map((item, index) => {
+                <option key={-1} value={0} >....</option>
+                  {assignAppraiser.map((item, index) => {
                     
-                    <option value={0}>....</option>
+                    
                     return (
-                      <option key={item.id} value={item.$id}>
-                        {item.firstName} {item.lastName}
+                      <option key={item.id} value={item.id} disabled={!item.isActive}>
+                        { item.firstName ? `${item.firstName} ${item.lastName}`: `Appraiser ${index+1}`}
                       </option>
                     );
                   })}
@@ -1553,7 +1605,7 @@ const closeAssignModal = ()=>{
                   {AppraiserStatusOptions.map((item, index) => {
                     
                     return (
-                      <option key={item.id} value={item.value}  disabled={currentBid.orderStatus >= index}>
+                      <option key={item.id} value={item.value}  >
                         {item.type}
                       </option>
                     );

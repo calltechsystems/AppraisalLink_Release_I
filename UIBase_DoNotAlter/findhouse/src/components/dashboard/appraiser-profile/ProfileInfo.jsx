@@ -19,15 +19,16 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
       "/assets/images/home/placeholder_01.jpg"
   );
 
+
   const hiddenStyle = { backgroundColor: "#E8F0FE", display: "none" };
   const viewStyle = { backgroundColor: "#E8F0FE", display: "block" };
-  const [edit, setEdit] = useState(!userData.appraiser_Details?.firstName);
+  const [edit, setEdit] = useState(true);
 
   const [firstNameRef, setFirstNameRef] = useState(
     userData?.appraiser_Details?.firstName || ""
   );
 
-  const [designations, setDesignation] = useState("");
+  const [designations,setDesignation]= useState("");
   const [middleNameRef, setMiddleNameRef] = useState(
     userData?.appraiser_Details?.middleName || ""
   );
@@ -48,6 +49,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   const [addressLineTwoRef, setAddressLineTwoRef] = useState(
     userData?.appraiser_Details?.adressLine2 || ""
   );
+
+  
 
   const [cityRef, setCityRef] = useState(
     userData?.appraiser_Details?.city || ""
@@ -72,15 +75,19 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
 
   const [otherDesignation, setOtherDesignation] = useState("");
   const [setODesignation, setSetODesignation] = useState(false);
+  
 
-  useEffect(() => {
-    if (String(designations) === "Other") {
+  useEffect(()=>{
+
+    if(String(designations) === "Other"){
       setSetODesignation(true);
-    } else {
+    }
+    else{
       setSetODesignation(false);
     }
-    console.log(setODesignation);
-  }, [designations]);
+    console.log(setODesignation)
+
+  },[designations]);
 
   // const [designation, setDesignation] = useState(
   //   userData?.brokerage_Details?.designation || ""
@@ -92,9 +99,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   const [streetNumber, setStreetNumber] = useState(
     userData.appraiser_Details?.streetNumber || ""
   );
-  const [unit, setUnit] = useState(
-    userData?.appraiser_Details?.apartmentNo || ""
-  );
+  const [unit, setUnit] = useState(userData?.appraiser_Details?.apartmentNo || "");
 
   const uploadProfile = (e) => {
     const file = e.target.files[0];
@@ -203,7 +208,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
       toast.loading("Updating ...");
       const encryptedData = encryptionData(payload);
       axios
-        .put("/api/updateAppraiserProfile", encryptedData)
+        .put("/api/updateAppraiserCompanyProfile", encryptedData)
         .then((res) => {
           toast.success("Successfully Updated Profile!");
           console.log(res.data.userData);
@@ -327,7 +332,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
               </div>
               <div className="col-lg-9">
                 <div className="row mb-2">
-                  <h3 className="heading-forms">Appraiser Information</h3>
+                  <h3>Appraiser Information</h3>
                   <hr />
                   <div className="col-lg-12 mb-3">
                     <div className="row">
@@ -396,12 +401,11 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                     <div className="row">
                       <div className="col-lg-4">
                         <label htmlFor="" style={{ paddingTop: "10px" }}>
-                          Company Name <span class="req-btn">*</span>
+                          Company Name{" "}
                         </label>
                       </div>
                       <div className="col-lg-7">
                         <input
-                          required
                           type="text"
                           className="form-control"
                           style={{ backgroundColor: "#E8F0FE" }}
@@ -417,7 +421,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                     <div className="row">
                       <div className="col-lg-4">
                         <label htmlFor="" style={{ paddingTop: "10px" }}>
-                          Phone Number (Primary)<span class="req-btn">*</span>
+                          Phone Number <span class="req-btn">*</span>
                         </label>
                       </div>
                       <div className="col-lg-7">
@@ -430,27 +434,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           value={phoneNumberRef}
                           onChange={(e) => setPhoneNumberRef(e.target.value)}
                           disabled={!edit}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-12 mb-3">
-                    <div className="row">
-                      <div className="col-lg-4">
-                        <label htmlFor="" style={{ paddingTop: "10px" }}>
-                          Cell Number
-                        </label>
-                      </div>
-                      <div className="col-lg-7">
-                        <input
-                          type="text"
-                          required
-                          className="form-control"
-                          id="formGroupExampleInput3"
-                          style={{ backgroundColor: "#E8F0FE" }}
-                          // value={phoneNumberRef}
-                          // onChange={(e) => setPhoneNumberRef(e.target.value)}
-                          // disabled={!edit}
                         />
                       </div>
                     </div>
@@ -495,7 +478,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                             paddingTop: "15px",
                             paddingBottom: "15px",
                             backgroundColor: "#E8F0FE",
-                            color: "black",
+                            color:"black"
                           }}
                         >
                           {designation.map((item, index) => {
@@ -507,24 +490,27 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           })}
                         </select>
                       </div>
-                      {setODesignation && (
-                        <div id="other-div">
-                          <input
-                            required
-                            // style={setODesignation ? viewStyle : hiddenStyle}
-                            onChange={(e) =>
-                              setOtherDesignation(e.target.value)
-                            }
-                            value={otherDesignation}
-                            type="text"
-                            className="form-control"
-                            id="formGroupExampleInput3"
-                            style={{ backgroundColor: "#E8F0FE" }}
-                            maxLength={30}
-                          />
-                        </div>
-                      )}
+                      {setODesignation &&
+                      <div id="other-div">
+                        <input
+                          required
+                          // style={setODesignation ? viewStyle : hiddenStyle}
+                          onChange={(e) =>
+                            setOtherDesignation(e.target.value)
+                          }
+                          value={otherDesignation}
+                          type="text"
+                          className="form-control"
+                          id="formGroupExampleInput3"
+                          style={{ backgroundColor: "#E8F0FE" }}
+                          maxLength={30}
+                        />
+                    </div> }
                     </div>
+
+
+
+                   
                   </div>
 
                   <div className="col-lg-12 mb-3">
@@ -535,9 +521,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                             className="form-check-input mt-3"
                             type="checkbox"
                             value=""
-                            required
                             id="terms"
-                            checked
                             style={{ border: "1px solid black" }}
                           />
                           <label
@@ -579,9 +563,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                             className="form-check-input mt-3"
                             type="checkbox"
                             value=""
-                            required
                             id="terms"
-                            checked
                             style={{ border: "1px solid black" }}
                           />
                           <label
@@ -618,8 +600,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       </div>
                     </div>
                   </div>
-
-                  <h3 className="mt-4 heading-forms">Address</h3>
+                  <h3 className="mt-4">Address</h3>
                   <hr />
                   <div className="col-lg-12 mb-3">
                     <div className="row">
@@ -723,6 +704,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           className="form-select"
                           data-live-search="true"
                           data-width="100%"
+                          
                           onChange={(e) => setStateRef(e.target.value.value)}
                           value={stateRef}
                           disabled={!edit}
@@ -934,6 +916,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           <button
                             className="btn btn5 m-1"
                             // onClick={cancelHandler}
+                            onClick={()=>setShowCard(true)}
                           >
                             Cancel
                           </button>

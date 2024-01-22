@@ -9,6 +9,7 @@ import Loader from "./Loader";
 import { FaArchive } from "react-icons/fa";
 import { AppraiserStatusOptions } from "../create-listing/data";
 import millify from "millify";
+import { CldUploadWidget } from "next-cloudinary";
 // import "./SmartTable.css";
 
 const headCells = [
@@ -96,6 +97,12 @@ const headCells = [
     id: "lender_information",
     numeric: false,
     label: "Lender Information",
+    width: 200,
+  },
+  {
+    id: "lender_information_btn",
+    numeric: false,
+    label: "Approved Lender List",
     width: 200,
   },
  
@@ -227,7 +234,7 @@ export default function Exemple({
       .then((res) => {
         toast.dismiss();
         toast.success("Successfully removed !!! ");
-        window.location.reload();
+        location.reload(true);
       })
       .catch((err) => {
         toast.dismiss();
@@ -405,6 +412,7 @@ export default function Exemple({
           lender_information: property.lenderInformation
             ? property.lenderInformation
             : "N.A.",
+            lender_information_btn:"N.A.",
           urgency:
             property.urgency === 0
               ? "Rush"
@@ -450,7 +458,6 @@ export default function Exemple({
                       }
                     </li>
                   )}
-
                   {(!isBidded.$id || isBidded?.status < 1) && (
                     <li
                       className="list-inline-item"
@@ -509,7 +516,7 @@ export default function Exemple({
                   </div>
                 </li>
                 </ul>
-              ) : ( isBidded.orderStatus <=6 &&
+              ) : ( isBidded.orderStatus <6 &&
                  <button
                           href="#"
                           className="btn btn-color w-100 mt-1"
@@ -664,6 +671,7 @@ export default function Exemple({
     console.log("end", bids, properties, wishlist);
     setRefresh(false);
   }, [refresh]);
+
   // console.log(sortObjectsByOrderIdDescending(updatedData));
   return (
     <>

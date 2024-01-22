@@ -98,7 +98,6 @@ const headCells = [
     label: "Lender Information",
     width: 200,
   },
- 
   {
     id: "broker",
     numeric: false,
@@ -133,7 +132,7 @@ export default function Exemple({
   setCurrentBid,
   setAllAppraiser,
   setAssignPropertyId,
-
+  setAssignAppraiser,
   setAssignModal,
   setIsStatusModal,
   setProperties,
@@ -156,6 +155,7 @@ export default function Exemple({
   const [hideAction, setHideAction] = useState(false);
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
+  const [assignedProperties,setAssignedProperties]=useState([]);
   let tempData = [];
 
   const [allArchive,setAllArchive]=useState([]);
@@ -231,7 +231,7 @@ export default function Exemple({
       .then((res) => {
         toast.dismiss();
         toast.success("Successfully removed !!! ");
-        window.location.reload();
+        location.reload(true);
       })
       .catch((err) => {
         toast.dismiss();
@@ -251,9 +251,41 @@ export default function Exemple({
       second: "numeric",
     };
 
-    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
+    const originalDate = new Date(dateString);
+
+    // Adjust for Eastern Standard Time (EST) by subtracting 5 hours
+    const estDate = new Date(originalDate.getTime() - (5 * 60 * 60 * 1000));
+
+    // Format the EST date
+    const formattedDate = estDate.toLocaleString("en-US", options);
+
     return formattedDate;
   };
+
+
+  const formatLargeNumber = (number) => {
+    // Convert the number to a string
+    const numberString = number.toString();
+
+    // Determine the length of the integer part
+    const integerLength = Math.floor(Math.log10(Math.abs(number))) + 1;
+
+    // Choose the appropriate unit based on the length of the integer part
+    let unit = '';
+
+    if (integerLength >= 10) {
+        unit = 'B'; // Billion
+    } else if (integerLength >= 7) {
+        unit = 'M'; // Million
+    } else if (integerLength >= 4) {
+        unit = 'K'; // Thousand
+    }
+
+    // Divide the number by the appropriate factor
+    const formattedNumber = (number / Math.pow(10, (integerLength - 1))).toFixed(2);
+
+    return `${formattedNumber}${unit}`;
+};
 
   const checkWishlistedHandler = (data) => {
     let temp = {};
@@ -270,6 +302,16 @@ export default function Exemple({
     let temp = true;
     return temp;
   };
+
+  const checkInAssignedProperty = (id)=>{
+    let isAssigned = false;
+    assignedProperties.map((prop,index)=>{
+      if(String(prop.propertyId) === String(id)){
+        isAssigned = true;
+      }
+    })
+    return isAssigned;
+  }
 
   const openAssignModalHandler=(property)=>{
     setAssignPropertyId(property.$id);
@@ -292,9 +334,10 @@ export default function Exemple({
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
         
+        const isAssigned = checkInAssignedProperty(property.propertyId);
         const isArchive = foundArchiveHandler(property.propertyId);
 
-        if(!isArchive){
+        if(!isArchive && !isAssigned){
           if(isBidded.status === 1){
             console.log(getOrderValue(isBidded.orderStatus))
           }
@@ -303,7 +346,7 @@ export default function Exemple({
           orderId: property.orderId ,
           address: `${property.city}-${property.province},${property.zipCode}`,
           estimatedValue: property.estimatedValue
-            ? `$ ${millify(property.estimatedValue)}`
+            ? `$ ${formatLargeNumber(property.estimatedValue)}`
             : "$ 0",
           purpose: property.purpose ? property.purpose : "N.A.",
           appraisal_status: isBidded.status === 1 && isBidded.orderStatus ? (
@@ -412,6 +455,7 @@ export default function Exemple({
           lender_information: property.lenderInformation
             ? property.lenderInformation
             : "NA",
+          lender_information_btn:"N.A.",
           urgency:
             property.urgency === 0
               ? "Rush"
@@ -435,7 +479,22 @@ export default function Exemple({
                         src="https://png.pngtree.com/png-clipart/20200226/original/pngtree-3d-red-heart-cute-valentine-romantic-glossy-shine-heart-shape-png-image_5315044.jpg"
                       />
                     </button>
-                  ) : (
+                  ) :
+                  isBidded.orderStatus === 6 ? 
+                  <span
+                  className="btn btn-success  w-100"
+                  
+                >
+                  Completed
+                </span> :
+                isBidded.status === 2 ? 
+                  <span
+                  className="btn btn-danger  w-100"
+                  
+                >
+                  Rejected
+                </span> :
+                 (
                     <li
                       className="list-inline-item"
                       title="Wishlist Property"
@@ -536,9 +595,10 @@ export default function Exemple({
                   </Link>
                     </button>
                   </div>
+
                 </li>
                 </ul>
-              ) : ( isBidded.orderStatus <=6 &&
+              ) : ( isBidded.orderStatus <6 &&
                  <button
                           href="#"
                           className="btn btn-color w-100 mt-1"
@@ -580,6 +640,8 @@ export default function Exemple({
     };
     let tempProperties = [],
       tempWishlist = [];
+
+    const startDate = new Date();
     axios
       .get("/api/getPropertiesById", {
         headers: {
@@ -591,6 +653,8 @@ export default function Exemple({
         },
       })
       .then((res) => {
+        const endDate = new Date();
+        console.log("listedProperties",endDate - startDate);
         const temp = res.data.data.property.$values;
 
         tempProperties = temp.filter((prop,index)=>{
@@ -606,6 +670,8 @@ export default function Exemple({
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
+
+
     axios
       .get("/api/appraiserWishlistedProperties", {
         headers: {
@@ -614,6 +680,8 @@ export default function Exemple({
         },
       })
       .then((res) => {
+        const endDate = new Date();
+        console.log("wishlisted",endDate - startDate);
         const tempData = res.data.data.$values;
 
         // setAllWishlistedProperties(res.data.data.$values);
@@ -641,6 +709,8 @@ export default function Exemple({
       })
       .then((res) => {
         console.log(res);
+        const endDate = new Date();
+        console.log("bidded",endDate - startDate);
         tempBids = res.data.data.result.$values;
         const updatedBids = tempBids.filter((prop,index)=>{
           if(String(prop.appraiserUserId) === String(data.userId)){
@@ -664,6 +734,7 @@ export default function Exemple({
         },
       })
       .then((res) => {
+        console.log("kj");    
         setAllBrokers(res.data.data.$values);
        
       })
@@ -673,13 +744,35 @@ export default function Exemple({
       });
 
       axios
-      .get("/api/getAllAppraiser", {
+      .get("/api/getAllAssignProperties", {
         headers: {
           Authorization: `Bearer ${data.token}`,
         },
       })
       .then((res) => {
-        setAllAppraiser(res.data.data.$values);
+        const endDate = new Date();
+        console.log("assign prop",endDate - startDate);
+        setAssignedProperties(res.data.data.$values);
+       
+      })
+      .catch((err) => {
+        setErrorMessage(err?.response?.data?.error);
+        setModalIsOpenError(true);
+      });
+
+      axios
+      .get("/api/getAllAppraiserByCompanyId", {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+        params:{
+          userId : data.appraiserCompany_Datails?.appraiserCompanyId
+        }
+      })
+      .then((res) => {
+        const endDate = new Date();
+        console.log("all appraiser by company",endDate - startDate);
+        setAssignAppraiser(res.data.data.appraisers.$values)
        
       })
       .catch((err) => {
@@ -694,6 +787,8 @@ export default function Exemple({
         },
       })
       .then((res) => {
+        const endDate = new Date();
+        console.log("archive propertie",endDate - startDate);
         setAllArchive(res.data.data.$values);
        
       })

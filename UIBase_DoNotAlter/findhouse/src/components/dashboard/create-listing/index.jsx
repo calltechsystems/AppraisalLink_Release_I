@@ -865,7 +865,7 @@ const Index = ({ isView, propertyData }) => {
                           {/* <hr style={{ color: "#2e008b" }} /> */}
                         </h4>
                       </div>
-                      <hr style={{ color: "#2e008b" }} />
+                      {/* <hr style={{ color: "#2e008b" }} /> */}
 
                       <LocationField
                         isDisable={isDisable}
@@ -911,7 +911,7 @@ const Index = ({ isView, propertyData }) => {
                         Additional Property Information
                       </h4>
                     </div>
-                    <hr style={{ color: "#2e008b" }} />
+                    {/* <hr style={{ color: "#2e008b" }} /> */}
                     <CreateList
                       isDisable={isDisable}
                       errorLabel={errorLabel}
@@ -978,7 +978,7 @@ const Index = ({ isView, propertyData }) => {
                           {/* <hr style={{ color: "#2e008b" }} /> */}
                         </h4>
                       </div>
-                      <hr style={{ color: "#2e008b" }} />
+                      {/* <hr style={{ color: "#2e008b" }} /> */}
 
                       <DetailedInfo
                         isDisable={isDisable}

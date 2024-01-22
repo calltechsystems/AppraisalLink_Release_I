@@ -16,6 +16,7 @@ import { AppraiserStatusOptions } from "../create-listing/data";
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
+  
   const [isStatusModal,setIsStatusModal] = useState(false);
   const [toggleId, setToggleId] = useState(-1);
   const [toggleWishlist, setToggleWishlist] = useState(0);
@@ -31,7 +32,6 @@ const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [lowRangeBid, setLowRangeBid] = useState("");
   const [propertyId, setPropertyId] = useState(null);
-
   
   const [wishlistedProperties,setWishlistedProperties] = useState([]);
   const [updatedCode, setUpdatedCode] = useState(false);
@@ -44,7 +44,9 @@ const Index = () => {
 
   const [refresh, setRefresh] = useState(false);
 
+  const [orderStatus,setOrderStatus]=useState(-1);
     
+  const [allBrokers,setAllBrokers]=useState([]);
   const [start,setStart]=useState(0);
   
   const [end,setEnd]=useState(4);
@@ -52,37 +54,43 @@ const Index = () => {
   const closeErrorModal = () => {
     setModalIsOpenError(false);
   };
-  const [currentBid,setCurrentBid]=useState(-1);
+
+  const [remark,setRemark]=useState("");
 
   const handleStatusUpdateHandler = ()=>{
-
-    const userData = JSON.parse(localStorage.getItem("user"));
-
+    
+    if(remark === "" ){
+      toast.error("Remark should be filled!!");
+    }
+    else if(orderStatus <= currentBid.orderStatus){
+      toast.error("Select a proper quote status Please !!")
+    }
+    else{
+    const data = JSON.parse(localStorage.getItem("user"));
     const payload = {
-      token:userData.token,
-      bidid:currentBid,
+      token:data.token,
+      bidid:currentBid.bidId,
       OrderStatus:Number(orderStatus),
       remark:remark
     };
-
-
 
     const encryptedBody = encryptionData(payload);
     toast.loading("Updating order status!!");
     axios.put("/api/updateOrderStatus",encryptedBody).then((res)=>{
       toast.dismiss();
       toast.success("Successfully updated!!");
-      window.location.reload();
+      location.reload(true);
     })
     .catch((err)=>{
       toast.dismiss();
-      toast.error(err);
+      toast.error(err?.response?.data?.error);
     });
-
-    setCurrentBid(-1);
-    setIsStatusModal(false);
   }
 
+    setRemark("");
+    setCurrentBid({});
+    setIsStatusModal(false);
+  }
 
   const closeStatusUpdateHandler = ()=>{
     setOpenDate(false);
@@ -100,7 +108,6 @@ const Index = () => {
     setIsQuoteModalOpen(false);
   };
 
-
   const openQuoteModal = () => {
     setIsModalOpen(false);
     setIsQuoteModalOpen(true);
@@ -109,11 +116,30 @@ const Index = () => {
   const [openDate,setOpenDate] = useState(false);
   const [statusDate,setStatusDate]=useState("");
 
+  const [allAppraiser,setAllAppraiser]=useState([]);
+  const [assignModal,setAssignModal]=useState(false);
   
 
- 
+  const handleStatusSelect = (value)=>{
+    if(String(value) === "Appraisal Visit Confirmed"){
+      setOpenDate(true);
+    }
+    let selectedValue = 0;
+    AppraiserStatusOptions.map((prop,index)=>{
+      if(String(prop.type) === String(value)){
+        console.log(prop.type,value,prop.id)
+        selectedValue = prop.id;
+      }
+    })
 
-  const [allBrokers,setAllBrokers]=useState([]);
+    if(currentBid.orderStatus >= selectedValue){
+      toast.error("Select the next status please !!");
+    }
+    else{
+    setOrderStatus(selectedValue);
+    }
+  }
+
   let [selectedBroker ,setSelectedBroker]=useState({});
   const openModalBroker = (property, value) => {
  
@@ -130,6 +156,44 @@ const Index = () => {
     setOpenBrokerModal(true);
   };
 
+  const [selectedAppraiser,setSelectedAppraiser] = useState(-1);
+  const [assignPropertyId,setAssignPropertyId] = useState(-1);
+
+  const assignAppraiserUpdateHandler = ()=>{
+
+ 
+
+    const data = JSON.parse(localStorage.getItem("user"));
+    const payload = {
+    companyid:data.appraiserCompany_Datails.appraiserCompanyId,
+    propertyid:Number(assignPropertyId),
+    appraiserid:Number(selectedAppraiser)
+  };
+
+  const encryptedData = encryptionData(payload);
+  toast.loading("Assigning the property!!....");
+  axios.post("/api/assignPropertyToAppraiser",encryptedData,{
+    headers:{
+      Authorization:`Bearer ${data.token}`
+    }
+  })
+  .then((res)=>{
+    toast.dismiss();
+    toast.success("Successfully assigned the property!");
+    location.reload(true);
+  })
+  .catch((err)=>{
+    toast.dismiss();
+    toast.error(err);
+  })
+  setAssignPropertyId(-1);
+}
+
+
+const closeAssignModal = ()=>{
+  setAssignModal(false);
+  setAssignPropertyId(-1);
+}
   const router = useRouter();
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
@@ -183,20 +247,6 @@ const Index = () => {
     setShowPropDetails(false);
   };
 
-
-  const handleStatusSelect = (value)=>{
-
-    if(String(value) === "Appraisal Visit Confirmed"){
-      setOpenDate(true);
-    }
-
-    console.log(value);
-    setOrderStatus(value);
-
-  }
-
-  const [remark,setRemark]=useState("");
-  const [orderStatus,setOrderStatus]=useState(-1);
   useEffect(() => {
     const filterProperties = (propertys, searchInput) => {
       if (searchInput === "") {
@@ -257,6 +307,35 @@ const Index = () => {
     }
   };
 
+  const  onArchivePropertyHandler = (propertyId)=>{
+    const data = JSON.parse(localStorage.getItem("user"));
+
+    const payload = {
+      propertyId:propertyId,
+      userid:data.userId,
+      token:data.token
+    };
+
+    toast.loading("Archiving the desired property!!.");
+
+    const encryptedBody = encryptionData(payload);
+
+    axios.post("/api/setArchivePropertyByAppraiser",encryptedBody,{
+      headers:{
+        Authorization:`Bearer ${data.token}`,
+        "Content-Type":"application/json"
+      }
+    }).then((res)=>{
+      toast.dismiss();
+      toast.success("Archived property!");
+      location.reload(true);
+    })
+    .catch((err)=>{
+      toast.dismiss();
+      toast.error(err);
+    })
+  }
+
   useEffect(() => {
     const tmpData = filterData(properties);
     setProperties(tmpData);
@@ -296,10 +375,10 @@ const Index = () => {
     const data = JSON.parse(localStorage.getItem("user"));
     if (!data) {
       router.push("/login");
-    }
+    } 
     if(!data?.appraiserCompany_Datails?.firstName){
       router.push("appraiser-company-profile");
-    } 
+    }
     if (!data) {
       router.push("/login");
     }
@@ -313,10 +392,31 @@ const Index = () => {
 
   const brokerInfoHandler = (orderId) => {
     const printWindow = window.open("", "_blank");
+    printWindow.document.write("<html><head><title></title></head><body>");
+
+    // Add the header section
+    printWindow.document.write(`
+      <div class="col-lg-12">
+        <div class="row">
+          <div class="col-lg-12 text-center" style="margin-left:250px; margin-top:50px" >
+            <a href="/" class="">
+              <img width="40" height="45" class="logo1 img-fluid" style="margin-top:-20px" src="/assets/images/logo.png" alt="header-logo2.png" />
+              <span style="color:#2e008b; font-weight:bold; font-size:18px; margin-top:20px">
+                Appraisal
+              </span>
+              <span style="color:#97d700; font-weight:bold; font-size:18px; margin-top:20px">
+                Land
+              </span>
+            </a>
+          </div>
+        </div>
+        <hr style="width:27%; margin-left:200px; color:#2e008b" />
+      </div>
+    `);
+
     printWindow.document.write(
-      "<html><head><title>Broker Information</title></head><body>"
+      `<h3 style="margin-left:200px;">Broker Details of Order No. ${orderId}</h3>`
     );
-    printWindow.document.write("<h1>" + `Broker info of order ${orderId}` + "</h1>");
     printWindow.document.write(
       '<button style="display:none;" onclick="window.print()">Print</button>'
     );
@@ -362,14 +462,34 @@ const Index = () => {
   
   const PropertyInfoHandler = (orderId) => {
     const printWindow = window.open("", "_blank");
+    printWindow.document.write("<html><head><title></title></head><body>");
+
+    // Add the header section
+    printWindow.document.write(`
+      <div class="col-lg-12">
+        <div class="row">
+          <div class="col-lg-12 text-center" style="margin-left:250px; margin-top:50px" >
+            <a href="/" class="">
+              <img width="40" height="45" class="logo1 img-fluid" style="margin-top:-20px" src="/assets/images/logo.png" alt="header-logo2.png" />
+              <span style="color:#2e008b; font-weight:bold; font-size:18px; margin-top:20px">
+                Appraisal
+              </span>
+              <span style="color:#97d700; font-weight:bold; font-size:18px; margin-top:20px">
+                Land
+              </span>
+            </a>
+          </div>
+        </div>
+        <hr style="width:27%; margin-left:200px; color:#2e008b" />
+      </div>
+    `);
+
     printWindow.document.write(
-      "<html><head><title>Property Information</title></head><body>"
+      `<h3 style="margin-left:200px;">Property Details of Order No. ${orderId}</h3>`
     );
-    printWindow.document.write("<h1>" + `Property info of order ${orderId}` + "</h1>");
     printWindow.document.write(
       '<button style="display:none;" onclick="window.print()">Print</button>'
     );
-
     // Clone the table-container and remove the action column
     const tableContainer = document.getElementById("property-info-container");
     const table = tableContainer.querySelector("table");
@@ -409,18 +529,37 @@ const Index = () => {
     };
   };
 
-  const participateHandler = (val, id) => {
+  const [isUpdateBid,setIsUpdateBid] = useState(false);
+  const [bidAmount,setbidAmount] = useState(0);
+  const [alreadyBidded,setAlreadyBidded]=useState(false);
+
+  const participateHandler = (val, id,isUpdate,value,isBidded) => {
+    console.log(val,id,isUpdate,value);
+    if(isUpdate){
+    setLowRangeBid(val);
+    setIsUpdateBid(isUpdate);
+    setbidAmount(value);
+    setPropertyId(id);
+    setAlreadyBidded(isBidded);
+    setModalOpen(true);
+
+    }
+    else{
     setLowRangeBid(val);
     setPropertyId(id);
+    setAlreadyBidded(isBidded);
     setModalOpen(true);
+    }
   };
+
+  const [currentBid,setCurrentBid]=useState({});
 
   const onWishlistHandler = (id) => {
     const userData = JSON.parse(localStorage.getItem("user"));
 
     const formData = {
       userId: userData.userId,
-      propertyId: id,
+      propertyId: selectedAppraiser,
       token: userData.token,
     };
 
@@ -432,7 +571,7 @@ const Index = () => {
       .then((res) => {
         toast.dismiss();
         toast.success("Successfully added !!! ");
-        window.location.reload();
+        location.reload(true);
       })
       .catch((err) => {
         toast.dismiss();
@@ -496,10 +635,10 @@ const Index = () => {
       {/* End sidebar_menu */}
 
       {/* <!-- Our Dashbord --> */}
-      <section className="our-dashbord dashbord bgc-f7 pb50">
+      <section className="our-dashbord dashbord bgc-f7 pb50 dashboard-height">
         <div
-          className="container-fluid ovh"
-          style={{ marginLeft: "-10px", marginTop: "" }}
+          className="container-fluid ovh table-padding container-padding"
+          style={{ }}
         >
           <div className="row">
             <div className="col-lg-12 maxw100flex-992">
@@ -523,7 +662,7 @@ const Index = () => {
 
                 <div className="col-lg-4 col-xl-4 mb10">
                   <div className="style2 mb30-991">
-                    <h3 className="breadcrumb_title"> Quotes History</h3>
+                    <h3 className="breadcrumb_title">Quotes History</h3>
                     {/* <p>We are glad to see you again!</p>                                                             */}
                   </div>
                 </div>
@@ -573,20 +712,24 @@ const Index = () => {
                           setProperties={setProperties}
                           start={start}
                           end={end}
-                          setCurrentBid={setCurrentBid}
+                          setAssignPropertyId={setAssignPropertyId}
+                          onArchivePropertyHandler={ onArchivePropertyHandler}
                           properties={
                             searchInput === "" ? properties : filterProperty
                           }
+                          setCurrentBid={setCurrentBid}
                           setUpdatedCode={setUpdatedCode}
                           onWishlistHandler={onWishlistHandler}
                           participateHandler={participateHandler}
                           setErrorMessage={setErrorMessage}
                           setModalIsOpenError={setModalIsOpenError}
                           setRefresh={setRefresh}
+                          setAllAppraiser = {setAllAppraiser}
+                          setAssignModal={setAssignModal}
+                          setAllBrokers={setAllBrokers}
                           setFilterQuery={setFilterQuery}
                           setSearchInput={setSearchInput}
                           refresh={refresh}
-                          setAllBrokers={setAllBrokers}
                           setWishlistedProperties={setWishlistedProperties}
                           setStartLoading={setStartLoading}
                           openModalBroker={openModalBroker}
@@ -634,6 +777,7 @@ const Index = () => {
                             </div>
                           </div>
                         )}
+
                         {(openBrokerModal && typeView === 1) && (
                           <div className="modal">
                             <div className="modal-content">
@@ -884,7 +1028,7 @@ const Index = () => {
                                         width: "250px",
                                       }}
                                     >
-                                      {broker.quoteRequiredDate ? broker.quoteRequiredDate : "N.A."}
+                                      {broker.quoteRequiredDate}
                                     </td>
                                   </tr>
                                   <tr>
@@ -1373,6 +1517,59 @@ const Index = () => {
                   </div>
                 </div>
               )}
+
+              {assignModal && (
+                <div className="modal">
+                  <div className="modal-content">
+                    <h3 className="text-center">Quote Status Updation</h3>
+                    
+                    <select
+                  required
+                  className="form-select"
+                  data-live-search="true"
+                  data-width="100%"
+                  onChange={(e)=>setSelectedAppraiser(e.target.value)}
+                  // value={buildinRef}
+                  // onChange={(e) => setBuildinRef(e.target.value)}
+                  // onChange={(e) => setBuildinRef(e.target.value)}
+                  // disabled={isDisable}
+                  style={{
+                          paddingTop: "15px",
+                          paddingBottom: "15px",
+                          backgroundColor: "#E8F0FE"
+                        }}
+                >
+                  {allAppraiser.map((item, index) => {
+                    
+                    <option value={0}>....</option>
+                    return (
+                      <option key={item.id} value={item.$id}>
+                        {item.firstName} {item.lastName}
+                      </option>
+                    );
+                  })}
+                </select>
+              
+                    {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
+                    <div className="text-center" style={{}}>
+                    <button
+                    className="btn w-35 btn-white"
+                    onClick={()=>closeAssignModal()}
+                  >
+                    Cancel
+                  </button>
+                      <button
+                      className="btn btn-color w-10 mt-1"
+                      style={{ marginLeft: "12px" }}
+                        onClick={assignAppraiserUpdateHandler}
+                      >
+                        Submit
+                      </button>        
+                     
+                    </div>
+                  </div>
+                </div>
+              )}
               {isStatusModal && (
                 <div className="modal">
                   <div className="modal-content">
@@ -1395,8 +1592,9 @@ const Index = () => {
                         }}
                 >
                   {AppraiserStatusOptions.map((item, index) => {
+                    
                     return (
-                      <option key={item.id} value={item.value}>
+                      <option key={item.id} value={item.value}  disabled={currentBid.orderStatus >= index}>
                         {item.type}
                       </option>
                     );
@@ -1416,8 +1614,11 @@ const Index = () => {
                   onChange={(e) => setStatusDate(e.target.value)}
                   value={statusDate}
                 />
-              </div>}
-              <label style={{color:"black",fontWeight:"bold"}}>
+                
+            </div>
+            }
+            <div>
+            <label style={{color:"black",fontWeight:"bold"}}>
               Remark <span style={{color:"red"}}>*</span>
               </label>
               <input
@@ -1429,6 +1630,7 @@ const Index = () => {
                 onChange={(e) => setRemark(e.target.value)}
                 value={remark}
               />
+            </div>
             
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
@@ -1456,9 +1658,17 @@ const Index = () => {
                   setIsModalOpen={setIsModalOpen}
                   closeModal={closeModal}
                   lowRangeBid={lowRangeBid}
+                  isUpdateBid={isUpdateBid}
+                  bidAmount={bidAmount}
+                  setModalOpen={setModalOpen}
                   propertyId={propertyId}
+                  setIsQuoteModalOpen={setIsQuoteModalOpen}
                   openQuoteModal={openQuoteModal}
                   closeQuoteModal={closeQuoteModal}
+                  currentBid={currentBid}
+                  setCurrentBid={setCurrentBid}
+                  setBidAmount={setbidAmount}
+                  alreadyBidded={alreadyBidded}
                 />
               </div>
               <div className="row">
@@ -1482,7 +1692,7 @@ const Index = () => {
                     <Pagination
                       setStart={setStart}
                       setEnd={setEnd}
-                      properties={wishlistedProperties}
+                      properties={properties}
                     />
                   </div>
                 </div> 

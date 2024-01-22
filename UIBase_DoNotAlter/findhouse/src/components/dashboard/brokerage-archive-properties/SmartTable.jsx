@@ -242,7 +242,7 @@ function SmartTable(props) {
   console.log(data.length > 0, data);
 
   return (
-    <div className="col-12 p-2">
+    <div className="col-12 p-1">
       <div className="smartTable-container row">
         <div className="candidate_revew_select style2 mb30-991">
           <ul className="mb0 mt-0">
@@ -332,8 +332,8 @@ function SmartTable(props) {
                     </tr>
                   </thead>
                   <tbody>
-                    {props.data.length > 0
-                      ? props.data.map((row, idx) => {
+                    {data.length > 0
+                      ? data.map((row, idx) => {
                           if (idx >= props.start && idx <= props.end) {
                             return (
                               <tr key={"tr_" + idx}>
@@ -379,7 +379,7 @@ function SmartTable(props) {
             <div className="row">
               <div
                 className="smartTable-noDataFound col-12"
-                style={{ marginTop: "100px", marginBottom: "40px" }}
+                style={{ marginTop: "110px", marginBottom: "40px" }}
               >
                 <div className="ring">
                   Loading

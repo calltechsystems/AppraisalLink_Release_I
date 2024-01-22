@@ -14263,7 +14263,7 @@ legend span {
 .my_dashboard_review,
 .my_listing_single {
   background-color: #ffffff;
-  border: 1px solid rgb(235, 235, 235);
+  border: 4px solid #97d700;
   border-radius: 8px;
   padding: 30px;
 }

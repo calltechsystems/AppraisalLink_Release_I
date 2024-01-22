@@ -8,7 +8,6 @@ import { useRouter } from "next/router";
 import Loader from "./Loader";
 import { FaArchive } from "react-icons/fa";
 import { AppraiserStatusOptions } from "../create-listing/data";
-import millify from "millify";
 // import "./SmartTable.css";
 
 const headCells = [
@@ -230,13 +229,37 @@ export default function Exemple({
       .then((res) => {
         toast.dismiss();
         toast.success("Successfully removed !!! ");
-        window.location.reload();
+        location.reload(true);
       })
       .catch((err) => {
         toast.dismiss();
         toast.error(err?.response?.data?.error);
       });
   };
+
+  const formatLargeNumber = (number) => {
+    // Convert the number to a string
+    const numberString = number.toString();
+
+    // Determine the length of the integer part
+    const integerLength = Math.floor(Math.log10(Math.abs(number))) + 1;
+
+    // Choose the appropriate unit based on the length of the integer part
+    let unit = '';
+
+    if (integerLength >= 10) {
+        unit = 'B'; // Billion
+    } else if (integerLength >= 7) {
+        unit = 'M'; // Million
+    } else if (integerLength >= 4) {
+        unit = 'K'; // Thousand
+    }
+
+    // Divide the number by the appropriate factor
+    const formattedNumber = (number / Math.pow(10, (integerLength - 1))).toFixed(2);
+
+    return `${formattedNumber}${unit}`;
+};
 
   const onDeletePropertyHandler = () => {};
 
@@ -250,9 +273,16 @@ export default function Exemple({
       second: "numeric",
     };
 
-    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
-    return formattedDate;
+    const originalDate = new Date(dateString);
+
+    // Adjust for Eastern Standard Time (EST) by subtracting 5 hours
+    const estDate = new Date(originalDate.getTime() - (5 * 60 * 60 * 1000));
+
+    // Format the EST date
+    const formattedDate = estDate.toLocaleString("en-US", options);
+ return formattedDate;
   };
+
 
   const checkWishlistedHandler = (data) => {
     let temp = {};
@@ -294,12 +324,12 @@ export default function Exemple({
           orderId: property.orderId ,
           address: `${property.city}-${property.province},${property.zipCode}`,
           estimatedValue: property.estimatedValue
-            ? `$ ${millify(property.estimatedValue)}`
+            ? `$ ${formatLargeNumber(property.estimatedValue)}`
             : "$ 0",
           purpose: property.purpose ? property.purpose : "N.A.",
           appraisal_status: isBidded.status === 1 && isBidded.orderStatus ? (
             <span className="btn btn-warning  w-100">{getOrderValue(isBidded.orderStatus)}</span>
-          ):<span className="btn btn-warning  w-100">N.A.</span>,
+          ):<span className="btn btn-warning  w-100">New</span>,
           remark : (isBidded && isBidded.remark) ? isBidded.remark : "N.A.",
           status: 
           isWait ? 

@@ -225,6 +225,16 @@ export default function Exemple({
     return title;
   }
 
+  const checkIsOfSameCompany = (id)=>{
+    const data = JSON.parse(localStorage.getItem("user"));
+    if(data.appraiserCompany_Datails?.appraiserCompanyId === id){
+      return true ;
+    }
+    else{
+      return false;
+    }
+  }
+
   const openStatusUpdateHandler = (bidId) => {
     setCurrentBid(bidId);
     setIsStatusModal(true);
@@ -253,7 +263,7 @@ export default function Exemple({
       .then((res) => {
         toast.dismiss();
         toast.success("Successfully removed !!! ");
-        window.location.reload();
+        location.reload(true);
       })
       .catch((err) => {
         toast.dismiss();
@@ -311,15 +321,16 @@ export default function Exemple({
       properties.map((property, index) => {
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
-       
+        const isSameCompany = checkIsOfSameCompany(property.companyid);
+       if(isSameCompany){
         const updatedRow = {
           orderId: property.orderId ,
           address: `${property.city}-${property.province},${property.zipCode}`,
           estimatedValue: property.estimatedValue
             ? `$ ${property.estimatedValue}`
             : "$ 0",
-          purpose: property.purpose ? property.purpose : "NA",
-          remark: property.remark ?  <span className="btn btn-warning  w-100">{getOrderValue(property.remark)}</span> : "N.A.",
+          purpose: property.purpose ? property.purpose : "N.A.",
+          remark: property.remark ?  <p>remark</p> : "N.A.",
           status: isBidded.bidId ? (
             isBidded.status === 0 ? (
               <span
@@ -341,7 +352,7 @@ export default function Exemple({
             <span className="btn btn-warning  w-100">New</span>
           ),
           appraisal_status: isBidded.orderStatus ? (
-            <h5>{getOrderValue(isBidded.orderStatus)}</h5>
+            <span className="btn btn-warning  w-100">{getOrderValue(isBidded.orderStatus)}</span>
           ):<span className="btn btn-warning  w-100">N.A.</span>,
           broker: (
             <div>
@@ -534,6 +545,7 @@ export default function Exemple({
           ),
         };
         tempData.push(updatedRow);
+      }
       });
       setUpdatedData(tempData);
     };

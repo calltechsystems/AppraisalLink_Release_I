@@ -65,7 +65,7 @@ const Modal = ({
         .then((res) => {
           toast.dismiss();
           toast.success("Successfully set the bid ");
-          window.location.reload();
+          location.reload(true);
         })
         .catch((err) => {
           toast.dismiss();

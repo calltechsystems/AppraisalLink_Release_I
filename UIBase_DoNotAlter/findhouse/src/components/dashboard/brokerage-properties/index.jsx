@@ -23,6 +23,7 @@ const Index = () => {
   const [property, setProperty] = useState("");
   const [typeView, setTypeView] = useState(0);
   const [startLoading, setStartLoading] = useState(false);
+  const [currentProperty, setCurrentProperty] = useState("");
   const [filterProperty, setFilterProperty] = useState("");
   const [showPropDetails, setShowPropDetails] = useState(false);
   const [filterQuery, setFilterQuery] = useState("Last 30 Days");
@@ -59,6 +60,8 @@ const Index = () => {
   };
 
   const [openBrokerModal, setOpenBrokerModal] = useState(false);
+  const [modalIsPopupOpen, setModalIsPopupOpen] = useState(false);
+
   const [broker, setBroker] = useState({});
 
   const closeBrokerModal = () => {
@@ -140,6 +143,31 @@ const Index = () => {
   const closeModal = () => {
     setModalOpen(false);
     setShowPropDetails(false);
+  };
+
+  const archievePropertyHandler = (id) => {
+    const data = JSON.parse(localStorage.getItem("user"));
+
+    toast.loading("archeiving this property");
+    axios
+      .get("/api/propertyArcheive", {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+          "Content-Type": "application/json",
+        },
+        params: {
+          Id: id,
+        },
+      })
+      .then((res) => {
+        toast.dismiss();
+        toast.success("Successfully added to archived properties!!");
+        window.location.reload();
+      })
+      .catch((err) => {
+        toast.error(err);
+      });
+    // closeModal();
   };
 
   useEffect(() => {
@@ -523,12 +551,15 @@ const Index = () => {
                           setErrorMessage={setErrorMessage}
                           setModalIsOpenError={setModalIsOpenError}
                           setRefresh={setRefresh}
+                          setModalIsPopupOpen={setModalIsPopupOpen}
                           setFilterQuery={setFilterQuery}
                           setSearchInput={setSearchInput}
                           refresh={refresh}
                           setWishlistedProperties={setWishlistedProperties}
                           setStartLoading={setStartLoading}
                           openModalBroker={openModalBroker}
+                          setCurrentProperty={setCurrentProperty}
+                          archievePropertyHandler={archievePropertyHandler}
                         />
 
                         {modalIsOpenError && (

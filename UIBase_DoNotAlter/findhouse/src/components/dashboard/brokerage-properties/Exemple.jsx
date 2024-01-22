@@ -23,6 +23,12 @@ const headCells = [
     width: 100,
   },
   {
+    id: "broker",
+    numeric: false,
+    label: "Broker",
+    width: 100,
+  },
+  {
     id: "address",
     numeric: false,
     label: "Property Address",

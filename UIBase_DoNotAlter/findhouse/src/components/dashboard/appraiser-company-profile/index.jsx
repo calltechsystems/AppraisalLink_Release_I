@@ -52,13 +52,14 @@ const Index = ({ profileCount, setProfileCount }) => {
 
   useEffect(() => {
     const storedUserData = JSON.parse(localStorage.getItem("user"));
+   
     if (!storedUserData) {
       router.push("/login");
     } else {
       setUserData(storedUserData); // Set user data in state
-      if (storedUserData?.brokerage_Details?.firstName !== null) {
-        setShowCard(true); // Show content if conditions are met
-      }
+      // if (storedUserData?.appraiserCompany_Datails?.firstName !== null) {
+      //   setShowCard(false); 
+      // }
     }
   }, []); // Empty dependency array for componentDidMount-like behavior
 
