@@ -122,7 +122,8 @@ export default function Exemple({
   setAppraiser,
   end,
   setUpdatedCode,
-  setCloseRegisterModal,
+  setCurrentViewAppraiser,
+  setOpenViewModal,setAppraiserCompanyInfo,setCloseRegisterModal,
   properties,
   setIsStatusModal,
   setProperties,
@@ -169,6 +170,11 @@ export default function Exemple({
     //   return requestTime >= twentyFourHoursAgo && requestTime <= currentTime;
   };
 
+  const openCredModal = (data)=>{
+  setCurrentViewAppraiser(data);
+  setOpenViewModal(true);
+  }
+
   const router = useRouter();
 
   const openStatusUpdateHandler = () => {
@@ -203,7 +209,7 @@ export default function Exemple({
       .then((res) => {
         toast.dismiss();
         toast.success("Successfully removed !!! ");
-        window.location.reload();
+        location.reload(true);
       })
       .catch((err) => {
         toast.dismiss();
@@ -266,16 +272,16 @@ export default function Exemple({
           firstname: data.firstName ? data.firstName : "-",
           lastname: data.lastName ? data.lastName : "-",
           company: data.companyName? data.companyName : "-",
-          status : data.isActive === 1 ? (<span
+          status : data.isActive  ? (<span
           className="btn btn-success  w-100"
           
         >
           Active
         </span>
-      ) : data.firstName !== "" && data.isActive === 0 ?  (
-        <span className="btn btn-danger  w-100">In-active</span>)
+      ) : !data.firstName  ?  (
+        <span className="btn btn-warning  w-100">Not Registered</span>)
       : (
-      <span className="btn btn-warning  w-100">Not Registered</span>
+      <span className="btn btn-danger  w-100">In-Active</span>
     ) ,
           phone: data.phoneNumber ? data.phoneNumber : "-",
           address :`${data.streetName} ${data.streetNumber},${data.city}-${data.postalCode}`,
@@ -287,6 +293,10 @@ export default function Exemple({
                 <i className="flaticon-edit"></i>
               </button>
               
+              <button className="btn btn-color m-1" onClick={()=>openCredModal(data)}>
+              <i className="flaticon-view"></i>
+            </button>
+            
             </div>
           ),
         };
@@ -326,7 +336,9 @@ export default function Exemple({
         },
       })
       .then((res) => {
+
         console.log(res.data.data.appraisers.$values);
+        setAppraiserCompanyInfo(res.data.data.appraiserCompany);
         setProperties(res.data.data.appraisers.$values);
       })
       .catch((err) => {

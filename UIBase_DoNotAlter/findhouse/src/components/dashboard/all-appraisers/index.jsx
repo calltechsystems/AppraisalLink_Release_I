@@ -16,6 +16,7 @@ import { encryptionData } from "../../../utils/dataEncryption";
 import Loader from "./Loader";
 import { AppraiserStatusOptions } from "../create-listing/data";
 import Form from "../../appraiser-register/Form";
+import Link from "next/link";
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -55,6 +56,10 @@ const Index = () => {
 
   const [end, setEnd] = useState(5);
 
+  const [currentViewAppraiser,setCurrentViewAppraiser]=useState({});
+  const [openViewModal,setOpenViewModal] = useState(false);
+  const [appraiserCompanyInfo,setAppraiserCompanyInfo]=useState({});
+
   const [isStatusModal, setIsStatusModal] = useState(false);
 
   const [selectedAppraiser,setSelectedAppraiser] = useState(-1);
@@ -89,6 +94,32 @@ const Index = () => {
 
     setSelectedAppraiser(-1);
   };
+
+  function copyToClipboard(text) {
+    // Create a temporary textarea element
+    const textarea = document.createElement('textarea');
+    
+    // Set the text content to the provided text
+    textarea.value = text;
+    
+    // Append the textarea to the document
+    document.body.appendChild(textarea);
+    
+    // Select the text in the textarea
+    textarea.select();
+    
+    try {
+        // Execute the copy command
+        document.execCommand('copy');
+        toast.success('Text copied to clipboard');
+    } catch (err) {
+        toast.error('Unable to copy text to clipboard', err);
+    } finally {
+        // Remove the textarea from the document
+        document.body.removeChild(textarea);
+    }
+}
+
 
   const closeStatusUpdateHandler = () => {
     setSelectedAppraiser(-1);
@@ -167,7 +198,7 @@ const Index = () => {
     .then((res)=>{
       toast.dismiss();
       toast.success("Successfully updated!!");
-      window.location.reload();
+      location.reload(true);
     })
     .catch((err)=>{
       toast.dismiss();
@@ -334,6 +365,11 @@ const Index = () => {
     fetchData();
   }, []);
 
+  const closeViewModal = ()=>{
+    setOpenViewModal(false);
+    setCurrentViewAppraiser({});
+  }
+
   const participateHandler = (val, id) => {
     setLowRangeBid(val);
     setPropertyId(id);
@@ -357,7 +393,7 @@ const Index = () => {
       .then((res) => {
         toast.dismiss();
         toast.success("Successfully added !!! ");
-        window.location.reload();
+        location.reload(true);
       })
       .catch((err) => {
         toast.dismiss();
@@ -503,6 +539,9 @@ const Index = () => {
                           setModalIsOpenError={setModalIsOpenError}
                           setRefresh={setRefresh}
                           refresh={refresh}
+                          setCurrentViewAppraiser={setCurrentViewAppraiser}
+                          setOpenViewModal={setOpenViewModal}
+                          setAppraiserCompanyInfo={setAppraiserCompanyInfo}
                           setStartLoading={setStartLoading}
                           openModalBroker={openModalBroker}
                           setIsStatusModal={setIsStatusModal}
@@ -1126,6 +1165,100 @@ const Index = () => {
                   </div>
                 </div>
               )}
+
+              { openViewModal &&
+                <div className="modal">
+                <div className="modal-content">
+                <h3 className="text-center">View Credentials</h3>
+
+                <div className="row">
+                  <div className="col-lg-12">
+                    <div className="row mb-2 mt-2 text-center">
+                      <div className="row mb-2 mt-2">
+                        <div className="col-lg-3 mb-2">
+                          <label
+                            htmlFor=""
+                            style={{
+                              paddingTop: "15px",
+                              fontWeight: "lighter",
+                            }}
+                          >
+                            Email <span class="req-btn">*</span> :
+                          </label>
+                        </div>
+                        <div className="col-lg-7"style={{display:"flex",flexDirection:"row"}}>
+                          <input
+                            type="text"
+                            value={currentViewAppraiser.email}
+                            
+                            className="form-control"
+                            id="formGroupExampleInput3"
+                          />
+                          <button
+                          onClick={()=>copyToClipboard(currentViewAppraiser.email)}
+                          className="btn btn-color w-10 mt-1"
+                          style={{ marginLeft: "12px" }}
+                        >
+                        <Link href="#">
+                        <span className="flaticon-invoice text-light"></span>
+                      </Link>
+                      </button>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-lg-3 mb-2">
+                          <label
+                          
+                            htmlFor=""
+                            style={{
+                              paddingTop: "15px",
+                              fontWeight: "lighter",
+                            }}
+                          >
+                            Password
+                          </label>
+                        </div>
+                        <div className="col-lg-7"style={{display:"flex",flexDirection:"row"}}>
+                          <input
+                            type="password"
+                            value={currentViewAppraiser.password}
+                            
+                            className="form-control"
+                            id="formGroupExampleInput3"
+                          />
+                          <button
+                          onClick={()=>copyToClipboard(currentViewAppraiser.password)}
+                          className="btn btn-color w-10 mt-1"
+                          style={{ marginLeft: "12px" }}
+                        >
+                        <Link href="#">
+                        <span className="flaticon-invoice text-light"></span>
+                      </Link>
+                      </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* End .col */}
+                  </div>
+                </div>
+                <div
+              className="col-lg-12 text-center"
+              style={{ marginRight: "4%" }}
+            >
+              {/* <button className="cancel-button" onClick={closeModal}>
+                  Cancel
+                </button> */}
+              <button
+                className="btn btn-color w-25"
+                onClick={()=>closeViewModal()}
+              >
+                Cancel
+              </button>
+            </div>
+                </div>
+                            </div>
+              }
 
               {openEditModal && (
                 <div className="modal">
