@@ -1185,33 +1185,36 @@ const Index = () => {
                       </Link>
                     </div>
                   </div>
-                  <h2 className="text-center mt-3" style={{backgroundColor:"#97d700", color:"#2e008b"}}>
+                  <h2 className="text-center mt-3" style={{ color: "#2e008b" }}>
                     {isHoldProperty
                       ? `${
                           propValue
-                            ? "Confirmation On Hold Property"
+                            ? "Order Confirmation"
                             : "Confirmation Remove On Hold Property"
                         }`
                       : `${
                           propValue
-                            ? "Confirmation On Cancel Property"
+                            ? "Order Confirmation"
                             : "Confirmation Remove On Cancel Property"
                         }`}
                   </h2>
-                  {/* <div
-                    className="mb-3"
+                  <div
+                    className="mb-2"
                     style={{ border: "2px solid #97d700" }}
-                  ></div> */}
-                  <p className="fs-5 text-center text-dark mt-2">
-                    Are you sure to confirm to{" "}
-                    <span style={{ color: "red", fontWeight:"bold" }}>
+                  ></div>
+                  <p className="fs-5 text-center text-dark mt-4">
+                    Are you sure for the order to be{" "}
+                    <span style={{ color: "red", fontWeight: "bold" }}>
                       {" "}
-                      {isHoldProperty ? "Hold" : "Cancel"}{" "}
+                      {isHoldProperty ? "On Hold" : "On Cancel"}{" "}
                     </span>
-                    the Property ?{" "}
+                    ?{" "}
                   </p>
 
-                  <hr />
+                  <div
+                    className="mb-3 mt-4"
+                    style={{ border: "2px solid #97d700" }}
+                  ></div>
                   <div className="col-lg-12 text-center">
                     <button
                       className="btn w-25 btn-color m-1"
