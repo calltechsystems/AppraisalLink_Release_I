@@ -236,93 +236,59 @@ export default function Exemple({
         // const isWishlist = checkWishlistedHandler(property);
         // const isBidded = filterBidsWithin24Hours(property);
         // console.log("isBidded",property);
+        properties.map((data, index) => {
+          const updatedRow = {
+            email: data.email,
+            firstname: data.firstName ? data.firstName : "NA",
+            lastname: data.lastName ? data.lastName : "NA",
+            // company: data.company,
+            status: data.isActive ? (
+              <span className="btn btn-success  w-100">Active</span>
+            ) : !data.firstName ? (
+              <span className="btn btn-warning  w-100">Not Registered</span>
+            ) : (
+              <span className="btn btn-danger  w-100">In-Active</span>
+            ),
+            phone: data.phoneNumber ? data.phoneNumber : "NA",
+            address: `${data.streetName} ${data.streetNumber},${data.city}-${data.postalCode}`,
+            // date: dateNow,
+            emailaddress: data.email,
 
-        const updatedRow = {
-          email: data.email,
-          firstname: data.firstname,
-          lastname: data.lastname,
-          // company: data.company,
-          phone: data.phone,
-          emailaddress: data.email,
-          status:<span className="btn btn-success w-50">Active</span>,
-          // broker: (
-          //   <div>
-          //     {isBidded.status === 1 ? (
-          //       <a href="#">
-          //         <button
-          //           className=""
-          //           style={{
-          //             border: "0px",
-          //             color: "#2e008b",
-          //             textDecoration: "underline",
-          //             // fontWeight: "bold",
-          //             backgroundColor: "transparent",
-          //           }}
-          //           onClick={() => openModalBroker(property)}
-          //         >
-          //           {`${property.applicantFirstName} ${property.applicantLastName}`}
-          //         </button>
-          //       </a>
-          //     ) : isBidded.status === 2 ? (
-          //       <h6 style={{ color: "red" }}> Rejected</h6>
-          //     ) : (
-          //       <p>
-          //         Broker Information will be available post the quote acceptance
-          //       </p>
-          //     )}
-          //   </div>
-          // ),
-          // type_of_appraisal: property.typeOfAppraisal
-          //   ? property.typeOfAppraisal
-          //   : "NA",
-          // typeOfBuilding:
-          //   property.typeOfBuilding > 0 ? "Apartment" : property.typeOfBuilding,
-          // quote_required_by: formatDate(property.addedDatetime),
-          // date: formatDate(property.addedDatetime),
-          // bidAmount: property.bidLowerRange,
-          // lender_information: property.lenderInformation
-          //   ? property.lenderInformation
-          //   : "NA",
-          // urgency:
-          //   property.urgency === 0
-          //     ? "Rush"
-          //     : property.urgency === 1
-          //     ? "Regular"
-          //     : "NA",
-
-          action: (
-            <div className="print-hidden-column">
-              <button
-                href="#"
-                className="btn btn-color w-50"
-                style={{ marginLeft: "12px" }}
-                onClick={openStatusUpdateHandler}
-                title="Update Status"
-              >
-                <Link href="#">
-                  <span className="flaticon-edit text-light"></span>
-                </Link>
-              </button>
-              {/* <button className="btn btn-color m-1">
+            action: (
+              <div className="print-hidden-column">
+                <button
+                  href="#"
+                  className="btn btn-color w-50"
+                  style={{ marginLeft: "12px" }}
+                  onClick={openStatusUpdateHandler}
+                  title="Update Status"
+                >
+                  <Link href="#">
+                    <span className="flaticon-edit text-light"></span>
+                  </Link>
+                </button>
+                {/* <button className="btn btn-color m-1">
                 <i className="flaticon-edit"></i>
               </button>
               <button className="btn btn-color">
                 <i className="flaticon-garbage"></i>
               </button> */}
-            </div>
-          ),
-        };
+              </div>
+            ),
+          };
 
-        // const updatedRow = {
-        //   email:data.email,
-        //   firstname:data.firstname,
-        //   lastname:data.lastname,
-        //   company:data.company,
-        //   phone:data.phone,
-        //   date:data.date
+          // const updatedRow = {
+          //   email:data.email,
+          //   firstname:data.firstname,
+          //   lastname:data.lastname,
+          //   company:data.company,
+          //   phone:data.phone,
+          //   date:data.date
 
-        // };
-        tempData.push(updatedRow);
+          // };
+
+          tempData.push(updatedRow);
+        });
       });
       setUpdatedData(tempData);
     };

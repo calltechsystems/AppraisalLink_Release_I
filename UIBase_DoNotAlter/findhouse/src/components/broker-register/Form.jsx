@@ -119,14 +119,16 @@ const Form = ({
       const data = {
         email: email,
         password: password,
-        companyId: userData.appraiserCompany_Datails.appraiserCompanyId,
+        brokerageId: userData.brokerage_Details.id,
       };
+
+      console.log(data);
 
       const encryptedData = encryptionData(data);
       setLoading(true);
       toast.loading("Registering user...");
       axios
-        .post("/api/registerByCompany", encryptedData)
+        .post("/api/registerBrokerByBrokerageCompany", encryptedData)
         .then((res) => {
           toast.dismiss();
           toast.success("Successfully added!!");

@@ -180,19 +180,19 @@ export default function Exemple({
       type: "Appraisal Report Writing Completed and Submitted",
       value: "Appraisal Report Writing Completed and Submitted",
     },
-  
+
     {
       id: 4,
       type: "Assignment on Hold",
       value: "Assignment on Hold",
     },
-  
+
     {
       id: 5,
       type: "Assignment Cancelled new status to be added",
       value: "Assignment Cancelled new status to be added",
     },
-  
+
     {
       id: 6,
       type: "Appraisal visit completed; report writing is pending until fee received",
@@ -224,6 +224,32 @@ export default function Exemple({
     setModalOpen(true);
   };
 
+  const formatLargeNumber = (number) => {
+    // Convert the number to a string
+    const numberString = number.toString();
+
+    // Determine the length of the integer part
+    const integerLength = Math.floor(Math.log10(Math.abs(number))) + 1;
+
+    // Choose the appropriate unit based on the length of the integer part
+    let unit = "";
+
+    if (integerLength >= 10) {
+      unit = "B"; // Billion
+    } else if (integerLength >= 7) {
+      unit = "M"; // Million
+    } else if (integerLength >= 4) {
+      unit = "K"; // Thousand
+    }
+
+    // Divide the number by the appropriate factor
+    const formattedNumber = (number / Math.pow(10, integerLength - 1)).toFixed(
+      2
+    );
+
+    return `${formattedNumber}${unit}`;
+  };
+
   const formatDate = (dateString) => {
     const options = {
       year: "numeric",
@@ -231,6 +257,21 @@ export default function Exemple({
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
+      // second: "numeric",
+      hour12: true, // Set to false for 24-hour format
+    };
+
+    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
+    return formattedDate;
+  };
+
+  const formatDateQuote = (dateString) => {
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      // hour: "numeric",
+      // minute: "numeric",
       // second: "numeric",
       hour12: true, // Set to false for 24-hour format
     };
@@ -274,7 +315,7 @@ export default function Exemple({
             order_id: property.orderId,
             sub_date: formatDate(property.addedDatetime),
             quote_required_by: property.quoteRequiredDate
-              ? formatDate(property.quoteRequiredDate)
+              ? formatDateQuote(property.quoteRequiredDate)
               : formatDate(property.addedDatetime),
             status:
               isHold || isCancel ? (
@@ -301,17 +342,20 @@ export default function Exemple({
                 <span className="btn bg-warning  w-100">
                   {isHold ? "On Hold" : "OnCancelled"}
                 </span>
+              ) : property.orderStatus ? (
+                <span className="btn bg-warning  w-100">
+                  {getOrderValue(property.orderStatus)}
+                </span>
               ) : (
-                 property.orderStatus ? (
-                  <span className="btn bg-warning  w-100">{getOrderValue(property.orderStatus)}</span>
-                ) :
                 <span className="btn bg-warning  w-100">N.A.</span>
               ),
             address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
             remark: property.remark ? property.remark : "N.A.",
             // user: property.applicantEmailAddress,
             type_of_building: property.typeOfBuilding,
-            amount: ` $ ${millify(property.estimatedValue)}`,
+            amount: property.estimatedValue
+              ? `$ ${formatLargeNumber(property.estimatedValue)}`
+              : "$ 0",
             purpose: property.purpose,
             type_of_appraisal: property.typeOfAppraisal,
             lender_information: property.lenderInformation

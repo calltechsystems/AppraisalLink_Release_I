@@ -7,7 +7,7 @@ import {ClipLoader } from 'react-spinners';
 const Modal = ({ modalOpen, closeModal, price }) => {
   const [paypalUrl, setPaypalUrl] = useState("");
   const [status, setStatus] = useState(0);
-  const [countdown, setCountdown] = useState(180); // 3 minutes in seconds
+  const [countdown, setCountdown] = useState(180); 
 
   const checkOutHandler = () => {
     const data = JSON.parse(localStorage.getItem("user"));
@@ -41,7 +41,7 @@ const Modal = ({ modalOpen, closeModal, price }) => {
     } else if (countdown === 0) {
       // Handle countdown reaching 0, e.g., close modal or perform additional actions
       clearInterval(countdownInterval);
-      window.location.reload();
+      location.reload(true);
     }
 
     return () => {
@@ -82,7 +82,7 @@ const Modal = ({ modalOpen, closeModal, price }) => {
             >
               <p>We have already redirected you to the paypal page.</p>
               <p>
-                Don&apos;t <span style={{color:"red"}}>reload</span> or <span style={{color:"red"}}>refresh</span> the page
+                Don't <span style={{color:"red"}}>reload</span> or <span style={{color:"red"}}>refresh</span> the page
                
               </p>
             </div>: <div
@@ -137,7 +137,7 @@ const Modal = ({ modalOpen, closeModal, price }) => {
                 ) : (
                   <label className="btn btn-color w-25" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' ,marginLeft:"36%"}}>
                   <ClipLoader color="#ffffff" loading={true} size={40} />
-                  <span style={{ marginLeft: '10px' }}>Loading...</span>
+                  <span style={{ marginLeft: '10px' }}>Processing...</span>
                 </label>
                 )
               ) : (
@@ -148,7 +148,7 @@ const Modal = ({ modalOpen, closeModal, price }) => {
             </div>
             {status === 2 && (
               <div className="text-center mt-3">
-                <p>Left Time: {Math.floor(countdown / 60)}:{countdown % 60}</p>
+                <h4>Remaining Time: {Math.floor(countdown / 60)}:{countdown % 60} mins</h4>
               </div>
             )}
           </div>

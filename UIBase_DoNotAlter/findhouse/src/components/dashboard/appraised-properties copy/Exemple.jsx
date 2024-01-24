@@ -319,7 +319,7 @@ export default function Exemple({
         
         const isArchive = foundArchiveHandler(property.propertyId);
 
-        const isWait = property.isHold || property.isCancel;
+        const isWait = property.isOnHold || property.isOnCancel;
         const updatedRow = {
           orderId: property.orderId ,
           address: `${property.city}-${property.province},${property.zipCode}`,
@@ -336,7 +336,7 @@ export default function Exemple({
           <span
           className="btn btn-primary  w-100"
         >
-          {property.isHold ? "On Hold" : "On Cancel"}
+          {property.isOnHold ? "On Hold" : "On Cancel"}
         </span>
             : 
           isBidded.bidId ? (

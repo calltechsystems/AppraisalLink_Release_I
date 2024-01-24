@@ -161,6 +161,7 @@ export default function Exemple({
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
   const [Appraiser , setAppraiser] = useState({});
+  const [allAssignAppraiser,setAllAssignAppraiser]=useState([]);
   let tempData = [];
 
   const filterBidsWithin24Hours = (property) => {
@@ -184,33 +185,17 @@ export default function Exemple({
   };
 
   const getAppraiser = (id)=>{
-    const data = JSON.parse(localStorage.getItem("user"));
-    axios
-    .get("/api/getAllAppraiser", {
-      headers: {
-        Authorization: `Bearer ${data.token}`,
-      },
-      params:{
-        Id:id
-      }
-    })
-    .then((res) => {
-      const getAllAppraiser = res.data.data.$values;
+   
       let selectedAppraiser = {};
-      getAllAppraiser.map((appraiser,index)=>{
-        if(String(appraiser.userId) === String(id)){
+      allAssignAppraiser.map((appraiser,index)=>{
+        if(String(appraiser.id) === String(id)){
           selectedAppraiser = appraiser;
         }
       })
 
-      console.log(selectedAppraiser)
+      console.log(allAssignAppraiser)
       openAppraiserInfoModal(selectedAppraiser);
      
-    })
-    .catch((err) => {
-      setErrorMessage(err?.response?.data?.error);
-      setModalIsOpenError(true);
-    });
   }
 
   const router = useRouter();
@@ -282,8 +267,15 @@ export default function Exemple({
       minute: "numeric",
       second: "numeric",
     };
+    
+    const originalDate = new Date(dateString);
 
-    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
+    // Adjust for Eastern Standard Time (EST) by subtracting 5 hours
+    const estDate = new Date(originalDate.getTime() - (5 * 60 * 60 * 1000));
+
+    // Format the EST date
+    const formattedDate = estDate.toLocaleString("en-US", options);
+
     return formattedDate;
   };
 
@@ -309,7 +301,29 @@ export default function Exemple({
 
   const [isBroker,setIsBroker]=useState(-1);
 
-  
+  const formatLargeNumber = (number) => {
+    // Convert the number to a string
+    const numberString = number.toString();
+
+    // Determine the length of the integer part
+    const integerLength = Math.floor(Math.log10(Math.abs(number))) + 1;
+
+    // Choose the appropriate unit based on the length of the integer part
+    let unit = '';
+
+    if (integerLength >= 10) {
+        unit = 'B'; // Billion
+    } else if (integerLength >= 7) {
+        unit = 'M'; // Million
+    } else if (integerLength >= 4) {
+        unit = 'K'; // Thousand
+    }
+
+    // Divide the number by the appropriate factor
+    const formattedNumber = (number / Math.pow(10, (integerLength - 1))).toFixed(2);
+
+    return `${formattedNumber}${unit}`;
+};
   
   const checkData = (properties && !updatedData) ? true : false;
   useEffect(()=>{
@@ -327,7 +341,7 @@ export default function Exemple({
           orderId: property.orderId ,
           address: `${property.city}-${property.province},${property.zipCode}`,
           estimatedValue: property.estimatedValue
-            ? `$ ${property.estimatedValue}`
+            ? `$ ${formatLargeNumber(property.estimatedValue)}`
             : "$ 0",
           purpose: property.purpose ? property.purpose : "N.A.",
           remark: property.remark ?  <p>remark</p> : "N.A.",
@@ -392,7 +406,7 @@ export default function Exemple({
                       // fontWeight: "bold",
                       backgroundColor: "transparent",
                     }}
-                    onClick={() => getAppraiser(211)}
+                    onClick={() => getAppraiser(property.appraiserid)}
                   >
                    Appraiser Info
                   </button>
@@ -666,6 +680,23 @@ export default function Exemple({
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
+
+      axios
+    .get("/api/getAllAppraiser", {
+      headers: {
+        Authorization: `Bearer ${data.token}`,
+      }
+    })
+    .then((res) => {
+      console.log(res);
+    //   const getAllAppraiser = res.data.data.result.$values;
+     setAllAssignAppraiser(res.data.data.result.$values);
+     
+    })
+    .catch((err) => {
+      setErrorMessage(err?.response?.data?.error);
+      setModalIsOpenError(true);
+    });
 
      
      

@@ -326,7 +326,7 @@ export default function Exemple({
           }
 
           tempProp.push(property);
-        const isWait = property.isHold || property.isCancel;
+        const isWait = property.isonHold || property.isOnCancel;
         const updatedRow = {
           orderId: property.orderId ,
           address: `${property.city}-${property.province},${property.zipCode}`,
@@ -343,7 +343,7 @@ export default function Exemple({
           <span
           className="btn btn-primary  w-100"
         >
-          {property.isHold ? "On Hold" : "On Cancel"}
+          {property.isOnHold ? "On Hold" : "On Cancel"}
         </span>
             : 
           isBidded.bidId ? 
@@ -542,7 +542,7 @@ export default function Exemple({
                   </div>
                 </li>
                 </ul>
-              ) : ( isBidded.orderStatus <=6 &&
+              ) : ( isBidded.orderStatus <=6 && isBidded.status === 1 &&
                  <button
                           href="#"
                           className="btn btn-color w-100 mt-1"

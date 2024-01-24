@@ -67,17 +67,19 @@ const Index = () => {
   const [isActive,setIsActive] = useState(0);
 
   const handleStatusUpdateHandler = () => {
+   
     const payload = {
       id : selectedAppraiser.id,
-      IsActive : isActive
+      IsActive : !selectedAppraiser.isActive
     };
+
 
     const encryptedData = encryptionData(payload);
 
     toast.loading(
     "Updating the status"
     )
-    axios.put("/api/updateIsActive",encryptedData,{
+    axios.post("/api/updateIsActiveAppraiser",encryptedData,{
       headers:{
         Authorization:`Bearer ${userData.token}`,
         "Content-Type":"application/json"
@@ -86,6 +88,7 @@ const Index = () => {
     .then((res)=>{
       toast.dismiss();
       toast.success("Successfully Updated!!");
+      window.location.reload();
     })
     .catch((err)=>{
       toast.dismiss();
@@ -93,6 +96,7 @@ const Index = () => {
     })
 
     setSelectedAppraiser(-1);
+  
   };
 
   function copyToClipboard(text) {
@@ -1205,38 +1209,6 @@ const Index = () => {
                       </button>
                         </div>
                       </div>
-                      <div className="row">
-                        <div className="col-lg-3 mb-2">
-                          <label
-                          
-                            htmlFor=""
-                            style={{
-                              paddingTop: "15px",
-                              fontWeight: "lighter",
-                            }}
-                          >
-                            Password
-                          </label>
-                        </div>
-                        <div className="col-lg-7"style={{display:"flex",flexDirection:"row"}}>
-                          <input
-                            type="password"
-                            value={currentViewAppraiser.password}
-                            
-                            className="form-control"
-                            id="formGroupExampleInput3"
-                          />
-                          <button
-                          onClick={()=>copyToClipboard(currentViewAppraiser.password)}
-                          className="btn btn-color w-10 mt-1"
-                          style={{ marginLeft: "12px" }}
-                        >
-                        <Link href="#">
-                        <span className="flaticon-invoice text-light"></span>
-                      </Link>
-                      </button>
-                        </div>
-                      </div>
                     </div>
 
                     {/* End .col */}
@@ -1280,11 +1252,10 @@ const Index = () => {
                         backgroundColor: "#E8F0FE",
                       }}
                     >
-                      
-                          <option key={0} value={0} disabled={selectedAppraiser?.firstName ? true : false }>
+                          <option key={0} value={0} disabled={selectedAppraiser?.isActive ? false : true }>
                             In-active
                           </option>
-                          <option key={1} value={1} disabled={selectedAppraiser?.firstName ? false : true }>
+                          <option key={1} value={1} disabled={selectedAppraiser?.isActive ? true : false }>
                             Active
                           </option>
                        

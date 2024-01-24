@@ -298,7 +298,7 @@ export default function Exemple({
           }
 
         if(isWishlist.id){
-        const isWait = property.isHold || property.isCancel;
+        const isWait = property.isOnHold || property.isOnCancel;
         const updatedRow = {
           orderId: property.orderId ,
           address: `${property.city}-${property.province},${property.zipCode}`,
@@ -313,9 +313,9 @@ export default function Exemple({
           status: 
           isWait ? 
           <span
-          className="btn btn-primary  w-100"
+          className="btn btn-danger  w-100"
         >
-          {property.isHold ? "On Hold" : "On Cancel"}
+          {property.isOnHold ? "On Hold" : "On Cancel"}
         </span>
             : 
           isBidded.bidId ? 
@@ -516,7 +516,7 @@ export default function Exemple({
                   </div>
                 </li>
                 </ul>
-              ) : ( isBidded.orderStatus <6 &&
+              ) : ( isBidded.orderStatus <6 && isBidded.status === 1 &&
                  <button
                           href="#"
                           className="btn btn-color w-100 mt-1"

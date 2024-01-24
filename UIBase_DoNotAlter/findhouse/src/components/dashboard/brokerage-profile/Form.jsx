@@ -18,7 +18,9 @@ const Form = ({ userData, chnageShowCardHandler }) => {
             data-toggle="tooltip"
             data-placement="top"
             title="Edit Profile"
-          >Edit Profile</span>
+          >
+            Edit Profile
+          </span>
         </button>
       </div>
 
@@ -56,9 +58,9 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       <span className="text-dark" style={{ fontSize: "17px" }}>
                         {" "}
                         <span className="fw-bold">Name</span> :{" "}
-                        {userData?.broker_Details?.firstName}{" "}
-                        {userData?.broker_Details?.middleName}{" "}
-                        {userData?.broker_Details?.lastName}
+                        {userData?.brokerage_Details?.firstName}{" "}
+                        {userData?.brokerage_Details?.middleName}{" "}
+                        {userData?.brokerage_Details?.lastName}
                       </span>
                     </li>
                   </td>
@@ -71,8 +73,8 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                   >
                     <li className="text-dark p-2" style={{ listStyle: "none" }}>
                       <span className="text-dark" style={{ fontSize: "17px" }}>
-                        <span className="fw-bold"> Company</span> :{" "}
-                        {userData?.broker_Details?.companyName}
+                        <span className="fw-bold"> Brokerage Name</span> :{" "}
+                        {userData?.brokerage_Details?.brokerageNameRef}
                       </span>
                       {/* <span className="text-dark fw-bold">Middle Name</span> :{" "}
                     <span className="text-dark fw-bold"> Devendra </span> */}
@@ -105,7 +107,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                     <li className="text-dark p-2" style={{ listStyle: "none" }}>
                       <span className="text-dark" style={{ fontSize: "17px" }}>
                         <span className="fw-bold"> Phone</span> :{" "}
-                        {userData?.broker_Details?.phoneNumber}
+                        {userData?.brokerage_Details?.phoneNumber}
                       </span>
                       {/* <span className="text-dark fw-bold">Last Name</span> :{" "}
                     <span className="text-dark fw-bold"> Patel </span> */}
@@ -126,7 +128,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                         <span className="fw-bold">
                           Mortgage Broker Licence No.
                         </span>{" "}
-                        : {userData?.broker_Details?.mortageBrokerLicNo}
+                        : {userData?.brokerage_Details?.mortageBrokerLicNo}
                       </span>
                       {/* <span className="text-dark fw-bold">Middle Name</span> :{" "}
                     <span className="text-dark fw-bold"> Devendra </span> */}
@@ -147,7 +149,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                           {" "}
                           Mortgage Brokerge Licence No. :{" "}
                         </span>
-                        {userData?.broker_Details?.phoneNumber}
+                        {userData?.brokerage_Details?.phoneNumber}
                       </span>
                       {/* <span className="text-dark fw-bold">Last Name</span> :{" "}
                     <span className="text-dark fw-bold"> Patel </span> */}
@@ -165,11 +167,11 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                     <li className="text-dark p-2" style={{ listStyle: "none" }}>
                       <span className="text-dark" style={{ fontSize: "17px" }}>
                         <span className="fw-bold"> Address : </span>
-                        {userData.broker_Details?.streetNumber},{" "}
-                        {userData.broker_Details?.streetName},{" "}
-                        {userData?.broker_Details?.city},{" "}
-                        {userData?.broker_Details?.province},{" "}
-                        {userData?.broker_Details?.zipCode}
+                        {userData.brokerage_Details?.streetNumber},{" "}
+                        {userData.brokerage_Details?.streetName},{" "}
+                        {userData?.brokerage_Details?.city},{" "}
+                        {userData?.brokerage_Details?.province},{" "}
+                        {userData?.brokerage_Details?.zipCode}
                       </span>
                       {/* <span className="text-dark fw-bold">Last Name</span> :{" "}
                     <span className="text-dark fw-bold"> Patel </span> */}
@@ -189,8 +191,8 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       <span className="text-dark" style={{ fontSize: "17px" }}>
                         {" "}
                         <span className="fw-bold">Assistant Name</span> :{" "}
-                        {userData?.broker_Details?.assistantFirstName}{" "}
-                        {userData?.broker_Details?.assistantLatsName}
+                        {userData?.brokerage_Details?.assistantFirstName}{" "}
+                        {userData?.brokerage_Details?.assistantLatsName}
                       </span>
                     </li>
                   </td>
@@ -208,7 +210,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       <span className="text-dark" style={{ fontSize: "17px" }}>
                         {" "}
                         <span className="fw-bold">Assistant Email</span> :{" "}
-                        {userData?.broker_Details?.assistantEmailAddress}{" "}
+                        {userData?.brokerage_Details?.assistantEmailAddress}{" "}
                       </span>
                     </li>
                   </td>
@@ -226,7 +228,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       <span className="text-dark" style={{ fontSize: "17px" }}>
                         {" "}
                         <span className="fw-bold">Assistant Phone </span> :{" "}
-                        {userData?.broker_Details?.assistantPhoneNumber}{" "}
+                        {userData?.brokerage_Details?.assistantPhoneNumber}{" "}
                       </span>
                     </li>
                   </td>

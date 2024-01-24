@@ -373,14 +373,36 @@ const Index = () => {
 
   const brokerInfoHandler = (orderId) => {
     const printWindow = window.open("", "_blank");
+    printWindow.document.write("<html><head><title></title></head><body>");
+
+    // Add the header section
+    printWindow.document.write(`
+      <div class="col-lg-12">
+        <div class="row">
+          <div class="col-lg-12 text-center" style="margin-left:250px; margin-top:50px" >
+            <a href="/" class="">
+              <img width="40" height="45" class="logo1 img-fluid" style="margin-top:-20px" src="/assets/images/logo.png" alt="header-logo2.png" />
+              <span style="color:#2e008b; font-weight:bold; font-size:18px; margin-top:20px">
+                Appraisal
+              </span>
+              <span style="color:#97d700; font-weight:bold; font-size:18px; margin-top:20px">
+                Land
+              </span>
+            </a>
+          </div>
+        </div>
+        <hr style="width:27%; margin-left:200px; color:#2e008b" />
+      </div>
+    `);
+
     printWindow.document.write(
-      "<html><head><title>Broker Information</title></head><body>"
+      `<h3 style="margin-left:200px;">Broker Details of Order No. ${orderId}</h3>`
     );
-    printWindow.document.write("<h1>" + `Broker info of order ${orderId}` + "</h1>");
     printWindow.document.write(
       '<button style="display:none;" onclick="window.print()">Print</button>'
     );
 
+    // Clone the table-container and remove the action column
     const tableContainer = document.getElementById("broker-info-container");
     const table = tableContainer.querySelector("table");
     const clonedTable = table.cloneNode(true);
@@ -421,14 +443,34 @@ const Index = () => {
   
   const PropertyInfoHandler = (orderId) => {
     const printWindow = window.open("", "_blank");
+    printWindow.document.write("<html><head><title></title></head><body>");
+
+    // Add the header section
+    printWindow.document.write(`
+      <div class="col-lg-12">
+        <div class="row">
+          <div class="col-lg-12 text-center" style="margin-left:250px; margin-top:50px" >
+            <a href="/" class="">
+              <img width="40" height="45" class="logo1 img-fluid" style="margin-top:-20px" src="/assets/images/logo.png" alt="header-logo2.png" />
+              <span style="color:#2e008b; font-weight:bold; font-size:18px; margin-top:20px">
+                Appraisal
+              </span>
+              <span style="color:#97d700; font-weight:bold; font-size:18px; margin-top:20px">
+                Land
+              </span>
+            </a>
+          </div>
+        </div>
+        <hr style="width:27%; margin-left:200px; color:#2e008b" />
+      </div>
+    `);
+
     printWindow.document.write(
-      "<html><head><title>Property Information</title></head><body>"
+      `<h3 style="margin-left:200px;">Property Details of Order No. ${orderId}</h3>`
     );
-    printWindow.document.write("<h1>" + `Property info of order ${orderId}` + "</h1>");
     printWindow.document.write(
       '<button style="display:none;" onclick="window.print()">Print</button>'
     );
-
     // Clone the table-container and remove the action column
     const tableContainer = document.getElementById("property-info-container");
     const table = tableContainer.querySelector("table");

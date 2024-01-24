@@ -74,7 +74,6 @@ const Index = () => {
       remark:remark,
       modifiedDate : statusDate
     };
-
     const encryptedBody = encryptionData(payload);
     toast.loading("Updating order status!!");
     axios.put("/api/updateOrderStatus",encryptedBody).then((res)=>{

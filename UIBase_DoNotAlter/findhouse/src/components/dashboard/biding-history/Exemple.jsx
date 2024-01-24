@@ -328,7 +328,7 @@ export default function Exemple({
           if(isBidded.status === 1){
             console.log(getOrderValue(isBidded.orderStatus))
           }
-        const isWait = property.isHold || property.isCancel;
+        const isWait = property.isOnHold || property.isOnCancel;
         const updatedRow = {
           orderId: property.orderId ,
           address: `${property.city}-${property.province},${property.zipCode}`,
@@ -343,9 +343,9 @@ export default function Exemple({
           status: 
           isWait ? 
           <span
-          className="btn btn-primary  w-100"
+          className="btn btn-danger  w-100"
         >
-          {property.isHold ? "On Hold" : "On Cancel"}
+          {property.isOnHold ? "On Hold" : "On Cancel"}
         </span>
             : 
           isBidded.bidId ? 
@@ -433,7 +433,7 @@ export default function Exemple({
           ),
           type_of_appraisal: property.typeOfAppraisal
             ? property.typeOfAppraisal
-            : "NA",
+            : "N.A.",
           typeOfBuilding:
             property.typeOfBuilding > 0 ? "Apartment" : property.typeOfBuilding,
           quote_required_by: formatDate(property.addedDatetime),
@@ -441,13 +441,13 @@ export default function Exemple({
           bidAmount: millify(property.bidLowerRange),
           lender_information: property.lenderInformation
             ? property.lenderInformation
-            : "NA",
+            : "N.A.",
           urgency:
             property.urgency === 0
               ? "Rush"
               : property.urgency === 1
               ? "Regular"
-              : "",
+              : "N.A.",
 
           action: (
             <div className="print-hidden-column">
@@ -542,7 +542,7 @@ export default function Exemple({
                   </div>
                 </li>
                 </ul>
-              ) : ( isBidded.orderStatus <=6 &&
+              ) : ( isBidded.orderStatus <=6 && isBidded.status === 1 &&
                  <button
                           href="#"
                           className="btn btn-color w-100 mt-1"
