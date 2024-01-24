@@ -18,15 +18,14 @@ const Form = ({ userData, chnageShowCardHandler }) => {
             data-toggle="tooltip"
             data-placement="top"
             title="Edit Profile"
-          >Edit Profile</span>
+          >
+            Edit Profile
+          </span>
         </button>
       </div>
 
       <div className="row">
-      <div className="col-lg-3 text-center">
-          
-          {/* End .col */}
-        </div>
+        <div className="col-lg-3 text-center">{/* End .col */}</div>
         <div className="col-lg-9">
           <div className="row mb-2">
             <div className="col-lg-9">
@@ -65,7 +64,10 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                     <li className="text-dark p-2" style={{ listStyle: "none" }}>
                       <span className="text-dark" style={{ fontSize: "17px" }}>
                         <span className="fw-bold"> Company</span> :{" "}
-                        {userData?.appraiserCompany_Datails?.appraiserCompanyName}
+                        {
+                          userData?.appraiserCompany_Datails
+                            ?.appraiserCompanyName
+                        }
                       </span>
                       {/* <span className="text-dark fw-bold">Middle Name</span> :{" "}
                     <span className="text-dark fw-bold"> Devendra </span> */}
@@ -116,10 +118,8 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                   >
                     <li className="text-dark p-2" style={{ listStyle: "none" }}>
                       <span className="text-dark" style={{ fontSize: "17px" }}>
-                        <span className="fw-bold">
-                         Licence No.
-                        </span>{" "}
-                        : {userData?.appraiserCompany_Datails?.licenseNumber}
+                        <span className="fw-bold">Licence No.</span> :{" "}
+                        {userData?.appraiserCompany_Datails?.licenseNumber}
                       </span>
                       {/* <span className="text-dark fw-bold">Middle Name</span> :{" "}
                     <span className="text-dark fw-bold"> Devendra </span> */}
@@ -136,10 +136,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                   >
                     <li className="text-dark p-2" style={{ listStyle: "none" }}>
                       <span className="text-dark" style={{ fontSize: "17px" }}>
-                        <span className="fw-bold">
-                          {" "}
-                         Primary Address
-                        </span>
+                        <span className="fw-bold"> Primary Address</span>
                         {userData?.appraiserCompany_Datails?.addressLineOne}
                       </span>
                       {/* <span className="text-dark fw-bold">Last Name</span> :{" "}
@@ -180,8 +177,14 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       <span className="text-dark" style={{ fontSize: "17px" }}>
                         {" "}
                         <span className="fw-bold">Assistant Name</span> :{" "}
-                        {userData?.appraiserCompany_Datails?.officeContactFirstName}{" "}
-                        {userData?.appraiserCompany_Datails?.officeContactLastName}
+                        {
+                          userData?.appraiserCompany_Datails
+                            ?.officeContactFirstName
+                        }{" "}
+                        {
+                          userData?.appraiserCompany_Datails
+                            ?.officeContactLastName
+                        }
                       </span>
                     </li>
                   </td>

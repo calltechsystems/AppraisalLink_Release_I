@@ -19,7 +19,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
       "/assets/images/home/placeholder_01.jpg"
   );
 
-
   const hiddenStyle = { backgroundColor: "#E8F0FE", display: "none" };
   const viewStyle = { backgroundColor: "#E8F0FE", display: "block" };
   const [edit, setEdit] = useState(true);
@@ -28,7 +27,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     userData?.appraiser_Details?.firstName || ""
   );
 
-  const [designations,setDesignation]= useState("");
+  const [designations, setDesignation] = useState("");
   const [middleNameRef, setMiddleNameRef] = useState(
     userData?.appraiser_Details?.middleName || ""
   );
@@ -49,8 +48,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   const [addressLineTwoRef, setAddressLineTwoRef] = useState(
     userData?.appraiser_Details?.adressLine2 || ""
   );
-
-  
 
   const [cityRef, setCityRef] = useState(
     userData?.appraiser_Details?.city || ""
@@ -75,19 +72,15 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
 
   const [otherDesignation, setOtherDesignation] = useState("");
   const [setODesignation, setSetODesignation] = useState(false);
-  
 
-  useEffect(()=>{
-
-    if(String(designations) === "Other"){
+  useEffect(() => {
+    if (String(designations) === "Other") {
       setSetODesignation(true);
-    }
-    else{
+    } else {
       setSetODesignation(false);
     }
-    console.log(setODesignation)
-
-  },[designations]);
+    console.log(setODesignation);
+  }, [designations]);
 
   // const [designation, setDesignation] = useState(
   //   userData?.brokerage_Details?.designation || ""
@@ -99,7 +92,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   const [streetNumber, setStreetNumber] = useState(
     userData.appraiser_Details?.streetNumber || ""
   );
-  const [unit, setUnit] = useState(userData?.appraiser_Details?.apartmentNo || "");
+  const [unit, setUnit] = useState(
+    userData?.appraiser_Details?.apartmentNo || ""
+  );
 
   const uploadProfile = (e) => {
     const file = e.target.files[0];
@@ -208,7 +203,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
       toast.loading("Updating ...");
       const encryptedData = encryptionData(payload);
       axios
-        .put("/api/updateAppraiserCompanyProfile", encryptedData)
+        .put("/api/updateAppraiserProfile", encryptedData)
         .then((res) => {
           toast.success("Successfully Updated Profile!");
           console.log(res.data.userData);
@@ -478,7 +473,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                             paddingTop: "15px",
                             paddingBottom: "15px",
                             backgroundColor: "#E8F0FE",
-                            color:"black"
+                            color: "black",
                           }}
                         >
                           {designation.map((item, index) => {
@@ -490,27 +485,24 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           })}
                         </select>
                       </div>
-                      {setODesignation &&
-                      <div id="other-div">
-                        <input
-                          required
-                          // style={setODesignation ? viewStyle : hiddenStyle}
-                          onChange={(e) =>
-                            setOtherDesignation(e.target.value)
-                          }
-                          value={otherDesignation}
-                          type="text"
-                          className="form-control"
-                          id="formGroupExampleInput3"
-                          style={{ backgroundColor: "#E8F0FE" }}
-                          maxLength={30}
-                        />
-                    </div> }
+                      {setODesignation && (
+                        <div id="other-div">
+                          <input
+                            required
+                            // style={setODesignation ? viewStyle : hiddenStyle}
+                            onChange={(e) =>
+                              setOtherDesignation(e.target.value)
+                            }
+                            value={otherDesignation}
+                            type="text"
+                            className="form-control"
+                            id="formGroupExampleInput3"
+                            style={{ backgroundColor: "#E8F0FE" }}
+                            maxLength={30}
+                          />
+                        </div>
+                      )}
                     </div>
-
-
-
-                   
                   </div>
 
                   <div className="col-lg-12 mb-3">
@@ -600,6 +592,43 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       </div>
                     </div>
                   </div>
+
+                  <div className="row">
+                    <div className="col-lg-3 mb-2">
+                      <label
+                        htmlFor=""
+                        style={{
+                          // paddingTop: "15px",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Add Lender List<span class="req-btn">*</span>
+                      </label>
+                    </div>
+                    <div className="col-lg-7">
+                      <CldUploadWidget
+                        onUpload={""}
+                        uploadPreset="mpbjdclg"
+                        options={{
+                          cloudName: "dcrq3m6dx", // Your Cloudinary upload preset
+                          maxFiles: 1,
+                        }}
+                      >
+                        {({ open }) => (
+                          <div>
+                            <button
+                              className="btn btn-color "
+                              style={{ marginLeft: "0px" }}
+                              onClick={open} // This will open the upload widget
+                            >
+                              Upload +
+                            </button>
+                          </div>
+                        )}
+                      </CldUploadWidget>
+                    </div>
+                  </div>
+
                   <h3 className="mt-4">Address</h3>
                   <hr />
                   <div className="col-lg-12 mb-3">
@@ -704,7 +733,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           className="form-select"
                           data-live-search="true"
                           data-width="100%"
-                          
                           onChange={(e) => setStateRef(e.target.value.value)}
                           value={stateRef}
                           disabled={!edit}
@@ -916,7 +944,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           <button
                             className="btn btn5 m-1"
                             // onClick={cancelHandler}
-                            onClick={()=>setShowCard(true)}
+                            onClick={() => setShowCard(true)}
                           >
                             Cancel
                           </button>
@@ -924,7 +952,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                             className="btn btn2 btn-dark"
                             onClick={onUpdatHandler}
                           >
-                            {userData?.brokerage_Details
+                            {userData?.appraiser_Details
                               ? "Update Profile"
                               : "Create Profile"}
                           </button>

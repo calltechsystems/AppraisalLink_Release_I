@@ -451,8 +451,7 @@ export default function Exemple({
                   >
                     <button
                       href="#"
-                      className="btn btn-color w-100 mt-1"
-                      style={{ marginLeft: "12px" }}
+                      className="btn btn-color"
                     >
                     <Link href="#">
                     <span className="text-light"> <FaArchive/></span>
