@@ -483,7 +483,7 @@ export default function Exemple({
                     <Link
                       className="btn btn-color-table"
                       // style={{ marginLeft: "4.3rem" }}
-                      href={`/my-property-bids/${property.propertyId}`}
+                      href={`/brokerage-properties-bid/${property.propertyId}`}
                     >
                       <span className="flaticon-invoice">
                         {/* <FaHandHoldingUsd /> */}

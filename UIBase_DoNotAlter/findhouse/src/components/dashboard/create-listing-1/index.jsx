@@ -752,7 +752,7 @@ const Index = ({ isView, propertyData }) => {
             toast.dismiss();
             toast.success("Property Added Successfully");
             // setModalIsOpen(true);
-            router.push("/my-properties");
+            router.push("/brokerage-properties");
           })
           .catch((err) => {
             toast.dismiss();

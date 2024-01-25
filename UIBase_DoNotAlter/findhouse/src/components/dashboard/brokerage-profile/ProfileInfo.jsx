@@ -36,10 +36,10 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     userData?.brokerage_Details?.brokerageName || ""
   );
 
-  const [mortgageBrokrageLicNoRef, setMortgageLicNoRef] = useState(
+  const [mortageBrokrageLicNoRef, setMortageLicNoRef] = useState(
     userData?.brokerage_Details?.mortageBrokerageLicNo || ""
   );
-  const [mortgageBrokerLicNoRef, setMortgageBrokerLicNoRef] = useState(
+  const [mortageBrokerLicNoRef, setMortageBrokerLicNoRef] = useState(
     userData?.brokerage_Details?.mortageBrokerLicNo || ""
   );
 
@@ -199,12 +199,12 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         lastName: lastName,
         brokerageName: brokerageName,
         mortageBrokerLicNo:
-          mortgageBrokerLicNoRef !== ""
-            ? mortgageBrokerLicNoRef
+          mortageBrokerLicNoRef !== ""
+            ? mortageBrokerLicNoRef
             : userData.brokerage_Details.mortageBrokerLicNo,
         mortageBrokerageLicNo:
-          mortgageBrokrageLicNoRef !== ""
-            ? mortgageBrokrageLicNoRef
+          mortageBrokrageLicNoRef !== ""
+            ? mortageBrokrageLicNoRef
             : userData.brokerage_Details.mortageBrokerageLicNo,
         streetNumber: streetNumber,
         apartmentNo: "",
@@ -465,8 +465,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           className="form-control"
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
-                          value={mortgageBrokrageLicNoRef}
-                          onChange={(e) => setMortgageLicNoRef(e.target.value)}
+                          value={mortageBrokrageLicNoRef}
+                          onChange={(e) => setMortageLicNoRef(e.target.value)}
                         />
                       </div>
                     </div>
@@ -490,9 +490,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           className="form-control"
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
-                          value={mortgageBrokerLicNoRef}
+                          value={mortageBrokerLicNoRef}
                           onChange={(e) =>
-                            setMortgageBrokerLicNoRef(e.target.value)
+                            setMortageBrokerLicNoRef(e.target.value)
                           }
                         />
                       </div>

@@ -347,7 +347,7 @@ export default function Exemple({
             ) : (
               <div>
                 <h5 className="btn btn-danger m-1">Declined</h5>
-                {/* <li
+                <li
                   className="list-inline-item"
                   data-toggle="tooltip"
                   data-placement="top"
@@ -361,7 +361,7 @@ export default function Exemple({
                       Accept
                     </a>
                   </div>
-                </li> */}
+                </li>
               </div>
             ),
         };

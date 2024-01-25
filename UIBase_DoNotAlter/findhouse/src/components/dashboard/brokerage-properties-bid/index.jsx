@@ -12,12 +12,20 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/router";
 import Exemple from "./Exemple";
+import { encryptionData } from "../../../utils/dataEncryption";
 
-const Index = () => {
+const Index = ({ propertyId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
+  const [appInfo, setAppInfo] = useState({});
   const [refresh, setRefresh] = useState(false);
-  const [property, setProperty] = useState("");
+  const [id, setId] = useState(0);
+
+  const [start, setStart] = useState(0);
+
+  const [openBrokerModal, setOpenBrokerModal] = useState(false);
+
+  const [property, setProperty] = useState([]);
   const [filterProperty, setFilterProperty] = useState("");
   const [filterQuery, setFilterQuery] = useState("Last 30 Days");
   const [properties, setProperties] = useState([]);
@@ -27,13 +35,73 @@ const Index = () => {
 
   const router = useRouter();
 
+  const len = properties.length > 5 ? properties.length : 5;
+  console.log(len);
+
+  const [end, setEnd] = useState(len);
+
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
   );
 
-  const [start, setStart] = useState(0);
+  const closeAppraiserHandler = () => {
+    setAppInfo({});
+    setOpenBrokerModal(false);
+  };
 
-  const [end, setEnd] = useState(4);
+  const acceptRequestHandler = () => {
+    const data = JSON.parse(localStorage.getItem("user"));
+    toast.loading("Accepting the bid ...");
+    const payload = {
+      bidId: id,
+      token: data.token,
+    };
+
+    const encryptedBody = encryptionData(payload);
+    axios
+      .post("/api/acceptBid", encryptedBody, {
+        headers: {
+          Authorization: `Bearer ${data?.token}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        toast.dismiss();
+
+        toast.success("Successfully accepted the requested Bid");
+        router.push("/my-properties");
+      })
+      .catch((err) => {
+        toast.dismiss();
+        console.log(err);
+        toast.error(err?.response?.data?.error);
+      });
+  };
+
+  const rejectRequestHandler = (id) => {
+    const data = JSON.parse(localStorage.getItem("user"));
+    toast.loading("Declining the bid ...");
+    const payload = {
+      bidId: id,
+    };
+    const encryptedBody = encryptionData(payload);
+    axios
+      .post("/api/declineBid", encryptedBody, {
+        headers: {
+          Authorization: `Bearer ${data?.token}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        toast.dismiss();
+        toast.success("Successfully declined the requested Bid");
+        router.push("/my-properties");
+      })
+      .catch((err) => {
+        toast.dismiss();
+        toast.error(err?.response?.data?.error);
+      });
+  };
 
   useEffect(() => {
     const activityHandler = () => {
@@ -60,7 +128,7 @@ const Index = () => {
       const timeSinceLastActivity = currentTime - lastActivityTimestamp;
 
       // Check if there has been no activity in the last 10 minutes (600,000 milliseconds)
-      if (timeSinceLastActivity > 600000) {
+      if (timeSinceLastActivity > 1200000) {
         localStorage.removeItem("user");
         router.push("/login");
       }
@@ -94,7 +162,7 @@ const Index = () => {
           property.zipCode.toLowerCase().includes(searchTerm) ||
           property.area.toLowerCase().includes(searchTerm) ||
           property.city.toLowerCase().includes(searchTerm) ||
-          property.province.toLowerCase().includes(searchTerm) ||
+          property.state.toLowerCase().includes(searchTerm) ||
           property.streetName.toLowerCase().includes(searchTerm) ||
           property.streetNumber.toLowerCase().includes(searchTerm) ||
           property.typeOfBuilding.toLowerCase().includes(searchTerm)
@@ -189,6 +257,11 @@ const Index = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    console.log(property);
+  }, [property]);
+
+  console.log(appInfo);
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -210,10 +283,10 @@ const Index = () => {
       {/* End sidebar_menu */}
 
       {/* <!-- Our Dashbord --> */}
-      <section className="our-dashbord dashbord bgc-f7 pb50">
+      <section className="our-dashbord dashbord bgc-f7 pb50 dashboard-height">
         <div
-          className="container-fluid ovh"
-          style={{ marginLeft: "-10px", marginTop: "" }}
+          className="container-fluid ovh padding container-padding"
+          style={{}}
         >
           <div className="row">
             <div className="col-lg-12 maxw100flex-992">
@@ -235,29 +308,17 @@ const Index = () => {
                 </div> */}
                 {/* End Dashboard Navigation */}
 
-                {/*<div className="col-lg-4 col-xl-4">
+                <div className="col-lg-4 col-xl-4 m-2">
                   <div className="style2 mb30-991">
-                    <h3 className="breadcrumb_title">Archive Properties</h3>
-                    <p>We are glad to see you again!</p>                                                             
+                    <h3 className="breadcrumb_title">
+                      Provided Bids On Property
+                    </h3>
                   </div>
-              </div>*/}
-
+                </div>
                 {/* End .col */}
 
-                {/* <div className="row">
-                  <div className="col-lg-12 mt20">
-                    <div className="mbp_pagination">
-                      <Pagination
-                        setStart={setStart}
-                        setEnd={setEnd}
-                        properties={properties}
-                      />
-                    </div>
-                  </div>
-                </div> */}
-
-                <div className="col-lg-12 col-xl-12">
-                  {/*<div className="candidate_revew_select style2 mb30-991">
+                {/* <div className="col-lg-12 col-xl-12">
+                  <div className="candidate_revew_select style2 mb30-991">
                     <ul className="mb0">
                       <li className="list-inline-item">
                         <Filtering setFilterQuery={setFilterQuery} />
@@ -270,32 +331,37 @@ const Index = () => {
                           <SearchBox setSearchInput={setSearchInput} />
                         </div>
                       </li>
-                      
+                     
                     </ul>
-              </div>*/}
-                </div>
+                  </div>
+                </div> */}
                 {/* End .col */}
 
                 <div className="col-lg-12">
-                  <div className="">
+                  <div className="mb40">
                     <div className="property_table">
-                      <div className="mt0">
+                      <div className=" mt0">
                         <TableData
                           userData={userData}
                           open={openModal}
+                          setIsModalOpen={setIsModalOpen}
                           close={closeModal}
                           setProperties={setProperties}
-                          start={start}
-                          end={end}
                           properties={
                             searchInput === "" ? properties : filterProperty
                           }
+                          start={start}
+                          end={end}
+                          setid={setId}
+                          property={property}
+                          setProperty={setProperty}
+                          propertyId={propertyId}
                           setModalIsOpenError={setModalIsOpenError}
+                          setOpenBrokerModal={setOpenBrokerModal}
                           setErrorMessage={setErrorMessage}
-                          setRefresh={setRefresh}
+                          setAppInfo={setAppInfo}
                           refresh={refresh}
-                          setFilterQuery={setFilterQuery}
-                          setSearchInput={setSearchInput}
+                          setRefresh={setRefresh}
                         />
 
                         {modalIsOpenError && (
@@ -353,61 +419,158 @@ const Index = () => {
               </div>
 
               <div className="row">
-                <div className="col-lg-12 mt20">
+                {/* <div className="col-lg-12 mt20">
                   <div className="mbp_pagination">
                     <Pagination
                       properties={properties}
                       setProperties={setProperties}
                     />
                   </div>
-                </div>
+                </div> */}
                 {/* End paginaion .col */}
               </div>
               {/* End .row */}
             </div>
             {/* End .row */}
-            {/*<div className="row">
-                 <div className="col-lg-12 mt20">
-                  <div className="mbp_pagination">
-                    <Pagination
-                      setStart={setStart}
-                      setEnd={setEnd}
-                      properties={properties}
-                    />
-                  </div>
-                </div> 
-            </div>*/}
+
+            <div className="row">
+              <div className="col-lg-12 mt20 mb100">
+                <div className="mbp_pagination">
+                  <Pagination
+                    setStart={setStart}
+                    setEnd={setEnd}
+                    properties={properties}
+                  />
+                </div>
+              </div>
+            </div>
 
             <div className="row mt50">
               <div className="col-lg-12">
                 <div className="copyright-widget text-center">
                   <p>
-                    &copy; {new Date().getFullYear()} Appraisal Link. All Rights
+                    &copy; {new Date().getFullYear()} Appraisal Land. All Rights
                     Reserved.
                   </p>
                 </div>
               </div>
             </div>
             {/* End .col */}
+
+            {openBrokerModal && appInfo.firstName && (
+              <div className="modal">
+                <div className="modal-content">
+                  <span style={{ fontWeight: "bold" }}>
+                    <h3 className="text-center"> Appraiser Details </h3>
+                  </span>
+                  <hr />
+                  <div className=" col-lg-12">
+                    <div className="row offset-1">
+                      <h5 className="col-lg-3 mt-1 text-start">
+                        <span className="">Appraiser Name </span>{" "}
+                      </h5>
+                      <span className="col-lg-1">:</span>
+                      <span className="col-lg-6 text-start">
+                        {appInfo.firstName} {appInfo.lastName}
+                      </span>
+                    </div>
+                    <div className="row offset-1">
+                      <h5 className="col-lg-3 mt-1 text-start">
+                        <span className="">Email Address</span>{" "}
+                      </h5>
+                      <span className="col-lg-1">:</span>
+                      <span className="col-lg-6 text-start">
+                        {appInfo.email ? appInfo.email : "N.A."}
+                      </span>
+                    </div>
+                    <div className="row offset-1">
+                      <h5 className="col-lg-3 mt-1 text-start">
+                        <span className="">Phone Number </span>{" "}
+                      </h5>
+                      <span className="col-lg-1">:</span>
+                      <span className="col-lg-6 text-start">
+                        {appInfo.phoneNumber}
+                      </span>
+                    </div>
+                    <div className="row offset-1">
+                      <h5 className="col-lg-3 mt-1 text-start">
+                        <span className="">Company Name </span>{" "}
+                      </h5>
+                      <span className="col-lg-1">:</span>
+                      <span className="col-lg-6 text-start">
+                        {appInfo.companyName}
+                      </span>
+                    </div>
+                    <div className="row offset-1">
+                      <h5 className="col-lg-3 mt-1 text-start">
+                        <span className="">Designation</span>{" "}
+                      </h5>
+                      <span className="col-lg-1">:</span>
+                      <span className="col-lg-6 text-start">
+                        {appInfo.designation}
+                      </span>
+                    </div>
+                    <div className="row offset-1">
+                      <h5 className="col-lg-3 mt-1 text-start">
+                        <span className="">Address </span>{" "}
+                      </h5>
+                      <span className="col-lg-1">:</span>
+                      <span className="col-lg-6">
+                        {appInfo.streetName}-{appInfo.streetNumber},
+                        {appInfo.area} {appInfo.city} - {appInfo.province}{" "}
+                        {appInfo.postalCode}
+                      </span>
+                    </div>
+                  </div>
+                  <hr />
+                  <div className="text-center" style={{}}>
+                    <button
+                      className="btn btn-color w-35"
+                      onClick={() => closeAppraiserHandler()}
+                    >
+                      Ok
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
             {isModalOpen && (
               <div className="modal">
                 <div className="modal-content">
-                  <h3 className="text-center">Delete Confirmation</h3>
-                  <h5 className="text-center">
-                    Are you sure you want to delete the property :{" "}
-                    {property.area} ?
-                  </h5>
+                  <h3 className="text-center">Accept Bid Confirmation</h3>
+                  <hr />
+                  <p className="text-center fs-6">
+                    Are you sure you want to accept the quote with value?
+                  </p>
+
+                  <h4 className="text-center">
+                    Quote Amount : $ {property.bidAmount}
+                  </h4>
+                  <p className="text-center mt-3 mb-0">
+                    ( Note <span className="text-danger">*</span> : All Other
+                    Quotes from other appriasers will be Rejected.)
+                  </p>
+                  <hr />
+
                   {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
-                  <div className="text-center" style={{}}>
-                    <button
-                      className="btn w-35 btn-thm3 m-2"
-                      onClick={handleDelete}
-                    >
-                      Delete
-                    </button>
-                    <button className="btn w-35 btn-white" onClick={closeModal}>
-                      Cancel
-                    </button>
+                  <div className="col-lg-12">
+                    <div className="row">
+                      <div className="col-lg-12 text-center m-1">
+                        <button
+                          className="btn btn-color"
+                          style={{ marginRight: "5px" }}
+                          onClick={closeModal}
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          className="btn btn-color"
+                          onClick={() => acceptRequestHandler(property.bidId)}
+                        >
+                          Submit
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

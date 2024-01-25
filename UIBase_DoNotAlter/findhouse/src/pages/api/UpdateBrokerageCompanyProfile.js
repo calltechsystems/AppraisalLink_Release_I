@@ -23,7 +23,7 @@ async function handler(request, response) {
       middleName,
       companyName,
       mortageBrokerLicNo,
-      mortgageBrokerageLicNo,
+      mortageBrokerageLicNo,
       city,
       state,
       postalCode,
@@ -57,7 +57,7 @@ async function handler(request, response) {
       assistantEmailAddress: assistantEmailAddress,
       assistantFirstName: assistantFirstName,
       assistantPhoneNumber: assistantPhoneNumber,
-      mortageBrokerageLicNo: mortgageBrokerageLicNo,
+      mortageBrokerageLicNo: mortageBrokerageLicNo,
       mortageBrokerLicNo: mortageBrokerLicNo,
       profileImage: profileImage,
     };

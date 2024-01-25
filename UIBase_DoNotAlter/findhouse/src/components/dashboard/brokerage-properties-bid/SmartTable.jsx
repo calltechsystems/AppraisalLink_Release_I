@@ -1,25 +1,19 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import SVGArrowDown from "./icons/SVGArrowDown";
 import SVGArrowUp from "./icons/SVGArrowUp";
 import SVGChevronLeft from "./icons/SVGChevronLeft";
 import SVGChevronRight from "./icons/SVGChevronRight";
 import { FaRedo } from "react-icons/fa";
-import * as XLSX from "xlsx";
-
-import { useReactToPrint } from "react-to-print";
-import toast from "react-hot-toast";
-import SearchBox from "./SearchBox";
-import FilteringBy from "./FilteringBy";
 import Filtering from "./Filtering";
+import SearchBox from "./SearchBox";
 
 function SmartTable(props) {
   const [loading, setLoading] = useState(false);
   const [sortDesc, setSortDesc] = useState({});
+
   const [tableWidth, setTableWidth] = useState(1000);
   const [data, setData] = useState(props.data);
-
-  const componentRef = useRef();
 
   const [search, setSearch] = useState("");
   const [rowsPerPage, setRowsPerPage] = useState(props.rowsPerPage ?? 10);
@@ -28,7 +22,6 @@ function SmartTable(props) {
   );
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(props.total ?? 0);
-  const [changes, setChanges] = useState(false);
 
   const generatePDF = () => {
     window.print();
@@ -39,6 +32,8 @@ function SmartTable(props) {
     const refresh = !props.refresh;
     props.setRefresh(refresh);
   };
+
+  console.log(props.data);
   const fetchData = useCallback(
     async (queryString) => {
       setLoading(true);
@@ -62,6 +57,49 @@ function SmartTable(props) {
     },
     [props.url]
   );
+
+  const tableWidthFunc = useCallback(() => {
+    let tempTableWidth = 0;
+    props.headCells.map((cell) => (tempTableWidth += cell.width));
+
+    if (tempTableWidth) setTableWidth(tempTableWidth);
+  }, [props.headCells]);
+
+  useEffect(() => {
+    tableWidthFunc();
+    if (props.url && !props.data)
+      fetchData(`?limit=${props.rowsPerPage ?? 10}`);
+  }, [
+    props.url,
+    props.data,
+    props.rowsPerPage,
+    props.headCells,
+    tableWidthFunc,
+    fetchData,
+  ]);
+  console.log(props.data);
+
+  const buildQueryString = (search, page, rowsPerPage) => {
+    const queries = [];
+
+    if (page) queries.push(`page=${page}`);
+    if (rowsPerPage) queries.push(`limit=${rowsPerPage}`);
+    if (search) queries.push(`search=${search.toLowerCase()}`);
+
+    const queryString = queries.join("&");
+
+    return queryString ? `?${queryString}` : "";
+  };
+
+  const debounce = (func, timeout = 300) => {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        func.apply(this, args);
+      }, timeout);
+    };
+  };
 
   const handlePrint = () => {
     const printWindow = window.open("", "_blank");
@@ -116,6 +154,7 @@ function SmartTable(props) {
       toast.success("Saved the data");
     };
   };
+
   const handleExcelPrint = () => {
     const twoDData = props.data.map((item, index) => {
       return [item.bid, item.date, item.title, item.urgency];
@@ -159,49 +198,6 @@ function SmartTable(props) {
     excelWindow.document.close();
   };
 
-  const tableWidthFunc = useCallback(() => {
-    let tempTableWidth = 0;
-    props.headCells.map((cell) => (tempTableWidth += cell.width));
-
-    if (tempTableWidth) setTableWidth(tempTableWidth);
-  }, [props.headCells]);
-
-  useEffect(() => {
-    tableWidthFunc();
-    if (props.url && !props.data)
-      fetchData(`?limit=${props.rowsPerPage ?? 10}`);
-  }, [
-    props.url,
-    props.data,
-    props.rowsPerPage,
-    props.headCells,
-    tableWidthFunc,
-    fetchData,
-  ]);
-  console.log(props.data);
-
-  const buildQueryString = (search, page, rowsPerPage) => {
-    const queries = [];
-
-    if (page) queries.push((page = `${page}`));
-    if (rowsPerPage) queries.push(`limit=${rowsPerPage}`);
-    if (search) queries.push(`search=${search.toLowerCase()}`);
-
-    const queryString = queries.join("&");
-
-    return queryString ? `?${queryString}` : "";
-  };
-
-  const debounce = (func, timeout = 300) => {
-    let timer;
-    return (...args) => {
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        func.apply(this, args);
-      }, timeout);
-    };
-  };
-
   const handleSearch = debounce((event) => {
     const { value } = event.target;
     setSearch(value);
@@ -221,28 +217,21 @@ function SmartTable(props) {
   }, props.searchDebounceTime ?? 800);
 
   const sortData = (cell) => {
-    let tempData = data.length > 0 ? [...data] : [...props.data];
+    let tempData = [...data];
 
     tempData.sort((a, b) => {
-      const valueA =
-        typeof a[cell] === "string" ? a[cell].toLowerCase() : a[cell];
-      const valueB =
-        typeof b[cell] === "string" ? b[cell].toLowerCase() : b[cell];
-
       if (sortDesc[cell]) {
-        return valueA < valueB ? 1 : -1;
+        return a[cell].toLowerCase() < b[cell].toLowerCase() ? 1 : -1;
       } else {
-        return valueA > valueB ? 1 : -1;
+        return a[cell].toLowerCase() > b[cell].toLowerCase() ? 1 : -1;
       }
     });
     setSortDesc({ [cell]: !sortDesc[cell] });
-
     setData(tempData);
   };
-  console.log(data.length > 0, data);
 
   return (
-    <div className="col-12">
+    <div className="col-12 p-1">
       <div className="smartTable-container row">
         <div className="candidate_revew_select style2 mb30-991">
           <ul className="mb0 mt-0">
@@ -289,7 +278,7 @@ function SmartTable(props) {
         <div className="col-12">
           {props.data.length > 0 ? (
             <div className="row mt-3">
-              <div className="smartTable-tableContainer" id="table-container">
+              <div className="smartTable-tableContainer">
                 <table
                   className={"smartTable-table table table-striped border"}
                   style={{ minWidth: tableWidth }}
@@ -376,7 +365,7 @@ function SmartTable(props) {
               </div>
             </div>
           ) : (
-            <div className="row">
+            <div className="row p-4">
               <div
                 className="smartTable-noDataFound col-12"
                 style={{ marginTop: "50px", marginBottom: "40px" }}

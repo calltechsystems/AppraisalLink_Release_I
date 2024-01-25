@@ -41,7 +41,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
               <table
                 className=""
                 style={{
-                  width: "650px",
+                  width: "450px",
                   // textAlign: "center",
                   borderRadius: "5px",
                 }}
@@ -64,6 +64,8 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       </span>
                     </li>
                   </td>
+                </tr>
+                <tr>
                   <td
                     style={{
                       border: "1px solid grey",
@@ -98,6 +100,8 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                     <span className="text-dark fw-bold"> Devendra </span> */}
                     </li>
                   </td>
+                </tr>
+                <tr>
                   <td
                     style={{
                       border: "1px solid #2e008b",
@@ -149,7 +153,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                           {" "}
                           Mortgage Brokerge Licence No. :{" "}
                         </span>
-                        {userData?.brokerage_Details?.phoneNumber}
+                        {userData?.brokerage_Details?.mortageBrokerageLicNo}
                       </span>
                       {/* <span className="text-dark fw-bold">Last Name</span> :{" "}
                     <span className="text-dark fw-bold"> Patel </span> */}
@@ -178,7 +182,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                     </li>
                   </td>
                 </tr>
-                <tr>
+                {/* <tr>
                   <td
                     colSpan="2"
                     style={{
@@ -187,7 +191,6 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                     }}
                   >
                     <li className="text-dark p-2" style={{ listStyle: "none" }}>
-                      {/* <span className="text-dark fw-bold">First Name</span> :{" "} */}
                       <span className="text-dark" style={{ fontSize: "17px" }}>
                         {" "}
                         <span className="fw-bold">Assistant Name</span> :{" "}
@@ -206,7 +209,6 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                     }}
                   >
                     <li className="text-dark p-2" style={{ listStyle: "none" }}>
-                      {/* <span className="text-dark fw-bold">First Name</span> :{" "} */}
                       <span className="text-dark" style={{ fontSize: "17px" }}>
                         {" "}
                         <span className="fw-bold">Assistant Email</span> :{" "}
@@ -224,7 +226,6 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                     }}
                   >
                     <li className="text-dark p-2" style={{ listStyle: "none" }}>
-                      {/* <span className="text-dark fw-bold">First Name</span> :{" "} */}
                       <span className="text-dark" style={{ fontSize: "17px" }}>
                         {" "}
                         <span className="fw-bold">Assistant Phone </span> :{" "}
@@ -232,7 +233,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       </span>
                     </li>
                   </td>
-                </tr>
+                </tr> */}
               </table>
             </div>
             {/* End .col */}
