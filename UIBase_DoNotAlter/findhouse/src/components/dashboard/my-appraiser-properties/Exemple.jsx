@@ -461,9 +461,9 @@ export default function Exemple({
             
           >
             Completed
-          </span> : isWait ?  <p className="btn btn-danger  w-100">Cannot perform any actions right now!.</p> : isBidded && isBidded.status !== 1 ? (
+          </span> : isWait && property.status !== 2 ?  <p className="btn btn-danger  w-100">Cannot perform any actions right now!.</p> : isBidded && isBidded.status !== 1 ? (
                 <ul className="">
-                  {isWishlist.id ? (
+                  {isWishlist.id  && property.status < 2? (
                     <button
                       className="btn "
                       style={{ border: "1px solid grey" }}
@@ -677,25 +677,27 @@ export default function Exemple({
       .get("/api/getAllBids", {
         headers: {
           Authorization: `Bearer ${data.token}`,
-        },
-      })
-      .then((res) => {
-        console.log(res);
-        tempBids = res.data.data.result.$values;
-        const updatedBids = tempBids.filter((prop,index)=>{
-          if(String(prop.appraiserUserId) === String(data.userId)){
-            return true;
-          }
-          else{
-            return false;
-          }
-        })
-        setBids(updatedBids);
-      })
-      .catch((err) => {
-        setErrorMessage(err?.response?.data?.error);
-        setModalIsOpenError(true);
-      });
+        }, 
+      
+        params:{
+          email:data.userEmail
+        }
+    })
+    .then((res) => {
+      console.log(res.data.data);
+      const tempBids = res.data.data;
+      let acceptedBid = 0 ;
+      
+      let updatedBids = [];
+      updatedBids.push(tempBids)
+      
+      console.log(updatedBids)
+      setBids(updatedBids);
+    })
+    .catch((err) => {
+      setErrorMessage(err?.response?.data?.error);
+      setModalIsOpenError(true);
+    });
 
       axios
       .get("/api/getAllBrokers", {

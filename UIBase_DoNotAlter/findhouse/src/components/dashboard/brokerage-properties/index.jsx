@@ -560,6 +560,8 @@ const Index = () => {
                           openModalBroker={openModalBroker}
                           setCurrentProperty={setCurrentProperty}
                           archievePropertyHandler={archievePropertyHandler}
+                          // setIsCancelProperty={setIsCancelProperty}
+                          // setIsHoldProperty={setIsHoldProperty}
                         />
 
                         {modalIsOpenError && (

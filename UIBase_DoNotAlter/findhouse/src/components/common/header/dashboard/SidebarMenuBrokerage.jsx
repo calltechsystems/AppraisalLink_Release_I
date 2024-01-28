@@ -97,10 +97,7 @@ const SidebarMenu = ({ userData }) => {
           <ul>
             <li
               className={`treeview ${
-                isSinglePageActive(
-                  "/brokerage-dashboard",
-                  route.pathname
-                )
+                isSinglePageActive("/brokerage-dashboard", route.pathname)
                   ? "active"
                   : ""
               }`}
@@ -113,10 +110,7 @@ const SidebarMenu = ({ userData }) => {
 
             <li
               className={`treeview ${
-                isSinglePageActive(
-                  "/brokerage-properties",
-                  route.pathname
-                )
+                isSinglePageActive("/brokerage-properties", route.pathname)
                   ? "active"
                   : ""
               }`}
@@ -127,12 +121,9 @@ const SidebarMenu = ({ userData }) => {
               </Link>
             </li>
 
-           <li
+            <li
               className={`treeview ${
-                isSinglePageActive(
-                  "/create-listing-1",
-                  route.pathname
-                )
+                isSinglePageActive("/create-listing-1", route.pathname)
                   ? "active"
                   : ""
               }`}
@@ -140,19 +131,6 @@ const SidebarMenu = ({ userData }) => {
               <Link href="/create-listing-1">
                 <i className="flaticon-plus"></i>
                 <span>Add New Property</span>
-              </Link>
-            </li>
-
-            <li
-              className={`treeview ${
-                isSinglePageActive("/brokerage-biding-history", route.pathname)
-                  ? "active"
-                  : ""
-              }`}
-            >
-              <Link href="/brokerage-biding-history">
-                <i className="flaticon-building"></i>
-                <span>Order History</span>
               </Link>
             </li>
 
@@ -171,176 +149,13 @@ const SidebarMenu = ({ userData }) => {
                 <span>Archive Properties</span>
               </Link>
             </li>
-
-            {/* <li
-              className={`treeview ${
-                isSinglePageActive(
-                  "/brokerage-allocated-properties",
-                  route.pathname
-                )
-                  ? "active"
-                  : ""
-              }`}
-            >
-              <Link href="/brokerage-allocated-properties">
-                <i className="flaticon-building"></i>
-                <span>Assigned Properties</span>
-              </Link>
-            </li> */}
-
-            {/* End Review */}
-
-            {/*<li
-              className={`treeview ${
-                isSinglePageActive("/appraiser-wishlist", route.pathname)
-                  ? "active"
-                  : ""
-              }`}
-            >
-              <Link href="/appraiser-wishlist">
-                <i className="flaticon-heart"></i>
-                <span> Wishlist</span>
-              </Link>
-            </li>*/}
-
-            {/* <li
-              className={`treeview ${
-                isSinglePageActive("/biding-history", route.pathname)
-                  ? "active"
-                  : ""
-              }`}
-            >
-              <Link href="/biding-history">
-                <i className="flaticon-pdf"></i>
-                <span> Biding History</span>
-              </Link>
-            </li>*/}
-            {/* <li
-              className={`treeview ${
-                    isParentPageActive("/my-properties", route.pathname) ? "active" : ""
-                  }`}
-                >
-                <Link href="/my-properties">
-                <i className="flaticon-home"></i>
-                <span>Properties</span>
-              </Link>
-                </li>*/}
           </ul>
         </li>
-
-        {/*<li
-              className={`treeview ${
-                isSinglePageActive("/my-message", route.pathname)
-                  ? "active"
-                  : ""
-              }`}
-            >
-               <Link href="/my-message">
-                <i className="flaticon-envelope"></i>
-                <span> Message</span>
-              </Link> 
-            </li>*/}
-
-        {/* End Main */}
-
-        {/* <li className="title">
-          <span >Manage Appraise Properties</span>
-          <ul>
-            <li
-              className={`treeview ${
-                isParentPageActive(myProperties, route.pathname) ? "active" : ""
-              }`}
-            >
-              <a data-bs-toggle="collapse" href="#my-property">
-                <i className="flaticon-home"></i> <span>My Properties</span>
-                </a>
-            </li>*/}
-        {/* <i className="fa fa-angle-down pull-right"></i>*/}
-
-        {/*<ul className="treeview-menu collapse" id="my-property">
-                {myProperties.map((item) => (
-                  <li key={item.id}>
-                    <Link href={item.route}>
-                      <i className="fa fa-circle"></i> {item.name}
-                    </Link>
-                  </li>
-                ))}
-                </ul>*/}
-
-        {/* end properties */}
-
-        {/* <li
-              className={`treeview ${
-                isParentPageActive(reviews, route.pathname) ? "active" : ""
-              }`}
-            >
-              <a data-bs-toggle="collapse" href="#review">
-                <i className="flaticon-chat"></i>
-                <span>Reviews</span>
-                <i className="fa fa-angle-down pull-right"></i>
-              </a>
-              <ul className="treeview-menu collapse" id="review">
-                {reviews.map((item) => (
-                  <li key={item.id}>
-                    <Link href={item.route}>
-                      <i className="fa fa-circle"></i> {item.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </li> */}
-        {/* End Review */}
-
-        {/* <li
-              className={`treeview ${
-                isSinglePageActive("/my-favourites", route.pathname)
-                  ? "active"
-                  : ""
-              }`}
-            >
-              <Link href="/my-favourites">
-                <i className="flaticon-magnifying-glass"></i>
-                <span> My Favorites</span>
-              </Link>
-            </li>
-            <li
-              className={`treeview ${
-                isSinglePageActive("/my-saved-search", route.pathname)
-                  ? "active"
-                  : ""
-              }`}
-            >
-              <Link href="/my-saved-search">
-                <i className="flaticon-magnifying-glass"></i>
-                <span> Saved Search</span>
-              </Link>
-            </li> */}
-        {/*</ul>
-          </li>*/}
-        {/* End manage listing */}
-
-        {/* <li className="title">
-          <span>Manage Properties</span>
-          <ul>
-            {appraiserProperties.map((item) => (
-              <li
-                className={
-                  isSinglePageActive(item.route, route.pathname) ? "active" : ""
-                }
-                key={item.id}
-              >
-                <Link href={item.route}>
-                  <i className={item.icon}></i> <span>{item.name}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </li> */}
 
         <li className="title">
           <span>Manage Orders</span>
           <ul>
-            <li
+            {/* <li
               className={`treeview ${
                 isSinglePageActive(
                   "/brokerage-completed-properties",
@@ -354,7 +169,7 @@ const SidebarMenu = ({ userData }) => {
                 <i className="flaticon-building"></i>
                 <span>Accepted Orders</span>
               </Link>
-            </li>
+            </li> */}
             <li
               className={`treeview ${
                 isSinglePageActive(
@@ -368,6 +183,18 @@ const SidebarMenu = ({ userData }) => {
               <Link href="/brokerage-completed-properties">
                 <i className="flaticon-building"></i>
                 <span>Completed Orders</span>
+              </Link>
+            </li>
+            <li
+              className={`treeview ${
+                isSinglePageActive("/brokerage-biding-history", route.pathname)
+                  ? "active"
+                  : ""
+              }`}
+            >
+              <Link href="/brokerage-biding-history">
+                <i className="flaticon-building"></i>
+                <span>Order History</span>
               </Link>
             </li>
           </ul>

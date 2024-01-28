@@ -21,7 +21,7 @@ const Index = () => {
 
   const closeErrorModal = () => {
     setModalIsOpenError(false);
-    window.location.reload();
+    location.reload(true);
   };
 
   return (

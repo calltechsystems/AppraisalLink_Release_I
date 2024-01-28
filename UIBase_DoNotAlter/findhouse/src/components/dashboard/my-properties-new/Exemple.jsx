@@ -39,12 +39,12 @@ const headCells = [
     label: "Appraisal Status",
     width: 170,
   },
-  {
-    id: "remark",
-    numeric: false,
-    label: "Remark",
-    width: 170,
-  },
+  // {
+  //   id: "remark",
+  //   numeric: false,
+  //   label: "Remark",
+  //   width: 170,
+  // },
   {
     id: "sub_date",
     numeric: false,
@@ -340,7 +340,7 @@ export default function Exemple({
             appraisal_status:
               isHold || isCancel ? (
                 <span className="btn bg-warning  w-100">
-                  {isHold ? "On Hold" : "OnCancelled"}
+                  {isHold ? "N.A." : "N.A."}
                 </span>
               ) : property.orderStatus ? (
                 <span className="btn bg-warning  w-100">

@@ -568,7 +568,6 @@ const Index = () => {
                                           style={{
                                             border: "1px solid #2e008b",
                                             color: "#2e008b",
-                                            color: "#2e008b",
                                             // padding: "5px",
                                             textAlign: "center",
                                           }}
@@ -1190,12 +1189,12 @@ const Index = () => {
                       ? `${
                           propValue
                             ? "Order Confirmation"
-                            : "Confirmation Remove On Hold Property"
+                            : "Order Confirmation"
                         }`
                       : `${
                           propValue
                             ? "Order Confirmation"
-                            : "Confirmation Remove On Cancel Property"
+                            : "Order Confirmation"
                         }`}
                   </h2>
                   <div

@@ -1,5 +1,5 @@
-import Header from "../../common/header/dashboard/Header";
-import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
+import Header from "../../common/header/dashboard/HeaderBrokerage";
+import SidebarMenu from "../../common/header/dashboard/SidebarMenuBrokerage";
 import MobileMenu from "../../common/header/MobileMenu_02";
 import TableData from "./TableData";
 import Filtering from "./Filtering";
@@ -51,7 +51,7 @@ const Index = ({ propertyId }) => {
 
   const acceptRequestHandler = () => {
     const data = JSON.parse(localStorage.getItem("user"));
-    toast.loading("Accepting the bid ...");
+    toast.loading("Accepting the Quote ...");
     const payload = {
       bidId: id,
       token: data.token,
@@ -68,8 +68,8 @@ const Index = ({ propertyId }) => {
       .then((res) => {
         toast.dismiss();
 
-        toast.success("Successfully accepted the requested Bid");
-        router.push("/my-properties");
+        toast.success("Successfully accepted the Quote");
+        router.push("/brokerage-properties");
       })
       .catch((err) => {
         toast.dismiss();
@@ -80,7 +80,7 @@ const Index = ({ propertyId }) => {
 
   const rejectRequestHandler = (id) => {
     const data = JSON.parse(localStorage.getItem("user"));
-    toast.loading("Declining the bid ...");
+    toast.loading("Declining the Quote ...");
     const payload = {
       bidId: id,
     };
@@ -94,8 +94,8 @@ const Index = ({ propertyId }) => {
       })
       .then((res) => {
         toast.dismiss();
-        toast.success("Successfully declined the requested Bid");
-        router.push("/my-properties");
+        toast.success("Successfully declined the Quote");
+        router.push("/brokerage-properties");
       })
       .catch((err) => {
         toast.dismiss();
@@ -243,8 +243,8 @@ const Index = ({ propertyId }) => {
     const data = JSON.parse(localStorage.getItem("user"));
     if (!data) {
       router.push("/login");
-    } else if (!data?.broker_Details?.firstName) {
-      router.push("/my-profile");
+    } else if (!data?.brokerage_Details?.firstName) {
+      router.push("/brokerage-profile");
     }
     if (!data) {
       router.push("/login");

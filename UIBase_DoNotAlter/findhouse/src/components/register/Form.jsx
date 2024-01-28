@@ -138,8 +138,24 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
           }
         })
         .catch((err) => {
+          // console.log(err);
+          // return ;
+          let statusText = err.response;
+          if( String(err.response.request.status) === "409"){
+            statusText="The used email is already being registered!";
+          }
+          if( String(err.response.request.status) === "500"){
+            statusText="Server issues ,Please Try again !!";
+          }
+          if( String(err.response.request.status) === "403"){
+            statusText="You are being forbidden to access this !";
+          }
+          if( String(err.response.request.status) === "304"){
+            statusText="Not found!";
+          }
+          
           toast.dismiss();
-          setErrorMessage(err.response);
+          setErrorMessage(statusText);
           setModalIsOpenError(true);
           // toast.error(
           //   err.response.data.error

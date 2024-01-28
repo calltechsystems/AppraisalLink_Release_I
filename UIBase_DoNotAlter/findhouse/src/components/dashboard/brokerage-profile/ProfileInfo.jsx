@@ -36,7 +36,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     userData?.brokerage_Details?.brokerageName || ""
   );
 
-  const [mortageBrokrageLicNoRef, setMortageLicNoRef] = useState(
+  const [mortageBrokrageLicNoRef, setMortageBrokerageLicNoRef] = useState(
     userData?.brokerage_Details?.mortageBrokerageLicNo || ""
   );
   const [mortageBrokerLicNoRef, setMortageBrokerLicNoRef] = useState(
@@ -466,7 +466,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
                           value={mortageBrokrageLicNoRef}
-                          onChange={(e) => setMortageLicNoRef(e.target.value)}
+                          onChange={(e) =>
+                            setMortageBrokerageLicNoRef(e.target.value)
+                          }
                         />
                       </div>
                     </div>
@@ -963,11 +965,10 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           className="form-control"
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
-                          // value={assistantFirstName}
-                          // onChange={(e) =>
-                          //   setAssistantFirstName(e.target.value)
-                          // }
-                          //
+                          value={assistantFirstName}
+                          onChange={(e) =>
+                            setAssistantFirstName(e.target.value)
+                          }
                         />
                       </div>
                     </div>
@@ -1047,190 +1048,30 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       </div>
                     </div>
                   </div>
-                  {/* <h3 className="mt-4">Other Details</h3>
-                  <hr />
 
-                  <div className="col-lg-12 mb-3">
-                    <div className="row">
-                      <div className="col-lg-4">
-                        <label htmlFor="" style={{ paddingTop: "10px" }}>
-                          Commission Rate (Only Numbers)
-                        </label>
-                      </div>
-                      <div className="col-lg-7">
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="formGroupExampleInput3"
-                          style={{ backgroundColor: "#E8F0FE" }}
-                          value={commissionRate}
-                          onChange={(e) => setCommissionRate(e.target.value)}
-                          
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-12 mb-3">
-                    <div className="row">
-                      <div className="col-lg-4">
-                        <label htmlFor="" style={{ paddingTop: "10px" }}>
-                          Max Number of Assigned Orders
-                        </label>
-                      </div>
-                      <div className="col-lg-7">
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="formGroupExampleInput3"
-                          style={{ backgroundColor: "#E8F0FE" }}
-                          value={maxNumberOfAssignedOrders}
-                          onChange={(e) => setMaxNumberOfAssignedOrders(e.target.value)}
-                          
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-12 mb-3">
-                    <div className="row">
-                      <div className="col-lg-4">
-                        <label htmlFor="" style={{ paddingTop: "10px" }}>
-                          Review Appraiser Share (Only Numbers)
-                        </label>
-                      </div>
-                      <div className="col-lg-7">
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="formGroupExampleInput3"
-                          style={{ backgroundColor: "#E8F0FE" }}
-                          // value={assistantFirstName}
-                          // onChange={(e) =>
-                          //   setAssistantFirstName(e.target.value)
-                          // }
-                          // 
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-12 mb-3">
-                    <div className="row">
-                      <div className="col-lg-4">
-                        <label htmlFor="" style={{ paddingTop: "10px" }}>
-                          Designation
-                        </label>
-                      </div>
-                      <div className="col-lg-7">
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="formGroupExampleInput3"
-                          style={{ backgroundColor: "#E8F0FE" }}
-                          value={designation}
-                          onChange={(e) => setDesignation(e.target.value)}
-                          
-                        />
-                      </div>
-                    </div>
-                  </div> */}
-                  {/* <div className="row">
-                  <div className="col-lg-6">
-                    <div className="col-12 mb-2">
-                      <label htmlFor="" style={{ paddingTop: "10px" }}>
-                        Licence Number
-                      </label>
-                    </div>
-                    <div className="col-12 mb-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="formGroupExampleInput3"
-                        style={{ backgroundColor: "#E8F0FE" }}
-                        value={licenseNo}
-                        onChange={(e) => setLicenseNo(e.target.value)}
-                        
-                      />
-                    </div>
-                  </div>
-                  <div className="col-lg-6">
-                    <div className="col-12 mb-2">
-                      <label htmlFor="" style={{ paddingTop: "10px" }}>
-                        Brokerage Name
-                      </label>
-                    </div>
-                    <div className="col-12 mb-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="formGroupExampleInput3"
-                        style={{ backgroundColor: "#E8F0FE" }}
-                        value={brokerageName}
-                        onChange={(e) => setBrokerageName(e.target.value)}
-                        
-                      />
-                    </div>
-                  </div>
-                  <div className="col-lg-6">
-                    <div className="col-12 mb-2">
-                      <label htmlFor="" style={{ paddingTop: "10px" }}>
-                        Assistant First Name
-                      </label>
-                    </div>
-                    <div className="col-12 mb-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="formGroupExampleInput3"
-                        style={{ backgroundColor: "#E8F0FE" }}
-                        value={assistantFirstName}
-                        onChange={(e) => setAssistantFirstName(e.target.value)}
-                        
-                      />
-                    </div>
-                  </div>
-                  <div className="col-lg-6">
-                    <div className="col-12 mb-2">
-                      <label htmlFor="" style={{ paddingTop: "10px" }}>
-                        Assistant Last Name
-                      </label>
-                    </div>
-                    <div className="col-12 mb-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="formGroupExampleInput3"
-                        style={{ backgroundColor: "#E8F0FE" }}
-                        value={assistantLastName}
-                        onChange={(e) => setAssistantLastName(e.target.value)}
-                        
-                      />
-                    </div>
-                  </div>
-                </div> */}
-                  
-                    <div className="row mt-4">
-                      <div className="col-xl-12">
-                        <div
-                          className="my_profile_setting_input"
-                          style={{ textAlign: "end" }}
+                  <div className="row mt-4">
+                    <div className="col-xl-12">
+                      <div
+                        className="my_profile_setting_input"
+                        style={{ textAlign: "end" }}
+                      >
+                        <button
+                          className="btn btn5 m-1"
+                          // onClick={cancelHandler}
                         >
-                          <button
-                            className="btn btn5 m-1"
-                            // onClick={cancelHandler}
-                          >
-                            Cancel
-                          </button>
-                          <button
-                            className="btn btn2 btn-dark"
-                            onClick={onUpdatHandler}
-                          >
-                            {userData?.brokerage_Details
-                              ? "Update Profile"
-                              : "Create Profile"}
-                          </button>
-                        </div>
+                          Cancel
+                        </button>
+                        <button
+                          className="btn btn2 btn-dark"
+                          onClick={onUpdatHandler}
+                        >
+                          {userData?.brokerage_Details
+                            ? "Update Profile"
+                            : "Create Profile"}
+                        </button>
                       </div>
                     </div>
-                  
+                  </div>
                 </div>
               </div>
             </div>

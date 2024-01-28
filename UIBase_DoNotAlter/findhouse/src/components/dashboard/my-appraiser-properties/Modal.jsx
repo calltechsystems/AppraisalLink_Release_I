@@ -30,24 +30,21 @@ const Modal = ({
 
   const [toggle, setToggle] = useState(false);
 
-  const [selectedImage, setSelectedImage] = useState({});
+  const [selectedImage,setSelectedImage]=useState({});
 
   const handleUpload = (result) => {
-    // Handle the image upload result here
-    console.log("handleUpload called", result.info);
-    setSelectedImage({
-      url: result.info.secure_url,
-      name: result.info.original_filename + "." + result.info.format,
-    });
-    // if (result.info.secure_url) {
-    //   setSelectedImage(result.info.secure_url);
-    //   setProfilePhoto(result.info.secure_url);
-    //   // You can also save the URL to your state or do other operations here
-    // } else {
-    //   // Handle the case when the upload failed
-    //   console.error("Image upload failed");
-    // }
-  };
+      // Handle the image upload result here
+      console.log("handleUpload called",result.info);
+      setSelectedImage({url:result.info.secure_url,name:result.info.original_filename+"."+result.info.format});
+      // if (result.info.secure_url) {
+      //   setSelectedImage(result.info.secure_url);
+      //   setProfilePhoto(result.info.secure_url);
+      //   // You can also save the URL to your state or do other operations here
+      // } else {
+      //   // Handle the case when the upload failed
+      //   console.error("Image upload failed");
+      // }
+    };
 
   const onCancelHandler = () => {
     setToggle(false);
@@ -77,11 +74,12 @@ const Modal = ({
     if (bidAmount <= 0 || bidAmount === "") {
       toast.error("Quoted amount should be filled !");
       return;
-    }
-    if (!alreadyBidded && !selectedImage) {
+    } 
+    if(!alreadyBidded && !selectedImage){
       toast.error("Please upload the lender list document !");
-      return;
-    } else {
+      return ;
+    }
+    else {
       const user = JSON.parse(localStorage.getItem("user"));
 
       const formData = {
@@ -90,8 +88,9 @@ const Modal = ({
         bidAmount: bidAmount,
         description: desp ? desp : "NA",
         token: user.token,
-        lenderListUrl: selectedImage.url,
+        lenderListUrl : selectedImage.url
       };
+
 
       const payload = encryptionData(formData);
       setIsModalOpen(false);
@@ -100,11 +99,7 @@ const Modal = ({
         .post("/api/setBid", payload)
         .then((res) => {
           toast.dismiss();
-          toast.success(
-            alreadyBidded
-              ? "Successfully Updated a bid!"
-              : "Successfully set a bid"
-          );
+          toast.success(alreadyBidded ? "Successfully Updated a bid!" : "Successfully set a bid");
           location.reload(true);
         })
         .catch((err) => {
@@ -123,32 +118,32 @@ const Modal = ({
     const integerLength = Math.floor(Math.log10(Math.abs(number))) + 1;
 
     // Choose the appropriate unit based on the length of the integer part
-    let unit = "";
+    let unit = '';
 
     if (integerLength >= 10) {
-      unit = "B"; // Billion
+        unit = 'B'; // Billion
     } else if (integerLength >= 7) {
-      unit = "M"; // Million
+        unit = 'M'; // Million
     } else if (integerLength >= 4) {
-      unit = "K"; // Thousand
+        unit = 'K'; // Thousand
     }
 
     // Divide the number by the appropriate factor
-    const formattedNumber = (number / Math.pow(10, integerLength - 1)).toFixed(
-      2
-    );
+    const formattedNumber = (number / Math.pow(10, (integerLength - 1))).toFixed(2);
 
     return `${formattedNumber}${unit}`;
-  };
+};
+
 
   const openConfirmModal = () => {
     if (!value) {
       toast.error("Quoted amount should be filled !");
     }
-    if (!alreadyBidded && !selectedImage) {
+    if(!alreadyBidded && !selectedImage){
       toast.error("Please upload the lender list document !");
-      return;
-    } else {
+      return ;
+    }
+     else {
       setToggle(true);
     }
   };
@@ -171,45 +166,31 @@ const Modal = ({
                   }}
                 >
                   {!toggle
-                    ? `${
-                        alreadyBidded
-                          ? "Appraisal Quote Updation Form "
-                          : "Appraisal Quote Form"
-                      }`
-                    : `${
-                        alreadyBidded
-                          ? "Confirmation of Quote Updation Form "
-                          : "Confirmation of Quote Form"
-                      }`}
+                    ?  `${ alreadyBidded ? "Appraisal Quote Updation Form " : "Appraisal Quote Form"}`
+                    :  `${ alreadyBidded ? "Confirmation of Quote Updation Form " : "Confirmation of Quote Form"}` }
                 </span>
               </h2>
             </div>
-            <div>
-              <hr />
-            </div>
+            <div><hr /></div>
             <div>
               {!toggle ? (
                 <div className="row">
                   <div className="col-lg-12">
                     <div className="row mb-2 mt-2 text-center">
-                      <div className="col-lg-12 mb-2">
-                        <label
-                          htmlFor=""
-                          style={{
-                            paddingTop: "15px",
-                            fontWeight: "lighter",
-                          }}
-                        >
-                          {`${
-                            alreadyBidded
-                              ? `Your Eariler Quote was $ ${formatLargeNumber(
-                                  bidAmount
-                                )}`
-                              : "Please provide a quote for this property"
-                          }`}
-                        </label>
-                      </div>
-                      <div className="row mb-2 mt-2">
+                    <div className="col-lg-12 mb-2">
+                    <label
+                      htmlFor=""
+                      style={{
+                        paddingTop: "15px",
+                        fontWeight: "lighter",
+                      }}
+                    >
+                     {`${alreadyBidded? `Your Eariler Quote was $ ${(bidAmount)}` : "Please provide a quote for this property"}`}
+                    </label>
+                  </div>
+                      <div className="row mb-2 mt-2" >
+                     
+                    
                         <div className="col-lg-3 mb-2">
                           <label
                             htmlFor=""
@@ -218,14 +199,11 @@ const Modal = ({
                               fontWeight: "lighter",
                             }}
                           >
-                            {`${
-                              alreadyBidded
-                                ? "Appraisal updation Quote "
-                                : "Appraisal Quote"
-                            }`}{" "}
-                            <span class="req-btn">*</span> :
+                            {`${ alreadyBidded ? "Appraisal updation Quote " : "Appraisal Quote"}`} <span class="req-btn">*</span> :
                           </label>
                         </div>
+
+                      
 
                         <div className="col-lg-7">
                           <input
@@ -237,6 +215,44 @@ const Modal = ({
                           />
                         </div>
                       </div>
+
+                      {!alreadyBidded && (<div className="row">
+                      <div className="col-lg-3 mb-2"> 
+                      <label
+                            htmlFor=""
+                            style={{
+                              paddingTop: "15px",
+                              fontWeight: "lighter",
+                            }}
+                          >
+                          Add Lender List
+                          </label>
+                          </div> 
+                          <div className="col-lg-7">
+                        <label>{selectedImage.name}</label>
+                          <CldUploadWidget
+                        onUpload={handleUpload}
+                        uploadPreset="mpbjdclg"
+                        options={{
+                          cloudName: "dcrq3m6dx", // Your Cloudinary upload preset
+                          maxFiles: 1,
+                        }}
+                      >
+                        {({ open }) => (
+                          <div>
+                            <button
+                              className="btn btn-color profile_edit_button mb-5"
+                              style={{ marginLeft: "0px" }}
+                              onClick={open} // This will open the upload widget
+                            >
+                              Upload +
+                            </button>
+                          </div>
+                        )}
+                      </CldUploadWidget>
+                      </div>
+                      </div>
+                      )}
 
                       <div className="row">
                         <div className="col-lg-3 mb-2">
@@ -266,21 +282,12 @@ const Modal = ({
                   </div>
                 </div>
               ) : (
-                <>
-                  <p className="m-3 text-center" style={{ fontSize: "18px" }}>
-                    Are you confirming that you will quote this property for the
-                    given amount : <br />
-                    <h3 className="mt-2 text-color"> $ {value}</h3>
-                  </p>
-                  {alreadyBidded && (
-                    <p className="m-3 text-center" style={{ fontSize: "18px" }}>
-                      {" "}
-                      from{" "}
-                      <span style={{ color: "red" }}>
-                        $ {formatLargeNumber(bidAmount)}
-                      </span>
-                    </p>
-                  )}
+                <><p className="m-3 text-center" style={{ fontSize: "18px" }}>
+                  Are you confirming that you will quote this property for the
+                  given amount : <br />
+                  <h3 className="mt-2 text-color"> $ {value}</h3>
+                </p>
+                {alreadyBidded && (<p className="m-3 text-center" style={{ fontSize: "18px" }}> from <span style={{color:"red"}}>$ {(bidAmount)}</span></p>)}
                 </>
               )}
             </div>

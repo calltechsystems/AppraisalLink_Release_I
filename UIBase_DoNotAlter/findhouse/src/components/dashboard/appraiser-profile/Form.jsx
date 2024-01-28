@@ -7,7 +7,11 @@ import Image from "next/image";
 
 const Form = ({ userData, chnageShowCardHandler }) => {
   return (
-    <form className="contact_form" action="#" style={{ borderRadius: "5px" }}>
+    <form
+      className="contact_form"
+      action="#"
+      style={{ borderRadius: "5px" }}
+    >
       <div className="d-flex justify-content-end">
         <button
           className="btn btn2 btn-color profile_edit_button_01"
@@ -80,16 +84,17 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                     <p className="text-dark" style={{ fontSize: "17px" }}>
                       Phone : {userData?.appraiser_Details?.phoneNumber}
                     </p>
-                  </li>
+                        </li>
                 </ul>
               </div>
-              <div className="form-group">
+               <div className="form-group">
                 <ul>
                   <li className="text-dark mt-0">
                     <p className="text-dark" style={{ fontSize: "17px" }}>
                       Designation. :{" "}
                       {userData?.appraiser_Details?.designation || "NA"}
                     </p>
+                    
                   </li>
                 </ul>
               </div>
@@ -126,7 +131,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       className="text-dark"
                       style={{ fontSize: "17px", marginLeft: "4.8rem" }}
                     >
-                      {userData?.appraiser_Datails?.area}
+                      {userData?.appraiserCompany_Datails?.area}
                     </p>
                     {/* <span className="text-dark fw-bold">Middle Name</span> :{" "}
                     <span className="text-dark fw-bold"> Devendra </span> */}
@@ -140,9 +145,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       className="text-dark"
                       style={{ fontSize: "17px", marginLeft: "4.8rem" }}
                     >
-                      {userData.appraiser_Details?.streetName}-
-                      {userData.appraiser_Details?.streetNumber},
-                      {userData?.appraiser_Details?.city},{" "}
+                      {userData.appraiser_Details?.streetName}-{userData.appraiser_Details?.streetNumber},{userData?.appraiser_Details?.city},{" "}
                       {userData?.appraiser_Details?.province}
                     </p>
                     {/* <span className="text-dark fw-bold">Middle Name</span> :{" "}

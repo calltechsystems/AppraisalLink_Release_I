@@ -151,6 +151,8 @@ export default function Exemple({
   setIsCancelProperty,
   setIsHoldProperty,
   isBidded,
+  setErrorMessage,
+  setModalIsOpenError
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [allBids, setBids] = useState([]);
@@ -528,7 +530,7 @@ export default function Exemple({
                     </Link>{" "} */}
                     <Link
                       className="btn btn-color-table"
-                      href={`/create-listing/${property.propertyId}`}
+                      href={`/create-listing-1/${property.propertyId}`}
                     >
                       <span className="flaticon-edit"></span>
                     </Link>
@@ -624,7 +626,7 @@ export default function Exemple({
                     className="btn btn-color-table"
                     onClick={() => archievePropertyHandler(property.propertyId)}
                   >
-                    <Link className="color-light" href={`/archive-property`}>
+                    <Link className="color-light" href={`/brokerage-archive-properties`}>
                       <span className="text-light">
                         <FaArchive />
                       </span>

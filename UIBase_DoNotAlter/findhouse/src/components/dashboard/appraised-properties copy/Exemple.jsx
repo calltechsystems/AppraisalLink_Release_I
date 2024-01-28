@@ -336,7 +336,7 @@ export default function Exemple({
           <span
           className="btn btn-primary  w-100"
         >
-          {property.isOnHold ? "On Hold" : "On Cancel"}
+          {property.isOnCancel ? "On Cancel" : property.isOnHold ?  "On Hold" : ""}
         </span>
             : 
           isBidded.bidId ? (
@@ -436,7 +436,7 @@ export default function Exemple({
             <div className="print-hidden-column">
               
                  
-                  <li
+                 { <li
                   className="list-inline-item"
                   data-toggle="tooltip"
                   data-placement="top"
@@ -458,7 +458,7 @@ export default function Exemple({
                   </Link>
                     </button>
                   </div>
-                </li>
+                </li>}
                
               
             </div>
@@ -548,25 +548,27 @@ export default function Exemple({
       .get("/api/getAllBids", {
         headers: {
           Authorization: `Bearer ${data.token}`,
-        },
-      })
-      .then((res) => {
-        console.log(res);
-        tempBids = res.data.data.result.$values;
-        const updatedBids = tempBids.filter((prop,index)=>{
-          if(String(prop.appraiserUserId) === String(data.userId)){
-            return true;
-          }
-          else{
-            return false;
-          }
-        })
-        setBids(updatedBids);
-      })
-      .catch((err) => {
-        setErrorMessage(err?.response?.data?.error);
-        setModalIsOpenError(true);
-      });
+        }, 
+      
+        params:{
+          email:data.userEmail
+        }
+    })
+    .then((res) => {
+      console.log(res.data.data);
+      const tempBids = res.data.data;
+      let acceptedBid = 0 ;
+      
+      let updatedBids = [];
+      updatedBids.push(tempBids)
+      
+      console.log(updatedBids)
+      setBids(updatedBids);
+    })
+    .catch((err) => {
+      setErrorMessage(err?.response?.data?.error);
+      setModalIsOpenError(true);
+    });
 
       axios
       .get("/api/getAllBrokers", {

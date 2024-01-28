@@ -372,6 +372,27 @@ export default function Exemple({
         setModalIsOpenError(true);
       });
 
+    const encryptedData = encryptionData(payload);
+    axios
+      .get("/api/getBrokerById", {
+        headers: {
+          Authorization: `Bearer ${data?.token}`,
+          "Content-Type": "application/json",
+        },
+        params: {
+          userId: data?.brokerage_Datails?.brokerageId,
+        },
+      })
+      .then((res) => {
+        console.log(res.data.data.appraisers.$values);
+        // setAppraiserCompanyInfo(res.data.data.appraiserCompany);
+        // setProperties(res.data.data.appraisers.$values);
+      })
+      .catch((err) => {
+        setErrorMessage(err?.response?.data?.error);
+        setModalIsOpenError(true);
+      });
+
     console.log("end", bids, properties, wishlist);
     setRefresh(false);
   }, [refresh]);

@@ -341,11 +341,11 @@ export default function Exemple({
           ):<span className="btn btn-warning  w-100">N.A.</span>,
           remark : (isBidded && isBidded.remark) ? isBidded.remark : "N.A.",
           status: 
-          isWait ? 
+          isWait && property.status < 2? 
           <span
           className="btn btn-danger  w-100"
         >
-          {property.isOnHold ? "On Hold" : "On Cancel"}
+          {property.isOnCancel ? "On Cancel" : property.isOnHold ?  "On Hold" : ""}
         </span>
             : 
           isBidded.bidId ? 
@@ -451,14 +451,8 @@ export default function Exemple({
 
           action: (
             <div className="print-hidden-column">
-              {isBidded.orderStatus === 6 ?
-                <span
-                className="btn btn-success  w-100"
+              {isWait && property.status !== 2 ?  <p className="btn btn-danger  w-100">Cannot perform any actions right now!.</p> : isBidded && isBidded.status !== 1 ? (
                 
-              >
-                Completed
-              </span>
-                :isWait ?  <p className="btn btn-danger  w-100">Cannot perform any actions right now!.</p> : isBidded && isBidded.status !== 1 ? (
                 <ul className="">
                   
 
@@ -542,7 +536,15 @@ export default function Exemple({
                   </div>
                 </li>
                 </ul>
-              ) : ( isBidded.orderStatus <=6 && isBidded.status === 1 &&
+              ) :
+              isBidded.orderStatus === 6 ?
+                <span
+                className="btn btn-success  w-100"
+                
+              >
+                Completed
+              </span>
+                : ( isBidded.orderStatus <=6 && isBidded.status === 1 &&
                  <button
                           href="#"
                           className="btn btn-color w-100 mt-1"
@@ -641,26 +643,27 @@ export default function Exemple({
       .get("/api/getAllBids", {
         headers: {
           Authorization: `Bearer ${data.token}`,
-        },
-      })
-      .then((res) => {
-        console.log(res);
-        tempBids = res.data.data.result.$values;
-        const updatedBids = tempBids.filter((prop,index)=>{
-          if(String(prop.appraiserUserId) === String(data.userId)){
-            return true;
-          }
-          else{
-            return false;
-          }
-        })
-        setBids(updatedBids);
-      })
-      .catch((err) => {
-        setErrorMessage(err?.response?.data?.error);
-        setModalIsOpenError(true);
-      });
-
+        }, 
+      
+        params:{
+          email:data.userEmail
+        }
+    })
+    .then((res) => {
+      console.log(res.data.data);
+      const tempBids = res.data.data;
+      let acceptedBid = 0 ;
+      
+      let updatedBids = [];
+      updatedBids.push(tempBids)
+      
+      console.log(updatedBids)
+      setBids(updatedBids);
+    })
+    .catch((err) => {
+      setErrorMessage(err?.response?.data?.error);
+      setModalIsOpenError(true);
+    });
       axios
       .get("/api/getAllBrokers", {
         headers: {
