@@ -11,12 +11,14 @@ import CryptoJS from "crypto-js";
     const token = request.headers.authorization;
     const userId = request.query.userId;
 
-
-    const userResponse = await axios.delete(`${domain}/Wishlist/${userId}`,
+const userResponse = await axios.delete(`${domain}/com.appraisalland.Wishlist/RemoveFromWishlist`,
     {
         headers: {
           Authorization:token,
           "Content-Type":"application/json"
+        },
+        params:{
+          id:userId
         }
       });
     const users = userResponse.data;

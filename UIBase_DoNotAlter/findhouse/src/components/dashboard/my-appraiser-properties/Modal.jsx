@@ -83,7 +83,7 @@ const Modal = ({
       const user = JSON.parse(localStorage.getItem("user"));
 
       const formData = {
-        propertyId: propertyId,
+        orderId: propertyId,
         userId: user.userId,
         bidAmount: bidAmount,
         description: desp ? desp : "NA",
@@ -215,44 +215,6 @@ const Modal = ({
                           />
                         </div>
                       </div>
-
-                      {!alreadyBidded && (<div className="row">
-                      <div className="col-lg-3 mb-2"> 
-                      <label
-                            htmlFor=""
-                            style={{
-                              paddingTop: "15px",
-                              fontWeight: "lighter",
-                            }}
-                          >
-                          Add Lender List
-                          </label>
-                          </div> 
-                          <div className="col-lg-7">
-                        <label>{selectedImage.name}</label>
-                          <CldUploadWidget
-                        onUpload={handleUpload}
-                        uploadPreset="mpbjdclg"
-                        options={{
-                          cloudName: "dcrq3m6dx", // Your Cloudinary upload preset
-                          maxFiles: 1,
-                        }}
-                      >
-                        {({ open }) => (
-                          <div>
-                            <button
-                              className="btn btn-color profile_edit_button mb-5"
-                              style={{ marginLeft: "0px" }}
-                              onClick={open} // This will open the upload widget
-                            >
-                              Upload +
-                            </button>
-                          </div>
-                        )}
-                      </CldUploadWidget>
-                      </div>
-                      </div>
-                      )}
 
                       <div className="row">
                         <div className="col-lg-3 mb-2">

@@ -33,6 +33,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   const [middleNameRef, setMiddleNameRef] = useState(
     userData?.appraiser_Details?.middleName || ""
   );
+
+  const [SMSAlert,setSMSAlert]=useState(false);
   const [lastNameRef, setLastNameRef] = useState(
     userData?.appraiser_Details?.lastName || ""
   );
@@ -161,7 +163,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
       nameRegex.test(lastName) === false
     ) {
       toast.error("Name should be valid ");
-    } else if (phoneNumberRegex.test(phoneNumber) === false || !phoneNumber) {
+    } 
+   
+    else if (phoneNumberRegex.test(phoneNumber) === false || !phoneNumber) {
       toast.error("enter a valid phone number please");
     } else if (
       (!firstName ||
@@ -203,6 +207,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         count--;
       }
 
+      
+
       // const percentage = Math.floor(count / 13) * 100;
       // setProfileCount(percentage);
 
@@ -227,6 +233,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         phoneNumber: phoneNumber,
         profileImage: SelectedImage,
       };
+      if(SMSAlert && !phoneNumber){
+        toast.error("As SMS Alert is selected but phone number is not provided so SMS Alert will not work properly!");
+      }
 
       console.log(payload);
 
@@ -587,7 +596,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           <input
                             className="form-check-input mt-3"
                             type="checkbox"
-                            value=""
+                            onSelect={()=>setSMSAlert(true)}
                             id="terms"
                             style={{ border: "1px solid black" }}
                           />

@@ -36,6 +36,7 @@ async function handler(request, response) {
     if (!user) {
       return response.status(404).json({ error: "User Not Found" });
     }
+    console.log(user);
     return response.status(200).json({ msg: "OK", userData: user });
   } catch (err) {
    console.log(err);

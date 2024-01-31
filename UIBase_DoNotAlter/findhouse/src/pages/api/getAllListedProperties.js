@@ -10,7 +10,7 @@ async function handler(request, response) {
 
     console.log(domain);
     const userResponse = await axios.get(
-      `http://calltech-prod.us-east-1.elasticbeanstalk.com/api/Property/GetAllProperty`,
+      `${domain}/com.appraisalland.Property/getAllProperty`,
       {
         headers: {
           Authorization: token,

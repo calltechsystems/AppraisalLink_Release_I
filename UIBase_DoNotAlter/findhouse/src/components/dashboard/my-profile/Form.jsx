@@ -222,113 +222,143 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                   </td>
                 </tr>
               </table> */}
-              <div className="form-content">
+              <div className="">
                 <span style={{ fontWeight: "bold" }}>
                   <h3 className="text-center"> Broker Details </h3>
                 </span>
                 <hr />
                 <div className=" col-lg-12">
                   <div className="row">
-                    <h5 className="col-lg-5 mt-1 text-start">
-                      <span className="fs-18 text-color">Name </span>{" "}
-                    </h5>
-                    <span className="col-lg-1">:</span>
-                    <span className="col-lg-6 text-start text-dark fw-bold">
-                      {userData?.broker_Details?.firstName}{" "}
-                      {userData?.broker_Details?.middleName}{" "}
-                      {userData?.broker_Details?.lastName}
-                    </span>
+                    <div className="col-lg-12 mt-1 text-start">
+                      <span className="fs-18 fw-bold text-color">Name </span>
+                      {"   "}
+                      <span className="">:</span>
+                      {"   "}
+                      <span className="text-start text-dark fw-bold">
+                        {userData?.broker_Details?.firstName}{" "}
+                        {userData?.broker_Details?.middleName}{" "}
+                        {userData?.broker_Details?.lastName}
+                      </span>
+                    </div>
                   </div>
                   <div className="row">
-                    <h5 className="col-lg-5 mt-1 text-start">
-                      <span className="fs-18 text-color">Company Name</span>{" "}
-                    </h5>
-                    <span className="col-lg-1">:</span>
-                    <span className="col-lg-6 text-start text-dark fw-bold">
-                      {userData?.broker_Details?.companyName}
-                    </span>
+                    <div className="col-lg-12 mt-1 text-start">
+                      <span className="fs-18 fw-bold text-color">
+                        Company Name{" "}
+                      </span>
+                      {"   "}
+                      <span className="">:</span>
+                      {"   "}
+                      <span className="text-start text-dark fw-bold">
+                        {userData?.broker_Details?.companyName}
+                      </span>
+                    </div>
                   </div>
                   <div className="row">
-                    <h5 className="col-lg-5 mt-1 text-start">
-                      <span className="fs-18 text-color">Email Address </span>{" "}
-                    </h5>
-                    <span className="col-lg-1">:</span>
-                    <span className="col-lg-6 text-start text-dark fw-bold">
-                      {userData?.userEmail}
-                    </span>
+                    <div className="col-lg-12 mt-1 text-start">
+                      <span className="fs-18 fw-bold text-color">
+                        Email Address{" "}
+                      </span>
+                      {"   "}
+                      <span className="">:</span>
+                      {"   "}
+                      <span className="text-start text-dark fw-bold">
+                        {userData?.userEmail}
+                      </span>
+                    </div>
                   </div>
                   <div className="row">
-                    <h5 className="col-lg-5 mt-1 text-start">
-                      <span className="fs-18 text-color">Phone </span>{" "}
-                    </h5>
-                    <span className="col-lg-1">:</span>
-                    <span className="col-lg-6 text-start text-dark fw-bold">
-                      {userData?.broker_Details?.phoneNumber}
-                    </span>
+                    <div className="col-lg-12 mt-1 text-start">
+                      <span className="fs-18 fw-bold text-color">Phone </span>
+                      {"   "}
+                      <span className="">:</span>
+                      {"   "}
+                      <span className="text-start text-dark fw-bold">
+                        {userData?.broker_Details?.phoneNumber}
+                      </span>
+                    </div>
                   </div>
                   <div className="row">
-                    <h5 className="col-lg-5 mt-1 text-start">
-                      <span className="fs-18 text-color">
-                        Mortgage Broker Licence No.
-                      </span>{" "}
-                    </h5>
-                    <span className="col-lg-1">:</span>
-                    <span className="col-lg-6 text-start text-dark fw-bold">
-                      {userData?.broker_Details?.mortageBrokerLicNo}
-                    </span>
+                    <div className="col-lg-12 mt-1 text-start">
+                      <span className="fs-18 fw-bold text-color">
+                        Mortgage Broker Licence No.{" "}
+                      </span>
+                      {"   "}
+                      <span className="">:</span>
+                      {"   "}
+                      <span className="text-start text-dark fw-bold">
+                        {userData?.broker_Details?.mortageBrokerLicNo}
+                      </span>
+                    </div>
                   </div>
                   <div className="row">
-                    <h5 className="col-lg-5 mt-1 text-start">
-                      <span className="fs-18 text-color">
-                        Mortgage Brokerage Licence No.
-                      </span>{" "}
-                    </h5>
-                    <span className="col-lg-1">:</span>
-                    <span className="col-lg-6 text-start text-dark fw-bold">
-                      {userData?.broker_Details?.mortageBrokerageLicNo}
-                    </span>
+                    <div className="col-lg-12 mt-1 text-start">
+                      <span className="fs-18 fw-bold text-color">
+                        Mortgage Brokerage Licence No.{" "}
+                      </span>
+                      {"   "}
+                      <span className="">:</span>
+                      {"   "}
+                      <span className="text-start text-dark fw-bold">
+                        {userData?.broker_Details?.mortageBrokerageLicNo}
+                      </span>
+                    </div>
                   </div>
                   <div className="row">
-                    <h5 className="col-lg-5 mt-1 text-start">
-                      <span className="fs-18 text-color">Address </span>{" "}
-                    </h5>
-                    <span className="col-lg-1">:</span>
-                    <span className="col-lg-6 text-dark fw-bold">
-                      {userData?.broker_Details?.streetName}-
-                      {userData?.broker_Details?.streetNumber},
-                      {userData?.broker_Details?.unit}{" "}
-                      {userData?.broker_Details?.city} -{" "}
-                      {userData?.broker_Details?.province}{" "}
-                      {userData?.broker_Details?.postalCode}
-                    </span>
+                    <div className="col-lg-12 mt-1 text-start">
+                      <span className="fs-18 fw-bold text-color">Address </span>
+                      {"   "}
+                      <span className="">:</span>
+                      {"   "}
+                      <span className="text-start text-dark fw-bold">
+                        {userData?.broker_Details?.streetNumber}{" "}
+                        {userData?.broker_Details?.streetName}
+                        {userData?.broker_Details?.unit}{" "}
+                        {userData?.broker_Details?.city}, {" "}
+                        {userData?.broker_Details?.province},{" "}
+                        {userData?.broker_Details?.postalCode}
+                      </span>
+                    </div>
                   </div>
                   <div className="row">
-                    <h5 className="col-lg-5 mt-1 text-start">
-                      <span className="fs-18 text-color">Assistant Name </span>{" "}
-                    </h5>
-                    <span className="col-lg-1">:</span>
-                    <span className="col-lg-6 text-start text-dark fw-bold">
-                      {userData?.broker_Details?.assistantFirstName}{" "}
-                      {userData?.broker_Details?.assistantLastName}
-                    </span>
+                    <div className="col-lg-12 mt-1 text-start">
+                      <span className="fs-18 fw-bold text-color">
+                        Assistant Name{" "}
+                      </span>
+                      {"   "}
+                      <span className="">:</span>
+                      {"   "}
+                      <span className="text-start text-dark fw-bold">
+                        {userData?.broker_Details?.assistantFirstName}{" "}
+                        {userData?.broker_Details?.assistantLastName}
+                      </span>
+                    </div>
                   </div>
                   <div className="row">
-                    <h5 className="col-lg-5 mt-1 text-start">
-                      <span className="fs-18 text-color">Assistant Email </span>{" "}
-                    </h5>
-                    <span className="col-lg-1">:</span>
-                    <span className="col-lg-6 text-start text-dark fw-bold">
-                      {userData?.broker_Details?.assistantEmailAddress}{" "}
-                    </span>
+                    <div className="col-lg-12 mt-1 text-start">
+                      <span className="fs-18 fw-bold text-color">
+                        Assistant Email{" "}
+                      </span>
+                      {"   "}
+                      <span className="">:</span>
+                      {"   "}
+                      <span className="text-start text-dark fw-bold">
+                        {userData?.broker_Details?.assistantEmailAddress}
+                      </span>
+                    </div>
                   </div>
                   <div className="row">
-                    <h5 className="col-lg-5 mt-1 text-start">
-                      <span className="fs-18 text-color">Assistant Phone </span>{" "}
-                    </h5>
-                    <span className="col-lg-1">:</span>
-                    <span className="col-lg-6 text-start text-dark fw-bold">
-                      {userData?.broker_Details?.assistantPhoneNumber}{" "}
-                    </span>
+                    <div className="col-lg-12 mt-1 text-start">
+                      <span className="fs-18 fw-bold text-color">
+                        Assistant Phone{" "}
+                      </span>
+                      {"   "}
+                      <span className="">:</span>
+                      {"   "}
+                      <span className="text-start text-dark fw-bold">
+                        {userData?.broker_Details?.assistantPhoneNumber}
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <hr />

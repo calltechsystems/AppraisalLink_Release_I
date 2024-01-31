@@ -39,12 +39,12 @@ const headCells = [
     label: "Appraisal Status",
     width: 170,
   },
-  // {
-  //   id: "remark",
-  //   numeric: false,
-  //   label: "Remark",
-  //   width: 170,
-  // },
+  {
+    id: "remark",
+    numeric: false,
+    label: "Remark",
+    width: 170,
+  },
   {
     id: "sub_date",
     numeric: false,
@@ -180,19 +180,19 @@ export default function Exemple({
       type: "Appraisal Report Writing Completed and Submitted",
       value: "Appraisal Report Writing Completed and Submitted",
     },
-
+  
     {
       id: 4,
       type: "Assignment on Hold",
       value: "Assignment on Hold",
     },
-
+  
     {
       id: 5,
       type: "Assignment Cancelled new status to be added",
       value: "Assignment Cancelled new status to be added",
     },
-
+  
     {
       id: 6,
       type: "Appraisal visit completed; report writing is pending until fee received",
@@ -224,32 +224,6 @@ export default function Exemple({
     setModalOpen(true);
   };
 
-  const formatLargeNumber = (number) => {
-    // Convert the number to a string
-    const numberString = number.toString();
-
-    // Determine the length of the integer part
-    const integerLength = Math.floor(Math.log10(Math.abs(number))) + 1;
-
-    // Choose the appropriate unit based on the length of the integer part
-    let unit = "";
-
-    if (integerLength >= 10) {
-      unit = "B"; // Billion
-    } else if (integerLength >= 7) {
-      unit = "M"; // Million
-    } else if (integerLength >= 4) {
-      unit = "K"; // Thousand
-    }
-
-    // Divide the number by the appropriate factor
-    const formattedNumber = (number / Math.pow(10, integerLength - 1)).toFixed(
-      2
-    );
-
-    return `${formattedNumber}${unit}`;
-  };
-
   const formatDate = (dateString) => {
     const options = {
       year: "numeric",
@@ -257,21 +231,6 @@ export default function Exemple({
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
-      // second: "numeric",
-      hour12: true, // Set to false for 24-hour format
-    };
-
-    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
-    return formattedDate;
-  };
-
-  const formatDateQuote = (dateString) => {
-    const options = {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      // hour: "numeric",
-      // minute: "numeric",
       // second: "numeric",
       hour12: true, // Set to false for 24-hour format
     };
@@ -315,7 +274,7 @@ export default function Exemple({
             order_id: property.orderId,
             sub_date: formatDate(property.addedDatetime),
             quote_required_by: property.quoteRequiredDate
-              ? formatDateQuote(property.quoteRequiredDate)
+              ? formatDate(property.quoteRequiredDate)
               : formatDate(property.addedDatetime),
             status:
               isHold || isCancel ? (
@@ -340,22 +299,19 @@ export default function Exemple({
             appraisal_status:
               isHold || isCancel ? (
                 <span className="btn bg-warning  w-100">
-                  {isHold ? "N.A." : "N.A."}
-                </span>
-              ) : property.orderStatus ? (
-                <span className="btn bg-warning  w-100">
-                  {getOrderValue(property.orderStatus)}
+                  {isHold ? "On Hold" : "OnCancelled"}
                 </span>
               ) : (
+                 property.orderStatus ? (
+                  <span className="btn bg-warning  w-100">{getOrderValue(property.orderStatus)}</span>
+                ) :
                 <span className="btn bg-warning  w-100">N.A.</span>
               ),
-            address: `${property.streetNumber} ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
+            address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
             remark: property.remark ? property.remark : "N.A.",
             // user: property.applicantEmailAddress,
             type_of_building: property.typeOfBuilding,
-            amount: property.estimatedValue
-              ? `$ ${formatLargeNumber(property.estimatedValue)}`
-              : "$ 0",
+            amount: ` $ ${millify(property.estimatedValue)}`,
             purpose: property.purpose,
             type_of_appraisal: property.typeOfAppraisal,
             lender_information: property.lenderInformation
@@ -628,7 +584,7 @@ export default function Exemple({
                     style={{ border: "1px solid grey" }}
                     // onClick={() => onHoldHandler(property.propertyId, !isHold)}
                     onClick={() =>
-                      openModal(property.propertyId, 1, isHold ? 0 : 1)
+                      openModal(property.orderId, 1, isHold ? 0 : 1)
                     }
                   >
                     <Link href="#" className="text-light">
@@ -639,7 +595,7 @@ export default function Exemple({
                 {/* )} */}
 
                 {/* {isEditable && ( */}
-                <li title={!isCancel ? "Order Cancel" : "Remove Cancel"}>
+                {!isCancel && <li title={ "Order Cancel" }>
                   <span
                     className="btn btn-color-table"
                     style={{ border: "1px solid grey" }}
@@ -647,14 +603,14 @@ export default function Exemple({
                     //   onCancelHandler(property.propertyId, !isCancel)
                     // }
                     onClick={() =>
-                      openModal(property.propertyId, 2, isCancel ? 0 : 1)
+                      openModal(property.orderId, 2, 1)
                     }
                   >
                     <Link href="#">
                       <span className="flaticon-garbage text-light"></span>
                     </Link>
                   </span>
-                </li>
+                </li>}
                 {/* )} */}
 
                 {/* {isEditable && (
@@ -706,7 +662,7 @@ export default function Exemple({
                     </Link> */}
                   <span
                     className="btn btn-color-table"
-                    onClick={() => archievePropertyHandler(property.propertyId)}
+                    onClick={() => archievePropertyHandler(property.orderId)}
                   >
                     <Link className="color-light" href={`/archive-property`}>
                       <span className="text-light">
@@ -736,7 +692,7 @@ export default function Exemple({
     };
 
     axios
-      .get("/api/getPropertiesById", {
+      .get("/api/getAllListedProperties", {
         headers: {
           Authorization: `Bearer ${data?.token}`,
           "Content-Type": "application/json",
@@ -747,8 +703,17 @@ export default function Exemple({
       })
       .then((res) => {
         toast.dismiss();
-
-        setProperties(res.data.data.property.$values);
+        const temp = res.data.data.properties.$values;
+        let tempProperties = [];
+         tempProperties = temp.filter((prop,index)=>{
+          if(String(prop.userId) === String(data.userId)){
+            return true
+          }
+          else{
+            return false
+          }
+        })
+        setProperties(tempProperties)
       })
       .catch((err) => {
         toast.dismiss();
@@ -763,13 +728,12 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        // console.log(res);
-        tempBids = res.data.data.result.$values;
+        tempBids = res.data.data.$values;
         setBids(tempBids);
       })
       .catch((err) => {
-        setErrorMessage(err?.response?.data?.error);
-        setModalIsOpenError(true);
+        toast.error(err);
+        // setModalIsOpenError(true);
       });
     setRefresh(false);
   }, [refresh]);

@@ -74,9 +74,9 @@ async function handler(request, response) {
       remark : remark,
       quoteRequiredDate:quoteRequiredDate
     };
-
+   
     const userResponse = await axios.post(
-      `${domain}/Registration/RegisterProperty`,
+      `${domain}/com.appraisalland.Property/addProperty`,
       formData,
       {
         headers: {

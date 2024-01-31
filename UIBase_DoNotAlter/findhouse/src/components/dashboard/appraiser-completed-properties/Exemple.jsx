@@ -183,7 +183,7 @@ export default function Exemple({
       bidValue = {};
       // console.log(bids);
     bids.filter((bid) => {
-      if (bid.propertyId === property.propertyId ) {
+      if (bid.orderId === property.orderId ) {
         // console.log("matched", bid);
         tempBid = tempBid + 1;
         bidValue = bid;
@@ -578,7 +578,7 @@ export default function Exemple({
     let tempProperties = [],
       tempWishlist = [];
     axios
-      .get("/api/getPropertiesById", {
+      .get("/api/getAllListedProperties", {
         headers: {
           Authorization: `Bearer ${data?.token}`,
           "Content-Type": "application/json",
@@ -588,7 +588,7 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        const temp = res.data.data.property.$values;
+        const temp = res.data.data.properties.$values;
 
         tempProperties = temp.filter((prop,index)=>{
           if(String(prop.userId) === String(data.userId) ){
@@ -642,14 +642,16 @@ export default function Exemple({
         }
     })
     .then((res) => {
-      console.log(res.data.data);
-      const tempBids = res.data.data;
-      let acceptedBid = 0 ;
-      
-      let updatedBids = [];
-      updatedBids.push(tempBids)
-      
-      console.log(updatedBids)
+      tempBids = res.data.data.$values;
+      const updatedBids = tempBids.filter((prop,index)=>{
+        if(String(prop.appraiserUserId) === String(data.userId)){
+          return true;
+        }
+        else{
+          return false;
+        }
+      })
+      console.log(updatedBids);
       setBids(updatedBids);
     })
     .catch((err) => {
@@ -677,6 +679,9 @@ export default function Exemple({
         headers: {
           Authorization: `Bearer ${data.token}`,
         },
+        params:{
+        userId : data.userId
+        }
       })
       .then((res) => {
         setAllArchive(res.data.data.$values);

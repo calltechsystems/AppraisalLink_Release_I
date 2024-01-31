@@ -21,6 +21,7 @@ async function handler(request, response) {
       firstName,
       addressLineOne,
       lastName,
+      lenderListUrl,
       addressLineTwo,
       city,
       licenseNumber,
@@ -50,6 +51,7 @@ async function handler(request, response) {
       officeContactLastName:officeContactLastName,
       phoneNumber: phoneNumber,
       officeContactEmail : officeContactEmail,
+      lenderListUrl:lenderListUrl,
       officeContactPhone:officeContactPhone,
     };
 

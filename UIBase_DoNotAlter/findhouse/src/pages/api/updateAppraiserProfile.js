@@ -22,6 +22,7 @@ async function handler(request, response) {
       middleName,
       lastName,
       companyName,
+      lenderListUrl,
       city,
       province,
       postalCode,
@@ -43,6 +44,7 @@ async function handler(request, response) {
       province: province,
       postalCode: postalCode,
       area: "" ,
+      lenderListUrl:lenderListUrl,
       apartmentNo : "",
       streetName:streetName,
       streetNumber:streetNumber,
@@ -53,14 +55,16 @@ async function handler(request, response) {
       profileImage: profileImage,
     };
 
-    console.log(formData);
-    
 
-    const userResponse = await axios.put(`${domain}/AppraiserIndividual/${id}`, formData, {
+
+    const userResponse = await axios.put(`${domain}/com.appraisalland.AppraiserIndividual/updateAppraiserProfile`, formData, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
+      params:{
+        AppraiserId:id
+      }
     });
     const user = userResponse.data;
 

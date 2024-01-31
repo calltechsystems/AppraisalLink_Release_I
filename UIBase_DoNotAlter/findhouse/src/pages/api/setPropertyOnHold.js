@@ -15,28 +15,25 @@ async function handler(request, response) {
       return response.status(403).json({ error: "Not a verified Data" });
     }
 
-    const { token, propertyId, value } = body;
+    const { token, orderId, status, value } = body;
 
-    const userResponse = await axios.put(
-      `${domain}/Property/UpdateIsOnHold`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        params: {
-          propertyId: propertyId,
-          value: value,
-        },
+    const payload = {
+      orderId:orderId,
+      status:status,
+      value:value
+    }
+const userResponse = await axios.put(`${domain}/com.appraisalland.Property/updateOrder_Cancel_OnHold`, payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       }
-    );
+    });
     const user = userResponse.data;
 
     if (!user) {
       return response.status(404).json({ error: "User Not Found" });
     }
-
+    
     return response.status(200).json({ msg: "OK", userData: user });
   } catch (err) {
     console.log(err);

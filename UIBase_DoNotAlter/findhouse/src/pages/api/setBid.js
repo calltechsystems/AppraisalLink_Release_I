@@ -15,17 +15,17 @@ async function handler(request, response) {
       return response.status(403).json({ error: "Not a verified Data" });
     }
 
-    const { userId, propertyId, bidAmount, description, token } = body;
+    const { userId, orderId, bidAmount, description, token } = body;
 
     const formData = {
       appraiserId: userId,
-      propertyId: propertyId,
+      orderId: orderId,
       description: description,
       bidAmount: bidAmount,
     };
 
 
-    const userResponse = await axios.post(`${domain}/Bid`, formData, {
+    const userResponse = await axios.post(`${domain}/com.appraisalland.Bid/setQuotes `, formData, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",

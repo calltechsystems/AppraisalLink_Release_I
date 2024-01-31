@@ -460,10 +460,46 @@ const Index = ({ propertyId }) => {
             {openBrokerModal && appInfo.firstName && (
               <div className="modal">
                 <div className="modal-content">
+                  <div className="col-lg-12">
+                    <Link href="/" className="">
+                      <Image
+                        width={50}
+                        height={45}
+                        className="logo1 img-fluid"
+                        style={{ marginTop: "-20px" }}
+                        src="/assets/images/logo.png"
+                        alt="header-logo2.png"
+                      />
+                      <span
+                        style={{
+                          color: "#2e008b",
+                          fontWeight: "bold",
+                          fontSize: "24px",
+                          // marginTop: "20px",
+                        }}
+                      >
+                        Appraisal
+                      </span>
+                      <span
+                        style={{
+                          color: "#97d700",
+                          fontWeight: "bold",
+                          fontSize: "24px",
+                          // marginTop: "20px",
+                        }}
+                      >
+                        {" "}
+                        Land
+                      </span>
+                    </Link>
+                  </div>
                   <span style={{ fontWeight: "bold" }}>
                     <h3 className="text-center"> Appraiser Details </h3>
                   </span>
-                  <hr />
+                  <div
+                    className="mb-2"
+                    style={{ border: "2px solid #97d700" }}
+                  ></div>
                   <div className=" col-lg-12">
                     <div className="row offset-1">
                       <h5 className="col-lg-3 mt-1 text-start">
@@ -522,7 +558,10 @@ const Index = ({ propertyId }) => {
                       </span>
                     </div>
                   </div>
-                  <hr />
+                  <div
+                    className="mb-2"
+                    style={{ border: "2px solid #97d700" }}
+                  ></div>
                   <div className="text-center" style={{}}>
                     <button
                       className="btn btn-color w-35"
@@ -537,8 +576,46 @@ const Index = ({ propertyId }) => {
             {isModalOpen && (
               <div className="modal">
                 <div className="modal-content">
+                  <div className="row">
+                    <div className="col-lg-12">
+                      <Link href="/" className="">
+                        <Image
+                          width={50}
+                          height={45}
+                          className="logo1 img-fluid"
+                          style={{ marginTop: "-20px" }}
+                          src="/assets/images/logo.png"
+                          alt="header-logo2.png"
+                        />
+                        <span
+                          style={{
+                            color: "#2e008b",
+                            fontWeight: "bold",
+                            fontSize: "24px",
+                            // marginTop: "20px",
+                          }}
+                        >
+                          Appraisal
+                        </span>
+                        <span
+                          style={{
+                            color: "#97d700",
+                            fontWeight: "bold",
+                            fontSize: "24px",
+                            // marginTop: "20px",
+                          }}
+                        >
+                          {" "}
+                          Land
+                        </span>
+                      </Link>
+                    </div>
+                  </div>
                   <h3 className="text-center">Accept Bid Confirmation</h3>
-                  <hr />
+                  <div
+                    className="mb-2"
+                    style={{ border: "2px solid #97d700" }}
+                  ></div>
                   <p className="text-center fs-6">
                     Are you sure you want to accept the quote with value?
                   </p>

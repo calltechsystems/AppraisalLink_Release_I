@@ -80,7 +80,7 @@ const ChangePassword = () => {
                 aria-expanded="false"
                 aria-controls="collapseThree"
               >
-                {/* Manage Password */}
+                <h4 className="">Manage Password</h4>
               </button>
             </h2>
             <div

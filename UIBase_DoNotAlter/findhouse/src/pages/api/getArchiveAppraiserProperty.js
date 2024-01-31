@@ -7,15 +7,17 @@ import CryptoJS from "crypto-js";
     const decryptionKey = process.env.CRYPTO_SECRET_KEY;
     const domain = process.env.BACKEND_DOMAIN;
 
+    const userId = request.query.userId;
   try {
     const token = request.headers.authorization;
-
-
-    const userResponse = await axios.get(`${domain}/Property`,
+   const userResponse = await axios.get(`${domain}/com.appraisalland.Property/getApprasierArchiveProperty`,
     {
         headers: {
           Authorization:token,
           "Content-Type":"application/json"
+        },
+        params:{
+          userId:userId
         }
       });
     const users = userResponse.data;

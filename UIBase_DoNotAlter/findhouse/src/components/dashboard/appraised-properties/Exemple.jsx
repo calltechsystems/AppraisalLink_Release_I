@@ -187,7 +187,7 @@ export default function Exemple({
       bidValue = {};
       // console.log(bids);
     bids.filter((bid) => {
-      if (bid.propertyId === property.propertyId ) {
+      if (bid.orderId === property.orderId ) {
         // console.log("matched", bid);
         tempBid = tempBid + 1;
         bidValue = bid;
@@ -287,10 +287,13 @@ export default function Exemple({
   };
 
   const checkWishlistedHandler = (data) => {
+    const userInfo = JSON.parse(localStorage.getItem("user"));
     let temp = {};
     // console.log(wishlist, data);
     wishlist.map((prop, index) => {
-      if (String(prop.propertyId) === String(data.propertyId) && String(prop.userId) === String(userData.userId) ) {
+      
+      if (String(prop.propertyId) === String(data.propertyId) && String(prop.userId) === String(userInfo.userId) ) {
+        // console.log("wishlist",data,prop)
         temp = prop;
       }
     });
@@ -323,7 +326,8 @@ export default function Exemple({
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
         
-        const isArchive = foundArchiveHandler(property.propertyId);
+        // console.log("wishlisted",isWishlist);
+        const isArchive = false;
 
         if(!isArchive){
           if(isBidded.status === 1){
@@ -464,7 +468,7 @@ export default function Exemple({
             Completed
           </span> : isWait  && property.status === 2?  <p className="btn btn-danger  w-100">{`Cannot perform any actions right now as property is being ${property.isOnCancel ? "Cancelled" : "On Hold"} !.`} </p> : isBidded && isBidded.status !== 1 ? (
                 <ul className="">
-                  {isWishlist.id  && property.status < 2 ? (
+                  {isWishlist.id  ? (
                     <button
                       className="btn "
                       style={{ border: "1px solid grey" }}
@@ -511,7 +515,7 @@ export default function Exemple({
                         onClick={() =>
                           participateHandler(
                             property.bidLowerRange,
-                            property.propertyId,
+                            property.orderId,
                             isBidded.status < 1,
                             isBidded.bidAmount,
                             isBidded.$id ? true : false
@@ -564,7 +568,7 @@ export default function Exemple({
                   <div
                     className="w-100"
                     onClick={() =>
-                      onArchivePropertyHandler(property.propertyId)
+                      onArchivePropertyHandler(property.orderId)
                     }
                   >
                     <button
@@ -622,7 +626,7 @@ export default function Exemple({
     let tempProperties = [],
       tempWishlist = [];
     axios
-      .get("/api/getPropertiesById", {
+      .get("/api/getAllListedProperties", {
         headers: {
           Authorization: `Bearer ${data?.token}`,
           "Content-Type": "application/json",
@@ -632,7 +636,7 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        const temp = res.data.data.property.$values;
+        const temp = res.data.data.properties.$values;
 
         tempProperties = temp.filter((prop,index)=>{
           if(String(prop.userId) === String(data.userId)){
@@ -679,20 +683,21 @@ export default function Exemple({
       headers: {
         Authorization: `Bearer ${data.token}`,
       },
-      
-        params:{
+      params:{
           email:data.userEmail
         }
     })
     .then((res) => {
-      console.log(res.data.data);
-      const tempBids = res.data.data;
-      let acceptedBid = 0 ;
-      
-      let updatedBids = [];
-      updatedBids.push(tempBids)
-      
-      console.log(updatedBids)
+      tempBids = res.data.data.result.$values;
+      const updatedBids = tempBids.filter((prop,index)=>{
+        if(String(prop.appraiserUserId) === String(data.userId)){
+          return true;
+        }
+        else{
+          return false;
+        }
+      })
+      console.log(updatedBids);
       setBids(updatedBids);
     })
     .catch((err) => {
@@ -706,6 +711,7 @@ export default function Exemple({
           Authorization: `Bearer ${data.token}`,
         },
       })
+
       .then((res) => {
         setAllBrokers(res.data.data.$values);
        
@@ -722,7 +728,7 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        setAllAppraiser(res.data.data.$values);
+        setAllAppraiser(res.data.data.result.$values);
        
       })
       .catch((err) => {
@@ -735,8 +741,13 @@ export default function Exemple({
         headers: {
           Authorization: `Bearer ${data.token}`,
         },
+        params:{
+        userId : data.userId
+        }
       })
       .then((res) => {
+
+       
         setAllArchive(res.data.data.$values);
        
       })

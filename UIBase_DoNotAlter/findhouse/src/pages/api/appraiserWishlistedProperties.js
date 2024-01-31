@@ -9,9 +9,8 @@ import CryptoJS from "crypto-js";
 
   try {
     const token = request.headers.authorization;
-
-
-    const userResponse = await axios.get(`${domain}/Wishlist`,
+   
+     const userResponse = await axios.get(`${domain}/com.appraisalland.Wishlist/getWishlists`,
     {
         headers: {
           Authorization:token,

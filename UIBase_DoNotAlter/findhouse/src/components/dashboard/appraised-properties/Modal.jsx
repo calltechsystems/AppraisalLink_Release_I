@@ -83,7 +83,7 @@ const Modal = ({
       const user = JSON.parse(localStorage.getItem("user"));
 
       const formData = {
-        propertyId: propertyId,
+        orderId: propertyId,
         userId: user.userId,
         bidAmount: bidAmount,
         description: desp ? desp : "NA",

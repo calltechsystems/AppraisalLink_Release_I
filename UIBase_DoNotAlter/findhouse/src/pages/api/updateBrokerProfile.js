@@ -61,13 +61,14 @@ async function handler(request, response) {
       mortageBrokerLicNo: mortageBrokerLicNo,
       profileImage: profileImage,
     };
-    console.log(formData);
-
-    const userResponse = await axios.put(`${domain}/Broker/${id}`, formData, {
+    const userResponse = await axios.put(`${domain}/com.appraisalland.Broker/updateBrokerProfile`, formData, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
+      params:{
+        BrokerId:id
+      }
     });
     const user = userResponse.data;
 

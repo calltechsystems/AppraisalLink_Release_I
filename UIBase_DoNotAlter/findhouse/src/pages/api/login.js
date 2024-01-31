@@ -17,8 +17,7 @@ async function handler(request, response) {
     }
 
     const { email, password } = body;
-
-    const userResponse = await axios.post(`${domain}/Login/Login`, {
+    const userResponse = await axios.post(`${domain}/com.appraisalland.Login/Login`, {
       email: email,
       password: password,
     });

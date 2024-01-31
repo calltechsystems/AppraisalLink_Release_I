@@ -298,35 +298,16 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                   >
                     <div className="row">
                       <div className="col-lg-2"></div>
-                      <div
-                        className="col-lg-2 text-center"
-                        style={{ backgroundColor: "" }}
-                      >
-                        <div className="row text-end">
-                          <div className="col-lg-12 m-5 fw-bold">
-                            <span>
-                              Ready to see Appraisal Land help make you more
-                              money at record speed?
-                            </span>
-                            <br />
-                            <Link href="/register">
-                              <button className="btn btn2 w-50 btn-color">
-                                Register
-                              </button>
-                            </Link>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-lg-2">
-                        <div className="row text-center">
-                          <div className="col-lg-12 m-3 fw-bold">
+                      <div className="col-lg-2 text-end">
+                        <div className="row">
+                          <div className="col-lg-8 m-5 fw-bold" style={{}}>
                             <Link href="/">
                               <Image
-                                width={190}
+                                width={160}
                                 height={125}
-                                className="logo2 img-fluid mt-3"
+                                className="logo2"
                                 // style={{ marginRight: "10px" }}
-                                src="/assets/images/service/house_.png"
+                                src="/assets/images/service/image001.png"
                                 alt="header-logo2.png"
                               />
                             </Link>
@@ -365,23 +346,41 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                           </div>
                         </div>
                       </div>
-                      <div className="col-lg-3 text-start">
-                        <div className="row">
-                          <div className="col-lg-6 m-5 fw-bold" style={{}}>
+                      <div className="col-lg-2">
+                        <div className="row text-center">
+                          <div className="col-lg-12 m-3 fw-bold">
                             <Link href="/">
                               <Image
-                                width={160}
+                                width={190}
                                 height={125}
-                                className="logo2"
+                                className="logo2 img-fluid mt-3"
                                 // style={{ marginRight: "10px" }}
-                                src="/assets/images/service/image001.png"
+                                src="/assets/images/service/house_.png"
                                 alt="header-logo2.png"
                               />
                             </Link>
                           </div>
                         </div>
                       </div>
-
+                      <div
+                        className="col-lg-2 text-center"
+                        style={{ backgroundColor: "" }}
+                      >
+                        <div className="row text-center">
+                          <div className="col-lg-10 m-5 fw-bold">
+                            <span>
+                              Ready to see Appraisal Land help make you more
+                              money at record speed?
+                            </span>
+                            <br />
+                            <Link href="/register">
+                              <button className="btn btn2 w-50 btn-color">
+                                Register
+                              </button>
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
                       <div className="col-lg-1"></div>
                     </div>
                     {/* <h1>hiiiii</h1> */}
@@ -438,26 +437,26 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                   >
                     <div className="row">
                       <div className="col-lg-2"></div>
+
                       <div className="col-lg-2 text-end">
                         <div className="row">
-                          <div className="col-lg-12 mt-4">
-                            {/* <Link href="/">
-                     <Image
-                       width={40}
-                       height={45}
-                       className="logo2 img-fluid"
-                       style={{ marginRight: "10px" }}
-                       src="/assets/images/logo_new.png"
-                       alt="header-logo2.png"
-                     />
-                     <span
-                       className="fw-bold"
-                       style={{ fontSize: "19px", color: "black" }}
-                     >
-                       Appraisal Link
-                     </span>
-                   </Link> */}
+                          <div className="col-lg-12 m-4 fw-bold">
+                            <Link href="/">
+                              <Image
+                                width={190}
+                                height={125}
+                                className="logo2 img-fluid mt-3"
+                                // style={{ marginRight: "10px" }}
+                                src="/assets/images/about/home-inspector-checks-condition-house-writes-report-flat-illustration_2175-8129.png"
+                                alt="header-logo2.png"
+                              />
+                            </Link>
                           </div>
+                        </div>
+                      </div>
+                      <div className="col-lg-2 text-end">
+                        <div className="row">
+                          <div className="col-lg-12 mt-4"></div>
                           <div className="col-lg-12 mb-2">
                             <Link href="/appraiser-user-guide">
                               <button className="btn w-100 btn-color">
@@ -488,17 +487,16 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                           </div>
                         </div>
                       </div>
-
-                      <div className="col-lg-2 text-end">
+                      <div className="col-lg-2 text-center">
                         <div className="row">
-                          <div className="col-lg-12 m-4 fw-bold">
+                          <div className="col-lg-6 m-5 fw-bold" style={{}}>
                             <Link href="/">
                               <Image
-                                width={190}
+                                width={160}
                                 height={125}
-                                className="logo2 img-fluid mt-3"
+                                className="logo2 img-fluid"
                                 // style={{ marginRight: "10px" }}
-                                src="/assets/images/about/home-inspector-checks-condition-house-writes-report-flat-illustration_2175-8129.png"
+                                src="/assets/images/about/house-mortgage-property-inspection-audit-icon-graphic-home-real-estate-deal-review-assessment_101884-2246.png"
                                 alt="header-logo2.png"
                               />
                             </Link>
@@ -520,22 +518,6 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                               <button className="btn w-50 btn-color">
                                 Register
                               </button>
-                            </Link>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-lg-2 text-center">
-                        <div className="row">
-                          <div className="col-lg-6 m-5 fw-bold" style={{}}>
-                            <Link href="/">
-                              <Image
-                                width={160}
-                                height={125}
-                                className="logo2 img-fluid"
-                                // style={{ marginRight: "10px" }}
-                                src="/assets/images/about/house-mortgage-property-inspection-audit-icon-graphic-home-real-estate-deal-review-assessment_101884-2246.png"
-                                alt="header-logo2.png"
-                              />
                             </Link>
                           </div>
                         </div>
@@ -729,26 +711,47 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                   >
                     <div className="row">
                       <div className="col-lg-2"></div>
+                      <div
+                        className="col-lg-2 text-center"
+                        style={{ backgroundColor: "#c2c2c2" }}
+                      >
+                        <div className="row">
+                          <div className="col-lg-8 m-5 fw-bold">
+                            <span style={{ lineHeight: "1.9" }}>
+                              Experience our platform to the fullest by becoming
+                              a subscriber on{" "}
+                              <span className="text-color fw-bold">
+                                Appraisal Land
+                              </span>
+                              .
+                            </span>
+                            <br />
+                          </div>
+                        </div>
+                      </div>
+
                       <div className="col-lg-2 text-end">
                         <div className="row">
-                          <div className="col-lg-12 mt-4">
-                            {/* <Link href="/">
-                     <Image
-                       width={40}
-                       height={45}
-                       className="logo2 img-fluid"
-                       style={{ marginRight: "10px" }}
-                       src="/assets/images/logo_new.png"
-                       alt="header-logo2.png"
-                     />
-                     <span
-                       className="fw-bold"
-                       style={{ fontSize: "19px", color: "black" }}
-                     >
-                       Appraisal Link
-                     </span>
-                   </Link> */}
+                          <div
+                            className="col-lg-12 m-3 fw-bold"
+                            style={{ marginLeft: "-30px" }}
+                          >
+                            <Link href="/">
+                              <Image
+                                width={190}
+                                height={125}
+                                className="logo2 img-fluid mt-1"
+                                src="/assets/images/home/man-pencil-fills-out-questionnaire-260nw-2052001217.png"
+                                alt="header-logo2.png"
+                              />
+                            </Link>
                           </div>
+                        </div>
+                      </div>
+
+                      <div className="col-lg-2 text-end">
+                        <div className="row">
+                          <div className="col-lg-12 mt-4"></div>
                           <div className="col-lg-12 mb-2">
                             <Link href="/membership">
                               <button className="btn w-100 btn-color">
@@ -776,42 +779,6 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                                 For Mortgage Brokerage
                               </button>
                             </Link>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-lg-2 text-end">
-                        <div className="row">
-                          <div
-                            className="col-lg-12 m-3 fw-bold"
-                            style={{ marginLeft: "-30px" }}
-                          >
-                            <Link href="/">
-                              <Image
-                                width={190}
-                                height={125}
-                                className="logo2 img-fluid mt-1"
-                                src="/assets/images/home/man-pencil-fills-out-questionnaire-260nw-2052001217.png"
-                                alt="header-logo2.png"
-                              />
-                            </Link>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className="col-lg-2 text-center"
-                        style={{ backgroundColor: "#c2c2c2" }}
-                      >
-                        <div className="row">
-                          <div className="col-lg-8 m-5 fw-bold">
-                            <span style={{ lineHeight: "1.9" }}>
-                              Experience our platform to the fullest by becoming
-                              a subscriber on{" "}
-                              <span className="text-color fw-bold">
-                                Appraisal Land
-                              </span>
-                              .
-                            </span>
-                            <br />
                           </div>
                         </div>
                       </div>

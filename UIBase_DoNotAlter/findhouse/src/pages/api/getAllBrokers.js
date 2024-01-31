@@ -11,7 +11,7 @@ import CryptoJS from "crypto-js";
     const token = request.headers.authorization;
 
 
-    const userResponse = await axios.get(`${domain}/Admin/Broker/All`,
+    const userResponse = await axios.get(`${domain}/com.appraisalland.Admin/Broker/All`,
     {
         headers: {
           Authorization:token,

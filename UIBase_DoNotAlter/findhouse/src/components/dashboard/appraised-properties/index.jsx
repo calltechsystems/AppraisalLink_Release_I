@@ -307,12 +307,13 @@ const closeAssignModal = ()=>{
     }
   };
 
-  const  onArchivePropertyHandler = (propertyId)=>{
+  const  onArchivePropertyHandler = (orderId)=>{
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
-      propertyId:propertyId,
+      orderId:orderId,
       userid:data.userId,
+      status : true,
       token:data.token
     };
 

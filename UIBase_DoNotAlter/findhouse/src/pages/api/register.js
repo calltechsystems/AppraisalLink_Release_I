@@ -21,16 +21,15 @@ export default async function handler(request, response) {
       password: password,
       userType: userType,
     };
-
+    
     const userResponse = await axios.post(
-      `${domain}/Registration/Registration`,
+      `${domain}/com.appraisalland.Registration/Registration`,
       formData
     );
     const user = userResponse.data;
 
     return response.status(201).json({ msg: "Successfully Created !!" });
   } catch (err) {
-    console.log(err);
     if (err.response) {
       // If the error is from an axios request (e.g., HTTP 4xx or 5xx error)
       console.log(err);

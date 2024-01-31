@@ -858,7 +858,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   </div>
                   <div className="col-lg-12 mb-3">
                     <div className="row">
-                      <div className="col-4">
+                      <div className="col-lg-4">
                         <label
                           className="text-color"
                           htmlFor=""
@@ -867,7 +867,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           Assistant First Name{" "}
                         </label>
                       </div>
-                      <div className="col-7">
+                      <div className="col-lg-7">
                         <input
                           type="text"
                           className="form-control"
@@ -884,7 +884,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   </div>
                   <div className="col-lg-12 mb-3">
                     <div className="row">
-                      <div className="col-4 ">
+                      <div className="col-lg-4 ">
                         <label
                           className="text-color"
                           htmlFor=""
@@ -893,7 +893,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           Assistant Last Name{" "}
                         </label>
                       </div>
-                      <div className="col-7 ">
+                      <div className="col-lg-7 ">
                         <input
                           type="text"
                           className="form-control"
@@ -908,7 +908,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   </div>
                   <div className="col-lg-12 mb-3">
                     <div className="row">
-                      <div className="col-4">
+                      <div className="col-lg-4">
                         <label
                           className="text-color"
                           htmlFor=""
@@ -917,7 +917,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           Assistant Phone Number
                         </label>
                       </div>
-                      <div className="col-7">
+                      <div className="col-lg-7">
                         <input
                           type="text"
                           required
@@ -966,7 +966,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   </div>
                   <div className="col-lg-12 mb-3">
                     <div className="row">
-                      <div className="col-4">
+                      <div className="col-lg-4">
                         <label
                           className="text-color"
                           htmlFor=""
@@ -975,22 +975,24 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           Assistant First Name{" "}
                         </label>
                       </div>
-                      <div className="col-7">
+                      <div className="col-lg-7">
                         <input
                           type="text"
                           className="form-control"
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
-                          // value={assistantFirstName}
-                          // onChange={(e) => setAssistantFirstName(e.target.value)}
-                          // disabled={!edit}
+                          value={assistantFirstName}
+                          onChange={(e) =>
+                            setAssistantFirstName(e.target.value)
+                          }
+                          disabled={!edit}
                         />
                       </div>
                     </div>
                   </div>
                   <div className="col-lg-12 mb-3">
                     <div className="row">
-                      <div className="col-4 ">
+                      <div className="col-lg-4 ">
                         <label
                           className="text-color"
                           htmlFor=""
@@ -999,22 +1001,22 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           Assistant Last Name{" "}
                         </label>
                       </div>
-                      <div className="col-7 ">
+                      <div className="col-lg-7 ">
                         <input
                           type="text"
                           className="form-control"
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
-                          // value={assistantPhoneNumber}
-                          // onChange={(e) => setCompanyNameRef(e.target.value)}
-                          // disabled={!edit}
+                          value={assistantLastName}
+                          onChange={(e) => setAssistantLastName(e.target.value)}
+                          disabled={!edit}
                         />
                       </div>
                     </div>
                   </div>
                   <div className="col-lg-12 mb-3">
                     <div className="row">
-                      <div className="col-4">
+                      <div className="col-lg-4">
                         <label
                           className="text-color"
                           htmlFor=""
@@ -1023,16 +1025,18 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           Assistant Phone Number
                         </label>
                       </div>
-                      <div className="col-7">
+                      <div className="col-lg-7">
                         <input
                           type="text"
                           required
                           className="form-control"
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
-                          // value={assistantPhoneNumber}
-                          // onChange={(e) => setAssistantPhoneNumber(e.target.value)}
-                          // disabled={!edit}
+                          value={assistantPhoneNumber}
+                          onChange={(e) =>
+                            setAssistantPhoneNumber(e.target.value)
+                          }
+                          disabled={!edit}
                         />
                       </div>
                     </div>
@@ -1350,7 +1354,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       >
                         <button
                           className="btn btn5 m-1"
-                          onClick={cancelHandler}
+                          onClick={() => setShowCard(true)}
                         >
                           Cancel
                         </button>

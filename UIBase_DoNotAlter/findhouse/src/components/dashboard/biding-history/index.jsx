@@ -311,7 +311,7 @@ const closeAssignModal = ()=>{
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
-      propertyId:propertyId,
+      orderId:propertyId,
       userid:data.userId,
       token:data.token
     };

@@ -148,7 +148,7 @@ const Index = () => {
     const func = () => {
       const data = JSON.parse(localStorage.getItem("user"));
       axios
-        .get("/api/getPropertiesById", {
+        .get("/api/getAllListedProperties", {
           headers: {
             Authorization: `Bearer ${data?.token}`,
             "Content-Type": "application/json",
@@ -160,7 +160,15 @@ const Index = () => {
         .then((res) => {
           // console.log(categorizeDataByMonth(res.data.data.property.$values));
 
-          setData(res.data.data.property.$values);
+          const temp = res.data.data.properties.$values;
+          const pdated = temp.filter((prop,index)=>{
+            if(String(prop.userId) === String(data.userId))
+             return true;
+            else
+             return false;
+          })
+
+          setData(pdated);
           setShowLineGraph(true);
           setRerender(false);
         })
@@ -168,99 +176,47 @@ const Index = () => {
           toast.error(err?.response?.data?.error);
         });
 
-        axios
-        .get("/api/getPropertiesById", {
-          headers: {
-            Authorization: `Bearer ${data?.token}`,
-            "Content-Type": "application/json",
-          },
-          params: {
-            userId: data?.userId,
-          },
-        })
-        .then((res) => {
-          // console.log(categorizeDataByMonth(res.data.data.property.$values));
+    
 
-          setData(res.data.data.property.$values);
-          setShowLineGraph(true);
-          setRerender(false);
-        })
-        .catch((err) => {
-          toast.error(err?.response?.data?.error);
-        });
-
-        axios
-        .get("/api/getPropertiesById", {
-          headers: {
-            Authorization: `Bearer ${data?.token}`,
-            "Content-Type": "application/json",
-          },
-          params: {
-            userId: data?.userId,
-          },
-        })
-        .then((res) => {
-          // console.log(categorizeDataByMonth(res.data.data.property.$values));
-
-          setData(res.data.data.property.$values);
-          setShowLineGraph(true);
-          setRerender(false);
-        })
-        .catch((err) => {
-          toast.error(err?.response?.data?.error);
-        });
-
-        axios
-      .get("/api/appraiserWishlistedProperties", {
-        headers: {
-          Authorization: `Bearer ${data?.token}`,
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => {
-        const tempData = res.data.data.$values;
-
-        // setAllWishlistedProperties(res.data.data.$values);
-        const responseData = tempData.filter((prop, index) => {
-          if (prop.userId === data.userId) {
-            return true;
-          } else {
-            return false;
-          }
-        });
-        const tempId = responseData;
-        setWishlist(responseData);
-      })
-      .catch((err) => {
-        toast.error(err?.response);
-        setErrorMessage(err?.response);
-        setModalIsOpenError(true);
-      });
 
         axios
       .get("/api/getAllBids", {
         headers: {
           Authorization: `Bearer ${data.token}`,
         },
+      params:{
+          email:data.userEmail
+        }
+        
       })
       .then((res) => {
-        // console.log(res);
-        const tempBids = res.data.data.result.$values;
+        console.log(res.data.data.$values);
+        const tempBids = res.data.data.$values;
         let acceptedBid = 0 ;
-        tempBids.map((bids,index)=>{
-          if(bids.userId === data.userId && bids.status === 2)
+        let allBids = [];
+        tempBids.map((prop,index)=>{
+          if(String(prop.userId) === String(data.userId) && bids.status === 2)
           acceptedBid = acceptedBid + 1 ;
+          else if(String(prop.userId) === String(data.userId) )
+          {
+            allBids.push(prop)
+          }
         })
-        setAcceptedBids(acceptedBid)
-        setBids(tempBids);
+        setAcceptedBids(acceptedBid);
+       
+        setBids(allBids);
       })
       .catch((err) => {
-        setErrorMessage(err?.response?.data?.error);
-        setModalIsOpenError(true);
+        toast.error(err);
+        // setModalIsOpenError(true);
       });
     };
     func();
   }, []);
+
+
+
+
 
   useEffect(() => {
     const categorizeDataByMonth = (data) => {
@@ -408,7 +364,7 @@ const Index = () => {
                 <div className="col-lg-12">
                   <div className="copyright-widget text-center">
                     <p>
-                      &copy; {new Date().getFullYear()} Appraisal Land. All
+                      &copy; {new Date().getFullYear()} Appraisal Link. All
                       Rights Reserved.
                     </p>
                   </div>

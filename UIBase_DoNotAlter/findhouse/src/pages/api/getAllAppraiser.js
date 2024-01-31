@@ -11,7 +11,7 @@ import CryptoJS from "crypto-js";
     const token = request.headers.authorization;
 
 
-    const userResponse = await axios.get(`${domain}/Admin/Broker/All`,
+    const userResponse = await axios.get(`${domain}/com.appraisalland.Admin/Apraiser/All`,
     {
         headers: {
           Authorization:token,
@@ -24,6 +24,7 @@ import CryptoJS from "crypto-js";
     return response.status(200).json({msg:"OK",data : users});
   } catch (err) {
     
+    console.log(err);
     if (err.response) {
       // If the error is from an axios request (e.g., HTTP 4xx or 5xx error)
       const axiosError = err.response.data;
