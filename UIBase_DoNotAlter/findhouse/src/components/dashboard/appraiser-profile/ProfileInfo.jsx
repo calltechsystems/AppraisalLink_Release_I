@@ -476,6 +476,27 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                     <div className="row">
                       <div className="col-lg-4">
                         <label htmlFor="" style={{ paddingTop: "10px" }}>
+                          Cell Number <span class="req-btn">*</span>
+                        </label>
+                      </div>
+                      <div className="col-lg-7">
+                        <input
+                          type="text"
+                          required
+                          className="form-control"
+                          id="formGroupExampleInput3"
+                          style={{ backgroundColor: "#E8F0FE" }}
+                          value={phoneNumberRef}
+                          onChange={(e) => setPhoneNumberRef(e.target.value)}
+                          disabled={!edit}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-lg-12 mb-3">
+                    <div className="row">
+                      <div className="col-lg-4">
+                        <label htmlFor="" style={{ paddingTop: "10px" }}>
                           Email Address <span class="req-btn">*</span>
                         </label>
                       </div>

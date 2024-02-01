@@ -420,7 +420,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                     <div className="row">
                       <div className="col-lg-4">
                         <label htmlFor="" style={{ paddingTop: "10px" }}>
-                          Phone Number <span class="req-btn">*</span>
+                          Cell Number <span class="req-btn">*</span>
                         </label>
                       </div>
                       <div className="col-lg-7">
