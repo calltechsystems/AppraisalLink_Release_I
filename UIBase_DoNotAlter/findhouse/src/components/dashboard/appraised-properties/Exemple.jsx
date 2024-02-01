@@ -688,7 +688,7 @@ export default function Exemple({
         }
     })
     .then((res) => {
-      tempBids = res.data.data.result.$values;
+      tempBids = res.data.data.$values;
       const updatedBids = tempBids.filter((prop,index)=>{
         if(String(prop.appraiserUserId) === String(data.userId)){
           return true;

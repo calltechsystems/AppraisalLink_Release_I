@@ -55,13 +55,15 @@ async function handler(request, response) {
       officeContactPhone:officeContactPhone,
     };
 
-    
-
-    const userResponse = await axios.put(`${domain}/AppraiserCompany/${id}`, formData, {
+  
+    const userResponse = await axios.put(`${domain}/com.appraisalland.AppraiserCompany/updateAppraisalCompanyProfile`, formData, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
+      params:{
+        AppraiserCompanyID:id
+      }
     });
     const user = userResponse.data;
 

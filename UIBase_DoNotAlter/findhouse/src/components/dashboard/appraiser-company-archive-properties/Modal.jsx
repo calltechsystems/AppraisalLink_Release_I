@@ -106,9 +106,7 @@ const Modal = ({
                 </span>
               </h2>
             </div>
-            <div>
-              <hr />
-            </div>
+            <div><hr /></div>
             <div>
               {!toggle ? (
                 <div className="row">

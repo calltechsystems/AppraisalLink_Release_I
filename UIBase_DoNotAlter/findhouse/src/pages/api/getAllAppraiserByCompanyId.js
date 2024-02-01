@@ -12,8 +12,7 @@ import CryptoJS from "crypto-js";
     const userId = request.query.userId;
 
     console.log(userId);
-
-    const userResponse = await axios.get(`${domain}/AppraiserCompany`,
+    const userResponse = await axios.get(`${domain}/com.appraisalland.AppraiserIndividual/getAssignedAppraiserbyAppraiserCompany`,
     {
         headers: {
           Authorization:token,

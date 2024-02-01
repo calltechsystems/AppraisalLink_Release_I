@@ -18,10 +18,9 @@ export default async function handler(request, response) {
 
     const token = request.headers.authorization;
 
-    console.log(id);
-
-    const userResponse = await axios.post(
-      `${domain}/AppraiserIndividual`,
+  
+    const userResponse = await axios.put(
+      `${domain}/com.appraisalland.AppraiserIndividual/updateApprasierStatus`,
       {},
       {
         headers: {

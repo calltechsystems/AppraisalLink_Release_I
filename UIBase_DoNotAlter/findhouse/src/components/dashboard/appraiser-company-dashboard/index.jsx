@@ -1,4 +1,4 @@
-import Header from "../../common/header/dashboard/HeaderAppraiserCompany";
+import Header from "../../common/header/dashboard/Header_02";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenu_002";
 import MobileMenu from "../../common/header/MobileMenu_01";
 import Filtering from "./Filtering";
@@ -75,6 +75,9 @@ const Index = () => {
     if (!data) {
       router.push("/login");
     } 
+    if(!userData?.appraiserCompany_Datails.firstName){
+      router.push("appraiser-company-profile");
+    }
     if (!data) {
       router.push("/login");
     }
@@ -147,21 +150,20 @@ const Index = () => {
     .get("/api/getAllBids", {
       headers: {
         Authorization: `Bearer ${data.token}`,
-      },
+     },
+      
+        params:{
+          email:data.userEmail
+        }
     })
     .then((res) => {
-      const tempBids = res.data.data.result.$values;
+      console.log(res.data.data);
+      const tempBids = res.data.data;
       let acceptedBid = 0 ;
       
-      const updatedBids =  tempBids.filter((bids,index)=>{
-        if(String(bids.appraiserUserId) === String(data.userId)){
-        // acceptedBid = acceptedBid + 1 ; 
-        return true;
-        }
-        else{
-          return false;
-        }
-      })
+      let updatedBids = [];
+      updatedBids.push(tempBids)
+      
       console.log(updatedBids)
       setBids(updatedBids);
     })
@@ -169,6 +171,7 @@ const Index = () => {
       setErrorMessage(err?.response?.data?.error);
       setModalIsOpenError(true);
     });
+   
     };
     func();
     setRefresh(false);

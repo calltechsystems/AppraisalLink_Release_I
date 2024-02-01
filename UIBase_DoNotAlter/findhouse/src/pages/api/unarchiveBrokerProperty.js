@@ -15,21 +15,21 @@ async function handler(request, response) {
       return response.status(403).json({ error: "Not a verified Data" });
     }
 
-    const { token, propertyId } = body;
+    const {
+      token,
+      propertyId
+      
+    } = body;
 
-    const userResponse = await axios.put(
-      `${domain}/Property/Unarchiveproperty`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        params: {
-          PropertyID: propertyId,
-        },
+
+    const userResponse = await axios.put(`${domain}/Property/Unarchiveproperty`, {}, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },params:{
+        PropertyID : propertyId
       }
-    );
+    });
     const user = userResponse.data;
 
     if (!user) {

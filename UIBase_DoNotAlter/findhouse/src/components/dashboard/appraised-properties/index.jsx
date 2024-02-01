@@ -66,10 +66,10 @@ const Index = () => {
     const data = JSON.parse(localStorage.getItem("user"));
     const payload = {
       token:data.token,
-      bidid:currentBid.bidId,
+      Quoteid:currentBid.bidId,
       OrderStatus:Number(orderStatus),
       remark:remark,
-      modifiedDate : statusDate
+      statusDate : statusDate
     };
 
     const encryptedBody = encryptionData(payload);

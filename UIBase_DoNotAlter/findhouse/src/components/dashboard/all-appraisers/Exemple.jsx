@@ -116,9 +116,7 @@ export default function Exemple({
   end,
   setUpdatedCode,
   setCurrentViewAppraiser,
-  setOpenViewModal,
-  setAppraiserCompanyInfo,
-  setCloseRegisterModal,
+  setOpenViewModal,setAppraiserCompanyInfo,setCloseRegisterModal,
   properties,
   setIsStatusModal,
   setProperties,
@@ -165,10 +163,10 @@ export default function Exemple({
     //   return requestTime >= twentyFourHoursAgo && requestTime <= currentTime;
   };
 
-  const openCredModal = (data) => {
-    setCurrentViewAppraiser(data);
-    setOpenViewModal(true);
-  };
+  const openCredModal = (data)=>{
+  setCurrentViewAppraiser(data);
+  setOpenViewModal(true);
+  }
 
   const router = useRouter();
 
@@ -176,10 +174,10 @@ export default function Exemple({
     setIsStatusModal(true);
   };
 
-  const openEditModalHandler = (appraiser) => {
-    setSelectedAppraiser(appraiser);
-    setOpenEditModal(true);
-  };
+  const openEditModalHandler = (appraiser)=>{
+      setSelectedAppraiser(appraiser);
+      setOpenEditModal(true);
+  }
 
   const removeWishlistHandler = (id) => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -212,10 +210,10 @@ export default function Exemple({
       });
   };
 
-  const openModalEdit = (appraiser) => {
+  const openModalEdit = (appraiser)=>{
     setAppraiser(appraiser);
     setOpenEditModal(true);
-  };
+  }
 
   const onDeletePropertyHandler = () => {};
 
@@ -266,38 +264,31 @@ export default function Exemple({
           appraiser_id: data.id,
           firstname: data.firstName ? data.firstName : "-",
           lastname: data.lastName ? data.lastName : "-",
-          status: data.isActive ? (
-            <span className="btn btn-success  w-100">Active</span>
-          ) : !data.firstName ? (
-            <span className="btn btn-warning  w-100">Not Registered</span>
-          ) : (
-            <span className="btn btn-danger  w-100">In-Active</span>
-          ),
+          status : data.isActive  ? (<span
+          className="btn btn-success  w-100"
+          
+        >
+          Active
+        </span>
+      ) : !data.firstName  ?  (
+        <span className="btn btn-warning  w-100">Not Registered</span>)
+      : (
+      <span className="btn btn-danger  w-100">In-Active</span>
+    ) ,
           phone: data.phoneNumber ? data.phoneNumber : "-",
-          address: data.streetName
-            ? `${data.streetName} ${data.streetNumber},${data.city}-${data.postalCode}`
-            : "N.A.",
+          address :data.streetName ? `${data.streetName} ${data.streetNumber},${data.city}-${data.postalCode}` : "N.A.",
           date: dateNow,
 
           action: (
             <div className="print-hidden-column">
-              {data.firstName && (
-                <button
-                  className="btn btn-color m-1"
-                  onClick={() => openEditModalHandler(data)}
-                >
-                  <i className="flaticon-edit"></i>
-                </button>
-              )}
-
-              {!data.firstName && (
-                <button
-                  className="btn btn-color m-1"
-                  onClick={() => openCredModal(data)}
-                >
-                  <i className="flaticon-view"></i>
-                </button>
-              )}
+            { data.firstName  && <button className="btn btn-color m-1" onClick={()=>openEditModalHandler(data)}>
+                <i className="flaticon-edit"></i>
+              </button>}
+              
+              { !data.firstName &&  <button className="btn btn-color m-1" onClick={()=>openCredModal(data)}>
+              <i className="flaticon-view"></i>
+            </button>}
+            
             </div>
           ),
         };
@@ -318,16 +309,14 @@ export default function Exemple({
     setStartLoading(true);
   };
   useEffect(() => {
-    console.log("inside");
     const data = JSON.parse(localStorage.getItem("user"));
-    console.log(data.appraiserCompany_Datails);
     const payload = {
       token: userData.token,
-      userId: userData.userId,
+      userId : userData.userId
     };
-    const encryptedData = encryptionData(payload);
+      const encryptedData = encryptionData(payload);
     axios
-      .get("/api/getAllAppraiserByCompanyId", {
+      .get("/api/getAllAppraiserByCompanyId",{
         headers: {
           Authorization: `Bearer ${data?.token}`,
           "Content-Type": "application/json",
@@ -337,15 +326,16 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        console.log(res.data.data.appraisers.$values);
-        setAppraiserCompanyInfo(res.data.data.appraiserCompany);
-        setProperties(res.data.data.appraisers.$values);
+
+        // console.log(res.data);
+        setAppraiserCompanyInfo([]);
+        setProperties(res.data.data.$values);
       })
       .catch((err) => {
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
-    setRefresh(false);
+       setRefresh(false);
   }, [refresh]);
   console.log(sortObjectsByOrderIdDescending(updatedData));
   return (

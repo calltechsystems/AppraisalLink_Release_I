@@ -1,4 +1,4 @@
-import Header from "../../common/header/dashboard/HeaderAppraiserCompany";
+import Header from "../../common/header/dashboard/Header_02";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenu_002";
 import MobileMenu from "../../common/header/MobileMenu_01";
 import TableData from "./TableData";
@@ -69,10 +69,10 @@ const Index = () => {
     const data = JSON.parse(localStorage.getItem("user"));
     const payload = {
       token:data.token,
-      bidid:currentBid.bidId,
+      Quoteid:currentBid.bidId,
       OrderStatus:Number(orderStatus),
       remark:remark,
-      modifiedDate : statusDate
+      statusDate : statusDate
     };
     const encryptedBody = encryptionData(payload);
     toast.loading("Updating order status!!");
@@ -270,8 +270,9 @@ const Index = () => {
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
-      propertyId:propertyId,
+      orderId:propertyId,
       userid:data.userId,
+      status:true,
       token:data.token
     };
 

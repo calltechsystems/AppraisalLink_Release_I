@@ -18,7 +18,7 @@ import CryptoJS from "crypto-js";
     const {userId,planId,token} = body;
    
 
-    const userResponse = await axios.post(`${domain}/payments/paymenturl?Planid=${planId}&UserId=${userId}`,
+    const userResponse = await axios.post(`${domain}/com.appraisalland.Payments/paymenturl?Planid=${planId}&UserId=${userId}`,
     null,{
         headers: {
           Authorization:`Bearer ${token}`

@@ -69,7 +69,7 @@ const Index = () => {
   const handleStatusUpdateHandler = () => {
    
     const payload = {
-      id : selectedAppraiser.id,
+      id : selectedAppraiser.userId,
       IsActive : !selectedAppraiser.isActive
     };
 

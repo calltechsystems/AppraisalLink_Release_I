@@ -10,14 +10,14 @@ import CryptoJS from "crypto-js";
     const userId = request.query.userId;
   try {
     const token = request.headers.authorization;
-   const userResponse = await axios.get(`${domain}/com.appraisalland.Property/getApprasierArchiveProperty`,
+    const userResponse = await axios.get(`${domain}/com.appraisalland.Property/getApprasierArchiveProperty`,
     {
         headers: {
           Authorization:token,
           "Content-Type":"application/json"
         },
         params:{
-          userId:userId
+          UserId:userId
         }
       });
     const users = userResponse.data;

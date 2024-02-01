@@ -17,25 +17,27 @@ async function handler(request, response) {
 
     const {
       token,
-      bidid,
+      Quoteid,
       remark,
+      statusDate,
       OrderStatus
       
     } = body;
 
-   
+    const payload={
+      Quoteid:Quoteid,
+      OrderStatus:OrderStatus,
+      remark:remark,
+      statusDate:statusDate
+    }
 
-    const userResponse = await axios.put(`${domain}/Bid/UpdateStatus`, {}, {
+   
+    const userResponse = await axios.put(`${domain}/com.appraisalland.Bid/updateApprasialStatus`, payload, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
-      },
-      params:{
-        bidid:bidid,
-        OrderStatus:OrderStatus,
-        remark:remark,
-        
       }
+      
     });
     const user = userResponse.data;
 

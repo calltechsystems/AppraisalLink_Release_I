@@ -1,6 +1,5 @@
 import axios from "axios";
 import CryptoJS from "crypto-js";
-import withSession from "../../utils/session/session";
 
 async function handler(request, response) {
   const decryptionKey = process.env.CRYPTO_SECRET_KEY;
@@ -19,7 +18,9 @@ async function handler(request, response) {
     const token = request.headers.authorization;
     const { companyid, appraiserid , propertyid} = body;
 
-    const userResponse = await axios.post(`${domain}/AppraiserCompany/AssignProprties`, {
+   
+    const userResponse = await axios.post(`${domain}/com.appraisalland.AppraiserCompany/assignPropopertyByAppCompany`, 
+    {
       companyid:companyid,
       propertyid:propertyid,
       appraiserid:appraiserid

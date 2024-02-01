@@ -1,4 +1,4 @@
-import Header from "../../common/header/dashboard/HeaderAppraiserCompany";
+import Header from "../../common/header/dashboard/Header_02";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenu_002";
 import MobileMenu from "../../common/header/MobileMenu_01";
 import TableData from "./TableData";
@@ -154,17 +154,18 @@ const Index = () => {
   const  unArchivePropertyHandler = (propertyId)=>{
     const data = JSON.parse(localStorage.getItem("user"));
 
-    // const payload = {
-    //   propertyId:propertyId,
-    //   userid:data.userId,
-    //   token:data.token
-    // };
+    const payload = {
+      orderId:propertyId,
+      status:false,
+      userid:data.userId,
+      token:data.token
+    };
 
     toast.loading("Un-Archiving the desired property!!.");
 
-    // const encryptedBody = encryptionData(payload);
+    const encryptedBody = encryptionData(payload);
 
-    axios.delete("/api/deleteArchivePropertyByAppraiser",{
+    axios.post("/api/deleteArchivePropertyByAppraiser",encryptedBody,{
       headers:{
         Authorization:`Bearer ${data.token}`,
         "Content-Type":"application/json"

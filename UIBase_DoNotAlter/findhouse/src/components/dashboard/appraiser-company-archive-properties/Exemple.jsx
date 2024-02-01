@@ -185,7 +185,7 @@ export default function Exemple({
       bidValue = {};
       // console.log(bids);
     bids.filter((bid) => {
-      if (bid.propertyId === property.propertyId ) {
+      if (bid.orderId === property.orderId ) {
         // console.log("matched", bid);
         tempBid = tempBid + 1;
         bidValue = bid;
@@ -446,12 +446,13 @@ export default function Exemple({
                   <div
                     className="w-100"
                     onClick={() =>
-                      unArchivePropertyHandler(property.propertyId)
+                      unArchivePropertyHandler(property.orderId)
                     }
                   >
                     <button
                       href="#"
-                      className="btn btn-color"
+                      className="btn btn-color w-100 mt-1"
+                      style={{ marginLeft: "12px" }}
                     >
                     <Link href="#">
                     <span className="text-light"> <FaArchive/></span>
@@ -492,7 +493,7 @@ export default function Exemple({
     let tempProperties = [],
       tempWishlist = [];
     axios
-      .get("/api/getPropertiesById", {
+      .get("/api/getAllListedProperties", {
         headers: {
           Authorization: `Bearer ${data?.token}`,
           "Content-Type": "application/json",
@@ -502,7 +503,7 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        const temp = res.data.data.property.$values;
+        const temp = res.data.data.properties.$values;
 
         tempProperties = temp.filter((prop,index)=>{
           if(String(prop.userId) === String(data.userId)){
@@ -552,7 +553,7 @@ export default function Exemple({
       })
       .then((res) => {
         console.log(res);
-        tempBids = res.data.data.result.$values;
+        tempBids = res.data.data.$values;
         const updatedBids = tempBids.filter((prop,index)=>{
           if(String(prop.appraiserUserId) === String(data.userId)){
             return true;
@@ -588,6 +589,9 @@ export default function Exemple({
         headers: {
           Authorization: `Bearer ${data.token}`,
         },
+        params:{
+        userId : data.userId
+        }
       })
       .then((res) => {
         setAllArchive(res.data.data.$values);
@@ -597,8 +601,6 @@ export default function Exemple({
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
-
-    console.log("end", bids, properties, wishlist);
     setRefresh(false);
   }, [refresh]);
   // console.log(sortObjectsByOrderIdDescending(updatedData));

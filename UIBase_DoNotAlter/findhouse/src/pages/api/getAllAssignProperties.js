@@ -7,13 +7,16 @@ import axios from "axios";
 
   try {
     const token = request.headers.authorization;
-
-
-    const userResponse = await axios.get(`${domain}/Property/AssignProperties`,
+    const userId = request.query.userId;
+    
+    const userResponse = await axios.get(`${domain}/com.appraisalland.AppraiserCompany/getAssignedPropertiesbyAppraiserCompany`,
     {
         headers: {
           Authorization:token,
           "Content-Type":"application/json"
+        },
+        params:{
+          companyid:userId
         }
       });
     const users = userResponse.data;

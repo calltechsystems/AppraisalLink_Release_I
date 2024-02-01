@@ -66,9 +66,10 @@ const Index = () => {
     const data = JSON.parse(localStorage.getItem("user"));
     const payload = {
       token:data.token,
-      bidid:currentBid,
+      Quoteid:currentBid,
       OrderStatus:Number(orderStatus),
-      remark:remark
+      remark:remark,
+      statusDate:statusDate
     };
 
     const encryptedBody = encryptionData(payload);
@@ -154,24 +155,22 @@ const Index = () => {
   const  unArchivePropertyHandler = (propertyId)=>{
     const data = JSON.parse(localStorage.getItem("user"));
 
-    // const payload = {
-    //   propertyId:propertyId,
-    //   userid:data.userId,
-    //   token:data.token
-    // };
+    const payload = {
+      orderId:propertyId,
+      userid:data.userId,
+      status:false,
+      token:data.token
+    };
 
     toast.loading("Un-Archiving the desired property!!.");
 
-    // const encryptedBody = encryptionData(payload);
+    const encryptedBody = encryptionData(payload);
 
-    axios.delete("/api/deleteArchivePropertyByAppraiser",{
+    axios.post("/api/setArchivePropertyByAppraiser",
+    encryptedBody,{
       headers:{
         Authorization:`Bearer ${data.token}`,
         "Content-Type":"application/json"
-      },
-      params:{
-        userid:data.userId,
-        propertyId:propertyId
       }
     }).then((res)=>{
       toast.dismiss();

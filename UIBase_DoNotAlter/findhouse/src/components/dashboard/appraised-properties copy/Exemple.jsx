@@ -445,7 +445,7 @@ export default function Exemple({
                   <div
                     className="w-100"
                     onClick={() =>
-                      unArchivePropertyHandler(property.propertyId)
+                      unArchivePropertyHandler(property.orderId)
                     }
                   >
                     <button
