@@ -4,7 +4,7 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 import axios, { all } from "axios";
 import millify from "millify";
-import AppraiserStatusOptions from "../create-listing/data";
+import { AppraiserStatusOptions } from "../create-listing/data";
 import {
   FaArchive,
   FaHandHoldingHeart,
@@ -152,7 +152,7 @@ export default function Exemple({
   setIsHoldProperty,
   isBidded,
   setErrorMessage,
-  setModalIsOpenError
+  setModalIsOpenError,
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [allBids, setBids] = useState([]);
@@ -626,7 +626,10 @@ export default function Exemple({
                     className="btn btn-color-table"
                     onClick={() => archievePropertyHandler(property.propertyId)}
                   >
-                    <Link className="color-light" href={`/brokerage-archive-properties`}>
+                    <Link
+                      className="color-light"
+                      href={`/brokerage-archive-properties`}
+                    >
                       <span className="text-light">
                         <FaArchive />
                       </span>
