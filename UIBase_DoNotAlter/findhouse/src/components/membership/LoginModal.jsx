@@ -1,6 +1,9 @@
 // Modal.js (a React component)
 
 import React from "react";
+import Link from "next/link";
+import Image from "next/image";
+
 
 const LoginModal = ({ modalOpen, closeModal, price }) => {
   return (

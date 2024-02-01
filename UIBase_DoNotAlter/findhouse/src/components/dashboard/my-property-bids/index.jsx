@@ -13,6 +13,8 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import Exemple from "./Exemple";
 import { encryptionData } from "../../../utils/dataEncryption";
+import Link from "next/link";
+import Image from "next/image";
 
 const Index = ({ propertyId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
