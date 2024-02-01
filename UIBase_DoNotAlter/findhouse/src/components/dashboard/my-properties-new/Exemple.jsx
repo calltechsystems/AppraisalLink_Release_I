@@ -248,9 +248,9 @@ export default function Exemple({
     let isQuoteProvided = false;
     let isCompleted = false;
     allBids.map((bid, index) => {
-      if (bid.propertyId === property.propertyId && bid.status === 1) {
+      if (bid.orderId === property.orderId && bid.status === 1) {
         isCompleted = true;
-      } else if (bid.propertyId === property.propertyId) {
+      } else if (bid.orderId === property.orderId) {
         isQuoteProvided = true;
       }
     });
@@ -345,7 +345,7 @@ export default function Exemple({
 
                 {!isEditable && isStatus === 1 && (
                   <li>
-                    <Link href={`/my-property-bids/${property.propertyId}`}>
+                    <Link href={`/my-property-bids/${property.orderId}`}>
                       <span className="btn btn-color w-100 mb-1"> Quotes </span>
                     </Link>{" "}
                     {/* <Link
@@ -523,7 +523,7 @@ export default function Exemple({
                     <Link
                       className="btn btn-color-table"
                       // style={{ marginLeft: "4.3rem" }}
-                      href={`/my-property-bids/${property.propertyId}`}
+                      href={`/my-property-bids/${property.orderId}`}
                     >
                       <span className="flaticon-invoice">
                         {/* <FaHandHoldingUsd /> */}
@@ -568,7 +568,7 @@ export default function Exemple({
                     </Link>{" "} */}
                     <Link
                       className="btn btn-color-table"
-                      href={`/create-listing/${property.propertyId}`}
+                      href={`/create-listing/${property.orderId}`}
                     >
                       <span className="flaticon-edit"></span>
                     </Link>

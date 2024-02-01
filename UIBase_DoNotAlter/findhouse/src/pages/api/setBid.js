@@ -24,22 +24,19 @@ async function handler(request, response) {
       bidAmount: bidAmount,
     };
 
-    const userResponse = await axios.post(
-      `${domain}/com.appraisalland.Bid/setQuotes `,
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+
+    const userResponse = await axios.post(`${domain}/com.appraisalland.Bid/setQuotes `, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
     const user = userResponse.data;
 
     if (!user) {
       return response.status(404).json({ error: "User Not Found" });
     }
-
+    
     return response.status(200).json({ msg: "OK", userData: user });
   } catch (err) {
     console.log(err);

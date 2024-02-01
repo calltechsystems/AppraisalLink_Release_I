@@ -280,13 +280,13 @@ export default function Exemple({
                   data-placement="top"
                   title="Approved Lender List"
                 >
-                  <div className="btn btn-color fw-bold">
+                  <div className="btn btn-color fw-bold m-1">
                     <Link
                       href="assets/images/Terms & Conditions.pdf"
                       target="_blank"
                       className="form-check-label text-primary"
                     >
-                      <span className="flaticon-pdf text-light mt-0"></span>
+                      <span className="flaticon-pdf text-light"></span>
                     </Link>
                   </div>
                 </li>
@@ -300,7 +300,7 @@ export default function Exemple({
                   title="Accept"
                 >
                   <div
-                    className="fw-bold"
+                    className="fp_pdate float-end mt-1 fw-bold"
                     onClick={() => openPopupModal(property, property.bidId)}
                   >
                     <a href="#" className="btn btn-success">
@@ -311,7 +311,7 @@ export default function Exemple({
 
                 {/* <div className="fp_pdate float-end">{item.postedYear}</div> */}
 
-                {/* <li
+                <li
                   className="list-inline-item"
                   data-toggle="tooltip"
                   data-placement="top"
@@ -325,7 +325,7 @@ export default function Exemple({
                       Decline
                     </a>
                   </div>
-                </li> */}
+                </li>
 
                 <li
                   className="list-inline-item"
@@ -333,7 +333,7 @@ export default function Exemple({
                   data-placement="top"
                   title="Approved Lender List"
                 >
-                  <div className="btn btn-color fw-bold">
+                  <div className="btn btn-color fw-bold m-1">
                     <Link
                       href="assets/images/Terms & Conditions.pdf"
                       target="_blank"
@@ -345,24 +345,7 @@ export default function Exemple({
                 </li>
               </ul>
             ) : (
-              <div>
-                <h5 className="btn btn-danger m-1">Declined</h5>
-                {/* <li
-                  className="list-inline-item"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Accept"
-                >
-                  <div
-                    className="fw-bold"
-                    onClick={() => openPopupModal(property, property.bidId)}
-                  >
-                    <a href="#" className="btn btn-color">
-                      Accept
-                    </a>
-                  </div>
-                </li> */}
-              </div>
+              <h5 className="btn btn-danger">Declined</h5>
             ),
         };
         tempData.push(updatedRow);
@@ -404,16 +387,16 @@ export default function Exemple({
           "Content-Type": "application/json",
         },
         params: {
-          userId: data?.userId,
+          OrderId: data?.userId,
         },
       })
       .then((res) => {
         toast.dismiss();
-        const tempBids = res.data.data.result.$values;
+        const tempBids = res.data.data.$values;
         console.log(tempBids, propertyId);
         let updatedBids = [];
         tempBids.filter((bid, index) => {
-          if (String(bid.propertyId) === String(propertyId)) {
+          if (String(bid.orderId) === String(propertyId)) {
             updatedBids.push(bid);
           }
         });

@@ -11,108 +11,98 @@ import { FaArchive } from "react-icons/fa";
 
 const headCells = [
   {
-    id: "order_id",
+    id: "orderId",
     numeric: false,
     label: "Order ID",
     width: 100,
   },
+  
   {
     id: "address",
     numeric: false,
     label: "Property Address",
-    width: 280,
+    width: 200,
   },
+  
   {
     id: "status",
     numeric: false,
-    label: "Order Status",
-    width: 170,
-  },
-  {
-    id: "appraisal_status",
-    numeric: false,
-    label: "Appraisal Status",
-    width: 170,
-  },
-  {
-    id: "remark",
-    numeric: false,
-    label: "Remark",
-    width: 170,
-  },
-  {
-    id: "sub_date",
-    numeric: false,
-    label: "Quote Submitted Date",
-    width: 220,
+    label: "Quote Status",
+    width: 160,
   },
   {
     id: "urgency",
     numeric: false,
-    label: "Request Type",
-    width: 140,
+    label: "Urgency",
+    width: 200,
+  },
+  
+  {
+    id: "date",
+    numeric: false,
+    label: "Order Submission Date",
+    width: 200,
   },
   {
     id: "quote_required_by",
     numeric: false,
     label: "Appraisal Report Required By",
-    width: 220,
+    width: 200,
   },
-  // {
-  //   id: "user",
-  //   numeric: false,
-  //   label: "Appraiser",
-  //   width: 200,
-  // },
-  // {
-  //   id: "amount",
-  //   numeric: false,
-  //   label: "Quote Amount",
-  //   width: 200,
-  // },
 
   {
-    id: "type_of_building",
+    id: "typeOfBuilding",
     numeric: false,
-    label: "Property Type",
-    width: 140,
+    label: "Type of Property",
+    width: 200,
   },
+  
   {
-    id: "amount",
+    id: "estimatedValue",
     numeric: false,
-    label: "Estimated Value / Purchase Price",
-    width: 150,
-  },
-  {
-    id: "purpose",
-    numeric: false,
-    label: "Purpose",
-    width: 130,
+    label: "Estimated Property Value ($)",
+    width: 200,
   },
   {
     id: "type_of_appraisal",
     numeric: false,
     label: "Type Of Appraisal",
-    width: 160,
+    width: 200,
   },
+
+
+  {
+    id: "purpose",
+    numeric: false,
+    label: "Purpose",
+    width: 200,
+  },
+
   {
     id: "lender_information",
     numeric: false,
     label: "Lender Information",
-    width: 160,
+    width: 200,
+  },
+ 
+  {
+    id: "broker",
+    numeric: false,
+    label: "Broker",
+    width: 200,
+  },
+  {
+    id: "property",
+    numeric: false,
+    label: "Property",
+    width: 200,
   },
 
-  // {
-  //   id: "actions",
-  //   numeric: false,
-  //   label: "Actions",
-  //   width: 170,
-  // },
   {
-    id: "actions_01",
+    id: "action",
     numeric: false,
-    label: "Actions",
-    width: 170,
+    label: "Action",
+    width: 180,
   },
 ];
 
@@ -152,9 +142,9 @@ export default function Exemple({
     const userData = JSON.parse(localStorage.getItem("user"));
     let tempBid = 0,
       bidValue = {};
-    console.log(bids);
+      console.log(bids);
     bids.filter((bid) => {
-      if (bid.propertyId === property.propertyId) {
+      if (bid.propertyId === property.propertyId ) {
         console.log("matched", bid);
         tempBid = tempBid + 1;
         bidValue = bid;
@@ -170,71 +160,30 @@ export default function Exemple({
 
   const router = useRouter();
 
-  const formatLargeNumber = (number) => {
-    // Convert the number to a string
-    const numberString = number.toString();
-
-    // Determine the length of the integer part
-    const integerLength = Math.floor(Math.log10(Math.abs(number))) + 1;
-
-    // Choose the appropriate unit based on the length of the integer part
-    let unit = "";
-
-    if (integerLength >= 10) {
-      unit = "B"; // Billion
-    } else if (integerLength >= 7) {
-      unit = "M"; // Million
-    } else if (integerLength >= 4) {
-      unit = "K"; // Thousand
-    }
-
-    // Divide the number by the appropriate factor
-    const formattedNumber = (number / Math.pow(10, integerLength - 1)).toFixed(
-      2
-    );
-
-    return `${formattedNumber}${unit}`;
-  };
-  const formatDateQuote = (dateString) => {
-    const options = {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      // hour: "numeric",
-      // minute: "numeric",
-      // second: "numeric",
-      hour12: true, // Set to false for 24-hour format
-    };
-
-    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
-    return formattedDate;
-  };
-
   const openStatusUpdateHandler = () => {
     setIsStatusModal(true);
   };
 
-  const onUnarchiveHandler = (id) => {
+  const onUnarchiveHandler = (id)=>{
     const data = JSON.parse(localStorage.getItem("user"));
     const payload = {
-      token: data.token,
-      propertyId: id,
+      token : data.token,
+      propertyId:id
     };
 
-    toast.loading("un-archiving the property!!...");
+    toast.loading("un-archiving the property!!...")
     const encryptedBody = encryptionData(payload);
-    axios
-      .put("/api/unarchiveBrokerProperty", encryptedBody)
-      .then((res) => {
-        toast.dismiss();
-        toast.success("Successfully unarchived the property!");
-        window.location.reload();
-      })
-      .catch((err) => {
-        toast.dismiss();
-        toast.error("Try again!");
-      });
-  };
+    axios.put("/api/unarchiveBrokerProperty",encryptedBody)
+    .then((res)=>{
+      toast.dismiss();
+      toast.success("Successfully unarchived the property!");
+      window.location.reload();
+    })
+    .catch((err)=>{
+      toast.dismiss();
+      toast.error("Try again!");
+    })
+  }
 
   const removeWishlistHandler = (id) => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -287,10 +236,7 @@ export default function Exemple({
     let temp = {};
     // console.log(wishlist, data);
     wishlist.map((prop, index) => {
-      if (
-        String(prop.propertyId) === String(data.propertyId) &&
-        String(prop.userId) === String(userData.userId)
-      ) {
+      if (String(prop.propertyId) === String(data.propertyId) && String(prop.userId) === String(userData.userId) ) {
         temp = prop;
       }
     });
@@ -306,7 +252,9 @@ export default function Exemple({
     return data.sort((a, b) => b.orderId - a.orderId);
   };
 
-  const checkData = properties && !updatedData ? true : false;
+  
+  const checkData = (properties && !updatedData) ? true : false;
+
 
   useEffect(() => {
     console.log(properties);
@@ -314,115 +262,115 @@ export default function Exemple({
       properties.map((property, index) => {
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
-
+        
         // console.log(property.isArchive);
-        if (property.isArchive) {
-          const updatedRow = {
-            order_id: property.orderId,
-            address: `${property.streetNumber} ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
-            estimatedValue: property.estimatedValue
-              ? `$ ${property.estimatedValue}`
-              : "$ 0",
-            sub_date: formatDate(property.addedDatetime),
-            type_of_building: property.typeOfBuilding,
-            remark: property.remark ? property.remark : "N.A.",
-            amount: property.estimatedValue
-              ? `$ ${formatLargeNumber(property.estimatedValue)}`
-              : "$ 0",
-            quote_required_by: property.quoteRequiredDate
-              ? formatDateQuote(property.quoteRequiredDate)
-              : formatDate(property.addedDatetime),
-            purpose: property.purpose ? property.purpose : "NA",
-            status: isBidded.bidId ? (
-              isBidded.status === 0 ? (
-                <span className="btn btn-primary  w-100">Quote Provided</span>
-              ) : isBidded.status === 1 ? (
-                <span className="btn btn-success  w-100">Accepted</span>
-              ) : (
-                <span className="btn btn-danger  w-100">Rejected</span>
-              )
+        if(property.isArchive){
+        const updatedRow = {
+          orderId: property.orderId ,
+          address: `${property.city}-${property.province},${property.zipCode}`,
+          estimatedValue: property.estimatedValue
+            ? `$ ${property.estimatedValue}`
+            : "$ 0",
+          purpose: property.purpose ? property.purpose : "NA",
+          status: isBidded.bidId ? (
+            isBidded.status === 0 ? (
+              <span
+                className="btn btn-primary  w-100"
+              >
+                Quote Provided
+              </span>
+            ) : isBidded.status === 1 ? (
+              <span
+                className="btn btn-success  w-100"
+                
+              >
+                Accepted
+              </span>
             ) : (
-              <span className="btn btn-warning  w-100">New</span>
-            ),
-            broker: (
-              <div>
-                {isBidded.status === 1 ? (
-                  <a href="#">
-                    <button
-                      className=""
-                      style={{
-                        border: "0px",
-                        color: "#2e008b",
-                        textDecoration: "underline",
-                        // fontWeight: "bold",
-                        backgroundColor: "transparent",
-                      }}
-                      onClick={() => openModalBroker(property, 1)}
-                    >
-                      Broker Info
-                    </button>
-                  </a>
-                ) : isBidded.status === 2 ? (
-                  <h6 style={{ color: "red" }}> Declined</h6>
-                ) : (
-                  <p>
-                    Broker Information will be available post the quote
-                    acceptance
-                  </p>
-                )}
-              </div>
-            ),
-            property: (
-              <div>
-                {isBidded.status === 1 ? (
-                  <a href="#">
-                    <button
-                      className=""
-                      style={{
-                        border: "0px",
-                        color: "#2e008b",
-                        textDecoration: "underline",
-                        // fontWeight: "bold",
-                        backgroundColor: "transparent",
-                      }}
-                      onClick={() => openModalBroker(property, 2)}
-                    >
-                      Property Info
-                    </button>
-                  </a>
-                ) : isBidded.status === 2 ? (
-                  <h6 style={{ color: "red" }}> Declined</h6>
-                ) : (
-                  <p>
-                    Broker Information will be available post the quote
-                    acceptance
-                  </p>
-                )}
-              </div>
-            ),
-            type_of_appraisal: property.typeOfAppraisal
-              ? property.typeOfAppraisal
+              <span className="btn btn-danger  w-100">Rejected</span>
+            )
+          ) : (
+            <span className="btn btn-warning  w-100">New</span>
+          ),
+          broker: (
+            <div>
+              {isBidded.status === 1 ? (
+                <a href="#">
+                  <button
+                    className=""
+                    style={{
+                      border: "0px",
+                      color: "#2e008b",
+                      textDecoration: "underline",
+                      // fontWeight: "bold",
+                      backgroundColor: "transparent",
+                    }}
+                    onClick={() => openModalBroker(property,1)}
+                  >
+                   Broker Info
+                  </button>
+                </a>
+              ) : isBidded.status === 2 ? (
+                <h6 style={{ color: "red" }}> Declined</h6>
+              ) : (
+                <p>
+                  Broker Information will be available post the quote acceptance
+                </p>
+              )}
+            </div>
+          ),
+          property: (
+            <div>
+              {isBidded.status === 1 ? (
+                <a href="#">
+                  <button
+                    className=""
+                    style={{
+                      border: "0px",
+                      color: "#2e008b",
+                      textDecoration: "underline",
+                      // fontWeight: "bold",
+                      backgroundColor: "transparent",
+                    }}
+                    onClick={() => openModalBroker(property,2)}
+                  >
+                    Property Info
+                  </button>
+                </a>
+              ) : isBidded.status === 2 ? (
+                <h6 style={{ color: "red" }}> Declined</h6>
+              ) : (
+                <p>
+                  Broker Information will be available post the quote acceptance
+                </p>
+              )}
+            </div>
+          ),
+          type_of_appraisal: property.typeOfAppraisal
+            ? property.typeOfAppraisal
+            : "NA",
+          typeOfBuilding:
+            property.typeOfBuilding > 0 ? "Apartment" : property.typeOfBuilding,
+          quote_required_by: formatDate(property.addedDatetime),
+          date: formatDate(property.addedDatetime),
+          bidAmount: property.bidLowerRange,
+          lender_information: property.lenderInformation
+            ? property.lenderInformation
+            : "NA",
+          urgency:
+            property.urgency === 0
+              ? "Rush"
+              : property.urgency === 1
+              ? "Regular"
               : "NA",
-            typeOfBuilding:
-              property.typeOfBuilding > 0
-                ? "Apartment"
-                : property.typeOfBuilding,
-            quote_required_by: formatDate(property.addedDatetime),
-            date: formatDate(property.addedDatetime),
-            bidAmount: property.bidLowerRange,
-            lender_information: property.lenderInformation
-              ? property.lenderInformation
-              : "NA",
-            urgency:
-              property.urgency === 0
-                ? "Rush"
-                : property.urgency === 1
-                ? "Regular"
-                : "NA",
 
-            actions_01: (
-              <div className="print-hidden-column">
-                <li
+          action: (
+            <div className="print-hidden-column">
+              
+
+                  
+                 
+                  <li
                   className="list-inline-item"
                   data-toggle="tooltip"
                   data-placement="top"
@@ -430,20 +378,28 @@ export default function Exemple({
                 >
                   <div
                     className="w-100"
-                    onClick={() => onUnarchiveHandler(property.propertyId)}
+                    onClick={() =>
+                      onUnarchiveHandler(property.propertyId)
+                    }
                   >
-                    <button href="#" className="btn btn-color">
-                      <span className="text-light">
-                        <FaArchive />
-                      </span>
+                    <button
+                      href="#"
+                      className="btn btn-color w-100 mt-1"
+                      style={{ marginLeft: "12px" }}
+                    >
+                    <span className="text-light">
+                    <FaArchive />
+                  </span>
                     </button>
                   </div>
-                </li>
-              </div>
-            ),
-          };
-          tempData.push(updatedRow);
-        }
+                  </li>
+                  </div>
+                  
+              ) 
+          
+        };
+        tempData.push(updatedRow);
+      }
       });
       setUpdatedData(tempData);
     };
@@ -474,19 +430,17 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        console.log(res.data.data.properties.$values);
+        console.log( res.data.data.properties.$values);
         const temp = res.data.data.properties.$values;
 
-        tempProperties = temp.filter((prop, index) => {
-          if (
-            String(prop.userId) === String(data.userId) &&
-            String(prop.isArchive)
-          ) {
-            return true;
-          } else {
-            return false;
+        tempProperties = temp.filter((prop,index)=>{
+          if(String(prop.userId) === String(data.userId) && String(prop.isArchive)){
+            return true
           }
-        });
+          else{
+            return false
+          }
+        })
         setProperties(tempProperties);
       })
       .catch((err) => {
@@ -529,13 +483,14 @@ export default function Exemple({
       .then((res) => {
         console.log(res);
         tempBids = res.data.data.result.$values;
-        const updatedBids = tempBids.filter((prop, index) => {
-          if (String(prop.appraiserUserId) === String(data.userId)) {
+        const updatedBids = tempBids.filter((prop,index)=>{
+          if(String(prop.appraiserUserId) === String(data.userId)){
             return true;
-          } else {
+          }
+          else{
             return false;
           }
-        });
+        })
         setBids(updatedBids);
       })
       .catch((err) => {
@@ -549,19 +504,25 @@ export default function Exemple({
   console.log(sortObjectsByOrderIdDescending(updatedData));
   return (
     <>
-      <SmartTable
-        title=""
-        setSearchInput={setSearchInput}
-        setFilterQuery={setFilterQuery}
-        data={sortObjectsByOrderIdDescending(updatedData)}
-        headCells={headCells}
-        setRefresh={setRefresh}
-        refresh={refresh}
-        refreshHandler={refreshHandler}
-        setStartLoading={setStartLoading}
-        start={start}
-        end={end}
-      />
+      {refresh ? (
+        <Loader />
+      ) : (
+        <SmartTable
+          title=""
+
+          setSearchInput={setSearchInput}
+          setFilterQuery={setFilterQuery}
+          data={sortObjectsByOrderIdDescending(updatedData)}
+          headCells={headCells}
+          setRefresh={setRefresh}
+        
+          refresh={refresh}
+          refreshHandler={refreshHandler}
+          setStartLoading={setStartLoading}
+          start={start}
+          end={end}
+        />
+      )}
     </>
   );
 }
