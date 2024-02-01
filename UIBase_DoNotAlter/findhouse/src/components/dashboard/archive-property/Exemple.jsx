@@ -6,7 +6,7 @@ import axios from "axios";
 import { encryptionData } from "../../../utils/dataEncryption";
 import { useRouter } from "next/router";
 import { FaArchive } from "react-icons/fa";
-import Loader from "./Loader";
+// import Loader from "./Loader";
 // import "./SmartTable.css";
 
 const headCells = [
@@ -493,9 +493,8 @@ export default function Exemple({
   console.log(sortObjectsByOrderIdDescending(updatedData));
   return (
     <>
-      {refresh ? (
-        <Loader />
-      ) : (
+      {refresh(
+        // <Loader />
         <SmartTable
           title=""
           setSearchInput={setSearchInput}
