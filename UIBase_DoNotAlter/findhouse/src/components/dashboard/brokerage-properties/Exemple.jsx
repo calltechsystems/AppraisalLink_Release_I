@@ -657,7 +657,7 @@ export default function Exemple({
     };
 
     axios
-      .get("/api/getPropertiesById", {
+      .get("/api/getAllListedProperties", {
         headers: {
           Authorization: `Bearer ${data?.token}`,
           "Content-Type": "application/json",
@@ -668,8 +668,16 @@ export default function Exemple({
       })
       .then((res) => {
         toast.dismiss();
-
-        setProperties(res.data.data.property.$values);
+        const temp = res.data.data.properties.$values;
+        let tempProperties = [];
+        tempProperties = temp.filter((prop, index) => {
+          if (String(prop.userId) === String(data.userId)) {
+            return true;
+          } else {
+            return false;
+          }
+        });
+        setProperties(tempProperties);
       })
       .catch((err) => {
         toast.dismiss();
