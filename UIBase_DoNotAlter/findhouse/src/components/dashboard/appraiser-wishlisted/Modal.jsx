@@ -3,6 +3,8 @@
 import React, { useRef } from "react";
 import toast from "react-hot-toast";
 import { encryptionData } from "../../../utils/dataEncryption";
+import Link from "next/link";
+import Image from "next/image";
 import axios from "axios";
 import { useRouter } from "next/router";
 
