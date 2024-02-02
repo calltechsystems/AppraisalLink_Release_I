@@ -311,7 +311,7 @@ export default function Exemple({
 
                 {/* <div className="fp_pdate float-end">{item.postedYear}</div> */}
 
-                <li
+                {/* <li
                   className="list-inline-item"
                   data-toggle="tooltip"
                   data-placement="top"
@@ -325,7 +325,7 @@ export default function Exemple({
                       Decline
                     </a>
                   </div>
-                </li>
+                </li> */}
 
                 <li
                   className="list-inline-item"
@@ -333,11 +333,11 @@ export default function Exemple({
                   data-placement="top"
                   title="Approved Lender List"
                 >
-                  <div className="btn btn-color fw-bold m-1">
+                  <div className="btn btn-color fw-bold fp_pdate float-end">
                     <Link
                       href="assets/images/Terms & Conditions.pdf"
                       target="_blank"
-                      className="form-check-label text-primary"
+                      className=""
                     >
                       <span className="flaticon-pdf text-light"></span>
                     </Link>

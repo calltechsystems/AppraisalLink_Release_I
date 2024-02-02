@@ -73,9 +73,44 @@ const Modal = ({
       {modalOpen && (
         <div className="modal">
           <div className="modal-content">
-            <span className="close" onClick={closeModal}>
+            <div className="row">
+              <div className="col-lg-12">
+                <Link href="/" className="">
+                  <Image
+                    width={50}
+                    height={45}
+                    className="logo1 img-fluid"
+                    style={{ marginTop: "-20px" }}
+                    src="/assets/images/logo.png"
+                    alt="header-logo2.png"
+                  />
+                  <span
+                    style={{
+                      color: "#2e008b",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    Appraisal
+                  </span>
+                  <span
+                    style={{
+                      color: "#97d700",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    {" "}
+                    Land
+                  </span>
+                </Link>
+              </div>
+            </div>
+            {/* <span className="close" onClick={closeModal}>
               &times;
-            </span>
+            </span> */}
             <div style={{ display: "flex", flexDirection: "column" }}>
               <h2 className="text-center">
                 {" "}

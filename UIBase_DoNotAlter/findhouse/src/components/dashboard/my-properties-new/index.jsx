@@ -572,7 +572,6 @@ const Index = () => {
                                           style={{
                                             border: "1px solid #2e008b",
                                             color: "#2e008b",
-                                            color: "#2e008b",
                                             // padding: "5px",
                                             textAlign: "center",
                                           }}
@@ -1210,7 +1209,9 @@ const Index = () => {
                     Are you sure for the order to be{" "}
                     <span style={{ color: "red", fontWeight: "bold" }}>
                       {" "}
-                      {isHoldProperty ? "On Hold" : "On Cancel"}{" "}
+                      {isHoldProperty
+                        ? `${propValue ? "On Hold" : "Remove On Hold"}`
+                        : `${propValue ? "On Cancel" : "On Cancel"}`}{" "}
                     </span>
                     ?{" "}
                   </p>

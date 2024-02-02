@@ -180,19 +180,19 @@ export default function Exemple({
       type: "Appraisal Report Writing Completed and Submitted",
       value: "Appraisal Report Writing Completed and Submitted",
     },
-  
+
     {
       id: 4,
       type: "Assignment on Hold",
       value: "Assignment on Hold",
     },
-  
+
     {
       id: 5,
       type: "Assignment Cancelled new status to be added",
       value: "Assignment Cancelled new status to be added",
     },
-  
+
     {
       id: 6,
       type: "Appraisal visit completed; report writing is pending until fee received",
@@ -301,10 +301,11 @@ export default function Exemple({
                 <span className="btn bg-warning  w-100">
                   {isHold ? "On Hold" : "OnCancelled"}
                 </span>
+              ) : property.orderStatus ? (
+                <span className="btn bg-warning  w-100">
+                  {getOrderValue(property.orderStatus)}
+                </span>
               ) : (
-                 property.orderStatus ? (
-                  <span className="btn bg-warning  w-100">{getOrderValue(property.orderStatus)}</span>
-                ) :
                 <span className="btn bg-warning  w-100">N.A.</span>
               ),
             address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
@@ -562,7 +563,7 @@ export default function Exemple({
               </li> */}
 
                 {(isEditable || isStatus === 1) && (
-                  <li title="Edit Property">
+                   <li title="Edit Property">
                     {/* <Link href={`/create-listing/${property.propertyId}`}>
                       <span className="btn btn-color w-100 mb-1"> Edit </span>
                     </Link>{" "} */}
@@ -578,39 +579,41 @@ export default function Exemple({
                 {/* End li */}
 
                 {/* {isEditable && ( */}
-                <li title={!isHold ? "On Hold" : "Remove Hold"}>
-                  <span
-                    className="btn btn-color-table "
-                    style={{ border: "1px solid grey" }}
-                    // onClick={() => onHoldHandler(property.propertyId, !isHold)}
-                    onClick={() =>
-                      openModal(property.orderId, 1, isHold ? 0 : 1)
-                    }
-                  >
-                    <Link href="#" className="text-light">
-                      <FaPause />
-                    </Link>
-                  </span>
-                </li>
+                {!isCancel && (
+                  <li title={!isHold ? "On Hold" : "Remove Hold"}>
+                    <span
+                      className="btn btn-color-table "
+                      style={{ border: "1px solid grey" }}
+                      // onClick={() => onHoldHandler(property.propertyId, !isHold)}
+                      onClick={() =>
+                        openModal(property.orderId, 1, isHold ? 0 : 1)
+                      }
+                    >
+                      <Link href="#" className="text-light">
+                        <FaPause />
+                      </Link>
+                    </span>
+                  </li>
+                )}
                 {/* )} */}
 
                 {/* {isEditable && ( */}
-                {!isCancel && <li title={ "Order Cancel" }>
-                  <span
-                    className="btn btn-color-table"
-                    style={{ border: "1px solid grey" }}
-                    // onClick={() =>
-                    //   onCancelHandler(property.propertyId, !isCancel)
-                    // }
-                    onClick={() =>
-                      openModal(property.orderId, 2, 1)
-                    }
-                  >
-                    <Link href="#">
-                      <span className="flaticon-garbage text-light"></span>
-                    </Link>
-                  </span>
-                </li>}
+                {!isCancel && (
+                  <li title={"Order Cancel"}>
+                    <span
+                      className="btn btn-color-table"
+                      style={{ border: "1px solid grey" }}
+                      // onClick={() =>
+                      //   onCancelHandler(property.propertyId, !isCancel)
+                      // }
+                      onClick={() => openModal(property.orderId, 2, 1)}
+                    >
+                      <Link href="#">
+                        <span className="flaticon-garbage text-light"></span>
+                      </Link>
+                    </span>
+                  </li>
+                )}
                 {/* )} */}
 
                 {/* {isEditable && (
@@ -705,15 +708,14 @@ export default function Exemple({
         toast.dismiss();
         const temp = res.data.data.properties.$values;
         let tempProperties = [];
-         tempProperties = temp.filter((prop,index)=>{
-          if(String(prop.userId) === String(data.userId)){
-            return true
+        tempProperties = temp.filter((prop, index) => {
+          if (String(prop.userId) === String(data.userId)) {
+            return true;
+          } else {
+            return false;
           }
-          else{
-            return false
-          }
-        })
-        setProperties(tempProperties)
+        });
+        setProperties(tempProperties);
       })
       .catch((err) => {
         toast.dismiss();
