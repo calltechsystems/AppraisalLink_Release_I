@@ -11,97 +11,108 @@ import { FaArchive } from "react-icons/fa";
 
 const headCells = [
   {
-    id: "orderId",
+    id: "order_id",
     numeric: false,
     label: "Order ID",
     width: 100,
   },
-
   {
     id: "address",
     numeric: false,
     label: "Property Address",
-    width: 200,
+    width: 280,
   },
-
   {
     id: "status",
     numeric: false,
-    label: "Quote Status",
-    width: 160,
+    label: "Order Status",
+    width: 170,
+  },
+  {
+    id: "appraisal_status",
+    numeric: false,
+    label: "Appraisal Status",
+    width: 170,
+  },
+  {
+    id: "remark",
+    numeric: false,
+    label: "Remark",
+    width: 170,
+  },
+  {
+    id: "sub_date",
+    numeric: false,
+    label: "Quote Submitted Date",
+    width: 220,
   },
   {
     id: "urgency",
     numeric: false,
-    label: "Urgency",
-    width: 200,
-  },
-
-  {
-    id: "date",
-    numeric: false,
-    label: "Order Submission Date",
-    width: 200,
+    label: "Request Type",
+    width: 140,
   },
   {
     id: "quote_required_by",
     numeric: false,
     label: "Appraisal Report Required By",
-    width: 200,
+    width: 220,
   },
+  // {
+  //   id: "user",
+  //   numeric: false,
+  //   label: "Appraiser",
+  //   width: 200,
+  // },
+  // {
+  //   id: "amount",
+  //   numeric: false,
+  //   label: "Quote Amount",
+  //   width: 200,
+  // },
 
   {
-    id: "typeOfBuilding",
+    id: "type_of_building",
     numeric: false,
-    label: "Type of Property",
-    width: 200,
+    label: "Property Type",
+    width: 140,
   },
-
   {
-    id: "estimatedValue",
+    id: "amount",
     numeric: false,
-    label: "Estimated Property Value ($)",
-    width: 200,
+    label: "Estimated Value / Purchase Price",
+    width: 150,
+  },
+  {
+    id: "purpose",
+    numeric: false,
+    label: "Purpose",
+    width: 130,
   },
   {
     id: "type_of_appraisal",
     numeric: false,
     label: "Type Of Appraisal",
-    width: 200,
+    width: 160,
   },
-
-  {
-    id: "purpose",
-    numeric: false,
-    label: "Purpose",
-    width: 200,
-  },
-
   {
     id: "lender_information",
     numeric: false,
     label: "Lender Information",
-    width: 200,
+    width: 160,
   },
 
+  // {
+  //   id: "actions",
+  //   numeric: false,
+  //   label: "Actions",
+  //   width: 170,
+  // },
   {
-    id: "broker",
+    id: "actions_01",
     numeric: false,
-    label: "Broker",
-    width: 200,
-  },
-  {
-    id: "property",
-    numeric: false,
-    label: "Property",
-    width: 200,
-  },
-
-  {
-    id: "action",
-    numeric: false,
-    label: "Action",
-    width: 180,
+    label: "Actions",
+    width: 170,
   },
 ];
 
@@ -158,6 +169,46 @@ export default function Exemple({
   };
 
   const router = useRouter();
+
+  const formatLargeNumber = (number) => {
+    // Convert the number to a string
+    const numberString = number.toString();
+
+    // Determine the length of the integer part
+    const integerLength = Math.floor(Math.log10(Math.abs(number))) + 1;
+
+    // Choose the appropriate unit based on the length of the integer part
+    let unit = "";
+
+    if (integerLength >= 10) {
+      unit = "B"; // Billion
+    } else if (integerLength >= 7) {
+      unit = "M"; // Million
+    } else if (integerLength >= 4) {
+      unit = "K"; // Thousand
+    }
+
+    // Divide the number by the appropriate factor
+    const formattedNumber = (number / Math.pow(10, integerLength - 1)).toFixed(
+      2
+    );
+
+    return `${formattedNumber}${unit}`;
+  };
+  const formatDateQuote = (dateString) => {
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      // hour: "numeric",
+      // minute: "numeric",
+      // second: "numeric",
+      hour12: true, // Set to false for 24-hour format
+    };
+
+    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
+    return formattedDate;
+  };
 
   const openStatusUpdateHandler = () => {
     setIsStatusModal(true);
@@ -267,11 +318,20 @@ export default function Exemple({
         // console.log(property.isArchive);
         if (property.isArchive) {
           const updatedRow = {
-            orderId: property.orderId,
-            address: `${property.city}-${property.province},${property.zipCode}`,
+            order_id: property.orderId,
+            address: `${property.streetNumber} ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
             estimatedValue: property.estimatedValue
               ? `$ ${property.estimatedValue}`
               : "$ 0",
+            sub_date: formatDate(property.addedDatetime),
+            type_of_building: property.typeOfBuilding,
+            remark: property.remark ? property.remark : "N.A.",
+            amount: property.estimatedValue
+              ? `$ ${formatLargeNumber(property.estimatedValue)}`
+              : "$ 0",
+            quote_required_by: property.quoteRequiredDate
+              ? formatDateQuote(property.quoteRequiredDate)
+              : formatDate(property.addedDatetime),
             purpose: property.purpose ? property.purpose : "NA",
             status: isBidded.bidId ? (
               isBidded.status === 0 ? (
@@ -360,7 +420,7 @@ export default function Exemple({
                 ? "Regular"
                 : "NA",
 
-            action: (
+            actions_01: (
               <div className="print-hidden-column">
                 <li
                   className="list-inline-item"
@@ -372,11 +432,7 @@ export default function Exemple({
                     className="w-100"
                     onClick={() => onUnarchiveHandler(property.propertyId)}
                   >
-                    <button
-                      href="#"
-                      className="btn btn-color w-100 mt-1"
-                      style={{ marginLeft: "12px" }}
-                    >
+                    <button href="#" className="btn btn-color">
                       <span className="text-light">
                         <FaArchive />
                       </span>
@@ -493,22 +549,19 @@ export default function Exemple({
   console.log(sortObjectsByOrderIdDescending(updatedData));
   return (
     <>
-      {refresh(
-        // <Loader />
-        <SmartTable
-          title=""
-          setSearchInput={setSearchInput}
-          setFilterQuery={setFilterQuery}
-          data={sortObjectsByOrderIdDescending(updatedData)}
-          headCells={headCells}
-          setRefresh={setRefresh}
-          refresh={refresh}
-          refreshHandler={refreshHandler}
-          setStartLoading={setStartLoading}
-          start={start}
-          end={end}
-        />
-      )}
+      <SmartTable
+        title=""
+        setSearchInput={setSearchInput}
+        setFilterQuery={setFilterQuery}
+        data={sortObjectsByOrderIdDescending(updatedData)}
+        headCells={headCells}
+        setRefresh={setRefresh}
+        refresh={refresh}
+        refreshHandler={refreshHandler}
+        setStartLoading={setStartLoading}
+        start={start}
+        end={end}
+      />
     </>
   );
 }
