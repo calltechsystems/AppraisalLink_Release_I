@@ -11,6 +11,8 @@ import { useRouter } from "next/router";
 import Modal from "./Modal";
 import { encryptionData } from "../../../utils/dataEncryption";
 import Loader from "./Loader";
+import Link from "next/link";
+import Image from "next/image";
 import { AppraiserStatusOptions } from "../create-listing/data";
 
 const Index = () => {
