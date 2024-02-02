@@ -5,6 +5,8 @@ import toast from "react-hot-toast";
 import { encryptionData } from "../../../utils/dataEncryption";
 import axios from "axios";
 import { useRouter } from "next/router";
+import Link from "next/link";
+import Image from "next/image";
 
 const Modal = ({
   modalOpen,
