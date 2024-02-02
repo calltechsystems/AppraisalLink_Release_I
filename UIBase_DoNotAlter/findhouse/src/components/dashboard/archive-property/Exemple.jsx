@@ -490,6 +490,10 @@ export default function Exemple({
     console.log("end", bids, properties, wishlist);
     setRefresh(false);
   }, [refresh]);
+
+  const temp = ()=>{
+    console.log("");
+  }
   console.log(sortObjectsByOrderIdDescending(updatedData));
   return (
     <>
@@ -502,8 +506,8 @@ export default function Exemple({
           data={sortObjectsByOrderIdDescending(updatedData)}
           headCells={headCells}
           setRefresh={setRefresh}
-          refresh={refresh}
-          refreshHandler={refreshHandler}
+          refresh={false}
+          refreshHandler={temp}
           setStartLoading={setStartLoading}
           start={start}
           end={end}
