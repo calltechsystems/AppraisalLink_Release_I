@@ -546,6 +546,10 @@ export default function Exemple({
     console.log("end", bids, properties, wishlist);
     setRefresh(false);
   }, [refresh]);
+
+  const temp = () => {
+    console.log("");
+  };
   console.log(sortObjectsByOrderIdDescending(updatedData));
   return (
     <>
