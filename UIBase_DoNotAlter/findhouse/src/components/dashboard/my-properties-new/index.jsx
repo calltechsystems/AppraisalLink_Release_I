@@ -161,9 +161,9 @@ const Index = () => {
           "Content-Type": "application/json",
         },
         params: {
-          orderId: id,
-          status: true,
-          userId: data.userId,
+          orderId:id,
+          status:true,
+          userId:data.userId
         },
       })
       .then((res) => {
@@ -186,7 +186,7 @@ const Index = () => {
     const payload = {
       token: data.token,
       orderId: propertyId,
-      status: "HOLD",
+      status:"HOLD",
       value: Boolean(propValue),
     };
 
@@ -215,7 +215,7 @@ const Index = () => {
     const payload = {
       token: data.token,
       orderId: propertyId,
-      status: "CANCEL",
+      status:"CANCEL",
       value: Boolean(propValue),
     };
 
@@ -571,6 +571,7 @@ const Index = () => {
                                         <th
                                           style={{
                                             border: "1px solid #2e008b",
+                                            color: "#2e008b",
                                             color: "#2e008b",
                                             // padding: "5px",
                                             textAlign: "center",
@@ -1188,38 +1189,33 @@ const Index = () => {
                       </Link>
                     </div>
                   </div>
-                  <h2 className="text-center mt-3" style={{ color: "#2e008b" }}>
+                  <h2 className="text-center mt-3" style={{backgroundColor:"#97d700", color:"#2e008b"}}>
                     {isHoldProperty
                       ? `${
                           propValue
-                            ? "Order Confirmation"
-                            : "Order Confirmation"
+                            ? "Confirmation On Hold Property"
+                            : "Confirmation Remove On Hold Property"
                         }`
                       : `${
                           propValue
-                            ? "Order Confirmation"
-                            : "Order Confirmation"
+                            ? "Confirmation On Cancel Property"
+                            : "Confirmation Remove On Cancel Property"
                         }`}
                   </h2>
-                  <div
-                    className="mb-2"
+                  {/* <div
+                    className="mb-3"
                     style={{ border: "2px solid #97d700" }}
-                  ></div>
-                  <p className="fs-5 text-center text-dark mt-4">
-                    Are you sure for the order to be{" "}
-                    <span style={{ color: "red", fontWeight: "bold" }}>
+                  ></div> */}
+                  <p className="fs-5 text-center text-dark mt-2">
+                    Are you sure to confirm to{" "}
+                    <span style={{ color: "red", fontWeight:"bold" }}>
                       {" "}
-                      {isHoldProperty
-                        ? `${propValue ? "On Hold" : "Remove On Hold"}`
-                        : `${propValue ? "On Cancel" : "On Cancel"}`}{" "}
+                      {isHoldProperty ? "Hold" : "Cancel"}{" "}
                     </span>
-                    ?{" "}
+                    the Property ?{" "}
                   </p>
 
-                  <div
-                    className="mb-3 mt-4"
-                    style={{ border: "2px solid #97d700" }}
-                  ></div>
+                  <hr />
                   <div className="col-lg-12 text-center">
                     <button
                       className="btn w-25 btn-color m-1"

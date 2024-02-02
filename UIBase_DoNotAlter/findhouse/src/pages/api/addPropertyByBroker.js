@@ -79,12 +79,14 @@ import CryptoJS from "crypto-js";
       quoteRequiredDate:quoteRequiredDate
     };
 
-  
-    const userResponse = await axios.put(`${domain}/Property/ByPropertyID/${propertyId}`, formData,
+    const userResponse = await axios.put(`${domain}/com.appraisalland.Property/updateProperty`, formData,
     {
       headers: {
         Authorization:`Bearer ${token}`,
         "Content-Type":"application/json"
+      },
+      params:{
+        PropertyID:propertyId
       }
     }
     );

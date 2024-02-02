@@ -15,7 +15,7 @@ import CryptoJS from "crypto-js";
 
     // console.log(request.query)
 
-    const userResponse = await axios.put(`${domain}/com.appraisalland.Property/archievePropertyByBroker`,{},
+    const userResponse = await axios.post(`${domain}/com.appraisalland.Property/archievePropertyByBroker`,{},
     {
         headers: {
           Authorization:token,

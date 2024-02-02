@@ -31,9 +31,9 @@ const Index = () => {
     Date.now()
   );
 
-  const [start, setStart] = useState(0);
-
-  const [end, setEnd] = useState(4);
+  const [start,setStart]=useState(0);
+  
+  const [end,setEnd]=useState(4);
 
   useEffect(() => {
     const activityHandler = () => {
@@ -244,17 +244,17 @@ const Index = () => {
 
                 {/* End .col */}
 
-                {/* <div className="row">
-                  <div className="col-lg-12 mt20">
-                    <div className="mbp_pagination">
-                      <Pagination
-                        setStart={setStart}
-                        setEnd={setEnd}
-                        properties={properties}
-                      />
-                    </div>
-                  </div>
-                </div> */}
+                <div className="row">
+                <div className="col-lg-12 mt20">
+                 <div className="mbp_pagination">
+                   <Pagination
+                     setStart={setStart}
+                     setEnd={setEnd}
+                     properties={properties}
+                   />
+                 </div>
+               </div> 
+           </div>
 
                 <div className="col-lg-12 col-xl-12">
                   {/*<div className="candidate_revew_select style2 mb30-991">
@@ -353,14 +353,14 @@ const Index = () => {
               </div>
 
               <div className="row">
-                <div className="col-lg-12 mt20">
+                {/* <div className="col-lg-12 mt20">
                   <div className="mbp_pagination">
                     <Pagination
                       properties={properties}
                       setProperties={setProperties}
                     />
                   </div>
-                </div>
+                </div> */}
                 {/* End paginaion .col */}
               </div>
               {/* End .row */}

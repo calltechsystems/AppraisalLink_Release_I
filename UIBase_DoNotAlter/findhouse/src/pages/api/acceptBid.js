@@ -18,16 +18,18 @@ export default async function handler(request, response) {
 
     const token = request.headers.authorization;
 
-    console.log(bidId);
-
-    const userResponse = await axios.post(
-      `${domain}/Broker/accept/${bidId}`,
+    
+    const userResponse = await axios.put(
+      `${domain}/com.appraisalland.Broker/quoteActionByBroker`,
       {},
       {
         headers: {
           Authorization: token,
           "Content-Type": "application/json",
         },
+        params:{
+          QuoteID:bidId
+        }
       }
     );
     const user = userResponse.data;

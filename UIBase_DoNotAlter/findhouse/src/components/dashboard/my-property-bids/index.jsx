@@ -8,8 +8,6 @@ import Pagination from "./Pagination";
 import SearchBox from "./SearchBox";
 import { useEffect } from "react";
 import { useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -45,6 +43,8 @@ const Index = ({ propertyId }) => {
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
   );
+
+  console.log(appInfo);
 
   const closeAppraiserHandler = () => {
     setAppInfo({});
@@ -459,51 +459,13 @@ const Index = ({ propertyId }) => {
             </div>
             {/* End .col */}
 
-            {openBrokerModal && appInfo.firstName && (
+            {openBrokerModal && appInfo?.firstName && (
               <div className="modal">
                 <div className="modal-content">
-                  <div className="row">
-                    <div className="col-lg-12">
-                      <Link href="/" className="">
-                        <Image
-                          width={50}
-                          height={45}
-                          className="logo1 img-fluid"
-                          style={{ marginTop: "-20px" }}
-                          src="/assets/images/logo.png"
-                          alt="header-logo2.png"
-                        />
-                        <span
-                          style={{
-                            color: "#2e008b",
-                            fontWeight: "bold",
-                            fontSize: "24px",
-                            // marginTop: "20px",
-                          }}
-                        >
-                          Appraisal
-                        </span>
-                        <span
-                          style={{
-                            color: "#97d700",
-                            fontWeight: "bold",
-                            fontSize: "24px",
-                            // marginTop: "20px",
-                          }}
-                        >
-                          {" "}
-                          Land
-                        </span>
-                      </Link>
-                    </div>
-                  </div>
                   <span style={{ fontWeight: "bold" }}>
                     <h3 className="text-center"> Appraiser Details </h3>
                   </span>
-                  <div
-                    className="mb-2"
-                    style={{ border: "2px solid #97d700" }}
-                  ></div>
+                  <hr />
                   <div className=" col-lg-12">
                     <div className="row offset-1">
                       <h5 className="col-lg-3 mt-1 text-start">
@@ -562,10 +524,7 @@ const Index = ({ propertyId }) => {
                       </span>
                     </div>
                   </div>
-                  <div
-                    className="mb-2"
-                    style={{ border: "2px solid #97d700" }}
-                  ></div>
+                  <hr />
                   <div className="text-center" style={{}}>
                     <button
                       className="btn btn-color w-35"
@@ -580,46 +539,8 @@ const Index = ({ propertyId }) => {
             {isModalOpen && (
               <div className="modal">
                 <div className="modal-content">
-                  <div className="row">
-                    <div className="col-lg-12">
-                      <Link href="/" className="">
-                        <Image
-                          width={50}
-                          height={45}
-                          className="logo1 img-fluid"
-                          style={{ marginTop: "-20px" }}
-                          src="/assets/images/logo.png"
-                          alt="header-logo2.png"
-                        />
-                        <span
-                          style={{
-                            color: "#2e008b",
-                            fontWeight: "bold",
-                            fontSize: "24px",
-                            // marginTop: "20px",
-                          }}
-                        >
-                          Appraisal
-                        </span>
-                        <span
-                          style={{
-                            color: "#97d700",
-                            fontWeight: "bold",
-                            fontSize: "24px",
-                            // marginTop: "20px",
-                          }}
-                        >
-                          {" "}
-                          Land
-                        </span>
-                      </Link>
-                    </div>
-                  </div>
                   <h3 className="text-center">Accept Bid Confirmation</h3>
-                  <div
-                    className="mb-2"
-                    style={{ border: "2px solid #97d700" }}
-                  ></div>
+                  <hr />
                   <p className="text-center fs-6">
                     Are you sure you want to accept the quote with value?
                   </p>
@@ -631,10 +552,7 @@ const Index = ({ propertyId }) => {
                     ( Note <span className="text-danger">*</span> : All Other
                     Quotes from other appriasers will be Rejected.)
                   </p>
-                  <div
-                    className="mb-2"
-                    style={{ border: "2px solid #97d700" }}
-                  ></div>
+                  <hr />
 
                   {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                   <div className="col-lg-12">

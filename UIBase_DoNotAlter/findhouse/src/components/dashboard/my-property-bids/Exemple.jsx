@@ -158,7 +158,8 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        setAppInfo(res.data.data.appraiser.result);
+        // console.log(res.data.data);
+        setAppInfo(res.data.data.appraiser);
         setOpenBrokerModal(true);
       })
       .catch((err) => {
@@ -311,21 +312,7 @@ export default function Exemple({
 
                 {/* <div className="fp_pdate float-end">{item.postedYear}</div> */}
 
-                {/* <li
-                  className="list-inline-item"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Delete"
-                >
-                  <div
-                    className="fp_pdate float-end mt-1 fw-bold"
-                    onClick={() => setProperty(property)}
-                  >
-                    <a href="#" className="btn btn-danger">
-                      Decline
-                    </a>
-                  </div>
-                </li> */}
+               
 
                 <li
                   className="list-inline-item"
@@ -333,11 +320,11 @@ export default function Exemple({
                   data-placement="top"
                   title="Approved Lender List"
                 >
-                  <div className="btn btn-color fw-bold fp_pdate float-end">
+                  <div className="btn btn-color fw-bold m-1">
                     <Link
                       href="assets/images/Terms & Conditions.pdf"
                       target="_blank"
-                      className=""
+                      className="form-check-label text-primary"
                     >
                       <span className="flaticon-pdf text-light"></span>
                     </Link>
