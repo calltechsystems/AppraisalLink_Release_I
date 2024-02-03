@@ -1,33 +1,32 @@
 import Header from "../../common/header/dashboard/HeaderBrokerage";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenuBrokerage";
-import MobileMenu from "../../common/header/MobileMenu_01";
+import MobileMenu from "../../common/header/MobileMenu_02";
 import Filtering from "./Filtering";
 import AllStatistics from "./AllStatistics";
-import StatisticsPieChart from "./StatisticsPieChart";
 import StatisticsChart from "./StatisticsChart";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import toast from "react-hot-toast";
+import StatisticsPieChart from "./StatisticsPieChart";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { toast } from "react-toast";
+
+import axios from "axios";
+import Modal from "../../common/header/dashboard/NotificationModal";
 
 const Index = () => {
-  let userData =  JSON.parse(localStorage.getItem("user"));
+  const [userData, setUserData] = useState({});
+  const [showNotification, setShowNotification] = useState(false);
+  const [data, setData] = useState([]);
+  const [bids, setBids] = useState([]);
+  const [unfilteredData, setUnfilteredData] = useState([]);
+  const [showLineGraph, setShowLineGraph] = useState(false);
+  const [filterQuery, setFilterQuery] = useState("monthly");
+  const [wishlist, setWishlist] = useState([]);
+  const [lineData, setLineData] = useState([]);
+  const [acceptedBids, setAcceptedBids] = useState(0);
   const router = useRouter();
-  const [properties, setProperties] = useState([]);
-  const [refresh,setRefresh]=useState(false);
 
-  const [allProperties, setAllProperties] = useState([]);
-
-  const [bids , setBids] = useState([]);
-  const [wishlist,setWishlist]=useState([]);
-
-  const [chartData, setChartData] = useState([]);
-
-  const [modalIsOpenError, setModalIsOpenError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const closeErrorModal = () => {
-    setModalIsOpenError(false);
+  const closeModal = () => {
+    setShowNotification(false);
   };
 
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
@@ -69,146 +68,147 @@ const Index = () => {
     return () => clearInterval(inactivityCheckInterval);
   }, [lastActivityTimestamp]);
 
+  // if (!userData) {
+  //   router.push("/login");
+  // } else if (!userData?.broker_Details?.firstName) {
+  //   router.push("/my-profile");
+  // }
+
+  const categorizeDataByMonth = (data) => {
+    if (data.length <= 0) return [];
+    // Initialize an object to store data by month
+    const dataByMonth = {};
+
+    const currentMonth = new Date().getMonth();
+
+    data.forEach((property) => {
+      const createdAtDate = new Date(property.createdAt);
+      const month = createdAtDate.getMonth();
+      if (month <= currentMonth) {
+        if (!dataByMonth[month]) {
+          dataByMonth[month] = [];
+        }
+        dataByMonth[month].push(property);
+      }
+    });
+
+    const categorizedData = Object.entries(dataByMonth)?.map(
+      ([month, properties]) => ({
+        month: parseInt(month, 10),
+        properties,
+      })
+    );
+
+    categorizedData.sort((a, b) => a.month - b.month);
+
+    return categorizedData;
+  };
+
+  const filterData = (tempData) => {
+    const currentDate = new Date();
+    const oneYearAgo = new Date(currentDate);
+    oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
+
+    switch (filterQuery) {
+      case "monthly":
+        const oneMonthAgo = new Date(currentDate);
+        oneMonthAgo.setMonth(currentDate.getMonth() - 1);
+        return tempData.filter(
+          (item) => new Date(item.addedDatetime) >= oneMonthAgo
+        );
+      case "yearly":
+        return tempData.filter(
+          (item) => new Date(item.addedDatetime) >= oneYearAgo
+        );
+      case "weekly":
+        const oneWeekAgo = new Date(currentDate);
+        oneWeekAgo.setDate(currentDate.getDate() - 7);
+        return tempData.filter(
+          (item) => new Date(item.addedDatetime) >= oneWeekAgo
+        );
+      default:
+        return tempData;
+    }
+  };
+
   useEffect(() => {
-    userData = JSON.parse(localStorage.getItem("user"));
+    const dataTemp = filterData(data);
+    setData(dataTemp);
+  }, [filterQuery]);
+
+  useEffect(() => {
     const data = JSON.parse(localStorage.getItem("user"));
+    setUserData(data);
     if (!data) {
       router.push("/login");
-    } 
-    if (!data) {
-      router.push("/login");
+    } else if (!data?.brokerage_Details?.firstName) {
+      router.push("/brokerage-profile");
     }
 
     const func = () => {
-      const data = JSON.parse(localStorage.getItem("user"))
+      const data = JSON.parse(localStorage.getItem("user"));
       axios
-      .get("/api/getAllListedProperties", {
-        headers: {
-          Authorization: `Bearer `,
-          "Content-Type": "application/json",
-        },
-        params: {
-          userId: data?.userId,
-        },
-      })
-      .then((res) => {
-        console.log(res.data.data.properties.$values);
-        
-
-        const temp = res.data.data.properties.$values;
-
-        const updatedProp = temp.filter((prop,index)=>{
-          if(String(prop.userId) === String(data.userId)){
-            return true;
-          }
-          else{
-            return false;
-          }
+        .get("/api/getAllListedProperties", {
+          headers: {
+            Authorization: `Bearer ${data?.token}`,
+            "Content-Type": "application/json",
+          },
+          params: {
+            userId: data?.userId,
+          },
         })
-        
-        // setShowLineGraph(true);
-        // setRerender(false);
+        .then((res) => {
+          // console.log(categorizeDataByMonth(res.data.data.property.$values));
 
-        setProperties(updatedProp);
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error(err?.response?.data?.error);
-      });
+          const temp = res.data.data.properties.$values;
+          const pdated = temp.filter((prop, index) => {
+            if (String(prop.userId) === String(data.userId)) return true;
+            else return false;
+          });
 
-      axios
-    .get("/api/appraiserWishlistedProperties", {
-      headers: {
-        Authorization: `Bearer ${data?.token}`,
-        "Content-Type": "application/json",
-      },
-    })
-    .then((res) => {
-      const tempData = res.data.data.$values;
-
-      // setAllWishlistedProperties(res.data.data.$values);
-      const responseData = tempData.filter((prop, index) => {
-        if (String(prop.userId) === String(data.userId)) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-      const tempId = responseData;
-      setWishlist(responseData);
-    })
-    .catch((err) => {
-      toast.error(err?.response);
-      setErrorMessage(err?.response);
-      setModalIsOpenError(true);
-    });
+          setData(pdated);
+          setShowLineGraph(true);
+          setRerender(false);
+        })
+        .catch((err) => {
+          toast.error(err?.response?.data?.error);
+        });
 
       axios
-    .get("/api/getAllBids", {
-      headers: {
-        Authorization: `Bearer ${data.token}`,
-      },
-    })
-    .then((res) => {
-      const tempBids = res.data.data.result.$values;
-      let acceptedBid = 0 ;
-      
-      const updatedBids =  tempBids.filter((bids,index)=>{
-        if(String(bids.appraiserUserId) === String(data.userId)){
-        // acceptedBid = acceptedBid + 1 ; 
-        return true;
-        }
-        else{
-          return false;
-        }
-      })
-      console.log(updatedBids)
-      setBids(updatedBids);
-    })
-    .catch((err) => {
-      setErrorMessage(err?.response?.data?.error);
-      setModalIsOpenError(true);
-    });
+        .get("/api/getAllBids", {
+          headers: {
+            Authorization: `Bearer ${data.token}`,
+          },
+          params: {
+            email: data.userEmail,
+          },
+        })
+        .then((res) => {
+          console.log(res.data.data.$values);
+          const tempBids = res.data.data.$values;
+          let acceptedBid = 0;
+          let allBids = [];
+          tempBids.map((prop, index) => {
+            if (
+              String(prop.userId) === String(data.userId) &&
+              bids.status === 2
+            )
+              acceptedBid = acceptedBid + 1;
+            else if (String(prop.userId) === String(data.userId)) {
+              allBids.push(prop);
+            }
+          });
+          setAcceptedBids(acceptedBid);
+
+          setBids(allBids);
+        })
+        .catch((err) => {
+          toast.error(err);
+          // setModalIsOpenError(true);
+        });
     };
     func();
-    setRefresh(false);
-  }, [refresh]);
-
-  useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("user"));
-    if (!data) {
-      router.push("/login");
-    } 
-    if (!data) {
-      router.push("/login");
-    }
-    // const func2 = () => {
-    //   axios
-    //     .get("/api/getAllListedProperties", {
-    //       headers: {
-    //         Authorization: `Bearer ${data?.token}`,
-    //         "Content-Type": "application/json",
-    //       },
-    //     })
-    //     .then((res) => {
-    //       toast.dismiss();
-
-    //       const tempData = res.data.data.properties.$values;
-    //       const responseData = tempData.filter((prop) => {
-    //         return properties.some((data) => {
-    //           return data.propertyId === prop.propertyId;
-    //         });
-    //       });
-    //       setAllProperties(responseData);
-    //     })
-    //     .catch((err) => {
-    //       toast.dismiss();
-    //       setErrorMessage(err?.response?.data?.error);
-    //       setModalIsOpenError(true);
-    //     });
-    // };
-    // func2();
-  }, [properties]);
+  }, []);
 
   useEffect(() => {
     const categorizeDataByMonth = (data) => {
@@ -231,14 +231,17 @@ const Index = () => {
 
       return countsByMonth;
     };
-    const temp = categorizeDataByMonth(properties);
-    setChartData(temp);
-   
-  }, [properties]);
+    const temp = categorizeDataByMonth(data);
+    setLineData(temp);
+  }, [data]);
+
   return (
     <>
       {/* <!-- Main Header Nav --> */}
-      <Header userData={userData} />
+      <Header
+        userData={userData ? userData : {}}
+        setShowNotification={setShowNotification}
+      />
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
@@ -279,24 +282,26 @@ const Index = () => {
                 {/* End Dashboard Navigation */}
 
                 <div
-                  className=""
+                  className="col-lg-12 mb10"
                   style={{
                     display: "flex",
                     flexDirection: "row",
                     justifyContent: "space-between",
-                    alignItems: "center",
                   }}
                 >
                   <div className="breadcrumb_content style2">
                     <h2 className="breadcrumb_title">
-                      {userData?.brokerage_Details
-                        ? `${userData?.brokerage_Details?.firstName} ${userData?.brokerage_Details?.lastName}`
-                        : ""}
+                      {userData?.broker_Details?.firstName
+                        ? userData?.broker_Details?.firstName
+                        : "firstName"}{" "}
+                      {userData?.broker_Details?.lastName
+                        ? userData?.broker_Details?.lastName
+                        : "lastName"}
                     </h2>
-                    <p>We are glad to see you again!</p>
+                    {/* <p>We are glad to see you again!</p> */}
                   </div>
                   <div>
-                    <Filtering setRefresh={setRefresh}/>
+                    <Filtering setFilterQuery={setFilterQuery} />
                   </div>
                 </div>
               </div>
@@ -304,10 +309,10 @@ const Index = () => {
 
               <div className="row">
                 <AllStatistics
-                  properties={bids.length + wishlist.length}
-                  views={bids.length + wishlist.length}
-                  bids={bids.length}
-                  wishlist={wishlist.length}
+                  properties={data.length}
+                  views={bids.length}
+                  bids={acceptedBids}
+                  favourites={wishlist.length}
                 />
               </div>
               {/* End .row Dashboard top statistics */}
@@ -315,60 +320,21 @@ const Index = () => {
               <div className="row">
                 <div className="col-xl-6">
                   <div className="application_statics">
-                    <h4 className="mb-4">View Statistics</h4>
-                    {chartData.length > 0 ? (
-                      <StatisticsChart data={chartData} />
+                    <h4 className="mb-4">Property Statistics</h4>
+                    {data.length > 0 && showLineGraph ? (
+                      <StatisticsChart data={lineData} />
                     ) : (
-                      <StatisticsChart data={chartData} /> // You can replace this with a loading indicator
+                      <p>Loading...</p> // You can replace this with a loading indicator
                     )}
                   </div>
                 </div>
                 <div className="col-xl-6">
                   <div className="application_statics">
-                    <h4 className="mb-4">View Statistics</h4>
-                    {chartData.length > 0 ? (
-                      <StatisticsPieChart data={chartData} />
+                    <h4 className="mb-4">Plans Statistics</h4>
+                    {data.length > 0 && showLineGraph ? (
+                      <StatisticsPieChart data={lineData} />
                     ) : (
-                      <StatisticsPieChart data={chartData} /> // You can replace this with a loading indicator
-                    )}
-                    {modalIsOpenError && (
-                      <div className="modal">
-                        <div
-                          className="modal-content"
-                          style={{ borderColor: "orangered", width: "20%" }}
-                        >
-                          <h3
-                            className="text-center"
-                            style={{ color: "orangered" }}
-                          >
-                            Error
-                          </h3>
-                          <div
-                            style={{
-                              borderWidth: "2px",
-                              borderColor: "orangered",
-                            }}
-                          >
-                            <br />
-                          </div>
-                          <h5 className="text-center">{errorMessage}</h5>
-                          <div
-                            className="text-center"
-                            style={{ display: "flex", flexDirection: "column" }}
-                          >
-                            <button
-                              className="btn w-35 btn-white"
-                              onClick={() => closeErrorModal()}
-                              style={{
-                                borderColor: "orangered",
-                                color: "orangered",
-                              }}
-                            >
-                              Cancel
-                            </button>
-                          </div>
-                        </div>
-                      </div>
+                      <p>Loading...</p> // You can replace this with a loading indicator
                     )}
                   </div>
                 </div>
@@ -379,9 +345,11 @@ const Index = () => {
                   <div className="recent_job_activity">
                     <h4 className="title mb-4">Recent Activities</h4>
                     <Activities />
+                    <Modal modalOpen={true} closeModal={closeModal}/>
                   </div>
                 </div>*/}
               </div>
+
               {/* End .row  */}
 
               <div className="row mt50">

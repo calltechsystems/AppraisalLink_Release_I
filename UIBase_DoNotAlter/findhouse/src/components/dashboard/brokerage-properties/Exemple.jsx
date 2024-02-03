@@ -210,9 +210,9 @@ export default function Exemple({
     let isQuoteProvided = false;
     let isCompleted = false;
     allBids.map((bid, index) => {
-      if (bid.propertyId === property.propertyId && bid.status === 1) {
+      if (bid.orderId === property.orderId && bid.status === 1) {
         isCompleted = true;
-      } else if (bid.propertyId === property.propertyId) {
+      } else if (bid.orderId === property.orderId) {
         isQuoteProvided = true;
       }
     });
@@ -307,7 +307,9 @@ export default function Exemple({
 
                 {!isEditable && isStatus === 1 && (
                   <li>
-                    <Link href={`/my-property-bids/${property.propertyId}`}>
+                    <Link
+                      href={`/brokerage-properties-bid/${property.orderId}`}
+                    >
                       <span className="btn btn-color w-100 mb-1"> Quotes </span>
                     </Link>{" "}
                     {/* <Link
@@ -351,7 +353,7 @@ export default function Exemple({
 
                 {(isEditable || isStatus === 1) && (
                   <li>
-                    <Link href={`/create-listing/${property.propertyId}`}>
+                    <Link href={`/create-listing-1/${property.propertyId}`}>
                       <span className="btn btn-color w-100 mb-1"> Edit </span>
                     </Link>{" "}
                     {/* <Link
@@ -624,7 +626,7 @@ export default function Exemple({
                     </Link> */}
                   <span
                     className="btn btn-color-table"
-                    onClick={() => archievePropertyHandler(property.propertyId)}
+                    onClick={() => archievePropertyHandler(property.orderId)}
                   >
                     <Link
                       className="color-light"

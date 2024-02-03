@@ -198,7 +198,7 @@ export default function Exemple({
       .then((res) => {
         toast.dismiss();
         toast.success("Successfully accepted the requested Bid");
-        router.push("/my-properties");
+        router.push("/brokerage-properties");
       })
       .catch((err) => {
         toast.dismiss();
@@ -404,7 +404,7 @@ export default function Exemple({
           "Content-Type": "application/json",
         },
         params: {
-          userId: data?.userId,
+          OrderId: data?.userId,
         },
       })
       .then((res) => {
@@ -413,7 +413,7 @@ export default function Exemple({
         console.log(tempBids, propertyId);
         let updatedBids = [];
         tempBids.filter((bid, index) => {
-          if (String(bid.propertyId) === String(propertyId)) {
+          if (String(bid.orderId) === String(propertyId)) {
             updatedBids.push(bid);
           }
         });

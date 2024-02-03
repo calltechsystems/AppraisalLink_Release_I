@@ -32,19 +32,6 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
       name: "Home 1",
       routerPath: "/",
     },
-    // { id: 2, name: "Home 2", routerPath: "/home-2" },
-    // {
-    //   id: 3,
-    //   name: "Home 3",
-    //   routerPath: "/home-3",
-    // },
-    // { id: 4, name: "Home 4", routerPath: "/home-4" },
-    // { id: 5, name: "Home 5", routerPath: "/home-5" },
-    // { id: 6, name: "Home 6", routerPath: "/home-6" },
-    // { id: 7, name: "Home 7", routerPath: "/home-7" },
-    // { id: 8, name: "Home 8", routerPath: "/home-8" },
-    // { id: 9, name: "Home 9", routerPath: "/home-9" },
-    // { id: 10, name: "Home 10", routerPath: "/home-10" },
   ];
 
   const listing = [
@@ -230,22 +217,6 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                   </span>
                   {/* <span className="arrow"></span> */}
                 </Link>
-                {/* <!-- Level Two--> */}
-
-                {/* <ul className="sub-menu ">
-          {home.map((item) => (
-            <li key={item.id}>
-              <Link
-                href={item.routerPath}
-                className={
-                  route.pathname === item.routerPath ? "ui-active" : undefined
-                }
-              >
-                {item.name}
-              </Link>
-            </li>
-          ))}
-        </ul> */}
               </li>
               {/* End .dropitem */}
               <li
@@ -265,10 +236,6 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                   >
                     About Us
                   </span>
-                  {/* <span
-                    className="arrow text-info-01"
-                    style={{ marginLeft: "-5px" }}
-                  ></span> */}
                 </Link>
                 {insight ? (
                   <div
@@ -281,7 +248,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                       position: "absolute",
                       top: "100%",
                       // left: "20px",
-                      right: "-1000px",
+                      right: "-1050px",
                       width: "1900px",
                       margin: "-16px",
                       height: "225px",
@@ -338,15 +305,10 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                                 Events
                               </button>
                             </Link>
-                            {/* <Link href="#">
-                            <button className="mt-3 mb-2">
-                              Mortgage Brokerage
-                            </button>
-                          </Link> */}
                           </div>
                         </div>
                       </div>
-                      <div className="col-lg-2">
+                      <div className="col-lg-1">
                         <div className="row text-center">
                           <div className="col-lg-12 m-3 fw-bold">
                             <Link href="/">
@@ -363,7 +325,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                         </div>
                       </div>
                       <div
-                        className="col-lg-2 text-center"
+                        className="col-lg-3 text-center"
                         style={{ backgroundColor: "" }}
                       >
                         <div className="row text-center">
@@ -383,7 +345,6 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                       </div>
                       <div className="col-lg-1"></div>
                     </div>
-                    {/* <h1>hiiiii</h1> */}
                   </div>
                 ) : null}
               </li>
@@ -419,7 +380,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                       transition: "opacity 0.3s ease", // Add transition for the opacity property
                       position: "absolute",
                       top: "100%",
-                      left: "-840px",
+                      left: "-1000px",
                       // right: "-500px",
                       width: "1900px",
                       margin: "-16px",
@@ -437,6 +398,25 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                   >
                     <div className="row">
                       <div className="col-lg-2"></div>
+                      <div
+                        className="col-lg-2 text-center"
+                        style={{ backgroundColor: "#c2c2c2" }}
+                      >
+                        <div className="row">
+                          <div className="col-lg-9 m-5 fw-bold">
+                            <span>
+                              Ready to see Appraisal Land help make you more
+                              money at record speed?
+                            </span>
+                            <br />
+                            <Link href="/register">
+                              <button className="btn w-50 btn-color">
+                                Register
+                              </button>
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
 
                       <div className="col-lg-2 text-end">
                         <div className="row">
@@ -454,7 +434,10 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                           </div>
                         </div>
                       </div>
-                      <div className="col-lg-2 text-end">
+                      <div
+                        className="col-lg-2 text-end"
+                        style={{ backgroundColor: "#c2c2c2" }}
+                      >
                         <div className="row">
                           <div className="col-lg-12 mt-4"></div>
                           <div className="col-lg-12 mb-2">
@@ -503,29 +486,9 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                           </div>
                         </div>
                       </div>
-                      <div
-                        className="col-lg-2 text-center"
-                        style={{ backgroundColor: "#c2c2c2" }}
-                      >
-                        <div className="row">
-                          <div className="col-lg-9 m-5 fw-bold">
-                            <span>
-                              Ready to see Appraisal Land help make you more
-                              money at record speed?
-                            </span>
-                            <br />
-                            <Link href="/register">
-                              <button className="btn w-50 btn-color">
-                                Register
-                              </button>
-                            </Link>
-                          </div>
-                        </div>
-                      </div>
 
                       <div className="col-lg-1"></div>
                     </div>
-                    {/* <h1>hiiiii</h1> */}
                   </div>
                 ) : null}
               </li>
@@ -567,7 +530,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                       position: "absolute",
                       top: "100%",
                       // left: "20px",
-                      right: "-700px",
+                      right: "-720px",
                       width: "1900px",
                       margin: "-16px",
                       height: "225px",
@@ -584,41 +547,6 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                   >
                     <div className="row">
                       <div className="col-lg-2"></div>
-                      <div className="col-lg-3 text-center">
-                        <div className="row">
-                          <div className="col-lg-8 m-5 fw-bold">
-                            <span>
-                              To accessing your dashboard <br /> by click on it.
-                            </span>
-                            <br />
-                            <button
-                              className="btn btn2 w-50 btn-color"
-                              onClick={handleInsightClick}
-                            >
-                              Insights
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-lg-2 text-end">
-                        <div className="row">
-                          <div
-                            className="col-lg-8 m-3 fw-bold"
-                            style={{ marginLeft: "-30px" }}
-                          >
-                            <Link href="/">
-                              <Image
-                                width={190}
-                                height={125}
-                                className="logo2 img-fluid mt-3"
-                                // style={{ marginRight: "10px" }}
-                                src="/assets/images/service/22.jpg"
-                                alt="header-logo2.png"
-                              />
-                            </Link>
-                          </div>
-                        </div>
-                      </div>
                       <div
                         className="col-lg-2 text-center"
                         style={{ backgroundColor: "#c2c2c2" }}
@@ -639,7 +567,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                       </div>
                       <div className="col-lg-2 text-center">
                         <div className="row">
-                          <div className="col-lg-6 m-4 fw-bold" style={{}}>
+                          <div className="col-lg-10 m-4 fw-bold" style={{}}>
                             <Link href="/">
                               <Image
                                 width={160}
@@ -653,10 +581,46 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                           </div>
                         </div>
                       </div>
-
+                      <div
+                        className="col-lg-2 text-center"
+                        style={{ backgroundColor: "#c2c2c2" }}
+                      >
+                        <div className="row">
+                          <div className="col-lg-12 mt-5 fw-bold">
+                            <span>
+                              To accessing your dashboard <br /> by click on it.
+                            </span>
+                            <br />
+                            <button
+                              className="btn btn2 w-50 btn-color"
+                              onClick={handleInsightClick}
+                            >
+                              Insights
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-lg-2 text-end">
+                        <div className="row">
+                          <div
+                            className="col-lg-12 m-3 fw-bold"
+                            style={{ marginLeft: "-30px" }}
+                          >
+                            <Link href="/">
+                              <Image
+                                width={190}
+                                height={125}
+                                className="logo2 img-fluid mt-3"
+                                // style={{ marginRight: "10px" }}
+                                src="/assets/images/service/22.jpg"
+                                alt="header-logo2.png"
+                              />
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
                       <div className="col-lg-1"></div>
                     </div>
-                    {/* <h1>hiiiii</h1> */}
                   </div>
                 ) : null}
               </li>
@@ -694,7 +658,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                       position: "absolute",
                       top: "100%",
                       // left: "20px",
-                      right: "-650px",
+                      right: "-700px",
                       width: "1900px",
                       margin: "-16px",
                       height: "225px",
@@ -749,7 +713,10 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                         </div>
                       </div>
 
-                      <div className="col-lg-2 text-end">
+                      <div
+                        className="col-lg-2 text-end"
+                        style={{ backgroundColor: "#c2c2c2" }}
+                      >
                         <div className="row">
                           <div className="col-lg-12 mt-4"></div>
                           <div className="col-lg-12 mb-2">
@@ -801,7 +768,6 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
 
                       <div className="col-lg-1"></div>
                     </div>
-                    {/* <h1>hiiiii</h1> */}
                   </div>
                 ) : null}
               </li>
@@ -849,10 +815,6 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                       {/* {userData ? "logout" : "login"} */}
                     </span>
                   )}
-                  {/* <span
-                    className="arrow text-info-01"
-                    style={{ marginLeft: "-5px" }}
-                  ></span> */}
                 </Link>
 
                 {login ? (
@@ -866,7 +828,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                       position: "absolute",
                       top: "100%",
                       // left: "20px",
-                      right: "-500px",
+                      right: "-450px",
                       width: "1900px",
                       margin: "-16px",
                       height: "225px",
@@ -883,12 +845,28 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                   >
                     <div className="row">
                       <div className="col-lg-2"></div>
+                      <div className="col-lg-2">
+                        <div className="row">
+                          <div className="col-lg-12 m-4 fw-bold" style={{}}>
+                            <Link href="/">
+                              <Image
+                                width={160}
+                                height={125}
+                                className="logo2 img-fluid mt-5"
+                                // style={{ marginRight: "10px" }}
+                                src="/assets/images/service/333.jpg"
+                                alt="header-logo2.png"
+                              />
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
                       <div
                         className="col-lg-2 text-center"
-                        style={{ backgroundColor: "" }}
+                        style={{ backgroundColor: "#c2c2c2" }}
                       >
                         <div className="row text-end">
-                          <div className="col-lg-12 m-5 fw-bold">
+                          <div className="col-lg-12 mt-5 fw-bold">
                             <span>
                               Ready to see Appraisal Land help make you more
                               money at record speed?
@@ -947,43 +925,12 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                           </div>
                         </div>
                       </div>
-                      <div className="col-lg-3 text-center">
-                        <div className="row">
-                          <div className="col-lg-6 m-4 fw-bold" style={{}}>
-                            <Link href="/">
-                              <Image
-                                width={160}
-                                height={125}
-                                className="logo2 img-fluid mt-5"
-                                // style={{ marginRight: "10px" }}
-                                src="/assets/images/service/333.jpg"
-                                alt="header-logo2.png"
-                              />
-                            </Link>
-                          </div>
-                        </div>
-                      </div>
 
                       <div className="col-lg-1"></div>
                     </div>
                     {/* <h1>hiiiii</h1> */}
                   </div>
                 ) : null}
-
-                {/* <ul className="sub-menu ">
-            {user.map((item) => (
-              <li key={item.id}>
-                <Link
-                  href={item.routerPath}
-                  className={
-                    route.pathname === item.routerPath ? "ui-active" : undefined
-                  }
-                >
-                  {item.name}
-                </Link>
-              </li>
-            ))}
-          </ul> */}
               </li>
               <li
                 className="dropitem"

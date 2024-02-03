@@ -18,23 +18,31 @@ const Form = ({ userData, chnageShowCardHandler }) => {
             data-toggle="tooltip"
             data-placement="top"
             title="Edit Profile"
-          >Edit Profile</span>
+          >
+            {" "}
+            Edit Profile
+          </span>
         </button>
       </div>
 
       <div className="row">
-      <div className="col-lg-3 text-center">
-          
+        <div className="col-lg-3 text-center">
+          <div className="wrap-custom-file mt-5 mb-5">
+            <img
+              style={{ borderRadius: "50%" }}
+              src={userData?.appraiserCompany_Datails?.profileImage}
+              alt="Uploaded Image"
+            />
+          </div>
           {/* End .col */}
         </div>
         <div className="col-lg-9">
           <div className="row mb-2">
             <div className="col-lg-9">
-              <table
+              {/* <table
                 className=""
                 style={{
                   width: "650px",
-                  // textAlign: "center",
                   borderRadius: "5px",
                 }}
               >
@@ -46,11 +54,11 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                     }}
                   >
                     <li className="text-dark p-2" style={{ listStyle: "none" }}>
-                      {/* <span className="text-dark fw-bold">First Name</span> :{" "} */}
                       <span className="text-dark" style={{ fontSize: "17px" }}>
                         {" "}
                         <span className="fw-bold">Name</span> :{" "}
                         {userData?.appraiserCompany_Datails?.firstName}{" "}
+                        {userData?.appraiserCompany_Datails?.middleName}{" "}
                         {userData?.appraiserCompany_Datails?.lastName}
                       </span>
                     </li>
@@ -59,16 +67,13 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                     style={{
                       border: "1px solid grey",
                       color: "#2e008b",
-                      // padding:"5px"
                     }}
                   >
                     <li className="text-dark p-2" style={{ listStyle: "none" }}>
                       <span className="text-dark" style={{ fontSize: "17px" }}>
                         <span className="fw-bold"> Company</span> :{" "}
-                        {userData?.appraiserCompany_Datails?.appraiserCompanyName}
+                        {userData?.appraiserCompany_Datails?.companyName}
                       </span>
-                      {/* <span className="text-dark fw-bold">Middle Name</span> :{" "}
-                    <span className="text-dark fw-bold"> Devendra </span> */}
                     </li>
                   </td>
                 </tr>
@@ -77,7 +82,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                     style={{
                       border: "1px solid grey",
                       color: "#2e008b",
-                      // padding:"5px"
+                      
                     }}
                   >
                     <li className="text-dark p-2" style={{ listStyle: "none" }}>
@@ -85,8 +90,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                         <span className="fw-bold">Email</span> :{" "}
                         {userData?.userEmail}
                       </span>
-                      {/* <span className="text-dark fw-bold">Middle Name</span> :{" "}
-                    <span className="text-dark fw-bold"> Devendra </span> */}
+                      
                     </li>
                   </td>
                   <td
@@ -100,8 +104,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                         <span className="fw-bold"> Phone</span> :{" "}
                         {userData?.appraiserCompany_Datails?.phoneNumber}
                       </span>
-                      {/* <span className="text-dark fw-bold">Last Name</span> :{" "}
-                    <span className="text-dark fw-bold"> Patel </span> */}
+                     
                     </li>
                   </td>
                 </tr>
@@ -111,18 +114,17 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                     style={{
                       border: "1px solid grey",
                       color: "#2e008b",
-                      // padding:"5px"
+                      
                     }}
                   >
                     <li className="text-dark p-2" style={{ listStyle: "none" }}>
                       <span className="text-dark" style={{ fontSize: "17px" }}>
                         <span className="fw-bold">
-                         Licence No.
+                          Mortgage Broker Licence No.
                         </span>{" "}
-                        : {userData?.appraiserCompany_Datails?.licenseNumber}
+                        : {userData?.appraiserCompany_Datails?.mortageBrokerLicNo}
                       </span>
-                      {/* <span className="text-dark fw-bold">Middle Name</span> :{" "}
-                    <span className="text-dark fw-bold"> Devendra </span> */}
+                      
                     </li>
                   </td>
                 </tr>
@@ -138,12 +140,11 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       <span className="text-dark" style={{ fontSize: "17px" }}>
                         <span className="fw-bold">
                           {" "}
-                         Primary Address
+                          Mortgage Brokerge Licence No. :{" "}
                         </span>
-                        {userData?.appraiserCompany_Datails?.addressLineOne}
+                        {userData?.appraiserCompany_Datails?.phoneNumber}
                       </span>
-                      {/* <span className="text-dark fw-bold">Last Name</span> :{" "}
-                    <span className="text-dark fw-bold"> Patel </span> */}
+                    
                     </li>
                   </td>
                 </tr>
@@ -158,12 +159,13 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                     <li className="text-dark p-2" style={{ listStyle: "none" }}>
                       <span className="text-dark" style={{ fontSize: "17px" }}>
                         <span className="fw-bold"> Address : </span>
+                        {userData.appraiserCompany_Datails?.streetNumber},{" "}
+                        {userData.appraiserCompany_Datails?.streetName},{" "}
                         {userData?.appraiserCompany_Datails?.city},{" "}
-                        {userData?.appraiserCompany_Datails?.state},{" "}
-                        {userData?.appraiserCompany_Datails?.postalCode}
+                        {userData?.appraiserCompany_Datails?.province},{" "}
+                        {userData?.appraiserCompany_Datails?.zipCode}
                       </span>
-                      {/* <span className="text-dark fw-bold">Last Name</span> :{" "}
-                    <span className="text-dark fw-bold"> Patel </span> */}
+                      
                     </li>
                   </td>
                 </tr>
@@ -176,12 +178,11 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                     }}
                   >
                     <li className="text-dark p-2" style={{ listStyle: "none" }}>
-                      {/* <span className="text-dark fw-bold">First Name</span> :{" "} */}
                       <span className="text-dark" style={{ fontSize: "17px" }}>
                         {" "}
                         <span className="fw-bold">Assistant Name</span> :{" "}
-                        {userData?.appraiserCompany_Datails?.officeContactFirstName}{" "}
-                        {userData?.appraiserCompany_Datails?.officeContactLastName}
+                        {userData?.appraiserCompany_Datails?.assistantFirstName}{" "}
+                        {userData?.appraiserCompany_Datails?.assistantLatsName}
                       </span>
                     </li>
                   </td>
@@ -195,11 +196,10 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                     }}
                   >
                     <li className="text-dark p-2" style={{ listStyle: "none" }}>
-                      {/* <span className="text-dark fw-bold">First Name</span> :{" "} */}
                       <span className="text-dark" style={{ fontSize: "17px" }}>
                         {" "}
-                        <span className="fw-bold">Office Email</span> :{" "}
-                        {userData?.appraiserCompany_Datails?.officeContactEmail}{" "}
+                        <span className="fw-bold">Assistant Email</span> :{" "}
+                        {userData?.appraiserCompany_Datails?.assistantEmailAddress}{" "}
                       </span>
                     </li>
                   </td>
@@ -213,16 +213,165 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                     }}
                   >
                     <li className="text-dark p-2" style={{ listStyle: "none" }}>
-                      {/* <span className="text-dark fw-bold">First Name</span> :{" "} */}
                       <span className="text-dark" style={{ fontSize: "17px" }}>
                         {" "}
-                        <span className="fw-bold">Office Phone </span> :{" "}
-                        {userData?.appraiserCompany_Datails?.officeContactPhone}{" "}
+                        <span className="fw-bold">Assistant Phone </span> :{" "}
+                        {userData?.appraiserCompany_Datails?.assistantPhoneNumber}{" "}
                       </span>
                     </li>
                   </td>
                 </tr>
-              </table>
+              </table> */}
+              <div className="">
+                <span style={{ fontWeight: "bold" }}>
+                  <h3 className="text-center"> Appraiser Company Details </h3>
+                </span>
+                <hr />
+                <div className=" col-lg-12">
+                  <div className="row">
+                    <div className="col-lg-12 mt-1 text-start">
+                      <span className="fs-18 fw-bold text-color">
+                        Appraiser Company Name{" "}
+                      </span>
+                      {"   "}
+                      <span className="">:</span>
+                      {"   "}
+                      <span className="text-start text-dark fw-bold">
+                        {
+                          userData?.appraiserCompany_Datails
+                            ?.appraiserCompanyName
+                        }
+                      </span>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-lg-12 mt-1 text-start">
+                      <span className="fs-18 fw-bold text-color">
+                        Primary Contact Name{" "}
+                      </span>
+                      {"   "}
+                      <span className="">:</span>
+                      {"   "}
+                      <span className="text-start text-dark fw-bold">
+                        {userData?.appraiserCompany_Datails?.firstName}{" "}
+                        {userData?.appraiserCompany_Datails?.middleName}{" "}
+                        {userData?.appraiserCompany_Datails?.lastName}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-lg-12 mt-1 text-start">
+                      <span className="fs-18 fw-bold text-color">
+                        Email Address{" "}
+                      </span>
+                      {"   "}
+                      <span className="">:</span>
+                      {"   "}
+                      <span className="text-start text-dark fw-bold">
+                        {userData?.userEmail}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-lg-12 mt-1 text-start">
+                      <span className="fs-18 fw-bold text-color">Phone </span>
+                      {"   "}
+                      <span className="">:</span>
+                      {"   "}
+                      <span className="text-start text-dark fw-bold">
+                        {userData?.appraiserCompany_Datails?.phoneNumber}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-lg-12 mt-1 text-start">
+                      <span className="fs-18 fw-bold text-color">
+                        Cell Number{" "}
+                      </span>
+                      {"   "}
+                      <span className="">:</span>
+                      {"   "}
+                      <span className="text-start text-dark fw-bold">
+                        {userData?.appraiserCompany_Datails?.mortageBrokerLicNo}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-lg-12 mt-1 text-start">
+                      <span className="fs-18 fw-bold text-color">Licence </span>
+                      {"   "}
+                      <span className="">:</span>
+                      {"   "}
+                      <span className="text-start text-dark fw-bold">
+                        {userData?.appraiserCompany_Datails?.licenseNumber}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-lg-12 mt-1 text-start">
+                      <span className="fs-18 fw-bold text-color">Address </span>
+                      {"   "}
+                      <span className="">:</span>
+                      {"   "}
+                      <span className="text-start text-dark fw-bold">
+                        {userData?.appraiserCompany_Datails?.addressLineOne}{" "}
+                        {userData?.appraiserCompany_Datails?.addressLineTwo}
+                        {userData?.appraiserCompany_Datails?.unit}{" "}
+                        {userData?.appraiserCompany_Datails?.city},{" "}
+                        {userData?.appraiserCompany_Datails?.province},{" "}
+                        {userData?.appraiserCompany_Datails?.postalCode}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-lg-12 mt-1 text-start">
+                      <span className="fs-18 fw-bold text-color">
+                        Office Contact Name{" "}
+                      </span>
+                      {"   "}
+                      <span className="">:</span>
+                      {"   "}
+                      <span className="text-start text-dark fw-bold">
+                        {
+                          userData?.appraiserCompany_Datails
+                            ?.officeContactFirstName
+                        }{" "}
+                        {
+                          userData?.appraiserCompany_Datails
+                            ?.officeContactLastName
+                        }
+                      </span>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-lg-12 mt-1 text-start">
+                      <span className="fs-18 fw-bold text-color">
+                        Office Contact Email{" "}
+                      </span>
+                      {"   "}
+                      <span className="">:</span>
+                      {"   "}
+                      <span className="text-start text-dark fw-bold">
+                        {userData?.appraiserCompany_Datails?.officeContactEmail}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-lg-12 mt-1 text-start">
+                      <span className="fs-18 fw-bold text-color">
+                        Office Contact Phone{" "}
+                      </span>
+                      {"   "}
+                      <span className="">:</span>
+                      {"   "}
+                      <span className="text-start text-dark fw-bold">
+                        {userData?.appraiserCompany_Datails?.officeContactPhone}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <hr />
+              </div>
             </div>
             {/* End .col */}
           </div>

@@ -22959,4 +22959,5 @@ input:checked + .slider:before {
   font-size: 30px;
   color: black;
   border-radius: 5px;
+  margin-bottom: 10px;
 }
