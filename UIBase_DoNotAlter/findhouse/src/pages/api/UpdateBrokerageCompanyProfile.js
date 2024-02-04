@@ -65,7 +65,7 @@ async function handler(request, response) {
     console.log(formData);
 
     const userResponse = await axios.put(
-      `${domain}/Brokerage/${id}`,
+      `${domain}/com.appraisalland.Brokerage/updateMortgageBrokerageProfile?BrokerageId=${id}`,
       formData,
       {
         headers: {

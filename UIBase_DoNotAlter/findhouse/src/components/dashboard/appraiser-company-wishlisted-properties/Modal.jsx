@@ -129,7 +129,7 @@ const Modal = ({
 
     // Divide the number by the appropriate factor
     const formattedNumber = (number / Math.pow(10, (integerLength - 1))).toFixed(2);
-
+    console.log(formatLargeNumber+".."+unit)
     return `${formattedNumber}${unit}`;
 };
 
@@ -184,7 +184,7 @@ const Modal = ({
                         fontWeight: "lighter",
                       }}
                     >
-                     {`${alreadyBidded? `Your Eariler Quote was $ ${formatLargeNumber(bidAmount)}` : "Please provide a quote for this property"}`}
+                     <span style={{fontWeight:"bold",fontSize:"larger",color:"black"}}>{`${alreadyBidded? `Your Eariler Quote was $ ${(bidAmount)}` : "Please provide a quote for this property"}`}</span>
                     </label>
                   </div>
                       <div className="row mb-2 mt-2" >
@@ -215,6 +215,7 @@ const Modal = ({
                         </div>
                       </div>
 
+                    
 
                       <div className="row">
                         <div className="col-lg-3 mb-2">
@@ -249,7 +250,7 @@ const Modal = ({
                   given amount : <br />
                   <h3 className="mt-2 text-color"> $ {value}</h3>
                 </p>
-                {alreadyBidded && (<p className="m-3 text-center" style={{ fontSize: "18px" }}> from <span style={{color:"red"}}>$ {formatLargeNumber(bidAmount)}</span></p>)}
+                {alreadyBidded && (<p className="m-3 text-center" style={{ fontSize: "18px" }}> from <span style={{color:"red"}}>$ {(bidAmount)}</span></p>)}
                 </>
               )}
             </div>

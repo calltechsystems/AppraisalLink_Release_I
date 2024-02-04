@@ -182,24 +182,24 @@ export default function Exemple({
   }
 
   const filterBidsWithin24Hours = (property) => {
-    const userData = JSON.parse(localStorage.getItem("user"));
     let tempBid = 0,
       bidValue = {};
+      let isAccepted = {};
       // console.log(bids);
     bids.filter((bid) => {
       if (bid.orderId === property.orderId ) {
-        // console.log("matched", bid);
+        if(bid.status === 1){
+          isAccepted=bid;
+        }
+        else{
+          bidValue=bid;
+        }
         tempBid = tempBid + 1;
-        bidValue = bid;
       } else {
       }
     });
-    return tempBid > 0 ? bidValue : {};
-    // const currentTime = new Date();
-    // const twentyFourHoursAgo = currentTime - 24 * 60 * 60 * 1000; // Subtracting milliseconds for 24 hours
-    //    const requestTime = new Date(tempBid.requestTime);
-    //   return requestTime >= twentyFourHoursAgo && requestTime <= currentTime;
-  };
+    return isAccepted.$id ? isAccepted : bidValue;
+   };
 
   const router = useRouter();
 
@@ -327,13 +327,13 @@ export default function Exemple({
         const isBidded = filterBidsWithin24Hours(property);
         
         // console.log("wishlisted",isWishlist);
+        const isWait = property.isOnHold || property.isOnCancel;
         const isArchive = false;
 
         if(!isArchive){
           if(isBidded.status === 1){
             console.log(getOrderValue(isBidded.orderStatus))
           }
-        const isWait = property.isOnHold || property.isOnCancel;
         const updatedRow = {
           orderId: property.orderId ,
           address: `${property.city}-${property.province},${property.zipCode}`,
@@ -346,7 +346,7 @@ export default function Exemple({
           ):<span className="btn btn-warning  w-100">N.A.</span>,
           remark : (isBidded && isBidded.remark) ? isBidded.orderStatus === 1 ? `${isBidded.remark} on ${formatDate(isBidded.modifiedDate)}`: isBidded.remark : "N.A.",
           status: 
-          isWait && property.status === 2 ? 
+          isWait  ? 
           <span
           className="btn btn-danger  w-100"
         >
@@ -466,7 +466,7 @@ export default function Exemple({
             
           >
             Completed
-          </span> : isWait  && property.status === 2?  <p className="btn btn-danger  w-100">{`Cannot perform any actions right now as property is being ${property.isOnCancel ? "Cancelled" : "On Hold"} !.`} </p> : isBidded && isBidded.status !== 1 ? (
+          </span> : isWait  ?  <p className="btn btn-danger  w-100">{`Cannot perform any actions right now as property is being ${property.isOnCancel ? "Cancelled" : "On Hold"} !.`} </p> : isBidded && isBidded.status !== 1 ? (
                 <ul className="">
                   {isWishlist.id  ? (
                     <button
@@ -736,25 +736,25 @@ export default function Exemple({
         setModalIsOpenError(true);
       });
 
-      axios
-      .get("/api/getArchiveAppraiserProperty", {
-        headers: {
-          Authorization: `Bearer ${data.token}`,
-        },
-        params:{
-        userId : data.userId
-        }
-      })
-      .then((res) => {
+      // axios
+      // .get("/api/getArchive?   m ppraiserProperty", {
+      //   headers: {
+      //     Authorization: `Bearer ${data.token}`,
+      //   },
+      //   params:{
+      //   userId : data.userId
+      //   }
+      // })
+      // .then((res) => {
 
        
-        setAllArchive(res.data.data.$values);
+      //   setAllArchive(res.data.data.$values);
        
-      })
-      .catch((err) => {
-        setErrorMessage(err?.response?.data?.error);
-        setModalIsOpenError(true);
-      });
+      // })
+      // .catch((err) => {
+      //   setErrorMessage(err?.response?.data?.error);
+      //   setModalIsOpenError(true);
+      // });
 
     console.log("end", bids, properties, wishlist);
     setRefresh(false);

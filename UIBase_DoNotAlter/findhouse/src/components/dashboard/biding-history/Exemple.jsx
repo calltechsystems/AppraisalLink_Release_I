@@ -182,19 +182,23 @@ export default function Exemple({
   }
 
   const filterBidsWithin24Hours = (property) => {
-    const userData = JSON.parse(localStorage.getItem("user"));
     let tempBid = 0,
       bidValue = {};
+      let isAccepted = {};
       // console.log(bids);
     bids.filter((bid) => {
-      if (bid.orderId === property.orderId ){
-        // console.log("matched", bid);
+      if (bid.orderId === property.orderId ) {
+        if(bid.status === 1){
+          isAccepted=bid;
+        }
+        else{
+          bidValue=bid;
+        }
         tempBid = tempBid + 1;
-        bidValue = bid;
       } else {
       }
     });
-    return tempBid > 0 ? bidValue : {};
+    return isAccepted.$id ? isAccepted : bidValue;
     // const currentTime = new Date();
     // const twentyFourHoursAgo = currentTime - 24 * 60 * 60 * 1000; // Subtracting milliseconds for 24 hours
     //    const requestTime = new Date(tempBid.requestTime);
@@ -341,7 +345,7 @@ export default function Exemple({
           ):<span className="btn btn-warning  w-100">N.A.</span>,
           remark : (isBidded && isBidded.remark) ? isBidded.remark : "N.A.",
           status: 
-          isWait && property.status < 2? 
+          isWait ? 
           <span
           className="btn btn-danger  w-100"
         >
@@ -451,7 +455,7 @@ export default function Exemple({
 
           action: (
             <div className="print-hidden-column">
-              {isWait && property.status !== 2 ?  <p className="btn btn-danger  w-100">Cannot perform any actions right now!.</p> : isBidded && isBidded.status !== 1 ? (
+              {isWait ?  <p className="btn btn-danger  w-100">Cannot perform any actions right now!.</p> : isBidded && isBidded.status !== 1 ? (
                 
                 <ul className="">
                   
@@ -701,6 +705,9 @@ export default function Exemple({
         headers: {
           Authorization: `Bearer ${data.token}`,
         },
+        params:{
+          userId : data.userId
+        }
       })
       .then((res) => {
         setAllArchive(res.data.data.$values);

@@ -30,9 +30,9 @@ async function handler(request, response) {
       streetName,
       streetNumber,
       phoneNumber,
-     apartmentNo,
-     assistantFirstName,
-     assistantPhoneNumber,
+      apartmentNo,
+      assistantFirstName,
+      assistantPhoneNumber,
       assistantEmailAddress,
       profileImage,
     } = body;
@@ -44,32 +44,36 @@ async function handler(request, response) {
       companyName: companyName,
       licenseNo: "",
       brokerageName: "",
-      streetName:streetName,
-      streetNumber:streetNumber,
+      streetName: streetName,
+      streetNumber: streetNumber,
       city: city,
       province: state,
-      apartmentNo:apartmentNo,
+      apartmentNo: apartmentNo,
       postalCode: postalCode,
       area: "",
       phoneNumber: phoneNumber,
-      faxNumber : "",
-      description : "",
-      assistantEmailAddress:assistantEmailAddress,
-      assistantFirstName:assistantFirstName,
-      assistantPhoneNumber:assistantPhoneNumber,
+      faxNumber: "",
+      description: "",
+      assistantEmailAddress: assistantEmailAddress,
+      assistantFirstName: assistantFirstName,
+      assistantPhoneNumber: assistantPhoneNumber,
       mortageBrokerageLicNo: mortgageBrokerageLicNo,
       mortageBrokerLicNo: mortageBrokerLicNo,
       profileImage: profileImage,
     };
-    const userResponse = await axios.put(`${domain}/com.appraisalland.Broker/updateBrokerProfile`, formData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      params:{
-        BrokerId:id
+    const userResponse = await axios.put(
+      `${domain}/com.appraisalland.Broker/updateBrokerProfile`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        params: {
+          BrokerId: id,
+        },
       }
-    });
+    );
     const user = userResponse.data;
 
     if (!user) {

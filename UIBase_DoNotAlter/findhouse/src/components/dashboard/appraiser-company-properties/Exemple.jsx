@@ -184,17 +184,22 @@ export default function Exemple({
   const filterBidsWithin24Hours = (property) => {
     const userData = JSON.parse(localStorage.getItem("user"));
     let tempBid = 0,
-      bidValue = {};
-      // console.log(bids);
-    bids.filter((bid) => {
-      if (bid.orderId === property.orderId ) {
-        // console.log("matched", bid);
-        tempBid = tempBid + 1;
-        bidValue = bid;
-      } else {
+    bidValue = {};
+    let isAccepted = {};
+    // console.log(bids);
+  bids.filter((bid) => {
+    if (bid.orderId === property.orderId ) {
+      if(bid.status === 1){
+        isAccepted=bid;
       }
-    });
-    return tempBid > 0 ? bidValue : {};
+      else{
+        bidValue=bid;
+      }
+      tempBid = tempBid + 1;
+    } else {
+    }
+  });
+  return isAccepted.$id ? isAccepted : bidValue;
     // const currentTime = new Date();
     // const twentyFourHoursAgo = currentTime - 24 * 60 * 60 * 1000; // Subtracting milliseconds for 24 hours
     //    const requestTime = new Date(tempBid.requestTime);

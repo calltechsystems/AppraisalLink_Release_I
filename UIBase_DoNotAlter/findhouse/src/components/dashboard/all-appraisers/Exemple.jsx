@@ -261,31 +261,31 @@ export default function Exemple({
       const dateNow = formatDate(new Date());
       properties.map((data, index) => {
         const updatedRow = {
-          appraiser_id: data.id,
-          firstname: data.firstName ? data.firstName : "-",
-          lastname: data.lastName ? data.lastName : "-",
-          status : data.isActive  ? (<span
+          appraiser_id: data.item.id,
+          firstname: data.item.firstName ? data.item.firstName : "-",
+          lastname: data.item.lastName ? data.item.lastName : "-",
+          status : data.item.isActive  ? (<span
           className="btn btn-success  w-100"
           
         >
           Active
         </span>
-      ) : !data.firstName  ?  (
+      ) : !data.item.firstName  ?  (
         <span className="btn btn-warning  w-100">Not Registered</span>)
       : (
       <span className="btn btn-danger  w-100">In-Active</span>
     ) ,
-          phone: data.phoneNumber ? data.phoneNumber : "-",
-          address :data.streetName ? `${data.streetName} ${data.streetNumber},${data.city}-${data.postalCode}` : "N.A.",
+          phone: data.item.phoneNumber ? data.item.phoneNumber : "-",
+          address :data.item.streetName ? `${data.item.streetName} ${data.item.streetNumber},${data.city}-${data.postalCode}` : "N.A.",
           date: dateNow,
 
           action: (
             <div className="print-hidden-column">
-            { data.firstName  && <button className="btn btn-color m-1" onClick={()=>openEditModalHandler(data)}>
+            { data.item.firstName  && <button className="btn btn-color m-1" onClick={()=>openEditModalHandler(data.item)}>
                 <i className="flaticon-edit"></i>
               </button>}
               
-              { !data.firstName &&  <button className="btn btn-color m-1" onClick={()=>openCredModal(data)}>
+              { !data.item.firstName &&  <button className="btn btn-color m-1" onClick={()=>openCredModal(data)}>
               <i className="flaticon-view"></i>
             </button>}
             

@@ -105,7 +105,7 @@ export default function Exemple({
   refresh,
   setOpenBrokerModal,
   setIsModalOpen,
-  propertyId,
+  orderId,
   properties,
   setProperties,
   deletePropertyHandler,
@@ -320,7 +320,7 @@ export default function Exemple({
                   data-placement="top"
                   title="Approved Lender List"
                 >
-                  <div className="btn btn-color fw-bold m-1">
+                  <div className="fp_pdate float-end btn btn-color fw-bold ">
                     <Link
                       href="assets/images/Terms & Conditions.pdf"
                       target="_blank"
@@ -380,10 +380,10 @@ export default function Exemple({
       .then((res) => {
         toast.dismiss();
         const tempBids = res.data.data.$values;
-        console.log(tempBids, propertyId);
+        console.log(tempBids, orderId);
         let updatedBids = [];
         tempBids.filter((bid, index) => {
-          if (String(bid.orderId) === String(propertyId)) {
+          if (String(bid.orderId) === String(orderId)) {
             updatedBids.push(bid);
           }
         });

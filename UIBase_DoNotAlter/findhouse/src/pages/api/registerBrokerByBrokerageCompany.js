@@ -23,7 +23,7 @@ export default async function handler(request, response) {
     };
 
     const userResponse = await axios.post(
-      `${domain}/Registration/RegisterBrokerByBrokerage`,
+      `${domain}/com.appraisalland.Registration/RegisterBrokerByBrokerage`,
       formData
     );
     const user = userResponse.data;

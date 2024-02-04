@@ -180,24 +180,24 @@ export default function Exemple({
   }
 
   const filterBidsWithin24Hours = (property) => {
-    const userData = JSON.parse(localStorage.getItem("user"));
     let tempBid = 0,
-      bidValue = {};
-      // console.log(bids);
-    bids.filter((bid) => {
-      if (bid.propertyId === property.propertyId ) {
-        // console.log("matched", bid);
-        tempBid = tempBid + 1;
-        bidValue = bid;
-      } else {
+    bidValue = {};
+    let isAccepted = {};
+    // console.log(bids);
+  bids.filter((bid) => {
+    if (bid.orderId === property.orderId ) {
+      if(bid.status === 1){
+        isAccepted=bid;
       }
-    });
-    return tempBid > 0 ? bidValue : {};
-    // const currentTime = new Date();
-    // const twentyFourHoursAgo = currentTime - 24 * 60 * 60 * 1000; // Subtracting milliseconds for 24 hours
-    //    const requestTime = new Date(tempBid.requestTime);
-    //   return requestTime >= twentyFourHoursAgo && requestTime <= currentTime;
-  };
+      else{
+        bidValue=bid;
+      }
+      tempBid = tempBid + 1;
+    } else {
+    }
+  });
+  return isAccepted.$id ? isAccepted : bidValue;
+};
 
   const router = useRouter();
 
@@ -587,23 +587,23 @@ export default function Exemple({
         setModalIsOpenError(true);
       });
 
-      axios
-      .get("/api/getArchiveAppraiserProperty", {
-        headers: {
-          Authorization: `Bearer ${data.token}`,
-        },
-        params:{
-        userId : data.userId
-        }
-      })
-      .then((res) => {
-        setAllArchive(res.data.data.$values);
+      // axios
+      // .get("/api/getArchiveAppraiserProperty", {
+      //   headers: {
+      //     Authorization: `Bearer ${data.token}`,
+      //   },
+      //   params:{
+      //   userId : data.userId
+      //   }
+      // })
+      // .then((res) => {
+      //   setAllArchive(res.data.data.$values);
        
-      })
-      .catch((err) => {
-        setErrorMessage(err?.response?.data?.error);
-        setModalIsOpenError(true);
-      });
+      // })
+      // .catch((err) => {
+      //   setErrorMessage(err?.response?.data?.error);
+      //   setModalIsOpenError(true);
+      // });
 
     console.log("end", bids, properties, wishlist);
     setRefresh(false);

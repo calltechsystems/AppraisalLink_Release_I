@@ -73,6 +73,7 @@ const Index = () => {
       IsActive : !selectedAppraiser.isActive
     };
 
+    console.log(payload);
 
     const encryptedData = encryptionData(payload);
 
@@ -1193,7 +1194,7 @@ const Index = () => {
                         <div className="col-lg-7"style={{display:"flex",flexDirection:"row"}}>
                           <input
                             type="text"
-                            value={currentViewAppraiser.email}
+                            value={currentViewAppraiser.userInfo}
                             
                             className="form-control"
                             id="formGroupExampleInput3"

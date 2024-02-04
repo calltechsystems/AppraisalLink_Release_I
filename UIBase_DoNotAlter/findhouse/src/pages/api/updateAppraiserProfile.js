@@ -32,40 +32,42 @@ async function handler(request, response) {
       profileImage,
       maxNumberOfAssignedOrders,
       designation,
-      commissionRate
+      commissionRate,
     } = body;
 
     const formData = {
       firstName: firstName,
-      middleName : middleName,
+      middleName: middleName,
       lastName: lastName,
       companyName: companyName,
       city: city,
       province: province,
       postalCode: postalCode,
-      area: "" ,
-      lenderListUrl:lenderListUrl,
-      apartmentNo : "",
-      streetName:streetName,
-      streetNumber:streetNumber,
+      area: "",
+      lenderListUrl: lenderListUrl,
+      apartmentNo: "",
+      streetName: streetName,
+      streetNumber: streetNumber,
       phoneNumber: phoneNumber,
-      commissionRate : Number(commissionRate),
-      maxNumberOfAssignedOrders:Number(maxNumberOfAssignedOrders),
-      designation : designation,
+      commissionRate: Number(commissionRate),
+      maxNumberOfAssignedOrders: Number(maxNumberOfAssignedOrders),
+      designation: designation,
       profileImage: profileImage,
     };
 
-
-
-    const userResponse = await axios.put(`${domain}/com.appraisalland.AppraiserIndividual/updateAppraiserProfile`, formData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      params:{
-        AppraiserId:id
+    const userResponse = await axios.put(
+      `${domain}/com.appraisalland.AppraiserIndividual/updateAppraiserProfile`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        params: {
+          AppraiserId: id,
+        },
       }
-    });
+    );
     const user = userResponse.data;
 
     if (!user) {

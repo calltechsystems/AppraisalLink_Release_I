@@ -1,5 +1,5 @@
 import Header from "../../common/header/dashboard/Header_02";
-import SidebarMenu from "../../common/header/dashboard/SidebarMenu_01";
+import SidebarMenu from "../../common/header/dashboard/SidebarMenu_002";
 import MobileMenu from "../../common/header/MobileMenu_01";
 import TableData from "./TableData";
 import Pagination from "./Pagination";
@@ -74,7 +74,6 @@ const Index = () => {
       remark:remark,
       statusDate : statusDate
     };
-
     const encryptedBody = encryptionData(payload);
     toast.loading("Updating order status!!");
     axios.put("/api/updateOrderStatus",encryptedBody).then((res)=>{
@@ -271,8 +270,9 @@ const Index = () => {
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
-      propertyId:propertyId,
+      orderId:propertyId,
       userid:data.userId,
+      status:true,
       token:data.token
     };
 
@@ -336,8 +336,8 @@ const Index = () => {
     if (!data) {
       router.push("/login");
     } 
-    else if (!data?.appraiser_Details?.firstName) {
-      router.push("/appraiser-profile");
+    else if (!data?.appraiserCompany_Datails?.firstName) {
+      router.push("/appraiser-company-profile");
     }
     if (!data) {
       router.push("/login");

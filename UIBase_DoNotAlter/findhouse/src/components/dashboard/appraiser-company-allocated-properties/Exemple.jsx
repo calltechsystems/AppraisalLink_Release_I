@@ -165,23 +165,23 @@ export default function Exemple({
   let tempData = [];
 
   const filterBidsWithin24Hours = (property) => {
-    const userData = JSON.parse(localStorage.getItem("user"));
     let tempBid = 0,
       bidValue = {};
+      let isAccepted = {};
       // console.log(bids);
     bids.filter((bid) => {
       if (bid.orderId === property?.orderId ) {
-        // console.log("matched", bid);
+        if(bid.status === 1){
+          isAccepted=bid;
+        }
+        else{
+          bidValue=bid;
+        }
         tempBid = tempBid + 1;
-        bidValue = bid;
       } else {
       }
     });
-    return tempBid > 0 ? bidValue : {};
-    // const currentTime = new Date();
-    // const twentyFourHoursAgo = currentTime - 24 * 60 * 60 * 1000; // Subtracting milliseconds for 24 hours
-    //    const requestTime = new Date(tempBid.requestTime);
-    //   return requestTime >= twentyFourHoursAgo && requestTime <= currentTime;
+    return isAccepted.$id ? isAccepted : bidValue;    //   return requestTime >= twentyFourHoursAgo && requestTime <= currentTime;
   };
 
   const getAppraiser = (id)=>{
@@ -194,10 +194,23 @@ export default function Exemple({
         }
       })
 
-      // console.log(selectedAppraiser,id,)
+      console.log(selectedAppraiser)
       openAppraiserInfoModal(selectedAppraiser);
      
   }
+  const getAppraiserName = (id)=>{
+   
+    let selectedAppraiser = {};
+    allAssignAppraiser.map((appraiser,index)=>{
+      console.log(appraiser,id)
+      if(String(appraiser.id) === String(id)){
+        selectedAppraiser = appraiser;
+      }
+    })
+
+    return `${selectedAppraiser.firstName} ${selectedAppraiser.lastName}`;
+   
+}
 
   const router = useRouter();
 
@@ -339,6 +352,7 @@ export default function Exemple({
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
       
+        const isWait = property?.isOnHold || property?.isOnCancel;
         const updatedRow = {
           orderId: property?.orderId ,
           address: `${property?.city}-${property?.province},${property?.zipCode}`,
@@ -347,7 +361,14 @@ export default function Exemple({
             : "$ 0",
           purpose: property?.purpose ? property?.purpose : "N.A.",
           remark: property?.remark ?  <p>remark</p> : "N.A.",
-          status: isBidded.bidId ? (
+          status: 
+          isWait  ? 
+          <span
+          className="btn btn-danger  w-100"
+        >
+          {property.isOnCancel ? "On Cancel" : property.isOnHold ?  "On Hold" : ""}
+        </span>
+            :  isBidded.bidId ? (
             isBidded.status === 0 ? (
               <span
                 className="btn btn-primary  w-100"
@@ -410,7 +431,7 @@ export default function Exemple({
                     }}
                     onClick={() => getAppraiser(propertyDetail?.appraiserid)}
                   >
-                   Appraiser Info
+                  Appraiser_Info
                   </button>
                 </a>,
           property: (
@@ -460,7 +481,16 @@ export default function Exemple({
 
           action: (
             <div className="print-hidden-column">
-              {isBidded && isBidded.status !== 1 ? (
+            {
+              isBidded.orderStatus === 6 ? 
+            <span
+            className="btn btn-success  w-100"
+            
+          >
+            Completed
+          </span> : isWait  ?  <p className="btn btn-danger  w-100">{`Cannot perform any actions right now as property is being ${property.isOnCancel ? "Cancelled" : "On Hold"} !.`} </p> :
+               
+              isBidded && isBidded.status !== 1 ? (
                 <ul className="">
                   
 

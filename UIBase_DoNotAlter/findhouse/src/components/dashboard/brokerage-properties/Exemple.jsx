@@ -487,7 +487,7 @@ export default function Exemple({
                     <Link
                       className="btn btn-color-table"
                       // style={{ marginLeft: "4.3rem" }}
-                      href={`/brokerage-properties-bid/${property.propertyId}`}
+                      href={`/brokerage-properties-bid/${property.orderId}`}
                     >
                       <span className="flaticon-invoice">
                         {/* <FaHandHoldingUsd /> */}
@@ -532,7 +532,7 @@ export default function Exemple({
                     </Link>{" "} */}
                     <Link
                       className="btn btn-color-table"
-                      href={`/create-listing-1/${property.propertyId}`}
+                      href={`/create-listing-1/${property.orderId}`}
                     >
                       <span className="flaticon-edit"></span>
                     </Link>
@@ -694,13 +694,12 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        // console.log(res);
-        tempBids = res.data.data.result.$values;
+        tempBids = res.data.data.$values;
         setBids(tempBids);
       })
       .catch((err) => {
-        setErrorMessage(err?.response?.data?.error);
-        setModalIsOpenError(true);
+        toast.error(err);
+        // setModalIsOpenError(true);
       });
     setRefresh(false);
   }, [refresh]);

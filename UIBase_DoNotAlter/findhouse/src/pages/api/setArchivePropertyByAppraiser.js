@@ -15,28 +15,25 @@ async function handler(request, response) {
       return response.status(403).json({ error: "Not a verified Data" });
     }
 
-    const {
-      token,
-      orderId,
-      status,
-      userid
-      
-    } = body;
+    const { token, orderId, status, userid } = body;
 
     // console.log(body);
 
-    const userResponse = await axios.post(`${domain}/com.appraisalland.Property/archievePropertyByApprasier`,{}, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      params:{
-        
-        orderId:orderId,
-        userId:userid,
-        status:status
+    const userResponse = await axios.post(
+      `${domain}/com.appraisalland.Property/archievePropertyByApprasier`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        params: {
+          orderId: orderId,
+          userId: userid,
+          status: status,
+        },
       }
-    });
+    );
     const user = userResponse.data;
 
     if (!user) {

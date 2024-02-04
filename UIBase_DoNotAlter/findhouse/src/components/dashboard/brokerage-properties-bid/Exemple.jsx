@@ -158,7 +158,8 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        setAppInfo(res.data.data.appraiser.result);
+        // console.log(res.data.data);
+        setAppInfo(res.data.data.appraiser);
         setOpenBrokerModal(true);
       })
       .catch((err) => {
