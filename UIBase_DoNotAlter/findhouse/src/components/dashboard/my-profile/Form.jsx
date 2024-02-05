@@ -26,7 +26,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
       </div>
 
       <div className="row">
-        <div className="col-lg-3 text-center">
+        <div className="col-lg-2 text-center">
           <div className="wrap-custom-file mt-3 mb-5">
             <img
               style={{ borderRadius: "50%" }}
@@ -36,9 +36,9 @@ const Form = ({ userData, chnageShowCardHandler }) => {
           </div>
           {/* End .col */}
         </div>
-        <div className="col-lg-9">
+        <div className="col-lg-10">
           <div className="row mb-2">
-            <div className="col-lg-9">
+            <div className="col-lg-12">
               {/* <table
                 className=""
                 style={{
@@ -222,7 +222,301 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                   </td>
                 </tr>
               </table> */}
-              <div className="">
+              <span style={{ fontWeight: "bold" }}>
+                <h3 className="text-center text-color"> Broker Details </h3>
+              </span>
+              {/* <hr /> */}
+              <div
+                className="d-flex justify-content-center"
+                id="property-info-container"
+              >
+                <table
+                  style={{
+                    width: "700px",
+                    textAlign: "start",
+                    borderRadius: "5px",
+                    fontSize: "17px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  <thead>
+                    <tr>
+                      <th
+                        style={{
+                          border: "1px solid #2e008b",
+                          color: "#2e008b",
+                          color: "#2e008b",
+                          // padding: "5px",
+                          textAlign: "center",
+                        }}
+                      >
+                        Headers
+                      </th>
+                      <th
+                        style={{
+                          border: "1px solid #2e008b",
+                          // width: "470px",
+                          color: "#2e008b",
+                          // padding: "5px",
+                          textAlign: "center",
+                        }}
+                      >
+                        Value
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td
+                        style={{
+                          border: "1px solid #2e008b",
+                          color: "#2e008b",
+                          padding: "5px",
+                        }}
+                      >
+                        <span className="text-start">Name</span>
+                      </td>
+                      <td
+                        style={{
+                          border: "1px solid #2e008b",
+                          width: "420px",
+                          color: "black",
+                          padding: "5px",
+                        }}
+                      >
+                        {" "}
+                        {userData?.broker_Details?.firstName}{" "}
+                        {userData?.broker_Details?.middleName}{" "}
+                        {userData?.broker_Details?.lastName}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        style={{
+                          border: "1px solid #2e008b",
+                          color: "#2e008b",
+                          padding: "5px",
+                        }}
+                      >
+                        <span className="text-start"> Company Name </span>
+                      </td>
+                      <td
+                        style={{
+                          border: "1px solid #2e008b",
+                          width: "250px",
+                          color: "black",
+                          padding: "5px",
+                        }}
+                      >
+                        {userData?.broker_Details?.companyName}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        style={{
+                          border: "1px solid #2e008b",
+                          color: "#2e008b",
+                          padding: "5px",
+                        }}
+                      >
+                        <span className="text-start"> Email Address</span>
+                      </td>
+                      <td
+                        style={{
+                          border: "1px solid #2e008b",
+                          width: "250px",
+                          color: "black",
+                          padding: "5px",
+                        }}
+                      >
+                        {userData?.userEmail}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        style={{
+                          border: "1px solid #2e008b",
+                          color: "#2e008b",
+                          padding: "5px",
+                        }}
+                      >
+                        <span className="text-start"> Phone Number</span>
+                      </td>
+                      <td
+                        style={{
+                          border: "1px solid #2e008b",
+                          width: "250px",
+                          color: "black",
+                          padding: "5px",
+                        }}
+                      >
+                        {userData?.broker_Details?.phoneNumber}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        style={{
+                          border: "1px solid #2e008b",
+                          color: "#2e008b",
+                          padding: "5px",
+                        }}
+                      >
+                        <span className="text-start"> Cell Number</span>
+                      </td>
+                      <td
+                        style={{
+                          border: "1px solid #2e008b",
+                          width: "250px",
+                          color: "black",
+                          padding: "5px",
+                        }}
+                      >
+                        {userData?.broker_Details?.phoneNumber}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        style={{
+                          border: "1px solid #2e008b",
+                          color: "#2e008b",
+                          padding: "5px",
+                        }}
+                      >
+                        <span className="text-start">
+                          {" "}
+                          Mortgage Broker Licence No.
+                        </span>
+                      </td>
+                      <td
+                        style={{
+                          border: "1px solid #2e008b",
+                          width: "250px",
+                          color: "black",
+                          padding: "5px",
+                        }}
+                      >
+                        {userData?.broker_Details?.mortageBrokerLicNo}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        style={{
+                          border: "1px solid #2e008b",
+                          color: "#2e008b",
+                          padding: "5px",
+                        }}
+                      >
+                        <span className="text-start">
+                          Mortgage Brokerage Licence No.
+                        </span>
+                      </td>
+                      <td
+                        style={{
+                          border: "1px solid #2e008b",
+                          width: "250px",
+                          color: "black",
+                          padding: "5px",
+                        }}
+                      >
+                        {userData?.broker_Details?.mortageBrokerageLicNo}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        style={{
+                          border: "1px solid #2e008b",
+                          color: "#2e008b",
+                          padding: "5px",
+                        }}
+                      >
+                        <span className="text-start">Address</span>
+                      </td>
+                      <td
+                        style={{
+                          border: "1px solid #2e008b",
+                          width: "250px",
+                          color: "black",
+                          padding: "5px",
+                        }}
+                      >
+                        {" "}
+                        {userData?.broker_Details?.streetNumber}{" "}
+                        {userData?.broker_Details?.streetName}{" "}
+                        {userData?.broker_Details?.city}{" "}
+                        {userData?.broker_Details?.province}{" "}
+                        {userData?.broker_Details?.postalCode}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        style={{
+                          border: "1px solid #2e008b",
+                          color: "#2e008b",
+                          padding: "5px",
+                        }}
+                      >
+                        <span className="text-start">Assistant Name</span>
+                      </td>
+                      <td
+                        style={{
+                          border: "1px solid #2e008b",
+                          width: "250px",
+                          color: "black",
+                          padding: "5px",
+                        }}
+                      >
+                        {userData?.broker_Details?.assistantFirstName}
+                        {userData?.broker_Details?.assistantLastName}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        style={{
+                          border: "1px solid #2e008b",
+                          color: "#2e008b",
+                          padding: "5px",
+                        }}
+                      >
+                        <span className="text-start">Assistant Email</span>
+                      </td>
+                      <td
+                        style={{
+                          border: "1px solid #2e008b",
+                          width: "250px",
+                          color: "black",
+                          padding: "5px",
+                        }}
+                      >
+                        {" "}
+                        {userData?.broker_Details?.assistantEmailAddress}{" "}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        style={{
+                          border: "1px solid #2e008b",
+                          color: "#2e008b",
+                          padding: "5px",
+                        }}
+                      >
+                        <span className="text-start">Assistant Phone</span>
+                      </td>
+                      <td
+                        style={{
+                          border: "1px solid #2e008b",
+                          width: "250px",
+                          color: "black",
+                          padding: "5px",
+                        }}
+                      >
+                        {" "}
+                        {userData?.broker_Details?.assistantPhoneNumber}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              {/* <div className="">
                 <span style={{ fontWeight: "bold" }}>
                   <h3 className="text-center"> Broker Details </h3>
                 </span>
@@ -314,7 +608,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                         {userData?.broker_Details?.streetNumber}{" "}
                         {userData?.broker_Details?.streetName}
                         {userData?.broker_Details?.unit}{" "}
-                        {userData?.broker_Details?.city}, {" "}
+                        {userData?.broker_Details?.city},{" "}
                         {userData?.broker_Details?.province},{" "}
                         {userData?.broker_Details?.postalCode}
                       </span>
@@ -362,7 +656,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                   </div>
                 </div>
                 <hr />
-              </div>
+              </div> */}
             </div>
             {/* End .col */}
           </div>
