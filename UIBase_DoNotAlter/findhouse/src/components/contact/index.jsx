@@ -121,11 +121,11 @@ const Index = () => {
                 <div
                   className="col-lg-3"
                   style={{
-                    backgroundColor: "#2e008b",
                     borderRadius: "4px 0 0 4px",
-                    opacity: "0.9",
-                    background:
-                      "url(https://i.pinimg.com/originals/02/7e/fd/027efde1602fe8a0a642fafbe5673b42.jpg)",
+                    opacity: "",
+                    background: "#2e008b",
+                    // background:
+                    //   "url(https://i.pinimg.com/originals/02/7e/fd/027efde1602fe8a0a642fafbe5673b42.jpg)",
                   }}
                 >
                   <h3

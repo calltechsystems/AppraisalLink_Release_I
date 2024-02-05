@@ -544,7 +544,7 @@ const Form = () => {
             >
               <button
                 onClick={submitHnadler}
-                className="btn btn2"
+                className="btn btn-color"
                 disabled={!verified}
               >
                 Submit

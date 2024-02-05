@@ -39,12 +39,12 @@ const headCells = [
     label: "Appraisal Status",
     width: 170,
   },
-  {
-    id: "remark",
-    numeric: false,
-    label: "Remark",
-    width: 170,
-  },
+  // {
+  //   id: "remark",
+  //   numeric: false,
+  //   label: "Remark",
+  //   width: 170,
+  // },
   {
     id: "sub_date",
     numeric: false,
@@ -308,7 +308,7 @@ export default function Exemple({
               ) : (
                 <span className="btn bg-warning  w-100">N.A.</span>
               ),
-            address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
+            address: `${property.streetNumber} ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
             remark: property.remark ? property.remark : "N.A.",
             // user: property.applicantEmailAddress,
             type_of_building: property.typeOfBuilding,

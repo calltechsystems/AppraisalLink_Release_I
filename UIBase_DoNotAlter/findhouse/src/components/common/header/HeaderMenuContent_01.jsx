@@ -225,7 +225,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                 onMouseEnter={() => setAbout()}
               >
                 <Link
-                  href="#"
+                  href="/about-us"
                   onMouseEnter={() => setHovered()}
                   className={route.pathname === "#" ? "ui-active" : undefined}
                 >
@@ -248,8 +248,8 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                       position: "absolute",
                       top: "100%",
                       // left: "20px",
-                      right: "-1050px",
-                      width: "1900px",
+                      right: "-750px",
+                      width: "1300px",
                       margin: "-16px",
                       height: "225px",
                       backgroundColor: "#fff",
@@ -264,8 +264,8 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                     }}
                   >
                     <div className="row">
-                      <div className="col-lg-2"></div>
-                      <div className="col-lg-2 text-end">
+                      {/* <div className="col-lg-2"></div> */}
+                      <div className="col-lg-3 text-end">
                         <div className="row">
                           <div className="col-lg-8 m-5 fw-bold" style={{}}>
                             <Link href="/">
@@ -282,7 +282,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                         </div>
                       </div>
                       <div
-                        className="col-lg-2"
+                        className="col-lg-3"
                         style={{ backgroundColor: "#c2c2c2" }}
                       >
                         <div className="row">
@@ -308,7 +308,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                           </div>
                         </div>
                       </div>
-                      <div className="col-lg-1">
+                      <div className="col-lg-2">
                         <div className="row text-center">
                           <div className="col-lg-12 m-3 fw-bold">
                             <Link href="/">
@@ -343,7 +343,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                           </div>
                         </div>
                       </div>
-                      <div className="col-lg-1"></div>
+                      {/* <div className="col-lg-1"></div> */}
                     </div>
                   </div>
                 ) : null}
@@ -354,7 +354,10 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                 onMouseOver={() => setAbout()}
                 onMouseEnter={() => setLogin()}
               >
-                <Link href="#" onMouseOver={() => setInsight()}>
+                <Link
+                  href="/broker-user-guide"
+                  onMouseOver={() => setInsight()}
+                >
                   <span
                     className="title text-info-01 cool-link menuitem"
                     onMouseOver={() => setHovered(!hovered)}
@@ -380,11 +383,11 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                       transition: "opacity 0.3s ease", // Add transition for the opacity property
                       position: "absolute",
                       top: "100%",
-                      left: "-1000px",
+                      left: "-550px",
                       // right: "-500px",
-                      width: "1900px",
+                      width: "1300px",
                       margin: "-16px",
-                      height: "225px",
+                      height: "230px",
                       backgroundColor: "#fff",
                       color: "#333",
                       borderTopColor: "#2e008b",
@@ -397,13 +400,13 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                     }}
                   >
                     <div className="row">
-                      <div className="col-lg-2"></div>
+                      {/* <div className="col-lg-2"></div> */}
                       <div
-                        className="col-lg-2 text-center"
-                        style={{ backgroundColor: "#c2c2c2" }}
+                        className="col-lg-3 text-center"
+                        style={{ backgroundColor: "" }}
                       >
                         <div className="row">
-                          <div className="col-lg-9 m-5 fw-bold">
+                          <div className="col-lg-8 m-5 fw-bold">
                             <span>
                               Ready to see Appraisal Land help make you more
                               money at record speed?
@@ -417,8 +420,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                           </div>
                         </div>
                       </div>
-
-                      <div className="col-lg-2 text-end">
+                      <div className="col-lg-3 text-end">
                         <div className="row">
                           <div className="col-lg-12 m-4 fw-bold">
                             <Link href="/">
@@ -435,7 +437,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                         </div>
                       </div>
                       <div
-                        className="col-lg-2 text-end"
+                        className="col-lg-3 text-end"
                         style={{ backgroundColor: "#c2c2c2" }}
                       >
                         <div className="row">
@@ -461,7 +463,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                               </button>
                             </Link>
                           </div>
-                          <div className="col-lg-12 mb-2">
+                          <div className="col-lg-12">
                             <Link href="/broker-user-guide">
                               <button className="btn w-100 btn-color">
                                 For Mortgage Brokerage
@@ -470,9 +472,9 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                           </div>
                         </div>
                       </div>
-                      <div className="col-lg-2 text-center">
+                      <div className="col-lg-2 text-start">
                         <div className="row">
-                          <div className="col-lg-6 m-5 fw-bold" style={{}}>
+                          <div className="col-lg-12 m-5 fw-bold" style={{}}>
                             <Link href="/">
                               <Image
                                 width={160}
@@ -487,7 +489,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                         </div>
                       </div>
 
-                      <div className="col-lg-1"></div>
+                      {/* <div className="col-lg-1"></div> */}
                     </div>
                   </div>
                 ) : null}
@@ -631,7 +633,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                 onMouseEnter={() => setInsight()}
               >
                 <Link
-                  href="#"
+                  href="/membership"
                   onMouseOver={() => setAbout()}
                   className={
                     route.pathname === "/membership" ? "ui-active" : undefined
@@ -828,8 +830,8 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                       position: "absolute",
                       top: "100%",
                       // left: "20px",
-                      right: "-450px",
-                      width: "1900px",
+                      right: "-250px",
+                      width: "1300px",
                       margin: "-16px",
                       height: "225px",
                       backgroundColor: "#fff",
@@ -844,7 +846,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                     }}
                   >
                     <div className="row">
-                      <div className="col-lg-2"></div>
+                      {/* <div className="col-lg-2"></div> */}
                       <div className="col-lg-2">
                         <div className="row">
                           <div className="col-lg-12 m-4 fw-bold" style={{}}>
@@ -862,7 +864,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                         </div>
                       </div>
                       <div
-                        className="col-lg-2 text-center"
+                        className="col-lg-3 text-center"
                         style={{ backgroundColor: "#c2c2c2" }}
                       >
                         <div className="row text-end">
@@ -880,7 +882,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                           </div>
                         </div>
                       </div>
-                      <div className="col-lg-2 text-center">
+                      <div className="col-lg-3 text-center">
                         <div className="row">
                           <div className="col-lg-12 m-4 fw-bold">
                             <Link href="/">
@@ -897,7 +899,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                         </div>
                       </div>
                       <div
-                        className="col-lg-2 text-center"
+                        className="col-lg-3 text-center"
                         style={{ backgroundColor: "#c2c2c2" }}
                       >
                         <div className="row">

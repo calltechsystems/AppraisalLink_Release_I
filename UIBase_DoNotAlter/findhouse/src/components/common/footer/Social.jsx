@@ -11,7 +11,7 @@ const Social = () => {
       {socialContent.map((item) => (
         <li className="list-inline-item" key={item.id}>
           <a href={item.liveLink} target="_blank" rel="noopener noreferrer">
-            <i className={`fa ${item.icon}`}></i>
+            <i className={`fa ${item.icon} text-light`}></i>
           </a>
         </li>
       ))}

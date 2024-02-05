@@ -28,24 +28,28 @@ const Header = ({ userData }) => {
         {/* <!-- Menu Toggle btn--> */}
         <Link href="/" className="navbar_brand float-start dn-smd">
           <Image
-            width={70}
+            width={60}
             height={45}
             className="logo1 img-fluid"
-            style={{  }}
+            style={{}}
             src="/assets/images/logo.png"
             alt="header-logo2.png"
           />
           <Image
-            width={70}
+            width={60}
             height={45}
             className="logo2 img-fluid"
-            style={{  }}
+            style={{}}
             src="/assets/images/logo.png"
             alt="header-logo2.png"
           />
-          <span style={{ marginTop: "40px", color: "#2e008b", marginLeft:"-10px" }}>Appraisal</span>
           <span
-            style={{ marginTop: "40px", color: "#97d700", paddingLeft: "5px" }}
+            style={{ marginTop: "35px", color: "#2e008b", marginLeft: "-10px" }}
+          >
+            Appraisal
+          </span>
+          <span
+            style={{ marginTop: "35px", color: "#97d700", paddingLeft: "5px" }}
           >
             Land
           </span>
