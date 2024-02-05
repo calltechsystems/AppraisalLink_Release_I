@@ -28,6 +28,7 @@ async function handler(request, response) {
       state,
       postalCode,
       phoneNumber,
+      cellNumber,
       officeContactEmail,
       officeContactLastName,
       officeContactFirstName,
@@ -53,6 +54,7 @@ async function handler(request, response) {
       officeContactEmail : officeContactEmail,
       lenderListUrl:lenderListUrl,
       officeContactPhone:officeContactPhone,
+      cellNumber:cellNumber,
     };
 
   

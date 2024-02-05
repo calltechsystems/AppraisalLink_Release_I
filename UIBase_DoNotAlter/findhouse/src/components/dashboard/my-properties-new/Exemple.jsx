@@ -39,12 +39,12 @@ const headCells = [
     label: "Appraisal Status",
     width: 170,
   },
-  // {
-  //   id: "remark",
-  //   numeric: false,
-  //   label: "Remark",
-  //   width: 170,
-  // },
+  {
+    id: "remark",
+    numeric: false,
+    label: "Appraiser Remark",
+    width: 170,
+  },
   {
     id: "sub_date",
     numeric: false,
@@ -310,6 +310,7 @@ export default function Exemple({
               ),
             address: `${property.streetNumber} ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
             // remark: isBidded.remark ? isBidded.remark : "N.A.",
+            remark: property.remark ? property.remark : "N.A.",
             // user: property.applicantEmailAddress,
             type_of_building: property.typeOfBuilding,
             amount: ` $ ${millify(property.estimatedValue)}`,

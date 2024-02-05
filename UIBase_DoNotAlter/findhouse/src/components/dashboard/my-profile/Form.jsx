@@ -223,7 +223,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                 </tr>
               </table> */}
               <span style={{ fontWeight: "bold" }}>
-                <h3 className="text-center text-color"> Broker Details </h3>
+                <h3 className="text-center text-color"> User Details </h3>
               </span>
               {/* <hr /> */}
               <div

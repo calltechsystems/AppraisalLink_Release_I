@@ -1,4 +1,4 @@
-import Header from "../../common/header/dashboard/Header_02";
+import Header from "../../common/header/dashboard/HeaderAppraiserCompany";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenu_002";
 import MobileMenu from "../../common/header/MobileMenu_01";
 import TableData from "./TableData";
@@ -23,7 +23,7 @@ const Index = () => {
   const [searchInput, setSearchInput] = useState("");
   const [toggleId, setToggleId] = useState(-1);
 
-  const [openEditModal,setOpenEditModal]=useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
 
   const [closeRegisterModal, setCloseRegisterModal] = useState(false);
   const [toggleWishlist, setToggleWishlist] = useState(0);
@@ -38,93 +38,103 @@ const Index = () => {
   const [lowRangeBid, setLowRangeBid] = useState("");
   const [propertyId, setPropertyId] = useState(null);
   const [updatedCode, setUpdatedCode] = useState(false);
-  
-  const [appraiser,setAppraiser] = useState({});
+
+  const [appraiser, setAppraiser] = useState({});
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
 
-  const [firstName,setFirstName]=useState(appraiser?.firstName ? appraiser?.firstName : "" );
-  const [lastName,setLastName]=useState(appraiser?.lastName ? appraiser?.lastName : "");
-  const [companyName,setCompanyName]=useState(appraiser?.companyName ? appraiser?.companyName : "");
-  const [phoneNumber,setPhoneNumber]=useState(appraiser?.phoneNumber ? appraiser?.phoneNumber : "");
+  const [firstName, setFirstName] = useState(
+    appraiser?.firstName ? appraiser?.firstName : ""
+  );
+  const [lastName, setLastName] = useState(
+    appraiser?.lastName ? appraiser?.lastName : ""
+  );
+  const [companyName, setCompanyName] = useState(
+    appraiser?.companyName ? appraiser?.companyName : ""
+  );
+  const [phoneNumber, setPhoneNumber] = useState(
+    appraiser?.phoneNumber ? appraiser?.phoneNumber : ""
+  );
 
-  const [streetName,setStreetName]=useState(appraiser?.streetName ? appraiser?.streetName : "");
-  const [streetNumber,setStreetNumber]=useState(appraiser?.streetNumber ? appraiser?.streetNumber : "");
-  const [postalCode,setPostalCode]=useState(appraiser?.postalCode ? appraiser?.postalCode : "");
-  const [city,setCity]=useState(appraiser?.city ? appraiser?.city : "");
+  const [streetName, setStreetName] = useState(
+    appraiser?.streetName ? appraiser?.streetName : ""
+  );
+  const [streetNumber, setStreetNumber] = useState(
+    appraiser?.streetNumber ? appraiser?.streetNumber : ""
+  );
+  const [postalCode, setPostalCode] = useState(
+    appraiser?.postalCode ? appraiser?.postalCode : ""
+  );
+  const [city, setCity] = useState(appraiser?.city ? appraiser?.city : "");
 
   const [start, setStart] = useState(0);
 
   const [end, setEnd] = useState(5);
 
-  const [currentViewAppraiser,setCurrentViewAppraiser]=useState({});
-  const [openViewModal,setOpenViewModal] = useState(false);
-  const [appraiserCompanyInfo,setAppraiserCompanyInfo]=useState({});
+  const [currentViewAppraiser, setCurrentViewAppraiser] = useState({});
+  const [openViewModal, setOpenViewModal] = useState(false);
+  const [appraiserCompanyInfo, setAppraiserCompanyInfo] = useState({});
 
   const [isStatusModal, setIsStatusModal] = useState(false);
 
-  const [selectedAppraiser,setSelectedAppraiser] = useState(-1);
+  const [selectedAppraiser, setSelectedAppraiser] = useState(-1);
 
-  const [isActive,setIsActive] = useState(0);
+  const [isActive, setIsActive] = useState(0);
 
   const handleStatusUpdateHandler = () => {
-   
     const payload = {
-      id : selectedAppraiser.userId,
-      IsActive : !selectedAppraiser.isActive
+      id: selectedAppraiser.userId,
+      IsActive: !selectedAppraiser.isActive,
     };
 
     console.log(payload);
 
     const encryptedData = encryptionData(payload);
 
-    toast.loading(
-    "Updating the status"
-    )
-    axios.post("/api/updateIsActiveAppraiser",encryptedData,{
-      headers:{
-        Authorization:`Bearer ${userData.token}`,
-        "Content-Type":"application/json"
-      }
-    })
-    .then((res)=>{
-      toast.dismiss();
-      toast.success("Successfully Updated!!");
-      window.location.reload();
-    })
-    .catch((err)=>{
-      toast.dismiss();
-      toast.error(err);
-    })
+    toast.loading("Updating the status");
+    axios
+      .post("/api/updateIsActiveAppraiser", encryptedData, {
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        toast.dismiss();
+        toast.success("Successfully Updated!!");
+        window.location.reload();
+      })
+      .catch((err) => {
+        toast.dismiss();
+        toast.error(err);
+      });
 
     setSelectedAppraiser(-1);
-  
   };
 
   function copyToClipboard(text) {
     // Create a temporary textarea element
-    const textarea = document.createElement('textarea');
-    
+    const textarea = document.createElement("textarea");
+
     // Set the text content to the provided text
     textarea.value = text;
-    
+
     // Append the textarea to the document
     document.body.appendChild(textarea);
-    
+
     // Select the text in the textarea
     textarea.select();
-    
-    try {
-        // Execute the copy command
-        document.execCommand('copy');
-        toast.success('Text copied to clipboard');
-    } catch (err) {
-        toast.error('Unable to copy text to clipboard', err);
-    } finally {
-        // Remove the textarea from the document
-        document.body.removeChild(textarea);
-    }
-}
 
+    try {
+      // Execute the copy command
+      document.execCommand("copy");
+      toast.success("Text copied to clipboard");
+    } catch (err) {
+      toast.error("Unable to copy text to clipboard", err);
+    } finally {
+      // Remove the textarea from the document
+      document.body.removeChild(textarea);
+    }
+  }
 
   const closeStatusUpdateHandler = () => {
     setSelectedAppraiser(-1);
@@ -145,7 +155,6 @@ const Index = () => {
 
   const [openBrokerModal, setOpenBrokerModal] = useState(false);
   const [broker, setBroker] = useState({});
-
 
   const closeBrokerModal = () => {
     setOpenBrokerModal(false);
@@ -171,47 +180,47 @@ const Index = () => {
 
   console.log(closeRegisterModal);
 
-  const submitEditHandler = ()=>{
-
+  const submitEditHandler = () => {
     const userData = JSON.parse(localStorage.getItem("user"));
     const payload = {
       firstName: firstName,
-      middleName : "",
+      middleName: "",
       lastName: lastName,
       companyName: companyName,
       city: city,
       province: "",
-      postalCode: (postalCode),
-      area: "" ,
-      apartmentNo : "",
-      streetName:streetName,
-      streetNumber:(streetNumber),
-      phoneNumber: (phoneNumber),
-      commissionRate : Number(0),
-      maxNumberOfAssignedOrders:Number(0),
-      designation : "",
+      postalCode: postalCode,
+      area: "",
+      apartmentNo: "",
+      streetName: streetName,
+      streetNumber: streetNumber,
+      phoneNumber: phoneNumber,
+      commissionRate: Number(0),
+      maxNumberOfAssignedOrders: Number(0),
+      designation: "",
       profileImage: "",
-      token:userData.token,
-      id:appraiser.userId
+      token: userData.token,
+      id: appraiser.userId,
     };
 
     toast.loading("Updating the profile!!");
 
     const encryptedBody = encryptionData(payload);
 
-    axios.put("/api/updateAppraiserProfile",encryptedBody)
-    .then((res)=>{
-      toast.dismiss();
-      toast.success("Successfully updated!!");
-      location.reload(true);
-    })
-    .catch((err)=>{
-      toast.dismiss();
-      toast.error("Try Again!");
-      setAppraiser({});
-      setOpenEditModal(false);
-    })
-  }
+    axios
+      .put("/api/updateAppraiserProfile", encryptedBody)
+      .then((res) => {
+        toast.dismiss();
+        toast.success("Successfully updated!!");
+        location.reload(true);
+      })
+      .catch((err) => {
+        toast.dismiss();
+        toast.error("Try Again!");
+        setAppraiser({});
+        setOpenEditModal(false);
+      });
+  };
   useEffect(() => {
     const activityHandler = () => {
       setLastActivityTimestamp(Date.now());
@@ -370,10 +379,10 @@ const Index = () => {
     fetchData();
   }, []);
 
-  const closeViewModal = ()=>{
+  const closeViewModal = () => {
     setOpenViewModal(false);
     setCurrentViewAppraiser({});
-  }
+  };
 
   const participateHandler = (val, id) => {
     setLowRangeBid(val);
@@ -1160,7 +1169,6 @@ const Index = () => {
                 </div>
                 {/* End .col */}
               </div>
-             
 
               {closeRegisterModal && (
                 <div className="modal">
@@ -1171,67 +1179,71 @@ const Index = () => {
                 </div>
               )}
 
-              { openViewModal &&
+              {openViewModal && (
                 <div className="modal">
-                <div className="modal-content">
-                <h3 className="text-center">View Credentials</h3>
+                  <div className="modal-content">
+                    <h3 className="text-center">View Credentials</h3>
 
-                <div className="row">
-                  <div className="col-lg-12">
-                    <div className="row mb-2 mt-2 text-center">
-                      <div className="row mb-2 mt-2">
-                        <div className="col-lg-3 mb-2">
-                          <label
-                            htmlFor=""
-                            style={{
-                              paddingTop: "15px",
-                              fontWeight: "lighter",
-                            }}
-                          >
-                            Email <span class="req-btn">*</span> :
-                          </label>
+                    <div className="row">
+                      <div className="col-lg-12">
+                        <div className="row mb-2 mt-2 text-center">
+                          <div className="row mb-2 mt-2">
+                            <div className="col-lg-3 mb-2">
+                              <label
+                                htmlFor=""
+                                style={{
+                                  paddingTop: "15px",
+                                  fontWeight: "lighter",
+                                }}
+                              >
+                                Email <span class="req-btn">*</span> :
+                              </label>
+                            </div>
+                            <div
+                              className="col-lg-7"
+                              style={{ display: "flex", flexDirection: "row" }}
+                            >
+                              <input
+                                type="text"
+                                value={currentViewAppraiser.userInfo}
+                                className="form-control"
+                                id="formGroupExampleInput3"
+                              />
+                              <button
+                                onClick={() =>
+                                  copyToClipboard(currentViewAppraiser.email)
+                                }
+                                className="btn btn-color w-10 mt-1"
+                                style={{ marginLeft: "12px" }}
+                              >
+                                <Link href="#">
+                                  <span className="flaticon-invoice text-light"></span>
+                                </Link>
+                              </button>
+                            </div>
+                          </div>
                         </div>
-                        <div className="col-lg-7"style={{display:"flex",flexDirection:"row"}}>
-                          <input
-                            type="text"
-                            value={currentViewAppraiser.userInfo}
-                            
-                            className="form-control"
-                            id="formGroupExampleInput3"
-                          />
-                          <button
-                          onClick={()=>copyToClipboard(currentViewAppraiser.email)}
-                          className="btn btn-color w-10 mt-1"
-                          style={{ marginLeft: "12px" }}
-                        >
-                        <Link href="#">
-                        <span className="flaticon-invoice text-light"></span>
-                      </Link>
-                      </button>
-                        </div>
+
+                        {/* End .col */}
                       </div>
                     </div>
-
-                    {/* End .col */}
-                  </div>
-                </div>
-                <div
-              className="col-lg-12 text-center"
-              style={{ marginRight: "4%" }}
-            >
-              {/* <button className="cancel-button" onClick={closeModal}>
+                    <div
+                      className="col-lg-12 text-center"
+                      style={{ marginRight: "4%" }}
+                    >
+                      {/* <button className="cancel-button" onClick={closeModal}>
                   Cancel
                 </button> */}
-              <button
-                className="btn btn-color w-25"
-                onClick={()=>closeViewModal()}
-              >
-                Cancel
-              </button>
-            </div>
+                      <button
+                        className="btn btn-color w-25"
+                        onClick={() => closeViewModal()}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
                 </div>
-                            </div>
-              }
+              )}
 
               {openEditModal && (
                 <div className="modal">
@@ -1253,13 +1265,20 @@ const Index = () => {
                         backgroundColor: "#E8F0FE",
                       }}
                     >
-                          <option key={0} value={0} disabled={selectedAppraiser?.isActive ? false : true }>
-                            In-active
-                          </option>
-                          <option key={1} value={1} disabled={selectedAppraiser?.isActive ? true : false }>
-                            Active
-                          </option>
-                       
+                      <option
+                        key={0}
+                        value={0}
+                        disabled={selectedAppraiser?.isActive ? false : true}
+                      >
+                        In-active
+                      </option>
+                      <option
+                        key={1}
+                        value={1}
+                        disabled={selectedAppraiser?.isActive ? true : false}
+                      >
+                        Active
+                      </option>
                     </select>
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
