@@ -158,8 +158,13 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        // console.log(res.data.data);
-        setAppInfo(res.data.data.appraiser);
+        if(res.data.data.appraiser){
+          setAppInfo(res.data.data.appraiser);
+
+        }
+        else{
+          setAppInfo(res.data.data.appraiserCompany);
+        }
         setOpenBrokerModal(true);
       })
       .catch((err) => {
@@ -397,20 +402,23 @@ export default function Exemple({
         // setErrorMessage(err?.response?.data?.error);
         // setModalIsOpenError(true);
       });
+
+      console.log(propertyId);
     toast.loading("Getting properties...");
     axios
-      .get("/api/getAllBids", {
+      .get("/api/getAllQuotesForProperty", {
         headers: {
           Authorization: `Bearer ${data?.token}`,
           "Content-Type": "application/json",
         },
         params: {
-          OrderId: data?.userId,
+          OrderId: propertyId,
         },
       })
       .then((res) => {
         toast.dismiss();
-        const tempBids = res.data.data.result.$values;
+        console.log("bids",res.data);
+        const tempBids = res.data.data.$values;
         console.log(tempBids, propertyId);
         let updatedBids = [];
         tempBids.filter((bid, index) => {

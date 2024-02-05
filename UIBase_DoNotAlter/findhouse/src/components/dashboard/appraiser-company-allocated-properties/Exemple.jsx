@@ -16,7 +16,12 @@ const headCells = [
     label: "Order ID",
     width: 100,
   },
-  
+  {
+    id: "appraiser_info",
+    numeric: false,
+    label: "Appraiser Name",
+    width: 160,
+  },
   {
     id: "address",
     numeric: false,
@@ -44,12 +49,7 @@ const headCells = [
     label: "Remark",
     width: 160,
   },
-  {
-    id: "appraiser_info",
-    numeric: false,
-    label: "Appraiser Info",
-    width: 160,
-  },
+  
 
   {
     id: "urgency",
@@ -184,6 +184,7 @@ export default function Exemple({
     return isAccepted.$id ? isAccepted : bidValue;    //   return requestTime >= twentyFourHoursAgo && requestTime <= currentTime;
   };
 
+ 
   const getAppraiser = (id)=>{
    
       let selectedAppraiser = {};
@@ -355,7 +356,7 @@ export default function Exemple({
         const isWait = property?.isOnHold || property?.isOnCancel;
         const updatedRow = {
           orderId: property?.orderId ,
-          address: `${property?.city}-${property?.province},${property?.zipCode}`,
+          address: property?.city ? `${property?.city}-${property?.province},${property?.zipCode}` : "-",
           estimatedValue: property?.estimatedValue
             ? `$ ${formatLargeNumber(property?.estimatedValue)}`
             : "$ 0",
@@ -431,7 +432,7 @@ export default function Exemple({
                     }}
                     onClick={() => getAppraiser(propertyDetail?.appraiserid)}
                   >
-                  Appraiser_Info
+                  {getAppraiserName(propertyDetail?.appraiserid)}
                   </button>
                 </a>,
           property: (
@@ -465,7 +466,7 @@ export default function Exemple({
             ? property?.typeOfAppraisal
             : "N.A.",
           typeOfBuilding:
-            property?.typeOfBuilding > 0 ? "Apartment" : property?.typeOfBuilding,
+            property?.typeOfBuilding  ?  property?.typeOfBuilding : "N.A.",
           quote_required_by: formatDate(property?.addedDatetime),
           date: formatDate(property?.addedDatetime),
           bidAmount: property?.bidLowerRange,

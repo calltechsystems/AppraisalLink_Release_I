@@ -634,14 +634,8 @@ export default function Exemple({
       .then((res) => {
         const temp = res.data.data.properties.$values;
 
-        tempProperties = temp.filter((prop,index)=>{
-          if(String(prop.userId) === String(data.userId)){
-            return true
-          }
-          else{
-            return false
-          }
-        })
+       
+        setProperties(temp);
       })
       .catch((err) => {
         setErrorMessage(err?.response?.data?.error);

@@ -320,7 +320,8 @@ export default function Exemple({
         
         const isArchive = foundArchiveHandler(property.propertyId);
 
-        if(!isArchive && isBidded.status === 1 && isBidded.orderStatus === 6){
+        if(!isArchive && isBidded.status === 1 && isBidded.orderStatus === 3){
+          console.log(property);
           if(isBidded.status === 1){
             console.log(getOrderValue(isBidded.orderStatus))
           }
@@ -346,7 +347,7 @@ export default function Exemple({
         </span>
             : 
           isBidded.bidId ? 
-          isBidded.orderStatus === 6 ?
+          isBidded.orderStatus === 3 ?
           <span
           className="btn btn-success  w-100"
           
@@ -435,7 +436,7 @@ export default function Exemple({
             property.typeOfBuilding > 0 ? "Apartment" : property.typeOfBuilding,
           quote_required_by: formatDate(property.addedDatetime),
           date: formatDate(property.addedDatetime),
-          bidAmount: property.bidLowerRange,
+          bidAmount: formatLargeNumber(property.bidLowerRange),
           lender_information: property.lenderInformation
             ? property.lenderInformation
             : "N.A.",

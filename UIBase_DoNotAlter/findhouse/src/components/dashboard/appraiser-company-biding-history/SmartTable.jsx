@@ -275,7 +275,7 @@ function SmartTable(props) {
                   <div className="col-lg-6 w-50">
                     <button
                       className="btn btn-color"
-                      onClick={() => location.reload(true)}
+                      onClick={() =>props.refreshHandler()}
                       title="Refresh"
                     >
                       <FaRedo />

@@ -309,7 +309,7 @@ export default function Exemple({
                 <span className="btn bg-warning  w-100">N.A.</span>
               ),
             address: `${property.streetNumber} ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
-            remark: property.remark ? property.remark : "N.A.",
+            // remark: isBidded.remark ? isBidded.remark : "N.A.",
             // user: property.applicantEmailAddress,
             type_of_building: property.typeOfBuilding,
             amount: ` $ ${millify(property.estimatedValue)}`,

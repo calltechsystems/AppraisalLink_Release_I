@@ -420,7 +420,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                           </div>
                         </div>
                       </div>
-                      <div className="col-lg-3 text-end">
+                      <div className="col-lg-2 text-start">
                         <div className="row">
                           <div className="col-lg-12 m-4 fw-bold">
                             <Link href="/">
@@ -532,8 +532,8 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                       position: "absolute",
                       top: "100%",
                       // left: "20px",
-                      right: "-720px",
-                      width: "1900px",
+                      right: "-470px",
+                      width: "1400px",
                       margin: "-16px",
                       height: "225px",
                       backgroundColor: "#fff",
@@ -548,10 +548,10 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                     }}
                   >
                     <div className="row">
-                      <div className="col-lg-2"></div>
+                      {/* <div className="col-lg-2"></div> */}
                       <div
-                        className="col-lg-2 text-center"
-                        style={{ backgroundColor: "#c2c2c2" }}
+                        className="col-lg-3 text-center"
+                        style={{ backgroundColor: "" }}
                       >
                         <div className="row">
                           <div className="col-lg-8 m-5 fw-bold">
@@ -567,7 +567,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                           </div>
                         </div>
                       </div>
-                      <div className="col-lg-2 text-center">
+                      <div className="col-lg-3 text-center">
                         <div className="row">
                           <div className="col-lg-10 m-4 fw-bold" style={{}}>
                             <Link href="/">
@@ -584,7 +584,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                         </div>
                       </div>
                       <div
-                        className="col-lg-2 text-center"
+                        className="col-lg-3 text-center"
                         style={{ backgroundColor: "#c2c2c2" }}
                       >
                         <div className="row">
@@ -602,7 +602,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                           </div>
                         </div>
                       </div>
-                      <div className="col-lg-2 text-end">
+                      <div className="col-lg-3 text-end">
                         <div className="row">
                           <div
                             className="col-lg-12 m-3 fw-bold"
@@ -621,7 +621,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                           </div>
                         </div>
                       </div>
-                      <div className="col-lg-1"></div>
+                      {/* <div className="col-lg-1"></div> */}
                     </div>
                   </div>
                 ) : null}
@@ -660,8 +660,8 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                       position: "absolute",
                       top: "100%",
                       // left: "20px",
-                      right: "-700px",
-                      width: "1900px",
+                      right: "-380px",
+                      width: "1400px",
                       margin: "-16px",
                       height: "225px",
                       backgroundColor: "#fff",
@@ -676,13 +676,13 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                     }}
                   >
                     <div className="row">
-                      <div className="col-lg-2"></div>
+                      {/* <div className="col-lg-2"></div> */}
                       <div
-                        className="col-lg-2 text-center"
-                        style={{ backgroundColor: "#c2c2c2" }}
+                        className="col-lg-3 text-center"
+                        style={{ backgroundColor: "" }}
                       >
                         <div className="row">
-                          <div className="col-lg-8 m-5 fw-bold">
+                          <div className="col-lg-10 m-5 fw-bold">
                             <span style={{ lineHeight: "1.9" }}>
                               Experience our platform to the fullest by becoming
                               a subscriber on{" "}
@@ -696,7 +696,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                         </div>
                       </div>
 
-                      <div className="col-lg-2 text-end">
+                      <div className="col-lg-3 text-end">
                         <div className="row">
                           <div
                             className="col-lg-12 m-3 fw-bold"
@@ -716,7 +716,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                       </div>
 
                       <div
-                        className="col-lg-2 text-end"
+                        className="col-lg-3 text-end"
                         style={{ backgroundColor: "#c2c2c2" }}
                       >
                         <div className="row">
@@ -751,7 +751,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                           </div>
                         </div>
                       </div>
-                      <div className="col-lg-2 text-center">
+                      <div className="col-lg-3 text-center">
                         <div className="row">
                           <div className="col-lg-6 m-4 fw-bold" style={{}}>
                             <Link href="/">
@@ -768,7 +768,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                         </div>
                       </div>
 
-                      <div className="col-lg-1"></div>
+                      {/* <div className="col-lg-1"></div> */}
                     </div>
                   </div>
                 ) : null}

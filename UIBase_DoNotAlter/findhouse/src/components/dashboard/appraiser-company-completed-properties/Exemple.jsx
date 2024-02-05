@@ -320,7 +320,7 @@ export default function Exemple({
         
         const isArchive = foundArchiveHandler(property.propertyId);
 
-        if(!isArchive && isBidded.status === 1 && isBidded.orderStatus === 6){
+        if(!isArchive && isBidded.status === 1 && isBidded.orderStatus === 3){
           if(isBidded.status === 1){
             console.log(getOrderValue(isBidded.orderStatus))
           }
@@ -346,7 +346,7 @@ export default function Exemple({
         </span>
             : 
           isBidded.bidId ? 
-          isBidded.orderStatus === 6 ?
+          isBidded.orderStatus === 3 ?
           <span
           className="btn btn-success  w-100"
           
@@ -594,14 +594,7 @@ export default function Exemple({
       .then((res) => {
         const temp = res.data.data.properties.$values;
 
-        tempProperties = temp.filter((prop,index)=>{
-          if(String(prop.userId) === String(data.userId) ){
-            return true
-          }
-          else{
-            return false
-          }
-        })
+       setProperties(temp);
       })
       .catch((err) => {
         setErrorMessage(err?.response?.data?.error);

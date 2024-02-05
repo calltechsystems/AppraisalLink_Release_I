@@ -34,6 +34,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   );
 
   const [SMSAlert, setSMSAlert] = useState(false);
+
+  const [cellNumber,setCellNumber]=useState(userData?.appraiser_Details?.cellNumber || "");
   const [lastNameRef, setLastNameRef] = useState(
     userData?.appraiser_Details?.lastName || ""
   );
@@ -98,7 +100,38 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     // }
   };
 
-  console.log(selectedImage2);
+  const handleInputChange = (e) => {
+    const inputValue = e.target.value;
+
+    // Allow only numeric input
+    const numericValue = inputValue.replace(/\D/g, "");
+
+    // Restrict to 10 digits
+    const truncatedValue = numericValue.slice(0, 10);
+    if (truncatedValue.length === 10) {
+      setPhoneNumberRef(truncatedValue);
+    }
+
+    setPhoneNumberRef(truncatedValue);
+  };
+
+  const handleInputCellChange = (e) => {
+    const inputValue = e.target.value;
+
+    // Allow only numeric input
+    const numericValue = inputValue.replace(/\D/g, "");
+
+    // Restrict to 10 digits
+    const truncatedValue = numericValue.slice(0, 10);
+    if (truncatedValue.length === 10) {
+      setCellNumber(truncatedValue);
+    }
+
+    setCellNumber(truncatedValue);
+  };
+
+
+  // console.log(selectedImage2);
   useEffect(() => {
     if (String(designations) === "Other") {
       setSetODesignation(true);
@@ -217,6 +250,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         lenderListUrl: selectedImage2.url,
         streetNumber: streetNumber,
         apartmentNo: "",
+        cellNumber:cellNumber,
         streetName: streetName,
         commissionRate: commissionRate,
         maxNumberOfAssignedOrders: maxNumberOfAssignedOrders,
@@ -234,7 +268,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         );
       }
 
-      console.log(payload);
 
       toast.loading("Updating ...");
       const encryptedData = encryptionData(payload);
@@ -472,13 +505,13 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       </div>
                       <div className="col-lg-7">
                         <input
-                          type="text"
+                          type="phone"
                           required
                           className="form-control"
                           id="formGroupExampleInput3"
                           style={{ backgroundColor: "#E8F0FE" }}
                           value={phoneNumberRef}
-                          onChange={(e) => setPhoneNumberRef(e.target.value)}
+                          onChange={(e) => handleInputChange(e)}
                           disabled={!edit}
                         />
                       </div>
@@ -500,8 +533,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           className="form-control"
                           id="formGroupExampleInput3"
                           style={{ backgroundColor: "#E8F0FE" }}
-                          value={phoneNumberRef}
-                          onChange={(e) => setPhoneNumberRef(e.target.value)}
+                          value={cellNumber}
+                          onChange={(e) => handleInputCellChange(e)}
                           disabled={!edit}
                         />
                       </div>
@@ -620,7 +653,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       </CldUploadWidget>
                     </div>
                     <div className="col-lg-5 mt-1">
-                      <Link href={selectedImage2.url}>
+                      <Link target="_blank"
+                      rel="noopener noreferrer" href={selectedImage2.url}>
                         {selectedImage2.name}
                       </Link>
                     </div>{" "}

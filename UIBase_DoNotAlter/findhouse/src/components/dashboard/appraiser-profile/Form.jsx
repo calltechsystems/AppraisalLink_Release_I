@@ -287,7 +287,21 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       <span className="">:</span>
                       {"   "}
                       <span className="text-start text-dark fw-bold">
-                        {userData?.appraiser_Details?.mortageBrokerLicNo}
+                        {userData?.appraiser_Details?.cellNumber}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-lg-12 mt-1 text-start">
+                      <span className="fs-18 fw-bold text-color">
+                        Lender List{" "}
+                      </span>
+                      {"   "}
+                      <span className="">:</span>
+                      {"   "}
+                      <span className="text-start text-dark fw-bold">
+                        <a target="_blank"
+                        rel="noopener noreferrer" href={userData?.appraiser_Details?.lenderListUrl ? userData?.appraiser_Details?.lenderListUrl : "#"} style={{cursor:"pointer"}}>Lender List Pdf</a>
                       </span>
                     </div>
                   </div>

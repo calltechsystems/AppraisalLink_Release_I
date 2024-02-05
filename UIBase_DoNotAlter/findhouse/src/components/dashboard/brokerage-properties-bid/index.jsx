@@ -57,6 +57,8 @@ const Index = ({ propertyId }) => {
       token: data.token,
     };
 
+    console.log(propertyId);
+
     const encryptedBody = encryptionData(payload);
     axios
       .post("/api/acceptBid", encryptedBody, {
@@ -457,7 +459,7 @@ const Index = ({ propertyId }) => {
             </div>
             {/* End .col */}
 
-            {openBrokerModal && appInfo.firstName && (
+            {openBrokerModal && appInfo?.firstName && (
               <div className="modal">
                 <div className="modal-content">
                   <span style={{ fontWeight: "bold" }}>

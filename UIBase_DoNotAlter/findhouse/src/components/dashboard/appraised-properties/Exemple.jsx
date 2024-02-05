@@ -625,32 +625,65 @@ export default function Exemple({
     };
     let tempProperties = [],
       tempWishlist = [];
-    axios
-      .get("/api/getAllListedProperties", {
-        headers: {
-          Authorization: `Bearer ${data?.token}`,
-          "Content-Type": "application/json",
-        },
-        params: {
-          userId: data?.userId,
-        },
-      })
-      .then((res) => {
-        const temp = res.data.data.properties.$values;
+      axios
+    .get("/api/getAllListedProperties",
+     {
+      headers: {
+        Authorization:`Bearer ${data?.token}`,
+        "Content-Type":"application/json"
+      },
+      params : {
+        userId : data?.userId
+      }
+    })
+    .then((res) => {
+ 
+      toast.dismiss();
+      
+      console.log(res.data);
+      setProperties(res.data.data.properties.$values);
+      // setRerender(false);
+    })
+    .catch((err) => {
+      toast.dismiss();
+      toast.error(err);
+      // setErrorMessage(err?.response?.data?.error);
+      // setModalIsOpenError(true);
+    });
+      
+    
+      // axios
+      // .get("/api/getAllAssignProperties", {
+      //   headers: {
+      //     Authorization: `Bearer ${data?.token}`,
+      //     "Content-Type": "application/json",
+      //   },
+      //   params:{
+      //     userId : data.appraiser_Details?.id
+      //   }
+      // })
+      // .then((res) => {
 
-        tempProperties = temp.filter((prop,index)=>{
-          if(String(prop.userId) === String(data.userId)){
-            return true
-          }
-          else{
-            return false
-          }
-        })
-      })
-      .catch((err) => {
-        setErrorMessage(err?.response?.data?.error);
-        setModalIsOpenError(true);
-      });
+      //   // console.log(res.data.data.$values);
+      //   // tempProperties = res.data.data.$values;
+      //   const temp = res.data.data.$values;
+
+      // //   tempProperties = temp.filter((prop,index)=>{
+      // //     if(String(prop.userId) === String(data.userId)){
+      // //       return true
+      // //     }
+      // //     else{
+      // //       return false
+      // //     }
+      // //   })
+        
+      //   setProperties(temp);
+      // console.log("props",temp)
+      // })
+      // .catch((err) => {
+      //   setErrorMessage(err?.response?.data?.error);
+      //   setModalIsOpenError(true);
+      // });
     axios
       .get("/api/appraiserWishlistedProperties", {
         headers: {
