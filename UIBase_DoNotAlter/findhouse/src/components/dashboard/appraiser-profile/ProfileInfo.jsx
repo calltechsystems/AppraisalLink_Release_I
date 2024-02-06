@@ -28,14 +28,18 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     userData?.appraiser_Details?.firstName || ""
   );
 
-  const [designations, setDesignation] = useState("");
+  const [designation, setDesignation] = useState(
+    userData?.appraiser_Details?.designation || ""
+  );
   const [middleNameRef, setMiddleNameRef] = useState(
     userData?.appraiser_Details?.middleName || ""
   );
 
   const [SMSAlert, setSMSAlert] = useState(false);
 
-  const [cellNumber,setCellNumber]=useState(userData?.appraiser_Details?.cellNumber || "");
+  const [cellNumber, setCellNumber] = useState(
+    userData?.appraiser_Details?.cellNumber || ""
+  );
   const [lastNameRef, setLastNameRef] = useState(
     userData?.appraiser_Details?.lastName || ""
   );
@@ -129,7 +133,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
 
     setCellNumber(truncatedValue);
   };
-
 
   // console.log(selectedImage2);
   useEffect(() => {
@@ -250,7 +253,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         lenderListUrl: selectedImage2.url,
         streetNumber: streetNumber,
         apartmentNo: "",
-        cellNumber:cellNumber,
+        cellNumber: cellNumber,
         streetName: streetName,
         commissionRate: commissionRate,
         maxNumberOfAssignedOrders: maxNumberOfAssignedOrders,
@@ -267,7 +270,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
           "As SMS Alert is selected but phone number is not provided so SMS Alert will not work properly!"
         );
       }
-
 
       toast.loading("Updating ...");
       const encryptedData = encryptionData(payload);
@@ -653,8 +655,11 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       </CldUploadWidget>
                     </div>
                     <div className="col-lg-5 mt-1">
-                      <Link target="_blank"
-                      rel="noopener noreferrer" href={selectedImage2.url}>
+                      <Link
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={selectedImage2.url}
+                      >
                         {selectedImage2.name}
                       </Link>
                     </div>{" "}
