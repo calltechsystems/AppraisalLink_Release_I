@@ -21,6 +21,7 @@ async function handler(request, response) {
       firstName,
       addressLineOne,
       lastName,
+      cellNumber,
       lenderListUrl,
       addressLineTwo,
       city,
@@ -28,7 +29,6 @@ async function handler(request, response) {
       state,
       postalCode,
       phoneNumber,
-      cellNumber,
       officeContactEmail,
       officeContactLastName,
       officeContactFirstName,
@@ -46,6 +46,7 @@ async function handler(request, response) {
       city: city,
       state: state,
       postalCode: postalCode,
+      cellNumber:cellNumber,
       addressLineOne: addressLineOne ,
       addressLineTwo : addressLineTwo,
       officeContactFirstName:officeContactFirstName,
@@ -54,7 +55,6 @@ async function handler(request, response) {
       officeContactEmail : officeContactEmail,
       lenderListUrl:lenderListUrl,
       officeContactPhone:officeContactPhone,
-      cellNumber:cellNumber,
     };
 
   

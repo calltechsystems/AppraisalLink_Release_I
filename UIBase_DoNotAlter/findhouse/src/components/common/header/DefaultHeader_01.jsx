@@ -32,7 +32,7 @@ const Header = ({ userData }) => {
             height={45}
             className="logo1 img-fluid"
             style={{}}
-            src="/assets/images/logo.png"
+            src="/assets/images/Appraisal_Land_Logo.png"
             alt="header-logo2.png"
           />
           <Image
@@ -40,7 +40,7 @@ const Header = ({ userData }) => {
             height={45}
             className="logo2 img-fluid"
             style={{}}
-            src="/assets/images/logo.png"
+            src="/assets/images/Appraisal_Land_Logo.png"
             alt="header-logo2.png"
           />
           <span

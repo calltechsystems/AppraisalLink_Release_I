@@ -17,14 +17,14 @@ const headCells = [
     label: "Order ID",
     width: 100,
   },
-  
+
   {
     id: "address",
     numeric: false,
     label: "Property Address",
     width: 200,
   },
-  
+
   {
     id: "status",
     numeric: false,
@@ -49,7 +49,7 @@ const headCells = [
     label: "Urgency",
     width: 200,
   },
-  
+
   {
     id: "date",
     numeric: false,
@@ -69,7 +69,7 @@ const headCells = [
     label: "Type of Property",
     width: 200,
   },
-  
+
   {
     id: "estimatedValue",
     numeric: false,
@@ -82,7 +82,6 @@ const headCells = [
     label: "Type Of Appraisal",
     width: 200,
   },
-
 
   {
     id: "purpose",
@@ -97,7 +96,7 @@ const headCells = [
     label: "Lender Information",
     width: 200,
   },
- 
+
   {
     id: "broker",
     numeric: false,
@@ -144,7 +143,7 @@ export default function Exemple({
   setRefresh,
   unArchivePropertyHandler,
   setAllArchive,
-   allArchive,
+  allArchive,
   setStartLoading,
   refresh,
 }) {
@@ -156,48 +155,45 @@ export default function Exemple({
   const [show, setShow] = useState(false);
   let tempData = [];
 
-
-  const getOrderValue = (val)=>{
+  const getOrderValue = (val) => {
     let title = "";
-    AppraiserStatusOptions.map((status)=>{
-      if(String(status.id) === String(val)){
+    AppraiserStatusOptions.map((status) => {
+      if (String(status.id) === String(val)) {
         title = status.type;
       }
-    })
+    });
     return title;
-  }
+  };
 
-  const foundArchiveHandler = (propertyId)=>{
+  const foundArchiveHandler = (propertyId) => {
     let isArchive = false;
-    allArchive.map((prop,index)=>{
-      console.log("ischeck",propertyId,prop.property);
-      if(String(prop.property.propertyId) === String(propertyId)){
+    allArchive.map((prop, index) => {
+      console.log("ischeck", propertyId, prop.property);
+      if (String(prop.property.propertyId) === String(propertyId)) {
         isArchive = true;
-      
       }
     });
     return isArchive;
-  }
+  };
 
   const filterBidsWithin24Hours = (property) => {
     let tempBid = 0,
-    bidValue = {};
+      bidValue = {};
     let isAccepted = {};
     // console.log(bids);
-  bids.filter((bid) => {
-    if (bid.orderId === property.orderId ) {
-      if(bid.status === 1){
-        isAccepted=bid;
+    bids.filter((bid) => {
+      if (bid.orderId === property.orderId) {
+        if (bid.status === 1) {
+          isAccepted = bid;
+        } else {
+          bidValue = bid;
+        }
+        tempBid = tempBid + 1;
+      } else {
       }
-      else{
-        bidValue=bid;
-      }
-      tempBid = tempBid + 1;
-    } else {
-    }
-  });
-  return isAccepted.$id ? isAccepted : bidValue;
-};
+    });
+    return isAccepted.$id ? isAccepted : bidValue;
+  };
 
   const router = useRouter();
 
@@ -245,21 +241,23 @@ export default function Exemple({
     const integerLength = Math.floor(Math.log10(Math.abs(number))) + 1;
 
     // Choose the appropriate unit based on the length of the integer part
-    let unit = '';
+    let unit = "";
 
     if (integerLength >= 10) {
-        unit = 'B'; // Billion
+      unit = "B"; // Billion
     } else if (integerLength >= 7) {
-        unit = 'M'; // Million
+      unit = "M"; // Million
     } else if (integerLength >= 4) {
-        unit = 'K'; // Thousand
+      unit = "K"; // Thousand
     }
 
     // Divide the number by the appropriate factor
-    const formattedNumber = (number / Math.pow(10, (integerLength - 1))).toFixed(2);
+    const formattedNumber = (number / Math.pow(10, integerLength - 1)).toFixed(
+      2
+    );
 
     return `${formattedNumber}${unit}`;
-};
+  };
 
   const onDeletePropertyHandler = () => {};
 
@@ -276,19 +274,21 @@ export default function Exemple({
     const originalDate = new Date(dateString);
 
     // Adjust for Eastern Standard Time (EST) by subtracting 5 hours
-    const estDate = new Date(originalDate.getTime() - (5 * 60 * 60 * 1000));
+    const estDate = new Date(originalDate.getTime() - 5 * 60 * 60 * 1000);
 
     // Format the EST date
     const formattedDate = estDate.toLocaleString("en-US", options);
- return formattedDate;
+    return formattedDate;
   };
-
 
   const checkWishlistedHandler = (data) => {
     let temp = {};
     // console.log(wishlist, data);
     wishlist.map((prop, index) => {
-      if (String(prop.propertyId) === String(data.propertyId) && String(prop.userId) === String(userData.userId) ) {
+      if (
+        String(prop.propertyId) === String(data.propertyId) &&
+        String(prop.userId) === String(userData.userId)
+      ) {
         temp = prop;
       }
     });
@@ -304,11 +304,10 @@ export default function Exemple({
     return data.sort((a, b) => b.orderId - a.orderId);
   };
 
-  
-  const checkData = (properties && !updatedData) ? true : false;
-  useEffect(()=>{
+  const checkData = properties && !updatedData ? true : false;
+  useEffect(() => {
     setProperties([]);
-  },[checkData]);
+  }, [checkData]);
 
   useEffect(() => {
     const getData = () => {
@@ -316,44 +315,39 @@ export default function Exemple({
         const property = prop.property;
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
-        
+
         const isArchive = foundArchiveHandler(property.propertyId);
 
         const isWait = property.isOnHold || property.isOnCancel;
         const updatedRow = {
-          orderId: property.orderId ,
+          orderId: property.orderId,
           address: `${property.city}-${property.province},${property.zipCode}`,
           estimatedValue: property.estimatedValue
             ? `$ ${formatLargeNumber(property.estimatedValue)}`
             : "$ 0",
           purpose: property.purpose ? property.purpose : "N.A.",
-          appraisal_status: isBidded.status === 1 && isBidded.orderStatus ? (
-            <span className="btn btn-warning  w-100">{getOrderValue(isBidded.orderStatus)}</span>
-          ):<span className="btn btn-warning  w-100">New</span>,
-          remark : (isBidded && isBidded.remark) ? isBidded.remark : "N.A.",
-          status: 
-          isWait ? 
-          <span
-          className="btn btn-primary  w-100"
-        >
-          {property.isOnCancel ? "On Cancel" : property.isOnHold ?  "On Hold" : ""}
-        </span>
-            : 
-          isBidded.bidId ? (
-            
+          appraisal_status:
+            isBidded.status === 1 && isBidded.orderStatus ? (
+              <span className="btn btn-warning  w-100">
+                {getOrderValue(isBidded.orderStatus)}
+              </span>
+            ) : (
+              <span className="btn btn-warning  w-100">New</span>
+            ),
+          remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
+          status: isWait ? (
+            <span className="btn btn-primary  w-100">
+              {property.isOnCancel
+                ? "On Cancel"
+                : property.isOnHold
+                ? "On Hold"
+                : ""}
+            </span>
+          ) : isBidded.bidId ? (
             isBidded.status === 0 ? (
-              <span
-                className="btn btn-primary  w-100"
-              >
-                Quote Provided
-              </span>
+              <span className="btn btn-primary  w-100">Quote Provided</span>
             ) : isBidded.status === 1 ? (
-              <span
-                className="btn btn-success  w-100"
-                
-              >
-                Accepted
-              </span>
+              <span className="btn btn-success  w-100">Accepted</span>
             ) : (
               <span className="btn btn-danger  w-100">Rejected</span>
             )
@@ -373,9 +367,9 @@ export default function Exemple({
                       // fontWeight: "bold",
                       backgroundColor: "transparent",
                     }}
-                    onClick={() => openModalBroker(property,2)}
+                    onClick={() => openModalBroker(property, 2)}
                   >
-                   Broker Info
+                    Broker Info
                   </button>
                 </a>
               ) : isBidded.status === 2 ? (
@@ -400,7 +394,7 @@ export default function Exemple({
                       // fontWeight: "bold",
                       backgroundColor: "transparent",
                     }}
-                    onClick={() => openModalBroker(property,1)}
+                    onClick={() => openModalBroker(property, 1)}
                   >
                     Property Info
                   </button>
@@ -409,7 +403,8 @@ export default function Exemple({
                 <h6 style={{ color: "red" }}> Declined</h6>
               ) : (
                 <p>
-                  Property Information will be available post the quote acceptance
+                  Property Information will be available post the quote
+                  acceptance
                 </p>
               )}
             </div>
@@ -434,38 +429,32 @@ export default function Exemple({
 
           action: (
             <div className="print-hidden-column">
-              
-                 
-                 { <li
-                  className="list-inline-item"
+              {
+                <li
+                  className=""
                   data-toggle="tooltip"
                   data-placement="top"
                   title="Un-Archive Property"
                 >
                   <div
                     className="w-100"
-                    onClick={() =>
-                      unArchivePropertyHandler(property.orderId)
-                    }
+                    onClick={() => unArchivePropertyHandler(property.orderId)}
                   >
-                    <button
-                      href="#"
-                      className="btn btn-color w-100 mt-1"
-                      style={{ marginLeft: "12px" }}
-                    >
-                    <Link href="#">
-                    <span className="text-light"> <FaArchive/></span>
-                  </Link>
+                    <button href="#" className="btn btn-color">
+                      <Link href="#">
+                        <span className="text-light">
+                          {" "}
+                          <FaArchive />
+                        </span>
+                      </Link>
                     </button>
                   </div>
-                </li>}
-               
-              
+                </li>
+              }
             </div>
           ),
         };
         tempData.push(updatedRow);
-      
       });
       setUpdatedData(tempData);
     };
@@ -475,8 +464,6 @@ export default function Exemple({
   useEffect(() => {
     setUpdatedCode(true);
   }, [updatedData]);
-
-
 
   const refreshHandler = () => {
     setRefresh(true);
@@ -504,14 +491,13 @@ export default function Exemple({
       .then((res) => {
         const temp = res.data.data.properties.$values;
 
-        tempProperties = temp.filter((prop,index)=>{
-          if(String(prop.userId) === String(data.userId)){
-            return true
+        tempProperties = temp.filter((prop, index) => {
+          if (String(prop.userId) === String(data.userId)) {
+            return true;
+          } else {
+            return false;
           }
-          else{
-            return false
-          }
-        })
+        });
       })
       .catch((err) => {
         setErrorMessage(err?.response?.data?.error);
@@ -548,31 +534,30 @@ export default function Exemple({
       .get("/api/getAllBids", {
         headers: {
           Authorization: `Bearer ${data.token}`,
-        }, 
-      
-        params:{
-          email:data.userEmail
-        }
-    })
-    .then((res) => {
+        },
+
+        params: {
+          email: data.userEmail,
+        },
+      })
+      .then((res) => {
         tempBids = res.data.data.$values;
-        const updatedBids = tempBids.filter((prop,index)=>{
-          if(String(prop.appraiserUserId) === String(data.userId)){
+        const updatedBids = tempBids.filter((prop, index) => {
+          if (String(prop.appraiserUserId) === String(data.userId)) {
             return true;
-          }
-          else{
+          } else {
             return false;
           }
-        })
-        
-        setBids(updatedBids);
-    })
-    .catch((err) => {
-      setErrorMessage(err?.response?.data?.error);
-      setModalIsOpenError(true);
-    });
+        });
 
-      axios
+        setBids(updatedBids);
+      })
+      .catch((err) => {
+        setErrorMessage(err?.response?.data?.error);
+        setModalIsOpenError(true);
+      });
+
+    axios
       .get("/api/getAllBrokers", {
         headers: {
           Authorization: `Bearer ${data.token}`,
@@ -580,30 +565,29 @@ export default function Exemple({
       })
       .then((res) => {
         setAllBrokers(res.data.data.$values);
-       
       })
       .catch((err) => {
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
 
-      // axios
-      // .get("/api/getArchiveAppraiserProperty", {
-      //   headers: {
-      //     Authorization: `Bearer ${data.token}`,
-      //   },
-      //   params:{
-      //   userId : data.userId
-      //   }
-      // })
-      // .then((res) => {
-      //   setAllArchive(res.data.data.$values);
-       
-      // })
-      // .catch((err) => {
-      //   setErrorMessage(err?.response?.data?.error);
-      //   setModalIsOpenError(true);
-      // });
+    // axios
+    // .get("/api/getArchiveAppraiserProperty", {
+    //   headers: {
+    //     Authorization: `Bearer ${data.token}`,
+    //   },
+    //   params:{
+    //   userId : data.userId
+    //   }
+    // })
+    // .then((res) => {
+    //   setAllArchive(res.data.data.$values);
+
+    // })
+    // .catch((err) => {
+    //   setErrorMessage(err?.response?.data?.error);
+    //   setModalIsOpenError(true);
+    // });
 
     console.log("end", bids, properties, wishlist);
     setRefresh(false);
@@ -616,7 +600,6 @@ export default function Exemple({
       ) : (
         <SmartTable
           title=""
-
           setSearchInput={setSearchInput}
           setFilterQuery={setFilterQuery}
           data={sortObjectsByOrderIdDescending(updatedData)}

@@ -486,11 +486,11 @@ export default function Exemple({
                   } !.`}{" "}
                 </p>
               ) : isBidded && isBidded.status !== 1 ? (
-                <ul className="">
+                <ul className="mb0 d-flex gap-1">
                   {isBidded.$id && isBidded.status < 1 && (
                     <ul>
                       <li
-                        className="list-inline-item"
+                        className=""
                         data-toggle="tooltip"
                         data-placement="top"
                         title="Provide Quote"
@@ -504,11 +504,7 @@ export default function Exemple({
                             )
                           }
                         >
-                          <button
-                            href="#"
-                            className="btn btn-color w-0 mt-1"
-                            style={{ marginLeft: "12px" }}
-                          >
+                          <button href="#" className="btn btn-color">
                             <Link href="#">
                               <span className="flaticon-building text-light"></span>
                             </Link>
@@ -519,7 +515,7 @@ export default function Exemple({
                   )}
 
                   <li
-                    className="list-inline-item"
+                    className=""
                     data-toggle="tooltip"
                     data-placement="top"
                     title="Archive Property"
@@ -530,27 +526,17 @@ export default function Exemple({
                         onDeletePropertyHandler(property?.propertyId)
                       }
                     >
-                      <button
-                        href="#"
-                        className="btn btn-color w-0 mt-1"
-                        style={{ marginLeft: "12px" }}
-                      >
-                        <button
-                          href="#"
-                          className="btn btn-color  mt-1"
-                          style={{ marginLeft: "12px" }}
-                        >
-                          <Link href="#">
-                            <span className="flaticon-home text-light"></span>
-                          </Link>
-                        </button>
+                      <button href="#" className="btn btn-color">
+                        <Link href="#">
+                          <span className="flaticon-home text-light"></span>
+                        </Link>
                       </button>
                     </div>
                   </li>
                 </ul>
               ) : (
                 <li
-                  className="list-inline-item"
+                  className=""
                   data-toggle="tooltip"
                   data-placement="top"
                   title="Order Update"
@@ -559,16 +545,8 @@ export default function Exemple({
                     className="w-100"
                     onClick={() => openStatusUpdateHandler(isBidded.bidId)}
                   >
-                    <button
-                      href="#"
-                      className="btn btn-color w-0 mt-1"
-                      style={{ marginLeft: "12px" }}
-                    >
-                      <button
-                        href="#"
-                        className="btn btn-color  mt-1"
-                        style={{ marginLeft: "12px" }}
-                      >
+                    <button href="#" className="btn btn-color">
+                      <button href="#" className="btn btn-color">
                         <Link href="#">
                           <span className="flaticon-edit text-light"></span>
                         </Link>

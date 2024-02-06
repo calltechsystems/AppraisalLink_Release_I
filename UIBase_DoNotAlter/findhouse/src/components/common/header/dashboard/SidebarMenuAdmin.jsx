@@ -42,7 +42,7 @@ const SidebarMenu = () => {
             <Image
               width={40}
               height={45}
-              src="/assets/images/logo_new.png"
+              src="/assets/images/Appraisal_Land_Logo.png"
               alt="header-logo2.png"
             />
             <span>Appraisal Land</span>

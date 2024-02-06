@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import HeaderMenuContent from "./HeaderMenuContent";
 import Image from "next/image";
 
-const Header = ({profileCount , setProfileCount , userData }) => {
+const Header = ({ profileCount, setProfileCount, userData }) => {
   const [navbar, setNavbar] = useState(false);
 
-  const changeBackground = ({hide}) => {
+  const changeBackground = ({ hide }) => {
     if (window.scrollY >= 95) {
       setNavbar(true);
     } else {
@@ -15,11 +15,11 @@ const Header = ({profileCount , setProfileCount , userData }) => {
   };
   console.log(profileCount);
 
-  const [userInfo , setUserInfo ] = useState( userData || {} );
+  const [userInfo, setUserInfo] = useState(userData || {});
 
   useEffect(() => {
-    setUserInfo (JSON.parse(localStorage.getItem("user"))) ;
-    
+    setUserInfo(JSON.parse(localStorage.getItem("user")));
+
     window.addEventListener("scroll", changeBackground);
   }, []);
 
@@ -36,22 +36,27 @@ const Header = ({profileCount , setProfileCount , userData }) => {
             width={40}
             height={45}
             className="logo1 img-fluid"
-            src="/assets/images/header-logo2.png"
-            alt="header-logo2.png"
+            src="/assets/images/Appraisal_Land_Logo.png"
+            alt="Appraisal_Land_Logo.png"
           />
           <Image
             width={40}
             height={45}
             className="logo2 img-fluid"
-            src="/assets/images/header-logo2.png"
-            alt="header-logo2.png"
+            src="/assets/images/Appraisal_Land_Logo.png"
+            alt="Appraisal_Land_Logo.png"
           />
           <span>Appraisal Land</span>
         </Link>
         {/* site logo brand */}
 
         <nav>
-          <HeaderMenuContent  profileCount = {profileCount}  setProfileCount={setProfileCount} hide={false} userInfo={userInfo} />
+          <HeaderMenuContent
+            profileCount={profileCount}
+            setProfileCount={setProfileCount}
+            hide={false}
+            userInfo={userInfo}
+          />
         </nav>
         {/* End .navbar */}
       </div>
@@ -59,7 +64,5 @@ const Header = ({profileCount , setProfileCount , userData }) => {
     // {/* <!-- /.theme-main-menu --> */}
   );
 };
-
-
 
 export default Header;

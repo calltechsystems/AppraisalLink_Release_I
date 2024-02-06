@@ -13,6 +13,8 @@ import CryptoJS from "crypto-js";
     const OrderId = request.query.OrderId;
     // console.log(email)
 
+
+    console.log(OrderId);
     // http://calltech-prod.us-east-1.elasticbeanstalk.com/api?OrderId=1440------getQuotesByOrderID
     const userResponse = await axios.get(`${domain}/com.appraisalland.Bid/getQuotesByOrderID`,
     {

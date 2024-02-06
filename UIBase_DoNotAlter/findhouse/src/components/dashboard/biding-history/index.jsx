@@ -1576,81 +1576,126 @@ const closeAssignModal = ()=>{
               {isStatusModal && (
                 <div className="modal">
                   <div className="modal-content">
-                    <h3 className="text-center">Quote Status Updation</h3>
-                    
+                    <div className="row">
+                      <div className="col-lg-12">
+                        <Link href="/" className="">
+                          <Image
+                            width={50}
+                            height={45}
+                            className="logo1 img-fluid"
+                            style={{ marginTop: "-20px" }}
+                            src="/assets/images/logo.png"
+                            alt="header-logo2.png"
+                          />
+                          <span
+                            style={{
+                              color: "#2e008b",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            Appraisal
+                          </span>
+                          <span
+                            style={{
+                              color: "#97d700",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            {" "}
+                            Land
+                          </span>
+                        </Link>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-lg-12 text-center">
+                        <h2 className=" text-color mt-1">
+                          Quote Status Updation
+                        </h2>
+                      </div>
+                    </div>
+                    <div
+                      className="mb-4"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
                     <select
-                  required
-                  className="form-select"
-                  data-live-search="true"
-                  data-width="100%"
-                  onChange={(e)=>handleStatusSelect(e.target.value)}
-                  // value={buildinRef}
-                  // onChange={(e) => setBuildinRef(e.target.value)}
-                  // onChange={(e) => setBuildinRef(e.target.value)}
-                  // disabled={isDisable}
-                  style={{
-                          paddingTop: "15px",
-                          paddingBottom: "15px",
-                          backgroundColor: "#E8F0FE"
-                        }}
-                >
-                  {AppraiserStatusOptions.map((item, index) => {
-                    
-                    return (
-                      <option key={item.id} value={item.value}  disabled={currentBid.orderStatus >= index}>
-                        {item.type}
-                      </option>
-                    );
-                  })}
-                </select>
-                {openDate && <div className="col-lg-12 pt-20" style={{display:"flex",flexDirection:"row"}}>
-                
-                <label style={{color:"black",fontWeight:"bold"}}>
-                Date and Time <span style={{color:"red"}}>*</span>
-                </label>
-                <input
-                  required
-                 
-                  type="datetime-local"
-                  className="form-control"
-                  id="formGroupExampleInput3"
-                  onChange={(e) => setStatusDate(e.target.value)}
-                  value={statusDate}
-                />
-                
-            </div>
-            }
-            <div>
-            <label style={{color:"black",fontWeight:"bold"}}>
-              Remark <span style={{color:"red"}}>*</span>
-              </label>
-              <input
-                required
-               
-                type="text"
-                className="form-control"
-                id="formGroupExampleInput3"
-                onChange={(e) => setRemark(e.target.value)}
-                value={remark}
-              />
-            </div>
-            
+                      required
+                      className="form-select mb-3"
+                      data-live-search="true"
+                      data-width="100%"
+                      onChange={(e) => handleStatusSelect(e.target.value)}
+                      // value={buildinRef}
+                      // onChange={(e) => setBuildinRef(e.target.value)}
+                      // onChange={(e) => setBuildinRef(e.target.value)}
+                      // disabled={isDisable}
+                      style={{
+                        paddingTop: "15px",
+                        paddingBottom: "15px",
+                        backgroundColor: "#E8F0FE",
+                      }}
+                    >
+                      {AppraiserStatusOptions.map((item, index) => {
+                        return (
+                          <option key={item.id} value={item.value}>
+                            {item.type}
+                          </option>
+                        );
+                      })}
+                    </select>
+                    {openDate && (
+                      <div
+                        className="col-lg-12 pt-20"
+                        style={{ display: "flex", flexDirection: "row" }}
+                      >
+                        <label style={{ color: "black", fontWeight: "bold" }}>
+                          Date and Time <span style={{ color: "red" }}>*</span>
+                        </label>
+                        <input
+                          required
+                          type="datetime-local"
+                          className="form-control"
+                          id="formGroupExampleInput3"
+                          onChange={(e) => setStatusDate(e.target.value)}
+                          value={statusDate}
+                        />
+                      </div>
+                    )}
+                    <div>
+                      <h4 style={{ color: "#2e008b", fontWeight: "bold" }}>
+                        Remark <span style={{ color: "red" }}>*</span>
+                      </h4>
+                      <input
+                        required
+                        type="text"
+                        className="form-control mb-3"
+                        id="formGroupExampleInput3"
+                        onChange={(e) => setRemark(e.target.value)}
+                        value={remark}
+                      />
+                    </div>
+                    <div
+                      className="mb-3 mt-2"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
-                    <button
-                    className="btn w-35 btn-white"
-                    onClick={closeStatusUpdateHandler}
-                  >
-                    Cancel
-                  </button>
                       <button
-                      className="btn btn-color w-10 mt-1"
-                      style={{ marginLeft: "12px" }}
+                        className="btn w-35 btn-color"
+                        onClick={closeStatusUpdateHandler}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        className="btn btn-color w-10"
+                        style={{ marginLeft: "12px" }}
                         onClick={handleStatusUpdateHandler}
                       >
                         Submit
-                      </button>        
-                     
+                      </button>
                     </div>
                   </div>
                 </div>

@@ -80,7 +80,7 @@ const SidebarMenu = ({ userData }) => {
             <Image
               width={40}
               height={45}
-              src="/assets/images/logo.png"
+              src="/assets/images/Appraisal_Land_Logo.png"
               alt="header-logo2.png"
             />
             <span style={{ color: "#2e008b", marginTop: "20px" }}>

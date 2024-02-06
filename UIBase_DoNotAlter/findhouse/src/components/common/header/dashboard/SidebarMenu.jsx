@@ -44,7 +44,7 @@ const SidebarMenu = () => {
 
   return (
     <>
-     {/* <button className="collapse-btn flaticon-home" onClick={toggleCollapse}>
+      {/* <button className="collapse-btn flaticon-home" onClick={toggleCollapse}>
         {isCollapsed ? "Expand" : "Collapse"}
       </button> */}
       <ul className={`sidebar-menu ${isCollapsed ? "collapsed" : ""}`}>
@@ -56,11 +56,14 @@ const SidebarMenu = () => {
             <Image
               width={40}
               height={45}
-              src="/assets/images/logo.png"
+              src="/assets/images/Appraisal_Land_Logo.png"
               alt="header-logo2.png"
             />
-            <span style={{ color: "#2e008b", marginTop:"20px" }}>Appraisal </span>&nbsp;
-            <span style={{ color: "#97d700", marginTop:"20px" }}> Land</span>
+            <span style={{ color: "#2e008b", marginTop: "20px" }}>
+              Appraisal{" "}
+            </span>
+            &nbsp;
+            <span style={{ color: "#97d700", marginTop: "20px" }}> Land</span>
           </Link>
         </li>
         {/* End header */}

@@ -19,6 +19,7 @@ export default async function handler(request, response) {
     const token = request.headers.authorization;
 
     
+    
     const userResponse = await axios.put(
       `${domain}/com.appraisalland.Broker/quoteActionByBroker`,
       {},
