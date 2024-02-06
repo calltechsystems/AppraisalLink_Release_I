@@ -300,8 +300,18 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       <span className="">:</span>
                       {"   "}
                       <span className="text-start text-dark fw-bold">
-                        <a target="_blank"
-                        rel="noopener noreferrer" href={userData?.appraiser_Details?.lenderListUrl ? userData?.appraiser_Details?.lenderListUrl : "#"} style={{cursor:"pointer"}}>Lender List Pdf</a>
+                        <a
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          href={
+                            userData?.appraiser_Details?.lenderListUrl
+                              ? userData?.appraiser_Details?.lenderListUrl
+                              : "#"
+                          }
+                          style={{ cursor: "pointer" }}
+                        >
+                          Lender List Pdf
+                        </a>
                       </span>
                     </div>
                   </div>

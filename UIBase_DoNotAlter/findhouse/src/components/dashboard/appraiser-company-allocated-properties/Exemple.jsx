@@ -29,14 +29,13 @@ const headCells = [
     width: 200,
   },
 
-  
   {
     id: "status",
     numeric: false,
     label: "Quote Status",
     width: 160,
   },
-  
+
   {
     id: "appraisal_status",
     numeric: false,
@@ -49,7 +48,6 @@ const headCells = [
     label: "Remark",
     width: 160,
   },
-  
 
   {
     id: "urgency",
@@ -57,7 +55,7 @@ const headCells = [
     label: "Urgency",
     width: 200,
   },
-  
+
   {
     id: "date",
     numeric: false,
@@ -77,7 +75,7 @@ const headCells = [
     label: "Type of Property",
     width: 200,
   },
-  
+
   {
     id: "estimatedValue",
     numeric: false,
@@ -90,7 +88,6 @@ const headCells = [
     label: "Type Of Appraisal",
     width: 200,
   },
-
 
   {
     id: "purpose",
@@ -105,7 +102,7 @@ const headCells = [
     label: "Lender Information",
     width: 200,
   },
- 
+
   {
     id: "broker",
     numeric: false,
@@ -160,80 +157,73 @@ export default function Exemple({
   const [hideAction, setHideAction] = useState(false);
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
-  const [Appraiser , setAppraiser] = useState({});
-  const [allAssignAppraiser,setAllAssignAppraiser]=useState([]);
+  const [Appraiser, setAppraiser] = useState({});
+  const [allAssignAppraiser, setAllAssignAppraiser] = useState([]);
   let tempData = [];
 
   const filterBidsWithin24Hours = (property) => {
     let tempBid = 0,
       bidValue = {};
-      let isAccepted = {};
-      // console.log(bids);
+    let isAccepted = {};
+    // console.log(bids);
     bids.filter((bid) => {
-      if (bid.orderId === property?.orderId ) {
-        if(bid.status === 1){
-          isAccepted=bid;
-        }
-        else{
-          bidValue=bid;
+      if (bid.orderId === property?.orderId) {
+        if (bid.status === 1) {
+          isAccepted = bid;
+        } else {
+          bidValue = bid;
         }
         tempBid = tempBid + 1;
       } else {
       }
     });
-    return isAccepted.$id ? isAccepted : bidValue;    //   return requestTime >= twentyFourHoursAgo && requestTime <= currentTime;
+    return isAccepted.$id ? isAccepted : bidValue; //   return requestTime >= twentyFourHoursAgo && requestTime <= currentTime;
   };
 
- 
-  const getAppraiser = (id)=>{
-   
-      let selectedAppraiser = {};
-      allAssignAppraiser.map((appraiser,index)=>{
-        console.log(appraiser,id)
-        if(String(appraiser.id) === String(id)){
-          selectedAppraiser = appraiser;
-        }
-      })
-
-      console.log(selectedAppraiser)
-      openAppraiserInfoModal(selectedAppraiser);
-     
-  }
-  const getAppraiserName = (id)=>{
-   
+  const getAppraiser = (id) => {
     let selectedAppraiser = {};
-    allAssignAppraiser.map((appraiser,index)=>{
-      console.log(appraiser,id)
-      if(String(appraiser.id) === String(id)){
+    allAssignAppraiser.map((appraiser, index) => {
+      console.log(appraiser, id);
+      if (String(appraiser.id) === String(id)) {
         selectedAppraiser = appraiser;
       }
-    })
+    });
+
+    console.log(selectedAppraiser);
+    openAppraiserInfoModal(selectedAppraiser);
+  };
+  const getAppraiserName = (id) => {
+    let selectedAppraiser = {};
+    allAssignAppraiser.map((appraiser, index) => {
+      console.log(appraiser, id);
+      if (String(appraiser.id) === String(id)) {
+        selectedAppraiser = appraiser;
+      }
+    });
 
     return `${selectedAppraiser.firstName} ${selectedAppraiser.lastName}`;
-   
-}
+  };
 
   const router = useRouter();
 
-  const getOrderValue = (val)=>{
+  const getOrderValue = (val) => {
     let title = "";
-    AppraiserStatusOptions.map((status)=>{
-      if(String(status.value) === String(val)){
+    AppraiserStatusOptions.map((status) => {
+      if (String(status.value) === String(val)) {
         title = status.type;
       }
-    })
+    });
     return title;
-  }
+  };
 
-  const checkIsOfSameCompany = (id)=>{
+  const checkIsOfSameCompany = (id) => {
     const data = JSON.parse(localStorage.getItem("user"));
-    if(data.appraiserCompany_Datails?.appraiserCompanyId === id){
-      return true ;
-    }
-    else{
+    if (data.appraiserCompany_Datails?.appraiserCompanyId === id) {
+      return true;
+    } else {
       return false;
     }
-  }
+  };
 
   const openStatusUpdateHandler = (bidId) => {
     setCurrentBid(bidId);
@@ -282,11 +272,11 @@ export default function Exemple({
       minute: "numeric",
       second: "numeric",
     };
-    
+
     const originalDate = new Date(dateString);
 
     // Adjust for Eastern Standard Time (EST) by subtracting 5 hours
-    const estDate = new Date(originalDate.getTime() - (5 * 60 * 60 * 1000));
+    const estDate = new Date(originalDate.getTime() - 5 * 60 * 60 * 1000);
 
     // Format the EST date
     const formattedDate = estDate.toLocaleString("en-US", options);
@@ -298,7 +288,10 @@ export default function Exemple({
     let temp = {};
     // console.log(wishlist, data);
     wishlist.map((prop, index) => {
-      if (String(prop?.propertyId) === String(data?.propertyId) && String(prop?.userId) === String(userData.userId) ) {
+      if (
+        String(prop?.propertyId) === String(data?.propertyId) &&
+        String(prop?.userId) === String(userData.userId)
+      ) {
         temp = prop;
       }
     });
@@ -314,7 +307,7 @@ export default function Exemple({
     return data.sort((a, b) => b.orderId - a.orderId);
   };
 
-  const [isBroker,setIsBroker]=useState(-1);
+  const [isBroker, setIsBroker] = useState(-1);
 
   const formatLargeNumber = (number) => {
     // Convert the number to a string
@@ -324,65 +317,60 @@ export default function Exemple({
     const integerLength = Math.floor(Math.log10(Math.abs(number))) + 1;
 
     // Choose the appropriate unit based on the length of the integer part
-    let unit = '';
+    let unit = "";
 
     if (integerLength >= 10) {
-        unit = 'B'; // Billion
+      unit = "B"; // Billion
     } else if (integerLength >= 7) {
-        unit = 'M'; // Million
+      unit = "M"; // Million
     } else if (integerLength >= 4) {
-        unit = 'K'; // Thousand
+      unit = "K"; // Thousand
     }
 
     // Divide the number by the appropriate factor
-    const formattedNumber = (number / Math.pow(10, (integerLength - 1))).toFixed(2);
+    const formattedNumber = (number / Math.pow(10, integerLength - 1)).toFixed(
+      2
+    );
 
     return `${formattedNumber}${unit}`;
-};
-  
-  const checkData = (properties && !updatedData) ? true : false;
-  useEffect(()=>{
+  };
+
+  const checkData = properties && !updatedData ? true : false;
+  useEffect(() => {
     setProperties([]);
-  },[checkData]);
+  }, [checkData]);
 
   useEffect(() => {
     const getData = () => {
       properties.map((propertyDetail, index) => {
-
-        const property=propertyDetail?.propertyDetails;
+        const property = propertyDetail?.propertyDetails;
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
-      
+
         const isWait = property?.isOnHold || property?.isOnCancel;
         const updatedRow = {
-          orderId: property?.orderId ,
-          address: property?.city ? `${property?.city}-${property?.province},${property?.zipCode}` : "-",
+          orderId: property?.orderId,
+          address: property?.city
+            ? `${property?.city}-${property?.province},${property?.zipCode}`
+            : "-",
           estimatedValue: property?.estimatedValue
             ? `$ ${formatLargeNumber(property?.estimatedValue)}`
             : "$ 0",
           purpose: property?.purpose ? property?.purpose : "N.A.",
-          remark: property?.remark ?  <p>remark</p> : "N.A.",
-          status: 
-          isWait  ? 
-          <span
-          className="btn btn-danger  w-100"
-        >
-          {property.isOnCancel ? "On Cancel" : property.isOnHold ?  "On Hold" : ""}
-        </span>
-            :  isBidded.bidId ? (
+          remark: property?.remark ? <p>remark</p> : "N.A.",
+          status: isWait ? (
+            <span className="btn btn-danger  w-100">
+              {property.isOnCancel
+                ? "On Cancel"
+                : property.isOnHold
+                ? "On Hold"
+                : ""}
+            </span>
+          ) : isBidded.bidId ? (
             isBidded.status === 0 ? (
-              <span
-                className="btn btn-primary  w-100"
-              >
-                Quote Provided
-              </span>
+              <span className="btn btn-primary  w-100">Quote Provided</span>
             ) : isBidded.status === 1 ? (
-              <span
-                className="btn btn-success  w-100"
-                
-              >
-                Accepted
-              </span>
+              <span className="btn btn-success  w-100">Accepted</span>
             ) : (
               <span className="btn btn-danger  w-100">Declined</span>
             )
@@ -390,8 +378,12 @@ export default function Exemple({
             <span className="btn btn-warning  w-100">New</span>
           ),
           appraisal_status: isBidded.orderStatus ? (
-            <span className="btn btn-warning  w-100">{getOrderValue(isBidded.orderStatus)}</span>
-          ):<span className="btn btn-warning  w-100">N.A.</span>,
+            <span className="btn btn-warning  w-100">
+              {getOrderValue(isBidded.orderStatus)}
+            </span>
+          ) : (
+            <span className="btn btn-warning  w-100">N.A.</span>
+          ),
           broker: (
             <div>
               {isBidded.status === 1 ? (
@@ -405,9 +397,9 @@ export default function Exemple({
                       // fontWeight: "bold",
                       backgroundColor: "transparent",
                     }}
-                    onClick={() => openModalBroker(property,2)}
+                    onClick={() => openModalBroker(property, 2)}
                   >
-                   Broker Info
+                    Broker Info
                   </button>
                 </a>
               ) : isBidded.status === 2 ? (
@@ -419,22 +411,23 @@ export default function Exemple({
               )}
             </div>
           ),
-          appraiser_info:
-          <a href="#">
-                  <button
-                    className=""
-                    style={{
-                      border: "0px",
-                      color: "#2e008b",
-                      textDecoration: "underline",
-                      // fontWeight: "bold",
-                      backgroundColor: "transparent",
-                    }}
-                    onClick={() => getAppraiser(propertyDetail?.appraiserid)}
-                  >
-                  {getAppraiserName(propertyDetail?.appraiserid)}
-                  </button>
-                </a>,
+          appraiser_info: (
+            <a href="#">
+              <button
+                className=""
+                style={{
+                  border: "0px",
+                  color: "#2e008b",
+                  textDecoration: "underline",
+                  // fontWeight: "bold",
+                  backgroundColor: "transparent",
+                }}
+                onClick={() => getAppraiser(propertyDetail?.appraiserid)}
+              >
+                {getAppraiserName(propertyDetail?.appraiserid)}
+              </button>
+            </a>
+          ),
           property: (
             <div>
               {isBidded.status === 1 ? (
@@ -448,7 +441,7 @@ export default function Exemple({
                       // fontWeight: "bold",
                       backgroundColor: "transparent",
                     }}
-                    onClick={() => openModalBroker(property,1)}
+                    onClick={() => openModalBroker(property, 1)}
                   >
                     Property Info
                   </button>
@@ -457,7 +450,8 @@ export default function Exemple({
                 <h6 style={{ color: "red" }}> Declined</h6>
               ) : (
                 <p>
-                  Property Information will be available post the quote acceptance
+                  Property Information will be available post the quote
+                  acceptance
                 </p>
               )}
             </div>
@@ -465,8 +459,9 @@ export default function Exemple({
           type_of_appraisal: property?.typeOfAppraisal
             ? property?.typeOfAppraisal
             : "N.A.",
-          typeOfBuilding:
-            property?.typeOfBuilding  ?  property?.typeOfBuilding : "N.A.",
+          typeOfBuilding: property?.typeOfBuilding
+            ? property?.typeOfBuilding
+            : "N.A.",
           quote_required_by: formatDate(property?.addedDatetime),
           date: formatDate(property?.addedDatetime),
           bidAmount: property?.bidLowerRange,
@@ -482,117 +477,110 @@ export default function Exemple({
 
           action: (
             <div className="print-hidden-column">
-            {
-              isBidded.orderStatus === 6 ? 
-            <span
-            className="btn btn-success  w-100"
-            
-          >
-            Completed
-          </span> : isWait  ?  <p className="btn btn-danger  w-100">{`Cannot perform any actions right now as property is being ${property.isOnCancel ? "Cancelled" : "On Hold"} !.`} </p> :
-               
-              isBidded && isBidded.status !== 1 ? (
+              {isBidded.orderStatus === 6 ? (
+                <span className="btn btn-success  w-100">Completed</span>
+              ) : isWait ? (
+                <p className="btn btn-danger  w-100">
+                  {`Cannot perform any actions right now as property is being ${
+                    property.isOnCancel ? "Cancelled" : "On Hold"
+                  } !.`}{" "}
+                </p>
+              ) : isBidded && isBidded.status !== 1 ? (
                 <ul className="">
-                  
-
-                  {(isBidded.$id  && isBidded.status < 1)&& (
+                  {isBidded.$id && isBidded.status < 1 && (
                     <ul>
-                    <li
-                      className="list-inline-item"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Provide Quote"
+                      <li
+                        className="list-inline-item"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="Provide Quote"
+                      >
+                        <div
+                          className="w-100"
+                          onClick={() =>
+                            participateHandler(
+                              property?.bidLowerRange,
+                              property?.propertyId
+                            )
+                          }
+                        >
+                          <button
+                            href="#"
+                            className="btn btn-color w-0 mt-1"
+                            style={{ marginLeft: "12px" }}
+                          >
+                            <Link href="#">
+                              <span className="flaticon-building text-light"></span>
+                            </Link>
+                          </button>
+                        </div>
+                      </li>
+                    </ul>
+                  )}
+
+                  <li
+                    className="list-inline-item"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Archive Property"
+                  >
+                    <div
+                      className="w-100"
+                      onClick={() =>
+                        onDeletePropertyHandler(property?.propertyId)
+                      }
                     >
-                      <div
-                        className="w-100"
-                        onClick={() =>
-                          participateHandler(
-                            property?.bidLowerRange,
-                            property?.propertyId
-                          )
-                        }
+                      <button
+                        href="#"
+                        className="btn btn-color w-0 mt-1"
+                        style={{ marginLeft: "12px" }}
                       >
                         <button
                           href="#"
-                          className = "btn btn-color w-0 mt-1"
+                          className="btn btn-color  mt-1"
                           style={{ marginLeft: "12px" }}
                         >
-                        <Link href="#">
-                        <span className="flaticon-building text-light"></span>
-                      </Link>
+                          <Link href="#">
+                            <span className="flaticon-home text-light"></span>
+                          </Link>
                         </button>
-                      </div>
-                    </li>
-                    </ul>
-                  )}
-                    
-                 
-                  <li
+                      </button>
+                    </div>
+                  </li>
+                </ul>
+              ) : (
+                <li
                   className="list-inline-item"
                   data-toggle="tooltip"
                   data-placement="top"
-                  title="Archive Property"
+                  title="Order Update"
                 >
                   <div
                     className="w-100"
-                    onClick={() =>
-                      onDeletePropertyHandler(property?.propertyId)
-                    }
+                    onClick={() => openStatusUpdateHandler(isBidded.bidId)}
                   >
                     <button
                       href="#"
                       className="btn btn-color w-0 mt-1"
                       style={{ marginLeft: "12px" }}
                     >
-                    <button
-                          href="#"
-                          className="btn btn-color  mt-1"
-                          style={{ marginLeft: "12px" }}
-                        >
-                        <Link href="#">
-                        <span className="flaticon-home text-light"></span>
-                      </Link>
-                        </button>
-                    </button>
-                  </div>
-                </li>
-                </ul>
-              ) : (
-                <li
-                className="list-inline-item"
-                data-toggle="tooltip"
-                data-placement="top"
-                title="Order Update"
-              >
-                <div
-                  className="w-100"
-                  onClick={() =>
-                   openStatusUpdateHandler(isBidded.bidId)
-                  }
-                >
-                  <button
-                    href="#"
-                    className="btn btn-color w-0 mt-1"
-                    style={{ marginLeft: "12px" }}
-                  >
-                  <button
+                      <button
                         href="#"
                         className="btn btn-color  mt-1"
                         style={{ marginLeft: "12px" }}
                       >
-                      <Link href="#">
-                      <span className="flaticon-edit text-light"></span>
-                    </Link>
+                        <Link href="#">
+                          <span className="flaticon-edit text-light"></span>
+                        </Link>
                       </button>
-                  </button>
-                </div>
-              </li>
+                    </button>
+                  </div>
+                </li>
               )}
             </div>
           ),
         };
         tempData.push(updatedRow);
-      
       });
       setUpdatedData(tempData);
     };
@@ -602,8 +590,6 @@ export default function Exemple({
   useEffect(() => {
     setUpdatedCode(true);
   }, [updatedData]);
-
-
 
   const refreshHandler = () => {
     setRefresh(true);
@@ -624,27 +610,25 @@ export default function Exemple({
           Authorization: `Bearer ${data?.token}`,
           "Content-Type": "application/json",
         },
-        params:{
-          userId : data.appraiserCompany_Datails?.appraiserCompanyId
-        }
+        params: {
+          userId: data.appraiserCompany_Datails?.appraiserCompanyId,
+        },
       })
       .then((res) => {
-
         // console.log(res.data.data.$values);
         tempProperties = res.data.data.$values;
         const temp = res.data.data.$values;
 
-        tempProperties = temp.filter((prop,index)=>{
-          if(String(prop.userId) === String(data.userId)){
-            return true
+        tempProperties = temp.filter((prop, index) => {
+          if (String(prop.userId) === String(data.userId)) {
+            return true;
+          } else {
+            return false;
           }
-          else{
-            return false
-          }
-        })
-        
+        });
+
         setProperties(temp);
-      console.log("props",temp)
+        console.log("props", temp);
       })
       .catch((err) => {
         setErrorMessage(err?.response?.data?.error);
@@ -686,15 +670,14 @@ export default function Exemple({
       .then((res) => {
         // console.log(res);
         tempBids = res.data.data.$values;
-        const updatedBids = tempBids.filter((prop,index)=>{
-          if(String(prop.appraiserUserId) === String(data.userId)){
+        const updatedBids = tempBids.filter((prop, index) => {
+          if (String(prop.appraiserUserId) === String(data.userId)) {
             return true;
-          }
-          else{
+          } else {
             return false;
           }
-        })
-        console.log("bids",updatedBids);
+        });
+        console.log("bids", updatedBids);
         setBids(updatedBids);
       })
       .catch((err) => {
@@ -702,7 +685,7 @@ export default function Exemple({
         setModalIsOpenError(true);
       });
 
-      axios
+    axios
       .get("/api/getAllBrokers", {
         headers: {
           Authorization: `Bearer ${data.token}`,
@@ -710,32 +693,27 @@ export default function Exemple({
       })
       .then((res) => {
         setAllBrokers(res.data.data.$values);
-       
       })
       .catch((err) => {
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
 
-      axios
-    .get("/api/getAllAppraiser", {
-      headers: {
-        Authorization: `Bearer ${data.token}`,
-      }
-    })
-    .then((res) => {
-      console.log(res);
-    //   const getAllAppraiser = res.data.data.result.$values;
-     setAllAssignAppraiser(res.data.data.result.$values);
-     
-    })
-    .catch((err) => {
-      setErrorMessage(err?.response?.data?.error);
-      setModalIsOpenError(true);
-    });
-
-     
-     
+    axios
+      .get("/api/getAllAppraiser", {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        //   const getAllAppraiser = res.data.data.result.$values;
+        setAllAssignAppraiser(res.data.data.result.$values);
+      })
+      .catch((err) => {
+        setErrorMessage(err?.response?.data?.error);
+        setModalIsOpenError(true);
+      });
 
     // console.log("end", bids, properties, wishlist);
     setRefresh(false);
@@ -748,7 +726,6 @@ export default function Exemple({
       ) : (
         <SmartTable
           title=""
-
           setSearchInput={setSearchInput}
           setFilterQuery={setFilterQuery}
           data={sortObjectsByOrderIdDescending(updatedData)}

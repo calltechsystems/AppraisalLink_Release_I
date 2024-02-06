@@ -35,6 +35,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   const [brokerageNameRef, setBrokerageNameRef] = useState(
     userData?.brokerage_Details?.brokerageName || ""
   );
+  const [cellNumberRef, setCellNumberRef] = useState(
+    userData?.brokerage_Details?.cellNumber || ""
+  );
 
   const [mortageBrokrageLicNoRef, setMortageBrokerageLicNoRef] = useState(
     userData?.brokerage_Details?.mortageBrokerageLicNo || ""
@@ -134,7 +137,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     const state = stateRef;
     const zipCode = zipcodeRef;
     const phoneNumber = phoneNumberRef;
-
+    const cellNumber = cellNumberRef;
     const adressLine2 = addressLineTwoRef;
     const middleName = middleNameRef;
     const brokerageName = brokerageNameRef;
@@ -157,7 +160,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         !city ||
         !state ||
         !zipCode ||
-        !phoneNumber) &&
+        !phoneNumber ||
+        !cellNumber) &&
       !userData
     ) {
       toast.error("All marked fields arent filled !!");
@@ -217,6 +221,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         postalCode: zipCode,
         area: "",
         phoneNumber: phoneNumber,
+        cellNumber: cellNumber,
         profileImage: SelectedImage,
       };
 
@@ -543,9 +548,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           className="form-control"
                           id="formGroupExampleInput3"
                           style={{ backgroundColor: "#E8F0FE" }}
-                          // value={phoneNumberRef}
-                          // onChange={(e) => setPhoneNumberRef(e.target.value)}
-                          //
+                          value={cellNumberRef}
+                          onChange={(e) => setCellNumberRef(e.target.value)}
                         />
                       </div>
                     </div>

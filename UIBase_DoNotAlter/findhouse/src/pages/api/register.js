@@ -21,9 +21,9 @@ export default async function handler(request, response) {
       password: password,
       userType: userType,
     };
-    
+
     const userResponse = await axios.post(
-      `${domain}/com.appraisalland.Registration/Registration`,
+      `${domain}/com.appraisalland.Registration/userRegistration`,
       formData
     );
     const user = userResponse.data;

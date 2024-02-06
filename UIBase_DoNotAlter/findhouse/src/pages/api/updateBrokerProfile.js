@@ -34,6 +34,7 @@ async function handler(request, response) {
       assistantFirstName,
       assistantPhoneNumber,
       assistantEmailAddress,
+      cellNumber,
       profileImage,
     } = body;
 
@@ -60,6 +61,7 @@ async function handler(request, response) {
       mortageBrokerageLicNo: mortgageBrokerageLicNo,
       mortageBrokerLicNo: mortageBrokerLicNo,
       profileImage: profileImage,
+      cellNumber:cellNumber,
     };
     const userResponse = await axios.put(
       `${domain}/com.appraisalland.Broker/updateBrokerProfile`,

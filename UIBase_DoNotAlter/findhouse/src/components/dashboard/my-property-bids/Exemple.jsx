@@ -233,6 +233,30 @@ export default function Exemple({
       });
   };
 
+  // const getAppraiser = (id) => {
+  //   let selectedAppraiser = {};
+  //   allAssignAppraiser.map((appraiser, index) => {
+  //     console.log(appraiser, id);
+  //     if (String(appraiser.id) === String(id)) {
+  //       selectedAppraiser = appraiser;
+  //     }
+  //   });
+
+  //   console.log(selectedAppraiser);
+  //   openAppraiserInfoModal(selectedAppraiser);
+  // };
+  // const getAppraiserName = (id) => {
+  //   let selectedAppraiser = {};
+  //   allAssignAppraiser.map((appraiser, index) => {
+  //     console.log(appraiser, id);
+  //     if (String(appraiser.id) === String(id)) {
+  //       selectedAppraiser = appraiser;
+  //     }
+  //   });
+
+  //   return `${selectedAppraiser.firstName} ${selectedAppraiser.lastName}`;
+  // };
+
   useEffect(() => {
     const getData = () => {
       properties.map((property, index) => {
@@ -312,8 +336,6 @@ export default function Exemple({
 
                 {/* <div className="fp_pdate float-end">{item.postedYear}</div> */}
 
-               
-
                 <li
                   className="list-inline-item"
                   data-toggle="tooltip"
@@ -321,13 +343,27 @@ export default function Exemple({
                   title="Approved Lender List"
                 >
                   <div className="fp_pdate float-end btn btn-color fw-bold ">
-                    <Link
+                    {/* <Link
                       href="assets/images/Terms & Conditions.pdf"
                       target="_blank"
                       className="form-check-label text-primary"
-                    >
-                      <span className="flaticon-pdf text-light"></span>
-                    </Link>
+                    > */}
+                    <span className="flaticon-pdf text-light">
+                      {" "}
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={
+                          userData?.appraiser_Details?.lenderListUrl
+                            ? userData?.appraiser_Details?.lenderListUrl
+                            : "#"
+                        }
+                        style={{ cursor: "pointer" }}
+                      >
+                        Lender List Pdf
+                      </a>
+                    </span>
+                    {/* </Link> */}
                   </div>
                 </li>
               </ul>

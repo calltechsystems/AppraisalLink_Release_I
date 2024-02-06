@@ -68,8 +68,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   const [streetNumber, setStreetNumber] = useState(
     userData?.broker_Details?.streetNumber || ""
   );
-  const [cellNumber, setCellNumber] = useState(
-    userData?.broker_Details?.cellNumber || ""
+  const [cellNumberRef, setCellNumberRef] = useState(
+    userData?.broker_Details?.cellNumber || " "
   );
 
   const [streetName, setStreetName] = useState(
@@ -127,6 +127,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
       phoneNumberRef !== ""
         ? phoneNumberRef
         : userData.broker_Details.phoneNumber;
+    const cellNumber =
+      cellNumberRef !== "" ? cellNumberRef : userData.broker_Details.cellNumber;
     const mortageBrokerLicNo =
       mortgageBrokerLicNoRef !== ""
         ? mortgageBrokerLicNoRef
@@ -168,6 +170,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         !state ||
         !zipCode ||
         !phoneNumber ||
+        !cellNumber ||
         !mortageBrokerLicNo ||
         !mortageBrokerageLicNo) &&
       !userData
@@ -220,6 +223,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         state: state,
         postalCode: zipCode,
         phoneNumber: phoneNumber,
+        cellNumber: cellNumber,
         mortageBrokerLicNo: mortageBrokerLicNo,
         mortgageBrokerageLicNo: mortgageBrokrageLicNoRef,
         profileImage: SelectedImage,
@@ -499,8 +503,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           className="form-control"
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
-                          value={cellNumber}
-                          onChange={(e) => setCellNumber(e.target.value)}
+                          value={cellNumberRef}
+                          onChange={(e) => setCellNumberRef(e.target.value)}
                           disabled={!edit}
                         />
                       </div>

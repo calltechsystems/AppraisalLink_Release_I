@@ -371,7 +371,9 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                           padding: "5px",
                         }}
                       >
-                        {userData?.broker_Details?.phoneNumber}
+                        {userData?.broker_Details?.cellNumber
+                          ? userData?.broker_Details?.cellNumber
+                          : "Not Provided"}
                       </td>
                     </tr>
                     <tr>
@@ -455,7 +457,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                           padding: "5px",
                         }}
                       >
-                        <span className="text-start">Assistant Name</span>
+                        <span className="text-start">Assistant#1 Name</span>
                       </td>
                       <td
                         style={{
@@ -477,7 +479,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                           padding: "5px",
                         }}
                       >
-                        <span className="text-start">Assistant Email</span>
+                        <span className="text-start">Assistant#1 Email</span>
                       </td>
                       <td
                         style={{
@@ -499,7 +501,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                           padding: "5px",
                         }}
                       >
-                        <span className="text-start">Assistant Phone</span>
+                        <span className="text-start">Assistant#1 Phone</span>
                       </td>
                       <td
                         style={{
@@ -511,6 +513,74 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       >
                         {" "}
                         {userData?.broker_Details?.assistantPhoneNumber}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        style={{
+                          border: "1px solid #2e008b",
+                          color: "#2e008b",
+                          padding: "5px",
+                        }}
+                      >
+                        <span className="text-start">Assistant#2 Name</span>
+                      </td>
+                      <td
+                        style={{
+                          border: "1px solid #2e008b",
+                          width: "250px",
+                          color: "black",
+                          padding: "5px",
+                        }}
+                      >
+                        {userData?.broker_Details?.assistantFirstName}
+                        {userData?.broker_Details?.assistantLastName}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        style={{
+                          border: "1px solid #2e008b",
+                          color: "#2e008b",
+                          padding: "5px",
+                        }}
+                      >
+                        <span className="text-start">Assistant#2 Email</span>
+                      </td>
+                      <td
+                        style={{
+                          border: "1px solid #2e008b",
+                          width: "250px",
+                          color: "black",
+                          padding: "5px",
+                        }}
+                      >
+                        {" "}
+                        {userData?.broker_Details?.assistantEmailAddress}{" "}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        style={{
+                          border: "1px solid #2e008b",
+                          color: "#2e008b",
+                          padding: "5px",
+                        }}
+                      >
+                        <span className="text-start">Assistant#2 Phone</span>
+                      </td>
+                      <td
+                        style={{
+                          border: "1px solid #2e008b",
+                          width: "250px",
+                          color: "black",
+                          padding: "5px",
+                        }}
+                      >
+                        {" "}
+                        {userData?.broker_Details?.assistantPhoneNumber2
+                          ? userData?.broker_Details?.assistantPhoneNumber2
+                          : "Not Provided"}
                       </td>
                     </tr>
                   </tbody>

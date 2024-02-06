@@ -268,12 +268,23 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                   </div>
                   <div className="row">
                     <div className="col-lg-12 mt-1 text-start">
-                      <span className="fs-18 fw-bold text-color">Phone </span>
+                      <span className="fs-18 fw-bold text-color">Phone Number(Primary)</span>
                       {"   "}
                       <span className="">:</span>
                       {"   "}
                       <span className="text-start text-dark fw-bold">
                         {userData?.brokerage_Details?.phoneNumber}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-lg-12 mt-1 text-start">
+                      <span className="fs-18 fw-bold text-color">Cell Number </span>
+                      {"   "}
+                      <span className="">:</span>
+                      {"   "}
+                      <span className="text-start text-dark fw-bold">
+                        {userData?.brokerage_Details?.cellNumber}
                       </span>
                     </div>
                   </div>
