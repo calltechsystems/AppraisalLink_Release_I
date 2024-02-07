@@ -14,7 +14,7 @@ const Index = () => {
     const fetchPropertyData = async () => {
       try {
         const userData = JSON.parse(localStorage.getItem("user"));
-        const response = await axios.get("/api/getPropertyById", {
+        const response = await axios.get("/api/getPropertiesById", {
           headers: {
             Authorization: `Bearer ${userData.token}`,
             "Content-Type": "application/json",
@@ -23,6 +23,7 @@ const Index = () => {
             item: item,
           },
         });
+        console.log(response.data);
         setPropertyData(response.data.data); // Update state with the fetched data
       } catch (err) {
         alert(err.message);
@@ -35,12 +36,13 @@ const Index = () => {
     }
   }, [item]); // Add item as a dependency to trigger the effect when it changes
 
-
   return (
     <>
       <Seo pageTitle="Create Listing" />
 
-      {propertyData && (<CreateListing isView={true} propertyData={propertyData} />)}
+      {propertyData && (
+        <CreateListing isView={true} propertyData={propertyData} />
+      )}
     </>
   );
 };
