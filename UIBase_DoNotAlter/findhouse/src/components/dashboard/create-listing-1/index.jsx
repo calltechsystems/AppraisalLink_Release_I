@@ -12,6 +12,8 @@ import LocationField from "./LocationField";
 import { encryptionData } from "../../../utils/dataEncryption";
 import axios from "axios";
 import toast from "react-hot-toast";
+import Link from "next/link";
+import Image from "next/image";
 
 const Index = ({ isView, propertyData }) => {
   const router = useRouter();
