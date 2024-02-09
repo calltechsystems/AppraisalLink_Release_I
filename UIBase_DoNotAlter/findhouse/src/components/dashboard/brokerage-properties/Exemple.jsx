@@ -525,7 +525,7 @@ export default function Exemple({
                 </Link>
               </li> */}
 
-                {(isEditable || isStatus === 1) && (
+                {(isEditable || isStatus === 1) && !isCancel && (
                   <li title="Edit Property">
                     {/* <Link href={`/create-listing/${property.propertyId}`}>
                       <span className="btn btn-color w-100 mb-1"> Edit </span>
@@ -542,39 +542,43 @@ export default function Exemple({
                 {/* End li */}
 
                 {/* {isEditable && ( */}
-                <li title={!isHold ? "On Hold" : "Remove Hold"}>
-                  <span
-                    className="btn btn-color-table "
-                    style={{ border: "1px solid grey" }}
-                    // onClick={() => onHoldHandler(property.propertyId, !isHold)}
-                    onClick={() =>
-                      openModal(property.propertyId, 1, isHold ? 0 : 1)
-                    }
-                  >
-                    <Link href="#" className="text-light">
-                      <FaPause />
-                    </Link>
-                  </span>
-                </li>
+                {!isCancel && (
+                  <li title={!isHold ? "On Hold" : "Remove Hold"}>
+                    <span
+                      className="btn btn-color-table "
+                      style={{ border: "1px solid grey" }}
+                      // onClick={() => onHoldHandler(property.propertyId, !isHold)}
+                      onClick={() =>
+                        openModal(property.propertyId, 1, isHold ? 0 : 1)
+                      }
+                    >
+                      <Link href="#" className="text-light">
+                        <FaPause />
+                      </Link>
+                    </span>
+                  </li>
+                )}
                 {/* )} */}
 
                 {/* {isEditable && ( */}
-                <li title={!isCancel ? "Order Cancel" : "Remove Cancel"}>
-                  <span
-                    className="btn btn-color-table"
-                    style={{ border: "1px solid grey" }}
-                    // onClick={() =>
-                    //   onCancelHandler(property.propertyId, !isCancel)
-                    // }
-                    onClick={() =>
-                      openModal(property.propertyId, 2, isCancel ? 0 : 1)
-                    }
-                  >
-                    <Link href="#">
-                      <span className="flaticon-garbage text-light"></span>
-                    </Link>
-                  </span>
-                </li>
+                {!isCancel && (
+                  <li title={!isCancel ? "Order Cancel" : "Remove Cancel"}>
+                    <span
+                      className="btn btn-color-table"
+                      style={{ border: "1px solid grey" }}
+                      // onClick={() =>
+                      //   onCancelHandler(property.propertyId, !isCancel)
+                      // }
+                      onClick={() =>
+                        openModal(property.orderId, 2, isCancel ? 0 : 1)
+                      }
+                    >
+                      <Link href="#">
+                        <span className="flaticon-garbage text-light"></span>
+                      </Link>
+                    </span>
+                  </li>
+                )}
                 {/* )} */}
 
                 {/* {isEditable && (

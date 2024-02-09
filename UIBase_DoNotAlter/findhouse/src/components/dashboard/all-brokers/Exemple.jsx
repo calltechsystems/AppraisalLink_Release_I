@@ -233,11 +233,10 @@ export default function Exemple({
   useEffect(() => {
     const getData = () => {
       temporaryData.map((data, index) => {
-        // const isWishlist = checkWishlistedHandler(property);
-        // const isBidded = filterBidsWithin24Hours(property);
-        // console.log("isBidded",property);
-        properties.map((data, index) => {
+        properties.map((temp, index) => {
+          const data = temp.broker;
           const updatedRow = {
+            // appraiser_id: data.item.id,
             email: data.email,
             firstname: data.firstName ? data.firstName : "NA",
             lastname: data.lastName ? data.lastName : "NA",
@@ -374,25 +373,25 @@ export default function Exemple({
 
     const encryptedData = encryptionData(payload);
     axios
-      .get("/api/getBrokerById", {
+      .get("/api/getBrokerByBrokerageId", {
         headers: {
           Authorization: `Bearer ${data?.token}`,
           "Content-Type": "application/json",
         },
         params: {
-          userId: data?.brokerage_Datails?.brokerageId,
+          userId: data?.brokerage_Details?.id,
         },
       })
       .then((res) => {
-        console.log(res.data.data.appraisers.$values);
-        // setAppraiserCompanyInfo(res.data.data.appraiserCompany);
-        // setProperties(res.data.data.appraisers.$values);
+        console.log(res.data);
+        setAppraiserCompanyInfo(res.data.data.brokerage);
+        setProperties(res.data.data.brokers.$values);
       })
       .catch((err) => {
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
-
+    // console.log(err);
     console.log("end", bids, properties, wishlist);
     setRefresh(false);
   }, [refresh]);

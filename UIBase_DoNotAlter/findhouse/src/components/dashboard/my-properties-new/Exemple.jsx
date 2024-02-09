@@ -247,14 +247,22 @@ export default function Exemple({
     let isInProgress = true;
     let isQuoteProvided = false;
     let isCompleted = false;
+    let isAccepted = false;
     allBids.map((bid, index) => {
-      if (bid.orderId === property.orderId && bid.status === 1) {
+      if (
+        bid.orderId === property.orderId &&
+        bid.status === 1 &&
+        bid.orderStatus === 3
+      ) {
         isCompleted = true;
+      }
+      if (bid.orderId === property.orderId && bid.status === 1) {
+        isAccepted = true;
       } else if (bid.orderId === property.orderId) {
         isQuoteProvided = true;
       }
     });
-    return isCompleted ? 2 : isQuoteProvided ? 1 : 0;
+    return isCompleted ? 3 : isAccepted ? 2 : isQuoteProvided ? 1 : 0;
   };
 
   const openPopupModal = (property) => {
@@ -280,6 +288,10 @@ export default function Exemple({
               isHold || isCancel ? (
                 <span className="btn bg-warning w-100">
                   {isHold ? "On Hold" : "Cancelled"}
+                </span>
+              ) : isStatus === 3 ? (
+                <span className="btn bg-success w-100 text-light">
+                  Completed
                 </span>
               ) : isStatus === 2 ? (
                 <span className="btn bg-success w-100 text-light">

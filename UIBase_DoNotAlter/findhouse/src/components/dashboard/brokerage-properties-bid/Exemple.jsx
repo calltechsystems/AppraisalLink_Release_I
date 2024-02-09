@@ -158,11 +158,9 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        if(res.data.data.appraiser){
+        if (res.data.data.appraiser) {
           setAppInfo(res.data.data.appraiser);
-
-        }
-        else{
+        } else {
           setAppInfo(res.data.data.appraiserCompany);
         }
         setOpenBrokerModal(true);
@@ -238,9 +236,20 @@ export default function Exemple({
       });
   };
 
+  const getCurrentPropertyById = (id) => {
+    let property = {};
+    allProperties.map((prop, index) => {
+      if (String(prop.propertyId) === String(id)) {
+        property = prop;
+      }
+    });
+    return property;
+  };
   useEffect(() => {
     const getData = () => {
       properties.map((property, index) => {
+        const currentProperty = getCurrentPropertyById(property.propertyId);
+        console.log(currentProperty);
         const updatedRow = {
           AppraiserId: property.appraiserUserId ? property.appraiserUserId : 0,
           quote: property.bidAmount,
@@ -297,7 +306,8 @@ export default function Exemple({
                   </div>
                 </li>
               </div>
-            ) : property.status === 0 ? (
+            ) : property.status === 0 &&
+              (!property.isOnCancel || !property.isOnHold) ? (
               <ul className="">
                 <li
                   className="list-inline-item"
@@ -403,7 +413,7 @@ export default function Exemple({
         // setModalIsOpenError(true);
       });
 
-      console.log(propertyId);
+    console.log(propertyId);
     toast.loading("Getting properties...");
     axios
       .get("/api/getAllQuotesForProperty", {
@@ -417,7 +427,7 @@ export default function Exemple({
       })
       .then((res) => {
         toast.dismiss();
-        console.log("bids",res.data);
+        console.log("bids", res.data);
         const tempBids = res.data.data.$values;
         console.log(tempBids, propertyId);
         let updatedBids = [];
