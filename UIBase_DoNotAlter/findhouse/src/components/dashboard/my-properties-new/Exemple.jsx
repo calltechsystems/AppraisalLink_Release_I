@@ -529,7 +529,7 @@ export default function Exemple({
                 </li>
                 {/* )} */}
 
-                {!isEditable && (
+                {!isEditable && !isCancel && (
                   <li title="Quotes">
                     {/* <Link href={`/my-property-bids/${property.propertyId}`}>
                       <span className="btn btn-color w-100 mb-1"> Quotes </span>
@@ -575,7 +575,7 @@ export default function Exemple({
                 </Link>
               </li> */}
 
-                {(isEditable || isStatus === 1) && (
+                {(isEditable || isStatus === 1) && !isCancel && (
                   <li title="Edit Property">
                     {/* <Link href={`/create-listing/${property.propertyId}`}>
                       <span className="btn btn-color w-100 mb-1"> Edit </span>
@@ -592,20 +592,22 @@ export default function Exemple({
                 {/* End li */}
 
                 {/* {isEditable && ( */}
-                <li title={!isHold ? "On Hold" : "Remove Hold"}>
-                  <span
-                    className="btn btn-color-table "
-                    style={{ border: "1px solid grey" }}
-                    // onClick={() => onHoldHandler(property.propertyId, !isHold)}
-                    onClick={() =>
-                      openModal(property.orderId, 1, isHold ? 0 : 1)
-                    }
-                  >
-                    <Link href="#" className="text-light">
-                      <FaPause />
-                    </Link>
-                  </span>
-                </li>
+                {!isCancel && (
+                  <li title={!isHold ? "On Hold" : "Remove Hold"}>
+                    <span
+                      className="btn btn-color-table "
+                      style={{ border: "1px solid grey" }}
+                      // onClick={() => onHoldHandler(property.propertyId, !isHold)}
+                      onClick={() =>
+                        openModal(property.orderId, 1, isHold ? 0 : 1)
+                      }
+                    >
+                      <Link href="#" className="text-light">
+                        <FaPause />
+                      </Link>
+                    </span>
+                  </li>
+                )}
                 {/* )} */}
 
                 {/* {isEditable && ( */}
