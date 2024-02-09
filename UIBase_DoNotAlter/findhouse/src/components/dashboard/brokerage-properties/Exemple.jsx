@@ -549,7 +549,7 @@ export default function Exemple({
                       style={{ border: "1px solid grey" }}
                       // onClick={() => onHoldHandler(property.propertyId, !isHold)}
                       onClick={() =>
-                        openModal(property.propertyId, 1, isHold ? 0 : 1)
+                        openModal(property.orderId, 1, isHold ? 0 : 1)
                       }
                     >
                       <Link href="#" className="text-light">
@@ -561,7 +561,7 @@ export default function Exemple({
                 {/* )} */}
 
                 {/* {isEditable && ( */}
-                {!isCancel && (
+                {!isCancel && !isHold && (
                   <li title={!isCancel ? "Order Cancel" : "Remove Cancel"}>
                     <span
                       className="btn btn-color-table"

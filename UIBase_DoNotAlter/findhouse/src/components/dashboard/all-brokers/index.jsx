@@ -1083,13 +1083,12 @@ const Index = () => {
                           width: "300px",
                         }}
                       >
-                        {BrokerStatus.map((item, index) => {
-                          return (
-                            <option key={item.id} value={item.value}>
-                              {item.type}
-                            </option>
-                          );
-                        })}
+                        <option key={0} value={1}>
+                          Active
+                        </option>
+                        <option key={1} value={0}>
+                          In-Active
+                        </option>
                       </select>
                     </div>
                     <hr />

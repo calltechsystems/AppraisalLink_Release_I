@@ -644,67 +644,70 @@ export default function Exemple({
       .then((res) => {
         const temp = res.data.data.properties.$values;
 
-        setProperties(temp);
+        let tempBids = [];
+        axios
+          .get("/api/getAllBids", {
+            headers: {
+              Authorization: `Bearer ${data.token}`,
+            },
+            params: {
+              email: data.userEmail,
+            },
+          })
+          .then((res) => {
+            tempBids = res.data.data.$values;
+            const updatedBids = tempBids.filter((prop, index) => {
+              if (String(prop.appraiserUserId) === String(data.userId)) {
+                return true;
+              } else {
+                return false;
+              }
+            });
+            console.log(updatedBids);
+            setBids(updatedBids);
+            axios
+            .get("/api/appraiserWishlistedProperties", {
+              headers: {
+                Authorization: `Bearer ${data?.token}`,
+                "Content-Type": "application/json",
+              },
+            })
+            .then((res) => {
+              const endDate = new Date();
+              console.log("wishlisted", endDate - startDate);
+              const tempData = res.data.data.$values;
+      
+              // setAllWishlistedProperties(res.data.data.$values);
+              const responseData = tempData.filter((prop, index) => {
+                if (String(prop.userId) === String(data.userId)) {
+                  return true;
+                } else {
+                  return false;
+                }
+              });
+              const tempId = responseData;
+              setWishlist(responseData);
+              setProperties(temp);
+            })
+            .catch((err) => {
+              toast.error(err?.response);
+              setErrorMessage(err?.response);
+              setModalIsOpenError(true);
+            });
+      
+          })
+          .catch((err) => {
+            setErrorMessage(err?.response?.data?.error);
+            setModalIsOpenError(true);
+          });
+    
+        
       })
       .catch((err) => {
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
 
-    axios
-      .get("/api/appraiserWishlistedProperties", {
-        headers: {
-          Authorization: `Bearer ${data?.token}`,
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => {
-        const endDate = new Date();
-        console.log("wishlisted", endDate - startDate);
-        const tempData = res.data.data.$values;
-
-        // setAllWishlistedProperties(res.data.data.$values);
-        const responseData = tempData.filter((prop, index) => {
-          if (String(prop.userId) === String(data.userId)) {
-            return true;
-          } else {
-            return false;
-          }
-        });
-        const tempId = responseData;
-        setWishlist(responseData);
-      })
-      .catch((err) => {
-        toast.error(err?.response);
-        setErrorMessage(err?.response);
-        setModalIsOpenError(true);
-      });
-    let tempBids = [];
-    axios
-      .get("/api/getAllBids", {
-        headers: {
-          Authorization: `Bearer ${data.token}`,
-        },
-        params: {
-          email: data.userEmail,
-        },
-      })
-      .then((res) => {
-        tempBids = res.data.data.$values;
-        const updatedBids = tempBids.filter((prop, index) => {
-          if (String(prop.appraiserUserId) === String(data.userId)) {
-            return true;
-          } else {
-            return false;
-          }
-        });
-        console.log(updatedBids);
-        setBids(updatedBids);
-      })
-      .catch((err) => {
-        setErrorMessage(err?.response?.data?.error);
-        setModalIsOpenError(true);
-      });
 
     axios
       .get("/api/getAllBrokers", {

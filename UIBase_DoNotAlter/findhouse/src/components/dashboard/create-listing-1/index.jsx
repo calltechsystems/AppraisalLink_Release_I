@@ -12,7 +12,6 @@ import LocationField from "./LocationField";
 import { encryptionData } from "../../../utils/dataEncryption";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { typeOfBuilding } from "./data";
 
 const Index = ({ isView, propertyData }) => {
   const router = useRouter();
@@ -1032,23 +1031,94 @@ const Index = ({ isView, propertyData }) => {
                 {modalIsOpen && (
                   <div className="modal">
                     <div className="modal-content">
-                      <h3 className="text-center">Property Form</h3>
-                      {/* <p className="text-center mb-3">
-                        All of the details on the assessed property are here.
-                      </p> */}
+                      <div className="col-lg-12">
+                        <div className="row">
+                          <div className="col-lg-12">
+                            <Link href="/" className="">
+                              <Image
+                                width={60}
+                                height={45}
+                                className="logo1 img-fluid"
+                                style={{ marginTop: "-20px" }}
+                                src="/assets/images/logo.png"
+                                alt="header-logo2.png"
+                              />
+                              <span
+                                style={{
+                                  color: "#2e008b",
+                                  fontWeight: "bold",
+                                  fontSize: "24px",
+                                  // marginTop: "20px",
+                                }}
+                              >
+                                Appraisal
+                              </span>
+                              <span
+                                style={{
+                                  color: "#97d700",
+                                  fontWeight: "bold",
+                                  fontSize: "24px",
+                                  // marginTop: "20px",
+                                }}
+                              >
+                                {" "}
+                                Land
+                              </span>
+                            </Link>
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="col-lg-12 text-center">
+                            <h1 className=" text-color mt-1">
+                              Property Details
+                            </h1>
+                          </div>
+                        </div>
+                        <div
+                          className="mt-2 mb-3"
+                          style={{ border: "2px solid #97d700" }}
+                        ></div>
+                      </div>
+
                       <div className="d-flex justify-content-center mt-2">
                         <table
                           style={{
-                            width: "510px",
-                            textAlign: "center",
+                            width: "700px",
+                            textAlign: "start",
                             borderRadius: "5px",
+                            fontSize: "17px",
+                            fontWeight: "bold",
                           }}
                         >
                           <tr>
+                            <th
+                              style={{
+                                border: "1px solid #2e008b",
+                                color: "#2e008b",
+                                // padding: "5px",
+                                textAlign: "center",
+                              }}
+                            >
+                              Headers
+                            </th>
+                            <th
+                              style={{
+                                border: "1px solid #2e008b",
+                                // width: "470px",
+                                color: "#2e008b",
+                                // padding: "5px",
+                                textAlign: "center",
+                              }}
+                            >
+                              Value
+                            </th>
+                          </tr>
+                          <tr>
                             <td
                               style={{
-                                border: "1px solid grey",
+                                border: "1px solid #2e008b",
                                 color: "#2e008b",
+                                padding: "5px",
                               }}
                             >
                               <span className="text-start">
@@ -1057,39 +1127,23 @@ const Index = ({ isView, propertyData }) => {
                             </td>
                             <td
                               style={{
-                                border: "1px solid grey",
-                                width: "250px",
+                                border: "1px solid #2e008b",
+                                width: "465px",
+                                color: "black",
+                                padding: "5px",
                               }}
                             >
                               {streetNumberRef} {streetNameRef} {cityRef}{" "}
                               {stateRef} {zipCodeRef}
                             </td>
                           </tr>
-                          {/* <tr>
-                            <td
-                              style={{
-                                border: "1px solid grey",
-                                color: "#2e008b",
-                              }}
-                            >
-                              <span className="text-start">Property Area</span>
-                            </td>
-                            <td
-                              style={{
-                                border: "1px solid grey",
-                                width: "250px",
-                              }}
-                            >
-                              {" "}
-                              {areaRef} sqft
-                            </td>
-                          </tr> */}
 
                           <tr>
                             <td
                               style={{
-                                border: "1px solid grey",
+                                border: "1px solid #2e008b",
                                 color: "#2e008b",
+                                padding: "5px",
                               }}
                             >
                               <span className="text-start">
@@ -1099,8 +1153,10 @@ const Index = ({ isView, propertyData }) => {
                             </td>
                             <td
                               style={{
-                                border: "1px solid grey",
-                                width: "250px",
+                                border: "1px solid #2e008b",
+                                width: "465px",
+                                color: "black",
+                                padding: "5px",
                               }}
                             >
                               {String(buildinRef) === "Other"
@@ -1111,8 +1167,9 @@ const Index = ({ isView, propertyData }) => {
                           <tr>
                             <td
                               style={{
-                                border: "1px solid grey",
+                                border: "1px solid #2e008b",
                                 color: "#2e008b",
+                                padding: "5px",
                               }}
                             >
                               <span className="text-start">
@@ -1122,8 +1179,10 @@ const Index = ({ isView, propertyData }) => {
                             </td>
                             <td
                               style={{
-                                border: "1px solid grey",
-                                width: "250px",
+                                border: "1px solid #2e008b",
+                                width: "465px",
+                                color: "black",
+                                padding: "5px",
                               }}
                             >
                               {String(typeOfAppraisal) === "Other"
@@ -1134,16 +1193,19 @@ const Index = ({ isView, propertyData }) => {
                           <tr>
                             <td
                               style={{
-                                border: "1px solid grey",
+                                border: "1px solid #2e008b",
                                 color: "#2e008b",
+                                padding: "5px",
                               }}
                             >
                               <span className="text-start"> Purpose</span>
                             </td>
                             <td
                               style={{
-                                border: "1px solid grey",
-                                width: "250px",
+                                border: "1px solid #2e008b",
+                                width: "465px",
+                                color: "black",
+                                padding: "5px",
                               }}
                             >
                               {String(purpose) === "Other"
@@ -1166,8 +1228,10 @@ const Index = ({ isView, propertyData }) => {
                               </td>
                               <td
                                 style={{
-                                  border: "1px solid grey",
-                                  width: "250px",
+                                  border: "1px solid #2e008b",
+                                  width: "465px",
+                                  color: "black",
+                                  padding: "5px",
                                 }}
                               >
                                 {lenderInformation}
@@ -1198,8 +1262,9 @@ const Index = ({ isView, propertyData }) => {
                           <tr>
                             <td
                               style={{
-                                border: "1px solid grey",
+                                border: "1px solid #2e008b",
                                 color: "#2e008b",
+                                padding: "5px",
                               }}
                             >
                               <span className="text-start">
@@ -1208,8 +1273,10 @@ const Index = ({ isView, propertyData }) => {
                             </td>
                             <td
                               style={{
-                                border: "1px solid grey",
-                                width: "250px",
+                                border: "1px solid #2e008b",
+                                width: "465px",
+                                color: "black",
+                                padding: "5px",
                               }}
                             >
                               {" "}
@@ -1219,16 +1286,19 @@ const Index = ({ isView, propertyData }) => {
                           <tr>
                             <td
                               style={{
-                                border: "1px solid grey",
+                                border: "1px solid #2e008b",
                                 color: "#2e008b",
+                                padding: "5px",
                               }}
                             >
                               <span className="text-start">Urgency</span>
                             </td>
                             <td
                               style={{
-                                border: "1px solid grey",
-                                width: "250px",
+                                border: "1px solid #2e008b",
+                                width: "465px",
+                                color: "black",
+                                padding: "5px",
                               }}
                             >
                               {" "}
@@ -1241,8 +1311,9 @@ const Index = ({ isView, propertyData }) => {
                           <tr>
                             <td
                               style={{
-                                border: "1px solid grey",
+                                border: "1px solid #2e008b",
                                 color: "#2e008b",
+                                padding: "5px",
                               }}
                             >
                               <span className="text-start">
@@ -1251,8 +1322,10 @@ const Index = ({ isView, propertyData }) => {
                             </td>
                             <td
                               style={{
-                                border: "1px solid grey",
-                                width: "250px",
+                                border: "1px solid #2e008b",
+                                width: "465px",
+                                color: "black",
+                                padding: "5px",
                               }}
                             >
                               {" "}
@@ -1263,16 +1336,19 @@ const Index = ({ isView, propertyData }) => {
                           <tr>
                             <td
                               style={{
-                                border: "1px solid grey",
+                                border: "1px solid #2e008b",
                                 color: "#2e008b",
+                                padding: "5px",
                               }}
                             >
                               <span className="text-start">Applicant Name</span>
                             </td>
                             <td
                               style={{
-                                border: "1px solid grey",
-                                width: "250px",
+                                border: "1px solid #2e008b",
+                                width: "465px",
+                                color: "black",
+                                padding: "5px",
                               }}
                             >
                               {" "}
@@ -1282,16 +1358,19 @@ const Index = ({ isView, propertyData }) => {
                           <tr>
                             <td
                               style={{
-                                border: "1px solid grey",
+                                border: "1px solid #2e008b",
                                 color: "#2e008b",
+                                padding: "5px",
                               }}
                             >
                               <span className="text-start">Email Address</span>
                             </td>
                             <td
                               style={{
-                                border: "1px solid grey",
-                                width: "250px",
+                                border: "1px solid #2e008b",
+                                width: "465px",
+                                color: "black",
+                                padding: "5px",
                               }}
                             >
                               {" "}
@@ -1301,16 +1380,19 @@ const Index = ({ isView, propertyData }) => {
                           <tr>
                             <td
                               style={{
-                                border: "1px solid grey",
+                                border: "1px solid #2e008b",
                                 color: "#2e008b",
+                                padding: "5px",
                               }}
                             >
                               <span className="text-start">Phone Number</span>
                             </td>
                             <td
                               style={{
-                                border: "1px solid grey",
-                                width: "250px",
+                                border: "1px solid #2e008b",
+                                width: "465px",
+                                color: "black",
+                                padding: "5px",
                               }}
                             >
                               {" "}

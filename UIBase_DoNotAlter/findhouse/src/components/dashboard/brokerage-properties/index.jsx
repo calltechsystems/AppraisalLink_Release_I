@@ -534,7 +534,7 @@ const Index = () => {
           id="DashboardOffcanvasMenu"
           data-bs-scroll="true"
         >
-        <SidebarMenu />
+          <SidebarMenu />
         </div>
       </div>
       {/* End sidebar_menu */}
@@ -1203,39 +1203,47 @@ const Index = () => {
                               </div>
                               <h2
                                 className="text-center mt-3"
-                                style={{
-                                  backgroundColor: "#97d700",
-                                  color: "#2e008b",
-                                }}
+                                style={{ color: "#2e008b" }}
                               >
                                 {isHoldProperty
                                   ? `${
                                       propValue
-                                        ? "Confirmation On Hold Property"
-                                        : "Confirmation Remove On Hold Property"
+                                        ? "Order Confirmation"
+                                        : "Order Confirmation"
                                     }`
                                   : `${
                                       propValue
-                                        ? "Confirmation On Cancel Property"
-                                        : "Confirmation Remove On Cancel Property"
+                                        ? "Order Confirmation"
+                                        : "Order Confirmation"
                                     }`}
                               </h2>
-                              {/* <div
-                    className="mb-3"
-                    style={{ border: "2px solid #97d700" }}
-                  ></div> */}
-                              <p className="fs-5 text-center text-dark mt-2">
-                                Are you sure to confirm to{" "}
+                              <div
+                                className="mb-2"
+                                style={{ border: "2px solid #97d700" }}
+                              ></div>
+                              <p className="fs-5 text-center text-dark mt-4">
+                                Are you sure for the order to be{" "}
                                 <span
                                   style={{ color: "red", fontWeight: "bold" }}
                                 >
                                   {" "}
-                                  {isHoldProperty ? "Hold" : "Cancel"}{" "}
+                                  {isHoldProperty
+                                    ? `${
+                                        propValue ? "On Hold" : "Remove On Hold"
+                                      }`
+                                    : `${
+                                        propValue
+                                          ? "On Cancel"
+                                          : "Remove On Hold"
+                                      }`}{" "}
                                 </span>
-                                the Property ?{" "}
+                                ?{" "}
                               </p>
 
-                              <hr />
+                              <div
+                                className="mb-3 mt-4"
+                                style={{ border: "2px solid #97d700" }}
+                              ></div>
                               <div className="col-lg-12 text-center">
                                 <button
                                   className="btn w-25 btn-color m-1"

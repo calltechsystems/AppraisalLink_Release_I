@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { Urgency, typeOfAppraisal, Purpose } from "./data";
-import { typeOfBuilding } from "./data";
+import { Urgency, typeOfAppraisal, Purpose } from "../create-listing/data";
+import { typeOfBuilding } from "../create-listing/data";
 import moment from "moment";
 import MyDatePicker from "./MyDatePicker";
 

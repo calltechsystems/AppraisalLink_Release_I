@@ -611,7 +611,7 @@ export default function Exemple({
                 {/* )} */}
 
                 {/* {isEditable && ( */}
-                {!isCancel && (
+                {!isCancel && !isHold && (
                   <li title={"Order Cancel"}>
                     <span
                       className="btn btn-color-table"

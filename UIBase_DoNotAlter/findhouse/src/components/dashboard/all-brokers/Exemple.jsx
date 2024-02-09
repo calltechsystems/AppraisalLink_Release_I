@@ -125,6 +125,7 @@ export default function Exemple({
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [wishlist, setWishlist] = useState([]);
+  const [allBrokers,setAllBrokers]=useState([]);
   const [bids, setBids] = useState([]);
   const [hideAction, setHideAction] = useState(false);
   const [hideClass, setHideClass] = useState("");
@@ -162,9 +163,9 @@ export default function Exemple({
     const userData = JSON.parse(localStorage.getItem("user"));
 
     const formData = {
-      userId: userData.userId,
+      userId: userdata?.userId,
       propertyId: id,
-      token: userData.token,
+      token: userdata?.token,
     };
 
     const payload = encryptionData(formData);
@@ -172,7 +173,7 @@ export default function Exemple({
     axios
       .delete("/api/removeWishlistProperty", {
         headers: {
-          Authorization: `Bearer ${userData.token}`,
+          Authorization: `Bearer ${userdata?.token}`,
         },
         params: {
           userId: id,
@@ -209,7 +210,7 @@ export default function Exemple({
     let temp = {};
     console.log(wishlist, data);
     wishlist.map((prop, index) => {
-      if (String(prop.propertyId) === String(data.propertyId)) {
+      if (String(prop.propertyId) === String(data?.propertyId)) {
         temp = prop;
       }
     });
@@ -222,7 +223,7 @@ export default function Exemple({
   };
 
   const sortObjectsByOrderIdDescending = (data) => {
-    return data.sort((a, b) => b.orderId - a.orderId);
+    return data?.sort((a, b) => b.orderId - a.orderId);
   };
 
   const checkData = properties && !updatedData ? true : false;
@@ -231,27 +232,29 @@ export default function Exemple({
   }, [checkData]);
 
   useEffect(() => {
+    let tempData = [];
     const getData = () => {
-      temporaryData.map((data, index) => {
-        properties.map((temp, index) => {
+     
+        allBrokers?.map((temp, index) => {
+          console.log(temp);
           const data = temp.broker;
           const updatedRow = {
-            // appraiser_id: data.item.id,
-            email: data.email,
-            firstname: data.firstName ? data.firstName : "NA",
-            lastname: data.lastName ? data.lastName : "NA",
-            // company: data.company,
-            status: data.isActive ? (
+            // appraiser_id: data?.item.id,
+            email: data?.email,
+            firstname: data?.firstName ? data?.firstName : "NA",
+            lastname: data?.lastName ? data?.lastName : "NA",
+            // company: data?.company,
+            status: data?.isActive ? (
               <span className="btn btn-success  w-100">Active</span>
-            ) : !data.firstName ? (
+            ) : !data?.firstName ? (
               <span className="btn btn-warning  w-100">Not Registered</span>
             ) : (
               <span className="btn btn-danger  w-100">In-Active</span>
             ),
-            phone: data.phoneNumber ? data.phoneNumber : "NA",
-            address: `${data.streetName} ${data.streetNumber},${data.city}-${data.postalCode}`,
+            phone: data?.phoneNumber ? data?.phoneNumber : "NA",
+            address: `${data?.streetName} ${data?.streetNumber},${data?.city}-${data?.postalCode}`,
             // date: dateNow,
-            emailaddress: data.email,
+            emailaddress: data?.email,
 
             action: (
               <div className="print-hidden-column">
@@ -276,18 +279,9 @@ export default function Exemple({
             ),
           };
 
-          // const updatedRow = {
-          //   email:data.email,
-          //   firstname:data.firstname,
-          //   lastname:data.lastname,
-          //   company:data.company,
-          //   phone:data.phone,
-          //   date:data.date
+         
+          tempData.push(updatedRow)
 
-          // };
-
-          tempData.push(updatedRow);
-        });
       });
       setUpdatedData(tempData);
     };
@@ -307,71 +301,11 @@ export default function Exemple({
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
-      token: userData.token,
+      token: data?.token,
     };
     let tempProperties = [],
       tempWishlist = [];
-    axios
-      .get("/api/getPropertiesById", {
-        headers: {
-          Authorization: `Bearer ${data?.token}`,
-          "Content-Type": "application/json",
-        },
-        params: {
-          userId: data?.userId,
-        },
-      })
-      .then((res) => {
-        tempProperties = res.data.data.property.$values;
-      })
-      .catch((err) => {
-        setErrorMessage(err?.response?.data?.error);
-        setModalIsOpenError(true);
-      });
-    axios
-      .get("/api/appraiserWishlistedProperties", {
-        headers: {
-          Authorization: `Bearer ${data?.token}`,
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => {
-        const tempData = res.data.data.$values;
-
-        // setAllWishlistedProperties(res.data.data.$values);
-        const responseData = tempData.filter((prop, index) => {
-          if (prop.userId === data.userId) {
-            return true;
-          } else {
-            return false;
-          }
-        });
-        const tempId = responseData;
-        setWishlist(responseData);
-      })
-      .catch((err) => {
-        toast.error(err?.response);
-        setErrorMessage(err?.response);
-        setModalIsOpenError(true);
-      });
-    let tempBids = [];
-    axios
-      .get("/api/getAllBids", {
-        headers: {
-          Authorization: `Bearer ${data.token}`,
-        },
-      })
-      .then((res) => {
-        console.log(res);
-        tempBids = res.data.data.result.$values;
-        setBids(tempBids);
-      })
-      .catch((err) => {
-        setErrorMessage(err?.response?.data?.error);
-        setModalIsOpenError(true);
-      });
-
-    const encryptedData = encryptionData(payload);
+    
     axios
       .get("/api/getBrokerByBrokerageId", {
         headers: {
@@ -384,18 +318,16 @@ export default function Exemple({
       })
       .then((res) => {
         console.log(res.data);
-        setAppraiserCompanyInfo(res.data.data.brokerage);
-        setProperties(res.data.data.brokers.$values);
+        // setAppraiserCompanyInfo(res.data?.data?.brokerage);
+        setAllBrokers(res.data?.data?.brokers.$values);
       })
       .catch((err) => {
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
     // console.log(err);
-    console.log("end", bids, properties, wishlist);
     setRefresh(false);
   }, [refresh]);
-  console.log(sortObjectsByOrderIdDescending(updatedData));
   return (
     <>
       {refresh ? (

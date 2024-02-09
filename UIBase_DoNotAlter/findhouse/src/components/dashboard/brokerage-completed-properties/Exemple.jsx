@@ -15,14 +15,14 @@ const headCells = [
     label: "Order ID",
     width: 100,
   },
-  
+
   {
     id: "address",
     numeric: false,
     label: "Property Address",
     width: 200,
   },
-  
+
   {
     id: "status",
     numeric: false,
@@ -41,7 +41,7 @@ const headCells = [
     label: "Urgency",
     width: 200,
   },
-  
+
   {
     id: "date",
     numeric: false,
@@ -61,7 +61,7 @@ const headCells = [
     label: "Type of Property",
     width: 200,
   },
-  
+
   {
     id: "estimatedValue",
     numeric: false,
@@ -74,7 +74,6 @@ const headCells = [
     label: "Type Of Appraisal",
     width: 200,
   },
-
 
   {
     id: "purpose",
@@ -89,7 +88,7 @@ const headCells = [
     label: "Lender Information",
     width: 200,
   },
- 
+
   {
     id: "broker",
     numeric: false,
@@ -238,15 +237,14 @@ export default function Exemple({
     return temp;
   };
 
-  
-  const checkData = (properties && !updatedData) ? true : false;
-  useEffect(()=>{
+  const checkData = properties && !updatedData ? true : false;
+  useEffect(() => {
     setProperties([]);
-  },[checkData])
+  }, [checkData]);
 
-  useEffect(()=>{
+  useEffect(() => {
     setRefresh(true);
-  },[!updatedData]);
+  }, [!updatedData]);
 
   useEffect(() => {
     let page = [];
@@ -269,7 +267,12 @@ export default function Exemple({
               isBidded.status === 0 ? (
                 <span className="btn btn-primary">Quote Provided</span>
               ) : isBidded.status === 1 ? (
-                <span className="btn btn-success" onClick={openStatusUpdateHandler}>Accepted</span>
+                <span
+                  className="btn btn-success"
+                  onClick={openStatusUpdateHandler}
+                >
+                  Accepted
+                </span>
               ) : (
                 <span className="btn btn-danger">Rejected</span>
               )
@@ -280,7 +283,12 @@ export default function Exemple({
               isBidded.status === 0 ? (
                 <span className="btn btn-primary">Quote Provided</span>
               ) : isBidded.status === 1 ? (
-                <span className="btn btn-success" onClick={openStatusUpdateHandler}>Accepted</span>
+                <span
+                  className="btn btn-success"
+                  onClick={openStatusUpdateHandler}
+                >
+                  Accepted
+                </span>
               ) : (
                 <span className="btn btn-danger">Rejected</span>
               )
@@ -300,7 +308,7 @@ export default function Exemple({
                         // fontWeight: "bold",
                         backgroundColor: "transparent",
                       }}
-                      onClick={() => openModalBroker(property,2)}
+                      onClick={() => openModalBroker(property, 2)}
                     >
                       Broker Info
                     </button>
@@ -328,9 +336,9 @@ export default function Exemple({
                         // fontWeight: "bold",
                         backgroundColor: "transparent",
                       }}
-                      onClick={() => openModalBroker(property,1)}
+                      onClick={() => openModalBroker(property, 1)}
                     >
-                     Property Info
+                      Property Info
                     </button>
                   </a>
                 ) : isBidded.status === 2 ? (
@@ -414,14 +422,13 @@ export default function Exemple({
       .then((res) => {
         const temp = res.data.data.property.$values;
 
-        tempProperties = temp.filter((prop,index)=>{
-          if(String(prop.userId) === String(data.userId)){
-            return true
+        tempProperties = temp.filter((prop, index) => {
+          if (String(prop.userId) === String(data.userId)) {
+            return true;
+          } else {
+            return false;
           }
-          else{
-            return false
-          }
-        })
+        });
       })
       .catch((err) => {
         setErrorMessage(err?.response?.data?.error);
@@ -462,15 +469,14 @@ export default function Exemple({
       })
       .then((res) => {
         tempBids = res.data.data.result.$values;
-        const updatedBids = tempBids.filter((prop,index)=>{
-          if(String(prop.appraiserUserId) === String(data.userId)){
+        const updatedBids = tempBids.filter((prop, index) => {
+          if (String(prop.appraiserUserId) === String(data.userId)) {
             return true;
-          }
-          else{
+          } else {
             return false;
           }
-        })
-        console.log(updatedBids)
+        });
+        console.log(updatedBids);
         setBids(updatedBids);
       })
       .catch((err) => {
@@ -496,7 +502,7 @@ export default function Exemple({
           setRefresh={setRefresh}
           setProperties={setProperties}
           setFilterQuery={setFilterQuery}
-                          setSearchInput={setSearchInput}
+          setSearchInput={setSearchInput}
           refresh={refresh}
           refreshHandler={refreshHandler}
           setStartLoading={setStartLoading}
