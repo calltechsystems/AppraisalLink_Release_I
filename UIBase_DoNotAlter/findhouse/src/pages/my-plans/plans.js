@@ -2,21 +2,21 @@ import React, { useEffect, useState } from "react";
 import Header from "../../components/common/header/dashboard/Header";
 import MobileMenu from "../../components/common/header/MobileMenu";
 import Pricing from "./pricing";
-import SidebarMenu from "../../components/common/header/dashboard/SidebarMenuBroker";
+import SidebarMenu from "../../components/common/header/dashboard/SidebarMenu";
 import axios from "axios";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 
-const Index = ({ setModalOpen, setPrice ,modalOpen}) => {
+const Index = ({ setModalOpen, setPrice, modalOpen }) => {
   const [selectedPlan, setSelectedPlan] = useState("Monthly");
   const [planData, setPlanData] = useState([]);
   const [isChecked, setIsChecked] = useState(false);
 
   const router = useRouter();
   let userData = {};
-  useEffect(()=>{
+  useEffect(() => {
     userData = JSON.parse(localStorage.getItem("user"));
-  })
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,10 +41,7 @@ const Index = ({ setModalOpen, setPrice ,modalOpen}) => {
     fetchData();
   }, []);
 
-
-  const sortFunction = (data)=>{
-
-  }
+  const sortFunction = (data) => {};
   const togglePlan = () => {
     setSelectedPlan(selectedPlan === "Monthly" ? "Yearly" : "Monthly");
   };
@@ -68,14 +65,11 @@ const Index = ({ setModalOpen, setPrice ,modalOpen}) => {
           id="DashboardOffcanvasMenu"
           data-bs-scroll="true"
         >
-        <SidebarMenu modalOpen={modalOpen}/>
+          <SidebarMenu modalOpen={modalOpen} />
         </div>
       </div>
 
-      <section
-        className="our-dashbord dashbord bgc-f7 pb50"
-        style={{ }}
-      >
+      <section className="our-dashbord dashbord bgc-f7 pb50" style={{}}>
         <div className="container-fluid ovh">
           <div className="row">
             <div className="col-lg-12 col-lg-6 maxw100flex-992">
@@ -88,8 +82,8 @@ const Index = ({ setModalOpen, setPrice ,modalOpen}) => {
                   <span className="fw-bold text-dark">Monthly</span>
                   <div style={{ width: "20%", height: "70%" }}>
                     <label
-                      // className={`toggleLabel ${selectedPlan}`}
-                      // onClick={togglePlan}
+                    // className={`toggleLabel ${selectedPlan}`}
+                    // onClick={togglePlan}
                     >
                       <button className="toggleSwitch"></button>
 
@@ -115,9 +109,8 @@ const Index = ({ setModalOpen, setPrice ,modalOpen}) => {
           {/* End .row */}
 
           <div className="row">
-             <Pricing
+            <Pricing
               isPlan={selectedPlan === "Monthly" ? 1 : 2}
-
               setModalOpen={setModalOpen}
               setPrice={setPrice}
               data={planData}
