@@ -353,7 +353,7 @@ export default function Exemple({
             status: isWait ? (
               <span className="btn btn-danger  w-100">
                 {property.isOnCancel
-                  ? "On Cancel"
+                  ? "Cancelled"
                   : property.isOnHold
                   ? "On Hold"
                   : ""}
@@ -450,9 +450,33 @@ export default function Exemple({
             action: (
               <div className="print-hidden-column">
                 {isWait ? (
+                  <>
                   <p className="btn btn-danger  w-100">
-                    Cannot perform any actions right now!.
+                  {`Cannot perform any actions further on this property as propperty is ${
+                    property.isOnCancel ? "Cancelled" : "On Hold"
+                  } !.`}
                   </p>
+                  <li
+                  className=""
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Un-Archive Property"
+                >
+                  <div
+                    className="w-100"
+                    onClick={() => unArchivePropertyHandler(property.orderId)}
+                  >
+                    <button href="#" className="btn btn-color">
+                      <Link href="#">
+                        <span className="text-light">
+                          {" "}
+                          <FaArchive />
+                        </span>
+                      </Link>
+                    </button>
+                  </div>
+                </li>
+                </>
                 ) : isBidded && isBidded.status !== 1 ? (
                   <ul className="mb0 d-flex gap-1">
                     {(!isBidded.$id || isBidded?.status < 1) && (

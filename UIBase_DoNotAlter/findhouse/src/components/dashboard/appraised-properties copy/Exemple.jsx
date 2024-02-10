@@ -338,7 +338,7 @@ export default function Exemple({
           status: isWait ? (
             <span className="btn btn-primary  w-100">
               {property.isOnCancel
-                ? "On Cancel"
+                ? "Cancelled"
                 : property.isOnHold
                 ? "On Hold"
                 : ""}
@@ -429,7 +429,14 @@ export default function Exemple({
 
           action: (
             <div className="print-hidden-column">
-              {
+              
+                  
+                  { isWait ? <p className="btn btn-danger  w-100">
+                    {`Cannot perform any actions further on this property as propperty is ${
+                      property.isOnCancel ? "Cancelled" : "On Hold"
+                    } !.`}
+                  </p> : ""}
+                
                 <li
                   className=""
                   data-toggle="tooltip"
@@ -450,7 +457,7 @@ export default function Exemple({
                     </button>
                   </div>
                 </li>
-              }
+              
             </div>
           ),
         };

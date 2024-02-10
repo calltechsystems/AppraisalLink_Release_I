@@ -60,7 +60,7 @@ const Pricing = ({
     const Packages = userData.userSubscription?.$values;
     const len = Packages?.length;
     setSelectedPackage(Packages?.length > 0 ? Packages[len-1] : {});
-  })
+  },[])
 
   const selectedIdStyle = selectedId ? selectedId : "2";
   const content =

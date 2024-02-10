@@ -347,7 +347,7 @@ export default function Exemple({
                 : "N.A.",
             status: isWait ? (
               <span className="btn btn-primary  w-100">
-                {property.isOnHold ? "On Hold" : "On Cancel"}
+                {property.isOnHold ? "On Hold" : "Cancelled"}
               </span>
             ) : isBidded.bidId ? (
               isBidded.orderStatus === 6 ? (
@@ -441,9 +441,39 @@ export default function Exemple({
             action: (
               <div className="print-hidden-column">
                 {isWait ? (
+                  <>
                   <p className="btn btn-danger  w-100">
-                    Cannot perform any actions right now!.
+                  {`Cannot perform any actions further on this property as propperty is ${
+                    property.isOnCancel ? "Cancelled" : "On Hold"
+                  } !.`}
                   </p>
+                  <li
+                      className="list-inline-item"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Archive Property"
+                    >
+                      <div
+                        className="w-100"
+                        onClick={() =>
+                          onArchivePropertyHandler(property.propertyId)
+                        }
+                      >
+                        <button
+                          href="#"
+                          className="btn btn-color w-100 mt-1"
+                          style={{ marginLeft: "12px" }}
+                        >
+                          <Link href="#">
+                            <span className="text-light">
+                              {" "}
+                              <FaArchive />
+                            </span>
+                          </Link>
+                        </button>
+                      </div>
+                    </li>
+                    </>
                 ) : isBidded && isBidded.status !== 1 ? (
                   <ul className="">
                     {isWishlist.id ? (

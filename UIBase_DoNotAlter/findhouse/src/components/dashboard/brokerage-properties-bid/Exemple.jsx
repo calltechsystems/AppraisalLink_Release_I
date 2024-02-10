@@ -301,7 +301,7 @@ export default function Exemple({
                       target="_blank"
                       className="form-check-label text-primary"
                     >
-                      <span className="flaticon-pdf text-light mt-0"></span>
+                      <span className="flaticon-pdf text-light"></span>
                     </Link>
                   </div>
                 </li>
@@ -349,14 +349,24 @@ export default function Exemple({
                   data-placement="top"
                   title="Approved Lender List"
                 >
-                  <div className="btn btn-color fw-bold">
-                    <Link
+                  <div className="btn btn-color fw-bold ">
+                    {/* <Link
                       href="assets/images/Terms & Conditions.pdf"
                       target="_blank"
                       className="form-check-label text-primary"
-                    >
-                      <span className="flaticon-pdf text-light"></span>
-                    </Link>
+                    > */}{" "}
+                    <a
+                      className="flaticon-pdf text-light"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={
+                        userData?.appraiser_Details?.lenderListUrl
+                          ? userData?.appraiser_Details?.lenderListUrl
+                          : "#"
+                      }
+                      style={{ cursor: "pointer" }}
+                    ></a>
+                    {/* </Link> */}
                   </div>
                 </li>
               </ul>
@@ -415,6 +425,8 @@ export default function Exemple({
 
     console.log(propertyId);
     toast.loading("Getting properties...");
+    const url = window.location.pathname;
+    const propertyOrderId = url.split("/my-property-bids/")[1];
     axios
       .get("/api/getAllQuotesForProperty", {
         headers: {
@@ -422,7 +434,7 @@ export default function Exemple({
           "Content-Type": "application/json",
         },
         params: {
-          OrderId: propertyId,
+          OrderId: propertyOrderId,
         },
       })
       .then((res) => {

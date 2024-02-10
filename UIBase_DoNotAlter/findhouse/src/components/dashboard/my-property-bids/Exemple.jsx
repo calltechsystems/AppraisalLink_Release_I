@@ -403,17 +403,21 @@ export default function Exemple({
         // setModalIsOpenError(true);
       });
     toast.loading("Getting properties...");
+    // console.log(window.location.pathname);
+    const url = window.location.pathname;
+    const propertyOrderId = url.split("/my-property-bids/")[1];
     axios
-      .get("/api/getAllBids", {
+      .get("/api/getAllQuotesForProperty", {
         headers: {
           Authorization: `Bearer ${data?.token}`,
           "Content-Type": "application/json",
         },
         params: {
-          OrderId: data?.userId,
+          OrderId: propertyOrderId,
         },
       })
       .then((res) => {
+        // console.log(res.data);
         toast.dismiss();
         const tempBids = res.data.data.$values;
         console.log(tempBids, orderId);

@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import Header from "../../components/common/header/dashboard/Header";
 import MobileMenu from "../../components/common/header/MobileMenu";
 import Pricing from "./pricing";
-import SidebarMenu from "../../components/common/header/dashboard/SidebarMenu";
+import SidebarMenu from "../../components/common/header/dashboard/SidebarMenuBroker";
 import axios from "axios";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 
-const Index = ({ setModalOpen, setPrice }) => {
+const Index = ({ setModalOpen, setPrice ,modalOpen}) => {
   const [selectedPlan, setSelectedPlan] = useState("Monthly");
   const [planData, setPlanData] = useState([]);
   const [isChecked, setIsChecked] = useState(false);
@@ -38,11 +38,13 @@ const Index = ({ setModalOpen, setPrice }) => {
       }
     };
 
-    if (typeof window !== "undefined") {
-      fetchData();
-    }
-  }, [router]);
+    fetchData();
+  }, []);
 
+
+  const sortFunction = (data)=>{
+
+  }
   const togglePlan = () => {
     setSelectedPlan(selectedPlan === "Monthly" ? "Yearly" : "Monthly");
   };
@@ -66,7 +68,7 @@ const Index = ({ setModalOpen, setPrice }) => {
           id="DashboardOffcanvasMenu"
           data-bs-scroll="true"
         >
-        <SidebarMenu/>
+        <SidebarMenu modalOpen={modalOpen}/>
         </div>
       </div>
 
@@ -113,8 +115,9 @@ const Index = ({ setModalOpen, setPrice }) => {
           {/* End .row */}
 
           <div className="row">
-            <Pricing
+             <Pricing
               isPlan={selectedPlan === "Monthly" ? 1 : 2}
+
               setModalOpen={setModalOpen}
               setPrice={setPrice}
               data={planData}

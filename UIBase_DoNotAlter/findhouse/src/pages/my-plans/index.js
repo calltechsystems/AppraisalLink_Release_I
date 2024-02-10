@@ -32,7 +32,7 @@ const Index = () => {
   return (
     <>
       <Seo pageTitle="My Plans" />
-      <MyPlans setModalOpen={setModalOpen} setPrice={setPrice} userData={userData}/>
+      <MyPlans setModalOpen={setModalOpen} setPrice={setPrice} userData={userData} modalOpen={modalOpen}/>
       <Modal modalOpen={modalOpen} closeModal={closeModal} price={price}/>
     </>
   );
