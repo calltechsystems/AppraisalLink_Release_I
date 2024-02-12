@@ -11,15 +11,15 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 
 const Index = () => {
-  let userData =  JSON.parse(localStorage.getItem("user"));
+  let userData = JSON.parse(localStorage.getItem("user"));
   const router = useRouter();
   const [properties, setProperties] = useState([]);
-  const [refresh,setRefresh]=useState(false);
+  const [refresh, setRefresh] = useState(false);
 
   const [allProperties, setAllProperties] = useState([]);
 
-  const [bids , setBids] = useState([]);
-  const [wishlist,setWishlist]=useState([]);
+  const [bids, setBids] = useState([]);
+  const [wishlist, setWishlist] = useState([]);
 
   const [chartData, setChartData] = useState([]);
 
@@ -74,8 +74,8 @@ const Index = () => {
     const data = JSON.parse(localStorage.getItem("user"));
     if (!data) {
       router.push("/login");
-    } 
-    if(!userData?.appraiserCompany_Datails.firstName){
+    }
+    if (!userData?.appraiserCompany_Datails.firstName) {
       router.push("appraiser-company-profile");
     }
     if (!data) {
@@ -83,95 +83,92 @@ const Index = () => {
     }
 
     const func = () => {
-      const data = JSON.parse(localStorage.getItem("user"))
+      const data = JSON.parse(localStorage.getItem("user"));
       axios
-      .get("/api/getAllListedProperties", {
-        headers: {
-          Authorization: `Bearer ${data?.token}`,
-          "Content-Type": "application/json",
-        },
-        params: {
-          userId: data?.userId,
-        },
-      })
-      .then((res) => {
-        console.log(res.data.data.properties.$values);
-        
-
-        const temp = res.data.data.properties.$values;
-
-        const updatedProp = temp.filter((prop,index)=>{
-          if(String(prop.userId) === String(data.userId)){
-            return true;
-          }
-          else{
-            return false;
-          }
+        .get("/api/getAllListedProperties", {
+          headers: {
+            Authorization: `Bearer ${data?.token}`,
+            "Content-Type": "application/json",
+          },
+          params: {
+            userId: data?.userId,
+          },
         })
-        
-        // setShowLineGraph(true);
-        // setRerender(false);
+        .then((res) => {
+          console.log(res.data.data.properties.$values);
 
-        setProperties(updatedProp);
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error(err?.response?.data?.error);
-      });
+          const temp = res.data.data.properties.$values;
 
-      axios
-    .get("/api/appraiserWishlistedProperties", {
-      headers: {
-        Authorization: `Bearer ${data?.token}`,
-        "Content-Type": "application/json",
-      },
-    })
-    .then((res) => {
-      const tempData = res.data.data.$values;
+          const updatedProp = temp.filter((prop, index) => {
+            if (String(prop.userId) === String(data.userId)) {
+              return true;
+            } else {
+              return false;
+            }
+          });
 
-      // setAllWishlistedProperties(res.data.data.$values);
-      const responseData = tempData.filter((prop, index) => {
-        if (String(prop.userId) === String(data.userId)) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-      const tempId = responseData;
-      setWishlist(responseData);
-    })
-    .catch((err) => {
-      toast.error(err?.response);
-      setErrorMessage(err?.response);
-      setModalIsOpenError(true);
-    });
+          // setShowLineGraph(true);
+          // setRerender(false);
+
+          setProperties(updatedProp);
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error(err?.response?.data?.error);
+        });
 
       axios
-    .get("/api/getAllBids", {
-      headers: {
-        Authorization: `Bearer ${data.token}`,
-     },
-      
-        params:{
-          email:data.userEmail
-        }
-    })
-    .then((res) => {
-      console.log(res.data.data);
-      const tempBids = res.data.data;
-      let acceptedBid = 0 ;
-      
-      let updatedBids = [];
-      updatedBids.push(tempBids)
-      
-      console.log(updatedBids)
-      setBids(updatedBids);
-    })
-    .catch((err) => {
-      setErrorMessage(err?.response?.data?.error);
-      setModalIsOpenError(true);
-    });
-   
+        .get("/api/appraiserWishlistedProperties", {
+          headers: {
+            Authorization: `Bearer ${data?.token}`,
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          const tempData = res.data.data.$values;
+
+          // setAllWishlistedProperties(res.data.data.$values);
+          const responseData = tempData.filter((prop, index) => {
+            if (String(prop.userId) === String(data.userId)) {
+              return true;
+            } else {
+              return false;
+            }
+          });
+          const tempId = responseData;
+          setWishlist(responseData);
+        })
+        .catch((err) => {
+          toast.error(err?.response);
+          setErrorMessage(err?.response);
+          setModalIsOpenError(true);
+        });
+
+      axios
+        .get("/api/getAllBids", {
+          headers: {
+            Authorization: `Bearer ${data.token}`,
+          },
+
+          params: {
+            email: data.userEmail,
+          },
+        })
+        .then((res) => {
+          console.log(res.data.data);
+          const tempBids = res.data.data;
+          let acceptedBid = 0;
+
+          let updatedBids = [];
+          updatedBids.push(tempBids);
+
+          console.log(updatedBids);
+          setBids(updatedBids);
+        })
+        .catch((err) => {
+          setErrorMessage(err?.response?.data?.error);
+          setModalIsOpenError(true);
+        });
     };
     func();
     setRefresh(false);
@@ -181,7 +178,7 @@ const Index = () => {
     const data = JSON.parse(localStorage.getItem("user"));
     if (!data) {
       router.push("/login");
-    } 
+    }
     if (!data) {
       router.push("/login");
     }
@@ -236,7 +233,6 @@ const Index = () => {
     };
     const temp = categorizeDataByMonth(properties);
     setChartData(temp);
-   
   }, [properties]);
   return (
     <>
@@ -281,25 +277,16 @@ const Index = () => {
                 </div> */}
                 {/* End Dashboard Navigation */}
 
-                <div
-                  className=""
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  <div className="breadcrumb_content style2">
+                <div className="row">
+                  <div className="col-lg-8 breadcrumb_content style2">
                     <h2 className="breadcrumb_title">
                       {userData?.brokerage_Details
-                        ? `${userData?.brokerage_Details?.firstName} ${userData?.brokerage_Details?.lastName}`
+                        ? `${userData?.appraiserCompany_Datails?.firstName} ${userData?.appraiserCompany_Datails?.lastName}`
                         : ""}
                     </h2>
-                    <p>We are glad to see you again!</p>
                   </div>
-                  <div>
-                    <Filtering setRefresh={setRefresh}/>
+                  <div className="col-lg-4">
+                    <Filtering setRefresh={setRefresh} />
                   </div>
                 </div>
               </div>

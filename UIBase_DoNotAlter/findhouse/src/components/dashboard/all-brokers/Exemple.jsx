@@ -125,7 +125,7 @@ export default function Exemple({
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [wishlist, setWishlist] = useState([]);
-  const [allBrokers,setAllBrokers]=useState([]);
+  const [allBrokers, setAllBrokers] = useState([]);
   const [bids, setBids] = useState([]);
   const [hideAction, setHideAction] = useState(false);
   const [hideClass, setHideClass] = useState("");
@@ -234,54 +234,51 @@ export default function Exemple({
   useEffect(() => {
     let tempData = [];
     const getData = () => {
-     
-        allBrokers?.map((temp, index) => {
-          console.log(temp);
-          const data = temp.broker;
-          const updatedRow = {
-            // appraiser_id: data?.item.id,
-            email: data?.email,
-            firstname: data?.firstName ? data?.firstName : "NA",
-            lastname: data?.lastName ? data?.lastName : "NA",
-            // company: data?.company,
-            status: data?.isActive ? (
-              <span className="btn btn-success  w-100">Active</span>
-            ) : !data?.firstName ? (
-              <span className="btn btn-warning  w-100">Not Registered</span>
-            ) : (
-              <span className="btn btn-danger  w-100">In-Active</span>
-            ),
-            phone: data?.phoneNumber ? data?.phoneNumber : "NA",
-            address: `${data?.streetName} ${data?.streetNumber},${data?.city}-${data?.postalCode}`,
-            // date: dateNow,
-            emailaddress: data?.email,
+      allBrokers?.map((temp, index) => {
+        console.log(temp);
+        const data = temp.broker;
+        const updatedRow = {
+          // appraiser_id: data?.item.id,
+          email: data?.email,
+          firstname: data?.firstName ? data?.firstName : "NA",
+          lastname: data?.lastName ? data?.lastName : "NA",
+          // company: data?.company,
+          status: data?.isActive ? (
+            <span className="btn btn-success  w-100">Active</span>
+          ) : !data?.firstName ? (
+            <span className="btn btn-warning  w-100">Not Registered</span>
+          ) : (
+            <span className="btn btn-danger  w-100">In-Active</span>
+          ),
+          phone: data?.phoneNumber ? data?.phoneNumber : "NA",
+          address: `${data?.streetName} ${data?.streetNumber},${data?.city}-${data?.postalCode}`,
+          // date: dateNow,
+          emailaddress: data?.email,
 
-            action: (
-              <div className="print-hidden-column">
-                <button
-                  href="#"
-                  className="btn btn-color w-50"
-                  style={{ marginLeft: "12px" }}
-                  onClick={openStatusUpdateHandler}
-                  title="Update Status"
-                >
-                  <Link href="#">
-                    <span className="flaticon-edit text-light"></span>
-                  </Link>
-                </button>
-                {/* <button className="btn btn-color m-1">
+          action: (
+            <div className="print-hidden-column">
+              <button
+                href="#"
+                className="btn btn-color w-50"
+                style={{ marginLeft: "12px" }}
+                onClick={openStatusUpdateHandler}
+                title="Update Status"
+              >
+                <Link href="#">
+                  <span className="flaticon-edit text-light"></span>
+                </Link>
+              </button>
+              {/* <button className="btn btn-color m-1">
                 <i className="flaticon-edit"></i>
               </button>
               <button className="btn btn-color">
                 <i className="flaticon-garbage"></i>
               </button> */}
-              </div>
-            ),
-          };
+            </div>
+          ),
+        };
 
-         
-          tempData.push(updatedRow)
-
+        tempData.push(updatedRow);
       });
       setUpdatedData(tempData);
     };
@@ -305,7 +302,7 @@ export default function Exemple({
     };
     let tempProperties = [],
       tempWishlist = [];
-    
+
     axios
       .get("/api/getBrokerByBrokerageId", {
         headers: {

@@ -312,8 +312,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     if (truncatedValue.length === 10) {
       setPhoneNumberRef(truncatedValue);
     }
-
-    setPhoneNumber_01(truncatedValue);
+    setPhoneNumberRef(truncatedValue);
   };
 
   return (

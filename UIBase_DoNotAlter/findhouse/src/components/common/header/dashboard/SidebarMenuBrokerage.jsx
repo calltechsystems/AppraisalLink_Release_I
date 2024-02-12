@@ -185,7 +185,7 @@ const SidebarMenu = ({ userData }) => {
                 <span>Completed Orders</span>
               </Link>
             </li>
-            <li
+            {/* <li
               className={`treeview ${
                 isSinglePageActive("/brokerage-biding-history", route.pathname)
                   ? "active"
@@ -196,7 +196,7 @@ const SidebarMenu = ({ userData }) => {
                 <i className="flaticon-building"></i>
                 <span>Order History</span>
               </Link>
-            </li>
+            </li> */}
           </ul>
         </li>
         <li className="title">
@@ -212,6 +212,18 @@ const SidebarMenu = ({ userData }) => {
               <Link href="/all-brokers">
                 <i className="flaticon-building"></i>
                 <span> Broker Add/View</span>
+              </Link>
+            </li>
+            <li
+              className={`treeview ${
+                isSinglePageActive("/brokers-properties", route.pathname)
+                  ? "active"
+                  : ""
+              }`}
+            >
+              <Link href="/brokers-properties">
+                <i className="flaticon-building"></i>
+                <span> Brokers Properties</span>
               </Link>
             </li>
           </ul>

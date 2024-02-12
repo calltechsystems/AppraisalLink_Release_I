@@ -426,7 +426,7 @@ export default function Exemple({
     console.log(propertyId);
     toast.loading("Getting properties...");
     const url = window.location.pathname;
-    const propertyOrderId = url.split("/my-property-bids/")[1];
+    const propertyOrderId = url.split("/brokerage-properties-bid/")[1];
     axios
       .get("/api/getAllQuotesForProperty", {
         headers: {

@@ -77,7 +77,10 @@ const Form = ({
           // console.log(res);
           localStorage.setItem("user", JSON.stringify(res.data.userData));
           // setModalIsOpen(true);
-          if (res.data.userData.userType === 1) {
+          if (
+            res.data.userData.userType === 1 ||
+            res.data.userData.userType === 6
+          ) {
             router.push("/my-dashboard");
           } else if (res.data.userData.userType === 4) {
             router.push("/appraiser-company-dashboard");

@@ -461,32 +461,34 @@ export default function Exemple({
               <div className="print-hidden-column">
                 {isWait && property.status !== 2 ? (
                   <>
-                  <p className="btn btn-danger  w-100">
-                  {`Cannot perform any actions further on this property as propperty is ${
-                    property.isOnCancel ? "Cancelled" : "On Hold"
-                  } !.`}
-                  </p>
-                  <li
-                  className=""
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Un-Archive Property"
-                >
-                  <div
-                    className="w-100"
-                    onClick={() => unArchivePropertyHandler(property.orderId)}
-                  >
-                    <button href="#" className="btn btn-color">
-                      <Link href="#">
-                        <span className="text-light">
-                          {" "}
-                          <FaArchive />
-                        </span>
-                      </Link>
-                    </button>
-                  </div>
-                </li>
-                </>
+                    <p className="btn btn-danger  w-100">
+                      {`Cannot perform any actions further on this property as propperty is ${
+                        property.isOnCancel ? "Cancelled" : "On Hold"
+                      } !.`}
+                    </p>
+                    <li
+                      className=""
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Un-Archive Property"
+                    >
+                      <div
+                        className="w-100"
+                        onClick={() =>
+                          unArchivePropertyHandler(property.orderId)
+                        }
+                      >
+                        <button href="#" className="btn btn-color">
+                          <Link href="#">
+                            <span className="text-light">
+                              {" "}
+                              <FaArchive />
+                            </span>
+                          </Link>
+                        </button>
+                      </div>
+                    </li>
+                  </>
                 ) : isBidded && isBidded.status !== 1 ? (
                   <ul className="mb0 d-flex gap-1">
                     {isWishlist.id ? (
@@ -690,48 +692,44 @@ export default function Exemple({
             console.log(updatedBids);
             setBids(updatedBids);
             axios
-            .get("/api/appraiserWishlistedProperties", {
-              headers: {
-                Authorization: `Bearer ${data?.token}`,
-                "Content-Type": "application/json",
-              },
-            })
-            .then((res) => {
-              const endDate = new Date();
-              console.log("wishlisted", endDate - startDate);
-              const tempData = res.data.data.$values;
-      
-              // setAllWishlistedProperties(res.data.data.$values);
-              const responseData = tempData.filter((prop, index) => {
-                if (String(prop.userId) === String(data.userId)) {
-                  return true;
-                } else {
-                  return false;
-                }
+              .get("/api/appraiserWishlistedProperties", {
+                headers: {
+                  Authorization: `Bearer ${data?.token}`,
+                  "Content-Type": "application/json",
+                },
+              })
+              .then((res) => {
+                const endDate = new Date();
+                console.log("wishlisted", endDate - startDate);
+                const tempData = res.data.data.$values;
+
+                // setAllWishlistedProperties(res.data.data.$values);
+                const responseData = tempData.filter((prop, index) => {
+                  if (String(prop.userId) === String(data.userId)) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+                });
+                const tempId = responseData;
+                setWishlist(responseData);
+                setProperties(temp);
+              })
+              .catch((err) => {
+                toast.error(err?.response);
+                setErrorMessage(err?.response);
+                setModalIsOpenError(true);
               });
-              const tempId = responseData;
-              setWishlist(responseData);
-              setProperties(temp);
-            })
-            .catch((err) => {
-              toast.error(err?.response);
-              setErrorMessage(err?.response);
-              setModalIsOpenError(true);
-            });
-      
           })
           .catch((err) => {
             setErrorMessage(err?.response?.data?.error);
             setModalIsOpenError(true);
           });
-    
-        
       })
       .catch((err) => {
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
-
 
     axios
       .get("/api/getAllBrokers", {

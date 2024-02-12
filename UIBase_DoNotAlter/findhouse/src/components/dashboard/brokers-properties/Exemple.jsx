@@ -226,18 +226,19 @@ export default function Exemple({
   useEffect(() => {
     const getData = () => {
       properties.map((property, index) => {
-        const isHold = property.isOnHold;
-        const isCancel = property.isOnCancel;
+        console.log("property", property);
+        const isHold = property.value.isOnHold;
+        const isCancel = property.value.isOnCancel;
         const isStatus = getPropertyStatusHandler(property);
         console.log(isStatus);
         const isEditable = isStatus === 0 ? true : false;
-        if (!property.isArchive) {
+        if (!property.value.isArchive) {
           const updatedRow = {
-            order_id: property.orderId,
-            sub_date: formatDate(property.addedDatetime),
-            quote_required_by: property.quoteRequiredDate
-              ? formatDate(property.quoteRequiredDate)
-              : formatDate(property.addedDatetime),
+            order_id: property.value.orderId,
+            sub_date: formatDate(property.value.value.addedDatetime),
+            quote_required_by: property.value.quoteRequiredDate
+              ? formatDate(property.value.quoteRequiredDate)
+              : formatDate(property.value.addedDatetime),
             status:
               isHold || isCancel ? (
                 <span className="btn bg-warning w-100">
@@ -269,17 +270,17 @@ export default function Exemple({
                 // )
                 <span className="btn bg-warning  w-100">N.A.</span>
               ),
-            address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
-            remark: property.remark ? property.remark : "N.A.",
-            // user: property.applicantEmailAddress,
-            type_of_building: property.typeOfBuilding,
-            amount: ` $ ${millify(property.estimatedValue)}`,
-            purpose: property.purpose,
-            type_of_appraisal: property.typeOfAppraisal,
-            lender_information: property.lenderInformation
-              ? property.lenderInformation
+            address: `${property.value.streetNumber}, ${property.value.streetName}, ${property.value.city}, ${property.value.province}, ${property.value.zipCode}`,
+            remark: property.value.remark ? property.value.remark : "N.A.",
+            // user: property.value.applicantEmailAddress,
+            type_of_building: property.value.typeOfBuilding,
+            amount: ` $ ${millify(property.value.estimatedValue)}`,
+            purpose: property.value.purpose,
+            type_of_appraisal: property.value.typeOfAppraisal,
+            lender_information: property.value.lenderInformation
+              ? property.value.lenderInformation
               : "N.A.",
-            urgency: property.urgency === 0 ? "Rush" : "Regular",
+            urgency: property.value.urgency === 0 ? "Rush" : "Regular",
             actions: (
               // <ul className="view_edit_delete_list mb0">
               <ul className="mb0">
@@ -663,18 +664,19 @@ export default function Exemple({
     };
 
     axios
-      .get("/api/getAllListedProperties", {
+      .get("/api/getBrokersProperties", {
         headers: {
           Authorization: `Bearer ${data?.token}`,
           "Content-Type": "application/json",
         },
         params: {
-          userId: data?.userId,
+          userId: data.brokerage_Details.id,
         },
       })
       .then((res) => {
         toast.dismiss();
-        const temp = res.data.data.properties.$values;
+        // console.log("bids", res.data.data.$values);
+        const temp = res.data.data.$values;
         let tempProperties = [];
         tempProperties = temp.filter((prop, index) => {
           if (String(prop.userId) === String(data.userId)) {
