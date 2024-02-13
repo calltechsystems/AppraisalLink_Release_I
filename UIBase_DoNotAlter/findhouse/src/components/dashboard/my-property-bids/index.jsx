@@ -313,11 +313,9 @@ const Index = ({ propertyId }) => {
                 </div> */}
                 {/* End Dashboard Navigation */}
 
-                <div className="col-lg-4 col-xl-4 m-2">
+                <div className="col-lg-12 col-xl-12 mt-3 mb-1 text-center">
                   <div className="style2 mb30-991">
-                    <h3 className="breadcrumb_title">
-                      Provided Bids On Property
-                    </h3>
+                    <h3 className="breadcrumb_title">Provided Quotes</h3>
                   </div>
                 </div>
                 {/* End .col */}
