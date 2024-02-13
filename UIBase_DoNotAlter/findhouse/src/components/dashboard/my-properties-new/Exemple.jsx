@@ -313,7 +313,7 @@ export default function Exemple({
                 <span className="btn bg-warning  w-100">
                   {isHold ? "On Hold" : "OnCancelled"}
                 </span>
-              ) : property.orderStatus ? (
+              ) : property.orderStatus !== null ? (
                 <span className="btn bg-warning  w-100">
                   {getOrderValue(property.orderStatus)}
                 </span>
@@ -599,7 +599,7 @@ export default function Exemple({
                       style={{ border: "1px solid grey" }}
                       // onClick={() => onHoldHandler(property.propertyId, !isHold)}
                       onClick={() =>
-                        openModal(property.orderId, 1, isHold ? 0 : 1)
+                        openModal(property.orderId, 1, isHold ? 0 : property)
                       }
                     >
                       <Link href="#" className="text-light">
@@ -619,7 +619,7 @@ export default function Exemple({
                       // onClick={() =>
                       //   onCancelHandler(property.propertyId, !isCancel)
                       // }
-                      onClick={() => openModal(property.orderId, 2, 1)}
+                      onClick={() => openModal(property.orderId, 2, property)}
                     >
                       <Link href="#">
                         <span className="flaticon-garbage text-light"></span>
@@ -728,7 +728,21 @@ export default function Exemple({
             return false;
           }
         });
-        setProperties(tempProperties);
+        axios
+          .get("/api/getAllBids", {
+            headers: {
+              Authorization: `Bearer ${data.token}`,
+            },
+          })
+          .then((res) => {
+            tempBids = res.data.data.$values;
+            setProperties(tempProperties);
+            setBids(tempBids);
+          })
+          .catch((err) => {
+            toast.error(err);
+            // setModalIsOpenError(true);
+          });
       })
       .catch((err) => {
         toast.dismiss();
@@ -736,20 +750,7 @@ export default function Exemple({
       });
 
     let tempBids = [];
-    axios
-      .get("/api/getAllBids", {
-        headers: {
-          Authorization: `Bearer ${data.token}`,
-        },
-      })
-      .then((res) => {
-        tempBids = res.data.data.$values;
-        setBids(tempBids);
-      })
-      .catch((err) => {
-        toast.error(err);
-        // setModalIsOpenError(true);
-      });
+
     setRefresh(false);
   }, [refresh]);
   return (

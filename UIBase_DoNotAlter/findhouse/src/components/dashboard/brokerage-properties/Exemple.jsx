@@ -4,7 +4,6 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 import axios, { all } from "axios";
 import millify from "millify";
-import { AppraiserStatusOptions } from "../create-listing/data";
 import {
   FaArchive,
   FaHandHoldingHeart,
@@ -20,12 +19,6 @@ const headCells = [
     id: "order_id",
     numeric: false,
     label: "Order ID",
-    width: 100,
-  },
-  {
-    id: "broker",
-    numeric: false,
-    label: "Broker",
     width: 100,
   },
   {
@@ -49,7 +42,7 @@ const headCells = [
   {
     id: "remark",
     numeric: false,
-    label: "Remark",
+    label: "Appraiser Remark",
     width: 170,
   },
   {
@@ -151,8 +144,6 @@ export default function Exemple({
   setIsCancelProperty,
   setIsHoldProperty,
   isBidded,
-  setErrorMessage,
-  setModalIsOpenError,
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [allBids, setBids] = useState([]);
@@ -163,10 +154,57 @@ export default function Exemple({
     return data.sort((a, b) => b.order_id - a.order_id);
   };
 
+  const AppraiserStatusOptions = [
+    {
+      id: -1,
+      type: "Select...",
+      value: "",
+    },
+    {
+      id: 0,
+      type: "Applicant Contacted by appraiser",
+      value: "Applicant Contacted by appraiser",
+    },
+    {
+      id: 1,
+      type: "Appraisal Visit Confirmed",
+      value: "Appraisal Visit Confirmed",
+    },
+    {
+      id: 2,
+      type: "Appraisal Report Writing in Progress",
+      value: "Appraisal Report Writing in Progress",
+    },
+    {
+      id: 3,
+      type: "Appraisal Report Writing Completed and Submitted",
+      value: "Appraisal Report Writing Completed and Submitted",
+    },
+
+    {
+      id: 4,
+      type: "Assignment on Hold",
+      value: "Assignment on Hold",
+    },
+
+    {
+      id: 5,
+      type: "Assignment Cancelled new status to be added",
+      value: "Assignment Cancelled new status to be added",
+    },
+
+    {
+      id: 6,
+      type: "Appraisal visit completed; report writing is pending until fee received",
+      value:
+        "Appraisal visit completed; report writing is pending until fee received",
+    },
+  ];
+
   const getOrderValue = (val) => {
     let title = "";
-    AppraiserStatusOptions.map((status) => {
-      if (String(status.value) === String(val)) {
+    AppraiserStatusOptions?.map((status) => {
+      if (String(status.id) === String(val)) {
         title = status.type;
       }
     });
@@ -209,14 +247,22 @@ export default function Exemple({
     let isInProgress = true;
     let isQuoteProvided = false;
     let isCompleted = false;
+    let isAccepted = false;
     allBids.map((bid, index) => {
-      if (bid.orderId === property.orderId && bid.status === 1) {
+      if (
+        bid.orderId === property.orderId &&
+        bid.status === 1 &&
+        bid.orderStatus === 3
+      ) {
         isCompleted = true;
+      }
+      if (bid.orderId === property.orderId && bid.status === 1) {
+        isAccepted = true;
       } else if (bid.orderId === property.orderId) {
         isQuoteProvided = true;
       }
     });
-    return isCompleted ? 2 : isQuoteProvided ? 1 : 0;
+    return isCompleted ? 3 : isAccepted ? 2 : isQuoteProvided ? 1 : 0;
   };
 
   const openPopupModal = (property) => {
@@ -243,6 +289,10 @@ export default function Exemple({
                 <span className="btn bg-warning w-100">
                   {isHold ? "On Hold" : "Cancelled"}
                 </span>
+              ) : isStatus === 3 ? (
+                <span className="btn bg-success w-100 text-light">
+                  Completed
+                </span>
               ) : isStatus === 2 ? (
                 <span className="btn bg-success w-100 text-light">
                   Accepted
@@ -261,15 +311,17 @@ export default function Exemple({
             appraisal_status:
               isHold || isCancel ? (
                 <span className="btn bg-warning  w-100">
-                  {isHold ? "On Hold" : "Cancelled"}
+                  {isHold ? "On Hold" : "OnCancelled"}
+                </span>
+              ) : property.orderStatus !== null? (
+                <span className="btn bg-warning  w-100">
+                  {getOrderValue(property.orderStatus)}
                 </span>
               ) : (
-                //  property.orderStatus ? (
-                //   <h5>{getOrderValue(isBidded.orderStatus)}</h5>
-                // )
                 <span className="btn bg-warning  w-100">N.A.</span>
               ),
-            address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
+            address: `${property.streetNumber} ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
+            // remark: isBidded.remark ? isBidded.remark : "N.A.",
             remark: property.remark ? property.remark : "N.A.",
             // user: property.applicantEmailAddress,
             type_of_building: property.typeOfBuilding,
@@ -307,9 +359,7 @@ export default function Exemple({
 
                 {!isEditable && isStatus === 1 && (
                   <li>
-                    <Link
-                      href={`/brokerage-properties-bid/${property.orderId}`}
-                    >
+                    <Link href={`/my-property-bids/${property.orderId}`}>
                       <span className="btn btn-color w-100 mb-1"> Quotes </span>
                     </Link>{" "}
                     {/* <Link
@@ -353,7 +403,7 @@ export default function Exemple({
 
                 {(isEditable || isStatus === 1) && (
                   <li>
-                    <Link href={`/create-listing-1/${property.propertyId}`}>
+                    <Link href={`/create-listing/${property.propertyId}`}>
                       <span className="btn btn-color w-100 mb-1"> Edit </span>
                     </Link>{" "}
                     {/* <Link
@@ -532,7 +582,7 @@ export default function Exemple({
                     </Link>{" "} */}
                     <Link
                       className="btn btn-color-table"
-                      href={`/create-listing-1/${property.orderId}`}
+                      href={`/create-listing/${property.orderId}`}
                     >
                       <span className="flaticon-edit"></span>
                     </Link>
@@ -549,7 +599,7 @@ export default function Exemple({
                       style={{ border: "1px solid grey" }}
                       // onClick={() => onHoldHandler(property.propertyId, !isHold)}
                       onClick={() =>
-                        openModal(property.orderId, 1, isHold ? 0 : 1)
+                        openModal(property.orderId, 1, isHold ? 0 : property)
                       }
                     >
                       <Link href="#" className="text-light">
@@ -562,16 +612,14 @@ export default function Exemple({
 
                 {/* {isEditable && ( */}
                 {!isCancel && !isHold && (
-                  <li title={!isCancel ? "Order Cancel" : "Remove Cancel"}>
+                  <li title={"Order Cancel"}>
                     <span
                       className="btn btn-color-table"
                       style={{ border: "1px solid grey" }}
                       // onClick={() =>
                       //   onCancelHandler(property.propertyId, !isCancel)
                       // }
-                      onClick={() =>
-                        openModal(property.orderId, 2, isCancel ? 0 : 1)
-                      }
+                      onClick={() => openModal(property.orderId, 2, property)}
                     >
                       <Link href="#">
                         <span className="flaticon-garbage text-light"></span>
@@ -632,10 +680,7 @@ export default function Exemple({
                     className="btn btn-color-table"
                     onClick={() => archievePropertyHandler(property.orderId)}
                   >
-                    <Link
-                      className="color-light"
-                      href={`/brokerage-archive-properties`}
-                    >
+                    <Link className="color-light" href={`/archive-property`}>
                       <span className="text-light">
                         <FaArchive />
                       </span>
@@ -683,7 +728,22 @@ export default function Exemple({
             return false;
           }
         });
-        setProperties(tempProperties);
+        axios
+        .get("/api/getAllBids", {
+          headers: {
+            Authorization: `Bearer ${data.token}`,
+          },
+        })
+        .then((res) => {
+          tempBids = res.data.data.$values;
+          setProperties(tempProperties);
+          setBids(tempBids);
+        })
+        .catch((err) => {
+          toast.error(err);
+          // setModalIsOpenError(true);
+        });
+        
       })
       .catch((err) => {
         toast.dismiss();
@@ -691,54 +751,7 @@ export default function Exemple({
       });
 
     let tempBids = [];
-    axios
-      .get("/api/getAllBids", {
-        headers: {
-          Authorization: `Bearer ${data.token}`,
-        },
-      })
-      .then((res) => {
-        tempBids = res.data.data.$values;
-        setBids(tempBids);
-      })
-      .catch((err) => {
-        toast.error(err);
-        // setModalIsOpenError(true);
-      });
-
-    // console.log(brokerageId);
-    toast.loading("Getting properties...");
-    // const url = window.location.pathname;
-    // const brokerageId = url.split("/brokerage-properties/")[1];
-    // axios
-    //   .get("/api/getBrokersProperties", {
-    //     headers: {
-    //       Authorization: `Bearer ${data?.token}`,
-    //       "Content-Type": "application/json",
-    //     },
-    //     params: {
-    //       userId: data.brokerage_Details.id,
-    //     },
-    //   })
-    //   .then((res) => {
-    //     toast.dismiss();
-    //     console.log("bids", res.data.data.$values);
-    // const tempBids = res.data.data.$values;
-    // console.log(tempBids, brokerageId);
-    // let updatedBids = [];
-    // tempBids.filter((bid, index) => {
-    //   if (String(bid.orderId) === String(propertyId)) {
-    //     updatedBids.push(bid);
-    //   }
-    // });
-
-    // console.log(updatedBids);
-    // setProperties(updatedBids);
-    // })
-    // .catch((err) => {
-    //   toast.dismiss();
-    //   toast.error(err?.response?.data?.error);
-    // });
+   
     setRefresh(false);
   }, [refresh]);
   return (

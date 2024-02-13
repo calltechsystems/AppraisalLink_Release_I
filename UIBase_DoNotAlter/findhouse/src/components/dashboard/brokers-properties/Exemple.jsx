@@ -262,12 +262,13 @@ export default function Exemple({
             appraisal_status:
               isHold || isCancel ? (
                 <span className="btn bg-warning  w-100">
-                  {isHold ? "On Hold" : "Cancelled"}
+                  {isHold ? "On Hold" : "OnCancelled"}
+                </span>
+              ) : property.orderStatus ? (
+                <span className="btn bg-warning  w-100">
+                  {getOrderValue(property.orderStatus)}
                 </span>
               ) : (
-                //  property.orderStatus ? (
-                //   <h5>{getOrderValue(isBidded.orderStatus)}</h5>
-                // )
                 <span className="btn bg-warning  w-100">N.A.</span>
               ),
             address: `${property.value.streetNumber}, ${property.value.streetName}, ${property.value.city}, ${property.value.province}, ${property.value.zipCode}`,

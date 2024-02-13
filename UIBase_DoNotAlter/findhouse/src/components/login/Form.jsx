@@ -84,7 +84,10 @@ const Form = ({
             router.push("/my-dashboard");
           } else if (res.data.userData.userType === 4) {
             router.push("/appraiser-company-dashboard");
-          } else if (res.data.userData.userType === 3) {
+          } else if (
+            res.data.userData.userType === 3 ||
+            res.data.userData.userType === 5
+          ) {
             router.push("/appraiser-dashboard");
           } else if (res.data.userData.userType === 2) {
             router.push("/brokerage-dashboard");

@@ -12,8 +12,6 @@ import Modal from "./Modal";
 import { encryptionData } from "../../../utils/dataEncryption";
 import Loader from "./Loader";
 import { AppraiserStatusOptions } from "../create-listing/data";
-import Link from "next/link";
-import Image from "next/image";
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

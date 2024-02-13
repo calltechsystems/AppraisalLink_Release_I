@@ -340,7 +340,7 @@ export default function Exemple({
               : "$ 0",
             purpose: property.purpose ? property.purpose : "N.A.",
             appraisal_status:
-              isBidded.status === 1 && isBidded.orderStatus ? (
+              isBidded.status === 1 && isBidded.orderStatus !== null? (
                 <span className="btn btn-warning  w-100">
                   {getOrderValue(isBidded.orderStatus)}
                 </span>
@@ -448,9 +448,8 @@ export default function Exemple({
                 ) : isWait && property.status !== 2 ? (
                   <>
                   <p className="btn btn-danger  w-100">
-                  {`Cannot perform any actions further on this property as propperty is ${
-                    property.isOnCancel ? "Cancelled" : "On Hold"
-                  } !.`}
+                  {`No further actions can be taken on this property since it is ${ property.isOnCancel ? "Cancelled" : "On Hold" } !.`}
+                  
                   </p>
                   <li
                   className=""

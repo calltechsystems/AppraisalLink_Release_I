@@ -1172,8 +1172,12 @@ const Index = () => {
 
               {closeRegisterModal && (
                 <div className="modal">
-                  <div className="modal-content">
+                  <div className="modal-content" style={{ width: "500px" }}>
                     <h3 className="text-center">Add Appraiser</h3>
+                    <div
+                      className=""
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
                     <Form setCloseRegisterModal={setCloseRegisterModal} />
                   </div>
                 </div>

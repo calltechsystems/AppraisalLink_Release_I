@@ -176,7 +176,7 @@ const Index = () => {
   };
 
   // const [propertyId, setPropertyId] = useState(-1);
-  const [propValue, setPropValue] = useState(0);
+  const [propValue, setPropValue] = useState({});
 
   const onHoldHandler = () => {
     const data = JSON.parse(localStorage.getItem("user"));
@@ -195,6 +195,7 @@ const Index = () => {
       .put("/api/setPropertyOnHold", encryptedBody)
       .then((res) => {
         toast.dismiss();
+        setIsHoldProperty(false);
         toast.success("Successfully added status!");
         window.location.reload();
       })
@@ -202,8 +203,8 @@ const Index = () => {
         toast.error(err);
       });
     // closeModal();
-    setPropValue(0);
-    setIsHoldProperty(false);
+    setPropValue({});
+
     setPropertyId(-1);
   };
 
@@ -225,6 +226,7 @@ const Index = () => {
       .then((res) => {
         toast.dismiss();
         toast.success("Successfully added status!");
+        setIsCancelProperty(false);
         window.location.reload();
       })
       .catch((err) => {
@@ -233,7 +235,6 @@ const Index = () => {
     // closeModal();
     setPropValue(0);
     setPropertyId(-1);
-    setIsCancelProperty(false);
   };
 
   const closeCancelHoldHandler = () => {

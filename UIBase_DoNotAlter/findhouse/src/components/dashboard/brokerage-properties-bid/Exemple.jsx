@@ -8,24 +8,13 @@ import { useRouter } from "next/router";
 // import "./SmartTable.css";
 
 const headCells = [
-  // {
-  //   id: "AppraiserId",
-  //   numeric: false,
-  //   label: "Appraiser ID",
-  //   width: 150,
-  // },
   {
     id: "appraiser",
     numeric: false,
     label: "Appraiser / Appraiser Company",
     width: 220,
   },
-  // {
-  //   id: "appraiser_company",
-  //   numeric: false,
-  //   label: "Appraiser Company Name",
-  //   width: 220,
-  // },
+
   {
     id: "quote",
     numeric: false,
@@ -105,7 +94,7 @@ export default function Exemple({
   refresh,
   setOpenBrokerModal,
   setIsModalOpen,
-  propertyId,
+  orderId,
   properties,
   setProperties,
   deletePropertyHandler,
@@ -145,6 +134,18 @@ export default function Exemple({
     setRefresh(true);
   };
 
+  const getCurrentPropertyInfoHandler = ()=>{
+    let currentProperty={};
+    const url = window.location.pathname;
+     const propertyOrderId = url.split("/brokerage-properties-bid/")[1];
+    allProperties.map((prop,index)=>{
+      if(String(prop.orderId) === String(propertyOrderId)){
+        currentProperty=prop;
+      }
+    });
+    return currentProperty;
+  }
+
   const triggerAppraiserInfo = (id) => {
     const data = JSON.parse(localStorage.getItem("user"));
     axios
@@ -158,11 +159,8 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        if (res.data.data.appraiser) {
-          setAppInfo(res.data.data.appraiser);
-        } else {
-          setAppInfo(res.data.data.appraiserCompany);
-        }
+        // console.log(res.data.data);
+        setAppInfo(res.data.data.appraiser);
         setOpenBrokerModal(true);
       })
       .catch((err) => {
@@ -202,7 +200,7 @@ export default function Exemple({
       .then((res) => {
         toast.dismiss();
         toast.success("Successfully accepted the requested Bid");
-        router.push("/brokerage-properties");
+        router.push("/my-properties");
       })
       .catch((err) => {
         toast.dismiss();
@@ -236,20 +234,36 @@ export default function Exemple({
       });
   };
 
-  const getCurrentPropertyById = (id) => {
-    let property = {};
-    allProperties.map((prop, index) => {
-      if (String(prop.propertyId) === String(id)) {
-        property = prop;
-      }
-    });
-    return property;
-  };
+  // const getAppraiser = (id) => {
+  //   let selectedAppraiser = {};
+  //   allAssignAppraiser.map((appraiser, index) => {
+  //     console.log(appraiser, id);
+  //     if (String(appraiser.id) === String(id)) {
+  //       selectedAppraiser = appraiser;
+  //     }
+  //   });
+
+  //   console.log(selectedAppraiser);
+  //   openAppraiserInfoModal(selectedAppraiser);
+  // };
+  // const getAppraiserName = (id) => {
+  //   let selectedAppraiser = {};
+  //   allAssignAppraiser.map((appraiser, index) => {
+  //     console.log(appraiser, id);
+  //     if (String(appraiser.id) === String(id)) {
+  //       selectedAppraiser = appraiser;
+  //     }
+  //   });
+
+  //   return `${selectedAppraiser.firstName} ${selectedAppraiser.lastName}`;
+  // };
+
   useEffect(() => {
+    const prop = getCurrentPropertyInfoHandler();
+  console.log(prop)
     const getData = () => {
       properties.map((property, index) => {
-        const currentProperty = getCurrentPropertyById(property.propertyId);
-        console.log(currentProperty);
+       
         const updatedRow = {
           AppraiserId: property.appraiserUserId ? property.appraiserUserId : 0,
           quote: property.bidAmount,
@@ -286,6 +300,10 @@ export default function Exemple({
           ),
 
           action:
+          prop.isOnHold || prop.isOnCancel ?
+          <p className="btn btn-danger">{`Cannot perform any actions as the current property is ${prop.isOnCancel || prop.isOnHold ? "Cancelled" : "On Hold"}`} </p>
+            
+          :
             property.status === 1 ? (
               <div>
                 <h5 className="btn btn-success m-1">Accepted</h5>
@@ -295,7 +313,7 @@ export default function Exemple({
                   data-placement="top"
                   title="Approved Lender List"
                 >
-                  <div className="btn btn-color fw-bold">
+                  <div className="btn btn-color fw-bold m-1">
                     <Link
                       href="assets/images/Terms & Conditions.pdf"
                       target="_blank"
@@ -306,9 +324,9 @@ export default function Exemple({
                   </div>
                 </li>
               </div>
-            ) : property.status === 0 &&
-              (!property.isOnCancel || !property.isOnHold) ? (
+            ) : property.status === 0 ? (
               <ul className="">
+            
                 <li
                   className="list-inline-item"
                   data-toggle="tooltip"
@@ -316,7 +334,7 @@ export default function Exemple({
                   title="Accept"
                 >
                   <div
-                    className="fw-bold"
+                    className="fp_pdate float-end mt-1 fw-bold"
                     onClick={() => openPopupModal(property, property.bidId)}
                   >
                     <a href="#" className="btn btn-success">
@@ -324,71 +342,39 @@ export default function Exemple({
                     </a>
                   </div>
                 </li>
-
-                {/* <div className="fp_pdate float-end">{item.postedYear}</div> */}
-
-                {/* <li
-                  className="list-inline-item"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Delete"
-                >
-                  <div
-                    className="fp_pdate float-end mt-1 fw-bold"
-                    onClick={() => setProperty(property)}
-                  >
-                    <a href="#" className="btn btn-danger">
-                      Decline
-                    </a>
-                  </div>
-                </li> */}
-
                 <li
                   className="list-inline-item"
                   data-toggle="tooltip"
                   data-placement="top"
                   title="Approved Lender List"
                 >
-                  <div className="btn btn-color fw-bold ">
+                  <div className="fp_pdate float-end btn btn-color fw-bold ">
                     {/* <Link
                       href="assets/images/Terms & Conditions.pdf"
                       target="_blank"
                       className="form-check-label text-primary"
-                    > */}{" "}
-                    <a
-                      className="flaticon-pdf text-light"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href={
-                        userData?.appraiser_Details?.lenderListUrl
-                          ? userData?.appraiser_Details?.lenderListUrl
-                          : "#"
-                      }
-                      style={{ cursor: "pointer" }}
-                    ></a>
+                    > */}
+                    <span className="flaticon-pdf text-light">
+                      {" "}
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={
+                          userData?.appraiser_Details?.lenderListUrl
+                            ? userData?.appraiser_Details?.lenderListUrl
+                            : "#"
+                        }
+                        style={{ cursor: "pointer" }}
+                      >
+                        Lender List Pdf
+                      </a>
+                    </span>
                     {/* </Link> */}
                   </div>
                 </li>
               </ul>
             ) : (
-              <div>
-                <h5 className="btn btn-danger m-1">Declined</h5>
-                {/* <li
-                  className="list-inline-item"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Accept"
-                >
-                  <div
-                    className="fw-bold"
-                    onClick={() => openPopupModal(property, property.bidId)}
-                  >
-                    <a href="#" className="btn btn-color">
-                      Accept
-                    </a>
-                  </div>
-                </li> */}
-              </div>
+              <h5 className="btn btn-danger">Declined</h5>
             ),
         };
         tempData.push(updatedRow);
@@ -400,11 +386,6 @@ export default function Exemple({
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("user"));
-
-    const payload = {
-      token: userData.token,
-    };
-
     axios
       .get("/api/getAllListedProperties", {
         headers: {
@@ -412,51 +393,43 @@ export default function Exemple({
           "Content-Type": "application/json",
         },
       })
-      .then((res) => {
-        console.log(res);
-        console.log("Properties", res.data.data.properties.$values);
-        setAllProperties(res.data.data.properties.$values);
+      .then((result) => {
+        const url = window.location.pathname;
+        const propertyOrderId = url.split("/brokerage-properties-bid/")[1];
+        axios
+          .get("/api/getAllQuotesForProperty", {
+            headers: {
+              Authorization: `Bearer ${data?.token}`,
+              "Content-Type": "application/json",
+            },
+            params: {
+              OrderId: propertyOrderId,
+            },
+          })
+          .then((res) => {
+           
+            toast.dismiss();
+            const tempBids = res.data.data.$values;
+           
+    
+            setAllProperties(result.data.data.properties.$values);
+            setProperties(tempBids);
+          
+          })
+          .catch((err) => {
+            toast.dismiss();
+            toast.error(err?.response?.data?.error);
+          });
+    
       })
       .catch((err) => {
         toast.dismiss();
         // setErrorMessage(err?.response?.data?.error);
         // setModalIsOpenError(true);
       });
-
-    console.log(propertyId);
-    toast.loading("Getting properties...");
-    const url = window.location.pathname;
-    const propertyOrderId = url.split("/brokerage-properties-bid/")[1];
-    axios
-      .get("/api/getAllQuotesForProperty", {
-        headers: {
-          Authorization: `Bearer ${data?.token}`,
-          "Content-Type": "application/json",
-        },
-        params: {
-          OrderId: propertyOrderId,
-        },
-      })
-      .then((res) => {
-        toast.dismiss();
-        console.log("bids", res.data);
-        const tempBids = res.data.data.$values;
-        console.log(tempBids, propertyId);
-        let updatedBids = [];
-        tempBids.filter((bid, index) => {
-          if (String(bid.orderId) === String(propertyId)) {
-            updatedBids.push(bid);
-          }
-        });
-
-        console.log(updatedBids);
-        setProperties(updatedBids);
-      })
-      .catch((err) => {
-        toast.dismiss();
-        toast.error(err?.response?.data?.error);
-      });
-
+    // toast.loading("Getting properties...");
+    // console.log(window.location.pathname);
+   
     setRefresh(false);
   }, [refresh]);
   return (

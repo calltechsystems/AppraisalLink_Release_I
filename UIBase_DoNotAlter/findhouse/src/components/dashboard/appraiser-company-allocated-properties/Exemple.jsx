@@ -7,7 +7,6 @@ import { encryptionData } from "../../../utils/dataEncryption";
 import { useRouter } from "next/router";
 import Loader from "./Loader";
 import { AppraiserStatusOptions } from "../create-listing/data";
-import { FaArchive } from "react-icons/fa";
 // import "./SmartTable.css";
 
 const headCells = [
@@ -378,7 +377,7 @@ export default function Exemple({
           ) : (
             <span className="btn btn-warning  w-100">New</span>
           ),
-          appraisal_status: isBidded.orderStatus ? (
+          appraisal_status: isBidded.orderStatus !== null? (
             <span className="btn btn-warning  w-100">
               {getOrderValue(isBidded.orderStatus)}
             </span>
@@ -483,9 +482,8 @@ export default function Exemple({
               ) : isWait ? (
                 <>
                 <p className="btn btn-danger  w-100">
-                  {`Cannot perform any actions right now as property is being ${
-                    property.isOnCancel ? "Cancelled" : "On Hold"
-                  } !.`}{" "}
+                {`No further actions can be taken on this property since it is ${ property.isOnCancel ? "Cancelled" : "On Hold" } !.`}
+                  
                 </p>
                 <li
                   className=""

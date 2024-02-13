@@ -19,30 +19,87 @@ import { FaRedo } from "react-icons/fa";
 import { encryptionData } from "../../../utils/dataEncryption";
 
 const Index = () => {
-  const [modalOpen, setModalOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
-  const [currentProperty, setCurrentProperty] = useState("");
+  const [isStatusModal, setIsStatusModal] = useState(false);
+  const [toggleId, setToggleId] = useState(-1);
+  const [toggleWishlist, setToggleWishlist] = useState(0);
+  const [searchResult, setSearchResult] = useState([]);
   const [property, setProperty] = useState("");
   const [typeView, setTypeView] = useState(0);
+  const [startLoading, setStartLoading] = useState(false);
+  const [currentProperty, setCurrentProperty] = useState("");
   const [filterProperty, setFilterProperty] = useState("");
+  const [showPropDetails, setShowPropDetails] = useState(false);
   const [filterQuery, setFilterQuery] = useState("Last 30 Days");
+  const [searchQuery, setSearchQuery] = useState("city");
   const [properties, setProperties] = useState([]);
-  const [isHoldProperty, setIsHoldProperty] = useState(0);
-  const [isCancelProperty, setIsCancelProperty] = useState(0);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [lowRangeBid, setLowRangeBid] = useState("");
+  const [propertyId, setPropertyId] = useState(null);
 
-  const [start, setStart] = useState(0);
-
-  const [end, setEnd] = useState(4);
-
-  const [refresh, setRefresh] = useState(false);
+  const [wishlistedProperties, setWishlistedProperties] = useState([]);
+  const [updatedCode, setUpdatedCode] = useState(false);
+  const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
 
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  const [refresh, setRefresh] = useState(false);
+
+  const [start, setStart] = useState(0);
+  const [isHoldProperty, setIsHoldProperty] = useState(0);
+  const [isCancelProperty, setIsCancelProperty] = useState(0);
+
+  const [end, setEnd] = useState(4);
+
+  const closeErrorModal = () => {
+    setModalIsOpenError(false);
+  };
+
+  const handleStatusUpdateHandler = () => {};
+
+  const closeStatusUpdateHandler = () => {
+    setOpenDate(false);
+    setIsStatusModal(false);
+  };
+
+  const [openBrokerModal, setOpenBrokerModal] = useState(false);
   const [modalIsPopupOpen, setModalIsPopupOpen] = useState(false);
 
-  const router = useRouter();
+  const [broker, setBroker] = useState({});
 
+  const closeBrokerModal = () => {
+    setOpenBrokerModal(false);
+  };
+
+  const closeQuoteModal = () => {
+    setIsQuoteModalOpen(false);
+  };
+
+  const openQuoteModal = () => {
+    setIsModalOpen(false);
+    setIsQuoteModalOpen(true);
+  };
+
+  const [openDate, setOpenDate] = useState(false);
+  const [statusDate, setStatusDate] = useState("");
+
+  const handleStatusSelect = (value) => {
+    if (String(value) === "Appraisal Visit Confirmed") {
+      setOpenDate(true);
+    }
+  };
+
+  const openModalBroker = (property, value) => {
+    setBroker(property);
+    setShowPropDetails(status);
+    setTypeView(value);
+    setOpenBrokerModal(true);
+  };
+  const router = useRouter();
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
   );
@@ -82,72 +139,17 @@ const Index = () => {
     return () => clearInterval(inactivityCheckInterval);
   }, [lastActivityTimestamp]);
 
-  const modalOpened = () => {
-    setModalOpen(true);
-  };
-
-  const modalClose = () => {
-    setModalOpen(false);
-  };
-
-  const openModal = (property, type) => {
-    console.log("inside");
+  const openModal = (property, status) => {
     setProperty(property);
-    setTypeView(type);
+    if (status === 1) {
+      setShowPropDetails(true);
+    }
     setIsModalOpen(true);
   };
 
-  const PropertyInfoHandler = (orderId) => {
-    const printWindow = window.open("", "_blank");
-    printWindow.document.write("<html><head><title></title></head><body>");
-
-    // Add the header section
-    printWindow.document.write(`
-      <div class="col-lg-12">
-        <div class="row">
-          <div class="col-lg-12 text-center" style="margin-left:250px; margin-top:50px" >
-            <a href="/" class="">
-              <img width="40" height="45" class="logo1 img-fluid" style="margin-top:-20px" src="/assets/images/logo.png" alt="header-logo2.png" />
-              <span style="color:#2e008b; font-weight:bold; font-size:18px; margin-top:20px">
-                Appraisal
-              </span>
-              <span style="color:#97d700; font-weight:bold; font-size:18px; margin-top:20px">
-                Land
-              </span>
-            </a>
-          </div>
-        </div>
-        <hr style="width:27%; margin-left:200px; color:#2e008b" />
-      </div>
-    `);
-
-    printWindow.document.write(
-      `<h3 style="margin-left:200px;">Property Details of Order No. ${orderId}</h3>`
-    );
-    printWindow.document.write(
-      '<button style="display:none;" onclick="window.print()">Print</button>'
-    );
-
-    // Clone the table-container and remove the action column
-    const tableContainer = document.getElementById("property-info-container");
-    const table = tableContainer.querySelector("table");
-    const clonedTable = table.cloneNode(true);
-
-    // ... (rest of your code)
-
-    printWindow.document.write(clonedTable.outerHTML);
-    printWindow.document.write(`<p> Appraisal Land. All
-    Rights Reserved.</p></body></html>`);
-    printWindow.document.close();
-    printWindow.print();
-    printWindow.onafterprint = () => {
-      printWindow.close();
-      toast.success("Saved the data");
-    };
-  };
-
   const closeModal = () => {
-    setIsModalOpen(false);
+    setModalOpen(false);
+    setShowPropDetails(false);
   };
 
   const archievePropertyHandler = (id) => {
@@ -161,9 +163,7 @@ const Index = () => {
           "Content-Type": "application/json",
         },
         params: {
-          orderId: id,
-          status: true,
-          userId: data.userId,
+          Id: id,
         },
       })
       .then((res) => {
@@ -177,8 +177,8 @@ const Index = () => {
     // closeModal();
   };
 
-  const [propertyId, setPropertyId] = useState(-1);
-  const [propValue, setPropValue] = useState(0);
+  // const [propertyId, setPropertyId] = useState(-1);
+  const [propValue, setPropValue] = useState({});
 
   const onHoldHandler = () => {
     const data = JSON.parse(localStorage.getItem("user"));
@@ -197,6 +197,7 @@ const Index = () => {
       .put("/api/setPropertyOnHold", encryptedBody)
       .then((res) => {
         toast.dismiss();
+        setIsHoldProperty(false);
         toast.success("Successfully added status!");
         window.location.reload();
       })
@@ -204,8 +205,8 @@ const Index = () => {
         toast.error(err);
       });
     // closeModal();
-    setPropValue(0);
-    setIsHoldProperty(false);
+    setPropValue({});
+
     setPropertyId(-1);
   };
 
@@ -227,6 +228,7 @@ const Index = () => {
       .then((res) => {
         toast.dismiss();
         toast.success("Successfully added status!");
+        setIsCancelProperty(false);
         window.location.reload();
       })
       .catch((err) => {
@@ -235,7 +237,6 @@ const Index = () => {
     // closeModal();
     setPropValue(0);
     setPropertyId(-1);
-    setIsCancelProperty(false);
   };
 
   const closeCancelHoldHandler = () => {
@@ -324,7 +325,7 @@ const Index = () => {
         },
       })
       .then((res) => {
-        window.location.reload();
+        setRerender(true);
       })
       .catch((err) => {
         toast.error(err);
@@ -333,14 +334,16 @@ const Index = () => {
     closeModal();
   };
 
+  useEffect(() => {
+    setIsLoading(false);
+  }, [updatedCode]);
+
   const [userData, setUserData] = useState({});
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("user"));
     if (!data) {
       router.push("/login");
-    } else if (!data?.broker_Details?.firstName) {
-      router.push("/my-profile");
     }
     if (!data) {
       router.push("/login");
@@ -353,10 +356,176 @@ const Index = () => {
     fetchData();
   }, []);
 
+  const brokerInfoHandler = (orderId) => {
+    const printWindow = window.open("", "_blank");
+    printWindow.document.write(
+      "<html><head><title>Broker Information</title></head><body>"
+    );
+    printWindow.document.write(
+      "<h1>" + `Broker info of order ${orderId}` + "</h1>"
+    );
+    printWindow.document.write(
+      '<button style="display:none;" onclick="window.print()">Print</button>'
+    );
+
+    // Clone the table-container and remove the action column
+    const tableContainer = document.getElementById("broker-info-container");
+    const table = tableContainer.querySelector("table");
+    const clonedTable = table.cloneNode(true);
+    const rows = clonedTable.querySelectorAll("tr");
+    rows.forEach((row) => {
+      const lastCell = row.querySelector("td:last-child");
+    });
+
+    // Remove the action heading from the table
+    const tableHead = clonedTable.querySelector("thead");
+    const tableHeadRows = tableHead.querySelectorAll("tr");
+    tableHeadRows.forEach((row) => {
+      const lastCell = row.querySelector("th:last-child");
+    });
+
+    // Make the table responsive for all fields
+    const tableRows = clonedTable.querySelectorAll("tr");
+    tableRows.forEach((row) => {
+      const firstCell = row.querySelector("td:first-child");
+      if (firstCell) {
+        const columnHeading = tableHeadRows[0].querySelector(
+          "th:nth-child(" + (firstCell.cellIndex + 1) + ")"
+        ).innerText;
+        firstCell.setAttribute("data-th", columnHeading);
+      }
+    });
+
+    printWindow.document.write(clonedTable.outerHTML);
+    printWindow.document.write("</body></html>");
+    printWindow.document.close();
+    printWindow.print();
+    printWindow.onafterprint = () => {
+      printWindow.close();
+      toast.success("Saved the data");
+    };
+  };
+
+  const PropertyInfoHandler = (orderId) => {
+    const printWindow = window.open("", "_blank");
+    printWindow.document.write(
+      "<html><head><title>Property Information</title></head><body>"
+    );
+    printWindow.document.write(
+      "<h1>" + `Property info of order ${orderId}` + "</h1>"
+    );
+    printWindow.document.write(
+      '<button style="display:none;" onclick="window.print()">Print</button>'
+    );
+
+    // Clone the table-container and remove the action column
+    const tableContainer = document.getElementById("property-info-container");
+    const table = tableContainer.querySelector("table");
+    const clonedTable = table.cloneNode(true);
+    const rows = clonedTable.querySelectorAll("tr");
+    rows.forEach((row) => {
+      const lastCell = row.querySelector("td:last-child");
+    });
+
+    // Remove the action heading from the table
+    const tableHead = clonedTable.querySelector("thead");
+    const tableHeadRows = tableHead.querySelectorAll("tr");
+    tableHeadRows.forEach((row) => {
+      const lastCell = row.querySelector("th:last-child");
+    });
+
+    // Make the table responsive for all fields
+    const tableRows = clonedTable.querySelectorAll("tr");
+    tableRows.forEach((row) => {
+      const firstCell = row.querySelector("td:first-child");
+      if (firstCell) {
+        const columnHeading = tableHeadRows[0].querySelector(
+          "th:nth-child(" + (firstCell.cellIndex + 1) + ")"
+        ).innerText;
+        firstCell.setAttribute("data-th", columnHeading);
+      }
+    });
+
+    printWindow.document.write(clonedTable.outerHTML);
+    printWindow.document.write("</body></html>");
+    printWindow.document.close();
+    printWindow.print();
+    printWindow.onafterprint = () => {
+      printWindow.close();
+      toast.success("Saved the data");
+    };
+  };
+
+  const participateHandler = (val, id) => {
+    setLowRangeBid(val);
+    setPropertyId(id);
+    setModalOpen(true);
+  };
+
+  const onWishlistHandler = (id) => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+
+    const formData = {
+      userId: userData.userId,
+      propertyId: id,
+      token: userData.token,
+    };
+
+    const payload = encryptionData(formData);
+
+    toast.loading("Setting this property into your wishlist");
+    axios
+      .post("/api/addToWishlist", payload)
+      .then((res) => {
+        toast.dismiss();
+        toast.success("Successfully added !!! ");
+        window.location.reload();
+      })
+      .catch((err) => {
+        toast.dismiss();
+        toast.error(err?.response?.data?.error);
+      });
+  };
+
+  useEffect(() => {
+    console.log(searchQuery);
+    const tempData = properties;
+    if (searchInput === "") {
+      return;
+    } else if (searchQuery === "city") {
+      const newProperties = tempData.filter((item) => {
+        if (item.city.toLowerCase() === searchInput.toLowerCase()) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      setSearchResult(newProperties);
+    } else if (searchQuery === "state") {
+      const newProperties = tempData.filter((item) => {
+        if (item.state.toLowerCase() === searchInput.toLowerCase()) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      setSearchResult(newProperties);
+    } else {
+      const newProperties = tempData.filter((item) => {
+        if (item.zipCode.toLowerCase() === searchInput.toLowerCase()) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      setSearchResult(newProperties);
+    }
+  }, [searchInput]);
+
   return (
     <>
       {/* <!-- Main Header Nav --> */}
-      <Header />
+      <Header userData={userData} />
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
@@ -375,10 +544,7 @@ const Index = () => {
 
       {/* <!-- Our Dashbord --> */}
       <section className="our-dashbord dashbord bgc-f7 pb50 dashboard-height">
-        <div
-          className="container-fluid ovh table-padding container-padding"
-          style={{}}
-        >
+        <div className="container-fluid ovh table-padding container-padding">
           <div className="row">
             <div className="col-lg-12 maxw100flex-992">
               <div className="row">
@@ -399,71 +565,45 @@ const Index = () => {
                 </div> */}
                 {/* End Dashboard Navigation */}
 
-                {/* <div className="col-lg-4 col-xl-4">
-                  <div className=" style2 mb30-991">
-                    <h3 className="breadcrumb_title">My Properties</h3>
+                <div className="col-lg-4 col-xl-4 mb10">
+                  <div className="style2 mb30-991">
+                    {/* <h3 className="breadcrumb_title">Appraising Properties</h3> */}
+                    {/* <p>We are glad to see you again!</p>                                                             */}
                   </div>
-                </div> */}
+                </div>
                 {/* End .col */}
 
-                {/* <div className="col-lg-12 col-xl-12">
-                 <div className="candidate_revew_select style2 mb30-991">
+                {/*<div className="row">
+                <div className="col-lg-12 mt20">
+                 <div className="mbp_pagination">
+                   <Pagination
+                     setStart={setStart}
+                     setEnd={setEnd}
+                     properties={properties}
+                   />
+                 </div>
+               </div> 
+              </div>*/}
+
+                <div className="col-lg-12 col-xl-12">
+                  {/* <div className="candidate_revew_select style2 mb30-991">
                     <ul className="mb0">
                       <li className="list-inline-item">
                         <Filtering setFilterQuery={setFilterQuery} />
                       </li>
-                      <li className="list-inline-item"> 
-                        <FilteringBy setFilterQuery={setFilterQuery} />
+                      <li className="list-inline-item">
+                        <FilteringBy setFilterQuery={setSearchQuery} />
                       </li>
                       <li className="list-inline-item">
                         <div className="candidate_revew_search_box course fn-520">
                           <SearchBox setSearchInput={setSearchInput} />
                         </div>
                       </li>
-                      <li
-                        className="list-inline-item"
-                        style={{ textAlign: "end", marginLeft: "10px" }}
-                        // title="Refresh Page"
-                      >
-                        <div className="col-lg-12">
-                          <div className="row">
-                            <div
-                              className="col-lg-6 btn btn-color w-50"
-                              onClick={() => handlePrint()}
-                              title="Download Pdf"
-                            >
-                              <span className="flaticon-download "></span>
-                            </div>
-                            <div className="col-lg-6 w-50">
-                              <button
-                                className="btn btn-color"
-                                onClick={() => props.refreshHandler()}
-                                title="Refresh"
-                              >
-                                <FaRedo />
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-
-                        
-                      </li>
-                      
+                    
                     </ul>
-                  </div>
-                </div>   */}
+                  </div> */}
+                </div>
                 {/* End .col */}
-                {/* <div className="row">
-                  <div className="col-lg-12 mt0">
-                    <div className="mbp_pagination">
-                      <Pagination
-                        setStart={setStart}
-                        setEnd={setEnd}
-                        properties={properties}
-                      />
-                    </div>
-                  </div>
-                </div> */}
 
                 <div className="col-lg-12">
                   <div className="">
@@ -471,28 +611,32 @@ const Index = () => {
                       <div className="mt0">
                         <TableData
                           userData={userData}
-                          open={openModal}
+                          setModalOpen={setModalOpen}
+                          setIsStatusModal={setIsStatusModal}
+                          close={closeModal}
+                          setPropertyId={setPropertyId}
+                          setPropValue={setPropValue}
+                          setProperties={setProperties}
                           start={start}
                           end={end}
-                          close={closeModal}
-                          setFilterQuery={setFilterQuery}
-                          onHoldHandler={onHoldHandler}
-                          onCancelHandler={onCancelHandler}
-                          setSearchInput={setSearchInput}
-                          setProperties={setProperties}
-                          setPropValue={setPropValue}
-                          setPropertyId={setPropertyId}
                           properties={
                             searchInput === "" ? properties : filterProperty
                           }
-                          setModalIsOpenError={setModalIsOpenError}
+                          setUpdatedCode={setUpdatedCode}
+                          onWishlistHandler={onWishlistHandler}
+                          participateHandler={participateHandler}
                           setErrorMessage={setErrorMessage}
+                          setModalIsOpenError={setModalIsOpenError}
+                          setRefresh={setRefresh}
                           setModalIsPopupOpen={setModalIsPopupOpen}
+                          setFilterQuery={setFilterQuery}
+                          setSearchInput={setSearchInput}
+                          refresh={refresh}
+                          setWishlistedProperties={setWishlistedProperties}
+                          setStartLoading={setStartLoading}
+                          openModalBroker={openModalBroker}
                           setCurrentProperty={setCurrentProperty}
                           archievePropertyHandler={archievePropertyHandler}
-                          setRefresh={setRefresh}
-                          refresh={refresh}
-                          setModalOpen={setModalOpen}
                           setIsCancelProperty={setIsCancelProperty}
                           setIsHoldProperty={setIsHoldProperty}
                         />
@@ -1022,50 +1166,110 @@ const Index = () => {
                             </div>
                           )}
                         </div>
-
-                        {modalIsOpenError && (
+                        {modalOpen && (
                           <div className="modal">
-                            <div
-                              className="modal-content"
-                              style={{ borderColor: "orangered", width: "20%" }}
-                            >
-                              <h3
-                                className="text-center"
-                                style={{ color: "orangered" }}
-                              >
-                                Error
-                              </h3>
-                              <div
-                                style={{
-                                  borderWidth: "2px",
-                                  borderColor: "orangered",
-                                }}
-                              >
-                                <br />
+                            <div className="modal-content">
+                              <div className="row">
+                                <div className="col-lg-12">
+                                  <Link href="/" className="">
+                                    <Image
+                                      width={50}
+                                      height={45}
+                                      className="logo1 img-fluid"
+                                      style={{ marginTop: "-20px" }}
+                                      src="/assets/images/logo.png"
+                                      alt="header-logo2.png"
+                                    />
+                                    <span
+                                      style={{
+                                        color: "#2e008b",
+                                        fontWeight: "bold",
+                                        fontSize: "24px",
+                                        // marginTop: "20px",
+                                      }}
+                                    >
+                                      Appraisal
+                                    </span>
+                                    <span
+                                      style={{
+                                        color: "#97d700",
+                                        fontWeight: "bold",
+                                        fontSize: "24px",
+                                        // marginTop: "20px",
+                                      }}
+                                    >
+                                      {" "}
+                                      Land
+                                    </span>
+                                  </Link>
+                                </div>
                               </div>
-                              <h5 className="text-center">{errorMessage}</h5>
-                              <div
-                                className="text-center"
-                                style={{
-                                  display: "flex",
-                                  flexDirection: "column",
-                                }}
+                              <h2
+                                className="text-center mt-3"
+                                style={{ color: "#2e008b" }}
                               >
+                                {isHoldProperty
+                                  ? `${
+                                      propValue
+                                        ? "Order Confirmation"
+                                        : "Order Confirmation"
+                                    }`
+                                  : `${
+                                      propValue
+                                        ? "Order Confirmation"
+                                        : "Order Confirmation"
+                                    }`}
+                              </h2>
+                              <div
+                                className="mb-2"
+                                style={{ border: "2px solid #97d700" }}
+                              ></div>
+                              <p className="fs-5 text-center text-dark mt-4">
+                                Are you sure for the order to be{" "}
+                                <span
+                                  style={{ color: "red", fontWeight: "bold" }}
+                                >
+                                  {" "}
+                                  {isHoldProperty
+                                    ? `${
+                                        propValue ? "On Hold" : "Remove On Hold"
+                                      }`
+                                    : `${
+                                        propValue
+                                          ? "On Cancel"
+                                          : "Remove On Hold"
+                                      }`}{" "}
+                                </span>
+                                ?{" "}
+                              </p>
+
+                              <div
+                                className="mb-3 mt-4"
+                                style={{ border: "2px solid #97d700" }}
+                              ></div>
+                              <div className="col-lg-12 text-center">
                                 <button
-                                  className="btn w-35 btn-white"
-                                  onClick={() => closeModal()}
-                                  style={{
-                                    borderColor: "orangered",
-                                    color: "orangered",
-                                  }}
+                                  className="btn w-25 btn-color m-1"
+                                  onClick={closeCancelHoldHandler}
                                 >
                                   Cancel
+                                </button>
+                                <button
+                                  className="btn w-25 btn-color"
+                                  onClick={
+                                    isHoldProperty
+                                      ? onHoldHandler
+                                      : onCancelHandler
+                                  }
+                                >
+                                  Confirm
                                 </button>
                               </div>
                             </div>
                           </div>
                         )}
                       </div>
+
                       {/* End .table-responsive */}
 
                       {/* End .mbp_pagination */}
@@ -1073,21 +1277,9 @@ const Index = () => {
                     {/* End .property_table */}
                   </div>
                 </div>
-
                 {/* End .col */}
               </div>
 
-              <div className="row">
-                {/* <div className="col-lg-12 mt20">
-                  <div className="mbp_pagination">
-                    <Pagination
-                      properties={properties}
-                      setProperties={setProperties}
-                    />
-                  </div>
-                </div> */}
-                {/* End paginaion .col */}
-              </div>
               {/* End .row */}
             </div>
             {/* End .row */}
@@ -1098,7 +1290,7 @@ const Index = () => {
                   <Pagination
                     setStart={setStart}
                     setEnd={setEnd}
-                    properties={properties}
+                    properties={wishlistedProperties}
                   />
                 </div>
               </div>
@@ -1107,137 +1299,11 @@ const Index = () => {
             <div className="row mt50">
               <div className="col-lg-12">
                 <div className="copyright-widget text-center">
-                  <p>
-                    &copy; {new Date().getFullYear()} Appraisal Land. All Rights
-                    Reserved.
-                  </p>
+                  <p>© 2020 Find House. Made with love.</p>
                 </div>
               </div>
             </div>
             {/* End .col */}
-            {!openModal && (
-              <div className="modal">
-                <div className="modal-content">
-                  <h4 className="text-center">Cancel Confirmation</h4>
-                  <hr />
-                  <p className="text-center" style={{ fontSize: "16px" }}>
-                    Are you sure you want to cancel the property : <br />
-                    <span className="fw-bold">
-                      {property.streetNumber}
-                      {property.streetName}
-                      {property.city}
-                      {property.province}
-                      {property.zipCode}
-                    </span>
-                    ?
-                  </p>
-                  <hr />
-                  {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
-                  <div className=" col-lg-12 text-center" style={{}}>
-                    <button
-                      className="btn w-25 btn-color m-1"
-                      onClick={closeModal}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      className="btn w-25 btn-color"
-                      onClick={onCancelHandler(property.propertyId, !isCancel)}
-                    >
-                      Confirm
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {modalOpen && (
-              <div className="modal">
-                <div className="modal-content">
-                  <div className="row">
-                    <div className="col-lg-12">
-                      <Link href="/" className="">
-                        <Image
-                          width={50}
-                          height={45}
-                          className="logo1 img-fluid"
-                          style={{ marginTop: "-20px" }}
-                          src="/assets/images/logo.png"
-                          alt="header-logo2.png"
-                        />
-                        <span
-                          style={{
-                            color: "#2e008b",
-                            fontWeight: "bold",
-                            fontSize: "24px",
-                            // marginTop: "20px",
-                          }}
-                        >
-                          Appraisal
-                        </span>
-                        <span
-                          style={{
-                            color: "#97d700",
-                            fontWeight: "bold",
-                            fontSize: "24px",
-                            // marginTop: "20px",
-                          }}
-                        >
-                          {" "}
-                          Land
-                        </span>
-                      </Link>
-                    </div>
-                  </div>
-                  <h2 className="text-center mt-3" style={{ color: "#2e008b" }}>
-                    {isHoldProperty
-                      ? `${
-                          propValue
-                            ? "Order Confirmation"
-                            : "Order Confirmation"
-                        }`
-                      : `${
-                          propValue
-                            ? "Order Confirmation"
-                            : "Order Confirmation"
-                        }`}
-                  </h2>
-                  <div
-                    className="mb-2"
-                    style={{ border: "2px solid #97d700" }}
-                  ></div>
-                  <p className="fs-5 text-center text-dark mt-4">
-                    Are you sure for the order to be{" "}
-                    <span style={{ color: "red", fontWeight: "bold" }}>
-                      {" "}
-                      {isHoldProperty
-                        ? `${propValue ? "On Hold" : "Remove On Hold"}`
-                        : `${propValue ? "On Cancel" : "Remove On Hold"}`}{" "}
-                    </span>
-                    ?{" "}
-                  </p>
-
-                  <div
-                    className="mb-3 mt-4"
-                    style={{ border: "2px solid #97d700" }}
-                  ></div>
-                  <div className="col-lg-12 text-center">
-                    <button
-                      className="btn w-25 btn-color m-1"
-                      onClick={closeCancelHoldHandler}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      className="btn w-25 btn-color"
-                      onClick={isHoldProperty ? onHoldHandler : onCancelHandler}
-                    >
-                      Confirm
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </section>

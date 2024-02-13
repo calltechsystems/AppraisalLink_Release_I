@@ -24,7 +24,7 @@ const Index = ({ user }) => {
 
   const closeErrorModal = () => {
     setModalIsOpenError(false);
-    window.location.reload();
+    location.reload(true);
   };
 
   useEffect(() => {
@@ -32,7 +32,7 @@ const Index = ({ user }) => {
 
     const handleRouteChange = (url) => {
       if (url === initialRoute) {
-        window.location.reload();
+        location.reload(true);
       }
     };
 

@@ -145,6 +145,16 @@ export default function Exemple({
     setRefresh(true);
   };
 
+  const getCurrentPropertyInfoHandler = ()=>{
+    let currentProperty={};
+    allProperties.map((prop,index)=>{
+      if(String(prop.orderId) === String(orderId)){
+        currentProperty=prop;
+      }
+    });
+    return currentProperty;
+  }
+
   const triggerAppraiserInfo = (id) => {
     const data = JSON.parse(localStorage.getItem("user"));
     axios
@@ -258,8 +268,12 @@ export default function Exemple({
   // };
 
   useEffect(() => {
+    const prop = getCurrentPropertyInfoHandler();
+ 
     const getData = () => {
       properties.map((property, index) => {
+        const isWait = prop.isOnCancel  || prop.isOnHold  ? true : false;
+       
         const updatedRow = {
           AppraiserId: property.appraiserUserId ? property.appraiserUserId : 0,
           quote: property.bidAmount,
@@ -296,8 +310,13 @@ export default function Exemple({
           ),
 
           action:
+          <>
+          { prop.isOnCancel  || prop.isOnHold ? 
+            <p className="btn btn-danger">{`Cannot perform any actions as the current property is ${prop.isOnCancel || prop.isOnHold ? "Cancelled" : "On Hold"}`} </p>
+            :
             property.status === 1 ? (
               <div>
+
                 <h5 className="btn btn-success m-1">Accepted</h5>
                 <li
                   className="list-inline-item"
@@ -318,6 +337,7 @@ export default function Exemple({
               </div>
             ) : property.status === 0 ? (
               <ul className="">
+            
                 <li
                   className="list-inline-item"
                   data-toggle="tooltip"
@@ -334,7 +354,7 @@ export default function Exemple({
                   </div>
                 </li>
 
-                {/* <div className="fp_pdate float-end">{item.postedYear}</div> */}
+             
 
                 <li
                   className="list-inline-item"
@@ -369,7 +389,8 @@ export default function Exemple({
               </ul>
             ) : (
               <h5 className="btn btn-danger">Declined</h5>
-            ),
+            
+            )}  </>,
         };
         tempData.push(updatedRow);
       });
@@ -392,10 +413,45 @@ export default function Exemple({
           "Content-Type": "application/json",
         },
       })
-      .then((res) => {
-        console.log(res);
-        console.log("Properties", res.data.data.properties.$values);
-        setAllProperties(res.data.data.properties.$values);
+      .then((result) => {
+        console.log(result);
+        
+        setAllProperties(result.data.data.properties.$values);
+        const url = window.location.pathname;
+        const propertyOrderId = url.split("/my-property-bids/")[1];
+        axios
+          .get("/api/getAllQuotesForProperty", {
+            headers: {
+              Authorization: `Bearer ${data?.token}`,
+              "Content-Type": "application/json",
+            },
+            params: {
+              OrderId: propertyOrderId,
+            },
+          })
+          .then((res) => {
+            // console.log(res.data);
+            toast.dismiss();
+            const tempBids = res.data.data.$values;
+            console.log(tempBids, orderId);
+            let updatedBids = [];
+            tempBids.filter((bid, index) => {
+              if (String(bid.orderId) === String(orderId)) {
+                updatedBids.push(bid);
+              }
+            });
+    
+            setProperties(updatedBids);
+            
+            console.log(updatedBids);
+           
+           
+          })
+          .catch((err) => {
+            toast.dismiss();
+            toast.error(err?.response?.data?.error);
+          });
+    
       })
       .catch((err) => {
         toast.dismiss();
@@ -404,38 +460,7 @@ export default function Exemple({
       });
     toast.loading("Getting properties...");
     // console.log(window.location.pathname);
-    const url = window.location.pathname;
-    const propertyOrderId = url.split("/my-property-bids/")[1];
-    axios
-      .get("/api/getAllQuotesForProperty", {
-        headers: {
-          Authorization: `Bearer ${data?.token}`,
-          "Content-Type": "application/json",
-        },
-        params: {
-          OrderId: propertyOrderId,
-        },
-      })
-      .then((res) => {
-        // console.log(res.data);
-        toast.dismiss();
-        const tempBids = res.data.data.$values;
-        console.log(tempBids, orderId);
-        let updatedBids = [];
-        tempBids.filter((bid, index) => {
-          if (String(bid.orderId) === String(orderId)) {
-            updatedBids.push(bid);
-          }
-        });
-
-        console.log(updatedBids);
-        setProperties(updatedBids);
-      })
-      .catch((err) => {
-        toast.dismiss();
-        toast.error(err?.response?.data?.error);
-      });
-
+   
     setRefresh(false);
   }, [refresh]);
   return (

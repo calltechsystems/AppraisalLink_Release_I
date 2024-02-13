@@ -234,46 +234,43 @@ function SmartTable(props) {
     <div className="col-12 p-1">
       <div className="smartTable-container row">
         <div className="candidate_revew_select style2 mb30-991">
-          <ul className="mb0 mt-0">
-            <li className="list-inline-item">
+          {/* <ul className="mb0 mt-0"> */}
+          {/* <li className="list-inline-item">
               <Filtering setFilterQuery={props.setFilterQuery} />
             </li>
-            {/* <li className="list-inline-item">
-              <FilteringBy setFilterQuery={props.setSearchQuery} />
-            </li> */}
             <li className="list-inline-item" style={{ marginRight: "15px" }}>
               <div className="candidate_revew_search_box course fn-520">
                 <SearchBox setSearchInput={props.setSearchInput} />
               </div>
-            </li>
-            <li className="list-inline-item">
-              {loading && (
-                <div className="smartTable-loaderContainer text-primary">
-                  <div className="spinner-border" role="status"></div>
-                </div>
-              )}
-              <div className="col-lg-12">
-                <div className="row">
-                  <div
-                    className="col-lg-6 btn btn-color w-50"
-                    onClick={() => handlePrint()}
-                    title="Download Pdf"
-                  >
-                    <span className="flaticon-download "></span>
-                  </div>
-                  <div className="col-lg-6 w-50">
-                    <button
-                      className="btn btn-color"
-                      onClick={() => props.refreshHandler()}
-                      title="Refresh"
-                    >
-                      <FaRedo />
-                    </button>
-                  </div>
-                </div>
+            </li> */}
+          {/* <li className="list-inline-item"> */}
+          {loading && (
+            <div className="smartTable-loaderContainer text-primary">
+              <div className="spinner-border" role="status"></div>
+            </div>
+          )}
+          <div className="col-lg-1 m-1">
+            <div className="row">
+              <div
+                className="col-lg-6 btn btn-color w-10"
+                onClick={() => handlePrint()}
+                title="Download Pdf"
+              >
+                <span className="flaticon-download "></span>
               </div>
-            </li>
-          </ul>
+              <div className="col-lg-6 w-50">
+                <button
+                  className="btn btn-color"
+                  onClick={() => props.refreshHandler()}
+                  title="Refresh"
+                >
+                  <FaRedo />
+                </button>
+              </div>
+            </div>
+          </div>
+          {/* </li> */}
+          {/* </ul> */}
         </div>
         <div className="col-12">
           {props.data.length > 0 ? (

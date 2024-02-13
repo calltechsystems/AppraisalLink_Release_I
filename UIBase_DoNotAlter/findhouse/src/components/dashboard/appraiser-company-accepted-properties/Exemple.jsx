@@ -337,7 +337,7 @@ export default function Exemple({
             ? `$ ${formatLargeNumber(property.estimatedValue)}`
             : "$ 0",
           purpose: property.purpose ? property.purpose : "N.A.",
-          appraisal_status: isBidded.status === 1 && isBidded.orderStatus ? (
+          appraisal_status: isBidded.status === 1 && isBidded.orderStatus!== null ? (
             <span  className="btn btn-warning  w-100">{getOrderValue(isBidded.orderStatus)}</span>
           ):<span className="btn btn-warning  w-100">N.A.</span>,
           remark : (isBidded && isBidded.remark) ? isBidded.orderStatus === 1 ? `${isBidded.remark} on ${formatDate(isBidded.modifiedDate)}`: isBidded.remark : "N.A.",
@@ -455,9 +455,8 @@ export default function Exemple({
               {isWait ?
                 <>  
                 <p className="btn btn-danger  w-100">
-                {`Cannot perform any actions further on this property as propperty is ${
-                  property.isOnCancel ? "Cancelled" : "On Hold"
-                } !.`}
+                {`No further actions can be taken on this property since it is ${ property.isOnCancel ? "Cancelled" : "On Hold" } !.`}
+                  
                 </p> 
                 <li
                 className=""
