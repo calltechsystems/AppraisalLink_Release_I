@@ -34,6 +34,7 @@ async function handler(request, response) {
       assistantFirstName,
       assistantPhoneNumber,
       assistantEmailAddress,
+      cellNumber,
       profileImage,
     } = body;
 
@@ -52,6 +53,7 @@ async function handler(request, response) {
       postalCode: postalCode,
       area: "",
       phoneNumber: phoneNumber,
+      cellNumber: cellNumber,
       faxNumber: "",
       description: "",
       assistantEmailAddress: assistantEmailAddress,

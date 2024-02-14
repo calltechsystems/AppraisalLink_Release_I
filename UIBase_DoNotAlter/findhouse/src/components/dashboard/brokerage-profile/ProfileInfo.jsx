@@ -71,16 +71,16 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   );
 
   const [assistantFirstName, setAssistantFirstName] = useState(
-    userData?.broker_Details?.assistantFirstName || ""
+    userData?.brokerage_Details?.assistantFirstName || ""
   );
   const [assistantLastName, setAssistantLastName] = useState(
-    userData?.broker_Details?.assistantFirstName || ""
+    userData?.brokerage_Details?.assistantFirstName || ""
   );
   const [assistantPhoneNumber, setAssistantPhoneNumber] = useState(
-    userData?.broker_Details?.assistantPhoneNumber || ""
+    userData?.brokerage_Details?.assistantPhoneNumber || ""
   );
   const [assistantEmailAddress, setAssistantEmailAddress] = useState(
-    userData?.broker_Details?.assistantEmailAddress || ""
+    userData?.brokerage_Details?.assistantEmailAddress || ""
   );
 
   const [commissionRate, setCommissionRate] = useState(
@@ -141,6 +141,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     const adressLine2 = addressLineTwoRef;
     const middleName = middleNameRef;
     const brokerageName = brokerageNameRef;
+    // const assistantEmailAddress = assistantEmailAddress;
+    // const assistantFirstName = assistantFirstName;
+    // const assistantPhoneNumber = assistantPhoneNumber;
 
     const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const nameRegex = /^[A-Za-z]+$/;
@@ -223,6 +226,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         phoneNumber: phoneNumber,
         cellNumber: cellNumber,
         profileImage: SelectedImage,
+        assistantEmailAddress: assistantEmailAddress,
+        assistantFirstName: assistantFirstName,
+        assistantPhoneNumber: assistantPhoneNumber,
       };
 
       toast.loading("Updating ...");
@@ -857,10 +863,10 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           className="form-control"
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
-                          // value={assistantFirstName}
-                          // onChange={(e) =>
-                          //   setAssistantFirstName(e.target.value)
-                          // }
+                          value={assistantFirstName}
+                          onChange={(e) =>
+                            setAssistantFirstName(e.target.value)
+                          }
                           //
                         />
                       </div>
@@ -883,9 +889,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           className="form-control"
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
-                          // value={assistantLastName}
-                          // onChange={(e) => setAssistantLastName(e.target.value)}
-                          //
+                          value={assistantLastName}
+                          onChange={(e) => setAssistantLastName(e.target.value)}
                         />
                       </div>
                     </div>
@@ -908,11 +913,10 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           className="form-control"
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
-                          // value={assistantPhoneNumber}
-                          // onChange={(e) =>
-                          //   setAssistantPhoneNumber(e.target.value)
-                          // }
-                          //
+                          value={assistantPhoneNumber}
+                          onChange={(e) =>
+                            setAssistantPhoneNumber(e.target.value)
+                          }
                         />
                       </div>
                     </div>

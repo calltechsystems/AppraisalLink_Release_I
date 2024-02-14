@@ -503,8 +503,12 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                 <Link
                   href={
                     userData
-                      ? userData.userType === 1
+                      ? userData.userType === 1 || userData.userType === 6
                         ? "/my-dashboard"
+                        : userData.userType === 3
+                        ? "/brokerage-dashboard"
+                        : userData.userType === 4
+                        ? "/appraiser-company-dashboard"
                         : "/appraiser-dashboard"
                       : "#"
                   }
