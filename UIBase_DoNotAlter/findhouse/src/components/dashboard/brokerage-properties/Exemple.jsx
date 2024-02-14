@@ -239,6 +239,16 @@ export default function Exemple({
     return formattedDate;
   };
 
+  const getBidOfProperty = (orderId) => {
+    let Bid = {};
+    allBids.map((bid, index) => {
+      if (String(bid.orderId) === String(orderId)) {
+        Bid = bid;
+      }
+    });
+    return Bid;
+  };
+
   const refreshHandler = () => {
     setRefresh(true);
   };
@@ -272,6 +282,7 @@ export default function Exemple({
   useEffect(() => {
     const getData = () => {
       properties.map((property, index) => {
+        const isBidded = getBidOfProperty(property.orderId);
         const isHold = property.isOnHold;
         const isCancel = property.isOnCancel;
         const isStatus = getPropertyStatusHandler(property);
@@ -313,16 +324,16 @@ export default function Exemple({
                 <span className="btn bg-warning  w-100">
                   {isHold ? "On Hold" : "OnCancelled"}
                 </span>
-              ) : property.orderStatus !== null? (
+              ) : property.orderStatus !== null ? (
                 <span className="btn bg-warning  w-100">
-                  {getOrderValue(property.orderStatus)}
+                  {getOrderValue(isBidded.orderStatus)}
                 </span>
               ) : (
                 <span className="btn bg-warning  w-100">N.A.</span>
               ),
             address: `${property.streetNumber} ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
-            // remark: isBidded.remark ? isBidded.remark : "N.A.",
-            remark: property.remark ? property.remark : "N.A.",
+            remark: isBidded.remark ? isBidded.remark : "N.A.",
+            // remark: property.remark ? property.remark : "N.A.",
             // user: property.applicantEmailAddress,
             type_of_building: property.typeOfBuilding,
             amount: ` $ ${millify(property.estimatedValue)}`,
@@ -729,21 +740,20 @@ export default function Exemple({
           }
         });
         axios
-        .get("/api/getAllBids", {
-          headers: {
-            Authorization: `Bearer ${data.token}`,
-          },
-        })
-        .then((res) => {
-          tempBids = res.data.data.$values;
-          setProperties(tempProperties);
-          setBids(tempBids);
-        })
-        .catch((err) => {
-          toast.error(err);
-          // setModalIsOpenError(true);
-        });
-        
+          .get("/api/getAllBids", {
+            headers: {
+              Authorization: `Bearer ${data.token}`,
+            },
+          })
+          .then((res) => {
+            tempBids = res.data.data.$values;
+            setProperties(tempProperties);
+            setBids(tempBids);
+          })
+          .catch((err) => {
+            toast.error(err);
+            // setModalIsOpenError(true);
+          });
       })
       .catch((err) => {
         toast.dismiss();
@@ -751,7 +761,7 @@ export default function Exemple({
       });
 
     let tempBids = [];
-   
+
     setRefresh(false);
   }, [refresh]);
   return (
