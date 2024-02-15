@@ -334,7 +334,7 @@ export default function Exemple({
               : "$ 0",
             purpose: property.purpose ? property.purpose : "N.A.",
             appraisal_status:
-              isBidded.status === 1 && isBidded.orderStatus!== null ? (
+              isBidded.status === 1 && isBidded.orderStatus !== null ? (
                 <span className="btn btn-warning  w-100">
                   {getOrderValue(isBidded.orderStatus)}
                 </span>
@@ -438,34 +438,37 @@ export default function Exemple({
 
             action: (
               <div className="print-hidden-column">
-                {isBidded.orderStatus === 6 ? (
+                {isBidded.orderStatus === 3 ? (
                   <span className="btn btn-success  w-100">Accepted</span>
                 ) : isWait ? (
                   <>
-                  <p className="btn btn-danger  w-100">
-                  {`No further actions can be taken on this property since it is ${ property.isOnCancel ? "Cancelled" : "On Hold" } !.`}
-                  
-                  </p>
-                  <li
-                  className=""
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Un-Archive Property"
-                >
-                  <div
-                    className="w-100"
-                    onClick={() => unArchivePropertyHandler(property.orderId)}
-                  >
-                    <button href="#" className="btn btn-color">
-                      <Link href="#">
-                        <span className="text-light">
-                          {" "}
-                          <FaArchive />
-                        </span>
-                      </Link>
-                    </button>
-                  </div>
-                </li>
+                    <p className="btn btn-danger  w-100">
+                      {`No further actions can be taken on this property since it is ${
+                        property.isOnCancel ? "Cancelled" : "On Hold"
+                      } !.`}
+                    </p>
+                    <li
+                      className="list-inline-item"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Archive Property"
+                    >
+                      <div
+                        className="w-100"
+                        onClick={() =>
+                          onArchivePropertyHandler(property.orderId)
+                        }
+                      >
+                        <button href="#" className="btn btn-color">
+                          <Link href="#">
+                            <span className="text-light">
+                              {" "}
+                              <FaArchive />
+                            </span>
+                          </Link>
+                        </button>
+                      </div>
+                    </li>
                   </>
                 ) : isBidded && isBidded.status !== 1 ? (
                   <ul className="mb0 d-flex gap-1">

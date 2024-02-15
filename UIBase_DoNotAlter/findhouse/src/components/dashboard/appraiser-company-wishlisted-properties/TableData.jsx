@@ -6,7 +6,8 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import Exemple from "./Exemple"
 import { useDispatch, useSelector } from "react-redux";
-const TableData = ({userData , open ,setRequiredProp,close ,setAssignedAppraiser, onArchivePropertyHandler,setCurrentBid,setShowBroker,setOpenAssignModal,setAllBrokers,setShowMore,setFilterQuery,setSearchInput,setIsStatusModal,start,end, onWishlistHandler ,setStartLoading,setUpdatedCode, openModalBroker,participateHandler , properties, setProperties,setErrorMessage,setModalIsOpenError,setRefresh,refresh}) => {
+const TableData = ({userData , open ,close ,setAssignedAppraiser,setAssignAppraiser,
+  setAssignPropertyId,setAssignModal,setAllAppraiser, onArchivePropertyHandler,setCurrentBid,setShowBroker,setOpenAssignModal,setAllBrokers,setShowMore,setFilterQuery,setSearchInput,setIsStatusModal,start,end, onWishlistHandler ,setStartLoading,setUpdatedCode, openModalBroker,participateHandler , properties, setProperties,setErrorMessage,setModalIsOpenError,setRefresh,refresh}) => {
 
 
   let userInfo = {};
@@ -90,7 +91,7 @@ const TableData = ({userData , open ,setRequiredProp,close ,setAssignedAppraiser
     };
 
 
-   
+  
   },[rerender]);
   const formatDate = (dateString) => {
     const options = {
@@ -259,7 +260,6 @@ const TableData = ({userData , open ,setRequiredProp,close ,setAssignedAppraiser
       properties={data}
       setRefresh={setRefresh}
       refresh={refresh}
-      setRequiredProp={setRequiredProp}
       setModalIsOpenError = {setModalIsOpenError}
       setErrorMessage = {setErrorMessage}
       deletePropertyHandler = {deletePropertyHandler}
@@ -270,11 +270,15 @@ const TableData = ({userData , open ,setRequiredProp,close ,setAssignedAppraiser
       setShowMore={setShowMore}
       setIsStatusModal={setIsStatusModal}
       start={start}
+      setAssignPropertyId={setAssignPropertyId}
       onArchivePropertyHandler={ onArchivePropertyHandler}
       setAssignedAppraiser={setAssignedAppraiser}
       openModalBroker={openModalBroker}
       setAllBrokers={setAllBrokers}
+      setAssignAppraiser={setAssignAppraiser}
       setCurrentBid={setCurrentBid}
+      setAllAppraiser={setAllAppraiser}
+  setAssignModal={setAssignModal}
       setOpenAssignModal={setOpenAssignModal}
       end={end}
       />)}

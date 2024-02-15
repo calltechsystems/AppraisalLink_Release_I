@@ -475,7 +475,7 @@ export default function Exemple({
                       <div
                         className="w-100"
                         onClick={() =>
-                          unArchivePropertyHandler(property.orderId)
+                          onArchivePropertyHandler(property.orderId)
                         }
                       >
                         <button href="#" className="btn btn-color">
@@ -507,7 +507,7 @@ export default function Exemple({
                           />
                         </button>
                       </li>
-                    ) : isBidded.orderStatus === 6 ? (
+                    ) : isBidded.orderStatus === 3 ? (
                       <span className="btn btn-success w-100">Completed</span>
                     ) : (
                       <li className="" title="Wishlist Property">
@@ -563,7 +563,7 @@ export default function Exemple({
 
                     {
                       <li
-                        className=""
+                        className="list-inline-item"
                         data-toggle="tooltip"
                         data-placement="top"
                         title="Assign Appraiser"

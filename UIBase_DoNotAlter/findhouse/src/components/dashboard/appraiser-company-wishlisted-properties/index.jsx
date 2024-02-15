@@ -19,6 +19,7 @@ const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
 
+  const [assignAppraiser, setAssignAppraiser] = useState([]);
   const [isStatusModal, setIsStatusModal] = useState(false);
   const [toggleId, setToggleId] = useState(-1);
   const [toggleWishlist, setToggleWishlist] = useState(0);
@@ -35,7 +36,8 @@ const Index = () => {
   const [lowRangeBid, setLowRangeBid] = useState("");
   const [propertyId, setPropertyId] = useState(null);
 
-  const [requiredProp, setRequiredProp] = useState([]);
+  const [assignAppraiserId, setassignAppraiserId] = useState(-1);
+
   const [wishlistedProperties, setWishlistedProperties] = useState([]);
   const [updatedCode, setUpdatedCode] = useState(false);
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
@@ -117,6 +119,9 @@ const Index = () => {
   const [openDate, setOpenDate] = useState(false);
   const [statusDate, setStatusDate] = useState("");
 
+  const [allAppraiser, setAllAppraiser] = useState([]);
+  const [assignModal, setAssignModal] = useState(false);
+
   const handleStatusSelect = (value) => {
     if (String(value) === "Appraisal Visit Confirmed") {
       setOpenDate(true);
@@ -148,6 +153,46 @@ const Index = () => {
     setTypeView(value);
     setOpenBrokerModal(true);
   };
+
+  const [selectedAppraiser, setSelectedAppraiser] = useState(-1);
+  const [assignPropertyId, setAssignPropertyId] = useState(-1);
+
+  const assignAppraiserUpdateHandler = () => {
+    if (assignAppraiserId <= 0) {
+      toast.error("Please select only active and appropriate appraisers!");
+    } else {
+      const data = JSON.parse(localStorage.getItem("user"));
+      const payload = {
+        companyid: data.appraiserCompany_Datails.appraiserCompanyId,
+        propertyid: Number(assignPropertyId),
+        appraiserid: Number(assignAppraiserId),
+      };
+
+      const encryptedData = encryptionData(payload);
+      toast.loading("Assigning the property!!....");
+      axios
+        .post("/api/assignPropertyToAppraiser", encryptedData, {
+          headers: {
+            Authorization: `Bearer ${data.token}`,
+          },
+        })
+        .then((res) => {
+          toast.dismiss();
+          toast.success("Successfully assigned the property!");
+          location.reload(true);
+        })
+        .catch((err) => {
+          toast.dismiss();
+          toast.error(err);
+        });
+      setAssignPropertyId(-1);
+    }
+  };
+
+  const closeAssignModal = () => {
+    setAssignModal(false);
+    setAssignPropertyId(-1);
+  };
   const router = useRouter();
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
@@ -170,6 +215,8 @@ const Index = () => {
       window.removeEventListener("click", activityHandler);
     };
   }, []);
+
+  console.log("appraiser", allBrokers);
 
   useEffect(() => {
     // Check for inactivity every minute
@@ -486,22 +533,23 @@ const Index = () => {
 
   const [isUpdateBid, setIsUpdateBid] = useState(false);
   const [bidAmount, setbidAmount] = useState(0);
-  const [isBidded, setIsBidded] = useState(false);
+  const [alreadyBidded, setAlreadyBidded] = useState(false);
 
   const participateHandler = (val, id, isUpdate, value, isBidded) => {
-    // console.log(val,id,isUpdate,value);
+    console.log(val, id, isUpdate, value);
     if (isUpdate) {
       setLowRangeBid(val);
       setIsUpdateBid(isUpdate);
       setbidAmount(value);
       setPropertyId(id);
+      setAlreadyBidded(isBidded);
       setModalOpen(true);
     } else {
       setLowRangeBid(val);
       setPropertyId(id);
+      setAlreadyBidded(isBidded);
       setModalOpen(true);
     }
-    setIsBidded(isBidded);
   };
 
   const [currentBid, setCurrentBid] = useState({});
@@ -614,7 +662,7 @@ const Index = () => {
 
                 <div className="col-lg-4 col-xl-4 mb10">
                   <div className="style2 mb30-991">
-                    <h3 className="breadcrumb_title">Wishlisted Property</h3>
+                    <h3 className="breadcrumb_title">Appraising Property</h3>
                     {/* <p>We are glad to see you again!</p>                                                             */}
                   </div>
                 </div>
@@ -664,11 +712,12 @@ const Index = () => {
                           setProperties={setProperties}
                           start={start}
                           end={end}
-                          setRequiredProp={setRequiredProp}
+                          setAssignPropertyId={setAssignPropertyId}
                           onArchivePropertyHandler={onArchivePropertyHandler}
                           properties={
                             searchInput === "" ? properties : filterProperty
                           }
+                          setAssignAppraiser={setAssignAppraiser}
                           setCurrentBid={setCurrentBid}
                           setUpdatedCode={setUpdatedCode}
                           onWishlistHandler={onWishlistHandler}
@@ -676,6 +725,8 @@ const Index = () => {
                           setErrorMessage={setErrorMessage}
                           setModalIsOpenError={setModalIsOpenError}
                           setRefresh={setRefresh}
+                          setAllAppraiser={setAllAppraiser}
+                          setAssignModal={setAssignModal}
                           setAllBrokers={setAllBrokers}
                           setFilterQuery={setFilterQuery}
                           setSearchInput={setSearchInput}
@@ -731,33 +782,84 @@ const Index = () => {
                         {openBrokerModal && typeView === 1 && (
                           <div className="modal">
                             <div className="modal-content">
-                              <h3 className="text-center">Property Details</h3>
-
+                              <div className="row">
+                                <div className="col-lg-12">
+                                  <Link href="/" className="">
+                                    <Image
+                                      width={50}
+                                      height={45}
+                                      className="logo1 img-fluid"
+                                      style={{ marginTop: "-20px" }}
+                                      src="/assets/images/logo.png"
+                                      alt="header-logo2.png"
+                                    />
+                                    <span
+                                      style={{
+                                        color: "#2e008b",
+                                        fontWeight: "bold",
+                                        fontSize: "24px",
+                                        // marginTop: "20px",
+                                      }}
+                                    >
+                                      Appraisal
+                                    </span>
+                                    <span
+                                      style={{
+                                        color: "#97d700",
+                                        fontWeight: "bold",
+                                        fontSize: "24px",
+                                        // marginTop: "20px",
+                                      }}
+                                    >
+                                      {" "}
+                                      Land
+                                    </span>
+                                  </Link>
+                                </div>
+                              </div>
+                              <div className="row">
+                                <div className="col-lg-12 text-center">
+                                  <h1 className=" text-color mt-1">
+                                    Property Details
+                                  </h1>
+                                </div>
+                              </div>
+                              <div
+                                className="mb-2"
+                                style={{ border: "2px solid #97d700" }}
+                              ></div>
                               <div
                                 className="d-flex justify-content-center"
                                 id="property-info-container"
                               >
                                 <table
                                   style={{
-                                    width: "550px",
-                                    textAlign: "center",
+                                    width: "700px",
+                                    textAlign: "start",
                                     borderRadius: "5px",
+                                    fontSize: "17px",
+                                    fontWeight: "bold",
                                   }}
                                 >
                                   <thead>
                                     <tr>
                                       <th
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
+                                          // padding: "5px",
+                                          textAlign: "center",
                                         }}
                                       >
-                                        Title
+                                        Headers
                                       </th>
                                       <th
                                         style={{
-                                          border: "1px solid grey",
-                                          width: "250px",
+                                          border: "1px solid #2e008b",
+                                          // width: "470px",
+                                          color: "#2e008b",
+                                          // padding: "5px",
+                                          textAlign: "center",
                                         }}
                                       >
                                         Value
@@ -778,8 +880,10 @@ const Index = () => {
                                       </td>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
-                                          width: "250px",
+                                          border: "1px solid #2e008b",
+                                          width: "465px",
+                                          color: "black",
+                                          padding: "5px",
                                         }}
                                       >
                                         {" "}
@@ -822,8 +926,10 @@ const Index = () => {
                                       </td>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           width: "250px",
+                                          color: "black",
+                                          padding: "5px",
                                         }}
                                       >
                                         {broker.typeOfBuilding}
@@ -843,8 +949,10 @@ const Index = () => {
                                       </td>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           width: "250px",
+                                          color: "black",
+                                          padding: "5px",
                                         }}
                                       >
                                         {broker.typeOfAppraisal}
@@ -864,8 +972,10 @@ const Index = () => {
                                       </td>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           width: "250px",
+                                          color: "black",
+                                          padding: "5px",
                                         }}
                                       >
                                         {broker.purpose}
@@ -885,8 +995,10 @@ const Index = () => {
                                       </td>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           width: "250px",
+                                          color: "black",
+                                          padding: "5px",
                                         }}
                                       >
                                         {broker.lenderInformation
@@ -930,8 +1042,10 @@ const Index = () => {
                                       </td>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           width: "250px",
+                                          color: "black",
+                                          padding: "5px",
                                         }}
                                       >
                                         ${broker.estimatedValue}
@@ -950,8 +1064,10 @@ const Index = () => {
                                       </td>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           width: "250px",
+                                          color: "black",
+                                          padding: "5px",
                                         }}
                                       >
                                         {" "}
@@ -975,8 +1091,10 @@ const Index = () => {
                                       </td>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           width: "250px",
+                                          color: "black",
+                                          padding: "5px",
                                         }}
                                       >
                                         {broker.quoteRequiredDate
@@ -997,8 +1115,10 @@ const Index = () => {
                                       </td>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           width: "250px",
+                                          color: "black",
+                                          padding: "5px",
                                         }}
                                       >
                                         {" "}
@@ -1019,14 +1139,14 @@ const Index = () => {
                                       </td>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           width: "250px",
+                                          color: "black",
+                                          padding: "5px",
                                         }}
                                       >
                                         {" "}
-                                        {broker.applicantEmailAddress
-                                          ? broker.applicantEmailAddress
-                                          : "N.A."}
+                                        {broker.applicantEmailAddress}
                                       </td>
                                     </tr>
                                     <tr>
@@ -1042,14 +1162,14 @@ const Index = () => {
                                       </td>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           width: "250px",
+                                          color: "black",
+                                          padding: "5px",
                                         }}
                                       >
                                         {" "}
-                                        {broker.applicantPhoneNumber
-                                          ? broker.applicantPhoneNumber
-                                          : "N.A."}
+                                        {broker.applicantPhoneNumber}
                                       </td>
                                     </tr>
                                     {/* <tr>
@@ -1088,8 +1208,10 @@ const Index = () => {
                                       </td>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           width: "250px",
+                                          color: "black",
+                                          padding: "5px",
                                         }}
                                       >
                                         {" "}
@@ -1109,8 +1231,10 @@ const Index = () => {
                                       </td>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           width: "250px",
+                                          color: "black",
+                                          padding: "5px",
                                         }}
                                       >
                                         {" "}
@@ -1133,8 +1257,10 @@ const Index = () => {
                                       </td>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           width: "250px",
+                                          color: "black",
+                                          padding: "5px",
                                         }}
                                       >
                                         {broker.applicantEmailAddress}
@@ -1153,8 +1279,10 @@ const Index = () => {
                                       </td>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           width: "250px",
+                                          color: "black",
+                                          padding: "5px",
                                         }}
                                       >
                                         {" "}
@@ -1175,7 +1303,7 @@ const Index = () => {
                                     }
                                     title="Download Pdf"
                                   >
-                                    Download Form
+                                    Download
                                   </div>
                                   <button
                                     className="btn btn-color w-25 text-center"
@@ -1192,17 +1320,63 @@ const Index = () => {
                         {openBrokerModal && typeView === 2 && (
                           <div className="modal">
                             <div className="modal-content">
-                              <h3 className="text-center">Broker Details</h3>
-
+                              <div className="row">
+                                <div className="col-lg-12">
+                                  <Link href="/" className="">
+                                    <Image
+                                      width={50}
+                                      height={45}
+                                      className="logo1 img-fluid"
+                                      style={{ marginTop: "-20px" }}
+                                      src="/assets/images/logo.png"
+                                      alt="header-logo2.png"
+                                    />
+                                    <span
+                                      style={{
+                                        color: "#2e008b",
+                                        fontWeight: "bold",
+                                        fontSize: "24px",
+                                        // marginTop: "20px",
+                                      }}
+                                    >
+                                      Appraisal
+                                    </span>
+                                    <span
+                                      style={{
+                                        color: "#97d700",
+                                        fontWeight: "bold",
+                                        fontSize: "24px",
+                                        // marginTop: "20px",
+                                      }}
+                                    >
+                                      {" "}
+                                      Land
+                                    </span>
+                                  </Link>
+                                </div>
+                              </div>
+                              <div className="row">
+                                <div className="col-lg-12 text-center">
+                                  <h1 className=" text-color mt-1">
+                                    Broker Details
+                                  </h1>
+                                </div>
+                              </div>
+                              <div
+                                className="mt-2 mb-3"
+                                style={{ border: "2px solid #97d700" }}
+                              ></div>
                               <div
                                 className="d-flex justify-content-center"
                                 id="broker-info-container"
                               >
                                 <table
                                   style={{
-                                    width: "550px",
-                                    textAlign: "center",
+                                    width: "700px",
+                                    textAlign: "start",
                                     borderRadius: "5px",
+                                    fontSize: "17px",
+                                    fontWeight: "bold",
                                   }}
                                   id="table-broker-info"
                                 >
@@ -1210,16 +1384,21 @@ const Index = () => {
                                     <tr>
                                       <th
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
+                                          // padding: "5px",
+                                          textAlign: "center",
                                         }}
                                       >
-                                        Title
+                                        Headers
                                       </th>
                                       <th
                                         style={{
-                                          border: "1px solid grey",
-                                          width: "250px",
+                                          border: "1px solid #2e008b",
+                                          // width: "470px",
+                                          color: "#2e008b",
+                                          // padding: "5px",
+                                          textAlign: "center",
                                         }}
                                       >
                                         Value
@@ -1240,8 +1419,10 @@ const Index = () => {
                                       </td>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           width: "250px",
+                                          color: "black",
+                                          padding: "5px",
                                         }}
                                       >
                                         {selectedBroker.firstName}{" "}
@@ -1261,8 +1442,10 @@ const Index = () => {
                                       </td>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
-                                          width: "250px",
+                                          border: "1px solid #2e008b",
+                                          width: "400px",
+                                          color: "black",
+                                          padding: "5px",
                                         }}
                                       >
                                         {selectedBroker.streetName}{" "}
@@ -1286,8 +1469,10 @@ const Index = () => {
                                       </td>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           width: "250px",
+                                          color: "black",
+                                          padding: "5px",
                                         }}
                                       >
                                         {selectedBroker.phoneNumber}
@@ -1306,8 +1491,10 @@ const Index = () => {
                                       </td>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           width: "250px",
+                                          color: "black",
+                                          padding: "5px",
                                         }}
                                       >
                                         {selectedBroker.mortageBrokerLicNo}
@@ -1326,8 +1513,10 @@ const Index = () => {
                                       </td>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           width: "250px",
+                                          color: "black",
+                                          padding: "5px",
                                         }}
                                       >
                                         {selectedBroker.mortageBrokerageLicNo}
@@ -1346,8 +1535,10 @@ const Index = () => {
                                       </td>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           width: "250px",
+                                          color: "black",
+                                          padding: "5px",
                                         }}
                                       >
                                         {selectedBroker.brokerageName
@@ -1368,8 +1559,10 @@ const Index = () => {
                                       </td>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           width: "250px",
+                                          color: "black",
+                                          padding: "5px",
                                         }}
                                       >
                                         {selectedBroker.companyName
@@ -1390,8 +1583,10 @@ const Index = () => {
                                       </td>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           width: "250px",
+                                          color: "black",
+                                          padding: "5px",
                                         }}
                                       >
                                         {selectedBroker.assistantFirstName
@@ -1412,8 +1607,10 @@ const Index = () => {
                                       </td>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           width: "250px",
+                                          color: "black",
+                                          padding: "5px",
                                         }}
                                       >
                                         {selectedBroker.assistantPhoneNumber
@@ -1434,8 +1631,10 @@ const Index = () => {
                                       </td>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           width: "250px",
+                                          color: "black",
+                                          padding: "5px",
                                         }}
                                       >
                                         {selectedBroker.assistantEmailAddress
@@ -1456,7 +1655,7 @@ const Index = () => {
                                     }
                                     title="Download Pdf"
                                   >
-                                    Download Form
+                                    Download
                                   </div>
                                   <button
                                     className="btn btn-color w-25 text-center"
@@ -1501,6 +1700,92 @@ const Index = () => {
                         onClick={closeQuoteModal}
                       >
                         Cancel
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {assignModal && (
+                <div className="modal">
+                  <div className="modal-content">
+                    <div className="row">
+                      <div className="col-lg-12">
+                        <Link href="/" className="">
+                          <Image
+                            width={50}
+                            height={45}
+                            className="logo1 img-fluid"
+                            style={{ marginTop: "-20px" }}
+                            src="/assets/images/logo.png"
+                            alt="header-logo2.png"
+                          />
+                          <span
+                            style={{
+                              color: "#2e008b",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            Appraisal
+                          </span>
+                          <span
+                            style={{
+                              color: "#97d700",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            {" "}
+                            Land
+                          </span>
+                        </Link>
+                      </div>
+                    </div>
+                    <h3 className="text-center">Quote Status Updation</h3>
+
+                    <select
+                      required
+                      className="form-select"
+                      data-live-search="true"
+                      data-width="100%"
+                      onChange={(e) => setSelectedAppraiser(e.target.value)}
+                      // value={buildinRef}
+                      // onChange={(e) => setBuildinRef(e.target.value)}
+                      // onChange={(e) => setBuildinRef(e.target.value)}
+                      // disabled={isDisable}
+                      style={{
+                        paddingTop: "15px",
+                        paddingBottom: "15px",
+                        backgroundColor: "#E8F0FE",
+                      }}
+                    >
+                      {allAppraiser.map((item, index) => {
+                        <option value={0}>....</option>;
+                        return (
+                          <option key={item.id} value={item.$id}>
+                            {item.firstName} {item.lastName}
+                          </option>
+                        );
+                      })}
+                    </select>
+
+                    {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
+                    <div className="text-center" style={{}}>
+                      <button
+                        className="btn w-35 btn-white"
+                        onClick={() => closeAssignModal()}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        className="btn btn-color w-10 mt-1"
+                        style={{ marginLeft: "12px" }}
+                        onClick={assignAppraiserUpdateHandler}
+                      >
+                        Submit
                       </button>
                     </div>
                   </div>
@@ -1641,14 +1926,15 @@ const Index = () => {
                   lowRangeBid={lowRangeBid}
                   isUpdateBid={isUpdateBid}
                   bidAmount={bidAmount}
-                  isBidded={isBidded}
-                  setCurrentBid={setCurrentBid}
-                  setBidAmount={setbidAmount}
                   setModalOpen={setModalOpen}
                   propertyId={propertyId}
                   setIsQuoteModalOpen={setIsQuoteModalOpen}
                   openQuoteModal={openQuoteModal}
                   closeQuoteModal={closeQuoteModal}
+                  currentBid={currentBid}
+                  setCurrentBid={setCurrentBid}
+                  setBidAmount={setbidAmount}
+                  alreadyBidded={alreadyBidded}
                 />
               </div>
               <div className="row">
@@ -1672,7 +1958,7 @@ const Index = () => {
                   <Pagination
                     setStart={setStart}
                     setEnd={setEnd}
-                    properties={requiredProp}
+                    properties={properties}
                   />
                 </div>
               </div>

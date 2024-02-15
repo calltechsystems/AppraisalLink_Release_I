@@ -440,11 +440,11 @@ export default function Exemple({
                   className=""
                   data-toggle="tooltip"
                   data-placement="top"
-                  title="Un-Archive Property"
+                  title="Archive Property"
                 >
                   <div
                     className="w-100"
-                    onClick={() => unArchivePropertyHandler(property.orderId)}
+                    onClick={() => onArchivePropertyHandler(property.orderId)}
                   >
                     <button href="#" className="btn btn-color">
                       <Link href="#">

@@ -9,6 +9,8 @@ import Loader from "./Loader";
 import { FaArchive } from "react-icons/fa";
 import { AppraiserStatusOptions } from "../create-listing/data";
 import millify from "millify";
+import Link from "next/link";
+import Image from "next/image";
 // import "./SmartTable.css";
 
 const headCells = [
@@ -442,7 +444,7 @@ export default function Exemple({
 
             action: (
               <div className="print-hidden-column">
-                {isBidded.orderStatus === 6 ? (
+                {isBidded.orderStatus === 3 ? (
                   <span className="btn btn-success  w-100">Completed</span>
                 ) : isWait ? (
                   <>
@@ -451,6 +453,7 @@ export default function Exemple({
                         property.isOnCancel ? "Cancelled" : "On Hold"
                       } !.`}
                     </p>
+
                     <li
                       className="list-inline-item"
                       data-toggle="tooltip"
@@ -478,7 +481,7 @@ export default function Exemple({
                   <ul className="mb0 d-flex gap-1">
                     {(!isBidded.$id || isBidded?.status < 1) && (
                       <li
-                        className=""
+                        className="list-inline-item"
                         data-toggle="tooltip"
                         data-placement="top"
                         title={`${
@@ -529,6 +532,7 @@ export default function Exemple({
                     </button>
                   </div>
                   </li>*/}
+
                     <li
                       className="list-inline-item"
                       data-toggle="tooltip"
@@ -538,7 +542,7 @@ export default function Exemple({
                       <div
                         className="w-100"
                         onClick={() =>
-                          unArchivePropertyHandler(property.orderId)
+                          onArchivePropertyHandler(property.orderId)
                         }
                       >
                         <button href="#" className="btn btn-color">

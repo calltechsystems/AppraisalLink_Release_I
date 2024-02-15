@@ -8,6 +8,8 @@ import { useRouter } from "next/router";
 import Loader from "./Loader";
 import { FaArchive } from "react-icons/fa";
 import { AppraiserStatusOptions } from "../create-listing/data";
+import Link from "next/link";
+import Image from "next/image";
 // import "./SmartTable.css";
 
 const headCells = [
@@ -331,7 +333,7 @@ export default function Exemple({
             : "$ 0",
           purpose: property.purpose ? property.purpose : "N.A.",
           appraisal_status:
-            isBidded.status === 1 && isBidded.orderStatus!== null ? (
+            isBidded.status === 1 && isBidded.orderStatus !== null ? (
               <span className="btn btn-warning  w-100">
                 {getOrderValue(isBidded.orderStatus)}
               </span>
@@ -431,19 +433,20 @@ export default function Exemple({
             <div className="print-hidden-column">
               isWait ?{" "}
               <>
-              <p className="btn btn-danger  w-100">
-              {`No further actions can be taken on this property since it is ${ property.isOnCancel ? "Cancelled" : "On Hold" } !.`}
-                  
-              </p>
-              <li
-                  className=""
+                <p className="btn btn-danger  w-100">
+                  {`No further actions can be taken on this property since it is ${
+                    property.isOnCancel ? "Cancelled" : "On Hold"
+                  } !.`}
+                </p>
+                <li
+                  className="list-inline-item"
                   data-toggle="tooltip"
                   data-placement="top"
-                  title="Un-Archive Property"
+                  title="Archive Property"
                 >
                   <div
                     className="w-100"
-                    onClick={() => unArchivePropertyHandler(property.orderId)}
+                    onClick={() => onArchivePropertyHandler(property.orderId)}
                   >
                     <button href="#" className="btn btn-color">
                       <Link href="#">
@@ -454,10 +457,11 @@ export default function Exemple({
                       </Link>
                     </button>
                   </div>
-                </li></>
+                </li>
+              </>
               :
               <li
-                className=""
+                className="list-inline-item"
                 data-toggle="tooltip"
                 data-placement="top"
                 title="Un-Archive Property"
@@ -534,45 +538,42 @@ export default function Exemple({
             });
             setBids(updatedBids);
             axios
-            .get("/api/appraiserWishlistedProperties", {
-              headers: {
-                Authorization: `Bearer ${data?.token}`,
-                "Content-Type": "application/json",
-              },
-            })
-            .then((res) => {
-              const tempData = res.data.data.$values;
-      
-              // setAllWishlistedProperties(res.data.data.$values);
-              const responseData = tempData.filter((prop, index) => {
-                if (String(prop.userId) === String(data.userId)) {
-                  return true;
-                } else {
-                  return false;
-                }
+              .get("/api/appraiserWishlistedProperties", {
+                headers: {
+                  Authorization: `Bearer ${data?.token}`,
+                  "Content-Type": "application/json",
+                },
+              })
+              .then((res) => {
+                const tempData = res.data.data.$values;
+
+                // setAllWishlistedProperties(res.data.data.$values);
+                const responseData = tempData.filter((prop, index) => {
+                  if (String(prop.userId) === String(data.userId)) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+                });
+                const tempId = responseData;
+                setWishlist(responseData);
+                setProperties(temp);
+              })
+              .catch((err) => {
+                toast.error(err?.response);
+                setErrorMessage(err?.response);
+                setModalIsOpenError(true);
               });
-              const tempId = responseData;
-              setWishlist(responseData);
-              setProperties(temp);
-            })
-            .catch((err) => {
-              toast.error(err?.response);
-              setErrorMessage(err?.response);
-              setModalIsOpenError(true);
-            });
           })
           .catch((err) => {
             setErrorMessage(err?.response?.data?.error);
             setModalIsOpenError(true);
           });
-    
-       
       })
       .catch((err) => {
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
-
 
     axios
       .get("/api/getAllBrokers", {
