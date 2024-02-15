@@ -9,7 +9,7 @@ import Loader from "./Loader";
 import { FaArchive } from "react-icons/fa";
 import { AppraiserStatusOptions } from "../create-listing/data";
 import millify from "millify";
-import Link from "next/link";
+// import Link from "next/link";
 import Image from "next/image";
 // import "./SmartTable.css";
 
