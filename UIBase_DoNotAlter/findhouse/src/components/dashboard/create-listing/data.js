@@ -303,7 +303,7 @@ export const AppraiserList = [
   },
 ];
 
-export const designation = [
+export const designations = [
   {
     id: "0",
     type: "Candidate Appraiser",

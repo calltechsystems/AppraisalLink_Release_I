@@ -7,7 +7,7 @@ import axios from "axios";
 import { CldUploadWidget } from "next-cloudinary";
 import toast from "react-hot-toast";
 import { province } from "../create-listing/data";
-import { designation } from "../create-listing/data";
+import { designations } from "../create-listing/data";
 import Link from "next/link";
 
 const ProfileInfo = ({ setProfileCount, setShowCard }) => {
@@ -135,14 +135,14 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   };
 
   // console.log(selectedImage2);
-  useEffect(() => {
-    if (String(designations) === "Other") {
-      setSetODesignation(true);
-    } else {
-      setSetODesignation(false);
-    }
-    console.log(setODesignation);
-  }, [designations]);
+  // useEffect(() => {
+  //   if (String(designations) === "Other") {
+  //     setSetODesignation(true);
+  //   } else {
+  //     setSetODesignation(false);
+  //   }
+  //   console.log(setODesignation);
+  // }, [designations]);
 
   // const [designation, setDesignation] = useState(
   //   userData?.brokerage_Details?.designation || ""
@@ -257,7 +257,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         streetName: streetName,
         commissionRate: commissionRate,
         maxNumberOfAssignedOrders: maxNumberOfAssignedOrders,
-        designation: designations,
+        designation: designation,
         city: city,
         province: state,
         postalCode: zipCode,
@@ -581,7 +581,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           className="form-select"
                           data-live-search="true"
                           data-width="100%"
-                          value={designations}
+                          value={designation}
                           onChange={(e) => setDesignation(e.target.value)}
                           // disabled={!edit}
                           style={{
@@ -591,7 +591,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                             color: "black",
                           }}
                         >
-                          {designation.map((item, index) => {
+                          {designations.map((item, index) => {
                             return (
                               <option key={item.id} value={item.value}>
                                 {item.type}
