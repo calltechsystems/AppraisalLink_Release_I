@@ -730,6 +730,7 @@ export default function Exemple({
       })
       .then((res) => {
         toast.dismiss();
+        console.log("data", res);
         const temp = res.data.data.properties.$values;
         let tempProperties = [];
         tempProperties = temp.filter((prop, index) => {
