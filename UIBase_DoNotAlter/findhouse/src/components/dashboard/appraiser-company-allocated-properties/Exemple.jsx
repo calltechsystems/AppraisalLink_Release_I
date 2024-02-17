@@ -7,6 +7,7 @@ import { encryptionData } from "../../../utils/dataEncryption";
 import { useRouter } from "next/router";
 import Loader from "./Loader";
 import { AppraiserStatusOptions } from "../create-listing/data";
+import { FaArchive } from "react-icons/fa";
 // import "./SmartTable.css";
 
 const headCells = [

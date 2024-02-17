@@ -5,6 +5,8 @@ import TableData from "./TableData";
 import Pagination from "./Pagination";
 import { useEffect, useRef } from "react";
 import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/router";
