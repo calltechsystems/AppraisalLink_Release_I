@@ -17,6 +17,7 @@ import Image from "next/image";
 
 const Index = ({ isView, propertyData }) => {
   const router = useRouter();
+  // const [userData, setUserData] = useState({});
 
   const [updateView, setUpdateView] = useState(propertyData);
   const [isDisable, setDisable] = useState(updateView);
@@ -786,7 +787,7 @@ const Index = ({ isView, propertyData }) => {
       <Header />
 
       {/* <!--  Mobile Menu --> */}
-      <MobileMenu />
+      <MobileMenu userData={userData} />
 
       <div className="dashboard_sidebar_menu">
         <div

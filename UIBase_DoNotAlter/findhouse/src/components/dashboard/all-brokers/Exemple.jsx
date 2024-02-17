@@ -155,9 +155,7 @@ export default function Exemple({
     //   return requestTime >= twentyFourHoursAgo && requestTime <= currentTime;
   };
 
-  const findBroker=(userId)=>{
-
-  }
+  const findBroker = (userId) => {};
 
   const router = useRouter();
 
@@ -268,7 +266,7 @@ export default function Exemple({
                 href="#"
                 className="btn btn-color w-50"
                 style={{ marginLeft: "12px" }}
-                onClick={()=>openStatusUpdateHandler(data)}
+                onClick={() => openStatusUpdateHandler(data)}
                 title="Update Status"
               >
                 <Link href="#">

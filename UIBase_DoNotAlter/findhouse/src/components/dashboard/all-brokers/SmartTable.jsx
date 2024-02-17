@@ -391,7 +391,7 @@ function SmartTable(props) {
             <div className="row">
               <div
                 className="smartTable-noDataFound col-12"
-                style={{ marginTop: "50px", marginBottom: "40px" }}
+                style={{ marginTop: "150px", marginBottom: "40px" }}
               >
                 <div className="ring">
                   Loading

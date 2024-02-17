@@ -1,5 +1,5 @@
-// import Header from "../../components/common/header/dashboard/HeaderBrokerage";
-// import SidebarMenu from "../../components/common/header/dashboard/SidebarMenuBrokerage";
+import Header from "../../components/common/header/dashboard/HeaderBrokerage";
+import SidebarMenu from "../../components/common/header/dashboard/SidebarMenuBrokerage";
 import MobileMenu from "../../components/common/header/MobileMenu_01";
 import TableData from "./TableData";
 import Filtering from "./Filtering";
@@ -40,15 +40,14 @@ const Index = () => {
   const [end, setEnd] = useState(4);
 
   const [isStatusModal, setIsStatusModal] = useState(false);
-  const [selectedBroker,setSelectedBroker]=useState({});
+  const [selectedBroker, setSelectedBroker] = useState({});
 
   const handleStatusUpdateHandler = () => {
-
-    const userData=JSON.parse(localStorage.getItem("user"));
+    const userData = JSON.parse(localStorage.getItem("user"));
     setDisable(true);
     const payload = {
-      brokerageId:userData?.brokerageDetails?.id ,
-      brokerId:selectedBroker.userId,
+      brokerageId: userData?.brokerageDetails?.id,
+      brokerId: selectedBroker.userId,
       IsActive: !selectedBroker.isActive,
     };
     const encryptedData = encryptionData(payload);
@@ -281,7 +280,7 @@ const Index = () => {
     setModalOpen(true);
   };
 
-  const [disable,setDisable]=useState(false);
+  const [disable, setDisable] = useState(false);
 
   const onWishlistHandler = (id) => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -346,7 +345,7 @@ const Index = () => {
   return (
     <>
       {/* <!-- Main Header Nav --> */}
-  {/*<Header userData={userData} />*/}
+      <Header userData={userData} />
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
@@ -358,7 +357,7 @@ const Index = () => {
           id="DashboardOffcanvasMenu"
           data-bs-scroll="true"
         >
-          {/*<SidebarMenu userData={userData} />*/}
+          <SidebarMenu userData={userData} />
         </div>
       </div>
       {/* End sidebar_menu */}
@@ -1090,7 +1089,7 @@ const Index = () => {
                   <div className="modal-content" style={{ width: "500px" }}>
                     <h3 className="text-center">Add Broker</h3>
                     <hr />
-                   {/*} <Form setCloseRegisterModal={setCloseRegisterModal} />*/}
+                    {/*} <Form setCloseRegisterModal={setCloseRegisterModal} />*/}
                   </div>
                 </div>
               )}
@@ -1128,14 +1127,14 @@ const Index = () => {
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
                       <button
-                      disabled={disable}
+                        disabled={disable}
                         className="btn w-25 btn-color"
                         onClick={closeStatusUpdateHandler}
                       >
                         Cancel
                       </button>
                       <button
-                      disabled={disable}
+                        disabled={disable}
                         className="btn btn-color w-25"
                         style={{ marginLeft: "12px" }}
                         onClick={handleStatusUpdateHandler}
