@@ -4,7 +4,7 @@ import { FaRedo } from "react-icons/fa";
 import { useRef } from "react";
 import { useEffect } from "react";
 
-const Captcha = ({ verified , reload , change , setChange}) => {
+const Captcha = ({ verified, reload, change, setChange }) => {
   const [captcha, setCaptcha] = useState("");
   const [style, setStyle] = useState({
     borderColor: "black",
@@ -36,7 +36,6 @@ const Captcha = ({ verified , reload , change , setChange}) => {
   }
 
   let handleChange = (e) => {
-
     const inputValue = captchaRef.current.value;
     if (String(inputValue) !== String(captcha)) {
       verified(false);
@@ -44,15 +43,12 @@ const Captcha = ({ verified , reload , change , setChange}) => {
         borderColor: "red",
         borderWidth: "2px",
       });
-      
-    }
-    else if (reload){
+    } else if (reload) {
       const prevState = change;
       captchaRef.current.value = "";
-      setChange(!prevState); 
-      console.log(reload,change);     
-    }
-     else {
+      setChange(!prevState);
+      console.log(reload, change);
+    } else {
       verified(true);
       setStyle({
         borderColor: "green",
@@ -83,7 +79,11 @@ const Captcha = ({ verified , reload , change , setChange}) => {
         }}
       >
         <div className="col-lg-4">
-          <h4 id="captcha" className="bg-imgg text-captcha text-center" style={{letterSpacing:'1px', textDecoration:'line-through'}}>
+          <h4
+            id="captcha"
+            className="bg-imgg text-captcha text-center"
+            style={{ letterSpacing: "1px", textDecoration: "line-through" }}
+          >
             {captcha}
           </h4>
           <Image
@@ -111,7 +111,7 @@ const Captcha = ({ verified , reload , change , setChange}) => {
             type="button"
             id="succesBTN"
             className="w-15 m-2 text-color"
-            style={{ cursor: "pointer", borderRadius:'5px' }}
+            style={{ cursor: "pointer", borderRadius: "5px" }}
             onClick={refreshHandler}
           >
             <FaRedo style={{ padding: "2px" }} />

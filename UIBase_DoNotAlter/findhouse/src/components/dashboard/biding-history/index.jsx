@@ -19,6 +19,8 @@ const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
 
+
+  const [disable,setDisable]=useState(false)
   const [isStatusModal, setIsStatusModal] = useState(false);
   const [toggleId, setToggleId] = useState(-1);
   const [toggleWishlist, setToggleWishlist] = useState(0);
@@ -60,9 +62,8 @@ const Index = () => {
   const [remark, setRemark] = useState("");
 
   const handleStatusUpdateHandler = () => {
-    if (remark === "") {
-      toast.error("Remark should be filled!!");
-    } else if (orderStatus <= currentBid.orderStatus) {
+    setDisable(true)
+   if (orderStatus <= currentBid.orderStatus) {
       toast.error("Select a proper quote status Please !!");
     } else {
       const data = JSON.parse(localStorage.getItem("user"));
@@ -1859,12 +1860,14 @@ const Index = () => {
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
                       <button
+                      disabled={disable}
                         className="btn w-35 btn-color"
                         onClick={closeStatusUpdateHandler}
                       >
                         Cancel
                       </button>
                       <button
+                      disabled={disable}
                         className="btn btn-color w-10"
                         style={{ marginLeft: "12px" }}
                         onClick={handleStatusUpdateHandler}

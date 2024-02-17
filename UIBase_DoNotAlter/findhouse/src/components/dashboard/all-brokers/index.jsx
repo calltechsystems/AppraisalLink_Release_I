@@ -11,11 +11,12 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/router";
+import Form from "../../broker-register/Form";
 import Modal from "./Modal";
 import { encryptionData } from "../../../utils/dataEncryption";
 import Loader from "./Loader";
 import { BrokerStatus } from "../create-listing/data";
-import Form from "../../broker-register/Form";
+// import Form from "../../broker-register/Form";
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -42,8 +43,38 @@ const Index = () => {
   const [end, setEnd] = useState(4);
 
   const [isStatusModal, setIsStatusModal] = useState(false);
+  const [selectedBroker, setSelectedBroker] = useState({});
 
-  const handleStatusUpdateHandler = () => {};
+  const handleStatusUpdateHandler = () => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    setDisable(true);
+    const payload = {
+      brokerageId: userData?.brokerageDetails?.id,
+      brokerId: selectedBroker.userId,
+      IsActive: !selectedBroker.isActive,
+    };
+    const encryptedData = encryptionData(payload);
+
+    toast.loading("Updating the status");
+    axios
+      .put("/api/updateIsActiveBroker", encryptedData, {
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        toast.dismiss();
+        toast.success("Successfully Updated!!");
+        window.location.reload();
+      })
+      .catch((err) => {
+        toast.dismiss();
+        toast.error(err);
+      });
+
+    setSelectedBroker({});
+  };
 
   const closeStatusUpdateHandler = () => {
     setIsStatusModal(false);
@@ -252,6 +283,8 @@ const Index = () => {
     setModalOpen(true);
   };
 
+  const [disable, setDisable] = useState(false);
+
   const onWishlistHandler = (id) => {
     const userData = JSON.parse(localStorage.getItem("user"));
 
@@ -421,6 +454,8 @@ const Index = () => {
                           setFilterQuery={setFilterQuery}
                           setCloseRegisterModal={setCloseRegisterModal}
                           start={start}
+                          selectedBroker={selectedBroker}
+                          setSelectedBroker={setSelectedBroker}
                           end={end}
                         />
 
@@ -1095,12 +1130,14 @@ const Index = () => {
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
                       <button
+                        disabled={disable}
                         className="btn w-25 btn-color"
                         onClick={closeStatusUpdateHandler}
                       >
                         Cancel
                       </button>
                       <button
+                        disabled={disable}
                         className="btn btn-color w-25"
                         style={{ marginLeft: "12px" }}
                         onClick={handleStatusUpdateHandler}

@@ -1,6 +1,6 @@
-import Header from "../../common/header/dashboard/HeaderAppraiserCompany";
-import SidebarMenu from "../../common/header/dashboard/SidebarMenu_002";
-import MobileMenu from "../../common/header/MobileMenu_01";
+// import Header from "../../components/common/header/dashboard/HeaderBrokerage";
+// import SidebarMenu from "../../components/common/header/dashboard/SidebarMenuBrokerage";
+import MobileMenu from "../../components/common/header/MobileMenu_01";
 import TableData from "./TableData";
 import Filtering from "./Filtering";
 import FilteringBy from "./FilteringBy";
@@ -12,18 +12,13 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/router";
 import Modal from "./Modal";
-import { encryptionData } from "../../../utils/dataEncryption";
-import Loader from "./Loader";
-import { AppraiserStatusOptions } from "../create-listing/data";
-import Form from "../../appraiser-register/Form";
-import Link from "next/link";
+import { encryptionData } from "../../utils/dataEncryption";
+// import Form from "../../broker-register/Form";
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [toggleId, setToggleId] = useState(-1);
-
-  const [openEditModal, setOpenEditModal] = useState(false);
 
   const [closeRegisterModal, setCloseRegisterModal] = useState(false);
   const [toggleWishlist, setToggleWishlist] = useState(0);
@@ -38,65 +33,29 @@ const Index = () => {
   const [lowRangeBid, setLowRangeBid] = useState("");
   const [propertyId, setPropertyId] = useState(null);
   const [updatedCode, setUpdatedCode] = useState(false);
-
-  const [appraiser, setAppraiser] = useState({});
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
-
-  const [firstName, setFirstName] = useState(
-    appraiser?.firstName ? appraiser?.firstName : ""
-  );
-  const [lastName, setLastName] = useState(
-    appraiser?.lastName ? appraiser?.lastName : ""
-  );
-  const [companyName, setCompanyName] = useState(
-    appraiser?.companyName ? appraiser?.companyName : ""
-  );
-  const [phoneNumber, setPhoneNumber] = useState(
-    appraiser?.phoneNumber ? appraiser?.phoneNumber : ""
-  );
-
-  const [streetName, setStreetName] = useState(
-    appraiser?.streetName ? appraiser?.streetName : ""
-  );
-  const [streetNumber, setStreetNumber] = useState(
-    appraiser?.streetNumber ? appraiser?.streetNumber : ""
-  );
-  const [postalCode, setPostalCode] = useState(
-    appraiser?.postalCode ? appraiser?.postalCode : ""
-  );
-  const [city, setCity] = useState(appraiser?.city ? appraiser?.city : "");
 
   const [start, setStart] = useState(0);
 
-  const [end, setEnd] = useState(5);
-
-  const [currentViewAppraiser, setCurrentViewAppraiser] = useState({});
-  const [openViewModal, setOpenViewModal] = useState(false);
-  const [appraiserCompanyInfo, setAppraiserCompanyInfo] = useState({});
+  const [end, setEnd] = useState(4);
 
   const [isStatusModal, setIsStatusModal] = useState(false);
-
-  const [selectedAppraiser, setSelectedAppraiser] = useState(-1);
-
-  const [isActive, setIsActive] = useState(0);
-
-  const [disable,setDisable]=useState(false);
+  const [selectedBroker,setSelectedBroker]=useState({});
 
   const handleStatusUpdateHandler = () => {
+
     const userData=JSON.parse(localStorage.getItem("user"));
     setDisable(true);
     const payload = {
-      id: selectedAppraiser.userId,
-      IsActive: !selectedAppraiser.isActive,
+      brokerageId:userData?.brokerageDetails?.id ,
+      brokerId:selectedBroker.userId,
+      IsActive: !selectedBroker.isActive,
     };
-
-    console.log(payload);
-
     const encryptedData = encryptionData(payload);
 
     toast.loading("Updating the status");
     axios
-      .put("/api/updateIsActiveAppraiser", encryptedData, {
+      .put("/api/updateIsActiveBroker", encryptedData, {
         headers: {
           Authorization: `Bearer ${userData.token}`,
           "Content-Type": "application/json",
@@ -112,37 +71,11 @@ const Index = () => {
         toast.error(err);
       });
 
-    setSelectedAppraiser(-1);
+    setSelectedBroker({});
   };
 
-  function copyToClipboard(text) {
-    // Create a temporary textarea element
-    const textarea = document.createElement("textarea");
-
-    // Set the text content to the provided text
-    textarea.value = text;
-
-    // Append the textarea to the document
-    document.body.appendChild(textarea);
-
-    // Select the text in the textarea
-    textarea.select();
-
-    try {
-      // Execute the copy command
-      document.execCommand("copy");
-      toast.success("Text copied to clipboard");
-    } catch (err) {
-      toast.error("Unable to copy text to clipboard", err);
-    } finally {
-      // Remove the textarea from the document
-      document.body.removeChild(textarea);
-    }
-  }
-
   const closeStatusUpdateHandler = () => {
-    setSelectedAppraiser(-1);
-    setOpenEditModal(false);
+    setIsStatusModal(false);
   };
 
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
@@ -184,47 +117,6 @@ const Index = () => {
 
   console.log(closeRegisterModal);
 
-  const submitEditHandler = () => {
-    const userData = JSON.parse(localStorage.getItem("user"));
-    const payload = {
-      firstName: firstName,
-      middleName: "",
-      lastName: lastName,
-      companyName: companyName,
-      city: city,
-      province: "",
-      postalCode: postalCode,
-      area: "",
-      apartmentNo: "",
-      streetName: streetName,
-      streetNumber: streetNumber,
-      phoneNumber: phoneNumber,
-      commissionRate: Number(0),
-      maxNumberOfAssignedOrders: Number(0),
-      designation: "",
-      profileImage: "",
-      token: userData.token,
-      id: appraiser.userId,
-    };
-
-    toast.loading("Updating the profile!!");
-
-    const encryptedBody = encryptionData(payload);
-
-    axios
-      .put("/api/updateAppraiserProfile", encryptedBody)
-      .then((res) => {
-        toast.dismiss();
-        toast.success("Successfully updated!!");
-        location.reload(true);
-      })
-      .catch((err) => {
-        toast.dismiss();
-        toast.error("Try Again!");
-        setAppraiser({});
-        setOpenEditModal(false);
-      });
-  };
   useEffect(() => {
     const activityHandler = () => {
       setLastActivityTimestamp(Date.now());
@@ -383,16 +275,13 @@ const Index = () => {
     fetchData();
   }, []);
 
-  const closeViewModal = () => {
-    setOpenViewModal(false);
-    setCurrentViewAppraiser({});
-  };
-
   const participateHandler = (val, id) => {
     setLowRangeBid(val);
     setPropertyId(id);
     setModalOpen(true);
   };
+
+  const [disable,setDisable]=useState(false);
 
   const onWishlistHandler = (id) => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -411,7 +300,7 @@ const Index = () => {
       .then((res) => {
         toast.dismiss();
         toast.success("Successfully added !!! ");
-        location.reload(true);
+        window.location.reload();
       })
       .catch((err) => {
         toast.dismiss();
@@ -457,7 +346,7 @@ const Index = () => {
   return (
     <>
       {/* <!-- Main Header Nav --> */}
-      <Header userData={userData} />
+  {/*<Header userData={userData} />*/}
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
@@ -469,7 +358,7 @@ const Index = () => {
           id="DashboardOffcanvasMenu"
           data-bs-scroll="true"
         >
-          <SidebarMenu userData={userData} />
+          {/*<SidebarMenu userData={userData} />*/}
         </div>
       </div>
       {/* End sidebar_menu */}
@@ -549,7 +438,6 @@ const Index = () => {
                           properties={
                             searchInput === "" ? properties : filterProperty
                           }
-                          setAppraiser={setAppraiser}
                           setUpdatedCode={setUpdatedCode}
                           onWishlistHandler={onWishlistHandler}
                           participateHandler={participateHandler}
@@ -557,18 +445,15 @@ const Index = () => {
                           setModalIsOpenError={setModalIsOpenError}
                           setRefresh={setRefresh}
                           refresh={refresh}
-                          setCurrentViewAppraiser={setCurrentViewAppraiser}
-                          setOpenViewModal={setOpenViewModal}
-                          setAppraiserCompanyInfo={setAppraiserCompanyInfo}
                           setStartLoading={setStartLoading}
                           openModalBroker={openModalBroker}
                           setIsStatusModal={setIsStatusModal}
                           setSearchInput={setSearchInput}
                           setFilterQuery={setFilterQuery}
-                          setOpenEditModal={setOpenEditModal}
                           setCloseRegisterModal={setCloseRegisterModal}
                           start={start}
-                          setSelectedAppraiser={setSelectedAppraiser}
+                          selectedBroker={selectedBroker}
+                          setSelectedBroker={setSelectedBroker}
                           end={end}
                         />
 
@@ -1173,74 +1058,25 @@ const Index = () => {
                 </div>
                 {/* End .col */}
               </div>
-
-              {closeRegisterModal && (
+              {isQuoteModalOpen && (
                 <div className="modal">
                   <div className="modal-content">
-                    <h3 className="text-center">Add Appraiser</h3>
-                    <Form setCloseRegisterModal={setCloseRegisterModal} />
-                  </div>
-                </div>
-              )}
-
-              {openViewModal && (
-                <div className="modal">
-                  <div className="modal-content">
-                    <h3 className="text-center">View Credentials</h3>
-
-                    <div className="row">
-                      <div className="col-lg-12">
-                        <div className="row mb-2 mt-2 text-center">
-                          <div className="row mb-2 mt-2">
-                            <div className="col-lg-3 mb-2">
-                              <label
-                                htmlFor=""
-                                style={{
-                                  paddingTop: "15px",
-                                  fontWeight: "lighter",
-                                }}
-                              >
-                                Email <span class="req-btn">*</span> :
-                              </label>
-                            </div>
-                            <div
-                              className="col-lg-7"
-                              style={{ display: "flex", flexDirection: "row" }}
-                            >
-                              <input
-                                type="text"
-                                value={currentViewAppraiser.userInfo}
-                                className="form-control"
-                                id="formGroupExampleInput3"
-                              />
-                              <button
-                                onClick={() =>
-                                  copyToClipboard(currentViewAppraiser.email)
-                                }
-                                className="btn btn-color w-10 mt-1"
-                                style={{ marginLeft: "12px" }}
-                              >
-                                <Link href="#">
-                                  <span className="flaticon-invoice text-light"></span>
-                                </Link>
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* End .col */}
-                      </div>
-                    </div>
-                    <div
-                      className="col-lg-12 text-center"
-                      style={{ marginRight: "4%" }}
-                    >
-                      {/* <button className="cancel-button" onClick={closeModal}>
-                  Cancel
-                </button> */}
+                    <h3 className="text-center">Quote Confirmation</h3>
+                    <h5 className="text-center">
+                      Are you sure you want to quote this property over this
+                      amount :{valueRef?.current?.value}?
+                    </h5>
+                    {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
+                    <div className="text-center" style={{}}>
                       <button
-                        className="btn btn-color w-25"
-                        onClick={() => closeViewModal()}
+                        className="btn w-35 btn-thm3 m-2"
+                        onClick={handleSubmit}
+                      >
+                        Submit
+                      </button>
+                      <button
+                        className="btn w-35 btn-white"
+                        onClick={closeQuoteModal}
                       >
                         Cancel
                       </button>
@@ -1249,53 +1085,58 @@ const Index = () => {
                 </div>
               )}
 
-              {openEditModal && (
+              {closeRegisterModal && (
+                <div className="modal">
+                  <div className="modal-content" style={{ width: "500px" }}>
+                    <h3 className="text-center">Add Broker</h3>
+                    <hr />
+                   {/*} <Form setCloseRegisterModal={setCloseRegisterModal} />*/}
+                  </div>
+                </div>
+              )}
+
+              {isStatusModal && (
                 <div className="modal">
                   <div className="modal-content">
-                    <h3 className="text-center">Status Updation</h3>
-
-                    <select
-                      required
-                      className="form-select"
-                      data-live-search="true"
-                      data-width="100%"
-                      // value={buildinRef}
-                      onChange={(e) => setIsActive(e.target.value)}
-                      // onChange={(e) => setBuildinRef(e.target.value)}
-                      // disabled={isDisable}
-                      style={{
-                        paddingTop: "15px",
-                        paddingBottom: "15px",
-                        backgroundColor: "#E8F0FE",
-                      }}
-                    >
-                      <option
-                        key={0}
-                        value={0}
-                        disabled={selectedAppraiser?.isActive ? false : true}
+                    <h3 className="text-center">Broker Status Update</h3>
+                    <hr />
+                    <div className="d-flex justify-content-center">
+                      <select
+                        className="form-select"
+                        data-live-search="true"
+                        data-width="100%"
+                        // value={buildinRef}
+                        // onChange={(e) => setBuildinRef(e.target.value)}
+                        // onChange={(e) => setBuildinRef(e.target.value)}
+                        // disabled={isDisable}
+                        style={{
+                          paddingTop: "10px",
+                          paddingBottom: "10px",
+                          backgroundColor: "#E8F0FE",
+                          width: "300px",
+                        }}
                       >
-                        In-active
-                      </option>
-                      <option
-                        key={1}
-                        value={1}
-                        disabled={selectedAppraiser?.isActive ? true : false}
-                      >
-                        Active
-                      </option>
-                    </select>
+                        <option key={0} value={1}>
+                          Active
+                        </option>
+                        <option key={1} value={0}>
+                          In-Active
+                        </option>
+                      </select>
+                    </div>
+                    <hr />
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
                       <button
                       disabled={disable}
-                        className="btn w-35 btn-white"
+                        className="btn w-25 btn-color"
                         onClick={closeStatusUpdateHandler}
                       >
                         Cancel
                       </button>
                       <button
                       disabled={disable}
-                        className="btn btn-color w-10 mt-1"
+                        className="btn btn-color w-25"
                         style={{ marginLeft: "12px" }}
                         onClick={handleStatusUpdateHandler}
                       >
@@ -1335,7 +1176,7 @@ const Index = () => {
                   <Pagination
                     setStart={setStart}
                     setEnd={setEnd}
-                    properties={properties}
+                    properties={[]}
                   />
                 </div>
               </div>

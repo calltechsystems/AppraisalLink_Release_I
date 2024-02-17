@@ -327,6 +327,11 @@ export default function Exemple({
             : "$ 0",
           purpose: property.purpose ? property.purpose : "N.A.",
           appraisal_status:
+          isBidded.status === 1 && isBidded.orderStatus === 1  ? (
+            <span className="btn btn-warning  w-100">
+              {getOrderValue(isBidded.orderStatus)} -{formatDate(isBidded.statusDate)}
+            </span>
+          ) :
             isBidded.status === 1 && isBidded.orderStatus !== null? (
               <span className="btn btn-warning  w-100">
                 {getOrderValue(isBidded.orderStatus)}
@@ -574,7 +579,26 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        setAllBrokers(res.data.data.$values);
+        let allbroker = res.data.data.$values;
+        axios
+        .get("/api/getAllBrokerageCompany", {
+          headers: {
+            Authorization: `Bearer ${data.token}`,
+          },
+        })
+        .then((res) => {
+          const allbrokerage = res.data.data.result.$values;
+          let updated = allbroker;
+           allbrokerage.map((user,index)=>{
+            updated.push(user);
+           });
+
+          setAllBrokers(updated);
+        })
+        .catch((err) => {
+          setErrorMessage(err?.response?.data?.error);
+          setModalIsOpenError(true);
+        });
       })
       .catch((err) => {
         setErrorMessage(err?.response?.data?.error);

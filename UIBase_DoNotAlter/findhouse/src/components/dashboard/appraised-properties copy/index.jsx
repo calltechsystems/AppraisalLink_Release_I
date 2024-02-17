@@ -24,6 +24,8 @@ const Index = () => {
   const [toggleWishlist, setToggleWishlist] = useState(0);
   const [searchResult, setSearchResult] = useState([]);
   const [property, setProperty] = useState("");
+
+  const [disbale,setDisable]=useState(false);
   const [typeView, setTypeView] = useState(0);
   const [startLoading, setStartLoading] = useState(false);
   const [filterProperty, setFilterProperty] = useState("");
@@ -60,6 +62,7 @@ const Index = () => {
   const [remark, setRemark] = useState("");
 
   const handleStatusUpdateHandler = () => {
+    setDisable(true);
     if (remark === "") {
       toast.error("Remark should be filled!!");
     } else {
@@ -1733,12 +1736,14 @@ const Index = () => {
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
                       <button
+                      disabled={disbale}
                         className="btn w-35 btn-white"
                         onClick={closeStatusUpdateHandler}
                       >
                         Cancel
                       </button>
                       <button
+                      disabled={disbale}
                         className="btn btn-color w-10 mt-1"
                         style={{ marginLeft: "12px" }}
                         onClick={handleStatusUpdateHandler}

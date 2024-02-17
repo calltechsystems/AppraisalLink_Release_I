@@ -525,15 +525,15 @@ const HeaderMenuContent = ({
               height={45}
               className="rounded-circle"
               src={
-                userInfo?.brokerage_Details?.profileImage
-                  ? userInfo?.brokerage_Details?.profileImage
-                  : `/assets/images/home/placeholder_01.jpg`
+                userInfo?.appraiserCompany_Datails?.profileImage
+                  ? userInfo?.appraiserCompany_Datails?.profileImage
+                  : "/assets/images/home/placeholder_01.jpg"
               }
               alt="e1.png"
             />
             <span className="dn-1199 ms-1 text-light">
-              {userData?.brokerage_Details?.firstName
-                ? userData.brokerage_Details?.firstName
+              {userData?.appraiserCompany_Datails?.firstName
+                ? userData.appraiserCompany_Datails?.firstName
                 : "User"}
             </span>
           </a>
@@ -544,7 +544,7 @@ const HeaderMenuContent = ({
       </li>
       {/* End ."user_setting */}
 
-      {/* <li className={`list-inline-item add_listing ${float}`}>
+      {/* <li className={list-inline-item add_listing ${float}}>
         <Link href="/create-listing">
           <span className="flaticon-plus"></span>
           <span className="dn-lg"> Create Listing</span>

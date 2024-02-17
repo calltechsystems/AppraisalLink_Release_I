@@ -674,6 +674,7 @@ const DetailedInfo = ({
                           style={{}}
                           onClick={open} // This will open the upload widget
                           disabled={isDisable}
+                          // disabled={buttonDisabled}
                         >
                           Upload Files
                         </button>

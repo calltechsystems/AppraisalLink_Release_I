@@ -22,6 +22,8 @@ const Index = () => {
   const [assignAppraiser, setAssignAppraiser] = useState([]);
   const [isStatusModal, setIsStatusModal] = useState(false);
   const [toggleId, setToggleId] = useState(-1);
+
+  const [disable,setDisable]=useState(false);
   const [toggleWishlist, setToggleWishlist] = useState(0);
   const [searchResult, setSearchResult] = useState([]);
   const [property, setProperty] = useState("");
@@ -63,9 +65,8 @@ const Index = () => {
   const [remark, setRemark] = useState("");
 
   const handleStatusUpdateHandler = () => {
-    if (remark === "") {
-      toast.error("Remark should be filled!!");
-    } else {
+    setDisable(true)
+   
       const data = JSON.parse(localStorage.getItem("user"));
       const payload = {
         token: data.token,
@@ -88,7 +89,7 @@ const Index = () => {
           toast.dismiss();
           toast.error(err?.response?.data?.error);
         });
-    }
+    
 
     setRemark("");
     setCurrentBid({});
@@ -118,6 +119,8 @@ const Index = () => {
 
   const [openDate, setOpenDate] = useState(false);
   const [statusDate, setStatusDate] = useState("");
+
+
 
   const [allAppraiser, setAllAppraiser] = useState([]);
   const [assignModal, setAssignModal] = useState(false);
@@ -1902,12 +1905,14 @@ const Index = () => {
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
                       <button
+                        disabled  ={disable}
                         className="btn w-35 btn-color"
                         onClick={closeStatusUpdateHandler}
                       >
                         Cancel
                       </button>
                       <button
+                      disabled={disable}
                         className="btn btn-color w-10"
                         style={{ marginLeft: "12px" }}
                         onClick={handleStatusUpdateHandler}

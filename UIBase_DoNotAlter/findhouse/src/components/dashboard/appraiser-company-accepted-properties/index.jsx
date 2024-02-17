@@ -12,12 +12,12 @@ import Modal from "./Modal";
 import { encryptionData } from "../../../utils/dataEncryption";
 import Loader from "./Loader";
 import { AppraiserStatusOptions } from "../create-listing/data";
-import Link from "next/link";
-import Image from "next/image";
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
+
+  const [disbale,setDisable]=useState(false)
   
   const [isStatusModal,setIsStatusModal] = useState(false);
   const [toggleId, setToggleId] = useState(-1);
@@ -63,11 +63,8 @@ const Index = () => {
   const [remark,setRemark]=useState("");
 
   const handleStatusUpdateHandler = ()=>{
+    setDisable(true)
     
-    if(remark === "" ){
-      toast.error("Remark should be filled!!");
-    }
-    else{
     const data = JSON.parse(localStorage.getItem("user"));
     const payload = {
       token:data.token,
@@ -87,7 +84,7 @@ const Index = () => {
       toast.dismiss();
       toast.error(err?.response?.data?.error);
     });
-  }
+  
 
     setRemark("");
     setCurrentBid({});
@@ -1584,12 +1581,14 @@ const Index = () => {
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
                       <button
+                      disabled={disbale}
                         className="btn w-35 btn-color"
                         onClick={closeStatusUpdateHandler}
                       >
                         Cancel
                       </button>
                       <button
+                      disabled={disbale}
                         className="btn btn-color w-10"
                         style={{ marginLeft: "12px" }}
                         onClick={handleStatusUpdateHandler}

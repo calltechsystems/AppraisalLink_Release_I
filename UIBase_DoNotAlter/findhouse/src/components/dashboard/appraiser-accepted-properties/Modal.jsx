@@ -32,6 +32,8 @@ const Modal = ({
 
   const [toggle, setToggle] = useState(false);
 
+  const [disable,setDisable]=useState(false)
+
   const [selectedImage, setSelectedImage] = useState({});
 
   const handleUpload = (result) => {
@@ -73,6 +75,7 @@ const Modal = ({
   };
 
   const onSubmitHnadler = () => {
+    setDisable(true);
     const bidAmount = value;
     const desp = description;
 
@@ -80,10 +83,7 @@ const Modal = ({
       toast.error("Quoted amount should be filled !");
       return;
     }
-    if (!alreadyBidded && !selectedImage) {
-      toast.error("Please upload the lender list document !");
-      return;
-    } else {
+   else{
       const user = JSON.parse(localStorage.getItem("user"));
 
       const formData = {
@@ -96,7 +96,7 @@ const Modal = ({
       };
 
       const payload = encryptionData(formData);
-      setIsModalOpen(false);
+      
       toast.loading(alreadyBidded ? "Updating a bid!" : "Setting a bid");
       axios
         .post("/api/setBid", payload)
@@ -331,12 +331,14 @@ const Modal = ({
                   Cancel
                 </button> */}
               <button
+              disabled={disable}
                 className="btn btn-color w-25"
                 onClick={onCloseModalHandler}
               >
                 Cancel
               </button>
               <button
+              disabled={disable}
                 className="btn btn-color w-25 m-1"
                 onClick={toggle ? onSubmitHnadler : openConfirmModal}
               >

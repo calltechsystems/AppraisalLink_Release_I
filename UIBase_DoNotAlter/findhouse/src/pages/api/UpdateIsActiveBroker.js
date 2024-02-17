@@ -14,10 +14,11 @@ export default async function handler(request, response) {
       return response.status(403).json({ error: "Not a verified Data" });
     }
 
-    const { id, IsActive } = body;
+    const { brokerageId,brokerId,IsActive } = body;
 
     const token = request.headers.authorization;
 
+  
     const userResponse = await axios.put(
       `${domain}/com.appraisalland.Brokerage/updateBrokerIsActive`,
       {},
@@ -26,10 +27,11 @@ export default async function handler(request, response) {
           Authorization: token,
           "Content-Type": "application/json",
         },
-        params: {
-          id: id,
-          IsActive: IsActive,
-        },
+        params:{
+          brokerId:brokerId,
+            brokerageId:brokerageId,
+            value:IsActive
+        }
       }
     );
     const user = userResponse.data;

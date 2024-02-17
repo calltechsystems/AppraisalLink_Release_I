@@ -238,6 +238,7 @@ const Index = () => {
   };
 
   const closeCancelHoldHandler = () => {
+    setDisable(true);
     setIsCancelProperty(false);
     setIsHoldProperty(false);
     setModalOpen(false);
@@ -484,6 +485,8 @@ const Index = () => {
         toast.error(err?.response?.data?.error);
       });
   };
+
+  const [disable, setDisable] = useState(false);
 
   useEffect(() => {
     console.log(searchQuery);
@@ -1247,12 +1250,14 @@ const Index = () => {
                               ></div>
                               <div className="col-lg-12 text-center">
                                 <button
+                                  disabled={disable}
                                   className="btn w-25 btn-color m-1"
                                   onClick={closeCancelHoldHandler}
                                 >
                                   Cancel
                                 </button>
                                 <button
+                                  disabled={disable}
                                   className="btn w-25 btn-color"
                                   onClick={
                                     isHoldProperty

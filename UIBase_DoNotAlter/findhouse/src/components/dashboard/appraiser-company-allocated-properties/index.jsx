@@ -39,6 +39,8 @@ const Index = () => {
   const [propertyId, setPropertyId] = useState(null);
 
   const [openAppraiser,setOpenAppraiser] = useState(false);
+
+  const [disable,setDisble]=useState(false);
   
   const [wishlistedProperties,setWishlistedProperties] = useState([]);
   const [updatedCode, setUpdatedCode] = useState(false);
@@ -67,6 +69,7 @@ const Index = () => {
 
   const handleStatusUpdateHandler = ()=>{
 
+    setDisble(true);
     const userData = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -1769,12 +1772,14 @@ const Index = () => {
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
                     <button
+                    disabled={disable}
                     className="btn w-35 btn-white"
                     onClick={closeStatusUpdateHandler}
                   >
                     Cancel
                   </button>
                       <button
+                      disabled={disable}
                       className="btn btn-color w-10 mt-1"
                       style={{ marginLeft: "12px" }}
                         onClick={handleStatusUpdateHandler}

@@ -114,6 +114,7 @@ const Index = ({ isView, propertyData }) => {
   const [otherUrgency, setOtherUrgency] = useState(false);
 
   const [image, setImage] = useState(propertyData?.image || "");
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const changeUrlToStringHandler = () => {
     const resultString = filesUrl.join(",");
@@ -620,6 +621,7 @@ const Index = ({ isView, propertyData }) => {
         });
       } else {
         setModalIsOpen(true);
+        setButtonDisabled(true);
       }
     }
   };
@@ -983,6 +985,8 @@ const Index = ({ isView, propertyData }) => {
                       {/* <hr style={{ color: "#2e008b" }} /> */}
 
                       <DetailedInfo
+                        setButtonDisabled={setButtonDisabled}
+                        buttonDisabled={buttonDisabled}
                         isDisable={isDisable}
                         applicantFirstName={applicantFirstName}
                         setApplicantFirstName={setApplicantFirstName}
@@ -1043,7 +1047,7 @@ const Index = ({ isView, propertyData }) => {
                                 height={45}
                                 className="logo1 img-fluid"
                                 style={{ marginTop: "-20px" }}
-                                src="/assets/images/logo.png"
+                                src="/assets/images/Appraisal_Land_Logo.png"
                                 alt="header-logo2.png"
                               />
                               <span

@@ -154,9 +154,9 @@ const MyAccount = ({ user, profileCount, setProfile, userData }) => {
           height={40}
           className="float-center mb-1"
           src={
-            userData?.brokerage_Details?.profileImage
-              ? userData.brokerage_Details?.profileImage
-              : `/assets/images/home/placeholder_01.jpg`
+            userData?.appraiserCompany_Datails?.profileImage
+              ? userData.appraiserCompany_Datails?.profileImage
+              : "/assets/images/home/placeholder_01.jpg"
           }
           alt="e1.png"
         />

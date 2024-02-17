@@ -19,6 +19,8 @@ const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
 
+  const [disable,setDisable]=useState(false)
+
   const [assignAppraiser, setAssignAppraiser] = useState([]);
   const [isStatusModal, setIsStatusModal] = useState(false);
   const [toggleId, setToggleId] = useState(-1);
@@ -45,6 +47,8 @@ const Index = () => {
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
+  
+
   const [isLoading, setIsLoading] = useState(true);
 
   const [refresh, setRefresh] = useState(false);
@@ -63,9 +67,8 @@ const Index = () => {
   const [remark, setRemark] = useState("");
 
   const handleStatusUpdateHandler = () => {
-    if (remark === "") {
-      toast.error("Remark should be filled!!");
-    } else {
+    setDisable(false)
+    
       const data = JSON.parse(localStorage.getItem("user"));
       const payload = {
         token: data.token,
@@ -88,7 +91,7 @@ const Index = () => {
           toast.dismiss();
           toast.error(err?.response?.data?.error);
         });
-    }
+    
 
     setRemark("");
     setCurrentBid({});
@@ -662,7 +665,7 @@ const Index = () => {
 
                 <div className="col-lg-4 col-xl-4 mb10">
                   <div className="style2 mb30-991">
-                    <h3 className="breadcrumb_title">Appraising Property</h3>
+                    <h3 className="breadcrumb_title">Wishlisted  Properties</h3>
                     {/* <p>We are glad to see you again!</p>                                                             */}
                   </div>
                 </div>
@@ -1744,7 +1747,7 @@ const Index = () => {
                         </Link>
                       </div>
                     </div>
-                    <h3 className="text-center">Quote Status Updation</h3>
+                    <h3 className="text-center">Assign Appraiser</h3>
 
                     <select
                       required
@@ -1765,9 +1768,11 @@ const Index = () => {
                       {allAppraiser.map((item, index) => {
                         <option value={0}>....</option>;
                         return (
+                          item.isActive ===1 ?
                           <option key={item.id} value={item.$id}>
                             {item.firstName} {item.lastName}
                           </option>
+                          : null
                         );
                       })}
                     </select>
@@ -1858,6 +1863,7 @@ const Index = () => {
                     >
                       {AppraiserStatusOptions.map((item, index) => {
                         return (
+
                           <option key={item.id} value={item.value}>
                             {item.type}
                           </option>
@@ -1893,6 +1899,7 @@ const Index = () => {
                         id="formGroupExampleInput3"
                         onChange={(e) => setRemark(e.target.value)}
                         value={remark}
+                        
                       />
                     </div>
                     <div
@@ -1902,12 +1909,14 @@ const Index = () => {
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
                       <button
+                      disabled={disable}
                         className="btn w-35 btn-color"
                         onClick={closeStatusUpdateHandler}
                       >
                         Cancel
                       </button>
                       <button
+                      disabled={disable}
                         className="btn btn-color w-10"
                         style={{ marginLeft: "12px" }}
                         onClick={handleStatusUpdateHandler}
@@ -1958,7 +1967,7 @@ const Index = () => {
                   <Pagination
                     setStart={setStart}
                     setEnd={setEnd}
-                    properties={properties}
+                    properties={wishlistedProperties}
                   />
                 </div>
               </div>

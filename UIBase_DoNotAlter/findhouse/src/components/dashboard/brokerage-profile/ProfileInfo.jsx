@@ -681,7 +681,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   <hr />
                   <div className="col-lg-12 mb-3">
                     <div className="row">
-                      <div className="col-lg-4">
+                      <div className="col-lg-5">
                         <label
                           className="text-color"
                           htmlFor=""
@@ -705,7 +705,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   </div>
                   <div className="col-lg-12 mb-3">
                     <div className="row">
-                      <div className="col-lg-4">
+                      <div className="col-lg-5">
                         <label
                           className="text-color"
                           htmlFor=""
@@ -728,7 +728,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   </div>
                   <div className="col-lg-12 mb-3">
                     <div className="row">
-                      <div className="col-lg-4">
+                      <div className="col-lg-5">
                         <label
                           className="text-color"
                           htmlFor=""
@@ -754,7 +754,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   </div>
                   <div className="col-lg-12 mb-3">
                     <div className="row">
-                      <div className="col-lg-4">
+                      <div className="col-lg-5">
                         <label
                           className="text-color"
                           htmlFor=""
@@ -778,7 +778,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   </div>
                   <div className="col-lg-12 mb-3">
                     <div className="row">
-                      <div className="col-lg-4">
+                      <div className="col-lg-5">
                         <label
                           className="text-color"
                           htmlFor=""
@@ -815,7 +815,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   </div>
                   <div className="col-lg-12 mb-3">
                     <div className="row">
-                      <div className="col-lg-4">
+                      <div className="col-lg-5">
                         <label
                           className="text-color"
                           htmlFor=""
@@ -848,7 +848,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   </div>
                   <div className="col-lg-12 mb-3">
                     <div className="row">
-                      <div className="col-lg-4">
+                      <div className="col-lg-5">
                         <label
                           className="text-color"
                           htmlFor=""
@@ -874,7 +874,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   </div>
                   <div className="col-lg-12 mb-3">
                     <div className="row">
-                      <div className="col-lg-4 ">
+                      <div className="col-lg-5 ">
                         <label
                           className="text-color"
                           htmlFor=""
@@ -897,7 +897,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   </div>
                   <div className="col-lg-12 mb-3">
                     <div className="row">
-                      <div className="col-lg-4">
+                      <div className="col-lg-5">
                         <label
                           className="text-color"
                           htmlFor=""
@@ -923,7 +923,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   </div>
                   <div className="col-lg-12">
                     <div className="row">
-                      <div className="col-lg-4">
+                      <div className="col-lg-5">
                         <label
                           className="text-color"
                           htmlFor=""
@@ -958,7 +958,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   </div>
                   <div className="col-lg-12 mb-3">
                     <div className="row">
-                      <div className="col-lg-4">
+                      <div className="col-lg-5">
                         <label
                           className="text-color"
                           htmlFor=""
@@ -983,7 +983,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   </div>
                   <div className="col-lg-12 mb-3">
                     <div className="row">
-                      <div className="col-lg-4 ">
+                      <div className="col-lg-5 ">
                         <label
                           className="text-color"
                           htmlFor=""
@@ -1006,7 +1006,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   </div>
                   <div className="col-lg-12 mb-3">
                     <div className="row">
-                      <div className="col-lg-4">
+                      <div className="col-lg-5">
                         <label
                           className="text-color"
                           htmlFor=""
@@ -1032,7 +1032,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   </div>
                   <div className="col-lg-12">
                     <div className="row">
-                      <div className="col-lg-4">
+                      <div className="col-lg-5">
                         <label
                           className="text-color"
                           htmlFor=""

@@ -119,6 +119,8 @@ export default function Exemple({
   openModalBroker,
   setErrorMessage,
   setModalIsOpenError,
+  selectedBroker,
+  setSelectedBroker,
   setRefresh,
   setStartLoading,
   refresh,
@@ -153,9 +155,14 @@ export default function Exemple({
     //   return requestTime >= twentyFourHoursAgo && requestTime <= currentTime;
   };
 
+  const findBroker=(userId)=>{
+
+  }
+
   const router = useRouter();
 
-  const openStatusUpdateHandler = () => {
+  const openStatusUpdateHandler = (broker) => {
+    setSelectedBroker(broker);
     setIsStatusModal(true);
   };
 
@@ -261,7 +268,7 @@ export default function Exemple({
                 href="#"
                 className="btn btn-color w-50"
                 style={{ marginLeft: "12px" }}
-                onClick={openStatusUpdateHandler}
+                onClick={()=>openStatusUpdateHandler(data)}
                 title="Update Status"
               >
                 <Link href="#">

@@ -654,7 +654,7 @@ const Index = () => {
                                           height={45}
                                           className="logo1 img-fluid"
                                           style={{ marginTop: "-20px" }}
-                                          src="/assets/images/logo.png"
+                                          src="/assets/images/Appraisal_Land_Logo.png"
                                           alt="header-logo2.png"
                                         />
                                         <span
@@ -1177,7 +1177,7 @@ const Index = () => {
                                       height={45}
                                       className="logo1 img-fluid"
                                       style={{ marginTop: "-20px" }}
-                                      src="/assets/images/logo.png"
+                                      src="/assets/images/Appraisal_Land_Logo.png"
                                       alt="header-logo2.png"
                                     />
                                     <span

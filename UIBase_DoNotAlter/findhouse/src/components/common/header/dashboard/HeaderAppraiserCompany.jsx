@@ -31,15 +31,15 @@ const Header = ({ userData }) => {
             width={40}
             height={45}
             className="logo1 img-fluid"
-            src="/assets/images/Appraisal_Land_Logo.png"
-            alt="Appraisal_Land_Logo.png"
+            src="/assets/images/header-logo2.png"
+            alt="header-logo2.png"
           />
           <Image
             width={40}
             height={45}
             className="logo2 img-fluid"
-            src="/assets/images/Appraisal_Land_Logo.png"
-            alt="Appraisal_Land_Logo.png"
+            src="/assets/images/header-logo2.png"
+            alt="header-logo2.png"
           />
           <span>Appraisal Land</span>
         </Link>
