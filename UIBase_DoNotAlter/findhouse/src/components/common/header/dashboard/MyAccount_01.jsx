@@ -7,6 +7,12 @@ import { use, useEffect } from "react";
 import { useState } from "react";
 
 const MyAccount = ({ user, profileCount, setProfile ,userData}) => {
+
+ let userInfo = {};
+ useEffect(()=>{
+  userInfo=JSON.parse(localStorage.getItem("user"));
+ },[]) 
+  
   const profileMenuItems = [
     { id: 1, name: "Profile", ruterPath: "/appraiser-profile" },
     // { id: 2, name: " My Message", ruterPath: "/my-message" },
@@ -154,19 +160,19 @@ const MyAccount = ({ user, profileCount, setProfile ,userData}) => {
           height={40}
           className="float-center mb-1"
           src={
-            userData?.brokerage_Details?.profileImage
-              ? userData.brokerage_Details?.profileImage
+            userInfo?.appraiser_Details?.profileImage
+              ? userInfo.appraiser_Details?.profileImage
               : `/assets/images/home/placeholder_01.jpg`
           }
           alt="e1.png"
         />
         <p>
-          {userData?.brokerage_Details?.firstName
-            ? userData?.brokerage_Details?.firstName
+          {userData?.appraiser_Details?.firstName
+            ? userData?.appraiser_Details?.firstName
             : "Name"}
           <br />
           <span className="address">
-            {userData?.userEmail ? userData.userEmail : "xyz@gmail.com"}
+            {userInfo?.userEmail ? userInfo.userEmail : "xyz@gmail.com"}
           </span>
         </p>
       </div>

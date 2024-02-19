@@ -264,7 +264,7 @@ export default function Exemple({
           appraiser_id: data.item.id,
           firstname: data.item.firstName ? data.item.firstName : "-",
           lastname: data.item.lastName ? data.item.lastName : "-",
-          status : data.item.isActive  ? (<span
+          status : data.item.isActive   ? (<span
           className="btn btn-success  w-100"
           
         >

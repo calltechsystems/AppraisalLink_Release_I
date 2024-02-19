@@ -23,6 +23,8 @@ const Index = ({ propertyId }) => {
   const [refresh, setRefresh] = useState(false);
   const [id, setId] = useState(0);
 
+  const [allAppraiser,setAllAppraiser]=useState({});
+
   const [start, setStart] = useState(0);
 
   const [openBrokerModal, setOpenBrokerModal] = useState(false);
@@ -352,6 +354,7 @@ const Index = ({ propertyId }) => {
                           properties={
                             searchInput === "" ? properties : filterProperty
                           }
+                          setAllAppraiser={setAllAppraiser}
                           start={start}
                           end={end}
                           setid={setId}

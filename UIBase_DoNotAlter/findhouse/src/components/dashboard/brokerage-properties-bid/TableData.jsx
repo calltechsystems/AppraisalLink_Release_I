@@ -21,6 +21,7 @@ const TableData = ({
   setAppInfo,
   setOpenBrokerModal,
   setid,
+  setAllAppraiser,
   refresh,
   setRefresh,
   setProperty
@@ -227,6 +228,7 @@ const TableData = ({
           setId={setid}
           refresh={refresh}
           start={start}
+         
           end={end}
           setRefresh={setRefresh}
         />

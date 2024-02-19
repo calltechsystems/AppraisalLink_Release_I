@@ -125,6 +125,8 @@ const Index = () => {
   const [allAppraiser, setAllAppraiser] = useState([]);
   const [assignModal, setAssignModal] = useState(false);
 
+  console.log("allAppraiser",allAppraiser);
+
   const handleStatusSelect = (value) => {
     if (String(value) === "Appraisal Visit Confirmed") {
       setOpenDate(true);

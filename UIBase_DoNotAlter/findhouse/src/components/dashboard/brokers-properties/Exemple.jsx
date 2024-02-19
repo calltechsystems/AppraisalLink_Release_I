@@ -736,16 +736,9 @@ export default function Exemple({
       })
       .then((res) => {
         toast.dismiss();
-        console.log(res);
-        const temp = res.data.data.$values[0].$values;
-        let tempProperties = [];
-        tempProperties = temp.filter((prop, index) => {
-          if (String(prop.userId) === String(data.userId)) {
-            return true;
-          } else {
-            return false;
-          }
-        });
+        console.log(res.data.data.$values[1].$values);
+        const temp = res.data.data.$values[1].$values;
+
         axios
           .get("/api/getAllBids", {
             headers: {
@@ -754,7 +747,7 @@ export default function Exemple({
           })
           .then((res) => {
             tempBids = res.data.data.$values;
-            // setProperties(tempProperties);
+            setProperties(temp);
             setBids(tempBids);
           })
           .catch((err) => {

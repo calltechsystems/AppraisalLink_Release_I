@@ -49,15 +49,15 @@ const Index = () => {
     const userData = JSON.parse(localStorage.getItem("user"));
     setDisable(true);
     const payload = {
-      brokerageId: userData?.brokerageDetails?.id,
-      brokerId: selectedBroker.userId,
+      brokerageId: userData?.brokerage_Details?.id,
+      brokerId: selectedBroker.id,
       IsActive: !selectedBroker.isActive,
     };
     const encryptedData = encryptionData(payload);
 
     toast.loading("Updating the status");
     axios
-      .put("/api/updateIsActiveBroker", encryptedData, {
+      .put("/api/UpdateIsActiveBroker", encryptedData, {
         headers: {
           Authorization: `Bearer ${userData.token}`,
           "Content-Type": "application/json",

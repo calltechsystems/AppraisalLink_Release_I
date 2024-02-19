@@ -157,13 +157,14 @@ const Index = () => {
     })
     .then((res) => {
       console.log(res.data.data);
-      const tempBids = res.data.data;
-      let acceptedBid = 0 ;
+      const tempBids = res.data.data.$values;
       
       let updatedBids = [];
-      updatedBids.push(tempBids)
-      
-      console.log(updatedBids)
+      tempBids.map((bid,index)=>{
+        if(String(bid.appraiserUserId) === String(data.userId)){
+          updatedBids.push(bid);
+        }
+      })
       setBids(updatedBids);
     })
     .catch((err) => {

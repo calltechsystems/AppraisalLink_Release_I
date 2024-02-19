@@ -368,7 +368,7 @@ export default function Exemple({
                   : ""}
               </span>
             ) : isBidded.bidId ? (
-              isBidded.orderStatus === 6 ? (
+              isBidded.orderStatus === 3 ? (
                 <span className="btn btn-success  w-100">Completed</span>
               ) : isBidded.status === 0 ? (
                 <span className="btn btn-primary  w-100">Quote Provided</span>
@@ -708,6 +708,87 @@ export default function Exemple({
     };
     let tempProperties = [],
       tempWishlist = [];
+    
+    if(data?.appraiser_Details?.companyId){
+      axios
+    .get("/api/getAllAssignProperties", {
+      headers: {
+        Authorization: `Bearer ${data?.token}`,
+        "Content-Type": "application/json",
+      },
+      params:{
+        userId : data.appraiser_Details?.companyId
+      }
+    })
+      .then((res) => {
+        toast.dismiss();
+
+        console.log(res.data);
+        const prop = res.data.data.properties.$values;
+        
+        axios
+      .get("/api/getAllBids", {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+        params: {
+          email: data.userEmail,
+        },
+      })
+      .then((res) => {
+        tempBids = res.data.data.$values;
+        const updatedBids = tempBids.filter((prop, index) => {
+          if (String(prop.appraiserUserId) === String(data.userId)) {
+            return true;
+          } else {
+            return false;
+          }
+        });
+        console.log(updatedBids);
+        setBids(updatedBids);
+        axios
+        .get("/api/appraiserWishlistedProperties", {
+          headers: {
+            Authorization: `Bearer ${data?.token}`,
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          const tempData = res.data.data.$values;
+  
+          // setAllWishlistedProperties(res.data.data.$values);
+          const responseData = tempData.filter((prop, index) => {
+            if (String(prop.userId) === String(data.userId)) {
+              return true;
+            } else {
+              return false;
+            }
+          });
+          const tempId = responseData;
+          setWishlist(responseData);
+          setProperties(prop);
+        })
+        .catch((err) => {
+          toast.error(err?.response);
+          setErrorMessage(err?.response);
+          setModalIsOpenError(true);
+        });
+      })
+      .catch((err) => {
+        setErrorMessage(err?.response?.data?.error);
+        setModalIsOpenError(true);
+      });
+        // setRerender(false);
+      })
+      .catch((err) => {
+        toast.dismiss();
+        toast.error(err);
+        // setErrorMessage(err?.response?.data?.error);
+        // setModalIsOpenError(true);
+      });
+
+    }
+    else{
     axios
       .get("/api/getAllListedProperties", {
         headers: {
@@ -785,6 +866,11 @@ export default function Exemple({
         // setModalIsOpenError(true);
       });
 
+    }
+
+   
+    let tempBids = [];
+    
     // axios
     // .get("/api/getAllAssignProperties", {
     //   headers: {
@@ -792,7 +878,7 @@ export default function Exemple({
     //     "Content-Type": "application/json",
     //   },
     //   params:{
-    //     userId : data.appraiser_Details?.id
+    //     userId : data.appraiser_Details?.companyId
     //   }
     // })
     // .then((res) => {
@@ -818,8 +904,6 @@ export default function Exemple({
     //   setModalIsOpenError(true);
     // });
 
-    let tempBids = [];
-    
 
     axios
       .get("/api/getAllBrokers", {

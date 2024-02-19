@@ -97,12 +97,15 @@ export default function Exemple({
   orderId,
   properties,
   setProperties,
+  setAllAppraiser,
   deletePropertyHandler,
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [allProperties, setAllProperties] = useState([]);
   const [show, setShow] = useState(false);
   const [all, setAll] = useState([]);
+
+  const [appraiser,setAppraisers]=useState([]);
 
   const router = useRouter();
   let tempData = [];
@@ -147,26 +150,15 @@ export default function Exemple({
   }
 
   const triggerAppraiserInfo = (id) => {
+
     const data = JSON.parse(localStorage.getItem("user"));
-    axios
-      .get("/api/getAppraiserById", {
-        headers: {
-          Authorization: `Bearer ${data?.token}`,
-          "Content-Type": "application/json",
-        },
-        params: {
-          Id: id,
-        },
-      })
-      .then((res) => {
-        // console.log(res.data.data);
-        setAppInfo(res.data.data.appraiser);
-        setOpenBrokerModal(true);
-      })
-      .catch((err) => {
-        toast.dismiss();
-        toast.error(err?.response?.data?.error);
-      });
+    let selectedAppraiser={};
+    appraiser.map((app,index)=>{
+      if(String(app.userId)=== String(id)){
+        selectedAppraiser=app;
+      }
+    })
+    setAppInfo(selectedAppraiser)
     setOpenBrokerModal(true);
   };
 
@@ -386,6 +378,42 @@ export default function Exemple({
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("user"));
+
+    axios
+    .get("/api/getAllAppraiser", {
+      headers: {
+        Authorization: `Bearer ${data.token}`,
+      },
+    })
+    .then((res) => {
+      let allbroker = res.data.data.result.$values;
+      axios
+      .get("/api/getAllAppraiserCompany", {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+      })
+      .then((res2) => {
+        const allbrokerage = res2.data.data.result.$values;
+        let updated = allbroker;
+         allbrokerage.map((user,index)=>{
+          updated.push(user);
+         });
+
+         console.log(updated);
+         setAppraisers(updated);
+      })
+      .catch((err) => {
+        toast.error(err);
+      });
+    })
+    .catch((err) => {
+      toast.error(err?.response?.data?.error);
+      // (true);
+    });
+  
+
+    //
     axios
       .get("/api/getAllListedProperties", {
         headers: {
@@ -427,9 +455,8 @@ export default function Exemple({
         // setErrorMessage(err?.response?.data?.error);
         // setModalIsOpenError(true);
       });
-    // toast.loading("Getting properties...");
-    // console.log(window.location.pathname);
-   
+
+     
     setRefresh(false);
   }, [refresh]);
   return (

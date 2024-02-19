@@ -21,17 +21,18 @@ export default async function handler(request, response) {
   
     const userResponse = await axios.put(
       `${domain}/com.appraisalland.Brokerage/updateBrokerIsActive`,
-      {},
+      {
+          brokerId:brokerId,
+            brokerageId:brokerageId,
+            value:IsActive
+      
+      },
       {
         headers: {
           Authorization: token,
           "Content-Type": "application/json",
         },
-        params:{
-          brokerId:brokerId,
-            brokerageId:brokerageId,
-            value:IsActive
-        }
+       
       }
     );
     const user = userResponse.data;

@@ -232,14 +232,20 @@ export default function Exemple({
     let isInProgress = true;
     let isQuoteProvided = false;
     let isCompleted = false;
+    let isAccepted = false;
     allBids.map((bid, index) => {
-      if (bid.orderId === property.orderId && bid.status === 1) {
+
+      if (bid.orderId === property.orderId && bid.status === 1 && bid.orderStatus===3) {
         isCompleted = true;
-      } else if (bid.orderId === property.orderId) {
+      }
+      if (bid.orderId === property.orderId && bid.status === 1 ) {
+        isAccepted = true;
+      }
+       else if (bid.orderId === property.orderId) {
         isQuoteProvided = true;
       }
     });
-    return isCompleted ? 2 : isQuoteProvided ? 1 : 0;
+    return isCompleted ? 3 : isAccepted ? 2 : isQuoteProvided ? 1 : 0;
   };
 
   const openPopupModal = (property) => {
@@ -254,7 +260,9 @@ export default function Exemple({
         const isStatus = getPropertyStatusHandler(property);
         console.log(isStatus);
         const isEditable = isStatus === 0 ? true : false;
-        if (!property.isArchive) {
+        if (!property.isArchive && isStatus === 3) {
+
+          console.log(property);
           const updatedRow = {
             order_id: property.orderId,
             sub_date: formatDate(property.addedDatetime),
@@ -278,7 +286,11 @@ export default function Exemple({
                 <span className="btn bg-info w-100 text-light">
                   Quote Provided
                 </span>
-              ) : (
+              )  : isStatus === 3 ? (
+                <span className="btn bg-success w-100 text-light">
+                 Completed
+                </span>
+              ): (
                 <span className="btn bg-info w-100 text-light">Cancelled</span>
               ),
             appraisal_status:

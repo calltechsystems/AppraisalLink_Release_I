@@ -28,7 +28,7 @@ export default async function handler(request, response) {
           "Content-Type": "application/json",
         },
         params:{
-            id:id,
+            Userid:id,
             IsActive:IsActive
         }
       }

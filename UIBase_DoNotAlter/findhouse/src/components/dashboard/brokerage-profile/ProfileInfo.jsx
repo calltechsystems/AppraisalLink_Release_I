@@ -243,7 +243,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
           localStorage.removeItem("user");
           localStorage.setItem("user", JSON.stringify(data));
           setShowCard(true);
-          router.push("/Brokerage-dashboard");
+          router.push("/brokerage-dashboard");
         })
         .catch((err) => {
           toast.error(err.message);

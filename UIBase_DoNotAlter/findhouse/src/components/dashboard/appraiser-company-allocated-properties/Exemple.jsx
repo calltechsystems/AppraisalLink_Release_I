@@ -378,19 +378,19 @@ export default function Exemple({
           ) : (
             <span className="btn btn-warning  w-100">New</span>
           ),
-          appraisal_status: 
-          isBidded.status === 1 && isBidded.orderStatus === 1  ? (
-            <span className="btn btn-warning  w-100">
-              {getOrderValue(isBidded.orderStatus)} -{formatDate(isBidded.statusDate)}
-            </span>
-          ) :
-          isBidded.status === 1 && isBidded.orderStatus !== null? (
-            <span className="btn btn-warning  w-100">
-              {getOrderValue(isBidded.orderStatus)}
-            </span>
-          ) : (
-            <span className="btn btn-warning  w-100">N.A.</span>
-          ),
+          appraisal_status:
+            isBidded.status === 1 && isBidded.orderStatus === 1 ? (
+              <span className="btn btn-warning  w-100">
+                {getOrderValue(isBidded.orderStatus)} -
+                {formatDate(isBidded.statusDate)}
+              </span>
+            ) : isBidded.status === 1 && isBidded.orderStatus !== null ? (
+              <span className="btn btn-warning  w-100">
+                {getOrderValue(isBidded.orderStatus)}
+              </span>
+            ) : (
+              <span className="btn btn-warning  w-100">N.A.</span>
+            ),
           broker: (
             <div>
               {isBidded.status === 1 ? (
@@ -488,37 +488,38 @@ export default function Exemple({
                 <span className="btn btn-success  w-100">Completed</span>
               ) : isWait ? (
                 <>
-                <p className="btn btn-danger  w-100">
-                {`No further actions can be taken on this property since it is ${ property.isOnCancel ? "Cancelled" : "On Hold" } !.`}
-                  
-                </p>
-                <li
-                  className=""
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Archive Property"
-                >
-                  <div
-                    className="w-100"
-                    onClick={() => onArchivePropertyHandler(property.orderId)}
+                  <p className="btn btn-danger  w-100">
+                    {`No further actions can be taken on this property since it is ${
+                      property.isOnCancel ? "Cancelled" : "On Hold"
+                    } !.`}
+                  </p>
+                  <li
+                    className="list-inline-item"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Archive Property"
                   >
-                    <button href="#" className="btn btn-color">
-                      <Link href="#">
-                        <span className="text-light">
-                          {" "}
-                          <FaArchive />
-                        </span>
-                      </Link>
-                    </button>
-                  </div>
-                </li>
+                    <div
+                      className="w-100"
+                      onClick={() => onArchivePropertyHandler(property.orderId)}
+                    >
+                      <button href="#" className="btn btn-color">
+                        <Link href="#">
+                          <span className="text-light">
+                            {" "}
+                            <FaArchive />
+                          </span>
+                        </Link>
+                      </button>
+                    </div>
+                  </li>
                 </>
               ) : isBidded && isBidded.status !== 1 ? (
                 <ul className="mb0 d-flex gap-1">
                   {isBidded.$id && isBidded.status < 1 && (
                     <ul>
                       <li
-                        className=""
+                        className="list-inline-item"
                         data-toggle="tooltip"
                         data-placement="top"
                         title="Provide Quote"
@@ -543,7 +544,7 @@ export default function Exemple({
                   )}
 
                   <li
-                    className=""
+                    className="list-inline-item"
                     data-toggle="tooltip"
                     data-placement="top"
                     title="Archive Property"
@@ -564,27 +565,27 @@ export default function Exemple({
                 </ul>
               ) : (
                 <>
-                <li
-                  className=""
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Order Update"
-                >
-                  <div
-                    className="w-100"
-                    onClick={() => openStatusUpdateHandler(isBidded.bidId)}
+                  <li
+                    className="list-inline-item"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Order Update"
                   >
-                    <button href="#" className="btn btn-color">
+                    <div
+                      className="w-100"
+                      onClick={() => openStatusUpdateHandler(isBidded.bidId)}
+                    >
                       <button href="#" className="btn btn-color">
-                        <Link href="#">
-                          <span className="flaticon-edit text-light"></span>
-                        </Link>
+                        <button href="#" className="btn btn-color">
+                          <Link href="#">
+                            <span className="flaticon-edit text-light"></span>
+                          </Link>
+                        </button>
                       </button>
-                    </button>
-                  </div>
-                </li>
-                <li
-                    className=""
+                    </div>
+                  </li>
+                  <li
+                    className="list-inline-item"
                     data-toggle="tooltip"
                     data-placement="top"
                     title="Archive Property"
@@ -674,47 +675,44 @@ export default function Exemple({
             console.log("bids", updatedBids);
             setBids(updatedBids);
             axios
-            .get("/api/appraiserWishlistedProperties", {
-              headers: {
-                Authorization: `Bearer ${data?.token}`,
-                "Content-Type": "application/json",
-              },
-            })
-            .then((res) => {
-              const tempData = res.data.data.$values;
-      
-              // setAllWishlistedProperties(res.data.data.$values);
-              const responseData = tempData.filter((prop, index) => {
-                if (String(prop.userId) === String(data.userId)) {
-                  return true;
-                } else {
-                  return false;
-                }
+              .get("/api/appraiserWishlistedProperties", {
+                headers: {
+                  Authorization: `Bearer ${data?.token}`,
+                  "Content-Type": "application/json",
+                },
+              })
+              .then((res) => {
+                const tempData = res.data.data.$values;
+
+                // setAllWishlistedProperties(res.data.data.$values);
+                const responseData = tempData.filter((prop, index) => {
+                  if (String(prop.userId) === String(data.userId)) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+                });
+                const tempId = responseData;
+                setWishlist(responseData);
+                setProperties(temp);
+              })
+              .catch((err) => {
+                toast.error(err?.response);
+                setErrorMessage(err?.response);
+                setModalIsOpenError(true);
               });
-              const tempId = responseData;
-              setWishlist(responseData);
-              setProperties(temp);
-            })
-            .catch((err) => {
-              toast.error(err?.response);
-              setErrorMessage(err?.response);
-              setModalIsOpenError(true);
-            });
           })
           .catch((err) => {
             setErrorMessage(err?.response?.data?.error);
             setModalIsOpenError(true);
           });
 
-       
         console.log("props", temp);
       })
       .catch((err) => {
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
-
-
 
     axios
       .get("/api/getAllBrokers", {
@@ -725,24 +723,24 @@ export default function Exemple({
       .then((res) => {
         let allbroker = res.data.data.$values;
         axios
-        .get("/api/getAllBrokerageCompany", {
-          headers: {
-            Authorization: `Bearer ${data.token}`,
-          },
-        })
-        .then((res) => {
-          const allbrokerage = res.data.data.result.$values;
-          let updated = allbroker;
-           allbrokerage.map((user,index)=>{
-            updated.push(user);
-           });
+          .get("/api/getAllBrokerageCompany", {
+            headers: {
+              Authorization: `Bearer ${data.token}`,
+            },
+          })
+          .then((res) => {
+            const allbrokerage = res.data.data.result.$values;
+            let updated = allbroker;
+            allbrokerage.map((user, index) => {
+              updated.push(user);
+            });
 
-          setAllBrokers(updated);
-        })
-        .catch((err) => {
-          setErrorMessage(err?.response?.data?.error);
-          setModalIsOpenError(true);
-        });
+            setAllBrokers(updated);
+          })
+          .catch((err) => {
+            setErrorMessage(err?.response?.data?.error);
+            setModalIsOpenError(true);
+          });
       })
       .catch((err) => {
         setErrorMessage(err?.response?.data?.error);

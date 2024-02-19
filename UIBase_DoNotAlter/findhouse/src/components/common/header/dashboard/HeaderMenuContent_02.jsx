@@ -513,7 +513,7 @@ const HeaderMenuContent = ({ float = "", hide, userData,  setProfileCount , prof
       </li> */}
 
       <li className="user_setting">
-        {userData?.userType === 3 ? <div className="">
+        {userData?.userType === 3 || userData?.userType === 5? <div className="">
           <a className="btn dropdown-toggle" href="#" data-bs-toggle="dropdown">
             <Image
               width={45}

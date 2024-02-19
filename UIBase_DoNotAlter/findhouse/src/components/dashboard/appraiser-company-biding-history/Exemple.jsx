@@ -326,10 +326,8 @@ export default function Exemple({
 
         const isArchive = foundArchiveHandler(property.propertyId);
 
+        console.log(isBidded);
         if (isBidded.$id) {
-          if (isBidded.status === 1) {
-            console.log(getOrderValue(isBidded.orderStatus));
-          }
           const isWait = property.isOnHold || property.isOnCancel;
           const updatedRow = {
             orderId: property.orderId,
@@ -339,12 +337,12 @@ export default function Exemple({
               : "$ 0",
             purpose: property.purpose ? property.purpose : "N.A.",
             appraisal_status:
-            isBidded.status === 1 && isBidded.orderStatus === 1  ? (
-              <span className="btn btn-warning  w-100">
-                {getOrderValue(isBidded.orderStatus)} -{formatDate(isBidded.statusDate)}
-              </span>
-            ) :
-              isBidded.status === 1 && isBidded.orderStatus!== null ? (
+              isBidded.status === 1 && isBidded.orderStatus === 1 ? (
+                <span className="btn btn-warning  w-100">
+                  {getOrderValue(isBidded.orderStatus)} -
+                  {formatDate(isBidded.statusDate)}
+                </span>
+              ) : isBidded.status === 1 && isBidded.orderStatus !== null ? (
                 <span className="btn btn-warning  w-100">
                   {getOrderValue(isBidded.orderStatus)}
                 </span>
@@ -357,7 +355,7 @@ export default function Exemple({
                 {property.isOnHold ? "On Hold" : "Cancelled"}
               </span>
             ) : isBidded.bidId ? (
-              isBidded.orderStatus === 6 ? (
+              isBidded.orderStatus === 3 ? (
                 <span className="btn btn-success  w-100">Completed</span>
               ) : isBidded.status === 0 ? (
                 <span className="btn btn-primary  w-100">Quote Provided</span>
@@ -451,39 +449,40 @@ export default function Exemple({
                   <span className="btn btn-success  w-100">Completed</span>
                 ) : isWait ? (
                   <>
-                  <p className="btn btn-danger  w-100">
-                  {`No further actions can be taken on this property since it is ${ property.isOnCancel ? "Cancelled" : "On Hold" } !.`}
-                  
-                </p> 
-              
-              <li
-                className=""
-                data-toggle="tooltip"
-                data-placement="top"
-                title="Archive Property"
-              >
-                <div
-                  className="w-100"
-                  onClick={() => onArchivePropertyHandler(property.orderId)}
-                >
-                  <button href="#" className="btn btn-color">
-                    <Link href="#">
-                      <span className="text-light">
-                        {" "}
-                        <FaArchive />
-                      </span>
-                    </Link>
-                  </button>
-                </div>
-              </li>
-              
-            
-              </>
+                    <p className="btn btn-danger  w-100">
+                      {`No further actions can be taken on this property since it is ${
+                        property.isOnCancel ? "Cancelled" : "On Hold"
+                      } !.`}
+                    </p>
+
+                    <li
+                      className="list-inline-item"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Archive Property"
+                    >
+                      <div
+                        className="w-100"
+                        onClick={() =>
+                          onArchivePropertyHandler(property.orderId)
+                        }
+                      >
+                        <button href="#" className="btn btn-color">
+                          <Link href="#">
+                            <span className="text-light">
+                              {" "}
+                              <FaArchive />
+                            </span>
+                          </Link>
+                        </button>
+                      </div>
+                    </li>
+                  </>
                 ) : isBidded && isBidded.status !== 1 ? (
                   <ul className="mb0 d-flex gap-1">
                     {(!isBidded.$id || isBidded?.status < 1) && (
                       <li
-                        className=""
+                        className="list-inline-item"
                         data-toggle="tooltip"
                         data-placement="top"
                         title={`${
@@ -536,7 +535,7 @@ export default function Exemple({
                   </li>*/}
 
                     <li
-                      className=""
+                      className="list-inline-item"
                       data-toggle="tooltip"
                       data-placement="top"
                       title="Archive Property"
@@ -559,43 +558,41 @@ export default function Exemple({
                     </li>
                   </ul>
                 ) : (
-                 
                   isBidded.orderStatus <= 6 && (
                     <>
-                    <button
-                      href="#"
-                      className="btn btn-color"
-                      onClick={() => openStatusUpdateHandler(isBidded)}
-                    >
-                      <Link href="#">
-                        <span className="flaticon-edit text-light"></span>
-                      </Link>
-                    </button>
-                    <li
-                      className=""
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Archive Property"
-                    >
-                      <div
-                        className="w-100"
-                        onClick={() =>
-                          onArchivePropertyHandler(property.orderId)
-                        }
+                      <button
+                        href="#"
+                        className="btn btn-color"
+                        onClick={() => openStatusUpdateHandler(isBidded)}
                       >
-                        <button href="#" className="btn btn-color">
-                          <Link href="#">
-                            <span className="text-light">
-                              {" "}
-                              <FaArchive />
-                            </span>
-                          </Link>
-                        </button>
-                      </div>
-                    </li>
+                        <Link href="#">
+                          <span className="flaticon-edit text-light"></span>
+                        </Link>
+                      </button>
+                      <li
+                        className="list-inline-item"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="Archive Property"
+                      >
+                        <div
+                          className="w-100"
+                          onClick={() =>
+                            onArchivePropertyHandler(property.orderId)
+                          }
+                        >
+                          <button href="#" className="btn btn-color">
+                            <Link href="#">
+                              <span className="text-light">
+                                {" "}
+                                <FaArchive />
+                              </span>
+                            </Link>
+                          </button>
+                        </div>
+                      </li>
                     </>
                   )
-                 
                 )}
               </div>
             ),
@@ -657,45 +654,42 @@ export default function Exemple({
             });
             setBids(updatedBids);
             axios
-            .get("/api/appraiserWishlistedProperties", {
-              headers: {
-                Authorization: `Bearer ${data?.token}`,
-                "Content-Type": "application/json",
-              },
-            })
-            .then((res) => {
-              const tempData = res.data.data.$values;
-      
-              // setAllWishlistedProperties(res.data.data.$values);
-              const responseData = tempData.filter((prop, index) => {
-                if (String(prop.userId) === String(data.userId)) {
-                  return true;
-                } else {
-                  return false;
-                }
+              .get("/api/appraiserWishlistedProperties", {
+                headers: {
+                  Authorization: `Bearer ${data?.token}`,
+                  "Content-Type": "application/json",
+                },
+              })
+              .then((res) => {
+                const tempData = res.data.data.$values;
+
+                // setAllWishlistedProperties(res.data.data.$values);
+                const responseData = tempData.filter((prop, index) => {
+                  if (String(prop.userId) === String(data.userId)) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+                });
+                const tempId = responseData;
+                setWishlist(responseData);
+                setProperties(temp);
+              })
+              .catch((err) => {
+                toast.error(err?.response);
+                setErrorMessage(err?.response);
+                setModalIsOpenError(true);
               });
-              const tempId = responseData;
-              setWishlist(responseData);
-              setProperties(temp);
-            })
-            .catch((err) => {
-              toast.error(err?.response);
-              setErrorMessage(err?.response);
-              setModalIsOpenError(true);
-            });
           })
           .catch((err) => {
             setErrorMessage(err?.response?.data?.error);
             setModalIsOpenError(true);
           });
-        
       })
       .catch((err) => {
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
-
- 
 
     axios
       .get("/api/getAllBrokers", {
@@ -706,24 +700,24 @@ export default function Exemple({
       .then((res) => {
         let allbroker = res.data.data.$values;
         axios
-        .get("/api/getAllBrokerageCompany", {
-          headers: {
-            Authorization: `Bearer ${data.token}`,
-          },
-        })
-        .then((res) => {
-          const allbrokerage = res.data.data.result.$values;
-          let updated = allbroker;
-           allbrokerage.map((user,index)=>{
-            updated.push(user);
-           });
+          .get("/api/getAllBrokerageCompany", {
+            headers: {
+              Authorization: `Bearer ${data.token}`,
+            },
+          })
+          .then((res) => {
+            const allbrokerage = res.data.data.result.$values;
+            let updated = allbroker;
+            allbrokerage.map((user, index) => {
+              updated.push(user);
+            });
 
-          setAllBrokers(updated);
-        })
-        .catch((err) => {
-          setErrorMessage(err?.response?.data?.error);
-          setModalIsOpenError(true);
-        });
+            setAllBrokers(updated);
+          })
+          .catch((err) => {
+            setErrorMessage(err?.response?.data?.error);
+            setModalIsOpenError(true);
+          });
       })
       .catch((err) => {
         setErrorMessage(err?.response?.data?.error);

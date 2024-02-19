@@ -327,12 +327,11 @@ export default function Exemple({
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
 
+        console.log(isBidded)
         const isArchive = foundArchiveHandler(property.propertyId);
 
-        if (isBidded.$id) {
-          if (isBidded.status === 1) {
-            console.log(getOrderValue(isBidded.orderStatus));
-          }
+        if (isBidded) {
+          
           const isWait = property.isOnHold || property.isOnCancel;
           const updatedRow = {
             orderId: property.orderId,
