@@ -47,7 +47,7 @@ async function handler(request, response) {
       area: "",
       lenderListUrl: lenderListUrl,
       apartmentNo: "",
-      CellNumber:cellNumber,
+      CellNumber: cellNumber,
       streetName: streetName,
       streetNumber: streetNumber,
       phoneNumber: phoneNumber,
@@ -56,7 +56,6 @@ async function handler(request, response) {
       designation: designation,
       profileImage: profileImage,
     };
-
 
     const userResponse = await axios.put(
       `${domain}/com.appraisalland.AppraiserIndividual/updateAppraiserProfile`,

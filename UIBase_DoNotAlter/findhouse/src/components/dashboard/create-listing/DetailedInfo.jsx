@@ -107,7 +107,7 @@ const DetailedInfo = ({
   setImage,
   setFilesUrl,
   setAttachment,
-  setDisable,
+  setDisabled,
 }) => {
   const router = useRouter();
   console.log(filesUrl, attachment);
@@ -734,7 +734,11 @@ const DetailedInfo = ({
                     Update
                   </button>
                 ) : (
-                  <button className="btn btn5" onClick={submitHandler}>
+                  <button
+                    className="btn btn5"
+                    onClick={submitHandler}
+                    disabled={setDisabled}
+                  >
                     Submit
                   </button>
                 ))}

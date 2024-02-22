@@ -74,7 +74,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     userData?.brokerage_Details?.assistantFirstName || ""
   );
   const [assistantLastName, setAssistantLastName] = useState(
-    userData?.brokerage_Details?.assistantFirstName || ""
+    userData?.brokerage_Details?.assistantLastName || ""
   );
   const [assistantPhoneNumber, setAssistantPhoneNumber] = useState(
     userData?.brokerage_Details?.assistantPhoneNumber || ""
@@ -83,19 +83,24 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     userData?.brokerage_Details?.assistantEmailAddress || ""
   );
 
-  const [commissionRate, setCommissionRate] = useState(
-    userData.brokerage_Details?.commissionRate || ""
+  const [assistantTwoFirstName, setAssistantTwoFirstName] = useState(
+    userData?.brokerage_Details?.assistantTwoFirstName || ""
+  );
+  const [assistantTwoLastName, setAssistantTwoLastName] = useState(
+    userData?.brokerage_Details?.assistantTwoLastName || ""
   );
 
-  const [maxNumberOfAssignedOrders, setMaxNumberOfAssignedOrders] = useState(
-    userData?.brokerage_Details?.maxNumberOfAssignedOrders || ""
+  const [assistantTwoEmailAddress, setAssistantTwoEmailAddress] = useState(
+    userData?.brokerage_Details?.assistantTwoEmailAddress || ""
   );
 
-  const [otherDesignation, setOtherDesignation] = useState(false);
+  const [assistantTwoPhoneNumber, setAssistantTwoPhoneNumber] = useState(
+    userData?.brokerage_Details?.assistantTwoPhoneNumber || ""
+  );
 
-  // const [designation, setDesignation] = useState(
-  //   userData?.brokerage_Details?.designation || ""
-  // );
+  const [emailId, setEmailId] = useState(
+    userData?.brokerage_Details?.emailId || ""
+  );
 
   const [streetName, setStreetName] = useState(
     userData?.brokerage_Details?.streetName || ""
@@ -216,9 +221,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         streetNumber: streetNumber,
         apartmentNo: "",
         streetName: streetName,
-        commissionRate: commissionRate,
-        maxNumberOfAssignedOrders: maxNumberOfAssignedOrders,
-        designation: designation,
         city: city,
         province: state,
         postalCode: zipCode,
@@ -228,7 +230,13 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         profileImage: SelectedImage,
         assistantEmailAddress: assistantEmailAddress,
         assistantFirstName: assistantFirstName,
+        assistantLastName: assistantLastName,
         assistantPhoneNumber: assistantPhoneNumber,
+        assistantTwoFirstName: assistantTwoFirstName,
+        assistantTwoLastName: assistantTwoLastName,
+        assistantTwoEmailAddress: assistantTwoEmailAddress,
+        assistantTwoPhoneNumber: assistantTwoPhoneNumber,
+        emailId: emailId,
       };
 
       toast.loading("Updating ...");
@@ -578,8 +586,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           required
                           id="formGroupExampleInput3"
                           style={{ backgroundColor: "#E8F0FE" }}
-                          value={userData?.userEmail ? userData.userEmail : ""}
-                          disabled
+                          value={emailId}
+                          onChange={(e) => setEmailId(e.target.value)}
                         />
                       </div>
                     </div>
@@ -973,9 +981,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           className="form-control"
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
-                          value={assistantFirstName}
+                          value={assistantTwoFirstName}
                           onChange={(e) =>
-                            setAssistantFirstName(e.target.value)
+                            setAssistantTwoFirstName(e.target.value)
                           }
                         />
                       </div>
@@ -998,8 +1006,10 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           className="form-control"
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
-                          value={assistantLastName}
-                          onChange={(e) => setAssistantLastName(e.target.value)}
+                          value={assistantTwoLastName}
+                          onChange={(e) =>
+                            setAssistantTwoLastName(e.target.value)
+                          }
                         />
                       </div>
                     </div>
@@ -1022,9 +1032,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           className="form-control"
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
-                          value={assistantPhoneNumber}
+                          value={assistantTwoPhoneNumber}
                           onChange={(e) =>
-                            setAssistantPhoneNumber(e.target.value)
+                            setAssistantTwoPhoneNumber(e.target.value)
                           }
                         />
                       </div>
@@ -1048,9 +1058,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           style={{ backgroundColor: "#E8F0FE" }}
                           required
                           id="formGroupExampleInput3"
-                          value={assistantEmailAddress}
+                          value={assistantTwoEmailAddress}
                           onChange={(e) =>
-                            setAssistantEmailAddress(e.target.value)
+                            setAssistantTwoEmailAddress(e.target.value)
                           }
                         />
                       </div>

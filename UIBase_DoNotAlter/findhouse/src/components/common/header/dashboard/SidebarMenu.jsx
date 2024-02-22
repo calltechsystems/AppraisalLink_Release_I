@@ -35,11 +35,17 @@ const SidebarMenu = () => {
     },
     {
       id: 2,
+      name: "Top-up Plans",
+      route: "/top-up",
+      icon: "flaticon-box",
+    },
+    {
+      id: 3,
       name: "Subscription History",
       route: "/my-package",
       icon: "flaticon-box",
     },
-    { id: 3, name: "Help desk", route: "/contact", icon: "flaticon-telephone" },
+    { id: 4, name: "Help desk", route: "/contact", icon: "flaticon-telephone" },
   ];
 
   return (

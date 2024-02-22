@@ -297,7 +297,7 @@ export default function Exemple({
               : formatDate(property.addedDatetime),
             status:
               isHold || isCancel ? (
-                <span className="btn bg-warning w-100">
+                <span className="btn bg-danger text-light w-100">
                   {isHold ? "On Hold" : "Cancelled"}
                 </span>
               ) : isStatus === 3 ? (
@@ -321,12 +321,13 @@ export default function Exemple({
               ),
             appraisal_status:
               isHold || isCancel ? (
-                <span className="btn bg-warning  w-100">
-                  {isHold ? "On Hold" : "OnCancelled"}
+                <span className="btn bg-warning w-100">
+                  {isHold ? "N.A." : "N.A."}
                 </span>
               ) : property.orderStatus !== null ? (
                 <span className="btn bg-warning  w-100">
-                  {getOrderValue(isBidded.orderStatus)}
+                  {getOrderValue(isBidded.orderStatus)} -
+                  {formatDate(isBidded.statusDate)}
                 </span>
               ) : (
                 <span className="btn bg-warning  w-100">N.A.</span>

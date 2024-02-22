@@ -117,8 +117,8 @@ export default function Exemple({
 
   const router = useRouter();
   let tempData = [];
-  
-  const [appraiser,setAppraisers]=useState([]);
+
+  const [appraiser, setAppraisers] = useState([]);
 
   const openPopupModal = (prop, id) => {
     // console.log(prop);
@@ -147,25 +147,25 @@ export default function Exemple({
     setRefresh(true);
   };
 
-  const getCurrentPropertyInfoHandler = ()=>{
-    let currentProperty={};
-    allProperties.map((prop,index)=>{
-      if(String(prop.orderId) === String(orderId)){
-        currentProperty=prop;
+  const getCurrentPropertyInfoHandler = () => {
+    let currentProperty = {};
+    allProperties.map((prop, index) => {
+      if (String(prop.orderId) === String(orderId)) {
+        currentProperty = prop;
       }
     });
     return currentProperty;
-  }
+  };
 
   const triggerAppraiserInfo = (id) => {
     const data = JSON.parse(localStorage.getItem("user"));
-    let selectedAppraiser={};
-    appraiser.map((app,index)=>{
-      if(String(app.userId)=== String(id)){
-        selectedAppraiser=app;
+    let selectedAppraiser = {};
+    appraiser.map((app, index) => {
+      if (String(app.userId) === String(id)) {
+        selectedAppraiser = app;
       }
-    })
-    setAppInfo(selectedAppraiser)
+    });
+    setAppInfo(selectedAppraiser);
     setOpenBrokerModal(true);
   };
 
@@ -259,11 +259,11 @@ export default function Exemple({
 
   useEffect(() => {
     const prop = getCurrentPropertyInfoHandler();
- 
+
     const getData = () => {
       properties.map((property, index) => {
-        const isWait = prop.isOnCancel  || prop.isOnHold  ? true : false;
-       
+        const isWait = prop.isOnCancel || prop.isOnHold ? true : false;
+
         const updatedRow = {
           AppraiserId: property.appraiserUserId ? property.appraiserUserId : 0,
           quote: property.bidAmount,
@@ -299,88 +299,88 @@ export default function Exemple({
             </a>
           ),
 
-          action:
-          <>
-          { prop.isOnCancel  || prop.isOnHold ? 
-            <p className="btn btn-danger">{`Cannot perform any actions as the current property is ${prop.isOnCancel || prop.isOnHold ? "Cancelled" : "On Hold"}`} </p>
-            :
-            property.status === 1 ? (
-              <div>
-
-                <h5 className="btn btn-success m-1">Accepted</h5>
-                <li
-                  className="list-inline-item"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Approved Lender List"
-                >
-                  <div className="btn btn-color fw-bold m-1">
-                    <Link
-                      href="assets/images/Terms & Conditions.pdf"
-                      target="_blank"
-                      className="form-check-label text-primary"
-                    >
-                      <span className="flaticon-pdf text-light"></span>
-                    </Link>
-                  </div>
-                </li>
-              </div>
-            ) : property.status === 0 ? (
-              <ul className="">
-            
-                <li
-                  className="list-inline-item"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Accept"
-                >
-                  <div
-                    className="fp_pdate float-end mt-1 fw-bold"
-                    onClick={() => openPopupModal(property, property.bidId)}
+          action: (
+            <>
+              {prop.isOnCancel || prop.isOnHold ? (
+                <p className="btn btn-danger">
+                  {`Cannot perform any actions as the current property is ${
+                    prop.isOnCancel || prop.isOnHold ? "Cancelled" : "On Hold"
+                  }`}{" "}
+                </p>
+              ) : property.status === 1 ? (
+                <div>
+                  <h5 className="btn btn-success m-1">Accepted</h5>
+                  <li
+                    className="list-inline-item"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Approved Lender List"
                   >
-                    <a href="#" className="btn btn-success">
-                      Accept
-                    </a>
-                  </div>
-                </li>
+                    <div className="btn btn-color fw-bold m-1">
+                      <Link
+                        href="assets/images/Terms & Conditions.pdf"
+                        target="_blank"
+                        className="form-check-label text-primary"
+                      >
+                        <span className="flaticon-pdf text-light"></span>
+                      </Link>
+                    </div>
+                  </li>
+                </div>
+              ) : property.status === 0 ? (
+                <ul className="">
+                  <li
+                    className="list-inline-item"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Accept"
+                  >
+                    <div
+                      className="fp_pdate float-end mt-1 fw-bold"
+                      onClick={() => openPopupModal(property, property.bidId)}
+                    >
+                      <a href="#" className="btn btn-success">
+                        Accept
+                      </a>
+                    </div>
+                  </li>
 
-             
-
-                <li
-                  className="list-inline-item"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Approved Lender List"
-                >
-                  <div className="fp_pdate float-end btn btn-color fw-bold ">
-                    {/* <Link
+                  <li
+                    className="list-inline-item"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Approved Lender List"
+                  >
+                    <div className="fp_pdate float-end btn btn-color fw-bold ">
+                      {/* <Link
                       href="assets/images/Terms & Conditions.pdf"
                       target="_blank"
                       className="form-check-label text-primary"
                     > */}
-                    <span className="flaticon-pdf text-light">
-                      {" "}
-                      <a
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        href={
-                          userData?.appraiser_Details?.lenderListUrl
-                            ? userData?.appraiser_Details?.lenderListUrl
-                            : "#"
-                        }
-                        style={{ cursor: "pointer" }}
-                      >
-                        Lender List Pdf
-                      </a>
-                    </span>
-                    {/* </Link> */}
-                  </div>
-                </li>
-              </ul>
-            ) : (
-              <h5 className="btn btn-danger">Declined</h5>
-            
-            )}  </>,
+                      <span className="flaticon-pdf text-light">
+                        {" "}
+                        <a
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          href={
+                            userData?.appraiser_Details?.lenderListUrl
+                              ? userData?.appraiser_Details?.lenderListUrl
+                              : "#"
+                          }
+                          style={{ cursor: "pointer" }}
+                        >
+                          Lender List Pdf
+                        </a>
+                      </span>
+                      {/* </Link> */}
+                    </div>
+                  </li>
+                </ul>
+              ) : (
+                <h5 className="btn btn-danger">Declined</h5>
+              )}{" "}
+            </>
+          ),
         };
         tempData.push(updatedRow);
       });
@@ -405,7 +405,7 @@ export default function Exemple({
       })
       .then((result) => {
         console.log(result);
-        
+
         setAllProperties(result.data.data.properties.$values);
         const url = window.location.pathname;
         const propertyOrderId = url.split("/my-property-bids/")[1];
@@ -430,26 +430,23 @@ export default function Exemple({
                 updatedBids.push(bid);
               }
             });
-    
+
             setProperties(updatedBids);
-            
+
             console.log(updatedBids);
-           
-           
           })
           .catch((err) => {
             toast.dismiss();
             toast.error(err?.response?.data?.error);
           });
-    
       })
       .catch((err) => {
         toast.dismiss();
         // setErrorMessage(err?.response?.data?.error);
         // setModalIsOpenError(true);
       });
-   
-      axios
+
+    axios
       .get("/api/getAllAppraiser", {
         headers: {
           Authorization: `Bearer ${data.token}`,
@@ -458,32 +455,30 @@ export default function Exemple({
       .then((res) => {
         let allbroker = res.data.data.result.$values;
         axios
-        .get("/api/getAllAppraiserCompany", {
-          headers: {
-            Authorization: `Bearer ${data.token}`,
-          },
-        })
-        .then((res2) => {
-          const allbrokerage = res2.data.data.result.$values;
-          let updated = allbroker;
-           allbrokerage.map((user,index)=>{
-            updated.push(user);
-           });
-  
-           console.log(updated);
-           setAppraisers(updated);
-        })
-        .catch((err) => {
-          toast.error(err);
-        });
+          .get("/api/getAllAppraiserCompany", {
+            headers: {
+              Authorization: `Bearer ${data.token}`,
+            },
+          })
+          .then((res2) => {
+            const allbrokerage = res2.data.data.result.$values;
+            let updated = allbroker;
+            allbrokerage.map((user, index) => {
+              updated.push(user);
+            });
+
+            console.log(updated);
+            setAppraisers(updated);
+          })
+          .catch((err) => {
+            toast.error(err);
+          });
       })
       .catch((err) => {
         toast.error(err?.response?.data?.error);
         // (true);
       });
-    
-  
-   
+
     setRefresh(false);
   }, [refresh]);
   return (

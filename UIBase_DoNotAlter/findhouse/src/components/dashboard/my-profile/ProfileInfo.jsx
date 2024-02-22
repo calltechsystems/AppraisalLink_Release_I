@@ -83,13 +83,32 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     userData?.broker_Details?.assistantFirstName || ""
   );
   const [assistantLastName, setAssistantLastName] = useState(
-    userData?.broker_Details?.assistantFirstName || ""
+    userData?.broker_Details?.assistantLastName || ""
   );
   const [assistantPhoneNumber, setAssistantPhoneNumber] = useState(
     userData?.broker_Details?.assistantPhoneNumber || ""
   );
   const [assistantEmailAddress, setAssistantEmailAddress] = useState(
     userData?.broker_Details?.assistantEmailAddress || ""
+  );
+
+  const [assistantTwoFirstName, setAssistantTwoFirstName] = useState(
+    userData?.broker_Details?.assistantTwoFirstName || ""
+  );
+  const [assistantTwoLastName, setAssistantTwoLastName] = useState(
+    userData?.broker_Details?.assistantTwoLastName || ""
+  );
+
+  const [assistantTwoEmailAddress, setAssistantTwoEmailAddress] = useState(
+    userData?.broker_Details?.assistantTwoEmailAddress || ""
+  );
+
+  const [assistantTwoPhoneNumber, setAssistantTwoPhoneNumber] = useState(
+    userData?.broker_Details?.assistantTwoPhoneNumber || ""
+  );
+
+  const [emailId, setEmailId] = useState(
+    userData?.broker_Details?.emailId || ""
   );
 
   const uploadProfile = (e) => {
@@ -150,6 +169,15 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
       companyNameRef !== ""
         ? companyNameRef
         : userData.broker_Details.companyName;
+    // const assistantTwoEmailAddress =
+    //   assistantTwoEmailAddress !== ""
+    //     ? assistantTwoEmailAddress
+    //     : userData.broker_Details.assistantTwoEmailAddress;
+    // const assistantTwoPhoneNumber =
+    //   assistantTwoPhoneNumber !== ""
+    //     ? assistantTwoPhoneNumber
+    //     : userData.broker_Details.assistantTwoPhoneNumber;
+    // const emailId = emailId !== "" ? emailId : userData.broker_Details.emailId;
 
     const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const nameRegex = /^[A-Za-z]+$/;
@@ -218,7 +246,13 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         streetNumber: streetNumber,
         assistantEmailAddress: assistantEmailAddress,
         assistantFirstName: assistantFirstName,
+        assistantLastName: assistantLastName,
         assistantPhoneNumber: assistantPhoneNumber,
+        assistantTwoFirstName: assistantTwoFirstName,
+        assistantTwoLastName: assistantTwoLastName,
+        assistantTwoEmailAddress: assistantTwoEmailAddress,
+        assistantTwoPhoneNumber: assistantTwoPhoneNumber,
+        emailId: emailId,
         city: city,
         state: state,
         postalCode: zipCode,
@@ -527,8 +561,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           style={{ backgroundColor: "#E8F0FE" }}
                           required
                           id="formGroupExampleInput3"
-                          value={userData?.userEmail ? userData.userEmail : ""}
-                          disabled
+                          value={emailId}
+                          onChange={(e) => setEmailId(e.target.value)}
+                          disabled={!edit}
                         />
                       </div>
                     </div>
@@ -984,9 +1019,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           className="form-control"
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
-                          value={assistantFirstName}
+                          value={assistantTwoFirstName}
                           onChange={(e) =>
-                            setAssistantFirstName(e.target.value)
+                            setAssistantTwoFirstName(e.target.value)
                           }
                           disabled={!edit}
                         />
@@ -1010,8 +1045,10 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           className="form-control"
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
-                          value={assistantLastName}
-                          onChange={(e) => setAssistantLastName(e.target.value)}
+                          value={assistantTwoLastName}
+                          onChange={(e) =>
+                            setAssistantTwoLastName(e.target.value)
+                          }
                           disabled={!edit}
                         />
                       </div>
@@ -1035,9 +1072,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           className="form-control"
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
-                          value={assistantPhoneNumber}
+                          value={assistantTwoPhoneNumber}
                           onChange={(e) =>
-                            setAssistantPhoneNumber(e.target.value)
+                            setAssistantTwoPhoneNumber(e.target.value)
                           }
                           disabled={!edit}
                         />
@@ -1062,9 +1099,11 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           style={{ backgroundColor: "#E8F0FE" }}
                           required
                           id="formGroupExampleInput3"
-                          // value={assistantEmailAddress}
-                          // onChange={(e) => setAssistantEmailAddress(e.target.value)}
-                          // disabled={!edit}
+                          value={assistantTwoEmailAddress}
+                          onChange={(e) =>
+                            setAssistantTwoEmailAddress(e.target.value)
+                          }
+                          disabled={!edit}
                         />
                       </div>
                     </div>

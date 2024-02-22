@@ -38,8 +38,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     userData?.appraiserCompany_Datails?.licenseNumber || ""
   );
 
-  const [cellNumber,setCellNumber]=useState(userData?.appraiserCompany_Datails?.cellNumber || "");
-  
+  const [cellNumber, setCellNumber] = useState(
+    userData?.appraiserCompany_Datails?.cellNumber || ""
+  );
 
   const [lastNameRef, setLastNameRef] = useState(
     userData?.appraiserCompany_Datails?.lastName || ""
@@ -196,6 +197,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         postalCode: zipcodeRef,
         phoneNumber: phoneNumberRef,
         officeContactPhone: officeContactPhone,
+        cellNumber: cellNumber,
       };
 
       if (SMSAlert && !phoneNumberRef) {
@@ -570,8 +572,11 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       </CldUploadWidget>
                     </div>
                     <div className="col-lg-5 mt-1">
-                      <Link target="_blank"
-                      rel="noopener noreferrer" href={selectedImage2.url}>
+                      <Link
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={selectedImage2.url}
+                      >
                         {selectedImage2.name}
                       </Link>
                     </div>{" "}

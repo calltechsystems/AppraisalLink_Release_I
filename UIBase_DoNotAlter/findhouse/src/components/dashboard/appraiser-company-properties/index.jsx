@@ -23,7 +23,7 @@ const Index = () => {
   const [isStatusModal, setIsStatusModal] = useState(false);
   const [toggleId, setToggleId] = useState(-1);
 
-  const [disable,setDisable]=useState(false);
+  const [disable, setDisable] = useState(false);
   const [toggleWishlist, setToggleWishlist] = useState(0);
   const [searchResult, setSearchResult] = useState([]);
   const [property, setProperty] = useState("");
@@ -65,31 +65,30 @@ const Index = () => {
   const [remark, setRemark] = useState("");
 
   const handleStatusUpdateHandler = () => {
-    setDisable(true)
-   
-      const data = JSON.parse(localStorage.getItem("user"));
-      const payload = {
-        token: data.token,
-        Quoteid: currentBid.bidId,
-        OrderStatus: Number(orderStatus),
-        remark: remark,
-        statusDate: statusDate,
-      };
+    setDisable(true);
 
-      const encryptedBody = encryptionData(payload);
-      toast.loading("Updating order status!!");
-      axios
-        .put("/api/updateOrderStatus", encryptedBody)
-        .then((res) => {
-          toast.dismiss();
-          toast.success("Successfully updated!!");
-          location.reload(true);
-        })
-        .catch((err) => {
-          toast.dismiss();
-          toast.error(err?.response?.data?.error);
-        });
-    
+    const data = JSON.parse(localStorage.getItem("user"));
+    const payload = {
+      token: data.token,
+      Quoteid: currentBid.bidId,
+      OrderStatus: Number(orderStatus),
+      remark: remark,
+      statusDate: statusDate,
+    };
+
+    const encryptedBody = encryptionData(payload);
+    toast.loading("Updating order status!!");
+    axios
+      .put("/api/updateOrderStatus", encryptedBody)
+      .then((res) => {
+        toast.dismiss();
+        toast.success("Successfully updated!!");
+        location.reload(true);
+      })
+      .catch((err) => {
+        toast.dismiss();
+        toast.error(err?.response?.data?.error);
+      });
 
     setRemark("");
     setCurrentBid({});
@@ -120,12 +119,10 @@ const Index = () => {
   const [openDate, setOpenDate] = useState(false);
   const [statusDate, setStatusDate] = useState("");
 
-
-
   const [allAppraiser, setAllAppraiser] = useState([]);
   const [assignModal, setAssignModal] = useState(false);
 
-  console.log("allAppraiser",allAppraiser);
+  console.log("allAppraiser", allAppraiser);
 
   const handleStatusSelect = (value) => {
     if (String(value) === "Appraisal Visit Confirmed") {
@@ -1907,14 +1904,14 @@ const Index = () => {
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
                       <button
-                        disabled  ={disable}
+                        disabled={disable}
                         className="btn w-35 btn-color"
                         onClick={closeStatusUpdateHandler}
                       >
                         Cancel
                       </button>
                       <button
-                      disabled={disable}
+                        disabled={disable}
                         className="btn btn-color w-10"
                         style={{ marginLeft: "12px" }}
                         onClick={handleStatusUpdateHandler}

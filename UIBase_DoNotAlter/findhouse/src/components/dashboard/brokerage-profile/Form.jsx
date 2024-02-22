@@ -145,7 +145,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                           padding: "5px",
                         }}
                       >
-                        {userData?.userEmail}
+                        {userData?.brokerage_Details?.emailId}
                       </td>
                     </tr>
                     <tr>
@@ -351,8 +351,8 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                           padding: "5px",
                         }}
                       >
-                        {userData?.brokerage_Details?.assistantFirstName}
-                        {userData?.brokerage_Details?.assistantLastName}
+                        {userData?.brokerage_Details?.assistantTwoFirstName}
+                        {userData?.brokerage_Details?.assistantTwoLastName}
                       </td>
                     </tr>
                     <tr>
@@ -375,7 +375,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       >
                         {" "}
                         {
-                          userData?.brokerage_Details?.assistantEmailAddress
+                          userData?.brokerage_Details?.assistantTwoEmailAddress
                         }{" "}
                       </td>
                     </tr>
@@ -398,7 +398,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                         }}
                       >
                         {" "}
-                        {userData?.brokerage_Details?.assistantPhoneNumber}
+                        {userData?.brokerage_Details?.assistantTwoPhoneNumber}
                       </td>
                     </tr>
                   </tbody>

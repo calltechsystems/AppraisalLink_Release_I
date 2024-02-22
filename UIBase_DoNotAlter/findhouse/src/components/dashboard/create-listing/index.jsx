@@ -21,7 +21,7 @@ const Index = ({ isView, propertyData }) => {
 
   const [updateView, setUpdateView] = useState(propertyData);
   const [isDisable, setDisable] = useState(updateView);
-
+  const [disabled, setDisabled] = useState(false);
   const [appraisalQuoteDate, setAppraisalQuoteDate] = useState(
     propertyData ? propertyData.quoteRequiredDate : ""
   );
@@ -510,6 +510,7 @@ const Index = ({ isView, propertyData }) => {
   };
 
   const submitHandler = () => {
+    // setDisabled(true);
     if (
       (String(purpose) === "Purchase" || String(purpose) === "Refinance") &&
       lenderInformation === ""

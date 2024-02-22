@@ -22961,3 +22961,7 @@ input:checked + .slider:before {
   border-radius: 5px;
   margin-bottom: 10px;
 }
+
+.text-onhold{
+  background-color: orange;
+}

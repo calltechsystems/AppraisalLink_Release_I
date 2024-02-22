@@ -33,40 +33,41 @@ async function handler(request, response) {
       officeContactLastName,
       officeContactFirstName,
       officeContactPhone,
-      appraiserCompanyName
+      appraiserCompanyName,
     } = body;
-
-    
 
     const formData = {
       firstName: firstName,
-      licenseNumber : licenseNumber,
+      licenseNumber: licenseNumber,
       lastName: lastName,
       AppraiserCompanyName: appraiserCompanyName,
       city: city,
       state: state,
       postalCode: postalCode,
-      cellNumber:cellNumber,
-      addressLineOne: addressLineOne ,
-      addressLineTwo : addressLineTwo,
-      officeContactFirstName:officeContactFirstName,
-      officeContactLastName:officeContactLastName,
+      cellNumber: cellNumber,
+      addressLineOne: addressLineOne,
+      addressLineTwo: addressLineTwo,
+      officeContactFirstName: officeContactFirstName,
+      officeContactLastName: officeContactLastName,
       phoneNumber: phoneNumber,
-      officeContactEmail : officeContactEmail,
-      lenderListUrl:lenderListUrl,
-      officeContactPhone:officeContactPhone,
+      officeContactEmail: officeContactEmail,
+      lenderListUrl: lenderListUrl,
+      officeContactPhone: officeContactPhone,
     };
 
-  
-    const userResponse = await axios.put(`${domain}/com.appraisalland.AppraiserCompany/updateAppraisalCompanyProfile`, formData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      params:{
-        AppraiserCompanyID:id
+    const userResponse = await axios.put(
+      `${domain}/com.appraisalland.AppraiserCompany/updateAppraisalCompanyProfile`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        params: {
+          AppraiserCompanyID: id,
+        },
       }
-    });
+    );
     const user = userResponse.data;
 
     if (!user) {
