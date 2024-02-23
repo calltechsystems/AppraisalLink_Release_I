@@ -115,10 +115,9 @@ export default function Exemple({
   const [show, setShow] = useState(false);
   const [all, setAll] = useState([]);
 
+  const [appraiser, setAppraisers] = useState([]);
   const router = useRouter();
   let tempData = [];
-
-  const [appraiser, setAppraisers] = useState([]);
 
   const openPopupModal = (prop, id) => {
     // console.log(prop);
@@ -165,6 +164,7 @@ export default function Exemple({
         selectedAppraiser = app;
       }
     });
+    console.log(selectedAppraiser);
     setAppInfo(selectedAppraiser);
     setOpenBrokerModal(true);
   };
@@ -344,7 +344,6 @@ export default function Exemple({
                       </a>
                     </div>
                   </li>
-
                   <li
                     className="list-inline-item"
                     data-toggle="tooltip"

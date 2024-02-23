@@ -8,6 +8,7 @@ const CreateList = ({
   isDisable,
   urgencyRef,
   areaRef,
+  disable,
   setAreaRef,
   setBuildinRef,
   appraisalQuoteDate,

@@ -353,18 +353,8 @@ export default function Exemple({
               <span className="btn btn-danger  w-100">
                 {property.isOnHold ? "On Hold" : "Cancelled"}
               </span>
-            ) : isBidded.bidId ? (
-              isBidded.orderStatus === 3 ? (
-                <span className="btn btn-success  w-100">Completed</span>
-              ) : isBidded.status === 0 ? (
-                <span className="btn btn-primary  w-100">Quote Provided</span>
-              ) : isBidded.status === 1 ? (
-                <span className="btn btn-success  w-100">Accepted</span>
-              ) : (
-                <span className="btn btn-danger  w-100">Rejected</span>
-              )
             ) : (
-              <span className="btn btn-warning  w-100">New</span>
+              <span className="btn btn-success  w-100">Completed</span>
             ),
             broker: (
               <div>
@@ -444,9 +434,7 @@ export default function Exemple({
 
             action: (
               <div className="print-hidden-column">
-                {isBidded.orderStatus === 3 ? (
-                  <span className="btn btn-success  w-100">Accepted</span>
-                ) : isWait ? (
+                {isWait ? (
                   <>
                     <p className="btn btn-danger  w-100">
                       {`No further actions can be taken on this property since it is ${
@@ -454,7 +442,7 @@ export default function Exemple({
                       } !.`}
                     </p>
                     <li
-                      className=""
+                      className="list-inline-item"
                       data-toggle="tooltip"
                       data-placement="top"
                       title="Archive Property"
@@ -476,86 +464,6 @@ export default function Exemple({
                       </div>
                     </li>
                   </>
-                ) : isBidded && isBidded.status !== 1 ? (
-                  <ul className="mb0 d-flex gap-1">
-                    {isWishlist.id ? (
-                      <button
-                        className="btn "
-                        style={{ border: "1px solid grey" }}
-                        onClick={() => removeWishlistHandler(isWishlist.id)}
-                      >
-                        <img
-                          width={26}
-                          height={26}
-                          src="https://png.pngtree.com/png-clipart/20200226/original/pngtree-3d-red-heart-cute-valentine-romantic-glossy-shine-heart-shape-png-image_5315044.jpg"
-                        />
-                      </button>
-                    ) : (
-                      <li className="" title="Wishlist Property">
-                        {
-                          <button
-                            className="btn"
-                            style={{ border: "1px solid grey" }}
-                            onClick={() =>
-                              onWishlistHandler(property.propertyId)
-                            }
-                          >
-                            <span className="flaticon-heart text-color"></span>
-                          </button>
-                        }
-                      </li>
-                    )}
-
-                    {(!isBidded.$id || isBidded?.status < 1) && (
-                      <li
-                        className=""
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title="Provide Quote"
-                      >
-                        <div
-                          className="w-100"
-                          onClick={() =>
-                            participateHandler(
-                              property.bidLowerRange,
-                              property.propertyId,
-                              isBidded.status < 1,
-                              isBidded.bidAmount
-                            )
-                          }
-                        >
-                          <button href="#" className="btn btn-color">
-                            <Link href="#">
-                              <span className="flaticon-invoice text-light"></span>
-                            </Link>
-                          </button>
-                        </div>
-                      </li>
-                    )}
-
-                    <li
-                      className=""
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Archive Property"
-                    >
-                      <div
-                        className="w-100"
-                        onClick={() =>
-                          onArchivePropertyHandler(property.propertyId)
-                        }
-                      >
-                        <button href="#" className="btn btn-color">
-                          <Link href="#">
-                            <span className="text-light">
-                              {" "}
-                              <FaArchive />
-                            </span>
-                          </Link>
-                        </button>
-                      </div>
-                    </li>
-                  </ul>
                 ) : (
                   <span className="btn btn-success  w-100">Completed</span>
                 )}

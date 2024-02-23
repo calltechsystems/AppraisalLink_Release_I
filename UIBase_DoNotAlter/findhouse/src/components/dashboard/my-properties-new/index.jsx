@@ -19,6 +19,7 @@ import { FaRedo } from "react-icons/fa";
 import { encryptionData } from "../../../utils/dataEncryption";
 
 const Index = () => {
+  const [disable,setdisable]=useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [isStatusModal, setIsStatusModal] = useState(false);
@@ -181,6 +182,7 @@ const Index = () => {
   const [propValue, setPropValue] = useState({});
 
   const onHoldHandler = () => {
+    setdisable(true)
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -211,6 +213,7 @@ const Index = () => {
   };
 
   const onCancelHandler = () => {
+    setdisable(true)
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -1249,12 +1252,14 @@ const Index = () => {
                               ></div>
                               <div className="col-lg-12 text-center">
                                 <button
+                                disabled={disable}
                                   className="btn w-25 btn-color m-1"
                                   onClick={closeCancelHoldHandler}
                                 >
                                   Cancel
                                 </button>
                                 <button
+                                 disabled={disable}
                                   className="btn w-25 btn-color"
                                   onClick={
                                     isHoldProperty

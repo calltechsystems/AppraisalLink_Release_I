@@ -21,7 +21,7 @@ const Index = ({ isView, propertyData }) => {
 
   const [updateView, setUpdateView] = useState(propertyData);
   const [isDisable, setDisable] = useState(updateView);
-  const [disabled, setDisabled] = useState(false);
+
   const [appraisalQuoteDate, setAppraisalQuoteDate] = useState(
     propertyData ? propertyData.quoteRequiredDate : ""
   );
@@ -34,6 +34,7 @@ const Index = ({ isView, propertyData }) => {
     return resultArray;
   };
 
+  const [disable,setdisable]=useState(false)
   let userData = {};
   const [updatedProperty, setUpdatedProperty] = useState([]);
 
@@ -358,6 +359,7 @@ const Index = ({ isView, propertyData }) => {
     window.location.reload();
   };
   const updateHandler = () => {
+    setdisable(true)
     setModalIsOpen(false);
     const nameRegex = /^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -510,7 +512,6 @@ const Index = ({ isView, propertyData }) => {
   };
 
   const submitHandler = () => {
-    // setDisabled(true);
     if (
       (String(purpose) === "Purchase" || String(purpose) === "Refinance") &&
       lenderInformation === ""
@@ -628,6 +629,7 @@ const Index = ({ isView, propertyData }) => {
   };
 
   const finalSubmitHandler = () => {
+    setdisable(true)
     setModalIsOpen(false);
     const nameRegex = /^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -998,6 +1000,7 @@ const Index = ({ isView, propertyData }) => {
                         changeStringUrlHandler={changeStringUrlHandler}
                         filesUrl={filesUrl}
                         image={image}
+                        disable={disable}
                         setImage={setImage}
                         setAttachment={setAttachment}
                         errorLabel={errorLabel}

@@ -202,7 +202,7 @@ export default function Exemple({
   ];
 
   const getOrderValue = (val) => {
-    let title = "";
+    let title = "Applicant Contacted by appraiser";
     AppraiserStatusOptions?.map((status) => {
       if (String(status.id) === String(val)) {
         title = status.type;
@@ -297,7 +297,7 @@ export default function Exemple({
               : formatDate(property.addedDatetime),
             status:
               isHold || isCancel ? (
-                <span className="btn bg-danger text-light w-100">
+                <span className="btn bg-warning w-100">
                   {isHold ? "On Hold" : "Cancelled"}
                 </span>
               ) : isStatus === 3 ? (
@@ -321,13 +321,12 @@ export default function Exemple({
               ),
             appraisal_status:
               isHold || isCancel ? (
-                <span className="btn bg-warning w-100">
+                <span className="btn bg-warning  w-100">
                   {isHold ? "N.A." : "N.A."}
                 </span>
               ) : property.orderStatus !== null ? (
                 <span className="btn bg-warning  w-100">
-                  {getOrderValue(isBidded.orderStatus)} -
-                  {formatDate(isBidded.statusDate)}
+                  {getOrderValue(isBidded.orderStatus)}
                 </span>
               ) : (
                 <span className="btn bg-warning  w-100">N.A.</span>
@@ -369,20 +368,27 @@ export default function Exemple({
                   </li>
                 )}
 
-                {!isEditable && isStatus === 1 && (
-                  <li>
-                    <Link href={`/my-property-bids/${property.orderId}`}>
-                      <span className="btn btn-color w-100 mb-1"> Quotes </span>
-                    </Link>{" "}
-                    {/* <Link
+                {!isEditable &&
+                  isStatus === 1 &&
+                  (isHold || isCancel ? (
+                    ""
+                  ) : (
+                    <li>
+                      <Link href={`/my-property-bids/${property.orderId}`}>
+                        <span className="btn btn-color w-100 mb-1">
+                          {" "}
+                          Quotes{" "}
+                        </span>
+                      </Link>{" "}
+                      {/* <Link
                       className="btn btn-color-table"
                       style={{ marginLeft: "4.3rem" }}
                       href={`/my-property-bids/${property.propertyId}`}
                     >
                       <span className="flaticon-invoice"></span>
                     </Link> */}
-                  </li>
-                )}
+                    </li>
+                  ))}
                 {/* <li
                 className="list-inline-item"
                 data-toggle="tooltip"
@@ -541,7 +547,7 @@ export default function Exemple({
                 </li>
                 {/* )} */}
 
-                {!isEditable && !isCancel && (
+                {!isEditable && !isCancel && !isHold && (
                   <li title="Quotes">
                     {/* <Link href={`/my-property-bids/${property.propertyId}`}>
                       <span className="btn btn-color w-100 mb-1"> Quotes </span>
@@ -587,7 +593,7 @@ export default function Exemple({
                 </Link>
               </li> */}
 
-                {(isEditable || isStatus === 1) && !isCancel && (
+                {isEditable && !isCancel && (
                   <li title="Edit Property">
                     {/* <Link href={`/create-listing/${property.propertyId}`}>
                       <span className="btn btn-color w-100 mb-1"> Edit </span>
@@ -604,7 +610,7 @@ export default function Exemple({
                 {/* End li */}
 
                 {/* {isEditable && ( */}
-                {!isCancel && (
+                {!isCancel && isStatus !== 3 && (
                   <li title={!isHold ? "On Hold" : "Remove Hold"}>
                     <span
                       className="btn btn-color-table "
@@ -623,7 +629,7 @@ export default function Exemple({
                 {/* )} */}
 
                 {/* {isEditable && ( */}
-                {!isCancel && !isHold && (
+                {!isCancel && isStatus !== 3 && !isHold && (
                   <li title={"Order Cancel"}>
                     <span
                       className="btn btn-color-table"

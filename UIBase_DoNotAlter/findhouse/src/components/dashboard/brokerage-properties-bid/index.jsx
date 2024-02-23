@@ -22,6 +22,7 @@ const Index = ({ propertyId }) => {
   const [appInfo, setAppInfo] = useState({});
   const [refresh, setRefresh] = useState(false);
   const [id, setId] = useState(0);
+  const [disable,setdisable]=useState(false)
 
   const [allAppraiser,setAllAppraiser]=useState({});
 
@@ -54,6 +55,7 @@ const Index = ({ propertyId }) => {
   };
 
   const acceptRequestHandler = () => {
+    setdisable(true)
     const data = JSON.parse(localStorage.getItem("user"));
     toast.loading("Accepting the Quote ...");
     const payload = {
@@ -644,6 +646,7 @@ const Index = ({ propertyId }) => {
                     <div className="row">
                       <div className="col-lg-12 text-center m-1">
                         <button
+                        disabled={disable}
                           className="btn btn-color"
                           style={{ marginRight: "5px" }}
                           onClick={closeModal}
@@ -651,6 +654,7 @@ const Index = ({ propertyId }) => {
                           Cancel
                         </button>
                         <button
+                          disabled={disable}
                           className="btn btn-color"
                           onClick={() => acceptRequestHandler(property.bidId)}
                         >

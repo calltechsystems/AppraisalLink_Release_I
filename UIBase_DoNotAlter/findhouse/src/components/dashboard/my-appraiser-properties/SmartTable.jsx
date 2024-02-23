@@ -248,27 +248,7 @@ function SmartTable(props) {
     <div className="col-12 p-4">
       <div className="smartTable-container row">
       <div className="candidate_revew_select style2 mb30-991">
-                    <ul className="mb0">
-                      <li className="list-inline-item">
-                        <Filtering setFilterQuery={props.setFilterQuery} />
-                      </li>
-                      <li className="list-inline-item">
-                        <FilteringBy setFilterQuery={props.setSearchQuery} />
-                      </li>
-                      <li className="list-inline-item">
-                        <div className="candidate_revew_search_box course fn-520">
-                          <SearchBox setSearchInput={props.setSearchInput} />
-                        </div>
-                      </li>
-                    
-                    </ul>
-                  </div>
-        <div className="col-12">
-          {loading && (
-            <div className="smartTable-loaderContainer text-primary">
-              <div className="spinner-border" role="status"></div>
-            </div>
-          )}
+                
           <div className="row">
             <div className="col-12">{props.title}</div>
             <div className="col-lg-4 offset-9">

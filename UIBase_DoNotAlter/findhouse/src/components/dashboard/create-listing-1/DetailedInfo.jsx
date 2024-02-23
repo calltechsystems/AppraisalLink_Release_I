@@ -83,6 +83,7 @@ import CheckBoxFilter from "../../common/CheckBoxFilter";
 const DetailedInfo = ({
   onCancelHandler,
   isDisable,
+  disable,
   changeUrlToStringHandler,
   updateHandler,
   remark,
@@ -721,11 +722,11 @@ const DetailedInfo = ({
               )}
               {!isDisable &&
                 (propertyData ? (
-                  <button className="btn btn5" onClick={submitHandler}>
+                  <button  disabled={disable} className="btn btn5" onClick={submitHandler}>
                     Update
                   </button>
                 ) : (
-                  <button className="btn btn5" onClick={submitHandler}>
+                  <button disabled={disable} className="btn btn5" onClick={submitHandler}>
                     Submit
                   </button>
                 ))}

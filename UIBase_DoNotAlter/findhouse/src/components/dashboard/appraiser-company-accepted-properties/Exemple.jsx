@@ -358,7 +358,7 @@ export default function Exemple({
                 {property.isOnHold ? "On Hold" : "Cancelled"}
               </span>
             ) : isBidded.bidId ? (
-              isBidded.orderStatus === 6 ? (
+              isBidded.orderStatus === 3 ? (
                 <span className="btn btn-success  w-100">Completed</span>
               ) : isBidded.status === 0 ? (
                 <span className="btn btn-primary  w-100">Quote Provided</span>
@@ -535,7 +535,11 @@ export default function Exemple({
                             )
                           }
                         >
-                          <button href="#" className="btn btn-color">
+                          <button
+                            href="#"
+                            className="btn btn-color w-100 mt-1"
+                            style={{ marginLeft: "12px" }}
+                          >
                             <Link href="#">
                               <span className="flaticon-invoice text-light"></span>
                             </Link>
@@ -556,7 +560,11 @@ export default function Exemple({
                           onArchivePropertyHandler(property.orderId)
                         }
                       >
-                        <button href="#" className="btn btn-color">
+                        <button
+                          href="#"
+                          className="btn btn-color w-100 mt-1"
+                          style={{ marginLeft: "12px" }}
+                        >
                           <Link href="#">
                             <span className="text-light">
                               {" "}
@@ -572,7 +580,8 @@ export default function Exemple({
                     <>
                       <button
                         href="#"
-                        className="btn btn-color m-1"
+                        className="btn btn-color w-100 mt-1"
+                        style={{ marginLeft: "12px" }}
                         onClick={() => openStatusUpdateHandler(isBidded)}
                       >
                         <Link href="#">
@@ -580,7 +589,7 @@ export default function Exemple({
                         </Link>
                       </button>
                       <li
-                        className="list-inline-item"
+                        className=""
                         data-toggle="tooltip"
                         data-placement="top"
                         title="Archive Property"

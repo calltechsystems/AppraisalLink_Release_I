@@ -104,10 +104,11 @@ const DetailedInfo = ({
   errorLabel,
   filesUrl,
   image,
+  disable,
   setImage,
   setFilesUrl,
   setAttachment,
-  setDisabled,
+  setDisable,
 }) => {
   const router = useRouter();
   console.log(filesUrl, attachment);
@@ -717,7 +718,7 @@ const DetailedInfo = ({
           <div className="col-xl-12">
             <div className="my_profile_setting_input overflow-hidden mt20 text-center">
               {isDisable && (
-                <button className="btn btn5 m-1" onClick={cancelHandler}>
+                <button disabled={disable} className="btn btn5 m-1" onClick={cancelHandler}>
                   Cancel
                 </button>
               )}
@@ -727,18 +728,15 @@ const DetailedInfo = ({
                   //   Update
                   // </button>
                   <button
+                  disabled={disable}
                     className={`btn btn5 ${isButtonDisabled ? "disabled" : ""}`}
                     onClick={submitHandler}
-                    disabled={isButtonDisabled}
+                    
                   >
                     Update
                   </button>
                 ) : (
-                  <button
-                    className="btn btn5"
-                    onClick={submitHandler}
-                    disabled={setDisabled}
-                  >
+                  <button disabled={disable} className="btn btn5" onClick={submitHandler}>
                     Submit
                   </button>
                 ))}

@@ -22,6 +22,8 @@ const Index = ({ isView, propertyData }) => {
   const [updateView, setUpdateView] = useState(propertyData);
   const [isDisable, setDisable] = useState(updateView);
 
+  const [disable,setdisable]=useState(false);
+
   const [appraisalQuoteDate, setAppraisalQuoteDate] = useState(
     propertyData ? propertyData.quoteRequiredDate : ""
   );
@@ -357,6 +359,7 @@ const Index = ({ isView, propertyData }) => {
     window.location.reload();
   };
   const updateHandler = () => {
+    setdisable(true);
     setModalIsOpen(false);
     const nameRegex = /^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -515,6 +518,7 @@ const Index = ({ isView, propertyData }) => {
     ) {
       toast.error("Please fill the lender Information for this purpose option");
     } else {
+      setdisable(true);
       const payload = {
         streetName: streetNameRef,
         streetNumber: streetNumberRef,
@@ -625,6 +629,7 @@ const Index = ({ isView, propertyData }) => {
   };
 
   const finalSubmitHandler = () => {
+    setdisable(true);
     setModalIsOpen(false);
     const nameRegex = /^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -919,6 +924,7 @@ const Index = ({ isView, propertyData }) => {
                       errorLabel={errorLabel}
                       // areaRef={areaRef}
                       // setAreaRef={setAreaRef}
+                      disable={disable}
                       communityRef={communityRef}
                       setCommunityRef={setCommunityRef}
                       buildinRef={buildinRef}
@@ -984,6 +990,7 @@ const Index = ({ isView, propertyData }) => {
 
                       <DetailedInfo
                         isDisable={isDisable}
+                        disable={disable}
                         applicantFirstName={applicantFirstName}
                         setApplicantFirstName={setApplicantFirstName}
                         setApplicantAddress={setApplicantAddress}
