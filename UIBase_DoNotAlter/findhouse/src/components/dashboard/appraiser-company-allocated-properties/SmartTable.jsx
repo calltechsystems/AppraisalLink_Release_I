@@ -56,7 +56,7 @@ function SmartTable(props) {
           setTotal(data.data.total, 0);
         }
       } catch (e) {
-        console.log("Fetch error", e.message);
+        //console.log("Fetch error", e.message);
       }
       setLoading(false);
     },
@@ -178,7 +178,7 @@ function SmartTable(props) {
     tableWidthFunc,
     fetchData,
   ]);
-  console.log(props.data);
+  //console.log(props.data);
 
   const buildQueryString = (search, page, rowsPerPage) => {
     const queries = [];
@@ -239,24 +239,14 @@ function SmartTable(props) {
 
     setData(tempData);
   };
-  console.log(data.length > 0, data);
+  //console.log(data.length > 0, data);
 
   return (
     <div className="col-12 p-2">
       <div className="smartTable-container row">
-        <div className="candidate_revew_select style2 mb30-991">
+        <div className="candidate_revew_select style2 mb30-991" style={{marginLeft:"40%",marginTop:"2%"}}>
           <ul className="mb0 mt-0">
-            <li className="list-inline-item">
-              <Filtering setFilterQuery={props.setFilterQuery} />
-            </li>
-            {/* <li className="list-inline-item">
-              <FilteringBy setFilterQuery={props.setSearchQuery} />
-            </li> */}
-            <li className="list-inline-item" style={{ marginRight: "15px" }}>
-              <div className="candidate_revew_search_box course fn-520">
-                <SearchBox setSearchInput={props.setSearchInput} />
-              </div>
-            </li>
+          
             <li className="list-inline-item">
               {loading && (
                 <div className="smartTable-loaderContainer text-primary">

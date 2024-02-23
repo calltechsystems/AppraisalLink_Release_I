@@ -46,20 +46,7 @@ const Pagination = ({ setStart , setEnd,properties}) => {
           </a>
         </li>
 
-        {/* Page numbers */}
-        {pageNumbers.map((number) => (
-          <li key={number} className={`page-item ${currentPage === number ? 'active' : ''}`}>
-            <a 
-              className="page-link"
-              href="#"
-              onClick={() => handlePageChange(number)}
-            >
-              {number}
-              {currentPage === number && <span className="sr-only">(current)</span>}
-            </a>
-          </li>
-        ))}
-
+      
         {/* Next page button */}
         <li className={`page-item ${currentPage === pageNumbers.length ? 'disabled' : ''}`}>
           <a

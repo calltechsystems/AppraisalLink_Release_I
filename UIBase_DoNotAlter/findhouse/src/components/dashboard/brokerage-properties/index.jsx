@@ -179,7 +179,6 @@ const Index = () => {
   const [propValue, setPropValue] = useState({});
 
   const onHoldHandler = () => {
-    setDisable(true)
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -210,7 +209,6 @@ const Index = () => {
   };
 
   const onCancelHandler = () => {
-    setDisable(true)
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {

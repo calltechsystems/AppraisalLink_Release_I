@@ -233,32 +233,24 @@ function SmartTable(props) {
   return (
     <div className="col-12 p-1">
       <div className="smartTable-container row">
-        <div className="candidate_revew_select style2 mb30-991">
-          {/* <ul className="mb0 mt-0"> */}
-          {/* <li className="list-inline-item">
-              <Filtering setFilterQuery={props.setFilterQuery} />
-            </li>
-            <li className="list-inline-item" style={{ marginRight: "15px" }}>
-              <div className="candidate_revew_search_box course fn-520">
-                <SearchBox setSearchInput={props.setSearchInput} />
-              </div>
-            </li> */}
-          {/* <li className="list-inline-item"> */}
+        <div className="candidate_revew_select style2 mb30-991 row">
+          <div className="col-lg-11"></div>
+          {/* <ul className="col-lg-12 text-end_01"> */}
           {loading && (
             <div className="smartTable-loaderContainer text-primary">
               <div className="spinner-border" role="status"></div>
             </div>
           )}
-          <div className="col-lg-1 m-1">
+          <div className="col-lg-1 mt-1">
             <div className="row">
               <div
-                className="col-lg-6 btn btn-color w-10"
+                className="w-50"
                 onClick={() => handlePrint()}
                 title="Download Pdf"
               >
-                <span className="flaticon-download "></span>
+                <span className="btn btn-color flaticon-download "></span>
               </div>
-              <div className="col-lg-6 w-50">
+              <div className="w-50">
                 <button
                   className="btn btn-color"
                   onClick={() => props.refreshHandler()}

@@ -245,6 +245,21 @@ export default function Exemple({
     return formattedDate;
   };
 
+  const formatDateNew = (dateString) => {
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      // hour: "numeric",
+      // minute: "numeric",
+      // second: "numeric",
+      hour12: true, // Set to false for 24-hour format
+    };
+
+    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
+    return formattedDate;
+  };
+
   const getBidOfProperty = (orderId) => {
     let Bid = {};
     allBids.map((bid, index) => {
@@ -299,8 +314,8 @@ export default function Exemple({
             order_id: property.orderId,
             sub_date: formatDate(property.addedDatetime),
             quote_required_by: property.quoteRequiredDate
-              ? formatDate(property.quoteRequiredDate)
-              : formatDate(property.addedDatetime),
+              ? formatDateNew(property.quoteRequiredDate)
+              : formatDateNew(property.addedDatetime),
             status:
               isHold || isCancel ? (
                 <span className="btn bg-danger text-light w-100">
@@ -330,10 +345,14 @@ export default function Exemple({
                 <span className="btn bg-warning w-100">
                   {isHold ? "N.A." : "N.A."}
                 </span>
+              ) : property.orderStatus === 1 ? (
+                <span className="btn bg-warning  w-100">
+                  {getOrderValue(isBidded.orderStatus)} -
+                  {formatDate(isBidded.statusDate)}
+                </span>
               ) : property.orderStatus !== null ? (
                 <span className="btn bg-warning  w-100">
-                  {getOrderValue(isBidded.orderStatus)}-
-                  {formatDate(isBidded.statusDate)}
+                  {getOrderValue(isBidded.orderStatus)}
                 </span>
               ) : (
                 <span className="btn bg-warning  w-100">N.A.</span>

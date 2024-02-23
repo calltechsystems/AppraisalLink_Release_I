@@ -1736,7 +1736,7 @@ const Index = () => {
                         </Link>
                       </div>
                     </div>
-                    <h3 className="text-center">Quote Status Updation</h3>
+                    <h3 className="text-center">Assign Appraiser</h3>
 
                     <select
                       required
@@ -1824,7 +1824,7 @@ const Index = () => {
                     <div className="row">
                       <div className="col-lg-12 text-center">
                         <h2 className=" text-color mt-1">
-                          Quote Status Updation
+                          Appraisal Status Updation
                         </h2>
                       </div>
                     </div>

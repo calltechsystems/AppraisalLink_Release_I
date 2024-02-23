@@ -20,7 +20,6 @@ const Index = ({ propertyId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [appInfo, setAppInfo] = useState({});
-  const [disable,setdisable]=useState(false)
   const [refresh, setRefresh] = useState(false);
   const [id, setId] = useState(0);
   console.log(propertyId);
@@ -56,7 +55,6 @@ const Index = ({ propertyId }) => {
   };
 
   const acceptRequestHandler = () => {
-    setdisable(true)
     const data = JSON.parse(localStorage.getItem("user"));
     toast.loading("Accepting the bid ...");
     const payload = {
@@ -644,7 +642,6 @@ const Index = ({ propertyId }) => {
                     <div className="row">
                       <div className="col-lg-12 text-center m-1">
                         <button
-                        disabled={disable}
                           className="btn btn-color"
                           style={{ marginRight: "5px" }}
                           onClick={closeModal}
@@ -652,7 +649,6 @@ const Index = ({ propertyId }) => {
                           Cancel
                         </button>
                         <button
-                         disabled={disable}
                           className="btn btn-color"
                           onClick={() => acceptRequestHandler(property.bidId)}
                         >

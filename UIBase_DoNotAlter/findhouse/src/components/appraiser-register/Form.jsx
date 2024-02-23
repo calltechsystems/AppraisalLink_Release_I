@@ -16,6 +16,7 @@ const Form = ({
   setCloseRegisterModal,
 }) => {
   const [showhide, setShowhide] = useState("");
+  const [disable,setDisable]=useState(false)
 
   const [change, setChange] = useState(false);
   const [showRegister, setRegister] = useState(true);
@@ -95,6 +96,7 @@ const Form = ({
     event.preventDefault();
 
     setRegister(false);
+    setDisable(true)
 
     const email = emailRegisterRef.current.value;
     const password = passwordRegister;
@@ -409,12 +411,14 @@ const Form = ({
 
               <div className="col-lg-12 text-center ">
                 <button
+                disabled={disable}
                   onClick={() => setCloseRegisterModal(false)}
                   className="btn btn-color w-25 m-1"
                 >
                   Cancel
                 </button>
                 <button
+                disabled={disable}
                   onClick={(e) => registerHandler(e)}
                   className="btn btn-color w-25"
                 >

@@ -260,11 +260,9 @@ function SmartTable(props) {
   return (
     <div className="col-12 p-2">
       <div className="smartTable-container row">
-        <div
-          className="candidate_revew_select style2 mb30-991"
-          style={{ marginLeft: "40%", marginTop: "2%" }}
-        >
+        <div className="candidate_revew_select style2 mb30-991" style={{marginLeft:"40%",marginTop:"2%"}}>
           <ul className="mb0">
+            
             <li className="list-inline-item">
               {loading && (
                 <div className="smartTable-loaderContainer text-primary">

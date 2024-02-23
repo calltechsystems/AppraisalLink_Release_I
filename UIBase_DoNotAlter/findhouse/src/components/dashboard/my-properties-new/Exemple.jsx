@@ -202,7 +202,7 @@ export default function Exemple({
   ];
 
   const getOrderValue = (val) => {
-    let title = "Applicant Contacted by appraiser";
+    let title = "";
     AppraiserStatusOptions?.map((status) => {
       if (String(status.id) === String(val)) {
         title = status.type;
@@ -231,6 +231,21 @@ export default function Exemple({
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
+      // second: "numeric",
+      hour12: true, // Set to false for 24-hour format
+    };
+
+    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
+    return formattedDate;
+  };
+
+  const formatDateNew = (dateString) => {
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      // hour: "numeric",
+      // minute: "numeric",
       // second: "numeric",
       hour12: true, // Set to false for 24-hour format
     };
@@ -293,11 +308,11 @@ export default function Exemple({
             order_id: property.orderId,
             sub_date: formatDate(property.addedDatetime),
             quote_required_by: property.quoteRequiredDate
-              ? formatDate(property.quoteRequiredDate)
-              : formatDate(property.addedDatetime),
+              ? formatDateNew(property.quoteRequiredDate)
+              : formatDateNew(property.addedDate),
             status:
               isHold || isCancel ? (
-                <span className="btn bg-warning w-100">
+                <span className="btn bg-danger text-light w-100">
                   {isHold ? "On Hold" : "Cancelled"}
                 </span>
               ) : isStatus === 3 ? (
@@ -321,8 +336,13 @@ export default function Exemple({
               ),
             appraisal_status:
               isHold || isCancel ? (
-                <span className="btn bg-warning  w-100">
+                <span className="btn bg-warning w-100">
                   {isHold ? "N.A." : "N.A."}
+                </span>
+              ) : property.orderStatus === 1 ? (
+                <span className="btn bg-warning  w-100">
+                  {getOrderValue(isBidded.orderStatus)} -
+                  {formatDate(isBidded.statusDate)}
                 </span>
               ) : property.orderStatus !== null ? (
                 <span className="btn bg-warning  w-100">
@@ -368,27 +388,20 @@ export default function Exemple({
                   </li>
                 )}
 
-                {!isEditable &&
-                  isStatus === 1 &&
-                  (isHold || isCancel ? (
-                    ""
-                  ) : (
-                    <li>
-                      <Link href={`/my-property-bids/${property.orderId}`}>
-                        <span className="btn btn-color w-100 mb-1">
-                          {" "}
-                          Quotes{" "}
-                        </span>
-                      </Link>{" "}
-                      {/* <Link
+                {!isEditable && isStatus === 1 && (
+                  <li>
+                    <Link href={`/my-property-bids/${property.orderId}`}>
+                      <span className="btn btn-color w-100 mb-1"> Quotes </span>
+                    </Link>{" "}
+                    {/* <Link
                       className="btn btn-color-table"
                       style={{ marginLeft: "4.3rem" }}
                       href={`/my-property-bids/${property.propertyId}`}
                     >
                       <span className="flaticon-invoice"></span>
                     </Link> */}
-                    </li>
-                  ))}
+                  </li>
+                )}
                 {/* <li
                 className="list-inline-item"
                 data-toggle="tooltip"
@@ -547,7 +560,7 @@ export default function Exemple({
                 </li>
                 {/* )} */}
 
-                {!isEditable && !isCancel && !isHold && (
+                {!isEditable && !isCancel && (
                   <li title="Quotes">
                     {/* <Link href={`/my-property-bids/${property.propertyId}`}>
                       <span className="btn btn-color w-100 mb-1"> Quotes </span>
@@ -593,7 +606,7 @@ export default function Exemple({
                 </Link>
               </li> */}
 
-                {isEditable && !isCancel && (
+                {(isEditable || isStatus === 1) && !isCancel && (
                   <li title="Edit Property">
                     {/* <Link href={`/create-listing/${property.propertyId}`}>
                       <span className="btn btn-color w-100 mb-1"> Edit </span>

@@ -23,7 +23,7 @@ const Index = () => {
   const [isStatusModal, setIsStatusModal] = useState(false);
   const [toggleId, setToggleId] = useState(-1);
 
-  const [disable, setDisable] = useState(false);
+  const [disable,setDisable]=useState(false);
   const [toggleWishlist, setToggleWishlist] = useState(0);
   const [searchResult, setSearchResult] = useState([]);
   const [property, setProperty] = useState("");
@@ -65,30 +65,31 @@ const Index = () => {
   const [remark, setRemark] = useState("");
 
   const handleStatusUpdateHandler = () => {
-    setDisable(true);
+    setDisable(true)
+   
+      const data = JSON.parse(localStorage.getItem("user"));
+      const payload = {
+        token: data.token,
+        Quoteid: currentBid.bidId,
+        OrderStatus: Number(orderStatus),
+        remark: remark,
+        statusDate: statusDate,
+      };
 
-    const data = JSON.parse(localStorage.getItem("user"));
-    const payload = {
-      token: data.token,
-      Quoteid: currentBid.bidId,
-      OrderStatus: Number(orderStatus),
-      remark: remark,
-      statusDate: statusDate,
-    };
-
-    const encryptedBody = encryptionData(payload);
-    toast.loading("Updating order status!!");
-    axios
-      .put("/api/updateOrderStatus", encryptedBody)
-      .then((res) => {
-        toast.dismiss();
-        toast.success("Successfully updated!!");
-        location.reload(true);
-      })
-      .catch((err) => {
-        toast.dismiss();
-        toast.error(err?.response?.data?.error);
-      });
+      const encryptedBody = encryptionData(payload);
+      toast.loading("Updating order status!!");
+      axios
+        .put("/api/updateOrderStatus", encryptedBody)
+        .then((res) => {
+          toast.dismiss();
+          toast.success("Successfully updated!!");
+          location.reload(true);
+        })
+        .catch((err) => {
+          toast.dismiss();
+          toast.error(err?.response?.data?.error);
+        });
+    
 
     setRemark("");
     setCurrentBid({});
@@ -119,10 +120,12 @@ const Index = () => {
   const [openDate, setOpenDate] = useState(false);
   const [statusDate, setStatusDate] = useState("");
 
+
+
   const [allAppraiser, setAllAppraiser] = useState([]);
   const [assignModal, setAssignModal] = useState(false);
 
-  console.log("allAppraiser", allAppraiser);
+  console.log("allAppraiser",allAppraiser);
 
   const handleStatusSelect = (value) => {
     if (String(value) === "Appraisal Visit Confirmed") {
@@ -160,14 +163,12 @@ const Index = () => {
   const [assignPropertyId, setAssignPropertyId] = useState(-1);
 
   const assignAppraiserUpdateHandler = () => {
-    if (assignAppraiserId <= 0) {
-      toast.error("Please select only active and appropriate appraisers!");
-    } else {
+    
       const data = JSON.parse(localStorage.getItem("user"));
       const payload = {
         companyid: data.appraiserCompany_Datails.appraiserCompanyId,
         propertyid: Number(assignPropertyId),
-        appraiserid: Number(assignAppraiserId),
+        appraiserid: Number(selectedAppraiser),
       };
 
       const encryptedData = encryptionData(payload);
@@ -188,7 +189,7 @@ const Index = () => {
           toast.error(err);
         });
       setAssignPropertyId(-1);
-    }
+    
   };
 
   const closeAssignModal = () => {
@@ -465,6 +466,7 @@ const Index = () => {
     };
   };
 
+  console.log("assignAppraiser",assignAppraiser);
   const PropertyInfoHandler = (orderId) => {
     const printWindow = window.open("", "_blank");
     printWindow.document.write("<html><head><title></title></head><body>");
@@ -1746,7 +1748,7 @@ const Index = () => {
                         </Link>
                       </div>
                     </div>
-                    <h3 className="text-center">Quote Status Updation</h3>
+                    <h3 className="text-center">Assign Appraiser </h3>
 
                     <select
                       required
@@ -1764,12 +1766,14 @@ const Index = () => {
                         backgroundColor: "#E8F0FE",
                       }}
                     >
-                      {allAppraiser.map((item, index) => {
+                      {assignAppraiser.map((item, index) => {
                         <option value={0}>....</option>;
                         return (
-                          <option key={item.id} value={item.$id}>
-                            {item.firstName} {item.lastName}
+                          item.item.isActive ?
+                          <option key={item.item.id} value={item.item.id}>
+                            {item.item.firstName} {item.item.lastName}
                           </option>
+                          : null
                         );
                       })}
                     </select>
@@ -1834,7 +1838,7 @@ const Index = () => {
                     <div className="row">
                       <div className="col-lg-12 text-center">
                         <h2 className=" text-color mt-1">
-                          Quote Status Updation
+                          Appraisal Status Updation
                         </h2>
                       </div>
                     </div>
@@ -1904,14 +1908,14 @@ const Index = () => {
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
                       <button
-                        disabled={disable}
+                        disabled  ={disable}
                         className="btn w-35 btn-color"
                         onClick={closeStatusUpdateHandler}
                       >
                         Cancel
                       </button>
                       <button
-                        disabled={disable}
+                      disabled={disable}
                         className="btn btn-color w-10"
                         style={{ marginLeft: "12px" }}
                         onClick={handleStatusUpdateHandler}

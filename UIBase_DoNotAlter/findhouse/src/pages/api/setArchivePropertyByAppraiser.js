@@ -17,20 +17,19 @@ async function handler(request, response) {
 
     const { token, orderId, status, userid } = body;
 
-    // console.log(body);
+    const payload = {
+      orderId: orderId,
+      userId: userid,
+      status: status,
+    };
 
     const userResponse = await axios.post(
       `${domain}/com.appraisalland.Property/archievePropertyByApprasier`,
-      {},
+      payload,
       {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
-        },
-        params: {
-          orderId: orderId,
-          userId: userid,
-          status: status,
         },
       }
     );

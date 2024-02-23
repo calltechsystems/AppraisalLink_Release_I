@@ -154,18 +154,19 @@ const Index = () => {
   );
 
   const unArchivePropertyHandler = (propertyId) => {
+
     const data = JSON.parse(localStorage.getItem("user"));
 
-    const payload = {
+    
+
+    toast.loading("Un-Archiving the desired property!!.");
+
+    const encryptedBody = encryptionData({
       orderId: propertyId,
       userid: data.userId,
       status: false,
       token: data.token,
-    };
-
-    toast.loading("Un-Archiving the desired property!!.");
-
-    const encryptedBody = encryptionData(payload);
+    });
 
     axios
       .post("/api/setArchivePropertyByAppraiser", encryptedBody, {
@@ -297,8 +298,9 @@ const Index = () => {
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
-      propertyId: propertyId,
+      orderId: propertyId,
       userid: data.userId,
+      status:false,
       token: data.token,
     };
 
@@ -1675,7 +1677,7 @@ const Index = () => {
               {isStatusModal && (
                 <div className="modal">
                   <div className="modal-content">
-                    <h3 className="text-center">Quote Status Updation</h3>
+                    <h3 className="text-center"> Appraisal Status Updation</h3>
 
                     <select
                       required

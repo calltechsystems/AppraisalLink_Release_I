@@ -300,7 +300,8 @@ const Index = () => {
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
-      propertyId:propertyId,
+      orderId:propertyId,
+      status:false,
       userid:data.userId,
       token:data.token
     };

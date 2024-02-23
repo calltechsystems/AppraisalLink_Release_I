@@ -119,6 +119,7 @@ const Index = () => {
     setIsQuoteModalOpen(true);
   };
 
+  console.log("assignAppraiser",assignAppraiser);
   const [openDate, setOpenDate] = useState(false);
   const [statusDate, setStatusDate] = useState("");
 
@@ -161,14 +162,13 @@ const Index = () => {
   const [assignPropertyId, setAssignPropertyId] = useState(-1);
 
   const assignAppraiserUpdateHandler = () => {
-    if (assignAppraiserId <= 0) {
-      toast.error("Please select only active and appropriate appraisers!");
-    } else {
+
+  
       const data = JSON.parse(localStorage.getItem("user"));
       const payload = {
         companyid: data.appraiserCompany_Datails.appraiserCompanyId,
         propertyid: Number(assignPropertyId),
-        appraiserid: Number(assignAppraiserId),
+        appraiserid: Number(selectedAppraiser),
       };
 
       const encryptedData = encryptionData(payload);
@@ -189,7 +189,7 @@ const Index = () => {
           toast.error(err);
         });
       setAssignPropertyId(-1);
-    }
+    
   };
 
   const closeAssignModal = () => {
@@ -1747,7 +1747,7 @@ const Index = () => {
                         </Link>
                       </div>
                     </div>
-                    <h3 className="text-center">Assign Appraiser</h3>
+                    <h3 className="text-center">Assign Appraiser </h3>
 
                     <select
                       required
@@ -1755,22 +1755,18 @@ const Index = () => {
                       data-live-search="true"
                       data-width="100%"
                       onChange={(e) => setSelectedAppraiser(e.target.value)}
-                      // value={buildinRef}
-                      // onChange={(e) => setBuildinRef(e.target.value)}
-                      // onChange={(e) => setBuildinRef(e.target.value)}
-                      // disabled={isDisable}
                       style={{
                         paddingTop: "15px",
                         paddingBottom: "15px",
                         backgroundColor: "#E8F0FE",
                       }}
                     >
-                      {allAppraiser.map((item, index) => {
+                      {assignAppraiser.map((item, index) => {
                         <option value={0}>....</option>;
                         return (
-                          item.isActive ===1 ?
-                          <option key={item.id} value={item.$id}>
-                            {item.firstName} {item.lastName}
+                          item.item.isActive ?
+                          <option key={item.item.id} value={item.item.id}>
+                            {item.item.firstName} {item.item.lastName}
                           </option>
                           : null
                         );
@@ -1837,7 +1833,7 @@ const Index = () => {
                     <div className="row">
                       <div className="col-lg-12 text-center">
                         <h2 className=" text-color mt-1">
-                          Quote Status Updation
+                          Appraisal Status Updation
                         </h2>
                       </div>
                     </div>

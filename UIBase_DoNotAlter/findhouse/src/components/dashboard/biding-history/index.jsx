@@ -63,9 +63,7 @@ const Index = () => {
 
   const handleStatusUpdateHandler = () => {
     setDisable(true)
-   if (orderStatus <= currentBid.orderStatus) {
-      toast.error("Select a proper quote status Please !!");
-    } else {
+   
       const data = JSON.parse(localStorage.getItem("user"));
       const payload = {
         token: data.token,
@@ -88,7 +86,7 @@ const Index = () => {
           toast.dismiss();
           toast.error(err?.response?.data?.error);
         });
-    }
+    
 
     setRemark("");
     setCurrentBid({});
@@ -1790,7 +1788,7 @@ const Index = () => {
                     <div className="row">
                       <div className="col-lg-12 text-center">
                         <h2 className=" text-color mt-1">
-                          Quote Status Updation
+                        Appraisal Status Updation
                         </h2>
                       </div>
                     </div>
