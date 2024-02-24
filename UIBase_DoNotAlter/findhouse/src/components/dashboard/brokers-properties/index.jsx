@@ -197,7 +197,6 @@ const Index = () => {
   };
 
   const closeCancelHoldHandler = () => {
-    setDisable(true);
     setIsCancelProperty(false);
     setIsHoldProperty(false);
     setModalOpen(false);

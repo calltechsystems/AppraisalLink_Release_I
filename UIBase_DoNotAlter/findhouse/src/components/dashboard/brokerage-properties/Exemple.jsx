@@ -623,7 +623,7 @@ export default function Exemple({
                 {/* End li */}
 
                 {/* {isEditable && ( */}
-                {!isCancel && (
+                {!isCancel && isStatus !== 3 && (
                   <li title={!isHold ? "On Hold" : "Remove Hold"}>
                     <span
                       className="btn btn-color-table "
@@ -642,7 +642,7 @@ export default function Exemple({
                 {/* )} */}
 
                 {/* {isEditable && ( */}
-                {!isCancel && !isHold && (
+                {!isCancel && isStatus !== 3 && !isHold && (
                   <li title={"Order Cancel"}>
                     <span
                       className="btn btn-color-table"

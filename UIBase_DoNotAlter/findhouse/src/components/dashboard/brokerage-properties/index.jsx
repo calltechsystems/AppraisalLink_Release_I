@@ -17,6 +17,7 @@ import Loader from "./Loader";
 import { AppraiserStatusOptions } from "../create-listing/data";
 
 const Index = () => {
+  const [disable, setDisable] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [isStatusModal, setIsStatusModal] = useState(false);
@@ -179,6 +180,7 @@ const Index = () => {
   const [propValue, setPropValue] = useState({});
 
   const onHoldHandler = () => {
+    setDisable(true);
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -209,6 +211,7 @@ const Index = () => {
   };
 
   const onCancelHandler = () => {
+    setDisable(true);
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -238,7 +241,6 @@ const Index = () => {
   };
 
   const closeCancelHoldHandler = () => {
-    setDisable(true);
     setIsCancelProperty(false);
     setIsHoldProperty(false);
     setModalOpen(false);
@@ -485,8 +487,6 @@ const Index = () => {
         toast.error(err?.response?.data?.error);
       });
   };
-
-  const [disable, setDisable] = useState(false);
 
   useEffect(() => {
     console.log(searchQuery);
