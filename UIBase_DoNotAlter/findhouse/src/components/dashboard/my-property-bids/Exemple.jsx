@@ -266,7 +266,7 @@ export default function Exemple({
 
         const updatedRow = {
           AppraiserId: property.appraiserUserId ? property.appraiserUserId : 0,
-          quote: property.bidAmount,
+          quote: `$ ${property.bidAmount}`,
           amount: property.bidAmount,
           description: property.description != "" ? property.description : "NA",
           date: formatDate(property.requestTime),

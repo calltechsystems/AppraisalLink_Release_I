@@ -505,7 +505,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                     userData
                       ? userData.userType === 1 || userData.userType === 6
                         ? "/my-dashboard"
-                        : userData.userType === 3
+                        : userData.userType === 2
                         ? "/brokerage-dashboard"
                         : userData.userType === 4
                         ? "/appraiser-company-dashboard"

@@ -105,7 +105,7 @@ export default function Exemple({
   const [show, setShow] = useState(false);
   const [all, setAll] = useState([]);
 
-  const [appraiser,setAppraisers]=useState([]);
+  const [appraiser, setAppraisers] = useState([]);
 
   const router = useRouter();
   let tempData = [];
@@ -137,28 +137,27 @@ export default function Exemple({
     setRefresh(true);
   };
 
-  const getCurrentPropertyInfoHandler = ()=>{
-    let currentProperty={};
+  const getCurrentPropertyInfoHandler = () => {
+    let currentProperty = {};
     const url = window.location.pathname;
-     const propertyOrderId = url.split("/brokerage-properties-bid/")[1];
-    allProperties.map((prop,index)=>{
-      if(String(prop.orderId) === String(propertyOrderId)){
-        currentProperty=prop;
+    const propertyOrderId = url.split("/brokerage-properties-bid/")[1];
+    allProperties.map((prop, index) => {
+      if (String(prop.orderId) === String(propertyOrderId)) {
+        currentProperty = prop;
       }
     });
     return currentProperty;
-  }
+  };
 
   const triggerAppraiserInfo = (id) => {
-
     const data = JSON.parse(localStorage.getItem("user"));
-    let selectedAppraiser={};
-    appraiser.map((app,index)=>{
-      if(String(app.userId)=== String(id)){
-        selectedAppraiser=app;
+    let selectedAppraiser = {};
+    appraiser.map((app, index) => {
+      if (String(app.userId) === String(id)) {
+        selectedAppraiser = app;
       }
-    })
-    setAppInfo(selectedAppraiser)
+    });
+    setAppInfo(selectedAppraiser);
     setOpenBrokerModal(true);
   };
 
@@ -252,14 +251,13 @@ export default function Exemple({
 
   useEffect(() => {
     const prop = getCurrentPropertyInfoHandler();
-  console.log(prop)
+    console.log(prop);
     const getData = () => {
       properties.map((property, index) => {
-       
         const updatedRow = {
           AppraiserId: property.appraiserUserId ? property.appraiserUserId : 0,
-          quote: property.bidAmount,
-          amount: property.bidAmount,
+          quote: `$ ${property.bidAmount}`,
+          amount: ` ${property.bidAmount}`,
           description: property.description != "" ? property.description : "NA",
           date: formatDate(property.requestTime),
           appraiser: (
@@ -292,11 +290,13 @@ export default function Exemple({
           ),
 
           action:
-          prop.isOnHold || prop.isOnCancel ?
-          <p className="btn btn-danger">{`Cannot perform any actions as the current property is ${prop.isOnCancel || prop.isOnHold ? "Cancelled" : "On Hold"}`} </p>
-            
-          :
-            property.status === 1 ? (
+            prop.isOnHold || prop.isOnCancel ? (
+              <p className="btn btn-danger">
+                {`Cannot perform any actions as the current property is ${
+                  prop.isOnCancel || prop.isOnHold ? "Cancelled" : "On Hold"
+                }`}{" "}
+              </p>
+            ) : property.status === 1 ? (
               <div>
                 <h5 className="btn btn-success m-1">Accepted</h5>
                 <li
@@ -318,7 +318,6 @@ export default function Exemple({
               </div>
             ) : property.status === 0 ? (
               <ul className="">
-            
                 <li
                   className="list-inline-item"
                   data-toggle="tooltip"
@@ -380,38 +379,37 @@ export default function Exemple({
     const data = JSON.parse(localStorage.getItem("user"));
 
     axios
-    .get("/api/getAllAppraiser", {
-      headers: {
-        Authorization: `Bearer ${data.token}`,
-      },
-    })
-    .then((res) => {
-      let allbroker = res.data.data.result.$values;
-      axios
-      .get("/api/getAllAppraiserCompany", {
+      .get("/api/getAllAppraiser", {
         headers: {
           Authorization: `Bearer ${data.token}`,
         },
       })
-      .then((res2) => {
-        const allbrokerage = res2.data.data.result.$values;
-        let updated = allbroker;
-         allbrokerage.map((user,index)=>{
-          updated.push(user);
-         });
+      .then((res) => {
+        let allbroker = res.data.data.result.$values;
+        axios
+          .get("/api/getAllAppraiserCompany", {
+            headers: {
+              Authorization: `Bearer ${data.token}`,
+            },
+          })
+          .then((res2) => {
+            const allbrokerage = res2.data.data.result.$values;
+            let updated = allbroker;
+            allbrokerage.map((user, index) => {
+              updated.push(user);
+            });
 
-         console.log(updated);
-         setAppraisers(updated);
+            console.log(updated);
+            setAppraisers(updated);
+          })
+          .catch((err) => {
+            toast.error(err);
+          });
       })
       .catch((err) => {
-        toast.error(err);
+        toast.error(err?.response?.data?.error);
+        // (true);
       });
-    })
-    .catch((err) => {
-      toast.error(err?.response?.data?.error);
-      // (true);
-    });
-  
 
     //
     axios
@@ -435,20 +433,16 @@ export default function Exemple({
             },
           })
           .then((res) => {
-           
             toast.dismiss();
             const tempBids = res.data.data.$values;
-           
-    
+
             setAllProperties(result.data.data.properties.$values);
             setProperties(tempBids);
-          
           })
           .catch((err) => {
             toast.dismiss();
             toast.error(err?.response?.data?.error);
           });
-    
       })
       .catch((err) => {
         toast.dismiss();
@@ -456,7 +450,6 @@ export default function Exemple({
         // setModalIsOpenError(true);
       });
 
-     
     setRefresh(false);
   }, [refresh]);
   return (

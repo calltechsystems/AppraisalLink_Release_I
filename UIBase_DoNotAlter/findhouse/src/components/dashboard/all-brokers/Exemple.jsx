@@ -9,12 +9,12 @@ import Loader from "./Loader";
 // import "./SmartTable.css";
 
 const headCells = [
-  {
-    id: "email",
-    numeric: false,
-    label: "Email / Username",
-    width: 200,
-  },
+  // {
+  //   id: "email",
+  //   numeric: false,
+  //   label: "Email / Username",
+  //   width: 200,
+  // },
 
   {
     id: "firstname",
@@ -244,7 +244,7 @@ export default function Exemple({
         const data = temp.broker;
         const updatedRow = {
           // appraiser_id: data?.item.id,
-          email: data?.email,
+          // emailaddress: data?.emailId ? data?.emailId : "NA",
           firstname: data?.firstName ? data?.firstName : "NA",
           lastname: data?.lastName ? data?.lastName : "NA",
           // company: data?.company,
@@ -258,7 +258,7 @@ export default function Exemple({
           phone: data?.phoneNumber ? data?.phoneNumber : "NA",
           address: `${data?.streetName} ${data?.streetNumber},${data?.city}-${data?.postalCode}`,
           // date: dateNow,
-          emailaddress: data?.email,
+          emailaddress: data?.emailId ? data?.emailId : "NA",
 
           action: (
             <div className="print-hidden-column">

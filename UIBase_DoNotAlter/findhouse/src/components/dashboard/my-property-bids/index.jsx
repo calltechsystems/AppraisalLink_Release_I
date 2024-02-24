@@ -521,7 +521,7 @@ const Index = ({ propertyId }) => {
                       </h5>
                       <span className="col-lg-1">:</span>
                       <span className="col-lg-6 text-start">
-                        {appInfo.email ? appInfo.email : "N.A."}
+                        {appInfo.userEmail ? appInfo.email : "N.A."}
                       </span>
                     </div>
                     <div className="row offset-1">
@@ -530,7 +530,7 @@ const Index = ({ propertyId }) => {
                       </h5>
                       <span className="col-lg-1">:</span>
                       <span className="col-lg-6 text-start">
-                        {appInfo.phoneNumber}
+                        {appInfo.phoneNumber ? appInfo.phoneNumber : "N.A."}
                       </span>
                     </div>
                     <div className="row offset-1">
@@ -539,7 +539,18 @@ const Index = ({ propertyId }) => {
                       </h5>
                       <span className="col-lg-1">:</span>
                       <span className="col-lg-6 text-start">
-                        {appInfo.companyName}
+                        {appInfo.companyName
+                          ? appInfo.companyName
+                          : appInfo.appraiserCompanyName}
+                      </span>
+                    </div>
+                    <div className="row offset-1">
+                      <h5 className="col-lg-3 mt-1 text-start">
+                        <span className="">Licence Number</span>{" "}
+                      </h5>
+                      <span className="col-lg-1">:</span>
+                      <span className="col-lg-6 text-start">
+                        {appInfo.licenseNumber ? appInfo.licenseNumber : "N.A."}
                       </span>
                     </div>
                     <div className="row offset-1">
@@ -548,7 +559,7 @@ const Index = ({ propertyId }) => {
                       </h5>
                       <span className="col-lg-1">:</span>
                       <span className="col-lg-6 text-start">
-                        {appInfo.designation}
+                        {appInfo.designation ? appInfo.designation : "N.A."}
                       </span>
                     </div>
                     <div className="row offset-1">
@@ -557,9 +568,44 @@ const Index = ({ propertyId }) => {
                       </h5>
                       <span className="col-lg-1">:</span>
                       <span className="col-lg-6">
-                        {appInfo.streetName}-{appInfo.streetNumber},
-                        {appInfo.area} {appInfo.city} - {appInfo.province}{" "}
-                        {appInfo.postalCode}
+                        {appInfo.addressLineOne}
+                        {appInfo.addressLineTwo} {appInfo.streetNumber}{" "}
+                        {appInfo.streetName} ,{appInfo.unit} {appInfo.city}{" "}
+                        {appInfo.province} {appInfo.postalCode}
+                      </span>
+                    </div>
+                    <div className="row offset-1">
+                      <h5 className="col-lg-3 mt-1 text-start">
+                        <span className="">Office Contact Name</span>{" "}
+                      </h5>
+                      <span className="col-lg-1">:</span>
+                      <span className="col-lg-6 text-start">
+                        {appInfo.officeContactFirstName
+                          ? appInfo.officeContactFirstName
+                          : "N.A."}{" "}
+                        {appInfo.officeContactLastName}
+                      </span>
+                    </div>
+                    <div className="row offset-1">
+                      <h5 className="col-lg-3 mt-1 text-start">
+                        <span className="">Office Contact Email</span>{" "}
+                      </h5>
+                      <span className="col-lg-1">:</span>
+                      <span className="col-lg-6 text-start">
+                        {appInfo.officeContactEmail
+                          ? appInfo.officeContactEmail
+                          : "N.A."}
+                      </span>
+                    </div>
+                    <div className="row offset-1">
+                      <h5 className="col-lg-3 mt-1 text-start">
+                        <span className="">Office Contact Phone</span>{" "}
+                      </h5>
+                      <span className="col-lg-1">:</span>
+                      <span className="col-lg-6 text-start">
+                        {appInfo.officeContactPhone
+                          ? appInfo.officeContactPhone
+                          : "N.A."}
                       </span>
                     </div>
                   </div>
@@ -569,7 +615,7 @@ const Index = ({ propertyId }) => {
                   ></div>
                   <div className="text-center" style={{}}>
                     <button
-                      className="btn btn-color w-35"
+                      className="btn btn-color w-50"
                       onClick={() => closeAppraiserHandler()}
                     >
                       Ok

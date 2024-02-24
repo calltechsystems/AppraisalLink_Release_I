@@ -22,7 +22,7 @@ const Index = ({ isView, propertyData }) => {
   const [updateView, setUpdateView] = useState(propertyData);
   const [isDisable, setDisable] = useState(updateView);
 
-  const [disable,setdisable]=useState(false);
+  const [disable, setdisable] = useState(false);
 
   const [appraisalQuoteDate, setAppraisalQuoteDate] = useState(
     propertyData ? propertyData.quoteRequiredDate : ""
