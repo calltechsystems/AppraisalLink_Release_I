@@ -60,7 +60,10 @@ const Pricing = ({
     const Packages = userData.userSubscription?.$values;
     const len = Packages?.length;
     setSelectedPackage(Packages?.length > 0 ? Packages[len-1] : {});
+   
   },[])
+
+  console.log(selectedPackage,data);
 
   const selectedIdStyle = selectedId ? selectedId : "2";
   const content =
@@ -154,7 +157,7 @@ const Pricing = ({
               </div>
             )}
 
-            {(!hideButton && String(selectedPackage.$id) !== String(item.id)) && (
+            {(!hideButton && String(selectedPackage.planId) !== String(item.id)) && (
               <div
                 className="pricing_footer"
                 onClick={() =>
@@ -172,7 +175,7 @@ const Pricing = ({
                 </a>
               </div>
             )}
-            {(!hideButton && String(selectedPackage.$id) === String(item.id)) && (
+            {(!hideButton && String(selectedPackage.planId) === String(item.id)) && (
               <div
                 className="pricing_footer"
               >

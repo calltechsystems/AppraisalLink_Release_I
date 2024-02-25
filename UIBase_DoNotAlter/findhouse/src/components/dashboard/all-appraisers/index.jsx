@@ -1252,7 +1252,7 @@ const Index = () => {
               {openEditModal && (
                 <div className="modal">
                   <div className="modal-content">
-                    <h3 className="text-center">Status Updation</h3>
+                    <h3 className="text-center">Activity Status Updation</h3>
 
                     <select
                       required
@@ -1341,12 +1341,15 @@ const Index = () => {
               </div>
             </div>
             <div className="row mt50">
-              <div className="col-lg-12">
-                <div className="copyright-widget text-center">
-                  <p>© 2020 Find House. Made with love.</p>
-                </div>
+            <div className="col-lg-12">
+              <div className="copyright-widget text-center">
+                <p>
+                  &copy; {new Date().getFullYear()} Appraisal Link. All
+                  Rights Reserved.
+                </p>
               </div>
             </div>
+          </div>
             {/* End .col */}
           </div>
         </div>

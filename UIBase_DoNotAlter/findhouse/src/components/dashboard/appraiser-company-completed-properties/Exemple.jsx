@@ -443,14 +443,11 @@ export default function Exemple({
 
             action: (
               <div className="print-hidden-column">
-                {isBidded.orderStatus === 3 ? (
-                  <span className="btn btn-success  w-100">Completed</span>
-                ) : isWait ? (
+                { 
+                isBidded.status === 2 ? (
                   <>
                   <p className="btn btn-danger  w-100">
-                  {`No further actions can be taken on this property since it is ${ property.isOnCancel ? "Cancelled" : "On Hold" } !.`}
-                  
-                  </p>
+                 Rejected </p>
                   <li
                   className=""
                   data-toggle="tooltip"
@@ -471,7 +468,38 @@ export default function Exemple({
                     </button>
                   </div>
                 </li>
-                  </>
+                </>
+                ) :
+                isWait ? (
+                  <ul>
+                  <p className="btn btn-danger  w-100">
+                  {`No further actions can be taken on this property since it is ${ property.isOnCancel ? "Cancelled" : "On Hold" } .`}
+                    
+                  </p>
+                  <li
+                    className=""
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Archive Property"
+                  >
+                    <div
+                      className="w-100"
+                      onClick={() => onArchivePropertyHandler(property.orderId)}
+                    >
+                      <button href="#" className="btn btn-color">
+                        <Link href="#">
+                          <span className="text-light">
+                            {" "}
+                            <FaArchive />
+                          </span>
+                        </Link>
+                      </button>
+                    </div>
+                  </li>
+                 
+                </ul>
+                ) :isBidded.orderStatus === 3 ? (
+                  <span className="btn btn-success  w-100">Completed</span>
                 ) : isBidded && isBidded.status !== 1 ? (
                   <ul className="mb0 d-flex gap-1">
                     {isWishlist.id ? (

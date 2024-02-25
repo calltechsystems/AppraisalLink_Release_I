@@ -215,7 +215,7 @@ export default function Exemple({
   const router = useRouter();
 
   const getOrderValue = (val) => {
-    let title = "";
+    let title = "Applicant Contancted By Appraiser";
     AppraiserStatusOptions.map((status) => {
       if (String(status.value) === String(val)) {
         title = status.type;
@@ -496,8 +496,66 @@ export default function Exemple({
               : "N.A.",
 
           action: (
+
             <div className="print-hidden-column">
-              {isBidded.orderStatus === 3 ? (
+              {
+                
+                isBidded.status === 2 ? (
+                  <>
+                  <p className="btn btn-danger  w-100">
+                 Rejected </p>
+                  <li
+                  className=""
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Archive Property"
+                >
+                  <div
+                    className="w-100"
+                    onClick={() => onArchivePropertyHandler(property.orderId)}
+                  >
+                    <button href="#" className="btn btn-color">
+                      <Link href="#">
+                        <span className="text-light">
+                          {" "}
+                          <FaArchive />
+                        </span>
+                      </Link>
+                    </button>
+                  </div>
+                </li>
+                </>
+                ) :
+                isWait ? (
+                  <ul>
+                  <p className="btn btn-danger  w-100">
+                  {`No further actions can be taken on this property since it is ${ property.isOnCancel ? "Cancelled" : "On Hold" } .`}
+                    
+                  </p>
+                  <li
+                    className=""
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Archive Property"
+                  >
+                    <div
+                      className="w-100"
+                      onClick={() => onArchivePropertyHandler(property.orderId)}
+                    >
+                      <button href="#" className="btn btn-color">
+                        <Link href="#">
+                          <span className="text-light">
+                            {" "}
+                            <FaArchive />
+                          </span>
+                        </Link>
+                      </button>
+                    </div>
+                  </li>
+                 
+                </ul>
+                ) :
+                isBidded.orderStatus === 3 ? (
                 <span className="btn btn-success  w-100">Completed</span>
               ) : isWait ? (
                 <>

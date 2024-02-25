@@ -33,8 +33,9 @@ const Pagination = ({ setStart , setEnd,properties}) => {
   return (
     <div>
       <ul className="page_navigation">
-        {/* Previous page button */}
-        <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+        { properties.length > 1 ? 
+          <>
+          <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
           <a
             className="page-link"
             href="#"
@@ -46,8 +47,6 @@ const Pagination = ({ setStart , setEnd,properties}) => {
           </a>
         </li>
 
-      
-        {/* Next page button */}
         <li className={`page-item ${currentPage === pageNumbers.length ? 'disabled' : ''}`}>
           <a
             className="page-link"
@@ -57,6 +56,9 @@ const Pagination = ({ setStart , setEnd,properties}) => {
             <span className="flaticon-right-arrow"></span>
           </a>
         </li>
+        </>
+      :""}
+        
       </ul>
     </div>
   );

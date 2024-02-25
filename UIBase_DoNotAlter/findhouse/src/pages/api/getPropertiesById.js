@@ -7,7 +7,7 @@ async function handler(request, response) {
 
   try {
     const token = request.headers.authorization;
-    const orderId = request.query.orderId;
+    const orderId = request.query.item;
 
     const userResponse = await axios.get(
       `${domain}/com.appraisalland.Property/getPropertyByOrderID`,

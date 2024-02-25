@@ -79,11 +79,6 @@ const Modal = ({
     const bidAmount = value;
     const desp = description;
 
-    if (bidAmount <= 0 || bidAmount === "") {
-      toast.error("Quoted amount should be filled !");
-      return;
-    }
-   else{
       const user = JSON.parse(localStorage.getItem("user"));
 
       const formData = {
@@ -114,7 +109,7 @@ const Modal = ({
           toast.error("Try Again");
         });
       setToggle(false);
-    }
+    
   };
 
   const formatLargeNumber = (number) => {

@@ -749,6 +749,41 @@ const Index = () => {
                         {(openBrokerModal && typeView === 1) && (
                           <div className="modal">
                             <div className="modal-content">
+                            <div className="row">
+                            <div className="col-lg-12">
+                              <Link href="/" className="">
+                                <Image
+                                  width={50}
+                                  height={45}
+                                  className="logo1 img-fluid"
+                                  style={{ marginTop: "-20px" }}
+                                  src="/assets/images/logo.png"
+                                  alt="header-logo2.png"
+                                />
+                                <span
+                                  style={{
+                                    color: "#2e008b",
+                                    fontWeight: "bold",
+                                    fontSize: "24px",
+                                    // marginTop: "20px",
+                                  }}
+                                >
+                                  Appraisal
+                                </span>
+                                <span
+                                  style={{
+                                    color: "#97d700",
+                                    fontWeight: "bold",
+                                    fontSize: "24px",
+                                    // marginTop: "20px",
+                                  }}
+                                >
+                                  {" "}
+                                  Land
+                                </span>
+                              </Link>
+                            </div>
+                          </div>
                               <h3 className="text-center">Property Details</h3>
                              
                               <div className="d-flex justify-content-center" id="property-info-container">
@@ -1207,7 +1242,41 @@ const Index = () => {
                         {(openBrokerModal && typeView === 2) && (
                           <div className="modal">
                             <div className="modal-content">
-                             
+                            <div className="row">
+                            <div className="col-lg-12">
+                              <Link href="/" className="">
+                                <Image
+                                  width={50}
+                                  height={45}
+                                  className="logo1 img-fluid"
+                                  style={{ marginTop: "-20px" }}
+                                  src="/assets/images/logo.png"
+                                  alt="header-logo2.png"
+                                />
+                                <span
+                                  style={{
+                                    color: "#2e008b",
+                                    fontWeight: "bold",
+                                    fontSize: "24px",
+                                    // marginTop: "20px",
+                                  }}
+                                >
+                                  Appraisal
+                                </span>
+                                <span
+                                  style={{
+                                    color: "#97d700",
+                                    fontWeight: "bold",
+                                    fontSize: "24px",
+                                    // marginTop: "20px",
+                                  }}
+                                >
+                                  {" "}
+                                  Land
+                                </span>
+                              </Link>
+                            </div>
+                          </div>
   
                               <h3 className="text-center">Broker Details</h3>
                              
@@ -1454,6 +1523,41 @@ const Index = () => {
                             <div className="modal-content">
                              
   
+                            <div className="row">
+                            <div className="col-lg-12">
+                              <Link href="/" className="">
+                                <Image
+                                  width={50}
+                                  height={45}
+                                  className="logo1 img-fluid"
+                                  style={{ marginTop: "-20px" }}
+                                  src="/assets/images/logo.png"
+                                  alt="header-logo2.png"
+                                />
+                                <span
+                                  style={{
+                                    color: "#2e008b",
+                                    fontWeight: "bold",
+                                    fontSize: "24px",
+                                    // marginTop: "20px",
+                                  }}
+                                >
+                                  Appraisal
+                                </span>
+                                <span
+                                  style={{
+                                    color: "#97d700",
+                                    fontWeight: "bold",
+                                    fontSize: "24px",
+                                    // marginTop: "20px",
+                                  }}
+                                >
+                                  {" "}
+                                  Land
+                                </span>
+                              </Link>
+                            </div>
+                          </div>
                               <h3 className="text-center">Appraiser Details</h3>
                              
                               <div className="d-flex justify-content-center" id="broker-info-container">
@@ -1881,11 +1985,14 @@ const Index = () => {
             </div>
 
             <div className="row mt50">
-              <div className="col-lg-12">
-                <div className="copyright-widget text-center">
-                  <p>© 2020 Find House. Made with love.</p>
-                </div>
+            <div className="col-lg-12">
+              <div className="copyright-widget text-center">
+                <p>
+                  &copy; {new Date().getFullYear()} Appraisal Link. All
+                  Rights Reserved.
+                </p>
               </div>
+            </div>
             </div>
             {/* End .col */}
           </div>

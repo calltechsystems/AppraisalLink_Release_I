@@ -9,12 +9,6 @@ import Loader from "./Loader";
 // import "./SmartTable.css";
 
 const headCells = [
-  {
-    id: "appraiser_id",
-    numeric: false,
-    label: "Appraiser Id",
-    width: 100,
-  },
 
   {
     id: "firstname",
@@ -222,9 +216,7 @@ export default function Exemple({
       year: "numeric",
       month: "long",
       day: "numeric",
-      hour: "numeric",
-      minute: "numeric",
-      second: "numeric",
+      
     };
 
     const formattedDate = new Date(dateString).toLocaleString("en-US", options);
@@ -276,7 +268,7 @@ export default function Exemple({
       <span className="btn btn-danger  w-100">In-Active</span>
     ) ,
           phone: data.item.phoneNumber ? data.item.phoneNumber : "-",
-          address :data.item.streetName ? `${data.item.streetName} ${data.item.streetNumber},${data.city}-${data.postalCode}` : "N.A.",
+          address :data.item.streetName ? `${data.item.streetName} ${data.item.streetNumber},${data.item.province}-${data.item.postalCode}` : "N.A.",
           date: dateNow,
 
           action: (

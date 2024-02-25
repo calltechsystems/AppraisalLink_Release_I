@@ -479,7 +479,9 @@ const Index = ({ isView, propertyData }) => {
       } else {
         const encryptedData = encryptionData(payload);
 
-        console.log(updateView, propertyData);
+        const url = window.location.pathname;
+
+    const propertyOrderId = url.split("/create-listing/")[1];
 
         toast.loading("Updating the property..");
         axios

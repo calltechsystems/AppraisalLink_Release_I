@@ -11,7 +11,12 @@ const Index = () => {
   const [propertyData, setPropertyData] = useState(null);
 
   useEffect(() => {
+    const url = window.location.pathname;
+
+    const propertyOrderId = url.split("/create-listing/")[1];
+    console.log(propertyOrderId)
     const fetchPropertyData = async () => {
+
       try {
         const userData = JSON.parse(localStorage.getItem("user"));
         const response = await axios.get("/api/getPropertiesById", {
@@ -20,7 +25,7 @@ const Index = () => {
             "Content-Type": "application/json",
           },
           params: {
-            item: item,
+            item: propertyOrderId,
           },
         });
         console.log(response.data);
@@ -41,7 +46,7 @@ const Index = () => {
       <Seo pageTitle="Create Listing" />
 
       {propertyData && (
-        <CreateListing isView={true} propertyData={propertyData} />
+        <CreateListing isView={true} propertyData={propertyData.property} />
       )}
     </>
   );

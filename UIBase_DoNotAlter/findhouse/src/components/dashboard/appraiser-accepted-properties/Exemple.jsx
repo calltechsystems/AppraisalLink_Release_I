@@ -445,40 +445,63 @@ export default function Exemple({
 
             action: (
               <div className="print-hidden-column">
-                {isWait ? (
+                { 
+                isBidded.status === 2 ? (
                   <>
                   <p className="btn btn-danger  w-100">
-                  {`No further actions can be taken on this property since it is ${ property.isOnCancel ? "Cancelled" : "On Hold" } !.`}
-                  
+                 Rejected </p>
+                  <li
+                  className=""
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Archive Property"
+                >
+                  <div
+                    className="w-100"
+                    onClick={() => onArchivePropertyHandler(property.orderId)}
+                  >
+                    <button href="#" className="btn btn-color">
+                      <Link href="#">
+                        <span className="text-light">
+                          {" "}
+                          <FaArchive />
+                        </span>
+                      </Link>
+                    </button>
+                  </div>
+                </li>
+                </>
+                ) : 
+                isWait ? (
+                  <ul>
+                  <p className="btn btn-danger  w-100">
+                  {`No further actions can be taken on this property since it is ${ property.isOnCancel ? "Cancelled" : "On Hold" } .`}
+                    
                   </p>
                   <li
-                      className="list-inline-item"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Archive Property"
+                    className=""
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Archive Property"
+                  >
+                    <div
+                      className="w-100"
+                      onClick={() => onArchivePropertyHandler(property.orderId)}
                     >
-                      <div
-                        className="w-100"
-                        onClick={() =>
-                          onArchivePropertyHandler(property.propertyId)
-                        }
-                      >
-                        <button
-                          href="#"
-                          className="btn btn-color w-100 mt-1"
-                          style={{ marginLeft: "12px" }}
-                        >
-                          <Link href="#">
-                            <span className="text-light">
-                              {" "}
-                              <FaArchive />
-                            </span>
-                          </Link>
-                        </button>
-                      </div>
-                    </li>
-                    </>
-                ) : isBidded && isBidded.status !== 1 ? (
+                      <button href="#" className="btn btn-color">
+                        <Link href="#">
+                          <span className="text-light">
+                            {" "}
+                            <FaArchive />
+                          </span>
+                        </Link>
+                      </button>
+                    </div>
+                  </li>
+                 
+                </ul>
+                ) :
+                isBidded && isBidded.status !== 1 ? (
                   <ul className="">
                     {isWishlist.id ? (
                       <button

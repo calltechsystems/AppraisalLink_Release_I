@@ -459,6 +459,7 @@ export default function Exemple({
             action: (
               <div className="print-hidden-column">
                 {
+                  
                   isBidded.status === 2 ? (
                     <>
                     <p className="btn btn-danger  w-100">
@@ -484,35 +485,36 @@ export default function Exemple({
                     </div>
                   </li>
                   </>
-                  ) :isWait ? (
-                  <ul>
-                  <p className="btn btn-danger  w-100">
-                  {`No further actions can be taken on this property since it is ${ property.isOnCancel ? "Cancelled" : "On Hold" } .`}
-                    
-                  </p>
-                  <li
-                    className=""
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title="Archive Property"
-                  >
-                    <div
-                      className="w-100"
-                      onClick={() => onArchivePropertyHandler(property.orderId)}
+                  ) :
+                  isWait ? (
+                    <ul>
+                    <p className="btn btn-danger  w-100">
+                    {`No further actions can be taken on this property since it is ${ property.isOnCancel ? "Cancelled" : "On Hold" } .`}
+                      
+                    </p>
+                    <li
+                      className=""
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Archive Property"
                     >
-                      <button href="#" className="btn btn-color">
-                        <Link href="#">
-                          <span className="text-light">
-                            {" "}
-                            <FaArchive />
-                          </span>
-                        </Link>
-                      </button>
-                    </div>
-                  </li>
-                 
-                </ul>
-                ) : isBidded && isBidded.status !== 1 ? (
+                      <div
+                        className="w-100"
+                        onClick={() => onArchivePropertyHandler(property.orderId)}
+                      >
+                        <button href="#" className="btn btn-color">
+                          <Link href="#">
+                            <span className="text-light">
+                              {" "}
+                              <FaArchive />
+                            </span>
+                          </Link>
+                        </button>
+                      </div>
+                    </li>
+                   
+                  </ul>
+                  ) : isBidded && isBidded.status !== 1 ? (
                   <ul className="mb0 d-flex gap-1">
                     {isWishlist.id ? (
                       <button
@@ -706,7 +708,7 @@ export default function Exemple({
     let tempProperties = [],
       tempWishlist = [];
     
-    if(data?.appraiser_Details?.companyId){
+    if(data?.userType === 5){
       axios
     .get("/api/getAllAssignProperties", {
       headers: {
