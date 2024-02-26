@@ -34,7 +34,7 @@ const Index = ({ isView, propertyData }) => {
     return resultArray;
   };
 
-  const [disable,setdisable]=useState(false)
+  const [disable, setdisable] = useState(false);
   let userData = {};
   const [updatedProperty, setUpdatedProperty] = useState([]);
 
@@ -359,7 +359,7 @@ const Index = ({ isView, propertyData }) => {
     window.location.reload();
   };
   const updateHandler = () => {
-    setdisable(true)
+    setdisable(true);
     setModalIsOpen(false);
     const nameRegex = /^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -481,7 +481,7 @@ const Index = ({ isView, propertyData }) => {
 
         const url = window.location.pathname;
 
-    const propertyOrderId = url.split("/create-listing/")[1];
+        const propertyOrderId = url.split("/create-listing/")[1];
 
         toast.loading("Updating the property..");
         axios
@@ -631,7 +631,7 @@ const Index = ({ isView, propertyData }) => {
   };
 
   const finalSubmitHandler = () => {
-    setdisable(true)
+    setdisable(true);
     setModalIsOpen(false);
     const nameRegex = /^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;

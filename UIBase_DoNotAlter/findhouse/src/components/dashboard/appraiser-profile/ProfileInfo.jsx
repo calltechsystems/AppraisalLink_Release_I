@@ -75,6 +75,10 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     userData.appraiser_Details?.commissionRate || ""
   );
 
+  const [emailId, setEmailId] = useState(
+    userData?.appraiser_Details?.emailId || ""
+  );
+
   const [maxNumberOfAssignedOrders, setMaxNumberOfAssignedOrders] = useState(
     userData?.appraiser_Details?.maxNumberOfAssignedOrders || ""
   );
@@ -189,7 +193,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     const adressLine2 = addressLineTwoRef;
     const middleName = middleNameRef;
     const companyName = companyNameRef;
-
+    // const emailId = emailId;
     const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const nameRegex = /^[A-Za-z]+$/;
 
@@ -209,6 +213,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         !state ||
         !zipCode ||
         !selectedImage2.name ||
+        !emailId ||
         !phoneNumber) &&
       !userData
     ) {
@@ -264,6 +269,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         area: "",
         phoneNumber: phoneNumber,
         profileImage: SelectedImage,
+        emailId: emailId,
       };
       if (SMSAlert && !phoneNumber) {
         toast.error(
@@ -559,8 +565,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           required
                           id="formGroupExampleInput3"
                           style={{ backgroundColor: "#E8F0FE" }}
-                          value={userData?.userEmail ? userData.userEmail : ""}
-                          disabled
+                          value={emailId}
+                          onChange={(e) => setEmailId(e.target.value)}
+                          disabled={!edit}
                         />
                       </div>
                     </div>

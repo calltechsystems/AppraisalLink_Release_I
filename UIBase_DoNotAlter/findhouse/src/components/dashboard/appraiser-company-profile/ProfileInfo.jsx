@@ -38,6 +38,10 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     userData?.appraiserCompany_Datails?.licenseNumber || ""
   );
 
+  const [emailId, setEmailId] = useState(
+    userData?.appraiserCompany_Datails?.emailId || ""
+  );
+
   const [cellNumber, setCellNumber] = useState(
     userData?.appraiserCompany_Datails?.cellNumber || ""
   );
@@ -169,6 +173,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         !zipcodeRef ||
         !selectedImage2.url ||
         !addressLineRef ||
+        !emailId ||
         !cityRef) &&
       !userData
     ) {
@@ -198,6 +203,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         phoneNumber: phoneNumberRef,
         officeContactPhone: officeContactPhone,
         cellNumber: cellNumber,
+        emailId: emailId,
       };
 
       if (SMSAlert && !phoneNumberRef) {
@@ -503,8 +509,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           required
                           id="formGroupExampleInput3"
                           style={{ backgroundColor: "#E8F0FE" }}
-                          value={userData?.userEmail ? userData.userEmail : ""}
-                          disabled
+                          value={emailId}
+                          onChange={(e) => setEmailId(e.target.value)}
+                          disabled={!edit}
                         />
                       </div>
                     </div>

@@ -34,6 +34,7 @@ async function handler(request, response) {
       officeContactFirstName,
       officeContactPhone,
       appraiserCompanyName,
+      emailId,
     } = body;
 
     const formData = {
@@ -53,6 +54,7 @@ async function handler(request, response) {
       officeContactEmail: officeContactEmail,
       lenderListUrl: lenderListUrl,
       officeContactPhone: officeContactPhone,
+      emailId: emailId,
     };
 
     const userResponse = await axios.put(

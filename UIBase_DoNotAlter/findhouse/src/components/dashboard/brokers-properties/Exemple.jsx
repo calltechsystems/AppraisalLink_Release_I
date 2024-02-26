@@ -149,15 +149,30 @@ export default function Exemple({
   setModalOpen,
   setIsCancelProperty,
   setIsHoldProperty,
+  openbrokerInfoModal,
   isBidded,
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [allBids, setBids] = useState([]);
   const [show, setShow] = useState(false);
   let tempData = [];
+  const [AllBrokers, setAllBrokers] = useState([]);
 
   const sortObjectsByOrderIdDescending = (data) => {
     return data.sort((a, b) => b.order_id - a.order_id);
+  };
+
+  const getBrokerName = (id) => {
+    console.log(id);
+    let selectedAppraiser = {};
+    AllBrokers.map((appraiser, index) => {
+      console.log(appraiser, id);
+      if (String(appraiser.userId) === String(id)) {
+        selectedAppraiser = appraiser;
+      }
+    });
+
+    return `${selectedAppraiser.firstName} ${selectedAppraiser.lastName}`;
   };
 
   const AppraiserStatusOptions = [
@@ -206,6 +221,19 @@ export default function Exemple({
         "Appraisal visit completed; report writing is pending until fee received",
     },
   ];
+
+  const getBroker = (id) => {
+    let selectedBroker = {};
+    AllBrokers.map((appraiser, index) => {
+      //console.log(appraiser, id);
+      if (String(appraiser.userId) === String(id)) {
+        selectedBroker = appraiser;
+      }
+    });
+    console.log(selectedBroker);
+
+    openbrokerInfoModal(selectedBroker);
+  };
 
   const getOrderValue = (val) => {
     let title = "";
@@ -303,6 +331,7 @@ export default function Exemple({
   useEffect(() => {
     const getData = () => {
       properties.map((property, index) => {
+        console.log(property);
         const isBidded = getBidOfProperty(property.orderId);
         const isHold = property.isOnHold;
         const isCancel = property.isOnCancel;
@@ -316,6 +345,23 @@ export default function Exemple({
             quote_required_by: property.quoteRequiredDate
               ? formatDateNew(property.quoteRequiredDate)
               : formatDateNew(property.addedDatetime),
+            broker: (
+              <a href="#">
+                <button
+                  className=""
+                  style={{
+                    border: "0px",
+                    color: "#2e008b",
+                    textDecoration: "underline",
+                    // fontWeight: "bold",
+                    backgroundColor: "transparent",
+                  }}
+                  onClick={() => getBroker(property?.userId)}
+                >
+                  {getBrokerName(property?.userId)}
+                </button>
+              </a>
+            ),
             status:
               isHold || isCancel ? (
                 <span className="btn bg-danger text-light w-100">
@@ -629,7 +675,7 @@ export default function Exemple({
                 {/* End li */}
 
                 {/* {isEditable && ( */}
-                {!isCancel && (
+                {!isCancel && isStatus !== 3 && (
                   <li title={!isHold ? "On Hold" : "Remove Hold"}>
                     <span
                       className="btn btn-color-table "
@@ -648,7 +694,7 @@ export default function Exemple({
                 {/* )} */}
 
                 {/* {isEditable && ( */}
-                {!isCancel && !isHold && (
+                {!isCancel && isStatus !== 3 && !isHold && (
                   <li title={"Order Cancel"}>
                     <span
                       className="btn btn-color-table"
@@ -774,11 +820,19 @@ export default function Exemple({
             toast.error(err);
             // setModalIsOpenError(true);
           });
-      })
-      .catch((err) => {
-        toast.dismiss();
-        toast.error(err?.response?.data?.error);
       });
+    axios
+      .get("/api/getAllBrokers", {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+      })
+      .then((res) => {
+        let allbroker = res.data.data.$values;
+
+        setAllBrokers(allbroker);
+      })
+      .catch((err) => {});
 
     let tempBids = [];
 

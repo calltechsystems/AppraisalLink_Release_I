@@ -147,7 +147,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                             padding: "5px",
                           }}
                         >
-                          {userData?.userEmail}
+                          {userData?.appraiser_Details?.emailId}
                         </td>
                       </tr>
                       <tr>

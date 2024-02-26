@@ -34,6 +34,7 @@ async function handler(request, response) {
       maxNumberOfAssignedOrders,
       designation,
       commissionRate,
+      emailId,
     } = body;
 
     const formData = {
@@ -55,6 +56,7 @@ async function handler(request, response) {
       maxNumberOfAssignedOrders: Number(maxNumberOfAssignedOrders),
       designation: designation,
       profileImage: profileImage,
+      emailId: emailId,
     };
 
     const userResponse = await axios.put(
