@@ -634,8 +634,8 @@ export default function Exemple({
                     </li>
                   </ul>
                 ) : (
-                  isBidded.orderStatus <= 6 &&
-                  isBidded.status === 1 && (
+                  isBidded.orderStatus <= 6 && isBidded.orderStatus!==3 &&
+                  isBidded.status === 1 ? (
                     <>
                       <li
                         className="list-inline-item"
@@ -670,7 +670,9 @@ export default function Exemple({
                         </Link>
                       </button>
                     </>
+                    
                   )
+                  :  (<p className="btn btn-success  w-100">Completed </p>)
                 )}
               </div>
             ),

@@ -581,7 +581,7 @@ export default function Exemple({
                     </li>
                   </ul>
                 ) : (
-                  isBidded.orderStatus <= 6 && (
+                  isBidded.orderStatus <= 6  && isBidded.orderStatus === 3 ? (
                     <>
                       <button
                         href="#"
@@ -616,6 +616,7 @@ export default function Exemple({
                       </li>
                     </>
                   )
+                  : (<p className="btn btn-success  w-100">Completed </p>)
                 )}
               </div>
             ),

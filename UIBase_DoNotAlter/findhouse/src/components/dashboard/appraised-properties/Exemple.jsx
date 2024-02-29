@@ -624,7 +624,7 @@ export default function Exemple({
                     </li>
                   </ul>
                 ) : (
-                  isBidded.orderStatus <= 6 && (
+                  isBidded.orderStatus !==3 ? (
                     <>
                       <button
                         href="#"
@@ -659,6 +659,9 @@ export default function Exemple({
                       </li>
                     </>
                   )
+                  :
+                  (<p className="btn btn-success  w-100">Completed </p>)
+
                 )}
               </div>
             ),
@@ -702,9 +705,53 @@ export default function Exemple({
         })
         .then((res) => {
           toast.dismiss();
+          const prop = res.data.data.$values;
 
-          console.log(res.data);
-          const prop = res.data.data.properties.$values;
+          axios
+        .get("/api/getAllListedProperties", {
+          headers: {
+            Authorization: `Bearer ${data?.token}`,
+            "Content-Type": "application/json",
+          },
+          params: {
+            userId: data?.userId,
+          },
+        })
+        .then((result) => {
+          toast.dismiss();
+
+         
+         const allProperties = result.data.data.properties.$values;
+         console.log(prop,allProperties);
+         let requiredProperties = [];
+         prop.map((assign,index)=>{
+          let id = assign.propertyid;
+            allProperties.map((tempProp,idx)=>{
+              if(String(tempProp.$id)===String(id)){
+                requiredProperties.push(tempProp);
+                id="";
+              }
+            })
+         })
+
+         let finalProperties = [];
+         let id="";
+         requiredProperties.map((prop,index)=>{
+          if(String(prop.$id)!==String(id)){
+            finalProperties.push(prop)
+            id=prop.$id;
+          }
+         })
+         console.log("finalProperties",finalProperties);
+         setProperties(finalProperties);
+        })
+        .catch((err) => {
+            
+        })
+        .catch((err) => {
+          toast.dismiss();
+          toast.error(err);
+        });
 
           axios
             .get("/api/getAllBids", {
@@ -746,7 +793,7 @@ export default function Exemple({
                   });
                   const tempId = responseData;
                   setWishlist(responseData);
-                  setProperties(prop);
+                  
                 })
                 .catch((err) => {
                   toast.error(err?.response);

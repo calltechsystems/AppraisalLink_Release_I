@@ -584,7 +584,7 @@ export default function Exemple({
                       </div>
                     </li>
                   </ul>
-                ) : (
+                ) : isBidded.orderStatus === 3 && (
                   <span className="btn btn-success  w-100">Completed</span>
                 )}
               </div>

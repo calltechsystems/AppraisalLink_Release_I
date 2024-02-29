@@ -669,7 +669,7 @@ export default function Exemple({
                     </li>
                   </ul>
                 ) : (
-                  isBidded.status === 1 &&
+                  isBidded.status === 1 && isBidded.orderStatus !==3 ?
                   !isWait && (
                     <>
                       <button
@@ -706,7 +706,7 @@ export default function Exemple({
                         </div>
                       </li>
                     </>
-                  )
+                  ): (<p className="btn btn-success  w-100">Completed </p>)
                 )}
               </div>
             ),
