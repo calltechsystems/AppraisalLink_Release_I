@@ -802,8 +802,8 @@ export default function Exemple({
       })
       .then((res) => {
         toast.dismiss();
-        console.log(res.data.data.$values[2].$values);
-        const temp = res.data.data.$values[2].$values;
+        console.log(res.data.data.$values[1].$values);
+        const temp = res.data.data.$values[1].$values;
 
         axios
           .get("/api/getAllBids", {

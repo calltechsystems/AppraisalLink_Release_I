@@ -19,7 +19,7 @@ const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
 
-  const [disbale,setDisable]=useState(false);
+  const [disbale, setDisable] = useState(false);
 
   const [isStatusModal, setIsStatusModal] = useState(false);
   const [toggleId, setToggleId] = useState(-1);
@@ -1736,14 +1736,14 @@ const Index = () => {
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
                       <button
-                      disabled={disbale}
+                        disabled={disbale}
                         className="btn w-35 btn-white"
                         onClick={() => closeAssignModal()}
                       >
                         Cancel
                       </button>
                       <button
-                      disabled={disbale}
+                        disabled={disbale}
                         className="btn btn-color w-10 mt-1"
                         style={{ marginLeft: "12px" }}
                         onClick={assignAppraiserUpdateHandler}
@@ -1795,7 +1795,7 @@ const Index = () => {
                     <div className="row">
                       <div className="col-lg-12 text-center">
                         <h2 className=" text-color mt-1">
-                        Appraisal Status Updation
+                          Appraisal Status Updation
                         </h2>
                       </div>
                     </div>
@@ -1847,7 +1847,7 @@ const Index = () => {
                     )}
                     <div>
                       <h4 style={{ color: "#2e008b", fontWeight: "bold" }}>
-                        Remark <span style={{ color: "red" }}>*</span>
+                        Remark
                       </h4>
                       <input
                         required
@@ -1872,7 +1872,7 @@ const Index = () => {
                         Cancel
                       </button>
                       <button
-                      disabled={disbale}
+                        disabled={disbale}
                         className="btn btn-color w-10"
                         style={{ marginLeft: "12px" }}
                         onClick={handleStatusUpdateHandler}
@@ -1930,14 +1930,14 @@ const Index = () => {
             </div>
 
             <div className="row mt50">
-            <div className="col-lg-12">
-              <div className="copyright-widget text-center">
-                <p>
-                  &copy; {new Date().getFullYear()} Appraisal Link. All
-                  Rights Reserved.
-                </p>
+              <div className="col-lg-12">
+                <div className="copyright-widget text-center">
+                  <p>
+                    &copy; {new Date().getFullYear()} Appraisal Land. All Rights
+                    Reserved.
+                  </p>
+                </div>
               </div>
-            </div>
             </div>
             {/* End .col */}
           </div>

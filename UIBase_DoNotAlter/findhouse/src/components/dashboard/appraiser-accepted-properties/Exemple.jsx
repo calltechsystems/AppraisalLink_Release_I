@@ -318,10 +318,7 @@ export default function Exemple({
         const isArchive = foundArchiveHandler(property.propertyId);
 
         if (!isArchive && isBidded.status === 1 && isBidded.orderStatus !== 3) {
-          if (isBidded.status === 1) {
-            console.log(getOrderValue(isBidded.orderStatus));
-          }
-
+        
           tempProp.push(property);
           const isWait = property.isonHold || property.isOnCancel;
           const updatedRow = {

@@ -15,7 +15,7 @@ async function handler(request, response) {
       return response.status(403).json({ error: "Not a verified Data" });
     }
 
-    const propertyId = request.query.propertyId;
+    const orderId = request.query.orderId;
 
     const {
       userId,
@@ -25,6 +25,7 @@ async function handler(request, response) {
       state,
       zipCode,
       area,
+      propertyId,
       community,
       typeOfBuilding,
       applicantFirstName,
@@ -86,7 +87,7 @@ async function handler(request, response) {
           "Content-Type": "application/json",
         },
         params: {
-          PropertyID: propertyId,
+          OrderId: orderId,
         },
       }
     );

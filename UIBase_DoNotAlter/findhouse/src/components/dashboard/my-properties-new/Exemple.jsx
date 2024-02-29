@@ -147,6 +147,7 @@ export default function Exemple({
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [allBids, setBids] = useState([]);
+  const [archive, setArchive] = useState([]);
   const [show, setShow] = useState(false);
   let tempData = [];
 
@@ -290,6 +291,16 @@ export default function Exemple({
     return isCompleted ? 3 : isAccepted ? 2 : isQuoteProvided ? 1 : 0;
   };
 
+  const getArchiveProperty = (orderId) => {
+    let prop = {};
+    archive.map((temp, index) => {
+      if (String(temp.property.orderId) === String(orderId)) {
+        prop = temp;
+      }
+    });
+    return prop;
+  };
+
   const openPopupModal = (property) => {
     setModalIsPopupOpen(true);
     setCurrentProperty(property);
@@ -297,13 +308,14 @@ export default function Exemple({
   useEffect(() => {
     const getData = () => {
       properties.map((property, index) => {
+        const Archived = getArchiveProperty(property.orderId);
         const isBidded = getBidOfProperty(property.orderId);
         const isHold = property.isOnHold;
         const isCancel = property.isOnCancel;
         const isStatus = getPropertyStatusHandler(property);
         console.log(isStatus);
         const isEditable = isStatus === 0 ? true : false;
-        if (!property.isArchive) {
+        if (!Archived.$id) {
           const updatedRow = {
             order_id: property.orderId,
             sub_date: formatDate(property.addedDatetime),

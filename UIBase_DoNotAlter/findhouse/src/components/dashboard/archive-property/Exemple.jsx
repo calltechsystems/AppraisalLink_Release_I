@@ -3,45 +3,53 @@ import SmartTable from "./SmartTable";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { encryptionData } from "../../../utils/dataEncryption";
+import {
+  FaArchive,
+  FaHandHoldingHeart,
+  FaHandHoldingUsd,
+  FaHandPointer,
+  FaPause,
+  FaRedo,
+} from "react-icons/fa";
 import { useRouter } from "next/router";
-import { FaArchive } from "react-icons/fa";
-// import Loader from "./Loader";
 // import "./SmartTable.css";
 
 const headCells = [
   {
-    id: "orderId",
+    id: "order_id",
     numeric: false,
     label: "Order ID",
     width: 100,
   },
-
   {
     id: "address",
     numeric: false,
     label: "Property Address",
-    width: 200,
+    width: 250,
   },
-
   {
     id: "status",
     numeric: false,
-    label: "Quote Status",
-    width: 160,
+    label: "Order Status",
+    width: 170,
+  },
+  {
+    id: "status",
+    numeric: false,
+    label: "Appraisal Status",
+    width: 170,
+  },
+  {
+    id: "sub_date",
+    numeric: false,
+    label: "Quote Submitted Date",
+    width: 200,
   },
   {
     id: "urgency",
     numeric: false,
-    label: "Urgency",
-    width: 200,
-  },
-
-  {
-    id: "date",
-    numeric: false,
-    label: "Order Submission Date",
-    width: 200,
+    label: "Type of Request",
+    width: 100,
   },
   {
     id: "quote_required_by",
@@ -49,112 +57,116 @@ const headCells = [
     label: "Appraisal Report Required By",
     width: 200,
   },
+  // {
+  //   id: "user",
+  //   numeric: false,
+  //   label: "Appraiser",
+  //   width: 200,
+  // },
+  // {
+  //   id: "amount",
+  //   numeric: false,
+  //   label: "Quote Amount",
+  //   width: 200,
+  // },
 
   {
-    id: "typeOfBuilding",
+    id: "type_of_building",
     numeric: false,
-    label: "Type of Property",
-    width: 200,
+    label: "Property Type",
+    width: 140,
   },
-
   {
-    id: "estimatedValue",
+    id: "amount",
     numeric: false,
-    label: "Estimated Property Value ($)",
-    width: 200,
+    label: "Estimated Value / Purchase Price",
+    width: 150,
+  },
+  {
+    id: "purpose",
+    numeric: false,
+    label: "Purpose",
+    width: 130,
   },
   {
     id: "type_of_appraisal",
     numeric: false,
     label: "Type Of Appraisal",
-    width: 200,
+    width: 160,
   },
-
-  {
-    id: "purpose",
-    numeric: false,
-    label: "Purpose",
-    width: 200,
-  },
-
   {
     id: "lender_information",
     numeric: false,
     label: "Lender Information",
-    width: 200,
+    width: 160,
   },
 
+  // {
+  //   id: "actions",
+  //   numeric: false,
+  //   label: "Actions",
+  //   width: 170,
+  // },
   {
-    id: "broker",
+    id: "actions_01",
     numeric: false,
-    label: "Broker",
-    width: 200,
-  },
-  {
-    id: "property",
-    numeric: false,
-    label: "Property",
-    width: 200,
-  },
-
-  {
-    id: "action",
-    numeric: false,
-    label: "Action",
-    width: 180,
+    label: "Actions",
+    width: 170,
   },
 ];
 
-let count = 0;
+const data = [
+  {
+    _id: "6144e83a966145976c75cdfe",
+    email: "minagerges123@gmail.com",
+    name: "Pending",
+    date: "2021-09-17 19:10:50",
+    subject: "23456",
+    phone: "+96170345114",
+    message: "ahlannn",
+  },
+  {
+    _id: "61439914086a4f4e9f9d87cd",
+    email: "amineamine1996@gmail.com",
+    name: "Completed",
+    phone: "+96176466341",
+    subject: "12345",
+    message: "121212121212121",
+    date: "2021-09-16 22:20:52",
+  },
+  {
+    _id: "61439887086a4f4e9f9d87cc",
+    email: "as@a.com",
+    name: "Progress",
+    phone: "+96176466341",
+    subject: "54321",
+    message: "as",
+    date: "2021-09-16 22:18:31",
+  },
+];
 
 export default function Exemple({
   userData,
   open,
-  close,
   start,
   end,
-  setUpdatedCode,
+  close,
   properties,
-  setIsStatusModal,
+  setRefresh,
+  refresh,
+  setFilterQuery,
+  setModalIsOpenError,
+  setSearchInput,
   setProperties,
   deletePropertyHandler,
-  onWishlistHandler,
-  participateHandler,
-  setFilterQuery,
-  setSearchInput,
-  openModalBroker,
-  setErrorMessage,
-  setModalIsOpenError,
-  setRefresh,
-  setStartLoading,
-  refresh,
 }) {
   const [updatedData, setUpdatedData] = useState([]);
-  const [wishlist, setWishlist] = useState([]);
-  const [bids, setBids] = useState([]);
-  const [hideAction, setHideAction] = useState(false);
-  const [hideClass, setHideClass] = useState("");
+  const [allBids, setBids] = useState([]);
   const [show, setShow] = useState(false);
   let tempData = [];
 
-  const filterBidsWithin24Hours = (property) => {
-    const userData = JSON.parse(localStorage.getItem("user"));
-    let tempBid = 0,
-      bidValue = {};
-    console.log(bids);
-    bids.filter((bid) => {
-      if (bid.propertyId === property.propertyId) {
-        console.log("matched", bid);
-        tempBid = tempBid + 1;
-        bidValue = bid;
-      } else {
-      }
-    });
-    return tempBid > 0 ? bidValue : {};
-    // const currentTime = new Date();
-    // const twentyFourHoursAgo = currentTime - 24 * 60 * 60 * 1000; // Subtracting milliseconds for 24 hours
-    //    const requestTime = new Date(tempBid.requestTime);
-    //   return requestTime >= twentyFourHoursAgo && requestTime <= currentTime;
+  const refreshHandler = () => {
+    setRefresh(true);
   };
 
   const router = useRouter();
@@ -165,10 +177,6 @@ export default function Exemple({
 
   const onUnarchiveHandler = (id) => {
     const data = JSON.parse(localStorage.getItem("user"));
-    // const payload = {
-    //   token : data.token,
-    //   propertyId:id
-    // };
 
     toast.loading("un-archiving the property!!...");
     // const encryptedBody = encryptionData(payload);
@@ -195,205 +203,439 @@ export default function Exemple({
       });
   };
 
-  const removeWishlistHandler = (id) => {
-    const userData = JSON.parse(localStorage.getItem("user"));
-
-    const formData = {
-      userId: userData.userId,
-      propertyId: id,
-      token: userData.token,
-    };
-
-    const payload = encryptionData(formData);
-    toast.loading("removing this property into your wishlist");
-    axios
-      .delete("/api/removeWishlistProperty", {
-        headers: {
-          Authorization: `Bearer ${userData.token}`,
-        },
-        params: {
-          userId: id,
-        },
-      })
-      .then((res) => {
-        toast.dismiss();
-        toast.success("Successfully removed !!! ");
-        location.reload(true);
-      })
-      .catch((err) => {
-        toast.dismiss();
-        toast.error(err?.response?.data?.error);
-      });
-  };
-
-  const onDeletePropertyHandler = () => {};
-
   const formatDate = (dateString) => {
     const options = {
       year: "numeric",
-      month: "long",
+      month: "short",
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
-      second: "numeric",
+      // second: "numeric",
+      hour12: false, // Set to false for 24-hour format
     };
 
     const formattedDate = new Date(dateString).toLocaleString("en-US", options);
     return formattedDate;
   };
 
-  const checkWishlistedHandler = (data) => {
-    let temp = {};
-    // console.log(wishlist, data);
-    wishlist.map((prop, index) => {
-      if (
-        String(prop.propertyId) === String(data.propertyId) &&
-        String(prop.userId) === String(userData.userId)
-      ) {
-        temp = prop;
+  const getPropertyStatusHandler = (property) => {
+    let isInProgress = true;
+    let isQuoteProvided = false;
+    let isCompleted = false;
+    allBids.map((bid, index) => {
+      if (bid.propertyId === property.propertyId && bid.status === 1) {
+        isCompleted = true;
+      } else if (bid.propertyId === property.propertyId) {
+        isQuoteProvided = true;
       }
     });
-    return temp ? temp : {};
-  };
-
-  const checkCanBidAgainHandler = (data) => {
-    let temp = true;
-    return temp;
+    return isCompleted ? 2 : isQuoteProvided ? 1 : 0;
   };
 
   const sortObjectsByOrderIdDescending = (data) => {
-    return data.sort((a, b) => b.orderId - a.orderId);
+    return data.sort((a, b) => b.order_id - a.order_id);
   };
 
-  const checkData = properties && !updatedData ? true : false;
-
   useEffect(() => {
-    console.log(properties);
     const getData = () => {
       properties.map((property, index) => {
-        const isWishlist = checkWishlistedHandler(property);
-        const isBidded = filterBidsWithin24Hours(property);
+        const isStatus = getPropertyStatusHandler(property);
 
-        // console.log(property.isArchive);
+        const isEditable = isStatus === 0 ? true : false;
         if (property.isArchive) {
           const updatedRow = {
-            orderId: property.orderId,
-            address: `${property.city}-${property.province},${property.zipCode}`,
-            estimatedValue: property.estimatedValue
-              ? `$ ${property.estimatedValue}`
-              : "$ 0",
-            purpose: property.purpose ? property.purpose : "NA",
-            status: isBidded.bidId ? (
-              isBidded.status === 0 ? (
-                <span className="btn btn-primary  w-100">Quote Provided</span>
-              ) : isBidded.status === 1 ? (
-                <span className="btn btn-success  w-100">Accepted</span>
-              ) : (
-                <span className="btn btn-danger  w-100">Rejected</span>
-              )
-            ) : (
-              <span className="btn btn-warning  w-100">New</span>
-            ),
-            broker: (
-              <div>
-                {isBidded.status === 1 ? (
-                  <a href="#">
-                    <button
-                      className=""
-                      style={{
-                        border: "0px",
-                        color: "#2e008b",
-                        textDecoration: "underline",
-                        // fontWeight: "bold",
-                        backgroundColor: "transparent",
-                      }}
-                      onClick={() => openModalBroker(property, 1)}
-                    >
-                      Broker Info
-                    </button>
-                  </a>
-                ) : isBidded.status === 2 ? (
-                  <h6 style={{ color: "red" }}> Declined</h6>
-                ) : (
-                  <p>
-                    Broker Information will be available post the quote
-                    acceptance
-                  </p>
-                )}
-              </div>
-            ),
-            property: (
-              <div>
-                {isBidded.status === 1 ? (
-                  <a href="#">
-                    <button
-                      className=""
-                      style={{
-                        border: "0px",
-                        color: "#2e008b",
-                        textDecoration: "underline",
-                        // fontWeight: "bold",
-                        backgroundColor: "transparent",
-                      }}
-                      onClick={() => openModalBroker(property, 2)}
-                    >
-                      Property Info
-                    </button>
-                  </a>
-                ) : isBidded.status === 2 ? (
-                  <h6 style={{ color: "red" }}> Declined</h6>
-                ) : (
-                  <p>
-                    Broker Information will be available post the quote
-                    acceptance
-                  </p>
-                )}
-              </div>
-            ),
-            type_of_appraisal: property.typeOfAppraisal
-              ? property.typeOfAppraisal
-              : "NA",
-            typeOfBuilding:
-              property.typeOfBuilding > 0
-                ? "Apartment"
-                : property.typeOfBuilding,
+            order_id: property.orderId,
+            sub_date: formatDate(property.addedDatetime),
             quote_required_by: formatDate(property.addedDatetime),
-            date: formatDate(property.addedDatetime),
-            bidAmount: property.bidLowerRange,
+            status:
+              isStatus === 2 ? (
+                <span className="btn bg-success w-100 text-light">
+                  Accepted
+                </span>
+              ) : isStatus === 0 ? (
+                <span className="btn bg-primary w-100 text-light">
+                  In Progress
+                </span>
+              ) : (
+                <span className="btn bg-info w-100 text-light">
+                  Quote Provided
+                </span>
+              ),
+            address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
+            // user: property.applicantEmailAddress,
+            type_of_building: property.typeOfBuilding,
+            amount: ` $${property.estimatedValue}`,
+            purpose: property.purpose,
+            type_of_appraisal: property.typeOfAppraisal,
             lender_information: property.lenderInformation
               ? property.lenderInformation
-              : "NA",
-            urgency:
-              property.urgency === 0
-                ? "Rush"
-                : property.urgency === 1
-                ? "Regular"
-                : "NA",
+              : "N.A.",
+            urgency: property.urgency === 0 ? "Rush" : "Regular",
+            actions: (
+              <ul className="mb0">
+                {!isEditable && (
+                  <li>
+                    <Link href={"#"}>
+                      <span
+                        className="btn btn-color w-100 mb-1"
+                        onClick={() => openPopupModal(property)}
+                      >
+                        {" "}
+                        Property Details{" "}
+                      </span>
+                    </Link>{" "}
+                    {/* <span
+                      className="btn btn-color-table m-1"
+                      onClick={() => openPopupModal(property)}
+                    >
+                      <Link href={"#"}>
+                        <span className="text-light flaticon-view"></span>
+                      </Link>
+                    </span> */}
+                  </li>
+                )}
 
-            action: (
-              <div className="print-hidden-column">
+                {!isEditable && (
+                  <li>
+                    <Link href={`/my-property-bids/${property.propertyId}`}>
+                      <span className="btn btn-color w-100 mb-1"> Quotes </span>
+                    </Link>{" "}
+                    {/* <Link
+                      className="btn btn-color-table"
+                      style={{ marginLeft: "4.3rem" }}
+                      href={`/my-property-bids/${property.propertyId}`}
+                    >
+                      <span className="flaticon-invoice"></span>
+                    </Link> */}
+                  </li>
+                )}
+                {/* <li
+                className="list-inline-item"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="Property Details"
+              >
+                <span
+                  className="btn btn-color-table"
+                  onClick={() => openPopupModal(property)}
+                >
+                  <Link href={"#"}>
+                    <span className="flaticon-view"></span>
+                  </Link>
+                </span>
+              </li>
+
+              <li
+                className="list-inline-item"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="Bids"
+              >
+                <Link
+                  className="btn btn-color-table"
+                  href={`/my-property-bids/${property.propertyId}`}
+                >
+                  <span className="flaticon-invoice"></span>
+                </Link>
+              </li> */}
+
+                {(isEditable || isStatus === 1) && (
+                  <li>
+                    <Link href={`/create-listing/${property.propertyId}`}>
+                      <span className="btn btn-color w-100 mb-1"> Edit </span>
+                    </Link>{" "}
+                    {/* <Link
+                      className="btn btn-color-table"
+                      href={`/create-listing/${property.propertyId}`}
+                    >
+                      <span className="flaticon-edit"></span>
+                    </Link> */}
+                  </li>
+                )}
+
+                {/* End li */}
+
+                {isEditable && (
+                  <li>
+                    <Link href="#" onClick={() => open(property)}>
+                      <span className="btn btn-color w-100 mb-1">
+                        {" "}
+                        Order Cancel{" "}
+                      </span>
+                    </Link>{" "}
+                    {/* <button
+                      className="btn"
+                      style={{ border: "1px solid grey" }}
+                      onClick={() => open(property)}
+                    >
+                      <Link href="#">
+                        <span className="flaticon-garbage text-danger"></span>
+                      </Link>
+                    </button> */}
+                  </li>
+                )}
+
+                {isEditable && (
+                  <li>
+                    <Link href="#">
+                      <span className="btn btn-color w-100 mb-1">
+                        {" "}
+                        On Hold{" "}
+                      </span>
+                    </Link>{" "}
+                    {/* <Link
+                      className="btn btn-color-table"
+                      href={`/create-listing/${property.propertyId}`}
+                    >
+                      <span className="flaticon-edit"></span>
+                    </Link> */}
+                  </li>
+                )}
+
+                {/* {!isEditable && (
                 <li
                   className="list-inline-item"
                   data-toggle="tooltip"
                   data-placement="top"
-                  title="un-archive Property"
+                  title="Archive Property"
                 >
-                  <div
-                    className="w-100"
-                    onClick={() => onUnarchiveHandler(property.orderId)}
+                  <span
+                    className="btn btn-color-table"
+                    onClick={() => archievePropertyHandler(property.propertyId)}
                   >
-                    <button
-                      href="#"
-                      className="btn btn-color w-100 mt-1"
-                      style={{ marginLeft: "12px" }}
-                    >
-                      <span className="text-light">
-                        <FaArchive />
-                      </span>
-                    </button>
-                  </div>
+                    <Link className="color-light" href={`/archive-property`}>
+                      <span className="flaticon-box"></span>
+                    </Link>
+                  </span>
                 </li>
-              </div>
+              )} */}
+                {!isEditable && (
+                  <li>
+                    <Link href="#">
+                      <span className="btn btn-color w-100">
+                        {" "}
+                        Remove Archive{" "}
+                      </span>
+                    </Link>
+                    {/* <span
+                      className="btn btn-color-table m-1"
+                      onClick={() =>
+                        archievePropertyHandler(property.propertyId)
+                      }
+                    >
+                      <Link className="color-light" href={`/archive-property`}>
+                        <span className="flaticon-box text-light"></span>
+                      </Link>
+                    </span> */}
+                  </li>
+                )}
+
+                {/* End li */}
+              </ul>
+              // <ul className="view_edit_delete_list mb0">
+              //   <li
+              //     className="list-inline-item"
+              //     data-toggle="tooltip"
+              //     data-placement="top"
+              //     title="View"
+              //   >
+              //     <Link
+              //       href={`/my-property-bids/${property.propertyId}`}
+              //       className="btn btn-color-table"
+              //     >
+              //       <span className="flaticon-view"></span>
+              //     </Link>
+              //   </li>
+
+              // </ul>
+            ),
+            actions_01: (
+              // <ul className="view_edit_delete_list mb0">
+              <ul className="mb0 d-flex gap-1">
+                {/* {!isEditable && ( */}
+                <li title="Property Details" className="">
+                  {/* <Link href={"#"}>
+                      <span
+                        className="btn btn-color w-100 mb-1"
+                        onClick={() => openPopupModal(property)}
+                      >
+                        {" "}
+                        Property Details{" "}
+                      </span>
+                    </Link>{" "} */}
+                  <span
+                    className="btn btn-color-table"
+                    onClick={() => openPopupModal(property)}
+                  >
+                    <Link href={"#"}>
+                      <span className="text-light flaticon-view"></span>
+                    </Link>
+                  </span>
+                </li>
+                {/* )} */}
+
+                {!isEditable && (
+                  <li title="Quotes">
+                    {/* <Link href={`/my-property-bids/${property.propertyId}`}>
+                      <span className="btn btn-color w-100 mb-1"> Quotes </span>
+                    </Link>{" "} */}
+                    <Link
+                      className="btn btn-color-table"
+                      // style={{ marginLeft: "4.3rem" }}
+                      href={`/my-property-bids/${property.propertyId}`}
+                    >
+                      <span className="flaticon-invoice">
+                        {/* <FaHandHoldingUsd /> */}
+                      </span>
+                    </Link>
+                  </li>
+                )}
+                {/* <li
+                className="list-inline-item"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="Property Details"
+              >
+                <span
+                  className="btn btn-color-table"
+                  onClick={() => openPopupModal(property)}
+                >
+                  <Link href={"#"}>
+                    <span className="flaticon-view"></span>
+                  </Link>
+                </span>
+              </li>
+
+              <li
+                className="list-inline-item"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="Bids"
+              >
+                <Link
+                  className="btn btn-color-table"
+                  href={`/my-property-bids/${property.propertyId}`}
+                >
+                  <span className="flaticon-invoice"></span>
+                </Link>
+              </li> */}
+
+                {(isEditable || isStatus === 1) && (
+                  <li title="Edit Property">
+                    {/* <Link href={`/create-listing/${property.propertyId}`}>
+                      <span className="btn btn-color w-100 mb-1"> Edit </span>
+                    </Link>{" "} */}
+                    <Link
+                      className="btn btn-color-table"
+                      href={`/create-listing/${property.propertyId}`}
+                    >
+                      <span className="flaticon-edit"></span>
+                    </Link>
+                  </li>
+                )}
+
+                {/* End li */}
+
+                {/* {isEditable && ( */}
+                <li title="On Hold">
+                  {/* <Link href="#">
+                      <span className="btn btn-color w-100 mb-1">
+                        {" "}
+                        On Hold{" "}
+                      </span>
+                    </Link>{" "} */}
+                  <Link
+                    className="btn btn-color-table"
+                    href={`/create-listing/${property.propertyId}`}
+                  >
+                    <span className="">
+                      <FaPause />
+                    </span>
+                  </Link>
+                </li>
+                {/* )} */}
+
+                {/* {isEditable && ( */}
+                <li title="Order Cancel">
+                  {/* <Link href="#" onClick={() => open(property)}>
+                      <span className="btn btn-color w-100 mb-1">
+                        {" "}
+                        Order Cancel{" "}
+                      </span>
+                    </Link>{" "} */}
+                  <button
+                    className="btn btn-color-table"
+                    style={{ border: "1px solid grey" }}
+                    onClick={() => open(property)}
+                  >
+                    <Link href="#">
+                      <span className="flaticon-garbage text-light"></span>
+                    </Link>
+                  </button>
+                </li>
+                {/* )} */}
+
+                {/* {isEditable && (
+                  <li title="Edit Property">
+                    <Link href="#">
+                      <span className="btn btn-color w-100 mb-1">
+                        {" "}
+                        On Hold{" "}
+                      </span>
+                    </Link>{" "}
+                    <Link
+                      className="btn btn-color-table"
+                      href={`/create-listing/${property.propertyId}`}
+                    >
+                      <span className="flaticon-edit"></span>
+                    </Link>
+                  </li>
+                )} */}
+
+                {/* {!isEditable && (
+                <li
+                  className="list-inline-item"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Archive Property"
+                >
+                  <span
+                    className="btn btn-color-table"
+                    onClick={() => archievePropertyHandler(property.propertyId)}
+                  >
+                    <Link className="color-light" href={`/archive-property`}>
+                      <span className="flaticon-box"></span>
+                    </Link>
+                  </span>
+                </li>
+              )} */}
+
+                <li title="Un-Archive Property">
+                  {/* <Link
+                      href="#"
+                      onClick={() =>
+                        archievePropertyHandler(property.propertyId)
+                      }
+                    >
+                      <span className="btn btn-color w-100">
+                        {" "}
+                        Archive Property{" "}
+                      </span>
+                    </Link> */}
+                  <span
+                    className="btn btn-color-table"
+                    onClick={() => archievePropertyHandler(property.propertyId)}
+                  >
+                    <Link className="color-light" href={`/archive-property`}>
+                      <span className="text-light flaticon-close">
+                        {/* <FaArchive /> */}
+                      </span>
+                    </Link>
+                  </span>
+                </li>
+
+                {/* End li */}
+              </ul>
             ),
           };
           tempData.push(updatedRow);
@@ -404,21 +646,35 @@ export default function Exemple({
     getData();
   }, [properties]);
 
-  const refreshHandler = () => {
-    setRefresh(true);
-    setStartLoading(true);
-  };
   useEffect(() => {
-    console.log("inside");
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
       token: userData.token,
     };
-    let tempProperties = [],
-      tempWishlist = [];
+
+    toast.loading("Getting properties...");
+
     axios
-      .get("/api/getAllListedProperties", {
+      .get("/api/getAllArchivePropertiesByBroker", {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+        params: {
+          userId: data.userId,
+        },
+      })
+      .then((res) => {
+        const temp = res.data.data.$values;
+        setProperties(temp);
+      })
+      .catch((err) => {
+        setErrorMessage(err?.response?.data?.error);
+        setModalIsOpenError(true);
+      });
+
+    axios
+      .get("/api/getPropertiesById", {
         headers: {
           Authorization: `Bearer ${data?.token}`,
           "Content-Type": "application/json",
@@ -428,51 +684,15 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        // console.log( res.data.data.properties.$values);
-        const temp = res.data.data.properties.$values;
+        toast.dismiss();
 
-        tempProperties = temp.filter((prop, index) => {
-          if (
-            String(prop.userId) === String(data.userId) &&
-            String(prop.isArchive)
-          ) {
-            return true;
-          } else {
-            return false;
-          }
-        });
-        setProperties(tempProperties);
+        setProperties(res.data.data.property.$values);
       })
       .catch((err) => {
-        setErrorMessage(err?.response?.data?.error);
-        setModalIsOpenError(true);
+        toast.dismiss();
+        toast.error(err?.response?.data?.error);
       });
-    axios
-      .get("/api/appraiserWishlistedProperties", {
-        headers: {
-          Authorization: `Bearer ${data?.token}`,
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => {
-        const tempData = res.data.data.$values;
 
-        // setAllWishlistedProperties(res.data.data.$values);
-        const responseData = tempData.filter((prop, index) => {
-          if (String(prop.userId) === String(data.userId)) {
-            return true;
-          } else {
-            return false;
-          }
-        });
-        const tempId = responseData;
-        setWishlist(responseData);
-      })
-      .catch((err) => {
-        toast.error(err?.response);
-        setErrorMessage(err?.response);
-        setModalIsOpenError(true);
-      });
     let tempBids = [];
     axios
       .get("/api/getAllBids", {
@@ -481,43 +701,30 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        console.log(res);
-        tempBids = res.data.data.$values;
-        const updatedBids = tempBids.filter((prop, index) => {
-          if (String(prop.appraiserUserId) === String(data.userId)) {
-            return true;
-          } else {
-            return false;
-          }
-        });
-        setBids(updatedBids);
+        // console.log(res);
+        tempBids = res.data.data.result.$values;
+        setBids(tempBids);
       })
       .catch((err) => {
-        setErrorMessage(err?.response?.data?.error);
+        // setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
-
-    console.log("end", bids, properties, wishlist);
     setRefresh(false);
   }, [refresh]);
-  console.log(sortObjectsByOrderIdDescending(updatedData));
   return (
     <>
-      {
+      {updatedData && (
         <SmartTable
           title=""
-          setSearchInput={setSearchInput}
           setFilterQuery={setFilterQuery}
+          setSearchInput={setSearchInput}
           data={sortObjectsByOrderIdDescending(updatedData)}
           headCells={headCells}
-          setRefresh={setRefresh}
-          refresh={refresh}
           refreshHandler={refreshHandler}
-          setStartLoading={setStartLoading}
           start={start}
           end={end}
         />
-      }
+      )}
     </>
   );
 }

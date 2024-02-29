@@ -23,7 +23,7 @@ const headCells = [
     label: "Selected Plan",
     width: 150,
   },
-
+ 
   {
     id: "st_date",
     numeric: false,
@@ -140,6 +140,16 @@ export default function Exemple({
     return result;
   };
 
+
+  
+  const sortObjectsByOrderIdDescending = (data) => {
+    return data.sort((a, b) => {
+      const dateA = new Date(a.st_date);
+      const dateB = new Date(b.st_date);
+      return dateB - dateA;
+    });
+  };
+
   const NextMonthAndYearCalculator = ( inputDate ) => {
    
     const inputDateTime = new Date(inputDate);
@@ -187,17 +197,17 @@ export default function Exemple({
           id: property.paymentid,
           planName: property.transactionDetail,
           planType: property.planAmount<500 ? 
-          <span className="btn btn-warning  w-100">Monthly</span>
+          <span >Monthly</span>
           :
-          <span className="btn btn-warning  w-100">Yearly</span>,
+          <span >Yearly</span>,
           amount:property.planAmount? `$ ${property.planAmount}` : '$ -',
           st_date:formatDate(property.createdTime),
           end_date: formatDate(endDate) ,
           status:
             expired ?
-            <span className="btn btn-danger  w-100">Exhausted</span>
+            <span className="btn btn-danger  w-100">In-Active</span>
             :
-            <span className="btn btn-success  w-100">Running</span>
+            <span className="btn btn-success  w-100">Active</span>
           
         };
         tempData.push(updatedRow);
@@ -218,7 +228,7 @@ export default function Exemple({
   return (
     <>
       {updatedData && (
-        <SmartTable title="" data={updatedData} headCells={headCells} />
+        <SmartTable title="" data={sortObjectsByOrderIdDescending(updatedData)} headCells={headCells} />
       )}
     </>
   );

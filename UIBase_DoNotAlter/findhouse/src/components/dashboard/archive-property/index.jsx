@@ -31,9 +31,9 @@ const Index = () => {
     Date.now()
   );
 
-  const [start,setStart]=useState(0);
-  
-  const [end,setEnd]=useState(4);
+  const [start, setStart] = useState(0);
+
+  const [end, setEnd] = useState(4);
 
   useEffect(() => {
     const activityHandler = () => {
@@ -210,16 +210,16 @@ const Index = () => {
       {/* End sidebar_menu */}
 
       {/* <!-- Our Dashbord --> */}
-      <section className="our-dashbord dashbord bgc-f7 pb50">
+      <section className="our-dashbord dashbord bgc-f7 pb50 dashboard-height">
         <div
-          className="container-fluid ovh"
-          style={{ marginLeft: "-10px", marginTop: "" }}
+          className="container-fluid ovh table-padding container-padding"
+          style={{}}
         >
           <div className="row">
             <div className="col-lg-12 maxw100flex-992">
               <div className="row">
                 {/* Start Dashboard Navigation */}
-                {/* <div className="col-lg-12">
+                <div className="col-lg-12">
                   <div className="dashboard_navigationbar dn db-1024">
                     <div className="dropdown">
                       <button
@@ -232,7 +232,7 @@ const Index = () => {
                       </button>
                     </div>
                   </div>
-                </div> */}
+                </div>
                 {/* End Dashboard Navigation */}
 
                 {/*<div className="col-lg-4 col-xl-4">
@@ -243,18 +243,6 @@ const Index = () => {
               </div>*/}
 
                 {/* End .col */}
-
-                <div className="row">
-                <div className="col-lg-12 mt20">
-                 <div className="mbp_pagination">
-                   <Pagination
-                     setStart={setStart}
-                     setEnd={setEnd}
-                     properties={properties}
-                   />
-                 </div>
-               </div> 
-           </div>
 
                 <div className="col-lg-12 col-xl-12">
                   {/*<div className="candidate_revew_select style2 mb30-991">
@@ -353,14 +341,17 @@ const Index = () => {
               </div>
 
               <div className="row">
-                {/* <div className="col-lg-12 mt20">
-                  <div className="mbp_pagination">
-                    <Pagination
-                      properties={properties}
-                      setProperties={setProperties}
-                    />
+              <div className="row">
+                  <div className="col-lg-12 mt0">
+                    <div className="mbp_pagination">
+                      <Pagination
+                        setStart={setStart}
+                        setEnd={setEnd}
+                        properties={properties}
+                      />
+                    </div>
                   </div>
-                </div> */}
+                </div>
                 {/* End paginaion .col */}
               </div>
               {/* End .row */}
@@ -382,7 +373,7 @@ const Index = () => {
               <div className="col-lg-12">
                 <div className="copyright-widget text-center">
                   <p>
-                    &copy; {new Date().getFullYear()} Appraisal Link. All Rights
+                    &copy; {new Date().getFullYear()} Appraisal Land. All Rights
                     Reserved.
                   </p>
                 </div>

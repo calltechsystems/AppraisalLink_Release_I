@@ -1876,7 +1876,7 @@ const Index = () => {
                     )}
                     <div>
                       <h4 style={{ color: "#2e008b", fontWeight: "bold" }}>
-                        Remark <span style={{ color: "red" }}>*</span>
+                        Remark
                       </h4>
                       <input
                         required
@@ -1962,7 +1962,7 @@ const Index = () => {
             <div className="col-lg-12">
               <div className="copyright-widget text-center">
                 <p>
-                  &copy; {new Date().getFullYear()} Appraisal Link. All
+                  &copy; {new Date().getFullYear()} Appraisal Land. All
                   Rights Reserved.
                 </p>
               </div>

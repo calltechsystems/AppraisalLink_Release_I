@@ -5,11 +5,12 @@ async function handler(request, response) {
   const decryptionKey = process.env.CRYPTO_SECRET_KEY;
   const domain = process.env.BACKEND_DOMAIN;
 
-  const userId = request.query.userId;
   try {
     const token = request.headers.authorization;
+    const userId = request.query.userId;
+
     const userResponse = await axios.get(
-      `${domain}/com.appraisalland.Property/getApprasierArchiveProperty`,
+      `${domain}/com.appraisalland.Property/getBrokerArchiveProperty`,
       {
         headers: {
           Authorization: token,

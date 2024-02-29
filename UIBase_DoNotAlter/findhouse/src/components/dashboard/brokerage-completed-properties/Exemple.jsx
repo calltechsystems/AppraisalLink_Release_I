@@ -186,6 +186,73 @@ export default function Exemple({
     //   return requestTime >= twentyFourHoursAgo && requestTime <= currentTime;
   };
 
+  const AppraiserStatusOptions = [
+    {
+      id: -1,
+      type: "Select...",
+      value: "",
+    },
+    {
+      id: 0,
+      type: "Applicant Contacted by appraiser",
+      value: "Applicant Contacted by appraiser",
+    },
+    {
+      id: 1,
+      type: "Appraisal Visit Confirmed",
+      value: "Appraisal Visit Confirmed",
+    },
+    {
+      id: 2,
+      type: "Appraisal Report Writing in Progress",
+      value: "Appraisal Report Writing in Progress",
+    },
+    {
+      id: 3,
+      type: "Appraisal Report Writing Completed and Submitted",
+      value: "Appraisal Report Writing Completed and Submitted",
+    },
+
+    {
+      id: 4,
+      type: "Assignment on Hold",
+      value: "Assignment on Hold",
+    },
+
+    {
+      id: 5,
+      type: "Assignment Cancelled new status to be added",
+      value: "Assignment Cancelled new status to be added",
+    },
+
+    {
+      id: 6,
+      type: "Appraisal visit completed; report writing is pending until fee received",
+      value:
+        "Appraisal visit completed; report writing is pending until fee received",
+    },
+  ];
+
+  // const getOrderValue = (val) => {
+  //   let title = "";
+  //   AppraiserStatusOptions?.map((status) => {
+  //     if (String(status.id) === String(val)) {
+  //       title = status.type;
+  //     }
+  //   });
+  //   return title;
+  // };
+
+  const getBidOfProperty = (orderId) => {
+    let Bid = {};
+    allBids.map((bid, index) => {
+      if (String(bid.orderId) === String(orderId)) {
+        Bid = bid;
+      }
+    });
+    return Bid;
+  };
+
   const getOrderValue = (val) => {
     let title = "";
     AppraiserStatusOptions.map((status) => {
@@ -234,14 +301,16 @@ export default function Exemple({
     let isCompleted = false;
     let isAccepted = false;
     allBids.map((bid, index) => {
-
-      if (bid.orderId === property.orderId && bid.status === 1 && bid.orderStatus===3) {
+      if (
+        bid.orderId === property.orderId &&
+        bid.status === 1 &&
+        bid.orderStatus === 3
+      ) {
         isCompleted = true;
       }
-      if (bid.orderId === property.orderId && bid.status === 1 ) {
+      if (bid.orderId === property.orderId && bid.status === 1) {
         isAccepted = true;
-      }
-       else if (bid.orderId === property.orderId) {
+      } else if (bid.orderId === property.orderId) {
         isQuoteProvided = true;
       }
     });
@@ -255,13 +324,13 @@ export default function Exemple({
   useEffect(() => {
     const getData = () => {
       properties.map((property, index) => {
+        const isBidded = getBidOfProperty(property.orderId);
         const isHold = property.isOnHold;
         const isCancel = property.isOnCancel;
         const isStatus = getPropertyStatusHandler(property);
         console.log(isStatus);
         const isEditable = isStatus === 0 ? true : false;
         if (!property.isArchive && isStatus === 3) {
-
           console.log(property);
           const updatedRow = {
             order_id: property.orderId,
@@ -286,26 +355,32 @@ export default function Exemple({
                 <span className="btn bg-info w-100 text-light">
                   Quote Provided
                 </span>
-              )  : isStatus === 3 ? (
+              ) : isStatus === 3 ? (
                 <span className="btn bg-success w-100 text-light">
-                 Completed
+                  Completed
                 </span>
-              ): (
+              ) : (
                 <span className="btn bg-info w-100 text-light">Cancelled</span>
               ),
             appraisal_status:
               isHold || isCancel ? (
                 <span className="btn bg-warning  w-100">
-                  {isHold ? "On Hold" : "Cancelled"}
+                  {isHold ? "N.A." : "N.A."}
+                </span>
+              ) : property.orderStatus === 1 ? (
+                <span className="btn bg-warning  w-100">
+                  {getOrderValue(isBidded.orderStatus)} -
+                  {formatDate(isBidded.statusDate)}
+                </span>
+              ) : property.orderStatus !== null ? (
+                <span className="btn bg-warning  w-100">
+                  {getOrderValue(isBidded.orderStatus)}
                 </span>
               ) : (
-                //  property.orderStatus ? (
-                //   <h5>{getOrderValue(isBidded.orderStatus)}</h5>
-                // )
                 <span className="btn bg-warning  w-100">N.A.</span>
               ),
             address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
-            remark: property.remark ? property.remark : "N.A.",
+            remark: isBidded.remark ? isBidded.remark : "N.A.",
             // user: property.applicantEmailAddress,
             type_of_building: property.typeOfBuilding,
             amount: ` $ ${millify(property.estimatedValue)}`,

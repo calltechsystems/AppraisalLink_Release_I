@@ -158,7 +158,7 @@ const SidebarMenu = () => {
             >
               <Link href="/archive-property">
                 <i className="flaticon-home"></i>
-                <span>Achieved Properties</span>
+                <span>Archived Properties</span>
               </Link>
             </li>
             {/* <li

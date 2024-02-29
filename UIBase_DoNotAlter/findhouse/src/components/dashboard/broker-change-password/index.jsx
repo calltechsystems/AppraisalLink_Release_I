@@ -121,7 +121,7 @@ const Index = () => {
         <div className="col-lg-12">
           <div className="copyright-widget text-end">
             <p>
-              &copy; {new Date().getFullYear()} Appraisal Link. All Rights
+              &copy; {new Date().getFullYear()} Appraisal Land. All Rights
               Reserved.
             </p>
           </div>

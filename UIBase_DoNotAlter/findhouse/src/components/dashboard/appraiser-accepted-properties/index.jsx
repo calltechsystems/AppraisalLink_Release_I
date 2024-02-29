@@ -26,7 +26,7 @@ const Index = () => {
   const [toggleWishlist, setToggleWishlist] = useState(0);
   const [searchResult, setSearchResult] = useState([]);
   const [property, setProperty] = useState("");
-  const [disbale,setDisable]=useState(false);
+  const [disbale, setDisable] = useState(false);
   const [typeView, setTypeView] = useState(0);
   const [startLoading, setStartLoading] = useState(false);
   const [filterProperty, setFilterProperty] = useState("");
@@ -64,30 +64,29 @@ const Index = () => {
 
   const handleStatusUpdateHandler = () => {
     setDisable(true);
-    
-      const data = JSON.parse(localStorage.getItem("user"));
-      const payload = {
-        token: data.token,
-        Quoteid: currentBid.bidId,
-        OrderStatus: Number(orderStatus),
-        remark: remark,
-        statusDate: statusDate,
-      };
 
-      const encryptedBody = encryptionData(payload);
-      toast.loading("Updating order status!!");
-      axios
-        .put("/api/updateOrderStatus", encryptedBody)
-        .then((res) => {
-          toast.dismiss();
-          toast.success("Successfully updated!!");
-          location.reload(true);
-        })
-        .catch((err) => {
-          toast.dismiss();
-          toast.error(err?.response?.data?.error);
-        });
-    
+    const data = JSON.parse(localStorage.getItem("user"));
+    const payload = {
+      token: data.token,
+      Quoteid: currentBid.bidId,
+      OrderStatus: Number(orderStatus),
+      remark: remark,
+      statusDate: statusDate,
+    };
+
+    const encryptedBody = encryptionData(payload);
+    toast.loading("Updating order status!!");
+    axios
+      .put("/api/updateOrderStatus", encryptedBody)
+      .then((res) => {
+        toast.dismiss();
+        toast.success("Successfully updated!!");
+        location.reload(true);
+      })
+      .catch((err) => {
+        toast.dismiss();
+        toast.error(err?.response?.data?.error);
+      });
 
     setRemark("");
     setCurrentBid({});
@@ -1693,7 +1692,7 @@ const Index = () => {
                     <div className="row">
                       <div className="col-lg-12 text-center">
                         <h2 className=" text-color mt-1">
-                        Appraisal Status Updation
+                          Appraisal Status Updation
                         </h2>
                       </div>
                     </div>
@@ -1745,7 +1744,7 @@ const Index = () => {
                     )}
                     <div>
                       <h4 style={{ color: "#2e008b", fontWeight: "bold" }}>
-                        Remark <span style={{ color: "red" }}>*</span>
+                        Remark
                       </h4>
                       <input
                         required
@@ -1763,14 +1762,14 @@ const Index = () => {
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
                       <button
-                      disabled={disbale}
+                        disabled={disbale}
                         className="btn w-35 btn-color"
                         onClick={closeStatusUpdateHandler}
                       >
                         Cancel
                       </button>
                       <button
-                      disabled={disbale}
+                        disabled={disbale}
                         className="btn btn-color w-10"
                         style={{ marginLeft: "12px" }}
                         onClick={handleStatusUpdateHandler}
@@ -1824,14 +1823,14 @@ const Index = () => {
             </div>
 
             <div className="row mt50">
-            <div className="col-lg-12">
-              <div className="copyright-widget text-center">
-                <p>
-                  &copy; {new Date().getFullYear()} Appraisal Link. All
-                  Rights Reserved.
-                </p>
+              <div className="col-lg-12">
+                <div className="copyright-widget text-center">
+                  <p>
+                    &copy; {new Date().getFullYear()} Appraisal Land. All Rights
+                    Reserved.
+                  </p>
+                </div>
               </div>
-            </div>
             </div>
             {/* End .col */}
           </div>

@@ -306,7 +306,7 @@ const Index = () => {
       token:data.token
     };
 
-    toast.loading("Archiving the desired property!!.");
+    toast.loading("Un-Archiving the desired property!!.");
 
     const encryptedBody = encryptionData(payload);
 
@@ -317,7 +317,7 @@ const Index = () => {
       }
     }).then((res)=>{
       toast.dismiss();
-      toast.success("Archived property!");
+      toast.success("Un-Archived property!");
       location.reload(true);
     })
     .catch((err)=>{
@@ -1537,7 +1537,7 @@ const Index = () => {
             }
             <div>
             <label style={{color:"black",fontWeight:"bold"}}>
-              Remark <span style={{color:"red"}}>*</span>
+              Remark 
               </label>
               <input
                 required
@@ -1613,7 +1613,7 @@ const Index = () => {
             <div className="col-lg-12">
               <div className="copyright-widget text-center">
                 <p>
-                  &copy; {new Date().getFullYear()} Appraisal Link. All
+                  &copy; {new Date().getFullYear()} Appraisal Land. All
                   Rights Reserved.
                 </p>
               </div>

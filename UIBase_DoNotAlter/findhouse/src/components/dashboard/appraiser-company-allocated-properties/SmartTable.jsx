@@ -246,9 +246,20 @@ function SmartTable(props) {
       <div className="smartTable-container row">
         <div
           className="candidate_revew_select style2 mb30-991"
-          style={{ marginLeft: "40%", marginTop: "2%" }}
+        
         >
           <ul className="mb0 mt-0">
+          <li className="list-inline-item">
+          <Filtering setFilterQuery={props.setFilterQuery} />
+        </li>
+        {/* <li className="list-inline-item">
+          <FilteringBy setFilterQuery={props.setSearchQuery} />
+        </li> */}.
+        <li className="list-inline-item" style={{ marginRight: "15px" }}>
+          <div className="candidate_revew_search_box course fn-520">
+            <SearchBox setSearchInput={props.setSearchInput} />
+          </div>
+        </li>
             <li className="list-inline-item">
               {loading && (
                 <div className="smartTable-loaderContainer text-primary">

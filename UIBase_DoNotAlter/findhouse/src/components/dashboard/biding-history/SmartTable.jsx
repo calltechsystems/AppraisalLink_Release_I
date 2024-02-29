@@ -7,6 +7,8 @@ import SVGChevronRight from "./icons/SVGChevronRight";
 import { FaRedo } from "react-icons/fa";
 import * as XLSX from "xlsx";
 
+import millify from 'millify';
+
 import { useReactToPrint } from "react-to-print";
 import toast from "react-hot-toast";
 import SearchBox from "./SearchBox";
@@ -245,15 +247,21 @@ function SmartTable(props) {
   return (
     <div className="col-12 p-4">
       <div className="smartTable-container row">
-      <div className="candidate_revew_select style2 mb30-991" style={{marginLeft:"40%",marginTop:"2%"}}>
-                  
-                  </div>
-        <div className="col-12">
-          {loading && (
-            <div className="smartTable-loaderContainer text-primary">
-              <div className="spinner-border" role="status"></div>
-            </div>
-          )}
+      <div className="candidate_revew_select style2 mb30-991">
+               
+      <ul>
+      <li className="list-inline-item">
+      <Filtering setFilterQuery={props.setFilterQuery} />
+    </li>
+    {/* <li className="list-inline-item">
+      <FilteringBy setFilterQuery={props.setSearchQuery} />
+    </li> */}
+    <li className="list-inline-item" style={{ marginRight: "15px" }}>
+      <div className="candidate_revew_search_box course fn-520">
+        <SearchBox setSearchInput={props.setSearchInput} />
+      </div>
+    </li>
+      </ul>
           <div className="row">
             <div className="col-12">{props.title}</div>
             <div className="col-lg-4 offset-9">

@@ -587,8 +587,6 @@ export default function Exemple({
                       </div>
                     </li>
                   </ul>
-                ) : isBidded.orderStatus === 6 ? (
-                  <span className="btn btn-success  w-100">Completed</span>
                 ) : (
                   isBidded.orderStatus <= 6 &&
                   isBidded.status === 1 && (

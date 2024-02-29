@@ -499,6 +499,7 @@ const Index = ({ isView, propertyData }) => {
             router.push("/brokerage-properties");
           })
           .catch((err) => {
+            console.log(err);
             toast.dismiss();
             toast.error(err.response.data.error);
           });
@@ -1508,7 +1509,7 @@ const Index = ({ isView, propertyData }) => {
                 <div className="col-lg-12">
                   <div className="copyright-widget text-center">
                     <p>
-                      &copy; {new Date().getFullYear()} Appraisal Link. All
+                      &copy; {new Date().getFullYear()} Appraisal Land. All
                       Rights Reserved.
                     </p>
                   </div>

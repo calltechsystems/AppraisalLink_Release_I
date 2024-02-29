@@ -261,7 +261,7 @@ const Modal = ({
                                 ? "Appraisal updation Quote "
                                 : "Appraisal Quote"
                             }`}{" "}
-                            <span class="req-btn">*</span> :
+                           :
                           </label>
                         </div>
 
