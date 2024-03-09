@@ -428,7 +428,7 @@ export default function Exemple({
               property.typeOfBuilding > 0
                 ? "Apartment"
                 : property.typeOfBuilding,
-            quote_required_by: formatDate(property.addedDatetime),
+            quote_required_by: formatDate(property.quoteRequiredDate),
             date: formatDate(property.addedDatetime),
             bidAmount: property.bidLowerRange,
             lender_information: property.lenderInformation
@@ -584,8 +584,10 @@ export default function Exemple({
                       </div>
                     </li>
                   </ul>
-                ) : isBidded.orderStatus === 3 && (
-                  <span className="btn btn-success  w-100">Completed</span>
+                ) : (
+                  isBidded.orderStatus === 3 && (
+                    <span className="btn btn-success  w-100">Completed</span>
+                  )
                 )}
               </div>
             ),

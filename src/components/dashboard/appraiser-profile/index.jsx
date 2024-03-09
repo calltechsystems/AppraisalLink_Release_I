@@ -7,6 +7,7 @@ import Form from "./Form";
 import { useRouter } from "next/router";
 
 const Index = ({ profileCount, setProfileCount }) => {
+  // let userData =  JSON.parse(localStorage.getItem("user"));
   const [showCard, setShowCard] = useState(false); // Set to false by default
   const [userData, setUserData] = useState({}); // State to hold user data
   const router = useRouter();
@@ -68,7 +69,11 @@ const Index = ({ profileCount, setProfileCount }) => {
 
   return (
     <>
-      <Header profileCount={profileCount} setProfileCount={setProfileCount} />
+      <Header
+        profileCount={profileCount}
+        setProfileCount={setProfileCount}
+        userData={userData}
+      />
       <MobileMenu />
 
       <div className="dashboard_sidebar_menu">

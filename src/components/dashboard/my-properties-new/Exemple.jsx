@@ -786,6 +786,25 @@ export default function Exemple({
             toast.error(err);
             // setModalIsOpenError(true);
           });
+        axios
+          .get("/api/getAllArchivePropertiesByBroker", {
+            headers: {
+              Authorization: `Bearer ${data.token}`,
+            },
+            params: {
+              userId: data.userId,
+            },
+          })
+          .then((res) => {
+            console.log(res);
+            const temp = res.data.data.$values;
+            setArchive(temp);
+          })
+          .catch((err) => {
+            console.log(err);
+            toast.error(err);
+            setModalIsOpenError(true);
+          });
       })
       .catch((err) => {
         toast.dismiss();

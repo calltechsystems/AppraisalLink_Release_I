@@ -328,7 +328,7 @@ export default function Exemple({
           purpose: property.purpose ? property.purpose : "N.A.",
           appraisal_status:
             isBidded.status === 1 && isBidded.orderStatus === 1 ? (
-              <span className="btn btn-warning  w-100">
+              <span className="btn btn-warning w-100">
                 {getOrderValue(isBidded.orderStatus)} -
                 {formatDate(isBidded.statusDate)}
               </span>
@@ -337,11 +337,11 @@ export default function Exemple({
                 {getOrderValue(isBidded.orderStatus)}
               </span>
             ) : (
-              <span className="btn btn-warning  w-100">New</span>
+              <span className="btn btn-warning w-100">New</span>
             ),
           remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
           status: isWait ? (
-            <span className="btn btn-primary  w-100">
+            <span className="btn btn-danger w-100">
               {property.isOnCancel
                 ? "Cancelled"
                 : property.isOnHold
@@ -419,7 +419,7 @@ export default function Exemple({
             : "N.A.",
           typeOfBuilding:
             property.typeOfBuilding > 0 ? "Apartment" : property.typeOfBuilding,
-          quote_required_by: formatDate(property.addedDatetime),
+          quote_required_by: formatDate(property.quoteRequiredDate),
           date: formatDate(property.addedDatetime),
           bidAmount: property.bidLowerRange,
           lender_information: property.lenderInformation

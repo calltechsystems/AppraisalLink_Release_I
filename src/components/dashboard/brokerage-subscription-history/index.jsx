@@ -10,12 +10,11 @@ import { useRouter } from "next/router";
 const Index = () => {
   const [data, setData] = useState([]);
   const router = useRouter();
-  let userData = {"userType" : 3};
+  let userData = { userType: 3 };
 
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
   );
-
 
   useEffect(() => {
     const activityHandler = () => {
@@ -67,7 +66,7 @@ const Index = () => {
     userData = JSON.parse(localStorage.getItem("user"));
     if (!userData) {
       router.push("/login");
-    } 
+    }
     // else if (!userData?.broker_Details?.firstName) {
     //   router.push("/my-profile");
     // }
@@ -101,7 +100,7 @@ const Index = () => {
   return (
     <>
       {/* <!-- Main Header Nav --> */}
-      <Header />
+      <Header userData={userData} />
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
@@ -113,7 +112,7 @@ const Index = () => {
           id="DashboardOffcanvasMenu"
           data-bs-scroll="true"
         >
-          <SidebarMenu userData = {userData}/>
+          <SidebarMenu userData={userData} />
         </div>
       </div>
       {/* End sidebar_menu */}

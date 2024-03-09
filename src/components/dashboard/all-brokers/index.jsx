@@ -9,6 +9,8 @@ import SearchBox from "./SearchBox";
 import { useEffect, useRef } from "react";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import Link from "next/link";
+import { FaCopy } from "react-icons/fa";
 import axios from "axios";
 import { useRouter } from "next/router";
 import Form from "../../broker-register/Form";
@@ -41,7 +43,8 @@ const Index = () => {
   const [start, setStart] = useState(0);
 
   const [end, setEnd] = useState(4);
-
+  const [currentViewBroker, setCurrentViewBroker] = useState({});
+  const [openViewModal, setOpenViewModal] = useState(false);
   const [isStatusModal, setIsStatusModal] = useState(false);
   const [selectedBroker, setSelectedBroker] = useState({});
 
@@ -277,6 +280,11 @@ const Index = () => {
     fetchData();
   }, []);
 
+  const closeViewModal = () => {
+    setOpenViewModal(false);
+    setCurrentViewBroker({});
+  };
+
   const participateHandler = (val, id) => {
     setLowRangeBid(val);
     setPropertyId(id);
@@ -452,6 +460,8 @@ const Index = () => {
                           setIsStatusModal={setIsStatusModal}
                           setSearchInput={setSearchInput}
                           setFilterQuery={setFilterQuery}
+                          setCurrentViewBroker={setCurrentViewBroker}
+                          setOpenViewModal={setOpenViewModal}
                           setCloseRegisterModal={setCloseRegisterModal}
                           start={start}
                           selectedBroker={selectedBroker}
@@ -1097,6 +1107,76 @@ const Index = () => {
                 </div>
               )}
 
+              {openViewModal && (
+                <div className="modal">
+                  <div className="modal-content">
+                    <h3 className="text-center">View Credentials</h3>
+
+                    <div className="row">
+                      <div className="col-lg-12">
+                        <div className="row mb-2 mt-2 text-center">
+                          <div className="row mb-2 mt-2">
+                            <div className="col-lg-3 mb-2">
+                              <label
+                                htmlFor=""
+                                style={{
+                                  paddingTop: "15px",
+                                  fontWeight: "lighter",
+                                }}
+                              >
+                                Email / Username <span class="req-btn">*</span>{" "}
+                                :
+                              </label>
+                            </div>
+                            <div
+                              className="col-lg-7"
+                              style={{ display: "flex", flexDirection: "row" }}
+                            >
+                              <input
+                                type="text"
+                                value={currentViewBroker.userInformation}
+                                className="form-control"
+                                id="formGroupExampleInput3"
+                              />
+                              <button
+                                onClick={() =>
+                                  copyToClipboard(currentViewBroker.email)
+                                }
+                                className="btn btn-color w-10 mt-1"
+                                title="Copy Username"
+                                style={{ marginLeft: "12px" }}
+                              >
+                                <Link href="#">
+                                  <span className="text-light">
+                                    <FaCopy />
+                                  </span>
+                                </Link>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* End .col */}
+                      </div>
+                    </div>
+                    <div
+                      className="col-lg-12 text-center"
+                      style={{ marginRight: "4%" }}
+                    >
+                      {/* <button className="cancel-button" onClick={closeModal}>
+                  Cancel
+                </button> */}
+                      <button
+                        className="btn btn-color w-25"
+                        onClick={() => closeViewModal()}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {isStatusModal && (
                 <div className="modal">
                   <div className="modal-content">
@@ -1187,9 +1267,9 @@ const Index = () => {
               <div className="col-lg-12">
                 <div className="copyright-widget text-center">
                   <p>
-                      &copy; {new Date().getFullYear()} Appraisal Land. All
-                      Rights Reserved.
-                    </p>
+                    &copy; {new Date().getFullYear()} Appraisal Land. All Rights
+                    Reserved.
+                  </p>
                 </div>
               </div>
             </div>

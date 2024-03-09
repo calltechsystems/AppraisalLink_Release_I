@@ -718,7 +718,11 @@ const DetailedInfo = ({
           <div className="col-xl-12">
             <div className="my_profile_setting_input overflow-hidden mt20 text-center">
               {isDisable && (
-                <button disabled={disable} className="btn btn5 m-1" onClick={cancelHandler}>
+                <button
+                  disabled={disable}
+                  className="btn btn5 m-1"
+                  onClick={cancelHandler}
+                >
                   Cancel
                 </button>
               )}
@@ -728,15 +732,18 @@ const DetailedInfo = ({
                   //   Update
                   // </button>
                   <button
-                  disabled={disable}
+                    disabled={disable}
                     className={`btn btn5 ${isButtonDisabled ? "disabled" : ""}`}
                     onClick={submitHandler}
-                    
                   >
                     Update
                   </button>
                 ) : (
-                  <button disabled={disable} className="btn btn5" onClick={submitHandler}>
+                  <button
+                    disabled={disable}
+                    className="btn btn5"
+                    onClick={submitHandler}
+                  >
                     Submit
                   </button>
                 ))}

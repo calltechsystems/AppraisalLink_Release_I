@@ -170,7 +170,7 @@ const Index = () => {
   };
 
   const [userData, setUserData] = useState({});
-
+  const data = JSON.parse(localStorage.getItem("user"));
   // useEffect(() => {
   //   const data = JSON.parse(localStorage.getItem("user"));
   //   if (!data) {
@@ -192,7 +192,7 @@ const Index = () => {
   return (
     <>
       {/* <!-- Main Header Nav --> */}
-      <Header userData={userData}/>
+      <Header userData={data}/>
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />

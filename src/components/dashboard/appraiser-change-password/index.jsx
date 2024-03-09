@@ -6,6 +6,9 @@ import ChangePassword from "./ChangePassword";
 import { useRouter } from "next/router";
 
 const Index = () => {
+  // const userData = JSON.parse(localStorage.getItem("user"));
+  const [userData, setUserData] = useState({});
+  const data = JSON.parse(localStorage.getItem("user"));
   const router = useRouter();
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
@@ -48,7 +51,7 @@ const Index = () => {
   return (
     <>
       {/* <!-- Main Header Nav --> */}
-      <Header />
+      <Header userData={data} />
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />

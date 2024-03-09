@@ -18,6 +18,9 @@ import Image from "next/image";
 
 const Index = ({ isView, propertyData }) => {
   const router = useRouter();
+  const [userData, setUserData] = useState({});
+  // const userData = JSON.parse(localStorage.getItem("user"));
+  const data = JSON.parse(localStorage.getItem("user"));
 
   const [updateView, setUpdateView] = useState(propertyData);
   const [isDisable, setDisable] = useState(updateView);
@@ -34,8 +37,8 @@ const Index = ({ isView, propertyData }) => {
     return resultArray;
   };
 
-  const [disable,setdisable]=useState(false)
-  let userData = {};
+  const [disable, setdisable] = useState(false);
+  // let userData = {};
   const [updatedProperty, setUpdatedProperty] = useState([]);
 
   const [remark, setRemark] = useState(propertyData?.remark || "");
@@ -359,7 +362,7 @@ const Index = ({ isView, propertyData }) => {
     window.location.reload();
   };
   const updateHandler = () => {
-    setdisable(true)
+    setdisable(true);
     setModalIsOpen(false);
     const nameRegex = /^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -391,7 +394,7 @@ const Index = ({ isView, propertyData }) => {
         zipCode: zipCodeRef,
         area: "",
         community: communityRef,
-        propertyId:propertyData.propertyId,
+        propertyId: propertyData.propertyId,
         applicantFirstName: applicantFirstName,
         applicantLastName: applicantLatsName,
         applicantPhoneNumber: applicantNumber,
@@ -482,7 +485,7 @@ const Index = ({ isView, propertyData }) => {
 
         const url = window.location.pathname;
 
-    const propertyOrderId = url.split("/create-listing/")[1];
+        const propertyOrderId = url.split("/create-listing/")[1];
 
         toast.loading("Updating the property..");
         axios
@@ -632,7 +635,7 @@ const Index = ({ isView, propertyData }) => {
   };
 
   const finalSubmitHandler = () => {
-    setdisable(true)
+    setdisable(true);
     setModalIsOpen(false);
     const nameRegex = /^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -765,8 +768,16 @@ const Index = ({ isView, propertyData }) => {
             router.push("/my-properties");
           })
           .catch((err) => {
-            toast.dismiss();
-            toast.error(err.message);
+            const status = err.response.request.status;
+            if (String(status) === String(403)) {
+              toast.dismiss();
+              toast.error(
+                "Cant appraise the property all properties are being used!!"
+              );
+            } else {
+              toast.dismiss();
+              toast.error(err.message);
+            }
           });
       }
     }
@@ -792,7 +803,7 @@ const Index = ({ isView, propertyData }) => {
   return (
     <>
       {/* <!-- Main Header Nav --> */}
-      <Header />
+      <Header userData={data} />
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />

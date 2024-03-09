@@ -24,8 +24,8 @@ const Index = () => {
   const [toggleWishlist, setToggleWishlist] = useState(0);
   const [searchResult, setSearchResult] = useState([]);
   const [property, setProperty] = useState("");
-
-  const [disbale,setDisable]=useState(false);
+  // const userData = JSON.parse(localStorage.getItem("user"));
+  const [disbale, setDisable] = useState(false);
   const [typeView, setTypeView] = useState(0);
   const [startLoading, setStartLoading] = useState(false);
   const [filterProperty, setFilterProperty] = useState("");
@@ -63,32 +63,29 @@ const Index = () => {
 
   const handleStatusUpdateHandler = () => {
     setDisable(true);
-    if (remark === "") {
-      toast.error("Remark should be filled!!");
-    } else {
-      const data = JSON.parse(localStorage.getItem("user"));
-      const payload = {
-        token: data.token,
-        Quoteid: currentBid,
-        OrderStatus: Number(orderStatus),
-        remark: remark,
-        statusDate: statusDate,
-      };
 
-      const encryptedBody = encryptionData(payload);
-      toast.loading("Updating order status!!");
-      axios
-        .put("/api/updateOrderStatus", encryptedBody)
-        .then((res) => {
-          toast.dismiss();
-          toast.success("Successfully updated!!");
-          location.reload(true);
-        })
-        .catch((err) => {
-          toast.dismiss();
-          toast.error(err?.response?.data?.error);
-        });
-    }
+    const data = JSON.parse(localStorage.getItem("user"));
+    const payload = {
+      token: data.token,
+      Quoteid: currentBid,
+      OrderStatus: Number(orderStatus),
+      remark: remark,
+      statusDate: statusDate,
+    };
+
+    const encryptedBody = encryptionData(payload);
+    toast.loading("Updating order status!!");
+    axios
+      .put("/api/updateOrderStatus", encryptedBody)
+      .then((res) => {
+        toast.dismiss();
+        toast.success("Successfully updated!!");
+        location.reload(true);
+      })
+      .catch((err) => {
+        toast.dismiss();
+        toast.error(err?.response?.data?.error);
+      });
 
     setRemark("");
     setCurrentBid(-1);
@@ -154,10 +151,7 @@ const Index = () => {
   );
 
   const unArchivePropertyHandler = (propertyId) => {
-
     const data = JSON.parse(localStorage.getItem("user"));
-
-    
 
     toast.loading("Un-Archiving the desired property!!.");
 
@@ -300,7 +294,7 @@ const Index = () => {
     const payload = {
       orderId: propertyId,
       userid: data.userId,
-      status:false,
+      status: false,
       token: data.token,
     };
 
@@ -599,7 +593,7 @@ const Index = () => {
           id="DashboardOffcanvasMenu"
           data-bs-scroll="true"
         >
-          <SidebarMenu />
+          <SidebarMenu userData={userData} />
         </div>
       </div>
       {/* End sidebar_menu */}
@@ -630,7 +624,7 @@ const Index = () => {
                 </div> */}
                 {/* End Dashboard Navigation */}
 
-                <div className="col-lg-4 col-xl-4 mb10">
+                <div className="col-lg-12 col-xl-12 text-center mt-1">
                   <div className="style2 mb30-991">
                     <h3 className="breadcrumb_title">Archive Property</h3>
                     {/* <p>We are glad to see you again!</p>                                                             */}
@@ -1723,7 +1717,7 @@ const Index = () => {
                     )}
                     <div>
                       <label style={{ color: "black", fontWeight: "bold" }}>
-                        Remark 
+                        Remark
                       </label>
                       <input
                         required
@@ -1738,14 +1732,14 @@ const Index = () => {
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
                       <button
-                      disabled={disbale}
+                        disabled={disbale}
                         className="btn w-35 btn-white"
                         onClick={closeStatusUpdateHandler}
                       >
                         Cancel
                       </button>
                       <button
-                      disabled={disbale}
+                        disabled={disbale}
                         className="btn btn-color w-10 mt-1"
                         style={{ marginLeft: "12px" }}
                         onClick={handleStatusUpdateHandler}
@@ -1796,15 +1790,15 @@ const Index = () => {
             </div>
 
             <div className="row mt50">
-                <div className="col-lg-12">
-                  <div className="copyright-widget text-center">
-                    <p>
-                      &copy; {new Date().getFullYear()} Appraisal Link. All
-                      Rights Reserved.
-                    </p>
-                  </div>
+              <div className="col-lg-12">
+                <div className="copyright-widget text-center">
+                  <p>
+                    &copy; {new Date().getFullYear()} Appraisal Land. All Rights
+                    Reserved.
+                  </p>
                 </div>
               </div>
+            </div>
             {/* End .col */}
           </div>
         </div>

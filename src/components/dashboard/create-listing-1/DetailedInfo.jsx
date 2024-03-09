@@ -112,7 +112,7 @@ const DetailedInfo = ({
 }) => {
   const router = useRouter();
   console.log(filesUrl, attachment);
-
+  const [isButtonDisabled, setButtonDisabled] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState([]);
 
   const cancelHandler = () => {
@@ -722,11 +722,19 @@ const DetailedInfo = ({
               )}
               {!isDisable &&
                 (propertyData ? (
-                  <button  disabled={disable} className="btn btn5" onClick={submitHandler}>
+                  <button
+                    disabled={disable}
+                    className={`btn btn5 ${isButtonDisabled ? "disabled" : ""}`}
+                    onClick={submitHandler}
+                  >
                     Update
                   </button>
                 ) : (
-                  <button disabled={disable} className="btn btn5" onClick={submitHandler}>
+                  <button
+                    disabled={disable}
+                    className="btn btn5"
+                    onClick={submitHandler}
+                  >
                     Submit
                   </button>
                 ))}

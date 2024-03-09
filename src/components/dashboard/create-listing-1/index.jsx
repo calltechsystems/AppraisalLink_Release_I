@@ -17,8 +17,9 @@ import Image from "next/image";
 
 const Index = ({ isView, propertyData }) => {
   const router = useRouter();
-  // const [userData, setUserData] = useState({});
-
+  const [userData, setUserData] = useState({});
+  // const userData = JSON.parse(localStorage.getItem("user"));
+  const data = JSON.parse(localStorage.getItem("user"));
   const [updateView, setUpdateView] = useState(propertyData);
   const [isDisable, setDisable] = useState(updateView);
 
@@ -36,7 +37,7 @@ const Index = ({ isView, propertyData }) => {
     return resultArray;
   };
 
-  let userData = {};
+  // let userData = {};
   const [updatedProperty, setUpdatedProperty] = useState([]);
 
   const [remark, setRemark] = useState(propertyData?.remark || "");
@@ -479,6 +480,10 @@ const Index = ({ isView, propertyData }) => {
       } else {
         const encryptedData = encryptionData(payload);
 
+        const url = window.location.pathname;
+
+        const propertyOrderId = url.split("/create-listing-1/")[1];
+
         console.log(updateView, propertyData);
 
         toast.loading("Updating the property..");
@@ -489,7 +494,7 @@ const Index = ({ isView, propertyData }) => {
               "Content-Type": "application/json",
             },
             params: {
-              propertyId: propertyData.propertyId,
+              orderId: propertyOrderId,
             },
           })
           .then((res) => {
@@ -499,7 +504,6 @@ const Index = ({ isView, propertyData }) => {
             router.push("/brokerage-properties");
           })
           .catch((err) => {
-            console.log(err);
             toast.dismiss();
             toast.error(err.response.data.error);
           });
@@ -519,7 +523,7 @@ const Index = ({ isView, propertyData }) => {
     ) {
       toast.error("Please fill the lender Information for this purpose option");
     } else {
-      setdisable(true);
+      // setdisable(true);
       const payload = {
         streetName: streetNameRef,
         streetNumber: streetNumberRef,
@@ -625,6 +629,7 @@ const Index = ({ isView, propertyData }) => {
         });
       } else {
         setModalIsOpen(true);
+        setButtonDisabled(true);
       }
     }
   };
@@ -763,8 +768,16 @@ const Index = ({ isView, propertyData }) => {
             router.push("/brokerage-properties");
           })
           .catch((err) => {
-            toast.dismiss();
-            toast.error(err.message);
+            const status = err.response.request.status;
+            if (String(status) === String(403)) {
+              toast.dismiss();
+              toast.error(
+                "Cant appraise the property all properties are being used!!"
+              );
+            } else {
+              toast.dismiss();
+              toast.error(err.message);
+            }
           });
       }
     }
@@ -790,7 +803,7 @@ const Index = ({ isView, propertyData }) => {
   return (
     <>
       {/* <!-- Main Header Nav --> */}
-      <Header />
+      <Header userData={data} />
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu userData={userData} />

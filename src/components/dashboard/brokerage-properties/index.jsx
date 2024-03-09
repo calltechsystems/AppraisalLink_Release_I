@@ -1293,7 +1293,7 @@ const Index = () => {
                   <Pagination
                     setStart={setStart}
                     setEnd={setEnd}
-                    properties={wishlistedProperties}
+                    properties={properties}
                   />
                 </div>
               </div>

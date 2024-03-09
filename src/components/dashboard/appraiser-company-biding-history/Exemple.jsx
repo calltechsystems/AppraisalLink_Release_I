@@ -430,7 +430,7 @@ export default function Exemple({
               property.typeOfBuilding > 0
                 ? "Apartment"
                 : property.typeOfBuilding,
-            quote_required_by: formatDate(property.addedDatetime),
+            quote_required_by: formatDate(property.quoteRequiredDate),
             date: formatDate(property.addedDatetime),
             bidAmount: millify(property.bidLowerRange),
             lender_information: property.lenderInformation
@@ -580,43 +580,42 @@ export default function Exemple({
                       </div>
                     </li>
                   </ul>
+                ) : isBidded.orderStatus <= 6 && isBidded.orderStatus === 3 ? (
+                  <>
+                    <button
+                      href="#"
+                      className="btn btn-color m-1"
+                      onClick={() => openStatusUpdateHandler(isBidded)}
+                    >
+                      <Link href="#">
+                        <span className="flaticon-edit text-light"></span>
+                      </Link>
+                    </button>
+                    <li
+                      className="list-inline-item"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Archive Property"
+                    >
+                      <div
+                        className="w-100"
+                        onClick={() =>
+                          onArchivePropertyHandler(property.orderId)
+                        }
+                      >
+                        <button href="#" className="btn btn-color">
+                          <Link href="#">
+                            <span className="text-light">
+                              {" "}
+                              <FaArchive />
+                            </span>
+                          </Link>
+                        </button>
+                      </div>
+                    </li>
+                  </>
                 ) : (
-                  isBidded.orderStatus <= 6  && isBidded.orderStatus === 3 ? (
-                    <>
-                      <button
-                        href="#"
-                        className="btn btn-color m-1"
-                        onClick={() => openStatusUpdateHandler(isBidded)}
-                      >
-                        <Link href="#">
-                          <span className="flaticon-edit text-light"></span>
-                        </Link>
-                      </button>
-                      <li
-                        className="list-inline-item"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title="Archive Property"
-                      >
-                        <div
-                          className="w-100"
-                          onClick={() =>
-                            onArchivePropertyHandler(property.orderId)
-                          }
-                        >
-                          <button href="#" className="btn btn-color">
-                            <Link href="#">
-                              <span className="text-light">
-                                {" "}
-                                <FaArchive />
-                              </span>
-                            </Link>
-                          </button>
-                        </div>
-                      </li>
-                    </>
-                  )
-                  : (<p className="btn btn-success  w-100">Completed </p>)
+                  <p className="btn btn-success  w-100">Completed </p>
                 )}
               </div>
             ),

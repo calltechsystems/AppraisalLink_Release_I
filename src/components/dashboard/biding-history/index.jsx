@@ -18,9 +18,7 @@ import Image from "next/image";
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
-
-
-  const [disable,setDisable]=useState(false)
+  const [disable, setDisable] = useState(false);
   const [isStatusModal, setIsStatusModal] = useState(false);
   const [toggleId, setToggleId] = useState(-1);
   const [toggleWishlist, setToggleWishlist] = useState(0);
@@ -62,31 +60,30 @@ const Index = () => {
   const [remark, setRemark] = useState("");
 
   const handleStatusUpdateHandler = () => {
-    setDisable(true)
-   
-      const data = JSON.parse(localStorage.getItem("user"));
-      const payload = {
-        token: data.token,
-        Quoteid: currentBid.bidId,
-        OrderStatus: Number(orderStatus),
-        remark: remark,
-        statusDate: statusDate,
-      };
+    setDisable(true);
 
-      const encryptedBody = encryptionData(payload);
-      toast.loading("Updating order status!!");
-      axios
-        .put("/api/updateOrderStatus", encryptedBody)
-        .then((res) => {
-          toast.dismiss();
-          toast.success("Successfully updated!!");
-          location.reload(true);
-        })
-        .catch((err) => {
-          toast.dismiss();
-          toast.error(err?.response?.data?.error);
-        });
-    
+    const data = JSON.parse(localStorage.getItem("user"));
+    const payload = {
+      token: data.token,
+      Quoteid: currentBid.bidId,
+      OrderStatus: Number(orderStatus),
+      remark: remark,
+      statusDate: statusDate,
+    };
+
+    const encryptedBody = encryptionData(payload);
+    toast.loading("Updating order status!!");
+    axios
+      .put("/api/updateOrderStatus", encryptedBody)
+      .then((res) => {
+        toast.dismiss();
+        toast.success("Successfully updated!!");
+        location.reload(true);
+      })
+      .catch((err) => {
+        toast.dismiss();
+        toast.error(err?.response?.data?.error);
+      });
 
     setRemark("");
     setCurrentBid({});
@@ -652,7 +649,7 @@ const Index = () => {
                 </div> */}
                 {/* End Dashboard Navigation */}
 
-                <div className="col-lg-4 col-xl-4 mb10">
+                <div className="col-lg-12 col-xl-12 text-center mt-1">
                   <div className="style2 mb30-991">
                     <h3 className="breadcrumb_title">Quotes History</h3>
                     {/* <p>We are glad to see you again!</p>                                                             */}
@@ -1788,7 +1785,7 @@ const Index = () => {
                     <div className="row">
                       <div className="col-lg-12 text-center">
                         <h2 className=" text-color mt-1">
-                        Appraisal Status Updation
+                          Appraisal Status Updation
                         </h2>
                       </div>
                     </div>
@@ -1840,7 +1837,7 @@ const Index = () => {
                     )}
                     <div>
                       <h4 style={{ color: "#2e008b", fontWeight: "bold" }}>
-                        Remark 
+                        Remark
                       </h4>
                       <input
                         required
@@ -1858,14 +1855,14 @@ const Index = () => {
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
                       <button
-                      disabled={disable}
+                        disabled={disable}
                         className="btn w-35 btn-color"
                         onClick={closeStatusUpdateHandler}
                       >
                         Cancel
                       </button>
                       <button
-                      disabled={disable}
+                        disabled={disable}
                         className="btn btn-color w-10"
                         style={{ marginLeft: "12px" }}
                         onClick={handleStatusUpdateHandler}
@@ -1923,14 +1920,14 @@ const Index = () => {
             </div>
 
             <div className="row mt50">
-            <div className="col-lg-12">
-              <div className="copyright-widget text-center">
-                <p>
-                  &copy; {new Date().getFullYear()} Appraisal Link. All
-                  Rights Reserved.
-                </p>
+              <div className="col-lg-12">
+                <div className="copyright-widget text-center">
+                  <p>
+                    &copy; {new Date().getFullYear()} Appraisal Land. All Rights
+                    Reserved.
+                  </p>
+                </div>
               </div>
-            </div>
             </div>
             {/* End .col */}
           </div>

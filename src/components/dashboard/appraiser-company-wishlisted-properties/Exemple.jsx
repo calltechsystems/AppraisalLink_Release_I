@@ -452,7 +452,7 @@ export default function Exemple({
               property.typeOfBuilding > 0
                 ? "Apartment"
                 : property.typeOfBuilding,
-            quote_required_by: formatDate(property.addedDatetime),
+            quote_required_by: formatDate(property.quoteRequiredDate),
             date: formatDate(property.addedDatetime),
             bidAmount: millify(property.bidLowerRange),
             lender_information: property.lenderInformation
@@ -633,46 +633,45 @@ export default function Exemple({
                       </div>
                     </li>
                   </ul>
-                ) : (
-                  isBidded.orderStatus <= 6 && isBidded.orderStatus!==3 &&
+                ) : isBidded.orderStatus <= 6 &&
+                  isBidded.orderStatus !== 3 &&
                   isBidded.status === 1 ? (
-                    <>
-                      <li
-                        className="list-inline-item"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title="Archive Property"
+                  <>
+                    <li
+                      className="list-inline-item"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Archive Property"
+                    >
+                      <div
+                        className="w-100"
+                        onClick={() =>
+                          onArchivePropertyHandler(property.orderId)
+                        }
                       >
-                        <div
-                          className="w-100"
-                          onClick={() =>
-                            onArchivePropertyHandler(property.orderId)
-                          }
-                        >
-                          <button href="#" className="btn btn-color">
-                            <Link href="#">
-                              <span className="text-light">
-                                {" "}
-                                <FaArchive />
-                              </span>
-                            </Link>
-                          </button>
-                        </div>
-                      </li>
-                      <button
-                        href="#"
-                        className="list-inline-item btn btn-color w-20"
-                        // style={{ marginLeft: "12px" }}
-                        onClick={() => openStatusUpdateHandler(isBidded)}
-                      >
-                        <Link href="#">
-                          <span className="flaticon-edit text-light"></span>
-                        </Link>
-                      </button>
-                    </>
-                    
-                  )
-                  :  (<p className="btn btn-success  w-100">Completed </p>)
+                        <button href="#" className="btn btn-color">
+                          <Link href="#">
+                            <span className="text-light">
+                              {" "}
+                              <FaArchive />
+                            </span>
+                          </Link>
+                        </button>
+                      </div>
+                    </li>
+                    <button
+                      href="#"
+                      className="list-inline-item btn btn-color w-20"
+                      // style={{ marginLeft: "12px" }}
+                      onClick={() => openStatusUpdateHandler(isBidded)}
+                    >
+                      <Link href="#">
+                        <span className="flaticon-edit text-light"></span>
+                      </Link>
+                    </button>
+                  </>
+                ) : (
+                  <p className="btn btn-success  w-100">Completed </p>
                 )}
               </div>
             ),
