@@ -1,0 +1,1565 @@
+import Header from "../../../components/common/header/dashboard/HeaderBrokerage";
+import SidebarMenu from "../../../components/common/header/dashboard/SidebarMenuBrokerage";
+import MobileMenu from "../../../components/common/header/MobileMenu_01";
+import TableData from "./TableData";
+import Filtering from "./Filtering";
+import Image from "next/image";
+import Link from "next/link";
+import millify from "millify";
+import FilteringBy from "./FilteringBy";
+import Pagination from "./Pagination";
+import SearchBox from "./SearchBox";
+import { useEffect, useRef } from "react";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { useRouter } from "next/router";
+import Modal from "./Modal";
+import { encryptionData } from "../../../utils/dataEncryption";
+// import Form from "../../broker-register/Form";
+
+const Index = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
+  const [toggleId, setToggleId] = useState(-1);
+
+  const [closeRegisterModal, setCloseRegisterModal] = useState(false);
+  const [toggleWishlist, setToggleWishlist] = useState(0);
+  const [searchResult, setSearchResult] = useState([]);
+  const [property, setProperty] = useState("");
+  const [startLoading, setStartLoading] = useState(false);
+  const [filterProperty, setFilterProperty] = useState("");
+  const [filterQuery, setFilterQuery] = useState("Last 30 Days");
+  const [searchQuery, setSearchQuery] = useState("city");
+  const [properties, setProperties] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [lowRangeBid, setLowRangeBid] = useState("");
+  const [propertyId, setPropertyId] = useState(null);
+  const [updatedCode, setUpdatedCode] = useState(false);
+  const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
+
+  const [start, setStart] = useState(0);
+  const [currentProperty, setCurrentProperty] = useState("");
+  const [end, setEnd] = useState(4);
+  const [isHoldProperty, setIsHoldProperty] = useState(0);
+  const [isCancelProperty, setIsCancelProperty] = useState(0);
+  // const [disable, setDisable] = useState(false);
+  const [modalIsPopupOpen, setModalIsPopupOpen] = useState(false);
+
+  const [isStatusModal, setIsStatusModal] = useState(false);
+  const [selectedBroker, setSelectedBroker] = useState({});
+
+  const closeStatusUpdateHandler = () => {
+    setIsStatusModal(false);
+  };
+
+  const [modalIsOpenError, setModalIsOpenError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [paginatedRow, setPaginatedRow] = useState([]);
+
+  const [refresh, setRefresh] = useState(false);
+
+  const closeErrorModal = () => {
+    setModalIsOpenError(false);
+  };
+
+  const closeBrokerModal = () => {
+    setOpenBrokerModal(false);
+  };
+
+  const closeQuoteModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const openQuoteModal = () => {
+    setIsModalOpen(false);
+    setIsQuoteModalOpen(true);
+  };
+
+  const openModalBroker = (property) => {
+    setBroker(property);
+    setOpenBrokerModal(true);
+  };
+  const router = useRouter();
+  const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
+    Date.now()
+  );
+
+  console.log(closeRegisterModal);
+
+  useEffect(() => {
+    const activityHandler = () => {
+      setLastActivityTimestamp(Date.now());
+    };
+
+    // Attach event listeners for user activity
+    window.addEventListener("mousemove", activityHandler);
+    window.addEventListener("keydown", activityHandler);
+    window.addEventListener("click", activityHandler);
+
+    // Cleanup event listeners when the component is unmounted
+    return () => {
+      window.removeEventListener("mousemove", activityHandler);
+      window.removeEventListener("keydown", activityHandler);
+      window.removeEventListener("click", activityHandler);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Check for inactivity every minute
+    const inactivityCheckInterval = setInterval(() => {
+      const currentTime = Date.now();
+      const timeSinceLastActivity = currentTime - lastActivityTimestamp;
+
+      // Check if there has been no activity in the last 10 minutes (600,000 milliseconds)
+      if (timeSinceLastActivity > 600000) {
+        localStorage.removeItem("user");
+        router.push("/login");
+      }
+    }, 60000); // Check every minute
+
+    // Cleanup the interval when the component is unmounted
+    return () => clearInterval(inactivityCheckInterval);
+  }, [lastActivityTimestamp]);
+
+  const openModal = (property) => {
+    setProperty(property);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+  const [propValue, setPropValue] = useState({});
+
+  const onHoldHandler = () => {
+    setDisable(true);
+    const data = JSON.parse(localStorage.getItem("user"));
+
+    const payload = {
+      token: data.token,
+      orderId: propertyId,
+      status: "HOLD",
+      value: Boolean(propValue),
+    };
+
+    const encryptedBody = encryptionData(payload);
+
+    toast.loading("Turning the property status !");
+    axios
+      .put("/api/setPropertyOnHold", encryptedBody)
+      .then((res) => {
+        toast.dismiss();
+        setIsHoldProperty(false);
+        toast.success("Successfully added status!");
+        window.location.reload();
+      })
+      .catch((err) => {
+        toast.error(err);
+      });
+    // closeModal();
+    setPropValue({});
+
+    setPropertyId(-1);
+  };
+
+  const [brokerInfoModal, setbrokerInfoModal] = useState(false);
+  const [broker, setBroker] = useState({});
+
+  const openbrokerInfoModal = (info) => {
+    console.log("inide", info);
+
+    setbrokerInfoModal(true);
+    setBroker(info);
+  };
+
+  const onCancelHandler = () => {
+    setDisable(true);
+    const data = JSON.parse(localStorage.getItem("user"));
+
+    const payload = {
+      token: data.token,
+      orderId: propertyId,
+      status: "CANCEL",
+      value: Boolean(propValue),
+    };
+
+    const encryptedBody = encryptionData(payload);
+
+    toast.loading("Turning the property status...");
+    axios
+      .put("/api/setPropertyOnHold", encryptedBody)
+      .then((res) => {
+        toast.dismiss();
+        toast.success("Successfully added status!");
+        setIsCancelProperty(false);
+        window.location.reload();
+      })
+      .catch((err) => {
+        toast.error(err);
+      });
+    // closeModal();
+    setPropValue(0);
+    setPropertyId(-1);
+  };
+
+  const closeCancelHoldHandler = () => {
+    setIsCancelProperty(false);
+    setIsHoldProperty(false);
+    setModalOpen(false);
+  };
+
+  useEffect(() => {
+    const filterProperties = (propertys, searchInput) => {
+      if (searchInput === "") {
+        return propertys;
+      }
+      const filteredProperties = propertys.filter((property) => {
+        // Convert the search input to lowercase for a case-insensitive search
+        const searchTerm = searchInput.toLowerCase();
+
+        // Check if any of the fields contain the search term
+        return (
+          property.zipCode.toLowerCase().includes(searchTerm) ||
+          property.area.toLowerCase().includes(searchTerm) ||
+          property.city.toLowerCase().includes(searchTerm) ||
+          property.province.toLowerCase().includes(searchTerm) ||
+          property.streetName.toLowerCase().includes(searchTerm) ||
+          property.streetNumber.toLowerCase().includes(searchTerm) ||
+          property.typeOfBuilding.toLowerCase().includes(searchTerm)
+        );
+      });
+
+      return filteredProperties;
+    };
+    const filteredData = filterProperties(properties, searchInput);
+    setFilterProperty(filteredData);
+  }, [searchInput]);
+
+  const filterData = (tempData) => {
+    const currentDate = new Date();
+    const oneYearAgo = new Date(currentDate);
+    oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
+
+    switch (filterQuery) {
+      case "Last 30 Days":
+        const thirtyDaysAgo = new Date(currentDate);
+        thirtyDaysAgo.setDate(currentDate.getDate() - 30);
+        return tempData.filter(
+          (item) => new Date(item.addedDatetime) >= thirtyDaysAgo
+        );
+      case "Last 1 month":
+        const oneMonthAgo = new Date(currentDate);
+        oneMonthAgo.setMonth(currentDate.getMonth() - 1);
+        return tempData.filter(
+          (item) => new Date(item.addedDatetime) >= oneMonthAgo
+        );
+      case "Last 6 months":
+        const sixMonthsAgo = new Date(currentDate);
+        sixMonthsAgo.setMonth(currentDate.getMonth() - 6);
+        return tempData.filter(
+          (item) => new Date(item.addedDatetime) >= sixMonthsAgo
+        );
+      case "Last 1 year":
+        return tempData.filter(
+          (item) => new Date(item.addedDatetime) >= oneYearAgo
+        );
+      default:
+        return tempData; // Return all data if no valid timeFrame is specified
+    }
+  };
+
+  useEffect(() => {
+    const tmpData = filterData(properties);
+    setProperties(tmpData);
+  }, [filterQuery]);
+
+  const handleDelete = () => {
+    const data = JSON.parse(localStorage.getItem("user"));
+
+    toast.loading("deleting this property");
+    axios
+      .delete("/api/deleteBrokerPropertyById", {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+          "Content-Type": "application/json",
+        },
+        params: {
+          propertyId: property.propertyId,
+        },
+      })
+      .then((res) => {
+        setRerender(true);
+      })
+      .catch((err) => {
+        toast.error(err);
+      });
+    toast.dismiss();
+    closeModal();
+  };
+
+  useEffect(() => {
+    setIsLoading(false);
+  }, [updatedCode]);
+
+  const [userData, setUserData] = useState({});
+
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("user"));
+    if (!data) {
+      router.push("/login");
+    }
+    // else if (!data?.brokerage_Details.firstName) {
+    //   router.push("/broker-profile");
+    // }
+    if (!data) {
+      router.push("/login");
+    }
+    const fetchData = () => {
+      if (data) {
+        setUserData(data);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const participateHandler = (val, id) => {
+    setLowRangeBid(val);
+    setPropertyId(id);
+    setModalOpen(true);
+  };
+
+  const [disable, setDisable] = useState(false);
+
+  const onWishlistHandler = (id) => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+
+    const formData = {
+      userId: userData.userId,
+      propertyId: id,
+      token: userData.token,
+    };
+
+    const payload = encryptionData(formData);
+
+    toast.loading("Setting this property into your wishlist");
+    axios
+      .post("/api/addToWishlist", payload)
+      .then((res) => {
+        toast.dismiss();
+        toast.success("Successfully added !!! ");
+        window.location.reload();
+      })
+      .catch((err) => {
+        toast.dismiss();
+        toast.error(err?.response?.data?.error);
+      });
+  };
+
+  useEffect(() => {
+    console.log(searchQuery);
+    const tempData = properties;
+    if (searchInput === "") {
+      return;
+    } else if (searchQuery === "city") {
+      const newProperties = tempData.filter((item) => {
+        if (item.city.toLowerCase() === searchInput.toLowerCase()) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      setSearchResult(newProperties);
+    } else if (searchQuery === "state") {
+      const newProperties = tempData.filter((item) => {
+        if (item.state.toLowerCase() === searchInput.toLowerCase()) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      setSearchResult(newProperties);
+    } else {
+      const newProperties = tempData.filter((item) => {
+        if (item.zipCode.toLowerCase() === searchInput.toLowerCase()) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      setSearchResult(newProperties);
+    }
+  }, [searchInput]);
+
+  return (
+    <>
+      {/* <!-- Main Header Nav --> */}
+      <Header userData={userData} />
+
+      {/* <!--  Mobile Menu --> */}
+      <MobileMenu />
+
+      <div className="dashboard_sidebar_menu">
+        <div
+          className="offcanvas offcanvas-dashboard offcanvas-start"
+          tabIndex="-1"
+          id="DashboardOffcanvasMenu"
+          data-bs-scroll="true"
+        >
+          <SidebarMenu userData={userData} />
+        </div>
+      </div>
+      {/* End sidebar_menu */}
+
+      {/* <!-- Our Dashbord --> */}
+      <section className="our-dashbord dashbord bgc-f7 pb50 dashboard-height">
+        <div
+          className="container-fluid ovh table-padding container-padding"
+          style={{}}
+        >
+          <div className="row">
+            <div className="col-lg-12 maxw100flex-992">
+              <div className="row">
+                {/* Start Dashboard Navigation */}
+                {/* <div className="col-lg-12">
+                  <div className="dashboard_navigationbar dn db-1024">
+                    <div className="dropdown">
+                      <button
+                        className="dropbtn"
+                        data-bs-toggle="offcanvas"
+                        data-bs-target="#DashboardOffcanvasMenu"
+                        aria-controls="DashboardOffcanvasMenu"
+                      >
+                        <i className="fa fa-bars pr10"></i> Dashboard Navigation
+                      </button>
+                    </div>
+                  </div>
+                </div> */}
+                {/* End Dashboard Navigation */}
+
+                {/* <div className="col-lg-4 col-xl-4 ">
+                  <div className="style2 mb30-991">
+                    <h3 className="breadcrumb_title">All brokers</h3>
+                  </div>
+                </div> */}
+                {/* End .col */}
+                {/*<div className="row">
+                 <div className="col-lg-12 mt20">
+                  <div className="mbp_pagination">
+                    <Pagination
+                      setStart={setStart}
+                      setEnd={setEnd}
+                      properties={properties}
+                    />
+                  </div>
+                </div> 
+            </div>*/}
+
+                <div className="col-lg-12 col-xl-12">
+                  {/*<div className="candidate_revew_select style2 mb30-991">
+                    <ul className="mb0">
+                      <li className="list-inline-item">
+                        <Filtering setFilterQuery={setFilterQuery} />
+                      </li>
+                      <li className="list-inline-item">
+                        <FilteringBy setFilterQuery={setSearchQuery} />
+                      </li>
+                      <li className="list-inline-item">
+                        <div className="candidate_revew_search_box course fn-520">
+                          <SearchBox setSearchInput={setSearchInput} />
+                        </div>
+                      </li>
+                    </ul>
+              </div>*/}
+                </div>
+                {/* End .col */}
+
+                <div className="col-lg-12">
+                  <div className="">
+                    <div className="property_table">
+                      <div className="mt0">
+                        <TableData
+                          userData={userData}
+                          setModalOpen={setModalOpen}
+                          close={closeModal}
+                          setProperties={setProperties}
+                          setPropertyId={setPropertyId}
+                          setPropValue={setPropValue}
+                          properties={
+                            searchInput === "" ? properties : filterProperty
+                          }
+                          setUpdatedCode={setUpdatedCode}
+                          onWishlistHandler={onWishlistHandler}
+                          participateHandler={participateHandler}
+                          setErrorMessage={setErrorMessage}
+                          setModalIsOpenError={setModalIsOpenError}
+                          setRefresh={setRefresh}
+                          setModalIsPopupOpen={setModalIsPopupOpen}
+                          refresh={refresh}
+                          setStartLoading={setStartLoading}
+                          openModalBroker={openModalBroker}
+                          setIsStatusModal={setIsStatusModal}
+                          setSearchInput={setSearchInput}
+                          setFilterQuery={setFilterQuery}
+                          setCloseRegisterModal={setCloseRegisterModal}
+                          start={start}
+                          openbrokerInfoModal={openbrokerInfoModal}
+                          selectedBroker={selectedBroker}
+                          setCurrentProperty={setCurrentProperty}
+                          setSelectedBroker={setSelectedBroker}
+                          setIsCancelProperty={setIsCancelProperty}
+                          setIsHoldProperty={setIsHoldProperty}
+                          end={end}
+                        />
+
+                        {modalIsOpenError && (
+                          <div className="modal">
+                            <div
+                              className="modal-content"
+                              style={{ borderColor: "orangered", width: "20%" }}
+                            >
+                              <h3
+                                className="text-center"
+                                style={{ color: "orangered" }}
+                              >
+                                Error
+                              </h3>
+                              <div
+                                style={{
+                                  borderWidth: "2px",
+                                  borderColor: "orangered",
+                                }}
+                              >
+                                <br />
+                              </div>
+                              <h5 className="text-center">{errorMessage}</h5>
+                              <div
+                                className="text-center"
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "column",
+                                }}
+                              >
+                                <button
+                                  className="btn w-35 btn-white"
+                                  onClick={() => closeErrorModal()}
+                                  style={{
+                                    borderColor: "orangered",
+                                    color: "orangered",
+                                  }}
+                                >
+                                  Cancel
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        <div>
+                          {modalIsPopupOpen && (
+                            <div className="modal">
+                              <div className="modal-content">
+                                <div className="col-lg-12">
+                                  <div className="row">
+                                    <div className="col-lg-12">
+                                      <Link href="/" className="">
+                                        <Image
+                                          width={60}
+                                          height={45}
+                                          className="logo1 img-fluid"
+                                          style={{ marginTop: "-20px" }}
+                                          src="/assets/images/logo.png"
+                                          alt="header-logo2.png"
+                                        />
+                                        <span
+                                          style={{
+                                            color: "#2e008b",
+                                            fontWeight: "bold",
+                                            fontSize: "24px",
+                                            // marginTop: "20px",
+                                          }}
+                                        >
+                                          Appraisal
+                                        </span>
+                                        <span
+                                          style={{
+                                            color: "#97d700",
+                                            fontWeight: "bold",
+                                            fontSize: "24px",
+                                            // marginTop: "20px",
+                                          }}
+                                        >
+                                          {" "}
+                                          Land
+                                        </span>
+                                      </Link>
+                                    </div>
+                                  </div>
+                                  <div className="row">
+                                    <div className="col-lg-12 text-center">
+                                      <h1 className=" text-color mt-1">
+                                        Property Details
+                                      </h1>
+                                    </div>
+                                  </div>
+                                  <div
+                                    className="mt-2 mb-3"
+                                    style={{ border: "2px solid #97d700" }}
+                                  ></div>
+                                </div>
+                                {/* <p className="text-center mb-3">
+                                  All of the details on the assessed property
+                                  are here.
+                                </p> */}
+                                <div
+                                  className="d-flex justify-content-center"
+                                  id="property-info-container"
+                                >
+                                  <table
+                                    style={{
+                                      width: "700px",
+                                      textAlign: "start",
+                                      borderRadius: "5px",
+                                      fontSize: "17px",
+                                      fontWeight: "bold",
+                                    }}
+                                  >
+                                    <thead>
+                                      <tr>
+                                        <th
+                                          style={{
+                                            border: "1px solid #2e008b",
+                                            color: "#2e008b",
+                                            color: "#2e008b",
+                                            // padding: "5px",
+                                            textAlign: "center",
+                                          }}
+                                        >
+                                          Headers
+                                        </th>
+                                        <th
+                                          style={{
+                                            border: "1px solid #2e008b",
+                                            // width: "470px",
+                                            color: "#2e008b",
+                                            // padding: "5px",
+                                            textAlign: "center",
+                                          }}
+                                        >
+                                          Value
+                                        </th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <td
+                                          style={{
+                                            border: "1px solid #2e008b",
+                                            color: "#2e008b",
+                                            padding: "5px",
+                                          }}
+                                        >
+                                          <span className="text-start">
+                                            Property Address
+                                          </span>
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid #2e008b",
+                                            width: "465px",
+                                            color: "black",
+                                            padding: "5px",
+                                          }}
+                                        >
+                                          {" "}
+                                          {currentProperty.streetNumber}{" "}
+                                          {currentProperty.streetName}{" "}
+                                          {currentProperty.city}{" "}
+                                          {currentProperty.province}{" "}
+                                          {currentProperty.zipCode}
+                                        </td>
+                                      </tr>
+                                      {/* <tr>
+                                      <td
+                                         style={{
+                                          border: "1px solid #2e008b",
+                                          color: "#2e008b",
+                                          padding:"5px"
+                                        }}
+                                      >
+                                        <span className="text-start">
+                                          Property Area
+                                        </span>
+                                      </td>
+                                      <td
+                                        style={{
+                                          border: "1px solid #2e008b",
+                                          width: "250px",
+                                        }}
+                                      >
+                                        {currentProperty.area} sqft
+                                      </td>
+                                    </tr> */}
+                                      <tr>
+                                        <td
+                                          style={{
+                                            border: "1px solid #2e008b",
+                                            color: "#2e008b",
+                                            padding: "5px",
+                                          }}
+                                        >
+                                          <span className="text-start">
+                                            {" "}
+                                            Type of Building{" "}
+                                          </span>
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid #2e008b",
+                                            width: "250px",
+                                            color: "black",
+                                            padding: "5px",
+                                          }}
+                                        >
+                                          {currentProperty.typeOfBuilding}
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td
+                                          style={{
+                                            border: "1px solid #2e008b",
+                                            color: "#2e008b",
+                                            padding: "5px",
+                                          }}
+                                        >
+                                          <span className="text-start">
+                                            {" "}
+                                            Type of Appraisal
+                                          </span>
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid #2e008b",
+                                            width: "250px",
+                                            color: "black",
+                                            padding: "5px",
+                                          }}
+                                        >
+                                          {currentProperty.typeOfAppraisal}
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td
+                                          style={{
+                                            border: "1px solid #2e008b",
+                                            color: "#2e008b",
+                                            padding: "5px",
+                                          }}
+                                        >
+                                          <span className="text-start">
+                                            {" "}
+                                            Purpose
+                                          </span>
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid #2e008b",
+                                            width: "250px",
+                                            color: "black",
+                                            padding: "5px",
+                                          }}
+                                        >
+                                          {currentProperty.purpose}
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td
+                                          style={{
+                                            border: "1px solid #2e008b",
+                                            color: "#2e008b",
+                                            padding: "5px",
+                                          }}
+                                        >
+                                          <span className="text-start">
+                                            {" "}
+                                            Lender Information
+                                          </span>
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid #2e008b",
+                                            width: "250px",
+                                            color: "black",
+                                            padding: "5px",
+                                          }}
+                                        >
+                                          {currentProperty.lenderInformation
+                                            ? currentProperty.lenderInformation
+                                            : "N.A."}
+                                        </td>
+                                      </tr>
+                                      {/* <tr>
+                                      <td
+                                         style={{
+                                          border: "1px solid #2e008b",
+                                          color: "#2e008b",
+                                          padding:"5px"
+                                        }}
+                                      >
+                                        <span className="text-start">
+                                          Community
+                                        </span>
+                                      </td>
+                                      <td
+                                        style={{
+                                          border: "1px solid #2e008b",
+                                          width: "250px",
+                                        }}
+                                      >
+                                        {" "}
+                                        {currentProperty.community
+                                          ? currentProperty.community
+                                          : "NA"}
+                                      </td>
+                                    </tr> */}
+                                      <tr>
+                                        <td
+                                          style={{
+                                            border: "1px solid #2e008b",
+                                            color: "#2e008b",
+                                            padding: "5px",
+                                          }}
+                                        >
+                                          <span className="text-start">
+                                            Estimated Value
+                                          </span>
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid #2e008b",
+                                            width: "250px",
+                                            color: "black",
+                                            padding: "5px",
+                                          }}
+                                        >
+                                          ${" "}
+                                          {millify(
+                                            currentProperty.estimatedValue
+                                          )}
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td
+                                          style={{
+                                            border: "1px solid #2e008b",
+                                            color: "#2e008b",
+                                            padding: "5px",
+                                          }}
+                                        >
+                                          <span className="text-start">
+                                            Urgency
+                                          </span>
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid #2e008b",
+                                            width: "250px",
+                                            color: "black",
+                                            padding: "5px",
+                                          }}
+                                        >
+                                          {" "}
+                                          {currentProperty.urgency === 0
+                                            ? "Rush"
+                                            : currentProperty.urgency === 1
+                                            ? "Regular"
+                                            : "N.A."}
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td
+                                          style={{
+                                            border: "1px solid #2e008b",
+                                            color: "#2e008b",
+                                            padding: "5px",
+                                          }}
+                                        >
+                                          <span className="text-start">
+                                            Appraisal Report Req. By
+                                          </span>
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid #2e008b",
+                                            width: "250px",
+                                            color: "black",
+                                            padding: "5px",
+                                          }}
+                                        >
+                                          {currentProperty.quoteRequiredDate}
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td
+                                          style={{
+                                            border: "1px solid #2e008b",
+                                            color: "#2e008b",
+                                            padding: "5px",
+                                          }}
+                                        >
+                                          <span className="text-start">
+                                            Applicant Name
+                                          </span>
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid #2e008b",
+                                            width: "250px",
+                                            color: "black",
+                                            padding: "5px",
+                                          }}
+                                        >
+                                          {" "}
+                                          {
+                                            currentProperty.applicantFirstName
+                                          }{" "}
+                                          {currentProperty.applicantLastName}
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td
+                                          style={{
+                                            border: "1px solid #2e008b",
+                                            color: "#2e008b",
+                                            padding: "5px",
+                                          }}
+                                        >
+                                          <span className="text-start">
+                                            Email Address
+                                          </span>
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid #2e008b",
+                                            width: "250px",
+                                            color: "black",
+                                            padding: "5px",
+                                          }}
+                                        >
+                                          {" "}
+                                          {
+                                            currentProperty.applicantEmailAddress
+                                          }
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td
+                                          style={{
+                                            border: "1px solid #2e008b",
+                                            color: "#2e008b",
+                                            padding: "5px",
+                                          }}
+                                        >
+                                          <span className="text-start">
+                                            Phone Number
+                                          </span>
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid #2e008b",
+                                            width: "250px",
+                                            color: "black",
+                                            padding: "5px",
+                                          }}
+                                        >
+                                          {" "}
+                                          {currentProperty.applicantPhoneNumber}
+                                        </td>
+                                      </tr>
+                                      {/* <tr>
+                                      <td
+                                         style={{
+                                          border: "1px solid #2e008b",
+                                          color: "#2e008b",
+                                          padding:"5px"
+                                        }}
+                                      >
+                                        <span className="text-start">
+                                          Address
+                                        </span>
+                                      </td>
+                                      <td
+                                        style={{
+                                          border: "1px solid #2e008b",
+                                          width: "250px",
+                                        }}
+                                      >
+                                        {" "}
+                                        {currentProperty.applicantAddress
+                                          ? currentProperty.applicantAddress
+                                          : "NA"}
+                                      </td>
+                                    </tr> */}
+                                      <tr>
+                                        <td
+                                          style={{
+                                            border: "1px solid #2e008b",
+                                            color: "#2e008b",
+                                            padding: "5px",
+                                          }}
+                                        >
+                                          <span className="text-start">
+                                            Remark / Summary
+                                          </span>
+                                        </td>
+                                        <td
+                                          style={{
+                                            border: "1px solid #2e008b",
+                                            width: "250px",
+                                            color: "black",
+                                            padding: "5px",
+                                          }}
+                                        >
+                                          {" "}
+                                          {currentProperty.remark
+                                            ? currentProperty.remark
+                                            : "N.A."}
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                                <div className="row text-center mt-3">
+                                  <div className="col-lg-12">
+                                    <div
+                                      className="btn btn-color w-25 m-1"
+                                      onClick={() =>
+                                        PropertyInfoHandler(
+                                          currentProperty.orderId
+                                        )
+                                      }
+                                      title="Download Pdf"
+                                    >
+                                      Download
+                                    </div>
+                                    <button
+                                      className="btn btn-color w-25 text-center"
+                                      onClick={() => setModalIsPopupOpen(false)}
+                                    >
+                                      Ok
+                                    </button>
+                                  </div>
+                                </div>
+
+                                {/* <div
+                                className="text-center"
+                                style={{ display: "flex", flexDirection: "column" }}
+                              >
+                                <label>Property Value : ${bidLowerRangeRef}</label>
+                                <label>community Type : {communityRef}</label>
+                                <label>Property type : {buildinRef}</label>
+                                <label>
+                                  {streetNameRef} {streetNumberRef} {cityRef}
+                                </label>
+                                <label>zipCode : {zipCodeRef}</label>
+                                <label>
+                                  Property By : {applicantFirstName} {applicantLatsName}
+                                </label>
+                                <label>
+                                  {applicantEmail} - {applicantNumber}
+                                </label>
+        
+                                <button
+                                  className="btn w-35 btn-white"
+                                  onClick={() => finalSubmitHandler()}
+                                >
+                                  OK
+                                </button>
+                              </div> */}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+
+                        {brokerInfoModal === true && (
+                          <div className="modal">
+                            <div className="modal-content">
+                              <div className="row">
+                                <div className="col-lg-12">
+                                  <Link href="/" className="">
+                                    <Image
+                                      width={50}
+                                      height={45}
+                                      className="logo1 img-fluid"
+                                      style={{ marginTop: "-20px" }}
+                                      src="/assets/images/Appraisal_Land_Logo.png"
+                                      alt="header-logo2.png"
+                                    />
+                                    <span
+                                      style={{
+                                        color: "#2e008b",
+                                        fontWeight: "bold",
+                                        fontSize: "24px",
+                                        // marginTop: "20px",
+                                      }}
+                                    >
+                                      Appraisal
+                                    </span>
+                                    <span
+                                      style={{
+                                        color: "#97d700",
+                                        fontWeight: "bold",
+                                        fontSize: "24px",
+                                        // marginTop: "20px",
+                                      }}
+                                    >
+                                      {" "}
+                                      Land
+                                    </span>
+                                  </Link>
+                                </div>
+                              </div>
+                              <div className="row">
+                                <div className="col-lg-12 text-center">
+                                  <h1 className=" text-color mt-1">
+                                    Broker Details
+                                  </h1>
+                                </div>
+                              </div>
+                              <div
+                                className="mt-2 mb-3"
+                                style={{ border: "2px solid #97d700" }}
+                              ></div>
+                              <div
+                                className="d-flex justify-content-center"
+                                id="broker-info-container"
+                              >
+                                <table
+                                  style={{
+                                    width: "700px",
+                                    textAlign: "start",
+                                    borderRadius: "5px",
+                                    fontSize: "17px",
+                                    fontWeight: "bold",
+                                  }}
+                                  id="table-broker-info"
+                                >
+                                  <thead>
+                                    <tr>
+                                      <th
+                                        style={{
+                                          border: "1px solid #2e008b",
+                                          color: "#2e008b",
+                                          color: "#2e008b",
+                                          // padding: "5px",
+                                          textAlign: "center",
+                                        }}
+                                      >
+                                        Headers
+                                      </th>
+                                      <th
+                                        style={{
+                                          border: "1px solid #2e008b",
+                                          // width: "470px",
+                                          color: "#2e008b",
+                                          // padding: "5px",
+                                          textAlign: "center",
+                                        }}
+                                      >
+                                        Value
+                                      </th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td
+                                        style={{
+                                          border: "1px solid #2e008b",
+                                          color: "#2e008b",
+                                          padding: "5px",
+                                        }}
+                                      >
+                                        <span className="text-start">Name</span>
+                                      </td>
+                                      <td
+                                        style={{
+                                          border: "1px solid #2e008b",
+                                          width: "445px",
+                                          color: "black",
+                                          padding: "5px",
+                                        }}
+                                      >
+                                        {broker?.firstName} {broker?.lastName}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        style={{
+                                          border: "1px solid grey",
+                                          color: "#2e008b",
+                                        }}
+                                      >
+                                        <span className="text-start">
+                                          Address
+                                        </span>
+                                      </td>
+                                      <td
+                                        style={{
+                                          border: "1px solid grey",
+                                          width: "250px",
+                                        }}
+                                      >
+                                        {broker?.streetName}{" "}
+                                        {broker?.streetNumber} {broker?.area} ,{" "}
+                                        {broker?.city} {broker?.state}-
+                                        {broker?.postalCode}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        style={{
+                                          border: "1px solid grey",
+                                          color: "#2e008b",
+                                        }}
+                                      >
+                                        <span className="text-start">
+                                          Phone Number
+                                        </span>
+                                      </td>
+                                      <td
+                                        style={{
+                                          border: "1px solid grey",
+                                          width: "250px",
+                                        }}
+                                      >
+                                        {broker?.phoneNumber}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        style={{
+                                          border: "1px solid grey",
+                                          color: "#2e008b",
+                                        }}
+                                      >
+                                        <span className="text-start">
+                                          Mortgage Broker Licence No
+                                        </span>
+                                      </td>
+                                      <td
+                                        style={{
+                                          border: "1px solid grey",
+                                          width: "250px",
+                                        }}
+                                      >
+                                        {broker?.mortageBrokerLicNo}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        style={{
+                                          border: "1px solid grey",
+                                          color: "#2e008b",
+                                        }}
+                                      >
+                                        <span className="text-start">
+                                          Mortgage Brokerage Licence No
+                                        </span>
+                                      </td>
+                                      <td
+                                        style={{
+                                          border: "1px solid grey",
+                                          width: "250px",
+                                        }}
+                                      >
+                                        {broker?.mortageBrokerageLicNo}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        style={{
+                                          border: "1px solid grey",
+                                          color: "#2e008b",
+                                        }}
+                                      >
+                                        <span className="text-start">
+                                          Brokerage Name
+                                        </span>
+                                      </td>
+                                      <td
+                                        style={{
+                                          border: "1px solid grey",
+                                          width: "250px",
+                                        }}
+                                      >
+                                        {broker?.brokerageName
+                                          ? broker?.brokerageName
+                                          : "N.A."}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        style={{
+                                          border: "1px solid grey",
+                                          color: "#2e008b",
+                                        }}
+                                      >
+                                        <span className="text-start">
+                                          Company Name
+                                        </span>
+                                      </td>
+                                      <td
+                                        style={{
+                                          border: "1px solid grey",
+                                          width: "250px",
+                                        }}
+                                      >
+                                        {broker?.companyName
+                                          ? broker?.companyName
+                                          : "N.A."}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        style={{
+                                          border: "1px solid grey",
+                                          color: "#2e008b",
+                                        }}
+                                      >
+                                        <span className="text-start">
+                                          Applicant Name
+                                        </span>
+                                      </td>
+                                      <td
+                                        style={{
+                                          border: "1px solid grey",
+                                          width: "250px",
+                                        }}
+                                      >
+                                        {broker?.assistantFirstName
+                                          ? broker?.assistantFirstName
+                                          : "N.A."}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        style={{
+                                          border: "1px solid grey",
+                                          color: "#2e008b",
+                                        }}
+                                      >
+                                        <span className="text-start">
+                                          Applicant Phone Number
+                                        </span>
+                                      </td>
+                                      <td
+                                        style={{
+                                          border: "1px solid grey",
+                                          width: "250px",
+                                        }}
+                                      >
+                                        {broker?.assistantPhoneNumber
+                                          ? broker?.assistantPhoneNumber
+                                          : "N.A."}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        style={{
+                                          border: "1px solid grey",
+                                          color: "#2e008b",
+                                        }}
+                                      >
+                                        <span className="text-start">
+                                          Applicant Email Address
+                                        </span>
+                                      </td>
+                                      <td
+                                        style={{
+                                          border: "1px solid grey",
+                                          width: "250px",
+                                        }}
+                                      >
+                                        {broker?.assistantEmailAddress
+                                          ? broker?.assistantEmailAddress
+                                          : "NA"}
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                                `
+                              </div>
+                              <div className="row text-center mt-3">
+                                <div className="col-lg-12">
+                                  <button
+                                    className="btn btn-color w-25 text-center"
+                                    onClick={() => setbrokerInfoModal(false)}
+                                  >
+                                    Ok
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {modalOpen && (
+                          <div className="modal">
+                            <div className="modal-content">
+                              <div className="row">
+                                <div className="col-lg-12">
+                                  <Link href="/" className="">
+                                    <Image
+                                      width={50}
+                                      height={45}
+                                      className="logo1 img-fluid"
+                                      style={{ marginTop: "-20px" }}
+                                      src="/assets/images/logo.png"
+                                      alt="header-logo2.png"
+                                    />
+                                    <span
+                                      style={{
+                                        color: "#2e008b",
+                                        fontWeight: "bold",
+                                        fontSize: "24px",
+                                        // marginTop: "20px",
+                                      }}
+                                    >
+                                      Appraisal
+                                    </span>
+                                    <span
+                                      style={{
+                                        color: "#97d700",
+                                        fontWeight: "bold",
+                                        fontSize: "24px",
+                                        // marginTop: "20px",
+                                      }}
+                                    >
+                                      {" "}
+                                      Land
+                                    </span>
+                                  </Link>
+                                </div>
+                              </div>
+                              <h2
+                                className="text-center mt-3"
+                                style={{ color: "#2e008b" }}
+                              >
+                                {isHoldProperty
+                                  ? `${
+                                      propValue
+                                        ? "Order Confirmation"
+                                        : "Order Confirmation"
+                                    }`
+                                  : `${
+                                      propValue
+                                        ? "Order Confirmation"
+                                        : "Order Confirmation"
+                                    }`}
+                              </h2>
+                              <div
+                                className="mb-2"
+                                style={{ border: "2px solid #97d700" }}
+                              ></div>
+                              <p className="fs-5 text-center text-dark mt-4">
+                                Are you sure for the order to be{" "}
+                                <span
+                                  style={{ color: "red", fontWeight: "bold" }}
+                                >
+                                  {" "}
+                                  {isHoldProperty
+                                    ? `${
+                                        propValue ? "On Hold" : "Remove On Hold"
+                                      }`
+                                    : `${
+                                        propValue
+                                          ? "On Cancel"
+                                          : "Remove On Hold"
+                                      }`}{" "}
+                                </span>
+                                ?{" "}
+                              </p>
+
+                              <div
+                                className="mb-3 mt-4"
+                                style={{ border: "2px solid #97d700" }}
+                              ></div>
+                              <div className="col-lg-12 text-center">
+                                <button
+                                  disabled={disable}
+                                  className="btn w-25 btn-color m-1"
+                                  onClick={closeCancelHoldHandler}
+                                >
+                                  Cancel
+                                </button>
+                                <button
+                                  disabled={disable}
+                                  className="btn w-25 btn-color"
+                                  onClick={
+                                    isHoldProperty
+                                      ? onHoldHandler
+                                      : onCancelHandler
+                                  }
+                                >
+                                  Confirm
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* End .table-responsive */}
+
+                      {/* End .mbp_pagination */}
+                    </div>
+                    {/* End .property_table */}
+                  </div>
+                </div>
+                {/* End .col */}
+              </div>
+
+              {/*<div className="row">
+                 <div className="col-lg-12 mt20">
+                  <div className="mbp_pagination">
+                    <Pagination
+                      properties={properties}
+                      setProperties={setProperties}
+                    />
+                  </div>
+                </div> 
+              </div>*/}
+              {/* End .row */}
+            </div>
+            <div className="row">
+              <div className="col-lg-12 mt20">
+                <div className="mbp_pagination">
+                  <Pagination
+                    setStart={setStart}
+                    setEnd={setEnd}
+                    properties={[]}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="row mt50">
+              <div className="col-lg-12">
+                <div className="copyright-widget text-center">
+                  <p>
+                    &copy; {new Date().getFullYear()} Appraisal Land. All Rights
+                    Reserved.
+                  </p>
+                </div>
+              </div>
+            </div>
+            {/* End .col */}
+          </div>
+        </div>
+      </section>
+    </>
+  );
+};
+
+export default Index;
