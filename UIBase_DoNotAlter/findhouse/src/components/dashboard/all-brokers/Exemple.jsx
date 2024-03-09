@@ -29,17 +29,16 @@ const headCells = [
     width: 150,
   },
   {
-    id: "status",
-    numeric: false,
-    label: "Status",
-    width: 150,
-  },
-
-  {
     id: "phone",
     numeric: false,
     label: "Phone Number",
     width: 200,
+  },
+  {
+    id: "status",
+    numeric: false,
+    label: "Status",
+    width: 150,
   },
 
   {
@@ -48,6 +47,12 @@ const headCells = [
     label: "Email Address",
     width: 200,
   },
+  // {
+  //   id: "date",
+  //   numeric: false,
+  //   label: "Date",
+  //   width: 200,
+  // },
   {
     id: "action",
     numeric: false,
@@ -114,6 +119,8 @@ export default function Exemple({
   deletePropertyHandler,
   onWishlistHandler,
   participateHandler,
+  setCurrentViewBroker,
+  setOpenViewModal,
   setFilterQuery,
   setSearchInput,
   openModalBroker,
@@ -153,6 +160,11 @@ export default function Exemple({
     // const twentyFourHoursAgo = currentTime - 24 * 60 * 60 * 1000; // Subtracting milliseconds for 24 hours
     //    const requestTime = new Date(tempBid.requestTime);
     //   return requestTime >= twentyFourHoursAgo && requestTime <= currentTime;
+  };
+
+  const openCredModal = (data) => {
+    setCurrentViewBroker(data);
+    setOpenViewModal(true);
   };
 
   const findBroker = (userId) => {};
@@ -202,9 +214,6 @@ export default function Exemple({
       year: "numeric",
       month: "long",
       day: "numeric",
-      hour: "numeric",
-      minute: "numeric",
-      second: "numeric",
     };
 
     const formattedDate = new Date(dateString).toLocaleString("en-US", options);
@@ -239,6 +248,7 @@ export default function Exemple({
   useEffect(() => {
     let tempData = [];
     const getData = () => {
+      const dateNow = formatDate(new Date());
       allBrokers?.map((temp, index) => {
         console.log(temp);
         const data = temp.broker;
@@ -248,24 +258,24 @@ export default function Exemple({
           firstname: data?.firstName ? data?.firstName : "NA",
           lastname: data?.lastName ? data?.lastName : "NA",
           // company: data?.company,
-          status: data?.isActive ? (
-            <span className="btn btn-success  w-100">Active</span>
-          ) : !data?.firstName ? (
-            <span className="btn btn-warning  w-100">Not Registered</span>
-          ) : (
-            <span className="btn btn-danger  w-100">In-Active</span>
-          ),
+          status:
+            data?.isActive && data.firstName !== null ? (
+              <span className="btn btn-success  w-100">Active</span>
+            ) : !data?.firstName ? (
+              <span className="btn btn-warning  w-100">Not Registered</span>
+            ) : (
+              <span className="btn btn-danger  w-100">In-Active</span>
+            ),
           phone: data?.phoneNumber ? data?.phoneNumber : "NA",
           address: `${data?.streetName} ${data?.streetNumber},${data?.city}-${data?.postalCode}`,
           // date: dateNow,
           emailaddress: data?.emailId ? data?.emailId : "NA",
-
+          date: dateNow,
           action: (
             <div className="print-hidden-column">
               <button
                 href="#"
-                className="btn btn-color w-50"
-                style={{ marginLeft: "12px" }}
+                className="btn btn-color"
                 onClick={() => openStatusUpdateHandler(data)}
                 title="Update Status"
               >
@@ -273,12 +283,12 @@ export default function Exemple({
                   <span className="flaticon-edit text-light"></span>
                 </Link>
               </button>
-              {/* <button className="btn btn-color m-1">
-                <i className="flaticon-edit"></i>
+              <button
+                className="btn btn-color m-1"
+                onClick={() => openCredModal(data)}
+              >
+                <i className="flaticon-view"></i>
               </button>
-              <button className="btn btn-color">
-                <i className="flaticon-garbage"></i>
-              </button> */}
             </div>
           ),
         };
@@ -303,8 +313,10 @@ export default function Exemple({
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
-      token: data?.token,
+      token: userData.token,
+      userId: userData.userId,
     };
+    const encryptedData = encryptionData(payload);
     let tempProperties = [],
       tempWishlist = [];
 

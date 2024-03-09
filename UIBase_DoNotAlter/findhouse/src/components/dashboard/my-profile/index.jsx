@@ -14,6 +14,7 @@ const Index = () => {
   const [data, setData] = useState({});
   let userData = {};
   const router = useRouter();
+  // const userData = JSON.parse(localStorage.getItem("user"));
 
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
@@ -75,7 +76,11 @@ const Index = () => {
   return (
     <>
       {/* <!-- Main Header Nav --> */}
-      <Header profileCount={profileCount} setProfileCount={setProfileCount} />
+      <Header
+        profileCount={profileCount}
+        setProfileCount={setProfileCount}
+        userData={userData}
+      />
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />

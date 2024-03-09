@@ -653,7 +653,7 @@ const Index = () => {
                 </div> */}
                 {/* End Dashboard Navigation */}
 
-                <div className="col-lg-4 col-xl-4 mb10">
+                <div className="col-lg-12 col-xl-12 text-center mt-1">
                   <div className="style2 mb30-991">
                     <h3 className="breadcrumb_title">Quotes History</h3>
                     {/* <p>We are glad to see you again!</p>                                                             */}
@@ -1962,7 +1962,7 @@ const Index = () => {
             <div className="col-lg-12">
               <div className="copyright-widget text-center">
                 <p>
-                  &copy; {new Date().getFullYear()} Appraisal Link. All
+                  &copy; {new Date().getFullYear()} Appraisal Land. All
                   Rights Reserved.
                 </p>
               </div>

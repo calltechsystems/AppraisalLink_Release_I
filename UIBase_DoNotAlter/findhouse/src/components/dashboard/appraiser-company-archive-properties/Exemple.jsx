@@ -345,7 +345,7 @@ export default function Exemple({
             ),
           remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
           status: isWait ? (
-            <span className="btn btn-primary  w-100">
+            <span className="btn btn-danger  w-100">
               {property.isOnHold ? "On Hold" : "Cancelled"}
             </span>
           ) : isBidded.bidId ? (
@@ -419,7 +419,7 @@ export default function Exemple({
             : "N.A.",
           typeOfBuilding:
             property.typeOfBuilding > 0 ? "Apartment" : property.typeOfBuilding,
-          quote_required_by: formatDate(property.addedDatetime),
+          quote_required_by: formatDate(property.quoteRequiredDate),
           date: formatDate(property.addedDatetime),
           bidAmount: property.bidLowerRange,
           lender_information: property.lenderInformation

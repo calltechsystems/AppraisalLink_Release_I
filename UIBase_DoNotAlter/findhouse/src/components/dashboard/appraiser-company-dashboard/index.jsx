@@ -11,7 +11,8 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 
 const Index = () => {
-  let userData = JSON.parse(localStorage.getItem("user"));
+  // let userData = JSON.parse(localStorage.getItem("user"));
+  const [userData, setUserData] = useState({});
   const router = useRouter();
   const [properties, setProperties] = useState([]);
   const [refresh, setRefresh] = useState(false);
@@ -29,6 +30,13 @@ const Index = () => {
   const closeErrorModal = () => {
     setModalIsOpenError(false);
   };
+
+  // const [userData, setUserData] = useState({});
+
+  // let userData = {};
+  // useEffect(() => {
+  //   userData = JSON.parse(localStorage.getItem("user"));
+  // });
 
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
@@ -70,12 +78,13 @@ const Index = () => {
   }, [lastActivityTimestamp]);
 
   useEffect(() => {
-    userData = JSON.parse(localStorage.getItem("user"));
+    // userData = JSON.parse(localStorage.getItem("user"));
     const data = JSON.parse(localStorage.getItem("user"));
+    setUserData(data);
     if (!data) {
       router.push("/login");
     }
-    if (!userData?.appraiserCompany_Datails.firstName) {
+    if (!data?.appraiserCompany_Datails.firstName) {
       router.push("appraiser-company-profile");
     }
     if (!data) {
@@ -161,13 +170,12 @@ const Index = () => {
 
           let updatedBids = [];
 
-         
-          tempBids.map((bid,index)=>{
-            if(String(bid.appraiserUserId)===String(data.userId)){
-              updatedBids.push(bid)
+          tempBids.map((bid, index) => {
+            if (String(bid.appraiserUserId) === String(data.userId)) {
+              updatedBids.push(bid);
             }
           });
-          console.log("updatedBids",updatedBids);
+          console.log("updatedBids", updatedBids);
           setBids(updatedBids);
         })
         .catch((err) => {
@@ -285,7 +293,7 @@ const Index = () => {
                 <div className="row">
                   <div className="col-lg-8 breadcrumb_content style2">
                     <h2 className="breadcrumb_title">
-                      {userData?.brokerage_Details
+                      {userData?.appraiserCompany_Details
                         ? `${userData?.appraiserCompany_Datails?.firstName} ${userData?.appraiserCompany_Datails?.lastName}`
                         : ""}
                     </h2>

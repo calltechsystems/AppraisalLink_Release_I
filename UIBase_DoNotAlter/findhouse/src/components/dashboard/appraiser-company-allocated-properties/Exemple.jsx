@@ -479,7 +479,7 @@ export default function Exemple({
           typeOfBuilding: property?.typeOfBuilding
             ? property?.typeOfBuilding
             : "N.A.",
-          quote_required_by: formatDate(property?.addedDatetime),
+          quote_required_by: formatDate(property?.quoteRequiredDate),
           date: formatDate(property?.addedDatetime),
           bidAmount: property?.bidLowerRange,
           lender_information: property?.lenderInformation

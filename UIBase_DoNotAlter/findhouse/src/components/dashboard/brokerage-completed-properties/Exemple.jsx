@@ -22,12 +22,12 @@ const headCells = [
     label: "Order ID",
     width: 100,
   },
-  {
-    id: "broker",
-    numeric: false,
-    label: "Broker",
-    width: 100,
-  },
+  // {
+  //   id: "broker",
+  //   numeric: false,
+  //   label: "Broker",
+  //   width: 100,
+  // },
   {
     id: "address",
     numeric: false,
@@ -254,8 +254,8 @@ export default function Exemple({
   };
 
   const getOrderValue = (val) => {
-    let title = "";
-    AppraiserStatusOptions.map((status) => {
+    let title = "Appraisal Report Writing Completed and Submitted";
+    AppraiserStatusOptions?.map((status) => {
       if (String(status.value) === String(val)) {
         title = status.type;
       }
@@ -330,7 +330,7 @@ export default function Exemple({
         const isStatus = getPropertyStatusHandler(property);
         console.log(isStatus);
         const isEditable = isStatus === 0 ? true : false;
-        if (!property.isArchive && isStatus === 3) {
+        if (!property.isArchive && isStatus === 3 && !isCancel) {
           console.log(property);
           const updatedRow = {
             order_id: property.orderId,
@@ -652,7 +652,7 @@ export default function Exemple({
                 {/* End li */}
 
                 {/* {isEditable && ( */}
-                {!isCancel && (
+                {!isCancel && isStatus !== 3 && (
                   <li title={!isHold ? "On Hold" : "Remove Hold"}>
                     <span
                       className="btn btn-color-table "
@@ -671,7 +671,7 @@ export default function Exemple({
                 {/* )} */}
 
                 {/* {isEditable && ( */}
-                {!isCancel && !isHold && (
+                {!isCancel && isStatus !== 3 && !isHold && (
                   <li title={!isCancel ? "Order Cancel" : "Remove Cancel"}>
                     <span
                       className="btn btn-color-table"

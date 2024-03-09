@@ -10,6 +10,7 @@ const Index = ({ profileCount, setProfileCount }) => {
   const [showCard, setShowCard] = useState(true); // Set to false by default
   const [userData, setUserData] = useState({}); // State to hold user data
   const router = useRouter();
+  // const user = JSON.parse(localStorage.getItem("user"));
 
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
@@ -52,13 +53,13 @@ const Index = ({ profileCount, setProfileCount }) => {
 
   useEffect(() => {
     const storedUserData = JSON.parse(localStorage.getItem("user"));
-   
+
     if (!storedUserData) {
       router.push("/login");
     } else {
       setUserData(storedUserData); // Set user data in state
       // if (storedUserData?.appraiserCompany_Datails?.firstName !== null) {
-      //   setShowCard(false); 
+      //   setShowCard(false);
       // }
     }
   }, []); // Empty dependency array for componentDidMount-like behavior
@@ -69,7 +70,11 @@ const Index = ({ profileCount, setProfileCount }) => {
 
   return (
     <>
-      <Header profileCount={profileCount} setProfileCount={setProfileCount} />
+      <Header
+        profileCount={profileCount}
+        setProfileCount={setProfileCount}
+        userData={userData}
+      />
       <MobileMenu />
 
       <div className="dashboard_sidebar_menu">
@@ -102,10 +107,17 @@ const Index = ({ profileCount, setProfileCount }) => {
                           <div className="col-xl-12">
                             {showCard ? (
                               <div className="mb-5">
-                                <Form userData={userData} chnageShowCardHandler={chnageShowCardHandler} />
+                                <Form
+                                  userData={userData}
+                                  chnageShowCardHandler={chnageShowCardHandler}
+                                />
                               </div>
                             ) : (
-                              <ProfileInfo profileCount={profileCount} setProfileCount={setProfileCount} setShowCard={setShowCard} />
+                              <ProfileInfo
+                                profileCount={profileCount}
+                                setProfileCount={setProfileCount}
+                                setShowCard={setShowCard}
+                              />
                             )}
                           </div>
                         </div>
@@ -117,7 +129,10 @@ const Index = ({ profileCount, setProfileCount }) => {
               <div className="row mt50">
                 <div className="col-lg-12">
                   <div className="copyright-widget text-center">
-                    <p>&copy; {new Date().getFullYear()} Appraisal Land. All Rights Reserved.</p>
+                    <p>
+                      &copy; {new Date().getFullYear()} Appraisal Land. All
+                      Rights Reserved.
+                    </p>
                   </div>
                 </div>
               </div>

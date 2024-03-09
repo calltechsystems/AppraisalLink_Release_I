@@ -21,7 +21,7 @@ const Index = () => {
   const [filterProperty, setFilterProperty] = useState("");
   const [filterQuery, setFilterQuery] = useState("Last 30 Days");
   const [properties, setProperties] = useState([]);
-
+  // const user = JSON.parse(localStorage.getItem("user"));
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -341,7 +341,7 @@ const Index = () => {
               </div>
 
               <div className="row">
-              <div className="row">
+                <div className="row">
                   <div className="col-lg-12 mt0">
                     <div className="mbp_pagination">
                       <Pagination

@@ -443,7 +443,7 @@ export default function Exemple({
               property.typeOfBuilding > 0
                 ? "Apartment"
                 : property.typeOfBuilding,
-            quote_required_by: formatDate(property.addedDatetime),
+            quote_required_by: formatDate(property.quoteRequiredDate),
             date: formatDate(property.addedDatetime),
             bidAmount: millify(property.bidLowerRange),
             lender_information: property.lenderInformation
@@ -623,45 +623,42 @@ export default function Exemple({
                       </div>
                     </li>
                   </ul>
+                ) : isBidded.orderStatus !== 3 ? (
+                  <>
+                    <button
+                      href="#"
+                      className="btn btn-color m-1"
+                      onClick={() => openStatusUpdateHandler(isBidded)}
+                    >
+                      <Link href="#">
+                        <span className="flaticon-edit text-light"></span>
+                      </Link>
+                    </button>
+                    <li
+                      className="list-inline-item"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Archive Property"
+                    >
+                      <div
+                        className="w-100"
+                        onClick={() =>
+                          onArchivePropertyHandler(property.orderId)
+                        }
+                      >
+                        <button href="#" className="btn btn-color">
+                          <Link href="#">
+                            <span className="text-light">
+                              {" "}
+                              <FaArchive />
+                            </span>
+                          </Link>
+                        </button>
+                      </div>
+                    </li>
+                  </>
                 ) : (
-                  isBidded.orderStatus !==3 ? (
-                    <>
-                      <button
-                        href="#"
-                        className="btn btn-color"
-                        onClick={() => openStatusUpdateHandler(isBidded)}
-                      >
-                        <Link href="#">
-                          <span className="flaticon-edit text-light"></span>
-                        </Link>
-                      </button>
-                      <li
-                        className="list-inline-item"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title="Archive Property"
-                      >
-                        <div
-                          className="w-100"
-                          onClick={() =>
-                            onArchivePropertyHandler(property.orderId)
-                          }
-                        >
-                          <button href="#" className="btn btn-color">
-                            <Link href="#">
-                              <span className="text-light">
-                                {" "}
-                                <FaArchive />
-                              </span>
-                            </Link>
-                          </button>
-                        </div>
-                      </li>
-                    </>
-                  )
-                  :
-                  (<p className="btn btn-success  w-100">Completed </p>)
-
+                  <p className="btn btn-success  w-100">Completed </p>
                 )}
               </div>
             ),
@@ -708,50 +705,47 @@ export default function Exemple({
           const prop = res.data.data.$values;
 
           axios
-        .get("/api/getAllListedProperties", {
-          headers: {
-            Authorization: `Bearer ${data?.token}`,
-            "Content-Type": "application/json",
-          },
-          params: {
-            userId: data?.userId,
-          },
-        })
-        .then((result) => {
-          toast.dismiss();
-
-         
-         const allProperties = result.data.data.properties.$values;
-         console.log(prop,allProperties);
-         let requiredProperties = [];
-         prop.map((assign,index)=>{
-          let id = assign.propertyid;
-            allProperties.map((tempProp,idx)=>{
-              if(String(tempProp.$id)===String(id)){
-                requiredProperties.push(tempProp);
-                id="";
-              }
+            .get("/api/getAllListedProperties", {
+              headers: {
+                Authorization: `Bearer ${data?.token}`,
+                "Content-Type": "application/json",
+              },
+              params: {
+                userId: data?.userId,
+              },
             })
-         })
+            .then((result) => {
+              toast.dismiss();
 
-         let finalProperties = [];
-         let id="";
-         requiredProperties.map((prop,index)=>{
-          if(String(prop.$id)!==String(id)){
-            finalProperties.push(prop)
-            id=prop.$id;
-          }
-         })
-         console.log("finalProperties",finalProperties);
-         setProperties(finalProperties);
-        })
-        .catch((err) => {
-            
-        })
-        .catch((err) => {
-          toast.dismiss();
-          toast.error(err);
-        });
+              const allProperties = result.data.data.properties.$values;
+              console.log(prop, allProperties);
+              let requiredProperties = [];
+              prop.map((assign, index) => {
+                let id = assign.propertyid;
+                allProperties.map((tempProp, idx) => {
+                  if (String(tempProp.$id) === String(id)) {
+                    requiredProperties.push(tempProp);
+                    id = "";
+                  }
+                });
+              });
+
+              let finalProperties = [];
+              let id = "";
+              requiredProperties.map((prop, index) => {
+                if (String(prop.$id) !== String(id)) {
+                  finalProperties.push(prop);
+                  id = prop.$id;
+                }
+              });
+              console.log("finalProperties", finalProperties);
+              setProperties(finalProperties);
+            })
+            .catch((err) => {})
+            .catch((err) => {
+              toast.dismiss();
+              toast.error(err);
+            });
 
           axios
             .get("/api/getAllBids", {
@@ -793,7 +787,6 @@ export default function Exemple({
                   });
                   const tempId = responseData;
                   setWishlist(responseData);
-                  
                 })
                 .catch((err) => {
                   toast.error(err?.response);

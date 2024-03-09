@@ -432,9 +432,9 @@ export default function Exemple({
                 </Link>
               </li> */}
 
-                {(isEditable || isStatus === 1) && (
+                {(isEditable || isStatus === 1) && !isCancel && (
                   <li>
-                    <Link href={`/create-listing/${property.propertyId}`}>
+                    <Link href={`/create-listing-1/${property.orderId}`}>
                       <span className="btn btn-color w-100 mb-1"> Edit </span>
                     </Link>{" "}
                     {/* <Link

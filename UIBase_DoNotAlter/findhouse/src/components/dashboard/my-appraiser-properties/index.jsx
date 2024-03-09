@@ -63,11 +63,7 @@ const Index = () => {
 
   const handleStatusUpdateHandler = () => {
     setDisable(true);
-    if (remark === "") {
-      toast.error("Remark should be filled!!");
-    } else if (orderStatus <= currentBid.orderStatus) {
-      toast.error("Select a proper quote status Please !!");
-    } else {
+   
       const data = JSON.parse(localStorage.getItem("user"));
       const payload = {
         token: data.token,
@@ -90,7 +86,7 @@ const Index = () => {
           toast.dismiss();
           toast.error(err?.response?.data?.error);
         });
-    }
+    
 
     setRemark("");
     setCurrentBid({});
@@ -657,7 +653,7 @@ const Index = () => {
                 </div> */}
                 {/* End Dashboard Navigation */}
 
-                <div className="col-lg-4 col-xl-4 mb10">
+                <div className="col-lg-12 col-xl-12 text-center mt-1">
                   <div className="style2 mb30-991">
                     <h3 className="breadcrumb_title">Wishlisted Property</h3>
                     {/* <p>We are glad to see you again!</p>                                                             */}
@@ -1933,7 +1929,7 @@ const Index = () => {
             <div className="col-lg-12">
               <div className="copyright-widget text-center">
                 <p>
-                  &copy; {new Date().getFullYear()} Appraisal Link. All
+                  &copy; {new Date().getFullYear()} Appraisal Land. All
                   Rights Reserved.
                 </p>
               </div>

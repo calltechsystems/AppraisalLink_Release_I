@@ -11,15 +11,17 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 
 const Index = () => {
-  let userData =  JSON.parse(localStorage.getItem("user"));
+  // let userData = JSON.parse(localStorage.getItem("user"));
+  const [userData, setUserData] = useState({});
+  // const data = JSON.parse(localStorage.getItem("user"));
   const router = useRouter();
   const [properties, setProperties] = useState([]);
-  const [refresh,setRefresh]=useState(false);
+  const [refresh, setRefresh] = useState(false);
 
   const [allProperties, setAllProperties] = useState([]);
 
-  const [bids , setBids] = useState([]);
-  const [wishlist,setWishlist]=useState([]);
+  const [bids, setBids] = useState([]);
+  const [wishlist, setWishlist] = useState([]);
 
   const [chartData, setChartData] = useState([]);
 
@@ -70,8 +72,9 @@ const Index = () => {
   }, [lastActivityTimestamp]);
 
   useEffect(() => {
-    userData = JSON.parse(localStorage.getItem("user"));
+    // userData = JSON.parse(localStorage.getItem("user"));
     const data = JSON.parse(localStorage.getItem("user"));
+    setUserData(data);
     if (!data) {
       router.push("/login");
     } else if (!data?.appraiser_Details?.firstName) {
@@ -82,95 +85,93 @@ const Index = () => {
     }
 
     const func = () => {
-      const data = JSON.parse(localStorage.getItem("user"))
+      const data = JSON.parse(localStorage.getItem("user"));
       axios
-      .get("/api/getAllListedProperties", {
-        headers: {
-          Authorization: `Bearer ${data?.token}`,
-          "Content-Type": "application/json",
-        },
-        params: {
-          userId: data?.userId,
-        },
-      })
-      .then((res) => {
-        console.log(res.data.data.properties.$values);
-        
-
-        const temp = res.data.data.properties.$values;
-
-        const updatedProp = temp.filter((prop,index)=>{
-          if(String(prop.userId) === String(data.userId)){
-            return true;
-          }
-          else{
-            return false;
-          }
+        .get("/api/getAllListedProperties", {
+          headers: {
+            Authorization: `Bearer ${data?.token}`,
+            "Content-Type": "application/json",
+          },
+          params: {
+            userId: data?.userId,
+          },
         })
-        
-        // setShowLineGraph(true);
-        // setRerender(false);
+        .then((res) => {
+          console.log(res.data.data.properties.$values);
 
-        setProperties(updatedProp);
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error(err?.response?.data?.error);
-      });
+          const temp = res.data.data.properties.$values;
 
-      axios
-    .get("/api/appraiserWishlistedProperties", {
-      headers: {
-        Authorization: `Bearer ${data?.token}`,
-        "Content-Type": "application/json",
-      },
-    })
-    .then((res) => {
-      const tempData = res.data.data.$values;
+          const updatedProp = temp.filter((prop, index) => {
+            if (String(prop.userId) === String(data.userId)) {
+              return true;
+            } else {
+              return false;
+            }
+          });
 
-      // setAllWishlistedProperties(res.data.data.$values);
-      const responseData = tempData.filter((prop, index) => {
-        if (String(prop.userId) === String(data.userId)) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-      const tempId = responseData;
-      setWishlist(responseData);
-    })
-    .catch((err) => {
-      toast.error(err?.response);
-      setErrorMessage(err?.response);
-      setModalIsOpenError(true);
-    });
+          // setShowLineGraph(true);
+          // setRerender(false);
+
+          setProperties(updatedProp);
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error(err?.response?.data?.error);
+        });
 
       axios
-    .get("/api/getAllBids", {
-      headers: {
-        Authorization: `Bearer ${data.token}`,
-      },
-      
-        params:{
-          email:data.userEmail
-        }
-    })
-    .then((res) => {
-      console.log(res.data.data);
-      const tempBids = res.data.data.$values;
-      
-      let updatedBids = [];
-      tempBids.map((bid,index)=>{
-        if(String(bid.appraiserUserId) === String(data.userId)){
-          updatedBids.push(bid);
-        }
-      })
-      setBids(updatedBids);
-    })
-    .catch((err) => {
-      setErrorMessage(err?.response?.data?.error);
-      setModalIsOpenError(true);
-    });
+        .get("/api/appraiserWishlistedProperties", {
+          headers: {
+            Authorization: `Bearer ${data?.token}`,
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          const tempData = res.data.data.$values;
+
+          // setAllWishlistedProperties(res.data.data.$values);
+          const responseData = tempData.filter((prop, index) => {
+            if (String(prop.userId) === String(data.userId)) {
+              return true;
+            } else {
+              return false;
+            }
+          });
+          const tempId = responseData;
+          setWishlist(responseData);
+        })
+        .catch((err) => {
+          toast.error(err?.response);
+          setErrorMessage(err?.response);
+          setModalIsOpenError(true);
+        });
+
+      axios
+        .get("/api/getAllBids", {
+          headers: {
+            Authorization: `Bearer ${data.token}`,
+          },
+
+          params: {
+            email: data.userEmail,
+          },
+        })
+        .then((res) => {
+          console.log(res.data.data);
+          const tempBids = res.data.data.$values;
+
+          let updatedBids = [];
+          tempBids.map((bid, index) => {
+            if (String(bid.appraiserUserId) === String(data.userId)) {
+              updatedBids.push(bid);
+            }
+          });
+          setBids(updatedBids);
+        })
+        .catch((err) => {
+          setErrorMessage(err?.response?.data?.error);
+          setModalIsOpenError(true);
+        });
     };
     func();
     setRefresh(false);
@@ -237,7 +238,6 @@ const Index = () => {
     };
     const temp = categorizeDataByMonth(properties);
     setChartData(temp);
-   
   }, [properties]);
   return (
     <>
@@ -299,7 +299,7 @@ const Index = () => {
                     </h2>
                   </div>
                   <div>
-                    <Filtering setRefresh={setRefresh}/>
+                    <Filtering setRefresh={setRefresh} />
                   </div>
                 </div>
               </div>

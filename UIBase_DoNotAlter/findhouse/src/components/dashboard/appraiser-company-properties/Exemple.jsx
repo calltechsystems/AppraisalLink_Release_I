@@ -448,7 +448,7 @@ export default function Exemple({
               property.typeOfBuilding > 0
                 ? "Apartment"
                 : property.typeOfBuilding,
-            quote_required_by: formatDate(property.addedDatetime),
+            quote_required_by: formatDate(property.quoteRequiredDate),
             date: formatDate(property.addedDatetime),
             bidAmount: millify(property.bidLowerRange),
             lender_information: property.lenderInformation
@@ -520,7 +520,7 @@ export default function Exemple({
                       </div>
                     </li>
 
-                    <li
+                    {/* <li
                       className="list-inline-item"
                       data-toggle="tooltip"
                       data-placement="top"
@@ -540,7 +540,7 @@ export default function Exemple({
                           </Link>
                         </button>
                       </div>
-                    </li>
+                    </li> */}
                   </>
                 ) : isBidded && isBidded.status !== 1 ? (
                   <ul className="mb0 d-flex gap-1">
@@ -668,8 +668,7 @@ export default function Exemple({
                       </div>
                     </li>
                   </ul>
-                ) : (
-                  isBidded.status === 1 && isBidded.orderStatus !==3 ?
+                ) : isBidded.status === 1 && isBidded.orderStatus !== 3 ? (
                   !isWait && (
                     <>
                       <button
@@ -706,7 +705,9 @@ export default function Exemple({
                         </div>
                       </li>
                     </>
-                  ): (<p className="btn btn-success  w-100">Completed </p>)
+                  )
+                ) : (
+                  <p className="btn btn-success  w-100">Completed </p>
                 )}
               </div>
             ),

@@ -17,6 +17,7 @@ import Loader from "./Loader";
 import { AppraiserStatusOptions } from "../create-listing/data";
 import Form from "../../appraiser-register/Form";
 import Link from "next/link";
+import { FaCopy } from "react-icons/fa";
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -80,10 +81,10 @@ const Index = () => {
 
   const [isActive, setIsActive] = useState(0);
 
-  const [disable,setDisable]=useState(false);
+  const [disable, setDisable] = useState(false);
 
   const handleStatusUpdateHandler = () => {
-    const userData=JSON.parse(localStorage.getItem("user"));
+    const userData = JSON.parse(localStorage.getItem("user"));
     setDisable(true);
     const payload = {
       id: selectedAppraiser.userId,
@@ -1200,7 +1201,8 @@ const Index = () => {
                                   fontWeight: "lighter",
                                 }}
                               >
-                                Email <span class="req-btn">*</span> :
+                                Email / Username <span class="req-btn">*</span>{" "}
+                                :
                               </label>
                             </div>
                             <div
@@ -1218,10 +1220,13 @@ const Index = () => {
                                   copyToClipboard(currentViewAppraiser.email)
                                 }
                                 className="btn btn-color w-10 mt-1"
+                                title="Copy Username"
                                 style={{ marginLeft: "12px" }}
                               >
                                 <Link href="#">
-                                  <span className="flaticon-invoice text-light"></span>
+                                  <span className="text-light">
+                                    <FaCopy />
+                                  </span>
                                 </Link>
                               </button>
                             </div>
@@ -1287,14 +1292,14 @@ const Index = () => {
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
                       <button
-                      disabled={disable}
+                        disabled={disable}
                         className="btn w-35 btn-white"
                         onClick={closeStatusUpdateHandler}
                       >
                         Cancel
                       </button>
                       <button
-                      disabled={disable}
+                        disabled={disable}
                         className="btn btn-color w-10 mt-1"
                         style={{ marginLeft: "12px" }}
                         onClick={handleStatusUpdateHandler}
@@ -1341,15 +1346,15 @@ const Index = () => {
               </div>
             </div>
             <div className="row mt50">
-            <div className="col-lg-12">
-              <div className="copyright-widget text-center">
-                <p>
-                  &copy; {new Date().getFullYear()} Appraisal Land. All
-                  Rights Reserved.
-                </p>
+              <div className="col-lg-12">
+                <div className="copyright-widget text-center">
+                  <p>
+                    &copy; {new Date().getFullYear()} Appraisal Land. All Rights
+                    Reserved.
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
             {/* End .col */}
           </div>
         </div>

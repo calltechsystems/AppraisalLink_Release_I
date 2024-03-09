@@ -528,7 +528,7 @@ const Index = () => {
   return (
     <>
       {/* <!-- Main Header Nav --> */}
-      <Header userData={userData} />
+      <Header />
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
@@ -1295,7 +1295,7 @@ const Index = () => {
                   <Pagination
                     setStart={setStart}
                     setEnd={setEnd}
-                    properties={wishlistedProperties}
+                    properties={properties}
                   />
                 </div>
               </div>
