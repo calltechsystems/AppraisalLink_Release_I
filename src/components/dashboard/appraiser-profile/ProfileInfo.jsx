@@ -323,6 +323,41 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     }
   };
 
+  const uploadFiles = (e,type)=>{
+    const userInfo = JSON.parse(localStorage.getItem("user"))
+    const file = e.target.files[0];
+    
+    const blobURL = URL.createObjectURL(file);
+    console.log("Blob URL:", blobURL);
+
+
+    const formdata = new FormData();
+    if(type === 1){
+    setSelectedImage(blobURL);
+    }
+    else{
+      setSelectedImage2({
+        url : blobURL,
+        name:file.name
+      })
+    }
+
+    formdata.append("file",file);
+    axios.post(`${process.env.BACKEND_DOMAIN}/FileUpload/upload`,file,{
+      headers:{
+        Authorization:`Bearer ${userInfo?.token}`,
+        'Content-Type': 'multipart/form-data',
+      }
+    })
+    .then((res)=>{
+      console.log(res);
+    })
+    .catch((err)=>{
+      console.log(err)
+      toast.error("Got error while uploading profile image!!");
+    })
+  }
+
   const handleZipCodeChange = async (val) => {
     setZipcodeRef(val);
 
@@ -378,28 +413,10 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                     src={SelectedImage}
                     alt="Uploaded Image"
                   />
-                  {edit && (
-                    <CldUploadWidget
-                      onUpload={handleUpload}
-                      uploadPreset="mpbjdclg"
-                      options={{
-                        cloudName: "dcrq3m6dx", // Your Cloudinary upload preset
-                        maxFiles: 1,
-                      }}
-                    >
-                      {({ open }) => (
-                        <div>
-                          <button
-                            className="btn btn-color profile_edit_button mb-5"
-                            style={{ marginLeft: "0px" }}
-                            onClick={open} // This will open the upload widget
-                          >
-                            Upload Photo
-                          </button>
-                        </div>
-                      )}
-                    </CldUploadWidget>
-                  )}
+                  
+                </div>
+                <div>
+                  <input type="file" onChange={(e)=>uploadFiles(e,1)}/>
                 </div>
               </div>
               <div className="col-lg-9">
@@ -640,26 +657,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       </label>
                     </div>
                     <div className="col-lg-3">
-                      <CldUploadWidget
-                        onUpload={handleUpload2}
-                        uploadPreset="mpbjdclg"
-                        options={{
-                          cloudName: "dcrq3m6dx", // Your Cloudinary upload preset
-                          maxFiles: 1,
-                        }}
-                      >
-                        {({ open }) => (
-                          <div>
-                            <button
-                              className="btn btn-color"
-                              style={{ marginLeft: "10px" }}
-                              onClick={open} // This will open the upload widget
-                            >
-                              Upload +
-                            </button>
-                          </div>
-                        )}
-                      </CldUploadWidget>
+                      <input type="file" onChange={(e)=>uploadFiles(e,2)}/>
                     </div>
                     <div className="col-lg-5 mt-1">
                       <Link

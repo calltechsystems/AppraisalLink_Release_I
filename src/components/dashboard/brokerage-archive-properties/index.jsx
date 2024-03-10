@@ -1,6 +1,6 @@
 import Header from "../../common/header/dashboard/HeaderBrokerage";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenuBrokerage";
-import MobileMenu from "../../common/header/MobileMenu_02";
+import MobileMenu from "../../common/header/MobileMenu_01";
 import TableData from "./TableData";
 import Filtering from "./Filtering";
 import FilteringBy from "./FilteringBy";
@@ -21,7 +21,7 @@ const Index = () => {
   const [filterProperty, setFilterProperty] = useState("");
   const [filterQuery, setFilterQuery] = useState("Last 30 Days");
   const [properties, setProperties] = useState([]);
-
+  // const user = JSON.parse(localStorage.getItem("user"));
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -170,29 +170,29 @@ const Index = () => {
   };
 
   const [userData, setUserData] = useState({});
-  const data = JSON.parse(localStorage.getItem("user"));
-  // useEffect(() => {
-  //   const data = JSON.parse(localStorage.getItem("user"));
-  //   if (!data) {
-  //     router.push("/login");
-  //   } else if (!data?.broker_Details?.firstName) {
-  //     router.push("/my-profile");
-  //   }
-  //   if (!data) {
-  //     router.push("/login");
-  //   }
-  //   const fetchData = () => {
-  //     if (data) {
-  //       setUserData(data);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
+
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("user"));
+    if (!data) {
+      router.push("/login");
+    } else if (!data?.brokerage_Details?.firstName) {
+      router.push("/brokerage-profile");
+    }
+    if (!data) {
+      router.push("/login");
+    }
+    const fetchData = () => {
+      if (data) {
+        setUserData(data);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <>
       {/* <!-- Main Header Nav --> */}
-      <Header userData={data}/>
+      <Header />
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
@@ -341,7 +341,7 @@ const Index = () => {
               </div>
 
               <div className="row">
-              <div className="row">
+                <div className="row">
                   <div className="col-lg-12 mt0">
                     <div className="mbp_pagination">
                       <Pagination

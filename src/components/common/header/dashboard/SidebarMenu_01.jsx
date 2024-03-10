@@ -141,7 +141,6 @@ const SidebarMenu = () => {
                 <span>Quote History</span>
               </Link>
             </li>
-
             <li
               className={`treeview ${
                 isSinglePageActive(

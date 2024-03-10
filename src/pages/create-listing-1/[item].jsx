@@ -14,7 +14,7 @@ const Index = () => {
     const fetchPropertyData = async () => {
       try {
         const userData = JSON.parse(localStorage.getItem("user"));
-        const response = await axios.get("/api/getPropertyById", {
+        const response = await axios.get("/api/getPropertiesById", {
           headers: {
             Authorization: `Bearer ${userData.token}`,
             "Content-Type": "application/json",
@@ -40,7 +40,7 @@ const Index = () => {
     <>
       <Seo pageTitle="Create Listing" />
 
-      {propertyData && (<CreateListing isView={true} propertyData={propertyData} />)}
+      {propertyData && (<CreateListing isView={true} propertyData={propertyData.property} />)}
     </>
   );
 };

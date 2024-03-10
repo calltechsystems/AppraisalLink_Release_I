@@ -629,7 +629,7 @@ const Index = ({ isView, propertyData }) => {
         });
       } else {
         setModalIsOpen(true);
-        setButtonDisabled(true);
+        setDisable(true);
       }
     }
   };

@@ -168,11 +168,11 @@ const MyAccount = ({ user, profileCount, setProfile ,userData}) => {
         />
         <p>
           {userData?.appraiser_Details?.firstName
-            ? userData?.appraiser_Details?.firstName
+            ? `${userData?.appraiser_Details?.firstName} ${userData?.appraiser_Details?.lastName}`
             : "Name"}
           <br />
           <span className="address">
-            {userInfo?.userEmail ? userInfo.userEmail : "xyz@gmail.com"}
+            {userData?.userEmail ? userData.userEmail : "xyz@gmail.com"}
           </span>
         </p>
       </div>
