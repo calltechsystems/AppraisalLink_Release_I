@@ -404,6 +404,10 @@ const Form = ({
               </label>
             )}*/}
               </div>
+              <div
+                className="mb-2"
+                style={{ border: "2px solid #97d700" }}
+              ></div>
               <div className="col-lg-12 text-center">
                 <button
                   onClick={() => setCloseRegisterModal(false)}

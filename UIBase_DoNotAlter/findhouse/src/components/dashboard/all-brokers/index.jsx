@@ -19,6 +19,7 @@ import { encryptionData } from "../../../utils/dataEncryption";
 import Loader from "./Loader";
 import { BrokerStatus } from "../create-listing/data";
 // import Form from "../../broker-register/Form";
+import Image from "next/image";
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -1100,8 +1101,46 @@ const Index = () => {
               {closeRegisterModal && (
                 <div className="modal">
                   <div className="modal-content" style={{ width: "500px" }}>
+                    <div className="row">
+                      <div className="col-lg-12">
+                        <Link href="/" className="">
+                          <Image
+                            width={50}
+                            height={45}
+                            className="logo1 img-fluid"
+                            style={{ marginTop: "-20px" }}
+                            src="/assets/images/Appraisal_Land_Logo.png"
+                            alt="header-logo2.png"
+                          />
+                          <span
+                            style={{
+                              color: "#2e008b",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            Appraisal
+                          </span>
+                          <span
+                            style={{
+                              color: "#97d700",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            {" "}
+                            Land
+                          </span>
+                        </Link>
+                      </div>
+                    </div>
                     <h3 className="text-center">Add Broker</h3>
-                    <hr />
+                    <div
+                      className="mb-2"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
                     <Form setCloseRegisterModal={setCloseRegisterModal} />
                   </div>
                 </div>
@@ -1110,8 +1149,46 @@ const Index = () => {
               {openViewModal && (
                 <div className="modal">
                   <div className="modal-content">
+                    <div className="row">
+                      <div className="col-lg-12">
+                        <Link href="/" className="">
+                          <Image
+                            width={50}
+                            height={45}
+                            className="logo1 img-fluid"
+                            style={{ marginTop: "-20px" }}
+                            src="/assets/images/Appraisal_Land_Logo.png"
+                            alt="header-logo2.png"
+                          />
+                          <span
+                            style={{
+                              color: "#2e008b",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            Appraisal
+                          </span>
+                          <span
+                            style={{
+                              color: "#97d700",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            {" "}
+                            Land
+                          </span>
+                        </Link>
+                      </div>
+                    </div>
                     <h3 className="text-center">View Credentials</h3>
-
+                    <div
+                      className="mb-2"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
                     <div className="row">
                       <div className="col-lg-12">
                         <div className="row mb-2 mt-2 text-center">
@@ -1155,7 +1232,10 @@ const Index = () => {
                             </div>
                           </div>
                         </div>
-
+                        <div
+                          className="mb-2"
+                          style={{ border: "2px solid #97d700" }}
+                        ></div>
                         {/* End .col */}
                       </div>
                     </div>
@@ -1170,7 +1250,7 @@ const Index = () => {
                         className="btn btn-color w-25"
                         onClick={() => closeViewModal()}
                       >
-                        Cancel
+                        Ok
                       </button>
                     </div>
                   </div>
@@ -1180,8 +1260,46 @@ const Index = () => {
               {isStatusModal && (
                 <div className="modal">
                   <div className="modal-content">
+                    <div className="row">
+                      <div className="col-lg-12">
+                        <Link href="/" className="">
+                          <Image
+                            width={50}
+                            height={45}
+                            className="logo1 img-fluid"
+                            style={{ marginTop: "-20px" }}
+                            src="/assets/images/Appraisal_Land_Logo.png"
+                            alt="header-logo2.png"
+                          />
+                          <span
+                            style={{
+                              color: "#2e008b",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            Appraisal
+                          </span>
+                          <span
+                            style={{
+                              color: "#97d700",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            {" "}
+                            Land
+                          </span>
+                        </Link>
+                      </div>
+                    </div>
                     <h3 className="text-center">Broker Status Update</h3>
-                    <hr />
+                    <div
+                      className="mb-2"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
                     <div className="d-flex justify-content-center">
                       <select
                         className="form-select"
@@ -1206,7 +1324,10 @@ const Index = () => {
                         </option>
                       </select>
                     </div>
-                    <hr />
+                    <div
+                      className="mb-2 mt-3"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
                       <button

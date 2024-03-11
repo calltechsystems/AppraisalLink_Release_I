@@ -18,6 +18,7 @@ import { AppraiserStatusOptions } from "../create-listing/data";
 import Form from "../../appraiser-register/Form";
 import Link from "next/link";
 import { FaCopy } from "react-icons/fa";
+import Image from "next/image";
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -1178,7 +1179,50 @@ const Index = () => {
               {closeRegisterModal && (
                 <div className="modal">
                   <div className="modal-content">
-                    <h3 className="text-center">Add Appraiser</h3>
+                    <div className="row">
+                      <div className="col-lg-12">
+                        <Link href="/" className="">
+                          <Image
+                            width={50}
+                            height={45}
+                            className="logo1 img-fluid"
+                            style={{ marginTop: "-20px" }}
+                            src="/assets/images/Appraisal_Land_Logo.png"
+                            alt="header-logo2.png"
+                          />
+                          <span
+                            style={{
+                              color: "#2e008b",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            Appraisal
+                          </span>
+                          <span
+                            style={{
+                              color: "#97d700",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            {" "}
+                            Land
+                          </span>
+                        </Link>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-lg-12 text-center">
+                        <h1 className=" text-color mt-1">Add Appraiser </h1>
+                      </div>
+                    </div>
+                    <div
+                      className="mb-2"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
                     <Form setCloseRegisterModal={setCloseRegisterModal} />
                   </div>
                 </div>
@@ -1187,8 +1231,46 @@ const Index = () => {
               {openViewModal && (
                 <div className="modal">
                   <div className="modal-content">
+                    <div className="row">
+                      <div className="col-lg-12">
+                        <Link href="/" className="">
+                          <Image
+                            width={50}
+                            height={45}
+                            className="logo1 img-fluid"
+                            style={{ marginTop: "-20px" }}
+                            src="/assets/images/Appraisal_Land_Logo.png"
+                            alt="header-logo2.png"
+                          />
+                          <span
+                            style={{
+                              color: "#2e008b",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            Appraisal
+                          </span>
+                          <span
+                            style={{
+                              color: "#97d700",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            {" "}
+                            Land
+                          </span>
+                        </Link>
+                      </div>
+                    </div>
                     <h3 className="text-center">View Credentials</h3>
-
+                    <div
+                      className="mb-2"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
                     <div className="row">
                       <div className="col-lg-12">
                         <div className="row mb-2 mt-2 text-center">
@@ -1232,7 +1314,10 @@ const Index = () => {
                             </div>
                           </div>
                         </div>
-
+                        <div
+                          className="mb-2"
+                          style={{ border: "2px solid #97d700" }}
+                        ></div>
                         {/* End .col */}
                       </div>
                     </div>
@@ -1247,7 +1332,7 @@ const Index = () => {
                         className="btn btn-color w-25"
                         onClick={() => closeViewModal()}
                       >
-                        Cancel
+                        Ok
                       </button>
                     </div>
                   </div>
@@ -1257,8 +1342,46 @@ const Index = () => {
               {openEditModal && (
                 <div className="modal">
                   <div className="modal-content">
+                    <div className="row">
+                      <div className="col-lg-12">
+                        <Link href="/" className="">
+                          <Image
+                            width={50}
+                            height={45}
+                            className="logo1 img-fluid"
+                            style={{ marginTop: "-20px" }}
+                            src="/assets/images/Appraisal_Land_Logo.png"
+                            alt="header-logo2.png"
+                          />
+                          <span
+                            style={{
+                              color: "#2e008b",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            Appraisal
+                          </span>
+                          <span
+                            style={{
+                              color: "#97d700",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            {" "}
+                            Land
+                          </span>
+                        </Link>
+                      </div>
+                    </div>
                     <h3 className="text-center">Activity Status Updation</h3>
-
+                    <div
+                      className="mb-2"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
                     <select
                       required
                       className="form-select"
@@ -1290,17 +1413,21 @@ const Index = () => {
                       </option>
                     </select>
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
+                    <div
+                      className="mb-2 mt-3"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
                     <div className="text-center" style={{}}>
                       <button
                         disabled={disable}
-                        className="btn w-35 btn-white"
+                        className="btn w-35 btn-color"
                         onClick={closeStatusUpdateHandler}
                       >
                         Cancel
                       </button>
                       <button
                         disabled={disable}
-                        className="btn btn-color w-10 mt-1"
+                        className="btn btn-color"
                         style={{ marginLeft: "12px" }}
                         onClick={handleStatusUpdateHandler}
                       >
