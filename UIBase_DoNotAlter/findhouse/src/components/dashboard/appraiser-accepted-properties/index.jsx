@@ -357,7 +357,7 @@ const Index = () => {
         <div class="row">
           <div class="col-lg-12 text-center" style="margin-left:250px; margin-top:50px" >
             <a href="/" class="">
-              <img width="40" height="45" class="logo1 img-fluid" style="margin-top:-20px" src="/assets/images/logo.png" alt="header-logo2.png" />
+              <img width="40" height="45" class="logo1 img-fluid" style="margin-top:-20px" src="/assets/images/Appraisal_Land_Logo.png" alt="header-logo2.png" />
               <span style="color:#2e008b; font-weight:bold; font-size:18px; margin-top:20px">
                 Appraisal
               </span>
@@ -426,7 +426,7 @@ const Index = () => {
         <div class="row">
           <div class="col-lg-12 text-center" style="margin-left:250px; margin-top:50px" >
             <a href="/" class="">
-              <img width="40" height="45" class="logo1 img-fluid" style="margin-top:-20px" src="/assets/images/logo.png" alt="header-logo2.png" />
+              <img width="40" height="45" class="logo1 img-fluid" style="margin-top:-20px" src="/assets/images/Appraisal_Land_Logo.png" alt="header-logo2.png" />
               <span style="color:#2e008b; font-weight:bold; font-size:18px; margin-top:20px">
                 Appraisal
               </span>
@@ -737,7 +737,7 @@ const Index = () => {
                                       height={45}
                                       className="logo1 img-fluid"
                                       style={{ marginTop: "-20px" }}
-                                      src="/assets/images/logo.png"
+                                      src="/assets/images/Appraisal_Land_Logo.png"
                                       alt="header-logo2.png"
                                     />
                                     <span
@@ -1275,7 +1275,7 @@ const Index = () => {
                                       height={45}
                                       className="logo1 img-fluid"
                                       style={{ marginTop: "-20px" }}
-                                      src="/assets/images/logo.png"
+                                      src="/assets/images/Appraisal_Land_Logo.png"
                                       alt="header-logo2.png"
                                     />
                                     <span
@@ -1663,7 +1663,7 @@ const Index = () => {
                             height={45}
                             className="logo1 img-fluid"
                             style={{ marginTop: "-20px" }}
-                            src="/assets/images/logo.png"
+                            src="/assets/images/Appraisal_Land_Logo.png"
                             alt="header-logo2.png"
                           />
                           <span

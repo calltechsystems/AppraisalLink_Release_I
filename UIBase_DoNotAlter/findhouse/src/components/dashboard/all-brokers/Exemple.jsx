@@ -285,7 +285,7 @@ export default function Exemple({
               </button>
               <button
                 className="btn btn-color m-1"
-                onClick={() => openCredModal(data)}
+                onClick={() => openCredModal(temp)}
               >
                 <i className="flaticon-view"></i>
               </button>

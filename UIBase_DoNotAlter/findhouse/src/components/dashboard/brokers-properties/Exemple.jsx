@@ -16,7 +16,7 @@ import {
 
 const headCells = [
   {
-    id: "order_id",
+    id: "property_id",
     numeric: false,
     label: "Order ID",
     width: 100,
@@ -155,6 +155,7 @@ export default function Exemple({
   const [updatedData, setUpdatedData] = useState([]);
   const [allBids, setBids] = useState([]);
   const [show, setShow] = useState(false);
+  const [allListedProperties,setAllListedProperties]=useState([]);
   let tempData = [];
   const [AllBrokers, setAllBrokers] = useState([]);
 
@@ -324,14 +325,27 @@ export default function Exemple({
     return isCompleted ? 3 : isAccepted ? 2 : isQuoteProvided ? 1 : 0;
   };
 
+  const getPropertyInfoById = (userId)=>{
+    console.log("getprop",userId,allListedProperties)
+    let selectedProperty = {};
+    allListedProperties.map((prop,index)=>{
+      if(String(prop.userId) === String(userId)){
+        selectedProperty = prop;
+      }
+    })
+    return selectedProperty;
+
+  }
+
   const openPopupModal = (property) => {
     setModalIsPopupOpen(true);
     setCurrentProperty(property);
   };
   useEffect(() => {
     const getData = () => {
-      properties.map((property, index) => {
-        console.log(property);
+      properties.map((item, index) => {
+        const itemWitnin = getPropertyInfoById(item.item.userId);
+        const property = itemWitnin;
         const isBidded = getBidOfProperty(property.orderId);
         const isHold = property.isOnHold;
         const isCancel = property.isOnCancel;
@@ -340,7 +354,7 @@ export default function Exemple({
         const isEditable = isStatus === 0 ? true : false;
         if (!property.isArchive) {
           const updatedRow = {
-            order_id: property.orderId,
+            property_id: property.orderId,
             sub_date: formatDate(property.addedDatetime),
             quote_required_by: property.quoteRequiredDate
               ? formatDateNew(property.quoteRequiredDate)
@@ -790,6 +804,27 @@ export default function Exemple({
       token: userData.token,
     };
 
+
+    axios
+      .get("/api/getAllListedProperties", {
+        headers: {
+          Authorization: `Bearer ${data?.token}`,
+          "Content-Type": "application/json",
+        },
+        params: {
+          userId: data?.userId,
+        },
+      })
+      .then((res) => {
+        toast.dismiss();
+        console.log("properties",res.data.data.properties.$values);
+        setAllListedProperties( res.data.data.properties.$values);
+      })
+      .catch((err) => {
+        toast.error(err);
+        // setModalIsOpenError(true);
+      });
+
     axios
       .get("/api/getBrokeragebrokerProperties", {
         headers: {
@@ -802,8 +837,8 @@ export default function Exemple({
       })
       .then((res) => {
         toast.dismiss();
-        console.log(res.data.data.$values[2].$values);
-        const temp = res.data.data.$values[2].$values;
+        console.log("broker properties",res.data.data.$values);
+        const temp = res.data.data.$values;
 
         axios
           .get("/api/getAllBids", {
@@ -832,7 +867,9 @@ export default function Exemple({
 
         setAllBrokers(allbroker);
       })
-      .catch((err) => {});
+      .catch((err) => {
+
+      });
 
     let tempBids = [];
 

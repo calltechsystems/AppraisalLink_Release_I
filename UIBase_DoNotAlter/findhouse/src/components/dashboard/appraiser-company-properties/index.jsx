@@ -23,7 +23,7 @@ const Index = () => {
   const [isStatusModal, setIsStatusModal] = useState(false);
   const [toggleId, setToggleId] = useState(-1);
 
-  const [disable,setDisable]=useState(false);
+  const [disable, setDisable] = useState(false);
   const [toggleWishlist, setToggleWishlist] = useState(0);
   const [searchResult, setSearchResult] = useState([]);
   const [property, setProperty] = useState("");
@@ -65,31 +65,30 @@ const Index = () => {
   const [remark, setRemark] = useState("");
 
   const handleStatusUpdateHandler = () => {
-    setDisable(true)
-   
-      const data = JSON.parse(localStorage.getItem("user"));
-      const payload = {
-        token: data.token,
-        Quoteid: currentBid.bidId,
-        OrderStatus: Number(orderStatus),
-        remark: remark,
-        statusDate: statusDate,
-      };
+    setDisable(true);
 
-      const encryptedBody = encryptionData(payload);
-      toast.loading("Updating order status!!");
-      axios
-        .put("/api/updateOrderStatus", encryptedBody)
-        .then((res) => {
-          toast.dismiss();
-          toast.success("Successfully updated!!");
-          location.reload(true);
-        })
-        .catch((err) => {
-          toast.dismiss();
-          toast.error(err?.response?.data?.error);
-        });
-    
+    const data = JSON.parse(localStorage.getItem("user"));
+    const payload = {
+      token: data.token,
+      Quoteid: currentBid.bidId,
+      OrderStatus: Number(orderStatus),
+      remark: remark,
+      statusDate: statusDate,
+    };
+
+    const encryptedBody = encryptionData(payload);
+    toast.loading("Updating order status!!");
+    axios
+      .put("/api/updateOrderStatus", encryptedBody)
+      .then((res) => {
+        toast.dismiss();
+        toast.success("Successfully updated!!");
+        location.reload(true);
+      })
+      .catch((err) => {
+        toast.dismiss();
+        toast.error(err?.response?.data?.error);
+      });
 
     setRemark("");
     setCurrentBid({});
@@ -120,12 +119,10 @@ const Index = () => {
   const [openDate, setOpenDate] = useState(false);
   const [statusDate, setStatusDate] = useState("");
 
-
-
   const [allAppraiser, setAllAppraiser] = useState([]);
   const [assignModal, setAssignModal] = useState(false);
 
-  console.log("allAppraiser",allAppraiser);
+  console.log("allAppraiser", allAppraiser);
 
   const handleStatusSelect = (value) => {
     if (String(value) === "Appraisal Visit Confirmed") {
@@ -163,33 +160,31 @@ const Index = () => {
   const [assignPropertyId, setAssignPropertyId] = useState(-1);
 
   const assignAppraiserUpdateHandler = () => {
-    
-      const data = JSON.parse(localStorage.getItem("user"));
-      const payload = {
-        companyid: data.appraiserCompany_Datails.appraiserCompanyId,
-        propertyid: Number(assignPropertyId),
-        appraiserid: Number(selectedAppraiser),
-      };
+    const data = JSON.parse(localStorage.getItem("user"));
+    const payload = {
+      companyid: data.appraiserCompany_Datails.appraiserCompanyId,
+      propertyid: Number(assignPropertyId),
+      appraiserid: Number(selectedAppraiser),
+    };
 
-      const encryptedData = encryptionData(payload);
-      toast.loading("Assigning the property!!....");
-      axios
-        .post("/api/assignPropertyToAppraiser", encryptedData, {
-          headers: {
-            Authorization: `Bearer ${data.token}`,
-          },
-        })
-        .then((res) => {
-          toast.dismiss();
-          toast.success("Successfully assigned the property!");
-          location.reload(true);
-        })
-        .catch((err) => {
-          toast.dismiss();
-          toast.error(err);
-        });
-      setAssignPropertyId(-1);
-    
+    const encryptedData = encryptionData(payload);
+    toast.loading("Assigning the property!!....");
+    axios
+      .post("/api/assignPropertyToAppraiser", encryptedData, {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+      })
+      .then((res) => {
+        toast.dismiss();
+        toast.success("Successfully assigned the property!");
+        location.reload(true);
+      })
+      .catch((err) => {
+        toast.dismiss();
+        toast.error(err);
+      });
+    setAssignPropertyId(-1);
   };
 
   const closeAssignModal = () => {
@@ -407,7 +402,7 @@ const Index = () => {
         <div class="row">
           <div class="col-lg-12 text-center" style="margin-left:250px; margin-top:50px" >
             <a href="/" class="">
-              <img width="40" height="45" class="logo1 img-fluid" style="margin-top:-20px" src="/assets/images/logo.png" alt="header-logo2.png" />
+              <img width="40" height="45" class="logo1 img-fluid" style="margin-top:-20px" src="/assets/images/Appraisal_Land_Logo.png" alt="header-logo2.png" />
               <span style="color:#2e008b; font-weight:bold; font-size:18px; margin-top:20px">
                 Appraisal
               </span>
@@ -466,7 +461,7 @@ const Index = () => {
     };
   };
 
-  console.log("assignAppraiser",assignAppraiser);
+  console.log("assignAppraiser", assignAppraiser);
   const PropertyInfoHandler = (orderId) => {
     const printWindow = window.open("", "_blank");
     printWindow.document.write("<html><head><title></title></head><body>");
@@ -477,7 +472,7 @@ const Index = () => {
         <div class="row">
           <div class="col-lg-12 text-center" style="margin-left:250px; margin-top:50px" >
             <a href="/" class="">
-              <img width="40" height="45" class="logo1 img-fluid" style="margin-top:-20px" src="/assets/images/logo.png" alt="header-logo2.png" />
+              <img width="40" height="45" class="logo1 img-fluid" style="margin-top:-20px" src="/assets/images/Appraisal_Land_Logo.png" alt="header-logo2.png" />
               <span style="color:#2e008b; font-weight:bold; font-size:18px; margin-top:20px">
                 Appraisal
               </span>
@@ -794,7 +789,7 @@ const Index = () => {
                                       height={45}
                                       className="logo1 img-fluid"
                                       style={{ marginTop: "-20px" }}
-                                      src="/assets/images/logo.png"
+                                      src="/assets/images/Appraisal_Land_Logo.png"
                                       alt="header-logo2.png"
                                     />
                                     <span
@@ -1332,7 +1327,7 @@ const Index = () => {
                                       height={45}
                                       className="logo1 img-fluid"
                                       style={{ marginTop: "-20px" }}
-                                      src="/assets/images/logo.png"
+                                      src="/assets/images/Appraisal_Land_Logo.png"
                                       alt="header-logo2.png"
                                     />
                                     <span
@@ -1721,7 +1716,7 @@ const Index = () => {
                             height={45}
                             className="logo1 img-fluid"
                             style={{ marginTop: "-20px" }}
-                            src="/assets/images/logo.png"
+                            src="/assets/images/Appraisal_Land_Logo.png"
                             alt="header-logo2.png"
                           />
                           <span
@@ -1748,8 +1743,15 @@ const Index = () => {
                         </Link>
                       </div>
                     </div>
-                    <h3 className="text-center">Assign Appraiser </h3>
-
+                    <div className="row">
+                      <div className="col-lg-12 text-center">
+                        <h1 className=" text-color mt-1">Asssign Appraiser</h1>
+                      </div>
+                    </div>
+                    <div
+                      className="mt-2 mb-3"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
                     <select
                       required
                       className="form-select"
@@ -1761,34 +1763,34 @@ const Index = () => {
                       // onChange={(e) => setBuildinRef(e.target.value)}
                       // disabled={isDisable}
                       style={{
-                        paddingTop: "15px",
-                        paddingBottom: "15px",
+                        // paddingTop: "15px",
+                        // paddingBottom: "15px",
                         backgroundColor: "#E8F0FE",
                       }}
                     >
                       {assignAppraiser.map((item, index) => {
                         <option value={0}>....</option>;
-                        return (
-                          item.item.isActive ?
+                        return item.item.isActive ? (
                           <option key={item.item.id} value={item.item.id}>
                             {item.item.firstName} {item.item.lastName}
                           </option>
-                          : null
-                        );
+                        ) : null;
                       })}
                     </select>
-
+                    <div
+                      className="mt-4 mb-3"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
                       <button
-                        className="btn w-35 btn-white"
+                        className="btn w-35 btn-color m-1"
                         onClick={() => closeAssignModal()}
                       >
                         Cancel
                       </button>
                       <button
-                        className="btn btn-color w-10 mt-1"
-                        style={{ marginLeft: "12px" }}
+                        className="btn btn-color"
                         onClick={assignAppraiserUpdateHandler}
                       >
                         Submit
@@ -1808,7 +1810,7 @@ const Index = () => {
                             height={45}
                             className="logo1 img-fluid"
                             style={{ marginTop: "-20px" }}
-                            src="/assets/images/logo.png"
+                            src="/assets/images/Appraisal_Land_Logo.png"
                             alt="header-logo2.png"
                           />
                           <span
@@ -1872,10 +1874,10 @@ const Index = () => {
                     </select>
                     {openDate && (
                       <div
-                        className="col-lg-12 pt-20"
-                        style={{ display: "flex", flexDirection: "row" }}
+                        className="col-lg-12"
+                        // style={{ display: "flex", flexDirection: "row" }}
                       >
-                        <label style={{ color: "black", fontWeight: "bold" }}>
+                        <label style={{ color: "#2e008b", fontWeight: "bold" }}>
                           Date and Time <span style={{ color: "red" }}>*</span>
                         </label>
                         <input
@@ -1888,9 +1890,9 @@ const Index = () => {
                         />
                       </div>
                     )}
-                    <div>
+                    <div className="mt-3">
                       <h4 style={{ color: "#2e008b", fontWeight: "bold" }}>
-                        Remark <span style={{ color: "red" }}>*</span>
+                        Remark
                       </h4>
                       <input
                         required
@@ -1908,14 +1910,14 @@ const Index = () => {
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
                       <button
-                        disabled  ={disable}
+                        disabled={disable}
                         className="btn w-35 btn-color"
                         onClick={closeStatusUpdateHandler}
                       >
                         Cancel
                       </button>
                       <button
-                      disabled={disable}
+                        disabled={disable}
                         className="btn btn-color w-10"
                         style={{ marginLeft: "12px" }}
                         onClick={handleStatusUpdateHandler}
@@ -1973,14 +1975,14 @@ const Index = () => {
             </div>
 
             <div className="row mt50">
-            <div className="col-lg-12">
-              <div className="copyright-widget text-center">
-                <p>
-                  &copy; {new Date().getFullYear()} Appraisal Land. All
-                  Rights Reserved.
-                </p>
+              <div className="col-lg-12">
+                <div className="copyright-widget text-center">
+                  <p>
+                    &copy; {new Date().getFullYear()} Appraisal Land. All Rights
+                    Reserved.
+                  </p>
+                </div>
               </div>
-            </div>
             </div>
             {/* End .col */}
           </div>
