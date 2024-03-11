@@ -135,9 +135,14 @@ const Form = ({
           window.location.reload();
         })
         .catch((err) => {
-          toast.dismiss();
-          toast.error(err);
-          // setModalIsOpenError(true);
+          const status = err.response.request.status;
+          if (String(status) === String(409)) {
+            toast.dismiss();
+            toast.error("Email is already registered!");
+          } else {
+            toast.dismiss();
+            toast.error(err.message);
+          }
         })
         .finally(() => {
           setLoading(false);

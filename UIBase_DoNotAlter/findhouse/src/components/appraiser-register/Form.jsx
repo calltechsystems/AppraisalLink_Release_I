@@ -16,7 +16,7 @@ const Form = ({
   setCloseRegisterModal,
 }) => {
   const [showhide, setShowhide] = useState("");
-  const [disable,setDisable]=useState(false)
+  const [disable, setDisable] = useState(false);
 
   const [change, setChange] = useState(false);
   const [showRegister, setRegister] = useState(true);
@@ -96,7 +96,7 @@ const Form = ({
     event.preventDefault();
 
     setRegister(false);
-    setDisable(true)
+    setDisable(true);
 
     const email = emailRegisterRef.current.value;
     const password = passwordRegister;
@@ -135,23 +135,32 @@ const Form = ({
           location.reload(true);
         })
         .catch((err) => {
-          let statusText = err.response;
-          if (String(err.response.request.status) === "409") {
-            statusText = "The used email is already being registered!";
-          }
-          if (String(err.response.request.status) === "500") {
-            statusText = "Server issues ,Please Try again !!";
-          }
-          if (String(err.response.request.status) === "403") {
-            statusText = "You are being forbidden to access this !";
-          }
-          if (String(err.response.request.status) === "304") {
-            statusText = "Not found!";
-          }
+          // let statusText = err.response;
+          // if (String(err.response.request.status) === "409") {
+          //   statusText = "The used email is already being registered!";
+          // }
+          // if (String(err.response.request.status) === "500") {
+          //   statusText = "Server issues ,Please Try again !!";
+          // }
+          // if (String(err.response.request.status) === "403") {
+          //   statusText = "You are being forbidden to access this !";
+          // }
+          // if (String(err.response.request.status) === "304") {
+          //   statusText = "Not found!";
+          // }
 
-          toast.dismiss();
-          setErrorMessage(statusText);
-          setModalIsOpenError(true);
+          // toast.dismiss();
+          // setErrorMessage(statusText);
+          // setModalIsOpenError(true);
+
+          const status = err.response.request.status;
+          if (String(status) === String(409)) {
+            toast.dismiss();
+            toast.error("Email is already registered!");
+          } else {
+            toast.dismiss();
+            toast.error(err.message);
+          }
         })
         .finally(() => {
           setLoading(false);
@@ -411,14 +420,14 @@ const Form = ({
 
               <div className="col-lg-12 text-center ">
                 <button
-                disabled={disable}
+                  // disabled={disable}
                   onClick={() => setCloseRegisterModal(false)}
                   className="btn btn-color w-25 m-1"
                 >
                   Cancel
                 </button>
                 <button
-                disabled={disable}
+                  disabled={disable}
                   onClick={(e) => registerHandler(e)}
                   className="btn btn-color w-25"
                 >

@@ -20,7 +20,7 @@ const SidebarMenu = ({ userData }) => {
     {
       id: 3,
       name: "Add / Modify Subscriptions",
-      route: "/brokerage-add-subscription",
+      route: "/brokerage-plans",
       icon: "flaticon-telephone",
     },
     {
@@ -244,6 +244,12 @@ const SidebarMenu = ({ userData }) => {
               </li>
             ))}
           </ul>
+        </li>
+        <li className="link-hover sidebar-menu">
+          <Link href="mailto:patelshubhendra@gmail.com">
+            <i className="flaticon-envelope"></i>
+            <span>Contact Us</span>
+          </Link>
         </li>
       </ul>
     </>
