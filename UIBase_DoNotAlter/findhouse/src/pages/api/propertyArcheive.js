@@ -12,8 +12,7 @@ async function handler(request, response) {
     const userId = request.query.userId;
 
     // console.log(request.query)
-    console.log(status, orderId, userId);
-    return;
+   
     const userResponse = await axios.post(
       `${domain}/com.appraisalland.Property/archievePropertyByBroker`,
       {},

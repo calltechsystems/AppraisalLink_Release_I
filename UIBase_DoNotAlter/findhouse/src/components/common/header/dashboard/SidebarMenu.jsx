@@ -240,24 +240,35 @@ const SidebarMenu = () => {
           </ul>
         </li> */}
         {/* End manage listing */}
-
-        <li className="title">
-          <span>Manage Account</span>
-          <ul>
-            {manageAccount.map((item) => (
-              <li
-                className={
-                  isSinglePageActive(item.route, route.pathname) ? "active" : ""
-                }
-                key={item.id}
-              >
-                <Link href={item.route}>
-                  <i className={item.icon}></i> <span>{item.name}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </li>
+        {userData?.broker_Details?.brokerageId === null && (
+          <li className="title">
+            <span>Manage Account</span>
+            <ul>
+              {manageAccount.map((item) => (
+                <li
+                  className={
+                    isSinglePageActive(item.route, route.pathname)
+                      ? "active"
+                      : ""
+                  }
+                  key={item.id}
+                >
+                  <Link href={item.route}>
+                    <i className={item.icon}></i> <span>{item.name}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </li>
+        )}
+        {userData?.broker_Details?.brokerageId !== null && (
+          <li className="link-hover sidebar-menu">
+            <Link href="/contact">
+              <i className="flaticon-telephone"></i>
+              <span>Help Desk</span>
+            </Link>
+          </li>
+        )}
         <li className="link-hover sidebar-menu">
           <Link href="mailto:patelshubhendra@gmail.com">
             <i className="flaticon-envelope"></i>
