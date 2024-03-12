@@ -592,8 +592,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           onChange={(e) => setDesignation(e.target.value)}
                           // disabled={!edit}
                           style={{
-                            paddingTop: "15px",
-                            paddingBottom: "15px",
                             backgroundColor: "#E8F0FE",
                             color: "black",
                           }}
@@ -879,8 +877,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           value={stateRef}
                           disabled={!edit}
                           style={{
-                            paddingTop: "15px",
-                            paddingBottom: "15px",
                             backgroundColor: "#E8F0FE",
                             // color:"white"
                           }}

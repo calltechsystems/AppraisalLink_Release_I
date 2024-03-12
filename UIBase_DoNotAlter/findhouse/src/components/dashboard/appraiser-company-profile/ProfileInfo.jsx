@@ -777,8 +777,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           onChange={(e) => setStateRef(e.target.value)}
                           disabled={!edit}
                           style={{
-                            paddingTop: "15px",
-                            paddingBottom: "15px",
                             backgroundColor: "#E8F0FE",
                             // color:"white"
                           }}
