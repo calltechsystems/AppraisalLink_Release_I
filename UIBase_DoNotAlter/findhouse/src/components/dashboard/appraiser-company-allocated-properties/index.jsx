@@ -1750,7 +1750,7 @@ const Index = () => {
                                         }}
                                       >
                                         <span className="text-start">
-                                          Address
+                                          Company Name
                                         </span>
                                       </td>
                                       <td
@@ -1761,10 +1761,9 @@ const Index = () => {
                                           padding: "5px",
                                         }}
                                       >
-                                        {appraiser.streetName}{" "}
-                                        {appraiser.streetNumber}{" "}
-                                        {appraiser.area} , {appraiser.city}{" "}
-                                        {appraiser.state}-{appraiser.postalCode}
+                                        {appraiser.companyName
+                                          ? appraiser.companyName
+                                          : "N.A."}
                                       </td>
                                     </tr>
                                     <tr>
@@ -1799,7 +1798,7 @@ const Index = () => {
                                         }}
                                       >
                                         <span className="text-start">
-                                          Mortgage Broker Licence No
+                                          Email Address
                                         </span>
                                       </td>
                                       <td
@@ -1810,7 +1809,7 @@ const Index = () => {
                                           padding: "5px",
                                         }}
                                       >
-                                        {appraiser.mortageBrokerLicNo}
+                                        {appraiser.emailId}
                                       </td>
                                     </tr>
                                     <tr>
@@ -1822,7 +1821,7 @@ const Index = () => {
                                         }}
                                       >
                                         <span className="text-start">
-                                          Mortgage Brokerage Licence No
+                                          Cell Number
                                         </span>
                                       </td>
                                       <td
@@ -1833,7 +1832,9 @@ const Index = () => {
                                           padding: "5px",
                                         }}
                                       >
-                                        {appraiser.mortageBrokerageLicNo}
+                                        {appraiser.cellNumber
+                                          ? appraiser.cellNumber
+                                          : "Not Provided"}
                                       </td>
                                     </tr>
                                     <tr>
@@ -1845,7 +1846,7 @@ const Index = () => {
                                         }}
                                       >
                                         <span className="text-start">
-                                          Brokerage Name
+                                          Address
                                         </span>
                                       </td>
                                       <td
@@ -1856,34 +1857,10 @@ const Index = () => {
                                           padding: "5px",
                                         }}
                                       >
-                                        {appraiser.brokerageName
-                                          ? appraiser.brokerageName
-                                          : "N.A."}
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
-                                        <span className="text-start">
-                                          Company Name
-                                        </span>
-                                      </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
-                                        {appraiser.companyName
-                                          ? appraiser.companyName
-                                          : "N.A."}
+                                        {appraiser.streetNumber}{" "}
+                                        {appraiser.streetName},{" "}
+                                        {appraiser.apartmentNo} {appraiser.city}{" "}
+                                        {appraiser.state} {appraiser.postalCode}
                                       </td>
                                     </tr>
                                     <tr>
@@ -1908,7 +1885,7 @@ const Index = () => {
                                       >
                                         {appraiser.assistantFirstName
                                           ? appraiser.assistantFirstName
-                                          : "N.A."}
+                                          : "Not Provided"}
                                       </td>
                                     </tr>
                                     <tr>
@@ -1933,7 +1910,7 @@ const Index = () => {
                                       >
                                         {appraiser.assistantPhoneNumber
                                           ? appraiser.assistantPhoneNumber
-                                          : "N.A."}
+                                          : "Not Provided"}
                                       </td>
                                     </tr>
                                     <tr>
@@ -1958,7 +1935,7 @@ const Index = () => {
                                       >
                                         {appraiser.assistantEmailAddress
                                           ? appraiser.assistantEmailAddress
-                                          : "NA"}
+                                          : "Not Provided"}
                                       </td>
                                     </tr>
                                   </tbody>

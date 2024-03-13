@@ -219,8 +219,8 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                         >
                           {" "}
                           {userData?.appraiser_Details?.streetNumber}{" "}
-                          {userData?.appraiser_Details?.streetName}
-                          {userData?.appraiser_Details?.unit}{" "}
+                          {userData?.appraiser_Details?.streetName}{" "}
+                          {userData?.appraiser_Details?.apartmentNo}{" "}
                           {userData?.appraiser_Details?.city},{" "}
                           {userData?.appraiser_Details?.province},{" "}
                           {userData?.appraiser_Details?.postalCode}

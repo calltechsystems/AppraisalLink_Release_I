@@ -11,16 +11,20 @@ const Index = () => {
   const [propertyData, setPropertyData] = useState(null);
 
   useEffect(() => {
+    const url = window.location.pathname;
+
+    const propertyOrderId = url.split("/create-listing-1/")[1];
+    console.log(propertyOrderId);
     const fetchPropertyData = async () => {
       try {
         const userData = JSON.parse(localStorage.getItem("user"));
-        const response = await axios.get("/api/getPropertyById", {
+        const response = await axios.get("/api/getPropertiesById", {
           headers: {
             Authorization: `Bearer ${userData.token}`,
             "Content-Type": "application/json",
           },
           params: {
-            item: item,
+            item: propertyOrderId,
           },
         });
         setPropertyData(response.data.data); // Update state with the fetched data
@@ -35,12 +39,13 @@ const Index = () => {
     }
   }, [item]); // Add item as a dependency to trigger the effect when it changes
 
-
   return (
     <>
       <Seo pageTitle="Create Listing" />
 
-      {propertyData && (<CreateListing isView={true} propertyData={propertyData} />)}
+      {propertyData && (
+        <CreateListing isView={true} propertyData={propertyData.property} />
+      )}
     </>
   );
 };

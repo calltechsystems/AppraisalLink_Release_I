@@ -679,7 +679,7 @@ export default function Exemple({
                     </Link>{" "} */}
                     <Link
                       className="btn btn-color-table"
-                      href={`/create-listing/${property.orderId}`}
+                      href={`/create-listing-1/${property.orderId}`}
                     >
                       <span className="flaticon-edit"></span>
                     </Link>
@@ -777,7 +777,7 @@ export default function Exemple({
                     className="btn btn-color-table"
                     onClick={() => archievePropertyHandler(property.orderId)}
                   >
-                    <Link className="color-light" href={`/archive-property`}>
+                    <Link className="color-light" href={`/brokerage-archive-property`}>
                       <span className="text-light">
                         <FaArchive />
                       </span>

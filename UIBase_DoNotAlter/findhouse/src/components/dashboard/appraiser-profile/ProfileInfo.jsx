@@ -158,7 +158,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   const [streetNumber, setStreetNumber] = useState(
     userData.appraiser_Details?.streetNumber || ""
   );
-  const [unit, setUnit] = useState(
+  const [apartmentNo, setApartmentNo] = useState(
     userData?.appraiser_Details?.apartmentNo || ""
   );
 
@@ -189,7 +189,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     const state = stateRef;
     const zipCode = zipcodeRef;
     const phoneNumber = phoneNumberRef;
-
+    // const unit = unit;
     const adressLine2 = addressLineTwoRef;
     const middleName = middleNameRef;
     const companyName = companyNameRef;
@@ -257,7 +257,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         companyName: companyName,
         lenderListUrl: selectedImage2.url,
         streetNumber: streetNumber,
-        apartmentNo: "",
+        apartmentNo: apartmentNo,
         cellNumber: cellNumber,
         streetName: streetName,
         commissionRate: commissionRate,
@@ -820,8 +820,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       <div className="col-lg-7">
                         <input
                           type="text"
-                          value={unit}
-                          onChange={(e) => setUnit(e.target.value)}
+                          value={apartmentNo}
+                          onChange={(e) => setApartmentNo(e.target.value)}
                           className="form-control"
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"

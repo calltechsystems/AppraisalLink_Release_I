@@ -219,7 +219,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
             ? mortageBrokrageLicNoRef
             : userData.brokerage_Details.mortageBrokerageLicNo,
         streetNumber: streetNumber,
-        apartmentNo: "",
+        apartmentNo: apartmentNo,
         streetName: streetName,
         city: city,
         province: state,

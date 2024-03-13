@@ -444,6 +444,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                         {" "}
                         {userData?.broker_Details?.streetNumber}{" "}
                         {userData?.broker_Details?.streetName}{" "}
+                        {userData?.broker_Details?.apartmentNo}{" "}
                         {userData?.broker_Details?.city}{" "}
                         {userData?.broker_Details?.province}{" "}
                         {userData?.broker_Details?.postalCode}

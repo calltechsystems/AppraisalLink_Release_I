@@ -260,6 +260,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                         {" "}
                         {userData?.brokerage_Details?.streetNumber}{" "}
                         {userData?.brokerage_Details?.streetName}{" "}
+                        {userData?.brokerage_Details?.apartmentNo}{" "}
                         {userData?.brokerage_Details?.city}{" "}
                         {userData?.brokerage_Details?.province}{" "}
                         {userData?.brokerage_Details?.postalCode}

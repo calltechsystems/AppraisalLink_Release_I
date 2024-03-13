@@ -35,6 +35,7 @@ async function handler(request, response) {
       designation,
       commissionRate,
       emailId,
+      apartmentNo,
     } = body;
 
     const formData = {
@@ -47,7 +48,7 @@ async function handler(request, response) {
       postalCode: postalCode,
       area: "",
       lenderListUrl: lenderListUrl,
-      apartmentNo: "",
+      apartmentNo: apartmentNo,
       CellNumber: cellNumber,
       streetName: streetName,
       streetNumber: streetNumber,
