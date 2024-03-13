@@ -5,6 +5,8 @@ import TableData from "./TableData";
 import Pagination from "./Pagination";
 import { useEffect, useRef } from "react";
 import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -12,12 +14,12 @@ import Modal from "./Modal";
 import { encryptionData } from "../../../utils/dataEncryption";
 import Loader from "./Loader";
 import { AppraiserStatusOptions } from "../create-listing/data";
-import Link from "next/link";
-import Image from "next/image";
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
+
+  const [disbale, setDisable] = useState(false);
 
   const [isStatusModal, setIsStatusModal] = useState(false);
   const [toggleId, setToggleId] = useState(-1);
@@ -26,7 +28,6 @@ const Index = () => {
   const [toggleWishlist, setToggleWishlist] = useState(0);
   const [searchResult, setSearchResult] = useState([]);
   const [property, setProperty] = useState("");
-  const [disbale,setDisable]=useState(false);
   const [typeView, setTypeView] = useState(0);
   const [startLoading, setStartLoading] = useState(false);
   const [filterProperty, setFilterProperty] = useState("");
@@ -64,30 +65,28 @@ const Index = () => {
 
   const handleStatusUpdateHandler = () => {
     setDisable(true);
-    
-      const data = JSON.parse(localStorage.getItem("user"));
-      const payload = {
-        token: data.token,
-        Quoteid: currentBid.bidId,
-        OrderStatus: Number(orderStatus),
-        remark: remark,
-        statusDate: statusDate,
-      };
 
-      const encryptedBody = encryptionData(payload);
-      toast.loading("Updating order status!!");
-      axios
-        .put("/api/updateOrderStatus", encryptedBody)
-        .then((res) => {
-          toast.dismiss();
-          toast.success("Successfully updated!!");
-          location.reload(true);
-        })
-        .catch((err) => {
-          toast.dismiss();
-          toast.error(err?.response?.data?.error);
-        });
-    
+    const data = JSON.parse(localStorage.getItem("user"));
+    const payload = {
+      token: data.token,
+      Quoteid: currentBid.bidId,
+      OrderStatus: Number(orderStatus),
+      remark: remark,
+      statusDate: statusDate,
+    };
+    const encryptedBody = encryptionData(payload);
+    toast.loading("Updating order status!!");
+    axios
+      .put("/api/updateOrderStatus", encryptedBody)
+      .then((res) => {
+        toast.dismiss();
+        toast.success("Successfully updated!!");
+        location.reload(true);
+      })
+      .catch((err) => {
+        toast.dismiss();
+        toast.error(err?.response?.data?.error);
+      });
 
     setRemark("");
     setCurrentBid({});
@@ -212,16 +211,20 @@ const Index = () => {
         // Convert the search input to lowercase for a case-insensitive search
         const searchTerm = searchInput.toLowerCase();
 
+        if (String(property.orderId) === String(searchTerm)) {
+          return true;
+        }
         // Check if any of the fields contain the search term
-        return (
-          property.zipCode.toLowerCase().includes(searchTerm) ||
-          property.area.toLowerCase().includes(searchTerm) ||
-          property.city.toLowerCase().includes(searchTerm) ||
-          property.province.toLowerCase().includes(searchTerm) ||
-          property.streetName.toLowerCase().includes(searchTerm) ||
-          property.streetNumber.toLowerCase().includes(searchTerm) ||
-          property.typeOfBuilding.toLowerCase().includes(searchTerm)
-        );
+        else
+          return (
+            property.zipCode.toLowerCase().includes(searchTerm) ||
+            property.area.toLowerCase().includes(searchTerm) ||
+            property.city.toLowerCase().includes(searchTerm) ||
+            property.province.toLowerCase().includes(searchTerm) ||
+            property.streetName.toLowerCase().includes(searchTerm) ||
+            property.streetNumber.toLowerCase().includes(searchTerm) ||
+            property.typeOfBuilding.toLowerCase().includes(searchTerm)
+          );
       });
 
       return filteredProperties;
@@ -229,6 +232,33 @@ const Index = () => {
     const filteredData = filterProperties(properties, searchInput);
     setFilterProperty(filteredData);
   }, [searchInput]);
+
+  // useEffect(() => {
+  //   const filterProperties = (propertys, searchInput) => {
+  //     if (searchInput === "") {
+  //       return propertys;
+  //     }
+  //     const filteredProperties = propertys.filter((property) => {
+  //       // Convert the search input to lowercase for a case-insensitive search
+  //       const searchTerm = searchInput.toLowerCase();
+
+  //       // Check if any of the fields contain the search term
+  //       return (
+  //         property.zipCode.toLowerCase().includes(searchTerm) ||
+  //         property.area.toLowerCase().includes(searchTerm) ||
+  //         property.city.toLowerCase().includes(searchTerm) ||
+  //         property.province.toLowerCase().includes(searchTerm) ||
+  //         property.streetName.toLowerCase().includes(searchTerm) ||
+  //         property.streetNumber.toLowerCase().includes(searchTerm) ||
+  //         property.typeOfBuilding.toLowerCase().includes(searchTerm)
+  //       );
+  //     });
+
+  //     return filteredProperties;
+  //   };
+  //   const filteredData = filterProperties(properties, searchInput);
+  //   setFilterProperty(filteredData);
+  // }, [searchInput]);
 
   const filterData = (tempData) => {
     const currentDate = new Date();
@@ -267,8 +297,9 @@ const Index = () => {
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
-      propertyId: propertyId,
+      orderId: propertyId,
       userid: data.userId,
+      status: true,
       token: data.token,
     };
 
@@ -357,7 +388,7 @@ const Index = () => {
         <div class="row">
           <div class="col-lg-12 text-center" style="margin-left:250px; margin-top:50px" >
             <a href="/" class="">
-              <img width="40" height="45" class="logo1 img-fluid" style="margin-top:-20px" src="/assets/images/Appraisal_Land_Logo.png" alt="header-logo2.png" />
+              <img width="40" height="45" class="logo1 img-fluid" style="margin-top:-20px" src="/assets/images/logo.png" alt="header-logo2.png" />
               <span style="color:#2e008b; font-weight:bold; font-size:18px; margin-top:20px">
                 Appraisal
               </span>
@@ -426,7 +457,7 @@ const Index = () => {
         <div class="row">
           <div class="col-lg-12 text-center" style="margin-left:250px; margin-top:50px" >
             <a href="/" class="">
-              <img width="40" height="45" class="logo1 img-fluid" style="margin-top:-20px" src="/assets/images/Appraisal_Land_Logo.png" alt="header-logo2.png" />
+              <img width="40" height="45" class="logo1 img-fluid" style="margin-top:-20px" src="/assets/images/logo.png" alt="header-logo2.png" />
               <span style="color:#2e008b; font-weight:bold; font-size:18px; margin-top:20px">
                 Appraisal
               </span>
@@ -610,7 +641,7 @@ const Index = () => {
                 </div> */}
                 {/* End Dashboard Navigation */}
 
-                <div className="col-lg-4 col-xl-4 mb10">
+                <div className="col-lg-12 col-xl-12 text-center mt-1">
                   <div className="style2 mb30-991">
                     <h3 className="breadcrumb_title">Accepted Property</h3>
                     {/* <p>We are glad to see you again!</p>                                                             */}
@@ -726,7 +757,7 @@ const Index = () => {
                           </div>
                         )}
 
-                        {openBrokerModal && typeView === 1 && (
+{openBrokerModal && typeView === 1 && (
                           <div className="modal">
                             <div className="modal-content">
                               <div className="row">
@@ -1263,7 +1294,6 @@ const Index = () => {
                             </div>
                           </div>
                         )}
-
                         {openBrokerModal && typeView === 2 && (
                           <div className="modal">
                             <div className="modal-content">
@@ -1663,7 +1693,7 @@ const Index = () => {
                             height={45}
                             className="logo1 img-fluid"
                             style={{ marginTop: "-20px" }}
-                            src="/assets/images/Appraisal_Land_Logo.png"
+                            src="/assets/images/logo.png"
                             alt="header-logo2.png"
                           />
                           <span
@@ -1693,7 +1723,7 @@ const Index = () => {
                     <div className="row">
                       <div className="col-lg-12 text-center">
                         <h2 className=" text-color mt-1">
-                        Appraisal Status Updation
+                          Appraisal Status Updation
                         </h2>
                       </div>
                     </div>
@@ -1745,7 +1775,7 @@ const Index = () => {
                     )}
                     <div>
                       <h4 style={{ color: "#2e008b", fontWeight: "bold" }}>
-                        Remark 
+                        Remark
                       </h4>
                       <input
                         required
@@ -1763,14 +1793,14 @@ const Index = () => {
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
                       <button
-                      disabled={disbale}
+                        disabled={disbale}
                         className="btn w-35 btn-color"
                         onClick={closeStatusUpdateHandler}
                       >
                         Cancel
                       </button>
                       <button
-                      disabled={disbale}
+                        disabled={disbale}
                         className="btn btn-color w-10"
                         style={{ marginLeft: "12px" }}
                         onClick={handleStatusUpdateHandler}
@@ -1824,14 +1854,14 @@ const Index = () => {
             </div>
 
             <div className="row mt50">
-            <div className="col-lg-12">
-              <div className="copyright-widget text-center">
-                <p>
-                  &copy; {new Date().getFullYear()} Appraisal Land. All
-                  Rights Reserved.
-                </p>
+              <div className="col-lg-12">
+                <div className="copyright-widget text-center">
+                  <p>
+                    &copy; {new Date().getFullYear()} Appraisal Land. All Rights
+                    Reserved.
+                  </p>
+                </div>
               </div>
-            </div>
             </div>
             {/* End .col */}
           </div>

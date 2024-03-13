@@ -215,16 +215,20 @@ const Index = () => {
         // Convert the search input to lowercase for a case-insensitive search
         const searchTerm = searchInput.toLowerCase();
 
+        if (String(property.orderId) === String(searchTerm)) {
+          return true;
+        }
         // Check if any of the fields contain the search term
-        return (
-          property.zipCode.toLowerCase().includes(searchTerm) ||
-          property.area.toLowerCase().includes(searchTerm) ||
-          property.city.toLowerCase().includes(searchTerm) ||
-          property.province.toLowerCase().includes(searchTerm) ||
-          property.streetName.toLowerCase().includes(searchTerm) ||
-          property.streetNumber.toLowerCase().includes(searchTerm) ||
-          property.typeOfBuilding.toLowerCase().includes(searchTerm)
-        );
+        else
+          return (
+            property.zipCode.toLowerCase().includes(searchTerm) ||
+            property.area.toLowerCase().includes(searchTerm) ||
+            property.city.toLowerCase().includes(searchTerm) ||
+            property.province.toLowerCase().includes(searchTerm) ||
+            property.streetName.toLowerCase().includes(searchTerm) ||
+            property.streetNumber.toLowerCase().includes(searchTerm) ||
+            property.typeOfBuilding.toLowerCase().includes(searchTerm)
+          );
       });
 
       return filteredProperties;
@@ -1782,14 +1786,14 @@ const Index = () => {
             </div>
 
             <div className="row mt50">
-            <div className="col-lg-12">
-              <div className="copyright-widget text-center">
-                <p>
-                  &copy; {new Date().getFullYear()} Appraisal Land. All
-                  Rights Reserved.
-                </p>
+              <div className="col-lg-12">
+                <div className="copyright-widget text-center">
+                  <p>
+                    &copy; {new Date().getFullYear()} Appraisal Land. All Rights
+                    Reserved.
+                  </p>
+                </div>
               </div>
-            </div>
             </div>
             {/* End .col */}
           </div>

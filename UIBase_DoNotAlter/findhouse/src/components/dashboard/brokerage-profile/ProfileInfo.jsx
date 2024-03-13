@@ -310,6 +310,34 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     console.log(url);
   };
 
+  const handleInputChange = (e) => {
+    const inputValue = e.target.value;
+
+    // Allow only numeric input
+    const numericValue = inputValue.replace(/\D/g, "");
+
+    // Restrict to 10 digits
+    const truncatedValue = numericValue.slice(0, 10);
+    if (truncatedValue.length === 10) {
+      setPhoneNumberRef(truncatedValue);
+    }
+    setPhoneNumberRef(truncatedValue);
+  };
+
+  const handleInputChange_01 = (e) => {
+    const inputValue = e.target.value;
+
+    // Allow only numeric input
+    const numericValue = inputValue.replace(/\D/g, "");
+
+    // Restrict to 10 digits
+    const truncatedValue = numericValue.slice(0, 10);
+    if (truncatedValue.length === 10) {
+      setCellNumberRef(truncatedValue);
+    }
+    setCellNumberRef(truncatedValue);
+  };
+
   return (
     <>
       <div className="row">
@@ -539,7 +567,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           id="formGroupExampleInput3"
                           style={{ backgroundColor: "#E8F0FE" }}
                           value={phoneNumberRef}
-                          onChange={(e) => setPhoneNumberRef(e.target.value)}
+                          // onChange={(e) => setPhoneNumberRef(e.target.value)}
+                          onChange={handleInputChange}
                         />
                       </div>
                     </div>
@@ -563,7 +592,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           id="formGroupExampleInput3"
                           style={{ backgroundColor: "#E8F0FE" }}
                           value={cellNumberRef}
-                          onChange={(e) => setCellNumberRef(e.target.value)}
+                          // onChange={(e) => setCellNumberRef(e.target.value)}
+                          onChange={handleInputChange_01}
                         />
                       </div>
                     </div>

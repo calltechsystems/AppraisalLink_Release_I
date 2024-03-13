@@ -303,6 +303,14 @@ export default function Exemple({
     return data.sort((a, b) => b.orderId - a.orderId);
   };
 
+  
+  const sortObjectsOrderStatusDescending = (data) => {
+    console.log(data)
+    return data.sort((a, b) => b.order_status - a.order_status);
+  };
+
+
+
   const checkData = properties && !updatedData ? true : false;
   useEffect(() => {
     setProperties([]);
@@ -353,6 +361,7 @@ export default function Exemple({
                   ? `${isBidded.remark} on ${formatDate(isBidded.modifiedDate)}`
                   : isBidded.remark
                 : "N.A.",
+            order_status:isBidded.orderStatus,
             status: isWait ? (
               <span className="btn btn-danger  w-100">
                 {property.isOnHold ? "On Hold" : "Cancelled"}
@@ -818,7 +827,7 @@ export default function Exemple({
           title=""
           setSearchInput={setSearchInput}
           setFilterQuery={setFilterQuery}
-          data={sortObjectsByOrderIdDescending(updatedData)}
+          data={sortObjectsOrderStatusDescending(sortObjectsByOrderIdDescending(updatedData))}
           headCells={headCells}
           setRefresh={setRefresh}
           setProperties={setProperties}

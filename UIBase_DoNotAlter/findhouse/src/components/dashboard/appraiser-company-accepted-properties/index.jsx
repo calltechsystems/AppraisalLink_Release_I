@@ -211,16 +211,20 @@ const Index = () => {
         // Convert the search input to lowercase for a case-insensitive search
         const searchTerm = searchInput.toLowerCase();
 
+        if (String(property.orderId) === String(searchTerm)) {
+          return true;
+        }
         // Check if any of the fields contain the search term
-        return (
-          property.zipCode.toLowerCase().includes(searchTerm) ||
-          property.area.toLowerCase().includes(searchTerm) ||
-          property.city.toLowerCase().includes(searchTerm) ||
-          property.province.toLowerCase().includes(searchTerm) ||
-          property.streetName.toLowerCase().includes(searchTerm) ||
-          property.streetNumber.toLowerCase().includes(searchTerm) ||
-          property.typeOfBuilding.toLowerCase().includes(searchTerm)
-        );
+        else
+          return (
+            property.zipCode.toLowerCase().includes(searchTerm) ||
+            property.area.toLowerCase().includes(searchTerm) ||
+            property.city.toLowerCase().includes(searchTerm) ||
+            property.province.toLowerCase().includes(searchTerm) ||
+            property.streetName.toLowerCase().includes(searchTerm) ||
+            property.streetNumber.toLowerCase().includes(searchTerm) ||
+            property.typeOfBuilding.toLowerCase().includes(searchTerm)
+          );
       });
 
       return filteredProperties;
@@ -357,7 +361,7 @@ const Index = () => {
         <div class="row">
           <div class="col-lg-12 text-center" style="margin-left:250px; margin-top:50px" >
             <a href="/" class="">
-              <img width="40" height="45" class="logo1 img-fluid" style="margin-top:-20px" src="/assets/images/Appraisal_Land_Logo.png" alt="header-logo2.png" />
+              <img width="40" height="45" class="logo1 img-fluid" style="margin-top:-20px" src="/assets/images/logo.png" alt="header-logo2.png" />
               <span style="color:#2e008b; font-weight:bold; font-size:18px; margin-top:20px">
                 Appraisal
               </span>
@@ -426,7 +430,7 @@ const Index = () => {
         <div class="row">
           <div class="col-lg-12 text-center" style="margin-left:250px; margin-top:50px" >
             <a href="/" class="">
-              <img width="40" height="45" class="logo1 img-fluid" style="margin-top:-20px" src="/assets/images/Appraisal_Land_Logo.png" alt="header-logo2.png" />
+              <img width="40" height="45" class="logo1 img-fluid" style="margin-top:-20px" src="/assets/images/logo.png" alt="header-logo2.png" />
               <span style="color:#2e008b; font-weight:bold; font-size:18px; margin-top:20px">
                 Appraisal
               </span>
@@ -1263,7 +1267,6 @@ const Index = () => {
                             </div>
                           </div>
                         )}
-
                         {openBrokerModal && typeView === 2 && (
                           <div className="modal">
                             <div className="modal-content">
@@ -1663,7 +1666,7 @@ const Index = () => {
                             height={45}
                             className="logo1 img-fluid"
                             style={{ marginTop: "-20px" }}
-                            src="/assets/images/Appraisal_Land_Logo.png"
+                            src="/assets/images/logo.png"
                             alt="header-logo2.png"
                           />
                           <span
@@ -1727,10 +1730,10 @@ const Index = () => {
                     </select>
                     {openDate && (
                       <div
-                        className="col-lg-12 pt-20"
-                        style={{ display: "flex", flexDirection: "row" }}
+                        className="col-lg-12"
+                        // style={{ display: "flex", flexDirection: "row" }}
                       >
-                        <label style={{ color: "black", fontWeight: "bold" }}>
+                        <label style={{ color: "#2e008b", fontWeight: "bold" }}>
                           Date and Time <span style={{ color: "red" }}>*</span>
                         </label>
                         <input
@@ -1743,7 +1746,7 @@ const Index = () => {
                         />
                       </div>
                     )}
-                    <div>
+                    <div className="mt-2">
                       <h4 style={{ color: "#2e008b", fontWeight: "bold" }}>
                         Remark
                       </h4>

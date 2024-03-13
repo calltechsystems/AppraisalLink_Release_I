@@ -147,10 +147,11 @@ export default function Exemple({
   onArchivePropertyHandler,
   setRefresh,
   setStartLoading,
+  wishlist,
+  setWishlist,
   refresh,
 }) {
   const [updatedData, setUpdatedData] = useState([]);
-  const [wishlist, setWishlist] = useState([]);
   const [bids, setBids] = useState([]);
   const [hideAction, setHideAction] = useState(false);
   const [hideClass, setHideClass] = useState("");

@@ -303,6 +303,12 @@ export default function Exemple({
     return data.sort((a, b) => b.orderId - a.orderId);
   };
 
+  const sortObjectsOrderStatusDescending = (data) => {
+    console.log(data)
+    return data.sort((a, b) => b.order_status - a.order_status);
+  };
+
+
   const checkData = properties && !updatedData ? true : false;
   useEffect(() => {
     setProperties([]);
@@ -318,8 +324,15 @@ export default function Exemple({
         const isArchive = foundArchiveHandler(property.propertyId);
 
         if (!isArchive && isBidded.status === 1 && isBidded.orderStatus !== 3) {
+          if (isBidded.status === 1) {
+            console.log(getOrderValue(isBidded.orderStatus));
+          }
+
+          if (isBidded.status === 1) {
+            console.log(isBidded);
+          }
           tempProp.push(property);
-          const isWait = property.isonHold || property.isOnCancel;
+          const isWait = property.isOnHold || property.isOnCancel;
           const updatedRow = {
             orderId: property.orderId,
             address: `${property.city}-${property.province},${property.zipCode}`,
@@ -327,6 +340,7 @@ export default function Exemple({
               ? `$ ${formatLargeNumber(property.estimatedValue)}`
               : "$ 0",
             purpose: property.purpose ? property.purpose : "N.A.",
+            order_status:isBidded.orderStatus,
             appraisal_status:
               isBidded.status === 1 && isBidded.orderStatus === 1 ? (
                 <span className="btn btn-warning  w-100">
@@ -347,11 +361,11 @@ export default function Exemple({
                   : isBidded.remark
                 : "N.A.",
             status: isWait ? (
-              <span className="btn btn-primary  w-100">
+              <span className="btn btn-danger  w-100">
                 {property.isOnHold ? "On Hold" : "Cancelled"}
               </span>
             ) : isBidded.bidId ? (
-              isBidded.orderStatus === 6 ? (
+              isBidded.orderStatus === 3 ? (
                 <span className="btn btn-success  w-100">Completed</span>
               ) : isBidded.status === 0 ? (
                 <span className="btn btn-primary  w-100">Quote Provided</span>
@@ -445,7 +459,7 @@ export default function Exemple({
                   <>
                     <p className="btn btn-danger  w-100">Rejected </p>
                     <li
-                      className=""
+                      className="list-inline-item"
                       data-toggle="tooltip"
                       data-placement="top"
                       title="Archive Property"
@@ -475,7 +489,7 @@ export default function Exemple({
                       } .`}
                     </p>
                     <li
-                      className=""
+                      className="list-inline-item"
                       data-toggle="tooltip"
                       data-placement="top"
                       title="Archive Property"
@@ -548,7 +562,7 @@ export default function Exemple({
                           onClick={() =>
                             participateHandler(
                               property.bidLowerRange,
-                              property.propertyId,
+                              property.orderId,
                               isBidded.status < 1,
                               isBidded.bidAmount
                             )
@@ -576,14 +590,10 @@ export default function Exemple({
                       <div
                         className="w-100"
                         onClick={() =>
-                          onArchivePropertyHandler(property.propertyId)
+                          onArchivePropertyHandler(property.orderId)
                         }
                       >
-                        <button
-                          href="#"
-                          className="btn btn-color w-100 mt-1"
-                          style={{ marginLeft: "12px" }}
-                        >
+                        <button href="#" className="btn btn-color">
                           <Link href="#">
                             <span className="text-light">
                               {" "}
@@ -595,11 +605,19 @@ export default function Exemple({
                     </li>
                   </ul>
                 ) : (
-                  isBidded.orderStatus <= 6 &&
-                  isBidded.status === 1 && (
+                  isBidded.orderStatus <= 6 && (
                     <>
+                      <button
+                        href="#"
+                        className="btn btn-color m-1"
+                        onClick={() => openStatusUpdateHandler(isBidded)}
+                      >
+                        <Link href="#">
+                          <span className="flaticon-edit text-light"></span>
+                        </Link>
+                      </button>
                       <li
-                        className=""
+                        className="list-inline-item"
                         data-toggle="tooltip"
                         data-placement="top"
                         title="Archive Property"
@@ -620,15 +638,6 @@ export default function Exemple({
                           </button>
                         </div>
                       </li>
-                      <button
-                        href="#"
-                        className="btn btn-color"
-                        onClick={() => openStatusUpdateHandler(isBidded)}
-                      >
-                        <Link href="#">
-                          <span className="flaticon-edit text-light"></span>
-                        </Link>
-                      </button>
                     </>
                   )
                 )}
@@ -674,24 +683,14 @@ export default function Exemple({
       .then((res) => {
         const temp = res.data.data.properties.$values;
 
-        tempProperties = temp.filter((prop, index) => {
-          if (String(prop.userId) === String(data.userId)) {
-            return true;
-          } else {
-            return false;
-          }
-        });
         axios
           .get("/api/getAllBids", {
             headers: {
               Authorization: `Bearer ${data.token}`,
             },
-
-            params: {
-              email: data.userEmail,
-            },
           })
           .then((res) => {
+            console.log(res);
             tempBids = res.data.data.$values;
             const updatedBids = tempBids.filter((prop, index) => {
               if (String(prop.appraiserUserId) === String(data.userId)) {
@@ -700,7 +699,6 @@ export default function Exemple({
                 return false;
               }
             });
-            console.log(updatedBids);
             setBids(updatedBids);
             axios
               .get("/api/appraiserWishlistedProperties", {
@@ -722,7 +720,7 @@ export default function Exemple({
                 });
                 const tempId = responseData;
                 setWishlist(responseData);
-                setProperties(tempProperties);
+                setProperties(temp);
               })
               .catch((err) => {
                 toast.error(err?.response);
@@ -741,6 +739,28 @@ export default function Exemple({
       });
 
     let tempBids = [];
+    axios
+      .get("/api/getAllBids", {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        tempBids = res.data.data.$values;
+        const updatedBids = tempBids.filter((prop, index) => {
+          if (String(prop.appraiserUserId) === String(data.userId)) {
+            return true;
+          } else {
+            return false;
+          }
+        });
+        setBids(updatedBids);
+      })
+      .catch((err) => {
+        setErrorMessage(err?.response?.data?.error);
+        setModalIsOpenError(true);
+      });
 
     axios
       .get("/api/getAllBrokers", {
@@ -805,7 +825,7 @@ export default function Exemple({
           title=""
           setSearchInput={setSearchInput}
           setFilterQuery={setFilterQuery}
-          data={sortObjectsByOrderIdDescending(updatedData)}
+          data={sortObjectsOrderStatusDescending(sortObjectsByOrderIdDescending(updatedData))}
           headCells={headCells}
           setRefresh={setRefresh}
           setProperties={setProperties}

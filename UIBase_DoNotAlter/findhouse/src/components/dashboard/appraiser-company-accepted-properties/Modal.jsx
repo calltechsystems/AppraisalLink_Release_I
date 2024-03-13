@@ -162,7 +162,7 @@ const Modal = ({
                     height={45}
                     className="logo1 img-fluid"
                     style={{ marginTop: "-20px" }}
-                    src="/assets/images/Appraisal_Land_Logo.png"
+                    src="/assets/images/logo.png"
                     alt="header-logo2.png"
                   />
                   <span

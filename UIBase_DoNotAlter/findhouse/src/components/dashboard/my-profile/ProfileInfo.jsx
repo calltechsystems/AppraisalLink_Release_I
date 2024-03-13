@@ -349,6 +349,20 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     setPhoneNumberRef(truncatedValue);
   };
 
+  const handleInputChange_01 = (e) => {
+    const inputValue = e.target.value;
+
+    // Allow only numeric input
+    const numericValue = inputValue.replace(/\D/g, "");
+
+    // Restrict to 10 digits
+    const truncatedValue = numericValue.slice(0, 10);
+    if (truncatedValue.length === 10) {
+      setCellNumberRef(truncatedValue);
+    }
+    setCellNumberRef(truncatedValue);
+  };
+
   return (
     <>
       <div className="row">
@@ -537,7 +551,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
                           value={cellNumberRef}
-                          onChange={(e) => setCellNumberRef(e.target.value)}
+                          // onChange={(e) => setCellNumberRef(e.target.value)}
+                          onChange={handleInputChange_01}
                           disabled={!edit}
                         />
                       </div>
