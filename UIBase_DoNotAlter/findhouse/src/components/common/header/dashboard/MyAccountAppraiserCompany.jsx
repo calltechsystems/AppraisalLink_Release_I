@@ -14,7 +14,7 @@ const MyAccount = ({ user, profileCount, setProfile, userData }) => {
     {
       id: 2,
       name: "Change Password ",
-      ruterPath: "/appraiser-change-password",
+      ruterPath: "/appraiser-company-change-password",
     },
     { id: 5, name: "Log out", ruterPath: "/login" },
   ];
