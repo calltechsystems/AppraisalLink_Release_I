@@ -93,6 +93,16 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     userData?.appraiserCompany_Datails?.officeContactPhone || ""
   );
 
+  const [streetName, setStreetName] = useState(
+    userData?.appraiserCompany_Datails?.streetName || ""
+  );
+  const [streetNumber, setStreetNumber] = useState(
+    userData.appraiserCompany_Datails?.streetNumber || ""
+  );
+  const [apartmentNumber, setApartmentNumber] = useState(
+    userData?.appraiserCompany_Datails?.apartmentNumber || ""
+  );
+
   const handleUpload2 = (result) => {
     // Handle the image upload result here
     console.log("handleUpload called", result.info);
@@ -204,6 +214,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         officeContactPhone: officeContactPhone,
         cellNumber: cellNumber,
         emailId: emailId,
+        streetNumber: streetNumber,
+        streetName: streetName,
+        apartmentNumber: apartmentNumber,
       };
 
       if (SMSAlert && !phoneNumberRef) {
@@ -698,8 +711,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           id="formGroupExampleInput3"
                           style={{ backgroundColor: "#E8F0FE" }}
                           required
-                          value={addressLineRef}
-                          onChange={(e) => setAddressLineRef(e.target.value)}
+                          value={streetNumber}
+                          onChange={(e) => setStreetNumber(e.target.value)}
                           disabled={!edit}
                         />
                       </div>
@@ -723,14 +736,40 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           id="formGroupExampleInput3"
                           style={{ backgroundColor: "#E8F0FE" }}
                           required
-                          value={addressLineTwoRef}
-                          onChange={(e) => setAddressLineTwoRef(e.target.value)}
+                          value={streetName}
+                          onChange={(e) => setStreetName(e.target.value)}
                           disabled={!edit}
                         />
                       </div>
                     </div>
                   </div>
-
+                  <div className="col-lg-12 mb-3">
+                    <div className="row">
+                      <div className="col-lg-4">
+                        <label
+                          className="text-color"
+                          htmlFor=""
+                          style={{ paddingTop: "5px" }}
+                        >
+                          Unit / Apt. No.
+                        </label>
+                      </div>
+                      <div className="col-lg-7">
+                        <input
+                          type="text"
+                          value={apartmentNumber}
+                          onChange={(e) => setApartmentNumber(e.target.value)}
+                          className="form-control"
+                          style={{ backgroundColor: "#E8F0FE" }}
+                          id="formGroupExampleInput3"
+                          required
+                          // value={cityRef}
+                          // onChange={(e) => setCityRef(e.target.value)}
+                          disabled={!edit}
+                        />
+                      </div>
+                    </div>
+                  </div>
                   <div className="col-lg-12 mb-3">
                     <div className="row">
                       <div className="col-lg-4">

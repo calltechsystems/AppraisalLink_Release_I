@@ -792,7 +792,8 @@ const Index = ({ propertyId }) => {
                           >
                             {appInfo.addressLineOne}
                             {appInfo.addressLineTwo} {appInfo.streetNumber}{" "}
-                            {appInfo.streetName} ,{appInfo.unit} {appInfo.city}{" "}
+                            {appInfo.streetName} ,{appInfo.unit}{" "}
+                            {appInfo.apartmentNumber} {appInfo.city}{" "}
                             {appInfo.province} {appInfo.postalCode}
                           </td>
                         </tr>

@@ -274,11 +274,9 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                         }}
                       >
                         {" "}
-                        {
-                          userData?.appraiserCompany_Datails?.addressLineOne
-                        }{" "}
-                        {userData?.appraiserCompany_Datails?.addressLineTwo}
-                        {userData?.appraiserCompany_Datails?.unit}{" "}
+                        {userData?.appraiserCompany_Datails?.streetNumber}{" "}
+                        {userData?.appraiserCompany_Datails?.streetName}{" "}
+                        {userData?.appraiserCompany_Datails?.apartmentNumber}{" "}
                         {userData?.appraiserCompany_Datails?.city},{" "}
                         {userData?.appraiserCompany_Datails?.province},{" "}
                         {userData?.appraiserCompany_Datails?.postalCode}
