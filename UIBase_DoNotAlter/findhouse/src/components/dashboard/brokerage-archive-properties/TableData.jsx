@@ -17,6 +17,7 @@ const TableData = ({
   setRefresh,
   setProperties,
   setModalIsOpenError,
+  setAllArchive,
   setErrorMessage,
 }) => {
   console.log(properties);
@@ -217,6 +218,7 @@ const TableData = ({
           setErrorMessage={setErrorMessage}
           deletePropertyHandler={deletePropertyHandler}
           start={start}
+          setAllArchive={setAllArchive}
           end={end}
         />
       )}

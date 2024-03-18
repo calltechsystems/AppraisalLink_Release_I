@@ -266,10 +266,10 @@ export default function Exemple({
           email: data.item.emailId ? data.item.emailId : "-",
           status: data.item.isActive ? (
             <span className="btn btn-success  w-100">Active</span>
-          ) : !data.item.firstName ? (
-            <span className="btn btn-warning  w-100">Not Registered</span>
+          ) : !data?.item?.isActive && data?.item?.firstName ? (
+            <span className="btn btn-danger  w-100">In-Active </span>
           ) : (
-            <span className="btn btn-danger  w-100">In-Active</span>
+            <span className="btn btn-warning  w-100">Registered</span>
           ),
           phone: data.item.phoneNumber ? data.item.phoneNumber : "-",
           address: data.item.streetName

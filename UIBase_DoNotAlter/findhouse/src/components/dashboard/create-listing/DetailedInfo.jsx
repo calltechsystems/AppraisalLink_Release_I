@@ -551,7 +551,7 @@ const DetailedInfo = ({
             <div className="col-lg-7">
               <input
                 style={
-                  checkIsError("applicantEmail")
+                  checkIsError("applicantEmailAddress")
                     ? errorLabelStyle
                     : {
                         // paddingTop: "15px",

@@ -161,8 +161,8 @@ const MyAccount = ({ user, profileCount, setProfile, userData }) => {
           alt="e1.png"
         />
         <p>
-          {userData?.brokerage_Details?.firstName
-            ? userData?.brokerage_Details?.firstName
+          {userData?.appraiserCompany_Datails
+            ? `${userData?.appraiserCompany_Datails?.firstName} ${userData?.appraiserCompany_Datails?.lastName}`
             : "Name"}
           <br />
           <span className="address">

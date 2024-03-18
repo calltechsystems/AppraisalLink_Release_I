@@ -153,6 +153,7 @@ export default function Exemple({
   close,
   properties,
   setRefresh,
+  setAllArchive,
   refresh,
   setFilterQuery,
   setModalIsOpenError,
@@ -223,9 +224,9 @@ export default function Exemple({
     let isQuoteProvided = false;
     let isCompleted = false;
     allBids.map((bid, index) => {
-      if (bid.propertyId === property.propertyId && bid.status === 1) {
+      if (bid.orderId === property.orderId && bid.status === 1) {
         isCompleted = true;
-      } else if (bid.propertyId === property.propertyId) {
+      } else if (bid.orderId === property.orderId) {
         isQuoteProvided = true;
       }
     });
@@ -650,8 +651,10 @@ export default function Exemple({
         }
       });
       setUpdatedData(tempData);
+      setAllArchive(tempData)
     };
     getData();
+    
   }, [properties]);
 
   useEffect(() => {

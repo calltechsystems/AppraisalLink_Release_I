@@ -18,6 +18,7 @@ const Index = () => {
   const [searchInput, setSearchInput] = useState("");
   const [refresh, setRefresh] = useState(false);
   const [property, setProperty] = useState("");
+  const [allArchive,setAllArchive]=useState([]);
   const [filterProperty, setFilterProperty] = useState("");
   const [filterQuery, setFilterQuery] = useState("Last 30 Days");
   const [properties, setProperties] = useState([]);
@@ -282,6 +283,7 @@ const Index = () => {
                           properties={
                             searchInput === "" ? properties : filterProperty
                           }
+                          setAllArchive={setAllArchive}
                           setModalIsOpenError={setModalIsOpenError}
                           setErrorMessage={setErrorMessage}
                           setRefresh={setRefresh}
@@ -351,7 +353,7 @@ const Index = () => {
                       <Pagination
                         setStart={setStart}
                         setEnd={setEnd}
-                        properties={properties}
+                        properties={allArchive}
                       />
                     </div>
                   </div>

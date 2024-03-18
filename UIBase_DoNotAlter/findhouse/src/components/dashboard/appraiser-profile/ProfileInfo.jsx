@@ -138,20 +138,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     setCellNumber(truncatedValue);
   };
 
-  // console.log(selectedImage2);
-  // useEffect(() => {
-  //   if (String(designations) === "Other") {
-  //     setSetODesignation(true);
-  //   } else {
-  //     setSetODesignation(false);
-  //   }
-  //   console.log(setODesignation);
-  // }, [designations]);
-
-  // const [designation, setDesignation] = useState(
-  //   userData?.brokerage_Details?.designation || ""
-  // );
-
   const [streetName, setStreetName] = useState(
     userData?.appraiser_Details?.streetName || ""
   );
@@ -180,6 +166,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
 
     console.log(typeof profilePhoto);
   };
+
+ 
 
   const onUpdatHandler = () => {
     const firstName = firstNameRef;
@@ -212,6 +200,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         !city ||
         !state ||
         !zipCode ||
+        !province ||
+        !streetName||
+        !streetName ||
         !selectedImage2.name ||
         !emailId ||
         !phoneNumber) &&
@@ -219,35 +210,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     ) {
       toast.error("All marked fields arent filled !!");
     } else {
-      let count = 9;
-      if (adressLine2) {
-        count++;
-      }
-      if (middleName) {
-        count++;
-      }
-      if (companyName) {
-        count++;
-      }
-      if (profilePhoto) {
-        count++;
-      }
-      if (adressLine2 === "") {
-        count--;
-      }
-      if (middleName === "") {
-        count--;
-      }
-      if (companyName === "") {
-        count--;
-      }
-      if (profilePhoto) {
-        count--;
-      }
-
-      // const percentage = Math.floor(count / 13) * 100;
-      // setProfileCount(percentage);
-
+    
       const payload = {
         id: userData.userId,
         token: userData.token,
@@ -271,11 +234,19 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         profileImage: SelectedImage,
         emailId: emailId,
       };
-      if (SMSAlert && !phoneNumber) {
+      if ( !payload.streetName || !payload.streetNumber || !payload.city || !payload.province || !payload.postalCode) {
+        toast.error(
+          "Please fill all the mandatory fields!"
+        );
+      }
+
+      else if ((SMSAlert && !phoneNumber )) {
         toast.error(
           "As SMS Alert is selected but phone number is not provided so SMS Alert will not work properly!"
         );
       }
+     
+      else{
 
       toast.loading("Updating ...");
       const encryptedData = encryptionData(payload);
@@ -297,6 +268,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         .finally(() => {});
       toast.dismiss();
     }
+  }
   };
 
   const changeEditHandler = () => {
@@ -343,10 +315,38 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
 
   const handleFileUpload = async (event) => {
     const file = event.target.files[0];
-
     const url = uploadImage(file);
     console.log(url);
   };
+
+  const handleFileChange  = (e,type)=>{
+    const file = e.target.files[0];
+    const userData = JSON.parse(localStorage.getItem("user"));
+
+    const BACKEND_DOMAIN = process.env.BACKEND_DOMAIN;
+    const formdata = {
+      file : file
+    }
+    
+    toast.dismiss("Uploading !!!");
+    axios.post(`${BACKEND_DOMAIN}/FileUpload/upload`,formdata,{
+      headers:{
+        "Authorization" : `Bearer ${userData?.token}`,
+        "Content-Type":"multipart/form-data"
+      }
+    })
+    .then((res)=>{
+      toast.dismiss()
+      toast.success("Uploaded Successfully !");
+      console.log(res)
+    })
+    .catch((err)=>{
+      toast.dismiss()
+      console.log(err)
+      toast.error("Try Again !!");
+    })
+
+  }
 
   return (
     <>
@@ -379,26 +379,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                     alt="Uploaded Image"
                   />
                   {edit && (
-                    <CldUploadWidget
-                      onUpload={handleUpload}
-                      uploadPreset="mpbjdclg"
-                      options={{
-                        cloudName: "dcrq3m6dx", // Your Cloudinary upload preset
-                        maxFiles: 1,
-                      }}
-                    >
-                      {({ open }) => (
-                        <div>
-                          <button
-                            className="btn btn-color profile_edit_button mb-5"
-                            style={{ marginLeft: "0px" }}
-                            onClick={open} // This will open the upload widget
-                          >
-                            Upload Photo
-                          </button>
-                        </div>
-                      )}
-                    </CldUploadWidget>
+                    <input type="file" onChange={(e)=>handleFileChange(e,1)}/>
                   )}
                 </div>
               </div>
@@ -638,26 +619,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       </label>
                     </div>
                     <div className="col-lg-3">
-                      <CldUploadWidget
-                        onUpload={handleUpload2}
-                        uploadPreset="mpbjdclg"
-                        options={{
-                          cloudName: "dcrq3m6dx", // Your Cloudinary upload preset
-                          maxFiles: 1,
-                        }}
-                      >
-                        {({ open }) => (
-                          <div>
-                            <button
-                              className="btn btn-color"
-                              style={{ marginLeft: "10px" }}
-                              onClick={open} // This will open the upload widget
-                            >
-                              Upload +
-                            </button>
-                          </div>
-                        )}
-                      </CldUploadWidget>
+                      <input type="file" onChange={(e)=>handleFileChange(e,2)}/>
                     </div>
                     <div className="col-lg-5 mt-1">
                       <Link
@@ -916,165 +878,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       </div>
                     </div>
                   </div>
-                  {/* <h3 className="mt-4">Other Details</h3>
-                  <hr />
-
-                  <div className="col-lg-12 mb-3">
-                    <div className="row">
-                      <div className="col-lg-4">
-                        <label htmlFor="" style={{ paddingTop: "10px", color:"#2e008b" }}>
-                          Commission Rate (Only Numbers)
-                        </label>
-                      </div>
-                      <div className="col-lg-7">
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="formGroupExampleInput3"
-                          style={{ backgroundColor: "#E8F0FE" }}
-                          value={commissionRate}
-                          onChange={(e) => setCommissionRate(e.target.value)}
-                          disabled={!edit}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-12 mb-3">
-                    <div className="row">
-                      <div className="col-lg-4">
-                        <label htmlFor="" style={{ paddingTop: "10px", color:"#2e008b" }}>
-                          Max Number of Assigned Orders
-                        </label>
-                      </div>
-                      <div className="col-lg-7">
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="formGroupExampleInput3"
-                          style={{ backgroundColor: "#E8F0FE" }}
-                          value={maxNumberOfAssignedOrders}
-                          onChange={(e) => setMaxNumberOfAssignedOrders(e.target.value)}
-                          disabled={!edit}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-12 mb-3">
-                    <div className="row">
-                      <div className="col-lg-4">
-                        <label htmlFor="" style={{ paddingTop: "10px", color:"#2e008b" }}>
-                          Review Appraiser Share (Only Numbers)
-                        </label>
-                      </div>
-                      <div className="col-lg-7">
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="formGroupExampleInput3"
-                          style={{ backgroundColor: "#E8F0FE" }}
-                          // value={assistantFirstName}
-                          // onChange={(e) =>
-                          //   setAssistantFirstName(e.target.value)
-                          // }
-                          // disabled={!edit}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-12 mb-3">
-                    <div className="row">
-                      <div className="col-lg-4">
-                        <label htmlFor="" style={{ paddingTop: "10px", color:"#2e008b" }}>
-                          Designation
-                        </label>
-                      </div>
-                      <div className="col-lg-7">
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="formGroupExampleInput3"
-                          style={{ backgroundColor: "#E8F0FE" }}
-                          value={designation}
-                          onChange={(e) => setDesignation(e.target.value)}
-                          disabled={!edit}
-                        />
-                      </div>
-                    </div>
-                  </div> */}
-                  {/* <div className="row">
-                  <div className="col-lg-6">
-                    <div className="col-12 mb-2">
-                      <label htmlFor="" style={{ paddingTop: "10px", color:"#2e008b" }}>
-                        Licence Number
-                      </label>
-                    </div>
-                    <div className="col-12 mb-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="formGroupExampleInput3"
-                        style={{ backgroundColor: "#E8F0FE" }}
-                        value={licenseNo}
-                        onChange={(e) => setLicenseNo(e.target.value)}
-                        disabled={!edit}
-                      />
-                    </div>
-                  </div>
-                  <div className="col-lg-6">
-                    <div className="col-12 mb-2">
-                      <label htmlFor="" style={{ paddingTop: "10px", color:"#2e008b" }}>
-                        Brokerage Name
-                      </label>
-                    </div>
-                    <div className="col-12 mb-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="formGroupExampleInput3"
-                        style={{ backgroundColor: "#E8F0FE" }}
-                        value={brokerageName}
-                        onChange={(e) => setBrokerageName(e.target.value)}
-                        disabled={!edit}
-                      />
-                    </div>
-                  </div>
-                  <div className="col-lg-6">
-                    <div className="col-12 mb-2">
-                      <label htmlFor="" style={{ paddingTop: "10px", color:"#2e008b" }}>
-                        Assistant First Name
-                      </label>
-                    </div>
-                    <div className="col-12 mb-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="formGroupExampleInput3"
-                        style={{ backgroundColor: "#E8F0FE" }}
-                        value={assistantFirstName}
-                        onChange={(e) => setAssistantFirstName(e.target.value)}
-                        disabled={!edit}
-                      />
-                    </div>
-                  </div>
-                  <div className="col-lg-6">
-                    <div className="col-12 mb-2">
-                      <label htmlFor="" style={{ paddingTop: "10px", color:"#2e008b" }}>
-                        Assistant Last Name
-                      </label>
-                    </div>
-                    <div className="col-12 mb-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="formGroupExampleInput3"
-                        style={{ backgroundColor: "#E8F0FE" }}
-                        value={assistantLastName}
-                        onChange={(e) => setAssistantLastName(e.target.value)}
-                        disabled={!edit}
-                      />
-                    </div>
-                  </div>
-                </div> */}
+                  
                   {edit && (
                     <div className="row mt-4">
                       <div className="col-xl-12">

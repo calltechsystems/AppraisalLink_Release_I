@@ -16,13 +16,15 @@ const Index = () => {
   const [userData, setUserData] = useState({});
   const [showNotification, setShowNotification] = useState(false);
   const [data, setData] = useState([]);
-  const [bids,setBids]=useState([]);
+  const [bids, setBids] = useState([]);
   const [unfilteredData, setUnfilteredData] = useState([]);
   const [showLineGraph, setShowLineGraph] = useState(false);
-  const [filterQuery, setFilterQuery] = useState("monthly");
-  const [wishlist,setWishlist]=useState([]);
+  const [filterQuery, setFilterQuery] = useState("Weekly");
+  const [wishlist, setWishlist] = useState([]);
   const [lineData, setLineData] = useState([]);
-  const [acceptedBids,setAcceptedBids] = useState(0);
+  const [acceptedBids, setAcceptedBids] = useState(0);
+  const [chartData,setChartData]=useState([])
+  const [refresh,setRefresh]=useState(false)
   const router = useRouter();
 
   const closeModal = () => {
@@ -105,35 +107,45 @@ const Index = () => {
   };
 
   const filterData = (tempData) => {
-    const currentDate = new Date();
-    const oneYearAgo = new Date(currentDate);
-    oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
-
-    switch (filterQuery) {
-      case "monthly":
-        const oneMonthAgo = new Date(currentDate);
-        oneMonthAgo.setMonth(currentDate.getMonth() - 1);
-        return tempData.filter(
-          (item) => new Date(item.addedDatetime) >= oneMonthAgo
-        );
-      case "yearly":
-        return tempData.filter(
-          (item) => new Date(item.addedDatetime) >= oneYearAgo
-        );
-      case "weekly":
-        const oneWeekAgo = new Date(currentDate);
-        oneWeekAgo.setDate(currentDate.getDate() - 7);
-        return tempData.filter(
-          (item) => new Date(item.addedDatetime) >= oneWeekAgo
-        );
-      default:
-        return tempData;
-    }
+    console.log("filterQuery",filterQuery,tempData)
+      const currentDate = new Date();
+      const oneYearAgo = new Date(currentDate);
+      oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
+    
+      switch (filterQuery) {
+        case "Monthly":
+          const oneMonthAgo = new Date(currentDate);
+          oneMonthAgo.setMonth(currentDate.getMonth() - 1);
+          return tempData.filter(
+            (item) => new Date(item.addedDatetime) >= oneMonthAgo
+          );
+        case "Yearly":
+          return tempData.filter(
+            (item) => new Date(item.addedDatetime) >= oneYearAgo
+          );
+        case "Weekly":
+          const oneWeekAgo = new Date(currentDate);
+          oneWeekAgo.setDate(currentDate.getDate() - 7);
+          return tempData.filter(
+            (item) => new Date(item.addedDatetime) >= oneWeekAgo
+          );
+        default:
+          // If none of the cases match, return weekly content
+          const oneWeekAgoDefault = new Date(currentDate);
+          oneWeekAgoDefault.setDate(currentDate.getDate() - 7);
+          return tempData?.filter(
+            (item) => new Date(item.addedDatetime) >= oneWeekAgoDefault
+          );
+      }
+    
+    
   };
+  
+
 
   useEffect(() => {
     const dataTemp = filterData(data);
-    setData(dataTemp);
+    setChartData(dataTemp);
   }, [filterQuery]);
 
   useEffect(() => {
@@ -161,14 +173,15 @@ const Index = () => {
           // console.log(categorizeDataByMonth(res.data.data.property.$values));
 
           const temp = res.data.data.properties.$values;
-          const pdated = temp.filter((prop,index)=>{
-            if(String(prop.userId) === String(data.userId))
-             return true;
-            else
-             return false;
-          })
+          const pdated = temp.filter((prop, index) => {
+            if (String(prop.userId) === String(data.userId)) return true;
+            else return false;
+          });
 
+        
+          const dataTemp = filterData(pdated);
           setData(pdated);
+          setChartData(dataTemp);
           setShowLineGraph(true);
           setRerender(false);
         })
@@ -176,47 +189,43 @@ const Index = () => {
           toast.error(err?.response?.data?.error);
         });
 
-    
-
-
-        axios
-      .get("/api/getAllBids", {
-        headers: {
-          Authorization: `Bearer ${data.token}`,
-        },
-      params:{
-          email:data.userEmail
-        }
-        
-      })
-      .then((res) => {
-        console.log(res.data.data.$values);
-        const tempBids = res.data.data.$values;
-        let acceptedBid = 0 ;
-        let allBids = [];
-        tempBids.map((prop,index)=>{
-          if(String(prop.userId) === String(data.userId) && bids.status === 2)
-          acceptedBid = acceptedBid + 1 ;
-          else if(String(prop.userId) === String(data.userId) )
-          {
-            allBids.push(prop)
-          }
+      axios
+        .get("/api/getAllBids", {
+          headers: {
+            Authorization: `Bearer ${data.token}`,
+          },
+          params: {
+            email: data.userEmail,
+          },
         })
-        setAcceptedBids(acceptedBid);
-       
-        setBids(allBids);
-      })
-      .catch((err) => {
-        toast.error(err);
-        // setModalIsOpenError(true);
-      });
+        .then((res) => {
+          console.log(res.data.data.$values);
+          const tempBids = res.data.data.$values;
+          let acceptedBid = 0;
+          let allBids = [];
+          tempBids.map((prop, index) => {
+           
+            if (String(prop.userId) === String(data.userId)) {
+              if(String(prop.status) === "1"){
+                acceptedBid+=1;
+              }
+              allBids.push(prop);
+            }
+          });
+          console.log("acceptedBid",acceptedBid)
+          setAcceptedBids(acceptedBid);
+
+          setBids(allBids);
+        })
+        .catch((err) => {
+          toast.error(err);
+          // setModalIsOpenError(true);
+        });
     };
     func();
-  }, []);
-
-
-
-
+    setRefresh(false)
+    
+  }, [refresh]);
 
   useEffect(() => {
     const categorizeDataByMonth = (data) => {
@@ -239,9 +248,9 @@ const Index = () => {
 
       return countsByMonth;
     };
-    const temp = categorizeDataByMonth(data);
+    const temp = categorizeDataByMonth(chartData);
     setLineData(temp);
-  }, [data]);
+  }, [chartData]);
 
   return (
     <>
@@ -309,7 +318,7 @@ const Index = () => {
                     {/* <p>We are glad to see you again!</p> */}
                   </div>
                   <div>
-                    <Filtering setFilterQuery={setFilterQuery} />
+                    <Filtering setRefresh={setRefresh} FilterQuery={filterQuery} setFilterQuery={setFilterQuery} />
                   </div>
                 </div>
               </div>

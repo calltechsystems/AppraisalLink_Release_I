@@ -161,18 +161,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   };
 
   const onUpdatHandler = () => {
-    // const firstName = firstNameRef;
-    // const lastName = lastNameRef;
-    // const adressLine1 = addressLineRef;
-    // const city = cityRef;
-    // const state = stateRef;
-    // const zipCode = zipcodeRef;
-    // const phoneNumber = phoneNumberRef;
-
-    // const adressLine2 = addressLineTwoRef;
-    // const middleName = middleNameRef;
-    // const companyName = companyNameRef;
-
     if (
       (!firstNameRef ||
         !lastNameRef ||
@@ -219,12 +207,18 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         apartmentNumber: apartmentNumber,
       };
 
-      if (SMSAlert && !phoneNumberRef) {
+      if ( !payload.streetName || !payload.streetNumber || !payload.city || !payload.state || !payload.postalCode) {
+        toast.error(
+          "Please fill all the mandatory fields!"
+        );
+      }
+
+      else if ((SMSAlert && !phoneNumberRef )) {
         toast.error(
           "As SMS Alert is selected but phone number is not provided so SMS Alert will not work properly!"
         );
       }
-
+      else{
       toast.loading("Updating ...");
       const encryptedData = encryptionData(payload);
       axios
@@ -246,6 +240,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         .finally(() => {});
       toast.dismiss();
     }
+  }
   };
 
   const changeEditHandler = () => {

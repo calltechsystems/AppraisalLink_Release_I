@@ -15,16 +15,15 @@ async function handler(request, response) {
    
     const userResponse = await axios.post(
       `${domain}/com.appraisalland.Property/archievePropertyByBroker`,
-      {},
+      {
+        userId: Number(userId),
+        status: Boolean(status),
+        orderId: Number(orderId),
+      },
       {
         headers: {
           Authorization: token,
           "Content-Type": "application/json",
-        },
-        params: {
-          userId: userId,
-          status: status,
-          orderId: orderId,
         },
       }
     );

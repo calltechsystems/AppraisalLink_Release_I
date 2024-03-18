@@ -202,7 +202,7 @@ export default function Exemple({
   ];
 
   const getOrderValue = (val) => {
-    let title = "";
+    let title = "Applicant Contacted by appraiser";
     AppraiserStatusOptions?.map((status) => {
       if (String(status.id) === String(val)) {
         title = status.type;
@@ -511,7 +511,7 @@ export default function Exemple({
                     <Link
                       href="#"
                       onClick={() =>
-                        archievePropertyHandler(property.propertyId)
+                        archievePropertyHandler(property.orderId)
                       }
                     >
                       <span className="btn btn-color w-100">

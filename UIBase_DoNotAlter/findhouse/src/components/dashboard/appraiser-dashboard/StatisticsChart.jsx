@@ -82,6 +82,7 @@ export const tempData = {
 
 export default function StatisticsChart({data}) {
 
+  console.log("chart",data);
   const customData = {
     labels,
     datasets: [

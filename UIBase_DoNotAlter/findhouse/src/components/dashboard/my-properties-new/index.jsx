@@ -164,7 +164,9 @@ const Index = () => {
           "Content-Type": "application/json",
         },
         params: {
-          Id: id,
+          orderId: id,
+          status:true,
+          userId:data.userId
         },
       })
       .then((res) => {

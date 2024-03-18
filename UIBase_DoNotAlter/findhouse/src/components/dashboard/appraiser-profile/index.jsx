@@ -7,7 +7,6 @@ import Form from "./Form";
 import { useRouter } from "next/router";
 
 const Index = ({ profileCount, setProfileCount }) => {
-  // let userData =  JSON.parse(localStorage.getItem("user"));
   const [showCard, setShowCard] = useState(false); // Set to false by default
   const [userData, setUserData] = useState({}); // State to hold user data
   const router = useRouter();

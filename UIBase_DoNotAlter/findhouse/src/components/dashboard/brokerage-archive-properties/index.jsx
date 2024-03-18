@@ -1,6 +1,6 @@
 import Header from "../../common/header/dashboard/HeaderBrokerage";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenuBrokerage";
-import MobileMenu from "../../common/header/MobileMenu_01";
+import MobileMenu from "../../common/header/MobileMenu_02";
 import TableData from "./TableData";
 import Filtering from "./Filtering";
 import FilteringBy from "./FilteringBy";
@@ -18,6 +18,7 @@ const Index = () => {
   const [searchInput, setSearchInput] = useState("");
   const [refresh, setRefresh] = useState(false);
   const [property, setProperty] = useState("");
+  const [allArchive,setAllArchive]=useState([]);
   const [filterProperty, setFilterProperty] = useState("");
   const [filterQuery, setFilterQuery] = useState("Last 30 Days");
   const [properties, setProperties] = useState([]);
@@ -179,8 +180,8 @@ const Index = () => {
     const data = JSON.parse(localStorage.getItem("user"));
     if (!data) {
       router.push("/login");
-    } else if (!data?.brokerage_Details?.firstName) {
-      router.push("/brokerage-profile");
+    } else if (!data?.broker_Details?.firstName) {
+      router.push("/my-profile");
     }
     if (!data) {
       router.push("/login");
@@ -282,6 +283,7 @@ const Index = () => {
                           properties={
                             searchInput === "" ? properties : filterProperty
                           }
+                          setAllArchive={setAllArchive}
                           setModalIsOpenError={setModalIsOpenError}
                           setErrorMessage={setErrorMessage}
                           setRefresh={setRefresh}
@@ -351,7 +353,7 @@ const Index = () => {
                       <Pagination
                         setStart={setStart}
                         setEnd={setEnd}
-                        properties={properties}
+                        properties={allArchive}
                       />
                     </div>
                   </div>

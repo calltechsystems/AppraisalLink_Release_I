@@ -304,7 +304,7 @@ export default function Exemple({
               {prop.isOnCancel || prop.isOnHold ? (
                 <p className="btn btn-danger">
                   {`Cannot perform any actions as the current property is ${
-                    prop.isOnCancel || prop.isOnHold ? "Cancelled" : "On Hold"
+                    prop.isOnHold ? "On Hold" : "On Cancelled"
                   }`}{" "}
                 </p>
               ) : property.status === 1 ? (

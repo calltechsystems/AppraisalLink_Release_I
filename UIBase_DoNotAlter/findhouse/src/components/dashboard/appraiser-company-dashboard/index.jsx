@@ -13,9 +13,11 @@ import { useRouter } from "next/router";
 const Index = () => {
   // let userData = JSON.parse(localStorage.getItem("user"));
   const [userData, setUserData] = useState({});
+  // const data = JSON.parse(localStorage.getItem("user"));
   const router = useRouter();
   const [properties, setProperties] = useState([]);
   const [refresh, setRefresh] = useState(false);
+  const [FilteringType, setFilteringType] = useState("Monthly");
 
   const [allProperties, setAllProperties] = useState([]);
 
@@ -30,13 +32,6 @@ const Index = () => {
   const closeErrorModal = () => {
     setModalIsOpenError(false);
   };
-
-  // const [userData, setUserData] = useState({});
-
-  // let userData = {};
-  // useEffect(() => {
-  //   userData = JSON.parse(localStorage.getItem("user"));
-  // });
 
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
@@ -83,9 +78,8 @@ const Index = () => {
     setUserData(data);
     if (!data) {
       router.push("/login");
-    }
-    if (!data?.appraiserCompany_Datails.firstName) {
-      router.push("appraiser-company-profile");
+    } else if (!data?.appraiserCompany_Datails?.firstName) {
+      router.push("/appraiser-company-profile");
     }
     if (!data) {
       router.push("/login");
@@ -104,22 +98,9 @@ const Index = () => {
           },
         })
         .then((res) => {
-          console.log(res.data.data.properties.$values);
-
           const temp = res.data.data.properties.$values;
 
-          const updatedProp = temp.filter((prop, index) => {
-            if (String(prop.userId) === String(data.userId)) {
-              return true;
-            } else {
-              return false;
-            }
-          });
-
-          // setShowLineGraph(true);
-          // setRerender(false);
-
-          setProperties(updatedProp);
+          setProperties(temp);
         })
         .catch((err) => {
           console.log(err);
@@ -166,16 +147,12 @@ const Index = () => {
         .then((res) => {
           console.log(res.data.data);
           const tempBids = res.data.data.$values;
-          let acceptedBid = 0;
-
           let updatedBids = [];
-
           tempBids.map((bid, index) => {
             if (String(bid.appraiserUserId) === String(data.userId)) {
               updatedBids.push(bid);
             }
           });
-          console.log("updatedBids", updatedBids);
           setBids(updatedBids);
         })
         .catch((err) => {
@@ -188,65 +165,112 @@ const Index = () => {
   }, [refresh]);
 
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("user"));
-    if (!data) {
-      router.push("/login");
-    }
-    if (!data) {
-      router.push("/login");
-    }
-    // const func2 = () => {
-    //   axios
-    //     .get("/api/getAllListedProperties", {
-    //       headers: {
-    //         Authorization: `Bearer ${data?.token}`,
-    //         "Content-Type": "application/json",
-    //       },
-    //     })
-    //     .then((res) => {
-    //       toast.dismiss();
-
-    //       const tempData = res.data.data.properties.$values;
-    //       const responseData = tempData.filter((prop) => {
-    //         return properties.some((data) => {
-    //           return data.propertyId === prop.propertyId;
-    //         });
-    //       });
-    //       setAllProperties(responseData);
-    //     })
-    //     .catch((err) => {
-    //       toast.dismiss();
-    //       setErrorMessage(err?.response?.data?.error);
-    //       setModalIsOpenError(true);
-    //     });
-    // };
-    // func2();
-  }, [properties]);
-
-  useEffect(() => {
-    const categorizeDataByMonth = (data) => {
+    const categorizeDataByMonth = () => {
+      const type = FilteringType ? FilteringType : "Monthly";
+      const data = properties;
       if (data.length === 0) {
         return Array(12).fill(0); // Initialize an array with 12 elements, all initialized to 0.
       }
 
-      const currentMonth = new Date().getMonth();
+      const currentDate = new Date();
+      const currentMonth = currentDate.getMonth();
+      const currentYear = currentDate.getFullYear();
+      const currentWeek = getWeekNumber(currentDate);
 
-      const countsByMonth = Array(currentMonth + 1).fill(0);
+      const counts = {
+        Monthly: Array(12).fill(0),
+        Weekly: Array(52).fill(0),
+        Yearly: Array(currentYear + 1).fill(0),
+      };
 
       data.forEach((property) => {
-        const createdAtDate = new Date(property.addedDatetime);
-        const month = createdAtDate.getMonth();
+        let isPresent = false;
+        let time = {};
 
-        if (month <= currentMonth) {
-          countsByMonth[month]++;
+        wishlist.forEach((prop) => {
+          if (String(prop.orderId) === String(property.orderId))
+            time = prop.addedDatetime ? prop.addedDatetime : new Date();
+          isPresent = true;
+        });
+
+        const createdAtDate = new Date(time);
+        const propertyMonth = createdAtDate.getMonth();
+        const propertyYear = createdAtDate.getFullYear();
+        const propertyWeek = getWeekNumber(createdAtDate);
+
+        if (isPresent) {
+          if (
+            type === "Monthly" &&
+            propertyYear === currentYear &&
+            propertyMonth <= currentMonth
+          ) {
+            counts.Monthly[propertyMonth]++;
+          } else if (
+            type === "Weekly" &&
+            propertyYear === currentYear &&
+            propertyWeek <= currentWeek
+          ) {
+            counts.Weekly[propertyWeek - 1]++;
+          } else if (type === "Yearly" && propertyYear <= currentYear) {
+            counts.Yearly[propertyYear]++;
+          }
         }
       });
 
-      return countsByMonth;
+      data.forEach((property) => {
+        let isPresent = false;
+        let time = {};
+
+        bids.forEach((bid) => {
+          if (String(bid.orderId) === String(property.orderId)) {
+            time = bid.requestTime;
+            isPresent = true;
+          }
+        });
+
+        const createdAtDate = new Date(time);
+        const propertyMonth = createdAtDate.getMonth();
+        const propertyYear = createdAtDate.getFullYear();
+        const propertyWeek = getWeekNumber(createdAtDate);
+
+        if (isPresent) {
+          if (
+            type === "Monthly" &&
+            propertyYear === currentYear &&
+            propertyMonth <= currentMonth
+          ) {
+            counts.Monthly[propertyMonth]++;
+          } else if (
+            type === "Weekly" &&
+            propertyYear === currentYear &&
+            propertyWeek <= currentWeek
+          ) {
+            counts.Weekly[propertyWeek - 1]++;
+          } else if (type === "Yearly" && propertyYear <= currentYear) {
+            counts.Yearly[propertyYear]++;
+          } else {
+            counts.Monthly[propertyMonth]++;
+          }
+        }
+      });
+
+      console.log("type", counts);
+      return type === "Monthly"
+        ? counts.Monthly
+        : type === "Weekly"
+        ? counts.Weekly
+        : counts.Yearly;
     };
+
     const temp = categorizeDataByMonth(properties);
     setChartData(temp);
-  }, [properties]);
+  }, [properties, FilteringType]);
+
+  function getWeekNumber(date) {
+    const oneJan = new Date(date.getFullYear(), 0, 1);
+    const numberOfDays = Math.floor((date - oneJan) / (24 * 60 * 60 * 1000));
+    return Math.ceil((date.getDay() + 1 + numberOfDays) / 7);
+  }
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -290,16 +314,28 @@ const Index = () => {
                 </div> */}
                 {/* End Dashboard Navigation */}
 
-                <div className="row">
-                  <div className="col-lg-8 breadcrumb_content style2">
+                <div
+                  className="mb-2"
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <div className="style2">
                     <h2 className="breadcrumb_title">
-                      {userData?.appraiserCompany_Details
+                      {userData?.appraiserCompany_Datails
                         ? `${userData?.appraiserCompany_Datails?.firstName} ${userData?.appraiserCompany_Datails?.lastName}`
-                        : ""}
+                        : "Name"}
                     </h2>
                   </div>
-                  <div className="col-lg-4">
-                    <Filtering setRefresh={setRefresh} />
+                  <div>
+                    <Filtering
+                      setRefresh={setRefresh}
+                      setFilteringType={setFilteringType}
+                      FilteringType={FilteringType}
+                    />
                   </div>
                 </div>
               </div>

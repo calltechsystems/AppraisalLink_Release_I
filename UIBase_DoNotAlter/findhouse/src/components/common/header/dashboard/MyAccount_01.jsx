@@ -6,13 +6,12 @@ import CircularIcon from "./CircularIcon";
 import { use, useEffect } from "react";
 import { useState } from "react";
 
-const MyAccount = ({ user, profileCount, setProfile ,userData}) => {
+const MyAccount = ({ user, profileCount, setProfile, userData }) => {
+  let userInfo = {};
+  useEffect(() => {
+    userInfo = JSON.parse(localStorage.getItem("user"));
+  }, []);
 
- let userInfo = {};
- useEffect(()=>{
-  userInfo=JSON.parse(localStorage.getItem("user"));
- },[]) 
-  
   const profileMenuItems = [
     { id: 1, name: "Profile", ruterPath: "/appraiser-profile" },
     // { id: 2, name: " My Message", ruterPath: "/my-message" },
@@ -167,12 +166,12 @@ const MyAccount = ({ user, profileCount, setProfile ,userData}) => {
           alt="e1.png"
         />
         <p>
-          {userData?.appraiser_Details?.firstName
-            ? userData?.appraiser_Details?.firstName
+          {userData?.appraiser_Details
+            ? `${userData?.appraiser_Details?.firstName} ${userData?.appraiser_Details?.lastName}`
             : "Name"}
           <br />
           <span className="address">
-            {userInfo?.userEmail ? userInfo.userEmail : "xyz@gmail.com"}
+            {userData?.userEmail ? userData.userEmail : "xyz@gmail.com"}
           </span>
         </p>
       </div>

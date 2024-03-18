@@ -523,7 +523,7 @@ export default function Exemple({
                     <Link
                       href="#"
                       onClick={() =>
-                        archievePropertyHandler(property.propertyId)
+                        archievePropertyHandler(property.orderId)
                       }
                     >
                       <span className="btn btn-color w-100">
