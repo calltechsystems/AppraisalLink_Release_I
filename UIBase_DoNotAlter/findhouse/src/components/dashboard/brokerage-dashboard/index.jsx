@@ -1,5 +1,5 @@
-import Header from "../../common/header/dashboard/Header";
-import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
+import Header from "../../common/header/dashboard/HeaderBrokerage";
+import SidebarMenu from "../../common/header/dashboard/SidebarMenuBrokerage";
 import MobileMenu from "../../common/header/MobileMenu_02";
 import Filtering from "./Filtering";
 import AllStatistics from "./AllStatistics";
@@ -23,8 +23,8 @@ const Index = () => {
   const [wishlist, setWishlist] = useState([]);
   const [lineData, setLineData] = useState([]);
   const [acceptedBids, setAcceptedBids] = useState(0);
-  const [chartData,setChartData]=useState([])
-  const [refresh,setRefresh]=useState(false)
+  const [chartData, setChartData] = useState([]);
+  const [refresh, setRefresh] = useState(false);
   const router = useRouter();
 
   const closeModal = () => {
@@ -107,41 +107,37 @@ const Index = () => {
   };
 
   const filterData = (tempData) => {
-    console.log("filterQuery",filterQuery,tempData)
-      const currentDate = new Date();
-      const oneYearAgo = new Date(currentDate);
-      oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
-    
-      switch (filterQuery) {
-        case "Monthly":
-          const oneMonthAgo = new Date(currentDate);
-          oneMonthAgo.setMonth(currentDate.getMonth() - 1);
-          return tempData.filter(
-            (item) => new Date(item.addedDatetime) >= oneMonthAgo
-          );
-        case "Yearly":
-          return tempData.filter(
-            (item) => new Date(item.addedDatetime) >= oneYearAgo
-          );
-        case "Weekly":
-          const oneWeekAgo = new Date(currentDate);
-          oneWeekAgo.setDate(currentDate.getDate() - 7);
-          return tempData.filter(
-            (item) => new Date(item.addedDatetime) >= oneWeekAgo
-          );
-        default:
-          // If none of the cases match, return weekly content
-          const oneWeekAgoDefault = new Date(currentDate);
-          oneWeekAgoDefault.setDate(currentDate.getDate() - 7);
-          return tempData?.filter(
-            (item) => new Date(item.addedDatetime) >= oneWeekAgoDefault
-          );
-      }
-    
-    
-  };
-  
+    console.log("filterQuery", filterQuery, tempData);
+    const currentDate = new Date();
+    const oneYearAgo = new Date(currentDate);
+    oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
 
+    switch (filterQuery) {
+      case "Monthly":
+        const oneMonthAgo = new Date(currentDate);
+        oneMonthAgo.setMonth(currentDate.getMonth() - 1);
+        return tempData.filter(
+          (item) => new Date(item.addedDatetime) >= oneMonthAgo
+        );
+      case "Yearly":
+        return tempData.filter(
+          (item) => new Date(item.addedDatetime) >= oneYearAgo
+        );
+      case "Weekly":
+        const oneWeekAgo = new Date(currentDate);
+        oneWeekAgo.setDate(currentDate.getDate() - 7);
+        return tempData.filter(
+          (item) => new Date(item.addedDatetime) >= oneWeekAgo
+        );
+      default:
+        // If none of the cases match, return weekly content
+        const oneWeekAgoDefault = new Date(currentDate);
+        oneWeekAgoDefault.setDate(currentDate.getDate() - 7);
+        return tempData?.filter(
+          (item) => new Date(item.addedDatetime) >= oneWeekAgoDefault
+        );
+    }
+  };
 
   useEffect(() => {
     const dataTemp = filterData(data);
@@ -154,7 +150,7 @@ const Index = () => {
     if (!data) {
       router.push("/login");
     } else if (!data?.brokerage_Details?.firstName) {
-      router.push("/my-profile");
+      router.push("/brokerage-profile");
     }
 
     const func = () => {
@@ -178,7 +174,6 @@ const Index = () => {
             else return false;
           });
 
-        
           const dataTemp = filterData(pdated);
           setData(pdated);
           setChartData(dataTemp);
@@ -204,15 +199,14 @@ const Index = () => {
           let acceptedBid = 0;
           let allBids = [];
           tempBids.map((prop, index) => {
-           
             if (String(prop.userId) === String(data.userId)) {
-              if(String(prop.status) === "1"){
-                acceptedBid+=1;
+              if (String(prop.status) === "1") {
+                acceptedBid += 1;
               }
               allBids.push(prop);
             }
           });
-          console.log("acceptedBid",acceptedBid)
+          console.log("acceptedBid", acceptedBid);
           setAcceptedBids(acceptedBid);
 
           setBids(allBids);
@@ -223,8 +217,7 @@ const Index = () => {
         });
     };
     func();
-    setRefresh(false)
-    
+    setRefresh(false);
   }, [refresh]);
 
   useEffect(() => {
@@ -308,17 +301,21 @@ const Index = () => {
                 >
                   <div className="breadcrumb_content style2">
                     <h2 className="breadcrumb_title">
-                      {userData?.broker_Details?.firstName
-                        ? userData?.broker_Details?.firstName
+                      {userData?.brokerage_Details?.firstName
+                        ? userData?.brokerage_Details?.firstName
                         : "firstName"}{" "}
-                      {userData?.broker_Details?.lastName
-                        ? userData?.broker_Details?.lastName
+                      {userData?.brokerage_Details?.lastName
+                        ? userData?.brokerage_Details?.lastName
                         : "lastName"}
                     </h2>
                     {/* <p>We are glad to see you again!</p> */}
                   </div>
                   <div>
-                    <Filtering setRefresh={setRefresh} FilterQuery={filterQuery} setFilterQuery={setFilterQuery} />
+                    <Filtering
+                      setRefresh={setRefresh}
+                      FilterQuery={filterQuery}
+                      setFilterQuery={setFilterQuery}
+                    />
                   </div>
                 </div>
               </div>
