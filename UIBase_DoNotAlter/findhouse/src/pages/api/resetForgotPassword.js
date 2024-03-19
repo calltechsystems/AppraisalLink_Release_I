@@ -19,7 +19,7 @@ async function handler(request, response) {
     const { email, newPassword, token } = body;
 
     const userResponse = await axios.post(
-      `${domain}/com.appraisalland.ForgotPassword/send-reset-token`,
+      `${domain}/com.appraisalland.ForgotPassword/verify-reset-Password`,
       {
         email: email,
         newPassword: newPassword,
