@@ -269,6 +269,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         // !payload.designation ||
         !payload.phoneNumber ||
         !payload.emailId ||
+        !payload.mortageBrokerLicNo ||
+        !payload.mortgageBrokerageLicNo ||
         // !payload.lenderListUrl ||
         !payload.streetName ||
         !payload.streetNumber ||

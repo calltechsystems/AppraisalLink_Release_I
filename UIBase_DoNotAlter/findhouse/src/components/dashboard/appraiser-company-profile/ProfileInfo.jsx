@@ -213,8 +213,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         !payload.companyName ||
         !payload.phoneNumber ||
         !payload.emailId ||
-        !payload.mortageBrokerLicNo ||
-        !payload.mortgageBrokerageLicNo ||
+        // !payload.mortageBrokerLicNo ||
+        // !payload.mortgageBrokerageLicNo ||
         !payload.lenderListUrl ||
         !payload.streetName ||
         !payload.streetNumber ||
