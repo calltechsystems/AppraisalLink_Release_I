@@ -210,7 +210,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
       if (
         !payload.lastName ||
         !payload.firstName ||
-        !payload.companyName ||
+        !payload.appraiserCompanyName ||
         !payload.phoneNumber ||
         !payload.emailId ||
         // !payload.mortageBrokerLicNo ||
