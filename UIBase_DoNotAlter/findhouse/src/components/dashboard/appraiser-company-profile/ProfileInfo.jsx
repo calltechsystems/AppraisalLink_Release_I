@@ -207,40 +207,49 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         apartmentNumber: apartmentNumber,
       };
 
-      if ( !payload.streetName || !payload.streetNumber || !payload.city || !payload.state || !payload.postalCode) {
-        toast.error(
-          "Please fill all the mandatory fields!"
-        );
-      }
-
-      else if ((SMSAlert && !phoneNumberRef )) {
+      if (
+        !payload.lastName ||
+        !payload.firstName ||
+        !payload.companyName ||
+        !payload.phoneNumber ||
+        !payload.emailId ||
+        !payload.mortageBrokerLicNo ||
+        !payload.mortgageBrokerageLicNo ||
+        !payload.lenderListUrl ||
+        !payload.streetName ||
+        !payload.streetNumber ||
+        !payload.city ||
+        !payload.state ||
+        !payload.postalCode
+      ) {
+        toast.error("Please fill all the mandatory fields!");
+      } else if (SMSAlert && !phoneNumberRef) {
         toast.error(
           "As SMS Alert is selected but phone number is not provided so SMS Alert will not work properly!"
         );
-      }
-      else{
-      toast.loading("Updating ...");
-      const encryptedData = encryptionData(payload);
-      axios
-        .put("/api/updateAppraiserCompanyProfile", encryptedData)
-        .then((res) => {
-          toast.success("Successfully Updated Profile!");
+      } else {
+        toast.loading("Updating ...");
+        const encryptedData = encryptionData(payload);
+        axios
+          .put("/api/updateAppraiserCompanyProfile", encryptedData)
+          .then((res) => {
+            toast.success("Successfully Updated Profile!");
 
-          let data = userData;
-          console.log(res.data.userData);
-          data.appraiserCompany_Datails = res.data.userData.appraiserCompany;
-          localStorage.removeItem("user");
-          localStorage.setItem("user", JSON.stringify(data));
-          setShowCard(true);
-          router.push("/appraiser-company-dashboard");
-        })
-        .catch((err) => {
-          toast.error(err.message);
-        })
-        .finally(() => {});
-      toast.dismiss();
+            let data = userData;
+            console.log(res.data.userData);
+            data.appraiserCompany_Datails = res.data.userData.appraiserCompany;
+            localStorage.removeItem("user");
+            localStorage.setItem("user", JSON.stringify(data));
+            setShowCard(true);
+            router.push("/appraiser-company-dashboard");
+          })
+          .catch((err) => {
+            toast.error(err.message);
+          })
+          .finally(() => {});
+        toast.dismiss();
+      }
     }
-  }
   };
 
   const changeEditHandler = () => {

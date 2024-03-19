@@ -55,7 +55,7 @@ const headCells = [
     id: "action",
     numeric: false,
     label: "Actions",
-    width: 200,
+    width: 250,
   },
 ];
 
@@ -105,6 +105,7 @@ export default function Exemple({
   refresh,
   setOpenBrokerModal,
   setIsModalOpen,
+  setIsModalOpen_01,
   orderId,
   properties,
   setProperties,
@@ -126,6 +127,13 @@ export default function Exemple({
     setId(id);
 
     setIsModalOpen(true);
+  };
+
+  const openPopupModal_01 = () => {
+    // console.log(prop);
+    // setProperty(prop);
+    // setId(id);
+    setIsModalOpen_01(true);
   };
 
   const formatDate = (dateString) => {
@@ -316,14 +324,28 @@ export default function Exemple({
                     data-placement="top"
                     title="Approved Lender List"
                   >
-                    <div className="btn btn-color fw-bold m-1">
-                      <Link
-                        href="assets/images/Terms & Conditions.pdf"
-                        target="_blank"
-                        className="form-check-label text-primary"
-                      >
-                        <span className="flaticon-pdf text-light"></span>
-                      </Link>
+                    <div className=" btn btn-color fw-bold ">
+                      {/* <Link
+                      href="assets/images/Terms & Conditions.pdf"
+                      target="_blank"
+                      className="form-check-label text-primary"
+                    > */}
+                      <span className="flaticon-pdf text-light">
+                        {" "}
+                        <a
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          href={
+                            userData?.appraiser_Details?.lenderListUrl
+                              ? userData?.appraiser_Details?.lenderListUrl
+                              : "#"
+                          }
+                          style={{ cursor: "pointer", color: "white" }}
+                        >
+                          Lender List Pdf
+                        </a>
+                      </span>
+                      {/* </Link> */}
                     </div>
                   </li>
                 </div>
@@ -377,7 +399,30 @@ export default function Exemple({
                   </li>
                 </ul>
               ) : (
-                <h5 className="btn btn-danger">Declined</h5>
+                <div>
+                  <h5 className="btn btn-danger m-1">Declined</h5>
+                  <li
+                    className="list-inline-item"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Change Appraiser"
+                  >
+                    <div className=" btn btn-color fw-bold ">
+                      <span className="flaticon-replace text-light">
+                        {" "}
+                        <a
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={openPopupModal_01}
+                          style={{ cursor: "pointer" }}
+                        >
+                          Change Apprasier
+                        </a>
+                      </span>
+                      {/* </Link> */}
+                    </div>
+                  </li>
+                </div>
               )}{" "}
             </>
           ),

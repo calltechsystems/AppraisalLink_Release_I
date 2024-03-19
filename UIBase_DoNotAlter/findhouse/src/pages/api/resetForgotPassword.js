@@ -16,14 +16,16 @@ async function handler(request, response) {
       return response.status(403).json({ error: "Not a verified Data" });
     }
 
-    const { email , newPassword , token} = body;
+    const { email, newPassword, token } = body;
 
-    const userResponse = await axios.post(`${domain}/ForgotPassword/verify-reset-Password`,
-    {
-        email : email,
-        newPassword : newPassword,
-        token : token
-    });
+    const userResponse = await axios.post(
+      `${domain}/com.appraisalland.ForgotPassword/send-reset-token`,
+      {
+        email: email,
+        newPassword: newPassword,
+        token: token,
+      }
+    );
     const user = userResponse.data;
 
     if (!user) {

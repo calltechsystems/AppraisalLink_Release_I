@@ -22,6 +22,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   const hiddenStyle = { backgroundColor: "#E8F0FE", display: "none" };
   const viewStyle = { backgroundColor: "#E8F0FE", display: "block" };
   const [edit, setEdit] = useState(!userData.brokerage_Details?.firstName);
+  const [SMSAlert, setSMSAlert] = useState(false);
 
   const [firstNameRef, setFirstNameRef] = useState(
     userData?.brokerage_Details?.firstName || ""
@@ -238,26 +239,46 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         assistantTwoPhoneNumber: assistantTwoPhoneNumber,
         emailId: emailId,
       };
+      if (
+        !payload.lastName ||
+        !payload.firstName ||
+        !payload.brokerageName ||
+        !payload.phoneNumber ||
+        !payload.emailId ||
+        !payload.mortageBrokerLicNo ||
+        !payload.mortageBrokerageLicNo ||
+        !payload.streetName ||
+        !payload.streetNumber ||
+        !payload.city ||
+        !payload.province ||
+        !payload.postalCode
+      ) {
+        toast.error("Please fill all the mandatory fields!");
+      } else if (SMSAlert && !phoneNumber) {
+        toast.error(
+          "As SMS Alert is selected but phone number is not provided so SMS Alert will not work properly!"
+        );
+      } else {
+        toast.loading("Updating ...");
+        const encryptedData = encryptionData(payload);
+        axios
+          .put("/api/UpdateBrokerageCompanyProfile", encryptedData)
+          .then((res) => {
+            toast.success("Successfully Updated Profile!");
 
-      toast.loading("Updating ...");
-      const encryptedData = encryptionData(payload);
-      axios
-        .put("/api/UpdateBrokerageCompanyProfile", encryptedData)
-        .then((res) => {
-          toast.success("Successfully Updated Profile!");
-
-          let data = userData;
-          data.brokerage_Details = res.data.userData.broker;
-          localStorage.removeItem("user");
-          localStorage.setItem("user", JSON.stringify(data));
-          setShowCard(true);
-          router.push("/brokerage-dashboard");
-        })
-        .catch((err) => {
-          toast.error(err.message);
-        })
-        .finally(() => {});
-      toast.dismiss();
+            let data = userData;
+            data.brokerage_Details = res.data.userData.broker;
+            localStorage.removeItem("user");
+            localStorage.setItem("user", JSON.stringify(data));
+            setShowCard(true);
+            router.push("/brokerage-dashboard");
+          })
+          .catch((err) => {
+            toast.error(err.message);
+          })
+          .finally(() => {});
+        toast.dismiss();
+      }
     }
   };
 

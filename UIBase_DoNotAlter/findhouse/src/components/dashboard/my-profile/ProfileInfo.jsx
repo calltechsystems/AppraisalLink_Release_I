@@ -22,6 +22,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   );
 
   const [edit, setEdit] = useState(true);
+  const [SMSAlert, setSMSAlert] = useState(false);
 
   const [firstNameRef, setFirstNameRef] = useState(
     userData?.broker_Details?.firstName || ""
@@ -262,25 +263,44 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         mortgageBrokerageLicNo: mortgageBrokrageLicNoRef,
         profileImage: SelectedImage,
       };
-
-      toast.loading("Updating ...");
-      const encryptedData = encryptionData(payload);
-      axios
-        .put("/api/updateBrokerProfile", encryptedData)
-        .then((res) => {
-          toast.success("Successfully Updated Profile!");
-          let data = userData;
-          data.broker_Details = res.data.userData.brokerage;
-          localStorage.removeItem("user");
-          localStorage.setItem("user", JSON.stringify(data));
-          router.push("/my-dashboard");
-          setShowCard(true);
-        })
-        .catch((err) => {
-          toast.error(err.message);
-        })
-        .finally(() => {});
-      toast.dismiss();
+      if (
+        !payload.lastName ||
+        !payload.firstName ||
+        // !payload.designation ||
+        !payload.phoneNumber ||
+        !payload.emailId ||
+        // !payload.lenderListUrl ||
+        !payload.streetName ||
+        !payload.streetNumber ||
+        !payload.city ||
+        !payload.state ||
+        !payload.postalCode
+      ) {
+        toast.error("Please fill all the mandatory fields!");
+      } else if (SMSAlert && !phoneNumber) {
+        toast.error(
+          "As SMS Alert is selected but phone number is not provided so SMS Alert will not work properly!"
+        );
+      } else {
+        toast.loading("Updating ...");
+        const encryptedData = encryptionData(payload);
+        axios
+          .put("/api/updateBrokerProfile", encryptedData)
+          .then((res) => {
+            toast.success("Successfully Updated Profile!");
+            let data = userData;
+            data.broker_Details = res.data.userData.brokerage;
+            localStorage.removeItem("user");
+            localStorage.setItem("user", JSON.stringify(data));
+            router.push("/my-dashboard");
+            setShowCard(true);
+          })
+          .catch((err) => {
+            toast.error(err.message);
+          })
+          .finally(() => {});
+        toast.dismiss();
+      }
     }
   };
 

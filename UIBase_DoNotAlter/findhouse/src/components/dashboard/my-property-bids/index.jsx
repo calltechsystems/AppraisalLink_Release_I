@@ -18,6 +18,7 @@ import { encryptionData } from "../../../utils/dataEncryption";
 
 const Index = ({ propertyId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen_01, setIsModalOpen_01] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [appInfo, setAppInfo] = useState({});
   const [refresh, setRefresh] = useState(false);
@@ -149,8 +150,15 @@ const Index = ({ propertyId }) => {
     setIsModalOpen(true);
   };
 
+  const openModal_01 = () => {
+    // console.log("inside");
+    // setProperty(property);
+    setIsModalOpen_01(true);
+  };
+
   const closeModal = () => {
     setIsModalOpen(false);
+    setIsModalOpen_01(false);
   };
 
   useEffect(() => {
@@ -348,6 +356,7 @@ const Index = ({ propertyId }) => {
                           userData={userData}
                           open={openModal}
                           setIsModalOpen={setIsModalOpen}
+                          setIsModalOpen_01={setIsModalOpen_01}
                           close={closeModal}
                           setProperties={setProperties}
                           properties={
@@ -962,6 +971,82 @@ const Index = ({ propertyId }) => {
                         <button
                           className="btn btn-color"
                           onClick={() => acceptRequestHandler(property.bidId)}
+                        >
+                          Submit
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {isModalOpen_01 && (
+              <div className="modal">
+                <div className="modal-content">
+                  <div className="row">
+                    <div className="col-lg-12">
+                      <Link href="/" className="">
+                        <Image
+                          width={60}
+                          height={45}
+                          className="logo1 img-fluid"
+                          style={{ marginTop: "-20px" }}
+                          src="/assets/images/Appraisal_Land_Logo.png"
+                          alt="header-logo2.png"
+                        />
+                        <span
+                          style={{
+                            color: "#2e008b",
+                            fontWeight: "bold",
+                            fontSize: "24px",
+                            // marginTop: "20px",
+                          }}
+                        >
+                          Appraisal
+                        </span>
+                        <span
+                          style={{
+                            color: "#97d700",
+                            fontWeight: "bold",
+                            fontSize: "24px",
+                            // marginTop: "20px",
+                          }}
+                        >
+                          {" "}
+                          Land
+                        </span>
+                      </Link>
+                    </div>
+                  </div>
+                  <h3 className="text-center">Appraiser Change Confirmation</h3>
+                  <div
+                    className="mt-2 mb-3"
+                    style={{ border: "2px solid #97d700" }}
+                  ></div>
+                  <p className="text-center fs-6">
+                    Are you sure you want to change the appraiser ?
+                  </p>
+
+                  <div
+                    className="mt-2 mb-3"
+                    style={{ border: "2px solid #97d700" }}
+                  ></div>
+
+                  {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
+                  <div className="col-lg-12">
+                    <div className="row">
+                      <div className="col-lg-12 text-center m-1">
+                        <button
+                          className="btn btn-color"
+                          style={{ marginRight: "5px" }}
+                          onClick={closeModal}
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          className="btn btn-color"
+                          // onClick={}
                         >
                           Submit
                         </button>

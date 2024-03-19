@@ -167,8 +167,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     console.log(typeof profilePhoto);
   };
 
- 
-
   const onUpdatHandler = () => {
     const firstName = firstNameRef;
     const lastName = lastNameRef;
@@ -201,7 +199,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         !state ||
         !zipCode ||
         !province ||
-        !streetName||
+        !streetName ||
         !streetName ||
         !selectedImage2.name ||
         !emailId ||
@@ -210,7 +208,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     ) {
       toast.error("All marked fields arent filled !!");
     } else {
-    
       const payload = {
         id: userData.userId,
         token: userData.token,
@@ -234,41 +231,46 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         profileImage: SelectedImage,
         emailId: emailId,
       };
-      if ( !payload.streetName || !payload.streetNumber || !payload.city || !payload.province || !payload.postalCode) {
-        toast.error(
-          "Please fill all the mandatory fields!"
-        );
-      }
-
-      else if ((SMSAlert && !phoneNumber )) {
+      if (
+        !payload.lastName ||
+        !payload.firstName ||
+        !payload.designation ||
+        !payload.phoneNumber ||
+        !payload.emailId ||
+        !payload.lenderListUrl ||
+        !payload.streetName ||
+        !payload.streetNumber ||
+        !payload.city ||
+        !payload.province ||
+        !payload.postalCode
+      ) {
+        toast.error("Please fill all the mandatory fields!");
+      } else if (SMSAlert && !phoneNumber) {
         toast.error(
           "As SMS Alert is selected but phone number is not provided so SMS Alert will not work properly!"
         );
+      } else {
+        toast.loading("Updating ...");
+        const encryptedData = encryptionData(payload);
+        axios
+          .put("/api/updateAppraiserProfile", encryptedData)
+          .then((res) => {
+            toast.success("Successfully Updated Profile!");
+            console.log(res.data.userData);
+            let data = userData;
+            data.appraiser_Details = res.data.userData.appraiser;
+            localStorage.removeItem("user");
+            localStorage.setItem("user", JSON.stringify(data));
+            setShowCard(true);
+            router.push("/appraiser-dashboard");
+          })
+          .catch((err) => {
+            toast.error(err.message);
+          })
+          .finally(() => {});
+        toast.dismiss();
       }
-     
-      else{
-
-      toast.loading("Updating ...");
-      const encryptedData = encryptionData(payload);
-      axios
-        .put("/api/updateAppraiserProfile", encryptedData)
-        .then((res) => {
-          toast.success("Successfully Updated Profile!");
-          console.log(res.data.userData);
-          let data = userData;
-          data.appraiser_Details = res.data.userData.appraiser;
-          localStorage.removeItem("user");
-          localStorage.setItem("user", JSON.stringify(data));
-          setShowCard(true);
-          router.push("/appraiser-dashboard");
-        })
-        .catch((err) => {
-          toast.error(err.message);
-        })
-        .finally(() => {});
-      toast.dismiss();
     }
-  }
   };
 
   const changeEditHandler = () => {
@@ -319,34 +321,34 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     console.log(url);
   };
 
-  const handleFileChange  = (e,type)=>{
+  const handleFileChange = (e, type) => {
     const file = e.target.files[0];
     const userData = JSON.parse(localStorage.getItem("user"));
 
     const BACKEND_DOMAIN = process.env.BACKEND_DOMAIN;
     const formdata = {
-      file : file
-    }
-    
-    toast.dismiss("Uploading !!!");
-    axios.post(`${BACKEND_DOMAIN}/FileUpload/upload`,formdata,{
-      headers:{
-        "Authorization" : `Bearer ${userData?.token}`,
-        "Content-Type":"multipart/form-data"
-      }
-    })
-    .then((res)=>{
-      toast.dismiss()
-      toast.success("Uploaded Successfully !");
-      console.log(res)
-    })
-    .catch((err)=>{
-      toast.dismiss()
-      console.log(err)
-      toast.error("Try Again !!");
-    })
+      file: file,
+    };
 
-  }
+    toast.dismiss("Uploading !!!");
+    axios
+      .post(`${BACKEND_DOMAIN}/FileUpload/upload`, formdata, {
+        headers: {
+          Authorization: `Bearer ${userData?.token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        toast.dismiss();
+        toast.success("Uploaded Successfully !");
+        console.log(res);
+      })
+      .catch((err) => {
+        toast.dismiss();
+        console.log(err);
+        toast.error("Try Again !!");
+      });
+  };
 
   return (
     <>
@@ -379,7 +381,10 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                     alt="Uploaded Image"
                   />
                   {edit && (
-                    <input type="file" onChange={(e)=>handleFileChange(e,1)}/>
+                    <input
+                      type="file"
+                      onChange={(e) => handleFileChange(e, 1)}
+                    />
                   )}
                 </div>
               </div>
@@ -619,7 +624,10 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       </label>
                     </div>
                     <div className="col-lg-3">
-                      <input type="file" onChange={(e)=>handleFileChange(e,2)}/>
+                      <input
+                        type="file"
+                        onChange={(e) => handleFileChange(e, 2)}
+                      />
                     </div>
                     <div className="col-lg-5 mt-1">
                       <Link
@@ -878,7 +886,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       </div>
                     </div>
                   </div>
-                  
+
                   {edit && (
                     <div className="row mt-4">
                       <div className="col-xl-12">

@@ -14,6 +14,7 @@ const TableData = ({
   properties,
   setProperties,
   setIsModalOpen,
+  setIsModalOpen_01,
   orderId,
   setModalIsOpenError,
   setErrorMessage,
@@ -23,7 +24,7 @@ const TableData = ({
   setid,
   refresh,
   setRefresh,
-  setProperty
+  setProperty,
 }) => {
   console.log(properties);
 
@@ -31,7 +32,7 @@ const TableData = ({
 
   const [rerender, setRerender] = useState(false);
 
-  const [data,setData]=useState([]);
+  const [data, setData] = useState([]);
 
   let theadConent = ["Property Title", "Date", "Status", "Bids", "Action"];
 
@@ -220,6 +221,7 @@ const TableData = ({
           setErrorMessage={setErrorMessage}
           deletePropertyHandler={deletePropertyHandler}
           setIsModalOpen={setIsModalOpen}
+          setIsModalOpen_01={setIsModalOpen_01}
           property={property}
           setOpenBrokerModal={setOpenBrokerModal}
           setProperty={setProperty}
