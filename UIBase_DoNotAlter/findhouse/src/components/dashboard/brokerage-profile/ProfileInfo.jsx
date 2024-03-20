@@ -147,6 +147,14 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     const adressLine2 = addressLineTwoRef;
     const middleName = middleNameRef;
     const brokerageName = brokerageNameRef;
+    const mortageBrokerLicNo =
+    mortageBrokerLicNoRef !== ""
+      ? mortageBrokerLicNoRef
+      : userData.brokerage_Details.mortageBrokerLicNo;
+  const mortageBrokrageLicNo =
+    mortageBrokrageLicNoRef !== ""
+      ? mortageBrokrageLicNoRef
+      : userData.brokerage_Details.mortageBrokerageLicNo;
     // const assistantEmailAddress = assistantEmailAddress;
     // const assistantFirstName = assistantFirstName;
     // const assistantPhoneNumber = assistantPhoneNumber;
@@ -211,14 +219,14 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         middleName: middleName,
         lastName: lastName,
         brokerageName: brokerageName,
-        mortageBrokerLicNo:
-          mortageBrokerLicNoRef !== ""
-            ? mortageBrokerLicNoRef
-            : userData.brokerage_Details.mortageBrokerLicNo,
-        mortageBrokerageLicNo:
-          mortageBrokrageLicNoRef !== ""
-            ? mortageBrokrageLicNoRef
-            : userData.brokerage_Details.mortageBrokerageLicNo,
+        // mortageBrokerLicNo:
+        //   mortageBrokerLicNoRef !== ""
+        //     ? mortageBrokerLicNoRef
+        //     : userData.brokerage_Details.mortageBrokerLicNo,
+        // mortageBrokerageLicNo:
+        //   mortageBrokrageLicNoRef !== ""
+        //     ? mortageBrokrageLicNoRef
+        //     : userData.brokerage_Details.mortageBrokerageLicNo,
         streetNumber: streetNumber,
         apartmentNo: apartmentNo,
         streetName: streetName,
@@ -237,6 +245,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         assistantTwoLastName: assistantTwoLastName,
         assistantTwoEmailAddress: assistantTwoEmailAddress,
         assistantTwoPhoneNumber: assistantTwoPhoneNumber,
+        mortageBrokerLicNo: mortageBrokerLicNoRef,
+        mortageBrokerageLicNo: mortageBrokrageLicNoRef,
         emailId: emailId,
       };
       if (

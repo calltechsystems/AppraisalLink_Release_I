@@ -211,6 +211,7 @@ const TableData = ({
           setSearchInput={setSearchInput}
           close={close}
           setProperties={setProperties}
+          setModalIsPopupOpen={setModalIsPopupOpen}
           properties={data}
           setRefresh={setRefresh}
           refresh={refresh}

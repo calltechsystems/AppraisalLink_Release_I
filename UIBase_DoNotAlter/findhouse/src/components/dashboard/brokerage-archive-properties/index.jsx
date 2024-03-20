@@ -176,23 +176,23 @@ const Index = () => {
 
   const [userData, setUserData] = useState({});
 
-  useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("user"));
-    if (!data) {
-      router.push("/login");
-    } else if (!data?.broker_Details?.firstName) {
-      router.push("/my-profile");
-    }
-    if (!data) {
-      router.push("/login");
-    }
-    const fetchData = () => {
-      if (data) {
-        setUserData(data);
-      }
-    };
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   const data = JSON.parse(localStorage.getItem("user"));
+  //   if (!data) {
+  //     router.push("/login");
+  //   } else if (!data?.broker_Details?.firstName) {
+  //     router.push("/my-profile");
+  //   }
+  //   if (!data) {
+  //     router.push("/login");
+  //   }
+  //   const fetchData = () => {
+  //     if (data) {
+  //       setUserData(data);
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
 
   return (
     <>

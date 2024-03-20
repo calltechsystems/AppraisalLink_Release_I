@@ -155,6 +155,21 @@ export default function Exemple({
     setRefresh(true);
   };
 
+
+  //Re assign appraiser funciton 
+  const reAssign = (QuoteId)=>{
+    axios.put("/api/reAssignAppraiser",{
+      QuoteId : QuoteId
+    })
+    .then((res)=>{
+      console.log(res);
+      toast.success("Successfully Re assigned Appraiser");
+    })
+    .catch((err)=>{
+      toast.error("Try Again!!");
+    })
+  }
+
   const getCurrentPropertyInfoHandler = () => {
     let currentProperty = {};
     allProperties.map((prop, index) => {
@@ -401,10 +416,13 @@ export default function Exemple({
               ) : (
                 <div>
                   <h5 className="btn btn-danger m-1">Declined</h5>
+                  
+                  <div>
                   <li
                     className="list-inline-item"
                     data-toggle="tooltip"
                     data-placement="top"
+                    onClick
                     title="Change Appraiser"
                   >
                     <div className=" btn btn-color fw-bold ">
@@ -413,7 +431,8 @@ export default function Exemple({
                         <a
                           target="_blank"
                           rel="noopener noreferrer"
-                          onClick={openPopupModal_01}
+                          // onClick={openPopupModal_01}
+                          onClick={()=>reAssign(property.bidId)}
                           style={{ cursor: "pointer" }}
                         >
                           Change Apprasier
@@ -422,6 +441,7 @@ export default function Exemple({
                       {/* </Link> */}
                     </div>
                   </li>
+                  </div>
                 </div>
               )}{" "}
             </>

@@ -157,7 +157,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
       mortgageBrokrageLicNoRef !== ""
         ? mortgageBrokrageLicNoRef
         : userData.broker_Details.mortageBrokerageLicNo;
-
     const adressLine2 =
       addressLineTwoRef !== ""
         ? addressLineTwoRef
@@ -181,6 +180,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     // const emailId = emailId !== "" ? emailId : userData.broker_Details.emailId;
 
     const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
+    const cellNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const nameRegex = /^[A-Za-z]+$/;
 
     if (
@@ -189,8 +189,12 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     ) {
       toast.error("Name should be valid ");
     } else if (phoneNumberRegex.test(phoneNumber) === false || !phoneNumber) {
-      toast.error("enter a valid phone number please");
-    } else if (
+      toast.error("Enter a Valid Phone Number Please");
+    } 
+    // else if (cellNumberRegex.test(cellNumber) === false || !cellNumber) {
+    //   toast.error("Enter a Valid Cell Number Please");
+    // } 
+    else if (
       (!firstName ||
         !lastName ||
         !streetNumber ||
@@ -258,8 +262,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         state: state,
         postalCode: zipCode,
         phoneNumber: phoneNumber,
-        cellNumber: cellNumber,
-        mortageBrokerLicNo: mortageBrokerLicNo,
+        cellNumber: cellNumberRef,
+        mortageBrokerLicNo: mortgageBrokerLicNoRef,
         mortgageBrokerageLicNo: mortgageBrokrageLicNoRef,
         profileImage: SelectedImage,
       };

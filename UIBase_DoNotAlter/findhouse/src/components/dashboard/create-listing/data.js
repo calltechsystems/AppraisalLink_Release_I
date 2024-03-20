@@ -166,6 +166,13 @@ export const AppraiserStatusOptions = [
     type: "Appraisal Visit Confirmed",
     value: "Appraisal Visit Confirmed",
   },
+  
+  {
+    id: 6,
+    type: "Appraisal visit completed; report writing is pending until fee received",
+    value:
+      "Appraisal visit completed; report writing is pending until fee received",
+  },
   {
     id: 2,
     type: "Appraisal Report Writing in Progress",
@@ -189,12 +196,6 @@ export const AppraiserStatusOptions = [
     value: "Assignment Cancelled new status to be added",
   },
 
-  {
-    id: 6,
-    type: "Appraisal visit completed; report writing is pending until fee received",
-    value:
-      "Appraisal visit completed; report writing is pending until fee received",
-  },
 ];
 
 export const province = [

@@ -213,7 +213,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         !payload.appraiserCompanyName ||
         !payload.phoneNumber ||
         !payload.emailId ||
-        // !payload.mortageBrokerLicNo ||
+        !payload.licenseNumber ||
         // !payload.mortgageBrokerageLicNo ||
         !payload.lenderListUrl ||
         !payload.streetName ||
