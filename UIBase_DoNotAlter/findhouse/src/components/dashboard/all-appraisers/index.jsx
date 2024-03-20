@@ -81,8 +81,20 @@ const Index = () => {
   const [selectedAppraiser, setSelectedAppraiser] = useState(-1);
 
   const [isActive, setIsActive] = useState(0);
-
+  // const [userInfo, setUserInfo] = useState("");
   const [disable, setDisable] = useState(false);
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(currentViewAppraiser.userInfo);
+      // alert("Copied to clipboard!");
+      toast.dismiss();
+      toast.success("Copied To Clipboard");
+    } catch (error) {
+      console.error("Failed to copy:", error);
+    }
+  };
+
 
   const handleStatusUpdateHandler = () => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -117,30 +129,30 @@ const Index = () => {
     setSelectedAppraiser(-1);
   };
 
-  function copyToClipboard(text) {
-    // Create a temporary textarea element
-    const textarea = document.createElement("textarea");
+  // function copyToClipboard(text) {
+  //   // Create a temporary textarea element
+  //   const textarea = document.createElement("textarea");
 
-    // Set the text content to the provided text
-    textarea.value = text;
+  //   // Set the text content to the provided text
+  //   textarea.value = text;
 
-    // Append the textarea to the document
-    document.body.appendChild(textarea);
+  //   // Append the textarea to the document
+  //   document.body.appendChild(textarea);
 
-    // Select the text in the textarea
-    textarea.select();
+  //   // Select the text in the textarea
+  //   textarea.select();
 
-    try {
-      // Execute the copy command
-      document.execCommand("copy");
-      toast.success("Text copied to clipboard");
-    } catch (err) {
-      toast.error("Unable to copy text to clipboard", err);
-    } finally {
-      // Remove the textarea from the document
-      document.body.removeChild(textarea);
-    }
-  }
+  //   try {
+  //     // Execute the copy command
+  //     document.execCommand("copy");
+  //     toast.success("Text copied to clipboard");
+  //   } catch (err) {
+  //     toast.error("Unable to copy text to clipboard", err);
+  //   } finally {
+  //     // Remove the textarea from the document
+  //     document.body.removeChild(textarea);
+  //   }
+  // }
 
   const closeStatusUpdateHandler = () => {
     setSelectedAppraiser(-1);
@@ -1294,13 +1306,16 @@ const Index = () => {
                               <input
                                 type="text"
                                 value={currentViewAppraiser.userInfo}
+                                // value={userInfo}
+                                onChange={(e) => setUserInfo(e.target.value)}
                                 className="form-control"
                                 id="formGroupExampleInput3"
                               />
                               <button
-                                onClick={() =>
-                                  copyToClipboard(currentViewAppraiser.email)
-                                }
+                                onClick={handleCopy}
+                                // onClick={() =>
+                                //   copyToClipboard(currentViewAppraiser.email)
+                                // }
                                 className="btn btn-color w-10 mt-1"
                                 title="Copy Username"
                                 style={{ marginLeft: "12px" }}
