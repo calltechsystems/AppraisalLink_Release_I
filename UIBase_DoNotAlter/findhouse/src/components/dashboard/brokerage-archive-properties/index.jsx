@@ -197,7 +197,7 @@ const Index = () => {
   return (
     <>
       {/* <!-- Main Header Nav --> */}
-      <Header />
+      <Header userData={userData}/>
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />

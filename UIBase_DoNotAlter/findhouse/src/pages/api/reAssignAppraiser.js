@@ -15,13 +15,13 @@ async function handler(request, response) {
       return response.status(403).json({ error: "Not a verified Data" });
     }
 
-    const { QuoteID , token } = body;
+    const { QuoteId , token } = body;
 
    
 
 
     const userResponse = await axios.put(`${domain}/com.appraisalland.Broker/quoteReActionByBroker `, {
-        QuoteID : QuoteID
+        QuoteID : QuoteId
     }, {
       headers: {
         Authorization: `Bearer ${token}`,

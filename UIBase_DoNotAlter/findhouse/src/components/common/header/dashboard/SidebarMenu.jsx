@@ -5,12 +5,15 @@ import {
   isSinglePageActive,
 } from "../../../../utils/daynamicNavigation";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const SidebarMenu = () => {
   const route = useRouter();
   const [isCollapsed, setIsCollapsed] = useState(false);
-
+  let userData = {};
+  useEffect(() => {
+    userData = JSON.parse(localStorage.getItem("user"));
+  }, []);
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
   };
@@ -241,7 +244,29 @@ const SidebarMenu = () => {
         </li> */}
         {/* End manage listing */}
 
-        <li className="title">
+        {userData.brokerage_Details?.brokerageId === null && (
+          <li className="title">
+            <span>Manage Account</span>
+            <ul>
+              {manageAccount.map((item) => (
+                <li
+                  className={
+                    isSinglePageActive(item.route, route.pathname)
+                      ? "active"
+                      : ""
+                  }
+                  key={item.id}
+                >
+                  <Link href={item.route}>
+                    <i className={item.icon}></i> <span>{item.name}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </li>
+        )}
+
+        {/* <li className="title">
           <span>Manage Account</span>
           <ul>
             {manageAccount.map((item) => (
@@ -257,7 +282,7 @@ const SidebarMenu = () => {
               </li>
             ))}
           </ul>
-        </li>
+        </li> */}
         <li className="link-hover sidebar-menu">
           <Link href="mailto:patelshubhendra@gmail.com">
             <i className="flaticon-envelope"></i>
