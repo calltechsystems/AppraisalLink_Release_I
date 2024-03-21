@@ -14,7 +14,7 @@ const MyAccount = ({ user, profileCount, setProfile, userData }) => {
     {
       id: 2,
       name: "Change Password ",
-      ruterPath: "/appraiser-company-change-password",
+      ruterPath: "/appraiser-change-password",
     },
     { id: 5, name: "Log out", ruterPath: "/login" },
   ];
@@ -161,7 +161,7 @@ const MyAccount = ({ user, profileCount, setProfile, userData }) => {
           alt="e1.png"
         />
         <p>
-          {userData?.appraiserCompany_Datails
+          {userData?.appraiserCompany_Datails?.firstName
             ? `${userData?.appraiserCompany_Datails?.firstName} ${userData?.appraiserCompany_Datails?.lastName}`
             : "Name"}
           <br />

@@ -156,11 +156,18 @@ export default function Exemple({
   };
 
 
+
   //Re assign appraiser funciton 
   const reAssign = (QuoteId)=>{
-    axios.put("/api/reAssignAppraiser",{
-      QuoteId : QuoteId
-    })
+
+    const userData = JSON.parse(localStorage.getItem("user"))
+    const payload = {
+      QuoteId : QuoteId,
+      token : userData.token
+    };
+  
+    const encryptedBpdy = encryptionData(payload)
+    axios.put("/api/reAssignAppraiser",encryptedBpdy)
     .then((res)=>{
       console.log(res);
       toast.success("Successfully Re assigned Appraiser");
@@ -417,26 +424,19 @@ export default function Exemple({
                 <div>
                   <h5 className="btn btn-danger m-1">Declined</h5>
                   
-                  <div>
+                  <div onClick={()=>reAssign(property.bidId)}>
                   <li
                     className="list-inline-item"
                     data-toggle="tooltip"
                     data-placement="top"
-                    onClick
+                    
                     title="Change Appraiser"
                   >
                     <div className=" btn btn-color fw-bold ">
                       <span className="flaticon-replace text-light">
                         {" "}
-                        <a
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          // onClick={openPopupModal_01}
-                          onClick={()=>reAssign(property.bidId)}
-                          style={{ cursor: "pointer" }}
-                        >
+                       
                           Change Apprasier
-                        </a>
                       </span>
                       {/* </Link> */}
                     </div>

@@ -15,25 +15,26 @@ async function handler(request, response) {
       return response.status(403).json({ error: "Not a verified Data" });
     }
 
-    const { QuoteId , token } = body;
+    const { QuoteId, token } = body;
 
-   
-
-
-    const userResponse = await axios.put(`${domain}/com.appraisalland.Broker/quoteReActionByBroker `, {
-        QuoteID : QuoteId
-    }, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
+    const userResponse = await axios.put(
+      `${domain}/com.appraisalland.Broker/quoteReActionByBroker`,
+      {
+        QuoteID: QuoteId,
       },
-    });
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
     const user = userResponse.data;
 
     if (!user) {
       return response.status(404).json({ error: "User Not Found" });
     }
-    
+
     return response.status(200).json({ msg: "OK", userData: user });
   } catch (err) {
     console.log(err);

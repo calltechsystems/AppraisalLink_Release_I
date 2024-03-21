@@ -535,7 +535,7 @@ export default function Exemple({
                     </Link>{" "} */}
                       <Link
                         className="btn btn-color-table"
-                        href={`/create-listing/${property.orderId}`}
+                        href={`/create-listing/${property.propertyId}`}
                       >
                         <span className="flaticon-edit"></span>
                       </Link>

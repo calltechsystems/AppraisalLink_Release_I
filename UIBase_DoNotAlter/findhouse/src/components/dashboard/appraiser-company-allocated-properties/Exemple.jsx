@@ -172,7 +172,7 @@ export default function Exemple({
         bidValue = bid;
       }
     });
-    //console.log("bidValue",bidValue)
+    console.log("bidValue",property,bidValue)
     return bidValue;
     //   return requestTime >= twentyFourHoursAgo && requestTime <= currentTime;
   };
@@ -586,8 +586,6 @@ export default function Exemple({
     const payload = {
       token: userData.token,
     };
-    let tempProperties = [],
-      tempWishlist = [];
     axios
       .get("/api/getAllListedProperties", {
         headers: {
@@ -615,16 +613,11 @@ export default function Exemple({
           })
           .then((res) => {
             // //console.log(res.data.data.$values);
-            tempProperties = res.data.data.$values;
+            let tempProperties = res.data.data.$values;
             const temp = res.data.data.$values;
+        
+            
 
-            tempProperties = temp.filter((prop, index) => {
-              if (String(prop.userId) === String(data.userId)) {
-                return true;
-              } else {
-                return false;
-              }
-            });
             let tempBids = [];
             axios
               .get("/api/getAllBids", {

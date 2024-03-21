@@ -17,7 +17,7 @@ const Index = () => {
   const router = useRouter();
   const [properties, setProperties] = useState([]);
   const [refresh, setRefresh] = useState(false);
-  const [FilteringType , setFilteringType] = useState("Monthly");
+  const [FilteringType, setFilteringType] = useState("Monthly");
 
   const [allProperties, setAllProperties] = useState([]);
 
@@ -98,7 +98,6 @@ const Index = () => {
           },
         })
         .then((res) => {
-         
           const temp = res.data.data.properties.$values;
 
           setProperties(temp);
@@ -167,45 +166,50 @@ const Index = () => {
 
   useEffect(() => {
     const categorizeDataByMonth = () => {
-      
       const type = FilteringType ? FilteringType : "Monthly";
       const data = properties;
       if (data.length === 0) {
         return Array(12).fill(0); // Initialize an array with 12 elements, all initialized to 0.
       }
-  
+
       const currentDate = new Date();
       const currentMonth = currentDate.getMonth();
       const currentYear = currentDate.getFullYear();
       const currentWeek = getWeekNumber(currentDate);
-  
+
       const counts = {
         Monthly: Array(12).fill(0),
         Weekly: Array(52).fill(0),
-        Yearly: Array(currentYear + 1).fill(0)
+        Yearly: Array(currentYear + 1).fill(0),
       };
 
-     
-  
       data.forEach((property) => {
         let isPresent = false;
         let time = {};
-  
+
         wishlist.forEach((prop) => {
           if (String(prop.orderId) === String(property.orderId))
             time = prop.addedDatetime ? prop.addedDatetime : new Date();
-            isPresent = true;
+          isPresent = true;
         });
-  
+
         const createdAtDate = new Date(time);
         const propertyMonth = createdAtDate.getMonth();
         const propertyYear = createdAtDate.getFullYear();
         const propertyWeek = getWeekNumber(createdAtDate);
-  
+
         if (isPresent) {
-          if (type === "Monthly" && propertyYear === currentYear && propertyMonth <= currentMonth) {
+          if (
+            type === "Monthly" &&
+            propertyYear === currentYear &&
+            propertyMonth <= currentMonth
+          ) {
             counts.Monthly[propertyMonth]++;
-          } else if (type === "Weekly" && propertyYear === currentYear && propertyWeek <= currentWeek) {
+          } else if (
+            type === "Weekly" &&
+            propertyYear === currentYear &&
+            propertyWeek <= currentWeek
+          ) {
             counts.Weekly[propertyWeek - 1]++;
           } else if (type === "Yearly" && propertyYear <= currentYear) {
             counts.Yearly[propertyYear]++;
@@ -216,41 +220,52 @@ const Index = () => {
       data.forEach((property) => {
         let isPresent = false;
         let time = {};
-  
+
         bids.forEach((bid) => {
-          if (String(bid.orderId) === String(property.orderId)){
+          if (String(bid.orderId) === String(property.orderId)) {
             time = bid.requestTime;
             isPresent = true;
           }
         });
-  
+
         const createdAtDate = new Date(time);
         const propertyMonth = createdAtDate.getMonth();
         const propertyYear = createdAtDate.getFullYear();
         const propertyWeek = getWeekNumber(createdAtDate);
-  
+
         if (isPresent) {
-          if (type === "Monthly" && propertyYear === currentYear && propertyMonth <= currentMonth) {
+          if (
+            type === "Monthly" &&
+            propertyYear === currentYear &&
+            propertyMonth <= currentMonth
+          ) {
             counts.Monthly[propertyMonth]++;
-          } else if (type === "Weekly" && propertyYear === currentYear && propertyWeek <= currentWeek) {
+          } else if (
+            type === "Weekly" &&
+            propertyYear === currentYear &&
+            propertyWeek <= currentWeek
+          ) {
             counts.Weekly[propertyWeek - 1]++;
           } else if (type === "Yearly" && propertyYear <= currentYear) {
             counts.Yearly[propertyYear]++;
-          }
-          else{
+          } else {
             counts.Monthly[propertyMonth]++;
           }
         }
       });
-  
-      console.log("type",counts)
-      return type === "Monthly" ? counts.Monthly : type === "Weekly" ? counts.Weekly : counts.Yearly;
+
+      console.log("type", counts);
+      return type === "Monthly"
+        ? counts.Monthly
+        : type === "Weekly"
+        ? counts.Weekly
+        : counts.Yearly;
     };
-  
+
     const temp = categorizeDataByMonth(properties);
     setChartData(temp);
   }, [properties, FilteringType]);
-  
+
   function getWeekNumber(date) {
     const oneJan = new Date(date.getFullYear(), 0, 1);
     const numberOfDays = Math.floor((date - oneJan) / (24 * 60 * 60 * 1000));
@@ -310,16 +325,17 @@ const Index = () => {
                 >
                   <div className="style2">
                     <h2 className="breadcrumb_title">
-                      {userData?.appraiser_Details
-                        ? `${userData?.appraiser_Details?.firstName} ${userData?.appraiser_Details?.lastName}`
-                        : ""}
+                      {userData?.appraiserCompany_Datails
+                        ? `${userData?.appraiserCompany_Datails?.firstName} ${userData?.appraiserCompany_Datails?.lastName}`
+                        : "Name"}
                     </h2>
                   </div>
                   <div>
-                    <Filtering 
-                    setRefresh={setRefresh}
-                    setFilteringType={setFilteringType}
-                    FilteringType={FilteringType} />
+                    <Filtering
+                      setRefresh={setRefresh}
+                      setFilteringType={setFilteringType}
+                      FilteringType={FilteringType}
+                    />
                   </div>
                 </div>
               </div>

@@ -95,6 +95,7 @@ const Index = () => {
     }
   };
 
+
   const handleStatusUpdateHandler = () => {
     const userData = JSON.parse(localStorage.getItem("user"));
     setDisable(true);
