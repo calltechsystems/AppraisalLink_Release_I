@@ -525,8 +525,8 @@ const HeaderMenuContent = ({
               height={45}
               className="rounded-circle"
               src={
-                userData?.appraiserCompany_Datails?.profileImage
-                  ? userData?.appraiserCompany_Datails?.profileImage
+                userInfo?.appraiserCompany_Datails?.profileImage
+                  ? userInfo?.appraiserCompany_Datails?.profileImage
                   : "/assets/images/home/placeholder_01.jpg"
               }
               alt="e1.png"

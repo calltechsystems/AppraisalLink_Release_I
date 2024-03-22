@@ -38,6 +38,8 @@ const Index = () => {
   const [lowRangeBid, setLowRangeBid] = useState("");
   const [propertyId, setPropertyId] = useState(null);
 
+  const [allAssignedprop,setAssignedProp]=useState([])
+
   const [openAppraiser, setOpenAppraiser] = useState(false);
 
   const [disable, setDisble] = useState(false);
@@ -99,6 +101,7 @@ const Index = () => {
     setOpenDate(false);
     setIsStatusModal(false);
   };
+
 
   const [openBrokerModal, setOpenBrokerModal] = useState(false);
   const [broker, setBroker] = useState({});
@@ -667,6 +670,7 @@ const Index = () => {
                           start={start}
                           end={end}
                           setAllBrokers={setAllBrokers}
+                          setAssignedProp={setAssignedProp}
                           properties={
                             searchInput === "" ? properties : filterProperty
                           }
@@ -2151,7 +2155,7 @@ const Index = () => {
                   <Pagination
                     setStart={setStart}
                     setEnd={setEnd}
-                    properties={wishlistedProperties}
+                    properties={properties}
                   />
                 </div>
               </div>

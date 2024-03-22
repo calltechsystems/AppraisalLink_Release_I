@@ -147,6 +147,7 @@ export default function Exemple({
   setErrorMessage,
   setModalIsOpenError,
   setRefresh,
+  setAssignedProp,
   setAllBrokers,
   setStartLoading,
 
@@ -347,7 +348,7 @@ export default function Exemple({
     setProperties([]);
   }, [checkData]);
 
-  //console.log("assignProperties",allProperties)
+  console.log("assignProperties",allProperties,properties)
 
   useEffect(() => {
     const getData = () => {
@@ -566,10 +567,13 @@ export default function Exemple({
         };
         tempData.push(updatedRow);
       });
+      setAssignedProp(tempData)
       setUpdatedData(tempData);
     };
+
     getData();
   }, [properties]);
+  console.log("updatedDATA",updatedData)
 
   useEffect(() => {
     setUpdatedCode(true);

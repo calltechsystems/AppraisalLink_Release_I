@@ -10,6 +10,7 @@ const TableData = ({
   userData,
   open,
   close,
+  setAssignedProp,
   setAssignedAppraiser,
   setCurrentBid,
   openAppraiserInfoModal,
@@ -316,6 +317,7 @@ const TableData = ({
           setCurrentBid={setCurrentBid}
           setOpenAssignModal={setOpenAssignModal}
           end={end}
+          setAssignedProp={setAssignedProp}
         />
       )}
     </>

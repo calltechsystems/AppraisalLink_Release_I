@@ -11,9 +11,13 @@ const SidebarMenu = () => {
   const route = useRouter();
   const [isCollapsed, setIsCollapsed] = useState(false);
   let userData = {};
-  useEffect(()=>{
-    userData = JSON.parse(localStorage.getItem("user"))
-  },[])
+  const [isBrokerByBrokerage, setIsBrokerByBrokerage] = useState(false);
+  useEffect(() => {
+    userData = JSON.parse(localStorage.getItem("user"));
+    if (userData?.broker_Details?.brokerageId !== null) {
+      setIsBrokerByBrokerage(true);
+    }
+  }, []);
 
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
@@ -50,6 +54,12 @@ const SidebarMenu = () => {
       icon: "flaticon-box",
     },
     { id: 4, name: "Help desk", route: "/contact", icon: "flaticon-telephone" },
+    {
+      id: 3,
+      name: "Contact Us",
+      route: "mailto:patelshubhendra@gmail.com",
+      icon: "flaticon-envelope",
+    },
   ];
 
   return (
@@ -245,29 +255,49 @@ const SidebarMenu = () => {
         </li> */}
         {/* End manage listing */}
 
-        {userData.brokerage_Details !== null && userData?.brokerage_Details?.brokerageId ? "" : <li className="title">
+        <li className="title">
           <span>Manage Account</span>
-          <ul>
-            {manageAccount.map((item) => (
-              <li
-                className={
-                  isSinglePageActive(item.route, route.pathname) ? "active" : ""
-                }
-                key={item.id}
-              >
-                <Link href={item.route}>
-                  <i className={item.icon}></i> <span>{item.name}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </li>}
-        <li className="link-hover sidebar-menu">
-          <Link href="mailto:patelshubhendra@gmail.com">
-            <i className="flaticon-envelope"></i>
-            <span>Contact Us</span>
-          </Link>
+          {isBrokerByBrokerage ? (
+            ""
+          ) : (
+            <ul>
+              {manageAccount.map((item) => (
+                <li
+                  className={
+                    isSinglePageActive(item.route, route.pathname)
+                      ? "active"
+                      : ""
+                  }
+                  key={item.id}
+                >
+                  <Link href={item.route}>
+                    <i className={item.icon}></i> <span>{item.name}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
         </li>
+        {!isBrokerByBrokerage ? (
+          ""
+        ) : (
+          <li className="link-hover sidebar-menu">
+            <Link href="/contact">
+              <i className="flaticon-envelope"></i>
+              <span>Help Desk</span>
+            </Link>
+          </li>
+        )}
+        {!isBrokerByBrokerage ? (
+          ""
+        ) : (
+          <li className="link-hover sidebar-menu">
+            <Link href="mailto:patelshubhendra@gmail.com">
+              <i className="flaticon-envelope"></i>
+              <span>Contact Us</span>
+            </Link>
+          </li>
+        )}
       </ul>
     </>
   );

@@ -7,13 +7,8 @@ import {
 import Image from "next/image";
 import { useEffect } from "react";
 
-const SidebarMenu = ({  }) => {
+const SidebarMenu = ({ userData }) => {
   const route = useRouter();
-  let userData = {};
-
-  useEffect(()=>{
-    userData = JSON.parse(localStorage.getItem("user"));
-  },[]);
 
   const myProperties = [
     { id: 1, name: "General Elements", route: "/my-properties" },
@@ -25,7 +20,7 @@ const SidebarMenu = ({  }) => {
     {
       id: 3,
       name: "Add / Modify Subscriptions",
-      route: "/brokerage-add-subscription",
+      route: "/brokerage-plans",
       icon: "flaticon-telephone",
     },
     {
@@ -249,6 +244,12 @@ const SidebarMenu = ({  }) => {
               </li>
             ))}
           </ul>
+        </li>
+        <li className="link-hover sidebar-menu">
+          <Link href="mailto:patelshubhendra@gmail.com">
+            <i className="flaticon-envelope"></i>
+            <span>Contact Us</span>
+          </Link>
         </li>
       </ul>
     </>

@@ -215,7 +215,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         !payload.emailId ||
         !payload.licenseNumber ||
         // !payload.mortgageBrokerageLicNo ||
-        !payload.lenderListUrl ||
+        // !payload.lenderListUrl ||
         !payload.streetName ||
         !payload.streetNumber ||
         !payload.city ||
@@ -362,9 +362,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   />
                   {edit && (
                     <input
-                    type="file"
-                    onChange={(e) => handleFileChange(e, 1)}
-                  />
+                      type="file"
+                      onChange={(e) => handleFileChange(e, 1)}
+                    />
                   )}
                 </div>
               </div>
@@ -587,10 +587,10 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       </label>
                     </div>
                     <div className="col-lg-3">
-                    <input
-                    type="file"
-                    onChange={(e) => handleFileChange(e, 2)}
-                  />
+                      <input
+                        type="file"
+                        onChange={(e) => handleFileChange(e, 2)}
+                      />
                     </div>
                     <div className="col-lg-5 mt-1">
                       <Link
