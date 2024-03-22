@@ -11,15 +11,15 @@ async function handler(request, response) {
     const orderId = request.query.orderId;
     const userId = request.query.userId;
 
-    // console.log(request.query)
-   
+    const payload = {
+      userId: Number(userId),
+      status: String(status) === "true" ? true : false,
+      orderId: Number(orderId),
+    }
+    console.log(payload)
     const userResponse = await axios.post(
       `${domain}/com.appraisalland.Property/archievePropertyByBroker`,
-      {
-        userId: Number(userId),
-        status: Boolean(status),
-        orderId: Number(orderId),
-      },
+      payload,
       {
         headers: {
           Authorization: token,

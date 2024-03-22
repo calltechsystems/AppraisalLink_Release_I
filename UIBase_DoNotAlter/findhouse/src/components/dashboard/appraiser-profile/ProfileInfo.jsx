@@ -333,7 +333,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
 
     toast.dismiss("Uploading !!!");
     axios
-      .post(`${BACKEND_DOMAIN}/FileUpload/upload`, formdata, {
+      .post(`${BACKEND_DOMAIN}/FileUpload/fileupload`, formdata, {
         headers: {
           Authorization: `Bearer ${userData?.token}`,
           "Content-Type": "multipart/form-data",

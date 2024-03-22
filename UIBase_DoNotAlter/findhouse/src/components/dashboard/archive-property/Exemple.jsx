@@ -188,9 +188,9 @@ export default function Exemple({
           "Content-Type": "application/json",
         },
         params: {
-          orderId: id,
-          status: false,
-          userId: data.userId,
+          orderId: Number(id),
+          status: Boolean(false),
+          userId: Number(data.userId),
         },
       })
       .then((res) => {

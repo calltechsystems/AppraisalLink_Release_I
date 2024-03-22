@@ -160,9 +160,12 @@ export default function Exemple({
   //Re assign appraiser funciton 
   const reAssign = (QuoteId)=>{
 
+    toast.loading("Re Assigning the appraiser ");
+
     const userData = JSON.parse(localStorage.getItem("user"))
     const payload = {
       QuoteId : QuoteId,
+      userId : userData.userId,
       token : userData.token
     };
   
@@ -170,9 +173,11 @@ export default function Exemple({
     axios.put("/api/reAssignAppraiser",encryptedBpdy)
     .then((res)=>{
       console.log(res);
+      toast.dismiss()
       toast.success("Successfully Re assigned Appraiser");
     })
     .catch((err)=>{
+      toast.dismiss()
       toast.error("Try Again!!");
     })
   }

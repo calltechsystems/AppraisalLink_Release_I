@@ -47,19 +47,7 @@ const Index = () => {
   const [currentViewBroker, setCurrentViewBroker] = useState({});
   const [openViewModal, setOpenViewModal] = useState(false);
   const [isStatusModal, setIsStatusModal] = useState(false);
-  // const [userInformation, setUserInformation] = useState(false);
   const [selectedBroker, setSelectedBroker] = useState({});
-
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(currentViewBroker.userInformation);
-      // alert("Copied to clipboard!");
-      toast.dismiss();
-      toast.success("Copied To Clipboard");
-    } catch (error) {
-      console.error("Failed to copy:", error);
-    }
-  };
 
   const handleStatusUpdateHandler = () => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -1228,15 +1216,13 @@ const Index = () => {
                               <input
                                 type="text"
                                 value={currentViewBroker.userInformation}
-                                onChange={(e) => setUserInfo(e.target.value)}
                                 className="form-control"
                                 id="formGroupExampleInput3"
                               />
                               <button
-                                onClick={handleCopy}
-                                // onClick={() =>
-                                //   copyToClipboard(currentViewBroker.email)
-                                // }
+                                onClick={() =>
+                                  copyToClipboard(currentViewBroker.email)
+                                }
                                 className="btn btn-color w-10 mt-1"
                                 title="Copy Username"
                                 style={{ marginLeft: "12px" }}
