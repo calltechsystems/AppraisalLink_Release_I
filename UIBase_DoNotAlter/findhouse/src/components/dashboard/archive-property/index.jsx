@@ -12,6 +12,8 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/router";
 import Exemple from "./Exemple";
+import Image from "next/image";
+import Link from "next/link";
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
