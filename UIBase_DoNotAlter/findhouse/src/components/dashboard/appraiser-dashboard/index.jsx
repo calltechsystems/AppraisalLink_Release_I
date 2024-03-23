@@ -325,8 +325,8 @@ const Index = () => {
                 >
                   <div className="style2">
                     <h2 className="breadcrumb_title">
-                      {userData?.appraiserCompany_Datails
-                        ? `${userData?.appraiserCompany_Datails?.firstName} ${userData?.appraiserCompany_Datails?.lastName}`
+                      {userData?.appraiser_Details
+                        ? `${userData?.appraiser_Details?.firstName} ${userData?.appraiser_Details?.lastName}`
                         : "Name"}
                     </h2>
                   </div>

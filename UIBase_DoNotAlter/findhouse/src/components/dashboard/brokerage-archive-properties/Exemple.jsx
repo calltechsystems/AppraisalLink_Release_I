@@ -634,7 +634,7 @@ export default function Exemple({
                       className="btn btn-color-table"
                       onClick={() => onUnarchiveHandler(property.orderId)}
                     >
-                      <Link className="color-light" href={`/brokerage-archive-property`}>
+                      <Link className="color-light" href={`/brokerage-archive-properties`}>
                         <span className="text-light flaticon-close">
                           {/* <FaArchive /> */}
                         </span>

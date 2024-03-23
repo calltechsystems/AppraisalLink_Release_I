@@ -132,6 +132,34 @@ const Index = () => {
   const closeModal = () => {
     setModalOpen(false);
   };
+
+  const archievePropertyHandler = (id) => {
+    const data = JSON.parse(localStorage.getItem("user"));
+
+    toast.loading("archeiving this property");
+    axios
+      .get("/api/propertyArcheive", {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+          "Content-Type": "application/json",
+        },
+        params: {
+          orderId: id,
+          status: true,
+          userId: data.userId,
+        },
+      })
+      .then((res) => {
+        toast.dismiss();
+        toast.success("Successfully added to archived properties!!");
+        window.location.reload();
+      })
+      .catch((err) => {
+        toast.error(err);
+      });
+    // closeModal();
+  };
+
   const [propValue, setPropValue] = useState({});
 
   const onHoldHandler = () => {
@@ -514,6 +542,7 @@ const Index = () => {
                           setCurrentProperty={setCurrentProperty}
                           setSelectedBroker={setSelectedBroker}
                           setIsCancelProperty={setIsCancelProperty}
+                          archievePropertyHandler={archievePropertyHandler}
                           setIsHoldProperty={setIsHoldProperty}
                           end={end}
                         />
