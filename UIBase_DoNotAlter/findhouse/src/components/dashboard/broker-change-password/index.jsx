@@ -122,7 +122,7 @@ const Index = () => {
       </section>
       <div className="row mt200">
         <div className="col-lg-12">
-          <div className="copyright-widget text-end">
+          <div className="copyright-widget-dashboard text-end">
             <p>
               &copy; {new Date().getFullYear()} Appraisal Land. All Rights
               Reserved.

@@ -1523,7 +1523,7 @@ const Index = ({ isView, propertyData }) => {
                   className="col-lg-12"
                   style={{ backgroundColor: "#2e008b" }}
                 >
-                  <div className="copyright-widget text-center">
+                  <div className="copyright-widget-dashboard text-center">
                     <p>
                       &copy; {new Date().getFullYear()} Appraisal Land. All
                       Rights Reserved.

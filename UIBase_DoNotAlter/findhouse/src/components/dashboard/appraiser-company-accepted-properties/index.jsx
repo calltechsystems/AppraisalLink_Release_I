@@ -1841,7 +1841,7 @@ const Index = () => {
 
             <div className="row mt50">
               <div className="col-lg-12">
-                <div className="copyright-widget text-center">
+                <div className="copyright-widget-dashboard text-center">
                   <p>
                     &copy; {new Date().getFullYear()} Appraisal Land. All Rights
                     Reserved.
