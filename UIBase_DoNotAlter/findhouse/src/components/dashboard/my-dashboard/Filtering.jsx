@@ -1,17 +1,20 @@
 import { FaRedo } from "react-icons/fa";
 
-const Filtering = ({ setRefresh , FilterQuery , setFilterQuery }) => {
+const Filtering = ({ setRefresh, FilterQuery, setFilterQuery }) => {
   const refreshHandler = () => {
-    setRefresh(true);
+    // setRefresh(true);
+    window.location.reload();
   };
   return (
     <>
       <div className="col=lg-12">
         <div className="row">
           <div className="col-lg-9">
-            <select className="selectpicker show-tick form-select c_select"
-            value={FilterQuery}
-            onChange={(e)=>setFilterQuery(e.target.value)}>
+            <select
+              className="selectpicker show-tick form-select c_select"
+              value={FilterQuery}
+              onChange={(e) => setFilterQuery(e.target.value)}
+            >
               <option value={"Monthly"}>Monthly</option>
               <option value={"Weekly"}>Weekly</option>
               <option value={"Yearly"}>Yearly</option>

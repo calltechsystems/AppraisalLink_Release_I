@@ -114,6 +114,18 @@ const Index = () => {
     setIsQuoteModalOpen(true);
   };
 
+  function getMinDateTime() {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
+    const day = currentDate.getDate().toString().padStart(2, "0");
+    const hours = currentDate.getHours().toString().padStart(2, "0");
+    const minutes = currentDate.getMinutes().toString().padStart(2, "0");
+
+    // Format the date as YYYY-MM-DDTHH:mm
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  }
+
   const [openDate, setOpenDate] = useState(false);
   const [statusDate, setStatusDate] = useState("");
 
@@ -1743,6 +1755,7 @@ const Index = () => {
                           id="formGroupExampleInput3"
                           onChange={(e) => setStatusDate(e.target.value)}
                           value={statusDate}
+                          min={getMinDateTime()}
                         />
                       </div>
                     )}

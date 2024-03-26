@@ -18,7 +18,7 @@ const Index = () => {
   const [searchInput, setSearchInput] = useState("");
   const [refresh, setRefresh] = useState(false);
   const [property, setProperty] = useState("");
-  const [allArchive,setAllArchive]=useState([]);
+  const [allArchive, setAllArchive] = useState([]);
   const [filterProperty, setFilterProperty] = useState("");
   const [filterQuery, setFilterQuery] = useState("Last 30 Days");
   const [properties, setProperties] = useState([]);
