@@ -12,6 +12,8 @@ const Modal = ({ modalOpen, closeModal, price }) => {
   const checkOutHandler = () => {
     const data = JSON.parse(localStorage.getItem("user"));
 
+    console.log(price)
+    if(String(price.type) === "plan"){
     const payload = {
       planId: price.id,
       userId: data.userId,
@@ -29,6 +31,27 @@ const Modal = ({ modalOpen, closeModal, price }) => {
       .catch((err) => {
         toast.error(err.message);
       });
+      }
+      else{
+        const payload = {
+          TopUpId: price.id,
+          UserId: data.userId,
+          token: data.token,
+        };
+    
+        const encryptiondata = encryptionData(payload);
+    
+        axios
+          .post("/api/addTopUp", encryptiondata)
+          .then((res) => {
+            console.log(res.data)
+            setPaypalUrl(res.data.userData.response);
+            setStatus(1);
+          })
+          .catch((err) => {
+            toast.error(err.message);
+          });
+          }
   };
 
   useEffect(() => {

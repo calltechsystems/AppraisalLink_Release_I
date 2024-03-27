@@ -8,12 +8,6 @@ import { useRouter } from "next/router";
 // import "./SmartTable.css";
 
 const headCells = [
-  // {
-  //   id: "AppraiserId",
-  //   numeric: false,
-  //   label: "Appraiser ID",
-  //   width: 150,
-  // },
   {
     id: "appraiser",
     numeric: false,
@@ -114,6 +108,7 @@ export default function Exemple({
   const [updatedData, setUpdatedData] = useState([]);
   const [allProperties, setAllProperties] = useState([]);
   const [show, setShow] = useState(false);
+  const [acceptedBid,setAcceptedBid]=useState(-1)
   const [all, setAll] = useState([]);
 
   const router = useRouter();
@@ -165,8 +160,7 @@ export default function Exemple({
     const userData = JSON.parse(localStorage.getItem("user"))
     const payload = {
       QuoteId : QuoteId,
-      userId : userData.userId,
-      token : userData.token
+      token : userData.token,
     };
   
     const encryptedBpdy = encryptionData(payload)
@@ -180,6 +174,7 @@ export default function Exemple({
       toast.dismiss()
       toast.error("Try Again!!");
     })
+    window.location.reload()
   }
 
   const getCurrentPropertyInfoHandler = () => {
@@ -243,6 +238,8 @@ export default function Exemple({
       });
   };
 
+
+
   const rejectRequestHandler = (id) => {
     const data = JSON.parse(localStorage.getItem("user"));
     toast.loading("Declining the bid ...");
@@ -268,37 +265,15 @@ export default function Exemple({
       });
   };
 
-  // const getAppraiser = (id) => {
-  //   let selectedAppraiser = {};
-  //   allAssignAppraiser.map((appraiser, index) => {
-  //     console.log(appraiser, id);
-  //     if (String(appraiser.id) === String(id)) {
-  //       selectedAppraiser = appraiser;
-  //     }
-  //   });
-
-  //   console.log(selectedAppraiser);
-  //   openAppraiserInfoModal(selectedAppraiser);
-  // };
-  // const getAppraiserName = (id) => {
-  //   let selectedAppraiser = {};
-  //   allAssignAppraiser.map((appraiser, index) => {
-  //     console.log(appraiser, id);
-  //     if (String(appraiser.id) === String(id)) {
-  //       selectedAppraiser = appraiser;
-  //     }
-  //   });
-
-  //   return `${selectedAppraiser.firstName} ${selectedAppraiser.lastName}`;
-  // };
-
   useEffect(() => {
     const prop = getCurrentPropertyInfoHandler();
 
     const getData = () => {
       properties.map((property, index) => {
         const isWait = prop.isOnCancel || prop.isOnHold ? true : false;
-
+        if(property.status === 1){
+          setAcceptedBid(property.bidId)
+        }
         const updatedRow = {
           AppraiserId: property.appraiserUserId ? property.appraiserUserId : 0,
           quote: `$ ${property.bidAmount}`,

@@ -45,7 +45,7 @@ const headCells = [
   {
     id: "remained_prop",
     numeric: false,
-    label: "Remained Properties",
+    label: "Remaining Properties",
     width: 150,
   },
   {
@@ -191,7 +191,7 @@ export default function Exemple({
     const getData = () => {
       const date = formatDate(new Date());
       
-      data.map((property, index) => {
+      data?.result?.$values.map((property, index) => {
         
         
         
@@ -210,7 +210,7 @@ export default function Exemple({
           amount:property.planAmount? `$ ${property.planAmount}` : '$ -',
           st_date:formatDate(property.createdTime),
           end_date: formatDate(endDate) ,
-          remained_prop:0,
+          remained_prop:data?.noUsedProperties,
           status:
             expired ?
             <span className="btn btn-danger  w-100">In-Active</span>

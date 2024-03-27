@@ -83,8 +83,8 @@ const Index = () => {
       })
       .then((res) => {
         toast.dismiss();
-        console.log(res.data.data.$values);
-        setData(res.data.data.$values);
+        console.log(res.data.data);
+        setData(res.data.data);
         setRerender(false);
       })
       .catch((err) => {
