@@ -54,16 +54,15 @@ const Pricing = ({
     },
   ];
   let userData = {};
-  const [selectedPackage,setSelectedPackage]=useState({});
-  useEffect(()=>{
+  const [selectedPackage, setSelectedPackage] = useState({});
+  useEffect(() => {
     userData = JSON.parse(localStorage.getItem("user"));
     const Packages = userData.userSubscription?.$values;
     const len = Packages?.length;
-    setSelectedPackage(Packages?.length > 0 ? Packages[len-1] : {});
-   
-  },[])
+    setSelectedPackage(Packages?.length > 0 ? Packages[len - 1] : {});
+  }, []);
 
-  console.log(selectedPackage,data);
+  console.log(selectedPackage, data);
 
   const selectedIdStyle = selectedId ? selectedId : "2";
   const content =
@@ -78,14 +77,9 @@ const Pricing = ({
     });
   };
 
-  const cancelPackageHandler=(planId)=>{
-    const payload = {
-      
-    }
-  }
-
- 
- 
+  const cancelPackageHandler = (planId) => {
+    const payload = {};
+  };
 
   return (
     <>
@@ -110,22 +104,21 @@ const Pricing = ({
                     color: "#2e008b",
                   }}
                 >
-                    Recommended Plan{" "}
-                </div>
-              ) : ( 
-                <div
-                className="p-1 fw-bold"
-                style={{
-                  visibility:"hidden",
-                  backgroundColor: "white",
-                  borderRadius: "4px",
-                  fontSize: "19px",
-                  color: "#2e008b",
-                }}
-              >
                   Recommended Plan{" "}
-              </div>
-                
+                </div>
+              ) : (
+                <div
+                  className="p-1 fw-bold"
+                  style={{
+                    visibility: "hidden",
+                    backgroundColor: "white",
+                    borderRadius: "4px",
+                    fontSize: "19px",
+                    color: "#2e008b",
+                  }}
+                >
+                  Recommended Plan{" "}
+                </div>
               )}
             </div>
             <div className="pricing_content">
@@ -144,7 +137,7 @@ const Pricing = ({
                 </h2>
               </div>
             </div>
-            {(!hideButton && !selectedPackage) && (
+            {!hideButton && !selectedPackage && (
               <div
                 className="pricing_footer"
                 onClick={() =>
@@ -163,35 +156,37 @@ const Pricing = ({
               </div>
             )}
 
-            {(!hideButton && String(selectedPackage.planId) !== String(item.id)) && (
-              <div
-                className="pricing_footer"
-                onClick={() =>
-                  selectPackageHandler(
-                    item.id,
-                    item.description,
-                    isPlan === 1
-                      ? item.monthlyAmount - item.discount
-                      : item.yearlyAmount - item.discount
-                  )
-                }
-              >
-                <a className={`btn btn-color_01 w-100`} href="#">
-                 Change Plan
-                </a>
-              </div>
-            )}
-            {(!hideButton && String(selectedPackage.planId) === String(item.id)) && (
-              <div
-                onClick={()=>cancelPackageHandler(item.planId)}
-                className="pricing_footer"
-                style={{backgroundColor:"red"}}
-              >
-                <a className={`btn btn-color_01 w-100`} href="#">
-                 Cancel Package
-                </a>
-              </div>
-            )}
+            {!hideButton &&
+              String(selectedPackage.planId) !== String(item.id) && (
+                <div
+                  className="pricing_footer"
+                  onClick={() =>
+                    selectPackageHandler(
+                      item.id,
+                      item.description,
+                      isPlan === 1
+                        ? item.monthlyAmount - item.discount
+                        : item.yearlyAmount - item.discount
+                    )
+                  }
+                >
+                  <a className={`btn btn-color_01 w-100`} href="#">
+                    Change Plan
+                  </a>
+                </div>
+              )}
+            {!hideButton &&
+              String(selectedPackage.planId) === String(item.id) && (
+                <div
+                  onClick={() => cancelPackageHandler(item.planId)}
+                  className="pricing_footer"
+                  // style={{ backgroundColor: "red" }}
+                >
+                  <a className={`btn btn-color_01 w-100`} href="#">
+                    Cancel Package
+                  </a>
+                </div>
+              )}
           </div>
         </div>
       ))}

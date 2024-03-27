@@ -31,6 +31,7 @@ const Index = ({ isView, propertyData }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalIsOpenError, setModalIsOpenError] = useState(false);
 
   const changeStringUrlHandler = (inputString) => {
     const resultArray = inputString?.split(",");
@@ -135,6 +136,11 @@ const Index = ({ isView, propertyData }) => {
     } else {
       field(value);
     }
+  };
+
+  const closeErrorModal = () => {
+    setModalIsOpenError(false);
+    location.reload(true);
   };
 
   useEffect(() => {
@@ -771,9 +777,10 @@ const Index = ({ isView, propertyData }) => {
             const status = err.response.request.status;
             if (String(status) === String(403)) {
               toast.dismiss();
-              toast.error(
-                "Cant appraise the property all properties are being used!!"
-              );
+              setModalIsOpenError(true);
+              // toast.error(
+              //   "Can't appraise the property all properties are being used!!"
+              // );
             } else {
               toast.dismiss();
               toast.error(err.message);
@@ -1518,6 +1525,35 @@ const Index = ({ isView, propertyData }) => {
                   </div>
                 )}
               </div>
+
+              {modalIsOpenError && (
+                <div className="modal">
+                  <div
+                    className="modal-content"
+                    style={{ borderColor: "#2e008b", width: "20%" }}
+                  >
+                    <h4 className="text-center mb-1" style={{ color: "red" }}>
+                      Error
+                    </h4>
+                    <div style={{ borderWidth: "2px", borderColor: "red" }}>
+                      <br />
+                    </div>
+                    <h5 className="text-center mb-3">{errorMessage}</h5>
+                    <div
+                      className="text-center"
+                      style={{ display: "flex", flexDirection: "column" }}
+                    >
+                      <button
+                        className="btn w-35 btn-color"
+                        onClick={() => closeErrorModal()}
+                        style={{}}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               <div className="row mt50">
                 <div className="col-lg-12">
