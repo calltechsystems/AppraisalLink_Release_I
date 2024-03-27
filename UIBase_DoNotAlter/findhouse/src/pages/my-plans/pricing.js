@@ -78,6 +78,12 @@ const Pricing = ({
     });
   };
 
+  const cancelPackageHandler=(planId)=>{
+    const payload = {
+      
+    }
+  }
+
  
  
 
@@ -177,10 +183,12 @@ const Pricing = ({
             )}
             {(!hideButton && String(selectedPackage.planId) === String(item.id)) && (
               <div
+                onClick={()=>cancelPackageHandler(item.planId)}
                 className="pricing_footer"
+                style={{backgroundColor:"red"}}
               >
                 <a className={`btn btn-color_01 w-100`} href="#">
-                 Current Package
+                 Cancel Package
                 </a>
               </div>
             )}

@@ -725,34 +725,23 @@ export default function Exemple({
                   </span>
                 </li>
               )} */}
-
-                <li title="Archive Property">
-                  {/* <Link
-                      href="#"
-                      onClick={() =>
-                        archievePropertyHandler(property.propertyId)
-                      }
+                {!isCancel && isStatus !== 3 && (
+                  <li title="Archive Property">
+                    <span
+                      className="btn btn-color-table"
+                      onClick={() => archievePropertyHandler(property.orderId)}
                     >
-                      <span className="btn btn-color w-100">
-                        {" "}
-                        Archive Property{" "}
-                      </span>
-                    </Link> */}
-                  <span
-                    className="btn btn-color-table"
-                    onClick={() => archievePropertyHandler(property.orderId)}
-                  >
-                    <Link
-                      className="color-light"
-                      href={`/brokerage-archive-properties`}
-                    >
-                      <span className="text-light">
-                        <FaArchive />
-                      </span>
-                    </Link>
-                  </span>
-                </li>
-
+                      <Link
+                        className="color-light"
+                        href={`/brokerage-archive-properties`}
+                      >
+                        <span className="text-light">
+                          <FaArchive />
+                        </span>
+                      </Link>
+                    </span>
+                  </li>
+                )}
                 {/* End li */}
               </ul>
             ),

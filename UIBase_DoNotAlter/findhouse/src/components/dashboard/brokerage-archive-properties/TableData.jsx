@@ -19,6 +19,14 @@ const TableData = ({
   setModalIsOpenError,
   setAllArchive,
   setErrorMessage,
+  setPropValue,
+  setModalOpen,
+  setIsCancelProperty,
+  setIsHoldProperty,
+  setPropertyId,
+  setCurrentProperty,
+  onHoldHandler,
+  onCancelHandler,
 }) => {
   console.log(properties);
 
@@ -220,6 +228,15 @@ const TableData = ({
           start={start}
           setAllArchive={setAllArchive}
           end={end}
+          setModalIsPopupOpen={setModalIsPopupOpen}
+          onHoldHandler={onHoldHandler}
+          setPropValue={setPropValue}
+          setPropertyId={setPropertyId}
+          onCancelHandler={onCancelHandler}
+          setModalOpen={setModalOpen}
+          setIsCancelProperty={setIsCancelProperty}
+          setIsHoldProperty={setIsHoldProperty}
+          setCurrentProperty={setCurrentProperty}
         />
       )}
     </>

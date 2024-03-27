@@ -269,7 +269,7 @@ export default function Exemple({
           ) : !data?.item?.isActive && data?.item?.firstName ? (
             <span className="btn btn-danger  w-100">In-Active </span>
           ) : (
-            <span className="btn btn-warning  w-100">Registered</span>
+            <span className="btn btn-warning  w-100">Not Registered</span>
           ),
           phone: data.item.phoneNumber ? data.item.phoneNumber : "-",
           address: data.item.streetName
