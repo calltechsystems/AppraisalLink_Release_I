@@ -12,6 +12,7 @@ const Pricing = ({
   setModalOpen,
   data,
   topupData,
+  currentSubscription,
   setPrice,
 }) => {
   const pricingContentForMonthly = [
