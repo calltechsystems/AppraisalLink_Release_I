@@ -11,7 +11,7 @@ const Index = ({ setModalOpen, setPrice, modalOpen }) => {
   const [selectedPlan, setSelectedPlan] = useState("Monthly");
   const [planData, setPlanData] = useState([]);
   const [isChecked, setIsChecked] = useState(false);
-  const [TopUpData,setTopUpData]=useState([]);
+  const [TopUpData, setTopUpData] = useState([]);
 
   const router = useRouter();
   let userData = {};
@@ -20,11 +20,12 @@ const Index = ({ setModalOpen, setPrice, modalOpen }) => {
   });
 
   useEffect(() => {
-
-    const isPaying = JSON.parse(localStorage.getItem("isPaying"))
-    if(isPaying){
-      toast.success("Redirecting back to plans page after transaction took place.")
-      localStorage.removeItem("isPaying")
+    const isPaying = JSON.parse(localStorage.getItem("isPaying"));
+    if (isPaying) {
+      toast.success(
+        "Redirecting back to plans page after transaction took place."
+      );
+      localStorage.removeItem("isPaying");
     }
     const fetchData = async () => {
       const data = JSON.parse(localStorage.getItem("user"));
@@ -50,9 +51,9 @@ const Index = ({ setModalOpen, setPrice, modalOpen }) => {
               Authorization: `Bearer ${data?.token}`,
               "Content-Type": "application/json",
             },
-            params:{
-              userId : data?.userId
-            }
+            params: {
+              userId: data?.userId,
+            },
           });
 
           const currentSubscriptionPlan = res3.data.data.$values;
@@ -60,14 +61,14 @@ const Index = ({ setModalOpen, setPrice, modalOpen }) => {
           let userInfo = JSON.parse(localStorage.getItem("user"));
           let newInfo = {
             ...userInfo,
-            plans : {
-              $id : userInfo?.plans?.$id,
-              $values : currentSubscriptionPlan
-            }
-          }
-          localStorage.setItem("user",JSON.stringify(newInfo))
+            plans: {
+              $id: userInfo?.plans?.$id,
+              $values: currentSubscriptionPlan,
+            },
+          };
+          localStorage.setItem("user", JSON.stringify(newInfo));
 
-          setTopUpData(res2.data.data.$values)
+          setTopUpData(res2.data.data.$values);
           setPlanData(res.data.data.$values);
         } catch (err) {
           toast.error(err.message);

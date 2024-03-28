@@ -361,7 +361,7 @@ export default function Exemple({
                   {getOrderValue(isBidded.orderStatus)}
                 </span>
               ) : (
-                <span className="btn bg-warning  w-100">N.A.</span>
+                <span className="btn bg-warning w-100">N.A.</span>
               ),
             address: `${property.streetNumber} ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
             remark: isBidded?.remark ? isBidded?.remark : "N.A.",
