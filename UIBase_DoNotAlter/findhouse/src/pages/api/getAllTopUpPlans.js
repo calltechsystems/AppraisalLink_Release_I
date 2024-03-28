@@ -10,27 +10,20 @@ import CryptoJS from "crypto-js";
   try {
     const token = request.headers.authorization;
 
-    const OrderId = request.query.OrderId;
-    // console.log(email)
 
-
-    console.log(OrderId);
-    const userResponse = await axios.get(`${domain}/com.appraisalland.Bid/getQuotesByOrderID`,
+    const userResponse = await axios.get(`${domain}/com.appraisalland.TopUp/getTopUp`,
     {
         headers: {
           Authorization:token,
           "Content-Type":"application/json"
-        },
-        params:{
-          OrderId:OrderId
         }
-    });
+      });
     const users = userResponse.data;
 
 
     return response.status(200).json({msg:"OK",data : users});
   } catch (err) {
-    console.log(err);
+    
     if (err.response) {
       // If the error is from an axios request (e.g., HTTP 4xx or 5xx error)
       const axiosError = err.response.data;

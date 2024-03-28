@@ -8,12 +8,6 @@ import { useRouter } from "next/router";
 // import "./SmartTable.css";
 
 const headCells = [
-  // {
-  //   id: "AppraiserId",
-  //   numeric: false,
-  //   label: "Appraiser ID",
-  //   width: 150,
-  // },
   {
     id: "appraiser",
     numeric: false,
@@ -48,14 +42,14 @@ const headCells = [
     id: "date",
     numeric: false,
     label: "Appraisal Submitted Date",
-    width: 220,
+    width: 200,
   },
   ,
   {
     id: "action",
     numeric: false,
     label: "Actions",
-    width: 250,
+    width: 270,
   },
 ];
 
@@ -114,6 +108,7 @@ export default function Exemple({
   const [updatedData, setUpdatedData] = useState([]);
   const [allProperties, setAllProperties] = useState([]);
   const [show, setShow] = useState(false);
+  const [acceptedBid, setAcceptedBid] = useState(-1);
   const [all, setAll] = useState([]);
 
   const router = useRouter();
@@ -155,20 +150,32 @@ export default function Exemple({
     setRefresh(true);
   };
 
+  //Re assign appraiser funciton
+  const reAssign = (QuoteId) => {
+    toast.loading("Re Assigning the appraiser ");
 
-  //Re assign appraiser funciton 
-  const reAssign = (QuoteId)=>{
-    axios.put("/api/reAssignAppraiser",{
-      QuoteId : QuoteId
-    })
-    .then((res)=>{
-      console.log(res);
-      toast.success("Successfully Re assigned Appraiser");
-    })
-    .catch((err)=>{
-      toast.error("Try Again!!");
-    })
-  }
+    const userData = JSON.parse(localStorage.getItem("user"));
+    const payload = {
+      QuoteId: QuoteId,
+      token: userData.token,
+    };
+
+    const encryptedBpdy = encryptionData(payload);
+    axios
+      .put("/api/reAssignAppraiser", encryptedBpdy)
+      .then((res) => {
+        console.log(res);
+        toast.dismiss();
+        toast.success("Successfully Re assigned Appraiser");
+      })
+      .catch((err) => {
+        toast.dismiss();
+        toast.error("Try Again!!");
+      });
+    setRefresh(true);
+    // window.location.reload();
+    // toast.success("Successfully Re assigned Appraiser");
+  };
 
   const getCurrentPropertyInfoHandler = () => {
     let currentProperty = {};
@@ -256,37 +263,15 @@ export default function Exemple({
       });
   };
 
-  // const getAppraiser = (id) => {
-  //   let selectedAppraiser = {};
-  //   allAssignAppraiser.map((appraiser, index) => {
-  //     console.log(appraiser, id);
-  //     if (String(appraiser.id) === String(id)) {
-  //       selectedAppraiser = appraiser;
-  //     }
-  //   });
-
-  //   console.log(selectedAppraiser);
-  //   openAppraiserInfoModal(selectedAppraiser);
-  // };
-  // const getAppraiserName = (id) => {
-  //   let selectedAppraiser = {};
-  //   allAssignAppraiser.map((appraiser, index) => {
-  //     console.log(appraiser, id);
-  //     if (String(appraiser.id) === String(id)) {
-  //       selectedAppraiser = appraiser;
-  //     }
-  //   });
-
-  //   return `${selectedAppraiser.firstName} ${selectedAppraiser.lastName}`;
-  // };
-
   useEffect(() => {
     const prop = getCurrentPropertyInfoHandler();
 
     const getData = () => {
       properties.map((property, index) => {
         const isWait = prop.isOnCancel || prop.isOnHold ? true : false;
-
+        if (property.status === 1) {
+          setAcceptedBid(property.bidId);
+        }
         const updatedRow = {
           AppraiserId: property.appraiserUserId ? property.appraiserUserId : 0,
           quote: `$ ${property.bidAmount}`,
@@ -416,31 +401,24 @@ export default function Exemple({
               ) : (
                 <div>
                   <h5 className="btn btn-danger m-1">Declined</h5>
-                  
-                  <div>
-                  <li
+                  <div
                     className="list-inline-item"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    onClick
-                    title="Change Appraiser"
+                    onClick={() => reAssign(property.bidId)}
                   >
-                    <div className=" btn btn-color fw-bold ">
-                      <span className="flaticon-replace text-light">
-                        {" "}
-                        <a
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          // onClick={openPopupModal_01}
-                          onClick={()=>reAssign(property.bidId)}
-                          style={{ cursor: "pointer" }}
-                        >
+                    <li
+                      className="list-inline-item"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Change Appraiser"
+                    >
+                      <div className=" btn btn-color fw-bold ">
+                        <span className="flaticon-replace text-light">
+                          {" "}
                           Change Apprasier
-                        </a>
-                      </span>
-                      {/* </Link> */}
-                    </div>
-                  </li>
+                        </span>
+                        {/* </Link> */}
+                      </div>
+                    </li>
                   </div>
                 </div>
               )}{" "}

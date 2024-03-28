@@ -11,6 +11,7 @@ const Index = ({ setModalOpen, setPrice, modalOpen }) => {
   const [selectedPlan, setSelectedPlan] = useState("Monthly");
   const [planData, setPlanData] = useState([]);
   const [isChecked, setIsChecked] = useState(false);
+  const [TopUpData,setTopUpData]=useState([]);
 
   const router = useRouter();
   let userData = {};
@@ -19,6 +20,12 @@ const Index = ({ setModalOpen, setPrice, modalOpen }) => {
   });
 
   useEffect(() => {
+
+    const isPaying = JSON.parse(localStorage.getItem("isPaying"))
+    if(isPaying){
+      toast.success("Redirecting back to plans page after transaction took place.")
+      localStorage.removeItem("isPaying")
+    }
     const fetchData = async () => {
       const data = JSON.parse(localStorage.getItem("user"));
       if (!data) {
@@ -31,6 +38,36 @@ const Index = ({ setModalOpen, setPrice, modalOpen }) => {
               "Content-Type": "application/json",
             },
           });
+          const res2 = await axios.get("/api/getAllTopUpPlans", {
+            headers: {
+              Authorization: `Bearer ${data?.token}`,
+              "Content-Type": "application/json",
+            },
+          });
+
+          const res3 = await axios.get("/api/getSpecificSubscriptionByUser", {
+            headers: {
+              Authorization: `Bearer ${data?.token}`,
+              "Content-Type": "application/json",
+            },
+            params:{
+              userId : data?.userId
+            }
+          });
+
+          const currentSubscriptionPlan = res3.data.data.$values;
+
+          let userInfo = JSON.parse(localStorage.getItem("user"));
+          let newInfo = {
+            ...userInfo,
+            plans : {
+              $id : userInfo?.plans?.$id,
+              $values : currentSubscriptionPlan
+            }
+          }
+          localStorage.setItem("user",JSON.stringify(newInfo))
+
+          setTopUpData(res2.data.data.$values)
           setPlanData(res.data.data.$values);
         } catch (err) {
           toast.error(err.message);
@@ -52,10 +89,8 @@ const Index = ({ setModalOpen, setPrice, modalOpen }) => {
 
   return (
     <>
-      {/* Main Header Nav */}
       <Header />
 
-      {/* Mobile Menu */}
       <MobileMenu />
 
       <div className="dashboard_sidebar_menu">
@@ -114,11 +149,23 @@ const Index = ({ setModalOpen, setPrice, modalOpen }) => {
               setModalOpen={setModalOpen}
               setPrice={setPrice}
               data={planData}
+              topupData={TopUpData}
               userData={userData}
             />
           </div>
           {/* End .row */}
         </div>
+        <div className="row mt50">
+          <div className="col-lg-12">
+            <div className="copyright-widget-dashboard text-center">
+              <p>
+                &copy; {new Date().getFullYear()} Appraisal Land. All Rights
+                Reserved.
+              </p>
+            </div>
+          </div>
+        </div>
+        {/* End .col */}
       </section>
     </>
   );

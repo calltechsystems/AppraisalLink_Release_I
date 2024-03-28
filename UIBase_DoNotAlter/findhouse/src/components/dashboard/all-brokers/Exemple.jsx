@@ -9,13 +9,6 @@ import Loader from "./Loader";
 // import "./SmartTable.css";
 
 const headCells = [
-  // {
-  //   id: "email",
-  //   numeric: false,
-  //   label: "Email / Username",
-  //   width: 200,
-  // },
-
   {
     id: "firstname",
     numeric: false,
@@ -156,10 +149,6 @@ export default function Exemple({
       }
     });
     return tempBid > 0 ? bidValue : {};
-    // const currentTime = new Date();
-    // const twentyFourHoursAgo = currentTime - 24 * 60 * 60 * 1000; // Subtracting milliseconds for 24 hours
-    //    const requestTime = new Date(tempBid.requestTime);
-    //   return requestTime >= twentyFourHoursAgo && requestTime <= currentTime;
   };
 
   const openCredModal = (data) => {
@@ -273,16 +262,18 @@ export default function Exemple({
           date: dateNow,
           action: (
             <div className="print-hidden-column">
-              <button
-                href="#"
-                className="btn btn-color"
-                onClick={() => openStatusUpdateHandler(data)}
-                title="Update Status"
-              >
-                <Link href="#">
-                  <span className="flaticon-edit text-light"></span>
-                </Link>
-              </button>
+              {data.firstName && (
+                <button
+                  href="#"
+                  className="btn btn-color"
+                  onClick={() => openStatusUpdateHandler(data)}
+                  title="Update Status"
+                >
+                  <Link href="#">
+                    <span className="flaticon-edit text-light"></span>
+                  </Link>
+                </button>
+              )}
               <button
                 className="btn btn-color m-1"
                 onClick={() => openCredModal(temp)}

@@ -23,8 +23,8 @@ const Index = () => {
   const [wishlist, setWishlist] = useState([]);
   const [lineData, setLineData] = useState([]);
   const [acceptedBids, setAcceptedBids] = useState(0);
-  const [chartData,setChartData]=useState([])
-  const [refresh,setRefresh]=useState(false)
+  const [chartData, setChartData] = useState([]);
+  const [refresh, setRefresh] = useState(false);
   const router = useRouter();
 
   const closeModal = () => {
@@ -107,41 +107,37 @@ const Index = () => {
   };
 
   const filterData = (tempData) => {
-    console.log("filterQuery",filterQuery,tempData)
-      const currentDate = new Date();
-      const oneYearAgo = new Date(currentDate);
-      oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
-    
-      switch (filterQuery) {
-        case "Monthly":
-          const oneMonthAgo = new Date(currentDate);
-          oneMonthAgo.setMonth(currentDate.getMonth() - 1);
-          return tempData.filter(
-            (item) => new Date(item.addedDatetime) >= oneMonthAgo
-          );
-        case "Yearly":
-          return tempData.filter(
-            (item) => new Date(item.addedDatetime) >= oneYearAgo
-          );
-        case "Weekly":
-          const oneWeekAgo = new Date(currentDate);
-          oneWeekAgo.setDate(currentDate.getDate() - 7);
-          return tempData.filter(
-            (item) => new Date(item.addedDatetime) >= oneWeekAgo
-          );
-        default:
-          // If none of the cases match, return weekly content
-          const oneWeekAgoDefault = new Date(currentDate);
-          oneWeekAgoDefault.setDate(currentDate.getDate() - 7);
-          return tempData?.filter(
-            (item) => new Date(item.addedDatetime) >= oneWeekAgoDefault
-          );
-      }
-    
-    
-  };
-  
+    console.log("filterQuery", filterQuery, tempData);
+    const currentDate = new Date();
+    const oneYearAgo = new Date(currentDate);
+    oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
 
+    switch (filterQuery) {
+      case "Monthly":
+        const oneMonthAgo = new Date(currentDate);
+        oneMonthAgo.setMonth(currentDate.getMonth() - 1);
+        return tempData.filter(
+          (item) => new Date(item.addedDatetime) >= oneMonthAgo
+        );
+      case "Yearly":
+        return tempData.filter(
+          (item) => new Date(item.addedDatetime) >= oneYearAgo
+        );
+      case "Weekly":
+        const oneWeekAgo = new Date(currentDate);
+        oneWeekAgo.setDate(currentDate.getDate() - 7);
+        return tempData.filter(
+          (item) => new Date(item.addedDatetime) >= oneWeekAgo
+        );
+      default:
+        // If none of the cases match, return weekly content
+        const oneWeekAgoDefault = new Date(currentDate);
+        oneWeekAgoDefault.setDate(currentDate.getDate() - 7);
+        return tempData?.filter(
+          (item) => new Date(item.addedDatetime) >= oneWeekAgoDefault
+        );
+    }
+  };
 
   useEffect(() => {
     const dataTemp = filterData(data);
@@ -178,7 +174,6 @@ const Index = () => {
             else return false;
           });
 
-        
           const dataTemp = filterData(pdated);
           setData(pdated);
           setChartData(dataTemp);
@@ -204,15 +199,14 @@ const Index = () => {
           let acceptedBid = 0;
           let allBids = [];
           tempBids.map((prop, index) => {
-           
             if (String(prop.userId) === String(data.userId)) {
-              if(String(prop.status) === "1"){
-                acceptedBid+=1;
+              if (String(prop.status) === "1") {
+                acceptedBid += 1;
               }
               allBids.push(prop);
             }
           });
-          console.log("acceptedBid",acceptedBid)
+          console.log("acceptedBid", acceptedBid);
           setAcceptedBids(acceptedBid);
 
           setBids(allBids);
@@ -223,8 +217,7 @@ const Index = () => {
         });
     };
     func();
-    setRefresh(false)
-    
+    setRefresh(false);
   }, [refresh]);
 
   useEffect(() => {
@@ -318,7 +311,11 @@ const Index = () => {
                     {/* <p>We are glad to see you again!</p> */}
                   </div>
                   <div>
-                    <Filtering setRefresh={setRefresh} FilterQuery={filterQuery} setFilterQuery={setFilterQuery} />
+                    <Filtering
+                      setRefresh={setRefresh}
+                      FilterQuery={filterQuery}
+                      setFilterQuery={setFilterQuery}
+                    />
                   </div>
                 </div>
               </div>
@@ -371,7 +368,7 @@ const Index = () => {
 
               <div className="row mt50">
                 <div className="col-lg-12">
-                  <div className="copyright-widget text-center">
+                  <div className="copyright-widget-dashboard text-center">
                     <p>
                       &copy; {new Date().getFullYear()} Appraisal Land. All
                       Rights Reserved.
@@ -385,6 +382,7 @@ const Index = () => {
           </div>
         </div>
       </section>
+      <div style={{ width: "100%", backgroundColor: "#2e008b" }}>.</div>
     </>
   );
 };

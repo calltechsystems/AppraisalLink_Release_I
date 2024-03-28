@@ -38,6 +38,8 @@ const Index = () => {
   const [lowRangeBid, setLowRangeBid] = useState("");
   const [propertyId, setPropertyId] = useState(null);
 
+  const [allAssignedprop,setAssignedProp]=useState([])
+
   const [openAppraiser, setOpenAppraiser] = useState(false);
 
   const [disable, setDisble] = useState(false);
@@ -99,6 +101,7 @@ const Index = () => {
     setOpenDate(false);
     setIsStatusModal(false);
   };
+
 
   const [openBrokerModal, setOpenBrokerModal] = useState(false);
   const [broker, setBroker] = useState({});
@@ -667,6 +670,7 @@ const Index = () => {
                           start={start}
                           end={end}
                           setAllBrokers={setAllBrokers}
+                          setAssignedProp={setAssignedProp}
                           properties={
                             searchInput === "" ? properties : filterProperty
                           }
@@ -2151,7 +2155,7 @@ const Index = () => {
                   <Pagination
                     setStart={setStart}
                     setEnd={setEnd}
-                    properties={wishlistedProperties}
+                    properties={properties}
                   />
                 </div>
               </div>
@@ -2159,7 +2163,7 @@ const Index = () => {
 
             <div className="row mt50">
               <div className="col-lg-12">
-                <div className="copyright-widget text-center">
+                <div className="copyright-widget-dashboard text-center">
                   <p>
                     &copy; {new Date().getFullYear()} Appraisal Land. All Rights
                     Reserved.

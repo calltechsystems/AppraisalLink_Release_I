@@ -78,13 +78,10 @@ const Index = ({ setModalOpen, setPrice, modalOpen }) => {
                 {/* <p className="text-dark mb-2">
                   Choose a plan tailored to your needs {selectedPlan}
                 </p> */}
-                <div className="toggleContainer">
+                {/* <div className="toggleContainer">
                   <span className="fw-bold text-dark">Monthly</span>
                   <div style={{ width: "20%", height: "70%" }}>
-                    <label
-                    // className={`toggleLabel ${selectedPlan}`}
-                    // onClick={togglePlan}
-                    >
+                    <label>
                       <button className="toggleSwitch"></button>
 
                       <div className="toggle-switch">
@@ -102,7 +99,7 @@ const Index = ({ setModalOpen, setPrice, modalOpen }) => {
                   </div>
 
                   <span className="fw-bold text-dark">Yearly</span>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
@@ -119,6 +116,17 @@ const Index = ({ setModalOpen, setPrice, modalOpen }) => {
           </div>
           {/* End .row */}
         </div>
+        <div className="row mt50">
+          <div className="col-lg-12">
+            <div className="copyright-widget-dashboard text-center">
+              <p>
+                &copy; {new Date().getFullYear()} Appraisal Land. All Rights
+                Reserved.
+              </p>
+            </div>
+          </div>
+        </div>
+        {/* End .col */}
       </section>
     </>
   );

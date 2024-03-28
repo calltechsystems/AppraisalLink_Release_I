@@ -7,7 +7,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 
-const Index = ({ setModalOpen, setPrice ,disable,userData}) => {
+const Index = ({ setModalOpen, setPrice, disable, userData }) => {
   const [selectedPlan, setSelectedPlan] = useState("Monthly");
   const [planData, setPlanData] = useState([]);
   const [isChecked, setIsChecked] = useState(false);
@@ -62,7 +62,7 @@ const Index = ({ setModalOpen, setPrice ,disable,userData}) => {
           id="DashboardOffcanvasMenu"
           data-bs-scroll="true"
         >
-          <SidebarMenu  disable={!disable}/>
+          <SidebarMenu disable={!disable} />
         </div>
       </div>
       {/* End sidebar_menu */}
@@ -119,6 +119,17 @@ const Index = ({ setModalOpen, setPrice ,disable,userData}) => {
           </div>
           {/* End .row */}
         </div>
+        <div className="row mt50">
+          <div className="col-lg-12">
+            <div className="copyright-widget-dashboard text-center">
+              <p>
+                &copy; {new Date().getFullYear()} Appraisal Land. All Rights
+                Reserved.
+              </p>
+            </div>
+          </div>
+        </div>
+        {/* End .col */}
       </section>
     </>
   );

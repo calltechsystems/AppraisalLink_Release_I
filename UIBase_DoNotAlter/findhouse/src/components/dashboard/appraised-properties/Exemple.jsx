@@ -718,12 +718,13 @@ export default function Exemple({
               toast.dismiss();
 
               const allProperties = result.data.data.properties.$values;
-              console.log(prop, allProperties);
+              console.log("prop", allProperties,prop);
               let requiredProperties = [];
               prop.map((assign, index) => {
                 let id = assign.propertyid;
                 allProperties.map((tempProp, idx) => {
-                  if (String(tempProp.$id) === String(id)) {
+                  console.log("assign",assign,tempProp)
+                  if (String(tempProp.$id) === String(id) && String(assign.appraiserid) === String(data.appraiser_Details.id)) {
                     requiredProperties.push(tempProp);
                     id = "";
                   }

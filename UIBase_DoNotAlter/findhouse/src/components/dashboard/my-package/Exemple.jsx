@@ -43,6 +43,12 @@ const headCells = [
     width: 150,
   },
   {
+    id: "remained_prop",
+    numeric: false,
+    label: "Remaining Properties",
+    width: 150,
+  },
+  {
     id: "status",
     numeric: false,
     label: "Status",
@@ -185,7 +191,7 @@ export default function Exemple({
     const getData = () => {
       const date = formatDate(new Date());
       
-      data.map((property, index) => {
+      data?.result?.$values.map((property, index) => {
         
         
         
@@ -193,6 +199,7 @@ export default function Exemple({
         const endDate =property.planAmount<500 ? nextMonth : nextYear;
         const expired = new Date(endDate) < new Date() ? true : false;
 
+        if(!expired){
         const updatedRow = {
           id: property.paymentid,
           planName: property.transactionDetail,
@@ -203,6 +210,7 @@ export default function Exemple({
           amount:property.planAmount? `$ ${property.planAmount}` : '$ -',
           st_date:formatDate(property.createdTime),
           end_date: formatDate(endDate) ,
+          remained_prop:data?.noUsedProperties,
           status:
             expired ?
             <span className="btn btn-danger  w-100">In-Active</span>
@@ -211,6 +219,7 @@ export default function Exemple({
           
         };
         tempData.push(updatedRow);
+      }
       });
       setUpdatedData(tempData);
     };

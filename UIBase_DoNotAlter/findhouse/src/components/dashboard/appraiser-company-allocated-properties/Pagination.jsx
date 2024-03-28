@@ -30,6 +30,7 @@ const Pagination = ({ setStart, setEnd, properties }) => {
     setCurrentPage(pageNumber);
     updateDisplayedProperties(pageNumber);
   };
+  console.log("paginations",properties)
 
   return (
     <div>

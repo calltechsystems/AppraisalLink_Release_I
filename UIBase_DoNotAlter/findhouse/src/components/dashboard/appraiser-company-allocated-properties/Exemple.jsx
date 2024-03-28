@@ -147,6 +147,7 @@ export default function Exemple({
   setErrorMessage,
   setModalIsOpenError,
   setRefresh,
+  setAssignedProp,
   setAllBrokers,
   setStartLoading,
 
@@ -172,7 +173,7 @@ export default function Exemple({
         bidValue = bid;
       }
     });
-    //console.log("bidValue",bidValue)
+    console.log("bidValue",property,bidValue)
     return bidValue;
     //   return requestTime >= twentyFourHoursAgo && requestTime <= currentTime;
   };
@@ -347,7 +348,7 @@ export default function Exemple({
     setProperties([]);
   }, [checkData]);
 
-  //console.log("assignProperties",allProperties)
+  console.log("assignProperties",allProperties,properties)
 
   useEffect(() => {
     const getData = () => {
@@ -566,10 +567,13 @@ export default function Exemple({
         };
         tempData.push(updatedRow);
       });
+      setAssignedProp(tempData)
       setUpdatedData(tempData);
     };
+
     getData();
   }, [properties]);
+  console.log("updatedDATA",updatedData)
 
   useEffect(() => {
     setUpdatedCode(true);
@@ -586,8 +590,6 @@ export default function Exemple({
     const payload = {
       token: userData.token,
     };
-    let tempProperties = [],
-      tempWishlist = [];
     axios
       .get("/api/getAllListedProperties", {
         headers: {
@@ -599,9 +601,9 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        const temp = res.data.data.properties.$values;
+        const temp2 = res.data.data.properties.$values;
 
-        setAllProperties(temp);
+        setAllProperties(temp2);
 
         axios
           .get("/api/getAllAssignProperties", {
@@ -615,16 +617,12 @@ export default function Exemple({
           })
           .then((res) => {
             // //console.log(res.data.data.$values);
-            tempProperties = res.data.data.$values;
+            let tempProperties = res.data.data.$values;
             const temp = res.data.data.$values;
 
-            tempProperties = temp.filter((prop, index) => {
-              if (String(prop.userId) === String(data.userId)) {
-                return true;
-              } else {
-                return false;
-              }
-            });
+            
+            setProperties(temp);
+
             let tempBids = [];
             axios
               .get("/api/getAllBids", {
@@ -635,6 +633,7 @@ export default function Exemple({
               .then((res) => {
                 // //console.log(res);
                 tempBids = res.data.data.$values;
+                
                 const updatedBids = tempBids.filter((prop, index) => {
                   if (String(prop.appraiserUserId) === String(data.userId)) {
                     return true;
@@ -642,7 +641,7 @@ export default function Exemple({
                     return false;
                   }
                 });
-                //console.log("bids", updatedBids);
+                console.log("bids", updatedBids.length);
                 setBids(updatedBids);
                 axios
                   .get("/api/appraiserWishlistedProperties", {
@@ -664,7 +663,6 @@ export default function Exemple({
                     });
                     const tempId = responseData;
                     setWishlist(responseData);
-                    setProperties(temp);
                   })
                   .catch((err) => {
                     toast.error(err?.response);

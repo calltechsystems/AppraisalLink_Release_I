@@ -9598,12 +9598,38 @@ form.home5_advanced_search_form
   background-color: #484848;
 }
 
+.copyright-widget-dashboard {
+  background-color: rgb(29, 41, 62); /* Set background color to black */
+  color: white; /* Set text color to white */
+  padding: 20px 0; /* Add padding to top and bottom */
+  position: fixed; /* Position the widget */
+  bottom: 0; /* Align it to the bottom of the viewport */
+  left: 0; /* Align it to the left */
+  width: 100%; /* Make it span the entire width */
+  z-index: 999; /* Set a high z-index to ensure it's on top of other content */
+}
+
 .copyright-widget p {
   font-size: 14px;
   font-family: "Nunito";
   color: #8a99b3;
   line-height: 2.143;
   margin-bottom: 0;
+  /* position: fixed;
+  left: 50%;
+  top: 96%; */
+}
+
+.copyright-widget-dashboard p {
+  font-size: 14px;
+  font-family: "Nunito";
+  color: white;
+  line-height: 2.143;
+  /* background-color: #000; */
+  margin-bottom: 0;
+  position: fixed;
+  left: 50%;
+  top: 96%;
 }
 
 .home3 .copyright-widget p,
@@ -14144,7 +14170,7 @@ legend span {
   padding-right: 60px;
 }
 
-.container-padding{
+.container-padding {
   padding-left: 5px !important;
   padding-right: 5px !important;
   /* padding-top: 100px !important; */
@@ -22949,11 +22975,11 @@ input:checked + .slider:before {
   border: 2px solid #97d700;
   font-size: 18px;
 }
-.fs-18{
+.fs-18 {
   font-size: 18px;
 }
 
-.heading-forms{
+.heading-forms {
   background-color: #97d700;
   text-align: center;
   font-size: 30px;
@@ -22962,6 +22988,6 @@ input:checked + .slider:before {
   margin-bottom: 10px;
 }
 
-.text-onhold{
+.text-onhold {
   background-color: orange;
 }

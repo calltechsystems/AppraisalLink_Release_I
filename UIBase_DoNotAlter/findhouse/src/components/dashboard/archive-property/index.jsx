@@ -12,8 +12,10 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/router";
 import Exemple from "./Exemple";
-import Link from "next/link";
+import millify from "millify";
 import Image from "next/image";
+import { encryptionData } from "../../../utils/dataEncryption";
+import Link from "next/link";
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,18 +26,22 @@ const Index = () => {
   const [filterProperty, setFilterProperty] = useState("");
   const [filterQuery, setFilterQuery] = useState("Last 30 Days");
   const [properties, setProperties] = useState([]);
+  const [disable, setdisable] = useState(false);
   // const user = JSON.parse(localStorage.getItem("user"));
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [modalIsPopupOpen, setModalIsPopupOpen] = useState(false);
   const router = useRouter();
   const [modalOpen, setModalOpen] = useState(false);
+  const [currentProperty, setCurrentProperty] = useState("");
+  const [propertyId, setPropertyId] = useState(null);
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
   );
 
   const [start, setStart] = useState(0);
-
+  const [isCancelProperty, setIsCancelProperty] = useState(0);
+  const [isHoldProperty, setIsHoldProperty] = useState(0);
   const [end, setEnd] = useState(4);
 
   useEffect(() => {
@@ -153,6 +159,75 @@ const Index = () => {
         return tempData; // Return all data if no valid timeFrame is specified
     }
   };
+
+  const [propValue, setPropValue] = useState({});
+
+  const onHoldHandler = () => {
+    setdisable(true);
+    const data = JSON.parse(localStorage.getItem("user"));
+
+    const payload = {
+      token: data.token,
+      orderId: propertyId,
+      status: "HOLD",
+      value: Boolean(propValue),
+    };
+
+    const encryptedBody = encryptionData(payload);
+
+    toast.loading("Turning the property status !");
+    axios
+      .put("/api/setPropertyOnHold", encryptedBody)
+      .then((res) => {
+        toast.dismiss();
+        setIsHoldProperty(false);
+        toast.success("Successfully added status!");
+        window.location.reload();
+      })
+      .catch((err) => {
+        toast.error(err);
+      });
+    // closeModal();
+    setPropValue({});
+
+    setPropertyId(-1);
+  };
+
+  const onCancelHandler = () => {
+    setdisable(true);
+    const data = JSON.parse(localStorage.getItem("user"));
+
+    const payload = {
+      token: data.token,
+      orderId: propertyId,
+      status: "CANCEL",
+      value: Boolean(propValue),
+    };
+
+    const encryptedBody = encryptionData(payload);
+
+    toast.loading("Turning the property status...");
+    axios
+      .put("/api/setPropertyOnHold", encryptedBody)
+      .then((res) => {
+        toast.dismiss();
+        toast.success("Successfully added status!");
+        setIsCancelProperty(false);
+        window.location.reload();
+      })
+      .catch((err) => {
+        toast.error(err);
+      });
+    // closeModal();
+    setPropValue(0);
+    setPropertyId(-1);
+  };
+
+  // const closeCancelHoldHandler = () => {
+  //   setIsCancelProperty(false);
+  //   setIsHoldProperty(false);
+  //   setModalOpen(false);
+  // };
 
   useEffect(() => {
     const tmpData = filterData(properties);
@@ -284,6 +359,7 @@ const Index = () => {
                       <div className="mt0">
                         <TableData
                           userData={userData}
+                          setModalOpen={setModalOpen}
                           open={openModal}
                           close={closeModal}
                           setProperties={setProperties}
@@ -296,10 +372,15 @@ const Index = () => {
                           setModalIsOpenError={setModalIsOpenError}
                           setErrorMessage={setErrorMessage}
                           setRefresh={setRefresh}
+                          setPropValue={setPropValue}
                           setModalIsPopupOpen={setModalIsPopupOpen}
                           refresh={refresh}
                           setFilterQuery={setFilterQuery}
+                          setPropertyId={setPropertyId}
                           setSearchInput={setSearchInput}
+                          setCurrentProperty={setCurrentProperty}
+                          setIsCancelProperty={setIsCancelProperty}
+                          setIsHoldProperty={setIsHoldProperty}
                         />
 
                         {modalIsPopupOpen && (
@@ -1012,7 +1093,7 @@ const Index = () => {
 
           <div className="row mt50">
             <div className="col-lg-12">
-              <div className="copyright-widget text-center">
+              <div className="copyright-widget-dashboard text-center">
                 <p>
                   &copy; {new Date().getFullYear()} Appraisal Land. All Rights
                   Reserved.

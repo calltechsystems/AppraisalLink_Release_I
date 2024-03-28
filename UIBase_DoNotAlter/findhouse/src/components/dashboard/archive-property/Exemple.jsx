@@ -148,16 +148,25 @@ const data = [
 export default function Exemple({
   userData,
   open,
+  setModalIsPopupOpen,
   start,
   end,
+  onHoldHandler,
+  setPropValue,
+  onCancelHandler,
   close,
   properties,
   setRefresh,
+  setPropertyId,
   setAllArchive,
   refresh,
   setFilterQuery,
   setModalIsOpenError,
+  setCurrentProperty,
   setSearchInput,
+  setModalOpen,
+  setIsCancelProperty,
+  setIsHoldProperty,
   setProperties,
   deletePropertyHandler,
 }) {
@@ -176,6 +185,63 @@ export default function Exemple({
     setIsStatusModal(true);
   };
 
+  const AppraiserStatusOptions = [
+    {
+      id: -1,
+      type: "Select...",
+      value: "",
+    },
+    {
+      id: 0,
+      type: "Applicant Contacted by appraiser",
+      value: "Applicant Contacted by appraiser",
+    },
+    {
+      id: 1,
+      type: "Appraisal Visit Confirmed",
+      value: "Appraisal Visit Confirmed",
+    },
+    {
+      id: 2,
+      type: "Appraisal Report Writing in Progress",
+      value: "Appraisal Report Writing in Progress",
+    },
+    {
+      id: 3,
+      type: "Appraisal Report Writing Completed and Submitted",
+      value: "Appraisal Report Writing Completed and Submitted",
+    },
+
+    {
+      id: 4,
+      type: "Assignment on Hold",
+      value: "Assignment on Hold",
+    },
+
+    {
+      id: 5,
+      type: "Assignment Cancelled new status to be added",
+      value: "Assignment Cancelled new status to be added",
+    },
+
+    {
+      id: 6,
+      type: "Appraisal visit completed; report writing is pending until fee received",
+      value:
+        "Appraisal visit completed; report writing is pending until fee received",
+    },
+  ];
+
+  const getOrderValue = (val) => {
+    let title = "";
+    AppraiserStatusOptions?.map((status) => {
+      if (String(status.id) === String(val)) {
+        title = status.type;
+      }
+    });
+    return title;
+  };
+
   const onUnarchiveHandler = (id) => {
     const data = JSON.parse(localStorage.getItem("user"));
 
@@ -188,9 +254,9 @@ export default function Exemple({
           "Content-Type": "application/json",
         },
         params: {
-          orderId: id,
-          status: false,
-          userId: data.userId,
+          orderId: Number(id),
+          status: Boolean(false),
+          userId: Number(data.userId),
         },
       })
       .then((res) => {
@@ -202,6 +268,19 @@ export default function Exemple({
         toast.dismiss();
         toast.error("Try again!");
       });
+  };
+
+  const openModal = (propertyId, value, toggle) => {
+    if (String(value) === String(1)) {
+      setIsHoldProperty(true);
+      setPropertyId(propertyId);
+      setPropValue(toggle);
+    } else {
+      setIsCancelProperty(true);
+      setPropertyId(propertyId);
+      setPropValue(toggle);
+    }
+    setModalOpen(true);
   };
 
   const formatDate = (dateString) => {
@@ -217,6 +296,31 @@ export default function Exemple({
 
     const formattedDate = new Date(dateString).toLocaleString("en-US", options);
     return formattedDate;
+  };
+
+  const formatDateNew = (dateString) => {
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      // hour: "numeric",
+      // minute: "numeric",
+      // second: "numeric",
+      hour12: true, // Set to false for 24-hour format
+    };
+
+    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
+    return formattedDate;
+  };
+
+  const getBidOfProperty = (orderId) => {
+    let Bid = {};
+    allBids.map((bid, index) => {
+      if (String(bid.orderId) === String(orderId)) {
+        Bid = bid;
+      }
+    });
+    return Bid;
   };
 
   const getPropertyStatusHandler = (property) => {
@@ -237,6 +341,11 @@ export default function Exemple({
     return data.sort((a, b) => b.order_id - a.order_id);
   };
 
+  const openPopupModal = (property) => {
+    setModalIsPopupOpen(true);
+    setCurrentProperty(property);
+  };
+
   useEffect(() => {
     const getData = () => {
       properties.map((temp, index) => {
@@ -244,16 +353,28 @@ export default function Exemple({
 
         if (property.$id) {
           const isStatus = getPropertyStatusHandler(property);
-
+          const isBidded = getBidOfProperty(property.orderId);
+          const isHold = property.isOnHold;
+          const isCancel = property.isOnCancel;
           console.log("property", property);
           const isEditable = isStatus === 0 ? true : false;
           if (true) {
             const updatedRow = {
               order_id: property.orderId,
               sub_date: formatDate(property.addedDatetime),
-              quote_required_by: formatDate(property.addedDatetime),
+              quote_required_by: property.quoteRequiredDate
+                ? formatDateNew(property.quoteRequiredDate)
+                : formatDateNew(property.addedDate),
               status:
-                isStatus === 2 ? (
+                isHold || isCancel ? (
+                  <span className="btn bg-danger text-light w-100">
+                    {isHold ? "On Hold" : "Cancelled"}
+                  </span>
+                ) : isStatus === 3 ? (
+                  <span className="btn bg-success w-100 text-light">
+                    Completed
+                  </span>
+                ) : isStatus === 2 ? (
                   <span className="btn bg-success w-100 text-light">
                     Accepted
                   </span>
@@ -261,10 +382,31 @@ export default function Exemple({
                   <span className="btn bg-primary w-100 text-light">
                     In Progress
                   </span>
-                ) : (
+                ) : isStatus === 1 ? (
                   <span className="btn bg-info w-100 text-light">
                     Quote Provided
                   </span>
+                ) : (
+                  <span className="btn bg-info w-100 text-light">
+                    Cancelled
+                  </span>
+                ),
+              appraisal_status:
+                isHold || isCancel ? (
+                  <span className="btn bg-warning w-100">
+                    {isHold ? "N.A." : "N.A."}
+                  </span>
+                ) : property.orderStatus === 1 ? (
+                  <span className="btn bg-warning  w-100">
+                    {getOrderValue(isBidded.orderStatus)} -
+                    {formatDate(isBidded.statusDate)}
+                  </span>
+                ) : property.orderStatus !== null ? (
+                  <span className="btn bg-warning  w-100">
+                    {getOrderValue(isBidded.orderStatus)}
+                  </span>
+                ) : (
+                  <span className="btn bg-warning  w-100">N.A.</span>
                 ),
               address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
               // user: property.applicantEmailAddress,
@@ -490,7 +632,7 @@ export default function Exemple({
                       <Link
                         className="btn btn-color-table"
                         // style={{ marginLeft: "4.3rem" }}
-                        href={`/my-property-bids/${property.propertyId}`}
+                        href={`/my-property-bids/${property.orderId}`}
                       >
                         <span className="flaticon-invoice">
                           {/* <FaHandHoldingUsd /> */}
@@ -545,42 +687,41 @@ export default function Exemple({
                   {/* End li */}
 
                   {/* {isEditable && ( */}
-                  <li title="On Hold">
-                    {/* <Link href="#">
-                      <span className="btn btn-color w-100 mb-1">
-                        {" "}
-                        On Hold{" "}
+                  {!isCancel && isStatus !== 3 && (
+                    <li title={!isHold ? "On Hold" : "Remove Hold"}>
+                      <span
+                        className="btn btn-color-table "
+                        style={{ border: "1px solid grey" }}
+                        // onClick={() => onHoldHandler(property.propertyId, !isHold)}
+                        onClick={() =>
+                          openModal(property.orderId, 1, isHold ? 0 : property)
+                        }
+                      >
+                        <Link href="#" className="text-light">
+                          <FaPause />
+                        </Link>
                       </span>
-                    </Link>{" "} */}
-                    <Link
-                      className="btn btn-color-table"
-                      href={`/create-listing/${property.propertyId}`}
-                    >
-                      <span className="">
-                        <FaPause />
-                      </span>
-                    </Link>
-                  </li>
+                    </li>
+                  )}
                   {/* )} */}
 
                   {/* {isEditable && ( */}
-                  <li title="Order Cancel">
-                    {/* <Link href="#" onClick={() => open(property)}>
-                      <span className="btn btn-color w-100 mb-1">
-                        {" "}
-                        Order Cancel{" "}
+                  {!isCancel && isStatus !== 3 && !isHold && (
+                    <li title={"Order Cancel"}>
+                      <span
+                        className="btn btn-color-table"
+                        style={{ border: "1px solid grey" }}
+                        // onClick={() =>
+                        //   onCancelHandler(property.propertyId, !isCancel)
+                        // }
+                        onClick={() => openModal(property.orderId, 2, property)}
+                      >
+                        <Link href="#">
+                          <span className="flaticon-garbage text-light"></span>
+                        </Link>
                       </span>
-                    </Link>{" "} */}
-                    <button
-                      className="btn btn-color-table"
-                      style={{ border: "1px solid grey" }}
-                      onClick={() => open(property)}
-                    >
-                      <Link href="#">
-                        <span className="flaticon-garbage text-light"></span>
-                      </Link>
-                    </button>
-                  </li>
+                    </li>
+                  )}
                   {/* )} */}
 
                   {/* {isEditable && (
@@ -651,10 +792,9 @@ export default function Exemple({
         }
       });
       setUpdatedData(tempData);
-      setAllArchive(tempData)
+      setAllArchive(tempData);
     };
     getData();
-    
   }, [properties]);
 
   useEffect(() => {

@@ -1518,9 +1518,12 @@ const Index = ({ isView, propertyData }) => {
                 )}
               </div>
 
-              <div className="row mt50">
-                <div className="col-lg-12">
-                  <div className="copyright-widget text-center">
+              <div className="row">
+                <div
+                  className="col-lg-12"
+                  style={{ backgroundColor: "#2e008b" }}
+                >
+                  <div className="copyright-widget-dashboard text-center">
                     <p>
                       &copy; {new Date().getFullYear()} Appraisal Land. All
                       Rights Reserved.
@@ -1534,6 +1537,15 @@ const Index = ({ isView, propertyData }) => {
           </div>
         </div>
       </section>
+      <div
+        style={{
+          width: "100%",
+          backgroundColor: "black",
+          position: "fixed",
+        }}
+      >
+        .
+      </div>
     </>
   );
 };

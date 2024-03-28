@@ -7,10 +7,16 @@ import toast from "react-hot-toast";
 import Exemple from "./Exemple";
 const TableData = ({
   userData,
-  open,start,end,
+  open,
+  start,
+  end,
   close,
+  onHoldHandler,
+  onCancelHandler,
   properties,
+  setPropertyId,
   refresh,
+  setCurrentProperty,
   setFilterQuery,
   setSearchInput,
   setModalIsPopupOpen,
@@ -18,7 +24,11 @@ const TableData = ({
   setProperties,
   setModalIsOpenError,
   setAllArchive,
+  setPropValue,
   setErrorMessage,
+  setModalOpen,
+  setIsCancelProperty,
+  setIsHoldProperty,
 }) => {
   console.log(properties);
 
@@ -212,6 +222,7 @@ const TableData = ({
           close={close}
           setProperties={setProperties}
           setModalIsPopupOpen={setModalIsPopupOpen}
+          setCurrentProperty={setCurrentProperty}
           properties={data}
           setRefresh={setRefresh}
           refresh={refresh}
@@ -221,6 +232,13 @@ const TableData = ({
           start={start}
           setAllArchive={setAllArchive}
           end={end}
+          onHoldHandler={onHoldHandler}
+          setPropValue={setPropValue}
+          setPropertyId={setPropertyId}
+          onCancelHandler={onCancelHandler}
+          setModalOpen={setModalOpen}
+          setIsCancelProperty={setIsCancelProperty}
+          setIsHoldProperty={setIsHoldProperty}
         />
       )}
     </>

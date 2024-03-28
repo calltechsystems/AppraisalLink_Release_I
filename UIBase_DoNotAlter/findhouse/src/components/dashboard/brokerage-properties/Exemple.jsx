@@ -711,7 +711,7 @@ export default function Exemple({
                     className="btn btn-color-table"
                     onClick={() => archievePropertyHandler(property.orderId)}
                   >
-                    <Link className="color-light" href={`/archive-property`}>
+                    <Link className="color-light" href={`/brokerage-archive-properties`}>
                       <span className="text-light">
                         <FaArchive />
                       </span>

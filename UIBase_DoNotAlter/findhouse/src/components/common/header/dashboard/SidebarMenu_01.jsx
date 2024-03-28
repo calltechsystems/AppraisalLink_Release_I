@@ -5,8 +5,18 @@ import {
   isSinglePageActive,
 } from "../../../../utils/daynamicNavigation";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 const SidebarMenu = () => {
+  let userData = {};
+  const [isAppraiserByCompany, setIsAppraiserByCompany] = useState(false);
+
+  useEffect(() => {
+    userData = JSON.parse(localStorage.getItem("user"));
+    if (userData?.appraiser_Details?.companyId) {
+      setIsAppraiserByCompany(true);
+    }
+  }, []);
   const route = useRouter();
 
   const myProperties = [
@@ -29,6 +39,12 @@ const SidebarMenu = () => {
       icon: "flaticon-building",
     },
     { id: 3, name: "Help desk", route: "/contact", icon: "flaticon-telephone" },
+    {
+      id: 3,
+      name: "Contact Us",
+      route: "mailto:patelshubhendra@gmail.com",
+      icon: "flaticon-envelope",
+    },
   ];
 
   const appraiserProperties = [
@@ -141,7 +157,6 @@ const SidebarMenu = () => {
                 <span>Quote History</span>
               </Link>
             </li>
-
             <li
               className={`treeview ${
                 isSinglePageActive(
@@ -344,27 +359,47 @@ const SidebarMenu = () => {
         </li>
         <li className="title">
           <span>Manage Account</span>
-          <ul>
-            {manageAccountTag.map((item) => (
-              <li
-                className={
-                  isSinglePageActive(item.route, route.pathname) ? "active" : ""
-                }
-                key={item.id}
-              >
-                <Link href={item.route}>
-                  <i className={item.icon}></i> <span>{item.name}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
+          {!isAppraiserByCompany ? (
+            <ul>
+              {manageAccountTag.map((item) => (
+                <li
+                  className={
+                    isSinglePageActive(item.route, route.pathname)
+                      ? "active"
+                      : ""
+                  }
+                  key={item.id}
+                >
+                  <Link href={item.route}>
+                    <i className={item.icon}></i> <span>{item.name}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            ""
+          )}
         </li>
-        <li className="link-hover sidebar-menu">
-          <Link href="mailto:patelshubhendra@gmail.com">
-            <i className="flaticon-envelope"></i>
-            <span>Contact Us</span>
-          </Link>
-        </li>
+        {!isAppraiserByCompany ? (
+          ""
+        ) : (
+          <li className="link-hover sidebar-menu">
+            <Link href="/contact">
+              <i className="flaticon-envelope"></i>
+              <span>Help Desk</span>
+            </Link>
+          </li>
+        )}
+        {!isAppraiserByCompany ? (
+          ""
+        ) : (
+          <li className="link-hover sidebar-menu">
+            <Link href="mailto:patelshubhendra@gmail.com">
+              <i className="flaticon-envelope"></i>
+              <span>Contact Us</span>
+            </Link>
+          </li>
+        )}
       </ul>
     </>
   );
