@@ -1313,7 +1313,7 @@ const Index = () => {
                         </Link>
                       </div>
                     </div>
-                    <h3 className="text-center">Broker Status Update</h3>
+                    <h3 className="text-center">Activity Status Updation</h3>
                     <div
                       className="mb-2"
                       style={{ border: "2px solid #97d700" }}
@@ -1334,11 +1334,25 @@ const Index = () => {
                           width: "300px",
                         }}
                       >
-                        <option key={0} value={1}>
+                        {/* <option key={0} value={1}>
                           Active
                         </option>
                         <option key={1} value={0}>
                           In-Active
+                        </option> */}
+                        <option
+                          key={0}
+                          value={0}
+                          disabled={selectedBroker?.isActive ? false : true}
+                        >
+                          In-active
+                        </option>
+                        <option
+                          key={1}
+                          value={1}
+                          disabled={selectedBroker?.isActive ? true : false}
+                        >
+                          Active
                         </option>
                       </select>
                     </div>
