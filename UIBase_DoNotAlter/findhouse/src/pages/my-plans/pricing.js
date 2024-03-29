@@ -263,7 +263,7 @@ const Pricing = ({
                   onClick={(e) => setPlan(item.id, e.target.value)}
                   className="pricing_footer btn btn-color_01 w-100"
                 >
-                  <option value={1}>Select Options </option>
+                  <option value={1}>Modify/Cancel Plan </option>
                   <option value={2}>Cancel Subscription</option>
                   <option value={3}>Add TopUp (Low)</option>
                   <option value={4}>Add TopUp (High)</option>

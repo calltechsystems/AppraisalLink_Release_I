@@ -9,6 +9,7 @@ import Loader from "./Loader";
 // import "./SmartTable.css";
 
 const headCells = [
+
   {
     id: "firstname",
     numeric: false,
@@ -262,18 +263,17 @@ export default function Exemple({
           date: dateNow,
           action: (
             <div className="print-hidden-column">
-              {data.firstName && (
-                <button
-                  href="#"
-                  className="btn btn-color"
-                  onClick={() => openStatusUpdateHandler(data)}
-                  title="Update Status"
-                >
-                  <Link href="#">
-                    <span className="flaticon-edit text-light"></span>
-                  </Link>
-                </button>
-              )}
+              {!data?.isActive && data.firstName === null  && 
+              <button
+                href="#"
+                className="btn btn-color"
+                onClick={() => openStatusUpdateHandler(data)}
+                title="Update Status"
+              >
+                <Link href="#">
+                  <span className="flaticon-edit text-light"></span>
+                </Link>
+              </button>}
               <button
                 className="btn btn-color m-1"
                 onClick={() => openCredModal(temp)}
@@ -289,7 +289,7 @@ export default function Exemple({
       setUpdatedData(tempData);
     };
     getData();
-  }, [properties]);
+  }, [allBrokers]);
 
   useEffect(() => {
     setUpdatedCode(true);

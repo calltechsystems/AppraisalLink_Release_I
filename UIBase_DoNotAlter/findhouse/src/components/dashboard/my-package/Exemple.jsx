@@ -23,7 +23,7 @@ const headCells = [
     label: "Selected Plan",
     width: 150,
   },
- 
+
   {
     id: "st_date",
     numeric: false,
@@ -39,13 +39,13 @@ const headCells = [
   {
     id: "amount",
     numeric: false,
-    label: "Amount",
+    label: "Subscription Cost",
     width: 150,
   },
   {
     id: "remained_prop",
     numeric: false,
-    label: "Remaining Properties",
+    label: "Properties",
     width: 150,
   },
   {
@@ -53,7 +53,7 @@ const headCells = [
     numeric: false,
     label: "Status",
     width: 150,
-  }
+  },
 ];
 
 const data = [
@@ -117,20 +117,19 @@ export default function Exemple({
 
   const prices = [
     {
-      "lite":49,
-      "Premium":99,
-      "Ultimate":149
-    }
-  ]
+      lite: 49,
+      Premium: 99,
+      Ultimate: 149,
+    },
+  ];
 
-
-  const getTypePrice = (type)=>{
+  const getTypePrice = (type) => {
     return prices[0].type;
-  }
+  };
 
-  const getNextDate =(date)=>{
+  const getNextDate = (date) => {
     return date;
-  }
+  };
   const calculateNextYearDate = (inputDate) => {
     const inputDateTime = new Date(inputDate);
 
@@ -138,7 +137,11 @@ export default function Exemple({
     const nextYear = inputDateTime.getFullYear() + 1;
 
     // Create a new Date object for the next year
-    const nextYearDate = new Date(nextYear, inputDateTime.getMonth(), inputDateTime.getDate());
+    const nextYearDate = new Date(
+      nextYear,
+      inputDateTime.getMonth(),
+      inputDateTime.getDate()
+    );
 
     // Format the result as a string
     const result = nextYearDate.toISOString();
@@ -146,8 +149,6 @@ export default function Exemple({
     return result;
   };
 
-
-  
   const sortObjectsByOrderIdDescending = (data) => {
     return data.sort((a, b) => {
       const dateA = new Date(a.st_date);
@@ -156,8 +157,7 @@ export default function Exemple({
     });
   };
 
-  const NextMonthAndYearCalculator = ( inputDate ) => {
-   
+  const NextMonthAndYearCalculator = (inputDate) => {
     const inputDateTime = new Date(inputDate);
 
     // Calculate the next month and next year
@@ -173,53 +173,59 @@ export default function Exemple({
     const lastDayOfNextMonth = new Date(nextYear, nextMonth + 1, 0).getDate();
 
     // Set the day to the minimum of the current day and the last day of the next month
-    const nextMonthDate = new Date(nextYear, nextMonth, Math.min(inputDateTime.getDate(), lastDayOfNextMonth));
+    const nextMonthDate = new Date(
+      nextYear,
+      nextMonth,
+      Math.min(inputDateTime.getDate(), lastDayOfNextMonth)
+    );
 
     // Calculate the next year date
-    const nextYearDate = new Date(nextYear + 1, inputDateTime.getMonth(), inputDateTime.getDate());
+    const nextYearDate = new Date(
+      nextYear + 1,
+      inputDateTime.getMonth(),
+      inputDateTime.getDate()
+    );
 
     // Format the results as strings
-    const nextMonthDateStr = nextMonthDate.toISOString().split('T')[0];
-    const nextYearDateStr = nextYearDate.toISOString().split('T')[0];
+    const nextMonthDateStr = nextMonthDate.toISOString().split("T")[0];
+    const nextYearDateStr = nextYearDate.toISOString().split("T")[0];
 
     return { nextMonth: nextMonthDateStr, nextYear: nextYearDateStr };
   };
 
- 
-
   useEffect(() => {
     const getData = () => {
       const date = formatDate(new Date());
-      
+
       data?.result?.$values.map((property, index) => {
-        
-        
-        
-        const {nextMonth,nextYear} = NextMonthAndYearCalculator(property.createdTime);
-        const endDate =property.planAmount<500 ? nextMonth : nextYear;
+        const { nextMonth, nextYear } = NextMonthAndYearCalculator(
+          property.createdTime
+        );
+        const endDate = property.planAmount < 500 ? nextMonth : nextYear;
         const expired = new Date(endDate) < new Date() ? true : false;
 
-        if(!expired){
-        const updatedRow = {
-          id: property.paymentid,
-          planName: property.transactionDetail,
-          planType: property.planAmount<500 ? 
-          <span >Monthly</span>
-          :
-          <span >Yearly</span>,
-          amount:property.planAmount? `$ ${property.planAmount}` : '$ -',
-          st_date:formatDate(property.createdTime),
-          end_date: formatDate(endDate) ,
-          remained_prop:data?.noUsedProperties,
-          status:
-            expired ?
-            <span className="btn btn-danger  w-100">In-Active</span>
-            :
-            <span className="btn btn-success  w-100">Active</span>
-          
-        };
-        tempData.push(updatedRow);
-      }
+        if (!expired) {
+          const updatedRow = {
+            id: property.paymentid,
+            planName: property.transactionDetail,
+            planType:
+              property.planAmount < 500 ? (
+                <span>Monthly</span>
+              ) : (
+                <span>Yearly</span>
+              ),
+            amount: property.planAmount ? `$ ${property.planAmount}` : "$ -",
+            st_date: formatDate(property.createdTime),
+            end_date: formatDate(endDate),
+            remained_prop: data?.noUsedProperties,
+            status: expired ? (
+              <span className="btn btn-danger  w-100">In-Active</span>
+            ) : (
+              <span className="btn btn-success  w-100">Active</span>
+            ),
+          };
+          tempData.push(updatedRow);
+        }
       });
       setUpdatedData(tempData);
     };
@@ -237,7 +243,11 @@ export default function Exemple({
   return (
     <>
       {updatedData && (
-        <SmartTable title="" data={sortObjectsByOrderIdDescending(updatedData)} headCells={headCells} />
+        <SmartTable
+          title=""
+          data={sortObjectsByOrderIdDescending(updatedData)}
+          headCells={headCells}
+        />
       )}
     </>
   );

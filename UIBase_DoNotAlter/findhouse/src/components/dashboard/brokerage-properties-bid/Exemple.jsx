@@ -44,7 +44,7 @@ const headCells = [
     id: "action",
     numeric: false,
     label: "Actions",
-    width: 200,
+    width: 270,
   },
 ];
 
@@ -160,6 +160,33 @@ export default function Exemple({
     setAppInfo(selectedAppraiser);
     setOpenBrokerModal(true);
   };
+
+    //Re assign appraiser funciton
+    const reAssign = (QuoteId) => {
+      toast.loading("Re Assigning the appraiser ");
+  
+      const userData = JSON.parse(localStorage.getItem("user"));
+      const payload = {
+        QuoteId: QuoteId,
+        token: userData.token,
+      };
+  
+      const encryptedBpdy = encryptionData(payload);
+      axios
+        .put("/api/reAssignAppraiser", encryptedBpdy)
+        .then((res) => {
+          console.log(res);
+          toast.dismiss();
+          toast.success("Successfully Re assigned Appraiser");
+        })
+        .catch((err) => {
+          toast.dismiss();
+          toast.error("Try Again!!");
+        });
+      setRefresh(true);
+      // window.location.reload();
+      // toast.success("Successfully Re assigned Appraiser");
+    };
 
   const getPropertyHandler = (currentProperty) => {
     let temp = {};
@@ -306,13 +333,28 @@ export default function Exemple({
                   title="Approved Lender List"
                 >
                   <div className="btn btn-color fw-bold m-1">
-                    <Link
+                    {/* <Link
                       href="assets/images/Terms & Conditions.pdf"
                       target="_blank"
                       className="form-check-label text-primary"
                     >
                       <span className="flaticon-pdf text-light"></span>
-                    </Link>
+                    </Link> */}
+                    <span className="flaticon-pdf text-light">
+                      {" "}
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={
+                          userData?.appraiser_Details?.lenderListUrl
+                            ? userData?.appraiser_Details?.lenderListUrl
+                            : "#"
+                        }
+                        style={{ cursor: "pointer", color: "white" }}
+                      >
+                        Lender List Pdf
+                      </a>
+                    </span>
                   </div>
                 </li>
               </div>
@@ -365,7 +407,28 @@ export default function Exemple({
                 </li>
               </ul>
             ) : (
-              <h5 className="btn btn-danger">Declined</h5>
+              <div>
+                <h5 className="btn btn-danger m-1">Declined</h5>
+                <div
+                  className="list-inline-item"
+                  onClick={() => reAssign(property.bidId)}
+                >
+                  <li
+                    className="list-inline-item"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Change Appraiser"
+                  >
+                    <div className=" btn btn-color fw-bold ">
+                      <span className="flaticon-replace text-light">
+                        {" "}
+                        Change Apprasier
+                      </span>
+                      {/* </Link> */}
+                    </div>
+                  </li>
+                </div>
+              </div>
             ),
         };
         tempData.push(updatedRow);

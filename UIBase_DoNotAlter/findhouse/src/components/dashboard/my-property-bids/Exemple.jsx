@@ -324,7 +324,7 @@ export default function Exemple({
                     data-placement="top"
                     title="Approved Lender List"
                   >
-                    <div className=" btn btn-color fw-bold ">
+                    <div className=" btn btn-color fw-bold m-1">
                       {/* <Link
                       href="assets/images/Terms & Conditions.pdf"
                       target="_blank"

@@ -23,7 +23,7 @@ const Index = ({ propertyId }) => {
   const [refresh, setRefresh] = useState(false);
   const [id, setId] = useState(0);
 
-  const [allAppraiser,setAllAppraiser]=useState({});
+  const [allAppraiser, setAllAppraiser] = useState({});
 
   const [start, setStart] = useState(0);
 
@@ -271,7 +271,7 @@ const Index = ({ propertyId }) => {
   return (
     <>
       {/* <!-- Main Header Nav --> */}
-      <Header userData={userData}/>
+      <Header userData={userData} />
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
@@ -500,14 +500,16 @@ const Index = ({ propertyId }) => {
                       </Link>
                     </div>
                   </div>
-                  <span style={{ fontWeight: "bold" }}>
-                    <h3 className="text-center"> Appraiser Details </h3>
-                  </span>
+                  <div className="row">
+                    <div className="col-lg-12 text-center">
+                      <h3 className=" text-color mt-1">Appraiser Details</h3>
+                    </div>
+                  </div>
                   <div
                     className="mt-2 mb-3"
                     style={{ border: "2px solid #97d700" }}
                   ></div>
-                  <div className=" col-lg-12">
+                  {/* <div className=" col-lg-12">
                     <div className="row offset-1">
                       <h5 className="col-lg-3 mt-1 text-start">
                         <span className="">Appraiser Name </span>{" "}
@@ -564,6 +566,269 @@ const Index = ({ propertyId }) => {
                         {appInfo.postalCode}
                       </span>
                     </div>
+                  </div> */}
+                  <div
+                    className="d-flex justify-content-center"
+                    id="broker-info-container"
+                  >
+                    <table
+                      style={{
+                        width: "700px",
+                        textAlign: "start",
+                        borderRadius: "5px",
+                        fontSize: "17px",
+                        fontWeight: "bold",
+                      }}
+                      id="table-broker-info"
+                    >
+                      <thead>
+                        <tr>
+                          <th
+                            style={{
+                              border: "1px solid #2e008b",
+                              color: "#2e008b",
+                              // padding: "5px",
+                              textAlign: "center",
+                            }}
+                          >
+                            Headers
+                          </th>
+                          <th
+                            style={{
+                              border: "1px solid #2e008b",
+                              // width: "470px",
+                              color: "#2e008b",
+                              // padding: "5px",
+                              textAlign: "center",
+                            }}
+                          >
+                            Value
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td
+                            style={{
+                              border: "1px solid grey",
+                              color: "#2e008b",
+                            }}
+                          >
+                            <span className="text-start">Appraiser Name</span>
+                          </td>
+                          <td
+                            style={{
+                              border: "1px solid #2e008b",
+                              width: "250px",
+                              color: "black",
+                              padding: "5px",
+                            }}
+                          >
+                            {appInfo.firstName} {appInfo.lastName}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            style={{
+                              border: "1px solid grey",
+                              color: "#2e008b",
+                            }}
+                          >
+                            <span className="text-start">Email Address</span>
+                          </td>
+                          <td
+                            style={{
+                              border: "1px solid #2e008b",
+                              width: "250px",
+                              color: "black",
+                              padding: "5px",
+                            }}
+                          >
+                            {appInfo.emailId ? appInfo.emailId : "N.A."}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            style={{
+                              border: "1px solid grey",
+                              color: "#2e008b",
+                            }}
+                          >
+                            <span className="text-start">Phone Number</span>
+                          </td>
+                          <td
+                            style={{
+                              border: "1px solid #2e008b",
+                              width: "250px",
+                              color: "black",
+                              padding: "5px",
+                            }}
+                          >
+                            {appInfo.phoneNumber ? appInfo.phoneNumber : "N.A."}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            style={{
+                              border: "1px solid grey",
+                              color: "#2e008b",
+                            }}
+                          >
+                            <span className="text-start">Cell Number</span>
+                          </td>
+                          <td
+                            style={{
+                              border: "1px solid #2e008b",
+                              width: "250px",
+                              color: "black",
+                              padding: "5px",
+                            }}
+                          >
+                            {appInfo.cellNumber ? appInfo.cellNumber : "N.A."}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            style={{
+                              border: "1px solid grey",
+                              color: "#2e008b",
+                            }}
+                          >
+                            <span className="text-start">Company Name</span>
+                          </td>
+                          <td
+                            style={{
+                              border: "1px solid #2e008b",
+                              width: "250px",
+                              color: "black",
+                              padding: "5px",
+                            }}
+                          >
+                            {appInfo.companyName
+                              ? appInfo.companyName
+                              : appInfo.appraiserCompanyName}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            style={{
+                              border: "1px solid grey",
+                              color: "#2e008b",
+                            }}
+                          >
+                            <span className="text-start">Designation</span>
+                          </td>
+                          <td
+                            style={{
+                              border: "1px solid #2e008b",
+                              width: "250px",
+                              color: "black",
+                              padding: "5px",
+                            }}
+                          >
+                            {appInfo.designation ? appInfo.designation : "N.A."}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            style={{
+                              border: "1px solid grey",
+                              color: "#2e008b",
+                            }}
+                          >
+                            <span className="text-start">Address</span>
+                          </td>
+                          <td
+                            style={{
+                              border: "1px solid #2e008b",
+                              width: "400px",
+                              color: "black",
+                              padding: "5px",
+                            }}
+                          >
+                            {appInfo.addressLineOne}
+                            {appInfo.addressLineTwo} {appInfo.streetNumber}{" "}
+                            {appInfo.streetName} ,{appInfo.unit}{" "}
+                            {appInfo.apartmentNumber} {appInfo.city}{" "}
+                            {appInfo.province} {appInfo.postalCode}
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <td
+                            style={{
+                              border: "1px solid grey",
+                              color: "#2e008b",
+                            }}
+                          >
+                            <span className="text-start">
+                              Office Contact Name
+                            </span>
+                          </td>
+                          <td
+                            style={{
+                              border: "1px solid #2e008b",
+                              width: "250px",
+                              color: "black",
+                              padding: "5px",
+                            }}
+                          >
+                            {appInfo.officeContactFirstName
+                              ? appInfo.officeContactFirstName
+                              : "N.A."}{" "}
+                            {appInfo.officeContactLastName}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            style={{
+                              border: "1px solid grey",
+                              color: "#2e008b",
+                            }}
+                          >
+                            <span className="text-start">
+                              Office Contact Phone Number
+                            </span>
+                          </td>
+                          <td
+                            style={{
+                              border: "1px solid #2e008b",
+                              width: "250px",
+                              color: "black",
+                              padding: "5px",
+                            }}
+                          >
+                            {appInfo.officeContactPhone
+                              ? appInfo.officeContactPhone
+                              : "N.A."}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            style={{
+                              border: "1px solid grey",
+                              color: "#2e008b",
+                            }}
+                          >
+                            <span className="text-start">
+                              Office Contact Email Address
+                            </span>
+                          </td>
+                          <td
+                            style={{
+                              border: "1px solid #2e008b",
+                              width: "250px",
+                              color: "black",
+                              padding: "5px",
+                            }}
+                          >
+                            {appInfo.officeContactEmail
+                              ? appInfo.officeContactEmail
+                              : "N.A."}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                   <div
                     className="mt-2 mb-3"
