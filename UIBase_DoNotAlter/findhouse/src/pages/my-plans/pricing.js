@@ -63,11 +63,11 @@ const Pricing = ({
   let userData = {};
   const [selectedPackage, setSelectedPackage] = useState({});
 
-  const [openCancelModal, setOpenCancelModal] = useState(false);
-  const [disable, setDisable] = useState(false);
-  const [selectedPlanId, setSelectedPlanId] = useState(-1);
-  const [selectedTopUp, setSelectedTopUp] = useState(-1);
-  const [type, setType] = useState(1);
+  const [openCancelModal,setOpenCancelModal]=useState(false);
+  const [disable,setDisable]=useState(false)
+  const [selectedPlanId,setSelectedPlanId]=useState(-1);
+  const [selectedTopUp,setSelectedTopUp]=useState(-1);
+  const [type,setType]=useState(1)
   useEffect(() => {
     userData = JSON.parse(localStorage.getItem("user"));
     const Packages = userData.userSubscription?.$values;
@@ -79,81 +79,85 @@ const Pricing = ({
   const content =
     isPlan === 1 ? pricingContentForMonthly : pricingContentForYearly;
 
-  const selectPackageHandler = (id, title, price, type) => {
+  const selectPackageHandler = (id, title, price , type) => {
+  
     setModalOpen(true);
     setPrice({
       id: id,
       title: title,
       price: price,
-      type: type,
+      type : type 
     });
   };
 
-  const setPlan = (planId, type) => {
-    console.log(planId);
+  const setPlan = (planId,type)=>{
+    console.log(planId)
     setSelectedPlanId(planId);
     setType(type);
-    if (String(type) === "2" || String(type) === "3" || String(type) === "4") {
+    if(String(type) === "2" || String(type) === "3" || String(type) === "4"){
       setOpenCancelModal(true);
-      if (String(type) === "3") {
+      if(String(type) === "3"){
         setSelectedTopUp(topupData[0]);
-      } else if (String(type) === "4") {
+      }
+      else if(String(type) === "4"){
         setSelectedTopUp(topupData[1]);
       }
     }
-  };
+    
+  }
 
-  const closeCancelHandler = () => {
-    setSelectedPlanId(-1);
-    setType(1);
-    setOpenCancelModal(false);
-  };
+  const closeCancelHandler = ()=>{
+    setSelectedPlanId(-1)
+    setType(1)
+    setOpenCancelModal(false)
+  }
 
   const cancelPackageHandler = () => {
-    setDisable(true);
+    setDisable(true)
 
-    const userData = JSON.parse(localStorage.getItem("user"));
+    const userData = JSON.parse(localStorage.getItem("user"))
 
-    if (String(type) === "2") {
+    if(String(type) === "2"){
       const payload = {
-        UserId: userData.userId,
-        token: userData.token,
+        UserId : userData.userId,
+        token : userData.token
       };
 
-      toast.loading("Cancelling the subscription !!");
+      toast.loading("Cancelling the subscription !!")
       const encryptedBody = encryptionData(payload);
-      axios
-        .post("/api/cancelSubscription", encryptedBody)
-        .then((res) => {
-          toast.success("Successfully cancelled the subscription!");
-        })
-        .catch((err) => {
-          toast.error("Try Again !!");
-        });
-
-      window.location.reload();
-    } else if (String(type) === "3" || String(type) === "4") {
-      //low add on topup
-
-      const payload = {
-        TopUpId: selectedTopUp.id,
-        UserId: userData.userId,
-      };
-
-      toast.loading("Adding the top-up !!");
-      const encryptedBody = encryptionData(payload);
-      axios
-        .post("/api/addTopUp", encryptedBody)
-        .then((res) => {
-          toast.success("Successfully added the top - up!");
-        })
-        .catch((err) => {
-          toast.error("Try Again !!");
-        });
+      axios.post("/api/cancelSubscription",encryptedBody)
+      .then((res)=>{
+        toast.success("Successfully cancelled the subscription!");
+      })
+      .catch((err)=>{
+        toast.error("Try Again !!");
+      })
 
       window.location.reload();
     }
-    window.location.reload();
+    else if(String(type) === "3" || String(type) === "4") {
+       //low add on topup
+
+      const payload = {
+        TopUpId : selectedTopUp.id,
+        UserId : userData.userId
+      };
+
+
+      toast.loading("Adding the top-up !!")
+      const encryptedBody = encryptionData(payload);
+      axios.post("/api/addTopUp",encryptedBody)
+      .then((res)=>{
+        toast.success("Successfully added the top - up!");
+      })
+      .catch((err)=>{
+        toast.error("Try Again !!");
+      })
+
+      window.location.reload()
+    }
+    window.location.reload()
+  
   };
 
   return (
@@ -243,7 +247,7 @@ const Pricing = ({
                       isPlan === 1
                         ? item.monthlyAmount - item.discount
                         : item.yearlyAmount - item.discount,
-                      "plan"
+                        "plan"
                     )
                   }
                 >
@@ -255,18 +259,15 @@ const Pricing = ({
             {!hideButton &&
               String(selectedPackage.planId) === String(item.id) && (
                 <select
-                  style={{
-                    padding: "2%",
-                    borderColor: "black",
-                    borderWidth: "2px",
-                  }}
-                  onClick={(e) => setPlan(item.id, e.target.value)}
+                  style={{padding:'2%',borderColor:"black",borderWidth:"2px"}}
+                  onClick={(e) => setPlan(item.id,e.target.value)}
                   className="pricing_footer btn btn-color_01 w-100"
                 >
-                  <option value={1}>Modify/Cancel Plan </option>
+                  <option value={1}>Modify/Cancel Subscription </option>
                   <option value={2}>Cancel Subscription</option>
                   <option value={3}>Add TopUp (Low)</option>
                   <option value={4}>Add TopUp (High)</option>
+                 
                 </select>
               )}
           </div>
@@ -312,19 +313,16 @@ const Pricing = ({
               </div>
             </div>
             <h2 className="text-center mt-3" style={{ color: "#2e008b" }}>
-              {String(type) === "2"
-                ? "Subscription Cancellation"
-                : String(type) === "3"
-                ? "Top-up Add On (Low)"
-                : "Top-up Add On (High)"}
+              {String(type) === "2" ? "Subscription Cancellation" :
+              String(type) === "3" ? "Top-up Add On (Low)" : "Top-up Add On (High)"}
             </h2>
             <div className="mb-2" style={{ border: "2px solid #97d700" }}></div>
             <p className="fs-5 text-center text-dark mt-4">
-              {String(type) === "2"
-                ? "Are you sure you want to cancel this subscription?"
-                : String(type) === "3"
-                ? "Are you sure you want add Top-up plan  (Low ) to this plan?"
-                : "Are you sure you want add Top-up plan  (High ) to this plan?"}{" "}
+            {String(type) === "2"? 'Are you sure you want to cancel this subscription?'
+              : 
+              String(type) === "3"? 'Are you sure you want add Top-up plan  (Low ) to this plan?' 
+              : 'Are you sure you want add Top-up plan  (High ) to this plan?' 
+              }{" "}
             </p>
 
             <div
@@ -342,17 +340,14 @@ const Pricing = ({
               <button
                 disabled={disable}
                 className="btn w-25 btn-color"
-                onClick={
-                  String(type) === "3" || String(type) === "4"
-                    ? () =>
-                        selectPackageHandler(
-                          selectedTopUp.id,
-                          selectedTopUp.topupDescription,
-                          selectedTopUp.tupUpAmount,
-                          "topup"
-                        )
-                    : cancelPackageHandler
-                }
+                onClick={String(type) === "3" || String(type) === "4"  ?
+                  ()=>selectPackageHandler(
+                    selectedTopUp.id,
+                    selectedTopUp.topupDescription,
+                    selectedTopUp.tupUpAmount,
+                    "topup"
+                  )
+                  : cancelPackageHandler}
               >
                 Confirm
               </button>
