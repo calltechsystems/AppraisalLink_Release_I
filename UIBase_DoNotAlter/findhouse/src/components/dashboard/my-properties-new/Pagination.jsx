@@ -3,7 +3,7 @@ import React, { useState } from "react";
 const Pagination = ({ setStart, setEnd, properties }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
-  const propertiesPerPage = 5;
+  const propertiesPerPage =8;
 
   const indexOfLastProperty = currentPage * propertiesPerPage;
   const indexOfFirstProperty = indexOfLastProperty - propertiesPerPage;

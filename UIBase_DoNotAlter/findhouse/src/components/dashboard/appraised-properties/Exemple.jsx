@@ -180,12 +180,14 @@ export default function Exemple({
   };
 
   const filterBidsWithin24Hours = (property) => {
+
+    const data = JSON.parse(localStorage.getItem("user"))
     let tempBid = 0,
       bidValue = {};
     let isAccepted = {};
     // console.log(bids);
     bids.filter((bid) => {
-      if (bid.orderId === property.orderId) {
+      if (bid.orderId === property.orderId && bid.appraiserUserId === data.userId) {
         if (bid.status === 1) {
           isAccepted = bid;
         } else {
@@ -198,6 +200,21 @@ export default function Exemple({
     return isAccepted.$id ? isAccepted : bidValue;
   };
 
+  const alreadyAccepted = (property)=>{
+    const data = JSON.parse(localStorage.getItem("user"))
+    let tempBid = 0,
+    bidValue = {};
+  let isAccepted = {};
+  // console.log(bids);
+  bids.filter((bid) => {
+    if (bid.orderId === property.orderId && bid.appraiserUserId !== data.userId) {
+      if (bid.status === 1) {
+        isAccepted = bid;
+      }
+    }
+  });
+  return isAccepted.$id ? true : false;
+};
   const router = useRouter();
 
   const openStatusUpdateHandler = (bid) => {
@@ -324,6 +341,7 @@ export default function Exemple({
       properties.map((property, index) => {
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
+        const anotherBid = alreadyAccepted(property)
 
         // console.log("wishlisted",isWishlist);
         const isWait = property.isOnHold || property.isOnCancel;
@@ -368,6 +386,7 @@ export default function Exemple({
                   : ""}
               </span>
             ) : isBidded.bidId ? (
+             
               isBidded.orderStatus === 3 ? (
                 <span className="btn btn-success  w-100">Completed</span>
               ) : isBidded.status === 0 ? (
@@ -377,7 +396,10 @@ export default function Exemple({
               ) : (
                 <span className="btn btn-danger  w-100">Rejected</span>
               )
-            ) : (
+            ) :
+            anotherBid ? (
+              <span className="btn btn-danger  w-100">Not Accepting</span>
+            ) :  (
               <span className="btn btn-warning  w-100">New</span>
             ),
             broker: (
@@ -400,7 +422,11 @@ export default function Exemple({
                   </a>
                 ) : isBidded.status === 2 ? (
                   <h6 style={{ color: "red" }}> Declined</h6>
-                ) : (
+                ) : alreadyAccepted ? (
+                  <p>
+                    Broker Information will not be available as the broker is already being assigned
+                  </p>
+                ): (
                   <p>
                     Broker Information will be available post the quote
                     acceptance
@@ -428,6 +454,10 @@ export default function Exemple({
                   </a>
                 ) : isBidded.status === 2 ? (
                   <h6 style={{ color: "red" }}> Declined</h6>
+                ) : alreadyAccepted ? (
+                  <p>
+                    Property Information will not be available as the property is already being alloted
+                  </p>
                 ) : (
                   <p>
                     Property Information will be available post the quote
@@ -528,7 +558,7 @@ export default function Exemple({
                           src="https://png.pngtree.com/png-clipart/20200226/original/pngtree-3d-red-heart-cute-valentine-romantic-glossy-shine-heart-shape-png-image_5315044.jpg"
                         />
                       </button>
-                    ) : (
+                    ) : !alreadyAccepted && (
                       <li
                         className="list-inline-item"
                         title="Wishlist Property"
@@ -547,7 +577,7 @@ export default function Exemple({
                       </li>
                     )}
 
-                    {(!isBidded.$id || isBidded?.status < 1) && (
+                    {(!isBidded.$id || isBidded?.status < 1) && !alreadyAccepted && (
                       <li
                         className="list-inline-item"
                         data-toggle="tooltip"
@@ -576,30 +606,7 @@ export default function Exemple({
                         </div>
                       </li>
                     )}
-                    {/* <li
-                  className="list-inline-item"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Assign Appraiser"
-                >
-                  <div
-                    className="w-100"
-                    onClick={() =>
-                      openAssignModalHandler(property)
-                    }
-                  >
-                    <button
-                      href="#"
-                      className="btn btn-color"
-                      
-                    >
-                    <Link href="#">
-                    <span className="text-light flaticon-edit"></span>
-                  </Link>
-                    </button>
-                  </div>
-                  </li>*/}
-
+                   
                     <li
                       className="list-inline-item"
                       data-toggle="tooltip"
@@ -836,11 +843,7 @@ export default function Exemple({
             .then((res) => {
               tempBids = res.data.data.$values;
               const updatedBids = tempBids.filter((prop, index) => {
-                if (String(prop.appraiserUserId) === String(data.userId)) {
-                  return true;
-                } else {
-                  return false;
-                }
+                return true
               });
               console.log(updatedBids);
               setBids(updatedBids);

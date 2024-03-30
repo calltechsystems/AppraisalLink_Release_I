@@ -315,9 +315,8 @@ function SmartTable(props) {
                                 ? "smartTable-pointer"
                                 : ""
                             }
-                             onClick={() =>
-                              headCell.sortable !== false &&
-                              headCell.id !== "address"
+                            onClick={() =>
+                              headCell.sortable !== false
                                 ? sortData(headCell.id)
                                 : {}
                             }
