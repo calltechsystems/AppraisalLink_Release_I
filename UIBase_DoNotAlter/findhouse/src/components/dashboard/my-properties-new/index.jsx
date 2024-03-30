@@ -156,7 +156,7 @@ const Index = () => {
   const archievePropertyHandler = (id) => {
     const data = JSON.parse(localStorage.getItem("user"));
 
-    toast.loading("archeiving this property");
+    toast.loading("Archiving this Property");
     axios
       .get("/api/propertyArcheive", {
         headers: {

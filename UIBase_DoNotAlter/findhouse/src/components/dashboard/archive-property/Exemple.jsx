@@ -34,7 +34,7 @@ const headCells = [
     width: 170,
   },
   {
-    id: "status",
+    id: "appraisal_status",
     numeric: false,
     label: "Appraisal Status",
     width: 170,
@@ -245,7 +245,7 @@ export default function Exemple({
   const onUnarchiveHandler = (id) => {
     const data = JSON.parse(localStorage.getItem("user"));
 
-    toast.loading("un-archiving the property!!...");
+    toast.loading("Un-archiving the Property!!...");
     // const encryptedBody = encryptionData(payload);
     axios
       .get("/api/propertyArcheive", {
@@ -261,7 +261,7 @@ export default function Exemple({
       })
       .then((res) => {
         toast.dismiss();
-        toast.success("Successfully unarchived the property!");
+        toast.success("Successfully Unarchived the Property!");
         window.location.reload();
       })
       .catch((err) => {
@@ -804,7 +804,7 @@ export default function Exemple({
       token: userData.token,
     };
 
-    toast.loading("Getting properties...");
+    toast.loading("Getting Properties...");
 
     axios
       .get("/api/getAllArchivePropertiesByBroker", {

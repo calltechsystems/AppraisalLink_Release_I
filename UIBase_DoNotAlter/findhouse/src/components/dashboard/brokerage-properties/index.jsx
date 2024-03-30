@@ -154,7 +154,7 @@ const Index = () => {
   const archievePropertyHandler = (id) => {
     const data = JSON.parse(localStorage.getItem("user"));
 
-    toast.loading("archeiving this property");
+    toast.loading("Archiving this Property");
     axios
       .get("/api/propertyArcheive", {
         headers: {
@@ -169,7 +169,7 @@ const Index = () => {
       })
       .then((res) => {
         toast.dismiss();
-        toast.success("Successfully added to archived properties!!");
+        toast.success("Successfully Added to Archived Properties!!");
         window.location.reload();
       })
       .catch((err) => {

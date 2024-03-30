@@ -12,8 +12,10 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/router";
 import Exemple from "./Exemple";
+import { encryptionData } from "../../../utils/dataEncryption";
 import Link from "next/link";
 import Image from "next/image";
+import millify from "millify";
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,6 +26,7 @@ const Index = () => {
   const [filterProperty, setFilterProperty] = useState("");
   const [filterQuery, setFilterQuery] = useState("Last 30 Days");
   const [properties, setProperties] = useState([]);
+  const [disable, setdisable] = useState(false);
   // const user = JSON.parse(localStorage.getItem("user"));
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -43,6 +46,7 @@ const Index = () => {
   const [end, setEnd] = useState(4);
 
   useEffect(() => {
+    setRefresh(true);
     const activityHandler = () => {
       setLastActivityTimestamp(Date.now());
     };
@@ -371,6 +375,7 @@ const Index = () => {
                           setCurrentProperty={setCurrentProperty}
                           setIsCancelProperty={setIsCancelProperty}
                           setIsHoldProperty={setIsHoldProperty}
+                          setModalOpen={setModalOpen}
                         />
 
                         {modalIsPopupOpen && (
