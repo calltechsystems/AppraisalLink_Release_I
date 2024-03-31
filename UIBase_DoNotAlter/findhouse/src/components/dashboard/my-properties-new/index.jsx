@@ -310,7 +310,6 @@ const Index = () => {
 
   useEffect(() => {
     const tmpData = filterData(properties);
-    console.log("tmpData",filterQuery,tmpData.length)
     setProperties(tmpData);
   }, [filterQuery]);
 

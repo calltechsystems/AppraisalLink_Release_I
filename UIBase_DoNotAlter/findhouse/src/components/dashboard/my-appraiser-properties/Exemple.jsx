@@ -156,6 +156,8 @@ export default function Exemple({
   const [hideAction, setHideAction] = useState(false);
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
+  
+  const [dataFetched,setDataFetched] = useState(false)
   let tempData = [];
 
   const [allArchive, setAllArchive] = useState([]);
@@ -741,11 +743,13 @@ export default function Exemple({
               })
 
               .catch((err) => {
+                setDataFetched(true)
                 setErrorMessage(err?.response?.data?.error);
                 setModalIsOpenError(true);
               });
           })
           .catch((err) => {
+            setDataFetched(false)
             toast.error(err?.response);
             setErrorMessage(err?.response);
             setModalIsOpenError(true);
@@ -842,6 +846,8 @@ export default function Exemple({
           refresh={refresh}
           refreshHandler={refreshHandler}
           setStartLoading={setStartLoading}
+          properties={updatedData}
+          dataFetched={dataFetched}
           start={start}
           end={end}
         />

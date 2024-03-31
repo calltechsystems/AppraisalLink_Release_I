@@ -155,6 +155,8 @@ export default function Exemple({
   const [hideAction, setHideAction] = useState(false);
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
+  
+  const [dataFetched,setDataFetched] = useState(false)
   let tempData = [];
 
   const [allArchive, setAllArchive] = useState([]);
@@ -330,7 +332,7 @@ export default function Exemple({
         console.log(isBidded);
         const isArchive = foundArchiveHandler(property.propertyId);
 
-        if (isBidded) {
+        if (isBidded?.$id) {
           const isWait = property.isOnHold || property.isOnCancel;
           const updatedRow = {
             orderId: property.orderId,
@@ -640,6 +642,7 @@ export default function Exemple({
         },
       })
       .then((res) => {
+        setDataFetched(true)
         const temp = res.data.data.properties.$values;
         axios
           .get("/api/getAllBids", {
@@ -691,6 +694,7 @@ export default function Exemple({
               });
           })
           .catch((err) => {
+            setDataFetched(false)
             setErrorMessage(err?.response?.data?.error);
             setModalIsOpenError(true);
           });
@@ -787,6 +791,8 @@ export default function Exemple({
           refreshHandler={refreshHandler}
           setStartLoading={setStartLoading}
           start={start}
+          properties={updatedData}
+          dataFetched={dataFetched}
           end={end}
         />
       )}

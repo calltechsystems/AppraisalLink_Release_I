@@ -232,6 +232,19 @@ function SmartTable(props) {
     }
   }, props.searchDebounceTime ?? 800);
 
+  const [showNoData, setShowNoData] = useState(false);
+
+  useEffect(() => {
+    if (props.dataFetched && props.properties.length === 0) {
+      const timer = setTimeout(() => {
+        setShowNoData(true);
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [props.dataFetched, props.properties]);
+
+
   const sortData = (cell) => {
     let tempData = data.length > 0 ? [...data] : [...props.data];
 
@@ -394,10 +407,21 @@ function SmartTable(props) {
                 className="smartTable-noDataFound col-12"
                 style={{ marginTop: "110px", marginBottom: "40px" }}
               >
+                {props.dataFetched && props.properties.length === 0 ? (
+                
+                showNoData ? 
+                <h3>No Data Found</h3>
+                :
                 <div className="ring">
                   Loading
                   <span className="load"></span>
                 </div>
+              ) : (
+                <div className="ring">
+                  Loading
+                  <span className="load"></span>
+                </div>
+              )}
               </div>
             </div>
           )}

@@ -244,23 +244,29 @@ const Index = () => {
       if (searchInput === "") {
         return propertys;
       }
+
+
       const filteredProperties = propertys.filter((property) => {
         // Convert the search input to lowercase for a case-insensitive search
         const searchTerm = searchInput.toLowerCase();
+
+        console.log("property.orderId",property)
 
         if (String(property.orderId) === String(searchTerm)) {
           return true;
         }
         // Check if any of the fields contain the search term
         else
+      
           return (
-            property.zipCode.toLowerCase().includes(searchTerm) ||
-            property.area.toLowerCase().includes(searchTerm) ||
-            property.city.toLowerCase().includes(searchTerm) ||
-            property.province.toLowerCase().includes(searchTerm) ||
-            property.streetName.toLowerCase().includes(searchTerm) ||
-            property.streetNumber.toLowerCase().includes(searchTerm) ||
-            property.typeOfBuilding.toLowerCase().includes(searchTerm)
+            String(property.orderId).toLowerCase().includes(searchTerm) ||
+            property.zipCode?.toLowerCase().includes(searchTerm) ||
+            property.area?.toLowerCase().includes(searchTerm) ||
+            property.city?.toLowerCase().includes(searchTerm) ||
+            property.province?.toLowerCase().includes(searchTerm) ||
+            property.streetName?.toLowerCase().includes(searchTerm) ||
+            property.streetNumber?.toLowerCase().includes(searchTerm) ||
+            property.typeOfBuilding?.toLowerCase().includes(searchTerm)
           );
       });
 
@@ -274,7 +280,7 @@ const Index = () => {
     const currentDate = new Date();
     const oneYearAgo = new Date(currentDate);
     oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
-
+  
     switch (filterQuery) {
       case "Last 30 Days":
         const thirtyDaysAgo = new Date(currentDate);
@@ -282,22 +288,13 @@ const Index = () => {
         return tempData.filter(
           (item) => new Date(item.addedDatetime) >= thirtyDaysAgo
         );
-      case "Last 1 month":
-        const oneMonthAgo = new Date(currentDate);
-        oneMonthAgo.setMonth(currentDate.getMonth() - 1);
+      case "Last 3 Month":
+        const threeMonthsAgo = new Date(currentDate);
+        threeMonthsAgo.setMonth(currentDate.getMonth() - 3);
         return tempData.filter(
-          (item) => new Date(item.addedDatetime) >= oneMonthAgo
+          (item) => new Date(item.addedDatetime) >= threeMonthsAgo
         );
-      case "Last 6 months":
-        const sixMonthsAgo = new Date(currentDate);
-        sixMonthsAgo.setMonth(currentDate.getMonth() - 6);
-        return tempData.filter(
-          (item) => new Date(item.addedDatetime) >= sixMonthsAgo
-        );
-      case "Last 1 year":
-        return tempData.filter(
-          (item) => new Date(item.addedDatetime) >= oneYearAgo
-        );
+      
       default:
         return tempData; // Return all data if no valid timeFrame is specified
     }
@@ -390,40 +387,6 @@ const Index = () => {
       });
   };
 
-  useEffect(() => {
-    console.log(searchQuery);
-    const tempData = properties;
-    if (searchInput === "") {
-      return;
-    } else if (searchQuery === "city") {
-      const newProperties = tempData.filter((item) => {
-        if (item.city.toLowerCase() === searchInput.toLowerCase()) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-      setSearchResult(newProperties);
-    } else if (searchQuery === "state") {
-      const newProperties = tempData.filter((item) => {
-        if (item.state.toLowerCase() === searchInput.toLowerCase()) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-      setSearchResult(newProperties);
-    } else {
-      const newProperties = tempData.filter((item) => {
-        if (item.zipCode.toLowerCase() === searchInput.toLowerCase()) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-      setSearchResult(newProperties);
-    }
-  }, [searchInput]);
 
   return (
     <>

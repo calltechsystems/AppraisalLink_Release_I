@@ -155,6 +155,7 @@ export default function Exemple({
   const [hideAction, setHideAction] = useState(false);
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
+  const [dataFetched,setDataFetched] = useState(false)
   let tempData = [];
 
   const [allArchive, setAllArchive] = useState([]);
@@ -718,7 +719,7 @@ export default function Exemple({
                 "Content-Type": "application/json",
               },
               params: {
-                userId: data?.userId,
+                UserID: data?.userId,
               },
             })
             .then((result) => {
@@ -829,6 +830,7 @@ export default function Exemple({
           toast.dismiss();
 
           console.log(res.data);
+          setDataFetched(true)
           const prop = res.data.data.properties.$values;
 
           axios
@@ -884,6 +886,7 @@ export default function Exemple({
         .catch((err) => {
           toast.dismiss();
           toast.error(err);
+          setDataFetched(false)
           // setErrorMessage(err?.response?.data?.error);
           // setModalIsOpenError(true);
         });
@@ -1012,6 +1015,8 @@ export default function Exemple({
           refreshHandler={refreshHandler}
           setStartLoading={setStartLoading}
           start={start}
+          dataFetched={dataFetched}
+          properties={properties}
           end={end}
         />
       )}

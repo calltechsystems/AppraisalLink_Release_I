@@ -774,7 +774,12 @@ const Index = ({ isView, propertyData }) => {
               toast.error(
                 "Cant appraise the property all properties are being used!!"
               );
-            } else {
+            }
+            else if (/^5\d{2}$/.test(String(status))) {
+              toast.dismiss();
+              toast.error("Server error occurred Try Again !! ");
+            }
+             else {
               toast.dismiss();
               toast.error(err.message);
             }
