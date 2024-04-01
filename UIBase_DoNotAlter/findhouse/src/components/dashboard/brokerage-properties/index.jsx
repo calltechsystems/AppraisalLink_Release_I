@@ -154,7 +154,7 @@ const Index = () => {
   const archievePropertyHandler = (id) => {
     const data = JSON.parse(localStorage.getItem("user"));
 
-    toast.loading("archeiving this property");
+    toast.loading("Archiving this Property");
     axios
       .get("/api/propertyArcheive", {
         headers: {
@@ -169,7 +169,7 @@ const Index = () => {
       })
       .then((res) => {
         toast.dismiss();
-        toast.success("Successfully added to archived properties!!");
+        toast.success("Successfully Added to Archived Properties!!");
         window.location.reload();
       })
       .catch((err) => {
@@ -263,6 +263,7 @@ const Index = () => {
         // Check if any of the fields contain the search term
         else
           return (
+            String(property.orderId).toLowerCase().includes(searchTerm) ||
             property.zipCode.toLowerCase().includes(searchTerm) ||
             property.area.toLowerCase().includes(searchTerm) ||
             property.city.toLowerCase().includes(searchTerm) ||
@@ -278,12 +279,12 @@ const Index = () => {
     const filteredData = filterProperties(properties, searchInput);
     setFilterProperty(filteredData);
   }, [searchInput]);
-
+  
   const filterData = (tempData) => {
     const currentDate = new Date();
     const oneYearAgo = new Date(currentDate);
     oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
-
+  
     switch (filterQuery) {
       case "Last 30 Days":
         const thirtyDaysAgo = new Date(currentDate);
@@ -291,22 +292,13 @@ const Index = () => {
         return tempData.filter(
           (item) => new Date(item.addedDatetime) >= thirtyDaysAgo
         );
-      case "Last 1 month":
-        const oneMonthAgo = new Date(currentDate);
-        oneMonthAgo.setMonth(currentDate.getMonth() - 1);
+      case "Last 3 Month":
+        const threeMonthsAgo = new Date(currentDate);
+        threeMonthsAgo.setMonth(currentDate.getMonth() - 3);
         return tempData.filter(
-          (item) => new Date(item.addedDatetime) >= oneMonthAgo
+          (item) => new Date(item.addedDatetime) >= threeMonthsAgo
         );
-      case "Last 6 months":
-        const sixMonthsAgo = new Date(currentDate);
-        sixMonthsAgo.setMonth(currentDate.getMonth() - 6);
-        return tempData.filter(
-          (item) => new Date(item.addedDatetime) >= sixMonthsAgo
-        );
-      case "Last 1 year":
-        return tempData.filter(
-          (item) => new Date(item.addedDatetime) >= oneYearAgo
-        );
+      
       default:
         return tempData; // Return all data if no valid timeFrame is specified
     }

@@ -94,11 +94,11 @@ const Index = () => {
             "Content-Type": "application/json",
           },
           params: {
-            userId: data?.userId,
+            UserID: data?.userId,
           },
         })
         .then((res) => {
-          const temp = res.data.data.properties.$values;
+          const temp = res.data.data.property.$values;
 
           setProperties(temp);
         })

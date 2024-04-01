@@ -149,6 +149,7 @@ export default function Exemple({
   const [allBids, setBids] = useState([]);
   const [archive, setArchive] = useState([]);
   const [show, setShow] = useState(false);
+  const [dataFetched , setDataFetched] = useState(false)
   let tempData = [];
 
   const sortObjectsByOrderIdDescending = (data) => {
@@ -751,18 +752,18 @@ export default function Exemple({
     };
 
     axios
-      .get("/api/getAllListedProperties", {
+      .get("/api/getAllListedProperties2", {
         headers: {
           Authorization: `Bearer ${data?.token}`,
           "Content-Type": "application/json",
         },
         params: {
-          userId: data?.userId,
+          UserID: data?.userId,
         },
       })
       .then((res) => {
         toast.dismiss();
-        const temp = res.data.data.properties.$values;
+        const temp = res.data.data.property.$values;
         let tempProperties = [];
         tempProperties = temp.filter((prop, index) => {
           if (String(prop.userId) === String(data.userId)) {
@@ -820,12 +821,15 @@ export default function Exemple({
       {updatedData && (
         <SmartTable
           title=""
+          
           setFilterQuery={setFilterQuery}
           setSearchInput={setSearchInput}
           data={sortObjectsByOrderIdDescending(updatedData)}
           headCells={headCells}
           refreshHandler={refreshHandler}
           start={start}
+          properties={properties}
+          dataFetched={dataFetched}
           end={end}
         />
       )}

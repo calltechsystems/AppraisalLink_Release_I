@@ -289,7 +289,7 @@ export default function Exemple({
       setUpdatedData(tempData);
     };
     getData();
-  }, [properties]);
+  }, [allBrokers]);
 
   useEffect(() => {
     setUpdatedCode(true);

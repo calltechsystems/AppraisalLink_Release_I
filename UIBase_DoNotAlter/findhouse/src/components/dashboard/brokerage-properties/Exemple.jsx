@@ -148,6 +148,7 @@ export default function Exemple({
   const [updatedData, setUpdatedData] = useState([]);
   const [allBids, setBids] = useState([]);
   const [show, setShow] = useState(false);
+  const [dataFetched,setDataFetched] = useState(false)
   let tempData = [];
 
   const sortObjectsByOrderIdDescending = (data) => {
@@ -739,19 +740,19 @@ export default function Exemple({
     };
 
     axios
-      .get("/api/getAllListedProperties", {
+      .get("/api/getAllListedProperties2", {
         headers: {
           Authorization: `Bearer ${data?.token}`,
           "Content-Type": "application/json",
         },
         params: {
-          userId: data?.userId,
+          UserID: data?.userId,
         },
       })
       .then((res) => {
         toast.dismiss();
-        console.log("data", res);
-        const temp = res.data.data.properties.$values;
+        setDataFetched(true)
+        const temp = res.data.data.property.$values;
         let tempProperties = [];
         tempProperties = temp.filter((prop, index) => {
           if (String(prop.userId) === String(data.userId)) {
@@ -778,6 +779,7 @@ export default function Exemple({
       })
       .catch((err) => {
         toast.dismiss();
+        setDataFetched(false)
         toast.error(err?.response?.data?.error);
       });
 
@@ -796,6 +798,8 @@ export default function Exemple({
           headCells={headCells}
           refreshHandler={refreshHandler}
           start={start}
+          dataFetched={dataFetched}
+          properties={properties}
           end={end}
         />
       )}

@@ -62,59 +62,69 @@ function SmartTable(props) {
     },
     [props.url]
   );
+  const handlePrint = async () => {
+    try {
+      // Fetch data
+      const allData = props.properties;
 
-  const handlePrint = () => {
-    const printWindow = window.open("", "_blank");
-    printWindow.document.write(
-      "<html><head><title>AllBrokerProperties</title></head><body>"
-    );
-    printWindow.document.write("<h1>" + props.title + "</h1>");
-    printWindow.document.write(
-      '<button style="display:none;" onclick="window.print()">Print</button>'
-    );
+      // Open print window and set up basic structure
+      const printWindow = window.open("", "_blank");
+      printWindow.document.write(
+        "<html><head><title>AllBrokerProperties</title></head><body>"
+      );
+      printWindow.document.write("<h1>" + props.title + "</h1>");
+      printWindow.document.write(
+        '<button style="display:none;" onclick="window.print()">Print</button>'
+      );
 
-    // Clone the table-container and remove the action column
-    const tableContainer = document.getElementById("table-container");
-    const table = tableContainer.querySelector("table");
-    const clonedTable = table.cloneNode(true);
-    const rows = clonedTable.querySelectorAll("tr");
-    rows.forEach((row) => {
-      const lastCell = row.querySelector("td:last-child");
-      if (lastCell) {
-        row.removeChild(lastCell);
-      }
-    });
+      // Create a new table element to hold all data
+      const clonedTable = document.createElement("table");
 
-    // Remove the action heading from the table
-    const tableHead = clonedTable.querySelector("thead");
-    const tableHeadRows = tableHead.querySelectorAll("tr");
-    tableHeadRows.forEach((row) => {
-      const lastCell = row.querySelector("th:last-child");
-      if (lastCell) {
-        row.removeChild(lastCell);
-      }
-    });
+      // Clone the original table header
+      const tableContainer = document.getElementById("table-container");
+      const originalTable = tableContainer.querySelector("table");
+      const originalTableHeader = originalTable
+        .querySelector("thead")
+        .cloneNode(true);
+      clonedTable.appendChild(originalTableHeader);
 
-    // Make the table responsive for all fields
-    const tableRows = clonedTable.querySelectorAll("tr");
-    tableRows.forEach((row) => {
-      const firstCell = row.querySelector("td:first-child");
-      if (firstCell) {
-        const columnHeading = tableHeadRows[0].querySelector(
-          "th:nth-child(" + (firstCell.cellIndex + 1) + ")"
-        ).innerText;
-        firstCell.setAttribute("data-th", columnHeading);
-      }
-    });
+      // Iterate over all data and append rows to the table body
+      const tableBody = document.createElement("tbody");
+      allData.forEach((item) => {
+        const row = tableBody.insertRow();
+        Object.values(item.item).forEach((value) => {
+          const cell = row.insertCell();
+          cell.textContent = value;
+        });
+      });
+      clonedTable.appendChild(tableBody);
 
-    printWindow.document.write(clonedTable.outerHTML);
-    printWindow.document.write("</body></html>");
-    printWindow.document.close();
-    printWindow.print();
-    printWindow.onafterprint = () => {
-      printWindow.close();
-      toast.success("Saved the data");
-    };
+      // Make the table responsive for all fields
+      const tableRows = clonedTable.querySelectorAll("tr");
+      tableRows.forEach((row) => {
+        const firstCell = row.querySelector("td:first-child");
+        if (firstCell) {
+          const columnHeading = originalTableHeader.querySelector(
+            "th:nth-child(" + (firstCell.cellIndex + 1) + ")"
+          ).innerText;
+          firstCell.setAttribute("data-th", columnHeading);
+        }
+      });
+
+      // Write the table to the print window
+      printWindow.document.write(clonedTable.outerHTML);
+      printWindow.document.write("</body></html>");
+      printWindow.document.close();
+
+      // Print and handle post-print actions
+      printWindow.print();
+      printWindow.onafterprint = () => {
+        printWindow.close();
+        toast.success("Saved the data");
+      };
+    } catch (error) {
+      console.error("Error handling print:", error);
+    }
   };
   const handleExcelPrint = () => {
     const twoDData = props.data.map((item, index) => {
@@ -201,6 +211,19 @@ function SmartTable(props) {
       }, timeout);
     };
   };
+
+  const [showNoData, setShowNoData] = useState(false);
+
+  useEffect(() => {
+    if (props.dataFetched && props.properties.length === 0) {
+      const timer = setTimeout(() => {
+        setShowNoData(true);
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [props.dataFetched, props.properties]);
+
 
   const handleSearch = debounce((event) => {
     const { value } = event.target;
@@ -382,10 +405,21 @@ function SmartTable(props) {
                 className="smartTable-noDataFound col-12"
                 style={{ marginTop: "110px", marginBottom: "40px" }}
               >
+                 {props.dataFetched && props.properties.length === 0 ? (
+                
+                showNoData ? 
+                <h3>No Data Found</h3>
+                :
                 <div className="ring">
                   Loading
                   <span className="load"></span>
                 </div>
+              ) : (
+                <div className="ring">
+                  Loading
+                  <span className="load"></span>
+                </div>
+              )}
               </div>
             </div>
           )}

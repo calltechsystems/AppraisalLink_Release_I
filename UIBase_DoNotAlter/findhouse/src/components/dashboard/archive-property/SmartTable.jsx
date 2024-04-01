@@ -312,7 +312,7 @@ function SmartTable(props) {
                                 ? "smartTable-pointer"
                                 : ""
                             }
-                             onClick={() =>
+                            onClick={() =>
                               headCell.sortable !== false &&
                               headCell.id !== "address"
                                 ? sortData(headCell.id)
@@ -382,10 +382,11 @@ function SmartTable(props) {
                 className="smartTable-noDataFound col-12"
                 style={{ marginTop: "110px", marginBottom: "40px" }}
               >
-                <div className="ring">
+                {/* <div className="ring">
                   Loading
                   <span className="load"></span>
-                </div>
+                </div> */}
+                No Data Found
               </div>
             </div>
           )}

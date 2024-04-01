@@ -97,6 +97,7 @@ const Index = () => {
   };
 
   useEffect(() => {
+    setRefresh(true);
     const filterProperties = (propertys, searchInput) => {
       if (searchInput === "") {
         return propertys;
@@ -175,13 +176,13 @@ const Index = () => {
 
     const encryptedBody = encryptionData(payload);
 
-    toast.loading("Turning the property status !");
+    toast.loading("Turning the Property Status !");
     axios
       .put("/api/setPropertyOnHold", encryptedBody)
       .then((res) => {
         toast.dismiss();
         setIsHoldProperty(false);
-        toast.success("Successfully added status!");
+        toast.success("Successfully Added Status!");
         window.location.reload();
       })
       .catch((err) => {
@@ -206,12 +207,12 @@ const Index = () => {
 
     const encryptedBody = encryptionData(payload);
 
-    toast.loading("Turning the property status...");
+    toast.loading("Turning the Property Status...");
     axios
       .put("/api/setPropertyOnHold", encryptedBody)
       .then((res) => {
         toast.dismiss();
-        toast.success("Successfully added status!");
+        toast.success("Successfully Added Status!");
         setIsCancelProperty(false);
         window.location.reload();
       })

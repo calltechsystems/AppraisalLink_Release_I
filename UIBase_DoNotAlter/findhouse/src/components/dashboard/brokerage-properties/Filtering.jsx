@@ -4,8 +4,6 @@ const Filtering = ({setFilterQuery}) => {
     <option>All</option>
       <option>Last 30 Days</option>
       <option>Last 3 month</option>
-      <option>Last 6 months</option>
-      <option>Last 1 year</option>
     </select>
   );
 };

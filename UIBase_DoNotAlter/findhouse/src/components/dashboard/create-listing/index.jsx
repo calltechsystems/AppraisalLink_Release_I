@@ -37,6 +37,7 @@ const Index = ({ isView, propertyData }) => {
     const resultArray = inputString?.split(",");
     return resultArray;
   };
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [disable, setdisable] = useState(false);
   // let userData = {};
@@ -777,10 +778,10 @@ const Index = ({ isView, propertyData }) => {
             const status = err.response.request.status;
             if (String(status) === String(403)) {
               toast.dismiss();
-              setModalIsOpenError(true);
-              // toast.error(
-              //   "Can't appraise the property all properties are being used!!"
-              // );
+              // setModalIsOpenError(true);
+              toast.error(
+                "Can't appraise the property all properties are being used!!"
+              );
             } else {
               toast.dismiss();
               toast.error(err.message);

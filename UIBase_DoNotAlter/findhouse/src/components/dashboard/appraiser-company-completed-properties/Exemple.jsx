@@ -147,6 +147,8 @@ export default function Exemple({
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [wishlist, setWishlist] = useState([]);
+  
+  const [dataFetched,setDataFetched] = useState(false)
   const [bids, setBids] = useState([]);
   const [hideAction, setHideAction] = useState(false);
   const [hideClass, setHideClass] = useState("");
@@ -629,6 +631,7 @@ export default function Exemple({
         },
       })
       .then((res) => {
+        setDataFetched(true)
         const temp = res.data.data.properties.$values;
 
         setProperties(temp);
@@ -717,6 +720,7 @@ export default function Exemple({
           });
       })
       .catch((err) => {
+        setDataFetched(false)
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
@@ -760,6 +764,8 @@ export default function Exemple({
           setStartLoading={setStartLoading}
           start={start}
           end={end}
+          dataFetched={dataFetched}
+          properties={updatedData}
         />
       )}
     </>

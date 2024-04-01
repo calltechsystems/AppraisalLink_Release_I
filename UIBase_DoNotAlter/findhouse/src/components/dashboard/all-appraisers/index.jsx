@@ -95,7 +95,6 @@ const Index = () => {
     }
   };
 
-
   const handleStatusUpdateHandler = () => {
     const userData = JSON.parse(localStorage.getItem("user"));
     setDisable(true);
@@ -1397,36 +1396,39 @@ const Index = () => {
                       className="mb-2"
                       style={{ border: "2px solid #97d700" }}
                     ></div>
-                    <select
-                      required
-                      className="form-select"
-                      data-live-search="true"
-                      data-width="100%"
-                      // value={buildinRef}
-                      onChange={(e) => setIsActive(e.target.value)}
-                      // onChange={(e) => setBuildinRef(e.target.value)}
-                      // disabled={isDisable}
-                      style={{
-                        paddingTop: "15px",
-                        paddingBottom: "15px",
-                        backgroundColor: "#E8F0FE",
-                      }}
-                    >
-                      <option
-                        key={0}
-                        value={0}
-                        disabled={selectedAppraiser?.isActive ? false : true}
+                    <div className="d-flex justify-content-center">
+                      <select
+                        required
+                        className="form-select"
+                        data-live-search="true"
+                        data-width="100%"
+                        // value={buildinRef}
+                        onChange={(e) => setIsActive(e.target.value)}
+                        // onChange={(e) => setBuildinRef(e.target.value)}
+                        // disabled={isDisable}
+                        style={{
+                          paddingTop: "10px",
+                          paddingBottom: "10px",
+                          backgroundColor: "#E8F0FE",
+                          width: "300px",
+                        }}
                       >
-                        In-active
-                      </option>
-                      <option
-                        key={1}
-                        value={1}
-                        disabled={selectedAppraiser?.isActive ? true : false}
-                      >
-                        Active
-                      </option>
-                    </select>
+                        <option
+                          key={0}
+                          value={0}
+                          disabled={selectedAppraiser?.isActive ? false : true}
+                        >
+                          In-active
+                        </option>
+                        <option
+                          key={1}
+                          value={1}
+                          disabled={selectedAppraiser?.isActive ? true : false}
+                        >
+                          Active
+                        </option>
+                      </select>
+                    </div>
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div
                       className="mb-2 mt-3"
@@ -1435,14 +1437,14 @@ const Index = () => {
                     <div className="text-center" style={{}}>
                       <button
                         disabled={disable}
-                        className="btn w-35 btn-color"
+                        className="btn btn-color w-25"
                         onClick={closeStatusUpdateHandler}
                       >
                         Cancel
                       </button>
                       <button
                         disabled={disable}
-                        className="btn btn-color"
+                        className="btn btn-color w-25 "
                         style={{ marginLeft: "12px" }}
                         onClick={handleStatusUpdateHandler}
                       >

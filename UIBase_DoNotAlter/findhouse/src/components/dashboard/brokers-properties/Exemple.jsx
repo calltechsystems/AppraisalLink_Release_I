@@ -155,6 +155,8 @@ export default function Exemple({
   const [updatedData, setUpdatedData] = useState([]);
   const [allBids, setBids] = useState([]);
   const [show, setShow] = useState(false);
+  
+  const [dataFetched,setDataFetched] = useState(false)
   const [allListedProperties,setAllListedProperties]=useState([]);
   let tempData = [];
   const [AllBrokers, setAllBrokers] = useState([]);
@@ -817,11 +819,13 @@ export default function Exemple({
       })
       .then((res) => {
         toast.dismiss();
+        setDataFetched(true)
         console.log("properties",res.data.data.properties.$values);
         setAllListedProperties( res.data.data.properties.$values);
       })
       .catch((err) => {
         toast.error(err);
+        setDataFetched(false)
         // setModalIsOpenError(true);
       });
 
@@ -886,6 +890,8 @@ export default function Exemple({
           headCells={headCells}
           refreshHandler={refreshHandler}
           start={start}
+          dataFetched={dataFetched}
+          properties={properties}
           end={end}
         />
       )}

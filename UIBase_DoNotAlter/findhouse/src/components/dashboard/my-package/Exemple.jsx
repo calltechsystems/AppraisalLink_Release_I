@@ -45,7 +45,7 @@ const headCells = [
   {
     id: "remained_prop",
     numeric: false,
-    label: "Remaining Properties",
+    label: "Used Properties",
     width: 150,
   },
   {
@@ -195,11 +195,12 @@ export default function Exemple({
         
         
         
+        const propertyCount = 26;
         const {nextMonth,nextYear} = NextMonthAndYearCalculator(property.createdTime);
         const endDate =property.planAmount<500 ? nextMonth : nextYear;
         const expired = new Date(endDate) < new Date() ? true : false;
 
-        if(!expired){
+        if(property.isActive){
         const updatedRow = {
           id: property.paymentid,
           planName: property.transactionDetail,
@@ -210,7 +211,7 @@ export default function Exemple({
           amount:property.planAmount? `$ ${property.planAmount}` : '$ -',
           st_date:formatDate(property.createdTime),
           end_date: formatDate(endDate) ,
-          remained_prop:data?.noUsedProperties,
+          remained_prop:`${propertyCount - data.noUsedProperties} of ${propertyCount}`,
           status:
             expired ?
             <span className="btn btn-danger  w-100">In-Active</span>

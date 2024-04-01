@@ -10,11 +10,14 @@ async function handler(request, response) {
     const UserID = request.query.UserID;
 
     const userResponse = await axios.get(
-      `${domain}/com.appraisalland.Property/getAllProperty`,
+      `${domain}/com.appraisalland.Property/getPropertyByUserId`,
       {
         headers: {
           Authorization: token,
           "Content-Type": "application/json",
+        },
+        params:{
+          UserID : UserID
         }
       }
     );

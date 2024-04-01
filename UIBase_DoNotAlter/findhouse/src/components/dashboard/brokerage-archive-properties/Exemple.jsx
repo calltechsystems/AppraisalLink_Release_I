@@ -171,6 +171,8 @@ export default function Exemple({
   const [updatedData, setUpdatedData] = useState([]);
   const [allBids, setBids] = useState([]);
   const [show, setShow] = useState(false);
+  
+  const [dataFetched,setDataFetched] = useState(false)
   let tempData = [];
 
   const refreshHandler = () => {
@@ -630,7 +632,7 @@ export default function Exemple({
                       <Link
                         className="btn btn-color-table"
                         // style={{ marginLeft: "4.3rem" }}
-                        href={`/my-property-bids/${property.propertyId}`}
+                        href={`/brokerage-properties-bid/${property.orderId}`}
                       >
                         <span className="flaticon-invoice">
                           {/* <FaHandHoldingUsd /> */}
@@ -817,12 +819,12 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        console.log(res);
+        setDataFetched(true)
         const temp = res.data.data.$values;
         setProperties(temp);
       })
       .catch((err) => {
-        console.log(err);
+        setDataFetched(false)
         toast.error(err);
         setModalIsOpenError(true);
       });
@@ -883,6 +885,9 @@ export default function Exemple({
           headCells={headCells}
           refreshHandler={refreshHandler}
           start={start}
+          
+          dataFetched={dataFetched}
+          properties={properties}
           end={end}
         />
       )}
