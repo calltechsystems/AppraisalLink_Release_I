@@ -48,6 +48,7 @@ const Index = ({ isView, propertyData }) => {
   const [streetNumberRef, setStreetNumberRef] = useState(
     propertyData?.streetNumber || ""
   );
+  const [refresh, setRefresh] = useState(false);
   const [cityRef, setCityRef] = useState(propertyData?.city || "");
   const [stateRef, setStateRef] = useState(propertyData?.province || "");
   const [zipCodeRef, setZipCodeRef] = useState(propertyData?.zipCode || null);
@@ -774,12 +775,17 @@ const Index = ({ isView, propertyData }) => {
               toast.error(
                 "Cant appraise the property all properties are being used!!"
               );
-            }
-            else if (/^5\d{2}$/.test(String(status))) {
+              window.location.reload();
+            } else if (String(status) === String(404)) {
+              toast.dismiss();
+              toast.error(
+                "You do not have any subscription. Please get a subscription to access the full features."
+              );
+              window.location.reload();
+            } else if (/^5\d{2}$/.test(String(status))) {
               toast.dismiss();
               toast.error("Server error occurred Try Again !! ");
-            }
-             else {
+            } else {
               toast.dismiss();
               toast.error(err.message);
             }

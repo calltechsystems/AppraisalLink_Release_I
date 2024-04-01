@@ -38,6 +38,7 @@ const Index = ({ isView, propertyData }) => {
     return resultArray;
   };
   const [errorMessage, setErrorMessage] = useState("");
+  const [refresh, setRefresh] = useState(false);
 
   const [disable, setdisable] = useState(false);
   // let userData = {};
@@ -782,6 +783,14 @@ const Index = ({ isView, propertyData }) => {
               toast.error(
                 "Can't appraise the property all properties are being used!!"
               );
+              // setRefresh(true);
+              window.location.reload();
+            } else if (String(status) === String(404)) {
+              toast.dismiss();
+              toast.error(
+                "You do not have any subscription. Please get a subscription to access the full features."
+              );
+              window.location.reload();
             } else {
               toast.dismiss();
               toast.error(err.message);
