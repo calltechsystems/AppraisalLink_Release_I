@@ -160,6 +160,8 @@ export default function Exemple({
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
   const [Appraiser, setAppraiser] = useState({});
+  
+  const [dataFetched,setDataFetched] = useState(false)
   const [allProperties, setAllProperties] = useState([]);
   const [allAssignAppraiser, setAllAssignAppraiser] = useState([]);
   let tempData = [];
@@ -601,6 +603,7 @@ export default function Exemple({
         },
       })
       .then((res) => {
+        setDataFetched(true)
         const temp2 = res.data.data.properties.$values;
 
         setAllProperties(temp2);
@@ -683,6 +686,7 @@ export default function Exemple({
           });
       })
       .catch((err) => {
+        setDataFetched(false)
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
@@ -716,6 +720,7 @@ export default function Exemple({
           });
       })
       .catch((err) => {
+
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
@@ -757,6 +762,8 @@ export default function Exemple({
           refreshHandler={refreshHandler}
           setStartLoading={setStartLoading}
           start={start}
+          properties={updatedData}
+          dataFetched={dataFetched}
           end={end}
         />
       )}

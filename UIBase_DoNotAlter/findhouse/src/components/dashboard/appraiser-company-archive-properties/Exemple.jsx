@@ -150,6 +150,8 @@ export default function Exemple({
   const [updatedData, setUpdatedData] = useState([]);
   const [wishlist, setWishlist] = useState([]);
   const [bids, setBids] = useState([]);
+  
+  const [dataFetched,setDataFetched] = useState(false)
   const [hideAction, setHideAction] = useState(false);
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
@@ -500,6 +502,7 @@ export default function Exemple({
         },
       })
       .then((res) => {
+        setDataFetched(true)
         const temp = res.data.data.properties.$values;
         let tempBids = [];
         axios
@@ -603,6 +606,7 @@ export default function Exemple({
         setAllArchive(res.data.data.$values);
       })
       .catch((err) => {
+        setDataFetched(false)
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
@@ -626,6 +630,8 @@ export default function Exemple({
           refreshHandler={refreshHandler}
           setStartLoading={setStartLoading}
           start={start}
+          properties={updatedData}
+          dataFetched={dataFetched}
           end={end}
         />
       )}
