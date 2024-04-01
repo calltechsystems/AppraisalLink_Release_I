@@ -514,7 +514,7 @@ const Index = ({ isView, propertyData }) => {
 
   const onCancelHandler = () => {
     setModalIsOpen(false);
-    window.location.reload();
+    // window.location.reload();
   };
 
   const submitHandler = () => {

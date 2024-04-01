@@ -256,7 +256,7 @@ const Index = () => {
         return propertys;
       }
       const filteredProperties = propertys.filter((property) => {
-        console.log("property",property)
+        console.log("property", property);
         // Convert the search input to lowercase for a case-insensitive search
         const searchTerm = searchInput.toLowerCase();
 
@@ -287,7 +287,7 @@ const Index = () => {
     const currentDate = new Date();
     const oneYearAgo = new Date(currentDate);
     oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
-  
+
     switch (filterQuery) {
       case "Last 30 Days":
         const thirtyDaysAgo = new Date(currentDate);
@@ -301,12 +301,11 @@ const Index = () => {
         return tempData.filter(
           (item) => new Date(item.addedDatetime) >= threeMonthsAgo
         );
-      
+
       default:
         return tempData; // Return all data if no valid timeFrame is specified
     }
   };
-  
 
   useEffect(() => {
     const tmpData = filterData(properties);
@@ -1289,7 +1288,7 @@ const Index = () => {
             </div>
             {/* End .row */}
 
-            <div className="row">
+            {/* <div className="row">
               <div className="col-lg-12 mt20">
                 <div className="mbp_pagination">
                   <Pagination
@@ -1299,7 +1298,7 @@ const Index = () => {
                   />
                 </div>
               </div>
-            </div>
+            </div> */}
 
             <div className="row mt50">
               <div className="col-lg-12">

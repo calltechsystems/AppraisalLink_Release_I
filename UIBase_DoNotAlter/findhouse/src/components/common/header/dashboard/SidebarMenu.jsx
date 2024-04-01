@@ -41,12 +41,12 @@ const SidebarMenu = () => {
       route: "/my-plans",
       icon: "flaticon-box",
     },
-    {
-      id: 2,
-      name: "Top-up Plans",
-      route: "/top-up",
-      icon: "flaticon-box",
-    },
+    // {
+    //   id: 2,
+    //   name: "Top-up Plans",
+    //   route: "/top-up",
+    //   icon: "flaticon-box",
+    // },
     {
       id: 3,
       name: "Subscription History",

@@ -22436,15 +22436,16 @@ input:checked + .slider:before {
 }
 
 .smartTable-tableContainer {
-  /* max-height: 83vh !important; */
+  max-height: 53vh !important;
   overflow: scroll;
+  /* overflow-y: scroll; */
   padding-right: 0 !important;
   padding-left: 0 !important;
 }
 
 .smartTable-tableContainer::-webkit-scrollbar {
   -webkit-appearance: none;
-  width: 0px;
+  width: 15px;
   height: 15px;
 }
 

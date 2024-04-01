@@ -12,52 +12,51 @@ const Modal = ({ modalOpen, closeModal, price }) => {
   const checkOutHandler = () => {
     const data = JSON.parse(localStorage.getItem("user"));
 
-    console.log(price)
-    if(String(price.type) === "plan"){
-    const payload = {
-      planId: price.id,
-      userId: data.userId,
-      token: data.token,
-    };
+    console.log(price);
+    if (String(price.type) === "plan") {
+      const payload = {
+        planId: price.id,
+        userId: data.userId,
+        token: data.token,
+      };
 
-    const encryptiondata = encryptionData(payload);
+      const encryptiondata = encryptionData(payload);
 
-    axios
-      .post("/api/paypalPayement", encryptiondata)
-      .then((res) => {
-        setPaypalUrl(res.data.data.response);
-        setStatus(1);
-      })
-      .catch((err) => {
-        toast.error(err.message);
-      });
-      }
-      else{
-        const payload = {
-          TopUpId: price.id,
-          UserId: data.userId,
-          token: data.token,
-        };
-    
-        const encryptiondata = encryptionData(payload);
-    
-        axios
-          .post("/api/addTopUp", encryptiondata)
-          .then((res) => {
-            console.log(res.data)
-            setPaypalUrl(res.data.userData.response);
-            setStatus(1);
-          })
-          .catch((err) => {
-            toast.error(err.message);
-          });
-          }
+      axios
+        .post("/api/paypalPayement", encryptiondata)
+        .then((res) => {
+          setPaypalUrl(res.data.data.response);
+          setStatus(1);
+        })
+        .catch((err) => {
+          toast.error(err.message);
+        });
+    } else {
+      const payload = {
+        TopUpId: price.id,
+        UserId: data.userId,
+        token: data.token,
+      };
+
+      const encryptiondata = encryptionData(payload);
+
+      axios
+        .post("/api/addTopUp", encryptiondata)
+        .then((res) => {
+          console.log(res.data);
+          setPaypalUrl(res.data.userData.response);
+          setStatus(1);
+        })
+        .catch((err) => {
+          toast.error(err.message);
+        });
+    }
   };
 
-  const openPaypalUrl = ()=>{
-    localStorage.setItem("isPaying",JSON.stringify("true"));
+  const openPaypalUrl = () => {
+    localStorage.setItem("isPaying", JSON.stringify("true"));
     setStatus(2);
-  }
+  };
 
   useEffect(() => {
     let countdownInterval;
@@ -159,12 +158,15 @@ const Modal = ({ modalOpen, closeModal, price }) => {
               )}
               {paypalUrl ? (
                 status === 1 ? (
-                  <div onClick={() => openPaypalUrl()}>
-                    <a href={paypalUrl} className="btn btn-color w-25">
+                  <div
+                    onClick={() => openPaypalUrl()}
+                    className="btn btn-color w-25"
+                  >
+                    <a href={paypalUrl} className="">
                       <img
                         src="https://th.bing.com/th/id/OIP.pQDcRxJ3IS71sWCWQ96IUwHaHa?w=171&h=180&c=7&r=0&o=5&pid=1.7"
                         width={40}
-                        height={30}
+                        height={25}
                         alt="PayPal"
                       />
                     </a>

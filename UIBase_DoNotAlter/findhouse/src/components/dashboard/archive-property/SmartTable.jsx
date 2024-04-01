@@ -63,59 +63,71 @@ function SmartTable(props) {
     [props.url]
   );
 
-  const handlePrint = () => {
-    const printWindow = window.open("", "_blank");
-    printWindow.document.write(
-      "<html><head><title>AllBrokerProperties</title></head><body>"
-    );
-    printWindow.document.write("<h1>" + props.title + "</h1>");
-    printWindow.document.write(
-      '<button style="display:none;" onclick="window.print()">Print</button>'
-    );
-
-    // Clone the table-container and remove the action column
-    const tableContainer = document.getElementById("table-container");
-    const table = tableContainer.querySelector("table");
-    const clonedTable = table.cloneNode(true);
-    const rows = clonedTable.querySelectorAll("tr");
-    rows.forEach((row) => {
-      const lastCell = row.querySelector("td:last-child");
-      if (lastCell) {
-        row.removeChild(lastCell);
-      }
-    });
-
-    // Remove the action heading from the table
-    const tableHead = clonedTable.querySelector("thead");
-    const tableHeadRows = tableHead.querySelectorAll("tr");
-    tableHeadRows.forEach((row) => {
-      const lastCell = row.querySelector("th:last-child");
-      if (lastCell) {
-        row.removeChild(lastCell);
-      }
-    });
-
-    // Make the table responsive for all fields
-    const tableRows = clonedTable.querySelectorAll("tr");
-    tableRows.forEach((row) => {
-      const firstCell = row.querySelector("td:first-child");
-      if (firstCell) {
-        const columnHeading = tableHeadRows[0].querySelector(
-          "th:nth-child(" + (firstCell.cellIndex + 1) + ")"
-        ).innerText;
-        firstCell.setAttribute("data-th", columnHeading);
-      }
-    });
-
-    printWindow.document.write(clonedTable.outerHTML);
-    printWindow.document.write("</body></html>");
-    printWindow.document.close();
-    printWindow.print();
-    printWindow.onafterprint = () => {
-      printWindow.close();
-      toast.success("Saved the data");
-    };
+  const handlePrint = async () => {
+    try {
+      // Fetch data
+      const allData = props.properties;
+  
+      // Open print window and set up basic structure
+      const printWindow = window.open("", "_blank");
+      printWindow.document.write(
+        "<html><head><title>AllBrokerProperties</title></head><body>"
+      );
+      printWindow.document.write("<h1>" + props.title + "</h1>");
+      printWindow.document.write(
+        '<button style="display:none;" onclick="window.print()">Print</button>'
+      );
+  
+      // Create a new table element to hold all data
+      const clonedTable = document.createElement("table");
+  
+      // Create table headers
+      const tableHeaderRow = document.createElement("tr");
+      const staticHeaders = [
+        ["order_id","Order Id"],
+         ["address","Address"],
+         ["remark","Remark"],
+         ["sub_date","Submission Date"],
+         ["urgency","Urgency"],
+         ["quote_required_by", "Quote Required By"],
+         ["type_of_building","Type Of Building"],
+         ["type_of_appraisal","Type Of Appraisal"]]; // Add your static headers here
+      staticHeaders.forEach((headerText) => {
+        const th = document.createElement("th");
+        th.textContent = headerText[1];
+        tableHeaderRow.appendChild(th);
+      });
+      clonedTable.appendChild(tableHeaderRow);
+  
+      // Iterate over all data and append rows to the table body
+        const tableBody = document.createElement("tbody");
+        allData.forEach((item) => {
+          const row = tableBody.insertRow();
+          staticHeaders.forEach((header) => {
+            const cell = row.insertCell();
+            cell.textContent = item[header[0].toLowerCase()]; // Use bracket notation to access item properties dynamically
+          });
+        });
+clonedTable.appendChild(tableBody);
+      clonedTable.appendChild(tableBody);
+  
+      // Write the table to the print window
+      printWindow.document.write(clonedTable.outerHTML);
+      printWindow.document.write("</body></html>");
+      printWindow.document.close();
+  
+      // Print and handle post-print actions
+      printWindow.print();
+      printWindow.onafterprint = () => {
+        printWindow.close();
+        toast.success("Saved the data");
+      };
+    } catch (error) {
+      console.error("Error handling print:", error);
+    }
   };
+
+
   const handleExcelPrint = () => {
     const twoDData = props.data.map((item, index) => {
       return [item.bid, item.date, item.title, item.urgency];
@@ -219,6 +231,20 @@ function SmartTable(props) {
       setData(tempData);
     }
   }, props.searchDebounceTime ?? 800);
+
+
+  const [showNoData, setShowNoData] = useState(false);
+
+  useEffect(() => {
+    if (props.dataFetched && props.properties.length === 0) {
+      const timer = setTimeout(() => {
+        setShowNoData(true);
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [props.dataFetched, props.properties]);
+
 
   const sortData = (cell) => {
     let tempData = data.length > 0 ? [...data] : [...props.data];
@@ -382,11 +408,21 @@ function SmartTable(props) {
                 className="smartTable-noDataFound col-12"
                 style={{ marginTop: "110px", marginBottom: "40px" }}
               >
-                {/* <div className="ring">
+                {props.dataFetched && props.properties.length === 0 ? (
+                
+                showNoData ? 
+                <h3>No Data Found</h3>
+                :
+                <div className="ring">
                   Loading
                   <span className="load"></span>
-                </div> */}
-                No Data Found
+                </div>
+              ) : (
+                <div className="ring">
+                  Loading
+                  <span className="load"></span>
+                </div>
+              )}
               </div>
             </div>
           )}

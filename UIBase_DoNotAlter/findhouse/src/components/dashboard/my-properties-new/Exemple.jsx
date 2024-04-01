@@ -149,7 +149,7 @@ export default function Exemple({
   const [allBids, setBids] = useState([]);
   const [archive, setArchive] = useState([]);
   const [show, setShow] = useState(false);
-  const [dataFetched , setDataFetched] = useState(false)
+  const [dataFetched, setDataFetched] = useState(false);
   let tempData = [];
 
   const sortObjectsByOrderIdDescending = (data) => {
@@ -314,7 +314,6 @@ export default function Exemple({
         const isHold = property.isOnHold;
         const isCancel = property.isOnCancel;
         const isStatus = getPropertyStatusHandler(property);
-        console.log(isStatus);
         const isEditable = isStatus === 0 ? true : false;
         if (!Archived.$id) {
           const updatedRow = {
@@ -523,9 +522,7 @@ export default function Exemple({
                   <li>
                     <Link
                       href="#"
-                      onClick={() =>
-                        archievePropertyHandler(property.orderId)
-                      }
+                      onClick={() => archievePropertyHandler(property.orderId)}
                     >
                       <span className="btn btn-color w-100">
                         {" "}
@@ -821,14 +818,13 @@ export default function Exemple({
       {updatedData && (
         <SmartTable
           title=""
-          
           setFilterQuery={setFilterQuery}
           setSearchInput={setSearchInput}
           data={sortObjectsByOrderIdDescending(updatedData)}
           headCells={headCells}
           refreshHandler={refreshHandler}
           start={start}
-          properties={properties}
+          properties={updatedData}
           dataFetched={dataFetched}
           end={end}
         />
