@@ -107,6 +107,7 @@ const Pricing = ({
     setSelectedPlanId(-1);
     setType(1);
     setOpenCancelModal(false);
+    window.location.reload();
   };
 
   const cancelPackageHandler = () => {
