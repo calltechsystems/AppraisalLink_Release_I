@@ -190,11 +190,12 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const cellNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const nameRegex = /^[A-Za-z]+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex for email validation
 
     if (
       nameRegex.test(firstName) === false ||
-      nameRegex.test(lastName) === false ||
-      nameRegex.test(middleName) === false
+      (middleName.trim() !== "" && nameRegex.test(middleName) === false) ||
+      nameRegex.test(lastName) === false
     ) {
       toast.error("Name should be valid ");
     } else if (
@@ -209,11 +210,34 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
       toast.error("Applicant Name should be valid ");
     } else if (phoneNumberRegex.test(phoneNumber) === false || !phoneNumber) {
       toast.error("Enter a Valid Phone Number Please");
-    }
-    // else if (cellNumberRegex.test(cellNumber) === false || !cellNumber) {
-    //   toast.error("Enter a Valid Cell Number Please");
-    // }
-    else if (
+    } else if (
+      cellNumberRegex.test(cellNumber) === false &&
+      cellNumber.trim() !== ""
+    ) {
+      toast.error("Enter a Valid Cell Number Please");
+    } else if (
+      cellNumberRegex.test(assistantPhoneNumber) === false &&
+      assistantPhoneNumber.trim() !== ""
+    ) {
+      toast.error("Enter a Valid Assistant Phone Number Please");
+    } else if (
+      cellNumberRegex.test(assistantTwoPhoneNumber) === false &&
+      assistantTwoPhoneNumber.trim() !== ""
+    ) {
+      toast.error("Enter a Valid Assistant Phone Number Please");
+    } else if (emailRegex.test(emailId) === false) {
+      toast.error("Enter a Valid Email Address Please");
+    } else if (
+      emailRegex.test(assistantEmailAddress) === false &&
+      assistantEmailAddress.trim() !== ""
+    ) {
+      toast.error("Enter a Valid Assistant Email Address Please");
+    } else if (
+      emailRegex.test(assistantTwoEmailAddress) === false &&
+      assistantTwoEmailAddress.trim() !== ""
+    ) {
+      toast.error("Enter a Valid Assistant Email Address Please");
+    } else if (
       (!firstName ||
         !lastName ||
         !streetNumber ||

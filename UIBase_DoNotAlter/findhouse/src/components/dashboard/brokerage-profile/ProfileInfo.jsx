@@ -15,7 +15,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   const router = useRouter();
 
   const [SelectedImage, setSelectedImage] = useState(
-    userData?.broker_Details?.profileImage ||
+    userData?.brokerage_Details?.profileImage ||
       "/assets/images/home/placeholder_01.jpg"
   );
 
@@ -148,27 +148,67 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     const middleName = middleNameRef;
     const brokerageName = brokerageNameRef;
     const mortageBrokerLicNo =
-    mortageBrokerLicNoRef !== ""
-      ? mortageBrokerLicNoRef
-      : userData.brokerage_Details.mortageBrokerLicNo;
-  const mortageBrokrageLicNo =
-    mortageBrokrageLicNoRef !== ""
-      ? mortageBrokrageLicNoRef
-      : userData.brokerage_Details.mortageBrokerageLicNo;
+      mortageBrokerLicNoRef !== ""
+        ? mortageBrokerLicNoRef
+        : userData.brokerage_Details.mortageBrokerLicNo;
+    const mortageBrokrageLicNo =
+      mortageBrokrageLicNoRef !== ""
+        ? mortageBrokrageLicNoRef
+        : userData.brokerage_Details.mortageBrokerageLicNo;
     // const assistantEmailAddress = assistantEmailAddress;
     // const assistantFirstName = assistantFirstName;
     // const assistantPhoneNumber = assistantPhoneNumber;
 
     const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
+    const cellNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const nameRegex = /^[A-Za-z]+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex for email validation
 
     if (
       nameRegex.test(firstName) === false ||
+      (middleName.trim() !== "" && nameRegex.test(middleName) === false) ||
       nameRegex.test(lastName) === false
     ) {
       toast.error("Name should be valid ");
+    } else if (
+      (assistantFirstName.trim() !== "" &&
+        !nameRegex.test(assistantFirstName)) ||
+      (assistantLastName.trim() !== "" && !nameRegex.test(assistantLastName)) ||
+      (assistantTwoFirstName.trim() !== "" &&
+        !nameRegex.test(assistantTwoFirstName)) ||
+      (assistantTwoLastName.trim() !== "" &&
+        !nameRegex.test(assistantTwoLastName))
+    ) {
+      toast.error("Applicant Name should be valid ");
     } else if (phoneNumberRegex.test(phoneNumber) === false || !phoneNumber) {
-      toast.error("enter a valid phone number please");
+      toast.error("Enter a Valid Phone Number Please");
+    } else if (
+      cellNumberRegex.test(cellNumber) === false &&
+      cellNumber.trim() !== ""
+    ) {
+      toast.error("Enter a Valid Cell Number Please");
+    } else if (
+      cellNumberRegex.test(assistantPhoneNumber) === false &&
+      assistantPhoneNumber.trim() !== ""
+    ) {
+      toast.error("Enter a Valid Assistant Phone Number Please");
+    } else if (
+      cellNumberRegex.test(assistantTwoPhoneNumber) === false &&
+      assistantTwoPhoneNumber.trim() !== ""
+    ) {
+      toast.error("Enter a Valid Assistant Phone Number Please");
+    } else if (emailRegex.test(emailId) === false) {
+      toast.error("Enter a Valid Email Address Please");
+    } else if (
+      emailRegex.test(assistantEmailAddress) === false &&
+      assistantEmailAddress.trim() !== ""
+    ) {
+      toast.error("Enter a Valid Assistant Email Address Please");
+    } else if (
+      emailRegex.test(assistantTwoEmailAddress) === false &&
+      assistantTwoEmailAddress.trim() !== ""
+    ) {
+      toast.error("Enter a Valid Assistant Email Address Please");
     } else if (
       (!firstName ||
         !lastName ||
@@ -369,6 +409,34 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     setCellNumberRef(truncatedValue);
   };
 
+  const handleInputChange_02 = (e) => {
+    const inputValue = e.target.value;
+
+    // Allow only numeric input
+    const numericValue = inputValue.replace(/\D/g, "");
+
+    // Restrict to 10 digits
+    const truncatedValue = numericValue.slice(0, 10);
+    if (truncatedValue.length === 10) {
+      setAssistantPhoneNumber(truncatedValue);
+    }
+    setAssistantPhoneNumber(truncatedValue);
+  };
+
+  const handleInputChange_03 = (e) => {
+    const inputValue = e.target.value;
+
+    // Allow only numeric input
+    const numericValue = inputValue.replace(/\D/g, "");
+
+    // Restrict to 10 digits
+    const truncatedValue = numericValue.slice(0, 10);
+    if (truncatedValue.length === 10) {
+      setAssistantTwoPhoneNumber(truncatedValue);
+    }
+    setAssistantTwoPhoneNumber(truncatedValue);
+  };
+
   return (
     <>
       <div className="row">
@@ -399,7 +467,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                     src={SelectedImage}
                     alt="Uploaded Image"
                   />
-                  {edit && (
+                  {!edit && (
                     <CldUploadWidget
                       onUpload={handleUpload}
                       uploadPreset="mpbjdclg"
@@ -981,9 +1049,11 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
                           value={assistantPhoneNumber}
-                          onChange={(e) =>
-                            setAssistantPhoneNumber(e.target.value)
-                          }
+                          onChange={handleInputChange_02}
+                          // onChange={(e) =>
+                          //   setAssistantPhoneNumber(e.target.value)
+                          // }
+                          // disabled={!edit}
                         />
                       </div>
                     </div>
@@ -1092,9 +1162,11 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
                           value={assistantTwoPhoneNumber}
-                          onChange={(e) =>
-                            setAssistantTwoPhoneNumber(e.target.value)
-                          }
+                          onChange={handleInputChange_03}
+                          // onChange={(e) =>
+                          //   setAssistantTwoPhoneNumber(e.target.value)
+                          // }
+                          // disabled={!edit}
                         />
                       </div>
                     </div>
