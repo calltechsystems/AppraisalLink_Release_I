@@ -183,6 +183,7 @@ const Index = () => {
 
   const onHoldHandler = () => {
     setDisable(true);
+    setModalOpen(false);
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -194,13 +195,13 @@ const Index = () => {
 
     const encryptedBody = encryptionData(payload);
 
-    toast.loading("Turning the property status !");
+    toast.loading("Turning the Property Status.....");
     axios
       .put("/api/setPropertyOnHold", encryptedBody)
       .then((res) => {
         toast.dismiss();
         setIsHoldProperty(false);
-        toast.success("Successfully added status!");
+        toast.success("Successfully Changed the Order Status !");
         window.location.reload();
       })
       .catch((err) => {
@@ -214,6 +215,7 @@ const Index = () => {
 
   const onCancelHandler = () => {
     setDisable(true);
+    setModalOpen(false);
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -225,12 +227,12 @@ const Index = () => {
 
     const encryptedBody = encryptionData(payload);
 
-    toast.loading("Turning the property status...");
+    toast.loading("Turning the Property Status.....");
     axios
       .put("/api/setPropertyOnHold", encryptedBody)
       .then((res) => {
         toast.dismiss();
-        toast.success("Successfully added status!");
+        toast.success("Successfully Changed the Order Status !");
         setIsCancelProperty(false);
         window.location.reload();
       })
@@ -279,12 +281,12 @@ const Index = () => {
     const filteredData = filterProperties(properties, searchInput);
     setFilterProperty(filteredData);
   }, [searchInput]);
-  
+
   const filterData = (tempData) => {
     const currentDate = new Date();
     const oneYearAgo = new Date(currentDate);
     oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
-  
+
     switch (filterQuery) {
       case "Last 30 Days":
         const thirtyDaysAgo = new Date(currentDate);
@@ -298,7 +300,7 @@ const Index = () => {
         return tempData.filter(
           (item) => new Date(item.addedDatetime) >= threeMonthsAgo
         );
-      
+
       default:
         return tempData; // Return all data if no valid timeFrame is specified
     }

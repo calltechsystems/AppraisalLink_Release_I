@@ -107,7 +107,7 @@ const Pricing = ({
     setSelectedPlanId(-1);
     setType(1);
     setOpenCancelModal(false);
-    window.location.reload();
+    window.location.reload()
   };
 
   const cancelPackageHandler = () => {
@@ -266,8 +266,8 @@ const Pricing = ({
                 >
                   <option value={1}>Modify/Cancel Subscription </option>
                   <option value={2}>Cancel Subscription</option>
-                  <option value={3}>Add TopUp (Low)</option>
-                  <option value={4}>Add TopUp (High)</option>
+                  <option value={3}>Add {topupData[0].noOfProperties} Properties</option>
+                  <option value={4}>Add {topupData[1].noOfProperties} Properties</option>
                 </select>
               )}
           </div>
@@ -324,8 +324,8 @@ const Pricing = ({
               {String(type) === "2"
                 ? "Are you sure you want to cancel this subscription?"
                 : String(type) === "3"
-                ? "Are you sure you want add Top-up plan  (Low ) to this plan?"
-                : "Are you sure you want add Top-up plan  (High ) to this plan?"}{" "}
+                ? `Are you sure you want add ${topupData[0].noOfProperties} properties to your existing plan ?`
+                : `Are you sure you want add ${topupData[1].noOfProperties} properties to your existing plan?`}{" "}
             </p>
 
             <div

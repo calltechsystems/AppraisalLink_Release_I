@@ -101,58 +101,74 @@ function SmartTable(props) {
     };
   };
 
-  const handlePrint = () => {
-    const printWindow = window.open("", "_blank");
-    printWindow.document.write(
-      "<html><head><title>AllBrokerProperties</title></head><body>"
-    );
-    printWindow.document.write("<h1>" + props.title + "</h1>");
-    printWindow.document.write(
-      '<button style="display:none;" onclick="window.print()">Print</button>'
-    );
+  const handlePrint = async () => {
+    try {
+      // Fetch data
+      const allData = props.properties;
 
-    // Clone the table-container and remove the action column
-    const tableContainer = document.getElementById("table-container");
-    const table = tableContainer.querySelector("table");
-    const clonedTable = table.cloneNode(true);
-    const rows = clonedTable.querySelectorAll("tr");
-    rows.forEach((row) => {
-      const lastCell = row.querySelector("td:last-child");
-      if (lastCell) {
-        row.removeChild(lastCell);
-      }
-    });
+      // Open print window and set up basic structure
+      const printWindow = window.open("", "_blank");
+      printWindow.document.write(
+        "<html><head><title>AllBrokerProperties</title></head><body>" +
+          // Add CSS styles within the <style> tag
+          "<style>" +
+          // Define your CSS styles here
+          "table { width: 100%; border-collapse: collapse; }" +
+          "th, td { border: 1px solid black; padding: 8px; }" +
+          "th { background-color:#2e008b; color:white; }" +
+          "</style>" +
+          "</head><body>"
+      );
+      printWindow.document.write("<h1>" + props.title + "</h1>");
+      printWindow.document.write(
+        '<button style="display:none;" onclick="window.print()">Print</button>'
+      );
 
-    // Remove the action heading from the table
-    const tableHead = clonedTable.querySelector("thead");
-    const tableHeadRows = tableHead.querySelectorAll("tr");
-    tableHeadRows.forEach((row) => {
-      const lastCell = row.querySelector("th:last-child");
-      if (lastCell) {
-        row.removeChild(lastCell);
-      }
-    });
+      // Create a new table element to hold all data
+      const clonedTable = document.createElement("table");
 
-    // Make the table responsive for all fields
-    const tableRows = clonedTable.querySelectorAll("tr");
-    tableRows.forEach((row) => {
-      const firstCell = row.querySelector("td:first-child");
-      if (firstCell) {
-        const columnHeading = tableHeadRows[0].querySelector(
-          "th:nth-child(" + (firstCell.cellIndex + 1) + ")"
-        ).innerText;
-        firstCell.setAttribute("data-th", columnHeading);
-      }
-    });
+      // Create table headers
+      const tableHeaderRow = document.createElement("tr");
+      const staticHeaders = [
+        ["appraiser", "Order Id"],
+        ["quote", "Address"],
+        ["description", "Remark"],
+        ["date", "Submission Date"],
+        ["urgency", "Urgency"],
+      ]; // Add your static headers here
+      staticHeaders.forEach((headerText) => {
+        const th = document.createElement("th");
+        th.textContent = headerText[1];
+        tableHeaderRow.appendChild(th);
+      });
+      clonedTable.appendChild(tableHeaderRow);
 
-    printWindow.document.write(clonedTable.outerHTML);
-    printWindow.document.write("</body></html>");
-    printWindow.document.close();
-    printWindow.print();
-    printWindow.onafterprint = () => {
-      printWindow.close();
-      toast.success("Saved the data");
-    };
+      // Iterate over all data and append rows to the table body
+      const tableBody = document.createElement("tbody");
+      allData.forEach((item) => {
+        const row = tableBody.insertRow();
+        staticHeaders.forEach((header) => {
+          const cell = row.insertCell();
+          cell.textContent = item[header[0].toLowerCase()]; // Use bracket notation to access item properties dynamically
+        });
+      });
+      clonedTable.appendChild(tableBody);
+      clonedTable.appendChild(tableBody);
+
+      // Write the table to the print window
+      printWindow.document.write(clonedTable.outerHTML);
+      printWindow.document.write("</body></html>");
+      printWindow.document.close();
+
+      // Print and handle post-print actions
+      printWindow.print();
+      printWindow.onafterprint = () => {
+        printWindow.close();
+        toast.success("Saved the data");
+      };
+    } catch (error) {
+      console.error("Error handling print:", error);
+    }
   };
 
   const handleExcelPrint = () => {

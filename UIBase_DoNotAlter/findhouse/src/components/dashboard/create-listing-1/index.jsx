@@ -29,7 +29,7 @@ const Index = ({ isView, propertyData }) => {
     propertyData ? propertyData.quoteRequiredDate : ""
   );
   const [modalOpen, setModalOpen] = useState(false);
-
+  const [modalIsOpenError, setModalIsOpenError] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const changeStringUrlHandler = (inputString) => {
@@ -355,6 +355,11 @@ const Index = ({ isView, propertyData }) => {
 
   const calculateDateHandler = () => {
     const type = urgencyRef;
+  };
+
+  const closeErrorModal = () => {
+    setModalIsOpenError(false);
+    location.reload(true);
   };
 
   const onCancelModalHandler = () => {
@@ -772,10 +777,11 @@ const Index = ({ isView, propertyData }) => {
             const status = err.response.request.status;
             if (String(status) === String(403)) {
               toast.dismiss();
-              toast.error(
-                "Cant appraise the property all properties are being used!!"
-              );
-              window.location.reload();
+              setModalIsOpenError(true);
+              // toast.error(
+              //   "Cant appraise the property all properties are being used!!"
+              // );
+              // window.location.reload();
             } else if (String(status) === String(404)) {
               toast.dismiss();
               toast.error(
@@ -785,6 +791,7 @@ const Index = ({ isView, propertyData }) => {
             } else if (/^5\d{2}$/.test(String(status))) {
               toast.dismiss();
               toast.error("Server error occurred Try Again !! ");
+              window.location.reload();
             } else {
               toast.dismiss();
               toast.error(err.message);
@@ -1528,6 +1535,45 @@ const Index = ({ isView, propertyData }) => {
                   </div>
                 )}
               </div>
+
+              {modalIsOpenError && (
+                <div className="modal">
+                  <div
+                    className="modal-content"
+                    style={{ borderColor: "#2e008b", width: "20%" }}
+                  >
+                    <h4 className="text-center mb-1" style={{ color: "red" }}>
+                      Error
+                    </h4>
+                    <div
+                      className="mt-2 mb-3"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
+                    <span className="text-center mb-2 text-dark fw-bold">
+                      {/* Can't appraise the property. All properties are being
+                      used!! */}
+                      Your all properties have been used, so you cannot add more
+                      properties.
+                    </span>
+                    <div
+                      className="mt-2 mb-3"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
+                    <div
+                      className="text-center"
+                      style={{ display: "flex", flexDirection: "column" }}
+                    >
+                      <button
+                        className="btn btn-color"
+                        onClick={() => closeErrorModal()}
+                        style={{}}
+                      >
+                        Ok
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               <div className="row">
                 <div

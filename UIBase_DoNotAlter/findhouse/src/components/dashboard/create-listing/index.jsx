@@ -779,12 +779,12 @@ const Index = ({ isView, propertyData }) => {
             const status = err.response.request.status;
             if (String(status) === String(403)) {
               toast.dismiss();
-              // setModalIsOpenError(true);
-              toast.error(
-                "Can't appraise the property all properties are being used!!"
-              );
+              setModalIsOpenError(true);
+              // toast.error(
+              //   "Can't appraise the property all properties are being used!!"
+              // );
               // setRefresh(true);
-              window.location.reload();
+              // window.location.reload();
             } else if (String(status) === String(404)) {
               toast.dismiss();
               toast.error(
@@ -1545,20 +1545,30 @@ const Index = ({ isView, propertyData }) => {
                     <h4 className="text-center mb-1" style={{ color: "red" }}>
                       Error
                     </h4>
-                    <div style={{ borderWidth: "2px", borderColor: "red" }}>
-                      <br />
-                    </div>
-                    <h5 className="text-center mb-3">{errorMessage}</h5>
+                    <div
+                      className="mt-2 mb-3"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
+                    <span className="text-center mb-2 text-dark fw-bold">
+                      {/* Can't appraise the property. All properties are being
+                      used!! */}
+                      Your all properties have been used, so you cannot add more
+                      properties.
+                    </span>
+                    <div
+                      className="mt-2 mb-3"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
                     <div
                       className="text-center"
                       style={{ display: "flex", flexDirection: "column" }}
                     >
                       <button
-                        className="btn w-35 btn-color"
+                        className="btn btn-color"
                         onClick={() => closeErrorModal()}
                         style={{}}
                       >
-                        Cancel
+                        Ok
                       </button>
                     </div>
                   </div>

@@ -181,7 +181,7 @@ const DetailedInfo = ({
       setApplicantNumber(truncatedValue);
     }
 
-    setPhoneNumber(truncatedValue);
+    setApplicantNumber(truncatedValue);
   };
   return (
     <>
@@ -528,13 +528,14 @@ const DetailedInfo = ({
                 id="phoneNumber"
                 className="form-control"
                 name="phoneNumber"
-                value={phoneNumber}
+                value={applicantNumber}
                 onChange={handleInputChange}
                 pattern="[0-9]*"
                 maxLength="10"
                 // placeholder="Enter 10 digits"
                 title="Please enter only 10 digits"
                 required
+                disabled={isDisable}
               />
             </div>
           </div>

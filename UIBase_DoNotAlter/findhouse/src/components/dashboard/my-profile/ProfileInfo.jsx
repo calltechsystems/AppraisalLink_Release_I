@@ -169,6 +169,14 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
       companyNameRef !== ""
         ? companyNameRef
         : userData.broker_Details.companyName;
+    // const assistantTwoFirstName =
+    //   assistantTwoFirstName !== ""
+    //     ? assistantTwoFirstName
+    //     : userData.broker_Details.assistantTwoFirstName;
+    // const assistantTwoLastName =
+    //   assistantTwoLastName !== ""
+    //     ? assistantTwoLastName
+    //     : userData.broker_Details.assistantTwoLastName;
     // const assistantTwoEmailAddress =
     //   assistantTwoEmailAddress !== ""
     //     ? assistantTwoEmailAddress
@@ -185,15 +193,26 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
 
     if (
       nameRegex.test(firstName) === false ||
-      nameRegex.test(lastName) === false
+      nameRegex.test(lastName) === false ||
+      nameRegex.test(middleName) === false
     ) {
       toast.error("Name should be valid ");
+    } else if (
+      (assistantFirstName.trim() !== "" &&
+        !nameRegex.test(assistantFirstName)) ||
+      (assistantLastName.trim() !== "" && !nameRegex.test(assistantLastName)) ||
+      (assistantTwoFirstName.trim() !== "" &&
+        !nameRegex.test(assistantTwoFirstName)) ||
+      (assistantTwoLastName.trim() !== "" &&
+        !nameRegex.test(assistantTwoLastName))
+    ) {
+      toast.error("Applicant Name should be valid ");
     } else if (phoneNumberRegex.test(phoneNumber) === false || !phoneNumber) {
       toast.error("Enter a Valid Phone Number Please");
-    } 
+    }
     // else if (cellNumberRegex.test(cellNumber) === false || !cellNumber) {
     //   toast.error("Enter a Valid Cell Number Please");
-    // } 
+    // }
     else if (
       (!firstName ||
         !lastName ||
@@ -242,11 +261,11 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
       const payload = {
         id: userData.userId,
         token: userData.token,
-        firstName: firstName,
-        middleName: middleName,
-        lastName: lastName,
+        firstName: firstNameRef,
+        middleName: middleNameRef,
+        lastName: lastNameRef,
         apartmentNo: unit,
-        companyName: companyName,
+        companyName: companyNameRef,
         streetName: streetName,
         streetNumber: streetNumber,
         assistantEmailAddress: assistantEmailAddress,
@@ -261,7 +280,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         city: city,
         state: state,
         postalCode: zipCode,
-        phoneNumber: phoneNumber,
+        phoneNumber: phoneNumberRef,
         cellNumber: cellNumberRef,
         mortageBrokerLicNo: mortgageBrokerLicNoRef,
         mortgageBrokerageLicNo: mortgageBrokrageLicNoRef,
@@ -270,7 +289,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
       if (
         !payload.lastName ||
         !payload.firstName ||
-        // !payload.designation ||
+        !payload.companyName ||
         !payload.phoneNumber ||
         !payload.emailId ||
         !payload.mortageBrokerLicNo ||
@@ -388,7 +407,33 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     }
     setCellNumberRef(truncatedValue);
   };
+  const handleInputChange_02 = (e) => {
+    const inputValue = e.target.value;
 
+    // Allow only numeric input
+    const numericValue = inputValue.replace(/\D/g, "");
+
+    // Restrict to 10 digits
+    const truncatedValue = numericValue.slice(0, 10);
+    if (truncatedValue.length === 10) {
+      setAssistantPhoneNumber(truncatedValue);
+    }
+    setAssistantPhoneNumber(truncatedValue);
+  };
+
+  const handleInputChange_03 = (e) => {
+    const inputValue = e.target.value;
+
+    // Allow only numeric input
+    const numericValue = inputValue.replace(/\D/g, "");
+
+    // Restrict to 10 digits
+    const truncatedValue = numericValue.slice(0, 10);
+    if (truncatedValue.length === 10) {
+      setAssistantTwoPhoneNumber(truncatedValue);
+    }
+    setAssistantTwoPhoneNumber(truncatedValue);
+  };
   return (
     <>
       <div className="row">
@@ -1004,9 +1049,10 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
                           value={assistantPhoneNumber}
-                          onChange={(e) =>
-                            setAssistantPhoneNumber(e.target.value)
-                          }
+                          onChange={handleInputChange_02}
+                          // onChange={(e) =>
+                          //   setAssistantPhoneNumber(e.target.value)
+                          // }
                           disabled={!edit}
                         />
                       </div>
@@ -1114,9 +1160,10 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
                           value={assistantTwoPhoneNumber}
-                          onChange={(e) =>
-                            setAssistantTwoPhoneNumber(e.target.value)
-                          }
+                          onChange={handleInputChange_03}
+                          // onChange={(e) =>
+                          //   setAssistantTwoPhoneNumber(e.target.value)
+                          // }
                           disabled={!edit}
                         />
                       </div>

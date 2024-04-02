@@ -22436,7 +22436,7 @@ input:checked + .slider:before {
 }
 
 .smartTable-tableContainer {
-  max-height: 53vh !important;
+  max-height: 69vh !important;
   overflow: scroll;
   /* overflow-y: scroll; */
   padding-right: 0 !important;
