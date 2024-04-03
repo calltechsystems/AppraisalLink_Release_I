@@ -68,7 +68,7 @@ const Pricing = ({
   const [disable, setDisable] = useState(false);
   const [selectedPlanId, setSelectedPlanId] = useState(-1);
   const [selectedTopUp, setSelectedTopUp] = useState(-1);
-  const [filteredData,setFilteredData] = useState([])
+  const [filteredData, setFilteredData] = useState([]);
   const [type, setType] = useState(1);
   useEffect(() => {
     userData = JSON.parse(localStorage.getItem("user"));
@@ -109,7 +109,7 @@ const Pricing = ({
     setSelectedPlanId(-1);
     setType(1);
     setOpenCancelModal(false);
-    window.location.reload()
+    window.location.reload();
   };
 
   const cancelPackageHandler = () => {
@@ -159,26 +159,23 @@ const Pricing = ({
     window.location.reload();
   };
 
-  useEffect(()=>{
-    let Monthly=[],Yearly=[];
-    data?.map((row,index)=>{
-      if(row.monthlyAmount !== null ){
-        Monthly.push(row)
-      }
-      else{
-        Yearly.push(row)
+  useEffect(() => {
+    let Monthly = [],
+      Yearly = [];
+    data?.map((row, index) => {
+      if (row.monthlyAmount !== null) {
+        Monthly.push(row);
+      } else {
+        Yearly.push(row);
       }
     });
 
-    if(String(isPlan) === "1"){
+    if (String(isPlan) === "1") {
       setFilteredData(Monthly);
+    } else {
+      setFilteredData(Yearly);
     }
-    else{
-      setFilteredData(Yearly)
-    }
-
-  },[isPlan,data]);
-
+  }, [isPlan, data]);
 
   return (
     <>
@@ -193,9 +190,8 @@ const Pricing = ({
           >
             <div className="pricing_header">
               <div className="price">{item.description}</div>
-            
-              { 
-                String(selectedIdStyle) === String(item.id) ? (
+
+              {String(selectedIdStyle) === String(item.id) ? (
                 <div
                   className="p-1 fw-bold"
                   style={{
@@ -287,12 +283,16 @@ const Pricing = ({
                     borderWidth: "2px",
                   }}
                   onClick={(e) => setPlan(item.id, e.target.value)}
-                  className="pricing_footer btn btn-color_01"
+                  className="pricing_footer btn btn-color_01 form-select"
                 >
                   <option value={1}>Modify/Cancel Subscription </option>
+                  <option value={3}>
+                    Add {topupData[0].noOfProperties} Properties
+                  </option>
+                  <option value={4}>
+                    Add {topupData[1].noOfProperties} Properties
+                  </option>
                   <option value={2}>Cancel Subscription</option>
-                  <option value={3}>Add {topupData[0].noOfProperties} Properties</option>
-                  <option value={4}>Add {topupData[1].noOfProperties} Properties</option>
                 </select>
               )}
           </div>
