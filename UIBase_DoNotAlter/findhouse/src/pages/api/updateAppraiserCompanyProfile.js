@@ -38,6 +38,7 @@ async function handler(request, response) {
       apartmentNumber,
       streetName,
       streetNumber,
+      profileImage,
     } = body;
 
     const formData = {
@@ -61,6 +62,7 @@ async function handler(request, response) {
       apartmentNumber: apartmentNumber,
       streetName: streetName,
       streetNumber: streetNumber,
+      profileImage: profileImage,
     };
 
     const userResponse = await axios.put(

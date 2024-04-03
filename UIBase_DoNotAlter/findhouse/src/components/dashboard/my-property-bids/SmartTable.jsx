@@ -57,6 +57,18 @@ function SmartTable(props) {
     },
     [props.url]
   );
+  
+  const [showNoData, setShowNoData] = useState(false);
+  
+  useEffect(() => {
+    if (props.dataFetched && props.properties.length === 0) {
+      const timer = setTimeout(() => {
+        setShowNoData(true);
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [props.dataFetched, props.properties]);
 
   const tableWidthFunc = useCallback(() => {
     let tempTableWidth = 0;
@@ -130,11 +142,9 @@ function SmartTable(props) {
       // Create table headers
       const tableHeaderRow = document.createElement("tr");
       const staticHeaders = [
-        ["appraiser", "Order Id"],
-        ["quote", "Address"],
+        ["quote", "Quote Amount"],
         ["description", "Remark"],
-        ["date", "Submission Date"],
-        ["urgency", "Urgency"],
+        ["date", "Appraisal Submitted Date"],
       ]; // Add your static headers here
       staticHeaders.forEach((headerText) => {
         const th = document.createElement("th");
@@ -196,7 +206,7 @@ function SmartTable(props) {
 
     // Write the Excel blob to the new window
     excelWindow.document.write(
-      "<html><head><title>AllBrokerProperties</title></head><body>"
+      "<html><head><title>AllpropertyBids</title></head><body>"
     );
     excelWindow.document.write("<h1>" + props.title + "</h1>");
     excelWindow.document.write(
@@ -375,10 +385,21 @@ function SmartTable(props) {
                 className="smartTable-noDataFound col-12"
                 style={{ marginTop: "50px", marginBottom: "40px" }}
               >
+              {props.dataFetched && props.properties.length === 0 ? (
+                showNoData ? (
+                  <h3>No Data Found</h3>
+                ) : (
+                  <div className="ring">
+                    Loading
+                    <span className="load"></span>
+                  </div>
+                )
+              ) : (
                 <div className="ring">
                   Loading
                   <span className="load"></span>
                 </div>
+              )}
               </div>
             </div>
           )}

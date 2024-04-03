@@ -181,15 +181,25 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     const companyName = companyNameRef;
     // const emailId = emailId;
     const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
+    const cellNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const nameRegex = /^[A-Za-z]+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex for email validation
 
     if (
       nameRegex.test(firstName) === false ||
+      (middleName.trim() !== "" && nameRegex.test(middleName) === false) ||
       nameRegex.test(lastName) === false
     ) {
-      toast.error("Name should be valid ");
+      toast.error("Appraiser Name should be valid ");
     } else if (phoneNumberRegex.test(phoneNumber) === false || !phoneNumber) {
-      toast.error("enter a valid phone number please");
+      toast.error("Enter a Valid Phone Number Please");
+    } else if (
+      cellNumberRegex.test(cellNumber) === false &&
+      cellNumber.trim() !== ""
+    ) {
+      toast.error("Enter a Valid Cell Number Please");
+    } else if (emailRegex.test(emailId) === false) {
+      toast.error("Enter a Valid Email Address Please");
     } else if (
       (!firstName ||
         !lastName ||
@@ -237,7 +247,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         !payload.designation ||
         !payload.phoneNumber ||
         !payload.emailId ||
-        !payload.companyName ||
+        // !payload.companyName ||
         // !payload.lenderListUrl ||
         !payload.streetName ||
         !payload.streetNumber ||
@@ -381,11 +391,33 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                     src={SelectedImage}
                     alt="Uploaded Image"
                   />
-                  {edit && (
+                  {/* {edit && (
                     <input
                       type="file"
                       onChange={(e) => handleFileChange(e, 1)}
                     />
+                  )} */}
+                  {edit && (
+                    <CldUploadWidget
+                      onUpload={handleUpload}
+                      uploadPreset="mpbjdclg"
+                      options={{
+                        cloudName: "dcrq3m6dx", // Your Cloudinary upload preset
+                        maxFiles: 1,
+                      }}
+                    >
+                      {({ open }) => (
+                        <div>
+                          <button
+                            className="btn btn-color profile_edit_button mb-5"
+                            style={{}}
+                            onClick={open} // This will open the upload widget
+                          >
+                            Upload Photo
+                          </button>
+                        </div>
+                      )}
+                    </CldUploadWidget>
                   )}
                 </div>
               </div>

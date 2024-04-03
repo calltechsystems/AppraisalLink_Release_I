@@ -97,7 +97,7 @@ export default function Exemple({
   setErrorMessage,
   setModalIsOpenError,
 }) {
-  console.log(data);
+  const [dataFetched , setDataFetched] = useState(false)
   const [updatedData, setUpdatedData] = useState([]);
   const [properties, setProperties] = useState([]);
   const [show, setShow] = useState(false);
@@ -123,6 +123,13 @@ export default function Exemple({
     }
   ]
 
+  useEffect(()=>{
+    if(data.result ){
+      if((data?.result?.$values).length === 0 ){
+        setDataFetched(true)
+      }
+    }
+  },[data])
 
   const getTypePrice = (type)=>{
     return prices[0].type;
@@ -185,22 +192,22 @@ export default function Exemple({
     return { nextMonth: nextMonthDateStr, nextYear: nextYearDateStr };
   };
 
- 
+ console.log("getData",data)
 
   useEffect(() => {
     const getData = () => {
       const date = formatDate(new Date());
       
-      data?.result?.$values.map((property, index) => {
+      data?.map((property, index) => {
         
         
         
         const propertyCount = 26;
         const {nextMonth,nextYear} = NextMonthAndYearCalculator(property.createdTime);
         const endDate =property.planAmount<500 ? nextMonth : nextYear;
-        const expired = new Date(endDate) < new Date() ? true : false;
+        const expired = new Date(property.endDate) >= new Date() && new Date() >= new Date(property.startDate)  ? true : false;
 
-        if(property.isActive){
+        if(expired){
         const updatedRow = {
           id: property.paymentid,
           planName: property.transactionDetail,
@@ -209,11 +216,11 @@ export default function Exemple({
           :
           <span >Yearly</span>,
           amount:property.planAmount? `$ ${property.planAmount}` : '$ -',
-          st_date:formatDate(property.createdTime),
-          end_date: formatDate(endDate) ,
-          remained_prop:`${data.noUsedProperties} of ${propertyCount}`,
+          st_date:formatDate(property.startDate),
+          end_date: formatDate(property.endDate) ,
+          remained_prop:`${property.usedProperties === null ? 0  : data.usedProperties} of ${property.noOfProperties}`,
           status:
-            expired ?
+            !expired ?
             <span className="btn btn-danger  w-100">In-Active</span>
             :
             <span className="btn btn-success  w-100">Active</span>
@@ -234,11 +241,11 @@ export default function Exemple({
     const payload = {
       token: userData.token,
     };
-  }, []);
+  }, [data]);
   return (
     <>
       {updatedData && (
-        <SmartTable title="" data={sortObjectsByOrderIdDescending(updatedData)} headCells={headCells} />
+        <SmartTable title="" properties={(updatedData)} dataFetched={dataFetched} data={sortObjectsByOrderIdDescending(updatedData)} headCells={headCells} />
       )}
     </>
   );

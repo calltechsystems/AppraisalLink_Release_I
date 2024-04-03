@@ -39,6 +39,8 @@ function SmartTable(props) {
     const refresh = !props.refresh;
     props.setRefresh(refresh);
   };
+
+  
   const fetchData = useCallback(
     async (queryString) => {
       setLoading(true);

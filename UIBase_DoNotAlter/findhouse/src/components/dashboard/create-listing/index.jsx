@@ -791,6 +791,10 @@ const Index = ({ isView, propertyData }) => {
                 "You do not have any subscription. Please get a subscription to access the full features."
               );
               window.location.reload();
+            } else if (/^5\d{2}$/.test(String(status))) {
+              toast.dismiss();
+              toast.error("Server error occurred Try Again !! ");
+              window.location.reload();
             } else {
               toast.dismiss();
               toast.error(err.message);

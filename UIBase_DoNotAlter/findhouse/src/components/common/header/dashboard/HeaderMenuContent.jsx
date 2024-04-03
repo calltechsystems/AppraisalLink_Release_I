@@ -5,7 +5,13 @@ import Image from "next/image";
 import { useEffect } from "react";
 import { func } from "prop-types";
 
-const HeaderMenuContent = ({ float = "" ,hide, setProfileCount , profileCount , userInfo  }) => {
+const HeaderMenuContent = ({
+  float = "",
+  hide,
+  setProfileCount,
+  profileCount,
+  userInfo,
+}) => {
   const route = useRouter();
 
   const home = [

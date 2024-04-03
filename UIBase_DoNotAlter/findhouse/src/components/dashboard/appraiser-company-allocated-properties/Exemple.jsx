@@ -360,7 +360,7 @@ export default function Exemple({
         const property = getPropertyInfo(propertyDetail?.propertyid);
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
-        //console.log("isBidded",isBidded)
+        console.log("isBidded",isBidded)
         const isWait = property?.isOnHold || property?.isOnCancel;
         const updatedRow = {
           orderId: property?.orderId,
@@ -604,9 +604,9 @@ export default function Exemple({
       })
       .then((res) => {
         setDataFetched(true)
-        const temp2 = res.data.data.properties.$values;
+        const propertyInfo = res.data.data.properties.$values;
 
-        setAllProperties(temp2);
+        
 
         axios
           .get("/api/getAllAssignProperties", {
@@ -624,7 +624,7 @@ export default function Exemple({
             const temp = res.data.data.$values;
 
             
-            setProperties(temp);
+            
 
             let tempBids = [];
             axios
@@ -646,6 +646,8 @@ export default function Exemple({
                 });
                 console.log("bids", updatedBids.length);
                 setBids(updatedBids);
+                setAllProperties(propertyInfo);
+                setProperties(temp);
                 axios
                   .get("/api/appraiserWishlistedProperties", {
                     headers: {
@@ -666,6 +668,7 @@ export default function Exemple({
                     });
                     const tempId = responseData;
                     setWishlist(responseData);
+                   
                   })
                   .catch((err) => {
                     toast.error(err?.response);

@@ -16771,6 +16771,7 @@ legend span {
   line-height: 42px;
   text-align: center;
   width: 42px;
+  /* color: #2e008b; */
   transition: 0.3s;
 }
 
@@ -16785,7 +16786,7 @@ legend span {
 
 .contact_form_social_area li a {
   font-size: 14px;
-  color: #484848;
+  color: #2e008b;
   line-height: 1.2;
 }
 

@@ -17,8 +17,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
 
   const [selectedImage2, setSelectedImage2] = useState({
     name: "uploaded_file.pdf",
-    url: userData?.appraiser_Details?.lenderListUrl || "",
+    url: userData?.appraiserCompany_Datails?.lenderListUrl || "",
   });
+
   const [SelectedImage, setSelectedImage] = useState(
     userData?.appraiserCompany_Datails?.profileImage ||
       "/assets/images/home/placeholder_01.jpg"
@@ -161,7 +162,46 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   };
 
   const onUpdatHandler = () => {
+    const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
+    const cellNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
+    const nameRegex = /^[A-Za-z]+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex for email validation
+
     if (
+      nameRegex.test(firstNameRef) === false ||
+      nameRegex.test(lastNameRef) === false
+    ) {
+      toast.error("Primary Contact Name should be valid ");
+    } else if (
+      (officeContactFirstName.trim() !== "" &&
+        !nameRegex.test(officeContactFirstName)) ||
+      (officeContactLastName.trim() !== "" &&
+        !nameRegex.test(officeContactLastName))
+    ) {
+      toast.error("Applicant Name should be valid ");
+    } else if (
+      phoneNumberRegex.test(phoneNumberRef) === false ||
+      !phoneNumberRef
+    ) {
+      toast.error("Enter a Valid Phone Number Please");
+    } else if (
+      cellNumberRegex.test(cellNumber) === false &&
+      cellNumber.trim() !== ""
+    ) {
+      toast.error("Enter a Valid Cell Number Please");
+    } else if (
+      cellNumberRegex.test(officeContactPhone) === false &&
+      officeContactPhone.trim() !== ""
+    ) {
+      toast.error("Enter a Valid Office Phone Number Please");
+    } else if (emailRegex.test(emailId) === false) {
+      toast.error("Enter a Valid Email Address Please");
+    } else if (
+      emailRegex.test(officeContactEmail) === false &&
+      officeContactEmail.trim() !== ""
+    ) {
+      toast.error("Enter a Valid Office Email Address Please");
+    } else if (
       (!firstNameRef ||
         !lastNameRef ||
         !companyNameRef ||
@@ -205,6 +245,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         streetNumber: streetNumber,
         streetName: streetName,
         apartmentNumber: apartmentNumber,
+        profileImage: SelectedImage,
       };
 
       if (
@@ -360,11 +401,33 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                     src={SelectedImage}
                     alt="Uploaded Image"
                   />
-                  {edit && (
+                  {/* {edit && (
                     <input
                       type="file"
                       onChange={(e) => handleFileChange(e, 1)}
                     />
+                  )} */}
+                  {edit && (
+                    <CldUploadWidget
+                      onUpload={handleUpload}
+                      uploadPreset="mpbjdclg"
+                      options={{
+                        cloudName: "dcrq3m6dx", // Your Cloudinary upload preset
+                        maxFiles: 1,
+                      }}
+                    >
+                      {({ open }) => (
+                        <div>
+                          <button
+                            className="btn btn-color profile_edit_button mb-5"
+                            style={{}}
+                            onClick={open} // This will open the upload widget
+                          >
+                            Upload Photo
+                          </button>
+                        </div>
+                      )}
+                    </CldUploadWidget>
                   )}
                 </div>
               </div>

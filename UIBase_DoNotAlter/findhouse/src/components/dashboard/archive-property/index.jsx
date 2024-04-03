@@ -158,6 +158,8 @@ const Index = () => {
 
   const onHoldHandler = () => {
     setdisable(true);
+    setModalOpen(false);
+
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -169,13 +171,13 @@ const Index = () => {
 
     const encryptedBody = encryptionData(payload);
 
-    toast.loading("Turning the Property Status !");
+    toast.loading("Turning the Property Status.....");
     axios
       .put("/api/setPropertyOnHold", encryptedBody)
       .then((res) => {
         toast.dismiss();
         setIsHoldProperty(false);
-        toast.success("Successfully Added Status!");
+        toast.success("Successfully Changed the Order Status !");
         window.location.reload();
       })
       .catch((err) => {
@@ -189,6 +191,8 @@ const Index = () => {
 
   const onCancelHandler = () => {
     setdisable(true);
+    setModalOpen(false);
+
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -205,7 +209,7 @@ const Index = () => {
       .put("/api/setPropertyOnHold", encryptedBody)
       .then((res) => {
         toast.dismiss();
-        toast.success("Successfully Added Status!");
+        toast.success("Successfully Changed the Order Status !");
         setIsCancelProperty(false);
         window.location.reload();
       })

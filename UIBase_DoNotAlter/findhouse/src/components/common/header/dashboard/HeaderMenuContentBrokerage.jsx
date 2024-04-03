@@ -525,8 +525,8 @@ const HeaderMenuContent = ({
               height={45}
               className="rounded-circle"
               src={
-                userInfo?.brokerage_Details?.profileImage
-                  ? userInfo?.brokerage_Details?.profileImage
+                userData?.brokerage_Details?.profileImage
+                  ? userData?.brokerage_Details?.profileImage
                   : `/assets/images/home/placeholder_01.jpg`
               }
               alt="e1.png"

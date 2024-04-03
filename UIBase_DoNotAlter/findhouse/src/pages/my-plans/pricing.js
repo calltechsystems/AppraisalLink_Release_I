@@ -12,6 +12,7 @@ const Pricing = ({
   setModalOpen,
   data,
   topupData,
+  setData,
   currentSubscription,
   setPrice,
 }) => {
@@ -67,6 +68,7 @@ const Pricing = ({
   const [disable, setDisable] = useState(false);
   const [selectedPlanId, setSelectedPlanId] = useState(-1);
   const [selectedTopUp, setSelectedTopUp] = useState(-1);
+  const [filteredData,setFilteredData] = useState([])
   const [type, setType] = useState(1);
   useEffect(() => {
     userData = JSON.parse(localStorage.getItem("user"));
@@ -157,9 +159,30 @@ const Pricing = ({
     window.location.reload();
   };
 
+  useEffect(()=>{
+    let Monthly=[],Yearly=[];
+    data?.map((row,index)=>{
+      if(row.monthlyAmount !== null ){
+        Monthly.push(row)
+      }
+      else{
+        Yearly.push(row)
+      }
+    });
+
+    if(String(isPlan) === "1"){
+      setFilteredData(Monthly);
+    }
+    else{
+      setFilteredData(Yearly)
+    }
+
+  },[isPlan,data]);
+
+
   return (
     <>
-      {data?.map((item, idx) => (
+      {filteredData?.map((item, idx) => (
         <div className="col-sm-4 col-md-4 my_plan_pricing_header" key={item.id}>
           <div
             className={`pricing_table  ${
@@ -170,7 +193,9 @@ const Pricing = ({
           >
             <div className="pricing_header">
               <div className="price">{item.description}</div>
-              {String(selectedIdStyle) === String(item.id) ? (
+            
+              { 
+                String(selectedIdStyle) === String(item.id) ? (
                 <div
                   className="p-1 fw-bold"
                   style={{

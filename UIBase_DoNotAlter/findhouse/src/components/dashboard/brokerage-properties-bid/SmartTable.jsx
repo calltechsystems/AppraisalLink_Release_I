@@ -30,7 +30,7 @@ function SmartTable(props) {
 
   const refreshHandler = () => {
     const refresh = !props.refresh;
-    props.setRefresh(refresh);
+    props.setRefresh(true);
   };
 
   console.log(props.data);

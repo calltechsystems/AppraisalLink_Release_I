@@ -11,9 +11,7 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 
 const Index = () => {
-  // let userData = JSON.parse(localStorage.getItem("user"));
   const [userData, setUserData] = useState({});
-  // const data = JSON.parse(localStorage.getItem("user"));
   const router = useRouter();
   const [properties, setProperties] = useState([]);
   const [refresh, setRefresh] = useState(false);
@@ -94,11 +92,11 @@ const Index = () => {
             "Content-Type": "application/json",
           },
           params: {
-            UserID: data?.userId,
+            userId: data?.userId,
           },
         })
         .then((res) => {
-          const temp = res.data.data.property.$values;
+          const temp = res.data.data.properties.$values;
 
           setProperties(temp);
         })

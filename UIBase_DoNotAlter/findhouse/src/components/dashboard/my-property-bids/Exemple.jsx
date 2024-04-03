@@ -14,12 +14,6 @@ const headCells = [
     label: "Appraiser / Appraiser Company",
     width: 220,
   },
-  // {
-  //   id: "appraiser_company",
-  //   numeric: false,
-  //   label: "Appraiser Company Name",
-  //   width: 220,
-  // },
   {
     id: "quote",
     numeric: false,
@@ -107,6 +101,7 @@ export default function Exemple({
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [allProperties, setAllProperties] = useState([]);
+  const [dataFetched,setDataFetched] = useState(false)
   const [show, setShow] = useState(false);
   const [acceptedBid, setAcceptedBid] = useState(-1);
   const [all, setAll] = useState([]);
@@ -448,7 +443,7 @@ export default function Exemple({
       })
       .then((result) => {
         console.log(result);
-
+        setDataFetched(true)
         setAllProperties(result.data.data.properties.$values);
         const url = window.location.pathname;
         const propertyOrderId = url.split("/my-property-bids/")[1];
@@ -518,6 +513,7 @@ export default function Exemple({
           });
       })
       .catch((err) => {
+        setDataFetched(false)
         toast.error(err?.response?.data?.error);
         // (true);
       });
@@ -533,6 +529,8 @@ export default function Exemple({
           headCells={headCells}
           refreshHandler={refreshHandler}
           start={start}
+          dataFetched = {dataFetched}
+          properties={updatedData}
           end={end}
         />
       )}
