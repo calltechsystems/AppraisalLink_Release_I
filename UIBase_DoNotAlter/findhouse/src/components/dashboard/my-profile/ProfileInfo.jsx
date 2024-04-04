@@ -364,6 +364,45 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     }
   };
 
+  const handleFileChange = (e, type) => {
+    const file = e.target.files[0];
+    const userData = JSON.parse(localStorage.getItem("user"));
+
+    const BACKEND_DOMAIN = process.env.BACKEND_DOMAIN;
+    const formdata = {
+      file: file,
+    };
+
+    toast.dismiss("Uploading !!!");
+    axios
+      .post(`${BACKEND_DOMAIN}/FileUpload/fileupload`, formdata, {
+        headers: {
+          Authorization: `Bearer ${userData?.token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        toast.dismiss();
+        toast.success("Uploaded Successfully !");
+        const image = res.data;
+
+        const imageUrl = image.split("! Access it at: ")[1];
+        if (String(type) === "1") {
+          setSelectedImage(imageUrl);
+        } else {
+          setSelectedImage2({
+            name: file.name,
+            url: imageUrl,
+          });
+        }
+      })
+      .catch((err) => {
+        toast.dismiss();
+        console.log(err);
+        toast.error("Try Again !!");
+      });
+  };
+
   const handleUpload = (result) => {
     // Handle the image upload result here
     console.log("handleUpload called");
@@ -467,7 +506,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         <div className="col-lg-12 col-xl-12 mt-2">
           <div className="my_profile_setting_input form-group">
             <div className="row">
-              <div className="col-lg-3 text-center">
+              <div className="col-lg-3 text-center mb-5">
                 <div className="wrap-custom-file">
                   <img
                     style={{ borderRadius: "50%" }}
@@ -475,6 +514,14 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                     alt="Uploaded Image"
                   />
                   {edit && (
+                    <div className="">
+                      <input
+                        type="file"
+                        onChange={(e) => handleFileChange(e, 1)}
+                      />
+                    </div>
+                  )}
+                  {/* {edit && (
                     <CldUploadWidget
                       onUpload={handleUpload}
                       uploadPreset="mpbjdclg"
@@ -495,7 +542,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                         </div>
                       )}
                     </CldUploadWidget>
-                  )}
+                  )} */}
                 </div>
               </div>
               <div className="col-lg-9">

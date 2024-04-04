@@ -16174,12 +16174,12 @@ legend span {
 
 .wrap-custom-file input[type="file"] {
   position: absolute;
-  top: 0;
+  top: 15;
   left: 0;
-  width: 2px;
-  height: 2px;
+  width: 250px;
+  height: 40px;
   overflow: hidden;
-  opacity: 0;
+  /* opacity: 0; */
 }
 
 .wrap-custom-file label {

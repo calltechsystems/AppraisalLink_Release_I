@@ -87,7 +87,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   const [setODesignation, setSetODesignation] = useState(false);
 
   const [selectedImage2, setSelectedImage2] = useState({
-    name: userData?.appraiser_Details?.lenderListUrl  ? "Uploaded File":"",
+    name: userData?.appraiser_Details?.lenderListUrl ? "Uploaded File" : "",
     url: userData?.appraiser_Details?.lenderListUrl || "",
   });
 
@@ -341,16 +341,15 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         toast.dismiss();
         toast.success("Uploaded Successfully !");
         const image = res.data;
-      
+
         const imageUrl = image.split("! Access it at: ")[1];
-        if(String(type)==="1"){
-          setSelectedImage(imageUrl)
-        }
-        else{
+        if (String(type) === "1") {
+          setSelectedImage(imageUrl);
+        } else {
           setSelectedImage2({
-            name : file.name,
-            url : imageUrl
-          })
+            name: file.name,
+            url: imageUrl,
+          });
         }
       })
       .catch((err) => {
@@ -383,19 +382,21 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         <div className="col-lg-12 col-xl-12 mt-2">
           <div className="my_profile_setting_input form-group">
             <div className="row">
-              <div className="col-lg-3 text-center">
+              <div className="col-lg-3 mb-5 text-center">
                 <div className="wrap-custom-file">
                   <img
                     style={{ borderRadius: "50%" }}
                     src={SelectedImage}
                     alt="Uploaded Image"
                   />
-                   {edit && (
-                    <input
-                      type="file"
-                      onChange={(e) => handleFileChange(e, 1)}
-                    />
-                  )} 
+                  {edit && (
+                    <div className="">
+                      <input
+                        type="file"
+                        onChange={(e) => handleFileChange(e, 1)}
+                      />
+                    </div>
+                  )}
                   {/*edit && (
                     <CldUploadWidget
                       onUpload={handleUpload}

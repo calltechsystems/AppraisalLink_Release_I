@@ -67,12 +67,12 @@ function SmartTable(props) {
     try {
       // Fetch data
       const allData = props.data;
-  
+
       // Open print window and set up basic structure
       const printWindow = window.open("", "_blank");
       printWindow.document.write(
-        "<html><head><title>AllBrokerProperties</title></head><body>"+
-        "<style>" +
+        "<html><head><title>All Broker Archive Properties</title></head><body>" +
+          "<style>" +
           // Define your CSS styles here
           "table { width: 100%; border-collapse: collapse; }" +
           "th, td { border: 1px solid black; padding: 8px; }" +
@@ -84,45 +84,46 @@ function SmartTable(props) {
       printWindow.document.write(
         '<button style="display:none;" onclick="window.print()">Print</button>'
       );
-  
+
       // Create a new table element to hold all data
       const clonedTable = document.createElement("table");
-  
+
       // Create table headers
       const tableHeaderRow = document.createElement("tr");
       const staticHeaders = [
-        ["order_id","Order Id"],
-         ["address","Address"],
-         ["remark","Remark"],
-         ["sub_date","Submission Date"],
-         ["urgency","Urgency"],
-         ["quote_required_by", "Quote Required By"],
-         ["type_of_building","Type Of Building"],
-         ["type_of_appraisal","Type Of Appraisal"]]; // Add your static headers here
+        ["order_id", "Order Id"],
+        ["address", "Address"],
+        ["remark", "Remark"],
+        ["sub_date", "Submission Date"],
+        ["urgency", "Urgency"],
+        ["quote_required_by", "Quote Required By"],
+        ["type_of_building", "Type Of Building"],
+        ["type_of_appraisal", "Type Of Appraisal"],
+      ]; // Add your static headers here
       staticHeaders.forEach((headerText) => {
         const th = document.createElement("th");
         th.textContent = headerText[1];
         tableHeaderRow.appendChild(th);
       });
       clonedTable.appendChild(tableHeaderRow);
-  
+
       // Iterate over all data and append rows to the table body
-        const tableBody = document.createElement("tbody");
-        allData.forEach((item) => {
-          const row = tableBody.insertRow();
-          staticHeaders.forEach((header) => {
-            const cell = row.insertCell();
-            cell.textContent = item[header[0].toLowerCase()]; // Use bracket notation to access item properties dynamically
-          });
+      const tableBody = document.createElement("tbody");
+      allData.forEach((item) => {
+        const row = tableBody.insertRow();
+        staticHeaders.forEach((header) => {
+          const cell = row.insertCell();
+          cell.textContent = item[header[0].toLowerCase()]; // Use bracket notation to access item properties dynamically
         });
-clonedTable.appendChild(tableBody);
+      });
       clonedTable.appendChild(tableBody);
-  
+      clonedTable.appendChild(tableBody);
+
       // Write the table to the print window
       printWindow.document.write(clonedTable.outerHTML);
       printWindow.document.write("</body></html>");
       printWindow.document.close();
-  
+
       // Print and handle post-print actions
       printWindow.print();
       printWindow.onafterprint = () => {
@@ -133,7 +134,6 @@ clonedTable.appendChild(tableBody);
       console.error("Error handling print:", error);
     }
   };
-
 
   const handleExcelPrint = () => {
     const twoDData = props.data.map((item, index) => {
@@ -161,13 +161,13 @@ clonedTable.appendChild(tableBody);
     // Write the Excel blob to the new window
     excelWindow.document.write(
       "<html><head><title>AllBrokerProperties</title></head><body>" +
-      "<style>" +
-          // Define your CSS styles here
-          "table { width: 100%; border-collapse: collapse; }" +
-          "th, td { border: 1px solid black; padding: 8px; }" +
-          "th { background-color:#2e008b; color:white; }" +
-          "</style>" +
-          "</head><body>"
+        "<style>" +
+        // Define your CSS styles here
+        "table { width: 100%; border-collapse: collapse; }" +
+        "th, td { border: 1px solid black; padding: 8px; }" +
+        "th { background-color:#2e008b; color:white; }" +
+        "</style>" +
+        "</head><body>"
     );
     excelWindow.document.write("<h1>" + props.title + "</h1>");
     excelWindow.document.write(
@@ -246,7 +246,6 @@ clonedTable.appendChild(tableBody);
     }
   }, props.searchDebounceTime ?? 800);
 
-
   const [showNoData, setShowNoData] = useState(false);
 
   useEffect(() => {
@@ -258,7 +257,6 @@ clonedTable.appendChild(tableBody);
       return () => clearTimeout(timer);
     }
   }, [props.dataFetched, props.properties]);
-
 
   const sortData = (cell) => {
     let tempData = data.length > 0 ? [...data] : [...props.data];
@@ -423,20 +421,20 @@ clonedTable.appendChild(tableBody);
                 style={{ marginTop: "110px", marginBottom: "40px" }}
               >
                 {props.dataFetched && props.properties.length === 0 ? (
-                
-                showNoData ? 
-                <h3>No Data Found</h3>
-                :
-                <div className="ring">
-                  Loading
-                  <span className="load"></span>
-                </div>
-              ) : (
-                <div className="ring">
-                  Loading
-                  <span className="load"></span>
-                </div>
-              )}
+                  showNoData ? (
+                    <h3>No Data Found</h3>
+                  ) : (
+                    <div className="ring">
+                      Loading
+                      <span className="load"></span>
+                    </div>
+                  )
+                ) : (
+                  <div className="ring">
+                    Loading
+                    <span className="load"></span>
+                  </div>
+                )}
               </div>
             </div>
           )}

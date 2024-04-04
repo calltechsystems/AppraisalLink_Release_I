@@ -16,8 +16,14 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   const router = useRouter();
 
   const [selectedImage2, setSelectedImage2] = useState({
-    name: userData?.appraiserCompany_Datails?.lenderListUrl !== null ? "uploaded file" :"",
-    url: userData?.appraiserCompany_Datails?.lenderListUrl !== null ? userData?.appraiserCompany_Datails?.lenderListUrl : "",
+    name:
+      userData?.appraiserCompany_Datails?.lenderListUrl !== null
+        ? "uploaded file"
+        : "",
+    url:
+      userData?.appraiserCompany_Datails?.lenderListUrl !== null
+        ? userData?.appraiserCompany_Datails?.lenderListUrl
+        : "",
   });
 
   const [SelectedImage, setSelectedImage] = useState(
@@ -314,16 +320,15 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         toast.dismiss();
         toast.success("Uploaded Successfully !");
         const image = res.data;
-      
+
         const imageUrl = image.split("! Access it at: ")[1];
-        if(String(type)==="1"){
-          setSelectedImage(imageUrl)
-        }
-        else{
+        if (String(type) === "1") {
+          setSelectedImage(imageUrl);
+        } else {
           setSelectedImage2({
-            name : file.name,
-            url : imageUrl
-          })
+            name: file.name,
+            url: imageUrl,
+          });
         }
       })
       .catch((err) => {
@@ -382,13 +387,13 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     console.log(url);
   };
 
-  console.log("selectedImage2",selectedImage2)
+  console.log("selectedImage2", selectedImage2);
   return (
     <>
       <div className="row">
         {/* <h4 className="mb-3">Personal Information</h4> */}
         <div className="col-lg-12"></div>
-        {!edit && (
+        {/* {!edit && (
           <div>
             <button
               className="btn btn2 btn-color profile_edit_button"
@@ -402,23 +407,25 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
               ></span>
             </button>
           </div>
-        )}
+        )} */}
         <div className="col-lg-12 col-xl-12 mt-2">
           <div className="my_profile_setting_input form-group">
             <div className="row">
-              <div className="col-lg-3 text-center">
+              <div className="col-lg-3 text-center mb-5">
                 <div className="wrap-custom-file">
                   <img
                     style={{ borderRadius: "50%" }}
                     src={SelectedImage}
                     alt="Uploaded Image"
                   />
-                   {edit && (
-                    <input
-                      type="file"
-                      onChange={(e) => handleFileChange(e, 1)}
-                    />
-                  )} 
+                  {edit && (
+                    <div className="">
+                      <input
+                        type="file"
+                        onChange={(e) => handleFileChange(e, 1)}
+                      />
+                    </div>
+                  )}
                   {/*edit && (
                     <CldUploadWidget
                       onUpload={handleUpload}
@@ -671,9 +678,14 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       <Link
                         target="_blank"
                         rel="noopener noreferrer"
-                        href={selectedImage2.url !== null ||selectedImage2.url !== 'undefined' ? selectedImage2.url  : "" }
+                        href={
+                          selectedImage2.url !== null ||
+                          selectedImage2.url !== "undefined"
+                            ? selectedImage2.url
+                            : ""
+                        }
                       >
-                        {selectedImage2.name }
+                        {selectedImage2.name}
                       </Link>
                     </div>{" "}
                   </div>
