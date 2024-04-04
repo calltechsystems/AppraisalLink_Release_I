@@ -533,7 +533,7 @@ const HeaderMenuContent = ({
             />
             <span className="dn-1199 ms-1 text-light">
               {userData?.appraiserCompany_Datails?.firstName
-                ? userData.appraiserCompany_Datails?.firstName
+                ? `${userData.appraiserCompany_Datails?.firstName} ${userData?.appraiserCompany_Datails?.lastName}`
                 : "User"}
             </span>
           </a>
