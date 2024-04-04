@@ -16,8 +16,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   const router = useRouter();
 
   const [selectedImage2, setSelectedImage2] = useState({
-    name: "uploaded_file.pdf",
-    url: userData?.appraiserCompany_Datails?.lenderListUrl || "",
+    name: userData?.appraiserCompany_Datails?.lenderListUrl !== null ? "uploaded file" :"",
+    url: userData?.appraiserCompany_Datails?.lenderListUrl !== null ? userData?.appraiserCompany_Datails?.lenderListUrl : "",
   });
 
   const [SelectedImage, setSelectedImage] = useState(
@@ -256,7 +256,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         !payload.emailId ||
         !payload.licenseNumber ||
         // !payload.mortgageBrokerageLicNo ||
-        // !payload.lenderListUrl ||
+        !payload.lenderListUrl ||
         !payload.streetName ||
         !payload.streetNumber ||
         !payload.city ||
@@ -304,7 +304,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
 
     toast.dismiss("Uploading !!!");
     axios
-      .post(`${BACKEND_DOMAIN}/FileUpload/upload`, formdata, {
+      .post(`${BACKEND_DOMAIN}/FileUpload/fileupload`, formdata, {
         headers: {
           Authorization: `Bearer ${userData?.token}`,
           "Content-Type": "multipart/form-data",
@@ -313,7 +313,18 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
       .then((res) => {
         toast.dismiss();
         toast.success("Uploaded Successfully !");
-        console.log(res);
+        const image = res.data;
+      
+        const imageUrl = image.split("! Access it at: ")[1];
+        if(String(type)==="1"){
+          setSelectedImage(imageUrl)
+        }
+        else{
+          setSelectedImage2({
+            name : file.name,
+            url : imageUrl
+          })
+        }
       })
       .catch((err) => {
         toast.dismiss();
@@ -371,6 +382,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     console.log(url);
   };
 
+  console.log("selectedImage2",selectedImage2)
   return (
     <>
       <div className="row">
@@ -401,13 +413,13 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                     src={SelectedImage}
                     alt="Uploaded Image"
                   />
-                  {/* {edit && (
+                   {edit && (
                     <input
                       type="file"
                       onChange={(e) => handleFileChange(e, 1)}
                     />
-                  )} */}
-                  {edit && (
+                  )} 
+                  {/*edit && (
                     <CldUploadWidget
                       onUpload={handleUpload}
                       uploadPreset="mpbjdclg"
@@ -428,7 +440,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                         </div>
                       )}
                     </CldUploadWidget>
-                  )}
+                      )*/}
                 </div>
               </div>
               <div className="col-lg-9">
@@ -659,9 +671,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       <Link
                         target="_blank"
                         rel="noopener noreferrer"
-                        href={selectedImage2.url}
+                        href={selectedImage2.url !== null ||selectedImage2.url !== 'undefined' ? selectedImage2.url  : "" }
                       >
-                        {selectedImage2.name}
+                        {selectedImage2.name }
                       </Link>
                     </div>{" "}
                   </div>

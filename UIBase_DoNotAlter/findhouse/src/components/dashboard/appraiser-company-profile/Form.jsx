@@ -243,15 +243,15 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                             target="_blank"
                             rel="noopener noreferrer"
                             href={
-                              userData?.appraiserCompany_Datails?.lenderListUrl
-                                ? userData?.appraiserCompany_Datails
-                                    ?.lenderListUrl
-                                : "#"
+                              userData?.appraiserCompany_Datails?.lenderListUrl !== ""
+                                    ? userData?.appraiserCompany_Datails?.lenderListUrl
+                                    : ""
                             }
                             style={{ cursor: "pointer" }}
                           >
                             Lender List Pdf
                           </a>
+                          
                         </span>
                       </td>
                     </tr>

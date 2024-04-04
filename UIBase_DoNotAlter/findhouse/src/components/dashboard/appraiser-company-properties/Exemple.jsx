@@ -359,7 +359,7 @@ export default function Exemple({
         const isAssigned = checkInAssignedProperty(property.propertyId);
         const isArchive = foundArchiveHandler(property.propertyId);
 
-        if (!isArchive && !isAssigned) {
+        if (!isArchive) {
           if (isBidded.status === 1) {
             console.log(getOrderValue(isBidded.orderStatus));
           }
@@ -399,10 +399,7 @@ export default function Exemple({
               ) : (
                 <span className="btn btn-danger  w-100">Rejected</span>
               )
-            ) :
-            anotherBid ? (
-              <span className="btn btn-danger  w-100">Not Accepting</span>
-            )  : (
+            ) :(
               <span className="btn btn-warning  w-100">New</span>
             ),
             broker: (
@@ -590,7 +587,7 @@ export default function Exemple({
                       </li>
                     ) : isBidded.orderStatus === 3 ? (
                       <span className="btn btn-success w-100">Completed</span>
-                    ) : !alreadyAccepted && (
+                    ) :  (
                       <li
                         className="list-inline-item"
                         title="Wishlist Property"
@@ -611,7 +608,7 @@ export default function Exemple({
                       </li>
                     )}
 
-                    {(!isBidded.$id || isBidded?.status < 1) && !isWait &&   !alreadyAccepted && (
+                    {(!isBidded.$id || isBidded?.status < 1) && !isWait  && (
                       <li
                         className="list-inline-item"
                         data-toggle="tooltip"

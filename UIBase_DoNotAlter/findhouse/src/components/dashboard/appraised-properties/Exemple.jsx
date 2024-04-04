@@ -398,9 +398,7 @@ export default function Exemple({
                 <span className="btn btn-danger  w-100">Rejected</span>
               )
             ) :
-            anotherBid ? (
-              <span className="btn btn-danger  w-100">Not Accepting</span>
-            ) :  (
+            (
               <span className="btn btn-warning  w-100">New</span>
             ),
             broker: (
@@ -559,7 +557,7 @@ export default function Exemple({
                           src="https://png.pngtree.com/png-clipart/20200226/original/pngtree-3d-red-heart-cute-valentine-romantic-glossy-shine-heart-shape-png-image_5315044.jpg"
                         />
                       </button>
-                    ) : !alreadyAccepted && (
+                    ) :  (
                       <li
                         className="list-inline-item"
                         title="Wishlist Property"
@@ -578,7 +576,7 @@ export default function Exemple({
                       </li>
                     )}
 
-                    {(!isBidded.$id || isBidded?.status < 1) && !alreadyAccepted && (
+                    {(!isBidded.$id || isBidded?.status < 1)  && (
                       <li
                         className="list-inline-item"
                         data-toggle="tooltip"

@@ -87,7 +87,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   const [setODesignation, setSetODesignation] = useState(false);
 
   const [selectedImage2, setSelectedImage2] = useState({
-    name: "uploaded_file.pdf",
+    name: userData?.appraiser_Details?.lenderListUrl  ? "Uploaded File":"",
     url: userData?.appraiser_Details?.lenderListUrl || "",
   });
 
@@ -98,23 +98,13 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
       url: result.info.secure_url,
       name: result.info.original_filename + "." + result.info.format,
     });
-    // if (result.info.secure_url) {
-    //   setSelectedImage(result.info.secure_url);
-    //   setProfilePhoto(result.info.secure_url);
-    //   // You can also save the URL to your state or do other operations here
-    // } else {
-    //   // Handle the case when the upload failed
-    //   console.error("Image upload failed");
-    // }
   };
 
   const handleInputChange = (e) => {
     const inputValue = e.target.value;
 
-    // Allow only numeric input
     const numericValue = inputValue.replace(/\D/g, "");
 
-    // Restrict to 10 digits
     const truncatedValue = numericValue.slice(0, 10);
     if (truncatedValue.length === 10) {
       setPhoneNumberRef(truncatedValue);
@@ -126,10 +116,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   const handleInputCellChange = (e) => {
     const inputValue = e.target.value;
 
-    // Allow only numeric input
     const numericValue = inputValue.replace(/\D/g, "");
 
-    // Restrict to 10 digits
     const truncatedValue = numericValue.slice(0, 10);
     if (truncatedValue.length === 10) {
       setCellNumber(truncatedValue);
@@ -248,7 +236,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         !payload.phoneNumber ||
         !payload.emailId ||
         // !payload.companyName ||
-        // !payload.lenderListUrl ||
+        !payload.lenderListUrl ||
         !payload.streetName ||
         !payload.streetNumber ||
         !payload.city ||
@@ -352,7 +340,18 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
       .then((res) => {
         toast.dismiss();
         toast.success("Uploaded Successfully !");
-        console.log(res);
+        const image = res.data;
+      
+        const imageUrl = image.split("! Access it at: ")[1];
+        if(String(type)==="1"){
+          setSelectedImage(imageUrl)
+        }
+        else{
+          setSelectedImage2({
+            name : file.name,
+            url : imageUrl
+          })
+        }
       })
       .catch((err) => {
         toast.dismiss();
@@ -391,13 +390,13 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                     src={SelectedImage}
                     alt="Uploaded Image"
                   />
-                  {/* {edit && (
+                   {edit && (
                     <input
                       type="file"
                       onChange={(e) => handleFileChange(e, 1)}
                     />
-                  )} */}
-                  {edit && (
+                  )} 
+                  {/*edit && (
                     <CldUploadWidget
                       onUpload={handleUpload}
                       uploadPreset="mpbjdclg"
@@ -418,7 +417,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                         </div>
                       )}
                     </CldUploadWidget>
-                  )}
+                      )*/}
                 </div>
               </div>
               <div className="col-lg-9">

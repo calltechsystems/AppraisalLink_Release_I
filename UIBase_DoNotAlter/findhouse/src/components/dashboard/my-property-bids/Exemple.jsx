@@ -101,7 +101,7 @@ export default function Exemple({
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [allProperties, setAllProperties] = useState([]);
-  const [dataFetched,setDataFetched] = useState(false)
+  const [dataFetched, setDataFetched] = useState(false);
   const [show, setShow] = useState(false);
   const [acceptedBid, setAcceptedBid] = useState(-1);
   const [all, setAll] = useState([]);
@@ -380,9 +380,9 @@ export default function Exemple({
                           target="_blank"
                           rel="noopener noreferrer"
                           href={
-                            userData?.appraiser_Details?.lenderListUrl
+                            userData?.appraiser_Details?.lenderListUrl !== ""
                               ? userData?.appraiser_Details?.lenderListUrl
-                              : "#"
+                              : ""
                           }
                           style={{ cursor: "pointer" }}
                         >
@@ -443,7 +443,7 @@ export default function Exemple({
       })
       .then((result) => {
         console.log(result);
-        setDataFetched(true)
+        setDataFetched(true);
         setAllProperties(result.data.data.properties.$values);
         const url = window.location.pathname;
         const propertyOrderId = url.split("/my-property-bids/")[1];
@@ -513,7 +513,7 @@ export default function Exemple({
           });
       })
       .catch((err) => {
-        setDataFetched(false)
+        setDataFetched(false);
         toast.error(err?.response?.data?.error);
         // (true);
       });
@@ -529,7 +529,7 @@ export default function Exemple({
           headCells={headCells}
           refreshHandler={refreshHandler}
           start={start}
-          dataFetched = {dataFetched}
+          dataFetched={dataFetched}
           properties={updatedData}
           end={end}
         />

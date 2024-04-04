@@ -274,9 +274,9 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 href={
-                                  userData?.appraiser_Details?.lenderListUrl
+                                  userData?.appraiser_Details?.lenderListUrl !== ""
                                     ? userData?.appraiser_Details?.lenderListUrl
-                                    : "#"
+                                    : ""
                                 }
                                 style={{ cursor: "pointer" }}
                               >

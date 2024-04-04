@@ -156,8 +156,8 @@ export default function Exemple({
   const [hideAction, setHideAction] = useState(false);
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
-  
-  const [dataFetched,setDataFetched] = useState(false)
+
+  const [dataFetched, setDataFetched] = useState(false);
   let tempData = [];
 
   const [allArchive, setAllArchive] = useState([]);
@@ -639,12 +639,12 @@ export default function Exemple({
                         title="Archive Property"
                       >
                         <div
-                          className="w-100"
+                          className=""
                           onClick={() =>
                             onArchivePropertyHandler(property.orderId)
                           }
                         >
-                          <button href="#" className="btn btn-color">
+                          <button href="#" className="btn btn-color m-1">
                             <Link href="#">
                               <span className="text-light">
                                 {" "}
@@ -743,13 +743,13 @@ export default function Exemple({
               })
 
               .catch((err) => {
-                setDataFetched(true)
+                setDataFetched(true);
                 setErrorMessage(err?.response?.data?.error);
                 setModalIsOpenError(true);
               });
           })
           .catch((err) => {
-            setDataFetched(false)
+            setDataFetched(false);
             toast.error(err?.response);
             setErrorMessage(err?.response);
             setModalIsOpenError(true);
