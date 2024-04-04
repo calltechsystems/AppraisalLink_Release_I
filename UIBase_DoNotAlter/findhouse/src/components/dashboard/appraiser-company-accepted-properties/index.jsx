@@ -1819,7 +1819,7 @@ const Index = () => {
             </div>
             {/* End .row */}
 
-            <div className="row">
+            {/* <div className="row">
               <div className="col-lg-12 mt20">
                 <div className="mbp_pagination">
                   <Pagination
@@ -1829,7 +1829,7 @@ const Index = () => {
                   />
                 </div>
               </div>
-            </div>
+            </div> */}
 
             <div className="row mt50">
               <div className="col-lg-12">

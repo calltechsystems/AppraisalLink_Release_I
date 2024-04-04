@@ -75,7 +75,6 @@ function SmartTable(props) {
     }
   }, [props.dataFetched, props.properties]);
 
-
   const handlePrint = async () => {
     try {
       // Fetch data
@@ -359,42 +358,42 @@ function SmartTable(props) {
                   <tbody>
                     {data.length > 0
                       ? data.map((row, idx) => {
-                          if (idx >= props.start && idx <= props.end) {
-                            return (
-                              <tr key={"tr_" + idx}>
-                                {props.headCells.map((headCell, idxx) => {
-                                  return (
-                                    <td key={"td_" + idx + "_" + idxx}>
-                                      {headCell.render
-                                        ? headCell.render(row)
-                                        : row[headCell.id]}
-                                    </td>
-                                  );
-                                })}
-                              </tr>
-                            );
-                          } else {
-                            return null; // Skip rendering rows that don't meet the condition
-                          }
+                          // if (idx >= props.start && idx <= props.end) {
+                          return (
+                            <tr key={"tr_" + idx}>
+                              {props.headCells.map((headCell, idxx) => {
+                                return (
+                                  <td key={"td_" + idx + "_" + idxx}>
+                                    {headCell.render
+                                      ? headCell.render(row)
+                                      : row[headCell.id]}
+                                  </td>
+                                );
+                              })}
+                            </tr>
+                          );
+                          // } else {
+                          //   return null; // Skip rendering rows that don't meet the condition
+                          // }
                         })
                       : props.data.map((row, idx) => {
-                          if (idx >= props.start && idx <= props.end) {
-                            return (
-                              <tr key={"tr_" + idx}>
-                                {props.headCells.map((headCell, idxx) => {
-                                  return (
-                                    <td key={"td_" + idx + "_" + idxx}>
-                                      {headCell.render
-                                        ? headCell.render(row)
-                                        : row[headCell.id]}
-                                    </td>
-                                  );
-                                })}
-                              </tr>
-                            );
-                          } else {
-                            return null; // Skip rendering rows that don't meet the condition
-                          }
+                          // if (idx >= props.start && idx <= props.end) {
+                          return (
+                            <tr key={"tr_" + idx}>
+                              {props.headCells.map((headCell, idxx) => {
+                                return (
+                                  <td key={"td_" + idx + "_" + idxx}>
+                                    {headCell.render
+                                      ? headCell.render(row)
+                                      : row[headCell.id]}
+                                  </td>
+                                );
+                              })}
+                            </tr>
+                          );
+                          // } else {
+                          //   return null; // Skip rendering rows that don't meet the condition
+                          // }
                         })}
                   </tbody>
                 </table>
@@ -407,28 +406,28 @@ function SmartTable(props) {
                 style={{ marginTop: "100px", marginBottom: "40px" }}
               >
                 {props.dataFetched && props.properties.length === 0 ? (
-                
-                showNoData ? 
-                <h3>No Data Found</h3>
-                :
-                <div className="ring">
-                  Loading
-                  <span className="load"></span>
-                </div>
-              ) : (
-                <div className="ring">
-                  Loading
-                  <span className="load"></span>
-                </div>
-              )}
+                  showNoData ? (
+                    <h3>No Data Found</h3>
+                  ) : (
+                    <div className="ring">
+                      Loading
+                      <span className="load"></span>
+                    </div>
+                  )
+                ) : (
+                  <div className="ring">
+                    Loading
+                    <span className="load"></span>
+                  </div>
+                )}
               </div>
             </div>
           )}
           {props.noPagination || data.length === 0 || !props.url ? (
             <div className="row">
-              {/* <div className="col-12 text-end p-3">
-               
-              </div> */}
+              <div className="col-12 text-end p-3">
+                {props.data.length > 0 ? props.data.length : 0} Rows
+              </div>
             </div>
           ) : (
             <div className="row">

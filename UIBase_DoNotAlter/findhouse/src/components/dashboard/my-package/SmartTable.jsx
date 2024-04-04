@@ -44,7 +44,6 @@ function SmartTable(props) {
     [props.url]
   );
 
-  
   const tableWidthFunc = useCallback(() => {
     let tempTableWidth = 0;
     props.headCells.map((cell) => (tempTableWidth += cell.width));
@@ -120,7 +119,6 @@ function SmartTable(props) {
     setData(tempData);
   };
 
-   
   const [showNoData, setShowNoData] = useState(false);
 
   useEffect(() => {
@@ -133,10 +131,8 @@ function SmartTable(props) {
     }
   }, [props.dataFetched, props.properties]);
 
-
-
   return (
-    <div className="col-12 p-4">
+    <div className="col-12 p-2">
       <div className="smartTable-container row">
         <div className="col-12">
           {loading && (
@@ -225,23 +221,22 @@ function SmartTable(props) {
                 className="smartTable-noDataFound col-12"
                 style={{ marginTop: "110px", marginBottom: "40px" }}
               >
-              {props.dataFetched && props.data?.length === 0 ? (
-                "No data Found"
-                )
-                : (
-                <div className="ring">
-                  Loading
-                  <span className="load"></span>
-                </div>
-              )}
+                {props.dataFetched && props.data?.length === 0 ? (
+                  "No data Found"
+                ) : (
+                  <div className="ring">
+                    Loading
+                    <span className="load"></span>
+                  </div>
+                )}
               </div>
             </div>
           )}
           {props.noPagination || data?.length === 0 || !props.url ? (
             <div className="row">
-              {/* <div className="col-12 text-end p-3">
+              <div className="col-12 text-end p-3">
                 {props.data?.length > 0 ? props.data?.length : 0} Rows
-              </div> */}
+              </div>
             </div>
           ) : (
             <div className="row">
