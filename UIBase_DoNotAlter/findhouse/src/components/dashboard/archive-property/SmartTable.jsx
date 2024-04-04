@@ -66,12 +66,19 @@ function SmartTable(props) {
   const handlePrint = async () => {
     try {
       // Fetch data
-      const allData = props.properties;
+      const allData = props.data;
   
       // Open print window and set up basic structure
       const printWindow = window.open("", "_blank");
       printWindow.document.write(
-        "<html><head><title>AllBrokerProperties</title></head><body>"
+        "<html><head><title>AllBrokerProperties</title></head><body>"+
+        "<style>" +
+          // Define your CSS styles here
+          "table { width: 100%; border-collapse: collapse; }" +
+          "th, td { border: 1px solid black; padding: 8px; }" +
+          "th { background-color:#2e008b; color:white; }" +
+          "</style>" +
+          "</head><body>"
       );
       printWindow.document.write("<h1>" + props.title + "</h1>");
       printWindow.document.write(
@@ -153,7 +160,14 @@ clonedTable.appendChild(tableBody);
 
     // Write the Excel blob to the new window
     excelWindow.document.write(
-      "<html><head><title>AllBrokerProperties</title></head><body>"
+      "<html><head><title>AllBrokerProperties</title></head><body>" +
+      "<style>" +
+          // Define your CSS styles here
+          "table { width: 100%; border-collapse: collapse; }" +
+          "th, td { border: 1px solid black; padding: 8px; }" +
+          "th { background-color:#2e008b; color:white; }" +
+          "</style>" +
+          "</head><body>"
     );
     excelWindow.document.write("<h1>" + props.title + "</h1>");
     excelWindow.document.write(

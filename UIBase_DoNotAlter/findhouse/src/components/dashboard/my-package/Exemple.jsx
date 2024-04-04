@@ -218,13 +218,12 @@ export default function Exemple({
           amount:property.planAmount? `$ ${property.planAmount}` : '$ -',
           st_date:formatDate(property.startDate),
           end_date: formatDate(property.endDate) ,
-          remained_prop:`${property.usedProperties === null ? 0  : data.usedProperties} of ${property.noOfProperties}`,
+          remained_prop:`${property.usedProperties === null ? 0  : property.usedProperties} of ${property.noOfProperties}`,
           status:
             !expired ?
             <span className="btn btn-danger  w-100">In-Active</span>
             :
             <span className="btn btn-success  w-100">Active</span>
-          
         };
         tempData.push(updatedRow);
       }
