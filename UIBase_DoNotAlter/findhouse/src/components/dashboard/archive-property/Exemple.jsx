@@ -172,7 +172,7 @@ export default function Exemple({
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [allBids, setBids] = useState([]);
-  const [dataFetched,setDataFetched]=useState(false)
+  const [dataFetched, setDataFetched] = useState(false);
   const [show, setShow] = useState(false);
   let tempData = [];
 
@@ -357,8 +357,8 @@ export default function Exemple({
           const isBidded = getBidOfProperty(property.orderId);
           const isHold = property.isOnHold;
           const isCancel = property.isOnCancel;
-          console.log("isBidded",isBidded,isBidded.statusDate);
-        
+          console.log("isBidded", isBidded, isBidded.statusDate);
+
           const isEditable = isStatus === 0 ? true : false;
           if (true) {
             const updatedRow = {
@@ -818,7 +818,7 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        setDataFetched(true)
+        setDataFetched(true);
         const temp = res.data.data.$values;
         let tempBids = [];
         axios
@@ -834,22 +834,17 @@ export default function Exemple({
             setProperties(temp);
           })
           .catch((err) => {
-            
             toast.error(err);
             setModalIsOpenError(true);
           });
-           
-          })
+      })
       .catch((err) => {
-        setDataFetched(false)
+        setDataFetched(false);
         toast.error(err);
         setModalIsOpenError(true);
       });
     toast.dismiss();
 
- 
-
-    
     toast.dismiss();
     setRefresh(false);
   }, [refresh]);

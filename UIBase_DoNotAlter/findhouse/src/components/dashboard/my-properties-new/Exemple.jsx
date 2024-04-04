@@ -760,6 +760,7 @@ export default function Exemple({
       })
       .then((res) => {
         toast.dismiss();
+        setDataFetched(true);
         const temp = res.data.data.property.$values;
         let tempProperties = [];
         tempProperties = temp.filter((prop, index) => {
@@ -782,6 +783,7 @@ export default function Exemple({
           })
           .catch((err) => {
             toast.error(err);
+            setDataFetched(false);
             // setModalIsOpenError(true);
           });
         axios

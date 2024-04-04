@@ -652,6 +652,11 @@ const DetailedInfo = ({
               </div>
               <div className="col-lg-7 mb-2">
                 <label className="upload">
+                  <input type="file" onChange={(e) => handleUpload(e)} />
+                </label>
+              </div>
+              {/* <div className="col-lg-7 mb-2">
+                <label className="upload">
                   <CldUploadWidget
                     onUpload={handleUpload}
                     uploadPreset="mpbjdclg"
@@ -682,7 +687,7 @@ const DetailedInfo = ({
                     )}
                   </CldUploadWidget>
                 </label>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="col-xl-12">
