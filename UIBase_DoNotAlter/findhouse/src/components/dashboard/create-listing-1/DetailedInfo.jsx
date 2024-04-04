@@ -78,7 +78,8 @@ import { CldUploadWidget } from "next-cloudinary";
 // }
 
 // export default DetailedInfo;
-
+import toast from "react-hot-toast";
+import axios from "axios";
 import CheckBoxFilter from "../../common/CheckBoxFilter";
 const DetailedInfo = ({
   onCancelHandler,
@@ -135,23 +136,57 @@ const DetailedInfo = ({
     console.log("Number of selected images:", images.length);
   };
 
-  const handleUpload = (result) => {
-    try {
-      const fileUrl = result.info.secure_url;
-      console.log("File uploaded:", fileUrl);
+  const handleUpload = (e) => {
+    const file = e.target.files[0];
+    const userData = JSON.parse(localStorage.getItem("user"));
 
-      let olderUrl = filesUrl;
-      olderUrl.push(fileUrl);
-      console.log(olderUrl);
-      setFilesUrl(olderUrl);
+    const BACKEND_DOMAIN = process.env.BACKEND_DOMAIN;
+    const formdata = {
+      file: file,
+    };
 
-      // console.log(changeUrlToStringHandler());
+    toast.dismiss("Uploading !!!");
+    axios
+      .post(`${BACKEND_DOMAIN}/FileUpload/fileupload`, formdata, {
+        headers: {
+          Authorization: `Bearer ${userData?.token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        toast.dismiss();
+        toast.success("Uploaded Successfully !");
+        const image = res.data;
 
-      setAttachment(fileUrl);
-    } catch (error) {
-      console.error("Error handling upload:", error);
-    }
+        const imageUrl = image.split("! Access it at: ")[1];
+        let olderUrl = filesUrl;
+        olderUrl.push(imageUrl);
+        setFilesUrl(olderUrl);
+        setAttachment(imageUrl);
+      })
+      .catch((err) => {
+        toast.dismiss();
+        console.log(err);
+        toast.error("Try Again !!");
+      });
   };
+  // const handleUpload = (result) => {
+  //   try {
+  //     const fileUrl = result.info.secure_url;
+  //     console.log("File uploaded:", fileUrl);
+
+  //     let olderUrl = filesUrl;
+  //     olderUrl.push(fileUrl);
+  //     console.log(olderUrl);
+  //     setFilesUrl(olderUrl);
+
+  //     // console.log(changeUrlToStringHandler());
+
+  //     setAttachment(fileUrl);
+  //   } catch (error) {
+  //     console.error("Error handling upload:", error);
+  //   }
+  // };
 
   const errorLabelStyle = { borderColor: "red" };
 

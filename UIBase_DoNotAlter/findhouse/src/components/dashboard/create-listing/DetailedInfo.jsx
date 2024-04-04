@@ -139,7 +139,6 @@ const DetailedInfo = ({
   };
 
   const handleUpload = (e) => {
-
     const file = e.target.files[0];
     const userData = JSON.parse(localStorage.getItem("user"));
 
@@ -160,7 +159,7 @@ const DetailedInfo = ({
         toast.dismiss();
         toast.success("Uploaded Successfully !");
         const image = res.data;
-      
+
         const imageUrl = image.split("! Access it at: ")[1];
         let olderUrl = filesUrl;
         olderUrl.push(imageUrl);
@@ -172,10 +171,6 @@ const DetailedInfo = ({
         console.log(err);
         toast.error("Try Again !!");
       });
-
-     
-
-     
   };
 
   const errorLabelStyle = { borderColor: "red" };
@@ -676,7 +671,7 @@ const DetailedInfo = ({
               </div>
               <div className="col-lg-7 mb-2">
                 <label className="upload">
-                  <input type="file" onChange={(e)=>handleUpload(e)}/>
+                  <input type="file" onChange={(e) => handleUpload(e)} />
                 </label>
               </div>
             </div>
