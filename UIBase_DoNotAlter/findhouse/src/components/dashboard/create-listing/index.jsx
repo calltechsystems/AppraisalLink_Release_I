@@ -526,11 +526,25 @@ const Index = ({ isView, propertyData }) => {
   };
 
   const submitHandler = () => {
+    const nameRegex = /^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$/;
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    const userInfo = JSON.parse(localStorage.getItem("user"));
+    const phoneNumberRegex = /^\d{10}$/;
+
     if (
+      (!nameRegex.test(applicantFirstName) && applicantFirstName) ||
+      (!nameRegex.test(applicantLatsName) && applicantLatsName)
+    ) {
+      toast.error("Please Provide a Valid Applicant Name");
+    } else if (!emailRegex.test(applicantEmail) && applicantEmail) {
+      toast.error("Please Provide a Valid Email Address");
+    } else if (!phoneNumberRegex.test(applicantNumber) && applicantNumber) {
+      toast.error("Please Provide a Valid Phone Number");
+    } else if (
       (String(purpose) === "Purchase" || String(purpose) === "Refinance") &&
       lenderInformation === ""
     ) {
-      toast.error("Please fill the lender Information for this purpose option");
+      toast.error("Please fill the Lender Information for this Purpose option");
     } else {
       const payload = {
         streetName: streetNameRef,

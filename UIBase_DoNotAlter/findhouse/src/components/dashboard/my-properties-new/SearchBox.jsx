@@ -1,4 +1,4 @@
-const SearchBox = ({setSearchInput}) => {
+const SearchBox = ({ setSearchInput }) => {
   return (
     <form className="d-flex flex-wrap align-items-center my-2">
       <input
@@ -6,9 +6,9 @@ const SearchBox = ({setSearchInput}) => {
         type="search"
         placeholder="Search By Order ID, City, State, Postal Code"
         aria-label="Search"
-        onChange={(e)=>setSearchInput(e.target.value)}
+        onChange={(e) => setSearchInput(e.target.value)}
       />
-      <button className=" my-2 my-sm-0" type="submit">
+      <button className=" my-2 my-sm-0" disabled>
         <span className="flaticon-magnifying-glass"></span>
       </button>
     </form>
