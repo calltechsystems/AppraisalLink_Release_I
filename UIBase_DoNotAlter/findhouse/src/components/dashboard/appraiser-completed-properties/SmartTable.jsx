@@ -75,12 +75,11 @@ function SmartTable(props) {
     }
   }, [props.dataFetched, props.properties]);
 
-
   const handlePrint = async () => {
     try {
       // Fetch data
       const allData = props.properties;
-      
+
       // Open print window and set up basic structure
       const printWindow = window.open("", "_blank");
       printWindow.document.write(
@@ -113,7 +112,7 @@ function SmartTable(props) {
         ["quote_required_by", "Quote Required By"],
         ["purpose", "Purpose"],
         ["type_of_appraisal", "Type Of Appraisal"],
-      ]; 
+      ];
       staticHeaders.forEach((headerText) => {
         const th = document.createElement("th");
         th.textContent = headerText[1];
@@ -252,23 +251,33 @@ function SmartTable(props) {
     }
   }, props.searchDebounceTime ?? 800);
 
+  const extractTextContent = (cellValue) => {
+    if (typeof cellValue === "string") {
+      return cellValue; // If it's a string, return it as is
+    } else if (typeof cellValue === "object" && cellValue.$$typeof) {
+      // If it's a React element, extract text content recursively from children
+      return extractTextContent(cellValue.props.children);
+    } else {
+      return String(cellValue); // Convert other types to string and return
+    }
+  };
   const sortData = (cell) => {
-    let tempData = data.length > 0 ? [...data] : [...props.data];
+    let tempData = props.properties;
 
     tempData.sort((a, b) => {
-      const valueA =
-        typeof a[cell] === "string" ? a[cell].toLowerCase() : a[cell];
-      const valueB =
-        typeof b[cell] === "string" ? b[cell].toLowerCase() : b[cell];
+      // Extract text content from cell value (React element or other type)
+      const valueA = extractTextContent(a[cell]);
+      const valueB = extractTextContent(b[cell]);
 
+      // Perform comparison
       if (sortDesc[cell]) {
         return valueA < valueB ? 1 : -1;
       } else {
         return valueA > valueB ? 1 : -1;
       }
     });
-    setSortDesc({ [cell]: !sortDesc[cell] });
 
+    setSortDesc({ [cell]: !sortDesc[cell] });
     setData(tempData);
   };
   console.log(data.length > 0, data);
@@ -276,20 +285,19 @@ function SmartTable(props) {
   return (
     <div className="col-12 p-1">
       <div className="smartTable-container row">
-        <div className="candidate_revew_select style2 mb30-991" >
+        <div className="candidate_revew_select style2 mb30-991">
           <ul className="mb0 mt-0">
-            
-          <li className="list-inline-item">
-          <Filtering setFilterQuery={props.setFilterQuery} />
-        </li>
-        {/* <li className="list-inline-item">
+            <li className="list-inline-item">
+              <Filtering setFilterQuery={props.setFilterQuery} />
+            </li>
+            {/* <li className="list-inline-item">
           <FilteringBy setFilterQuery={props.setSearchQuery} />
         </li> */}
-        <li className="list-inline-item" style={{ marginRight: "15px" }}>
-          <div className="candidate_revew_search_box course fn-520">
-            <SearchBox setSearchInput={props.setSearchInput} />
-          </div>
-        </li>
+            <li className="list-inline-item" style={{ marginRight: "15px" }}>
+              <div className="candidate_revew_search_box course fn-520">
+                <SearchBox setSearchInput={props.setSearchInput} />
+              </div>
+            </li>
             <li className="list-inline-item">
               {loading && (
                 <div className="smartTable-loaderContainer text-primary">
@@ -345,7 +353,7 @@ function SmartTable(props) {
                                 ? "smartTable-pointer"
                                 : ""
                             }
-                             onClick={() =>
+                            onClick={() =>
                               headCell.sortable !== false &&
                               headCell.id !== "address"
                                 ? sortData(headCell.id)
@@ -369,38 +377,38 @@ function SmartTable(props) {
                     {data.length > 0
                       ? data.map((row, idx) => {
                           // if (idx >= props.start && idx <= props.end) {
-                            return (
-                              <tr key={"tr_" + idx}>
-                                {props.headCells.map((headCell, idxx) => {
-                                  return (
-                                    <td key={"td_" + idx + "_" + idxx}>
-                                      {headCell.render
-                                        ? headCell.render(row)
-                                        : row[headCell.id]}
-                                    </td>
-                                  );
-                                })}
-                              </tr>
-                            );
+                          return (
+                            <tr key={"tr_" + idx}>
+                              {props.headCells.map((headCell, idxx) => {
+                                return (
+                                  <td key={"td_" + idx + "_" + idxx}>
+                                    {headCell.render
+                                      ? headCell.render(row)
+                                      : row[headCell.id]}
+                                  </td>
+                                );
+                              })}
+                            </tr>
+                          );
                           // } else {
                           //   return null; // Skip rendering rows that don't meet the condition
                           // }
                         })
                       : props.data.map((row, idx) => {
                           // if (idx >= props.start && idx <= props.end) {
-                            return (
-                              <tr key={"tr_" + idx}>
-                                {props.headCells.map((headCell, idxx) => {
-                                  return (
-                                    <td key={"td_" + idx + "_" + idxx}>
-                                      {headCell.render
-                                        ? headCell.render(row)
-                                        : row[headCell.id]}
-                                    </td>
-                                  );
-                                })}
-                              </tr>
-                            );
+                          return (
+                            <tr key={"tr_" + idx}>
+                              {props.headCells.map((headCell, idxx) => {
+                                return (
+                                  <td key={"td_" + idx + "_" + idxx}>
+                                    {headCell.render
+                                      ? headCell.render(row)
+                                      : row[headCell.id]}
+                                  </td>
+                                );
+                              })}
+                            </tr>
+                          );
                           // } else {
                           //   return null; // Skip rendering rows that don't meet the condition
                           // }
@@ -416,20 +424,20 @@ function SmartTable(props) {
                 style={{ marginTop: "110px", marginBottom: "40px" }}
               >
                 {props.dataFetched && props.properties.length === 0 ? (
-                
-                showNoData ? 
-                <h3>No Data Found</h3>
-                :
-                <div className="ring">
-                  Loading
-                  <span className="load"></span>
-                </div>
-              ) : (
-                <div className="ring">
-                  Loading
-                  <span className="load"></span>
-                </div>
-              )}
+                  showNoData ? (
+                    <h3>No Data Found</h3>
+                  ) : (
+                    <div className="ring">
+                      Loading
+                      <span className="load"></span>
+                    </div>
+                  )
+                ) : (
+                  <div className="ring">
+                    Loading
+                    <span className="load"></span>
+                  </div>
+                )}
               </div>
             </div>
           )}

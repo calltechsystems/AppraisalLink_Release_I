@@ -157,8 +157,8 @@ export default function Exemple({
   
   const sortObjectsByOrderIdDescending = (data) => {
     return data.sort((a, b) => {
-      const dateA = new Date(a.st_date);
-      const dateB = new Date(b.st_date);
+      const dateA = new Date(a.status);
+      const dateB = new Date(b.status);
       return dateB - dateA;
     });
   };
@@ -207,7 +207,7 @@ export default function Exemple({
         const endDate =property.planAmount<500 ? nextMonth : nextYear;
         const expired = new Date(property.endDate) >= new Date() && new Date() >= new Date(property.startDate)  ? true : false;
 
-        if(expired){
+        if(true){
         const updatedRow = {
           id: property.paymentid,
           planName: property.transactionDetail,
@@ -221,7 +221,7 @@ export default function Exemple({
           remained_prop:`${property.usedProperties === null ? 0  : property.usedProperties} of ${property.noOfProperties}`,
           status:
             !expired ?
-            <span className="btn btn-danger  w-100">In-Active</span>
+            <span className="btn btn-info  w-100">Will Be Active on {formatDate(property.startDate)}</span>
             :
             <span className="btn btn-success  w-100">Active</span>
         };
