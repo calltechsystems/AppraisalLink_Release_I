@@ -104,6 +104,7 @@ export default function Exemple({
   const [allProperties, setAllProperties] = useState([]);
   const [show, setShow] = useState(false);
   const [all, setAll] = useState([]);
+  const [dataFetched, setDataFetched] = useState(false);
 
   const [appraiser, setAppraisers] = useState([]);
 
@@ -161,32 +162,32 @@ export default function Exemple({
     setOpenBrokerModal(true);
   };
 
-    //Re assign appraiser funciton
-    const reAssign = (QuoteId) => {
-      toast.loading("Re Assigning the appraiser ");
-  
-      const userData = JSON.parse(localStorage.getItem("user"));
-      const payload = {
-        QuoteId: QuoteId,
-        token: userData.token,
-      };
-  
-      const encryptedBpdy = encryptionData(payload);
-      axios
-        .put("/api/reAssignAppraiser", encryptedBpdy)
-        .then((res) => {
-          console.log(res);
-          toast.dismiss();
-          toast.success("Successfully Re assigned Appraiser");
-        })
-        .catch((err) => {
-          toast.dismiss();
-          toast.error("Try Again!!");
-        });
-      setRefresh(true);
-      // window.location.reload();
-      // toast.success("Successfully Re assigned Appraiser");
+  //Re assign appraiser funciton
+  const reAssign = (QuoteId) => {
+    toast.loading("Re Assigning the appraiser ");
+
+    const userData = JSON.parse(localStorage.getItem("user"));
+    const payload = {
+      QuoteId: QuoteId,
+      token: userData.token,
     };
+
+    const encryptedBpdy = encryptionData(payload);
+    axios
+      .put("/api/reAssignAppraiser", encryptedBpdy)
+      .then((res) => {
+        console.log(res);
+        toast.dismiss();
+        toast.success("Successfully Re assigned Appraiser");
+      })
+      .catch((err) => {
+        toast.dismiss();
+        toast.error("Try Again!!");
+      });
+    setRefresh(true);
+    // window.location.reload();
+    // toast.success("Successfully Re assigned Appraiser");
+  };
 
   const getPropertyHandler = (currentProperty) => {
     let temp = {};
@@ -483,6 +484,9 @@ export default function Exemple({
         },
       })
       .then((result) => {
+        // console.log(result);
+        setDataFetched(true);
+        // setAllProperties(result.data.data.properties.$values);
         const url = window.location.pathname;
         const propertyOrderId = url.split("/brokerage-properties-bid/")[1];
         axios
@@ -504,6 +508,7 @@ export default function Exemple({
           })
           .catch((err) => {
             toast.dismiss();
+            setDataFetched(false);
             toast.error(err?.response?.data?.error);
           });
       })
@@ -523,6 +528,8 @@ export default function Exemple({
           data={updatedData}
           headCells={headCells}
           refreshHandler={refreshHandler}
+          dataFetched={dataFetched}
+          properties={updatedData}
           start={start}
           end={end}
         />

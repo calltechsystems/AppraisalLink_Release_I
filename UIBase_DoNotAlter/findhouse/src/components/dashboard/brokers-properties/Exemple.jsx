@@ -891,7 +891,7 @@ export default function Exemple({
           refreshHandler={refreshHandler}
           start={start}
           dataFetched={dataFetched}
-          properties={properties}
+          properties={updatedData}
           end={end}
         />
       )}

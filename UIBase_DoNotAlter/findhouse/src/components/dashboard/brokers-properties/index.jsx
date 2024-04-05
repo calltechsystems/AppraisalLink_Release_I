@@ -319,7 +319,8 @@ const Index = () => {
 
   useEffect(() => {
     const tmpData = filterData(properties);
-    setProperties(tmpData);
+    console.log("filterQuery", filterQuery, tmpData, tmpData.length);
+    setFilterProperty(tmpData);
   }, [filterQuery]);
 
   const handleDelete = () => {

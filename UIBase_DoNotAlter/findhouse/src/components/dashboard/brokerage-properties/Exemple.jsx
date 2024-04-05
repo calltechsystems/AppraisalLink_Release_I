@@ -776,12 +776,12 @@ export default function Exemple({
           })
           .catch((err) => {
             toast.error(err);
+            setDataFetched(false);
             // setModalIsOpenError(true);
           });
       })
       .catch((err) => {
         toast.dismiss();
-        setDataFetched(false);
         toast.error(err?.response?.data?.error);
       });
 
@@ -801,7 +801,7 @@ export default function Exemple({
           refreshHandler={refreshHandler}
           start={start}
           dataFetched={dataFetched}
-          properties={properties}
+          properties={updatedData}
           end={end}
         />
       )}
