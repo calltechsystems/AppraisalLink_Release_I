@@ -13,11 +13,12 @@ import millify from "millify";
 
 const headCells = [
   {
-    id: "orderId",
+    id: "order_id",
     numeric: false,
     label: "Order ID",
     width: 100,
   },
+  
 
   {
     id: "address",
@@ -335,7 +336,7 @@ export default function Exemple({
         if (isBidded?.$id) {
           const isWait = property.isOnHold || property.isOnCancel;
           const updatedRow = {
-            orderId: property.orderId,
+            order_id: property.orderId,
             address: `${property.city}-${property.province},${property.zipCode}`,
             estimatedValue: property.estimatedValue
               ? `$ ${formatLargeNumber(property.estimatedValue)}`
@@ -766,6 +767,7 @@ export default function Exemple({
         setAllArchive(res.data.data.$values);
       })
       .catch((err) => {
+        setDataFetched(false)
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
@@ -773,7 +775,6 @@ export default function Exemple({
     console.log("end", bids, properties, wishlist);
     setRefresh(false);
   }, [refresh]);
-  // console.log(sortObjectsByOrderIdDescending(updatedData));
   return (
     <>
       {refresh ? (

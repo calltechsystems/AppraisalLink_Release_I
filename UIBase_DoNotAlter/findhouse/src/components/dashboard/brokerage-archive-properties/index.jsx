@@ -24,7 +24,7 @@ const Index = () => {
   const [property, setProperty] = useState("");
   const [allArchive, setAllArchive] = useState([]);
   const [filterProperty, setFilterProperty] = useState("");
-  const [filterQuery, setFilterQuery] = useState("Last 30 Days");
+  const [filterQuery, setFilterQuery] = useState("All");
   const [properties, setProperties] = useState([]);
   const [disable, setdisable] = useState(false);
   // const user = JSON.parse(localStorage.getItem("user"));
@@ -245,7 +245,8 @@ const Index = () => {
 
   useEffect(() => {
     const tmpData = filterData(properties);
-    setProperties(tmpData);
+    console.log("filterQuery", filterQuery, tmpData, tmpData.length);
+    setFilterProperty(tmpData);
   }, [filterQuery]);
 
   const handleDelete = () => {
@@ -379,7 +380,9 @@ const Index = () => {
                           start={start}
                           end={end}
                           properties={
-                            searchInput === "" ? properties : filterProperty
+                            searchInput === "" && filterQuery === "All"
+                              ? properties
+                              : filterProperty
                           }
                           setAllArchive={setAllArchive}
                           setModalIsOpenError={setModalIsOpenError}

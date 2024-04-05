@@ -3,7 +3,7 @@ import SidebarMenu from "../../common/header/dashboard/SidebarMenu_002";
 import MobileMenu from "../../common/header/MobileMenu_01";
 import Filtering from "./Filtering";
 import AllStatistics from "./AllStatistics";
-import StatisticsPieChart from "./StatisticsPieChart";
+import StatisticsPieChart, { tempData } from "./StatisticsPieChart";
 import StatisticsChart from "./StatisticsChart";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -11,9 +11,7 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 
 const Index = () => {
-  // let userData = JSON.parse(localStorage.getItem("user"));
   const [userData, setUserData] = useState({});
-  // const data = JSON.parse(localStorage.getItem("user"));
   const router = useRouter();
   const [properties, setProperties] = useState([]);
   const [refresh, setRefresh] = useState(false);
@@ -21,6 +19,9 @@ const Index = () => {
 
   const [allProperties, setAllProperties] = useState([]);
 
+  const [AllPropertiesCard, setAllPropertiesCard] = useState(0);
+  const [AllWishlistedCards, setAllWishlistedCards] = useState(0);
+  const [AllBiddedCards, setAllBiddedCards] = useState(0);
   const [bids, setBids] = useState([]);
   const [wishlist, setWishlist] = useState([]);
 
@@ -125,6 +126,7 @@ const Index = () => {
               return false;
             }
           });
+          console.log("wishlistddd", responseData);
           const tempId = responseData;
           setWishlist(responseData);
         })
@@ -163,6 +165,195 @@ const Index = () => {
     func();
     setRefresh(false);
   }, [refresh]);
+
+  const calculate = (searchDate, diff) => {
+    const newDateObj = new Date(searchDate);
+    const currentObj = new Date();
+
+    const getMonthsFDiff = currentObj.getMonth() - newDateObj.getMonth();
+    const gettingDiff = currentObj.getDate() - newDateObj.getDate();
+    const gettingYearDiff = currentObj.getFullYear() - newDateObj.getFullYear();
+
+    const estimatedDiff =
+      gettingDiff + getMonthsFDiff * 30 + gettingYearDiff * 365;
+
+    console.log("dayss", diff, newDateObj.getDate(), currentObj.getDate());
+    return estimatedDiff <= diff;
+  };
+
+  const getWishlishtTime = (orderId) => {
+    let time = "";
+    wishlist.map((bid, index) => {
+      if (String(bid.propertyId) === String(orderId))
+        [(time = bid.addedDateTime)];
+    });
+    return time;
+  };
+
+  const setDefaultCardsValues = (bids, wishlists) => {
+    setAllBiddedCards(bids);
+    setAllWishlistedCards(wishlists);
+  };
+
+  const getBiddedTime = (orderId) => {
+    let time = "";
+    bids.map((bid, index) => {
+      if (String(bid.orderId) === String(orderId)) [(time = bid.requestTime)];
+    });
+    return time;
+  };
+
+  const filterData = (tempData) => {
+    let tempAllBids = 0,
+      tempAllWishlist = 0,
+      tempAllProps = 0;
+    const currentDate = new Date();
+    const oneYearAgo = new Date(currentDate);
+    oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
+
+    let monthlyData = new Array(12).fill(0);
+    let weeklyData = new Array(52).fill(0);
+    let yearlyData = new Array(
+      currentDate.getFullYear() - oneYearAgo.getFullYear() + 1
+    ).fill(0);
+
+    switch (FilteringType) {
+      case "Last 7 days":
+        const sevenDaysAgo = new Date(currentDate);
+        sevenDaysAgo.setDate(currentDate.getDate() - 7);
+        tempData.forEach((item) => {
+          const bidTime = getBiddedTime(item.orderId);
+
+          const wihlistTime = getWishlishtTime(item.propertyId);
+
+          console.log("bidTime", bidTime, wihlistTime);
+          if (bidTime !== "" && calculate(bidTime, 7)) {
+            tempAllBids += 1;
+            weeklyData[new Date(bidTime).getDay()]++;
+          }
+          if (wihlistTime !== "" && calculate(wihlistTime, 7)) {
+            tempAllWishlist++;
+            console.log("wishlists", tempAllWishlist);
+
+            weeklyData[new Date(wihlistTime).getDay()]++;
+          }
+        });
+        setDefaultCardsValues(tempAllBids, tempAllWishlist);
+
+        return {
+          data: weeklyData,
+          labels: Array.from({ length: 7 }, (_, i) => i + 1),
+        }; // Assuming labels are days of the week
+
+      case "Last 30 Days":
+        const thirtyDaysAgo = new Date(currentDate);
+        thirtyDaysAgo.setDate(currentDate.getDate() - 30);
+        tempData.forEach((item) => {
+          const bidTime = getBiddedTime(item?.orderId);
+
+          const wihlistTime = getWishlishtTime(item?.propertyId);
+
+          if (bidTime !== "" && calculate(bidTime, 30)) {
+            tempAllBids += 1;
+            monthlyData[new Date(bidTime).getMonth()]++;
+          }
+          if (wihlistTime !== "" && calculate(wihlistTime, 30)) {
+            tempAllWishlist++;
+            console.log("wishlists", tempAllWishlist);
+
+            monthlyData[new Date(wihlistTime).getMonth()]++;
+          }
+        });
+        setDefaultCardsValues(tempAllBids, tempAllWishlist);
+
+        return {
+          data: monthlyData,
+          labels: Array.from({ length: 30 }, (_, i) => i + 1),
+        }; // Assuming labels are days of the month
+
+      case "Last 3 Month":
+        const threeMonthsAgo = new Date(currentDate);
+        threeMonthsAgo.setMonth(currentDate.getMonth() - 3);
+        tempData.forEach((item) => {
+          const bidTime = getBiddedTime(item?.orderId);
+
+          const wihlistTime = getWishlishtTime(item?.propertyId);
+
+          if (bidTime !== "" && calculate(bidTime, 90)) {
+            tempAllBids += 1;
+            const monthDifference =
+              currentDate.getMonth() - new Date(bidTime).getMonth();
+            yearlyData[
+              yearlyData.length - 1 - Math.floor(monthDifference / 3)
+            ]++;
+          }
+          if (wihlistTime !== "" && calculate(wihlistTime, 90)) {
+            tempAllWishlist++;
+
+            const monthDifference =
+              currentDate.getMonth() - new Date(wihlistTime).getMonth();
+            yearlyData[
+              yearlyData.length - 1 - Math.floor(monthDifference / 3)
+            ]++;
+          } else if (wihlistTime === null) {
+            const monthDifferenceWithNullValue =
+              currentDate.getMonth() - new Date().getMonth();
+            yearlyData[
+              yearlyData.length -
+                1 -
+                Math.floor(monthDifferenceWithNullValue / 3)
+            ]++;
+          }
+        });
+        setDefaultCardsValues(tempAllBids, tempAllWishlist);
+
+        return {
+          data: yearlyData,
+          labels: Array.from({ length: yearlyData.length }, (_, i) => i + 1),
+        }; // Assuming labels are months
+
+      default:
+        const threeMonthssAgo = new Date(currentDate);
+        threeMonthssAgo.setMonth(currentDate.getMonth() - 3);
+        tempData.forEach((item) => {
+          const bidTime = getBiddedTime(item?.orderId);
+
+          const wihlistTime = getWishlishtTime(item?.propertyId);
+
+          if (bidTime !== "" && calculate(bidTime, 90)) {
+            tempAllBids += 1;
+            const monthDifference =
+              currentDate.getMonth() - new Date(bidTime).getMonth();
+            yearlyData[
+              yearlyData.length - 1 - Math.floor(monthDifference / 3)
+            ]++;
+          }
+          if (wihlistTime !== "" && calculate(wihlistTime, 90)) {
+            tempAllWishlist++;
+
+            const monthDifference =
+              currentDate.getMonth() - new Date(wihlistTime).getMonth();
+            yearlyData[
+              yearlyData.length - 1 - Math.floor(monthDifference / 3)
+            ]++;
+          } else if (wihlistTime === null) {
+            const monthDifferenceWithNullValue =
+              currentDate.getMonth() - new Date().getMonth();
+            yearlyData[
+              yearlyData.length -
+                1 -
+                Math.floor(monthDifferenceWithNullValue / 3)
+            ]++;
+          }
+        });
+        setDefaultCardsValues(tempAllBids, tempAllWishlist);
+
+        return {
+          data: yearlyData,
+          labels: Array.from({ length: yearlyData.length }, (_, i) => i + 1),
+        }; // Assuming labels are years
+    }
+  };
 
   useEffect(() => {
     const categorizeDataByMonth = () => {
@@ -262,8 +453,15 @@ const Index = () => {
         : counts.Yearly;
     };
 
-    const temp = categorizeDataByMonth(properties);
-    setChartData(temp);
+    const temp = filterData(properties);
+    console.log(
+      "filterData",
+      FilteringType,
+      properties,
+      temp.data,
+      categorizeDataByMonth(properties)
+    );
+    setChartData(temp.data);
   }, [properties, FilteringType]);
 
   function getWeekNumber(date) {
@@ -343,10 +541,10 @@ const Index = () => {
 
               <div className="row">
                 <AllStatistics
-                  properties={bids.length + wishlist.length}
-                  views={bids.length + wishlist.length}
-                  bids={bids.length}
-                  wishlist={wishlist.length}
+                  properties={AllBiddedCards + AllWishlistedCards}
+                  views={AllBiddedCards + AllWishlistedCards}
+                  bids={AllBiddedCards}
+                  wishlist={AllWishlistedCards}
                 />
               </div>
               {/* End .row Dashboard top statistics */}

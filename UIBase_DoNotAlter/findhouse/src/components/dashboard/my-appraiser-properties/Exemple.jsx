@@ -13,7 +13,7 @@ import millify from "millify";
 
 const headCells = [
   {
-    id: "orderId",
+    id: "order_id",
     numeric: false,
     label: "Order ID",
     width: 100,
@@ -335,7 +335,7 @@ export default function Exemple({
           }
           const isWait = property.isOnHold || property.isOnCancel;
           const updatedRow = {
-            orderId: property.orderId,
+            order_id: property.orderId,
             address: `${property.city}-${property.province},${property.zipCode}`,
             estimatedValue: property.estimatedValue
               ? `$ ${formatLargeNumber(property.estimatedValue)}`
@@ -696,6 +696,7 @@ export default function Exemple({
         },
       })
       .then((res) => {
+        setDataFetched(true)
         const temp = res.data.data.properties.$values;
 
         axios
@@ -822,6 +823,7 @@ export default function Exemple({
         setAllArchive(res.data.data.$values);
       })
       .catch((err) => {
+        setDataFetched(false)
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });

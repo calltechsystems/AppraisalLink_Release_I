@@ -12,7 +12,7 @@ import { AppraiserStatusOptions } from "../create-listing/data";
 
 const headCells = [
   {
-    id: "orderId",
+    id: "order_id",
     numeric: false,
     label: "Order ID",
     width: 100,
@@ -336,7 +336,7 @@ export default function Exemple({
           tempProp.push(property);
           const isWait = property.isOnHold || property.isOnCancel;
           const updatedRow = {
-            orderId: property.orderId,
+            order_id: property.orderId,
             address: `${property.city}-${property.province},${property.zipCode}`,
             estimatedValue: property.estimatedValue
               ? `$ ${formatLargeNumber(property.estimatedValue)}`
@@ -737,6 +737,7 @@ export default function Exemple({
           });
       })
       .catch((err) => {
+
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
@@ -837,7 +838,7 @@ export default function Exemple({
           refreshHandler={refreshHandler}
           setStartLoading={setStartLoading}
           start={start}
-          properties={properties}
+          properties={updatedData}
           dataFetched={dataFetched}
           end={end}
         />
