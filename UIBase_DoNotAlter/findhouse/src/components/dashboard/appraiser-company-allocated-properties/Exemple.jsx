@@ -12,7 +12,7 @@ import { FaArchive } from "react-icons/fa";
 
 const headCells = [
   {
-    id: "orderId",
+    id: "order_id",
     numeric: false,
     label: "Order ID",
     width: 100,
@@ -294,6 +294,8 @@ export default function Exemple({
     return formattedDate;
   };
 
+
+
   const checkWishlistedHandler = (data) => {
     let temp = {};
     // //console.log(wishlist, data);
@@ -363,7 +365,7 @@ export default function Exemple({
         console.log("isBidded",isBidded)
         const isWait = property?.isOnHold || property?.isOnCancel;
         const updatedRow = {
-          orderId: property?.orderId,
+          order_id: property?.orderId,
           address: property?.city
             ? `${property?.city}-${property?.province},${property?.zipCode}`
             : "-",
@@ -564,6 +566,21 @@ export default function Exemple({
                   <p className="btn btn-info w-100">{`In progress`}</p>
                 </>
               )}
+
+              {isBidded.status === 1 && isBidded.orderStatus !== 3 ? (
+                                <>
+                                  <button
+                                    href="#"
+                                    className="btn btn-color m-1"
+                                    onClick={() => openStatusUpdateHandler(isBidded)}
+                                  >
+                                    <Link href="#">
+                                      <span className="flaticon-edit text-light"></span>
+                                    </Link>
+                                  </button>
+                                
+                                </>
+                              ) :""}
             </div>
           ),
         };
