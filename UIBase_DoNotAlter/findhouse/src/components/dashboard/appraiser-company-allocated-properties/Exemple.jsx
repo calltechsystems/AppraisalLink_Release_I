@@ -20,8 +20,8 @@ const headCells = [
   {
     id: "appraiser_info",
     numeric: false,
-    label: "Appraiser Name",
-    width: 160,
+    label: "Appraiser Info",
+    width: 170,
   },
   {
     id: "address",
@@ -29,14 +29,12 @@ const headCells = [
     label: "Property Address",
     width: 200,
   },
-
   {
     id: "status",
     numeric: false,
     label: "Quote Status",
     width: 160,
   },
-
   {
     id: "appraisal_status",
     numeric: false,
@@ -49,14 +47,12 @@ const headCells = [
     label: "Remark",
     width: 160,
   },
-
   {
     id: "urgency",
     numeric: false,
     label: "Urgency",
     width: 200,
   },
-
   {
     id: "date",
     numeric: false,
@@ -69,16 +65,14 @@ const headCells = [
     label: "Appraisal Report Required By",
     width: 200,
   },
-
   {
-    id: "typeOfBuilding",
+    id: "type_of_building",
     numeric: false,
     label: "Type of Property",
     width: 200,
   },
-
   {
-    id: "estimatedValue",
+    id: "estimated_value",
     numeric: false,
     label: "Estimated Property Value ($)",
     width: 200,
@@ -368,7 +362,7 @@ export default function Exemple({
           address: property?.city
             ? `${property?.city}-${property?.province},${property?.zipCode}`
             : "-",
-          estimatedValue: property?.estimatedValue
+          estimated_value: property?.estimatedValue
             ? `$ ${formatLargeNumber(property?.estimatedValue)}`
             : "$ 0",
           purpose: property?.purpose ? property?.purpose : "N.A.",
@@ -480,7 +474,7 @@ export default function Exemple({
           type_of_appraisal: property?.typeOfAppraisal
             ? property?.typeOfAppraisal
             : "N.A.",
-          typeOfBuilding: property?.typeOfBuilding
+            type_of_building: property?.typeOfBuilding
             ? property?.typeOfBuilding
             : "N.A.",
           quote_required_by: formatDate(property?.quoteRequiredDate),
@@ -551,7 +545,7 @@ export default function Exemple({
                   </li>
                 </ul>
               ) : isBidded.orderStatus === 3 ? (
-                <span className="btn btn-success  w-100">Completed</span>
+                <span className="btn btn-completed  w-100">Completed</span>
               ) : isWait ? (
                 <>
                   <p className="btn btn-danger  w-100">

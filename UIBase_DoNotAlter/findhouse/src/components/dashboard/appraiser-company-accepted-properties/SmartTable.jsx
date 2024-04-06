@@ -79,15 +79,15 @@ function SmartTable(props) {
     try {
       // Fetch data
       const allData = props.properties;
-      
+
       // Open print window and set up basic structure
       const printWindow = window.open("", "_blank");
       printWindow.document.write(
-        "<html><head><title>Company Accepted Properties</title></head><body>" +
+        "<html><head><title>Appraised Properties</title></head><body>" +
           // Add CSS styles within the <style> tag
           "<style>" +
           // Define your CSS styles here
-          "table { width: 100%; border-collapse: collapse; }" +
+          "table { width: 100%; border-collapse: collapse; font-size:12px; font-family:arial;}" +
           "th, td { border: 1px solid black; padding: 8px; }" +
           "th { background-color:#2e008b; color:white; }" +
           "</style>" +
@@ -106,13 +106,17 @@ function SmartTable(props) {
       const staticHeaders = [
         ["order_id", "Order Id"],
         ["address", "Address"],
+        ["status", "Status"],
+        ["appraisal_status", "Appraisal Status"],
         ["remark", "Remark"],
-        ["date", "Submission Date"],
         ["urgency", "Urgency"],
-        ["quote_required_by", "Quote Required By"],
-        ["purpose", "Purpose"],
+        ["date", "Submission Date"],
+        ["type_of_building", "Type Of Building"],
+        ["estimated_value", "Estimated Property Value ($)"],
         ["type_of_appraisal", "Type Of Appraisal"],
-      ]; 
+        ["purpose", "Purpose"],
+        ["lender_information", "Lender Information"],
+      ];
       staticHeaders.forEach((headerText) => {
         const th = document.createElement("th");
         th.textContent = headerText[1];
@@ -122,13 +126,64 @@ function SmartTable(props) {
 
       // Iterate over all data and append rows to the table body
       const tableBody = document.createElement("tbody");
+      // Iterate over all data and append rows to the table body
       allData.forEach((item) => {
         const row = tableBody.insertRow();
         staticHeaders.forEach((header) => {
           const cell = row.insertCell();
-          cell.textContent = item[header[0].toLowerCase()]; // Use bracket notation to access item properties dynamically
+          if (
+            header[0].toLowerCase() === "appraisal_status" ||
+            header[0].toLowerCase() === "status"
+          ) {
+            const value = item[header[0].toLowerCase()];
+            const className = value.props.className;
+            const content = value.props.children;
+
+            // Create a span element to contain the content
+            const spanElement = document.createElement("span");
+            spanElement.textContent = content;
+
+            // Apply styles based on className
+            if (className.includes("btn-warning")) {
+              spanElement.style.backgroundColor = "";
+              spanElement.style.color = "#E4A11B";
+              spanElement.style.height = "max-content";
+              spanElement.style.width = "120px";
+              spanElement.style.padding = "8px";
+              spanElement.style.fontWeight = "bold";
+            } else if (className.includes("btn-danger")) {
+              spanElement.style.backgroundColor = "";
+              spanElement.style.color = "#DC4C64";
+              spanElement.style.height = "max-content";
+              spanElement.style.width = "120px";
+              spanElement.style.padding = "8px";
+              spanElement.style.fontWeight = "bold";
+              // Add more styles as needed
+            } else if (className.includes("btn-success")) {
+              spanElement.style.backgroundColor = "";
+              spanElement.style.color = "#14A44D";
+              spanElement.style.height = "max-content";
+              spanElement.style.width = "120px";
+              spanElement.style.padding = "8px";
+              spanElement.style.fontWeight = "bold";
+              // Add more styles as needed
+            } else {
+              spanElement.style.backgroundColor = "";
+              spanElement.style.color = "#54B4D3";
+              spanElement.style.height = "max-content";
+              spanElement.style.width = "120px";
+              spanElement.style.padding = "8px";
+              spanElement.style.fontWeight = "bold";
+            }
+
+            // Append the span element to the cell
+            cell.appendChild(spanElement);
+          } else {
+            cell.textContent = item[header[0].toLowerCase()];
+          }
         });
       });
+
       clonedTable.appendChild(tableBody);
       clonedTable.appendChild(tableBody);
 

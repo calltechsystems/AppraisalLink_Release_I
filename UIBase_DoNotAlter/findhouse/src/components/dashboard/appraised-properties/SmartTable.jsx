@@ -37,9 +37,11 @@ function SmartTable(props) {
     toast.success("Data added");
   };
 
+
+
   const refreshHandler = () => {
     const refresh = !props.refresh;
-    setData([props.data]);
+    setData([props.data])
     props.setRefresh(refresh);
   };
   const fetchData = useCallback(
@@ -66,37 +68,7 @@ function SmartTable(props) {
     [props.url]
   );
 
-  const getClassName = (classname) => {
-    if (String(classname).toLowerCase.includes("btn-warning")) {
-      return {
-        height: "auto",
-        width: "100px",
-        backgroundColor: "blue",
-        color: "white",
-      };
-    } else if (String(classname).toLowerCase.includes("btn-danger")) {
-      return {
-        height: "auto",
-        width: "100px",
-        backgroundColor: "red",
-        color: "white",
-      };
-    } else if (String(classname).toLowerCase.includes("btn-success")) {
-      return {
-        height: "auto",
-        width: "100px",
-        backgroundColor: "green",
-        color: "white",
-      };
-    } else {
-      return {
-        height: "auto",
-        width: "100px",
-        backgroundColor: "yellow",
-        color: "black",
-      };
-    }
-  };
+
 
   const handlePrint = async () => {
     try {
@@ -358,23 +330,23 @@ function SmartTable(props) {
   //   }
   // };
 
-  const getDataFromStatus = (statusValues) => {
+  const getDataFromStatus = (statusValues) =>{
     let final = [];
 
-    statusValues?.map((status, index) => {
-      data.map((row, idx) => {
-        if (String(status.order_id) === String(row.order_id)) {
-          final.push(row);
+    statusValues?.map((status,index)=>{
+      data.map((row,idx)=>{
+        if(String(status.order_id) ===String(row.order_id)){
+          final.push(row)
         }
-      });
-    });
+      })
+    })
 
     return final;
-  };
+  }
   const extractTextContent = (cellValue) => {
-    if (typeof cellValue === "string") {
+    if (typeof cellValue === 'string') {
       return cellValue; // If it's a string, return it as is
-    } else if (typeof cellValue === "object" && cellValue.$$typeof) {
+    } else if (typeof cellValue === 'object' && cellValue.$$typeof) {
       // If it's a React element, extract text content recursively from children
       return extractTextContent(cellValue.props.children);
     } else {
@@ -385,17 +357,17 @@ function SmartTable(props) {
   const sortData = (cell) => {
     // Clone props.properties to avoid mutating the original data
     let tempData = [...props.properties];
-
+  
     // Toggle sorting order for the current cell
     const newSortDesc = { ...sortDesc };
     newSortDesc[cell] = !newSortDesc[cell];
-
+  
     // Perform sorting
     tempData.sort((a, b) => {
       // Extract text content from cell value (React element or other type)
       const valueA = extractTextContent(a[cell]);
       const valueB = extractTextContent(b[cell]);
-
+  
       // Perform comparison based on the sorting order
       if (newSortDesc[cell]) {
         return valueA < valueB ? 1 : -1;
@@ -403,19 +375,22 @@ function SmartTable(props) {
         return valueA > valueB ? 1 : -1;
       }
     });
-
+  
     // Update state with the new sorting order and sorted data
     setSortDesc(newSortDesc);
     setData(tempData);
   };
-
-  useEffect(() => {
+  
+  
+  useEffect(()=>{
     const sortObjectsByOrderIdDescending = (data) => {
       return data.sort((a, b) => b.order_id - a.order_id);
     };
 
-    setData(sortObjectsByOrderIdDescending(props.data));
-  }, [props.data]);
+    setData(sortObjectsByOrderIdDescending(props.data))
+  },[props.data])
+
+  
 
   return (
     <div className="col-12 p-2">

@@ -330,7 +330,7 @@ export default function Exemple({
                   {isHold ? "On Hold" : "Cancelled"}
                 </span>
               ) : isStatus === 3 ? (
-                <span className="btn bg-success w-100 text-light">
+                <span className="btn btn-completed w-100 text-light">
                   Completed
                 </span>
               ) : isStatus === 2 ? (

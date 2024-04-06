@@ -1515,7 +1515,7 @@ const Index = ({ isView, propertyData }) => {
                               updateView ? updateHandler : finalSubmitHandler
                             }
                           >
-                            Continue
+                            Submit
                           </button>
                         </div>
                       </div>

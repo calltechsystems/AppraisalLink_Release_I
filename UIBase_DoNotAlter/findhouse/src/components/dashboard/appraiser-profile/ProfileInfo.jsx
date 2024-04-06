@@ -236,7 +236,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         !payload.phoneNumber ||
         !payload.emailId ||
         // !payload.companyName ||
-        !payload.lenderListUrl ||
+        // !payload.lenderListUrl ||
         !payload.streetName ||
         !payload.streetNumber ||
         !payload.city ||

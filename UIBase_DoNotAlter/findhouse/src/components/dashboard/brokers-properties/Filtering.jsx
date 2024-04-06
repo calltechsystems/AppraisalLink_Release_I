@@ -7,7 +7,7 @@ const Filtering = ({ setFilterQuery }) => {
       <option value={"All"}>All</option>
       <option value={"Last 7 days"}>Last 7 days</option>
       <option value={"Last 30 Days"}>Last 30 Days</option>
-      <option value={"Last 3 Month"}>Last 3 month</option>
+      <option value={"Last 3 Month"}>Last 90 Days</option>
     </select>
   );
 };

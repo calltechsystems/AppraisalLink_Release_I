@@ -262,7 +262,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         !payload.emailId ||
         !payload.licenseNumber ||
         // !payload.mortgageBrokerageLicNo ||
-        !payload.lenderListUrl ||
+        // !payload.lenderListUrl ||
         !payload.streetName ||
         !payload.streetNumber ||
         !payload.city ||

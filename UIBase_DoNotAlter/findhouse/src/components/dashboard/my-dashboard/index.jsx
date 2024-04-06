@@ -382,7 +382,6 @@ const Index = () => {
           </div>
         </div>
       </section>
-      <div style={{ width: "100%", backgroundColor: "#2e008b" }}>.</div>
     </>
   );
 };

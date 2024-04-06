@@ -9,7 +9,6 @@ import Loader from "./Loader";
 import { FaArchive } from "react-icons/fa";
 import { AppraiserStatusOptions } from "../create-listing/data";
 // import "./SmartTable.css";
-
 const headCells = [
   {
     id: "order_id",
@@ -17,14 +16,12 @@ const headCells = [
     label: "Order ID",
     width: 100,
   },
-
   {
     id: "address",
     numeric: false,
     label: "Property Address",
     width: 200,
   },
-
   {
     id: "status",
     numeric: false,
@@ -49,7 +46,6 @@ const headCells = [
     label: "Urgency",
     width: 200,
   },
-
   {
     id: "date",
     numeric: false,
@@ -62,16 +58,14 @@ const headCells = [
     label: "Appraisal Report Required By",
     width: 200,
   },
-
   {
-    id: "typeOfBuilding",
+    id: "type_of_building",
     numeric: false,
     label: "Type of Property",
     width: 200,
   },
-
   {
-    id: "estimatedValue",
+    id: "estimated_value",
     numeric: false,
     label: "Estimated Property Value ($)",
     width: 200,
@@ -117,7 +111,6 @@ const headCells = [
     width: 180,
   },
 ];
-
 let count = 0;
 
 export default function Exemple({
@@ -302,7 +295,7 @@ export default function Exemple({
   };
 
   const sortObjectsByOrderIdDescending = (data) => {
-    return data.sort((a, b) => b.orderId - a.orderId);
+    return data.sort((a, b) => b.order_id - a.order_id);
   };
 
   const sortObjectsOrderStatusDescending = (data) => {
@@ -338,7 +331,7 @@ export default function Exemple({
           const updatedRow = {
             order_id: property.orderId,
             address: `${property.city}-${property.province},${property.zipCode}`,
-            estimatedValue: property.estimatedValue
+            estimated_value: property.estimatedValue
               ? `$ ${formatLargeNumber(property.estimatedValue)}`
               : "$ 0",
             purpose: property.purpose ? property.purpose : "N.A.",
@@ -438,7 +431,7 @@ export default function Exemple({
             type_of_appraisal: property.typeOfAppraisal
               ? property.typeOfAppraisal
               : "NA",
-            typeOfBuilding:
+            type_of_building:
               property.typeOfBuilding > 0
                 ? "Apartment"
                 : property.typeOfBuilding,
@@ -832,7 +825,7 @@ export default function Exemple({
           title=""
           setSearchInput={setSearchInput}
           setFilterQuery={setFilterQuery}
-          data={sortObjectsOrderStatusDescending(sortObjectsByOrderIdDescending(updatedData))}
+          data={sortObjectsByOrderIdDescending(sortObjectsByOrderIdDescending(updatedData))}
           headCells={headCells}
           setRefresh={setRefresh}
           setProperties={setProperties}

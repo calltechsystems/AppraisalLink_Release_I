@@ -15,7 +15,7 @@ const Index = () => {
   const router = useRouter();
   const [properties, setProperties] = useState([]);
   const [refresh, setRefresh] = useState(false);
-  const [FilteringType, setFilteringType] = useState("Monthly");
+  const [FilteringType, setFilteringType] = useState("All");
 
   const [allProperties, setAllProperties] = useState([]);
 

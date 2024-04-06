@@ -17,14 +17,12 @@ const headCells = [
     label: "Order ID",
     width: 100,
   },
-
   {
     id: "address",
     numeric: false,
     label: "Property Address",
     width: 200,
   },
-
   {
     id: "status",
     numeric: false,
@@ -49,7 +47,6 @@ const headCells = [
     label: "Urgency",
     width: 200,
   },
-
   {
     id: "date",
     numeric: false,
@@ -62,16 +59,14 @@ const headCells = [
     label: "Appraisal Report Required By",
     width: 200,
   },
-
   {
-    id: "typeOfBuilding",
+    id: "type_of_building",
     numeric: false,
     label: "Type of Property",
     width: 200,
   },
-
   {
-    id: "estimatedValue",
+    id: "estimated_value",
     numeric: false,
     label: "Estimated Property Value ($)",
     width: 200,
@@ -331,7 +326,7 @@ export default function Exemple({
           const updatedRow = {
             order_id: property.orderId,
             address: `${property.city}-${property.province},${property.zipCode}`,
-            estimatedValue: property.estimatedValue
+            estimated_value: property.estimatedValue
               ? `$ ${formatLargeNumber(property.estimatedValue)}`
               : "$ 0",
             purpose: property.purpose ? property.purpose : "N.A.",
@@ -356,7 +351,7 @@ export default function Exemple({
               </span>
             ) : isBidded.bidId ? (
               isBidded.orderStatus === 3 ? (
-                <span className="btn btn-success  w-100">Completed</span>
+                <span className="btn btn-completed  w-100">Completed</span>
               ) : isBidded.status === 0 ? (
                 <span className="btn btn-primary  w-100">Quote Provided</span>
               ) : isBidded.status === 1 ? (
@@ -426,7 +421,7 @@ export default function Exemple({
             type_of_appraisal: property.typeOfAppraisal
               ? property.typeOfAppraisal
               : "NA",
-            typeOfBuilding:
+            type_of_building:
               property.typeOfBuilding > 0
                 ? "Apartment"
                 : property.typeOfBuilding,
@@ -502,7 +497,7 @@ export default function Exemple({
                     </li>
                   </ul>
                 ) : isBidded.orderStatus === 3 ? (
-                  <span className="btn btn-success  w-100">Completed</span>
+                  <span className="btn btn-completed  w-100">Completed</span>
                 ) : isBidded && isBidded.status !== 1 ? (
                   <ul className="mb0 d-flex gap-1">
                     {isWishlist.id ? (
@@ -588,7 +583,7 @@ export default function Exemple({
                   </ul>
                 ) : (
                   isBidded.orderStatus === 3 && (
-                    <span className="btn btn-success  w-100">Completed</span>
+                    <span className="btn btn-completed  w-100">Completed</span>
                   )
                 )}
               </div>

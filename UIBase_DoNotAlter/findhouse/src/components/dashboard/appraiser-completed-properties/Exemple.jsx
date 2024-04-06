@@ -17,14 +17,12 @@ const headCells = [
     label: "Order ID",
     width: 100,
   },
-
   {
     id: "address",
     numeric: false,
     label: "Property Address",
     width: 200,
   },
-
   {
     id: "status",
     numeric: false,
@@ -49,7 +47,6 @@ const headCells = [
     label: "Urgency",
     width: 200,
   },
-
   {
     id: "date",
     numeric: false,
@@ -62,16 +59,14 @@ const headCells = [
     label: "Appraisal Report Required By",
     width: 200,
   },
-
   {
-    id: "typeOfBuilding",
+    id: "type_of_building",
     numeric: false,
     label: "Type of Property",
     width: 200,
   },
-
   {
-    id: "estimatedValue",
+    id: "estimated_value",
     numeric: false,
     label: "Estimated Property Value ($)",
     width: 200,
@@ -117,7 +112,6 @@ const headCells = [
     width: 180,
   },
 ];
-
 let count = 0;
 
 export default function Exemple({
@@ -305,7 +299,7 @@ export default function Exemple({
   };
 
   const sortObjectsByOrderIdDescending = (data) => {
-    return data.sort((a, b) => b.orderId - a.orderId);
+    return data.sort((a, b) => b.order_id - a.order_id);
   };
 
   const checkData = properties && !updatedData ? true : false;
@@ -332,7 +326,7 @@ export default function Exemple({
           const updatedRow = {
             order_id: property.orderId,
             address: `${property.city}-${property.province},${property.zipCode}`,
-            estimatedValue: property.estimatedValue
+            estimated_value: property.estimatedValue
               ? `$ ${formatLargeNumber(property.estimatedValue)}`
               : "$ 0",
             purpose: property.purpose ? property.purpose : "N.A.",
@@ -356,7 +350,7 @@ export default function Exemple({
                 {property.isOnHold ? "On Hold" : "Cancelled"}
               </span>
             ) : (
-              <span className="btn btn-success  w-100">Completed</span>
+              <span className="btn btn-completed  w-100">Completed</span>
             ),
             broker: (
               <div>
@@ -417,7 +411,7 @@ export default function Exemple({
             type_of_appraisal: property.typeOfAppraisal
               ? property.typeOfAppraisal
               : "NA",
-            typeOfBuilding:
+              type_of_building:
               property.typeOfBuilding > 0
                 ? "Apartment"
                 : property.typeOfBuilding,
@@ -493,7 +487,7 @@ export default function Exemple({
                     </li>
                   </>
                 ) : (
-                  <span className="btn btn-success  w-100">Completed</span>
+                  <span className="btn btn-completed  w-100">Completed</span>
                 )}
               </div>
             ),
@@ -505,7 +499,7 @@ export default function Exemple({
     };
     getData();
     setRequiredProp(tempProp);
-  }, [properties]);
+  }, [properties,bids,wishlist]);
 
   useEffect(() => {
     setUpdatedCode(true);
@@ -516,9 +510,6 @@ export default function Exemple({
     setStartLoading(true);
   };
   useEffect(() => {
-    setProperties([])
-    setBids([])
-    setWishlist([])
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
