@@ -26,6 +26,7 @@ const Index = () => {
 
   useEffect(()=>{
 
+    const userData = JSON.parse(localStorage.getItem("user"))
     axios
     .get("/api/getBrokerTransactions", {
       headers: {
@@ -45,14 +46,12 @@ const Index = () => {
           requiredSucription = sub;
         }
       })
+      console.log("requiredSubscription",requiredSucription)
       setcurrentSubscription(requiredSucription)
       setRerender(false);
     })
     .catch((err) => {
       toast.dismiss();
-      // toast.error(err?.response?.data?.error);
-      // setErrorMessage(err.response);
-      // setModalIsOpenError(true);
     });
 
 

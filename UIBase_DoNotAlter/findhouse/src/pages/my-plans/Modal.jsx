@@ -204,7 +204,7 @@ const Modal = ({ modalOpen, closeModal, price }) => {
                       fontSize: "19px",
                     }}
                   >
-                    Note : Cannot switch between the tabs while this modal is
+                    Note : Cannot switch between the tabs while this model is
                     being open.
                   </p>
                 </p>

@@ -60,13 +60,13 @@ const headCells = [
     width: 200,
   },
   {
-    id: "typeOfBuilding",
+    id: "type_of_building",
     numeric: false,
     label: "Type of Property",
     width: 200,
   },
   {
-    id: "estimatedValue",
+    id: "estimated_value",
     numeric: false,
     label: "Estimated Property Value ($)",
     width: 200,
@@ -325,7 +325,7 @@ export default function Exemple({
   };
 
   const sortObjectsByOrderIdDescending = (data) => {
-    return data.sort((a, b) => b.orderId - a.orderId);
+    return data.sort((a, b) => b.order_id - a.order_id);
   };
 
   const checkData = properties && !updatedData ? true : false;
@@ -362,7 +362,7 @@ export default function Exemple({
           const updatedRow = {
             order_id: property.orderId,
             address: `${property.city}-${property.province},${property.zipCode}`,
-            estimatedValue: property.estimatedValue
+            estimated_value: property.estimatedValue
               ? `$ ${formatLargeNumber(property.estimatedValue)}`
               : "$ 0",
             purpose: property.purpose ? property.purpose : "N.A.",
@@ -475,7 +475,7 @@ export default function Exemple({
             type_of_appraisal: property.typeOfAppraisal
               ? property.typeOfAppraisal
               : "N.A.",
-            typeOfBuilding:
+              type_of_building:
               property.typeOfBuilding > 0
                 ? "Apartment"
                 : property.typeOfBuilding,

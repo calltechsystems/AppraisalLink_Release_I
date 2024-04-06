@@ -77,7 +77,7 @@ function SmartTable(props) {
           // Add CSS styles within the <style> tag
           "<style>" +
           // Define your CSS styles here
-          "table { width: 100%; border-collapse: collapse; }" +
+          "table { width: 100%; border-collapse: collapse;font-size:12px; font-family:arial; }" +
           "th, td { border: 1px solid black; padding: 8px; }" +
           "th { background-color:#2e008b; color:white; }" +
           "</style>" +
@@ -96,12 +96,17 @@ function SmartTable(props) {
       const staticHeaders = [
         ["order_id", "Order Id"],
         ["address", "Address"],
+        ["status", "Order Status"],
+        ["appraisal_status", "Order Status"],
         ["remark", "Remark"],
         ["sub_date", "Submission Date"],
         ["urgency", "Urgency"],
         ["quote_required_by", "Quote Required By"],
         ["type_of_building", "Type Of Building"],
+        ["amount", "Estimated Value"],
+        ["purpose", "Purpose"],
         ["type_of_appraisal", "Type Of Appraisal"],
+        ["lender_information", "Lender Information"],
       ]; // Add your static headers here
       staticHeaders.forEach((headerText) => {
         const th = document.createElement("th");
@@ -138,7 +143,6 @@ function SmartTable(props) {
     }
   };
 
-  
   const handleExcelPrint = () => {
     const twoDData = props.data.map((item, index) => {
       return [item.bid, item.date, item.title, item.urgency];

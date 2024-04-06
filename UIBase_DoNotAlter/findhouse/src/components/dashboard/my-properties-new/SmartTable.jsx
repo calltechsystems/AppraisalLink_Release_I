@@ -75,7 +75,7 @@ function SmartTable(props) {
           // Add CSS styles within the <style> tag
           "<style>" +
           // Define your CSS styles here
-          "table { width: 100%; border-collapse: collapse; }" +
+          "table { width: 100%; border-collapse: collapse; font-size:12px; font-family:arial;}" +
           "th, td { border: 1px solid black; padding: 8px; }" +
           "th { background-color:#2e008b; color:white; }" +
           "</style>" +
