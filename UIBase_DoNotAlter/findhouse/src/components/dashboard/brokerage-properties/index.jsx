@@ -30,7 +30,7 @@ const Index = () => {
   const [currentProperty, setCurrentProperty] = useState("");
   const [filterProperty, setFilterProperty] = useState("");
   const [showPropDetails, setShowPropDetails] = useState(false);
-  const [filterQuery, setFilterQuery] = useState("Last 30 Days");
+  const [filterQuery, setFilterQuery] = useState("All");
   const [searchQuery, setSearchQuery] = useState("city");
   const [properties, setProperties] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
@@ -183,6 +183,7 @@ const Index = () => {
 
   const onHoldHandler = () => {
     setDisable(true);
+    setModalOpen(false);
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -194,13 +195,13 @@ const Index = () => {
 
     const encryptedBody = encryptionData(payload);
 
-    toast.loading("Turning the property status !");
+    toast.loading("Turning the Property Status.....");
     axios
       .put("/api/setPropertyOnHold", encryptedBody)
       .then((res) => {
         toast.dismiss();
         setIsHoldProperty(false);
-        toast.success("Successfully added status!");
+        toast.success("Successfully Changed the Order Status !");
         window.location.reload();
       })
       .catch((err) => {
@@ -214,6 +215,7 @@ const Index = () => {
 
   const onCancelHandler = () => {
     setDisable(true);
+    setModalOpen(false);
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -225,12 +227,12 @@ const Index = () => {
 
     const encryptedBody = encryptionData(payload);
 
-    toast.loading("Turning the property status...");
+    toast.loading("Turning the Property Status.....");
     axios
       .put("/api/setPropertyOnHold", encryptedBody)
       .then((res) => {
         toast.dismiss();
-        toast.success("Successfully added status!");
+        toast.success("Successfully Changed the Order Status !");
         setIsCancelProperty(false);
         window.location.reload();
       })
@@ -279,26 +281,41 @@ const Index = () => {
     const filteredData = filterProperties(properties, searchInput);
     setFilterProperty(filteredData);
   }, [searchInput]);
-  
+
+  const calculate = (searchDate, diff) => {
+    const newDateObj = new Date(searchDate.addedDatetime);
+    const currentObj = new Date();
+
+    const getMonthsFDiff = currentObj.getMonth() - newDateObj.getMonth();
+    const gettingDiff = currentObj.getDate() - newDateObj.getDate();
+    const gettingYearDiff = currentObj.getFullYear() - newDateObj.getFullYear();
+
+    const estimatedDiff =
+      gettingDiff + getMonthsFDiff * 30 + gettingYearDiff * 365;
+
+    console.log("dayss", diff, newDateObj.getDate(), currentObj.getDate());
+    return estimatedDiff <= diff;
+  };
+
   const filterData = (tempData) => {
     const currentDate = new Date();
     const oneYearAgo = new Date(currentDate);
     oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
-  
+
     switch (filterQuery) {
+      case "Last 7 days":
+        const sevenDaysAgo = new Date(currentDate);
+        sevenDaysAgo.setDate(currentDate.getDate() - 7);
+        return tempData.filter((item) => calculate(item, 7));
       case "Last 30 Days":
         const thirtyDaysAgo = new Date(currentDate);
         thirtyDaysAgo.setDate(currentDate.getDate() - 30);
-        return tempData.filter(
-          (item) => new Date(item.addedDatetime) >= thirtyDaysAgo
-        );
+        return tempData.filter((item) => calculate(item, 30));
       case "Last 3 Month":
         const threeMonthsAgo = new Date(currentDate);
         threeMonthsAgo.setMonth(currentDate.getMonth() - 3);
-        return tempData.filter(
-          (item) => new Date(item.addedDatetime) >= threeMonthsAgo
-        );
-      
+        return tempData.filter((item) => calculate(item, 90));
+
       default:
         return tempData; // Return all data if no valid timeFrame is specified
     }
@@ -306,7 +323,8 @@ const Index = () => {
 
   useEffect(() => {
     const tmpData = filterData(properties);
-    setProperties(tmpData);
+    console.log("filterQuery", filterQuery, tmpData, tmpData.length);
+    setFilterProperty(tmpData);
   }, [filterQuery]);
 
   const handleDelete = () => {
@@ -619,7 +637,9 @@ const Index = () => {
                           start={start}
                           end={end}
                           properties={
-                            searchInput === "" ? properties : filterProperty
+                            searchInput === "" && filterQuery === "All"
+                              ? properties
+                              : filterProperty
                           }
                           setUpdatedCode={setUpdatedCode}
                           onWishlistHandler={onWishlistHandler}
@@ -1285,7 +1305,7 @@ const Index = () => {
             </div>
             {/* End .row */}
 
-            <div className="row">
+            {/* <div className="row">
               <div className="col-lg-12 mt20">
                 <div className="mbp_pagination">
                   <Pagination
@@ -1295,7 +1315,7 @@ const Index = () => {
                   />
                 </div>
               </div>
-            </div>
+            </div> */}
 
             <div className="row mt50">
               <div className="col-lg-12">

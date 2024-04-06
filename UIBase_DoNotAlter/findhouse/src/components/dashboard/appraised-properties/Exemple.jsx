@@ -9,23 +9,20 @@ import Loader from "./Loader";
 import { FaArchive } from "react-icons/fa";
 import { AppraiserStatusOptions } from "../create-listing/data";
 import millify from "millify";
-// import "./SmartTable.css";
 
 const headCells = [
   {
-    id: "orderId",
+    id: "order_id",
     numeric: false,
     label: "Order ID",
     width: 100,
   },
-
   {
     id: "address",
     numeric: false,
     label: "Property Address",
     width: 200,
   },
-
   {
     id: "status",
     numeric: false,
@@ -50,7 +47,6 @@ const headCells = [
     label: "Urgency",
     width: 200,
   },
-
   {
     id: "date",
     numeric: false,
@@ -63,14 +59,12 @@ const headCells = [
     label: "Appraisal Report Required By",
     width: 200,
   },
-
   {
     id: "typeOfBuilding",
     numeric: false,
     label: "Type of Property",
     width: 200,
   },
-
   {
     id: "estimatedValue",
     numeric: false,
@@ -156,6 +150,8 @@ export default function Exemple({
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
   const [dataFetched,setDataFetched] = useState(false)
+
+  const [statusData,setStatusData] = useState([])
   let tempData = [];
 
   const [allArchive, setAllArchive] = useState([]);
@@ -338,7 +334,12 @@ export default function Exemple({
   }, [checkData]);
 
   useEffect(() => {
+
+    let tempStatusData = []
     const getData = () => {
+
+      const userData = JSON.parse(localStorage.getItem("user"));
+
       properties.map((property, index) => {
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
@@ -352,8 +353,14 @@ export default function Exemple({
           if (isBidded.status === 1) {
             console.log(getOrderValue(isBidded.orderStatus));
           }
+
+          const newStatus = {
+            status : isBidded.status,
+            appraisal_status : isBidded.orderStatus,
+            order_id : property.orderId
+          };
           const updatedRow = {
-            orderId: property.orderId,
+            order_id: property.orderId,
             address: `${property.city}-${property.province},${property.zipCode}`,
             estimatedValue: property.estimatedValue
               ? `$ ${formatLargeNumber(property.estimatedValue)}`
@@ -398,9 +405,7 @@ export default function Exemple({
                 <span className="btn btn-danger  w-100">Rejected</span>
               )
             ) :
-            anotherBid ? (
-              <span className="btn btn-danger  w-100">Not Accepting</span>
-            ) :  (
+            (
               <span className="btn btn-warning  w-100">New</span>
             ),
             broker: (
@@ -515,7 +520,8 @@ export default function Exemple({
                       </div>
                     </li>
                   </>
-                ) : isWait ? (
+                ) :
+                 isWait ? (
                   <ul>
                     <p className="btn btn-danger  w-100">
                       {`No further actions can be taken on this property since it is ${
@@ -545,7 +551,21 @@ export default function Exemple({
                       </div>
                     </li>
                   </ul>
-                ) : isBidded && isBidded.status !== 1 ? (
+                ) : 
+                isBidded.$id && isBidded.orderStatus === 3 ? 
+                 (
+                  <>
+                  <p className="btn btn-success  w-100">Completed </p>
+                  <li
+                      className="list-inline-item"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Archive Property"
+                    >
+                     
+                    </li>
+                  </>
+                ) : (
                   <ul className="mb0 d-flex gap-1">
                     {isWishlist.id ? (
                       <button
@@ -559,7 +579,7 @@ export default function Exemple({
                           src="https://png.pngtree.com/png-clipart/20200226/original/pngtree-3d-red-heart-cute-valentine-romantic-glossy-shine-heart-shape-png-image_5315044.jpg"
                         />
                       </button>
-                    ) : !alreadyAccepted && (
+                    ) :  (
                       <li
                         className="list-inline-item"
                         title="Wishlist Property"
@@ -578,7 +598,7 @@ export default function Exemple({
                       </li>
                     )}
 
-                    {(!isBidded.$id || isBidded?.status < 1) && !alreadyAccepted && (
+                    {(!isBidded.$id || isBidded?.status < 1)  && (
                       <li
                         className="list-inline-item"
                         data-toggle="tooltip"
@@ -631,7 +651,8 @@ export default function Exemple({
                       </div>
                     </li>
                   </ul>
-                ) : isBidded.orderStatus !== 3 ? (
+                ) }
+                {isBidded.status === 1 && isBidded.orderStatus !== 3 ? (
                   <>
                     <button
                       href="#"
@@ -642,53 +663,35 @@ export default function Exemple({
                         <span className="flaticon-edit text-light"></span>
                       </Link>
                     </button>
-                    <li
-                      className="list-inline-item"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Archive Property"
-                    >
-                      <div
-                        className="w-100"
-                        onClick={() =>
-                          onArchivePropertyHandler(property.orderId)
-                        }
-                      >
-                        <button href="#" className="btn btn-color">
-                          <Link href="#">
-                            <span className="text-light">
-                              {" "}
-                              <FaArchive />
-                            </span>
-                          </Link>
-                        </button>
-                      </div>
-                    </li>
+                   
                   </>
-                ) : (
-                  <p className="btn btn-success  w-100">Completed </p>
-                )}
+                ) :""}
               </div>
             ),
           };
           tempData.push(updatedRow);
+          tempStatusData.push(newStatus
+          )
         }
       });
       setUpdatedData(tempData);
+      setStatusData(tempStatusData)
     };
     getData();
   }, [properties]);
 
-  useEffect(() => {
-    setUpdatedCode(true);
-  }, [updatedData]);
+
 
   const refreshHandler = () => {
+    
+    setProperties([])
+    setWishlist([])
+    setBids([])
     setRefresh(true);
     setStartLoading(true);
   };
   useEffect(() => {
-    console.log("inside");
+    
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -1016,7 +1019,8 @@ export default function Exemple({
           setStartLoading={setStartLoading}
           start={start}
           dataFetched={dataFetched}
-          properties={properties}
+          statusData={statusData}
+          properties={updatedData}
           end={end}
         />
       )}

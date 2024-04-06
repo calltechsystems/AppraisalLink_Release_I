@@ -172,6 +172,7 @@ export default function Exemple({
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [allBids, setBids] = useState([]);
+  const [dataFetched, setDataFetched] = useState(false);
   const [show, setShow] = useState(false);
   let tempData = [];
 
@@ -356,7 +357,8 @@ export default function Exemple({
           const isBidded = getBidOfProperty(property.orderId);
           const isHold = property.isOnHold;
           const isCancel = property.isOnCancel;
-          console.log("property", property);
+          console.log("isBidded", isBidded, isBidded.statusDate);
+
           const isEditable = isStatus === 0 ? true : false;
           if (true) {
             const updatedRow = {
@@ -816,55 +818,33 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        console.log(res);
+        setDataFetched(true);
         const temp = res.data.data.$values;
-        setProperties(temp);
+        let tempBids = [];
+        axios
+          .get("/api/getAllBids", {
+            headers: {
+              Authorization: `Bearer ${data.token}`,
+            },
+          })
+          .then((res) => {
+            console.log("res", res);
+            tempBids = res.data.data.$values;
+            setBids(tempBids);
+            setProperties(temp);
+          })
+          .catch((err) => {
+            toast.error(err);
+            setModalIsOpenError(true);
+          });
       })
       .catch((err) => {
-        console.log(err);
+        setDataFetched(false);
         toast.error(err);
         setModalIsOpenError(true);
       });
     toast.dismiss();
 
-    // axios
-    //   .get("/api/getPropertiesById", {
-    //     headers: {
-    //       Authorization: `Bearer ${data?.token}`,
-    //       "Content-Type": "application/json",
-    //     },
-    //     params: {
-    //       userId: data?.userId,
-    //     },
-    //   })
-    //   .then((res) => {
-    //     toast.dismiss();
-
-    //     setProperties(res.data.data.property.$values);
-    //   })
-    //   .catch((err) => {
-    //     toast.dismiss();
-    //     toast.error(err?.response?.data?.error);
-    //   });
-
-    let tempBids = [];
-    axios
-      .get("/api/getAllBids", {
-        headers: {
-          Authorization: `Bearer ${data.token}`,
-        },
-      })
-      .then((res) => {
-        console.log("res", res);
-        tempBids = res.data.data.$values;
-        setBids(tempBids);
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error(err);
-        // setErrorMessage(err?.response?.data?.error);
-        setModalIsOpenError(true);
-      });
     toast.dismiss();
     setRefresh(false);
   }, [refresh]);
@@ -882,6 +862,8 @@ export default function Exemple({
           headCells={headCells}
           refreshHandler={refreshHandler}
           start={start}
+          properties={properties}
+          dataFetched={dataFetched}
           end={end}
         />
       )}

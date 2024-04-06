@@ -39,6 +39,7 @@ function SmartTable(props) {
     const refresh = !props.refresh;
     props.setRefresh(refresh);
   };
+
   const fetchData = useCallback(
     async (queryString) => {
       setLoading(true);
@@ -70,7 +71,15 @@ function SmartTable(props) {
       // Open print window and set up basic structure
       const printWindow = window.open("", "_blank");
       printWindow.document.write(
-        "<html><head><title>AllBrokerProperties</title></head><body>"
+        "<html><head><title>AllBrokerProperties</title></head><body>" +
+          // Add CSS styles within the <style> tag
+          "<style>" +
+          // Define your CSS styles here
+          "table { width: 100%; border-collapse: collapse; }" +
+          "th, td { border: 1px solid black; padding: 8px; }" +
+          "th { background-color:#2e008b; color:white; }" +
+          "</style>" +
+          "</head><body>"
       );
       printWindow.document.write("<h1>" + props.title + "</h1>");
       printWindow.document.write(
@@ -80,36 +89,36 @@ function SmartTable(props) {
       // Create a new table element to hold all data
       const clonedTable = document.createElement("table");
 
-      // Clone the original table header
-      const tableContainer = document.getElementById("table-container");
-      const originalTable = tableContainer.querySelector("table");
-      const originalTableHeader = originalTable
-        .querySelector("thead")
-        .cloneNode(true);
-      clonedTable.appendChild(originalTableHeader);
+      // Create table headers
+      const tableHeaderRow = document.createElement("tr");
+      const staticHeaders = [
+        ["property_id", "Order Id"],
+        ["address", "Address"],
+        ["remark", "Remark"],
+        ["sub_date", "Submission Date"],
+        ["urgency", "Urgency"],
+        ["quote_required_by", "Quote Required By"],
+        ["type_of_building", "Type Of Building"],
+        ["type_of_appraisal", "Type Of Appraisal"],
+      ]; // Add your static headers here
+      staticHeaders.forEach((headerText) => {
+        const th = document.createElement("th");
+        th.textContent = headerText[1];
+        tableHeaderRow.appendChild(th);
+      });
+      clonedTable.appendChild(tableHeaderRow);
 
       // Iterate over all data and append rows to the table body
       const tableBody = document.createElement("tbody");
       allData.forEach((item) => {
         const row = tableBody.insertRow();
-        Object.values(item.item).forEach((value) => {
+        staticHeaders.forEach((header) => {
           const cell = row.insertCell();
-          cell.textContent = value;
+          cell.textContent = item[header[0].toLowerCase()]; // Use bracket notation to access item properties dynamically
         });
       });
       clonedTable.appendChild(tableBody);
-
-      // Make the table responsive for all fields
-      const tableRows = clonedTable.querySelectorAll("tr");
-      tableRows.forEach((row) => {
-        const firstCell = row.querySelector("td:first-child");
-        if (firstCell) {
-          const columnHeading = originalTableHeader.querySelector(
-            "th:nth-child(" + (firstCell.cellIndex + 1) + ")"
-          ).innerText;
-          firstCell.setAttribute("data-th", columnHeading);
-        }
-      });
+      clonedTable.appendChild(tableBody);
 
       // Write the table to the print window
       printWindow.document.write(clonedTable.outerHTML);
@@ -224,7 +233,6 @@ function SmartTable(props) {
     }
   }, [props.dataFetched, props.properties]);
 
-
   const handleSearch = debounce((event) => {
     const { value } = event.target;
     setSearch(value);
@@ -335,7 +343,7 @@ function SmartTable(props) {
                                 ? "smartTable-pointer"
                                 : ""
                             }
-                             onClick={() =>
+                            onClick={() =>
                               headCell.sortable !== false &&
                               headCell.id !== "address"
                                 ? sortData(headCell.id)
@@ -358,42 +366,42 @@ function SmartTable(props) {
                   <tbody>
                     {data.length > 0
                       ? data.map((row, idx) => {
-                          if (idx >= props.start && idx <= props.end) {
-                            return (
-                              <tr key={"tr_" + idx}>
-                                {props.headCells.map((headCell, idxx) => {
-                                  return (
-                                    <td key={"td_" + idx + "_" + idxx}>
-                                      {headCell.render
-                                        ? headCell.render(row)
-                                        : row[headCell.id]}
-                                    </td>
-                                  );
-                                })}
-                              </tr>
-                            );
-                          } else {
-                            return null; // Skip rendering rows that don't meet the condition
-                          }
+                          // if (idx >= props.start && idx <= props.end) {
+                          return (
+                            <tr key={"tr_" + idx}>
+                              {props.headCells.map((headCell, idxx) => {
+                                return (
+                                  <td key={"td_" + idx + "_" + idxx}>
+                                    {headCell.render
+                                      ? headCell.render(row)
+                                      : row[headCell.id]}
+                                  </td>
+                                );
+                              })}
+                            </tr>
+                          );
+                          // } else {
+                          //   return null; // Skip rendering rows that don't meet the condition
+                          // }
                         })
                       : props.data.map((row, idx) => {
-                          if (idx >= props.start && idx <= props.end) {
-                            return (
-                              <tr key={"tr_" + idx}>
-                                {props.headCells.map((headCell, idxx) => {
-                                  return (
-                                    <td key={"td_" + idx + "_" + idxx}>
-                                      {headCell.render
-                                        ? headCell.render(row)
-                                        : row[headCell.id]}
-                                    </td>
-                                  );
-                                })}
-                              </tr>
-                            );
-                          } else {
-                            return null; // Skip rendering rows that don't meet the condition
-                          }
+                          // if (idx >= props.start && idx <= props.end) {
+                          return (
+                            <tr key={"tr_" + idx}>
+                              {props.headCells.map((headCell, idxx) => {
+                                return (
+                                  <td key={"td_" + idx + "_" + idxx}>
+                                    {headCell.render
+                                      ? headCell.render(row)
+                                      : row[headCell.id]}
+                                  </td>
+                                );
+                              })}
+                            </tr>
+                          );
+                          // } else {
+                          //   return null; // Skip rendering rows that don't meet the condition
+                          // }
                         })}
                   </tbody>
                 </table>
@@ -405,29 +413,29 @@ function SmartTable(props) {
                 className="smartTable-noDataFound col-12"
                 style={{ marginTop: "110px", marginBottom: "40px" }}
               >
-                 {props.dataFetched && props.properties.length === 0 ? (
-                
-                showNoData ? 
-                <h3>No Data Found</h3>
-                :
-                <div className="ring">
-                  Loading
-                  <span className="load"></span>
-                </div>
-              ) : (
-                <div className="ring">
-                  Loading
-                  <span className="load"></span>
-                </div>
-              )}
+                {props.dataFetched && props.properties.length === 0 ? (
+                  showNoData ? (
+                    <h3>No Data Found</h3>
+                  ) : (
+                    <div className="ring">
+                      Loading
+                      <span className="load"></span>
+                    </div>
+                  )
+                ) : (
+                  <div className="ring">
+                    Loading
+                    <span className="load"></span>
+                  </div>
+                )}
               </div>
             </div>
           )}
           {props.noPagination || data.length === 0 || !props.url ? (
             <div className="row">
-              {/* <div className="col-12 text-end p-3">
+              <div className="col-12 text-end p-3">
                 {props.data.length > 0 ? props.data.length : 0} Rows
-              </div> */}
+              </div>
             </div>
           ) : (
             <div className="row">

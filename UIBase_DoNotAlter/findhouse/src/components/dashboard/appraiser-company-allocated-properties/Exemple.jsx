@@ -12,7 +12,7 @@ import { FaArchive } from "react-icons/fa";
 
 const headCells = [
   {
-    id: "orderId",
+    id: "order_id",
     numeric: false,
     label: "Order ID",
     width: 100,
@@ -147,6 +147,7 @@ export default function Exemple({
   setErrorMessage,
   setModalIsOpenError,
   setRefresh,
+  setGeneratedProps,
   setAssignedProp,
   setAllBrokers,
   setStartLoading,
@@ -314,7 +315,7 @@ export default function Exemple({
   };
 
   const sortObjectsByOrderIdDescending = (data) => {
-    return data.sort((a, b) => b.orderId - a.orderId);
+    return data.sort((a, b) => b.order_id - a.order_id);
   };
 
   const [isBroker, setIsBroker] = useState(-1);
@@ -360,10 +361,10 @@ export default function Exemple({
         const property = getPropertyInfo(propertyDetail?.propertyid);
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
-        //console.log("isBidded",isBidded)
+        console.log("isBidded",isBidded,property)
         const isWait = property?.isOnHold || property?.isOnCancel;
         const updatedRow = {
-          orderId: property?.orderId,
+          order_id: property?.orderId,
           address: property?.city
             ? `${property?.city}-${property?.province},${property?.zipCode}`
             : "-",
@@ -604,9 +605,9 @@ export default function Exemple({
       })
       .then((res) => {
         setDataFetched(true)
-        const temp2 = res.data.data.properties.$values;
+        const propertyInfo = res.data.data.properties.$values;
 
-        setAllProperties(temp2);
+        
 
         axios
           .get("/api/getAllAssignProperties", {
@@ -624,7 +625,17 @@ export default function Exemple({
             const temp = res.data.data.$values;
 
             
-            setProperties(temp);
+            let assignedProps = [];
+            temp.map((prop,index)=>{
+              propertyInfo.map((assProp,idx)=>{
+                if(String(prop.propertyid) === String(assProp.$id)){
+                  assignedProps.push(assProp)
+                }
+              })
+            });
+
+            setGeneratedProps(assignedProps)
+            
 
             let tempBids = [];
             axios
@@ -646,6 +657,8 @@ export default function Exemple({
                 });
                 console.log("bids", updatedBids.length);
                 setBids(updatedBids);
+                setAllProperties(propertyInfo);
+                setProperties(temp);
                 axios
                   .get("/api/appraiserWishlistedProperties", {
                     headers: {
@@ -666,6 +679,7 @@ export default function Exemple({
                     });
                     const tempId = responseData;
                     setWishlist(responseData);
+                   
                   })
                   .catch((err) => {
                     toast.error(err?.response);

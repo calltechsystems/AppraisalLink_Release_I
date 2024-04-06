@@ -192,8 +192,8 @@ export const AppraiserStatusOptions = [
 
   {
     id: 5,
-    type: "Assignment Cancelled new status to be added",
-    value: "Assignment Cancelled new status to be added",
+    type: "Assignment Cancelled",
+    value: "Assignment Cancelled",
   },
 
 ];

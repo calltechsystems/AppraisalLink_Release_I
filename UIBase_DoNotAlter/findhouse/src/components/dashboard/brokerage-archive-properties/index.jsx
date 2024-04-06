@@ -24,7 +24,7 @@ const Index = () => {
   const [property, setProperty] = useState("");
   const [allArchive, setAllArchive] = useState([]);
   const [filterProperty, setFilterProperty] = useState("");
-  const [filterQuery, setFilterQuery] = useState("Last 30 Days");
+  const [filterQuery, setFilterQuery] = useState("All");
   const [properties, setProperties] = useState([]);
   const [disable, setdisable] = useState(false);
   // const user = JSON.parse(localStorage.getItem("user"));
@@ -98,6 +98,7 @@ const Index = () => {
   };
 
   useEffect(() => {
+    setRefresh(true);
     const filterProperties = (propertys, searchInput) => {
       if (searchInput === "") {
         return propertys;
@@ -106,21 +107,27 @@ const Index = () => {
         // Convert the search input to lowercase for a case-insensitive search
         const searchTerm = searchInput.toLowerCase();
 
-        console.log("propertyy",property)
+        console.log("propertyy", property);
         if (String(property.orderId) === String(searchTerm)) {
           return true;
         }
         // Check if any of the fields contain the search term
         else
           return (
-            String(property.property?.orderId).toLowerCase().includes(searchTerm) ||
+            String(property.property?.orderId)
+              .toLowerCase()
+              .includes(searchTerm) ||
             property.property?.zipCode?.toLowerCase().includes(searchTerm) ||
             property.property?.area?.toLowerCase().includes(searchTerm) ||
             property.property?.city?.toLowerCase().includes(searchTerm) ||
             property.property?.province?.toLowerCase().includes(searchTerm) ||
             property.property?.streetName?.toLowerCase().includes(searchTerm) ||
-            property.property?.streetNumber?.toLowerCase().includes(searchTerm) ||
-            property.property?.typeOfBuilding?.toLowerCase().includes(searchTerm)
+            property.property?.streetNumber
+              ?.toLowerCase()
+              .includes(searchTerm) ||
+            property.property?.typeOfBuilding
+              ?.toLowerCase()
+              .includes(searchTerm)
           );
       });
 
@@ -129,26 +136,41 @@ const Index = () => {
     const filteredData = filterProperties(properties, searchInput);
     setFilterProperty(filteredData);
   }, [searchInput]);
-  
+
+  const calculate = (searchDate, diff) => {
+    const newDateObj = new Date(searchDate.addedDatetime);
+    const currentObj = new Date();
+
+    const getMonthsFDiff = currentObj.getMonth() - newDateObj.getMonth();
+    const gettingDiff = currentObj.getDate() - newDateObj.getDate();
+    const gettingYearDiff = currentObj.getFullYear() - newDateObj.getFullYear();
+
+    const estimatedDiff =
+      gettingDiff + getMonthsFDiff * 30 + gettingYearDiff * 365;
+
+    console.log("dayss", diff, newDateObj.getDate(), currentObj.getDate());
+    return estimatedDiff <= diff;
+  };
+
   const filterData = (tempData) => {
     const currentDate = new Date();
     const oneYearAgo = new Date(currentDate);
     oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
-  
+
     switch (filterQuery) {
+      case "Last 7 days":
+        const sevenDaysAgo = new Date(currentDate);
+        sevenDaysAgo.setDate(currentDate.getDate() - 7);
+        return tempData.filter((item) => calculate(item, 7));
       case "Last 30 Days":
         const thirtyDaysAgo = new Date(currentDate);
         thirtyDaysAgo.setDate(currentDate.getDate() - 30);
-        return tempData.filter(
-          (item) => new Date(item.addedDatetime) >= thirtyDaysAgo
-        );
+        return tempData.filter((item) => calculate(item, 30));
       case "Last 3 Month":
         const threeMonthsAgo = new Date(currentDate);
         threeMonthsAgo.setMonth(currentDate.getMonth() - 3);
-        return tempData.filter(
-          (item) => new Date(item.addedDatetime) >= threeMonthsAgo
-        );
-      
+        return tempData.filter((item) => calculate(item, 90));
+
       default:
         return tempData; // Return all data if no valid timeFrame is specified
     }
@@ -158,6 +180,8 @@ const Index = () => {
 
   const onHoldHandler = () => {
     setdisable(true);
+    setModalOpen(false);
+
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -169,13 +193,13 @@ const Index = () => {
 
     const encryptedBody = encryptionData(payload);
 
-    toast.loading("Turning the property status !");
+    toast.loading("Turning the property status.....");
     axios
       .put("/api/setPropertyOnHold", encryptedBody)
       .then((res) => {
         toast.dismiss();
         setIsHoldProperty(false);
-        toast.success("Successfully added status!");
+        toast.success("Successfully Changed the Order Status !");
         window.location.reload();
       })
       .catch((err) => {
@@ -189,6 +213,8 @@ const Index = () => {
 
   const onCancelHandler = () => {
     setdisable(true);
+    setModalOpen(false);
+
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -205,7 +231,7 @@ const Index = () => {
       .put("/api/setPropertyOnHold", encryptedBody)
       .then((res) => {
         toast.dismiss();
-        toast.success("Successfully added status!");
+        toast.success("Successfully Changed the Order Status !");
         setIsCancelProperty(false);
         window.location.reload();
       })
@@ -219,7 +245,8 @@ const Index = () => {
 
   useEffect(() => {
     const tmpData = filterData(properties);
-    setProperties(tmpData);
+    console.log("filterQuery", filterQuery, tmpData, tmpData.length);
+    setFilterProperty(tmpData);
   }, [filterQuery]);
 
   const handleDelete = () => {
@@ -353,7 +380,9 @@ const Index = () => {
                           start={start}
                           end={end}
                           properties={
-                            searchInput === "" ? properties : filterProperty
+                            searchInput === "" && filterQuery === "All"
+                              ? properties
+                              : filterProperty
                           }
                           setAllArchive={setAllArchive}
                           setModalIsOpenError={setModalIsOpenError}

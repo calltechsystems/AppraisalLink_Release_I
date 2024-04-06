@@ -80,6 +80,8 @@ import { CldUploadWidget } from "next-cloudinary";
 // export default DetailedInfo;
 
 import CheckBoxFilter from "../../common/CheckBoxFilter";
+import toast from "react-hot-toast";
+import axios from "axios";
 const DetailedInfo = ({
   onCancelHandler,
   isDisable,
@@ -136,22 +138,39 @@ const DetailedInfo = ({
     console.log("Number of selected images:", images.length);
   };
 
-  const handleUpload = (result) => {
-    try {
-      const fileUrl = result.info.secure_url;
-      console.log("File uploaded:", fileUrl);
+  const handleUpload = (e) => {
+    const file = e.target.files[0];
+    const userData = JSON.parse(localStorage.getItem("user"));
 
-      let olderUrl = filesUrl;
-      olderUrl.push(fileUrl);
-      console.log(olderUrl);
-      setFilesUrl(olderUrl);
+    const BACKEND_DOMAIN = process.env.BACKEND_DOMAIN;
+    const formdata = {
+      file: file,
+    };
 
-      // console.log(changeUrlToStringHandler());
+    toast.dismiss("Uploading !!!");
+    axios
+      .post(`${BACKEND_DOMAIN}/FileUpload/fileupload`, formdata, {
+        headers: {
+          Authorization: `Bearer ${userData?.token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        toast.dismiss();
+        toast.success("Uploaded Successfully !");
+        const image = res.data;
 
-      setAttachment(fileUrl);
-    } catch (error) {
-      console.error("Error handling upload:", error);
-    }
+        const imageUrl = image.split("! Access it at: ")[1];
+        let olderUrl = filesUrl;
+        olderUrl.push(imageUrl);
+        setFilesUrl(olderUrl);
+        setAttachment(imageUrl);
+      })
+      .catch((err) => {
+        toast.dismiss();
+        console.log(err);
+        toast.error("Try Again !!");
+      });
   };
 
   const errorLabelStyle = { borderColor: "red" };
@@ -182,7 +201,7 @@ const DetailedInfo = ({
       setApplicantNumber(truncatedValue);
     }
 
-    setPhoneNumber(truncatedValue);
+    setApplicantNumber(truncatedValue);
   };
   return (
     <>
@@ -529,13 +548,14 @@ const DetailedInfo = ({
                 id="phoneNumber"
                 className="form-control"
                 name="phoneNumber"
-                value={phoneNumber}
+                value={applicantNumber}
                 onChange={handleInputChange}
                 pattern="[0-9]*"
                 maxLength="10"
                 // placeholder="Enter 10 digits"
                 title="Please enter only 10 digits"
                 required
+                disabled={isDisable}
               />
             </div>
           </div>
@@ -652,36 +672,7 @@ const DetailedInfo = ({
               </div>
               <div className="col-lg-7 mb-2">
                 <label className="upload">
-                  <CldUploadWidget
-                    onUpload={handleUpload}
-                    uploadPreset="mpbjdclg"
-                    options={{
-                      cloudName: "dcrq3m6dx", // Your Cloudinary cloud name
-                      allowedFormats: [
-                        "jpg",
-                        "png",
-                        "pdf",
-                        "csv",
-                        "word",
-                        "excel",
-                      ], // Specify allowed formats
-                      maxFiles: 50,
-                    }}
-                  >
-                    {({ open }) => (
-                      <div>
-                        <button
-                          className="btn btn-color profile_edit_button mb-5"
-                          style={{}}
-                          onClick={open} // This will open the upload widget
-                          disabled={isDisable}
-                          // disabled={buttonDisabled}
-                        >
-                          Upload Files
-                        </button>
-                      </div>
-                    )}
-                  </CldUploadWidget>
+                  <input type="file" onChange={(e) => handleUpload(e)} />
                 </label>
               </div>
             </div>

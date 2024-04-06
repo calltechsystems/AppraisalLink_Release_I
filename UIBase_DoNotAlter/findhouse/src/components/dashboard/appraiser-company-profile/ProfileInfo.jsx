@@ -16,9 +16,16 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   const router = useRouter();
 
   const [selectedImage2, setSelectedImage2] = useState({
-    name: "uploaded_file.pdf",
-    url: userData?.appraiser_Details?.lenderListUrl || "",
+    name:
+      userData?.appraiserCompany_Datails?.lenderListUrl !== null
+        ? "uploaded file"
+        : "",
+    url:
+      userData?.appraiserCompany_Datails?.lenderListUrl !== null
+        ? userData?.appraiserCompany_Datails?.lenderListUrl
+        : "",
   });
+
   const [SelectedImage, setSelectedImage] = useState(
     userData?.appraiserCompany_Datails?.profileImage ||
       "/assets/images/home/placeholder_01.jpg"
@@ -161,7 +168,46 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   };
 
   const onUpdatHandler = () => {
+    const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
+    const cellNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
+    const nameRegex = /^[A-Za-z]+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex for email validation
+
     if (
+      nameRegex.test(firstNameRef) === false ||
+      nameRegex.test(lastNameRef) === false
+    ) {
+      toast.error("Primary Contact Name should be valid ");
+    } else if (
+      (officeContactFirstName.trim() !== "" &&
+        !nameRegex.test(officeContactFirstName)) ||
+      (officeContactLastName.trim() !== "" &&
+        !nameRegex.test(officeContactLastName))
+    ) {
+      toast.error("Applicant Name should be valid ");
+    } else if (
+      phoneNumberRegex.test(phoneNumberRef) === false ||
+      !phoneNumberRef
+    ) {
+      toast.error("Enter a Valid Phone Number Please");
+    } else if (
+      cellNumberRegex.test(cellNumber) === false &&
+      cellNumber.trim() !== ""
+    ) {
+      toast.error("Enter a Valid Cell Number Please");
+    } else if (
+      cellNumberRegex.test(officeContactPhone) === false &&
+      officeContactPhone.trim() !== ""
+    ) {
+      toast.error("Enter a Valid Office Phone Number Please");
+    } else if (emailRegex.test(emailId) === false) {
+      toast.error("Enter a Valid Email Address Please");
+    } else if (
+      emailRegex.test(officeContactEmail) === false &&
+      officeContactEmail.trim() !== ""
+    ) {
+      toast.error("Enter a Valid Office Email Address Please");
+    } else if (
       (!firstNameRef ||
         !lastNameRef ||
         !companyNameRef ||
@@ -205,6 +251,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         streetNumber: streetNumber,
         streetName: streetName,
         apartmentNumber: apartmentNumber,
+        profileImage: SelectedImage,
       };
 
       if (
@@ -215,7 +262,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         !payload.emailId ||
         !payload.licenseNumber ||
         // !payload.mortgageBrokerageLicNo ||
-        // !payload.lenderListUrl ||
+        !payload.lenderListUrl ||
         !payload.streetName ||
         !payload.streetNumber ||
         !payload.city ||
@@ -263,7 +310,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
 
     toast.dismiss("Uploading !!!");
     axios
-      .post(`${BACKEND_DOMAIN}/FileUpload/upload`, formdata, {
+      .post(`${BACKEND_DOMAIN}/FileUpload/fileupload`, formdata, {
         headers: {
           Authorization: `Bearer ${userData?.token}`,
           "Content-Type": "multipart/form-data",
@@ -272,7 +319,17 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
       .then((res) => {
         toast.dismiss();
         toast.success("Uploaded Successfully !");
-        console.log(res);
+        const image = res.data;
+
+        const imageUrl = image.split("! Access it at: ")[1];
+        if (String(type) === "1") {
+          setSelectedImage(imageUrl);
+        } else {
+          setSelectedImage2({
+            name: file.name,
+            url: imageUrl,
+          });
+        }
       })
       .catch((err) => {
         toast.dismiss();
@@ -330,12 +387,13 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     console.log(url);
   };
 
+  console.log("selectedImage2", selectedImage2);
   return (
     <>
       <div className="row">
         {/* <h4 className="mb-3">Personal Information</h4> */}
         <div className="col-lg-12"></div>
-        {!edit && (
+        {/* {!edit && (
           <div>
             <button
               className="btn btn2 btn-color profile_edit_button"
@@ -349,11 +407,11 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
               ></span>
             </button>
           </div>
-        )}
+        )} */}
         <div className="col-lg-12 col-xl-12 mt-2">
           <div className="my_profile_setting_input form-group">
             <div className="row">
-              <div className="col-lg-3 text-center">
+              <div className="col-lg-3 text-center mb-5">
                 <div className="wrap-custom-file">
                   <img
                     style={{ borderRadius: "50%" }}
@@ -361,11 +419,35 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                     alt="Uploaded Image"
                   />
                   {edit && (
-                    <input
-                      type="file"
-                      onChange={(e) => handleFileChange(e, 1)}
-                    />
+                    <div className="">
+                      <input
+                        type="file"
+                        onChange={(e) => handleFileChange(e, 1)}
+                      />
+                    </div>
                   )}
+                  {/*edit && (
+                    <CldUploadWidget
+                      onUpload={handleUpload}
+                      uploadPreset="mpbjdclg"
+                      options={{
+                        cloudName: "dcrq3m6dx", // Your Cloudinary upload preset
+                        maxFiles: 1,
+                      }}
+                    >
+                      {({ open }) => (
+                        <div>
+                          <button
+                            className="btn btn-color profile_edit_button mb-5"
+                            style={{}}
+                            onClick={open} // This will open the upload widget
+                          >
+                            Upload Photo
+                          </button>
+                        </div>
+                      )}
+                    </CldUploadWidget>
+                      )*/}
                 </div>
               </div>
               <div className="col-lg-9">
@@ -596,7 +678,12 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       <Link
                         target="_blank"
                         rel="noopener noreferrer"
-                        href={selectedImage2.url}
+                        href={
+                          selectedImage2.url !== null ||
+                          selectedImage2.url !== "undefined"
+                            ? selectedImage2.url
+                            : ""
+                        }
                       >
                         {selectedImage2.name}
                       </Link>

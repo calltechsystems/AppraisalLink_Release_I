@@ -13,7 +13,7 @@ import millify from "millify";
 
 const headCells = [
   {
-    id: "orderId",
+    id: "order_id",
     numeric: false,
     label: "Order ID",
     width: 100,
@@ -312,7 +312,7 @@ export default function Exemple({
   };
 
   const sortObjectsByOrderIdDescending = (data) => {
-    return data.sort((a, b) => b.orderId - a.orderId);
+    return data.sort((a, b) => b.order_id - a.order_id);
   };
 
   const checkData = properties && !updatedData ? true : false;
@@ -332,7 +332,7 @@ export default function Exemple({
         if (isBidded.$id) {
           const isWait = property.isOnHold || property.isOnCancel;
           const updatedRow = {
-            orderId: property.orderId,
+            order_id: property.orderId,
             address: `${property.city}-${property.province},${property.zipCode}`,
             estimatedValue: property.estimatedValue
               ? `$ ${formatLargeNumber(property.estimatedValue)}`
@@ -639,7 +639,9 @@ export default function Exemple({
     setStartLoading(true);
   };
   useEffect(() => {
-    console.log("inside");
+    setProperties([])
+    setBids([])
+    setWishlist([])
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {

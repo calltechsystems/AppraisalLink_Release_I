@@ -373,7 +373,8 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       >
                         {userData?.broker_Details?.cellNumber
                           ? userData?.broker_Details?.cellNumber
-                          : "Not Provided"}
+                          : "Not Provided"
+                          }
                       </td>
                     </tr>
                     <tr>

@@ -5,7 +5,13 @@ import Image from "next/image";
 import { useEffect } from "react";
 import { func } from "prop-types";
 
-const HeaderMenuContent = ({ float = "" ,hide, setProfileCount , profileCount , userInfo  }) => {
+const HeaderMenuContent = ({
+  float = "",
+  hide,
+  setProfileCount,
+  profileCount,
+  userInfo,
+}) => {
   const route = useRouter();
 
   const home = [
@@ -528,7 +534,7 @@ const HeaderMenuContent = ({ float = "" ,hide, setProfileCount , profileCount , 
             />
             <span className="dn-1199 ms-1 text-light">
               {userInfo?.broker_Details?.firstName
-                ? userInfo.broker_Details?.firstName
+                ? `${userInfo.broker_Details?.firstName} ${userInfo?.broker_Details?.lastName}`
                 : `XYZ`}
             </span>
           </a>

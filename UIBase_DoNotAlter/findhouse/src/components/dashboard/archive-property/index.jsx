@@ -96,13 +96,14 @@ const Index = () => {
     setModalOpen(false);
   };
 
+
   useEffect(() => {
-    setRefresh(true);
     const filterProperties = (propertys, searchInput) => {
       if (searchInput === "") {
         return propertys;
       }
       const filteredProperties = propertys.filter((property) => {
+       
         // Convert the search input to lowercase for a case-insensitive search
         const searchTerm = searchInput.toLowerCase();
 
@@ -112,13 +113,14 @@ const Index = () => {
         // Check if any of the fields contain the search term
         else
           return (
-            property.zipCode.toLowerCase().includes(searchTerm) ||
-            property.area.toLowerCase().includes(searchTerm) ||
-            property.city.toLowerCase().includes(searchTerm) ||
-            property.province.toLowerCase().includes(searchTerm) ||
-            property.streetName.toLowerCase().includes(searchTerm) ||
-            property.streetNumber.toLowerCase().includes(searchTerm) ||
-            property.typeOfBuilding.toLowerCase().includes(searchTerm)
+            String(property.property.orderId).toLowerCase().includes(searchTerm) ||
+            property.property.zipCode?.toLowerCase().includes(searchTerm) ||
+            property.property.area?.toLowerCase().includes(searchTerm) ||
+            property.property.city?.toLowerCase().includes(searchTerm) ||
+            property.property.province?.toLowerCase().includes(searchTerm) ||
+            property.property.streetName?.toLowerCase().includes(searchTerm) ||
+            property.property.streetNumber?.toLowerCase().includes(searchTerm) ||
+            property.property.typeOfBuilding?.toLowerCase().includes(searchTerm)
           );
       });
 
@@ -128,43 +130,58 @@ const Index = () => {
     setFilterProperty(filteredData);
   }, [searchInput]);
 
+  const calculate= (searchDate,diff)=>{
+    const newDateObj = new Date(searchDate.addedDatetime);
+    const currentObj = new Date();
+
+    const getMonthsFDiff = currentObj.getMonth() - newDateObj.getMonth();
+    const gettingDiff = currentObj.getDate() - newDateObj.getDate();
+    const gettingYearDiff = currentObj.getFullYear() - newDateObj.getFullYear();
+
+    const estimatedDiff = gettingDiff + (getMonthsFDiff * 30) + (gettingYearDiff * 365);
+
+    console.log("dayss",diff,newDateObj.getDate(),currentObj.getDate());
+    return estimatedDiff  <= diff ;
+  }
+
+
   const filterData = (tempData) => {
     const currentDate = new Date();
     const oneYearAgo = new Date(currentDate);
     oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
 
     switch (filterQuery) {
+      case "Last 7 days":
+        const sevenDaysAgo = new Date(currentDate);
+        sevenDaysAgo.setDate(currentDate.getDate() - 7);
+        return tempData.filter(
+          (item) => calculate(item,7)
+        );
       case "Last 30 Days":
         const thirtyDaysAgo = new Date(currentDate);
         thirtyDaysAgo.setDate(currentDate.getDate() - 30);
         return tempData.filter(
-          (item) => new Date(item.addedDatetime) >= thirtyDaysAgo
+          (item) => calculate(item,30)
         );
-      case "Last 1 month":
-        const oneMonthAgo = new Date(currentDate);
-        oneMonthAgo.setMonth(currentDate.getMonth() - 1);
+      case "Last 3 Month":
+        const threeMonthsAgo = new Date(currentDate);
+        threeMonthsAgo.setMonth(currentDate.getMonth() - 3);
         return tempData.filter(
-          (item) => new Date(item.addedDatetime) >= oneMonthAgo
+          (item) => calculate(item,90)
         );
-      case "Last 6 months":
-        const sixMonthsAgo = new Date(currentDate);
-        sixMonthsAgo.setMonth(currentDate.getMonth() - 6);
-        return tempData.filter(
-          (item) => new Date(item.addedDatetime) >= sixMonthsAgo
-        );
-      case "Last 1 year":
-        return tempData.filter(
-          (item) => new Date(item.addedDatetime) >= oneYearAgo
-        );
+
       default:
         return tempData; // Return all data if no valid timeFrame is specified
     }
   };
 
+
   const [propValue, setPropValue] = useState({});
 
   const onHoldHandler = () => {
     setdisable(true);
+    setModalOpen(false);
+
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -176,13 +193,13 @@ const Index = () => {
 
     const encryptedBody = encryptionData(payload);
 
-    toast.loading("Turning the Property Status !");
+    toast.loading("Turning the Property Status.....");
     axios
       .put("/api/setPropertyOnHold", encryptedBody)
       .then((res) => {
         toast.dismiss();
         setIsHoldProperty(false);
-        toast.success("Successfully Added Status!");
+        toast.success("Successfully Changed the Order Status !");
         window.location.reload();
       })
       .catch((err) => {
@@ -196,6 +213,8 @@ const Index = () => {
 
   const onCancelHandler = () => {
     setdisable(true);
+    setModalOpen(false);
+
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -212,7 +231,7 @@ const Index = () => {
       .put("/api/setPropertyOnHold", encryptedBody)
       .then((res) => {
         toast.dismiss();
-        toast.success("Successfully Added Status!");
+        toast.success("Successfully Changed the Order Status !");
         setIsCancelProperty(false);
         window.location.reload();
       })
@@ -232,7 +251,7 @@ const Index = () => {
 
   useEffect(() => {
     const tmpData = filterData(properties);
-    setProperties(tmpData);
+    setFilterProperty(tmpData);
   }, [filterQuery]);
 
   const handleDelete = () => {

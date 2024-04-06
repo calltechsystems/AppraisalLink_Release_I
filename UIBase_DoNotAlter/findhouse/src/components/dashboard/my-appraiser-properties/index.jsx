@@ -31,7 +31,7 @@ const Index = () => {
   const [startLoading, setStartLoading] = useState(false);
   const [filterProperty, setFilterProperty] = useState("");
   const [showPropDetails, setShowPropDetails] = useState(false);
-  const [filterQuery, setFilterQuery] = useState("Last 30 Days");
+  const [filterQuery, setFilterQuery] = useState("All");
   const [searchQuery, setSearchQuery] = useState("city");
   const [properties, setProperties] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
@@ -274,29 +274,50 @@ const Index = () => {
     setFilterProperty(filteredData);
   }, [searchInput]);
   
+  const calculate = (searchDate, diff) => {
+    const newDateObj = new Date(searchDate.addedDatetime);
+    const currentObj = new Date();
+
+    const getMonthsFDiff = currentObj.getMonth() - newDateObj.getMonth();
+    const gettingDiff = currentObj.getDate() - newDateObj.getDate();
+    const gettingYearDiff = currentObj.getFullYear() - newDateObj.getFullYear();
+
+    const estimatedDiff =
+      gettingDiff + getMonthsFDiff * 30 + gettingYearDiff * 365;
+
+    console.log("dayss", diff, newDateObj.getDate(), currentObj.getDate());
+    return estimatedDiff <= diff;
+  };
+
   const filterData = (tempData) => {
     const currentDate = new Date();
     const oneYearAgo = new Date(currentDate);
     oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
-  
+
     switch (filterQuery) {
+      case "Last 7 days":
+        const sevenDaysAgo = new Date(currentDate);
+        sevenDaysAgo.setDate(currentDate.getDate() - 7);
+        return tempData.filter((item) => calculate(item, 7));
       case "Last 30 Days":
         const thirtyDaysAgo = new Date(currentDate);
         thirtyDaysAgo.setDate(currentDate.getDate() - 30);
-        return tempData.filter(
-          (item) => new Date(item.addedDatetime) >= thirtyDaysAgo
-        );
+        return tempData.filter((item) => calculate(item, 30));
       case "Last 3 Month":
         const threeMonthsAgo = new Date(currentDate);
         threeMonthsAgo.setMonth(currentDate.getMonth() - 3);
-        return tempData.filter(
-          (item) => new Date(item.addedDatetime) >= threeMonthsAgo
-        );
-      
+        return tempData.filter((item) => calculate(item, 90));
+
       default:
         return tempData; // Return all data if no valid timeFrame is specified
     }
   };
+
+  useEffect(() => {
+    const tmpData = filterData(properties);
+    console.log("filterQuery", filterQuery, tmpData, tmpData.length);
+    setFilterProperty(tmpData);
+  }, [filterQuery]);
 
 
   const onArchivePropertyHandler = (propertyId) => {
@@ -329,11 +350,6 @@ const Index = () => {
         toast.error(err);
       });
   };
-
-  useEffect(() => {
-    const tmpData = filterData(properties);
-    setProperties(tmpData);
-  }, [filterQuery]);
 
   const handleDelete = () => {
     const data = JSON.parse(localStorage.getItem("user"));
@@ -719,7 +735,7 @@ const Index = () => {
                           setAssignPropertyId={setAssignPropertyId}
                           onArchivePropertyHandler={onArchivePropertyHandler}
                           properties={
-                            searchInput === "" ? properties : filterProperty
+                            searchInput === "" && filterQuery === "All" ? properties : filterProperty
                           }
                           setCurrentBid={setCurrentBid}
                           setUpdatedCode={setUpdatedCode}
@@ -1925,7 +1941,7 @@ const Index = () => {
             </div>
             {/* End .row */}
 
-            <div className="row">
+            {/* <div className="row">
               <div className="col-lg-12 mt20">
                 <div className="mbp_pagination">
                   <Pagination
@@ -1935,7 +1951,7 @@ const Index = () => {
                   />
                 </div>
               </div>
-            </div>
+            </div> */}
 
             <div className="row mt50">
               <div className="col-lg-12">

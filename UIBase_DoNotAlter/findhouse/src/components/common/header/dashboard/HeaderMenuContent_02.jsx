@@ -3,7 +3,14 @@ import { useRouter } from "next/router";
 import MyAccount from "./MyAccount_01";
 import Image from "next/image";
 
-const HeaderMenuContent = ({ float = "", hide, userData,  setProfileCount , profileCount , userInfo }) => {
+const HeaderMenuContent = ({
+  float = "",
+  hide,
+  userData,
+  setProfileCount,
+  profileCount,
+  userInfo,
+}) => {
   const route = useRouter();
 
   // console.log(userData);
@@ -513,51 +520,63 @@ const HeaderMenuContent = ({ float = "", hide, userData,  setProfileCount , prof
       </li> */}
 
       <li className="user_setting">
-        {userData?.userType === 3 || userData?.userType === 5? <div className="">
-          <a className="btn dropdown-toggle" href="#" data-bs-toggle="dropdown">
-            <Image
-              width={45}
-              height={45}
-              className="rounded-circle"
-              src={userInfo?.appraiser_Details?.profileImage
-                ? userInfo?.appraiser_Details?.profileImage
-                : `/assets/images/home/placeholder_01.jpg`
-            }
-              alt="e1.png"
-            />
-            <span className="dn-1199 ms-1 text-light">
-              {userData?.appraiser_Details?.firstName
-                ? `${userData.appraiser_Details?.firstName} ${userData?.appraiser_Details?.lastName}`
-                : "xyz"}
-            </span>
-          </a>
-          <div className="dropdown-menu">
-            <MyAccount userData={userData} />
+        {userData?.userType === 3 || userData?.userType === 5 ? (
+          <div className="">
+            <a
+              className="btn dropdown-toggle"
+              href="#"
+              data-bs-toggle="dropdown"
+            >
+              <Image
+                width={45}
+                height={45}
+                className="rounded-circle"
+                src={
+                  userData?.appraiser_Details?.profileImage
+                    ? userData?.appraiser_Details?.profileImage
+                    : `/assets/images/home/placeholder_01.jpg`
+                }
+                alt="e1.png"
+              />
+              <span className="dn-1199 ms-1 text-light">
+                {userData?.appraiser_Details?.firstName
+                  ? `${userData.appraiser_Details?.firstName} ${userData?.appraiser_Details?.lastName}`
+                  : "xyz"}
+              </span>
+            </a>
+            <div className="dropdown-menu">
+              <MyAccount userData={userData} />
+            </div>
           </div>
-        </div>
-        :
-        <div className="">
-          <a className="btn dropdown-toggle" href="#" data-bs-toggle="dropdown">
-            <Image
-              width={45}
-              height={45}
-              className="rounded-circle"
-              src={userInfo?.appraiserCompany_Datails?.profileImage
-                ? userInfo?.appraiserCompany_Datails?.profileImage
-                : `/assets/images/home/placeholder_01.jpg`
-            }
-              alt="e1.png"
-            />
-            <span className="dn-1199 ms-1 text-light">
-              {userData?.appraiserCompany_Datails?.firstName
-                ? `${userData.appraiserCompany_Datails?.firstName} ${userData?.appraiserCompany_Datails?.lastName}`
-                : "xyz"}
-            </span>
-          </a>
-          <div className="dropdown-menu">
-            <MyAccount userData={userData} />
+        ) : (
+          <div className="">
+            <a
+              className="btn dropdown-toggle"
+              href="#"
+              data-bs-toggle="dropdown"
+            >
+              <Image
+                width={45}
+                height={45}
+                className="rounded-circle"
+                src={
+                  userData?.appraiserCompany_Datails?.profileImage
+                    ? userData?.appraiserCompany_Datails?.profileImage
+                    : `/assets/images/home/placeholder_01.jpg`
+                }
+                alt="e1.png"
+              />
+              <span className="dn-1199 ms-1 text-light">
+                {userData?.appraiserCompany_Datails?.firstName
+                  ? `${userData.appraiserCompany_Datails?.firstName} ${userData?.appraiserCompany_Datails?.lastName}`
+                  : "xyz"}
+              </span>
+            </a>
+            <div className="dropdown-menu">
+              <MyAccount userData={userData} />
+            </div>
           </div>
-        </div>}
+        )}
       </li>
       {/* End ."user_setting */}
 

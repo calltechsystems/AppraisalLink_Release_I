@@ -157,6 +157,7 @@ export default function Exemple({
   const [updatedData, setUpdatedData] = useState([]);
   const [allBids, setBids] = useState([]);
   const [show, setShow] = useState(false);
+  const [dataFetched, setDataFetched] = useState(false);
   let tempData = [];
 
   const sortObjectsByOrderIdDescending = (data) => {
@@ -773,6 +774,7 @@ export default function Exemple({
       })
       .then((res) => {
         toast.dismiss();
+        setDataFetched(true);
         const temp = res.data.data.properties.$values;
         let tempProperties = [];
         tempProperties = temp.filter((prop, index) => {
@@ -786,6 +788,7 @@ export default function Exemple({
       })
       .catch((err) => {
         toast.dismiss();
+        setDataFetched(false);
         toast.error(err?.response?.data?.error);
       });
 
@@ -816,6 +819,8 @@ export default function Exemple({
           data={sortObjectsByOrderIdDescending(updatedData)}
           headCells={headCells}
           refreshHandler={refreshHandler}
+          properties={properties}
+          dataFetched={dataFetched}
           start={start}
           end={end}
         />

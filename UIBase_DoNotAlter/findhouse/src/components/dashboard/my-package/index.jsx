@@ -83,8 +83,7 @@ const Index = () => {
       })
       .then((res) => {
         toast.dismiss();
-        console.log(res.data.data);
-        setData(res.data.data);
+        setData(res.data.data.result.$values);
         setRerender(false);
       })
       .catch((err) => {
@@ -216,7 +215,7 @@ const Index = () => {
                       </div>
                       {/* End .packages_table */}
 
-                      <div className="col-lg-12 text-center pck_chng_btn mb100">
+                      <div className="col-lg-12 text-center pck_chng_btn mb100 mt-5">
                         <button className="btn btn-color" onClick={updatePlan}>
                           Update Subscription
                         </button>

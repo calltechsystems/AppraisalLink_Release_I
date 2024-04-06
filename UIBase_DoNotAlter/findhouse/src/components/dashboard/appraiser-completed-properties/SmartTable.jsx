@@ -76,16 +76,23 @@ function SmartTable(props) {
   }, [props.dataFetched, props.properties]);
 
 
-
   const handlePrint = async () => {
     try {
       // Fetch data
       const allData = props.properties;
-
+      
       // Open print window and set up basic structure
       const printWindow = window.open("", "_blank");
       printWindow.document.write(
-        "<html><head><title>AllBrokerProperties</title></head><body>"
+        "<html><head><title>Appraiser All Completed Properties</title></head><body>" +
+          // Add CSS styles within the <style> tag
+          "<style>" +
+          // Define your CSS styles here
+          "table { width: 100%; border-collapse: collapse; }" +
+          "th, td { border: 1px solid black; padding: 8px; }" +
+          "th { background-color:#2e008b; color:white; }" +
+          "</style>" +
+          "</head><body>"
       );
       printWindow.document.write("<h1>" + props.title + "</h1>");
       printWindow.document.write(
@@ -95,36 +102,36 @@ function SmartTable(props) {
       // Create a new table element to hold all data
       const clonedTable = document.createElement("table");
 
-      // Clone the original table header
-      const tableContainer = document.getElementById("table-container");
-      const originalTable = tableContainer.querySelector("table");
-      const originalTableHeader = originalTable
-        .querySelector("thead")
-        .cloneNode(true);
-      clonedTable.appendChild(originalTableHeader);
+      // Create table headers
+      const tableHeaderRow = document.createElement("tr");
+      const staticHeaders = [
+        ["order_id", "Order Id"],
+        ["address", "Address"],
+        ["remark", "Remark"],
+        ["date", "Submission Date"],
+        ["urgency", "Urgency"],
+        ["quote_required_by", "Quote Required By"],
+        ["purpose", "Purpose"],
+        ["type_of_appraisal", "Type Of Appraisal"],
+      ]; 
+      staticHeaders.forEach((headerText) => {
+        const th = document.createElement("th");
+        th.textContent = headerText[1];
+        tableHeaderRow.appendChild(th);
+      });
+      clonedTable.appendChild(tableHeaderRow);
 
       // Iterate over all data and append rows to the table body
       const tableBody = document.createElement("tbody");
       allData.forEach((item) => {
         const row = tableBody.insertRow();
-        Object.values(item).forEach((value) => {
+        staticHeaders.forEach((header) => {
           const cell = row.insertCell();
-          cell.textContent = value;
+          cell.textContent = item[header[0].toLowerCase()]; // Use bracket notation to access item properties dynamically
         });
       });
       clonedTable.appendChild(tableBody);
-
-      // Make the table responsive for all fields
-      const tableRows = clonedTable.querySelectorAll("tr");
-      tableRows.forEach((row) => {
-        const firstCell = row.querySelector("td:first-child");
-        if (firstCell) {
-          const columnHeading = originalTableHeader.querySelector(
-            "th:nth-child(" + (firstCell.cellIndex + 1) + ")"
-          ).innerText;
-          firstCell.setAttribute("data-th", columnHeading);
-        }
-      });
+      clonedTable.appendChild(tableBody);
 
       // Write the table to the print window
       printWindow.document.write(clonedTable.outerHTML);
@@ -245,26 +252,45 @@ function SmartTable(props) {
     }
   }, props.searchDebounceTime ?? 800);
 
+
+  const extractTextContent = (cellValue) => {
+    if (typeof cellValue === 'string') {
+      return cellValue; // If it's a string, return it as is
+    } else if (typeof cellValue === 'object' && cellValue.$$typeof) {
+      // If it's a React element, extract text content recursively from children
+      return extractTextContent(cellValue.props.children);
+    } else {
+      return String(cellValue); // Convert other types to string and return
+    }
+  };
   const sortData = (cell) => {
-    let tempData = data.length > 0 ? [...data] : [...props.data];
-
+    let tempData = props.properties;
+  
     tempData.sort((a, b) => {
-      const valueA =
-        typeof a[cell] === "string" ? a[cell].toLowerCase() : a[cell];
-      const valueB =
-        typeof b[cell] === "string" ? b[cell].toLowerCase() : b[cell];
-
+      // Extract text content from cell value (React element or other type)
+      const valueA = extractTextContent(a[cell]);
+      const valueB = extractTextContent(b[cell]);
+  
+      // Perform comparison
       if (sortDesc[cell]) {
         return valueA < valueB ? 1 : -1;
       } else {
         return valueA > valueB ? 1 : -1;
       }
     });
+  
     setSortDesc({ [cell]: !sortDesc[cell] });
-
     setData(tempData);
   };
-  console.log(data.length > 0, data);
+
+  
+  useEffect(()=>{
+    const sortObjectsByOrderIdDescending = (data) => {
+      return data.sort((a, b) => b.orderId - a.orderId);
+    };
+
+    setData(sortObjectsByOrderIdDescending(props.data))
+  },[props.data])
 
   return (
     <div className="col-12 p-1">
@@ -361,7 +387,7 @@ function SmartTable(props) {
                   <tbody>
                     {data.length > 0
                       ? data.map((row, idx) => {
-                          if (idx >= props.start && idx <= props.end) {
+                          // if (idx >= props.start && idx <= props.end) {
                             return (
                               <tr key={"tr_" + idx}>
                                 {props.headCells.map((headCell, idxx) => {
@@ -375,12 +401,12 @@ function SmartTable(props) {
                                 })}
                               </tr>
                             );
-                          } else {
-                            return null; // Skip rendering rows that don't meet the condition
-                          }
+                          // } else {
+                          //   return null; // Skip rendering rows that don't meet the condition
+                          // }
                         })
                       : props.data.map((row, idx) => {
-                          if (idx >= props.start && idx <= props.end) {
+                          // if (idx >= props.start && idx <= props.end) {
                             return (
                               <tr key={"tr_" + idx}>
                                 {props.headCells.map((headCell, idxx) => {
@@ -394,9 +420,9 @@ function SmartTable(props) {
                                 })}
                               </tr>
                             );
-                          } else {
-                            return null; // Skip rendering rows that don't meet the condition
-                          }
+                          // } else {
+                          //   return null; // Skip rendering rows that don't meet the condition
+                          // }
                         })}
                   </tbody>
                 </table>
@@ -428,9 +454,9 @@ function SmartTable(props) {
           )}
           {props.noPagination || data.length === 0 || !props.url ? (
             <div className="row">
-              {/* <div className="col-12 text-end p-3">
+              <div className="col-12 text-end p-3">
                 {props.data.length > 0 ? props.data.length : 0} Rows
-              </div> */}
+              </div>
             </div>
           ) : (
             <div className="row">

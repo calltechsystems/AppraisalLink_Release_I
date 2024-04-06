@@ -14721,7 +14721,7 @@ legend span {
   margin-right: 0 !important;
   padding-left: 20px;
   padding-right: 0;
-  width: 258px;
+  width: 348px;
 }
 
 .candidate_revew_search_box button {
@@ -16174,12 +16174,12 @@ legend span {
 
 .wrap-custom-file input[type="file"] {
   position: absolute;
-  top: 0;
+  top: 15;
   left: 0;
-  width: 2px;
-  height: 2px;
+  width: 250px;
+  height: 40px;
   overflow: hidden;
-  opacity: 0;
+  /* opacity: 0; */
 }
 
 .wrap-custom-file label {
@@ -16771,6 +16771,7 @@ legend span {
   line-height: 42px;
   text-align: center;
   width: 42px;
+  /* color: #2e008b; */
   transition: 0.3s;
 }
 
@@ -16785,7 +16786,7 @@ legend span {
 
 .contact_form_social_area li a {
   font-size: 14px;
-  color: #484848;
+  color: #2e008b;
   line-height: 1.2;
 }
 
@@ -22436,15 +22437,16 @@ input:checked + .slider:before {
 }
 
 .smartTable-tableContainer {
-  /* max-height: 83vh !important; */
+  max-height: 75vh !important;
   overflow: scroll;
+  /* overflow-y: scroll; */
   padding-right: 0 !important;
   padding-left: 0 !important;
 }
 
 .smartTable-tableContainer::-webkit-scrollbar {
   -webkit-appearance: none;
-  width: 0px;
+  width: 15px;
   height: 15px;
 }
 

@@ -13,7 +13,7 @@ import millify from "millify";
 
 const headCells = [
   {
-    id: "orderId",
+    id: "order_id",
     numeric: false,
     label: "Order ID",
     width: 100,
@@ -156,8 +156,8 @@ export default function Exemple({
   const [hideAction, setHideAction] = useState(false);
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
-  
-  const [dataFetched,setDataFetched] = useState(false)
+
+  const [dataFetched, setDataFetched] = useState(false);
   let tempData = [];
 
   const [allArchive, setAllArchive] = useState([]);
@@ -335,7 +335,7 @@ export default function Exemple({
           }
           const isWait = property.isOnHold || property.isOnCancel;
           const updatedRow = {
-            orderId: property.orderId,
+            order_id: property.orderId,
             address: `${property.city}-${property.province},${property.zipCode}`,
             estimatedValue: property.estimatedValue
               ? `$ ${formatLargeNumber(property.estimatedValue)}`
@@ -639,12 +639,12 @@ export default function Exemple({
                         title="Archive Property"
                       >
                         <div
-                          className="w-100"
+                          className=""
                           onClick={() =>
                             onArchivePropertyHandler(property.orderId)
                           }
                         >
-                          <button href="#" className="btn btn-color">
+                          <button href="#" className="btn btn-color m-1">
                             <Link href="#">
                               <span className="text-light">
                                 {" "}
@@ -677,7 +677,9 @@ export default function Exemple({
     setStartLoading(true);
   };
   useEffect(() => {
-    console.log("inside");
+    setProperties([])
+    setBids([])
+    setWishlist([])
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -696,6 +698,7 @@ export default function Exemple({
         },
       })
       .then((res) => {
+        setDataFetched(true)
         const temp = res.data.data.properties.$values;
 
         axios
@@ -743,13 +746,13 @@ export default function Exemple({
               })
 
               .catch((err) => {
-                setDataFetched(true)
+                setDataFetched(true);
                 setErrorMessage(err?.response?.data?.error);
                 setModalIsOpenError(true);
               });
           })
           .catch((err) => {
-            setDataFetched(false)
+            setDataFetched(false);
             toast.error(err?.response);
             setErrorMessage(err?.response);
             setModalIsOpenError(true);
@@ -822,6 +825,7 @@ export default function Exemple({
         setAllArchive(res.data.data.$values);
       })
       .catch((err) => {
+        setDataFetched(false)
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });

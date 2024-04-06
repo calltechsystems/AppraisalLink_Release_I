@@ -243,15 +243,15 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                             target="_blank"
                             rel="noopener noreferrer"
                             href={
-                              userData?.appraiserCompany_Datails?.lenderListUrl
-                                ? userData?.appraiserCompany_Datails
-                                    ?.lenderListUrl
-                                : "#"
+                              userData?.appraiserCompany_Datails?.lenderListUrl !== ""
+                                    ? userData?.appraiserCompany_Datails?.lenderListUrl
+                                    : ""
                             }
                             style={{ cursor: "pointer" }}
                           >
                             Lender List Pdf
                           </a>
+                          
                         </span>
                       </td>
                     </tr>
@@ -329,9 +329,13 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                         }}
                       >
                         {" "}
-                        {
+                        {/* {
                           userData?.appraiserCompany_Datails?.officeContactEmail
-                        }{" "}
+                        }{" "} */}
+                        {userData?.appraiserCompany_Datails?.officeContactEmail
+                          ? userData?.appraiserCompany_Datails
+                              ?.officeContactEmail
+                          : "Not Provided"}
                       </td>
                     </tr>
                     <tr>
@@ -353,7 +357,11 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                         }}
                       >
                         {" "}
-                        {userData?.appraiserCompany_Datails?.officeContactPhone}
+                        {/* {userData?.appraiserCompany_Datails?.officeContactPhone} */}
+                        {userData?.appraiserCompany_Datails?.officeContactPhone
+                          ? userData?.appraiserCompany_Datails
+                              ?.officeContactPhone
+                          : "Not Provided"}
                       </td>
                     </tr>
                   </tbody>

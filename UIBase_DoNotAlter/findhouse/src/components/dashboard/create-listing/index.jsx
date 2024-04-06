@@ -38,6 +38,7 @@ const Index = ({ isView, propertyData }) => {
     return resultArray;
   };
   const [errorMessage, setErrorMessage] = useState("");
+  const [refresh, setRefresh] = useState(false);
 
   const [disable, setdisable] = useState(false);
   // let userData = {};
@@ -521,15 +522,29 @@ const Index = ({ isView, propertyData }) => {
 
   const onCancelHandler = () => {
     setModalIsOpen(false);
-    window.location.reload();
+    // window.location.reload();
   };
 
   const submitHandler = () => {
+    const nameRegex = /^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$/;
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    const userInfo = JSON.parse(localStorage.getItem("user"));
+    const phoneNumberRegex = /^\d{10}$/;
+
     if (
+      (!nameRegex.test(applicantFirstName) && applicantFirstName) ||
+      (!nameRegex.test(applicantLatsName) && applicantLatsName)
+    ) {
+      toast.error("Please Provide a Valid Applicant Name");
+    } else if (!emailRegex.test(applicantEmail) && applicantEmail) {
+      toast.error("Please Provide a Valid Email Address");
+    } else if (!phoneNumberRegex.test(applicantNumber) && applicantNumber) {
+      toast.error("Please Provide a Valid Phone Number");
+    } else if (
       (String(purpose) === "Purchase" || String(purpose) === "Refinance") &&
       lenderInformation === ""
     ) {
-      toast.error("Please fill the lender Information for this purpose option");
+      toast.error("Please fill the Lender Information for this Purpose option");
     } else {
       const payload = {
         streetName: streetNameRef,
@@ -778,10 +793,22 @@ const Index = ({ isView, propertyData }) => {
             const status = err.response.request.status;
             if (String(status) === String(403)) {
               toast.dismiss();
-              // setModalIsOpenError(true);
+              setModalIsOpenError(true);
+              // toast.error(
+              //   "Can't appraise the property all properties are being used!!"
+              // );
+              // setRefresh(true);
+              // window.location.reload();
+            } else if (String(status) === String(404)) {
+              toast.dismiss();
               toast.error(
-                "Can't appraise the property all properties are being used!!"
+                "You do not have any subscription. Please get a subscription to access the full features."
               );
+              window.location.reload();
+            } else if (/^5\d{2}$/.test(String(status))) {
+              toast.dismiss();
+              toast.error("Server error occurred Try Again !! ");
+              window.location.reload();
             } else {
               toast.dismiss();
               toast.error(err.message);
@@ -1536,20 +1563,30 @@ const Index = ({ isView, propertyData }) => {
                     <h4 className="text-center mb-1" style={{ color: "red" }}>
                       Error
                     </h4>
-                    <div style={{ borderWidth: "2px", borderColor: "red" }}>
-                      <br />
-                    </div>
-                    <h5 className="text-center mb-3">{errorMessage}</h5>
+                    <div
+                      className="mt-2 mb-3"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
+                    <span className="text-center mb-2 text-dark fw-bold">
+                      {/* Can't appraise the property. All properties are being
+                      used!! */}
+                      Your all properties have been used, so you cannot add more
+                      properties.
+                    </span>
+                    <div
+                      className="mt-2 mb-3"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
                     <div
                       className="text-center"
                       style={{ display: "flex", flexDirection: "column" }}
                     >
                       <button
-                        className="btn w-35 btn-color"
+                        className="btn btn-color"
                         onClick={() => closeErrorModal()}
                         style={{}}
                       >
-                        Cancel
+                        Ok
                       </button>
                     </div>
                   </div>

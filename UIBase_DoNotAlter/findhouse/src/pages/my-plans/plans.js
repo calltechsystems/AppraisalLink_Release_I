@@ -7,7 +7,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 
-const Index = ({ setModalOpen, setPrice, modalOpen }) => {
+const Index = ({ setModalOpen,currentSubscription, setPrice, modalOpen }) => {
   const [selectedPlan, setSelectedPlan] = useState("Monthly");
   const [planData, setPlanData] = useState([]);
   const [isChecked, setIsChecked] = useState(false);
@@ -55,7 +55,7 @@ const Index = ({ setModalOpen, setPrice, modalOpen }) => {
             }
           });
 
-          const currentSubscriptionPlan = res3.data.data.$values;
+          const currentSubscriptionPlan = currentSubscription;
 
           let userInfo = JSON.parse(localStorage.getItem("user"));
           let newInfo = {
@@ -149,6 +149,7 @@ const Index = ({ setModalOpen, setPrice, modalOpen }) => {
               setModalOpen={setModalOpen}
               setPrice={setPrice}
               data={planData}
+              setData={setPlanData}
               topupData={TopUpData}
               userData={userData}
             />

@@ -13,7 +13,7 @@ import millify from "millify";
 
 const headCells = [
   {
-    id: "orderId",
+    id: "order_id",
     numeric: false,
     label: "Order ID",
     width: 100,
@@ -341,9 +341,9 @@ export default function Exemple({
   };
 
   const sortObjectsByOrderIdDescending = (data) => {
-    return data.sort((a, b) => b.orderId - a.orderId);
+    return data.sort((a, b) => b.order_id - a.order_id);
   };
-
+  
   const checkData = properties && !updatedData ? true : false;
   useEffect(() => {
     setProperties([]);
@@ -359,13 +359,13 @@ export default function Exemple({
         const isAssigned = checkInAssignedProperty(property.propertyId);
         const isArchive = foundArchiveHandler(property.propertyId);
 
-        if (!isArchive && !isAssigned) {
+        if (!isArchive) {
           if (isBidded.status === 1) {
             console.log(getOrderValue(isBidded.orderStatus));
           }
           const isWait = property.isOnHold || property.isOnCancel;
           const updatedRow = {
-            orderId: property.orderId,
+            order_id: property.orderId,
             address: `${property.city}-${property.province},${property.zipCode}`,
             estimatedValue: property.estimatedValue
               ? `$ ${formatLargeNumber(property.estimatedValue)}`
@@ -399,10 +399,7 @@ export default function Exemple({
               ) : (
                 <span className="btn btn-danger  w-100">Rejected</span>
               )
-            ) :
-            anotherBid ? (
-              <span className="btn btn-danger  w-100">Not Accepting</span>
-            )  : (
+            ) :(
               <span className="btn btn-warning  w-100">New</span>
             ),
             broker: (
@@ -590,7 +587,7 @@ export default function Exemple({
                       </li>
                     ) : isBidded.orderStatus === 3 ? (
                       <span className="btn btn-success w-100">Completed</span>
-                    ) : !alreadyAccepted && (
+                    ) :  (
                       <li
                         className="list-inline-item"
                         title="Wishlist Property"
@@ -611,7 +608,7 @@ export default function Exemple({
                       </li>
                     )}
 
-                    {(!isBidded.$id || isBidded?.status < 1) && !isWait &&   !alreadyAccepted && (
+                    {(!isBidded.$id || isBidded?.status < 1) && !isWait  && (
                       <li
                         className="list-inline-item"
                         data-toggle="tooltip"
@@ -757,7 +754,9 @@ export default function Exemple({
     setStartLoading(true);
   };
   useEffect(() => {
-    console.log("inside");
+    setProperties([])
+    setBids([])
+    setWishlist([])
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {

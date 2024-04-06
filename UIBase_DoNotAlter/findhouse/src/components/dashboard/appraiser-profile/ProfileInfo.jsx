@@ -87,7 +87,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   const [setODesignation, setSetODesignation] = useState(false);
 
   const [selectedImage2, setSelectedImage2] = useState({
-    name: "uploaded_file.pdf",
+    name: userData?.appraiser_Details?.lenderListUrl ? "Uploaded File" : "",
     url: userData?.appraiser_Details?.lenderListUrl || "",
   });
 
@@ -98,23 +98,13 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
       url: result.info.secure_url,
       name: result.info.original_filename + "." + result.info.format,
     });
-    // if (result.info.secure_url) {
-    //   setSelectedImage(result.info.secure_url);
-    //   setProfilePhoto(result.info.secure_url);
-    //   // You can also save the URL to your state or do other operations here
-    // } else {
-    //   // Handle the case when the upload failed
-    //   console.error("Image upload failed");
-    // }
   };
 
   const handleInputChange = (e) => {
     const inputValue = e.target.value;
 
-    // Allow only numeric input
     const numericValue = inputValue.replace(/\D/g, "");
 
-    // Restrict to 10 digits
     const truncatedValue = numericValue.slice(0, 10);
     if (truncatedValue.length === 10) {
       setPhoneNumberRef(truncatedValue);
@@ -126,10 +116,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   const handleInputCellChange = (e) => {
     const inputValue = e.target.value;
 
-    // Allow only numeric input
     const numericValue = inputValue.replace(/\D/g, "");
 
-    // Restrict to 10 digits
     const truncatedValue = numericValue.slice(0, 10);
     if (truncatedValue.length === 10) {
       setCellNumber(truncatedValue);
@@ -181,15 +169,25 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     const companyName = companyNameRef;
     // const emailId = emailId;
     const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
+    const cellNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const nameRegex = /^[A-Za-z]+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex for email validation
 
     if (
       nameRegex.test(firstName) === false ||
+      (middleName.trim() !== "" && nameRegex.test(middleName) === false) ||
       nameRegex.test(lastName) === false
     ) {
-      toast.error("Name should be valid ");
+      toast.error("Appraiser Name should be valid ");
     } else if (phoneNumberRegex.test(phoneNumber) === false || !phoneNumber) {
-      toast.error("enter a valid phone number please");
+      toast.error("Enter a Valid Phone Number Please");
+    } else if (
+      cellNumberRegex.test(cellNumber) === false &&
+      cellNumber.trim() !== ""
+    ) {
+      toast.error("Enter a Valid Cell Number Please");
+    } else if (emailRegex.test(emailId) === false) {
+      toast.error("Enter a Valid Email Address Please");
     } else if (
       (!firstName ||
         !lastName ||
@@ -237,8 +235,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         !payload.designation ||
         !payload.phoneNumber ||
         !payload.emailId ||
-        !payload.companyName ||
-        // !payload.lenderListUrl ||
+        // !payload.companyName ||
+        !payload.lenderListUrl ||
         !payload.streetName ||
         !payload.streetNumber ||
         !payload.city ||
@@ -342,7 +340,17 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
       .then((res) => {
         toast.dismiss();
         toast.success("Uploaded Successfully !");
-        console.log(res);
+        const image = res.data;
+
+        const imageUrl = image.split("! Access it at: ")[1];
+        if (String(type) === "1") {
+          setSelectedImage(imageUrl);
+        } else {
+          setSelectedImage2({
+            name: file.name,
+            url: imageUrl,
+          });
+        }
       })
       .catch((err) => {
         toast.dismiss();
@@ -374,7 +382,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         <div className="col-lg-12 col-xl-12 mt-2">
           <div className="my_profile_setting_input form-group">
             <div className="row">
-              <div className="col-lg-3 text-center">
+              <div className="col-lg-3 mb-5 text-center">
                 <div className="wrap-custom-file">
                   <img
                     style={{ borderRadius: "50%" }}
@@ -382,11 +390,35 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                     alt="Uploaded Image"
                   />
                   {edit && (
-                    <input
-                      type="file"
-                      onChange={(e) => handleFileChange(e, 1)}
-                    />
+                    <div className="">
+                      <input
+                        type="file"
+                        onChange={(e) => handleFileChange(e, 1)}
+                      />
+                    </div>
                   )}
+                  {/*edit && (
+                    <CldUploadWidget
+                      onUpload={handleUpload}
+                      uploadPreset="mpbjdclg"
+                      options={{
+                        cloudName: "dcrq3m6dx", // Your Cloudinary upload preset
+                        maxFiles: 1,
+                      }}
+                    >
+                      {({ open }) => (
+                        <div>
+                          <button
+                            className="btn btn-color profile_edit_button mb-5"
+                            style={{}}
+                            onClick={open} // This will open the upload widget
+                          >
+                            Upload Photo
+                          </button>
+                        </div>
+                      )}
+                    </CldUploadWidget>
+                      )*/}
                 </div>
               </div>
               <div className="col-lg-9">

@@ -284,7 +284,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                           padding: "5px",
                         }}
                       >
-                        {userData?.brokerage_Details?.assistantFirstName}
+                        {userData?.brokerage_Details?.assistantFirstName}{" "}
                         {userData?.brokerage_Details?.assistantLastName}
                       </td>
                     </tr>
@@ -352,7 +352,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                           padding: "5px",
                         }}
                       >
-                        {userData?.brokerage_Details?.assistantTwoFirstName}
+                        {userData?.brokerage_Details?.assistantTwoFirstName}{" "}
                         {userData?.brokerage_Details?.assistantTwoLastName}
                       </td>
                     </tr>

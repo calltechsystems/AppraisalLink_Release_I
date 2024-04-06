@@ -885,9 +885,8 @@ export default function Exemple({
           headCells={headCells}
           refreshHandler={refreshHandler}
           start={start}
-          
           dataFetched={dataFetched}
-          properties={properties}
+          properties={updatedData}
           end={end}
         />
       )}

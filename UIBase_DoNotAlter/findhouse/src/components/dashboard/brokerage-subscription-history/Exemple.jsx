@@ -4,28 +4,58 @@ import toast from "react-hot-toast";
 import axios from "axios";
 // import "./SmartTable.css";
 
-
 const headCells = [
   {
     id: "id",
     numeric: false,
     label: "Unique Id",
-    width: 200,
+    width: 250,
+  },
+  {
+    id: "planName",
+    numeric: false,
+    label: "Selected Plan",
+    width: 150,
   },
   {
     id: "planType",
     numeric: false,
     label: "Selected Plan",
-    width: 200,
+    width: 150,
+  },
+ 
+  {
+    id: "st_date",
+    numeric: false,
+    label: "Start Date",
+    width: 100,
   },
   {
-    id: "transactionId",
+    id: "end_date",
     numeric: false,
-    label: "Transaction Id",
-    width: 200,
+    label: "End Date",
+    width: 100,
+  },
+  {
+    id: "amount",
+    numeric: false,
+    label: "Amount",
+    width: 150,
+  },
+  {
+    id: "remained_prop",
+    numeric: false,
+    label: "Used Properties",
+    width: 150,
+  },
+  {
+    id: "status",
+    numeric: false,
+    label: "Status",
+    width: 150,
   }
 ];
-              
+
 const data = [
   {
     _id: "6144e83a966145976c75cdfe",
@@ -56,60 +86,160 @@ const data = [
   },
 ];
 
-export default function Exemple({userData , data , open ,close ,deletePropertyHandler,onWishlistHandler,participateHandler,setErrorMessage,setModalIsOpenError}) {
-  
-  
+export default function Exemple({
+  userData,
+  data,
+  open,
+  close,
+  deletePropertyHandler,
+  onWishlistHandler,
+  participateHandler,
+  setErrorMessage,
+  setModalIsOpenError,
+}) {
   console.log(data);
-  const [updatedData , setUpdatedData] = useState([]);
-  const [properties,setProperties] = useState([]);
-  const [show , setShow] = useState(false);
+  const [updatedData, setUpdatedData] = useState([]);
+  const [properties, setProperties] = useState([]);
+  const [show, setShow] = useState(false);
   let tempData = [];
 
   const formatDate = (dateString) => {
     const options = {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     };
-  
-    const formattedDate = new Date(dateString).toLocaleString('en-US', options);
-  
+
+    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
+
     return formattedDate;
   };
 
+  const prices = [
+    {
+      "lite":49,
+      "Premium":99,
+      "Ultimate":149
+    }
+  ]
+
+
+  const getTypePrice = (type)=>{
+    return prices[0].type;
+  }
+
+  const getNextDate =(date)=>{
+    return date;
+  }
+  const calculateNextYearDate = (inputDate) => {
+    const inputDateTime = new Date(inputDate);
+
+    // Calculate the next year
+    const nextYear = inputDateTime.getFullYear() + 1;
+
+    // Create a new Date object for the next year
+    const nextYearDate = new Date(nextYear, inputDateTime.getMonth(), inputDateTime.getDate());
+
+    // Format the result as a string
+    const result = nextYearDate.toISOString();
+
+    return result;
+  };
+
+
   
-  useEffect(()=>{
-    const getData = ()=>{ 
-      data.map((property,index)=>{
+  const sortObjectsByOrderIdDescending = (data) => {
+    return data.sort((a, b) => {
+      const dateA = new Date(a.st_date);
+      const dateB = new Date(b.st_date);
+      return dateB - dateA;
+    });
+  };
+
+  const NextMonthAndYearCalculator = ( inputDate ) => {
+   
+    const inputDateTime = new Date(inputDate);
+
+    // Calculate the next month and next year
+    let nextMonth = inputDateTime.getMonth() + 1;
+    let nextYear = inputDateTime.getFullYear();
+
+    if (nextMonth > 11) {
+      nextMonth = 0;
+      nextYear += 1;
+    }
+
+    // Calculate the last day of the next month
+    const lastDayOfNextMonth = new Date(nextYear, nextMonth + 1, 0).getDate();
+
+    // Set the day to the minimum of the current day and the last day of the next month
+    const nextMonthDate = new Date(nextYear, nextMonth, Math.min(inputDateTime.getDate(), lastDayOfNextMonth));
+
+    // Calculate the next year date
+    const nextYearDate = new Date(nextYear + 1, inputDateTime.getMonth(), inputDateTime.getDate());
+
+    // Format the results as strings
+    const nextMonthDateStr = nextMonthDate.toISOString().split('T')[0];
+    const nextYearDateStr = nextYearDate.toISOString().split('T')[0];
+
+    return { nextMonth: nextMonthDateStr, nextYear: nextYearDateStr };
+  };
+
+ 
+
+  useEffect(() => {
+    const getData = () => {
+      const date = formatDate(new Date());
+      
+      data?.result?.$values.map((property, index) => {
+        
+        
+        
+        const propertyCount = 26;
+        const {nextMonth,nextYear} = NextMonthAndYearCalculator(property.createdTime);
+        const endDate =property.planAmount<500 ? nextMonth : nextYear;
+        const expired = new Date(endDate) < new Date() ? true : false;
+
+        if(property.isActive){
         const updatedRow = {
-          id : property.paymentid ,
-          planType : property.transactionDetail,
-          transactionId : property.transactionId
-        }
+          id: property.paymentid,
+          planName: property.transactionDetail,
+          planType: property.planAmount<500 ? 
+          <span >Monthly</span>
+          :
+          <span >Yearly</span>,
+          amount:property.planAmount? `$ ${property.planAmount}` : '$ -',
+          st_date:formatDate(property.createdTime),
+          end_date: formatDate(endDate) ,
+          remained_prop:`${propertyCount - data.noUsedProperties} of ${propertyCount}`,
+          status:
+            expired ?
+            <span className="btn btn-danger  w-100">In-Active</span>
+            :
+            <span className="btn btn-success  w-100">Active</span>
+          
+        };
         tempData.push(updatedRow);
+      }
       });
       setUpdatedData(tempData);
     };
     getData();
-  },[data]);
+  }, [data]);
 
-  useEffect(()=>{
+  useEffect(() => {
     let tempProperties = [];
-    const data = (JSON.parse(localStorage.getItem("user")));
+    const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
-      token : userData.token
+      token: userData.token,
     };
-
-  
-  },[]);
+  }, []);
   return (
     <>
-    { updatedData && (<SmartTable
-      title=""
-      data={updatedData}
-      headCells={headCells}
-    />)}
+      {updatedData && (
+        <SmartTable title="" data={sortObjectsByOrderIdDescending(updatedData)} headCells={headCells} />
+      )}
     </>
   );
 }

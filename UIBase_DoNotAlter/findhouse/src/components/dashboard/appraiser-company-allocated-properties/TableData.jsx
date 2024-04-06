@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 const TableData = ({
   userData,
   open,
+  setGeneratedProps,
   close,
   setAssignedProp,
   setAssignedAppraiser,
@@ -301,6 +302,7 @@ const TableData = ({
           openAppraiserInfoModal={openAppraiserInfoModal}
           setRefresh={setRefresh}
           refresh={refresh}
+          setGeneratedProps={setGeneratedProps}
           setModalIsOpenError={setModalIsOpenError}
           setErrorMessage={setErrorMessage}
           deletePropertyHandler={deletePropertyHandler}

@@ -162,7 +162,7 @@ const MyAccount = ({ user, profileCount, setProfile, userData }) => {
         />
         <p>
           {userData?.brokerage_Details?.firstName
-            ? userData?.brokerage_Details?.firstName
+            ? `${userData.brokerage_Details?.firstName} ${userData?.brokerage_Details?.lastName}`
             : "Name"}
           <br />
           <span className="address">

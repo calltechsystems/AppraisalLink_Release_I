@@ -32,9 +32,9 @@ function SmartTable(props) {
           }
         );
         const data = await response.json();
-        if (data && data.data) {
-          setData(data.data.result ?? []);
-          setTotal(data.data.total, 0);
+        if (data && data?.data) {
+          setData(data?.data?.result ?? []);
+          setTotal(data?.data?.total, 0);
         }
       } catch (e) {
         console.log("Fetch error", e.message);
@@ -94,7 +94,7 @@ function SmartTable(props) {
       fetchData(buildQueryString(value, page, rowsPerPage));
     } else {
       let bool = false;
-      let tempData = props.data.filter((row) => {
+      let tempData = props.data?.filter((row) => {
         bool = false;
         Object.keys(row).forEach((key) => {
           if (row[key].toLowerCase().includes(value.toLowerCase())) bool = true;
@@ -104,11 +104,12 @@ function SmartTable(props) {
       setData(tempData);
     }
   }, props.searchDebounceTime ?? 800);
+  
 
   const sortData = (cell) => {
     let tempData = [...data];
 
-    tempData.sort((a, b) => {
+    tempdata?.sort((a, b) => {
       if (sortDesc[cell]) {
         return a[cell].toLowerCase() < b[cell].toLowerCase() ? 1 : -1;
       } else {
@@ -119,8 +120,20 @@ function SmartTable(props) {
     setData(tempData);
   };
 
+  const [showNoData, setShowNoData] = useState(false);
+
+  useEffect(() => {
+    if (props.dataFetched && props.properties.length === 0) {
+      const timer = setTimeout(() => {
+        setShowNoData(true);
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [props.dataFetched, props.properties]);
+
   return (
-    <div className="col-12 p-4">
+    <div className="col-12 p-2">
       <div className="smartTable-container row">
         <div className="col-12">
           {loading && (
@@ -139,7 +152,7 @@ function SmartTable(props) {
               />
             </div>
           </div>*/}
-          {props.data.length > 0 ? (
+          {props.data?.length > 0 ? (
             <div className="row mt-3">
               <div className="smartTable-tableContainer">
                 <table
@@ -184,7 +197,7 @@ function SmartTable(props) {
                     </tr>
                   </thead>
                   <tbody>
-                    {props.data.map((row, idx) => {
+                    {props.data?.map((row, idx) => {
                       return (
                         <tr key={"tr_" + idx}>
                           {props.headCells.map((headCell, idxx) => {
@@ -207,20 +220,31 @@ function SmartTable(props) {
             <div className="row">
               <div
                 className="smartTable-noDataFound col-12"
-                style={{ marginTop: "110px", marginBottom: "40px" }}
+                style={{ marginTop: "100px", marginBottom: "40px" }}
               >
-                <div className="ring">
-                  Loading
-                  <span className="load"></span>
-                </div>
+                {props.dataFetched && props.properties.length === 0 ? (
+                  showNoData ? (
+                    <h3>No Data Found</h3>
+                  ) : (
+                    <div className="ring">
+                      Loading
+                      <span className="load"></span>
+                    </div>
+                  )
+                ) : (
+                  <div className="ring">
+                    Loading
+                    <span className="load"></span>
+                  </div>
+                )}
               </div>
             </div>
           )}
-          {props.noPagination || data.length === 0 || !props.url ? (
+          {props.noPagination || data?.length === 0 || !props.url ? (
             <div className="row">
-              {/* <div className="col-12 text-end p-3">
-                {props.data.length > 0 ? props.data.length : 0} Rows
-              </div> */}
+              <div className="col-12 text-end p-3">
+                {props.data?.length > 0 ? props.data?.length : 0} Rows
+              </div>
             </div>
           ) : (
             <div className="row">
@@ -246,7 +270,7 @@ function SmartTable(props) {
                 </span>
                 <span className="ms-4">
                   {(page - 1) * rowsPerPage + 1}-
-                  {(page - 1) * rowsPerPage + data.length} of {total}
+                  {(page - 1) * rowsPerPage + data?.length} of {total}
                 </span>
                 <span
                   className={page === 1 ? "ms-4" : "smartTable-pointer ms-4"}
