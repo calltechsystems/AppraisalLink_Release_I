@@ -150,11 +150,11 @@ export default function Exemple({
   const [updatedData, setUpdatedData] = useState([]);
   const [wishlist, setWishlist] = useState([]);
   const [bids, setBids] = useState([]);
-  
-  const [dataFetched,setDataFetched] = useState(false)
   const [hideAction, setHideAction] = useState(false);
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
+  
+  const [dataFetched,setDataFetched] = useState(false)
   let tempData = [];
 
   const getOrderValue = (val) => {
@@ -195,10 +195,6 @@ export default function Exemple({
       }
     });
     return isAccepted.$id ? isAccepted : bidValue;
-    // const currentTime = new Date();
-    // const twentyFourHoursAgo = currentTime - 24 * 60 * 60 * 1000; // Subtracting milliseconds for 24 hours
-    //    const requestTime = new Date(tempBid.requestTime);
-    //   return requestTime >= twentyFourHoursAgo && requestTime <= currentTime;
   };
 
   const router = useRouter();
@@ -307,7 +303,7 @@ export default function Exemple({
   };
 
   const sortObjectsByOrderIdDescending = (data) => {
-    return data.sort((a, b) => b.orderId - a.orderId);
+    return data.sort((a, b) => b.order_id - a.order_id);
   };
 
   const checkData = properties && !updatedData ? true : false;
@@ -334,7 +330,7 @@ export default function Exemple({
           purpose: property.purpose ? property.purpose : "N.A.",
           appraisal_status:
             isBidded.status === 1 && isBidded.orderStatus === 1 ? (
-              <span className="btn btn-warning  w-100">
+              <span className="btn btn-warning w-100">
                 {getOrderValue(isBidded.orderStatus)} -
                 {formatDate(isBidded.statusDate)}
               </span>
@@ -343,12 +339,16 @@ export default function Exemple({
                 {getOrderValue(isBidded.orderStatus)}
               </span>
             ) : (
-              <span className="btn btn-warning  w-100">New</span>
+              <span className="btn btn-warning w-100">New</span>
             ),
           remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
           status: isWait ? (
-            <span className="btn btn-danger  w-100">
-              {property.isOnHold ? "On Hold" : "Cancelled"}
+            <span className="btn btn-danger w-100">
+              {property.isOnCancel
+                ? "Cancelled"
+                : property.isOnHold
+                ? "On Hold"
+                : ""}
             </span>
           ) : isBidded.bidId ? (
             isBidded.status === 0 ? (
@@ -443,27 +443,29 @@ export default function Exemple({
                   } !.`}
                 </p>
               ) : (
-                <li
-                  className="list-inline-item"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Un-Archive Property"
-                >
-                  <div
-                    className="w-100"
-                    onClick={() => onArchivePropertyHandler(property.orderId)}
-                  >
-                    <button href="#" className="btn btn-color">
-                      <Link href="#">
-                        <span className="text-light">
-                          {" "}
-                          <FaArchive />
-                        </span>
-                      </Link>
-                    </button>
-                  </div>
-                </li>
+                ""
               )}
+
+              <li
+                className="list-inline-item"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="Archive Property"
+              >
+                <div
+                  className="w-100"
+                  onClick={() => onArchivePropertyHandler(property.orderId)}
+                >
+                  <button href="#" className="btn btn-color">
+                    <Link href="#">
+                      <span className="text-light">
+                        {" "}
+                        <FaArchive />
+                      </span>
+                    </Link>
+                  </button>
+                </div>
+              </li>
             </div>
           ),
         };
@@ -483,7 +485,9 @@ export default function Exemple({
     setStartLoading(true);
   };
   useEffect(() => {
-    console.log("inside");
+    setProperties([])
+    setBids([])
+    setWishlist([])
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -504,15 +508,26 @@ export default function Exemple({
       .then((res) => {
         setDataFetched(true)
         const temp = res.data.data.properties.$values;
-        let tempBids = [];
+
+        tempProperties = temp.filter((prop, index) => {
+          if (String(prop.userId) === String(data.userId)) {
+            return true;
+          } else {
+            return false;
+          }
+        });
+
         axios
           .get("/api/getAllBids", {
             headers: {
               Authorization: `Bearer ${data.token}`,
             },
+
+            params: {
+              email: data.userEmail,
+            },
           })
           .then((res) => {
-            console.log(res);
             tempBids = res.data.data.$values;
             const updatedBids = tempBids.filter((prop, index) => {
               if (String(prop.appraiserUserId) === String(data.userId)) {
@@ -521,6 +536,7 @@ export default function Exemple({
                 return false;
               }
             });
+
             setBids(updatedBids);
             axios
               .get("/api/appraiserWishlistedProperties", {
@@ -542,7 +558,7 @@ export default function Exemple({
                 });
                 const tempId = responseData;
                 setWishlist(responseData);
-                setProperties(temp);
+                setProperties(tempProperties);
               })
               .catch((err) => {
                 toast.error(err?.response);
@@ -556,9 +572,12 @@ export default function Exemple({
           });
       })
       .catch((err) => {
+        setDataFetched(false)
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
+
+    let tempBids = [];
 
     axios
       .get("/api/getAllBrokers", {
@@ -606,10 +625,11 @@ export default function Exemple({
         setAllArchive(res.data.data.$values);
       })
       .catch((err) => {
-        setDataFetched(false)
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
+
+    console.log("end", bids, properties, wishlist);
     setRefresh(false);
   }, [refresh]);
   // console.log(sortObjectsByOrderIdDescending(updatedData));

@@ -302,14 +302,14 @@ export default function Exemple({
   };
 
   const sortObjectsByOrderIdDescending = (data) => {
-    return data.sort((a, b) => b.orderId - a.orderId);
+    return data.sort((a, b) => b.order_id - a.order_id);
   };
 
   
-  const sortObjectsOrderStatusDescending = (data) => {
-    console.log(data)
-    return data.sort((a, b) => b.order_status - a.order_status);
-  };
+  // const sortObjectsOrderStatusDescending = (data) => {
+  //   console.log(data)
+  //   return data.sort((a, b) => b.order_status - a.order_status);
+  // };
 
 
 
@@ -655,7 +655,7 @@ export default function Exemple({
     };
     getData();
     setRequiredProp(tempProp);
-  }, [properties]);
+  }, [properties,bids,wishlist]);
 
   useEffect(() => {
     setUpdatedCode(true);
@@ -666,7 +666,9 @@ export default function Exemple({
     setStartLoading(true);
   };
   useEffect(() => {
-    console.log("inside");
+    setProperties([])
+    setBids([])
+    setWishlist([])
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -831,7 +833,7 @@ export default function Exemple({
           title=""
           setSearchInput={setSearchInput}
           setFilterQuery={setFilterQuery}
-          data={sortObjectsOrderStatusDescending(sortObjectsByOrderIdDescending(updatedData))}
+          data={sortObjectsByOrderIdDescending(sortObjectsByOrderIdDescending(updatedData))}
           headCells={headCells}
           setRefresh={setRefresh}
           setProperties={setProperties}

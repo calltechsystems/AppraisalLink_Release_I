@@ -94,12 +94,17 @@ function SmartTable(props) {
       const staticHeaders = [
         ["order_id", "Order Id"],
         ["address", "Address"],
+        ["status", "Order Status"],
+        ["appraisal_status", "Order Status"],
         ["remark", "Remark"],
         ["sub_date", "Submission Date"],
         ["urgency", "Urgency"],
         ["quote_required_by", "Quote Required By"],
         ["type_of_building", "Type Of Building"],
+        ["amount", "Estimated Value"],
+        ["purpose", "Purpose"],
         ["type_of_appraisal", "Type Of Appraisal"],
+        ["lender_information", "Lender Information"],
       ]; // Add your static headers here
       staticHeaders.forEach((headerText) => {
         const th = document.createElement("th");
@@ -387,19 +392,19 @@ function SmartTable(props) {
                         })
                       : props.data.map((row, idx) => {
                           // if (idx >= props.start && idx <= props.end) {
-                            return (
-                              <tr key={"tr_" + idx}>
-                                {props.headCells.map((headCell, idxx) => {
-                                  return (
-                                    <td key={"td_" + idx + "_" + idxx}>
-                                      {headCell.render
-                                        ? headCell.render(row)
-                                        : row[headCell.id]}
-                                    </td>
-                                  );
-                                })}
-                              </tr>
-                            );
+                          return (
+                            <tr key={"tr_" + idx}>
+                              {props.headCells.map((headCell, idxx) => {
+                                return (
+                                  <td key={"td_" + idx + "_" + idxx}>
+                                    {headCell.render
+                                      ? headCell.render(row)
+                                      : row[headCell.id]}
+                                  </td>
+                                );
+                              })}
+                            </tr>
+                          );
                           // } else {
                           //   return null; // Skip rendering rows that don't meet the condition
                           // }

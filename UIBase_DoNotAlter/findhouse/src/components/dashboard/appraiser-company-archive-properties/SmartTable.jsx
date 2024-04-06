@@ -7,8 +7,12 @@ import SVGChevronRight from "./icons/SVGChevronRight";
 import { FaRedo } from "react-icons/fa";
 import * as XLSX from "xlsx";
 
+import millify from "millify";
+
+import { useReactToPrint } from "react-to-print";
 import toast from "react-hot-toast";
 import SearchBox from "./SearchBox";
+import FilteringBy from "./FilteringBy";
 import Filtering from "./Filtering";
 
 function SmartTable(props) {
@@ -77,11 +81,11 @@ function SmartTable(props) {
     try {
       // Fetch data
       const allData = props.properties;
-
+      
       // Open print window and set up basic structure
       const printWindow = window.open("", "_blank");
       printWindow.document.write(
-        "<html><head><title>Company Archive Properties</title></head><body>" +
+        "<html><head><title>Appraiser Assigned Properties</title></head><body>" +
           // Add CSS styles within the <style> tag
           "<style>" +
           // Define your CSS styles here
@@ -110,7 +114,7 @@ function SmartTable(props) {
         ["quote_required_by", "Quote Required By"],
         ["purpose", "Purpose"],
         ["type_of_appraisal", "Type Of Appraisal"],
-      ];
+      ]; 
       staticHeaders.forEach((headerText) => {
         const th = document.createElement("th");
         th.textContent = headerText[1];
@@ -145,7 +149,6 @@ function SmartTable(props) {
       console.error("Error handling print:", error);
     }
   };
-
   const handleExcelPrint = () => {
     const twoDData = props.data.map((item, index) => {
       return [item.bid, item.date, item.title, item.urgency];
@@ -251,9 +254,9 @@ function SmartTable(props) {
   }, props.searchDebounceTime ?? 800);
 
   const extractTextContent = (cellValue) => {
-    if (typeof cellValue === "string") {
+    if (typeof cellValue === 'string') {
       return cellValue; // If it's a string, return it as is
-    } else if (typeof cellValue === "object" && cellValue.$$typeof) {
+    } else if (typeof cellValue === 'object' && cellValue.$$typeof) {
       // If it's a React element, extract text content recursively from children
       return extractTextContent(cellValue.props.children);
     } else {
@@ -261,25 +264,39 @@ function SmartTable(props) {
     }
   };
   const sortData = (cell) => {
-    let tempData = props.properties;
-
+    // Clone props.properties to avoid mutating the original data
+    let tempData = [...props.properties];
+  
+    // Toggle sorting order for the current cell
+    const newSortDesc = { ...sortDesc };
+    newSortDesc[cell] = !newSortDesc[cell];
+  
+    // Perform sorting
     tempData.sort((a, b) => {
       // Extract text content from cell value (React element or other type)
       const valueA = extractTextContent(a[cell]);
       const valueB = extractTextContent(b[cell]);
-
-      // Perform comparison
-      if (sortDesc[cell]) {
+  
+      // Perform comparison based on the sorting order
+      if (newSortDesc[cell]) {
         return valueA < valueB ? 1 : -1;
       } else {
         return valueA > valueB ? 1 : -1;
       }
     });
-
-    setSortDesc({ [cell]: !sortDesc[cell] });
+  
+    // Update state with the new sorting order and sorted data
+    setSortDesc(newSortDesc);
     setData(tempData);
   };
-  console.log(data.length > 0, data);
+  
+  useEffect(()=>{
+    const sortObjectsByOrderIdDescending = (data) => {
+      return data.sort((a, b) => b.order_id - a.order_id);
+    };
+
+    setData(sortObjectsByOrderIdDescending(props.data))
+  },[props.data])
 
   return (
     <div className="col-12 p-2">
@@ -307,20 +324,20 @@ function SmartTable(props) {
               <div className="col-lg-12">
                 <div className="row">
                   <div
-                    className="col-lg-6 btn btn-color w-50"
+                    className="col-lg-6 "
                     onClick={() => handlePrint()}
                     title="Download Pdf"
                   >
-                    <span className="flaticon-download "></span>
+                    <span className="btn btn-color w-100 flaticon-download "></span>
                   </div>
-                  <div className="col-lg-6 w-50">
-                    <button
-                      className="btn btn-color"
-                      onClick={() => props.refreshHandler()}
-                      title="Refresh"
-                    >
+                  <div
+                    className="col-lg-6 "
+                    onClick={() => props.refreshHandler()}
+                    title="Refresh"
+                  >
+                    <span className="btn btn-color">
                       <FaRedo />
-                    </button>
+                    </span>
                   </div>
                 </div>
               </div>
@@ -374,8 +391,8 @@ function SmartTable(props) {
                     </tr>
                   </thead>
                   <tbody>
-                    {props.data.length > 0
-                      ? props.data.map((row, idx) => {
+                    {data.length > 0
+                      ? data.map((row, idx) => {
                           // if (idx >= props.start && idx <= props.end) {
                           return (
                             <tr key={"tr_" + idx}>

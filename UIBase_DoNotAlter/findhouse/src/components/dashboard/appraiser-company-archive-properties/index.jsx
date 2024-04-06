@@ -24,6 +24,8 @@ const Index = () => {
   const [toggleWishlist, setToggleWishlist] = useState(0);
   const [searchResult, setSearchResult] = useState([]);
   const [property, setProperty] = useState("");
+  // const userData = JSON.parse(localStorage.getItem("user"));
+  const [disbale, setDisable] = useState(false);
   const [typeView, setTypeView] = useState(0);
   const [startLoading, setStartLoading] = useState(false);
   const [filterProperty, setFilterProperty] = useState("");
@@ -60,12 +62,15 @@ const Index = () => {
   const [remark, setRemark] = useState("");
 
   const handleStatusUpdateHandler = () => {
+    setDisable(true);
+
     const data = JSON.parse(localStorage.getItem("user"));
     const payload = {
       token: data.token,
-      bidid: currentBid,
+      Quoteid: currentBid,
       OrderStatus: Number(orderStatus),
       remark: remark,
+      statusDate: statusDate,
     };
 
     const encryptedBody = encryptionData(payload);
@@ -148,26 +153,20 @@ const Index = () => {
   const unArchivePropertyHandler = (propertyId) => {
     const data = JSON.parse(localStorage.getItem("user"));
 
-    const payload = {
-      orderId: propertyId,
-      status: false,
-      userid: data.userId,
-      token: data.token,
-    };
-
     toast.loading("Un-Archiving the desired property!!.");
 
-    const encryptedBody = encryptionData(payload);
+    const encryptedBody = encryptionData({
+      orderId: propertyId,
+      userid: data.userId,
+      status: false,
+      token: data.token,
+    });
 
     axios
-      .post("/api/deleteArchivePropertyByAppraiser", encryptedBody, {
+      .post("/api/setArchivePropertyByAppraiser", encryptedBody, {
         headers: {
           Authorization: `Bearer ${data.token}`,
           "Content-Type": "application/json",
-        },
-        params: {
-          userid: data.userId,
-          propertyId: propertyId,
         },
       })
       .then((res) => {
@@ -229,16 +228,28 @@ const Index = () => {
     setShowPropDetails(false);
   };
 
+  function getMinDateTime() {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
+    const day = currentDate.getDate().toString().padStart(2, "0");
+    const hours = currentDate.getHours().toString().padStart(2, "0");
+    const minutes = currentDate.getMinutes().toString().padStart(2, "0");
+
+    // Format the date as YYYY-MM-DDTHH:mm
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  }
+
   useEffect(() => {
     const filterProperties = (propertys, searchInput) => {
       if (searchInput === "") {
         return propertys;
       }
-      const filteredProperties = propertys.filter((property) => {
+      const filteredProperties = properties.filter((property) => {
         // Convert the search input to lowercase for a case-insensitive search
         const searchTerm = searchInput.toLowerCase();
 
-        console.log("propertiieess",property)
+        console.log("propertiessss", property);
         if (String(property.orderId) === String(searchTerm)) {
           return true;
         }
@@ -261,6 +272,7 @@ const Index = () => {
     const filteredData = filterProperties(properties, searchInput);
     setFilterProperty(filteredData);
   }, [searchInput]);
+
   const calculate = (searchDate, diff) => {
     const newDateObj = new Date(searchDate.addedDatetime);
     const currentObj = new Date();
@@ -311,8 +323,8 @@ const Index = () => {
 
     const payload = {
       orderId: propertyId,
-      status: false,
       userid: data.userId,
+      status: false,
       token: data.token,
     };
 
@@ -607,7 +619,7 @@ const Index = () => {
           id="DashboardOffcanvasMenu"
           data-bs-scroll="true"
         >
-          <SidebarMenu />
+          <SidebarMenu userData={userData} />
         </div>
       </div>
       {/* End sidebar_menu */}
@@ -694,7 +706,7 @@ const Index = () => {
                           end={end}
                           onArchivePropertyHandler={onArchivePropertyHandler}
                           properties={
-                            searchInput === "" && filterQuery === "All" ? properties : filterProperty
+                            searchInput === "" && filterQuery === "All"? properties : filterProperty
                           }
                           setCurrentBid={setCurrentBid}
                           setUpdatedCode={setUpdatedCode}
@@ -1685,7 +1697,7 @@ const Index = () => {
               {isStatusModal && (
                 <div className="modal">
                   <div className="modal-content">
-                    <h3 className="text-center">Quote Status Updation</h3>
+                    <h3 className="text-center"> Appraisal Status Updation</h3>
 
                     <select
                       required
@@ -1726,6 +1738,7 @@ const Index = () => {
                           id="formGroupExampleInput3"
                           onChange={(e) => setStatusDate(e.target.value)}
                           value={statusDate}
+                          min={getMinDateTime()}
                         />
                       </div>
                     )}
@@ -1746,12 +1759,14 @@ const Index = () => {
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
                       <button
+                        disabled={disbale}
                         className="btn w-35 btn-white"
                         onClick={closeStatusUpdateHandler}
                       >
                         Cancel
                       </button>
                       <button
+                        disabled={disbale}
                         className="btn btn-color w-10 mt-1"
                         style={{ marginLeft: "12px" }}
                         onClick={handleStatusUpdateHandler}

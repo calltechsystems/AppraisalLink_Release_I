@@ -30,6 +30,7 @@ const Index = () => {
   const [typeView, setTypeView] = useState(0);
   const [startLoading, setStartLoading] = useState(false);
   const [filterProperty, setFilterProperty] = useState("");
+  const [generatedProp,setGeneratedProps]=useState([])
   const [showPropDetails, setShowPropDetails] = useState(false);
   const [filterQuery, setFilterQuery] = useState("All");
   const [searchQuery, setSearchQuery] = useState("city");
@@ -305,6 +306,8 @@ const Index = () => {
   };
 
   const filterData = (tempData) => {
+
+    console.log("filterData",tempData)
     const currentDate = new Date();
     const oneYearAgo = new Date(currentDate);
     oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
@@ -330,10 +333,8 @@ const Index = () => {
 
   useEffect(() => {
     const tmpData = filterData(properties);
-    console.log("filterQuery", filterQuery, tmpData, tmpData.length);
     setFilterProperty(tmpData);
   }, [filterQuery]);
-
 
   const handleDelete = () => {
     const data = JSON.parse(localStorage.getItem("user"));
@@ -646,8 +647,9 @@ const Index = () => {
                           end={end}
                           setAllBrokers={setAllBrokers}
                           setAssignedProp={setAssignedProp}
+                          setGeneratedProps={setGeneratedProps}
                           properties={
-                            searchInput === "" && filterProperty === "All" ? properties : filterProperty
+                            searchInput === ""  && filterQuery === "All"? properties : filterProperty
                           }
                           setUpdatedCode={setUpdatedCode}
                           onWishlistHandler={onWishlistHandler}

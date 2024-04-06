@@ -90,7 +90,30 @@ const TableData = ({userData , open ,unArchivePropertyHandler,setAllArchive,allA
     };
 
 
- 
+    axios
+      .get("/api/getAllListedProperties",
+       {
+        headers: {
+          Authorization:`Bearer ${data?.token}`,
+          "Content-Type":"application/json"
+        },
+        params : {
+          userId : data?.userId
+        }
+      })
+      .then((res) => {
+   
+        toast.dismiss();
+        
+        console.log("props",res.data.data.properties.$values);
+        setProperties(res.data.data.properties.$values);
+        setRerender(false);
+      })
+      .catch((err) => {
+        toast.dismiss();
+        setErrorMessage(err?.response?.data?.error);
+        setModalIsOpenError(true);
+      });
   },[rerender]);
   const formatDate = (dateString) => {
     const options = {

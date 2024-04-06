@@ -104,6 +104,7 @@ function SmartTable(props) {
       setData(tempData);
     }
   }, props.searchDebounceTime ?? 800);
+  
 
   const sortData = (cell) => {
     let tempData = [...data];
@@ -219,10 +220,17 @@ function SmartTable(props) {
             <div className="row">
               <div
                 className="smartTable-noDataFound col-12"
-                style={{ marginTop: "110px", marginBottom: "40px" }}
+                style={{ marginTop: "100px", marginBottom: "40px" }}
               >
-                {props.dataFetched && props.data?.length === 0 ? (
-                  "No data Found"
+                {props.dataFetched && props.properties.length === 0 ? (
+                  showNoData ? (
+                    <h3>No Data Found</h3>
+                  ) : (
+                    <div className="ring">
+                      Loading
+                      <span className="load"></span>
+                    </div>
+                  )
                 ) : (
                   <div className="ring">
                     Loading

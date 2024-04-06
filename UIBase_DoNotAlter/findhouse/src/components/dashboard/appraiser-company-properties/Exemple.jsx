@@ -341,9 +341,9 @@ export default function Exemple({
   };
 
   const sortObjectsByOrderIdDescending = (data) => {
-    return data.sort((a, b) => b.orderId - a.orderId);
+    return data.sort((a, b) => b.order_id - a.order_id);
   };
-
+  
   const checkData = properties && !updatedData ? true : false;
   useEffect(() => {
     setProperties([]);
@@ -754,7 +754,9 @@ export default function Exemple({
     setStartLoading(true);
   };
   useEffect(() => {
-    console.log("inside");
+    setProperties([])
+    setBids([])
+    setWishlist([])
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {

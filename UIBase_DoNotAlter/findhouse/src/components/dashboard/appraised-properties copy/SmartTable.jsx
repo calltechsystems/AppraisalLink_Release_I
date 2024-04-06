@@ -81,7 +81,7 @@ function SmartTable(props) {
     try {
       // Fetch data
       const allData = props.properties;
-
+      
       // Open print window and set up basic structure
       const printWindow = window.open("", "_blank");
       printWindow.document.write(
@@ -114,7 +114,7 @@ function SmartTable(props) {
         ["quote_required_by", "Quote Required By"],
         ["purpose", "Purpose"],
         ["type_of_appraisal", "Type Of Appraisal"],
-      ];
+      ]; 
       staticHeaders.forEach((headerText) => {
         const th = document.createElement("th");
         th.textContent = headerText[1];
@@ -254,9 +254,9 @@ function SmartTable(props) {
   }, props.searchDebounceTime ?? 800);
 
   const extractTextContent = (cellValue) => {
-    if (typeof cellValue === "string") {
+    if (typeof cellValue === 'string') {
       return cellValue; // If it's a string, return it as is
-    } else if (typeof cellValue === "object" && cellValue.$$typeof) {
+    } else if (typeof cellValue === 'object' && cellValue.$$typeof) {
       // If it's a React element, extract text content recursively from children
       return extractTextContent(cellValue.props.children);
     } else {
@@ -265,12 +265,12 @@ function SmartTable(props) {
   };
   const sortData = (cell) => {
     let tempData = props.properties;
-
+  
     tempData.sort((a, b) => {
       // Extract text content from cell value (React element or other type)
       const valueA = extractTextContent(a[cell]);
       const valueB = extractTextContent(b[cell]);
-
+  
       // Perform comparison
       if (sortDesc[cell]) {
         return valueA < valueB ? 1 : -1;
@@ -278,11 +278,19 @@ function SmartTable(props) {
         return valueA > valueB ? 1 : -1;
       }
     });
-
+  
     setSortDesc({ [cell]: !sortDesc[cell] });
     setData(tempData);
   };
-  console.log(data.length > 0, data);
+
+  
+  useEffect(()=>{
+    const sortObjectsByOrderIdDescending = (data) => {
+      return data.sort((a, b) => b.orderId - a.orderId);
+    };
+
+    setData(sortObjectsByOrderIdDescending(props.data))
+  },[props.data])
 
   return (
     <div className="col-12 p-2">

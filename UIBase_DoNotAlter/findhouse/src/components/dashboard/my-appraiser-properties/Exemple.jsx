@@ -677,7 +677,9 @@ export default function Exemple({
     setStartLoading(true);
   };
   useEffect(() => {
-    console.log("inside");
+    setProperties([])
+    setBids([])
+    setWishlist([])
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {

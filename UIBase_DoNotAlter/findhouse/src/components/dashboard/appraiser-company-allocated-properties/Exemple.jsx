@@ -147,6 +147,7 @@ export default function Exemple({
   setErrorMessage,
   setModalIsOpenError,
   setRefresh,
+  setGeneratedProps,
   setAssignedProp,
   setAllBrokers,
   setStartLoading,
@@ -294,8 +295,6 @@ export default function Exemple({
     return formattedDate;
   };
 
-
-
   const checkWishlistedHandler = (data) => {
     let temp = {};
     // //console.log(wishlist, data);
@@ -316,7 +315,7 @@ export default function Exemple({
   };
 
   const sortObjectsByOrderIdDescending = (data) => {
-    return data.sort((a, b) => b.orderId - a.orderId);
+    return data.sort((a, b) => b.order_id - a.order_id);
   };
 
   const [isBroker, setIsBroker] = useState(-1);
@@ -362,7 +361,7 @@ export default function Exemple({
         const property = getPropertyInfo(propertyDetail?.propertyid);
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
-        console.log("isBidded",isBidded)
+        console.log("isBidded",isBidded,property)
         const isWait = property?.isOnHold || property?.isOnCancel;
         const updatedRow = {
           order_id: property?.orderId,
@@ -566,21 +565,6 @@ export default function Exemple({
                   <p className="btn btn-info w-100">{`In progress`}</p>
                 </>
               )}
-
-              {isBidded.status === 1 && isBidded.orderStatus !== 3 ? (
-                                <>
-                                  <button
-                                    href="#"
-                                    className="btn btn-color m-1"
-                                    onClick={() => openStatusUpdateHandler(isBidded)}
-                                  >
-                                    <Link href="#">
-                                      <span className="flaticon-edit text-light"></span>
-                                    </Link>
-                                  </button>
-                                
-                                </>
-                              ) :""}
             </div>
           ),
         };
@@ -641,6 +625,16 @@ export default function Exemple({
             const temp = res.data.data.$values;
 
             
+            let assignedProps = [];
+            temp.map((prop,index)=>{
+              propertyInfo.map((assProp,idx)=>{
+                if(String(prop.propertyid) === String(assProp.$id)){
+                  assignedProps.push(assProp)
+                }
+              })
+            });
+
+            setGeneratedProps(assignedProps)
             
 
             let tempBids = [];

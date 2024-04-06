@@ -75,11 +75,13 @@ function SmartTable(props) {
     }
   }, [props.dataFetched, props.properties]);
 
+
+
   const handlePrint = async () => {
     try {
       // Fetch data
       const allData = props.properties;
-
+      
       // Open print window and set up basic structure
       const printWindow = window.open("", "_blank");
       printWindow.document.write(
@@ -112,7 +114,7 @@ function SmartTable(props) {
         ["quote_required_by", "Quote Required By"],
         ["purpose", "Purpose"],
         ["type_of_appraisal", "Type Of Appraisal"],
-      ];
+      ]; 
       staticHeaders.forEach((headerText) => {
         const th = document.createElement("th");
         th.textContent = headerText[1];
@@ -251,10 +253,11 @@ function SmartTable(props) {
     }
   }, props.searchDebounceTime ?? 800);
 
+
   const extractTextContent = (cellValue) => {
-    if (typeof cellValue === "string") {
+    if (typeof cellValue === 'string') {
       return cellValue; // If it's a string, return it as is
-    } else if (typeof cellValue === "object" && cellValue.$$typeof) {
+    } else if (typeof cellValue === 'object' && cellValue.$$typeof) {
       // If it's a React element, extract text content recursively from children
       return extractTextContent(cellValue.props.children);
     } else {
@@ -262,25 +265,40 @@ function SmartTable(props) {
     }
   };
   const sortData = (cell) => {
-    let tempData = props.properties;
-
+    // Clone props.properties to avoid mutating the original data
+    let tempData = [...props.properties];
+  
+    // Toggle sorting order for the current cell
+    const newSortDesc = { ...sortDesc };
+    newSortDesc[cell] = !newSortDesc[cell];
+  
+    // Perform sorting
     tempData.sort((a, b) => {
       // Extract text content from cell value (React element or other type)
       const valueA = extractTextContent(a[cell]);
       const valueB = extractTextContent(b[cell]);
-
-      // Perform comparison
-      if (sortDesc[cell]) {
+  
+      // Perform comparison based on the sorting order
+      if (newSortDesc[cell]) {
         return valueA < valueB ? 1 : -1;
       } else {
         return valueA > valueB ? 1 : -1;
       }
     });
-
-    setSortDesc({ [cell]: !sortDesc[cell] });
+  
+    // Update state with the new sorting order and sorted data
+    setSortDesc(newSortDesc);
     setData(tempData);
   };
-  console.log(data.length > 0, data);
+  
+  
+  useEffect(()=>{
+    const sortObjectsByOrderIdDescending = (data) => {
+      return data.sort((a, b) => b.order_id - a.order_id);
+    };
+
+    setData(sortObjectsByOrderIdDescending(props.data))
+  },[props.data])
 
   return (
     <div className="col-12 p-2">
@@ -356,7 +374,7 @@ function SmartTable(props) {
                                 ? "smartTable-pointer"
                                 : ""
                             }
-                            onClick={() =>
+                             onClick={() =>
                               headCell.sortable !== false &&
                               headCell.id !== "address"
                                 ? sortData(headCell.id)
@@ -380,38 +398,38 @@ function SmartTable(props) {
                     {data.length > 0
                       ? data.map((row, idx) => {
                           // if (idx >= props.start && idx <= props.end) {
-                          return (
-                            <tr key={"tr_" + idx}>
-                              {props.headCells.map((headCell, idxx) => {
-                                return (
-                                  <td key={"td_" + idx + "_" + idxx}>
-                                    {headCell.render
-                                      ? headCell.render(row)
-                                      : row[headCell.id]}
-                                  </td>
-                                );
-                              })}
-                            </tr>
-                          );
+                            return (
+                              <tr key={"tr_" + idx}>
+                                {props.headCells.map((headCell, idxx) => {
+                                  return (
+                                    <td key={"td_" + idx + "_" + idxx}>
+                                      {headCell.render
+                                        ? headCell.render(row)
+                                        : row[headCell.id]}
+                                    </td>
+                                  );
+                                })}
+                              </tr>
+                            );
                           // } else {
                           //   return null; // Skip rendering rows that don't meet the condition
                           // }
                         })
                       : props.data.map((row, idx) => {
                           // if (idx >= props.start && idx <= props.end) {
-                          return (
-                            <tr key={"tr_" + idx}>
-                              {props.headCells.map((headCell, idxx) => {
-                                return (
-                                  <td key={"td_" + idx + "_" + idxx}>
-                                    {headCell.render
-                                      ? headCell.render(row)
-                                      : row[headCell.id]}
-                                  </td>
-                                );
-                              })}
-                            </tr>
-                          );
+                            return (
+                              <tr key={"tr_" + idx}>
+                                {props.headCells.map((headCell, idxx) => {
+                                  return (
+                                    <td key={"td_" + idx + "_" + idxx}>
+                                      {headCell.render
+                                        ? headCell.render(row)
+                                        : row[headCell.id]}
+                                    </td>
+                                  );
+                                })}
+                              </tr>
+                            );
                           // } else {
                           //   return null; // Skip rendering rows that don't meet the condition
                           // }
@@ -427,20 +445,20 @@ function SmartTable(props) {
                 style={{ marginTop: "100px", marginBottom: "40px" }}
               >
                 {props.dataFetched && props.properties.length === 0 ? (
-                  showNoData ? (
-                    <h3>No Data Found</h3>
-                  ) : (
-                    <div className="ring">
-                      Loading
-                      <span className="load"></span>
-                    </div>
-                  )
-                ) : (
-                  <div className="ring">
-                    Loading
-                    <span className="load"></span>
-                  </div>
-                )}
+                
+                showNoData ? 
+                <h3>No Data Found</h3>
+                :
+                <div className="ring">
+                  Loading
+                  <span className="load"></span>
+                </div>
+              ) : (
+                <div className="ring">
+                  Loading
+                  <span className="load"></span>
+                </div>
+              )}
               </div>
             </div>
           )}
