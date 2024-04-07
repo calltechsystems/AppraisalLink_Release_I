@@ -53,17 +53,18 @@ const headCells = [
     width: 220,
   },
   {
-    id: "urgency",
-    numeric: false,
-    label: "Request Type",
-    width: 140,
-  },
-  {
     id: "quote_required_by",
     numeric: false,
     label: "Appraisal Report Required By",
     width: 220,
   },
+  {
+    id: "urgency",
+    numeric: false,
+    label: "Request Type",
+    width: 140,
+  },
+
   // {
   //   id: "user",
   //   numeric: false,

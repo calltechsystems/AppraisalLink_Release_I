@@ -679,14 +679,13 @@ const Index = () => {
                 </div> */}
                 {/* End Dashboard Navigation */}
 
-                <div className="col-lg-12 col-xl-12 mt-1">
+                {/* <div className="col-lg-12 col-xl-12 mt-1">
                   <div className="style2 mb30-991">
                     <h3 className="breadcrumb_title text-center">
                       Appraised Properties
                     </h3>
-                    {/* <p>We are glad to see you again!</p>                                                             */}
                   </div>
-                </div>
+                </div> */}
                 {/* End .col */}
 
                 {/*<div className="row">

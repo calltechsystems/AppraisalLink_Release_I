@@ -105,12 +105,12 @@ const headCells = [
     width: 200,
   },
 
-  {
-    id: "action",
-    numeric: false,
-    label: "Action",
-    width: 180,
-  },
+  // {
+  //   id: "action",
+  //   numeric: false,
+  //   label: "Action",
+  //   width: 180,
+  // },
 ];
 
 let count = 0;

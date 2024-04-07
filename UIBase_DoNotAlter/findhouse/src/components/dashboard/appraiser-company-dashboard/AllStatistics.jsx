@@ -19,7 +19,7 @@ const AllStatistics = ({properties , views , bids , wishlist}) => {
       blockStyle: "style3",
       icon: "flaticon-user",
       timer: bids,
-      name: "Provided Bids",
+      name: "Provided Quotes",
     },
     {
       id: 4,

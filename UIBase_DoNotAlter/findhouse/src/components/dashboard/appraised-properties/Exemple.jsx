@@ -149,9 +149,9 @@ export default function Exemple({
   const [hideAction, setHideAction] = useState(false);
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
-  const [dataFetched,setDataFetched] = useState(false)
+  const [dataFetched, setDataFetched] = useState(false);
 
-  const [statusData,setStatusData] = useState([])
+  const [statusData, setStatusData] = useState([]);
   let tempData = [];
 
   const [allArchive, setAllArchive] = useState([]);
@@ -177,14 +177,16 @@ export default function Exemple({
   };
 
   const filterBidsWithin24Hours = (property) => {
-
-    const data = JSON.parse(localStorage.getItem("user"))
+    const data = JSON.parse(localStorage.getItem("user"));
     let tempBid = 0,
       bidValue = {};
     let isAccepted = {};
     // console.log(bids);
     bids.filter((bid) => {
-      if (bid.orderId === property.orderId && bid.appraiserUserId === data.userId) {
+      if (
+        bid.orderId === property.orderId &&
+        bid.appraiserUserId === data.userId
+      ) {
         if (bid.status === 1) {
           isAccepted = bid;
         } else {
@@ -197,21 +199,24 @@ export default function Exemple({
     return isAccepted.$id ? isAccepted : bidValue;
   };
 
-  const alreadyAccepted = (property)=>{
-    const data = JSON.parse(localStorage.getItem("user"))
+  const alreadyAccepted = (property) => {
+    const data = JSON.parse(localStorage.getItem("user"));
     let tempBid = 0,
-    bidValue = {};
-  let isAccepted = {};
-  // console.log(bids);
-  bids.filter((bid) => {
-    if (bid.orderId === property.orderId && bid.appraiserUserId !== data.userId) {
-      if (bid.status === 1) {
-        isAccepted = bid;
+      bidValue = {};
+    let isAccepted = {};
+    // console.log(bids);
+    bids.filter((bid) => {
+      if (
+        bid.orderId === property.orderId &&
+        bid.appraiserUserId !== data.userId
+      ) {
+        if (bid.status === 1) {
+          isAccepted = bid;
+        }
       }
-    }
-  });
-  return isAccepted.$id ? true : false;
-};
+    });
+    return isAccepted.$id ? true : false;
+  };
   const router = useRouter();
 
   const openStatusUpdateHandler = (bid) => {
@@ -334,16 +339,14 @@ export default function Exemple({
   }, [checkData]);
 
   useEffect(() => {
-
-    let tempStatusData = []
+    let tempStatusData = [];
     const getData = () => {
-
       const userData = JSON.parse(localStorage.getItem("user"));
 
       properties.map((property, index) => {
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
-        const anotherBid = alreadyAccepted(property)
+        const anotherBid = alreadyAccepted(property);
 
         // console.log("wishlisted",isWishlist);
         const isWait = property.isOnHold || property.isOnCancel;
@@ -355,9 +358,9 @@ export default function Exemple({
           }
 
           const newStatus = {
-            status : isBidded.status,
-            appraisal_status : isBidded.orderStatus,
-            order_id : property.orderId
+            status: isBidded.status,
+            appraisal_status: isBidded.orderStatus,
+            order_id: property.orderId,
           };
           const updatedRow = {
             order_id: property.orderId,
@@ -394,7 +397,6 @@ export default function Exemple({
                   : ""}
               </span>
             ) : isBidded.bidId ? (
-             
               isBidded.orderStatus === 3 ? (
                 <span className="btn btn-completed w-100">Completed</span>
               ) : isBidded.status === 0 ? (
@@ -404,8 +406,7 @@ export default function Exemple({
               ) : (
                 <span className="btn btn-danger  w-100">Rejected</span>
               )
-            ) :
-            (
+            ) : (
               <span className="btn btn-warning  w-100">New</span>
             ),
             broker: (
@@ -430,9 +431,10 @@ export default function Exemple({
                   <h6 style={{ color: "red" }}> Declined</h6>
                 ) : alreadyAccepted ? (
                   <p>
-                    Broker Information will not be available as the broker is already being assigned
+                    Broker Information will not be available as the broker is
+                    already being assigned
                   </p>
-                ): (
+                ) : (
                   <p>
                     Broker Information will be available post the quote
                     acceptance
@@ -462,7 +464,8 @@ export default function Exemple({
                   <h6 style={{ color: "red" }}> Declined</h6>
                 ) : alreadyAccepted ? (
                   <p>
-                    Property Information will not be available as the property is already being alloted
+                    Property Information will not be available as the property
+                    is already being alloted
                   </p>
                 ) : (
                   <p>
@@ -475,7 +478,7 @@ export default function Exemple({
             type_of_appraisal: property.typeOfAppraisal
               ? property.typeOfAppraisal
               : "N.A.",
-              type_of_building:
+            type_of_building:
               property.typeOfBuilding > 0
                 ? "Apartment"
                 : property.typeOfBuilding,
@@ -520,14 +523,20 @@ export default function Exemple({
                       </div>
                     </li>
                   </>
-                ) :
-                 isWait ? (
+                ) : isWait ? (
                   <ul>
-                    <p className="btn btn-danger  w-100">
-                      {`No further actions can be taken on this property since it is ${
-                        property.isOnCancel ? "Cancelled" : "On Hold"
-                      } .`}
-                    </p>
+                    <li
+                      className="list-inline-item"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Archive Property"
+                    >
+                      <p className="btn btn-danger  w-100">
+                        {`No further actions can be taken on this property since it is ${
+                          property.isOnCancel ? "Cancelled" : "On Hold"
+                        } .`}
+                      </p>
+                    </li>
                     <li
                       className="list-inline-item"
                       data-toggle="tooltip"
@@ -551,19 +560,15 @@ export default function Exemple({
                       </div>
                     </li>
                   </ul>
-                ) : 
-                isBidded.$id && isBidded.orderStatus === 3 ? 
-                 (
+                ) : isBidded.$id && isBidded.orderStatus === 3 ? (
                   <>
-                  <p className="btn btn-success  w-100">Completed </p>
-                  <li
+                    <p className="btn btn-success  w-100">Completed </p>
+                    <li
                       className="list-inline-item"
                       data-toggle="tooltip"
                       data-placement="top"
                       title="Archive Property"
-                    >
-                     
-                    </li>
+                    ></li>
                   </>
                 ) : (
                   <ul className="mb0 d-flex gap-1">
@@ -579,7 +584,7 @@ export default function Exemple({
                           src="https://png.pngtree.com/png-clipart/20200226/original/pngtree-3d-red-heart-cute-valentine-romantic-glossy-shine-heart-shape-png-image_5315044.jpg"
                         />
                       </button>
-                    ) :  (
+                    ) : (
                       <li
                         className="list-inline-item"
                         title="Wishlist Property"
@@ -598,7 +603,7 @@ export default function Exemple({
                       </li>
                     )}
 
-                    {(!isBidded.$id || isBidded?.status < 1)  && (
+                    {(!isBidded.$id || isBidded?.status < 1) && (
                       <li
                         className="list-inline-item"
                         data-toggle="tooltip"
@@ -627,7 +632,7 @@ export default function Exemple({
                         </div>
                       </li>
                     )}
-                   
+
                     <li
                       className="list-inline-item"
                       data-toggle="tooltip"
@@ -651,7 +656,7 @@ export default function Exemple({
                       </div>
                     </li>
                   </ul>
-                ) }
+                )}
                 {isBidded.status === 1 && isBidded.orderStatus !== 3 ? (
                   <>
                     <button
@@ -663,35 +668,31 @@ export default function Exemple({
                         <span className="flaticon-edit text-light"></span>
                       </Link>
                     </button>
-                   
                   </>
-                ) :""}
+                ) : (
+                  ""
+                )}
               </div>
             ),
           };
           tempData.push(updatedRow);
-          tempStatusData.push(newStatus
-          )
+          tempStatusData.push(newStatus);
         }
       });
       setUpdatedData(tempData);
-      setStatusData(tempStatusData)
+      setStatusData(tempStatusData);
     };
     getData();
   }, [properties]);
 
-
-
   const refreshHandler = () => {
-    
-    setProperties([])
-    setWishlist([])
-    setBids([])
+    setProperties([]);
+    setWishlist([]);
+    setBids([]);
     setRefresh(true);
     setStartLoading(true);
   };
   useEffect(() => {
-    
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -729,13 +730,17 @@ export default function Exemple({
               toast.dismiss();
 
               const allProperties = result.data.data.properties.$values;
-              console.log("prop", allProperties,prop);
+              console.log("prop", allProperties, prop);
               let requiredProperties = [];
               prop.map((assign, index) => {
                 let id = assign.propertyid;
                 allProperties.map((tempProp, idx) => {
-                  console.log("assign",assign,tempProp)
-                  if (String(tempProp.$id) === String(id) && String(assign.appraiserid) === String(data.appraiser_Details.id)) {
+                  console.log("assign", assign, tempProp);
+                  if (
+                    String(tempProp.$id) === String(id) &&
+                    String(assign.appraiserid) ===
+                      String(data.appraiser_Details.id)
+                  ) {
                     requiredProperties.push(tempProp);
                     id = "";
                   }
@@ -833,7 +838,7 @@ export default function Exemple({
           toast.dismiss();
 
           console.log(res.data);
-          setDataFetched(true)
+          setDataFetched(true);
           const prop = res.data.data.properties.$values;
 
           axios
@@ -848,7 +853,7 @@ export default function Exemple({
             .then((res) => {
               tempBids = res.data.data.$values;
               const updatedBids = tempBids.filter((prop, index) => {
-                return true
+                return true;
               });
               console.log(updatedBids);
               setBids(updatedBids);
@@ -889,7 +894,7 @@ export default function Exemple({
         .catch((err) => {
           toast.dismiss();
           toast.error(err);
-          setDataFetched(false)
+          setDataFetched(false);
           // setErrorMessage(err?.response?.data?.error);
           // setModalIsOpenError(true);
         });

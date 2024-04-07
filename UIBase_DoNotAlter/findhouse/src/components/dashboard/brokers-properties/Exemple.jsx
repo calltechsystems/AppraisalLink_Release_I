@@ -58,17 +58,18 @@ const headCells = [
     width: 220,
   },
   {
-    id: "urgency",
-    numeric: false,
-    label: "Request Type",
-    width: 140,
-  },
-  {
     id: "quote_required_by",
     numeric: false,
     label: "Appraisal Report Required By",
     width: 220,
   },
+  {
+    id: "urgency",
+    numeric: false,
+    label: "Request Type",
+    width: 140,
+  },
+
   // {
   //   id: "user",
   //   numeric: false,
@@ -155,9 +156,9 @@ export default function Exemple({
   const [updatedData, setUpdatedData] = useState([]);
   const [allBids, setBids] = useState([]);
   const [show, setShow] = useState(false);
-  
-  const [dataFetched,setDataFetched] = useState(false)
-  const [allListedProperties,setAllListedProperties]=useState([]);
+
+  const [dataFetched, setDataFetched] = useState(false);
+  const [allListedProperties, setAllListedProperties] = useState([]);
   let tempData = [];
   const [AllBrokers, setAllBrokers] = useState([]);
 
@@ -302,9 +303,9 @@ export default function Exemple({
   };
 
   const refreshHandler = () => {
-    setAllListedProperties([])
-    setBids([])
-    setProperties([])
+    setAllListedProperties([]);
+    setBids([]);
+    setProperties([]);
     setRefresh(true);
   };
 
@@ -330,17 +331,16 @@ export default function Exemple({
     return isCompleted ? 3 : isAccepted ? 2 : isQuoteProvided ? 1 : 0;
   };
 
-  const getPropertyInfoById = (userId)=>{
-    console.log("getprop",userId,allListedProperties)
+  const getPropertyInfoById = (userId) => {
+    console.log("getprop", userId, allListedProperties);
     let selectedProperty = {};
-    allListedProperties.map((prop,index)=>{
-      if(String(prop.userId) === String(userId)){
+    allListedProperties.map((prop, index) => {
+      if (String(prop.userId) === String(userId)) {
         selectedProperty = prop;
       }
-    })
+    });
     return selectedProperty;
-
-  }
+  };
 
   const openPopupModal = (property) => {
     setModalIsPopupOpen(true);
@@ -782,7 +782,10 @@ export default function Exemple({
                     className="btn btn-color-table"
                     onClick={() => archievePropertyHandler(property.orderId)}
                   >
-                    <Link className="color-light" href={`/brokerage-archive-properties`}>
+                    <Link
+                      className="color-light"
+                      href={`/brokerage-archive-properties`}
+                    >
                       <span className="text-light">
                         <FaArchive />
                       </span>
@@ -803,16 +806,14 @@ export default function Exemple({
   }, [properties]);
 
   useEffect(() => {
-
-    setAllListedProperties([])
-    setBids([])
-    setProperties([])
+    setAllListedProperties([]);
+    setBids([]);
+    setProperties([]);
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
       token: userData.token,
     };
-
 
     axios
       .get("/api/getAllListedProperties", {
@@ -826,12 +827,12 @@ export default function Exemple({
       })
       .then((res) => {
         toast.dismiss();
-        setDataFetched(true)
-        setAllListedProperties( res.data.data.properties.$values);
+        setDataFetched(true);
+        setAllListedProperties(res.data.data.properties.$values);
       })
       .catch((err) => {
         toast.error(err);
-        setDataFetched(false)
+        setDataFetched(false);
         // setModalIsOpenError(true);
       });
 
@@ -876,9 +877,7 @@ export default function Exemple({
 
         setAllBrokers(allbroker);
       })
-      .catch((err) => {
-
-      });
+      .catch((err) => {});
 
     let tempBids = [];
 
