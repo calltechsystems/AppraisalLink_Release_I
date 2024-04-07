@@ -267,6 +267,8 @@ export default function Exemple({
   };
 
   const refreshHandler = () => {
+    setProperties([])
+    setBids([])
     setRefresh(true);
   };
 

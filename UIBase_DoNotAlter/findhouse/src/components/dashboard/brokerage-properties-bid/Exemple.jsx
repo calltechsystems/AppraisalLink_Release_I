@@ -281,7 +281,8 @@ export default function Exemple({
     const prop = getCurrentPropertyInfoHandler();
     console.log(prop);
     const getData = () => {
-      properties.map((property, index) => {
+      properties.map((propertyWhole, index) => {
+        const property = propertyWhole.bid;
         const updatedRow = {
           AppraiserId: property.appraiserUserId ? property.appraiserUserId : 0,
           quote: `$ ${property.bidAmount}`,
@@ -347,9 +348,8 @@ export default function Exemple({
                         target="_blank"
                         rel="noopener noreferrer"
                         href={
-                          userData?.appraiser_Details?.lenderListUrl
-                            ? userData?.appraiser_Details?.lenderListUrl
-                            : "#"
+                          propertyWhole?.lenderListUrl ?
+                          propertyWhole?.lenderListUrl : "#"
                         }
                         style={{ cursor: "pointer", color: "white" }}
                       >

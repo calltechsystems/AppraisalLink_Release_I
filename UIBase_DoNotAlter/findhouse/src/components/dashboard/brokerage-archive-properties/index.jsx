@@ -138,7 +138,7 @@ const Index = () => {
   }, [searchInput]);
 
   const calculate = (searchDate, diff) => {
-    const newDateObj = new Date(searchDate.addedDatetime);
+    const newDateObj = new Date(searchDate.property.addedDatetime);
     const currentObj = new Date();
 
     const getMonthsFDiff = currentObj.getMonth() - newDateObj.getMonth();
@@ -153,6 +153,7 @@ const Index = () => {
   };
 
   const filterData = (tempData) => {
+   
     const currentDate = new Date();
     const oneYearAgo = new Date(currentDate);
     oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
@@ -176,6 +177,11 @@ const Index = () => {
     }
   };
 
+  useEffect(() => {
+    const tmpData = filterData(properties);
+    console.log("filterQuery", filterQuery, tmpData, tmpData.length);
+    setFilterProperty(tmpData);
+  }, [filterQuery]);
   const [propValue, setPropValue] = useState({});
 
   const onHoldHandler = () => {
@@ -243,11 +249,7 @@ const Index = () => {
     setPropertyId(-1);
   };
 
-  useEffect(() => {
-    const tmpData = filterData(properties);
-    console.log("filterQuery", filterQuery, tmpData, tmpData.length);
-    setFilterProperty(tmpData);
-  }, [filterQuery]);
+
 
   const handleDelete = () => {
     const data = JSON.parse(localStorage.getItem("user"));

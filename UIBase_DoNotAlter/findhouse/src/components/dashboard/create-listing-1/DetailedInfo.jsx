@@ -78,13 +78,13 @@ import { CldUploadWidget } from "next-cloudinary";
 // }
 
 // export default DetailedInfo;
+
+import CheckBoxFilter from "../../common/CheckBoxFilter";
 import toast from "react-hot-toast";
 import axios from "axios";
-import CheckBoxFilter from "../../common/CheckBoxFilter";
 const DetailedInfo = ({
   onCancelHandler,
   isDisable,
-  disable,
   changeUrlToStringHandler,
   updateHandler,
   remark,
@@ -106,6 +106,7 @@ const DetailedInfo = ({
   errorLabel,
   filesUrl,
   image,
+  disable,
   setImage,
   setFilesUrl,
   setAttachment,
@@ -114,6 +115,7 @@ const DetailedInfo = ({
   const router = useRouter();
   console.log(filesUrl, attachment);
   const [isButtonDisabled, setButtonDisabled] = useState(false);
+
   const [uploadedFiles, setUploadedFiles] = useState([]);
 
   const cancelHandler = () => {
@@ -170,23 +172,6 @@ const DetailedInfo = ({
         toast.error("Try Again !!");
       });
   };
-  // const handleUpload = (result) => {
-  //   try {
-  //     const fileUrl = result.info.secure_url;
-  //     console.log("File uploaded:", fileUrl);
-
-  //     let olderUrl = filesUrl;
-  //     olderUrl.push(fileUrl);
-  //     console.log(olderUrl);
-  //     setFilesUrl(olderUrl);
-
-  //     // console.log(changeUrlToStringHandler());
-
-  //     setAttachment(fileUrl);
-  //   } catch (error) {
-  //     console.error("Error handling upload:", error);
-  //   }
-  // };
 
   const errorLabelStyle = { borderColor: "red" };
 
@@ -570,7 +555,6 @@ const DetailedInfo = ({
                 // placeholder="Enter 10 digits"
                 title="Please enter only 10 digits"
                 required
-                disabled={isDisable}
               />
             </div>
           </div>
@@ -690,39 +674,6 @@ const DetailedInfo = ({
                   <input type="file" onChange={(e) => handleUpload(e)} />
                 </label>
               </div>
-              {/* <div className="col-lg-7 mb-2">
-                <label className="upload">
-                  <CldUploadWidget
-                    onUpload={handleUpload}
-                    uploadPreset="mpbjdclg"
-                    options={{
-                      cloudName: "dcrq3m6dx", // Your Cloudinary cloud name
-                      allowedFormats: [
-                        "jpg",
-                        "png",
-                        "pdf",
-                        "csv",
-                        "word",
-                        "excel",
-                      ], // Specify allowed formats
-                      maxFiles: 50,
-                    }}
-                  >
-                    {({ open }) => (
-                      <div>
-                        <button
-                          className="btn btn-color profile_edit_button mb-5"
-                          style={{}}
-                          onClick={open} // This will open the upload widget
-                          disabled={isDisable}
-                        >
-                          Upload Files
-                        </button>
-                      </div>
-                    )}
-                  </CldUploadWidget>
-                </label>
-              </div> */}
             </div>
           </div>
           <div className="col-xl-12">
@@ -767,6 +718,9 @@ const DetailedInfo = ({
               )}
               {!isDisable &&
                 (propertyData ? (
+                  // <button className="btn btn5" onClick={submitHandler}>
+                  //   Update
+                  // </button>
                   <button
                     disabled={disable}
                     className={`btn btn5 ${isButtonDisabled ? "disabled" : ""}`}

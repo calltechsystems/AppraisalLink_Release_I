@@ -11,11 +11,8 @@ import CryptoJS from "crypto-js";
     const token = request.headers.authorization;
 
     const OrderId = request.query.OrderId;
-    // console.log(email)
-
-
     console.log(OrderId);
-    const userResponse = await axios.get(`${domain}/com.appraisalland.Bid/getQuotesByOrderID`,
+    const userResponse = await axios.get(`http://appraisalland-prod.us-east-1.elasticbeanstalk.com/api/com.appraisalland.Bid/getQuotesByOrderID`,
     {
         headers: {
           Authorization:token,

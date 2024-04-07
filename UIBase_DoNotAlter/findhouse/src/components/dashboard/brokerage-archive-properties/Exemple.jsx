@@ -176,6 +176,8 @@ export default function Exemple({
   let tempData = [];
 
   const refreshHandler = () => {
+    setProperties([])
+    setBids([])
     setRefresh(true);
   };
 
@@ -801,6 +803,10 @@ export default function Exemple({
   }, [properties]);
 
   useEffect(() => {
+
+    setProperties([])
+    setBids([])
+    
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -830,26 +836,6 @@ export default function Exemple({
       });
     toast.dismiss();
 
-    // axios
-    //   .get("/api/getPropertiesById", {
-    //     headers: {
-    //       Authorization: `Bearer ${data?.token}`,
-    //       "Content-Type": "application/json",
-    //     },
-    //     params: {
-    //       userId: data?.userId,
-    //     },
-    //   })
-    //   .then((res) => {
-    //     toast.dismiss();
-
-    //     setProperties(res.data.data.property.$values);
-    //   })
-    //   .catch((err) => {
-    //     toast.dismiss();
-    //     toast.error(err?.response?.data?.error);
-    //   });
-
     let tempBids = [];
     axios
       .get("/api/getAllBids", {
@@ -865,7 +851,6 @@ export default function Exemple({
       .catch((err) => {
         console.log(err);
         toast.error(err);
-        // setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
     toast.dismiss();

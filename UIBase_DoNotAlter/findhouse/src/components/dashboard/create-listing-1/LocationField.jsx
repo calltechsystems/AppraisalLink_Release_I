@@ -1,6 +1,6 @@
 import { current } from "@reduxjs/toolkit";
-import { province, typeOfBuilding } from "../create-listing/data";
-import { Urgency } from "../create-listing/data";
+import { province, typeOfBuilding } from "./data";
+import { Urgency } from "./data";
 
 const LocationField = ({
   isDisable,

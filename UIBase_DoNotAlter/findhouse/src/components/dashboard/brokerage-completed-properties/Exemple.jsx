@@ -293,6 +293,8 @@ export default function Exemple({
   };
 
   const refreshHandler = () => {
+    setProperties([])
+    setBids([])
     setRefresh(true);
   };
 
@@ -756,6 +758,8 @@ export default function Exemple({
   }, [properties]);
 
   useEffect(() => {
+    setProperties([])
+    setBids([])
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -819,7 +823,7 @@ export default function Exemple({
           data={sortObjectsByOrderIdDescending(updatedData)}
           headCells={headCells}
           refreshHandler={refreshHandler}
-          properties={properties}
+          properties={updatedData}
           dataFetched={dataFetched}
           start={start}
           end={end}

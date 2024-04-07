@@ -162,7 +162,7 @@ export default function Exemple({
   const [AllBrokers, setAllBrokers] = useState([]);
 
   const sortObjectsByOrderIdDescending = (data) => {
-    return data.sort((a, b) => b.order_id - a.order_id);
+    return data.sort((a, b) => b.property_id - a.property_id);
   };
 
   const getBrokerName = (id) => {
@@ -302,6 +302,9 @@ export default function Exemple({
   };
 
   const refreshHandler = () => {
+    setAllListedProperties([])
+    setBids([])
+    setProperties([])
     setRefresh(true);
   };
 
@@ -800,6 +803,10 @@ export default function Exemple({
   }, [properties]);
 
   useEffect(() => {
+
+    setAllListedProperties([])
+    setBids([])
+    setProperties([])
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -820,7 +827,6 @@ export default function Exemple({
       .then((res) => {
         toast.dismiss();
         setDataFetched(true)
-        console.log("properties",res.data.data.properties.$values);
         setAllListedProperties( res.data.data.properties.$values);
       })
       .catch((err) => {
@@ -841,7 +847,6 @@ export default function Exemple({
       })
       .then((res) => {
         toast.dismiss();
-        console.log("broker properties",res.data.data.$values);
         const temp = res.data.data.$values;
 
         axios
