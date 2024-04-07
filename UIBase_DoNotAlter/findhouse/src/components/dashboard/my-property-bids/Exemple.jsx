@@ -262,7 +262,9 @@ export default function Exemple({
     const prop = getCurrentPropertyInfoHandler();
 
     const getData = () => {
-      properties.map((property, index) => {
+      properties.map((propertyWhole, index) => {
+        const property = propertyWhole?.bid;
+
         const isWait = prop.isOnCancel || prop.isOnHold ? true : false;
         if (property.status === 1) {
           setAcceptedBid(property.bidId);
@@ -380,8 +382,8 @@ export default function Exemple({
                           target="_blank"
                           rel="noopener noreferrer"
                           href={
-                            userData?.appraiser_Details?.lenderListUrl !== ""
-                              ? userData?.appraiser_Details?.lenderListUrl
+                            propertyWhole?.lenderListUrl !== ""
+                              ? propertyWhole?.lenderListUrl
                               : ""
                           }
                           style={{ cursor: "pointer" }}
