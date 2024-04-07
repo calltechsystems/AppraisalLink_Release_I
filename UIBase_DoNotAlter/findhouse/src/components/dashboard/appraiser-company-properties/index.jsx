@@ -176,7 +176,8 @@ const Index = () => {
     const payload = {
       companyid: data.appraiserCompany_Datails.appraiserCompanyId,
       propertyid: Number(assignPropertyId),
-      appraiserid: Number(selectedAppraiser),
+      appraiserid: Number(selectedAppraiser === -1 ? assignAppraiser[0].item.id : selectedAppraiser ),
+
     };
 
     const encryptedData = encryptionData(payload);
