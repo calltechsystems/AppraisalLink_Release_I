@@ -30,7 +30,7 @@ function SmartTable(props) {
 
   const refreshHandler = () => {
     const refresh = !props.refresh;
-    props.setRefresh(refresh);
+    props.setRefresh(true);
   };
 
   console.log(props.data);
@@ -64,7 +64,7 @@ function SmartTable(props) {
     if (props.dataFetched && props.properties.length === 0) {
       const timer = setTimeout(() => {
         setShowNoData(true);
-      }, 6000);
+      }, 2000);
 
       return () => clearTimeout(timer);
     }
@@ -206,7 +206,7 @@ function SmartTable(props) {
 
     // Write the Excel blob to the new window
     excelWindow.document.write(
-      "<html><head><title>AllpropertyBids</title></head><body>"
+      "<html><head><title>AllBrokerProperties</title></head><body>"
     );
     excelWindow.document.write("<h1>" + props.title + "</h1>");
     excelWindow.document.write(
