@@ -151,8 +151,8 @@ export default function Exemple({
   const [hideAction, setHideAction] = useState(false);
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
-  
-  const [dataFetched,setDataFetched] = useState(false)
+
+  const [dataFetched, setDataFetched] = useState(false);
   const [assignedProperties, setAssignedProperties] = useState([]);
   let tempData = [];
 
@@ -467,29 +467,37 @@ export default function Exemple({
               <div className="print-hidden-column">
                 {isBidded.status === 2 ? (
                   <>
-                    <p className="btn btn-danger  w-100">Rejected </p>
-                    <li
-                      className="list-inline-item"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Archive Property"
-                    >
-                      <div
-                        className="w-100"
-                        onClick={() =>
-                          onArchivePropertyHandler(property.orderId)
-                        }
+                    <ul>
+                      <li
+                        className="list-inline-item"
+                        data-toggle="tooltip"
+                        data-placement="top"
                       >
-                        <button href="#" className="btn btn-color">
-                          <Link href="#">
-                            <span className="text-light">
-                              {" "}
-                              <FaArchive />
-                            </span>
-                          </Link>
-                        </button>
-                      </div>
-                    </li>
+                        <span className="btn btn-danger  w-100">Rejected </span>
+                      </li>
+                      <li
+                        className="list-inline-item"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="Archive Property"
+                      >
+                        <div
+                          className="w-100"
+                          onClick={() =>
+                            onArchivePropertyHandler(property.orderId)
+                          }
+                        >
+                          <button href="#" className="btn btn-color">
+                            <Link href="#">
+                              <span className="text-light">
+                                {" "}
+                                <FaArchive />
+                              </span>
+                            </Link>
+                          </button>
+                        </div>
+                      </li>
+                    </ul>
                   </>
                 ) : isWait && property.status !== 2 ? (
                   <>
@@ -691,9 +699,9 @@ export default function Exemple({
     setStartLoading(true);
   };
   useEffect(() => {
-    setProperties([])
-    setBids([])
-    setWishlist([])
+    setProperties([]);
+    setBids([]);
+    setWishlist([]);
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -714,7 +722,7 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        setDataFetched(true)
+        setDataFetched(true);
         const temp = res.data.data.properties.$values;
 
         let tempBids = [];
@@ -879,7 +887,7 @@ export default function Exemple({
         setAllArchive(res.data.data.$values);
       })
       .catch((err) => {
-        setDataFetched(false)
+        setDataFetched(false);
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });

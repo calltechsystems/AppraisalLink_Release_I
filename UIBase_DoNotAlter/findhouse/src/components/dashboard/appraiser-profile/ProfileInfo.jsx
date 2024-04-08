@@ -87,7 +87,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   const [setODesignation, setSetODesignation] = useState(false);
 
   const [selectedImage2, setSelectedImage2] = useState({
-    name: userData?.appraiser_Details?.lenderListUrl ? "Uploaded File" : "",
+    name: userData?.appraiser_Details?.lenderListUrl ? "Lender List File" : "",
     url: userData?.appraiser_Details?.lenderListUrl || "",
   });
 

@@ -148,35 +148,36 @@ const data = [
 export default function Exemple({
   userData,
   open,
-  setModalIsPopupOpen,
   start,
   end,
-  onHoldHandler,
-  setPropValue,
-  onCancelHandler,
   close,
+  setPropValue,
   properties,
   setRefresh,
-  setPropertyId,
+  setModalIsPopupOpen,
   setAllArchive,
   refresh,
   setFilterQuery,
   setModalIsOpenError,
-  setCurrentProperty,
   setSearchInput,
+  setProperties,
+  deletePropertyHandler,
   setModalOpen,
   setIsCancelProperty,
   setIsHoldProperty,
-  setProperties,
-  deletePropertyHandler,
+  setCurrentProperty,
+  setPropertyId,
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [allBids, setBids] = useState([]);
-  const [dataFetched, setDataFetched] = useState(false);
   const [show, setShow] = useState(false);
+  
+  const [dataFetched,setDataFetched] = useState(false)
   let tempData = [];
 
   const refreshHandler = () => {
+    setProperties([])
+    setBids([])
     setRefresh(true);
   };
 
@@ -243,10 +244,15 @@ export default function Exemple({
     return title;
   };
 
+  const openPopupModal = (property) => {
+    setModalIsPopupOpen(true);
+    setCurrentProperty(property);
+  };
+
   const onUnarchiveHandler = (id) => {
     const data = JSON.parse(localStorage.getItem("user"));
 
-    toast.loading("Un-archiving the Property!!...");
+    toast.loading("un-archiving the property!!...");
     // const encryptedBody = encryptionData(payload);
     axios
       .get("/api/propertyArcheive", {
@@ -255,14 +261,14 @@ export default function Exemple({
           "Content-Type": "application/json",
         },
         params: {
-          orderId: Number(id),
-          status: Boolean(false),
-          userId: Number(data.userId),
+          orderId: id,
+          status: false,
+          userId: data.userId,
         },
       })
       .then((res) => {
         toast.dismiss();
-        toast.success("Successfully Unarchived the Property!");
+        toast.success("Successfully unarchived the property!");
         window.location.reload();
       })
       .catch((err) => {
@@ -342,11 +348,6 @@ export default function Exemple({
     return data.sort((a, b) => b.order_id - a.order_id);
   };
 
-  const openPopupModal = (property) => {
-    setModalIsPopupOpen(true);
-    setCurrentProperty(property);
-  };
-
   useEffect(() => {
     const getData = () => {
       properties.map((temp, index) => {
@@ -357,8 +358,7 @@ export default function Exemple({
           const isBidded = getBidOfProperty(property.orderId);
           const isHold = property.isOnHold;
           const isCancel = property.isOnCancel;
-          console.log("isBidded", isBidded, isBidded.statusDate);
-
+          console.log("property", property);
           const isEditable = isStatus === 0 ? true : false;
           if (true) {
             const updatedRow = {
@@ -777,7 +777,10 @@ export default function Exemple({
                       className="btn btn-color-table"
                       onClick={() => onUnarchiveHandler(property.orderId)}
                     >
-                      <Link className="color-light" href={`/archive-property`}>
+                      <Link
+                        className="color-light"
+                        href={`/archive-property`}
+                      >
                         <span className="text-light flaticon-close">
                           {/* <FaArchive /> */}
                         </span>
@@ -800,13 +803,17 @@ export default function Exemple({
   }, [properties]);
 
   useEffect(() => {
+
+    setProperties([])
+    setBids([])
+    
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
       token: userData.token,
     };
 
-    toast.loading("Getting Properties...");
+    toast.loading("Getting properties...");
 
     axios
       .get("/api/getAllArchivePropertiesByBroker", {
@@ -818,33 +825,34 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        setDataFetched(true);
+        setDataFetched(true)
         const temp = res.data.data.$values;
-        let tempBids = [];
-        axios
-          .get("/api/getAllBids", {
-            headers: {
-              Authorization: `Bearer ${data.token}`,
-            },
-          })
-          .then((res) => {
-            console.log("res", res);
-            tempBids = res.data.data.$values;
-            setBids(tempBids);
-            setProperties(temp);
-          })
-          .catch((err) => {
-            toast.error(err);
-            setModalIsOpenError(true);
-          });
+        setProperties(temp);
       })
       .catch((err) => {
-        setDataFetched(false);
+        setDataFetched(false)
         toast.error(err);
         setModalIsOpenError(true);
       });
     toast.dismiss();
 
+    let tempBids = [];
+    axios
+      .get("/api/getAllBids", {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+      })
+      .then((res) => {
+        console.log("res", res);
+        tempBids = res.data.data.$values;
+        setBids(tempBids);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err);
+        setModalIsOpenError(true);
+      });
     toast.dismiss();
     setRefresh(false);
   }, [refresh]);
@@ -862,8 +870,8 @@ export default function Exemple({
           headCells={headCells}
           refreshHandler={refreshHandler}
           start={start}
-          properties={properties}
           dataFetched={dataFetched}
+          properties={updatedData}
           end={end}
         />
       )}

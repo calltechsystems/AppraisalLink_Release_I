@@ -155,8 +155,8 @@ export default function Exemple({
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
   const [Appraiser, setAppraiser] = useState({});
-  
-  const [dataFetched,setDataFetched] = useState(false)
+
+  const [dataFetched, setDataFetched] = useState(false);
   const [allProperties, setAllProperties] = useState([]);
   const [allAssignAppraiser, setAllAssignAppraiser] = useState([]);
   let tempData = [];
@@ -170,7 +170,7 @@ export default function Exemple({
         bidValue = bid;
       }
     });
-    console.log("bidValue",property,bidValue)
+    console.log("bidValue", property, bidValue);
     return bidValue;
     //   return requestTime >= twentyFourHoursAgo && requestTime <= currentTime;
   };
@@ -345,7 +345,7 @@ export default function Exemple({
     setProperties([]);
   }, [checkData]);
 
-  console.log("assignProperties",allProperties,properties)
+  console.log("assignProperties", allProperties, properties);
 
   useEffect(() => {
     const getData = () => {
@@ -355,7 +355,7 @@ export default function Exemple({
         const property = getPropertyInfo(propertyDetail?.propertyid);
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
-        console.log("isBidded",isBidded,property)
+        console.log("isBidded", isBidded, property);
         const isWait = property?.isOnHold || property?.isOnCancel;
         const updatedRow = {
           order_id: property?.orderId,
@@ -474,7 +474,7 @@ export default function Exemple({
           type_of_appraisal: property?.typeOfAppraisal
             ? property?.typeOfAppraisal
             : "N.A.",
-            type_of_building: property?.typeOfBuilding
+          type_of_building: property?.typeOfBuilding
             ? property?.typeOfBuilding
             : "N.A.",
           quote_required_by: formatDate(property?.quoteRequiredDate),
@@ -494,27 +494,37 @@ export default function Exemple({
             <div className="print-hidden-column">
               {isBidded.status === 2 ? (
                 <>
-                  <p className="btn btn-danger  w-100">Rejected </p>
-                  <li
-                    className=""
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title="Archive Property"
-                  >
-                    <div
-                      className="w-100"
-                      onClick={() => onArchivePropertyHandler(property.orderId)}
+                  <ul>
+                    <li
+                      className="list-inline-item"
+                      data-toggle="tooltip"
+                      data-placement="top"
                     >
-                      <button href="#" className="btn btn-color">
-                        <Link href="#">
-                          <span className="text-light">
-                            {" "}
-                            <FaArchive />
-                          </span>
-                        </Link>
-                      </button>
-                    </div>
-                  </li>
+                      <span className="btn btn-danger  w-100">Rejected </span>
+                    </li>
+                    <li
+                      className="list-inline-item"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Archive Property"
+                    >
+                      <div
+                        className="w-100"
+                        onClick={() =>
+                          onArchivePropertyHandler(property.orderId)
+                        }
+                      >
+                        <button href="#" className="btn btn-color">
+                          <Link href="#">
+                            <span className="text-light">
+                              {" "}
+                              <FaArchive />
+                            </span>
+                          </Link>
+                        </button>
+                      </div>
+                    </li>
+                  </ul>
                 </>
               ) : isWait ? (
                 <ul>
@@ -564,13 +574,13 @@ export default function Exemple({
         };
         tempData.push(updatedRow);
       });
-      setAssignedProp(tempData)
+      setAssignedProp(tempData);
       setUpdatedData(tempData);
     };
 
     getData();
   }, [properties]);
-  console.log("updatedDATA",updatedData)
+  console.log("updatedDATA", updatedData);
 
   useEffect(() => {
     setUpdatedCode(true);
@@ -598,10 +608,8 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        setDataFetched(true)
+        setDataFetched(true);
         const propertyInfo = res.data.data.properties.$values;
-
-        
 
         axios
           .get("/api/getAllAssignProperties", {
@@ -618,18 +626,16 @@ export default function Exemple({
             let tempProperties = res.data.data.$values;
             const temp = res.data.data.$values;
 
-            
             let assignedProps = [];
-            temp.map((prop,index)=>{
-              propertyInfo.map((assProp,idx)=>{
-                if(String(prop.propertyid) === String(assProp.$id)){
-                  assignedProps.push(assProp)
+            temp.map((prop, index) => {
+              propertyInfo.map((assProp, idx) => {
+                if (String(prop.propertyid) === String(assProp.$id)) {
+                  assignedProps.push(assProp);
                 }
-              })
+              });
             });
 
-            setGeneratedProps(assignedProps)
-            
+            setGeneratedProps(assignedProps);
 
             let tempBids = [];
             axios
@@ -641,7 +647,7 @@ export default function Exemple({
               .then((res) => {
                 // //console.log(res);
                 tempBids = res.data.data.$values;
-                
+
                 const updatedBids = tempBids.filter((prop, index) => {
                   if (String(prop.appraiserUserId) === String(data.userId)) {
                     return true;
@@ -673,7 +679,6 @@ export default function Exemple({
                     });
                     const tempId = responseData;
                     setWishlist(responseData);
-                   
                   })
                   .catch((err) => {
                     toast.error(err?.response);
@@ -694,7 +699,7 @@ export default function Exemple({
           });
       })
       .catch((err) => {
-        setDataFetched(false)
+        setDataFetched(false);
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
@@ -728,7 +733,6 @@ export default function Exemple({
           });
       })
       .catch((err) => {
-
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });

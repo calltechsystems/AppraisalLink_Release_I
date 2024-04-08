@@ -594,11 +594,11 @@ const Index = () => {
                 </div> */}
                 {/* End Dashboard Navigation */}
 
-                <div className="col-lg-12 col-xl-12 text-center mt-1">
+                {/* <div className="col-lg-12 col-xl-12 text-center mt-1">
                   <div className="style2 mb30-991">
                     <h3 className="breadcrumb_title">Allocated Properties</h3>
                   </div>
-                </div>
+                </div> */}
                 {/* End .col */}
 
                 {/*<div className="row">
@@ -1037,7 +1037,7 @@ const Index = () => {
                                           : "N.A."}
                                       </td>
                                     </tr>
-                                    <tr>
+                                    {/* <tr>
                                       <td
                                         style={{
                                           border: "1px solid grey",
@@ -1106,7 +1106,7 @@ const Index = () => {
                                         {" "}
                                         {broker.applicantPhoneNumber}
                                       </td>
-                                    </tr>
+                                    </tr> */}
                                     {/* <tr>
                                     <td
                                       style={{
@@ -1209,7 +1209,7 @@ const Index = () => {
                                         }}
                                       >
                                         <span className="text-start">
-                                          Applicant Number
+                                          Applicant Phone Number
                                         </span>
                                       </td>
                                       <td

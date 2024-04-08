@@ -12,10 +12,10 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/router";
 import Exemple from "./Exemple";
-import millify from "millify";
-import Image from "next/image";
 import { encryptionData } from "../../../utils/dataEncryption";
 import Link from "next/link";
+import Image from "next/image";
+import millify from "millify";
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,7 +24,7 @@ const Index = () => {
   const [property, setProperty] = useState("");
   const [allArchive, setAllArchive] = useState([]);
   const [filterProperty, setFilterProperty] = useState("");
-  const [filterQuery, setFilterQuery] = useState("Last 30 Days");
+  const [filterQuery, setFilterQuery] = useState("All");
   const [properties, setProperties] = useState([]);
   const [disable, setdisable] = useState(false);
   // const user = JSON.parse(localStorage.getItem("user"));
@@ -35,16 +35,18 @@ const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [currentProperty, setCurrentProperty] = useState("");
   const [propertyId, setPropertyId] = useState(null);
+  const [isCancelProperty, setIsCancelProperty] = useState(0);
+  const [isHoldProperty, setIsHoldProperty] = useState(0);
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
   );
 
   const [start, setStart] = useState(0);
-  const [isCancelProperty, setIsCancelProperty] = useState(0);
-  const [isHoldProperty, setIsHoldProperty] = useState(0);
+
   const [end, setEnd] = useState(4);
 
   useEffect(() => {
+    setRefresh(true);
     const activityHandler = () => {
       setLastActivityTimestamp(Date.now());
     };
@@ -86,7 +88,6 @@ const Index = () => {
   };
 
   const closeModal = () => {
-    setModalOpen(false);
     setIsModalOpen(false);
   };
 
@@ -96,31 +97,37 @@ const Index = () => {
     setModalOpen(false);
   };
 
-
   useEffect(() => {
+    setRefresh(true);
     const filterProperties = (propertys, searchInput) => {
       if (searchInput === "") {
         return propertys;
       }
       const filteredProperties = propertys.filter((property) => {
-       
         // Convert the search input to lowercase for a case-insensitive search
         const searchTerm = searchInput.toLowerCase();
 
+        console.log("propertyy", property);
         if (String(property.orderId) === String(searchTerm)) {
           return true;
         }
         // Check if any of the fields contain the search term
         else
           return (
-            String(property.property.orderId).toLowerCase().includes(searchTerm) ||
-            property.property.zipCode?.toLowerCase().includes(searchTerm) ||
-            property.property.area?.toLowerCase().includes(searchTerm) ||
-            property.property.city?.toLowerCase().includes(searchTerm) ||
-            property.property.province?.toLowerCase().includes(searchTerm) ||
-            property.property.streetName?.toLowerCase().includes(searchTerm) ||
-            property.property.streetNumber?.toLowerCase().includes(searchTerm) ||
-            property.property.typeOfBuilding?.toLowerCase().includes(searchTerm)
+            String(property.property?.orderId)
+              .toLowerCase()
+              .includes(searchTerm) ||
+            property.property?.zipCode?.toLowerCase().includes(searchTerm) ||
+            property.property?.area?.toLowerCase().includes(searchTerm) ||
+            property.property?.city?.toLowerCase().includes(searchTerm) ||
+            property.property?.province?.toLowerCase().includes(searchTerm) ||
+            property.property?.streetName?.toLowerCase().includes(searchTerm) ||
+            property.property?.streetNumber
+              ?.toLowerCase()
+              .includes(searchTerm) ||
+            property.property?.typeOfBuilding
+              ?.toLowerCase()
+              .includes(searchTerm)
           );
       });
 
@@ -130,22 +137,23 @@ const Index = () => {
     setFilterProperty(filteredData);
   }, [searchInput]);
 
-  const calculate= (searchDate,diff)=>{
-    const newDateObj = new Date(searchDate.addedDatetime);
+  const calculate = (searchDate, diff) => {
+    const newDateObj = new Date(searchDate.property.addedDatetime);
     const currentObj = new Date();
 
     const getMonthsFDiff = currentObj.getMonth() - newDateObj.getMonth();
     const gettingDiff = currentObj.getDate() - newDateObj.getDate();
     const gettingYearDiff = currentObj.getFullYear() - newDateObj.getFullYear();
 
-    const estimatedDiff = gettingDiff + (getMonthsFDiff * 30) + (gettingYearDiff * 365);
+    const estimatedDiff =
+      gettingDiff + getMonthsFDiff * 30 + gettingYearDiff * 365;
 
-    console.log("dayss",diff,newDateObj.getDate(),currentObj.getDate());
-    return estimatedDiff  <= diff ;
-  }
-
+    console.log("dayss", diff, newDateObj.getDate(), currentObj.getDate());
+    return estimatedDiff <= diff;
+  };
 
   const filterData = (tempData) => {
+   
     const currentDate = new Date();
     const oneYearAgo = new Date(currentDate);
     oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
@@ -154,28 +162,26 @@ const Index = () => {
       case "Last 7 days":
         const sevenDaysAgo = new Date(currentDate);
         sevenDaysAgo.setDate(currentDate.getDate() - 7);
-        return tempData.filter(
-          (item) => calculate(item,7)
-        );
+        return tempData.filter((item) => calculate(item, 7));
       case "Last 30 Days":
         const thirtyDaysAgo = new Date(currentDate);
         thirtyDaysAgo.setDate(currentDate.getDate() - 30);
-        return tempData.filter(
-          (item) => calculate(item,30)
-        );
+        return tempData.filter((item) => calculate(item, 30));
       case "Last 3 Month":
         const threeMonthsAgo = new Date(currentDate);
         threeMonthsAgo.setMonth(currentDate.getMonth() - 3);
-        return tempData.filter(
-          (item) => calculate(item,90)
-        );
+        return tempData.filter((item) => calculate(item, 90));
 
       default:
         return tempData; // Return all data if no valid timeFrame is specified
     }
   };
 
-
+  useEffect(() => {
+    const tmpData = filterData(properties);
+    console.log("filterQuery", filterQuery, tmpData, tmpData.length);
+    setFilterProperty(tmpData);
+  }, [filterQuery]);
   const [propValue, setPropValue] = useState({});
 
   const onHoldHandler = () => {
@@ -193,7 +199,7 @@ const Index = () => {
 
     const encryptedBody = encryptionData(payload);
 
-    toast.loading("Turning the Property Status.....");
+    toast.loading("Turning the property status.....");
     axios
       .put("/api/setPropertyOnHold", encryptedBody)
       .then((res) => {
@@ -226,7 +232,7 @@ const Index = () => {
 
     const encryptedBody = encryptionData(payload);
 
-    toast.loading("Turning the Property Status...");
+    toast.loading("Turning the property status...");
     axios
       .put("/api/setPropertyOnHold", encryptedBody)
       .then((res) => {
@@ -243,16 +249,7 @@ const Index = () => {
     setPropertyId(-1);
   };
 
-  // const closeCancelHoldHandler = () => {
-  //   setIsCancelProperty(false);
-  //   setIsHoldProperty(false);
-  //   setModalOpen(false);
-  // };
 
-  useEffect(() => {
-    const tmpData = filterData(properties);
-    setFilterProperty(tmpData);
-  }, [filterQuery]);
 
   const handleDelete = () => {
     const data = JSON.parse(localStorage.getItem("user"));
@@ -280,23 +277,23 @@ const Index = () => {
 
   const [userData, setUserData] = useState({});
 
-  useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("user"));
-    if (!data) {
-      router.push("/login");
-    } else if (!data?.broker_Details?.firstName) {
-      router.push("/my-profile");
-    }
-    if (!data) {
-      router.push("/login");
-    }
-    const fetchData = () => {
-      if (data) {
-        setUserData(data);
-      }
-    };
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   const data = JSON.parse(localStorage.getItem("user"));
+  //   if (!data) {
+  //     router.push("/login");
+  //   } else if (!data?.broker_Details?.firstName) {
+  //     router.push("/my-profile");
+  //   }
+  //   if (!data) {
+  //     router.push("/login");
+  //   }
+  //   const fetchData = () => {
+  //     if (data) {
+  //       setUserData(data);
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
 
   return (
     <>
@@ -379,28 +376,30 @@ const Index = () => {
                       <div className="mt0">
                         <TableData
                           userData={userData}
-                          setModalOpen={setModalOpen}
                           open={openModal}
                           close={closeModal}
                           setProperties={setProperties}
                           start={start}
                           end={end}
                           properties={
-                            searchInput === "" ? properties : filterProperty
+                            searchInput === "" && filterQuery === "All"
+                              ? properties
+                              : filterProperty
                           }
                           setAllArchive={setAllArchive}
                           setModalIsOpenError={setModalIsOpenError}
                           setErrorMessage={setErrorMessage}
                           setRefresh={setRefresh}
-                          setPropValue={setPropValue}
-                          setModalIsPopupOpen={setModalIsPopupOpen}
                           refresh={refresh}
                           setFilterQuery={setFilterQuery}
-                          setPropertyId={setPropertyId}
                           setSearchInput={setSearchInput}
+                          setModalIsPopupOpen={setModalIsPopupOpen}
+                          setPropValue={setPropValue}
+                          setPropertyId={setPropertyId}
                           setCurrentProperty={setCurrentProperty}
                           setIsCancelProperty={setIsCancelProperty}
                           setIsHoldProperty={setIsHoldProperty}
+                          setModalOpen={setModalOpen}
                         />
 
                         {modalIsPopupOpen && (

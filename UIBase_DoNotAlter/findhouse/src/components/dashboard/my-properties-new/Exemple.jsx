@@ -149,7 +149,6 @@ export default function Exemple({
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [allBids, setBids] = useState([]);
-  const [archive, setArchive] = useState([]);
   const [show, setShow] = useState(false);
   const [dataFetched, setDataFetched] = useState(false);
   let tempData = [];
@@ -207,7 +206,6 @@ export default function Exemple({
 
   const getOrderValue = (val) => {
     let title = "";
-    console.log("value", val);
     AppraiserStatusOptions?.map((status) => {
       if (String(status.id) === String(val)) {
         title = status.type;
@@ -270,6 +268,8 @@ export default function Exemple({
   };
 
   const refreshHandler = () => {
+    setProperties([]);
+    setBids([]);
     setRefresh(true);
   };
 
@@ -295,16 +295,6 @@ export default function Exemple({
     return isCompleted ? 3 : isAccepted ? 2 : isQuoteProvided ? 1 : 0;
   };
 
-  const getArchiveProperty = (orderId) => {
-    let prop = {};
-    archive.map((temp, index) => {
-      if (String(temp.property.orderId) === String(orderId)) {
-        prop = temp;
-      }
-    });
-    return prop;
-  };
-
   const openPopupModal = (property) => {
     setModalIsPopupOpen(true);
     setCurrentProperty(property);
@@ -312,19 +302,19 @@ export default function Exemple({
   useEffect(() => {
     const getData = () => {
       properties.map((property, index) => {
-        const Archived = getArchiveProperty(property.orderId);
         const isBidded = getBidOfProperty(property.orderId);
         const isHold = property.isOnHold;
         const isCancel = property.isOnCancel;
         const isStatus = getPropertyStatusHandler(property);
+        console.log(isStatus);
         const isEditable = isStatus === 0 ? true : false;
-        if (!Archived.$id) {
+        if (!property.isArchive) {
           const updatedRow = {
             order_id: property.orderId,
             sub_date: formatDate(property.addedDatetime),
             quote_required_by: property.quoteRequiredDate
               ? formatDateNew(property.quoteRequiredDate)
-              : formatDateNew(property.addedDate),
+              : formatDateNew(property.addedDatetime),
             status:
               isHold || isCancel ? (
                 <span className="btn bg-danger text-light w-100">
@@ -367,11 +357,12 @@ export default function Exemple({
                 <span className="btn bg-warning  w-100">N.A.</span>
               ),
             address: `${property.streetNumber} ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
-            remark: isBidded?.remark ? isBidded?.remark : "N.A.",
+            remark: isBidded.remark ? isBidded.remark : "N.A.",
             // remark: property.remark ? property.remark : "N.A.",
             // user: property.applicantEmailAddress,
             type_of_building: property.typeOfBuilding,
-            amount: ` $ ${millify(property.estimatedValue)}`,
+            // amount: ` $ ${millify(property.estimatedValue)}`,
+            amount: ` $ ${property.estimatedValue}`,
             purpose: property.purpose,
             type_of_appraisal: property.typeOfAppraisal,
             lender_information: property.lenderInformation
@@ -447,9 +438,9 @@ export default function Exemple({
                 </Link>
               </li> */}
 
-                {(isEditable || isStatus === 1) && (
+                {(isEditable || isStatus === 1) && !isCancel && (
                   <li>
-                    <Link href={`/create-listing/${property.propertyId}`}>
+                    <Link href={`/create-listing/${property.orderId}`}>
                       <span className="btn btn-color w-100 mb-1"> Edit </span>
                     </Link>{" "}
                     {/* <Link
@@ -724,7 +715,10 @@ export default function Exemple({
                     className="btn btn-color-table"
                     onClick={() => archievePropertyHandler(property.orderId)}
                   >
-                    <Link className="color-light" href={`/archive-property`}>
+                    <Link
+                      className="color-light"
+                      href={`/archive-property`}
+                    >
                       <span className="text-light">
                         <FaArchive />
                       </span>
@@ -789,25 +783,6 @@ export default function Exemple({
             setDataFetched(false);
             // setModalIsOpenError(true);
           });
-        axios
-          .get("/api/getAllArchivePropertiesByBroker", {
-            headers: {
-              Authorization: `Bearer ${data.token}`,
-            },
-            params: {
-              userId: data.userId,
-            },
-          })
-          .then((res) => {
-            console.log(res);
-            const temp = res.data.data.$values;
-            setArchive(temp);
-          })
-          .catch((err) => {
-            console.log(err);
-            toast.error(err);
-            setModalIsOpenError(true);
-          });
       })
       .catch((err) => {
         toast.dismiss();
@@ -829,8 +804,8 @@ export default function Exemple({
           headCells={headCells}
           refreshHandler={refreshHandler}
           start={start}
-          properties={updatedData}
           dataFetched={dataFetched}
+          properties={updatedData}
           end={end}
         />
       )}

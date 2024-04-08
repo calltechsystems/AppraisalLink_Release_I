@@ -36,9 +36,9 @@ function SmartTable(props) {
   };
 
   const refreshHandler = () => {
-    // const refresh = !props.refresh;
-    // props.setRefresh(refresh);
-    window.location.reload();
+    const refresh = !props.refresh;
+    props.setRefresh(refresh);
+    // window.location.reload();
   };
   const fetchData = useCallback(
     async (queryString) => {
@@ -388,7 +388,7 @@ function SmartTable(props) {
                   <div className="col-lg-6 w-50">
                     <button
                       className="btn btn-color"
-                      onClick={() => refreshHandler()}
+                      onClick={() => props.refreshHandler()}
                       title="Refresh"
                     >
                       <FaRedo />

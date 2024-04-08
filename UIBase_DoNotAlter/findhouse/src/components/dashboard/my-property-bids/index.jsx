@@ -509,7 +509,7 @@ const Index = ({ propertyId }) => {
                   </div>
                   <div className="row">
                     <div className="col-lg-12 text-center">
-                      <h3 className=" text-color mt-1">Appraiser Details</h3>
+                      <h2 className=" text-color mt-1">Appraiser Details</h2>
                     </div>
                   </div>
                   <div
@@ -640,7 +640,7 @@ const Index = ({ propertyId }) => {
                             style={{
                               border: "1px solid #2e008b",
                               color: "#2e008b",
-                              // padding: "5px",
+                              // paddingLeft:"10px"
                               textAlign: "center",
                             }}
                           >
@@ -651,7 +651,7 @@ const Index = ({ propertyId }) => {
                               border: "1px solid #2e008b",
                               // width: "470px",
                               color: "#2e008b",
-                              // padding: "5px",
+                              // paddingLeft:"10px"
                               textAlign: "center",
                             }}
                           >
@@ -663,8 +663,9 @@ const Index = ({ propertyId }) => {
                         <tr>
                           <td
                             style={{
-                              border: "1px solid grey",
+                              border: "1px solid #2e008b",
                               color: "#2e008b",
+                              paddingLeft:"10px"
                             }}
                           >
                             <span className="text-start">Appraiser Name</span>
@@ -674,7 +675,7 @@ const Index = ({ propertyId }) => {
                               border: "1px solid #2e008b",
                               width: "250px",
                               color: "black",
-                              padding: "5px",
+                              paddingLeft: "10px",
                             }}
                           >
                             {appInfo.firstName} {appInfo.lastName}
@@ -683,8 +684,9 @@ const Index = ({ propertyId }) => {
                         <tr>
                           <td
                             style={{
-                              border: "1px solid grey",
+                               border: "1px solid #2e008b",
                               color: "#2e008b",
+                              paddingLeft:"10px"
                             }}
                           >
                             <span className="text-start">Email Address</span>
@@ -694,7 +696,7 @@ const Index = ({ propertyId }) => {
                               border: "1px solid #2e008b",
                               width: "250px",
                               color: "black",
-                              padding: "5px",
+                              paddingLeft:"10px"
                             }}
                           >
                             {appInfo.emailId ? appInfo.emailId : "N.A."}
@@ -703,8 +705,9 @@ const Index = ({ propertyId }) => {
                         <tr>
                           <td
                             style={{
-                              border: "1px solid grey",
+                               border: "1px solid #2e008b",
                               color: "#2e008b",
+                              paddingLeft:"10px"
                             }}
                           >
                             <span className="text-start">Phone Number</span>
@@ -714,7 +717,7 @@ const Index = ({ propertyId }) => {
                               border: "1px solid #2e008b",
                               width: "250px",
                               color: "black",
-                              padding: "5px",
+                              paddingLeft:"10px"
                             }}
                           >
                             {appInfo.phoneNumber ? appInfo.phoneNumber : "N.A."}
@@ -723,8 +726,9 @@ const Index = ({ propertyId }) => {
                         <tr>
                           <td
                             style={{
-                              border: "1px solid grey",
+                               border: "1px solid #2e008b",
                               color: "#2e008b",
+                              paddingLeft:"10px"
                             }}
                           >
                             <span className="text-start">Cell Number</span>
@@ -734,7 +738,7 @@ const Index = ({ propertyId }) => {
                               border: "1px solid #2e008b",
                               width: "250px",
                               color: "black",
-                              padding: "5px",
+                              paddingLeft:"10px"
                             }}
                           >
                             {appInfo.cellNumber ? appInfo.cellNumber : "N.A."}
@@ -743,8 +747,9 @@ const Index = ({ propertyId }) => {
                         <tr>
                           <td
                             style={{
-                              border: "1px solid grey",
+                               border: "1px solid #2e008b",
                               color: "#2e008b",
+                              paddingLeft:"10px"
                             }}
                           >
                             <span className="text-start">Company Name</span>
@@ -754,7 +759,7 @@ const Index = ({ propertyId }) => {
                               border: "1px solid #2e008b",
                               width: "250px",
                               color: "black",
-                              padding: "5px",
+                              paddingLeft:"10px"
                             }}
                           >
                             {appInfo.companyName
@@ -765,8 +770,9 @@ const Index = ({ propertyId }) => {
                         <tr>
                           <td
                             style={{
-                              border: "1px solid grey",
+                               border: "1px solid #2e008b",
                               color: "#2e008b",
+                              paddingLeft:"10px"
                             }}
                           >
                             <span className="text-start">Designation</span>
@@ -776,7 +782,7 @@ const Index = ({ propertyId }) => {
                               border: "1px solid #2e008b",
                               width: "250px",
                               color: "black",
-                              padding: "5px",
+                              paddingLeft:"10px"
                             }}
                           >
                             {appInfo.designation ? appInfo.designation : "N.A."}
@@ -785,8 +791,9 @@ const Index = ({ propertyId }) => {
                         <tr>
                           <td
                             style={{
-                              border: "1px solid grey",
+                               border: "1px solid #2e008b",
                               color: "#2e008b",
+                              paddingLeft:"10px"
                             }}
                           >
                             <span className="text-start">Address</span>
@@ -796,7 +803,7 @@ const Index = ({ propertyId }) => {
                               border: "1px solid #2e008b",
                               width: "400px",
                               color: "black",
-                              padding: "5px",
+                              paddingLeft:"10px"
                             }}
                           >
                             {appInfo.addressLineOne}
@@ -810,8 +817,9 @@ const Index = ({ propertyId }) => {
                         <tr>
                           <td
                             style={{
-                              border: "1px solid grey",
+                               border: "1px solid #2e008b",
                               color: "#2e008b",
+                              paddingLeft:"10px"
                             }}
                           >
                             <span className="text-start">
@@ -823,7 +831,7 @@ const Index = ({ propertyId }) => {
                               border: "1px solid #2e008b",
                               width: "250px",
                               color: "black",
-                              padding: "5px",
+                              paddingLeft:"10px"
                             }}
                           >
                             {appInfo.officeContactFirstName
@@ -835,8 +843,9 @@ const Index = ({ propertyId }) => {
                         <tr>
                           <td
                             style={{
-                              border: "1px solid grey",
+                               border: "1px solid #2e008b",
                               color: "#2e008b",
+                              paddingLeft:"10px"
                             }}
                           >
                             <span className="text-start">
@@ -848,7 +857,7 @@ const Index = ({ propertyId }) => {
                               border: "1px solid #2e008b",
                               width: "250px",
                               color: "black",
-                              padding: "5px",
+                              paddingLeft:"10px"
                             }}
                           >
                             {appInfo.officeContactPhone
@@ -859,8 +868,9 @@ const Index = ({ propertyId }) => {
                         <tr>
                           <td
                             style={{
-                              border: "1px solid grey",
+                               border: "1px solid #2e008b",
                               color: "#2e008b",
+                              paddingLeft:"10px"
                             }}
                           >
                             <span className="text-start">
@@ -872,7 +882,7 @@ const Index = ({ propertyId }) => {
                               border: "1px solid #2e008b",
                               width: "250px",
                               color: "black",
-                              padding: "5px",
+                              paddingLeft:"10px"
                             }}
                           >
                             {appInfo.officeContactEmail
@@ -883,13 +893,13 @@ const Index = ({ propertyId }) => {
                       </tbody>
                     </table>
                   </div>
-                  <div
+                  {/* <div
                     className="mt-2 mb-3"
                     style={{ border: "2px solid #97d700" }}
-                  ></div>
+                  ></div> */}
                   <div className="text-center" style={{}}>
                     <button
-                      className="btn btn-color w-50"
+                      className="btn btn-color w-50 mt-3"
                       onClick={() => closeAppraiserHandler()}
                     >
                       Ok

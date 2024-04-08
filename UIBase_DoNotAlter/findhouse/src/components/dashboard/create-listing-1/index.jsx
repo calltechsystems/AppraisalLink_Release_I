@@ -492,7 +492,7 @@ const Index = ({ isView, propertyData }) => {
 
         const url = window.location.pathname;
 
-        const propertyOrderId = url.split("/create-listing/")[1];
+        const propertyOrderId = url.split("/create-listing-1/")[1];
 
         toast.loading("Updating the property..");
         axios

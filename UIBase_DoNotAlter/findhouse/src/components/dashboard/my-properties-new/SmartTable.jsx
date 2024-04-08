@@ -6,7 +6,6 @@ import SVGChevronLeft from "./icons/SVGChevronLeft";
 import SVGChevronRight from "./icons/SVGChevronRight";
 import { FaRedo } from "react-icons/fa";
 import * as XLSX from "xlsx";
-
 import { useReactToPrint } from "react-to-print";
 import toast from "react-hot-toast";
 import SearchBox from "./SearchBox";
@@ -38,7 +37,10 @@ function SmartTable(props) {
   const refreshHandler = () => {
     const refresh = !props.refresh;
     props.setRefresh(refresh);
+    // toast.loading("Loading....");
+    // window.location.reload();
   };
+
   const fetchData = useCallback(
     async (queryString) => {
       setLoading(true);
@@ -71,7 +73,7 @@ function SmartTable(props) {
       // Open print window and set up basic structure
       const printWindow = window.open("", "_blank");
       printWindow.document.write(
-        "<html><head><title>AllBrokerProperties</title></head><body>" +
+        "<html><head><title>Brokerage Properties</title></head><body>" +
           // Add CSS styles within the <style> tag
           "<style>" +
           // Define your CSS styles here
@@ -94,18 +96,17 @@ function SmartTable(props) {
       const staticHeaders = [
         ["order_id", "Order Id"],
         ["address", "Address"],
-        ["status", "Order Status"],
-        ["appraisal_status", "Order Status"],
+        ["status", "Status"],
+        ["appraisal_status", "Appraisal Status"],
         ["remark", "Remark"],
-        ["sub_date", "Submission Date"],
         ["urgency", "Urgency"],
-        ["quote_required_by", "Quote Required By"],
+        ["sub_date", "Submission Date"],
         ["type_of_building", "Type Of Building"],
-        ["amount", "Estimated Value"],
-        ["purpose", "Purpose"],
+        ["amount", "Estimated Property Value ($)"],
         ["type_of_appraisal", "Type Of Appraisal"],
+        ["purpose", "Purpose"],
         ["lender_information", "Lender Information"],
-      ]; // Add your static headers here
+      ];
       staticHeaders.forEach((headerText) => {
         const th = document.createElement("th");
         th.textContent = headerText[1];
@@ -115,13 +116,64 @@ function SmartTable(props) {
 
       // Iterate over all data and append rows to the table body
       const tableBody = document.createElement("tbody");
+      // Iterate over all data and append rows to the table body
       allData.forEach((item) => {
         const row = tableBody.insertRow();
         staticHeaders.forEach((header) => {
           const cell = row.insertCell();
-          cell.textContent = item[header[0].toLowerCase()]; // Use bracket notation to access item properties dynamically
+          if (
+            header[0].toLowerCase() === "appraisal_status" ||
+            header[0].toLowerCase() === "status"
+          ) {
+            const value = item[header[0].toLowerCase()];
+            const className = value.props.className;
+            const content = value.props.children;
+
+            // Create a span element to contain the content
+            const spanElement = document.createElement("span");
+            spanElement.textContent = content;
+
+            // Apply styles based on className
+            if (className.includes("bg-warning")) {
+              spanElement.style.backgroundColor = "";
+              spanElement.style.color = "#E4A11B";
+              spanElement.style.height = "max-content";
+              spanElement.style.width = "120px";
+              spanElement.style.padding = "8px";
+              spanElement.style.fontWeight = "bold";
+            } else if (className.includes("bg-danger")) {
+              spanElement.style.backgroundColor = "";
+              spanElement.style.color = "#DC4C64";
+              spanElement.style.height = "max-content";
+              spanElement.style.width = "120px";
+              spanElement.style.padding = "8px";
+              spanElement.style.fontWeight = "bold";
+              // Add more styles as needed
+            } else if (className.includes("bg-success")) {
+              spanElement.style.backgroundColor = "";
+              spanElement.style.color = "#14A44D";
+              spanElement.style.height = "max-content";
+              spanElement.style.width = "120px";
+              spanElement.style.padding = "8px";
+              spanElement.style.fontWeight = "bold";
+              // Add more styles as needed
+            } else {
+              spanElement.style.backgroundColor = "";
+              spanElement.style.color = "#54B4D3";
+              spanElement.style.height = "max-content";
+              spanElement.style.width = "120px";
+              spanElement.style.padding = "8px";
+              spanElement.style.fontWeight = "bold";
+            }
+
+            // Append the span element to the cell
+            cell.appendChild(spanElement);
+          } else {
+            cell.textContent = item[header[0].toLowerCase()];
+          }
         });
       });
+
       clonedTable.appendChild(tableBody);
       clonedTable.appendChild(tableBody);
 
@@ -227,6 +279,18 @@ function SmartTable(props) {
     };
   };
 
+  const [showNoData, setShowNoData] = useState(false);
+
+  useEffect(() => {
+    if (props.dataFetched && props.properties.length === 0) {
+      const timer = setTimeout(() => {
+        setShowNoData(true);
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [props.dataFetched, props.properties]);
+
   const handleSearch = debounce((event) => {
     const { value } = event.target;
     setSearch(value);
@@ -245,38 +309,51 @@ function SmartTable(props) {
     }
   }, props.searchDebounceTime ?? 800);
 
-  const [showNoData, setShowNoData] = useState(false);
-
-  useEffect(() => {
-    if (props.dataFetched && props.properties.length === 0) {
-      const timer = setTimeout(() => {
-        setShowNoData(true);
-      }, 2000);
-
-      return () => clearTimeout(timer);
+  const extractTextContent = (cellValue) => {
+    if (typeof cellValue === "string") {
+      return cellValue; // If it's a string, return it as is
+    } else if (typeof cellValue === "object" && cellValue.$$typeof) {
+      // If it's a React element, extract text content recursively from children
+      return extractTextContent(cellValue.props.children);
+    } else {
+      return String(cellValue); // Convert other types to string and return
     }
-  }, [props.dataFetched, props.properties]);
+  };
 
   const sortData = (cell) => {
-    let tempData = data.length > 0 ? [...data] : [...props.data];
+    // Clone props.properties to avoid mutating the original data
+    let tempData = [...props.properties];
 
+    // Toggle sorting order for the current cell
+    const newSortDesc = { ...sortDesc };
+    newSortDesc[cell] = !newSortDesc[cell];
+
+    // Perform sorting
     tempData.sort((a, b) => {
-      const valueA =
-        typeof a[cell] === "string" ? a[cell].toLowerCase() : a[cell];
-      const valueB =
-        typeof b[cell] === "string" ? b[cell].toLowerCase() : b[cell];
+      // Extract text content from cell value (React element or other type)
+      const valueA = extractTextContent(a[cell]);
+      const valueB = extractTextContent(b[cell]);
 
-      if (sortDesc[cell]) {
+      // Perform comparison based on the sorting order
+      if (newSortDesc[cell]) {
         return valueA < valueB ? 1 : -1;
       } else {
         return valueA > valueB ? 1 : -1;
       }
     });
-    setSortDesc({ [cell]: !sortDesc[cell] });
 
+    // Update state with the new sorting order and sorted data
+    setSortDesc(newSortDesc);
     setData(tempData);
   };
-  console.log(data.length > 0, data);
+
+  useEffect(() => {
+    const sortObjectsByOrderIdDescending = (data) => {
+      return data.sort((a, b) => b.order_id - a.order_id);
+    };
+
+    setData(sortObjectsByOrderIdDescending(props.data));
+  }, [props.data]);
 
   return (
     <div className="col-12 p-1">

@@ -35,10 +35,10 @@ function SmartTable(props) {
   };
 
   const refreshHandler = () => {
-    // const refresh = !props.refresh;
-    // props.setRefresh(refresh);
-    toast.loading("Loading....");
-    window.location.reload();
+    const refresh = !props.refresh;
+    props.setRefresh(refresh);
+    // toast.loading("Loading....");
+    // window.location.reload();
   };
 
   const fetchData = useCallback(
@@ -310,9 +310,9 @@ function SmartTable(props) {
   }, props.searchDebounceTime ?? 800);
 
   const extractTextContent = (cellValue) => {
-    if (typeof cellValue === 'string') {
+    if (typeof cellValue === "string") {
       return cellValue; // If it's a string, return it as is
-    } else if (typeof cellValue === 'object' && cellValue.$$typeof) {
+    } else if (typeof cellValue === "object" && cellValue.$$typeof) {
       // If it's a React element, extract text content recursively from children
       return extractTextContent(cellValue.props.children);
     } else {
@@ -323,17 +323,17 @@ function SmartTable(props) {
   const sortData = (cell) => {
     // Clone props.properties to avoid mutating the original data
     let tempData = [...props.properties];
-  
+
     // Toggle sorting order for the current cell
     const newSortDesc = { ...sortDesc };
     newSortDesc[cell] = !newSortDesc[cell];
-  
+
     // Perform sorting
     tempData.sort((a, b) => {
       // Extract text content from cell value (React element or other type)
       const valueA = extractTextContent(a[cell]);
       const valueB = extractTextContent(b[cell]);
-  
+
       // Perform comparison based on the sorting order
       if (newSortDesc[cell]) {
         return valueA < valueB ? 1 : -1;
@@ -341,22 +341,20 @@ function SmartTable(props) {
         return valueA > valueB ? 1 : -1;
       }
     });
-  
+
     // Update state with the new sorting order and sorted data
     setSortDesc(newSortDesc);
     setData(tempData);
   };
-  
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     const sortObjectsByOrderIdDescending = (data) => {
       return data.sort((a, b) => b.order_id - a.order_id);
     };
 
-    setData(sortObjectsByOrderIdDescending(props.data))
-  },[props.data])
+    setData(sortObjectsByOrderIdDescending(props.data));
+  }, [props.data]);
 
-  
   return (
     <div className="col-12 p-1">
       <div className="smartTable-container row">
@@ -391,7 +389,7 @@ function SmartTable(props) {
                   <div className="col-lg-6 w-50">
                     <button
                       className="btn btn-color"
-                      onClick={() => refreshHandler()}
+                      onClick={() => props.refreshHandler()}
                       title="Refresh"
                     >
                       <FaRedo />

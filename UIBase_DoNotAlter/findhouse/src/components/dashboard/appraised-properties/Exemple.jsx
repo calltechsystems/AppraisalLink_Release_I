@@ -499,29 +499,37 @@ export default function Exemple({
               <div className="print-hidden-column">
                 {isBidded.status === 2 ? (
                   <>
-                    <p className="btn btn-danger  w-100">Rejected </p>
-                    <li
-                      className="list-inline-item"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Archive Property"
-                    >
-                      <div
-                        className="w-100"
-                        onClick={() =>
-                          onArchivePropertyHandler(property.orderId)
-                        }
+                    <ul>
+                      <li
+                        className="list-inline-item"
+                        data-toggle="tooltip"
+                        data-placement="top"
                       >
-                        <button href="#" className="btn btn-color">
-                          <Link href="#">
-                            <span className="text-light">
-                              {" "}
-                              <FaArchive />
-                            </span>
-                          </Link>
-                        </button>
-                      </div>
-                    </li>
+                        <span className="btn btn-danger  w-100">Rejected </span>
+                      </li>
+                      <li
+                        className="list-inline-item"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="Archive Property"
+                      >
+                        <div
+                          className="w-100"
+                          onClick={() =>
+                            onArchivePropertyHandler(property.orderId)
+                          }
+                        >
+                          <button href="#" className="btn btn-color">
+                            <Link href="#">
+                              <span className="text-light">
+                                {" "}
+                                <FaArchive />
+                              </span>
+                            </Link>
+                          </button>
+                        </div>
+                      </li>
+                    </ul>
                   </>
                 ) : isWait ? (
                   <ul>
@@ -529,7 +537,6 @@ export default function Exemple({
                       className="list-inline-item"
                       data-toggle="tooltip"
                       data-placement="top"
-                      title="Archive Property"
                     >
                       <p className="btn btn-danger  w-100">
                         {`No further actions can be taken on this property since it is ${
@@ -632,7 +639,30 @@ export default function Exemple({
                         </div>
                       </li>
                     )}
-
+                    {isBidded.status === 1 && isBidded.orderStatus !== 3 ? (
+                      <>
+                        <ul>
+                          <li
+                            className="list-inline-item"
+                            data-toggle="tooltip"
+                            data-placement="top"
+                            title="Status Update"
+                          >
+                            <button
+                              href="#"
+                              className="btn btn-color"
+                              onClick={() => openStatusUpdateHandler(isBidded)}
+                            >
+                              <Link href="#">
+                                <span className="flaticon-edit text-light"></span>
+                              </Link>
+                            </button>
+                          </li>
+                        </ul>
+                      </>
+                    ) : (
+                      ""
+                    )}
                     <li
                       className="list-inline-item"
                       data-toggle="tooltip"
@@ -657,21 +687,31 @@ export default function Exemple({
                     </li>
                   </ul>
                 )}
-                {isBidded.status === 1 && isBidded.orderStatus !== 3 ? (
+
+                {/* {isBidded.status === 1 && isBidded.orderStatus !== 3 ? (
                   <>
-                    <button
-                      href="#"
-                      className="btn btn-color m-1"
-                      onClick={() => openStatusUpdateHandler(isBidded)}
-                    >
-                      <Link href="#">
-                        <span className="flaticon-edit text-light"></span>
-                      </Link>
-                    </button>
+                    <ul>
+                      <li
+                        className="list-inline-item"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="Status Update"
+                      >
+                        <button
+                          href="#"
+                          className="btn btn-color m-1"
+                          onClick={() => openStatusUpdateHandler(isBidded)}
+                        >
+                          <Link href="#">
+                            <span className="flaticon-edit text-light"></span>
+                          </Link>
+                        </button>
+                      </li>
+                    </ul>
                   </>
                 ) : (
                   ""
-                )}
+                )} */}
               </div>
             ),
           };
