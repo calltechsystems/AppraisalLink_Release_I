@@ -11,7 +11,7 @@ const CopyrightFooter = () => {
   ];
 
   return (
-    <div className="row" style={{padding:0}}>
+    <div className="row" style={{ padding: 0 }}>
       {/* <div className="col-lg-6 col-xl-6">
         <div className="footer_menu_widget">
           <ul>
@@ -27,13 +27,9 @@ const CopyrightFooter = () => {
 
       <div className="col-12">
         <div className="copyright-widget text-center">
-          <p>
-            &copy; {new Date().getFullYear()} {" "}
-            <a
-              href="#"
-              target="_blank"
-              rel="noreferrer"
-            >
+          <p className="text-light">
+            &copy; {new Date().getFullYear()}{" "}
+            <a href="#" target="_blank" rel="noreferrer" className="text-light">
               Appraisal Land
             </a>
             . All rights reserved.

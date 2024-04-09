@@ -273,10 +273,12 @@ export default function Exemple({
     setRefresh(true);
   };
 
+  
   function addCommasToNumber(number) {
     if (Number(number) <= 100 || number === undefined) return number;
     return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
+
 
   const getPropertyStatusHandler = (property) => {
     let isInProgress = true;
@@ -311,7 +313,7 @@ export default function Exemple({
         const isHold = property.isOnHold;
         const isCancel = property.isOnCancel;
         const isStatus = getPropertyStatusHandler(property);
-        console.log(isStatus);
+        console.log("isBidded",isBidded.orderStatus,property.orderId);
         const isEditable = isStatus === 0 ? true : false;
         if (!property.isArchive) {
           const updatedRow = {
@@ -344,19 +346,19 @@ export default function Exemple({
               ) : (
                 <span className="btn bg-info w-100 text-light">Cancelled</span>
               ),
-            appraisal_status:
+              appraisal_status:
               isHold || isCancel ? (
                 <span className="btn bg-warning w-100">
                   {isHold ? "N.A." : "N.A."}
                 </span>
-              ) : property.orderStatus === 1 ? (
+              ) :isBidded.orderStatus !== 1 && isBidded.orderStatus !== null && isBidded.orderStatus !== undefined ? (
+                <span className="btn bg-warning  w-100">
+                  {getOrderValue(isBidded.orderStatus)}
+                </span>
+              ) : isBidded.$id && isBidded.status === 1  && isBidded.orderStatus === 1  && isBidded.orderStatus !== undefined? (
                 <span className="btn bg-warning  w-100">
                   {getOrderValue(isBidded.orderStatus)} -
                   {formatDate(isBidded.statusDate)}
-                </span>
-              ) : property.orderStatus !== null ? (
-                <span className="btn bg-warning  w-100">
-                  {getOrderValue(isBidded.orderStatus)}
                 </span>
               ) : (
                 <span className="btn bg-warning  w-100">N.A.</span>
@@ -720,7 +722,10 @@ export default function Exemple({
                     className="btn btn-color-table"
                     onClick={() => archievePropertyHandler(property.orderId)}
                   >
-                    <Link className="color-light" href={`/archive-property`}>
+                    <Link
+                      className="color-light"
+                      href={`/archive-property`}
+                    >
                       <span className="text-light">
                         <FaArchive />
                       </span>

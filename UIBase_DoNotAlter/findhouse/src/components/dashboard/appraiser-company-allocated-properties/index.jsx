@@ -105,6 +105,8 @@ const Index = () => {
     setIsStatusModal(false);
   };
 
+  const [searchedProperties, setSearchedProperties] = useState([]);
+
   const [openBrokerModal, setOpenBrokerModal] = useState(false);
   const [broker, setBroker] = useState({});
 
@@ -265,7 +267,7 @@ const Index = () => {
       if (searchInput === "") {
         return propertys;
       }
-      const filteredProperties = propertys.filter((property) => {
+      const filteredProperties = properties.filter((property) => {
         // Convert the search input to lowercase for a case-insensitive search
         const searchTerm = searchInput.toLowerCase();
 
@@ -285,13 +287,13 @@ const Index = () => {
             property.typeOfBuilding?.toLowerCase().includes(searchTerm)
           );
       });
-
       return filteredProperties;
     };
-    const filteredData = filterProperties(generatedProp, searchInput);
-    console.log("filterQuery", filterData, searchInput);
-    setFilterProperty(filteredData);
+    const filteredData = filterProperties(properties, searchInput);
+    setSearchedProperties(filteredData);
   }, [searchInput]);
+
+  console.log("filterProperties", searchInput, filterProperty);
 
   const calculate = (searchDate, diff) => {
     const newDateObj = new Date(searchDate.addedDatetime);
@@ -309,7 +311,6 @@ const Index = () => {
   };
 
   const filterData = (tempData) => {
-    console.log("filterData", tempData);
     const currentDate = new Date();
     const oneYearAgo = new Date(currentDate);
     oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
@@ -334,8 +335,7 @@ const Index = () => {
   };
 
   useEffect(() => {
-    const tmpData = filterData(generatedProp);
-    console.log("generatedProp", filterQuery, tmpData, generatedProp);
+    const tmpData = filterData(properties);
     setFilterProperty(tmpData);
   }, [filterQuery, generatedProp]);
 
@@ -653,6 +653,8 @@ const Index = () => {
                           properties={
                             searchInput === "" && filterQuery === "All"
                               ? properties
+                              : searchInput !== ""
+                              ? searchedProperties
                               : filterProperty
                           }
                           setUpdatedCode={setUpdatedCode}

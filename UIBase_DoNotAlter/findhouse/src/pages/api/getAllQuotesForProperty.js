@@ -3,7 +3,7 @@ import CryptoJS from "crypto-js";
 
 async function handler(request, response) {
   const decryptionKey = process.env.CRYPTO_SECRET_KEY;
-  const domain = process.env.BACKEND_DOMAIN;
+  const domain = process.env.BACKEND_DOMAIN2;
 
   try {
     const token = request.headers.authorization;
@@ -11,7 +11,7 @@ async function handler(request, response) {
     const OrderId = request.query.OrderId;
     console.log(OrderId);
     const userResponse = await axios.get(
-      `http://appraisalland-prod.us-east-1.elasticbeanstalk.com/api/com.appraisalland.Bid/getQuotesByOrderID`,
+      `${domain}/com.appraisalland.Bid/getQuotesByOrderID`,
       {
         headers: {
           Authorization: token,

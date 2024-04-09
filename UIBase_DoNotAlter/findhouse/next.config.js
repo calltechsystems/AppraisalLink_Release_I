@@ -12,6 +12,8 @@ const nextConfig = {
     CLOUDINARY_API_KEY: "121866971488326",
     CLOUDINARY_API_SECRET: "FFNmV8H7NH3euKmH0wf1bFqfZjI",
     BACKEND_DOMAIN: "http://calltech-prod.us-east-1.elasticbeanstalk.com/api",
+    BACKEND_DOMAIN2:
+      "http://appraisalland-prod.us-east-1.elasticbeanstalk.com/api",
   },
   images: {
     domains: [

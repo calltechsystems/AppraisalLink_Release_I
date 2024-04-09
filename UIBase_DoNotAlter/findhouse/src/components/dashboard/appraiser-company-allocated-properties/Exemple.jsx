@@ -359,11 +359,11 @@ export default function Exemple({
   useEffect(() => {
     let tempGeneratedProp = []
     const getData = () => {
-      properties.map((propertyDetail, index) => {
-        const currentProperty = propertyDetail?.propertyDetails;
+      properties.map((property, index) => {
+        // const currentProperty = propertyDetail?.propertyDetails;
 
        
-        const property = getPropertyInfo(propertyDetail?.propertyid);
+        // const property = getPropertyInfo(propertyDetail?.propertyid);
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
         tempGeneratedProp.push(property)
@@ -379,6 +379,10 @@ export default function Exemple({
             : "$ 0",
           purpose: property?.purpose ? property?.purpose : "N.A.",
           remark: property?.remark ? <p>remark</p> : "N.A.",
+          appraiser_assign_date : property?.createdDateTime ?
+          formatDate(property?.createdDateTime) : "-" ,
+          appraiser_assign_completed_date: isBidded.$id &&  isBidded?.status === 1  &&  isBidded?.orderStatus ?
+          formatDate(isBidded?.requestTime) : "",
           status: isWait ? (
             <span className="btn btn-danger  w-100">
               {property.isOnCancel
@@ -449,9 +453,9 @@ export default function Exemple({
                   // fontWeight: "bold",
                   backgroundColor: "transparent",
                 }}
-                onClick={() => getAppraiser(propertyDetail?.appraiserid)}
+                onClick={() => getAppraiser(property?.appraiserid)}
               >
-                {getAppraiserName(propertyDetail?.appraiserid)}
+                {getAppraiserName(property?.appraiserid)}
               </button>
             </a>
           ),
@@ -651,13 +655,18 @@ export default function Exemple({
             temp.map((prop, index) => {
               propertyInfo.map((assProp, idx) => {
                 if (String(prop.propertyid) === String(assProp.$id)) {
-                  assignedProps.push(assProp);
+                  const newRow = {
+                    ...assProp,
+                    appraiserid : prop.appraiserid,
+                    createdDateTime : prop.createdDateTime
+                  }
+                  assignedProps.push(newRow);
                 }
               });
             });
 
-            setGeneratedProps(assignedProps);
-
+            console.log("assignedProps",assignedProps)
+           
             let tempBids = [];
             axios
               .get("/api/getAllBids", {
@@ -678,8 +687,10 @@ export default function Exemple({
                 });
                 console.log("bids", updatedBids.length);
                 setBids(updatedBids);
-                setAllProperties(propertyInfo);
-                setProperties(temp);
+                setProperties(assignedProps);
+
+                // setAllProperties(propertyInfo);
+                // setProperties(temp);
                 axios
                   .get("/api/appraiserWishlistedProperties", {
                     headers: {

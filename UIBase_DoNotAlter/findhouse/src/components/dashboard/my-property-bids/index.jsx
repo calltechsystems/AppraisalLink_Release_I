@@ -75,7 +75,7 @@ const Index = ({ propertyId }) => {
         toast.dismiss();
 
         toast.success("Successfully accepted the Quote");
-        router.push("/my-properties-new");
+        router.push("/my-properties");
       })
       .catch((err) => {
         toast.dismiss();
@@ -101,7 +101,7 @@ const Index = ({ propertyId }) => {
       .then((res) => {
         toast.dismiss();
         toast.success("Successfully declined the Quote");
-        router.push("/my-properties-new");
+        router.push("/my-properties");
       })
       .catch((err) => {
         toast.dismiss();
