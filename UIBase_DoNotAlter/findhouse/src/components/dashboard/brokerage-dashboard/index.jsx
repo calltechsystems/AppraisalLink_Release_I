@@ -106,87 +106,84 @@ const Index = () => {
     return categorizedData;
   };
 
-  const getBiddedTime = (orderId)=>{
+  const getBiddedTime = (orderId) => {
     let time = "";
-    bids.map((bid,index)=>{
-      if(String(bid.orderId) === String(orderId) && bid.status === 1)[
-        time = bid.requestTime
-
-      ]
-    })
-    return time
-  }
+    bids.map((bid, index) => {
+      if (String(bid.orderId) === String(orderId) && bid.status === 1)
+        [(time = bid.requestTime)];
+    });
+    return time;
+  };
 
   const filterData = (tempData) => {
     console.log("filterQuery", filterQuery, tempData);
     const currentDate = new Date();
     const oneYearAgo = new Date(currentDate);
     oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
-    let tempAllAcceptedBids = 0 ;
+    let tempAllAcceptedBids = 0;
 
     switch (filterQuery) {
-        case "Monthly":
-            const oneMonthAgo = new Date(currentDate);
-            oneMonthAgo.setMonth(currentDate.getMonth() - 1);
-            tempData = tempData.filter((item) => {
-                const isBidded = getBiddedTime(item?.orderId);
-                if (isBidded !== "" && new Date(isBidded) >= oneMonthAgo) {
-                    tempAllAcceptedBids += 1;
-                }
-                return new Date(item.addedDatetime) >= oneMonthAgo;
-            });
-            setAcceptedBids(tempAllAcceptedBids);
-            return tempData;
+      case "Monthly":
+        const oneMonthAgo = new Date(currentDate);
+        oneMonthAgo.setMonth(currentDate.getMonth() - 1);
+        tempData = tempData.filter((item) => {
+          const isBidded = getBiddedTime(item?.orderId);
+          if (isBidded !== "" && new Date(isBidded) >= oneMonthAgo) {
+            tempAllAcceptedBids += 1;
+          }
+          return new Date(item.addedDatetime) >= oneMonthAgo;
+        });
+        setAcceptedBids(tempAllAcceptedBids);
+        return tempData;
 
-        case "Yearly":
-            tempData = tempData.filter((item) => {
-                const isBidded = getBiddedTime(item?.orderId);
-                if (isBidded !== "" && new Date(isBidded) >= oneYearAgo) {
-                    tempAllAcceptedBids += 1;
-                }
-                return new Date(item.addedDatetime) >= oneYearAgo;
-            });
-            setAcceptedBids(tempAllAcceptedBids);
-            return tempData;
+      case "Yearly":
+        tempData = tempData.filter((item) => {
+          const isBidded = getBiddedTime(item?.orderId);
+          if (isBidded !== "" && new Date(isBidded) >= oneYearAgo) {
+            tempAllAcceptedBids += 1;
+          }
+          return new Date(item.addedDatetime) >= oneYearAgo;
+        });
+        setAcceptedBids(tempAllAcceptedBids);
+        return tempData;
 
-        case "Weekly":
-            const oneWeekAgo = new Date(currentDate);
-            oneWeekAgo.setDate(currentDate.getDate() - 7);
-            tempData = tempData.filter((item) => {
-                const isBidded = getBiddedTime(item?.orderId);
-                if (isBidded !== "" && new Date(isBidded) >= oneWeekAgo) {
-                    tempAllAcceptedBids += 1;
-                }
-                return new Date(item.addedDatetime) >= oneWeekAgo;
-            });
-            setAcceptedBids(tempAllAcceptedBids);
-            return tempData;
+      case "Weekly":
+        const oneWeekAgo = new Date(currentDate);
+        oneWeekAgo.setDate(currentDate.getDate() - 7);
+        tempData = tempData.filter((item) => {
+          const isBidded = getBiddedTime(item?.orderId);
+          if (isBidded !== "" && new Date(isBidded) >= oneWeekAgo) {
+            tempAllAcceptedBids += 1;
+          }
+          return new Date(item.addedDatetime) >= oneWeekAgo;
+        });
+        setAcceptedBids(tempAllAcceptedBids);
+        return tempData;
 
-        default:
-            tempData = tempData.filter((item) => {
-                const isBidded = getBiddedTime(item?.orderId);
-                if (isBidded !== "" ) {
-                    tempAllAcceptedBids += 1;
-                }
-                return new Date(item.addedDatetime) >= oneYearAgo;
-            });
-            return tempData;
+      default:
+        tempData = tempData.filter((item) => {
+          const isBidded = getBiddedTime(item?.orderId);
+          if (isBidded !== "") {
+            tempAllAcceptedBids += 1;
+          }
+          return new Date(item.addedDatetime) >= oneYearAgo;
+        });
+        return tempData;
     }
-};
+  };
 
+  useEffect(() => {
+    let acceptedCount = 0;
+    data.map((row, index) => {
+      bids.map((bid, idx) => {
+        if (String(row.orderId) === String(bid.orderId) && bid.status === 1) {
+          acceptedCount += 1;
+        }
+      });
+    });
 
-useEffect(()=>{
-  let acceptedCount = 0;
-  data.map((row,index)=>{
-    bids.map((bid,idx)=>{
-      if(String(row.orderId) === String(bid.orderId) && bid.status === 1){
-        acceptedCount +=1;
-      }
-    })
-  })
-
-  setAcceptedBids(acceptedCount)
-},[data])
+    setAcceptedBids(acceptedCount);
+  }, [data]);
 
   useEffect(() => {
     const dataTemp = filterData(data);
@@ -249,7 +246,7 @@ useEffect(()=>{
           let allBids = [];
           tempBids.map((prop, index) => {
             if (String(prop.userId) === String(data.userId)) {
-              if ((prop.status) === 1 ) {
+              if (prop.status === 1) {
                 acceptedBid += 1;
               }
               allBids.push(prop);
@@ -431,7 +428,6 @@ useEffect(()=>{
           </div>
         </div>
       </section>
-      <div style={{ width: "100%", backgroundColor: "#2e008b" }}>.</div>
     </>
   );
 };

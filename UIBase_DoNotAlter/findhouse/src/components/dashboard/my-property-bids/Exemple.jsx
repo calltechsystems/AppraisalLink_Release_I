@@ -348,8 +348,9 @@ export default function Exemple({
                         target="_blank"
                         rel="noopener noreferrer"
                         href={
-                          propertyWhole?.lenderListUrl ?
-                          propertyWhole?.lenderListUrl : "#"
+                          propertyWhole?.lenderListUrl
+                            ? propertyWhole?.lenderListUrl
+                            : "#"
                         }
                         style={{ cursor: "pointer", color: "white" }}
                       >

@@ -8,8 +8,6 @@ import { useRouter } from "next/router";
 import Loader from "./Loader";
 import { AppraiserStatusOptions } from "../create-listing/data";
 import { FaArchive } from "react-icons/fa";
-// import "./SmartTable.css";
-
 const headCells = [
   {
     id: "order_id",
@@ -83,21 +81,18 @@ const headCells = [
     label: "Type Of Appraisal",
     width: 200,
   },
-
   {
     id: "purpose",
     numeric: false,
     label: "Purpose",
     width: 200,
   },
-
   {
     id: "lender_information",
     numeric: false,
     label: "Lender Information",
     width: 200,
   },
-
   {
     id: "broker",
     numeric: false,
@@ -110,7 +105,18 @@ const headCells = [
     label: "Property",
     width: 200,
   },
-
+  {
+    id: "appraiser_assign_date",
+    numeric: false,
+    label: "Appraiser Assign Date",
+    width: 200,
+  },
+  {
+    id: "appraiser_assign_completed_date",
+    numeric: false,
+    label: "Appraiser Assign Completed Date",
+    width: 200,
+  },
   {
     id: "action",
     numeric: false,
@@ -209,6 +215,11 @@ export default function Exemple({
     return `${selectedAppraiser.firstName} ${selectedAppraiser.lastName}`;
   };
 
+  function addCommasToNumber(number) {
+    if (Number(number) <= 100 || number === undefined) return number;
+    return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   const router = useRouter();
 
   const getOrderValue = (val) => {
@@ -289,6 +300,8 @@ export default function Exemple({
     return formattedDate;
   };
 
+
+
   const checkWishlistedHandler = (data) => {
     let temp = {};
     // //console.log(wishlist, data);
@@ -340,21 +353,20 @@ export default function Exemple({
     return `${formattedNumber}${unit}`;
   };
 
-  const checkData = properties && !updatedData ? true : false;
-  useEffect(() => {
-    setProperties([]);
-  }, [checkData]);
 
   console.log("assignProperties", allProperties, properties);
 
   useEffect(() => {
+    let tempGeneratedProp = []
     const getData = () => {
       properties.map((propertyDetail, index) => {
         const currentProperty = propertyDetail?.propertyDetails;
 
+       
         const property = getPropertyInfo(propertyDetail?.propertyid);
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
+        tempGeneratedProp.push(property)
         console.log("isBidded", isBidded, property);
         const isWait = property?.isOnHold || property?.isOnCancel;
         const updatedRow = {
@@ -363,7 +375,7 @@ export default function Exemple({
             ? `${property?.city}-${property?.province},${property?.zipCode}`
             : "-",
           estimated_value: property?.estimatedValue
-            ? `$ ${formatLargeNumber(property?.estimatedValue)}`
+            ? `$ ${addCommasToNumber(property?.estimatedValue)}`
             : "$ 0",
           purpose: property?.purpose ? property?.purpose : "N.A.",
           remark: property?.remark ? <p>remark</p> : "N.A.",
@@ -554,7 +566,7 @@ export default function Exemple({
                     </div>
                   </li>
                 </ul>
-              ) : isBidded.orderStatus === 3 ? (
+              ) : isBidded.$id && isBidded.orderStatus === 3 ? (
                 <span className="btn btn-completed  w-100">Completed</span>
               ) : isWait ? (
                 <>
@@ -566,7 +578,16 @@ export default function Exemple({
                 </>
               ) : (
                 <>
-                  <p className="btn btn-info w-100">{`In progress`}</p>
+                  {isBidded.$id &&  isBidded.status === 1 && <button
+                      href="#"
+                      className="btn btn-color m-1"
+                      onClick={() => openStatusUpdateHandler(isBidded)}
+                    >
+                      <Link href="#">
+                        <span className="flaticon-edit text-light"></span>
+                      </Link>
+                    </button>}
+                  { isBidded.status !== 1 && <p className="btn btn-info w-100">{`In progress`}</p>}
                 </>
               )}
             </div>
@@ -575,6 +596,7 @@ export default function Exemple({
         tempData.push(updatedRow);
       });
       setAssignedProp(tempData);
+      setGeneratedProps(tempGeneratedProp)
       setUpdatedData(tempData);
     };
 
@@ -622,7 +644,6 @@ export default function Exemple({
             },
           })
           .then((res) => {
-            // //console.log(res.data.data.$values);
             let tempProperties = res.data.data.$values;
             const temp = res.data.data.$values;
 

@@ -24,7 +24,7 @@ const TableData = ({
   setAllAppraiser,
   refresh,
   setRefresh,
-  setProperty
+  setProperty,
 }) => {
   console.log(properties);
 
@@ -32,7 +32,7 @@ const TableData = ({
 
   const [rerender, setRerender] = useState(false);
 
-  const [data,setData]=useState([]);
+  const [data, setData] = useState([]);
 
   let theadConent = ["Property Title", "Date", "Status", "Bids", "Action"];
 
@@ -228,7 +228,6 @@ const TableData = ({
           setId={setid}
           refresh={refresh}
           start={start}
-         
           end={end}
           setRefresh={setRefresh}
         />

@@ -106,12 +106,12 @@ const headCells = [
     width: 200,
   },
 
-  // {
-  //   id: "action",
-  //   numeric: false,
-  //   label: "Action",
-  //   width: 180,
-  // },
+  {
+    id: "action",
+    numeric: false,
+    label: "Action",
+    width: 180,
+  },
 ];
 
 
@@ -177,26 +177,30 @@ export default function Exemple({
     return isArchive;
   };
 
+  function addCommasToNumber(number) {
+    if (Number(number) <= 100 || number === undefined) return number;
+    return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   const filterBidsWithin24Hours = (property) => {
+    const data = JSON.parse(localStorage.getItem("user"));
     let tempBid = 0,
       bidValue = {};
     let isAccepted = {};
-    // console.log(bids);
     bids.filter((bid) => {
-      if (bid.orderId === property.orderId) {
-        if (bid.status === 1) {
-          isAccepted = bid;
-        } else {
-          bidValue = bid;
-        }
+    if (
+        bid.orderId === property.orderId &&
+        bid.appraiserUserId === data.userId
+      )
+      {
+        bidValue = bid
         tempBid = tempBid + 1;
       } else {
       }
     });
-    return isAccepted.$id ? isAccepted : bidValue;
-    //   return requestTime >= twentyFourHoursAgo && requestTime <= currentTime;
+    console.log("bidValue",bidValue)
+    return bidValue;
   };
-
   const router = useRouter();
 
   const openStatusUpdateHandler = (bid) => {
@@ -331,7 +335,7 @@ export default function Exemple({
             order_id: property.orderId,
             address: `${property.city}-${property.province},${property.zipCode}`,
             estimated_value: property.estimatedValue
-              ? `$ ${formatLargeNumber(property.estimatedValue)}`
+              ? `$ ${addCommasToNumber(property.estimatedValue)}`
               : "$ 0",
             purpose: property.purpose ? property.purpose : "N.A.",
             appraisal_status:

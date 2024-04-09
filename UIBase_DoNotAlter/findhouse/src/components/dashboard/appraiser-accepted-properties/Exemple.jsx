@@ -298,6 +298,11 @@ export default function Exemple({
     return data.sort((a, b) => b.order_id - a.order_id);
   };
 
+  function addCommasToNumber(number) {
+    if (Number(number) <= 100 || number === undefined) return number;
+    return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   const sortObjectsOrderStatusDescending = (data) => {
     console.log(data)
     return data.sort((a, b) => b.order_status - a.order_status);
@@ -332,7 +337,7 @@ export default function Exemple({
             order_id: property.orderId,
             address: `${property.city}-${property.province},${property.zipCode}`,
             estimated_value: property.estimatedValue
-              ? `$ ${formatLargeNumber(property.estimatedValue)}`
+              ? `$ ${addCommasToNumber(property.estimatedValue)}`
               : "$ 0",
             purpose: property.purpose ? property.purpose : "N.A.",
             order_status:isBidded.orderStatus,

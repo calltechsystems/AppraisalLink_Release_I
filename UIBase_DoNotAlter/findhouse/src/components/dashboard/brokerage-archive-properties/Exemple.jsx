@@ -171,13 +171,13 @@ export default function Exemple({
   const [updatedData, setUpdatedData] = useState([]);
   const [allBids, setBids] = useState([]);
   const [show, setShow] = useState(false);
-  
-  const [dataFetched,setDataFetched] = useState(false)
+
+  const [dataFetched, setDataFetched] = useState(false);
   let tempData = [];
 
   const refreshHandler = () => {
-    setProperties([])
-    setBids([])
+    setProperties([]);
+    setBids([]);
     setRefresh(true);
   };
 
@@ -248,6 +248,11 @@ export default function Exemple({
     setModalIsPopupOpen(true);
     setCurrentProperty(property);
   };
+
+  function addCommasToNumber(number) {
+    if (Number(number) <= 100 || number === undefined) return number;
+    return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
 
   const onUnarchiveHandler = (id) => {
     const data = JSON.parse(localStorage.getItem("user"));
@@ -334,14 +339,22 @@ export default function Exemple({
     let isInProgress = true;
     let isQuoteProvided = false;
     let isCompleted = false;
+    let isAccepted = false;
     allBids.map((bid, index) => {
-      if (bid.orderId === property.orderId && bid.status === 1) {
+      if (
+        bid.orderId === property.orderId &&
+        bid.status === 1 &&
+        bid.orderStatus === 3
+      ) {
         isCompleted = true;
+      }
+      if (bid.orderId === property.orderId && bid.status === 1) {
+        isAccepted = true;
       } else if (bid.orderId === property.orderId) {
         isQuoteProvided = true;
       }
     });
-    return isCompleted ? 2 : isQuoteProvided ? 1 : 0;
+    return isCompleted ? 3 : isAccepted ? 2 : isQuoteProvided ? 1 : 0;
   };
 
   const sortObjectsByOrderIdDescending = (data) => {
@@ -373,7 +386,7 @@ export default function Exemple({
                     {isHold ? "On Hold" : "Cancelled"}
                   </span>
                 ) : isStatus === 3 ? (
-                  <span className="btn bg-success w-100 text-light">
+                  <span className="btn btn-completed w-100 text-light">
                     Completed
                   </span>
                 ) : isStatus === 2 ? (
@@ -413,7 +426,7 @@ export default function Exemple({
               address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
               // user: property.applicantEmailAddress,
               type_of_building: property.typeOfBuilding,
-              amount: ` $${property.estimatedValue}`,
+              amount: ` $ ${addCommasToNumber(property.estimatedValue)}`,
               purpose: property.purpose,
               type_of_appraisal: property.typeOfAppraisal,
               lender_information: property.lenderInformation
@@ -803,10 +816,9 @@ export default function Exemple({
   }, [properties]);
 
   useEffect(() => {
+    setProperties([]);
+    setBids([]);
 
-    setProperties([])
-    setBids([])
-    
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -825,12 +837,12 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        setDataFetched(true)
+        setDataFetched(true);
         const temp = res.data.data.$values;
         setProperties(temp);
       })
       .catch((err) => {
-        setDataFetched(false)
+        setDataFetched(false);
         toast.error(err);
         setModalIsOpenError(true);
       });

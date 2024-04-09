@@ -273,6 +273,11 @@ export default function Exemple({
     setRefresh(true);
   };
 
+  function addCommasToNumber(number) {
+    if (Number(number) <= 100 || number === undefined) return number;
+    return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   const getPropertyStatusHandler = (property) => {
     let isInProgress = true;
     let isQuoteProvided = false;
@@ -362,7 +367,7 @@ export default function Exemple({
             // user: property.applicantEmailAddress,
             type_of_building: property.typeOfBuilding,
             // amount: ` $ ${millify(property.estimatedValue)}`,
-            amount: ` $ ${property.estimatedValue}`,
+            amount: addCommasToNumber(property.estimatedValue),
             purpose: property.purpose,
             type_of_appraisal: property.typeOfAppraisal,
             lender_information: property.lenderInformation
@@ -715,10 +720,7 @@ export default function Exemple({
                     className="btn btn-color-table"
                     onClick={() => archievePropertyHandler(property.orderId)}
                   >
-                    <Link
-                      className="color-light"
-                      href={`/archive-property`}
-                    >
+                    <Link className="color-light" href={`/archive-property`}>
                       <span className="text-light">
                         <FaArchive />
                       </span>

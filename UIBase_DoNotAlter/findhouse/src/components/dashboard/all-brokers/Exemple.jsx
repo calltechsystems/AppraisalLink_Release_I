@@ -40,12 +40,12 @@ const headCells = [
     label: "Email Address",
     width: 200,
   },
-  // {
-  //   id: "date",
-  //   numeric: false,
-  //   label: "Date",
-  //   width: 200,
-  // },
+  {
+    id: "date",
+    numeric: false,
+    label: "Date",
+    width: 200,
+  },
   {
     id: "action",
     numeric: false,

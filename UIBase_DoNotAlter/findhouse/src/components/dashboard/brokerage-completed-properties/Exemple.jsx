@@ -254,6 +254,12 @@ export default function Exemple({
     return Bid;
   };
 
+  function addCommasToNumber(number) {
+    if (Number(number) <= 100 || number === undefined) return number;
+    return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+
   const getOrderValue = (val) => {
     let title = "Appraisal Report Writing Completed and Submitted";
     AppraiserStatusOptions?.map((status) => {
@@ -359,7 +365,7 @@ export default function Exemple({
                   Quote Provided
                 </span>
               ) : isStatus === 3 ? (
-                <span className="btn bg-success w-100 text-light">
+                <span className="btn btn-completed w-100 text-light">
                   Completed
                 </span>
               ) : (
@@ -386,7 +392,7 @@ export default function Exemple({
             remark: isBidded.remark ? isBidded.remark : "N.A.",
             // user: property.applicantEmailAddress,
             type_of_building: property.typeOfBuilding,
-            amount: ` $ ${millify(property.estimatedValue)}`,
+            amount: ` $ ${addCommasToNumber(property.estimatedValue)}`,
             purpose: property.purpose,
             type_of_appraisal: property.typeOfAppraisal,
             lender_information: property.lenderInformation

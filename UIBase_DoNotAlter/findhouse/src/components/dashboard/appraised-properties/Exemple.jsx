@@ -181,22 +181,19 @@ export default function Exemple({
     let tempBid = 0,
       bidValue = {};
     let isAccepted = {};
-    // console.log(bids);
     bids.filter((bid) => {
-      if (
+    if (
         bid.orderId === property.orderId &&
         bid.appraiserUserId === data.userId
-      ) {
-        if (bid.status === 1) {
-          isAccepted = bid;
-        } else {
-          bidValue = bid;
-        }
+      )
+      {
+        bidValue = bid
         tempBid = tempBid + 1;
       } else {
       }
     });
-    return isAccepted.$id ? isAccepted : bidValue;
+    console.log("bidValue",bidValue)
+    return bidValue;
   };
 
   const alreadyAccepted = (property) => {
@@ -218,6 +215,11 @@ export default function Exemple({
     return isAccepted.$id ? true : false;
   };
   const router = useRouter();
+
+  function addCommasToNumber(number) {
+    if (Number(number) <= 100 || number === undefined) return number;
+    return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
 
   const openStatusUpdateHandler = (bid) => {
     setCurrentBid(bid);
@@ -366,7 +368,7 @@ export default function Exemple({
             order_id: property.orderId,
             address: `${property.city}-${property.province},${property.zipCode}`,
             estimated_value: property.estimatedValue
-              ? `$ ${formatLargeNumber(property.estimatedValue)}`
+              ? `$ ${addCommasToNumber(property.estimatedValue)}`
               : "$ 0",
             purpose: property.purpose ? property.purpose : "N.A.",
             appraisal_status:

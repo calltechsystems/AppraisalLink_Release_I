@@ -322,6 +322,22 @@ function SmartTable(props) {
     }
   }, props.searchDebounceTime ?? 800);
 
+  const extractTextContentFromDate = (value) => {
+    const date = new Date(value);
+    
+    if (isNaN(date.getTime())) {
+      return null;
+    }
+    return date;
+  };
+
+  const extractNumericValue = (str) => {
+    const numericStr = str.replace(/[^0-9]/g, '');
+    const numericValue = parseInt(numericStr, 10);
+  
+    return numericValue;
+  };
+
   const extractTextContent = (cellValue) => {
     if (typeof cellValue === 'string') {
       return cellValue; // If it's a string, return it as is
@@ -340,13 +356,20 @@ function SmartTable(props) {
     const newSortDesc = { ...sortDesc };
     newSortDesc[cell] = !newSortDesc[cell];
   
-    // Perform sorting
     tempData.sort((a, b) => {
-      // Extract text content from cell value (React element or other type)
-      const valueA = extractTextContent(a[cell]);
-      const valueB = extractTextContent(b[cell]);
+      let valueA = extractTextContent(a[cell]);
+      let valueB = extractTextContent(b[cell]);
+
+      if(String(cell) === "date" || String(cell) === "quote_required_by" ){
+        valueA = extractTextContentFromDate(a[cell]);
+        valueB = extractTextContentFromDate(b[cell]);
+      }
+
+      if(String(cell) === "estimated_value"){
+        valueA = extractNumericValue(a[cell]);
+        valueB = extractNumericValue(b[cell]);
+      }
   
-      // Perform comparison based on the sorting order
       if (newSortDesc[cell]) {
         return valueA < valueB ? 1 : -1;
       } else {
@@ -354,7 +377,6 @@ function SmartTable(props) {
       }
     });
   
-    // Update state with the new sorting order and sorted data
     setSortDesc(newSortDesc);
     setData(tempData);
   };
@@ -363,7 +385,6 @@ function SmartTable(props) {
     const sortObjectsByOrderIdDescending = (data) => {
       return data.sort((a, b) => b.order_id - a.order_id);
     };
-
     setData(sortObjectsByOrderIdDescending(props.data))
   },[props.data])
 

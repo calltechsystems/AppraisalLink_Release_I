@@ -177,6 +177,11 @@ export default function Exemple({
     return isArchive;
   };
 
+  function addCommasToNumber(number) {
+    if (Number(number) <= 100 || number === undefined) return number;
+    return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   const filterBidsWithin24Hours = (property) => {
     const userData = JSON.parse(localStorage.getItem("user"));
     let tempBid = 0,
@@ -333,7 +338,7 @@ export default function Exemple({
             order_id: property.orderId,
             address: `${property.city}-${property.province},${property.zipCode}`,
             estimated_value: property.estimatedValue
-              ? `$ ${formatLargeNumber(property.estimatedValue)}`
+              ? `$ ${addCommasToNumber(property.estimatedValue)}`
               : "$ 0",
             purpose: property.purpose ? property.purpose : "N.A.",
             appraisal_status:

@@ -306,6 +306,21 @@ function SmartTable(props) {
     }
   }, props.searchDebounceTime ?? 800);
 
+  const extractTextContentFromDate = (value) => {
+    const date = new Date(value);
+    
+    if (isNaN(date.getTime())) {
+      return null;
+    }
+    return date;
+  };
+
+  const extractNumericValue = (str) => {
+    const numericStr = str.replace(/[^0-9]/g, '');
+    const numericValue = parseInt(numericStr, 10);
+  
+    return numericValue;
+  };
 
   const extractTextContent = (cellValue) => {
     if (typeof cellValue === 'string') {
@@ -327,9 +342,18 @@ function SmartTable(props) {
   
     // Perform sorting
     tempData.sort((a, b) => {
-      // Extract text content from cell value (React element or other type)
-      const valueA = extractTextContent(a[cell]);
-      const valueB = extractTextContent(b[cell]);
+      let valueA = extractTextContent(a[cell]);
+      let valueB = extractTextContent(b[cell]);
+
+      if(String(cell) === "date" || String(cell) === "quote_required_by" ){
+        valueA = extractTextContentFromDate(a[cell]);
+        valueB = extractTextContentFromDate(b[cell]);
+      }
+
+      if(String(cell) === "estimated_value"){
+        valueA = extractNumericValue(a[cell]);
+        valueB = extractNumericValue(b[cell]);
+      }
   
       // Perform comparison based on the sorting order
       if (newSortDesc[cell]) {

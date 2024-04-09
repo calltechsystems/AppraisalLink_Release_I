@@ -179,27 +179,22 @@ export default function Exemple({
   };
 
   const filterBidsWithin24Hours = (property) => {
-    const userData = JSON.parse(localStorage.getItem("user"));
+    const data = JSON.parse(localStorage.getItem("user"));
     let tempBid = 0,
       bidValue = {};
     let isAccepted = {};
-    // console.log(bids);
     bids.filter((bid) => {
-      if (bid.orderId === property.orderId) {
-        if (bid.status === 1) {
-          isAccepted = bid;
-        } else {
-          bidValue = bid;
-        }
+      if (
+        bid.orderId === property.orderId &&
+        bid.appraiserUserId === data.userId
+      ) {
+        bidValue = bid;
         tempBid = tempBid + 1;
       } else {
       }
     });
-    return isAccepted.$id ? isAccepted : bidValue;
-    // const currentTime = new Date();
-    // const twentyFourHoursAgo = currentTime - 24 * 60 * 60 * 1000; // Subtracting milliseconds for 24 hours
-    //    const requestTime = new Date(tempBid.requestTime);
-    //   return requestTime >= twentyFourHoursAgo && requestTime <= currentTime;
+    console.log("bidValue", bidValue);
+    return bidValue;
   };
 
   const router = useRouter();
@@ -208,6 +203,11 @@ export default function Exemple({
     setCurrentBid(bid);
     setIsStatusModal(true);
   };
+
+  function addCommasToNumber(number) {
+    if (Number(number) <= 100 || number === undefined) return number;
+    return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
 
   const removeWishlistHandler = (id) => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -352,7 +352,7 @@ export default function Exemple({
             order_id: property.orderId,
             address: `${property.city}-${property.province},${property.zipCode}`,
             estimated_value: property.estimatedValue
-              ? `$ ${formatLargeNumber(property.estimatedValue)}`
+              ? `$ ${addCommasToNumber(property.estimatedValue)}`
               : "$ 0",
             purpose: property.purpose ? property.purpose : "N.A.",
             appraisal_status:
@@ -534,17 +534,18 @@ export default function Exemple({
                     {isWishlist.id ? (
                       <li>
                         <button
-                          className="btn"
+                        title="Remove Wishlist"
+                          className="btn flaticon-heart"
                           style={{
                             border: "1px solid grey",
                           }}
                           onClick={() => removeWishlistHandler(isWishlist.id)}
                         >
-                          <img
-                            width={26}
+                          {/* <img
+                            width={55 }
                             height={26}
                             src="https://png.pngtree.com/png-clipart/20200226/original/pngtree-3d-red-heart-cute-valentine-romantic-glossy-shine-heart-shape-png-image_5315044.jpg"
-                          />
+                          /> */}
                         </button>
                       </li>
                     ) : isBidded.orderStatus === 3 ? (

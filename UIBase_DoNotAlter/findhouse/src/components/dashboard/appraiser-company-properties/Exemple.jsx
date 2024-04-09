@@ -24,6 +24,13 @@ const headCells = [
     label: "Property Address",
     width: 200,
   },
+
+  {
+    id: "assigned_appraiser",
+    numeric: false,
+    label: "Appraiser Assigned",
+    width: 200,
+  },
   {
     id: "status",
     numeric: false,
@@ -182,22 +189,18 @@ export default function Exemple({
     let tempBid = 0,
       bidValue = {};
     let isAccepted = {};
-    // console.log(bids);
     bids.filter((bid) => {
       if (
         bid.orderId === property.orderId &&
         bid.appraiserUserId === data.userId
       ) {
-        if (bid.status === 1) {
-          isAccepted = bid;
-        } else {
-          bidValue = bid;
-        }
+        bidValue = bid;
         tempBid = tempBid + 1;
       } else {
       }
     });
-    return isAccepted.$id ? isAccepted : bidValue;
+    console.log("bidValue", bidValue);
+    return bidValue;
   };
 
   const alreadyAccepted = (property) => {
@@ -335,6 +338,11 @@ export default function Exemple({
     return isAssigned;
   };
 
+  function addCommasToNumber(number) {
+    if (Number(number) <= 100 || number === undefined) return number;
+    return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   const openAssignModalHandler = (property) => {
     setAssignPropertyId(property.$id);
     setAssignModal(true);
@@ -349,6 +357,16 @@ export default function Exemple({
     setProperties([]);
   }, [checkData]);
 
+  const checkIfPropertyAlreadyAssigned = (propertyId) => {
+    let assigned = false;
+    console.log("assignedProp", propertyId, assignedProperties);
+    assignedProperties.map((prop, index) => {
+      if (String(prop.propertyid) === propertyId) {
+        assigned = true;
+      }
+    });
+    return assigned;
+  };
   useEffect(() => {
     const getData = () => {
       properties.map((property, index) => {
@@ -356,7 +374,7 @@ export default function Exemple({
         const isBidded = filterBidsWithin24Hours(property);
         const anotherBid = alreadyAccepted(property);
 
-        const isAssigned = checkInAssignedProperty(property.propertyId);
+        const isAssigned = checkIfPropertyAlreadyAssigned(property.$id);
         const isArchive = foundArchiveHandler(property.propertyId);
 
         if (!isArchive) {
@@ -368,7 +386,7 @@ export default function Exemple({
             order_id: property.orderId,
             address: `${property.city}-${property.province},${property.zipCode}`,
             estimated_value: property.estimatedValue
-              ? `$ ${formatLargeNumber(property.estimatedValue)}`
+              ? `$ ${addCommasToNumber(property.estimatedValue)}`
               : "$ 0",
             purpose: property.purpose ? property.purpose : "N.A.",
             appraisal_status:
@@ -467,6 +485,33 @@ export default function Exemple({
                   </p>
                 )}
               </div>
+            ),
+            assigned_appraiser: isAssigned ? (
+              <span
+                className=""
+                style={{
+                  border: "0px",
+                  color: "green",
+                  textDecoration: "underline",
+                  // fontWeight: "bold",
+                  backgroundColor: "transparent",
+                }}
+              >
+                Assigned
+              </span>
+            ) : (
+              <span
+                className=""
+                style={{
+                  border: "0px",
+                  color: "#2e008b",
+                  textDecoration: "underline",
+                  // fontWeight: "bold",
+                  backgroundColor: "transparent",
+                }}
+              >
+                Not Assigned
+              </span>
             ),
             type_of_appraisal: property.typeOfAppraisal
               ? property.typeOfAppraisal
@@ -652,30 +697,6 @@ export default function Exemple({
                       </li>
                     )}
 
-                    {!isWait && isBidded.status === 1 && (
-                      <li
-                        className="list-inline-item"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title="Assign Appraiser"
-                      >
-                        <div
-                          className="w-100"
-                          onClick={() => openAssignModalHandler(property)}
-                        >
-                          <button
-                            href="#"
-                            className="btn btn-color"
-                            // style={{ marginLeft: "12px" }}
-                          >
-                            <Link href="#">
-                              <span className="text-light flaticon-user"></span>
-                            </Link>
-                          </button>
-                        </div>
-                      </li>
-                    )}
-
                     <li
                       className="list-inline-item"
                       data-toggle="tooltip"
@@ -716,7 +737,29 @@ export default function Exemple({
                           <span className="flaticon-edit text-light"></span>
                         </Link>
                       </button>
-
+                      {
+                        <li
+                          className="list-inline-item"
+                          data-toggle="tooltip"
+                          data-placement="top"
+                          title="Assign Appraiser"
+                        >
+                          <div
+                            className="w-100"
+                            onClick={() => openAssignModalHandler(property)}
+                          >
+                            <button
+                              href="#"
+                              className="btn btn-color"
+                              // style={{ marginLeft: "12px" }}
+                            >
+                              <Link href="#">
+                                <span className="text-light flaticon-user"></span>
+                              </Link>
+                            </button>
+                          </div>
+                        </li>
+                      }
                       <li
                         className="list-inline-item"
                         data-toggle="tooltip"
@@ -890,14 +933,13 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        // const endDate = new Date();
-        console.log("assign prop", res.data.data);
-        setAssignedProperties(res.data.data.$values);
+        // const endDate = new Date();\
+        let tempProperties = res.data.data.$values;
+        const temp = res.data.data.$values;
+
+        setAssignedProperties(tempProperties);
       })
-      .catch((err) => {
-        setErrorMessage(err?.response?.data?.error);
-        setModalIsOpenError(true);
-      });
+      .catch((err) => {});
 
     axios
       .get("/api/getAllAppraiserByCompanyId", {
