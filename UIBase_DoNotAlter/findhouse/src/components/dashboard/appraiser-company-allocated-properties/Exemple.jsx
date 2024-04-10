@@ -165,74 +165,68 @@ export default function Exemple({
   const [show, setShow] = useState(false);
   const [Appraiser, setAppraiser] = useState({});
 
-  const [allListedAssignAppraiser , setallListedAssignAppraiser] = useState([])
+  const [allListedAssignAppraiser, setallListedAssignAppraiser] = useState([]);
 
   const [dataFetched, setDataFetched] = useState(false);
   const [allProperties, setAllProperties] = useState([]);
   const [allAssignAppraiser, setAllAssignAppraiser] = useState([]);
   let tempData = [];
 
-  const calculateDate = (oldBid,newBid)=>{
-
-    if(!oldBid.requestTime){
-      return newBid
+  const calculateDate = (oldBid, newBid) => {
+    if (!oldBid.requestTime) {
+      return newBid;
     }
 
     const oldDate = new Date(oldBid.requestTime);
     const newDate = new Date(newBid.requestTime);
 
-    if(oldDate <= newDate){
+    if (oldDate <= newDate) {
       return newBid;
     }
     return oldBid;
-  }
+  };
 
-  const getFinalBid = (tempBids)=>{
-    
+  const getFinalBid = (tempBids) => {
     let finalBid = {};
-    tempBids.map((bid,index)=>{
-      if(!finalBid){
+    tempBids.map((bid, index) => {
+      if (!finalBid) {
         finalBid = bid;
-      }
-      else {
-        if(bid.status === 1){
-          if(finalBid.status === 1){
-            const customBid = calculateDate(finalBid,bid);
+      } else {
+        if (bid.status === 1) {
+          if (finalBid.status === 1) {
+            const customBid = calculateDate(finalBid, bid);
             finalBid = customBid;
+          } else {
+            finalBid = bid;
           }
-          else{
-            finalBid = bid
-          }
-        }
-        else{
-          const customBid = calculateDate(finalBid,bid);
-            finalBid = customBid;
+        } else {
+          const customBid = calculateDate(finalBid, bid);
+          finalBid = customBid;
         }
       }
-    })
+    });
 
     return finalBid;
-  }
+  };
 
   const filterBidsWithin24Hours = (property) => {
     const data = JSON.parse(localStorage.getItem("user"));
     let tempBid = 0;
-    let  bidValue = {};
-    let tempBids = []
+    let bidValue = {};
+    let tempBids = [];
     bids.filter((bid) => {
-    if (
+      if (
         bid.orderId === property.orderId &&
         bid.appraiserUserId === data.userId
-      )
-      {
-        tempBids.push(bid) ;
-        bidValue = (bid) ;
+      ) {
+        tempBids.push(bid);
+        bidValue = bid;
         tempBid = tempBid + 1;
       } else {
       }
     });
-    const customBid = getFinalBid(tempBids)
-    return customBid
+    const customBid = getFinalBid(tempBids);
+    return customBid;
   };
 
   const getPropertyInfo = (orderId) => {
@@ -276,7 +270,7 @@ export default function Exemple({
 
   const router = useRouter();
 
-  const getOrderValue = (val,orderId) => {
+  const getOrderValue = (val, orderId) => {
     let title = "Applicant Contancted By Appraiser";
     AppraiserStatusOptions.map((status) => {
       if (String(status.id) === String(val)) {
@@ -354,8 +348,6 @@ export default function Exemple({
     return formattedDate;
   };
 
-
-
   const checkWishlistedHandler = (data) => {
     let temp = {};
     // //console.log(wishlist, data);
@@ -376,36 +368,37 @@ export default function Exemple({
   };
 
   const openAssignModalHandler = (property) => {
-  
     setAssignPropertyId(property.$id);
     setAssignModal(true);
   };
 
-  const checkIsAlreadyExisting = (specificAppraiser , allSelectedAppraisers)=>{
+  const checkIsAlreadyExisting = (specificAppraiser, allSelectedAppraisers) => {
     let isPresent = false;
 
-    allSelectedAppraisers.map((app,index)=>{
-      if(String(app.id) === String(specificAppraiser.id)){
+    allSelectedAppraisers.map((app, index) => {
+      if (String(app.id) === String(specificAppraiser.id)) {
         isPresent = true;
       }
-    })
+    });
 
     return isPresent;
-  }
+  };
 
-  useEffect(()=>{
+  useEffect(() => {
     let requiredAssign = [];
-    allListedAssignAppraiser.map((assigned,idx)=>{
-     allAssignAppraiser.map((appraiser,index)=>{
-       const isPresent = checkIsAlreadyExisting(appraiser,requiredAssign)
-       if(String(appraiser.id) === String(assigned.appraiserid) && !isPresent){
-         requiredAssign.push(appraiser)
-       }
-     })
-    })
-    setAssignAppraisers(requiredAssign)
-     
-  },[allListedAssignAppraiser,allAssignAppraiser])
+    allListedAssignAppraiser.map((assigned, idx) => {
+      allAssignAppraiser.map((appraiser, index) => {
+        const isPresent = checkIsAlreadyExisting(appraiser, requiredAssign);
+        if (
+          String(appraiser.id) === String(assigned.appraiserid) &&
+          !isPresent
+        ) {
+          requiredAssign.push(appraiser);
+        }
+      });
+    });
+    setAssignAppraisers(requiredAssign);
+  }, [allListedAssignAppraiser, allAssignAppraiser]);
 
   const sortObjectsByOrderIdDescending = (data) => {
     return data.sort((a, b) => b.order_id - a.order_id);
@@ -439,20 +432,18 @@ export default function Exemple({
     return `${formattedNumber}${unit}`;
   };
 
-
   console.log("assignProperties", allProperties, properties);
 
   useEffect(() => {
-    let tempGeneratedProp = []
+    let tempGeneratedProp = [];
     const getData = () => {
       properties.map((property, index) => {
         // const currentProperty = propertyDetail?.propertyDetails;
 
-       
         // const property = getPropertyInfo(propertyDetail?.propertyid);
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
-        tempGeneratedProp.push(property)
+        tempGeneratedProp.push(property);
         console.log("isBidded", isBidded, property);
         const isWait = property?.isOnHold || property?.isOnCancel;
         const updatedRow = {
@@ -465,10 +456,16 @@ export default function Exemple({
             : "$ 0",
           purpose: property?.purpose ? property?.purpose : "N.A.",
           remark: property?.remark ? <p>remark</p> : "N.A.",
-          appraiser_assign_date : property?.createdDateTime ?
-          formatDate(property?.createdDateTime) : "-" ,
-          appraiser_assign_completed_date: isBidded.$id &&  isBidded?.status === 1  &&  isBidded?.orderStatus === 3 && isBidded.orderStatus !== null ?
-          formatDate(isBidded?.requestTime) : "",
+          appraiser_assign_date: property?.createdDateTime
+            ? formatDate(property?.createdDateTime)
+            : "-",
+          appraiser_assign_completed_date:
+            isBidded.$id &&
+            isBidded?.status === 1 &&
+            isBidded?.orderStatus === 3 &&
+            isBidded.orderStatus !== null
+              ? formatDate(isBidded?.requestTime)
+              : "",
           status: isWait ? (
             <span className="btn btn-danger  w-100">
               {property.isOnCancel
@@ -480,11 +477,9 @@ export default function Exemple({
           ) : isBidded.bidId ? (
             isBidded.status === 0 ? (
               <span className="btn btn-primary  w-100">Quote Provided</span>
-            )
-            : isBidded.status === 1  && isBidded.orderStatus === 3 ? (
+            ) : isBidded.status === 1 && isBidded.orderStatus === 3 ? (
               <span className="btn btn-completed  w-100">Completed</span>
-            ) 
-             : isBidded.status === 1 ? (
+            ) : isBidded.status === 1 ? (
               <span className="btn btn-success  w-100">Accepted</span>
             ) : (
               <span className="btn btn-danger  w-100">Declined</span>
@@ -495,12 +490,12 @@ export default function Exemple({
           appraisal_status:
             isBidded.status === 1 && isBidded.orderStatus === 1 ? (
               <span className="btn btn-warning  w-100">
-                {getOrderValue(isBidded.orderStatus,property.orderId)} -
+                {getOrderValue(isBidded.orderStatus, property.orderId)} -
                 {formatDate(isBidded.statusDate)}
               </span>
             ) : isBidded.status === 1 && isBidded.orderStatus !== null ? (
               <span className="btn btn-warning  w-100">
-                {getOrderValue(isBidded.orderStatus,property.orderId)}
+                {getOrderValue(isBidded.orderStatus, property.orderId)}
               </span>
             ) : (
               <span className="btn btn-warning  w-100">N.A.</span>
@@ -526,9 +521,7 @@ export default function Exemple({
               ) : isBidded.status === 2 ? (
                 <h6 style={{ color: "red" }}> Declined</h6>
               ) : (
-                <p>
-                  Broker Information will be available post the quote acceptance
-                </p>
+                <p>Information will be available post quote acceptance.</p>
               )}
             </div>
           ),
@@ -570,10 +563,7 @@ export default function Exemple({
               ) : isBidded.status === 2 ? (
                 <h6 style={{ color: "red" }}> Declined</h6>
               ) : (
-                <p>
-                  Property Information will be available post the quote
-                  acceptance
-                </p>
+                <p>Information will be available post quote acceptance.</p>
               )}
             </div>
           ),
@@ -631,26 +621,26 @@ export default function Exemple({
               ) : (
                 <>
                   <li
-                          className="list-inline-item"
-                          data-toggle="tooltip"
-                          data-placement="top"
-                          title="Assign Appraiser"
-                        >
-                          <div
-                            className="w-100"
-                            onClick={() => openAssignModalHandler(property)}
-                          >
-                            <button
-                              href="#"
-                              className="btn btn-color"
-                              // style={{ marginLeft: "12px" }}
-                            >
-                              <Link href="#">
-                                <span className="text-light flaticon-user"></span>
-                              </Link>
-                            </button>
-                          </div>
-                        </li>
+                    className="list-inline-item"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Assign Appraiser"
+                  >
+                    <div
+                      className="w-100"
+                      onClick={() => openAssignModalHandler(property)}
+                    >
+                      <button
+                        href="#"
+                        className="btn btn-color"
+                        // style={{ marginLeft: "12px" }}
+                      >
+                        <Link href="#">
+                          <span className="text-light flaticon-user"></span>
+                        </Link>
+                      </button>
+                    </div>
+                  </li>
                 </>
               )}
             </div>
@@ -659,7 +649,7 @@ export default function Exemple({
         tempData.push(updatedRow);
       });
       setAssignedProp(tempData);
-      setGeneratedProps(tempGeneratedProp)
+      setGeneratedProps(tempGeneratedProp);
       setUpdatedData(tempData);
     };
 
@@ -716,16 +706,16 @@ export default function Exemple({
                 if (String(prop.propertyid) === String(assProp.$id)) {
                   const newRow = {
                     ...assProp,
-                    appraiserid : prop.appraiserid,
-                    createdDateTime : prop.createdDateTime
-                  }
+                    appraiserid: prop.appraiserid,
+                    createdDateTime: prop.createdDateTime,
+                  };
                   assignedProps.push(newRow);
                 }
               });
             });
 
-            console.log("assignedProps",assignedProps)
-           
+            console.log("assignedProps", assignedProps);
+
             let tempBids = [];
             axios
               .get("/api/getAllBids", {
@@ -777,7 +767,6 @@ export default function Exemple({
                 setErrorMessage(err?.response?.data?.error);
                 setModalIsOpenError(true);
               });
-
           })
           .catch((err) => {
             setErrorMessage(err?.response?.data?.error);
@@ -790,7 +779,7 @@ export default function Exemple({
         setModalIsOpenError(true);
       });
 
-      axios
+    axios
       .get("/api/getAllAssignProperties", {
         headers: {
           Authorization: `Bearer ${data.token}`,

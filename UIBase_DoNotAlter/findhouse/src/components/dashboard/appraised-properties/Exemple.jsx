@@ -473,10 +473,7 @@ export default function Exemple({
                     Information will be available post quote acceptance.
                   </span>
                 ) : (
-                  <p>
-                    Broker Information will be available post the quote
-                    acceptance
-                  </p>
+                  <p>Information will be available post quote acceptance.</p>
                 )}
               </div>
             ),
@@ -505,10 +502,7 @@ export default function Exemple({
                     Information will be available post quote acceptance.
                   </span>
                 ) : (
-                  <p>
-                    Property Information will be available post the quote
-                    acceptance
-                  </p>
+                  <p>Information will be available post quote acceptance.</p>
                 )}
               </div>
             ),

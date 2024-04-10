@@ -373,8 +373,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       >
                         {userData?.broker_Details?.cellNumber
                           ? userData?.broker_Details?.cellNumber
-                          : "Not Provided"
-                          }
+                          : "Not Provided"}
                       </td>
                     </tr>
                     <tr>
@@ -492,7 +491,9 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                         }}
                       >
                         {" "}
-                        {userData?.broker_Details?.assistantEmailAddress}{" "}
+                        {userData?.broker_Details?.assistantEmailAddress
+                          ? userData?.broker_Details?.assistantTwoEmailAddress
+                          : "Not Provided"}
                       </td>
                     </tr>
                     <tr>
@@ -514,7 +515,9 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                         }}
                       >
                         {" "}
-                        {userData?.broker_Details?.assistantPhoneNumber}
+                        {userData?.broker_Details?.assistantPhoneNumber
+                          ? userData?.broker_Details?.assistantPhoneNumber
+                          : "Not Provided"}
                       </td>
                     </tr>
                     <tr>
@@ -558,9 +561,9 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                         }}
                       >
                         {" "}
-                        {
-                          userData?.broker_Details?.assistantTwoEmailAddress
-                        }{" "}
+                        {userData?.broker_Details?.assistantTwoEmailAddress
+                          ? userData?.broker_Details?.assistantTwoEmailAddress
+                          : "Not Provided"}
                       </td>
                     </tr>
                     <tr>

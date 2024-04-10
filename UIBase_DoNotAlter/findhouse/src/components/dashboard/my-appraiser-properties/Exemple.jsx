@@ -182,67 +182,61 @@ export default function Exemple({
     return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
-  const calculateDate = (oldBid,newBid)=>{
-
-    if(!oldBid.requestTime){
-      return newBid
+  const calculateDate = (oldBid, newBid) => {
+    if (!oldBid.requestTime) {
+      return newBid;
     }
 
     const oldDate = new Date(oldBid.requestTime);
     const newDate = new Date(newBid.requestTime);
 
-    if(oldDate <= newDate){
+    if (oldDate <= newDate) {
       return newBid;
     }
     return oldBid;
-  }
+  };
 
-  const getFinalBid = (tempBids)=>{
-    
+  const getFinalBid = (tempBids) => {
     let finalBid = {};
-    tempBids.map((bid,index)=>{
-      if(!finalBid){
+    tempBids.map((bid, index) => {
+      if (!finalBid) {
         finalBid = bid;
-      }
-      else {
-        if(bid.status === 1){
-          if(finalBid.status === 1){
-            const customBid = calculateDate(finalBid,bid);
+      } else {
+        if (bid.status === 1) {
+          if (finalBid.status === 1) {
+            const customBid = calculateDate(finalBid, bid);
             finalBid = customBid;
+          } else {
+            finalBid = bid;
           }
-          else{
-            finalBid = bid
-          }
-        }
-        else{
-          const customBid = calculateDate(finalBid,bid);
-            finalBid = customBid;
+        } else {
+          const customBid = calculateDate(finalBid, bid);
+          finalBid = customBid;
         }
       }
-    })
+    });
 
     return finalBid;
-  }
+  };
 
   const filterBidsWithin24Hours = (property) => {
     const data = JSON.parse(localStorage.getItem("user"));
     let tempBid = 0;
-    let  bidValue = {};
-    let tempBids = []
+    let bidValue = {};
+    let tempBids = [];
     bids.filter((bid) => {
-    if (
+      if (
         bid.orderId === property.orderId &&
         bid.appraiserUserId === data.userId
-      )
-      {
-        tempBids.push(bid) ;
-        bidValue = (bid) ;
+      ) {
+        tempBids.push(bid);
+        bidValue = bid;
         tempBid = tempBid + 1;
       } else {
       }
     });
-    const customBid = getFinalBid(tempBids)
-    return customBid
+    const customBid = getFinalBid(tempBids);
+    return customBid;
   };
 
   const router = useRouter();
@@ -436,10 +430,7 @@ export default function Exemple({
                 ) : isBidded.status === 2 ? (
                   <h6 style={{ color: "red" }}> Declined</h6>
                 ) : (
-                  <p>
-                    Broker Information will be available post the quote
-                    acceptance
-                  </p>
+                  <p>Information will be available post quote acceptance.</p>
                 )}
               </div>
             ),
@@ -464,10 +455,7 @@ export default function Exemple({
                 ) : isBidded.status === 2 ? (
                   <h6 style={{ color: "red" }}> Declined</h6>
                 ) : (
-                  <p>
-                    Property Information will be available post the quote
-                    acceptance
-                  </p>
+                  <p>Information will be available post quote acceptance.</p>
                 )}
               </div>
             ),
@@ -493,70 +481,70 @@ export default function Exemple({
 
             action: (
               <div className="print-hidden-column">
-                {(
-                    <ul className="mb0 d-flex gap-1">
-                      {isWishlist.id ? (
-                        <button
-                          className="btn "
-                          style={{ border: "1px solid grey" }}
-                          onClick={() => removeWishlistHandler(isWishlist.id)}
-                        >
-                          <img
-                            width={26}
-                            height={26}
-                            src="https://png.pngtree.com/png-clipart/20200226/original/pngtree-3d-red-heart-cute-valentine-romantic-glossy-shine-heart-shape-png-image_5315044.jpg"
-                          />
-                        </button>
-                      ) : (
-                        <li
-                          className="list-inline-item"
-                          title="Wishlist Property"
-                        >
-                          {
-                            <button
-                              className="btn"
-                              style={{ border: "1px solid grey" }}
-                              onClick={() =>
-                                onWishlistHandler(property.propertyId)
-                              }
-                            >
-                              <span className="flaticon-heart text-color"></span>
-                            </button>
-                          }
-                        </li>
-                      )}
-  
-                      {(!isBidded.$id || isBidded?.status < 1) && (
-                        <li
-                          className="list-inline-item"
-                          data-toggle="tooltip"
-                          data-placement="top"
-                          title={`${
-                            isBidded.$id ? "View/Update Quote" : "Provide Quote"
-                          }`}
-                        >
-                          <div
-                            className="w-100"
+                {
+                  <ul className="mb0 d-flex gap-1">
+                    {isWishlist.id ? (
+                      <button
+                        className="btn "
+                        style={{ border: "1px solid grey" }}
+                        onClick={() => removeWishlistHandler(isWishlist.id)}
+                      >
+                        <img
+                          width={26}
+                          height={26}
+                          src="https://png.pngtree.com/png-clipart/20200226/original/pngtree-3d-red-heart-cute-valentine-romantic-glossy-shine-heart-shape-png-image_5315044.jpg"
+                        />
+                      </button>
+                    ) : (
+                      <li
+                        className="list-inline-item"
+                        title="Wishlist Property"
+                      >
+                        {
+                          <button
+                            className="btn"
+                            style={{ border: "1px solid grey" }}
                             onClick={() =>
-                              participateHandler(
-                                property.bidLowerRange,
-                                property.orderId,
-                                isBidded.status < 1,
-                                isBidded.bidAmount,
-                                isBidded.$id ? true : false
-                              )
+                              onWishlistHandler(property.propertyId)
                             }
                           >
-                            <button href="#" className="btn btn-color">
-                              <Link href="#">
-                                <span className="flaticon-invoice text-light"></span>
-                              </Link>
-                            </button>
-                          </div>
-                        </li>
-                      )}
-  
-                      {/* <li
+                            <span className="flaticon-heart text-color"></span>
+                          </button>
+                        }
+                      </li>
+                    )}
+
+                    {(!isBidded.$id || isBidded?.status < 1) && (
+                      <li
+                        className="list-inline-item"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title={`${
+                          isBidded.$id ? "View/Update Quote" : "Provide Quote"
+                        }`}
+                      >
+                        <div
+                          className="w-100"
+                          onClick={() =>
+                            participateHandler(
+                              property.bidLowerRange,
+                              property.orderId,
+                              isBidded.status < 1,
+                              isBidded.bidAmount,
+                              isBidded.$id ? true : false
+                            )
+                          }
+                        >
+                          <button href="#" className="btn btn-color">
+                            <Link href="#">
+                              <span className="flaticon-invoice text-light"></span>
+                            </Link>
+                          </button>
+                        </div>
+                      </li>
+                    )}
+
+                    {/* <li
                     className="list-inline-item"
                     data-toggle="tooltip"
                     data-placement="top"
@@ -579,9 +567,7 @@ export default function Exemple({
                       </button>
                     </div>
                     </li>*/}
-  
-                    </ul>
-                  )
+                  </ul>
                 }
                 {isBidded.status === 2 ? (
                   <>
@@ -649,8 +635,7 @@ export default function Exemple({
                       </div>
                     </li>
                   </>
-                ) 
-                :  (
+                ) : (
                   isBidded.orderStatus <= 6 &&
                   isBidded.status === 1 && (
                     <>
@@ -688,31 +673,30 @@ export default function Exemple({
                       </li>
                     </>
                   )
-                  
                 )}
 
-                {!isBidded.$id && (<li
-                      className="list-inline-item"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Archive Property"
+                {!isBidded.$id && (
+                  <li
+                    className="list-inline-item"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Archive Property"
+                  >
+                    <div
+                      className="w-100"
+                      onClick={() => onArchivePropertyHandler(property.orderId)}
                     >
-                      <div
-                        className="w-100"
-                        onClick={() =>
-                          onArchivePropertyHandler(property.orderId)
-                        }
-                      >
-                        <button href="#" className="btn btn-color">
-                          <Link href="#">
-                            <span className="text-light">
-                              {" "}
-                              <FaArchive />
-                            </span>
-                          </Link>
-                        </button>
-                      </div>
-                    </li>)}
+                      <button href="#" className="btn btn-color">
+                        <Link href="#">
+                          <span className="text-light">
+                            {" "}
+                            <FaArchive />
+                          </span>
+                        </Link>
+                      </button>
+                    </div>
+                  </li>
+                )}
               </div>
             ),
           };
