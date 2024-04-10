@@ -109,7 +109,7 @@ const headCells = [
     id: "action",
     numeric: false,
     label: "Action",
-    width: 180,
+    width: 100,
   },
 ];
 
@@ -482,7 +482,7 @@ export default function Exemple({
 
           action: (
             <div className="print-hidden-column">
-              {isWait ? (
+              {/* {isWait ? (
                 <p className="btn btn-danger  w-100">
                   {`No further actions can be taken on this property since it is ${
                     property.isOnCancel ? "Cancelled" : "On Hold"
@@ -490,7 +490,7 @@ export default function Exemple({
                 </p>
               ) : (
                 ""
-              )}
+              )} */}
 
               <li
                 className="list-inline-item"

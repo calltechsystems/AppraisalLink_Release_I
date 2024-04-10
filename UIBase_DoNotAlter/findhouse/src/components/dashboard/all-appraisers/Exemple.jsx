@@ -29,13 +29,6 @@ const headCells = [
   },
 
   {
-    id: "status",
-    numeric: false,
-    label: "Status",
-    width: 200,
-  },
-
-  {
     id: "email",
     numeric: false,
     label: "Email Address",
@@ -52,7 +45,13 @@ const headCells = [
   {
     id: "date",
     numeric: false,
-    label: "Date",
+    label: "Start Date",
+    width: 200,
+  },
+  {
+    id: "status",
+    numeric: false,
+    label: "Status",
     width: 200,
   },
   {
