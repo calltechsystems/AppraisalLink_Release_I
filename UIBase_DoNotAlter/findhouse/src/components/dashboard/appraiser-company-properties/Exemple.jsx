@@ -779,6 +779,7 @@ export default function Exemple({
                         </Link>
                       </button>
                       {
+                        isAssigned === false && 
                         <li
                           className="list-inline-item"
                           data-toggle="tooltip"

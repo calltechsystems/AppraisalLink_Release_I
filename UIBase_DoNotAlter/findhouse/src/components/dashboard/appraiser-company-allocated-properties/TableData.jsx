@@ -11,6 +11,8 @@ const TableData = ({
   open,
   setGeneratedProps,
   close,
+  setAssignModal,
+  setAssignPropertyId,
   setAssignedProp,
   setAssignedAppraiser,
   setCurrentBid,
@@ -32,6 +34,7 @@ const TableData = ({
   properties,
   setProperties,
   setErrorMessage,
+  setAssignAppraisers,
   setModalIsOpenError,
   setRefresh,
   refresh,
@@ -319,6 +322,9 @@ const TableData = ({
           setCurrentBid={setCurrentBid}
           setOpenAssignModal={setOpenAssignModal}
           end={end}
+          setAssignAppraisers={setAssignAppraisers}
+          setAssignModal = {setAssignModal}
+          setAssignPropertyId = {setAssignPropertyId}
           setAssignedProp={setAssignedProp}
         />
       )}

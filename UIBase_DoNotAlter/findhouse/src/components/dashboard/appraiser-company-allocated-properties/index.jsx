@@ -45,6 +45,10 @@ const Index = () => {
 
   const [disable, setDisble] = useState(false);
 
+  const [assignModal, setAssignModal] = useState(false);
+
+
+  const [ AssignAppraisers, setAssignAppraisers ]  = useState([])
   const [wishlistedProperties, setWishlistedProperties] = useState([]);
   const [updatedCode, setUpdatedCode] = useState(false);
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
@@ -61,10 +65,10 @@ const Index = () => {
 
   const [end, setEnd] = useState(4);
 
+  console.log("AssignAppraisers",AssignAppraisers)
   const closeErrorModal = () => {
     setModalIsOpenError(false);
   };
-
   const [remark, setRemark] = useState("");
   const [currentBid, setCurrentBid] = useState(-1);
   const handleStatusUpdateHandler = () => {
@@ -158,6 +162,8 @@ const Index = () => {
     setTypeView(value);
     setOpenBrokerModal(true);
   };
+
+
 
   const [assignPropertyId, setAssignPropertyId] = useState(-1);
   const [assignAppraiserId, setAssignAppraiserId] = useState(-1);
@@ -259,7 +265,8 @@ const Index = () => {
   const setShowBroker = () => {};
 
   const closeAssignModal = () => {
-    setOpenAssignModal(false);
+    setAssignModal(false);
+    setAssignPropertyId(-1)
   };
 
   useEffect(() => {
@@ -528,6 +535,38 @@ const Index = () => {
     setModalOpen(true);
   };
 
+
+  const [selectedAppraiser, setSelectedAppraiser] = useState({})
+
+  const assignAppraiserUpdateHandler = () => {
+    const data = JSON.parse(localStorage.getItem("user"));
+    const payload = {
+      companyid: data.appraiserCompany_Datails.appraiserCompanyId,
+      propertyid: Number(assignPropertyId),
+      appraiserid: Number(selectedAppraiser === -1 ? AssignAppraisers[0].id : selectedAppraiser ),
+
+    };
+
+    const encryptedData = encryptionData(payload);
+    toast.loading("Assigning the property!!....");
+    axios
+      .post("/api/assignPropertyToAppraiser", encryptedData, {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+      })
+      .then((res) => {
+        toast.dismiss();
+        toast.success("Successfully assigned the property!");
+        location.reload(true);
+      })
+      .catch((err) => {
+        toast.dismiss();
+        toast.error(err);
+      });
+    setAssignPropertyId(-1);
+  };
+
   const onWishlistHandler = (id) => {
     const userData = JSON.parse(localStorage.getItem("user"));
 
@@ -657,6 +696,7 @@ const Index = () => {
                               ? searchedProperties
                               : filterProperty
                           }
+                          setAssignAppraisers={setAssignAppraisers}
                           setUpdatedCode={setUpdatedCode}
                           onWishlistHandler={onWishlistHandler}
                           participateHandler={participateHandler}
@@ -674,6 +714,9 @@ const Index = () => {
                           setWishlistedProperties={setWishlistedProperties}
                           setStartLoading={setStartLoading}
                           openModalBroker={openModalBroker}
+                          setAssignModal = {setAssignModal}
+                          setAssignPropertyId = {setAssignPropertyId}
+          
                           setAssignedAppraiser={openAppraisalModal}
                         />
 
@@ -2099,56 +2142,101 @@ const Index = () => {
                 </div>
               )}
 
-              {/*openAssignModal && (
+{assignModal && (
                 <div className="modal">
                   <div className="modal-content">
-                    <h3 className="text-center">Assign the appraiser</h3>
-                    
+                    <div className="row">
+                      <div className="col-lg-12">
+                        <Link href="/" className="">
+                          <Image
+                            width={50}
+                            height={45}
+                            className="logo1 img-fluid"
+                            style={{ marginTop: "-20px" }}
+                            src="/assets/images/Appraisal_Land_Logo.png"
+                            alt="header-logo2.png"
+                          />
+                          <span
+                            style={{
+                              color: "#2e008b",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            Appraisal
+                          </span>
+                          <span
+                            style={{
+                              color: "#97d700",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            {" "}
+                            Land
+                          </span>
+                        </Link>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-lg-12 text-center">
+                        <h1 className=" text-color mt-1">Asssign Appraiser</h1>
+                      </div>
+                    </div>
+                    <div
+                      className="mt-2 mb-3"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
                     <select
-                  required
-                  className="form-select"
-                  data-live-search="true"
-                  data-width="100%"
-                  onChange={(e)=>setAssignAppraiserId(e.target.value)}
-                  // value={buildinRef}
-                  // onChange={(e) => setBuildinRef(e.target.value)}
-                  // onChange={(e) => setBuildinRef(e.target.value)}
-                  // disabled={isDisable}
-                  style={{
-                          paddingTop: "15px",
-                          paddingBottom: "15px",
-                          backgroundColor: "#E8F0FE"
-                        }}
-                >
-                  {assignedAppraiser?.map((item, index) => {
-                    return (
-                      <option key={item.id} value={item.id}>
-                        {item.firstName ? `${item.firstName} ${item.lastName}` : "Name"}
-                      </option>
-                    );
-                  })}
-                </select>
-                
-                  
+                      required
+                      className="form-select"
+                      data-live-search="true"
+                      data-width="100%"
+                      onChange={(e) => setSelectedAppraiser(e.target.value)}
+                      // value={buildinRef}
+                      // onChange={(e) => setBuildinRef(e.target.value)}
+                      // onChange={(e) => setBuildinRef(e.target.value)}
+                      // disabled={isDisable}
+                      style={{
+                        // paddingTop: "15px",
+                        // paddingBottom: "15px",
+                        padding:"15px",
+                        backgroundColor: "#E8F0FE",
+                      }}
+                    >
+                      {AssignAppraisers.map((item, index) => {
+                        <option value={0}>....</option>;
+                        return item.isActive ? (
+                          <option key={item.id} value={item.id}>
+                            {item.firstName} {item.lastName}
+                          </option>
+                        ) : null;
+                      })}
+                    </select>
+                    <div
+                      className="mt-4 mb-3"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
+                    {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
-                    <button
-                    className="btn w-35 btn-white"
-                    onClick={closeAssignModal}
-                  >
-                    Cancel
-                  </button>
                       <button
-                      className="btn btn-color w-10 mt-1"
-                      style={{ marginLeft: "12px" }}
-                        onClick={handleAssignPropertyToAppraiser}
+                        className="btn btn-color m-1 w-25"
+                        onClick={() => closeAssignModal()}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        className="btn btn-color w-25"
+                        onClick={assignAppraiserUpdateHandler}
                       >
                         Submit
-                      </button>        
-                     
+                      </button>
                     </div>
                   </div>
                 </div>
-                )*/}
+              )}
               <div className="row">
                 <Modal
                   modalOpen={modalOpen}

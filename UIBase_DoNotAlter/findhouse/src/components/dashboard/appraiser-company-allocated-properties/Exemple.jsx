@@ -133,7 +133,9 @@ export default function Exemple({
   setAssignedAppraiser,
   end,
   openAppraiserInfoModal,
+  setAssignModal,
   setOpenAssignModal,
+  setAssignPropertyId,
   setUpdatedCode,
   properties,
   setCurrentBid,
@@ -141,6 +143,7 @@ export default function Exemple({
   setProperties,
   onWishlistHandler,
   participateHandler,
+  setAssignAppraisers,
   setFilterQuery,
   setSearchInput,
   openModalBroker,
@@ -161,6 +164,8 @@ export default function Exemple({
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
   const [Appraiser, setAppraiser] = useState({});
+
+  const [allListedAssignAppraiser , setallListedAssignAppraiser] = useState([])
 
   const [dataFetched, setDataFetched] = useState(false);
   const [allProperties, setAllProperties] = useState([]);
@@ -370,6 +375,38 @@ export default function Exemple({
     return temp;
   };
 
+  const openAssignModalHandler = (property) => {
+  
+    setAssignPropertyId(property.$id);
+    setAssignModal(true);
+  };
+
+  const checkIsAlreadyExisting = (specificAppraiser , allSelectedAppraisers)=>{
+    let isPresent = false;
+
+    allSelectedAppraisers.map((app,index)=>{
+      if(String(app.id) === String(specificAppraiser.id)){
+        isPresent = true;
+      }
+    })
+
+    return isPresent;
+  }
+
+  useEffect(()=>{
+    let requiredAssign = [];
+    allListedAssignAppraiser.map((assigned,idx)=>{
+     allAssignAppraiser.map((appraiser,index)=>{
+       const isPresent = checkIsAlreadyExisting(appraiser,requiredAssign)
+       if(String(appraiser.id) === String(assigned.appraiserid) && !isPresent){
+         requiredAssign.push(appraiser)
+       }
+     })
+    })
+    setAssignAppraisers(requiredAssign)
+     
+  },[allListedAssignAppraiser,allAssignAppraiser])
+
   const sortObjectsByOrderIdDescending = (data) => {
     return data.sort((a, b) => b.order_id - a.order_id);
   };
@@ -571,28 +608,6 @@ export default function Exemple({
                     >
                       <span className="btn btn-danger  w-100">Rejected </span>
                     </li>
-                    <li
-                      className="list-inline-item"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Archive Property"
-                    >
-                      <div
-                        className="w-100"
-                        onClick={() =>
-                          onArchivePropertyHandler(property.orderId)
-                        }
-                      >
-                        <button href="#" className="btn btn-color">
-                          <Link href="#">
-                            <span className="text-light">
-                              {" "}
-                              <FaArchive />
-                            </span>
-                          </Link>
-                        </button>
-                      </div>
-                    </li>
                   </ul>
                 </>
               ) : isWait ? (
@@ -602,26 +617,6 @@ export default function Exemple({
                       property.isOnCancel ? "Cancelled" : "On Hold"
                     } .`}
                   </p>
-                  <li
-                    className=""
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title="Archive Property"
-                  >
-                    <div
-                      className="w-100"
-                      onClick={() => onArchivePropertyHandler(property.orderId)}
-                    >
-                      <button href="#" className="btn btn-color">
-                        <Link href="#">
-                          <span className="text-light">
-                            {" "}
-                            <FaArchive />
-                          </span>
-                        </Link>
-                      </button>
-                    </div>
-                  </li>
                 </ul>
               ) : isBidded.$id && isBidded.orderStatus === 3 ? (
                 <span className="btn btn-completed  w-100">Completed</span>
@@ -635,16 +630,27 @@ export default function Exemple({
                 </>
               ) : (
                 <>
-                  {isBidded.$id &&  isBidded.status === 1 && <button
-                      href="#"
-                      className="btn btn-color m-1"
-                      onClick={() => openStatusUpdateHandler(isBidded)}
-                    >
-                      <Link href="#">
-                        <span className="flaticon-edit text-light"></span>
-                      </Link>
-                    </button>}
-                  { isBidded.status !== 1 && <p className="btn btn-info w-100">{`In progress`}</p>}
+                  <li
+                          className="list-inline-item"
+                          data-toggle="tooltip"
+                          data-placement="top"
+                          title="Assign Appraiser"
+                        >
+                          <div
+                            className="w-100"
+                            onClick={() => openAssignModalHandler(property)}
+                          >
+                            <button
+                              href="#"
+                              className="btn btn-color"
+                              // style={{ marginLeft: "12px" }}
+                            >
+                              <Link href="#">
+                                <span className="text-light flaticon-user"></span>
+                              </Link>
+                            </button>
+                          </div>
+                        </li>
                 </>
               )}
             </div>
@@ -728,7 +734,6 @@ export default function Exemple({
                 },
               })
               .then((res) => {
-                // //console.log(res);
                 tempBids = res.data.data.$values;
 
                 const updatedBids = tempBids.filter((prop, index) => {
@@ -742,8 +747,6 @@ export default function Exemple({
                 setBids(updatedBids);
                 setProperties(assignedProps);
 
-                // setAllProperties(propertyInfo);
-                // setProperties(temp);
                 axios
                   .get("/api/appraiserWishlistedProperties", {
                     headers: {
@@ -754,7 +757,6 @@ export default function Exemple({
                   .then((res) => {
                     const tempData = res.data.data.$values;
 
-                    // setAllWishlistedProperties(res.data.data.$values);
                     const responseData = tempData.filter((prop, index) => {
                       if (String(prop.userId) === String(data.userId)) {
                         return true;
@@ -776,7 +778,6 @@ export default function Exemple({
                 setModalIsOpenError(true);
               });
 
-            //console.log("props", temp);
           })
           .catch((err) => {
             setErrorMessage(err?.response?.data?.error);
@@ -788,6 +789,23 @@ export default function Exemple({
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
+
+      axios
+      .get("/api/getAllAssignProperties", {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+        params: {
+          userId: data.appraiserCompany_Datails?.appraiserCompanyId,
+        },
+      })
+      .then((res) => {
+        let tempProperties = res.data.data.$values;
+        const temp = res.data.data.$values;
+
+        setallListedAssignAppraiser(tempProperties);
+      })
+      .catch((err) => {});
 
     axios
       .get("/api/getAllBrokers", {
@@ -829,8 +847,6 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        //console.log(res);
-        //   const getAllAppraiser = res.data.data.result.$values;
         setAllAssignAppraiser(res.data.data.result.$values);
       })
       .catch((err) => {
@@ -838,10 +854,8 @@ export default function Exemple({
         setModalIsOpenError(true);
       });
 
-    // //console.log("end", bids, properties, wishlist);
     setRefresh(false);
   }, [refresh]);
-  // //console.log(sortObjectsByOrderIdDescending(updatedData));
   return (
     <>
       {refresh ? (
