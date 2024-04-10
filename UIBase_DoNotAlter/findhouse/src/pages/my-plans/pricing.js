@@ -66,6 +66,8 @@ const Pricing = ({
 
   const [openCancelModal, setOpenCancelModal] = useState(false);
   const [disable, setDisable] = useState(false);
+
+  const [currentActivePlan,setCurrentActivePlan] = useState({})
   const [selectedPlanId, setSelectedPlanId] = useState(-1);
   const [selectedTopUp, setSelectedTopUp] = useState(-1);
   const [filteredData, setFilteredData] = useState([]);
@@ -159,6 +161,26 @@ const Pricing = ({
     window.location.reload();
   };
 
+  
+
+  useEffect(()=>{
+    let requiredPlan = [];
+    data.map((plan,index)=>{
+      const planName = String(plan.planName).toLowerCase().includes(String(currentSubscription.planName).toLowerCase());
+      const amount = String(plan?.monthlyAmount === null ? plan.yearlyAmount :plan.monthlyAmount) === String(currentSubscription.planAmount);
+      const totalPropeerties = String(plan.noOfProperties) === String(currentSubscription.noOfProperties);
+
+      
+      if(planName && amount && totalPropeerties){
+        requiredPlan.push(plan)
+      }
+    })
+    
+    setCurrentActivePlan(requiredPlan[requiredPlan.length - 1])
+  },[currentSubscription,data])
+
+  console.log("currnetPlan",currentActivePlan?.planName)
+
   useEffect(() => {
     let Monthly = [],
       Yearly = [];
@@ -176,6 +198,7 @@ const Pricing = ({
       setFilteredData(Yearly);
     }
   }, [isPlan, data]);
+
 
   return (
     <>
@@ -234,7 +257,7 @@ const Pricing = ({
                 </h2>
               </div>
             </div>
-            {!hideButton && !selectedPackage && (
+            {!hideButton && !currentActivePlan?.$id && (
               <div
                 className="pricing_footer"
                 onClick={() =>
@@ -255,7 +278,7 @@ const Pricing = ({
             )}
 
             {!hideButton &&
-              String(selectedPackage.planId) !== String(item.id) && (
+              currentActivePlan && String(currentActivePlan.id) !== String(item.id) && (
                 <div
                   className="pricing_footer"
                   onClick={() =>
@@ -275,7 +298,7 @@ const Pricing = ({
                 </div>
               )}
             {!hideButton &&
-              String(selectedPackage.planId) === String(item.id) && (
+              String(currentActivePlan?.id) === String(item.id) && (
                 <select
                   style={{
                     padding: "2%",
