@@ -174,27 +174,68 @@ export default function Exemple({
     });
     return isArchive;
   };
+  const calculateDate = (oldBid,newBid)=>{
+
+    if(!oldBid.requestTime){
+      return newBid
+    }
+
+    const oldDate = new Date(oldBid.requestTime);
+    const newDate = new Date(newBid.requestTime);
+
+    if(oldDate <= newDate){
+      return newBid;
+    }
+    return oldBid;
+  }
+
+  const getFinalBid = (tempBids)=>{
+    
+    let finalBid = {};
+    tempBids.map((bid,index)=>{
+      if(!finalBid){
+        finalBid = bid;
+      }
+      else {
+        if(bid.status === 1){
+          if(finalBid.status === 1){
+            const customBid = calculateDate(finalBid,bid);
+            finalBid = customBid;
+          }
+          else{
+            finalBid = bid
+          }
+        }
+        else{
+          const customBid = calculateDate(finalBid,bid);
+            finalBid = customBid;
+        }
+      }
+    })
+
+    return finalBid;
+  }
+
   const filterBidsWithin24Hours = (property) => {
     const data = JSON.parse(localStorage.getItem("user"));
-    let tempBid = 0,
-      bidValue = {};
-    let isAccepted = {};
+    let tempBid = 0;
+    let  bidValue = {};
+    let tempBids = []
     bids.filter((bid) => {
     if (
         bid.orderId === property.orderId &&
         bid.appraiserUserId === data.userId
       )
       {
-        bidValue = bid
+        tempBids.push(bid) ;
+        bidValue = (bid) ;
         tempBid = tempBid + 1;
       } else {
       }
     });
-    console.log("bidValue",bidValue)
-    return bidValue;
+    const customBid = getFinalBid(tempBids)
+    return customBid
   };
-
-
 
   const router = useRouter();
 

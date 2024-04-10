@@ -372,7 +372,7 @@ const Index = ({ isView, propertyData }) => {
   const updateHandler = () => {
     setdisable(true);
     setModalIsOpen(false);
-    const nameRegex = /^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$/;
+    const nameRegex = /^[A-Za-z]+$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     const userInfo = JSON.parse(localStorage.getItem("user"));
 
@@ -526,7 +526,7 @@ const Index = ({ isView, propertyData }) => {
   };
 
   const submitHandler = () => {
-    const nameRegex = /^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$/;
+    const nameRegex = /^[A-Za-z]+$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     const userInfo = JSON.parse(localStorage.getItem("user"));
     const phoneNumberRegex = /^\d{10}$/;

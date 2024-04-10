@@ -23,6 +23,7 @@ const Index = () => {
   const [wishlist, setWishlist] = useState([]);
   const [lineData, setLineData] = useState([]);
   const [acceptedBids, setAcceptedBids] = useState(0);
+  const [allQuotesBids , setAllQuotesBids] = useState(0);
   const [chartData, setChartData] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const router = useRouter();
@@ -115,12 +116,23 @@ const Index = () => {
     return time;
   };
 
+  const getAllBiddedTime = (orderId) => {
+    let time = "";
+    bids.map((bid, index) => {
+      if (String(bid.orderId) === String(orderId) )
+        [(time = bid.requestTime)];
+    });
+    return time;
+  };
+
+
   const filterData = (tempData) => {
     console.log("filterQuery", filterQuery, tempData);
     const currentDate = new Date();
     const oneYearAgo = new Date(currentDate);
     oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
     let tempAllAcceptedBids = 0;
+    let tempAllQuotesBids = 0 ;
 
     switch (filterQuery) {
       case "Monthly":
@@ -128,22 +140,34 @@ const Index = () => {
         oneMonthAgo.setMonth(currentDate.getMonth() - 1);
         tempData = tempData.filter((item) => {
           const isBidded = getBiddedTime(item?.orderId);
+          const isAllBid = getAllBiddedTime(item?.orderId);
           if (isBidded !== "" && new Date(isBidded) >= oneMonthAgo) {
             tempAllAcceptedBids += 1;
           }
+
+          if(isAllBid !== "" && new Date(isAllBid) >= oneMonthAgo){
+            tempAllQuotesBids += 1;
+          }
+
           return new Date(item.addedDatetime) >= oneMonthAgo;
         });
+        setAllQuotesBids(tempAllQuotesBids);
         setAcceptedBids(tempAllAcceptedBids);
         return tempData;
 
       case "Yearly":
         tempData = tempData.filter((item) => {
           const isBidded = getBiddedTime(item?.orderId);
+          const isAllBid = getAllBiddedTime(item?.orderId);
           if (isBidded !== "" && new Date(isBidded) >= oneYearAgo) {
             tempAllAcceptedBids += 1;
           }
+          if(isAllBid !== "" && new Date(isAllBid) >= oneYearAgo){
+            tempAllQuotesBids += 1;
+          }
           return new Date(item.addedDatetime) >= oneYearAgo;
         });
+        setAllQuotesBids(tempAllQuotesBids);
         setAcceptedBids(tempAllAcceptedBids);
         return tempData;
 
@@ -152,22 +176,33 @@ const Index = () => {
         oneWeekAgo.setDate(currentDate.getDate() - 7);
         tempData = tempData.filter((item) => {
           const isBidded = getBiddedTime(item?.orderId);
+          const isAllBid = getAllBiddedTime(item?.orderId);
           if (isBidded !== "" && new Date(isBidded) >= oneWeekAgo) {
             tempAllAcceptedBids += 1;
           }
+          if(isAllBid !== "" && new Date(isAllBid) >= oneWeekAgo){
+            tempAllQuotesBids += 1;
+          }
           return new Date(item.addedDatetime) >= oneWeekAgo;
         });
+        setAllQuotesBids(tempAllQuotesBids);
         setAcceptedBids(tempAllAcceptedBids);
         return tempData;
 
       default:
         tempData = tempData.filter((item) => {
           const isBidded = getBiddedTime(item?.orderId);
+          const isAllBid = getAllBiddedTime(item?.orderId);
           if (isBidded !== "") {
             tempAllAcceptedBids += 1;
           }
+          if(isAllBid !== "" ){
+            tempAllQuotesBids += 1;
+          }
+
           return new Date(item.addedDatetime) >= oneYearAgo;
         });
+        setAllQuotesBids(tempAllQuotesBids);
         return tempData;
     }
   };
@@ -188,7 +223,7 @@ const Index = () => {
   useEffect(() => {
     const dataTemp = filterData(data);
     setChartData(dataTemp);
-  }, [filterQuery]);
+  }, [filterQuery,bids,data]);
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("user"));
@@ -369,8 +404,8 @@ const Index = () => {
 
               <div className="row">
                 <AllStatistics
-                  properties={data.length}
-                  views={bids.length}
+                  properties={allQuotesBids + acceptedBids}
+                  views={allQuotesBids}
                   bids={acceptedBids}
                   favourites={wishlist.length}
                 />

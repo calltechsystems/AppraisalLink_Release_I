@@ -166,19 +166,68 @@ export default function Exemple({
   const [allProperties, setAllProperties] = useState([]);
   const [allAssignAppraiser, setAllAssignAppraiser] = useState([]);
   let tempData = [];
+
+  const calculateDate = (oldBid,newBid)=>{
+
+    if(!oldBid.requestTime){
+      return newBid
+    }
+
+    const oldDate = new Date(oldBid.requestTime);
+    const newDate = new Date(newBid.requestTime);
+
+    if(oldDate <= newDate){
+      return newBid;
+    }
+    return oldBid;
+  }
+
+  const getFinalBid = (tempBids)=>{
+    
+    let finalBid = {};
+    tempBids.map((bid,index)=>{
+      if(!finalBid){
+        finalBid = bid;
+      }
+      else {
+        if(bid.status === 1){
+          if(finalBid.status === 1){
+            const customBid = calculateDate(finalBid,bid);
+            finalBid = customBid;
+          }
+          else{
+            finalBid = bid
+          }
+        }
+        else{
+          const customBid = calculateDate(finalBid,bid);
+            finalBid = customBid;
+        }
+      }
+    })
+
+    return finalBid;
+  }
+
   const filterBidsWithin24Hours = (property) => {
-    console.log("bid", property, bids);
-    let tempBid = 0,
-      bidValue = {};
-    // //console.log(bids);
-    bids.map((bid) => {
-      if (String(bid?.orderId) === String(property?.orderId)) {
-        bidValue = bid;
+    const data = JSON.parse(localStorage.getItem("user"));
+    let tempBid = 0;
+    let  bidValue = {};
+    let tempBids = []
+    bids.filter((bid) => {
+    if (
+        bid.orderId === property.orderId &&
+        bid.appraiserUserId === data.userId
+      )
+      {
+        tempBids.push(bid) ;
+        bidValue = (bid) ;
+        tempBid = tempBid + 1;
+      } else {
       }
     });
-    console.log("bidValue", property, bidValue);
-    return bidValue;
-    //   return requestTime >= twentyFourHoursAgo && requestTime <= currentTime;
+    const customBid = getFinalBid(tempBids)
+    return customBid
   };
 
   const getPropertyInfo = (orderId) => {
@@ -222,10 +271,10 @@ export default function Exemple({
 
   const router = useRouter();
 
-  const getOrderValue = (val) => {
+  const getOrderValue = (val,orderId) => {
     let title = "Applicant Contancted By Appraiser";
     AppraiserStatusOptions.map((status) => {
-      if (String(status.value) === String(val)) {
+      if (String(status.id) === String(val)) {
         title = status.type;
       }
     });
@@ -381,7 +430,7 @@ export default function Exemple({
           remark: property?.remark ? <p>remark</p> : "N.A.",
           appraiser_assign_date : property?.createdDateTime ?
           formatDate(property?.createdDateTime) : "-" ,
-          appraiser_assign_completed_date: isBidded.$id &&  isBidded?.status === 1  &&  isBidded?.orderStatus ?
+          appraiser_assign_completed_date: isBidded.$id &&  isBidded?.status === 1  &&  isBidded?.orderStatus === 3 && isBidded.orderStatus !== null ?
           formatDate(isBidded?.requestTime) : "",
           status: isWait ? (
             <span className="btn btn-danger  w-100">
@@ -394,7 +443,11 @@ export default function Exemple({
           ) : isBidded.bidId ? (
             isBidded.status === 0 ? (
               <span className="btn btn-primary  w-100">Quote Provided</span>
-            ) : isBidded.status === 1 ? (
+            )
+            : isBidded.status === 1  && isBidded.orderStatus === 3 ? (
+              <span className="btn btn-completed  w-100">Completed</span>
+            ) 
+             : isBidded.status === 1 ? (
               <span className="btn btn-success  w-100">Accepted</span>
             ) : (
               <span className="btn btn-danger  w-100">Declined</span>
@@ -405,12 +458,12 @@ export default function Exemple({
           appraisal_status:
             isBidded.status === 1 && isBidded.orderStatus === 1 ? (
               <span className="btn btn-warning  w-100">
-                {getOrderValue(isBidded.orderStatus)} -
+                {getOrderValue(isBidded.orderStatus,property.orderId)} -
                 {formatDate(isBidded.statusDate)}
               </span>
             ) : isBidded.status === 1 && isBidded.orderStatus !== null ? (
               <span className="btn btn-warning  w-100">
-                {getOrderValue(isBidded.orderStatus)}
+                {getOrderValue(isBidded.orderStatus,property.orderId)}
               </span>
             ) : (
               <span className="btn btn-warning  w-100">N.A.</span>

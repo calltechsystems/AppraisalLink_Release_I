@@ -98,7 +98,7 @@ const Index = () => {
   };
 
   useEffect(() => {
-    setRefresh(true);
+    // setRefresh(true);
     const filterProperties = (propertys, searchInput) => {
       if (searchInput === "") {
         return propertys;
@@ -178,6 +178,8 @@ const Index = () => {
   };
 
   useEffect(() => {
+    // setRefresh(true);
+
     const tmpData = filterData(properties);
     console.log("filterQuery", filterQuery, tmpData, tmpData.length);
     setFilterProperty(tmpData);
@@ -1082,7 +1084,7 @@ const Index = () => {
             </div>
 
             <div className="row">
-              <div className="row">
+              {/* <div className="row">
                 <div className="col-lg-12 mt0">
                   <div className="mbp_pagination">
                     <Pagination
@@ -1092,7 +1094,7 @@ const Index = () => {
                     />
                   </div>
                 </div>
-              </div>
+              </div> */}
               {/* End paginaion .col */}
             </div>
             {/* End .row */}

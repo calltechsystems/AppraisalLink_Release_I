@@ -178,23 +178,67 @@ export default function Exemple({
     return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
-  const filterBidsWithin24Hours = (property) => {
-    let tempBid = 0,
-      bidValue = {};
-    let isAccepted = {};
-    // console.log(bids);
-    bids.filter((bid) => {
-      if (bid.orderId === property.orderId) {
-        if (bid.status === 1) {
-          isAccepted = bid;
-        } else {
-          bidValue = bid;
+  const calculateDate = (oldBid,newBid)=>{
+
+    if(!oldBid.requestTime){
+      return newBid
+    }
+
+    const oldDate = new Date(oldBid.requestTime);
+    const newDate = new Date(newBid.requestTime);
+
+    if(oldDate <= newDate){
+      return newBid;
+    }
+    return oldBid;
+  }
+
+  const getFinalBid = (tempBids)=>{
+    
+    let finalBid = {};
+    tempBids.map((bid,index)=>{
+      if(!finalBid){
+        finalBid = bid;
+      }
+      else {
+        if(bid.status === 1){
+          if(finalBid.status === 1){
+            const customBid = calculateDate(finalBid,bid);
+            finalBid = customBid;
+          }
+          else{
+            finalBid = bid
+          }
         }
+        else{
+          const customBid = calculateDate(finalBid,bid);
+            finalBid = customBid;
+        }
+      }
+    })
+
+    return finalBid;
+  }
+
+  const filterBidsWithin24Hours = (property) => {
+    const data = JSON.parse(localStorage.getItem("user"));
+    let tempBid = 0;
+    let  bidValue = {};
+    let tempBids = []
+    bids.filter((bid) => {
+    if (
+        bid.orderId === property.orderId &&
+        bid.appraiserUserId === data.userId
+      )
+      {
+        tempBids.push(bid) ;
+        bidValue = (bid) ;
         tempBid = tempBid + 1;
       } else {
       }
     });
-    return isAccepted.$id ? isAccepted : bidValue;
+    const customBid = getFinalBid(tempBids)
+    return customBid
   };
 
   const router = useRouter();
@@ -353,7 +397,9 @@ export default function Exemple({
           ) : isBidded.bidId ? (
             isBidded.status === 0 ? (
               <span className="btn btn-primary  w-100">Quote Provided</span>
-            ) : isBidded.status === 1 ? (
+            ) : isBidded.status === 1  && isBidded.orderStatus === 3? (
+              <span className="btn btn-completed  w-100">Completed</span>
+            )  : isBidded.status === 1 ? (
               <span className="btn btn-success  w-100">Accepted</span>
             ) : (
               <span className="btn btn-danger  w-100">Rejected</span>
