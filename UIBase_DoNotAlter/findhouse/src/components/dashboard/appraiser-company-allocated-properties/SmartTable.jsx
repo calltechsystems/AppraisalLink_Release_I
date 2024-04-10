@@ -80,7 +80,7 @@ function SmartTable(props) {
       // Fetch data
       const allData = props.properties;
 
-      console.log("Company Assigned Properties",allData)
+      console.log("Company Assigned Properties", allData);
 
       // Open print window and set up basic structure
       const printWindow = window.open("", "_blank");
@@ -107,7 +107,7 @@ function SmartTable(props) {
       const tableHeaderRow = document.createElement("tr");
       const staticHeaders = [
         ["order_id", "Order Id"],
-        ["appraiser_info","AppraiserInfo"],
+        ["appraiser_info", "AppraiserInfo"],
         ["address", "Address"],
         ["status", "Status"],
         ["appraisal_status", "Appraisal Status"],
@@ -180,8 +180,7 @@ function SmartTable(props) {
 
             // Append the span element to the cell
             cell.appendChild(spanElement);
-          } 
-          else if(header[0].toLowerCase() === "appraiser_info"){
+          } else if (header[0].toLowerCase() === "appraiser_info") {
             const value = item[header[0].toLowerCase()];
             const content = value.props.children.props.children;
 
@@ -193,8 +192,7 @@ function SmartTable(props) {
             spanElement.style.textDecoration = "underline";
 
             cell.appendChild(spanElement);
-          }
-          else {
+          } else {
             cell.textContent = item[header[0].toLowerCase()];
           }
         });
@@ -324,7 +322,7 @@ function SmartTable(props) {
 
   const extractTextContentFromDate = (value) => {
     const date = new Date(value);
-    
+
     if (isNaN(date.getTime())) {
       return null;
     }
@@ -332,16 +330,16 @@ function SmartTable(props) {
   };
 
   const extractNumericValue = (str) => {
-    const numericStr = str.replace(/[^0-9]/g, '');
+    const numericStr = str.replace(/[^0-9]/g, "");
     const numericValue = parseInt(numericStr, 10);
-  
+
     return numericValue;
   };
 
   const extractTextContent = (cellValue) => {
-    if (typeof cellValue === 'string') {
+    if (typeof cellValue === "string") {
       return cellValue; // If it's a string, return it as is
-    } else if (typeof cellValue === 'object' && cellValue.$$typeof) {
+    } else if (typeof cellValue === "object" && cellValue.$$typeof) {
       // If it's a React element, extract text content recursively from children
       return extractTextContent(cellValue.props.children);
     } else {
@@ -351,42 +349,42 @@ function SmartTable(props) {
   const sortData = (cell) => {
     // Clone props.properties to avoid mutating the original data
     let tempData = [...props.properties];
-  
+
     // Toggle sorting order for the current cell
     const newSortDesc = { ...sortDesc };
     newSortDesc[cell] = !newSortDesc[cell];
-  
+
     tempData.sort((a, b) => {
       let valueA = extractTextContent(a[cell]);
       let valueB = extractTextContent(b[cell]);
 
-      if(String(cell) === "date" || String(cell) === "quote_required_by" ){
+      if (String(cell) === "date" || String(cell) === "quote_required_by") {
         valueA = extractTextContentFromDate(a[cell]);
         valueB = extractTextContentFromDate(b[cell]);
       }
 
-      if(String(cell) === "estimated_value"){
+      if (String(cell) === "estimated_value") {
         valueA = extractNumericValue(a[cell]);
         valueB = extractNumericValue(b[cell]);
       }
-  
+
       if (newSortDesc[cell]) {
         return valueA < valueB ? 1 : -1;
       } else {
         return valueA > valueB ? 1 : -1;
       }
     });
-  
+
     setSortDesc(newSortDesc);
     setData(tempData);
   };
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     const sortObjectsByOrderIdDescending = (data) => {
       return data.sort((a, b) => b.order_id - a.order_id);
     };
-    setData(sortObjectsByOrderIdDescending(props.data))
-  },[props.data])
+    setData(sortObjectsByOrderIdDescending(props.data));
+  }, [props.data]);
 
   return (
     <div className="col-12">
@@ -469,11 +467,13 @@ function SmartTable(props) {
                           >
                             {headCell.label}
                             {sortDesc[headCell.id] ? (
-                              <SVGArrowDown />
-                            ) : sortDesc[headCell.id] === undefined ? (
+                              <div></div>
+                            ) : // <SVGArrowDown />
+                            sortDesc[headCell.id] === undefined ? (
                               ""
                             ) : (
-                              <SVGArrowUp />
+                              <div></div>
+                              // <SVGArrowUp />
                             )}
                           </th>
                         );

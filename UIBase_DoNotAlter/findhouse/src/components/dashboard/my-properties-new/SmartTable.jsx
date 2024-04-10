@@ -462,11 +462,13 @@ function SmartTable(props) {
                           >
                             {headCell.label}
                             {sortDesc[headCell.id] ? (
-                              <SVGArrowDown />
+                              <div></div>
+                              // <SVGArrowDown />
                             ) : sortDesc[headCell.id] === undefined ? (
                               ""
                             ) : (
-                              <SVGArrowUp />
+                              <div></div>
+                              // <SVGArrowUp />
                             )}
                           </th>
                         );
