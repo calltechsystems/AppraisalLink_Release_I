@@ -203,7 +203,7 @@ const Modal = ({
                 <span
                   style={{
                     fontWeight: "bold",
-                    fontSize: "22px",
+                    fontSize: "29px",
                     color: "#2e008b",
                   }}
                 >
@@ -237,28 +237,33 @@ const Modal = ({
                           htmlFor=""
                           style={{
                             // paddingTop: "15px",
-                            fontWeight: "lighter",
+                            // fontWeight: "lighter",
+                            fontSize:"19px",
+                            color:"black"
                           }}
                         >
                           {`${
                             alreadyBidded
                               ? `Your Eariler Quote was $ ${bidAmount}`
-                              : "Please provide a quote for this property"
+                              : "Please Provide a Quote for this Property"
                           }`}
                         </label>
+                        {/* <span style={{ color: 'red' }}>{bidAmount}</span> */}
                       </div>
                       <div className="row mb-2 mt-2">
-                        <div className="col-lg-3 mb-2">
+                        <div className="col-lg-4 mb-2">
                           <label
                             htmlFor=""
                             style={{
                               paddingTop: "15px",
-                              fontWeight: "lighter",
+                              fontWeight: "bold",
+                              fontSize:"19px",
+                              color:"#2e008b"
                             }}
                           >
                             {`${
                               alreadyBidded
-                                ? "Appraisal updation Quote "
+                                ? "Appraisal Updated Quote "
                                 : "Appraisal Quote"
                             }`}{" "}
                             <span class="req-btn">*</span> :
@@ -277,15 +282,17 @@ const Modal = ({
                       </div>
 
                       <div className="row">
-                        <div className="col-lg-3 mb-2">
+                        <div className="col-lg-4 mb-2">
                           <label
                             htmlFor=""
                             style={{
                               paddingTop: "15px",
-                              fontWeight: "lighter",
+                              fontWeight: "bold",
+                              fontSize:"19px",
+                              color:"#2e008b"
                             }}
                           >
-                            Remark
+                            Remark :
                           </label>
                         </div>
                         <div className="col-lg-7">

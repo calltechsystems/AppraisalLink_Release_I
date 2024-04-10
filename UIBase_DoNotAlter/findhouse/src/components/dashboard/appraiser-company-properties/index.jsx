@@ -1845,6 +1845,7 @@ const Index = () => {
                       style={{
                         // paddingTop: "15px",
                         // paddingBottom: "15px",
+                        padding:"15px",
                         backgroundColor: "#E8F0FE",
                       }}
                     >
@@ -1864,13 +1865,13 @@ const Index = () => {
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
                       <button
-                        className="btn w-35 btn-color m-1"
+                        className="btn btn-color m-1 w-25"
                         onClick={() => closeAssignModal()}
                       >
                         Cancel
                       </button>
                       <button
-                        className="btn btn-color"
+                        className="btn btn-color w-25"
                         onClick={assignAppraiserUpdateHandler}
                       >
                         Submit
@@ -1992,14 +1993,14 @@ const Index = () => {
                     <div className="text-center" style={{}}>
                       <button
                         disabled={disable}
-                        className="btn w-35 btn-color"
+                        className="btn w-25 btn-color"
                         onClick={closeStatusUpdateHandler}
                       >
                         Cancel
                       </button>
                       <button
                         disabled={disable}
-                        className="btn btn-color w-10"
+                        className="btn btn-color w-25"
                         style={{ marginLeft: "12px" }}
                         onClick={handleStatusUpdateHandler}
                       >

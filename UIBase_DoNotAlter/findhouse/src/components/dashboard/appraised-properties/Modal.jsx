@@ -32,7 +32,7 @@ const Modal = ({
 
   const [toggle, setToggle] = useState(false);
 
-  const [disable,setDisable]=useState(false)
+  const [disable, setDisable] = useState(false);
 
   const [selectedImage, setSelectedImage] = useState({});
 
@@ -82,8 +82,7 @@ const Modal = ({
     if (bidAmount <= 0 || bidAmount === "") {
       toast.error("Quoted amount should be filled !");
       return;
-    }
-   else{
+    } else {
       const user = JSON.parse(localStorage.getItem("user"));
 
       const formData = {
@@ -96,7 +95,7 @@ const Modal = ({
       };
 
       const payload = encryptionData(formData);
-      
+
       toast.loading(alreadyBidded ? "Updating a bid!" : "Setting a bid");
       axios
         .post("/api/setBid", payload)
@@ -261,7 +260,7 @@ const Modal = ({
                                 ? "Appraisal updation Quote "
                                 : "Appraisal Quote"
                             }`}{" "}
-                            :
+                            <span class="req-btn">*</span> :
                           </label>
                         </div>
 
@@ -331,14 +330,14 @@ const Modal = ({
                   Cancel
                 </button> */}
               <button
-              disabled={disable}
+                disabled={disable}
                 className="btn btn-color w-25"
                 onClick={onCloseModalHandler}
               >
                 Cancel
               </button>
               <button
-              disabled={disable}
+                disabled={disable}
                 className="btn btn-color w-25 m-1"
                 onClick={toggle ? onSubmitHnadler : openConfirmModal}
               >
