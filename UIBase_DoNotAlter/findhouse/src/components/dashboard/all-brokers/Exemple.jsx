@@ -131,6 +131,7 @@ export default function Exemple({
   const [hideAction, setHideAction] = useState(false);
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
+  const [dataFetched, setDataFetched] = useState(false);
   let tempData = [];
 
   const filterBidsWithin24Hours = (property) => {
@@ -322,11 +323,13 @@ export default function Exemple({
         },
       })
       .then((res) => {
+        setDataFetched(true)
         console.log(res.data);
         // setAppraiserCompanyInfo(res.data?.data?.brokerage);
         setAllBrokers(res.data?.data?.brokers.$values);
       })
       .catch((err) => {
+        setDataFetched(false)
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
@@ -349,6 +352,8 @@ export default function Exemple({
           setCloseRegisterModal={setCloseRegisterModal}
           refresh={refresh}
           refreshHandler={refreshHandler}
+          dataFetched={dataFetched}
+          properties={updatedData}
           setStartLoading={setStartLoading}
           start={start}
           end={end}

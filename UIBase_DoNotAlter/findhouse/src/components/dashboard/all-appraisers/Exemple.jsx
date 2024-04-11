@@ -137,6 +137,8 @@ export default function Exemple({
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [wishlist, setWishlist] = useState([]);
+  
+  const [dataFetched, setDataFetched] = useState(false);
   const [bids, setBids] = useState([]);
   const [allAppraiser , setAllAppraiser] = useState([])
   const [hideAction, setHideAction] = useState(false);
@@ -350,11 +352,13 @@ export default function Exemple({
         },
       })
       .then((res) => {
+        setDataFetched(true)
         // console.log(res.data);
         setAppraiserCompanyInfo([]);
         setProperties(res.data.data.$values);
       })
       .catch((err) => {
+        setDataFetched(false)
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
@@ -378,6 +382,8 @@ export default function Exemple({
           setProperties={setProperties}
           setCloseRegisterModal={setCloseRegisterModal}
           refresh={refresh}
+          properties={updatedData}
+          dataFetched={dataFetched}
           refreshHandler={refreshHandler}
           setStartLoading={setStartLoading}
           start={start}
