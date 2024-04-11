@@ -401,11 +401,11 @@ export default function Exemple({
   }, [checkData]);
 
   const checkIfPropertyAlreadyAssigned = (propertyId) => {
-    let assigned = false;
+    let assigned = {};
     console.log("assignedProp", propertyId, assignedProperties);
     assignedProperties.map((prop, index) => {
       if (String(prop.propertyid) === propertyId) {
-        assigned = true;
+        assigned = prop;
       }
     });
     return assigned;
@@ -418,6 +418,7 @@ export default function Exemple({
         const anotherBid = alreadyAccepted(property);
 
         const isAssigned = checkIfPropertyAlreadyAssigned(property.$id);
+
         const isArchive = foundArchiveHandler(property.propertyId);
 
         if (!isArchive) {
@@ -483,17 +484,11 @@ export default function Exemple({
                   </a>
                 ) : isBidded.status === 2 ? (
                   <h6 style={{ color: "red" }}> Declined</h6>
-                ) : alreadyAccepted ? (
-                  <p>
-                    Broker Information will not be available as the broker is
-                    already being assigned
-                  </p>
-                ) : (
-                  <p>
-                    Broker Information will be available post the quote
-                    acceptance
-                  </p>
-                )}
+                ) :
+                <p>
+                  Information will be available post quote acceptance.
+                </p>
+                }
               </div>
             ),
             property: (
@@ -516,20 +511,14 @@ export default function Exemple({
                   </a>
                 ) : isBidded.status === 2 ? (
                   <h6 style={{ color: "red" }}> Declined</h6>
-                ) : alreadyAccepted ? (
-                  <p>
-                    Property Information will not be available as the property
-                    is already being alloted
-                  </p>
                 ) : (
                   <p>
-                    Property Information will be available post the quote
-                    acceptance
+                  Information will be available post quote acceptance.
                   </p>
                 )}
               </div>
             ),
-            assigned_appraiser: isAssigned ? (
+            assigned_appraiser: isAssigned?.id ? (
               <span
                 className=""
                 style={{
@@ -779,7 +768,7 @@ export default function Exemple({
                         </Link>
                       </button>
                       {
-                        isAssigned === false && isBidded.$id 
+                        !isAssigned?.id && isBidded.$id 
                         && isBidded.status ===1  && 
                         <li
                           className="list-inline-item"
@@ -828,7 +817,36 @@ export default function Exemple({
                     </>
                   )
                 ) : (
-                  <p className="btn btn-completed  w-100">Completed </p>
+                  <>
+                  <li
+                      className="list-inline-item"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Archive Property"
+                    >
+                      <div
+                        className="list-inline-item"
+                        onClick={() =>
+                          onArchivePropertyHandler(property.orderId)
+                        }
+                      >
+                        <button
+                          href="#"
+                          className="btn btn-color w-20"
+                          // style={{ marginLeft: "12px" }}
+                        >
+                          <Link href="#">
+                            <span className="text-light">
+                              {" "}
+                              <FaArchive />
+                            </span>
+                          </Link>
+                        </button>
+                      </div>
+                    </li>
+                    <p className="btn btn-completed  w-100">Completed </p>
+                    </>
+                 
                 )}
               </div>
             ),

@@ -65,11 +65,11 @@ function SmartTable(props) {
 
   const [showNoData, setShowNoData] = useState(false);
 
-useEffect(() => {
+  useEffect(() => {
     if (props.dataFetched && props.properties.length === 0) {
       const timer = setTimeout(() => {
         setShowNoData(true);
-      }, 10000);
+      }, 2000);
 
       return () => clearTimeout(timer);
     }
