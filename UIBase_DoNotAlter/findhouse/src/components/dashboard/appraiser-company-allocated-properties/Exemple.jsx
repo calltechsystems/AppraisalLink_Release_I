@@ -453,7 +453,7 @@ export default function Exemple({
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
         tempGeneratedProp.push(property)
-        console.log("isBidded", isBidded, property);
+        console.log("isBidded",property.orderId, isBidded, property);
         const isWait = property?.isOnHold || property?.isOnCancel;
         const updatedRow = {
           order_id: property?.orderId,
@@ -464,7 +464,7 @@ export default function Exemple({
             ? `$ ${addCommasToNumber(property?.estimatedValue)}`
             : "$ 0",
           purpose: property?.purpose ? property?.purpose : "N.A.",
-          remark: property?.remark ? <p>remark</p> : "N.A.",
+          remark: isBidded?.remark ? <p>{isBidded.remark}</p> : "N.A.",
           appraiser_assign_date : property?.createdDateTime ?
           formatDate(property?.createdDateTime) : "-" ,
           appraiser_assign_completed_date: isBidded.$id &&  isBidded?.status === 1  &&  isBidded?.orderStatus === 3 && isBidded.orderStatus !== null ?
