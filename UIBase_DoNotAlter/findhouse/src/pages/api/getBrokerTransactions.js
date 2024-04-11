@@ -17,7 +17,7 @@ async function handler(request, response) {
           "Content-Type": "application/json",
         },
         params: {
-          userId: userId
+          userId: userId,
         },
       }
     );

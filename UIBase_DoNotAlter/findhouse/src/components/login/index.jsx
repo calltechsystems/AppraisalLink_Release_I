@@ -24,7 +24,7 @@ const Index = ({ user }) => {
 
   const closeErrorModal = () => {
     setModalIsOpenError(false);
-    location.reload(true);
+    // location.reload(true);
   };
 
   useEffect(() => {

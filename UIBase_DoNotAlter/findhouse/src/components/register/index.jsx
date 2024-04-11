@@ -21,7 +21,7 @@ const Index = () => {
 
   const closeErrorModal = () => {
     setModalIsOpenError(false);
-    location.reload(true);
+    // location.reload(true);
   };
 
   return (
@@ -123,7 +123,7 @@ const Index = () => {
       </section>
 
       {/* <!-- Our Footer Bottom Area --> */}
-      <div className="footer_middle_area">
+      <div className="footer_middle_area pt40 pb40">
         <div className="container">
           <CopyrightFooter />
         </div>

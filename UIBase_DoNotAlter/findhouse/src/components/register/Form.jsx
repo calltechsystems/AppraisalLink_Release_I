@@ -108,6 +108,8 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
       setErrorMessage("Email cant be empty or non valid.");
       setModalIsOpenError(true);
     } else if (!captchaVerfied) {
+      setErrorMessage("Please fill the Captcha !")
+      setModalIsOpenError(true)
       setChange(true);
       return;
     } else {
