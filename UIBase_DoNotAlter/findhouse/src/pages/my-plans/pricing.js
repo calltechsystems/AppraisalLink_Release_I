@@ -166,9 +166,9 @@ const Pricing = ({
   useEffect(()=>{
     let requiredPlan = [];
     data.map((plan,index)=>{
-      const planName = String(plan.planName).toLowerCase().includes(String(currentSubscription.planName).toLowerCase());
-      const amount = String(plan?.monthlyAmount === null ? plan.yearlyAmount :plan.monthlyAmount) === String(currentSubscription.planAmount);
-      const totalPropeerties = String(plan.noOfProperties) === String(currentSubscription.noOfProperties);
+      const planName = String(plan.planName).toLowerCase().includes(String(currentSubscription?.planName).toLowerCase());
+      const amount = String(plan?.monthlyAmount === null ? plan.yearlyAmount :plan.monthlyAmount) === String(currentSubscription?.planAmount);
+      const totalPropeerties = String(plan.noOfProperties) === String(currentSubscription?.noOfProperties);
 
       
       if(planName && amount && totalPropeerties){
