@@ -105,12 +105,12 @@ const headCells = [
     width: 200,
   },
 
-  {
-    id: "action",
-    numeric: false,
-    label: "Action",
-    width: 180,
-  },
+  // {
+  //   id: "action",
+  //   numeric: false,
+  //   label: "Action",
+  //   width: 180,
+  // },
 ];
 
 let count = 0;
@@ -437,7 +437,10 @@ export default function Exemple({
                 ) : isBidded.status === 2 ? (
                   <h6 style={{ color: "red" }}> Declined</h6>
                 ) : (
-                  <p>Information will be available post quote acceptance.</p>
+                  <p>
+                    Broker Information will be available post the quote
+                    acceptance
+                  </p>
                 )}
               </div>
             ),
@@ -462,7 +465,10 @@ export default function Exemple({
                 ) : isBidded.status === 2 ? (
                   <h6 style={{ color: "red" }}> Declined</h6>
                 ) : (
-                  <p>Information will be available post quote acceptance.</p>
+                  <p>
+                    Property Information will be available post the quote
+                    acceptance
+                  </p>
                 )}
               </div>
             ),

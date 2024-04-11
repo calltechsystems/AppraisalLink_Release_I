@@ -138,6 +138,7 @@ export default function Exemple({
   const [updatedData, setUpdatedData] = useState([]);
   const [wishlist, setWishlist] = useState([]);
   const [bids, setBids] = useState([]);
+  const [allAppraiser , setAllAppraiser] = useState([])
   const [hideAction, setHideAction] = useState(false);
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
@@ -254,10 +255,26 @@ export default function Exemple({
     setProperties([]);
   }, [checkData]);
 
+  const getCurrentDate = (id)=>{
+    let specificAppraiser = {}
+
+    allAppraiser.map((appraiser,index)=>{
+      if(String(appraiser.id) === String(id)){
+        specificAppraiser = appraiser;
+      }
+    })
+
+    return specificAppraiser;
+  }
+
   useEffect(() => {
     const getData = () => {
       const dateNow = formatDate(new Date());
       properties.map((data, index) => {
+
+        const getCurrentdate = getCurrentDate(data?.item?.id);
+
+        console.log("getCurrentdate",getCurrentdate)
         const updatedRow = {
           appraiser_id: data.item.id,
           firstname: data.item.firstName ? data.item.firstName : "-",
@@ -274,7 +291,8 @@ export default function Exemple({
           address: data.item.streetName
             ? `${data.item.streetName} ${data.item.streetNumber},${data.item.province}-${data.item.postalCode}`
             : "N.A.",
-          date: dateNow,
+          date: data?.item?.isActive  && data?.item?.modifiedDateTime !==null ?
+          formatDate(data?.item?.modifiedDateTime) : "-",
 
           action: (
             <div className="print-hidden-column">
@@ -340,6 +358,8 @@ export default function Exemple({
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
+
+      
     setRefresh(false);
   }, [refresh]);
   console.log(sortObjectsByOrderIdDescending(updatedData));

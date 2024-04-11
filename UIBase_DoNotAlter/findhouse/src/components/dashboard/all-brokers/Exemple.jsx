@@ -258,7 +258,8 @@ export default function Exemple({
           address: `${data?.streetName} ${data?.streetNumber},${data?.city}-${data?.postalCode}`,
           // date: dateNow,
           emailaddress: data?.emailId ? data?.emailId : "NA",
-          date: dateNow,
+          date: data?.isActive && data?.modifiedDateTime !== null ?
+          formatDate(data?.modifiedDateTime) : "-",
           action: (
             <div className="print-hidden-column">
               {data.firstName && (

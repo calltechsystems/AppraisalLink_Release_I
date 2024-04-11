@@ -1823,7 +1823,7 @@ const Index = () => {
                                       <td
                                         style={{
                                           border: "1px solid #2e008b",
-                                          width: "450px",
+                                          width: "350px",
                                           color: "black",
                                           padding: "5px",
                                         }}
@@ -1866,7 +1866,7 @@ const Index = () => {
                                         }}
                                       >
                                         <span className="text-start">
-                                          Designation
+                                          Phone Number
                                         </span>
                                       </td>
                                       <td
@@ -1877,10 +1877,9 @@ const Index = () => {
                                           padding: "5px",
                                         }}
                                       >
-                                        {appraiser.designation}
+                                        {appraiser.phoneNumber}
                                       </td>
                                     </tr>
-
                                     <tr>
                                       <td
                                         style={{
@@ -1902,29 +1901,6 @@ const Index = () => {
                                         }}
                                       >
                                         {appraiser.emailId}
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
-                                        <span className="text-start">
-                                          Phone Number
-                                        </span>
-                                      </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
-                                        {appraiser.phoneNumber}
                                       </td>
                                     </tr>
                                     <tr>
@@ -1978,8 +1954,32 @@ const Index = () => {
                                         {appraiser.state} {appraiser.postalCode}
                                       </td>
                                     </tr>
-
-                                    {/* <tr>
+                                    <tr>
+                                      <td
+                                        style={{
+                                          border: "1px solid grey",
+                                          color: "#2e008b",
+                                          padding: "5px",
+                                        }}
+                                      >
+                                        <span className="text-start">
+                                          Applicant Name
+                                        </span>
+                                      </td>
+                                      <td
+                                        style={{
+                                          border: "1px solid #2e008b",
+                                          width: "250px",
+                                          color: "black",
+                                          padding: "5px",
+                                        }}
+                                      >
+                                        {appraiser.assistantFirstName
+                                          ? appraiser.assistantFirstName
+                                          : "Not Provided"}
+                                      </td>
+                                    </tr>
+                                    <tr>
                                       <td
                                         style={{
                                           border: "1px solid grey",
@@ -2028,7 +2028,7 @@ const Index = () => {
                                           ? appraiser.assistantEmailAddress
                                           : "Not Provided"}
                                       </td>
-                                    </tr> */}
+                                    </tr>
                                   </tbody>
                                 </table>
                                 `

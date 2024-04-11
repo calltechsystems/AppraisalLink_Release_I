@@ -490,7 +490,8 @@ export default function Exemple({
                   </p>
                 ) : (
                   <p>
-                    Information will be available post quote acceptance.
+                    Broker Information will be available post the quote
+                    acceptance
                   </p>
                 )}
               </div>
@@ -522,7 +523,8 @@ export default function Exemple({
                   </p>
                 ) : (
                   <p>
-                    Information will be available post quote acceptance.
+                    Property Information will be available post the quote
+                    acceptance
                   </p>
                 )}
               </div>
@@ -777,7 +779,8 @@ export default function Exemple({
                         </Link>
                       </button>
                       {
-                        isAssigned === false && 
+                        isAssigned === false && isBidded.$id 
+                        && isBidded.status ===1  && 
                         <li
                           className="list-inline-item"
                           data-toggle="tooltip"
