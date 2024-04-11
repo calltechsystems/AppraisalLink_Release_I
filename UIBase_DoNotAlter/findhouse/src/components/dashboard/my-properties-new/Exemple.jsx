@@ -370,7 +370,7 @@ export default function Exemple({
                     </ul>
                   </div>
                   <button className="btn btn-color">
-                    Appraisal Status
+                    Current Status
                     <span className="m-1">
                       <i class="fa fa-info-circle" aria-hidden="true"></i>
                     </span>
@@ -398,7 +398,12 @@ export default function Exemple({
                       </li>
                     </ul>
                   </div>
-                  <i class="fa fa-info-circle" aria-hidden="true"></i>
+                  <button className="btn btn-color">
+                    Current Status
+                    <span className="m-1">
+                      <i class="fa fa-info-circle" aria-hidden="true"></i>
+                    </span>
+                  </button>
                 </div>
               ) : (
                 <span className="btn bg-warning  w-100">N.A.</span>
