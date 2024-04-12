@@ -681,15 +681,15 @@ export default function Exemple({
                 ) : (
                   isBidded.status === 1 &&
                   isBidded.orderStatus === 3 && (
-                    // <ul>
-                    //   <li
-                    //     className="list-inline-item"
-                    //     data-toggle="tooltip"
-                    //     data-placement="top"
-                    //   >
-                    <span className="btn btn-completed w-100">Completed </span>
-                    //   </li>
-                    // </ul>
+                    <ul>
+                      <li
+                        className="list-inline-item"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                      >
+                    {/* <span className="btn btn-completed w-100">Completed </span> */}
+                      </li>
+                    </ul>
                   )
                 )}
               </div>

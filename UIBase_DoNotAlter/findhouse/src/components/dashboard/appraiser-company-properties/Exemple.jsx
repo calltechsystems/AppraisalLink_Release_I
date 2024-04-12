@@ -844,7 +844,7 @@ export default function Exemple({
                         </button>
                       </div>
                     </li>
-                    <p className="btn btn-completed  w-100">Completed </p>
+                    {/* <p className="btn btn-completed  w-100">Completed </p> */}
                     </>
                  
                 )}

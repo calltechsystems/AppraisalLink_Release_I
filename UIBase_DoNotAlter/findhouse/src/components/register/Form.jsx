@@ -135,8 +135,8 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
             router.push("/all-appraisers");
           }
           else{
-          // setModalIsOpen(true);
-          router.push("/login");
+          setModalIsOpen(true);
+          // router.push("/login");
           }
         })
         .catch((err) => {
@@ -397,8 +397,8 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
                 <div
                   className="input-group-text m-1"
                   style={{ border: "1px solid #2e008b" }}
-                  onMouseEnter={togglePasswordVisibility}
-                  onMouseLeave={togglePasswordVisibility}
+                  onMouseEnter={togglePasswordVisibility_01}
+                  onMouseLeave={togglePasswordVisibility_01}
                 >
                   <FaEye />
                 </div>

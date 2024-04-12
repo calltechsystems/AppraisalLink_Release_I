@@ -1606,7 +1606,10 @@ const Index = ({ isView, propertyData }) => {
                         style={{ border: "2px solid #97d700" }}
                       ></div>
                     </div>
-                    <span className="text-center mb-2 text-dark fw-bold" style={{fontSize:"18px"}}>
+                    <span
+                      className="text-center mb-2 text-dark fw-bold"
+                      style={{ fontSize: "18px" }}
+                    >
                       {/* Can't appraise the property. All properties are being
                       used!! */}
                       Your All Properties have been Used, so you cannot add more
@@ -1619,7 +1622,7 @@ const Index = ({ isView, propertyData }) => {
                     ></div>
                     <div
                       className="col-lg-12 text-center"
-                      style={{ display: "flex",justifyContent:"center" }}
+                      style={{ display: "flex", justifyContent: "center" }}
                     >
                       <button
                         className="btn btn-color w-50"

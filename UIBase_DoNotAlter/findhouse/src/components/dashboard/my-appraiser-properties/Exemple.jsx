@@ -428,7 +428,7 @@ export default function Exemple({
                     </button>
                   </a>
                 ) : isBidded.status === 2 ? (
-                  <h6 style={{ color: "red" }}> Declined</h6>
+                  <h5 style={{ color: "red" }}> Declined</h5>
                 ) : (
                   <p>Information will be available post quote acceptance.</p>
                 )}
@@ -453,7 +453,7 @@ export default function Exemple({
                     </button>
                   </a>
                 ) : isBidded.status === 2 ? (
-                  <h6 style={{ color: "red" }}> Declined</h6>
+                  <h5 style={{ color: "red" }}> Declined</h5>
                 ) : (
                   <p>Information will be available post quote acceptance.</p>
                 )}
@@ -480,7 +480,10 @@ export default function Exemple({
                 : "N.A.",
 
             action: (
-              <div className="print-hidden-column">
+              <div
+                className="print-hidden-column"
+                style={{ display: "flex", justifyContent: "space-evenly" }}
+              >
                 {
                   <ul className="mb0 d-flex gap-1">
                     {isWishlist.id ? (
@@ -524,7 +527,7 @@ export default function Exemple({
                         }`}
                       >
                         <div
-                          className="w-100"
+                          className=""
                           onClick={() =>
                             participateHandler(
                               property.bidLowerRange,
@@ -572,13 +575,13 @@ export default function Exemple({
                 {isBidded.status === 2 ? (
                   <>
                     <ul>
-                      <li
+                      {/* <li
                         className="list-inline-item"
                         data-toggle="tooltip"
                         data-placement="top"
                       >
                         <span className="btn btn-danger  w-100">Rejected </span>
-                      </li>
+                      </li> */}
                       <li
                         className="list-inline-item"
                         data-toggle="tooltip"
@@ -639,16 +642,22 @@ export default function Exemple({
                   isBidded.orderStatus <= 6 &&
                   isBidded.status === 1 && (
                     <>
-                      <button
-                        href="#"
-                        className="btn btn-color"
-                        onClick={() => openStatusUpdateHandler(isBidded)}
+                      <li
+                        className="list-inline-item"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title=""
                       >
-                        <Link href="#">
-                          <span className="flaticon-edit text-light"></span>
-                        </Link>
-                      </button>
-
+                        <button
+                          href="#"
+                          className="btn btn-color"
+                          onClick={() => openStatusUpdateHandler(isBidded)}
+                        >
+                          <Link href="#">
+                            <span className="flaticon-edit text-light"></span>
+                          </Link>
+                        </button>
+                      </li>
                       <li
                         className="list-inline-item"
                         data-toggle="tooltip"
@@ -661,7 +670,7 @@ export default function Exemple({
                             onArchivePropertyHandler(property.orderId)
                           }
                         >
-                          <button href="#" className="btn btn-color m-1">
+                          <button href="#" className="btn btn-color">
                             <Link href="#">
                               <span className="text-light">
                                 {" "}

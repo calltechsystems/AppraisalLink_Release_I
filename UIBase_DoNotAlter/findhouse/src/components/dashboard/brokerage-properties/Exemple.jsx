@@ -134,7 +134,9 @@ export default function Exemple({
   properties,
   onHoldHandler,
   onCancelHandler,
+  setWishlist,
   refresh,
+  searchInput,
   setRefresh,
   setProperties,
   setCurrentProperty,
@@ -273,6 +275,15 @@ export default function Exemple({
     setRefresh(true);
   };
 
+  useState(() => {
+    if (searchInput === "") {
+      setProperties([]);
+      setBids([]);
+      // setWishlist([]);
+      setRefresh(true);
+    }
+  }, [searchInput]);
+
   const getPropertyStatusHandler = (property) => {
     let isInProgress = true;
     let isQuoteProvided = false;
@@ -299,7 +310,6 @@ export default function Exemple({
     if (Number(number) <= 100 || number === undefined) return number;
     return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
-
 
   const openPopupModal = (property) => {
     setModalIsPopupOpen(true);
@@ -345,16 +355,21 @@ export default function Exemple({
               ) : (
                 <span className="btn bg-info w-100 text-light">Cancelled</span>
               ),
-              appraisal_status:
+            appraisal_status:
               isHold || isCancel ? (
                 <span className="btn bg-warning w-100">
                   {isHold ? "N.A." : "N.A."}
                 </span>
-              ) :isBidded.orderStatus !== 1 && isBidded.orderStatus !== null && isBidded.orderStatus !== undefined ? (
+              ) : isBidded.orderStatus !== 1 &&
+                isBidded.orderStatus !== null &&
+                isBidded.orderStatus !== undefined ? (
                 <span className="btn bg-warning  w-100">
                   {getOrderValue(isBidded.orderStatus)}
                 </span>
-              ) : isBidded.$id && isBidded.status === 1  && isBidded.orderStatus === 1  && isBidded.orderStatus !== undefined? (
+              ) : isBidded.$id &&
+                isBidded.status === 1 &&
+                isBidded.orderStatus === 1 &&
+                isBidded.orderStatus !== undefined ? (
                 <span className="btn bg-warning  w-100">
                   {getOrderValue(isBidded.orderStatus)} -
                   {formatDate(isBidded.statusDate)}

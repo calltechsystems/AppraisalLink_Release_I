@@ -47,8 +47,7 @@ const Index = () => {
 
   const [assignModal, setAssignModal] = useState(false);
 
-
-  const [ AssignAppraisers, setAssignAppraisers ]  = useState([])
+  const [AssignAppraisers, setAssignAppraisers] = useState([]);
   const [wishlistedProperties, setWishlistedProperties] = useState([]);
   const [updatedCode, setUpdatedCode] = useState(false);
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
@@ -65,7 +64,7 @@ const Index = () => {
 
   const [end, setEnd] = useState(4);
 
-  console.log("AssignAppraisers",AssignAppraisers)
+  console.log("AssignAppraisers", AssignAppraisers);
   const closeErrorModal = () => {
     setModalIsOpenError(false);
   };
@@ -83,7 +82,6 @@ const Index = () => {
       statusDate: statusDate,
     };
 
-  
     const encryptedBody = encryptionData(payload);
     toast.loading("Updating order status!!");
     axios
@@ -132,7 +130,6 @@ const Index = () => {
   const [statusDate, setStatusDate] = useState("");
 
   const handleStatusSelect = (value) => {
-   
     if (String(value) === "Appraisal Visit Confirmed") {
       setOpenDate(true);
     }
@@ -142,7 +139,7 @@ const Index = () => {
     let selectedValue = 0;
     AppraiserStatusOptions.map((prop, index) => {
       if (String(prop.type) === String(value)) {
-        console.log("props",prop.type, value, prop.id);
+        console.log("props", prop.type, value, prop.id);
         selectedValue = prop.id;
       }
     });
@@ -159,6 +156,18 @@ const Index = () => {
   const [moreBrokerInfo, setMoreBrokerInfo] = useState({});
   const [isBroker, setisBroker] = useState(false);
 
+  function getMinDateTime() {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
+    const day = currentDate.getDate().toString().padStart(2, "0");
+    const hours = currentDate.getHours().toString().padStart(2, "0");
+    const minutes = currentDate.getMinutes().toString().padStart(2, "0");
+
+    // Format the date as YYYY-MM-DDTHH:mm
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  }
+
   let [selectedBroker, setSelectedBroker] = useState({});
   const openModalBroker = (property, value) => {
     allBrokers.map((broker) => {
@@ -172,8 +181,6 @@ const Index = () => {
     setTypeView(value);
     setOpenBrokerModal(true);
   };
-
-
 
   const [assignPropertyId, setAssignPropertyId] = useState(-1);
   const [assignAppraiserId, setAssignAppraiserId] = useState(-1);
@@ -276,7 +283,7 @@ const Index = () => {
 
   const closeAssignModal = () => {
     setAssignModal(false);
-    setAssignPropertyId(-1)
+    setAssignPropertyId(-1);
   };
 
   useEffect(() => {
@@ -545,16 +552,16 @@ const Index = () => {
     setModalOpen(true);
   };
 
-
-  const [selectedAppraiser, setSelectedAppraiser] = useState({})
+  const [selectedAppraiser, setSelectedAppraiser] = useState({});
 
   const assignAppraiserUpdateHandler = () => {
     const data = JSON.parse(localStorage.getItem("user"));
     const payload = {
       companyid: data.appraiserCompany_Datails.appraiserCompanyId,
       propertyid: Number(assignPropertyId),
-      appraiserid: Number(selectedAppraiser === -1 ? AssignAppraisers[0].id : selectedAppraiser ),
-
+      appraiserid: Number(
+        selectedAppraiser === -1 ? AssignAppraisers[0].id : selectedAppraiser
+      ),
     };
 
     const encryptedData = encryptionData(payload);
@@ -724,9 +731,8 @@ const Index = () => {
                           setWishlistedProperties={setWishlistedProperties}
                           setStartLoading={setStartLoading}
                           openModalBroker={openModalBroker}
-                          setAssignModal = {setAssignModal}
-                          setAssignPropertyId = {setAssignPropertyId}
-          
+                          setAssignModal={setAssignModal}
+                          setAssignPropertyId={setAssignPropertyId}
                           setAssignedAppraiser={openAppraisalModal}
                         />
 
@@ -784,7 +790,7 @@ const Index = () => {
                                       height={45}
                                       className="logo1 img-fluid"
                                       style={{ marginTop: "-20px" }}
-                                      src="/assets/images/Appraisal_Land_Logo.png"
+                                      src="/assets/images/logo.png"
                                       alt="header-logo2.png"
                                     />
                                     <span
@@ -819,7 +825,7 @@ const Index = () => {
                                 </div>
                               </div>
                               <div
-                                className="mb-2"
+                                className="mb-3 mt-2"
                                 style={{ border: "2px solid #97d700" }}
                               ></div>
                               <div
@@ -864,8 +870,9 @@ const Index = () => {
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -875,9 +882,9 @@ const Index = () => {
                                       <td
                                         style={{
                                           border: "1px solid #2e008b",
-                                          width: "465px",
+                                          width: "415px",
                                           color: "black",
-                                          padding: "5px",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {" "}
@@ -909,8 +916,9 @@ const Index = () => {
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -923,7 +931,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          padding: "5px",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {broker.typeOfBuilding}
@@ -932,8 +940,9 @@ const Index = () => {
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -946,7 +955,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          padding: "5px",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {broker.typeOfAppraisal}
@@ -955,8 +964,9 @@ const Index = () => {
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -969,7 +979,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          padding: "5px",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {broker.purpose}
@@ -978,8 +988,9 @@ const Index = () => {
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -992,7 +1003,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          padding: "5px",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {broker.lenderInformation
@@ -1026,8 +1037,9 @@ const Index = () => {
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -1039,7 +1051,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          padding: "5px",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         ${broker.estimatedValue}
@@ -1048,8 +1060,9 @@ const Index = () => {
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -1061,7 +1074,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          padding: "5px",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {" "}
@@ -1075,8 +1088,9 @@ const Index = () => {
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -1088,7 +1102,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          padding: "5px",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {broker.quoteRequiredDate
@@ -1099,8 +1113,9 @@ const Index = () => {
                                     {/* <tr>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
+                                          paddingLeft:"10px"
                                         }}
                                       >
                                         <span className="text-start">
@@ -1112,7 +1127,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          padding: "5px",
+                                          paddingLeft:"10px"
                                         }}
                                       >
                                         {" "}
@@ -1123,8 +1138,9 @@ const Index = () => {
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
+                                          paddingLeft:"10px"
                                         }}
                                       >
                                         <span className="text-start">
@@ -1136,7 +1152,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          padding: "5px",
+                                          paddingLeft:"10px"
                                         }}
                                       >
                                         {" "}
@@ -1146,8 +1162,9 @@ const Index = () => {
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
+                                          paddingLeft:"10px"
                                         }}
                                       >
                                         <span className="text-start">
@@ -1159,7 +1176,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          padding: "5px",
+                                          paddingLeft:"10px"
                                         }}
                                       >
                                         {" "}
@@ -1192,8 +1209,9 @@ const Index = () => {
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -1205,7 +1223,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          padding: "5px",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {" "}
@@ -1215,8 +1233,9 @@ const Index = () => {
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -1228,7 +1247,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          padding: "5px",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {" "}
@@ -1240,8 +1259,9 @@ const Index = () => {
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -1254,7 +1274,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          padding: "5px",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {broker.applicantEmailAddress}
@@ -1263,8 +1283,9 @@ const Index = () => {
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -1276,7 +1297,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          padding: "5px",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {" "}
@@ -2085,11 +2106,55 @@ const Index = () => {
               {isStatusModal && (
                 <div className="modal">
                   <div className="modal-content">
-                    <h3 className="text-center">Quote Status Updation</h3>
-
+                    <div className="row">
+                      <div className="col-lg-12">
+                        <Link href="/" className="">
+                          <Image
+                            width={50}
+                            height={45}
+                            className="logo1 img-fluid"
+                            style={{ marginTop: "-20px" }}
+                            src="/assets/images/Appraisal_Land_Logo.png"
+                            alt="header-logo2.png"
+                          />
+                          <span
+                            style={{
+                              color: "#2e008b",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            Appraisal
+                          </span>
+                          <span
+                            style={{
+                              color: "#97d700",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            {" "}
+                            Land
+                          </span>
+                        </Link>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-lg-12 text-center">
+                        <h2 className=" text-color mt-1">
+                          Appraisal Status Updation
+                        </h2>
+                      </div>
+                    </div>
+                    <div
+                      className="mb-4"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
                     <select
                       required
-                      className="form-select"
+                      className="form-select mb-3"
                       data-live-search="true"
                       data-width="100%"
                       onChange={(e) => handleStatusSelect(e.target.value)}
@@ -2113,10 +2178,10 @@ const Index = () => {
                     </select>
                     {openDate && (
                       <div
-                        className="col-lg-12 pt-20"
-                        style={{ display: "flex", flexDirection: "row" }}
+                        className="col-lg-12"
+                        // style={{ display: "flex", flexDirection: "row" }}
                       >
-                        <label style={{ color: "black", fontWeight: "bold" }}>
+                        <label style={{ color: "#2e008b", fontWeight: "bold" }}>
                           Date and Time <span style={{ color: "red" }}>*</span>
                         </label>
                         <input
@@ -2126,9 +2191,9 @@ const Index = () => {
                           id="formGroupExampleInput3"
                           onChange={(e) => setStatusDate(e.target.value)}
                           value={statusDate}
+                          min={getMinDateTime()}
                         />
                       </div>
-                      
                     )}
                     <div className="mt-3">
                       <h4 style={{ color: "#2e008b", fontWeight: "bold" }}>
@@ -2143,20 +2208,22 @@ const Index = () => {
                         value={remark}
                       />
                     </div>
-
-
+                    <div
+                      className="mb-3 mt-2"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
                       <button
                         disabled={disable}
-                        className="btn w-35 btn-white"
+                        className="btn w-25 btn-color"
                         onClick={closeStatusUpdateHandler}
                       >
                         Cancel
                       </button>
                       <button
                         disabled={disable}
-                        className="btn btn-color w-10 mt-1"
+                        className="btn btn-color w-25"
                         style={{ marginLeft: "12px" }}
                         onClick={handleStatusUpdateHandler}
                       >
@@ -2167,7 +2234,7 @@ const Index = () => {
                 </div>
               )}
 
-{assignModal && (
+              {assignModal && (
                 <div className="modal">
                   <div className="modal-content">
                     <div className="row">
@@ -2227,7 +2294,7 @@ const Index = () => {
                       style={{
                         // paddingTop: "15px",
                         // paddingBottom: "15px",
-                        padding:"15px",
+                        padding: "15px",
                         backgroundColor: "#E8F0FE",
                       }}
                     >
