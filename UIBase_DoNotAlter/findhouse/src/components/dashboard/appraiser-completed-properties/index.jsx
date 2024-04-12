@@ -693,6 +693,8 @@ const Index = () => {
                           setFilterQuery={setFilterQuery}
                           setSearchInput={setSearchInput}
                           refresh={refresh}
+                          searchInput={searchInput}
+                          filterQuery={filterQuery}
                           setWishlistedProperties={setWishlistedProperties}
                           setStartLoading={setStartLoading}
                           openModalBroker={openModalBroker}

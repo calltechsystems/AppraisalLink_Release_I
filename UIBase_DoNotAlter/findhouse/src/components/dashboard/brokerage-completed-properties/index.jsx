@@ -535,6 +535,8 @@ const Index = () => {
                           close={closeModal}
                           setProperties={setProperties}
                           start={start}
+                          filterQuery={filterQuery}
+                          searchInput={searchInput}
                           end={end}
                           properties={
                             searchInput === "" && filterQuery === "All" ? properties : filterProperty

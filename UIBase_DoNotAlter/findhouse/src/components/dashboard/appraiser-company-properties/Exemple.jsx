@@ -143,6 +143,8 @@ export default function Exemple({
   participateHandler,
   setFilterQuery,
   setSearchInput,
+  searchInput,
+  filterQuery,
   openModalBroker,
   setErrorMessage,
   setModalIsOpenError,
@@ -164,6 +166,13 @@ export default function Exemple({
 
   const [allArchive, setAllArchive] = useState([]);
 
+  useEffect(()=>{
+    if(searchInput === ""){
+      setProperties([])
+      setBids([])
+      setRefresh(true)
+    }
+  },[searchInput])
   const getOrderValue = (val) => {
     let title = "Applicant Contacted by appraiser";
     AppraiserStatusOptions.map((status) => {
@@ -870,6 +879,8 @@ export default function Exemple({
   useEffect(() => {
     setProperties([]);
     setBids([]);
+    setFilterQuery("All")
+    setSearchInput("")
     setWishlist([]);
     const data = JSON.parse(localStorage.getItem("user"));
 
@@ -1054,6 +1065,8 @@ export default function Exemple({
           setRefresh={setRefresh}
           setProperties={setProperties}
           refresh={refresh}
+          searchInput={searchInput}
+          filterQuery={filterQuery}
           refreshHandler={refreshHandler}
           setStartLoading={setStartLoading}
           properties={updatedData}

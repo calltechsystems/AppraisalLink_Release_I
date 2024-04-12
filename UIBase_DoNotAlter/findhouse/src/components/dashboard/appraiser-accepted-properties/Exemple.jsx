@@ -104,12 +104,12 @@ const headCells = [
     width: 200,
   },
 
-  {
-    id: "action",
-    numeric: false,
-    label: "Actions",
-    width: 180,
-  },
+  // {
+  //   id: "action",
+  //   numeric: false,
+  //   label: "Actions",
+  //   width: 180,
+  // },
 ];
 let count = 0;
 
@@ -127,6 +127,8 @@ export default function Exemple({
   setAllBrokers,
   setRequiredProp,
   onWishlistHandler,
+  filterQuery,
+  searchInput,
   participateHandler,
   setFilterQuery,
   setSearchInput,
@@ -149,6 +151,12 @@ export default function Exemple({
   const [dataFetched, setDataFetched] = useState(false);
 
   const [allArchive, setAllArchive] = useState([]);
+
+  useEffect(() => {
+    if (searchInput === "") {
+      setRefresh(true);
+    }
+  }, [searchInput]);
 
   const getOrderValue = (val) => {
     let title = "Applicant Contacted by appraiser";
@@ -696,6 +704,8 @@ export default function Exemple({
     setProperties([]);
     setBids([]);
     setWishlist([]);
+    setSearchInput("");
+    setFilterQuery("All");
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -865,6 +875,8 @@ export default function Exemple({
           )}
           headCells={headCells}
           setRefresh={setRefresh}
+          searchInput={searchInput}
+          filterQuery={filterQuery}
           setProperties={setProperties}
           refresh={refresh}
           refreshHandler={refreshHandler}

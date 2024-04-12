@@ -759,6 +759,8 @@ const Index = () => {
                           setFilterQuery={setFilterQuery}
                           setSearchInput={setSearchInput}
                           refresh={refresh}
+                          searchInput={searchInput}
+                          filterQuery={filterQuery}
                           setWishlistedProperties={setWishlistedProperties}
                           setStartLoading={setStartLoading}
                           openModalBroker={openModalBroker}
@@ -1976,7 +1978,13 @@ const Index = () => {
                         className="col-lg-12"
                         // style={{ display: "flex", flexDirection: "row" }}
                       >
-                        <label style={{ color: "#2e008b", fontWeight: "bold" }}>
+                        <label
+                          style={{
+                            color: "#2e008b",
+                            fontWeight: "bold",
+                            fontSize: "18px",
+                          }}
+                        >
                           Date and Time <span style={{ color: "red" }}>*</span>
                         </label>
                         <input

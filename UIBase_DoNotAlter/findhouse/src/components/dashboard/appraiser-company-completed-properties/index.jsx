@@ -670,6 +670,8 @@ const Index = () => {
                       <div className="mt0">
                         <TableData
                           userData={userData}
+                          searchInput={searchInput}
+                          filterQuery={filterQuery}
                           setModalOpen={openModal}
                           setIsStatusModal={setIsStatusModal}
                           close={closeModal}

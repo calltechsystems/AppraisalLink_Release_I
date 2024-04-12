@@ -389,6 +389,8 @@ const Index = () => {
                               : filterProperty
                           }
                           setAllArchive={setAllArchive}
+                          searchInput = {searchInput}
+                          filterQuery = {filterQuery}
                           setModalIsOpenError={setModalIsOpenError}
                           setErrorMessage={setErrorMessage}
                           setRefresh={setRefresh}

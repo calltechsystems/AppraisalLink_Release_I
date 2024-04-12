@@ -26,6 +26,8 @@ const TableData = ({
   setIsStatusModal,
   start,
   end,
+  searchInput,
+  filterQuery,
   onWishlistHandler,
   setStartLoading,
   setUpdatedCode,
@@ -302,6 +304,8 @@ const TableData = ({
           setFilterQuery={setFilterQuery}
           setProperties={setProperties}
           properties={data}
+          searchInput={searchInput}
+                          filterQuery={filterQuery}
           openAppraiserInfoModal={openAppraiserInfoModal}
           setRefresh={setRefresh}
           refresh={refresh}

@@ -696,6 +696,8 @@ const Index = () => {
                           userData={userData}
                           setAllArchive={setAllArchive}
                           allArchive={allArchive}
+                          searchInput={searchInput}
+                          filterQuery={filterQuery}
                           setModalOpen={openModal}
                           setIsStatusModal={setIsStatusModal}
                           close={closeModal}

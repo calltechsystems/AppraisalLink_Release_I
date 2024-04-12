@@ -139,6 +139,8 @@ export default function Exemple({
   properties,
   onHoldHandler,
   onCancelHandler,
+  searchInput,
+  filterQuery,
   refresh,
   setRefresh,
   setProperties,
@@ -161,6 +163,14 @@ export default function Exemple({
   const [allListedProperties, setAllListedProperties] = useState([]);
   let tempData = [];
   const [AllBrokers, setAllBrokers] = useState([]);
+
+  useEffect(()=>{
+    if(searchInput === ""){
+      setFilterQuery("All")
+      setSearchInput("")
+      setRefresh(true)
+    }
+  },[searchInput])
 
   const sortObjectsByOrderIdDescending = (data) => {
     return data.sort((a, b) => b.property_id - a.property_id);
@@ -803,6 +813,8 @@ export default function Exemple({
     setAllListedProperties([]);
     setBids([]);
     setProperties([]);
+    setFilterQuery("All")
+    setSearchInput("")
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -882,6 +894,8 @@ export default function Exemple({
       {updatedData && (
         <SmartTable
           title=""
+          searchInput={searchInput}
+          filterQuery={filterQuery}
           setFilterQuery={setFilterQuery}
           setSearchInput={setSearchInput}
           data={sortObjectsByOrderIdDescending(updatedData)}

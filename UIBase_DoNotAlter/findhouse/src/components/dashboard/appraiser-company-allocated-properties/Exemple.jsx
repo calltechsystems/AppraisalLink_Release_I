@@ -140,6 +140,8 @@ export default function Exemple({
   properties,
   setCurrentBid,
   setIsStatusModal,
+  searchInput,
+  filterQuery,
   setProperties,
   onWishlistHandler,
   participateHandler,
@@ -171,6 +173,12 @@ export default function Exemple({
   const [allProperties, setAllProperties] = useState([]);
   const [allAssignAppraiser, setAllAssignAppraiser] = useState([]);
   let tempData = [];
+
+  useEffect(()=>{
+    if(searchInput === ""){
+      setRefresh(true)
+    }
+  },[searchInput])
 
   const calculateDate = (oldBid, newBid) => {
     if (!oldBid.requestTime) {
@@ -679,7 +687,10 @@ export default function Exemple({
     setStartLoading(true);
   };
   useEffect(() => {
-    // //console.log("inside");
+    setProperties([])
+    setBids([])
+    setFilterQuery("All")
+    setSearchInput("")
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -870,6 +881,8 @@ export default function Exemple({
           data={sortObjectsByOrderIdDescending(updatedData)}
           headCells={headCells}
           setRefresh={setRefresh}
+          searchInput={searchInput}
+          filterQuery={filterQuery}
           setProperties={setProperties}
           refresh={refresh}
           refreshHandler={refreshHandler}

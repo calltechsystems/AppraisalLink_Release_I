@@ -126,7 +126,6 @@ const Index = () => {
     if (String(value) !== "Appraisal Visit Confirmed") {
       setOpenDate(false);
     }
-
     let selectedValue = 0;
     AppraiserStatusOptions.map((prop, index) => {
       if (String(prop.type) === String(value)) {
@@ -727,6 +726,8 @@ const Index = () => {
                         <TableData
                           userData={userData}
                           setModalOpen={openModal}
+                          searchInput={searchInput}
+                          filterQuery={filterQuery}
                           setIsStatusModal={setIsStatusModal}
                           close={closeModal}
                           setProperties={setProperties}

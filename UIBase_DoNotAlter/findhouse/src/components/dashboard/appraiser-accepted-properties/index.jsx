@@ -692,6 +692,8 @@ const Index = () => {
                               : filterProperty
                           }
                           setCurrentBid={setCurrentBid}
+                          searchInput={searchInput}
+                          filterQuery={filterQuery}
                           setUpdatedCode={setUpdatedCode}
                           onWishlistHandler={onWishlistHandler}
                           participateHandler={participateHandler}

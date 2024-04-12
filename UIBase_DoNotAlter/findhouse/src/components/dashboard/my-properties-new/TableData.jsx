@@ -11,6 +11,8 @@ const TableData = ({
   start,
   end,
   close,
+  searchInput,
+  filterQuery,
   onHoldHandler,
   onCancelHandler,
   properties,
@@ -217,6 +219,7 @@ const TableData = ({
         <Exemple
           userData={userData}
           open={open}
+          filterQuery={filterQuery}
           setPropValue={setPropValue}
           setPropertyId={setPropertyId}
           close={close}
@@ -224,6 +227,7 @@ const TableData = ({
           properties={data}
           setRefresh={setRefresh}
           refresh={refresh}
+          searchInput={searchInput}
           setModalIsOpenError={setModalIsOpenError}
           setErrorMessage={setErrorMessage}
           deletePropertyHandler={deletePropertyHandler}

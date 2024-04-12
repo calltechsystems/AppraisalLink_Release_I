@@ -499,6 +499,8 @@ const Index = () => {
                           setProperties={setProperties}
                           setPropertyId={setPropertyId}
                           setPropValue={setPropValue}
+                          searchInput={searchInput}
+                          filterQuery={filterQuery}
                           properties={
                             searchInput === "" && filterQuery === "All" ? properties : filterProperty
                           }

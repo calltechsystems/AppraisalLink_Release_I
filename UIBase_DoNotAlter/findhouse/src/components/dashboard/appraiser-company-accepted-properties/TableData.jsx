@@ -6,7 +6,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import Exemple from "./Exemple"
 import { useDispatch, useSelector } from "react-redux";
-const TableData = ({userData ,setRequiredProp, open ,close ,setAssignedAppraiser, onArchivePropertyHandler,setCurrentBid,setShowBroker,setOpenAssignModal,setAllBrokers,setShowMore,setFilterQuery,setSearchInput,setIsStatusModal,start,end, onWishlistHandler ,setStartLoading,setUpdatedCode, openModalBroker,participateHandler , properties, setProperties,setErrorMessage,setModalIsOpenError,setRefresh,refresh}) => {
+const TableData = ({userData ,searchInput,filterQuery,setRequiredProp, open ,close ,setAssignedAppraiser, onArchivePropertyHandler,setCurrentBid,setShowBroker,setOpenAssignModal,setAllBrokers,setShowMore,setFilterQuery,setSearchInput,setIsStatusModal,start,end, onWishlistHandler ,setStartLoading,setUpdatedCode, openModalBroker,participateHandler , properties, setProperties,setErrorMessage,setModalIsOpenError,setRefresh,refresh}) => {
 
 
   let userInfo = {};
@@ -251,6 +251,8 @@ const TableData = ({userData ,setRequiredProp, open ,close ,setAssignedAppraiser
       userData={userData}
       open={open}
       close={close}
+      searchInput={searchInput}
+      filterQuery={filterQuery}
       setShowBroker={setShowBroker}
       setSearchInput={setSearchInput}
       setFilterQuery={setFilterQuery}

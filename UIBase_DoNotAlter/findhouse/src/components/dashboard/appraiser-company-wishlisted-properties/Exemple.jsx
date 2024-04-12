@@ -141,6 +141,7 @@ export default function Exemple({
   setModalIsOpenError,
   setWishlistedProperties,
   onArchivePropertyHandler,
+  searchInput,filterQuery,
   setRefresh,
   setStartLoading,
   refresh,
@@ -157,6 +158,12 @@ export default function Exemple({
   let tempData = [];
 
   const [allArchive, setAllArchive] = useState([]);
+
+  useEffect(()=>{
+    if(searchInput === ""){
+      setRefresh(true)
+    }
+  },[searchInput])
 
   const getOrderValue = (val) => {
     let title = "Applicant Contacted by appraiser";
@@ -716,6 +723,8 @@ export default function Exemple({
     setProperties([]);
     setBids([]);
     setWishlist([]);
+    setFilterQuery("All")
+    setSearchInput("")
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -926,6 +935,8 @@ export default function Exemple({
           refreshHandler={refreshHandler}
           setStartLoading={setStartLoading}
           start={start}
+          searchInput={searchInput}
+          filterQuery={filterQuery}
           properties={updatedData}
           dataFetched={dataFetched}
           end={end}

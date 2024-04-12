@@ -127,6 +127,8 @@ export default function Exemple({
   setIsStatusModal,
   setProperties,
   setAllBrokers,
+  searchInput,
+  filterQuery,
   onWishlistHandler,
   participateHandler,
   setFilterQuery,
@@ -151,6 +153,12 @@ export default function Exemple({
 
   const [dataFetched, setDataFetched] = useState(false);
   let tempData = [];
+
+  useEffect(()=>{
+    if(searchInput === ""){
+      setRefresh(true)
+    }
+  },[searchInput])
 
   const getOrderValue = (val) => {
     let title = "";
@@ -523,6 +531,8 @@ export default function Exemple({
     setProperties([]);
     setBids([]);
     setWishlist([]);
+    setFilterQuery("All")
+    setSearchInput("")
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -685,6 +695,8 @@ export default function Exemple({
           refreshHandler={refreshHandler}
           setStartLoading={setStartLoading}
           start={start}
+          searchInput={searchInput}
+          filterQuery={filterQuery}
           properties={updatedData}
           dataFetched={dataFetched}
           end={end}

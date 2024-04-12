@@ -713,6 +713,8 @@ const Index = () => {
                               ? searchedProperties
                               : filterProperty
                           }
+                          searchInput={searchInput}
+                          filterQuery={filterQuery}
                           setAssignAppraisers={setAssignAppraisers}
                           setUpdatedCode={setUpdatedCode}
                           onWishlistHandler={onWishlistHandler}

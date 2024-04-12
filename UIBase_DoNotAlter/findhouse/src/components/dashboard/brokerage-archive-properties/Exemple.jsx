@@ -7,6 +7,7 @@ import {
   FaArchive,
   FaHandHoldingHeart,
   FaHandHoldingUsd,
+  
   FaHandPointer,
   FaPause,
   FaRedo,
@@ -157,6 +158,8 @@ export default function Exemple({
   setModalIsPopupOpen,
   setAllArchive,
   refresh,
+  filterQuery,
+  searchInput,
   setFilterQuery,
   setModalIsOpenError,
   setSearchInput,
@@ -175,9 +178,17 @@ export default function Exemple({
   const [dataFetched, setDataFetched] = useState(false);
   let tempData = [];
 
+  useEffect(()=>{
+    if(searchInput === ""){
+      setRefresh(true)
+    }
+  },[searchInput])
+
   const refreshHandler = () => {
     setProperties([]);
     setBids([]);
+    setFilterQuery("All")
+    setSearchInput("")
     setRefresh(true);
   };
 
@@ -542,6 +553,8 @@ export default function Exemple({
   }, [properties]);
 
   useEffect(() => {
+    setFilterQuery("All")
+    setSearchInput("")
     setProperties([]);
     setBids([]);
 
@@ -608,6 +621,8 @@ export default function Exemple({
           headCells={headCells}
           refreshHandler={refreshHandler}
           start={start}
+          searchInput={searchInput}
+          filterQuery={filterQuery}
           dataFetched={dataFetched}
           properties={updatedData}
           end={end}

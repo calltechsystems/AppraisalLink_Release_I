@@ -12,6 +12,8 @@ const TableData = ({
   setIsStatusModal,
   open,
   setFilterQuery,
+  searchInput,
+  filterQuery,
   setSearchInput,
   start,
   end,
@@ -296,6 +298,8 @@ const TableData = ({
           participateHandler={participateHandler}
           setWishlistedProperties={setWishlistedProperties}
           setUpdatedCode={setUpdatedCode}
+          filterQuery={filterQuery}
+                          searchInput={searchInput}
           setStartLoading={setStartLoading}
           setFilterQuery={setFilterQuery}
           setCurrentProperty={setCurrentProperty}

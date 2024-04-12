@@ -651,7 +651,7 @@ const Index = () => {
                           setFilterQuery={setFilterQuery}
                           setSearchInput={setSearchInput}
                           searchInput={searchInput}
-                          // setWishlist={setWishlist}
+                          filterQuery={filterQuery}
                           refresh={refresh}
                           setWishlistedProperties={setWishlistedProperties}
                           setStartLoading={setStartLoading}

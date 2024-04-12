@@ -123,6 +123,8 @@ export default function Exemple({
   end,
   setUpdatedCode,
   setRequiredProp,
+  filterQuery,
+  searchInput,
   properties,
   setCurrentBid,
   setIsStatusModal,
@@ -142,8 +144,8 @@ export default function Exemple({
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [wishlist, setWishlist] = useState([]);
-  
-  const [dataFetched,setDataFetched] = useState(false)
+
+  const [dataFetched, setDataFetched] = useState(false);
   const [bids, setBids] = useState([]);
   const [hideAction, setHideAction] = useState(false);
   const [hideClass, setHideClass] = useState("");
@@ -172,69 +174,62 @@ export default function Exemple({
     return isArchive;
   };
 
-  const calculateDate = (oldBid,newBid)=>{
-
-    if(!oldBid.requestTime){
-      return newBid
+  const calculateDate = (oldBid, newBid) => {
+    if (!oldBid.requestTime) {
+      return newBid;
     }
 
     const oldDate = new Date(oldBid.requestTime);
     const newDate = new Date(newBid.requestTime);
 
-    if(oldDate <= newDate){
+    if (oldDate <= newDate) {
       return newBid;
     }
     return oldBid;
-  }
+  };
 
-  const getFinalBid = (tempBids)=>{
-    
+  const getFinalBid = (tempBids) => {
     let finalBid = {};
-    tempBids.map((bid,index)=>{
-      if(!finalBid){
+    tempBids.map((bid, index) => {
+      if (!finalBid) {
         finalBid = bid;
-      }
-      else {
-        if(bid.status === 1){
-          if(finalBid.status === 1){
-            const customBid = calculateDate(finalBid,bid);
+      } else {
+        if (bid.status === 1) {
+          if (finalBid.status === 1) {
+            const customBid = calculateDate(finalBid, bid);
             finalBid = customBid;
+          } else {
+            finalBid = bid;
           }
-          else{
-            finalBid = bid
-          }
-        }
-        else{
-          const customBid = calculateDate(finalBid,bid);
-            finalBid = customBid;
+        } else {
+          const customBid = calculateDate(finalBid, bid);
+          finalBid = customBid;
         }
       }
-    })
+    });
 
     return finalBid;
-  }
+  };
 
   const filterBidsWithin24Hours = (property) => {
     const data = JSON.parse(localStorage.getItem("user"));
     let tempBid = 0;
-    let  bidValue = {};
-    let tempBids = []
+    let bidValue = {};
+    let tempBids = [];
     bids.filter((bid) => {
-    if (
+      if (
         bid.orderId === property.orderId &&
         bid.appraiserUserId === data.userId
-      )
-      {
-        tempBids.push(bid) ;
-        bidValue = (bid) ;
+      ) {
+        tempBids.push(bid);
+        bidValue = bid;
         tempBid = tempBid + 1;
       } else {
       }
     });
-    const customBid = getFinalBid(tempBids)
-    return customBid
+    const customBid = getFinalBid(tempBids);
+    return customBid;
   };
-
 
   const router = useRouter();
 
@@ -653,7 +648,12 @@ export default function Exemple({
     setStartLoading(true);
   };
   useEffect(() => {
+    setSearchInput("");
+    setFilterQuery("All");
+    setProperties([]);
+    setBids([]);
     console.log("inside");
+
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -672,7 +672,7 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        setDataFetched(true)
+        setDataFetched(true);
         const temp = res.data.data.properties.$values;
 
         setProperties(temp);
@@ -761,7 +761,7 @@ export default function Exemple({
           });
       })
       .catch((err) => {
-        setDataFetched(false)
+        setDataFetched(false);
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
@@ -805,6 +805,8 @@ export default function Exemple({
           setStartLoading={setStartLoading}
           start={start}
           end={end}
+          searchInput={searchInput}
+          filterQuery={filterQuery}
           dataFetched={dataFetched}
           properties={updatedData}
         />

@@ -136,6 +136,8 @@ export default function Exemple({
   setFilterQuery,
   setSearchInput,
   openModalBroker,
+  searchInput,
+  filterQuery,
   setErrorMessage,
   setModalIsOpenError,
   onArchivePropertyHandler,
@@ -155,6 +157,12 @@ export default function Exemple({
   let tempData = [];
 
   const [allArchive, setAllArchive] = useState([]);
+
+  useEffect(()=>{
+    if(searchInput === ""){
+      setRefresh(true)
+    }
+  },[searchInput])
 
   const getOrderValue = (val) => {
     let title = "Applicant Contacted by appraiser";
@@ -536,7 +544,7 @@ export default function Exemple({
                         data-toggle="tooltip"
                         data-placement="top"
                       >
-                        <span className="btn btn-danger  w-100">Rejected </span>
+                        {/* <span className="btn btn-danger  w-100">Rejected </span> */}
                       </li>
                       <li
                         className="list-inline-item"
@@ -764,6 +772,11 @@ export default function Exemple({
     setStartLoading(true);
   };
   useEffect(() => {
+    setProperties([]);
+    setWishlist([]);
+    setBids([]);
+    setSearchInput("");
+    setFilterQuery("All");
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -1094,6 +1107,8 @@ export default function Exemple({
           refreshHandler={refreshHandler}
           setStartLoading={setStartLoading}
           start={start}
+          searchInput={searchInput}
+         filterQuery={filterQuery}
           dataFetched={dataFetched}
           statusData={statusData}
           properties={updatedData}

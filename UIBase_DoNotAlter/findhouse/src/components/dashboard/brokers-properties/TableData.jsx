@@ -18,6 +18,8 @@ const TableData = ({
   setPropValue,
   refresh,
   setRefresh,
+  searchInput,
+  filterQuery,
   openbrokerInfoModal,
   setModalIsPopupOpen,
   archievePropertyHandler,
@@ -221,6 +223,8 @@ const TableData = ({
           setPropValue={setPropValue}
           setPropertyId={setPropertyId}
           close={close}
+          searchInput={searchInput}
+          filterQuery={filterQuery}
           setProperties={setProperties}
           properties={data}
           setRefresh={setRefresh}

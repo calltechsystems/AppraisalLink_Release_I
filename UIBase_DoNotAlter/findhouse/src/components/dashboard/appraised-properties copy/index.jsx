@@ -708,6 +708,8 @@ const Index = () => {
                               ? properties
                               : filterProperty
                           }
+                          searchInput={searchInput}
+                          filterQuery={filterQuery}
                           setCurrentBid={setCurrentBid}
                           setUpdatedCode={setUpdatedCode}
                           onWishlistHandler={onWishlistHandler}

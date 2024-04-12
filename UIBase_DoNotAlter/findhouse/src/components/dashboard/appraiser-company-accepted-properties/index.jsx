@@ -682,6 +682,8 @@ const Index = () => {
                           setModalOpen={openModal}
                           setIsStatusModal={setIsStatusModal}
                           close={closeModal}
+                          searchInput={searchInput}
+                          filterQuery={filterQuery}
                           setProperties={setProperties}
                           start={start}
                           end={end}

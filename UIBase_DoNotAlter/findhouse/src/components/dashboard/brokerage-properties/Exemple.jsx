@@ -137,6 +137,7 @@ export default function Exemple({
   setWishlist,
   refresh,
   searchInput,
+  filterQuery,
   setRefresh,
   setProperties,
   setCurrentProperty,
@@ -154,6 +155,14 @@ export default function Exemple({
   const [show, setShow] = useState(false);
   const [dataFetched, setDataFetched] = useState(false);
   let tempData = [];
+
+  useEffect(()=>{
+    if(searchInput === ""){
+      setProperties([])
+      setBids([]);
+      setRefresh(true)
+    }
+  },[searchInput])
 
   const sortObjectsByOrderIdDescending = (data) => {
     return data.sort((a, b) => b.order_id - a.order_id);
@@ -759,6 +768,11 @@ export default function Exemple({
   }, [properties]);
 
   useEffect(() => {
+
+    setProperties([])
+    setBids([])
+    setFilterQuery("All")
+    setSearchInput("")
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -818,6 +832,8 @@ export default function Exemple({
       {updatedData && (
         <SmartTable
           title=""
+          searchInput={searchInput}
+          filterQuery={filterQuery}
           setFilterQuery={setFilterQuery}
           setSearchInput={setSearchInput}
           data={sortObjectsByOrderIdDescending(updatedData)}

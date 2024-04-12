@@ -298,7 +298,7 @@ const Index = () => {
   return (
     <>
       {/* <!-- Main Header Nav --> */}
-      <Header />
+      <Header userData={userData} />
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
@@ -391,6 +391,8 @@ const Index = () => {
                           setErrorMessage={setErrorMessage}
                           setRefresh={setRefresh}
                           refresh={refresh}
+                          filterQuery={filterQuery}
+                          searchInput={searchInput}
                           setFilterQuery={setFilterQuery}
                           setSearchInput={setSearchInput}
                           setModalIsPopupOpen={setModalIsPopupOpen}

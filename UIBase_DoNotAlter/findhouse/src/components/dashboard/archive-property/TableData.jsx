@@ -10,6 +10,8 @@ const TableData = ({
   open,start,end,
   close,
   properties,
+  searchInput,
+  filterQuery,
   refresh,
   setFilterQuery,
   setSearchInput,
@@ -218,6 +220,8 @@ const TableData = ({
           setFilterQuery={setFilterQuery}
           setSearchInput={setSearchInput}
           close={close}
+          searchInput = {searchInput}
+          filterQuery = {filterQuery}
           setProperties={setProperties}
           properties={data}
           setRefresh={setRefresh}

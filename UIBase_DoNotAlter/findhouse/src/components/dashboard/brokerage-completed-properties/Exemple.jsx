@@ -139,6 +139,8 @@ export default function Exemple({
   properties,
   onHoldHandler,
   onCancelHandler,
+  filterQuery,
+  searchInput,
   refresh,
   setRefresh,
   setProperties,
@@ -159,6 +161,14 @@ export default function Exemple({
   const [show, setShow] = useState(false);
   const [dataFetched, setDataFetched] = useState(false);
   let tempData = [];
+
+  useEffect(()=>{
+    if(searchInput === ""){
+      setProperties([])
+      setBids([])
+      setRefresh(true)
+    }
+  },[searchInput])
 
   const sortObjectsByOrderIdDescending = (data) => {
     return data.sort((a, b) => b.order_id - a.order_id);
@@ -300,6 +310,8 @@ export default function Exemple({
   const refreshHandler = () => {
     setProperties([]);
     setBids([]);
+    setFilterQuery("All")
+    setSearchInput("")
     setRefresh(true);
   };
 
@@ -560,6 +572,8 @@ export default function Exemple({
           setSearchInput={setSearchInput}
           data={sortObjectsByOrderIdDescending(updatedData)}
           headCells={headCells}
+          searchInput={searchInput}
+          filterQuery={filterQuery}
           refreshHandler={refreshHandler}
           properties={updatedData}
           dataFetched={dataFetched}

@@ -122,6 +122,8 @@ export default function Exemple({
   close,
   start,
   end,
+  searchInput,
+  filterQuery,
   setUpdatedCode,
   properties,
   setCurrentBid,
@@ -155,6 +157,11 @@ export default function Exemple({
   let tempData = [];
 
   const [allArchive, setAllArchive] = useState([]);
+  useEffect(()=>{
+    if(searchInput === ""){
+      setRefresh(true)
+    }
+  },[searchInput])
 
   const getOrderValue = (val) => {
     let title = "Applicant Contacted by appraiser";
@@ -672,6 +679,8 @@ export default function Exemple({
     setProperties([]);
     setBids([]);
     setWishlist([]);
+    setFilterQuery("All")
+    setSearchInput("")
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -835,6 +844,8 @@ export default function Exemple({
           refreshHandler={refreshHandler}
           properties={updatedData}
           dataFetched={dataFetched}
+          searchInput={searchInput}
+          filterQuery={filterQuery}
           setStartLoading={setStartLoading}
           start={start}
           end={end}

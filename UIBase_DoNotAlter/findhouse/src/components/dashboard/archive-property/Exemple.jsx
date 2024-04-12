@@ -161,6 +161,8 @@ export default function Exemple({
   setModalIsOpenError,
   setSearchInput,
   setProperties,
+  searchInput,
+  filterQuery,
   deletePropertyHandler,
   setModalOpen,
   setIsCancelProperty,
@@ -175,12 +177,20 @@ export default function Exemple({
   const [dataFetched, setDataFetched] = useState(false);
   let tempData = [];
 
+ 
   const refreshHandler = () => {
     setProperties([]);
     setBids([]);
     setRefresh(true);
   };
 
+  useEffect(()=>{
+    if(searchInput === ""){
+      setProperties([])
+      setBids([])
+      setRefresh(true);
+    }
+  },[searchInput]);
   const router = useRouter();
 
   const openStatusUpdateHandler = () => {
@@ -241,6 +251,8 @@ export default function Exemple({
         title = status.type;
       }
     });
+
+
     return title;
   };
 
@@ -360,13 +372,13 @@ export default function Exemple({
     const getData = () => {
       properties.map((temp, index) => {
         const property = temp.property;
+        
 
         if (property.$id) {
           const isStatus = getPropertyStatusHandler(property);
           const isBidded = getBidOfProperty(property.orderId);
           const isHold = property.isOnHold;
           const isCancel = property.isOnCancel;
-          console.log("property", property);
           const isEditable = isStatus === 0 ? true : false;
           if (true) {
             const updatedRow = {
@@ -406,7 +418,12 @@ export default function Exemple({
                   <span className="btn bg-warning w-100">
                     {isHold ? "N.A." : "N.A."}
                   </span>
-                ) : property.orderStatus === 1 ? (
+                ) : property.orderStatus === 3 ? (
+                  <span className="btn bg-warning  w-100">
+                    Appraisal Report Writing Completed and Submitted
+                  </span>
+                ) :
+                property.orderStatus === 1 ? (
                   <span className="btn bg-warning  w-100">
                     {getOrderValue(isBidded.orderStatus)} -
                     {formatDate(isBidded.statusDate)}
@@ -534,6 +551,8 @@ export default function Exemple({
   useEffect(() => {
     setProperties([]);
     setBids([]);
+    setSearchInput("")
+    setFilterQuery("All")
 
     const data = JSON.parse(localStorage.getItem("user"));
 
@@ -593,6 +612,8 @@ export default function Exemple({
         <SmartTable
           title=""
           setFilterQuery={setFilterQuery}
+          searchInput={searchInput}
+          filterQuery={filterQuery}
           setSearchInput={setSearchInput}
           data={sortObjectsByOrderIdDescending(updatedData)}
           headCells={headCells}
