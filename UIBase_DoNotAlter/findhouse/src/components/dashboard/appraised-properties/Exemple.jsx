@@ -121,12 +121,13 @@ export default function Exemple({
   close,
   start,
   end,
+  setCurrentBiddedView,
   setUpdatedCode,
   properties,
   setCurrentBid,
   setAllAppraiser,
   setAssignPropertyId,
-
+  setOpenQuoteView,
   setAssignModal,
   setIsStatusModal,
   setProperties,
@@ -328,6 +329,12 @@ export default function Exemple({
     return `${formattedNumber}${unit}`;
   };
 
+  const openQuoteViewModal = (bid)=>{
+    setCurrentBiddedView(bid)
+    setOpenQuoteView(true)
+    
+  }
+
   const onDeletePropertyHandler = () => {};
 
   const formatDate = (dateString) => {
@@ -435,7 +442,12 @@ export default function Exemple({
                   ? `${isBidded.remark} on ${formatDate(isBidded.modifiedDate)}`
                   : isBidded.remark
                 : "N.A.",
-            status: isWait ? (
+            status: 
+            isBidded?.bidId && isBidded.status === 2 ?
+            (
+              <span className="btn btn-danger  w-100">Rejected</span>
+            ) :
+            isWait ? (
               <span className="btn btn-danger  w-100">
                 {property.isOnCancel
                   ? "Cancelled"
@@ -450,9 +462,7 @@ export default function Exemple({
                 <span className="btn btn-primary  w-100">Quote Provided</span>
               ) : isBidded.status === 1 ? (
                 <span className="btn btn-success  w-100">Accepted</span>
-              ) : (
-                <span className="btn btn-danger  w-100">Rejected</span>
-              )
+              ) : ""
             ) : (
               <span className="btn btn-warning  w-100">New</span>
             ),
@@ -536,6 +546,20 @@ export default function Exemple({
 
             action: (
               <div className="print-hidden-column">
+
+                {
+                  isBidded.$id && (
+                    isBidded.status === 2 || isBidded.status === 1
+                  ) && <span
+                     className="btn btn-color-table"
+                     onClick={() => openQuoteViewModal(isBidded)}
+                   >
+                     <Link href={"#"}>
+                       <span className="text-light flaticon-view"></span>
+                     </Link>
+                   </span>
+                }
+                
                 {isBidded.status === 2 ? (
                   <>
                     <ul>

@@ -152,11 +152,11 @@ export default function Exemple({
 
   const [allArchive, setAllArchive] = useState([]);
 
-  useEffect(() => {
-    if (searchInput === "") {
-      setRefresh(true);
+  useEffect(()=>{
+    if(searchInput === ""){
+      setRefresh(true)
     }
-  }, [searchInput]);
+  },[searchInput])
 
   const getOrderValue = (val) => {
     let title = "Applicant Contacted by appraiser";
@@ -404,23 +404,30 @@ export default function Exemple({
                   ? `${isBidded.remark} on ${formatDate(isBidded.modifiedDate)}`
                   : isBidded.remark
                 : "N.A.",
-            status: isWait ? (
-              <span className="btn btn-danger  w-100">
-                {property.isOnHold ? "On Hold" : "Cancelled"}
-              </span>
-            ) : isBidded.bidId ? (
-              isBidded.orderStatus === 3 ? (
-                <span className="btn btn-success  w-100">Completed</span>
-              ) : isBidded.status === 0 ? (
-                <span className="btn btn-primary  w-100">Quote Provided</span>
-              ) : isBidded.status === 1 ? (
-                <span className="btn btn-success  w-100">Accepted</span>
-              ) : (
-                <span className="btn btn-danger  w-100">Rejected</span>
-              )
-            ) : (
-              <span className="btn btn-warning  w-100">New</span>
-            ),
+                status: 
+                isBidded?.bidId && isBidded.status === 2 ?
+                (
+                  <span className="btn btn-danger  w-100">Rejected</span>
+                ) :
+                isWait ? (
+                  <span className="btn btn-danger  w-100">
+                    {property.isOnCancel
+                      ? "Cancelled"
+                      : property.isOnHold
+                      ? "On Hold"
+                      : ""}
+                  </span>
+                ) : isBidded.bidId ? (
+                  isBidded.orderStatus === 3 ? (
+                    <span className="btn btn-completed w-100">Completed</span>
+                  ) : isBidded.status === 0 ? (
+                    <span className="btn btn-primary  w-100">Quote Provided</span>
+                  ) : isBidded.status === 1 ? (
+                    <span className="btn btn-success  w-100">Accepted</span>
+                  ) : ""
+                ) : (
+                  <span className="btn btn-warning  w-100">New</span>
+                ),
             broker: (
               <div>
                 {isBidded.status === 1 ? (
@@ -704,8 +711,8 @@ export default function Exemple({
     setProperties([]);
     setBids([]);
     setWishlist([]);
-    setSearchInput("");
-    setFilterQuery("All");
+    setSearchInput("")
+    setFilterQuery("All")
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -876,7 +883,7 @@ export default function Exemple({
           headCells={headCells}
           setRefresh={setRefresh}
           searchInput={searchInput}
-          filterQuery={filterQuery}
+                          filterQuery={filterQuery}
           setProperties={setProperties}
           refresh={refresh}
           refreshHandler={refreshHandler}

@@ -719,6 +719,8 @@ const Index = () => {
                         <TableData
                           userData={userData}
                           setModalOpen={openModal}
+                          searchInput={searchInput}
+                          filterQuery={filterQuery}
                           setIsStatusModal={setIsStatusModal}
                           close={closeModal}
                           setProperties={setProperties}

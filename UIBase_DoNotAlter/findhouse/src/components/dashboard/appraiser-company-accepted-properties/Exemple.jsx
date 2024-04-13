@@ -154,11 +154,11 @@ export default function Exemple({
 
   const [allArchive, setAllArchive] = useState([]);
 
-  useEffect(() => {
-    if (searchInput === "") {
-      setRefresh(true);
+  useEffect(()=>{
+    if(searchInput === ""){
+      setRefresh(true)
     }
-  }, [searchInput]);
+  },[searchInput])
 
   const getOrderValue = (val) => {
     let title = "Applicant Contacted by appraiser";

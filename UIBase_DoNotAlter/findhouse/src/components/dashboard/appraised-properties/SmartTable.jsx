@@ -59,7 +59,7 @@ function SmartTable(props) {
           setTotal(data.data.total, 0);
         }
       } catch (e) {
-        console.log("Fetch error", e.message);
+        //console.log("Fetch error", e.message);
       }
       setLoading(false);
     },
@@ -256,7 +256,7 @@ function SmartTable(props) {
     tableWidthFunc,
     fetchData,
   ]);
-  console.log(props.data);
+  //console.log(props.data);
 
   const buildQueryString = (search, page, rowsPerPage) => {
     const queries = [];

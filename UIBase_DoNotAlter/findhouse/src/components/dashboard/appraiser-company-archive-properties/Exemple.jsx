@@ -388,8 +388,13 @@ export default function Exemple({
               <span className="btn btn-warning w-100">New</span>
             ),
           remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
-          status: isWait ? (
-            <span className="btn btn-danger w-100">
+          status: 
+          isBidded?.bidId && isBidded.status === 2 ?
+          (
+            <span className="btn btn-danger  w-100">Rejected</span>
+          ) :
+          isWait ? (
+            <span className="btn btn-danger  w-100">
               {property.isOnCancel
                 ? "Cancelled"
                 : property.isOnHold
@@ -397,15 +402,13 @@ export default function Exemple({
                 : ""}
             </span>
           ) : isBidded.bidId ? (
-            isBidded.status === 0 ? (
+            isBidded.orderStatus === 3 ? (
+              <span className="btn btn-completed w-100">Completed</span>
+            ) : isBidded.status === 0 ? (
               <span className="btn btn-primary  w-100">Quote Provided</span>
-            ) : isBidded.status === 1 && isBidded.orderStatus === 3 ? (
-              <span className="btn btn-completed  w-100">Completed</span>
             ) : isBidded.status === 1 ? (
               <span className="btn btn-success  w-100">Accepted</span>
-            ) : (
-              <span className="btn btn-danger  w-100">Rejected</span>
-            )
+            ) : ""
           ) : (
             <span className="btn btn-warning  w-100">New</span>
           ),

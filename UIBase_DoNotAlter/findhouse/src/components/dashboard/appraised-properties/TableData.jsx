@@ -6,7 +6,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import Exemple from "./Exemple"
 import { useDispatch, useSelector } from "react-redux";
-const TableData = ({userData ,searchInput,filterQuery, open ,close ,setAssignedAppraiser,setAssignPropertyId,setAssignModal,setAllAppraiser, onArchivePropertyHandler,setCurrentBid,setShowBroker,setOpenAssignModal,setAllBrokers,setShowMore,setFilterQuery,setSearchInput,setIsStatusModal,start,end, onWishlistHandler ,setStartLoading,setUpdatedCode, openModalBroker,participateHandler , properties, setProperties,setErrorMessage,setModalIsOpenError,setRefresh,refresh}) => {
+const TableData = ({userData ,setCurrentBiddedView,setOpenQuoteView,searchInput,filterQuery, open ,close ,setAssignedAppraiser,setAssignPropertyId,setAssignModal,setAllAppraiser, onArchivePropertyHandler,setCurrentBid,setShowBroker,setOpenAssignModal,setAllBrokers,setShowMore,setFilterQuery,setSearchInput,setIsStatusModal,start,end, onWishlistHandler ,setStartLoading,setUpdatedCode, openModalBroker,participateHandler , properties, setProperties,setErrorMessage,setModalIsOpenError,setRefresh,refresh}) => {
 
 
   let userInfo = {};
@@ -267,8 +267,10 @@ const TableData = ({userData ,searchInput,filterQuery, open ,close ,setAssignedA
       setUpdatedCode={setUpdatedCode}
       searchInput={searchInput}
       filterQuery={filterQuery}
+      setCurrentBiddedView={setCurrentBiddedView}
       setStartLoading={setStartLoading}
       setShowMore={setShowMore}
+      setOpenQuoteView={setOpenQuoteView}
       setIsStatusModal={setIsStatusModal}
       start={start}
       setAssignPropertyId={setAssignPropertyId}

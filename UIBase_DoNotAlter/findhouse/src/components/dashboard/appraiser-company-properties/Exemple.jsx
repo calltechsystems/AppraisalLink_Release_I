@@ -139,6 +139,8 @@ export default function Exemple({
   setIsStatusModal,
   setProperties,
   setAllBrokers,
+  setCurrentBiddedView,
+  setOpenQuoteView,
   onWishlistHandler,
   participateHandler,
   setFilterQuery,
@@ -361,6 +363,12 @@ export default function Exemple({
     return `${formattedNumber}${unit}`;
   };
 
+  const openQuoteViewModal = (bid)=>{
+    setCurrentBiddedView(bid)
+    setOpenQuoteView(true)
+    
+  }
+
   const checkWishlistedHandler = (data) => {
     let temp = {};
     // console.log(wishlist, data);
@@ -456,20 +464,27 @@ export default function Exemple({
                 <span className="btn btn-warning  w-100">N.A.</span>
               ),
             remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
-            status: isWait ? (
+            status: 
+            isBidded?.bidId && isBidded.status === 2 ?
+            (
+              <span className="btn btn-danger  w-100">Rejected</span>
+            ) :
+            isWait ? (
               <span className="btn btn-danger  w-100">
-                {property.isOnHold ? "On Hold" : "Cancelled"}
+                {property.isOnCancel
+                  ? "Cancelled"
+                  : property.isOnHold
+                  ? "On Hold"
+                  : ""}
               </span>
             ) : isBidded.bidId ? (
               isBidded.orderStatus === 3 ? (
-                <span className="btn btn-completed  w-100">Completed</span>
+                <span className="btn btn-completed w-100">Completed</span>
               ) : isBidded.status === 0 ? (
                 <span className="btn btn-primary  w-100">Quote Provided</span>
               ) : isBidded.status === 1 ? (
                 <span className="btn btn-success  w-100">Accepted</span>
-              ) : (
-                <span className="btn btn-danger  w-100">Rejected</span>
-              )
+              ) : ""
             ) : (
               <span className="btn btn-warning  w-100">New</span>
             ),
@@ -575,6 +590,18 @@ export default function Exemple({
 
             action: (
               <div className="print-hidden-column">
+                {
+                  isBidded.$id && (
+                    isBidded.status === 2 || isBidded.status === 1
+                  ) && <span
+                     className="btn btn-color-table"
+                     onClick={() => openQuoteViewModal(isBidded)}
+                   >
+                     <Link href={"#"}>
+                       <span className="text-light flaticon-view"></span>
+                     </Link>
+                   </span>
+                }
                 {property.status === 2 ? (
                   <>
                     <ul>

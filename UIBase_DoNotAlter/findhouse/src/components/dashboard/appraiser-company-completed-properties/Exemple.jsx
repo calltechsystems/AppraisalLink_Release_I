@@ -144,8 +144,8 @@ export default function Exemple({
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [wishlist, setWishlist] = useState([]);
-
-  const [dataFetched, setDataFetched] = useState(false);
+  
+  const [dataFetched,setDataFetched] = useState(false)
   const [bids, setBids] = useState([]);
   const [hideAction, setHideAction] = useState(false);
   const [hideClass, setHideClass] = useState("");
@@ -174,62 +174,69 @@ export default function Exemple({
     return isArchive;
   };
 
-  const calculateDate = (oldBid, newBid) => {
-    if (!oldBid.requestTime) {
-      return newBid;
+  const calculateDate = (oldBid,newBid)=>{
+
+    if(!oldBid.requestTime){
+      return newBid
     }
 
     const oldDate = new Date(oldBid.requestTime);
     const newDate = new Date(newBid.requestTime);
 
-    if (oldDate <= newDate) {
+    if(oldDate <= newDate){
       return newBid;
     }
     return oldBid;
-  };
+  }
 
-  const getFinalBid = (tempBids) => {
+  const getFinalBid = (tempBids)=>{
+    
     let finalBid = {};
-    tempBids.map((bid, index) => {
-      if (!finalBid) {
+    tempBids.map((bid,index)=>{
+      if(!finalBid){
         finalBid = bid;
-      } else {
-        if (bid.status === 1) {
-          if (finalBid.status === 1) {
-            const customBid = calculateDate(finalBid, bid);
+      }
+      else {
+        if(bid.status === 1){
+          if(finalBid.status === 1){
+            const customBid = calculateDate(finalBid,bid);
             finalBid = customBid;
-          } else {
-            finalBid = bid;
           }
-        } else {
-          const customBid = calculateDate(finalBid, bid);
-          finalBid = customBid;
+          else{
+            finalBid = bid
+          }
+        }
+        else{
+          const customBid = calculateDate(finalBid,bid);
+            finalBid = customBid;
         }
       }
-    });
+    })
 
     return finalBid;
-  };
+  }
 
   const filterBidsWithin24Hours = (property) => {
     const data = JSON.parse(localStorage.getItem("user"));
     let tempBid = 0;
-    let bidValue = {};
-    let tempBids = [];
+    let  bidValue = {};
+    let tempBids = []
     bids.filter((bid) => {
-      if (
+    if (
         bid.orderId === property.orderId &&
         bid.appraiserUserId === data.userId
-      ) {
-        tempBids.push(bid);
-        bidValue = bid;
+      )
+      {
+        tempBids.push(bid) ;
+        bidValue = (bid) ;
         tempBid = tempBid + 1;
       } else {
       }
     });
-    const customBid = getFinalBid(tempBids);
-    return customBid;
+    const customBid = getFinalBid(tempBids)
+    return customBid
   };
+
 
   const router = useRouter();
 
@@ -386,23 +393,30 @@ export default function Exemple({
               ),
             remark:
               isBidded && isBidded.remark ? <p>{isBidded.remark}</p> : "N.A.",
-            status: isWait ? (
-              <span className="btn btn-danger  w-100">
-                {property.isOnHold ? "On Hold" : "Cancelled"}
-              </span>
-            ) : isBidded.bidId ? (
-              isBidded.orderStatus === 3 ? (
-                <span className="btn btn-completed  w-100">Completed</span>
-              ) : isBidded.status === 0 ? (
-                <span className="btn btn-primary  w-100">Quote Provided</span>
-              ) : isBidded.status === 1 ? (
-                <span className="btn btn-success  w-100">Accepted</span>
-              ) : (
+              status: 
+              isBidded?.bidId && isBidded.status === 2 ?
+              (
                 <span className="btn btn-danger  w-100">Rejected</span>
-              )
-            ) : (
-              <span className="btn btn-warning  w-100">New</span>
-            ),
+              ) :
+              isWait ? (
+                <span className="btn btn-danger  w-100">
+                  {property.isOnCancel
+                    ? "Cancelled"
+                    : property.isOnHold
+                    ? "On Hold"
+                    : ""}
+                </span>
+              ) : isBidded.bidId ? (
+                isBidded.orderStatus === 3 ? (
+                  <span className="btn btn-completed w-100">Completed</span>
+                ) : isBidded.status === 0 ? (
+                  <span className="btn btn-primary  w-100">Quote Provided</span>
+                ) : isBidded.status === 1 ? (
+                  <span className="btn btn-success  w-100">Accepted</span>
+                ) : ""
+              ) : (
+                <span className="btn btn-warning  w-100">New</span>
+              ),
             broker: (
               <div>
                 {isBidded.status === 1 ? (
@@ -648,10 +662,10 @@ export default function Exemple({
     setStartLoading(true);
   };
   useEffect(() => {
-    setSearchInput("");
-    setFilterQuery("All");
-    setProperties([]);
-    setBids([]);
+    setSearchInput("")
+    setFilterQuery("All")
+    setProperties([])
+    setBids([])
     console.log("inside");
 
     const data = JSON.parse(localStorage.getItem("user"));
@@ -672,7 +686,7 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        setDataFetched(true);
+        setDataFetched(true)
         const temp = res.data.data.properties.$values;
 
         setProperties(temp);
@@ -761,7 +775,7 @@ export default function Exemple({
           });
       })
       .catch((err) => {
-        setDataFetched(false);
+        setDataFetched(false)
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
