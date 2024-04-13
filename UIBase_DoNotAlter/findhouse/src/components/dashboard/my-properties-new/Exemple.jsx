@@ -4,10 +4,7 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 import axios, { all } from "axios";
 import { AppraiserStatusOptions } from "../create-listing/data";
-import {
-  FaArchive,
-  FaPause,
-} from "react-icons/fa";
+import { FaArchive, FaPause } from "react-icons/fa";
 
 const headCells = [
   {
@@ -130,22 +127,20 @@ export default function Exemple({
   const [dataFetched, setDataFetched] = useState(false);
   let tempData = [];
 
-  useEffect(()=>{
-    if(refresh === true){
-    setSearchInput("");
-    setFilterQuery("All")
+  useEffect(() => {
+    if (refresh === true) {
+      setSearchInput("");
+      setFilterQuery("All");
     }
-  },[refresh]);
+  }, [refresh]);
 
-  useEffect(()=>{
-    if(searchInput === ""){
-      setProperties([])
+  useEffect(() => {
+    if (searchInput === "") {
+      setProperties([]);
       setBids([]);
-      setRefresh(true)
+      setRefresh(true);
     }
-  },[searchInput]);
-
- 
+  }, [searchInput]);
 
   const sortObjectsByOrderIdDescending = (data) => {
     return data.sort((a, b) => b.order_id - a.order_id);
@@ -292,9 +287,9 @@ export default function Exemple({
               ),
             appraisal_status:
               isHold || isCancel ? (
-                <span className="btn btn-warning w-100">
+                <button className="btn btn-warning w-100">
                   {isHold ? "N.A." : "N.A."}
-                </span>
+                </button>
               ) : isBidded.orderStatus !== 1 &&
                 isBidded.orderStatus !== null &&
                 isBidded.orderStatus !== undefined ? (
@@ -315,7 +310,7 @@ export default function Exemple({
                       </li>
                     </ul>
                   </div>
-                  <button className="btn btn-color">
+                  <button className="btn btn-status">
                     Current Status
                     <span className="m-1">
                       <i class="fa fa-info-circle" aria-hidden="true"></i>
@@ -344,7 +339,7 @@ export default function Exemple({
                       </li>
                     </ul>
                   </div>
-                  <button className="btn btn-color">
+                  <button className="btn btn-secondary">
                     Current Status
                     <span className="m-1">
                       <i class="fa fa-info-circle" aria-hidden="true"></i>
@@ -352,7 +347,7 @@ export default function Exemple({
                   </button>
                 </div>
               ) : (
-                <span className="btn bg-warning  w-100">N.A.</span>
+                <span className="btn btn-warning w-100">N.A.</span>
               ),
             address: `${property.streetNumber} ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
             remark: isBidded.remark ? isBidded.remark : "N.A.",
@@ -441,7 +436,6 @@ export default function Exemple({
                     <Link href={`/create-listing/${property.orderId}`}>
                       <span className="btn btn-color w-100 mb-1"> Edit </span>
                     </Link>{" "}
-                  
                   </li>
                 )}
 
@@ -453,7 +447,6 @@ export default function Exemple({
                         Order Cancel{" "}
                       </span>
                     </Link>{" "}
-                    
                   </li>
                 )}
 
@@ -469,11 +462,9 @@ export default function Exemple({
                         </span>
                       </Link>{" "}
                     </button>
-                   
                   </li>
                 )}
 
-               
                 {!isEditable && (
                   <li>
                     <Link
@@ -485,17 +476,13 @@ export default function Exemple({
                         Archive Property{" "}
                       </span>
                     </Link>
-                    
                   </li>
                 )}
-
-               
               </ul>
             ),
             actions_01: (
               <ul className="mb0 d-flex gap-1">
                 <li title="Property Details" className="">
-                  
                   <span
                     className="btn btn-color-table"
                     onClick={() => openPopupModal(property)}
@@ -513,12 +500,11 @@ export default function Exemple({
                       className="btn btn-color-table"
                       href={`/my-property-bids/${property.orderId}`}
                     >
-                      <span className="flaticon-invoice">
-                      </span>
+                      <span className="flaticon-invoice"></span>
                     </Link>
                   </li>
                 )}
-                
+
                 {(isEditable || isStatus === 1) && !isCancel && (
                   <li title="Edit Property">
                     {/* <Link href={`/create-listing/${property.propertyId}`}>
@@ -645,9 +631,6 @@ export default function Exemple({
   }, [properties]);
 
   useEffect(() => {
-
-    
-
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -697,10 +680,10 @@ export default function Exemple({
         toast.dismiss();
         toast.error(err?.response?.data?.error);
       });
-      setSearchInput("")
-    setFilterQuery("All")
-    setProperties([])
-    setBids([])
+    setSearchInput("");
+    setFilterQuery("All");
+    setProperties([]);
+    setBids([]);
 
     let tempBids = [];
 
