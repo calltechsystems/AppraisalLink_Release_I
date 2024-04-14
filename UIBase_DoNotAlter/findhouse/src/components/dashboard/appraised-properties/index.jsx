@@ -1903,7 +1903,7 @@ const Index = () => {
                         </Link>
                       </div>
                     </div>
-                    <h3 className="text-center">Latest Quote View</h3>
+                    <h3 className="text-center">Quote View</h3>
                     <div>
                       <div
                         className="mt-2 mb-3"
@@ -1912,7 +1912,7 @@ const Index = () => {
                     </div>
                     <h5 className="text-center">
                       The Last Provided Quote was for ${" "}
-                      {addCommasToNumber(currentBiddedView?.bidAmount)}
+                      <span style={{color:"green",fontWeight:"bold",fontSize:"22px"}}>{addCommasToNumber(currentBiddedView?.bidAmount)}</span>
                     </h5>
                     <h5 className="text-center">
                       Updated At : {formatDate(currentBiddedView?.requestTime)}
@@ -1926,7 +1926,7 @@ const Index = () => {
                         ></div>
                       </div>
                       <button
-                        className="btn w-35 btn-white"
+                        className="btn btn-color w-25 m-1"
                         onClick={closeQuoteViewModal}
                       >
                         Ok

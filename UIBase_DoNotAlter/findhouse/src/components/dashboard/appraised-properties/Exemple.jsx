@@ -550,7 +550,14 @@ export default function Exemple({
                 {
                   isBidded.$id && (
                     isBidded.status === 2 || isBidded.status === 1
-                  ) && <span
+                  ) &&
+                  <li
+                  className="list-inline-item"
+                  data-toggle="tooltip"
+                  style={{margin:"2%"}}
+                  data-placement="top"
+                > <span
+
                      className="btn btn-color-table"
                      onClick={() => openQuoteViewModal(isBidded)}
                    >
@@ -558,6 +565,7 @@ export default function Exemple({
                        <span className="text-light flaticon-view"></span>
                      </Link>
                    </span>
+                   </li>
                 }
                 
                 {isBidded.status === 2 ? (
