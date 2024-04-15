@@ -37,7 +37,7 @@ const headCells = [
     id: "appraisal_status",
     numeric: false,
     label: "Appraisal Status",
-    width: 170,
+    width: 180,
   },
   {
     id: "sub_date",
@@ -177,20 +177,19 @@ export default function Exemple({
   const [dataFetched, setDataFetched] = useState(false);
   let tempData = [];
 
- 
   const refreshHandler = () => {
     setProperties([]);
     setBids([]);
     setRefresh(true);
   };
 
-  useEffect(()=>{
-    if(searchInput === ""){
-      setProperties([])
-      setBids([])
+  useEffect(() => {
+    if (searchInput === "") {
+      setProperties([]);
+      setBids([]);
       setRefresh(true);
     }
-  },[searchInput]);
+  }, [searchInput]);
   const router = useRouter();
 
   const openStatusUpdateHandler = () => {
@@ -251,7 +250,6 @@ export default function Exemple({
         title = status.type;
       }
     });
-
 
     return title;
   };
@@ -372,7 +370,6 @@ export default function Exemple({
     const getData = () => {
       properties.map((temp, index) => {
         const property = temp.property;
-        
 
         if (property.$id) {
           const isStatus = getPropertyStatusHandler(property);
@@ -415,25 +412,68 @@ export default function Exemple({
                 ),
               appraisal_status:
                 isHold || isCancel ? (
-                  <span className="btn bg-warning w-100">
+                  <button className="btn btn-warning w-100">
                     {isHold ? "N.A." : "N.A."}
-                  </span>
-                ) : property.orderStatus === 3 ? (
-                  <span className="btn bg-warning  w-100">
-                    Appraisal Report Writing Completed and Submitted
-                  </span>
-                ) :
-                property.orderStatus === 1 ? (
-                  <span className="btn bg-warning  w-100">
-                    {getOrderValue(isBidded.orderStatus)} -
-                    {formatDate(isBidded.statusDate)}
-                  </span>
-                ) : property.orderStatus !== null ? (
-                  <span className="btn bg-warning  w-100">
-                    {getOrderValue(isBidded.orderStatus)}
-                  </span>
+                  </button>
+                ) : isBidded.orderStatus !== 1 &&
+                  isBidded.orderStatus !== null &&
+                  isBidded.orderStatus !== undefined ? (
+                  // <span className="btn bg-warning  w-100">
+                  //   {getOrderValue(isBidded.orderStatus)}
+                  // </span>
+                  <div className="hover-text">
+                    <div
+                      className="tooltip-text"
+                      style={{
+                        marginTop: "-60px",
+                        marginLeft: "-100px",
+                      }}
+                    >
+                      <ul>
+                        <li style={{ fontSize: "15px" }}>
+                          {getOrderValue(isBidded.orderStatus)}
+                        </li>
+                      </ul>
+                    </div>
+                    <button className="btn btn-status">
+                      Current Status
+                      <span className="m-1">
+                        <i class="fa fa-info-circle" aria-hidden="true"></i>
+                      </span>
+                    </button>
+                  </div>
+                ) : isBidded.$id &&
+                  isBidded.status === 1 &&
+                  isBidded.orderStatus === 1 &&
+                  isBidded.orderStatus !== undefined ? (
+                  // <span className="btn bg-warning  w-100">
+                  //   {getOrderValue(isBidded.orderStatus)} -
+                  //   {formatDate(isBidded.statusDate)}
+                  // </span>
+                  <div className="hover-text">
+                    <div
+                      className="tooltip-text"
+                      style={{
+                        marginTop: "-60px",
+                        marginLeft: "-100px",
+                      }}
+                    >
+                      <ul>
+                        <li style={{ fontSize: "15px" }}>
+                          {getOrderValue(isBidded.orderStatus)} -
+                          {formatDate(isBidded.statusDate)}
+                        </li>
+                      </ul>
+                    </div>
+                    <button className="btn btn-status">
+                      Current Status
+                      <span className="m-1">
+                        <i class="fa fa-info-circle" aria-hidden="true"></i>
+                      </span>
+                    </button>
+                  </div>
                 ) : (
-                  <span className="btn bg-warning  w-100">N.A.</span>
+                  <span className="btn btn-warning w-100">N.A.</span>
                 ),
               address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
               // user: property.applicantEmailAddress,
@@ -551,8 +591,8 @@ export default function Exemple({
   useEffect(() => {
     setProperties([]);
     setBids([]);
-    setSearchInput("")
-    setFilterQuery("All")
+    setSearchInput("");
+    setFilterQuery("All");
 
     const data = JSON.parse(localStorage.getItem("user"));
 

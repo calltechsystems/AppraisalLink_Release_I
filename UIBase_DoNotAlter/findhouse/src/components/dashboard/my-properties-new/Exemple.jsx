@@ -335,11 +335,12 @@ export default function Exemple({
                   >
                     <ul>
                       <li style={{ fontSize: "15px" }}>
-                        {getOrderValue(isBidded.orderStatus)}
+                        {getOrderValue(isBidded.orderStatus)} -
+                        {formatDate(isBidded.statusDate)}
                       </li>
                     </ul>
                   </div>
-                  <button className="btn btn-secondary">
+                  <button className="btn btn-status">
                     Current Status
                     <span className="m-1">
                       <i class="fa fa-info-circle" aria-hidden="true"></i>

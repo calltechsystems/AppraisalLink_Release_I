@@ -66,6 +66,20 @@ function SmartTable(props) {
     [props.url]
   );
 
+  function extractTextFromReactElement(element) {
+    if (typeof element === 'string') {
+        return element; // If it's a string, return it directly
+    } else if (Array.isArray(element)) {
+        // If it's an array of elements, recursively call this function for each element
+        return element.map(child => extractTextFromReactElement(child)).join('');
+    } else if (typeof element === 'object' && element !== null) {
+        // If it's an object (React element), recursively call this function on its children
+        return extractTextFromReactElement(element.props.children);
+    } else {
+        return ''; // Return an empty string if the element is not recognized
+    }
+}
+
   const handlePrint = async () => {
     try {
       // Fetch data
@@ -115,9 +129,7 @@ function SmartTable(props) {
       });
       clonedTable.appendChild(tableHeaderRow);
 
-      // Iterate over all data and append rows to the table body
       const tableBody = document.createElement("tbody");
-      // Iterate over all data and append rows to the table body
       allData.forEach((item) => {
         const row = tableBody.insertRow();
         staticHeaders.forEach((header) => {
@@ -128,13 +140,12 @@ function SmartTable(props) {
           ) {
             const value = item[header[0].toLowerCase()];
             const className = value.props.className;
-            const content = value.props.children;
+            const content = header[0].toLowerCase() === "appraisal_status" ?
+             extractTextFromReactElement(value.props.children).split("Current Status")[0] : value.props.children;
 
-            // Create a span element to contain the content
             const spanElement = document.createElement("span");
             spanElement.textContent = content;
 
-            // Apply styles based on className
             if (className.includes("btn-warning")) {
               spanElement.style.backgroundColor = "";
               spanElement.style.color = "#E4A11B";

@@ -24,6 +24,7 @@ const Index = () => {
   const [lineData, setLineData] = useState([]);
   const [acceptedBids, setAcceptedBids] = useState(0);
   const [allQuotesBids , setAllQuotesBids] = useState(0);
+  const [allProperties , setAllProperties] = useState([])
   const [chartData, setChartData] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const router = useRouter();
@@ -127,12 +128,12 @@ const Index = () => {
 
 
   const filterData = (tempData) => {
-    console.log("filterQuery", filterQuery, tempData);
     const currentDate = new Date();
     const oneYearAgo = new Date(currentDate);
     oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
     let tempAllAcceptedBids = 0;
     let tempAllQuotesBids = 0 ;
+    let currentAllProperties = 0;
 
     switch (filterQuery) {
       case "Monthly":
@@ -149,10 +150,15 @@ const Index = () => {
             tempAllQuotesBids += 1;
           }
 
+          if(new Date(item.addedDatetime) >= oneMonthAgo){
+            currentAllProperties += 1;
+          }
+
           return new Date(item.addedDatetime) >= oneMonthAgo;
         });
         setAllQuotesBids(tempAllQuotesBids);
         setAcceptedBids(tempAllAcceptedBids);
+        setAllProperties(currentAllProperties)
         return tempData;
 
       case "Yearly":
@@ -165,10 +171,14 @@ const Index = () => {
           if(isAllBid !== "" && new Date(isAllBid) >= oneYearAgo){
             tempAllQuotesBids += 1;
           }
+          if(new Date(item.addedDatetime) >= oneYearAgo){
+            currentAllProperties += 1;
+          }
           return new Date(item.addedDatetime) >= oneYearAgo;
         });
         setAllQuotesBids(tempAllQuotesBids);
         setAcceptedBids(tempAllAcceptedBids);
+        setAllProperties(currentAllProperties);
         return tempData;
 
       case "Weekly":
@@ -183,10 +193,14 @@ const Index = () => {
           if(isAllBid !== "" && new Date(isAllBid) >= oneWeekAgo){
             tempAllQuotesBids += 1;
           }
+          if(new Date(item.addedDatetime) >= oneWeekAgo){
+            currentAllProperties += 1;
+          }
           return new Date(item.addedDatetime) >= oneWeekAgo;
         });
         setAllQuotesBids(tempAllQuotesBids);
         setAcceptedBids(tempAllAcceptedBids);
+        setAllProperties(currentAllProperties);
         return tempData;
 
       default:
@@ -199,10 +213,12 @@ const Index = () => {
           if(isAllBid !== "" ){
             tempAllQuotesBids += 1;
           }
+          currentAllProperties += 1;
 
           return new Date(item.addedDatetime) >= oneYearAgo;
         });
         setAllQuotesBids(tempAllQuotesBids);
+        setAllProperties(currentAllProperties);
         return tempData;
     }
   };
@@ -222,8 +238,6 @@ const Index = () => {
 
   useEffect(() => {
     const dataTemp = filterData(data);
-    if(filterQuery === "All")
-     setAllQuotesBids(bids.length)
     setChartData(dataTemp);
   }, [filterQuery,bids,data]);
 
@@ -249,8 +263,6 @@ const Index = () => {
           },
         })
         .then((res) => {
-          // console.log(categorizeDataByMonth(res.data.data.property.$values));
-
           const temp = res.data.data.properties.$values;
           const pdated = temp.filter((prop, index) => {
             if (String(prop.userId) === String(data.userId)) return true;
@@ -289,7 +301,7 @@ const Index = () => {
               allBids.push(prop);
             }
           });
-          setAllQuotesBids(allBids.length )
+          console.log("acceptedBid", acceptedBid);
           setAcceptedBids(acceptedBid);
 
           setBids(allBids);
@@ -406,7 +418,7 @@ const Index = () => {
 
               <div className="row">
                 <AllStatistics
-                  properties={allQuotesBids + acceptedBids}
+                  properties={allProperties}
                   views={allQuotesBids}
                   bids={acceptedBids}
                   favourites={wishlist.length}

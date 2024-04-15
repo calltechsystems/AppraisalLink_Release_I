@@ -44,7 +44,7 @@ const headCells = [
     id: "appraisal_status",
     numeric: false,
     label: "Appraisal Status",
-    width: 170,
+    width: 190,
   },
   {
     id: "remark",
@@ -162,13 +162,13 @@ export default function Exemple({
   const [dataFetched, setDataFetched] = useState(false);
   let tempData = [];
 
-  useEffect(()=>{
-    if(searchInput === ""){
-      setProperties([])
-      setBids([])
-      setRefresh(true)
+  useEffect(() => {
+    if (searchInput === "") {
+      setProperties([]);
+      setBids([]);
+      setRefresh(true);
     }
-  },[searchInput])
+  }, [searchInput]);
 
   const sortObjectsByOrderIdDescending = (data) => {
     return data.sort((a, b) => b.order_id - a.order_id);
@@ -310,8 +310,8 @@ export default function Exemple({
   const refreshHandler = () => {
     setProperties([]);
     setBids([]);
-    setFilterQuery("All")
-    setSearchInput("")
+    setFilterQuery("All");
+    setSearchInput("");
     setRefresh(true);
   };
 
@@ -384,20 +384,68 @@ export default function Exemple({
               ),
             appraisal_status:
               isHold || isCancel ? (
-                <span className="btn bg-warning  w-100">
+                <button className="btn btn-warning w-100">
                   {isHold ? "N.A." : "N.A."}
-                </span>
-              ) : property.orderStatus === 1 ? (
-                <span className="btn bg-warning  w-100">
-                  {getOrderValue(isBidded.orderStatus)} -
-                  {formatDate(isBidded.statusDate)}
-                </span>
-              ) : property.orderStatus !== null ? (
-                <span className="btn bg-warning  w-100">
-                  {getOrderValue(isBidded.orderStatus)}
-                </span>
+                </button>
+              ) : isBidded.orderStatus !== 1 &&
+                isBidded.orderStatus !== null &&
+                isBidded.orderStatus !== undefined ? (
+                // <span className="btn bg-warning  w-100">
+                //   {getOrderValue(isBidded.orderStatus)}
+                // </span>
+                <div className="hover-text">
+                  <div
+                    className="tooltip-text"
+                    style={{
+                      marginTop: "-60px",
+                      marginLeft: "-100px",
+                    }}
+                  >
+                    <ul>
+                      <li style={{ fontSize: "15px" }}>
+                        {getOrderValue(isBidded.orderStatus)}
+                      </li>
+                    </ul>
+                  </div>
+                  <button className="btn btn-status">
+                    Current Status
+                    <span className="m-1">
+                      <i class="fa fa-info-circle" aria-hidden="true"></i>
+                    </span>
+                  </button>
+                </div>
+              ) : isBidded.$id &&
+                isBidded.status === 1 &&
+                isBidded.orderStatus === 1 &&
+                isBidded.orderStatus !== undefined ? (
+                // <span className="btn bg-warning  w-100">
+                //   {getOrderValue(isBidded.orderStatus)} -
+                //   {formatDate(isBidded.statusDate)}
+                // </span>
+                <div className="hover-text">
+                  <div
+                    className="tooltip-text"
+                    style={{
+                      marginTop: "-60px",
+                      marginLeft: "-100px",
+                    }}
+                  >
+                    <ul>
+                      <li style={{ fontSize: "15px" }}>
+                        {getOrderValue(isBidded.orderStatus)} -
+                        {formatDate(isBidded.statusDate)}
+                      </li>
+                    </ul>
+                  </div>
+                  <button className="btn btn-status">
+                    Current Status
+                    <span className="m-1">
+                      <i class="fa fa-info-circle" aria-hidden="true"></i>
+                    </span>
+                  </button>
+                </div>
               ) : (
-                <span className="btn bg-warning  w-100">N.A.</span>
+                <span className="btn btn-warning w-100">N.A.</span>
               ),
             address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
             remark: isBidded.remark ? isBidded.remark : "N.A.",

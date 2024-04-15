@@ -33,7 +33,7 @@ const headCells = [
     id: "appraisal_status",
     numeric: false,
     label: "Appraisal Status",
-    width: 160,
+    width: 190,
   },
   {
     id: "remark",
@@ -144,8 +144,8 @@ export default function Exemple({
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [wishlist, setWishlist] = useState([]);
-  
-  const [dataFetched,setDataFetched] = useState(false)
+
+  const [dataFetched, setDataFetched] = useState(false);
   const [bids, setBids] = useState([]);
   const [hideAction, setHideAction] = useState(false);
   const [hideClass, setHideClass] = useState("");
@@ -174,69 +174,62 @@ export default function Exemple({
     return isArchive;
   };
 
-  const calculateDate = (oldBid,newBid)=>{
-
-    if(!oldBid.requestTime){
-      return newBid
+  const calculateDate = (oldBid, newBid) => {
+    if (!oldBid.requestTime) {
+      return newBid;
     }
 
     const oldDate = new Date(oldBid.requestTime);
     const newDate = new Date(newBid.requestTime);
 
-    if(oldDate <= newDate){
+    if (oldDate <= newDate) {
       return newBid;
     }
     return oldBid;
-  }
+  };
 
-  const getFinalBid = (tempBids)=>{
-    
+  const getFinalBid = (tempBids) => {
     let finalBid = {};
-    tempBids.map((bid,index)=>{
-      if(!finalBid){
+    tempBids.map((bid, index) => {
+      if (!finalBid) {
         finalBid = bid;
-      }
-      else {
-        if(bid.status === 1){
-          if(finalBid.status === 1){
-            const customBid = calculateDate(finalBid,bid);
+      } else {
+        if (bid.status === 1) {
+          if (finalBid.status === 1) {
+            const customBid = calculateDate(finalBid, bid);
             finalBid = customBid;
+          } else {
+            finalBid = bid;
           }
-          else{
-            finalBid = bid
-          }
-        }
-        else{
-          const customBid = calculateDate(finalBid,bid);
-            finalBid = customBid;
+        } else {
+          const customBid = calculateDate(finalBid, bid);
+          finalBid = customBid;
         }
       }
-    })
+    });
 
     return finalBid;
-  }
+  };
 
   const filterBidsWithin24Hours = (property) => {
     const data = JSON.parse(localStorage.getItem("user"));
     let tempBid = 0;
-    let  bidValue = {};
-    let tempBids = []
+    let bidValue = {};
+    let tempBids = [];
     bids.filter((bid) => {
-    if (
+      if (
         bid.orderId === property.orderId &&
         bid.appraiserUserId === data.userId
-      )
-      {
-        tempBids.push(bid) ;
-        bidValue = (bid) ;
+      ) {
+        tempBids.push(bid);
+        bidValue = bid;
         tempBid = tempBid + 1;
       } else {
       }
     });
-    const customBid = getFinalBid(tempBids)
-    return customBid
+    const customBid = getFinalBid(tempBids);
+    return customBid;
   };
-
 
   const router = useRouter();
 
@@ -380,25 +373,66 @@ export default function Exemple({
             purpose: property.purpose ? property.purpose : "N.A.",
             appraisal_status:
               isBidded.status === 1 && isBidded.orderStatus === 1 ? (
-                <span className="btn btn-warning  w-100">
-                  {getOrderValue(isBidded.orderStatus)} -
-                  {formatDate(isBidded.statusDate)}
-                </span>
+                // <span className="btn btn-warning  w-100">
+                //   {getOrderValue(isBidded.orderStatus)} -
+                //   {formatDate(isBidded.statusDate)}
+                // </span>
+                <div className="hover-text">
+                  <div
+                    className="tooltip-text"
+                    style={{
+                      marginTop: "-60px",
+                      marginLeft: "-100px",
+                    }}
+                  >
+                    <ul>
+                      <li style={{ fontSize: "15px" }}>
+                        {getOrderValue(isBidded.orderStatus)} -
+                        {formatDate(isBidded.statusDate)}
+                      </li>
+                    </ul>
+                  </div>
+                  <button className="btn btn-status">
+                    Current Status
+                    <span className="m-1">
+                      <i class="fa fa-info-circle" aria-hidden="true"></i>
+                    </span>
+                  </button>
+                </div>
               ) : isBidded.status === 1 && isBidded.orderStatus !== null ? (
-                <span className="btn btn-warning  w-100">
-                  {getOrderValue(isBidded.orderStatus)}
-                </span>
+                // <span className="btn btn-warning  w-100">
+                //   {getOrderValue(isBidded.orderStatus)}
+                // </span>
+                <div className="hover-text">
+                  <div
+                    className="tooltip-text"
+                    style={{
+                      marginTop: "-60px",
+                      marginLeft: "-100px",
+                    }}
+                  >
+                    <ul>
+                      <li style={{ fontSize: "15px" }}>
+                        {getOrderValue(isBidded.orderStatus)}
+                      </li>
+                    </ul>
+                  </div>
+                  <button className="btn btn-status">
+                    Current Status
+                    <span className="m-1">
+                      <i class="fa fa-info-circle" aria-hidden="true"></i>
+                    </span>
+                  </button>
+                </div>
               ) : (
                 <span className="btn btn-warning  w-100">N.A.</span>
               ),
             remark:
               isBidded && isBidded.remark ? <p>{isBidded.remark}</p> : "N.A.",
-              status: 
-              isBidded?.bidId && isBidded.status === 2 ?
-              (
+            status:
+              isBidded?.bidId && isBidded.status === 2 ? (
                 <span className="btn btn-danger  w-100">Rejected</span>
-              ) :
-              isWait ? (
+              ) : isWait ? (
                 <span className="btn btn-danger  w-100">
                   {property.isOnCancel
                     ? "Cancelled"
@@ -413,7 +447,9 @@ export default function Exemple({
                   <span className="btn btn-primary  w-100">Quote Provided</span>
                 ) : isBidded.status === 1 ? (
                   <span className="btn btn-success  w-100">Accepted</span>
-                ) : ""
+                ) : (
+                  ""
+                )
               ) : (
                 <span className="btn btn-warning  w-100">New</span>
               ),
@@ -662,10 +698,10 @@ export default function Exemple({
     setStartLoading(true);
   };
   useEffect(() => {
-    setSearchInput("")
-    setFilterQuery("All")
-    setProperties([])
-    setBids([])
+    setSearchInput("");
+    setFilterQuery("All");
+    setProperties([]);
+    setBids([]);
     console.log("inside");
 
     const data = JSON.parse(localStorage.getItem("user"));
@@ -686,7 +722,7 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        setDataFetched(true)
+        setDataFetched(true);
         const temp = res.data.data.properties.$values;
 
         setProperties(temp);
@@ -775,7 +811,7 @@ export default function Exemple({
           });
       })
       .catch((err) => {
-        setDataFetched(false)
+        setDataFetched(false);
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });

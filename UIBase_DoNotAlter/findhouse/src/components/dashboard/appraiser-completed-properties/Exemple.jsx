@@ -33,7 +33,7 @@ const headCells = [
     id: "appraisal_status",
     numeric: false,
     label: "Appraisal Status",
-    width: 160,
+    width: 190,
   },
   {
     id: "remark",
@@ -378,14 +378,57 @@ export default function Exemple({
             purpose: property.purpose ? property.purpose : "N.A.",
             appraisal_status:
               isBidded.status === 1 && isBidded.orderStatus === 1 ? (
-                <span className="btn btn-warning  w-100">
-                  {getOrderValue(isBidded.orderStatus)} -
-                  {formatDate(isBidded.statusDate)}
-                </span>
+                // <span className="btn btn-warning  w-100">
+                //   {getOrderValue(isBidded.orderStatus)} -
+                //   {formatDate(isBidded.statusDate)}
+                // </span>
+                <div className="hover-text">
+                  <div
+                    className="tooltip-text"
+                    style={{
+                      marginTop: "-60px",
+                      marginLeft: "-100px",
+                    }}
+                  >
+                    <ul>
+                      <li style={{ fontSize: "15px" }}>
+                        {getOrderValue(isBidded.orderStatus)} -
+                        {formatDate(isBidded.statusDate)}
+                      </li>
+                    </ul>
+                  </div>
+                  <button className="btn btn-status">
+                    Current Status
+                    <span className="m-1">
+                      <i class="fa fa-info-circle" aria-hidden="true"></i>
+                    </span>
+                  </button>
+                </div>
               ) : isBidded.status === 1 && isBidded.orderStatus !== null ? (
-                <span className="btn btn-warning  w-100">
-                  {getOrderValue(isBidded.orderStatus)}
-                </span>
+                // <span className="btn btn-warning  w-100">
+                //   {getOrderValue(isBidded.orderStatus)}
+                // </span>
+                <div className="hover-text">
+                  <div
+                    className="tooltip-text"
+                    style={{
+                      marginTop: "-60px",
+                      marginLeft: "-100px",
+                    }}
+                  >
+                    <ul>
+                      <li style={{ fontSize: "15px" }}>
+                        {getOrderValue(isBidded.orderStatus)}
+                      </li>
+                    </ul>
+                  </div>
+                  <button className="btn btn-status">
+                    Current Status
+                    <span className="m-1">
+                      <i class="fa fa-info-circle" aria-hidden="true"></i>
+                    </span>
+                  </button>
+                </div>
               ) : (
                 <span className="btn btn-warning  w-100">N.A.</span>
               ),

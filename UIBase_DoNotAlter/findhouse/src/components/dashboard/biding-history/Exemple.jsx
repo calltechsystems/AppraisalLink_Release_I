@@ -33,7 +33,7 @@ const headCells = [
     id: "appraisal_status",
     numeric: false,
     label: "Appraisal Status",
-    width: 160,
+    width: 190,
   },
   {
     id: "remark",
@@ -157,11 +157,11 @@ export default function Exemple({
 
   const [allArchive, setAllArchive] = useState([]);
 
-  useEffect(()=>{
-    if(searchInput === ""){
-      setRefresh(true)
+  useEffect(() => {
+    if (searchInput === "") {
+      setRefresh(true);
     }
-  },[searchInput])
+  }, [searchInput]);
 
   const getOrderValue = (val) => {
     let title = "Applicant Contacted by appraiser";
@@ -383,42 +383,85 @@ export default function Exemple({
             purpose: property.purpose ? property.purpose : "N.A.",
             appraisal_status:
               isBidded.status === 1 && isBidded.orderStatus === 1 ? (
-                <span className="btn btn-warning  w-100">
-                  {getOrderValue(isBidded.orderStatus)} -
-                  {formatDate(isBidded.statusDate)}
-                </span>
+                // <span className="btn btn-warning  w-100">
+                //   {getOrderValue(isBidded.orderStatus)} -
+                //   {formatDate(isBidded.statusDate)}
+                // </span>
+                <div className="hover-text">
+                  <div
+                    className="tooltip-text"
+                    style={{
+                      marginTop: "-60px",
+                      marginLeft: "-100px",
+                    }}
+                  >
+                    <ul>
+                      <li style={{ fontSize: "15px" }}>
+                        {getOrderValue(isBidded.orderStatus)} -
+                        {formatDate(isBidded.statusDate)}
+                      </li>
+                    </ul>
+                  </div>
+                  <button className="btn btn-status">
+                    Current Status
+                    <span className="m-1">
+                      <i class="fa fa-info-circle" aria-hidden="true"></i>
+                    </span>
+                  </button>
+                </div>
               ) : isBidded.status === 1 && isBidded.orderStatus !== null ? (
-                <span className="btn btn-warning  w-100">
-                  {getOrderValue(isBidded.orderStatus)}
-                </span>
+                // <span className="btn btn-warning  w-100">
+                //   {getOrderValue(isBidded.orderStatus)}
+                // </span>
+                <div className="hover-text">
+                  <div
+                    className="tooltip-text"
+                    style={{
+                      marginTop: "-60px",
+                      marginLeft: "-100px",
+                    }}
+                  >
+                    <ul>
+                      <li style={{ fontSize: "15px" }}>
+                        {getOrderValue(isBidded.orderStatus)}
+                      </li>
+                    </ul>
+                  </div>
+                  <button className="btn btn-status">
+                    Current Status
+                    <span className="m-1">
+                      <i class="fa fa-info-circle" aria-hidden="true"></i>
+                    </span>
+                  </button>
+                </div>
               ) : (
                 <span className="btn btn-warning  w-100">N.A.</span>
               ),
             remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
-            status: 
-            isBidded?.bidId && isBidded.status === 2 ?
-            (
-              <span className="btn btn-danger  w-100">Rejected</span>
-            ) :
-            isWait ? (
-              <span className="btn btn-danger  w-100">
-                {property.isOnCancel
-                  ? "Cancelled"
-                  : property.isOnHold
-                  ? "On Hold"
-                  : ""}
-              </span>
-            ) : isBidded.bidId ? (
-              isBidded.orderStatus === 3 ? (
-                <span className="btn btn-completed w-100">Completed</span>
-              ) : isBidded.status === 0 ? (
-                <span className="btn btn-primary  w-100">Quote Provided</span>
-              ) : isBidded.status === 1 ? (
-                <span className="btn btn-success  w-100">Accepted</span>
-              ) : ""
-            ) : (
-              <span className="btn btn-warning  w-100">New</span>
-            ),
+            status:
+              isBidded?.bidId && isBidded.status === 2 ? (
+                <span className="btn btn-danger  w-100">Rejected</span>
+              ) : isWait ? (
+                <span className="btn btn-danger  w-100">
+                  {property.isOnCancel
+                    ? "Cancelled"
+                    : property.isOnHold
+                    ? "On Hold"
+                    : ""}
+                </span>
+              ) : isBidded.bidId ? (
+                isBidded.orderStatus === 3 ? (
+                  <span className="btn btn-completed w-100">Completed</span>
+                ) : isBidded.status === 0 ? (
+                  <span className="btn btn-primary  w-100">Quote Provided</span>
+                ) : isBidded.status === 1 ? (
+                  <span className="btn btn-success  w-100">Accepted</span>
+                ) : (
+                  ""
+                )
+              ) : (
+                <span className="btn btn-warning  w-100">New</span>
+              ),
             broker: (
               <div>
                 {isBidded.status === 1 ? (
@@ -663,8 +706,8 @@ export default function Exemple({
     setProperties([]);
     setBids([]);
     setWishlist([]);
-    setFilterQuery("All")
-    setSearchInput("")
+    setFilterQuery("All");
+    setSearchInput("");
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -833,7 +876,7 @@ export default function Exemple({
           setStartLoading={setStartLoading}
           start={start}
           searchInput={searchInput}
-                          filterQuery={filterQuery}
+          filterQuery={filterQuery}
           properties={updatedData}
           dataFetched={dataFetched}
           end={end}

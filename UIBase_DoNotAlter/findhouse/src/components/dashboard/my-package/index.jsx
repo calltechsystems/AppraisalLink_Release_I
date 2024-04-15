@@ -84,13 +84,13 @@ const Index = () => {
       })
       .then((res) => {
         toast.dismiss();
-        setDataFetched(true)
+        setDataFetched(true);
         setData(res.data.data.result.$values);
         setRerender(false);
       })
       .catch((err) => {
         toast.dismiss();
-        setDataFetched(false)
+        setDataFetched(false);
         // toast.error(err?.response?.data?.error);
         // setErrorMessage(err.response);
         // setModalIsOpenError(true);
@@ -146,12 +146,11 @@ const Index = () => {
               {/* End .row */}
 
               <div className="row align-items-center">
-                <div className="col-md-8 col-lg-8 col-xl-9">
+                {/* <div className="col-md-8 col-lg-8 col-xl-9">
                   <div className="style2 mb30-991">
                     <h2 className="breadcrumb_title m-3">Transactions</h2>
-                    {/* <p>You can see your transactions history here!</p> */}
                   </div>
-                </div>
+                </div> */}
                 {/* End .col */}
                 {/* <div className="col-md-4 col-lg-4 col-xl-3">
                   <ul className="sasw_list mb0">
@@ -168,7 +167,11 @@ const Index = () => {
                     <div className="col-lg-12">
                       <div className="packages_table">
                         <div className="mt0">
-                          <Exemple dataFetched={dataFetched} data={data} userData={userData} />
+                          <Exemple
+                            dataFetched={dataFetched}
+                            data={data}
+                            userData={userData}
+                          />
                           {modalIsOpenError && (
                             <div className="modal">
                               <div
