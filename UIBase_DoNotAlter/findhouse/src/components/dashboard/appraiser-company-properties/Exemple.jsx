@@ -253,8 +253,7 @@ export default function Exemple({
   };
   const alreadyAccepted = (property) => {
     const data = JSON.parse(localStorage.getItem("user"));
-    let tempBid = 0,
-      bidValue = {};
+    
     let isAccepted = {};
     // console.log(bids);
     bids.filter((bid) => {
@@ -501,7 +500,8 @@ export default function Exemple({
               ),
             remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
             status:
-              isBidded?.bidId && isBidded.status === 2 ? (
+             ( isBidded?.bidId && isBidded.status === 2) ||
+             (anotherBid?.bidId) ? (
                 <span className="btn btn-danger  w-100">Rejected</span>
               ) : isWait ? (
                 <span className="btn btn-danger  w-100">
@@ -542,7 +542,7 @@ export default function Exemple({
                       Broker Info
                     </button>
                   </a>
-                ) : isBidded.status === 2 ? (
+                ) : isBidded.status === 2 || anotherBid?.bidId ? (
                   <h6 style={{ color: "red" }}> Declined</h6>
                 ) : (
                   <p>Information will be available post quote acceptance.</p>
@@ -567,7 +567,7 @@ export default function Exemple({
                       Property Info
                     </button>
                   </a>
-                ) : isBidded.status === 2 ? (
+                ) : isBidded.status === 2 || anotherBid?.bidId ? (
                   <h6 style={{ color: "red" }}> Declined</h6>
                 ) : (
                   <p>Information will be available post quote acceptance.</p>
@@ -642,7 +642,7 @@ export default function Exemple({
                       </span>
                     </li>
                   )}
-                {property.status === 2 ? (
+                {isBidded.status === 2 || anotherBid?.bidId ? (
                   <>
                     <ul>
                       <li

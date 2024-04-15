@@ -244,10 +244,7 @@ export default function Exemple({
 
   const alreadyAccepted = (property) => {
     const data = JSON.parse(localStorage.getItem("user"));
-    let tempBid = 0,
-      bidValue = {};
     let isAccepted = {};
-    // console.log(bids);
     bids.filter((bid) => {
       if (
         bid.orderId === property.orderId &&
@@ -424,10 +421,6 @@ export default function Exemple({
             purpose: property.purpose ? property.purpose : "N.A.",
             appraisal_status:
               isBidded.status === 1 && isBidded.orderStatus === 1 ? (
-                // <span className="btn btn-warning  w-100">
-                //   {getOrderValue(isBidded.orderStatus)} -
-                //   {formatDate(isBidded.statusDate)}
-                // </span>
                 <div className="hover-text">
                   <div
                     className="tooltip-text"
@@ -450,10 +443,8 @@ export default function Exemple({
                     </span>
                   </button>
                 </div>
-              ) : isBidded.status === 1 && isBidded.orderStatus !== null ? (
-                // <span className="btn btn-warning  w-100">
-                //   {getOrderValue(isBidded.orderStatus)}
-                // </span>
+              ) :
+               isBidded.status === 1 && isBidded.orderStatus !== null ? (
                 <div className="hover-text">
                   <div
                     className="tooltip-text"
@@ -485,7 +476,7 @@ export default function Exemple({
                   : isBidded.remark
                 : "N.A.",
             status:
-              isBidded?.bidId && isBidded.status === 2 ? (
+              ((isBidded?.bidId && isBidded.status === 2) || anotherBid?.bidId)  ? (
                 <span className="btn btn-danger  w-100">Rejected</span>
               ) : isWait ? (
                 <span className="btn btn-danger  w-100">
@@ -518,7 +509,6 @@ export default function Exemple({
                         border: "0px",
                         color: "#2e008b",
                         textDecoration: "underline",
-                        // fontWeight: "bold",
                         backgroundColor: "transparent",
                       }}
                       onClick={() => openModalBroker(property, 2)}
@@ -526,7 +516,7 @@ export default function Exemple({
                       Broker Info
                     </button>
                   </a>
-                ) : isBidded.status === 2 ? (
+                ) : isBidded.status === 2 || anotherBid?.bidId ? (
                   <h6 style={{ color: "red" }}> Declined</h6>
                 ) : alreadyAccepted ? (
                   <span>
@@ -547,7 +537,6 @@ export default function Exemple({
                         border: "0px",
                         color: "#2e008b",
                         textDecoration: "underline",
-                        // fontWeight: "bold",
                         backgroundColor: "transparent",
                       }}
                       onClick={() => openModalBroker(property, 1)}
@@ -555,7 +544,7 @@ export default function Exemple({
                       Property Info
                     </button>
                   </a>
-                ) : isBidded.status === 2 ? (
+                ) : isBidded.status === 2 || anotherBid?.bidId ? (
                   <h6 style={{ color: "red" }}> Declined</h6>
                 ) : alreadyAccepted ? (
                   <span>
@@ -589,11 +578,10 @@ export default function Exemple({
             action: (
               <div className="print-hidden-column" style={{ display: "flex" }}>
                 {isBidded.$id &&
-                  (isBidded.status === 2 || isBidded.status === 1) && (
+                  (isBidded.status === 2 || isBidded.status === 1) && !anotherBid?.bidId && (
                     <li
                       className="list-inline-item"
                       data-toggle="tooltip"
-                      // style={{ margin: "2%" }}
                       data-placement="top"
                     >
                       {" "}
@@ -608,7 +596,7 @@ export default function Exemple({
                     </li>
                   )}
 
-                {isBidded.status === 2 ? (
+                {(isBidded.status === 2 || anotherBid?.bidId)? (
                   <>
                     <ul>
                       <li
@@ -616,7 +604,6 @@ export default function Exemple({
                         data-toggle="tooltip"
                         data-placement="top"
                       >
-                        {/* <span className="btn btn-danger  w-100">Rejected </span> */}
                       </li>
                       <li
                         className="list-inline-item"
@@ -1151,11 +1138,10 @@ export default function Exemple({
     //   setErrorMessage(err?.response?.data?.error);
     //   setModalIsOpenError(true);
     // });
-
-    console.log("end", bids, properties, wishlist);
+ 
     setRefresh(false);
   }, [refresh]);
-  // console.log(sortObjectsByOrderIdDescending(updatedData));
+  
   return (
     <>
       {refresh ? (
