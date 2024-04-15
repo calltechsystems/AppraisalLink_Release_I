@@ -665,7 +665,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           color: "#2e008b",
                         }}
                       >
-                        Add Lender List <span class="req-btn">*</span>
+                        Add Lender List
                       </label>
                     </div>
                     <div className="col-lg-3">
