@@ -73,7 +73,7 @@ function SmartTable(props) {
       // Open print window and set up basic structure
       const printWindow = window.open("", "_blank");
       printWindow.document.write(
-        "<html><head><title>Brokerage Properties</title></head><body>" +
+        "<html><head><title>Broker Properties</title></head><body>" +
           // Add CSS styles within the <style> tag
           "<style>" +
           // Define your CSS styles here
@@ -83,7 +83,15 @@ function SmartTable(props) {
           "</style>" +
           "</head><body>"
       );
-      printWindow.document.write("<h1>" + props.title + "</h1>");
+      printWindow.document.write(
+        ' <img width="60" height="45" class="logo1 img-fluid" style="" src="/assets/images/Appraisal_Land_Logo.png" alt="header-logo2.png"/> <span style="color: #2e008b font-weight: bold; font-size: 24px;">Appraisal</span><span style="color: #97d700; font-weight: bold; font-size: 24px;">Land</span>'
+      );
+      printWindow.document.write(
+        "<h3>Brokers Properties</h3>" +
+          "<style>" +
+          "h3{text-align:center;}" +
+          "</style>"
+      );
       printWindow.document.write(
         '<button style="display:none;" onclick="window.print()">Print</button>'
       );
@@ -95,16 +103,17 @@ function SmartTable(props) {
       const tableHeaderRow = document.createElement("tr");
       const staticHeaders = [
         ["order_id", "Order Id"],
-        ["address", "Address"],
-        ["status", "Status"],
+        ["address", "Property Address"],
+        ["status", "Order Status"],
         ["appraisal_status", "Appraisal Status"],
         ["remark", "Remark"],
-        ["urgency", "Urgency"],
         ["sub_date", "Submission Date"],
-        ["type_of_building", "Type Of Building"],
-        ["amount", "Estimated Property Value ($)"],
-        ["type_of_appraisal", "Type Of Appraisal"],
+        ["quote_required_by", "Appraisal Report Required By"],
+        ["urgency", "Request Type"],
+        ["type_of_building", "Property Type"],
+        ["amount", "Estimated Value ($)"],
         ["purpose", "Purpose"],
+        ["type_of_appraisal", "Type Of Appraisal"],
         ["lender_information", "Lender Information"],
       ];
       staticHeaders.forEach((headerText) => {
@@ -304,11 +313,11 @@ function SmartTable(props) {
 
   const extractTextContent = (cellValue) => {
     if (typeof cellValue === "string") {
-      return cellValue; 
+      return cellValue;
     } else if (typeof cellValue === "object" && cellValue.$$typeof) {
       return extractTextContent(cellValue.props.children);
     } else {
-      return String(cellValue); 
+      return String(cellValue);
     }
   };
 
@@ -372,16 +381,17 @@ function SmartTable(props) {
         <div className="candidate_revew_select style2 mb30-991">
           <ul className="mb0 mt-0">
             <li className="list-inline-item">
-              <Filtering 
-              filterQuery={props.filterQuery}
-              setFilterQuery={props.setFilterQuery} 
+              <Filtering
+                filterQuery={props.filterQuery}
+                setFilterQuery={props.setFilterQuery}
               />
             </li>
             <li className="list-inline-item" style={{ marginRight: "15px" }}>
               <div className="candidate_revew_search_box course fn-520">
-                <SearchBox 
-                searchInput={props.searchInput}
-                setSearchInput={props.setSearchInput} />
+                <SearchBox
+                  searchInput={props.searchInput}
+                  setSearchInput={props.setSearchInput}
+                />
               </div>
             </li>
             <li className="list-inline-item">
@@ -449,8 +459,7 @@ function SmartTable(props) {
                             {headCell.label}
                             {sortDesc[headCell.id] ? (
                               <div></div>
-                            ) : 
-                            sortDesc[headCell.id] === undefined ? (
+                            ) : sortDesc[headCell.id] === undefined ? (
                               ""
                             ) : (
                               <div></div>
@@ -490,7 +499,7 @@ function SmartTable(props) {
                                 );
                               })}
                             </tr>
-                          )
+                          );
                         })}
                   </tbody>
                 </table>
