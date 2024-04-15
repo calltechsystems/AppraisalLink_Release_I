@@ -29,7 +29,7 @@ const Index = () => {
   const [property, setProperty] = useState("");
   const [startLoading, setStartLoading] = useState(false);
   const [filterProperty, setFilterProperty] = useState("");
-  const [filterQuery, setFilterQuery] = useState("Last 30 Days");
+  const [filterQuery, setFilterQuery] = useState("All");
   const [searchQuery, setSearchQuery] = useState("city");
   const [properties, setProperties] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
@@ -499,8 +499,10 @@ const Index = () => {
                           setProperties={setProperties}
                           setPropertyId={setPropertyId}
                           setPropValue={setPropValue}
+                          searchInput={searchInput}
+                          filterQuery={filterQuery}
                           properties={
-                            searchInput === "" ? properties : filterProperty
+                            searchInput === "" && filterQuery === "All" ? properties : filterProperty
                           }
                           setUpdatedCode={setUpdatedCode}
                           onWishlistHandler={onWishlistHandler}

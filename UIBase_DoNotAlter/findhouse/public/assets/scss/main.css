@@ -121,7 +121,8 @@ html {
 
 body {
   background-attachment: fixed;
-  background-color: #ffffff;
+  /* background-color: #ffffff; */
+  background-color: #f7f7f7;
   color: #777777;
   font-family: "Nunito", sans-serif;
   font-size: 16px;
@@ -11836,6 +11837,7 @@ a.btn.btn_error {
   box-shadow: 0px 0px 50px 0px rgba(19, 19, 28, 0.12);
   /* box-shadow: 0px 0px 50px 0px rgb(151, 215, 0, 0.32); */
   transform: scale(1.1);
+  z-index: 9;
 }
 
 .pricing_table .pricing_header {
@@ -22992,4 +22994,14 @@ input:checked + .slider:before {
 
 .text-onhold {
   background-color: orange;
+}
+
+.btn-completed{
+  background-color: #2e008b;
+  color: white;
+}
+
+.btn-status{
+  background-color: #97d700;
+  color: #2e008b;
 }

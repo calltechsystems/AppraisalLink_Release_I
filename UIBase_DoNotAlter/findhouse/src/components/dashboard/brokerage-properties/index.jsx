@@ -650,6 +650,8 @@ const Index = () => {
                           setModalIsPopupOpen={setModalIsPopupOpen}
                           setFilterQuery={setFilterQuery}
                           setSearchInput={setSearchInput}
+                          searchInput={searchInput}
+                          filterQuery={filterQuery}
                           refresh={refresh}
                           setWishlistedProperties={setWishlistedProperties}
                           setStartLoading={setStartLoading}

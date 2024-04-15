@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { Urgency, typeOfAppraisal, Purpose } from "../create-listing/data";
-import { typeOfBuilding } from "../create-listing/data";
+import { Urgency, typeOfAppraisal, Purpose } from "./data";
+import { typeOfBuilding } from "./data";
 import moment from "moment";
 import MyDatePicker from "./MyDatePicker";
 
@@ -8,7 +8,6 @@ const CreateList = ({
   isDisable,
   urgencyRef,
   areaRef,
-  disable,
   setAreaRef,
   setBuildinRef,
   appraisalQuoteDate,
@@ -741,6 +740,7 @@ const CreateList = ({
                 id="formGroupExampleInput3"
                 onChange={(e) => setAppraisalQuoteDate(e.target.value)}
                 value={appraisalQuoteDate}
+                placeholder="MM-DD-YYYY"
                 disabled={isDisable}
                 min={getMinDateTime()}
               />

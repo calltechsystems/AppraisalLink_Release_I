@@ -37,14 +37,9 @@ function SmartTable(props) {
     toast.success("Data added");
   };
 
-
-  const sortObjectsByOrderIdDescending = (data) => {
-    return data.sort((a, b) => b.orderId - a.orderId);
-  };
-
   const refreshHandler = () => {
     const refresh = !props.refresh;
-    setData([props.data])
+    setData([props.data]);
     props.setRefresh(refresh);
   };
   const fetchData = useCallback(
@@ -64,19 +59,18 @@ function SmartTable(props) {
           setTotal(data.data.total, 0);
         }
       } catch (e) {
-        console.log("Fetch error", e.message);
+        //console.log("Fetch error", e.message);
       }
       setLoading(false);
     },
     [props.url]
   );
 
-
   const handlePrint = async () => {
     try {
       // Fetch data
       const allData = props.properties;
-      
+
       // Open print window and set up basic structure
       const printWindow = window.open("", "_blank");
       printWindow.document.write(
@@ -84,7 +78,7 @@ function SmartTable(props) {
           // Add CSS styles within the <style> tag
           "<style>" +
           // Define your CSS styles here
-          "table { width: 100%; border-collapse: collapse; }" +
+          "table { width: 100%; border-collapse: collapse; font-size:12px; font-family:arial;}" +
           "th, td { border: 1px solid black; padding: 8px; }" +
           "th { background-color:#2e008b; color:white; }" +
           "</style>" +
@@ -103,13 +97,17 @@ function SmartTable(props) {
       const staticHeaders = [
         ["order_id", "Order Id"],
         ["address", "Address"],
+        ["status", "Status"],
+        ["appraisal_status", "Appraisal Status"],
         ["remark", "Remark"],
-        ["date", "Submission Date"],
         ["urgency", "Urgency"],
-        ["quote_required_by", "Quote Required By"],
-        ["purpose", "Purpose"],
+        ["date", "Submission Date"],
+        ["type_of_building", "Type Of Building"],
+        ["estimated_value", "Estimated Property Value ($)"],
         ["type_of_appraisal", "Type Of Appraisal"],
-      ]; 
+        ["purpose", "Purpose"],
+        ["lender_information", "Lender Information"],
+      ];
       staticHeaders.forEach((headerText) => {
         const th = document.createElement("th");
         th.textContent = headerText[1];
@@ -119,13 +117,64 @@ function SmartTable(props) {
 
       // Iterate over all data and append rows to the table body
       const tableBody = document.createElement("tbody");
+      // Iterate over all data and append rows to the table body
       allData.forEach((item) => {
         const row = tableBody.insertRow();
         staticHeaders.forEach((header) => {
           const cell = row.insertCell();
-          cell.textContent = item[header[0].toLowerCase()]; // Use bracket notation to access item properties dynamically
+          if (
+            header[0].toLowerCase() === "appraisal_status" ||
+            header[0].toLowerCase() === "status"
+          ) {
+            const value = item[header[0].toLowerCase()];
+            const className = value.props.className;
+            const content = value.props.children;
+
+            // Create a span element to contain the content
+            const spanElement = document.createElement("span");
+            spanElement.textContent = content;
+
+            // Apply styles based on className
+            if (className.includes("btn-warning")) {
+              spanElement.style.backgroundColor = "";
+              spanElement.style.color = "#E4A11B";
+              spanElement.style.height = "max-content";
+              spanElement.style.width = "120px";
+              spanElement.style.padding = "8px";
+              spanElement.style.fontWeight = "bold";
+            } else if (className.includes("btn-danger")) {
+              spanElement.style.backgroundColor = "";
+              spanElement.style.color = "#DC4C64";
+              spanElement.style.height = "max-content";
+              spanElement.style.width = "120px";
+              spanElement.style.padding = "8px";
+              spanElement.style.fontWeight = "bold";
+              // Add more styles as needed
+            } else if (className.includes("btn-success")) {
+              spanElement.style.backgroundColor = "";
+              spanElement.style.color = "#14A44D";
+              spanElement.style.height = "max-content";
+              spanElement.style.width = "120px";
+              spanElement.style.padding = "8px";
+              spanElement.style.fontWeight = "bold";
+              // Add more styles as needed
+            } else {
+              spanElement.style.backgroundColor = "";
+              spanElement.style.color = "#54B4D3";
+              spanElement.style.height = "max-content";
+              spanElement.style.width = "120px";
+              spanElement.style.padding = "8px";
+              spanElement.style.fontWeight = "bold";
+            }
+
+            // Append the span element to the cell
+            cell.appendChild(spanElement);
+          } else {
+            cell.textContent = item[header[0].toLowerCase()];
+          }
         });
       });
+
       clonedTable.appendChild(tableBody);
       clonedTable.appendChild(tableBody);
 
@@ -207,7 +256,7 @@ function SmartTable(props) {
     tableWidthFunc,
     fetchData,
   ]);
-  console.log(props.data);
+  //console.log(props.data);
 
   const buildQueryString = (search, page, rowsPerPage) => {
     const queries = [];
@@ -255,7 +304,7 @@ function SmartTable(props) {
     if (props.dataFetched && props.properties.length === 0) {
       const timer = setTimeout(() => {
         setShowNoData(true);
-      }, 2000);
+      }, 10000);
 
       return () => clearTimeout(timer);
     }
@@ -277,59 +326,89 @@ function SmartTable(props) {
   //   }
   // };
 
-  const getDataFromStatus = (statusValues) =>{
+  const getDataFromStatus = (statusValues) => {
     let final = [];
 
-    statusValues?.map((status,index)=>{
-      data.map((row,idx)=>{
-        if(String(status.order_id) ===String(row.order_id)){
-          final.push(row)
+    statusValues?.map((status, index) => {
+      data.map((row, idx) => {
+        if (String(status.order_id) === String(row.order_id)) {
+          final.push(row);
         }
-      })
-    })
+      });
+    });
 
     return final;
-  }
+  };
   const extractTextContent = (cellValue) => {
-    if (typeof cellValue === 'string') {
+    if (typeof cellValue === "string") {
       return cellValue; // If it's a string, return it as is
-    } else if (typeof cellValue === 'object' && cellValue.$$typeof) {
+    } else if (typeof cellValue === "object" && cellValue.$$typeof) {
       // If it's a React element, extract text content recursively from children
       return extractTextContent(cellValue.props.children);
     } else {
       return String(cellValue); // Convert other types to string and return
     }
   };
+
+  const extractTextContentFromDate = (value) => {
+    const date = new Date(value);
+
+    if (isNaN(date.getTime())) {
+      return null;
+    }
+    return date;
+  };
+
+  const extractNumericValue = (str) => {
+    const numericStr = str.replace(/[^0-9]/g, "");
+    const numericValue = parseInt(numericStr, 10);
+
+    return numericValue;
+  };
+
   const sortData = (cell) => {
-    let tempData = props.properties;
-  
+    // Clone props.properties to avoid mutating the original data
+    let tempData = [...props.properties];
+
+    // Toggle sorting order for the current cell
+    const newSortDesc = { ...sortDesc };
+    newSortDesc[cell] = !newSortDesc[cell];
+
+    // Perform sorting
     tempData.sort((a, b) => {
       // Extract text content from cell value (React element or other type)
-      const valueA = extractTextContent(a[cell]);
-      const valueB = extractTextContent(b[cell]);
-  
-      // Perform comparison
-      if (sortDesc[cell]) {
+      let valueA = extractTextContent(a[cell]);
+      let valueB = extractTextContent(b[cell]);
+
+      if (String(cell) === "date" || String(cell) === "quote_required_by") {
+        valueA = extractTextContentFromDate(a[cell]);
+        valueB = extractTextContentFromDate(b[cell]);
+      }
+
+      if (String(cell) === "estimated_value") {
+        valueA = extractNumericValue(a[cell]);
+        valueB = extractNumericValue(b[cell]);
+      }
+      // Perform comparison based on the sorting order
+      if (newSortDesc[cell]) {
         return valueA < valueB ? 1 : -1;
       } else {
         return valueA > valueB ? 1 : -1;
       }
     });
-  
-    setSortDesc({ [cell]: !sortDesc[cell] });
+
+    // Update state with the new sorting order and sorted data
+    setSortDesc(newSortDesc);
     setData(tempData);
   };
 
-  
-  useEffect(()=>{
+  useEffect(() => {
     const sortObjectsByOrderIdDescending = (data) => {
-      return data.sort((a, b) => b.orderId - a.orderId);
+      return data.sort((a, b) => b.order_id - a.order_id);
     };
 
-    setData(sortObjectsByOrderIdDescending(props.data))
-  },[props.data])
-
-  
+    setData(sortObjectsByOrderIdDescending(props.data));
+  }, [props.data]);
 
   return (
     <div className="col-12 p-2">
@@ -337,14 +416,18 @@ function SmartTable(props) {
         <div className="candidate_revew_select style2 mb30-991">
           <ul className="mb0 mt-0">
             <li className="list-inline-item">
-              <Filtering setFilterQuery={props.setFilterQuery} />
+              <Filtering 
+              searchInput={props.searchInput}
+              setFilterQuery={props.setFilterQuery} />
             </li>
             {/* <li className="list-inline-item">
           <FilteringBy setFilterQuery={props.setSearchQuery} />
         </li> */}
             <li className="list-inline-item" style={{ marginRight: "15px" }}>
               <div className="candidate_revew_search_box course fn-520">
-                <SearchBox setSearchInput={props.setSearchInput} />
+                <SearchBox 
+                filterQuery={props.filterQuery}
+                setSearchInput={props.setSearchInput} />
               </div>
             </li>
 
@@ -412,11 +495,13 @@ function SmartTable(props) {
                           >
                             {headCell.label}
                             {sortDesc[headCell.id] ? (
-                              <SVGArrowDown />
-                            ) : sortDesc[headCell.id] === undefined ? (
+                              <div></div>
+                            ) : // <SVGArrowDown />
+                            sortDesc[headCell.id] === undefined ? (
                               ""
                             ) : (
-                              <SVGArrowUp />
+                              <div></div>
+                              // <SVGArrowUp />
                             )}
                           </th>
                         );

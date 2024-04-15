@@ -19,10 +19,11 @@ const Index = () => {
   const [bids, setBids] = useState([]);
   const [unfilteredData, setUnfilteredData] = useState([]);
   const [showLineGraph, setShowLineGraph] = useState(false);
-  const [filterQuery, setFilterQuery] = useState("Weekly");
+  const [filterQuery, setFilterQuery] = useState("All");
   const [wishlist, setWishlist] = useState([]);
   const [lineData, setLineData] = useState([]);
   const [acceptedBids, setAcceptedBids] = useState(0);
+  const [allQuotesBids , setAllQuotesBids] = useState(0);
   const [chartData, setChartData] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const router = useRouter();
@@ -106,43 +107,123 @@ const Index = () => {
     return categorizedData;
   };
 
+  const getBiddedTime = (orderId) => {
+    let time = "";
+    bids.map((bid, index) => {
+      if (String(bid.orderId) === String(orderId) && bid.status === 1)
+        [(time = bid.requestTime)];
+    });
+    return time;
+  };
+
+  const getAllBiddedTime = (orderId) => {
+    let time = "";
+    bids.map((bid, index) => {
+      if (String(bid.orderId) === String(orderId) )
+        [(time = bid.requestTime)];
+    });
+    return time;
+  };
+
+
   const filterData = (tempData) => {
     console.log("filterQuery", filterQuery, tempData);
     const currentDate = new Date();
     const oneYearAgo = new Date(currentDate);
     oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
+    let tempAllAcceptedBids = 0;
+    let tempAllQuotesBids = 0 ;
 
     switch (filterQuery) {
       case "Monthly":
         const oneMonthAgo = new Date(currentDate);
         oneMonthAgo.setMonth(currentDate.getMonth() - 1);
-        return tempData.filter(
-          (item) => new Date(item.addedDatetime) >= oneMonthAgo
-        );
+        tempData = tempData.filter((item) => {
+          const isBidded = getBiddedTime(item?.orderId);
+          const isAllBid = getAllBiddedTime(item?.orderId);
+          if (isBidded !== "" && new Date(isBidded) >= oneMonthAgo) {
+            tempAllAcceptedBids += 1;
+          }
+
+          if(isAllBid !== "" && new Date(isAllBid) >= oneMonthAgo){
+            tempAllQuotesBids += 1;
+          }
+
+          return new Date(item.addedDatetime) >= oneMonthAgo;
+        });
+        setAllQuotesBids(tempAllQuotesBids);
+        setAcceptedBids(tempAllAcceptedBids);
+        return tempData;
+
       case "Yearly":
-        return tempData.filter(
-          (item) => new Date(item.addedDatetime) >= oneYearAgo
-        );
+        tempData = tempData.filter((item) => {
+          const isBidded = getBiddedTime(item?.orderId);
+          const isAllBid = getAllBiddedTime(item?.orderId);
+          if (isBidded !== "" && new Date(isBidded) >= oneYearAgo) {
+            tempAllAcceptedBids += 1;
+          }
+          if(isAllBid !== "" && new Date(isAllBid) >= oneYearAgo){
+            tempAllQuotesBids += 1;
+          }
+          return new Date(item.addedDatetime) >= oneYearAgo;
+        });
+        setAllQuotesBids(tempAllQuotesBids);
+        setAcceptedBids(tempAllAcceptedBids);
+        return tempData;
+
       case "Weekly":
         const oneWeekAgo = new Date(currentDate);
         oneWeekAgo.setDate(currentDate.getDate() - 7);
-        return tempData.filter(
-          (item) => new Date(item.addedDatetime) >= oneWeekAgo
-        );
+        tempData = tempData.filter((item) => {
+          const isBidded = getBiddedTime(item?.orderId);
+          const isAllBid = getAllBiddedTime(item?.orderId);
+          if (isBidded !== "" && new Date(isBidded) >= oneWeekAgo) {
+            tempAllAcceptedBids += 1;
+          }
+          if(isAllBid !== "" && new Date(isAllBid) >= oneWeekAgo){
+            tempAllQuotesBids += 1;
+          }
+          return new Date(item.addedDatetime) >= oneWeekAgo;
+        });
+        setAllQuotesBids(tempAllQuotesBids);
+        setAcceptedBids(tempAllAcceptedBids);
+        return tempData;
+
       default:
-        // If none of the cases match, return weekly content
-        const oneWeekAgoDefault = new Date(currentDate);
-        oneWeekAgoDefault.setDate(currentDate.getDate() - 7);
-        return tempData?.filter(
-          (item) => new Date(item.addedDatetime) >= oneWeekAgoDefault
-        );
+        tempData = tempData.filter((item) => {
+          const isBidded = getBiddedTime(item?.orderId);
+          const isAllBid = getAllBiddedTime(item?.orderId);
+          if (isBidded !== "") {
+            tempAllAcceptedBids += 1;
+          }
+          if(isAllBid !== "" ){
+            tempAllQuotesBids += 1;
+          }
+
+          return new Date(item.addedDatetime) >= oneYearAgo;
+        });
+        setAllQuotesBids(tempAllQuotesBids);
+        return tempData;
     }
   };
 
   useEffect(() => {
+    let acceptedCount = 0;
+    data.map((row, index) => {
+      bids.map((bid, idx) => {
+        if (String(row.orderId) === String(bid.orderId) && bid.status === 1) {
+          acceptedCount += 1;
+        }
+      });
+    });
+
+    setAcceptedBids(acceptedCount);
+  }, [data]);
+
+  useEffect(() => {
     const dataTemp = filterData(data);
     setChartData(dataTemp);
-  }, [filterQuery]);
+  }, [filterQuery,bids,data]);
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("user"));
@@ -200,7 +281,7 @@ const Index = () => {
           let allBids = [];
           tempBids.map((prop, index) => {
             if (String(prop.userId) === String(data.userId)) {
-              if (String(prop.status) === "1") {
+              if (prop.status === 1) {
                 acceptedBid += 1;
               }
               allBids.push(prop);
@@ -323,8 +404,8 @@ const Index = () => {
 
               <div className="row">
                 <AllStatistics
-                  properties={data.length}
-                  views={bids.length}
+                  properties={allQuotesBids + acceptedBids}
+                  views={allQuotesBids}
                   bids={acceptedBids}
                   favourites={wishlist.length}
                 />
@@ -382,7 +463,6 @@ const Index = () => {
           </div>
         </div>
       </section>
-      <div style={{ width: "100%", backgroundColor: "#2e008b" }}>.</div>
     </>
   );
 };

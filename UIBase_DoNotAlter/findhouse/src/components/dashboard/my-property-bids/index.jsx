@@ -8,22 +8,22 @@ import Pagination from "./Pagination";
 import SearchBox from "./SearchBox";
 import { useEffect } from "react";
 import { useState } from "react";
-import toast from "react-hot-toast";
-import axios from "axios";
-import Image from "next/image";
 import Link from "next/link";
+import toast from "react-hot-toast";
+import Image from "next/image";
+import axios from "axios";
 import { useRouter } from "next/router";
 import Exemple from "./Exemple";
 import { encryptionData } from "../../../utils/dataEncryption";
 
 const Index = ({ propertyId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isModalOpen_01, setIsModalOpen_01] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [appInfo, setAppInfo] = useState({});
   const [refresh, setRefresh] = useState(false);
   const [id, setId] = useState(0);
-  console.log(propertyId);
+
+  const [allAppraiser, setAllAppraiser] = useState({});
 
   const [start, setStart] = useState(0);
 
@@ -48,8 +48,6 @@ const Index = ({ propertyId }) => {
     Date.now()
   );
 
-  console.log(appInfo);
-
   const closeAppraiserHandler = () => {
     setAppInfo({});
     setOpenBrokerModal(false);
@@ -57,11 +55,13 @@ const Index = ({ propertyId }) => {
 
   const acceptRequestHandler = () => {
     const data = JSON.parse(localStorage.getItem("user"));
-    toast.loading("Accepting the bid ...");
+    toast.loading("Accepting the Quote ...");
     const payload = {
       bidId: id,
       token: data.token,
     };
+
+    console.log(propertyId);
 
     const encryptedBody = encryptionData(payload);
     axios
@@ -74,7 +74,7 @@ const Index = ({ propertyId }) => {
       .then((res) => {
         toast.dismiss();
 
-        toast.success("Successfully accepted the requested Bid");
+        toast.success("Successfully accepted the Quote");
         router.push("/my-properties");
       })
       .catch((err) => {
@@ -86,7 +86,7 @@ const Index = ({ propertyId }) => {
 
   const rejectRequestHandler = (id) => {
     const data = JSON.parse(localStorage.getItem("user"));
-    toast.loading("Declining the bid ...");
+    toast.loading("Declining the Quote ...");
     const payload = {
       bidId: id,
     };
@@ -100,7 +100,7 @@ const Index = ({ propertyId }) => {
       })
       .then((res) => {
         toast.dismiss();
-        toast.success("Successfully declined the requested Bid");
+        toast.success("Successfully declined the Quote");
         router.push("/my-properties");
       })
       .catch((err) => {
@@ -150,15 +150,8 @@ const Index = ({ propertyId }) => {
     setIsModalOpen(true);
   };
 
-  const openModal_01 = () => {
-    // console.log("inside");
-    // setProperty(property);
-    setIsModalOpen_01(true);
-  };
-
   const closeModal = () => {
     setIsModalOpen(false);
-    setIsModalOpen_01(false);
   };
 
   useEffect(() => {
@@ -356,18 +349,18 @@ const Index = ({ propertyId }) => {
                           userData={userData}
                           open={openModal}
                           setIsModalOpen={setIsModalOpen}
-                          setIsModalOpen_01={setIsModalOpen_01}
                           close={closeModal}
                           setProperties={setProperties}
                           properties={
                             searchInput === "" ? properties : filterProperty
                           }
+                          setAllAppraiser={setAllAppraiser}
                           start={start}
                           end={end}
                           setid={setId}
                           property={property}
                           setProperty={setProperty}
-                          orderId={propertyId}
+                          propertyId={propertyId}
                           setModalIsOpenError={setModalIsOpenError}
                           setOpenBrokerModal={setOpenBrokerModal}
                           setErrorMessage={setErrorMessage}
@@ -509,7 +502,7 @@ const Index = ({ propertyId }) => {
                   </div>
                   <div className="row">
                     <div className="col-lg-12 text-center">
-                      <h3 className=" text-color mt-1">Appraiser Details</h3>
+                      <h2 className=" text-color mt-1">Appraiser Details</h2>
                     </div>
                   </div>
                   <div
@@ -640,7 +633,7 @@ const Index = ({ propertyId }) => {
                             style={{
                               border: "1px solid #2e008b",
                               color: "#2e008b",
-                              // padding: "5px",
+                              // paddingLeft:"10px"
                               textAlign: "center",
                             }}
                           >
@@ -651,7 +644,7 @@ const Index = ({ propertyId }) => {
                               border: "1px solid #2e008b",
                               // width: "470px",
                               color: "#2e008b",
-                              // padding: "5px",
+                              // paddingLeft:"10px"
                               textAlign: "center",
                             }}
                           >
@@ -663,8 +656,9 @@ const Index = ({ propertyId }) => {
                         <tr>
                           <td
                             style={{
-                              border: "1px solid grey",
+                              border: "1px solid #2e008b",
                               color: "#2e008b",
+                              paddingLeft: "10px",
                             }}
                           >
                             <span className="text-start">Appraiser Name</span>
@@ -674,7 +668,7 @@ const Index = ({ propertyId }) => {
                               border: "1px solid #2e008b",
                               width: "250px",
                               color: "black",
-                              padding: "5px",
+                              paddingLeft: "10px",
                             }}
                           >
                             {appInfo.firstName} {appInfo.lastName}
@@ -683,8 +677,9 @@ const Index = ({ propertyId }) => {
                         <tr>
                           <td
                             style={{
-                              border: "1px solid grey",
+                              border: "1px solid #2e008b",
                               color: "#2e008b",
+                              paddingLeft: "10px",
                             }}
                           >
                             <span className="text-start">Email Address</span>
@@ -694,7 +689,7 @@ const Index = ({ propertyId }) => {
                               border: "1px solid #2e008b",
                               width: "250px",
                               color: "black",
-                              padding: "5px",
+                              paddingLeft: "10px",
                             }}
                           >
                             {appInfo.emailId ? appInfo.emailId : "N.A."}
@@ -703,8 +698,9 @@ const Index = ({ propertyId }) => {
                         <tr>
                           <td
                             style={{
-                              border: "1px solid grey",
+                              border: "1px solid #2e008b",
                               color: "#2e008b",
+                              paddingLeft: "10px",
                             }}
                           >
                             <span className="text-start">Phone Number</span>
@@ -714,7 +710,7 @@ const Index = ({ propertyId }) => {
                               border: "1px solid #2e008b",
                               width: "250px",
                               color: "black",
-                              padding: "5px",
+                              paddingLeft: "10px",
                             }}
                           >
                             {appInfo.phoneNumber ? appInfo.phoneNumber : "N.A."}
@@ -723,8 +719,9 @@ const Index = ({ propertyId }) => {
                         <tr>
                           <td
                             style={{
-                              border: "1px solid grey",
+                              border: "1px solid #2e008b",
                               color: "#2e008b",
+                              paddingLeft: "10px",
                             }}
                           >
                             <span className="text-start">Cell Number</span>
@@ -734,7 +731,7 @@ const Index = ({ propertyId }) => {
                               border: "1px solid #2e008b",
                               width: "250px",
                               color: "black",
-                              padding: "5px",
+                              paddingLeft: "10px",
                             }}
                           >
                             {appInfo.cellNumber ? appInfo.cellNumber : "N.A."}
@@ -743,8 +740,9 @@ const Index = ({ propertyId }) => {
                         <tr>
                           <td
                             style={{
-                              border: "1px solid grey",
+                              border: "1px solid #2e008b",
                               color: "#2e008b",
+                              paddingLeft: "10px",
                             }}
                           >
                             <span className="text-start">Company Name</span>
@@ -754,7 +752,7 @@ const Index = ({ propertyId }) => {
                               border: "1px solid #2e008b",
                               width: "250px",
                               color: "black",
-                              padding: "5px",
+                              paddingLeft: "10px",
                             }}
                           >
                             {appInfo.companyName
@@ -765,8 +763,9 @@ const Index = ({ propertyId }) => {
                         <tr>
                           <td
                             style={{
-                              border: "1px solid grey",
+                              border: "1px solid #2e008b",
                               color: "#2e008b",
+                              paddingLeft: "10px",
                             }}
                           >
                             <span className="text-start">Designation</span>
@@ -776,7 +775,7 @@ const Index = ({ propertyId }) => {
                               border: "1px solid #2e008b",
                               width: "250px",
                               color: "black",
-                              padding: "5px",
+                              paddingLeft: "10px",
                             }}
                           >
                             {appInfo.designation ? appInfo.designation : "N.A."}
@@ -785,8 +784,9 @@ const Index = ({ propertyId }) => {
                         <tr>
                           <td
                             style={{
-                              border: "1px solid grey",
+                              border: "1px solid #2e008b",
                               color: "#2e008b",
+                              paddingLeft: "10px",
                             }}
                           >
                             <span className="text-start">Address</span>
@@ -796,7 +796,7 @@ const Index = ({ propertyId }) => {
                               border: "1px solid #2e008b",
                               width: "400px",
                               color: "black",
-                              padding: "5px",
+                              paddingLeft: "10px",
                             }}
                           >
                             {appInfo.addressLineOne}
@@ -810,8 +810,9 @@ const Index = ({ propertyId }) => {
                         <tr>
                           <td
                             style={{
-                              border: "1px solid grey",
+                              border: "1px solid #2e008b",
                               color: "#2e008b",
+                              paddingLeft: "10px",
                             }}
                           >
                             <span className="text-start">
@@ -823,7 +824,7 @@ const Index = ({ propertyId }) => {
                               border: "1px solid #2e008b",
                               width: "250px",
                               color: "black",
-                              padding: "5px",
+                              paddingLeft: "10px",
                             }}
                           >
                             {appInfo.officeContactFirstName
@@ -835,8 +836,9 @@ const Index = ({ propertyId }) => {
                         <tr>
                           <td
                             style={{
-                              border: "1px solid grey",
+                              border: "1px solid #2e008b",
                               color: "#2e008b",
+                              paddingLeft: "10px",
                             }}
                           >
                             <span className="text-start">
@@ -848,7 +850,7 @@ const Index = ({ propertyId }) => {
                               border: "1px solid #2e008b",
                               width: "250px",
                               color: "black",
-                              padding: "5px",
+                              paddingLeft: "10px",
                             }}
                           >
                             {appInfo.officeContactPhone
@@ -859,8 +861,9 @@ const Index = ({ propertyId }) => {
                         <tr>
                           <td
                             style={{
-                              border: "1px solid grey",
+                              border: "1px solid #2e008b",
                               color: "#2e008b",
+                              paddingLeft: "10px",
                             }}
                           >
                             <span className="text-start">
@@ -872,7 +875,7 @@ const Index = ({ propertyId }) => {
                               border: "1px solid #2e008b",
                               width: "250px",
                               color: "black",
-                              padding: "5px",
+                              paddingLeft: "10px",
                             }}
                           >
                             {appInfo.officeContactEmail
@@ -883,13 +886,13 @@ const Index = ({ propertyId }) => {
                       </tbody>
                     </table>
                   </div>
-                  <div
+                  {/* <div
                     className="mt-2 mb-3"
                     style={{ border: "2px solid #97d700" }}
-                  ></div>
+                  ></div> */}
                   <div className="text-center" style={{}}>
                     <button
-                      className="btn btn-color w-50"
+                      className="btn btn-color w-50 mt-3"
                       onClick={() => closeAppraiserHandler()}
                     >
                       Ok
@@ -971,82 +974,6 @@ const Index = ({ propertyId }) => {
                         <button
                           className="btn btn-color"
                           onClick={() => acceptRequestHandler(property.bidId)}
-                        >
-                          Submit
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {isModalOpen_01 && (
-              <div className="modal">
-                <div className="modal-content">
-                  <div className="row">
-                    <div className="col-lg-12">
-                      <Link href="/" className="">
-                        <Image
-                          width={60}
-                          height={45}
-                          className="logo1 img-fluid"
-                          style={{ marginTop: "-20px" }}
-                          src="/assets/images/Appraisal_Land_Logo.png"
-                          alt="header-logo2.png"
-                        />
-                        <span
-                          style={{
-                            color: "#2e008b",
-                            fontWeight: "bold",
-                            fontSize: "24px",
-                            // marginTop: "20px",
-                          }}
-                        >
-                          Appraisal
-                        </span>
-                        <span
-                          style={{
-                            color: "#97d700",
-                            fontWeight: "bold",
-                            fontSize: "24px",
-                            // marginTop: "20px",
-                          }}
-                        >
-                          {" "}
-                          Land
-                        </span>
-                      </Link>
-                    </div>
-                  </div>
-                  <h3 className="text-center">Appraiser Change Confirmation</h3>
-                  <div
-                    className="mt-2 mb-3"
-                    style={{ border: "2px solid #97d700" }}
-                  ></div>
-                  <p className="text-center fs-6">
-                    Are you sure you want to change the appraiser ?
-                  </p>
-
-                  <div
-                    className="mt-2 mb-3"
-                    style={{ border: "2px solid #97d700" }}
-                  ></div>
-
-                  {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
-                  <div className="col-lg-12">
-                    <div className="row">
-                      <div className="col-lg-12 text-center m-1">
-                        <button
-                          className="btn btn-color"
-                          style={{ marginRight: "5px" }}
-                          onClick={closeModal}
-                        >
-                          Cancel
-                        </button>
-                        <button
-                          className="btn btn-color"
-                          // onClick={}
                         >
                           Submit
                         </button>

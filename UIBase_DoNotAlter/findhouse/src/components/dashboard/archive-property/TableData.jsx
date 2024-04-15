@@ -7,16 +7,12 @@ import toast from "react-hot-toast";
 import Exemple from "./Exemple";
 const TableData = ({
   userData,
-  open,
-  start,
-  end,
+  open,start,end,
   close,
-  onHoldHandler,
-  onCancelHandler,
   properties,
-  setPropertyId,
+  searchInput,
+  filterQuery,
   refresh,
-  setCurrentProperty,
   setFilterQuery,
   setSearchInput,
   setModalIsPopupOpen,
@@ -24,11 +20,15 @@ const TableData = ({
   setProperties,
   setModalIsOpenError,
   setAllArchive,
-  setPropValue,
   setErrorMessage,
+  setPropValue,
   setModalOpen,
   setIsCancelProperty,
   setIsHoldProperty,
+  setPropertyId,
+  setCurrentProperty,
+  onHoldHandler,
+  onCancelHandler,
 }) => {
   console.log(properties);
 
@@ -220,9 +220,9 @@ const TableData = ({
           setFilterQuery={setFilterQuery}
           setSearchInput={setSearchInput}
           close={close}
+          searchInput = {searchInput}
+          filterQuery = {filterQuery}
           setProperties={setProperties}
-          setModalIsPopupOpen={setModalIsPopupOpen}
-          setCurrentProperty={setCurrentProperty}
           properties={data}
           setRefresh={setRefresh}
           refresh={refresh}
@@ -232,6 +232,7 @@ const TableData = ({
           start={start}
           setAllArchive={setAllArchive}
           end={end}
+          setModalIsPopupOpen={setModalIsPopupOpen}
           onHoldHandler={onHoldHandler}
           setPropValue={setPropValue}
           setPropertyId={setPropertyId}
@@ -239,6 +240,7 @@ const TableData = ({
           setModalOpen={setModalOpen}
           setIsCancelProperty={setIsCancelProperty}
           setIsHoldProperty={setIsHoldProperty}
+          setCurrentProperty={setCurrentProperty}
         />
       )}
     </>

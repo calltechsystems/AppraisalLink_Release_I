@@ -14,6 +14,7 @@ const Index = ({ user }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  // const [change, setChange] = useState(false);
 
   const router = useRouter();
 
@@ -24,7 +25,15 @@ const Index = ({ user }) => {
 
   const closeErrorModal = () => {
     setModalIsOpenError(false);
-    location.reload(true);
+    // const prevState = change;
+    // captchaRef.current.value = "";
+    // setStyle({
+    //   borderColor: "black",
+    //   borderWidth: "1px",
+    // });
+    // setChange(!prevState);
+    // };
+    // location.reload(true);
   };
 
   useEffect(() => {
@@ -146,7 +155,7 @@ const Index = ({ user }) => {
       </section>
 
       {/* <!-- Our Footer Bottom Area --> */}
-      <div className="footer_middle_area pt40 pb40">
+      <div className="footer_middle_area">
         <div className="container">
           <CopyrightFooter />
         </div>

@@ -3,23 +3,23 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
     {
       id: 1,
       blockStyle: "",
-      icon: "flaticon-home",
+      icon: "flaticon-house",
       timer: properties,
       name: "All Properties",
     },
     {
       id: 2,
       blockStyle: "style2",
-      icon: "flaticon-view",
+      icon: "flaticon-invoice",
       timer: views,
-      name: "Total Bids",
+      name: "Total Quotes",
     },
     {
       id: 3,
-      blockStyle: "style3",
+      blockStyle: "style4",
       icon: "flaticon-tick",
       timer: bids,
-      name: "Accepted Bids",
+      name: "Accepted Quotes",
     },
     // {
     //   id: 4,

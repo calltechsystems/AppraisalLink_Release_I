@@ -3,17 +3,8 @@ import SmartTable from "./SmartTable";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import axios, { all } from "axios";
-import millify from "millify";
 import { AppraiserStatusOptions } from "../create-listing/data";
-import {
-  FaArchive,
-  FaHandHoldingHeart,
-  FaHandHoldingUsd,
-  FaHandPointer,
-  FaPause,
-  FaRedo,
-} from "react-icons/fa";
-// import "./SmartTable.css";
+import { FaArchive, FaPause } from "react-icons/fa";
 
 const headCells = [
   {
@@ -38,7 +29,7 @@ const headCells = [
     id: "appraisal_status",
     numeric: false,
     label: "Appraisal Status",
-    width: 170,
+    width: 220,
   },
   {
     id: "remark",
@@ -53,29 +44,17 @@ const headCells = [
     width: 220,
   },
   {
-    id: "urgency",
-    numeric: false,
-    label: "Request Type",
-    width: 140,
-  },
-  {
     id: "quote_required_by",
     numeric: false,
     label: "Appraisal Report Required By",
     width: 220,
   },
-  // {
-  //   id: "user",
-  //   numeric: false,
-  //   label: "Appraiser",
-  //   width: 200,
-  // },
-  // {
-  //   id: "amount",
-  //   numeric: false,
-  //   label: "Quote Amount",
-  //   width: 200,
-  // },
+  {
+    id: "urgency",
+    numeric: false,
+    label: "Request Type",
+    width: 140,
+  },
 
   {
     id: "type_of_building",
@@ -108,12 +87,6 @@ const headCells = [
     width: 160,
   },
 
-  // {
-  //   id: "actions",
-  //   numeric: false,
-  //   label: "Actions",
-  //   width: 170,
-  // },
   {
     id: "actions_01",
     numeric: false,
@@ -130,6 +103,8 @@ export default function Exemple({
   open,
   setModalIsPopupOpen,
   close,
+  filterQuery,
+  searchInput,
   properties,
   onHoldHandler,
   onCancelHandler,
@@ -148,65 +123,31 @@ export default function Exemple({
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [allBids, setBids] = useState([]);
-  const [archive, setArchive] = useState([]);
   const [show, setShow] = useState(false);
   const [dataFetched, setDataFetched] = useState(false);
   let tempData = [];
+
+  useEffect(() => {
+    if (refresh === true) {
+      setSearchInput("");
+      setFilterQuery("All");
+    }
+  }, [refresh]);
+
+  useEffect(() => {
+    if (searchInput === "") {
+      setProperties([]);
+      setBids([]);
+      setRefresh(true);
+    }
+  }, [searchInput]);
 
   const sortObjectsByOrderIdDescending = (data) => {
     return data.sort((a, b) => b.order_id - a.order_id);
   };
 
-  // const AppraiserStatusOptions = [
-  //   {
-  //     id: -1,
-  //     type: "Select...",
-  //     value: "",
-  //   },
-  //   {
-  //     id: 0,
-  //     type: "Applicant Contacted by appraiser",
-  //     value: "Applicant Contacted by appraiser",
-  //   },
-  //   {
-  //     id: 1,
-  //     type: "Appraisal Visit Confirmed",
-  //     value: "Appraisal Visit Confirmed",
-  //   },
-  //   {
-  //     id: 2,
-  //     type: "Appraisal Report Writing in Progress",
-  //     value: "Appraisal Report Writing in Progress",
-  //   },
-  //   {
-  //     id: 3,
-  //     type: "Appraisal Report Writing Completed and Submitted",
-  //     value: "Appraisal Report Writing Completed and Submitted",
-  //   },
-
-  //   {
-  //     id: 4,
-  //     type: "Assignment on Hold",
-  //     value: "Assignment on Hold",
-  //   },
-
-  //   {
-  //     id: 5,
-  //     type: "Assignment Cancelled new status to be added",
-  //     value: "Assignment Cancelled new status to be added",
-  //   },
-
-  //   {
-  //     id: 6,
-  //     type: "Appraisal visit completed; report writing is pending until fee received",
-  //     value:
-  //       "Appraisal visit completed; report writing is pending until fee received",
-  //   },
-  // ];
-
   const getOrderValue = (val) => {
     let title = "";
-    console.log("value", val);
     AppraiserStatusOptions?.map((status) => {
       if (String(status.id) === String(val)) {
         title = status.type;
@@ -269,8 +210,15 @@ export default function Exemple({
   };
 
   const refreshHandler = () => {
+    setProperties([]);
+    setBids([]);
     setRefresh(true);
   };
+
+  function addCommasToNumber(number) {
+    if (Number(number) <= 100 || number === undefined) return number;
+    return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
 
   const getPropertyStatusHandler = (property) => {
     let isInProgress = true;
@@ -294,16 +242,6 @@ export default function Exemple({
     return isCompleted ? 3 : isAccepted ? 2 : isQuoteProvided ? 1 : 0;
   };
 
-  const getArchiveProperty = (orderId) => {
-    let prop = {};
-    archive.map((temp, index) => {
-      if (String(temp.property.orderId) === String(orderId)) {
-        prop = temp;
-      }
-    });
-    return prop;
-  };
-
   const openPopupModal = (property) => {
     setModalIsPopupOpen(true);
     setCurrentProperty(property);
@@ -311,26 +249,25 @@ export default function Exemple({
   useEffect(() => {
     const getData = () => {
       properties.map((property, index) => {
-        const Archived = getArchiveProperty(property.orderId);
         const isBidded = getBidOfProperty(property.orderId);
         const isHold = property.isOnHold;
         const isCancel = property.isOnCancel;
         const isStatus = getPropertyStatusHandler(property);
         const isEditable = isStatus === 0 ? true : false;
-        if (!Archived.$id) {
+        if (!property.isArchive) {
           const updatedRow = {
             order_id: property.orderId,
             sub_date: formatDate(property.addedDatetime),
             quote_required_by: property.quoteRequiredDate
               ? formatDateNew(property.quoteRequiredDate)
-              : formatDateNew(property.addedDate),
+              : formatDateNew(property.addedDatetime),
             status:
               isHold || isCancel ? (
                 <span className="btn bg-danger text-light w-100">
                   {isHold ? "On Hold" : "Cancelled"}
                 </span>
               ) : isStatus === 3 ? (
-                <span className="btn bg-success w-100 text-light">
+                <span className="btn btn-completed w-100 text-light">
                   Completed
                 </span>
               ) : isStatus === 2 ? (
@@ -350,27 +287,75 @@ export default function Exemple({
               ),
             appraisal_status:
               isHold || isCancel ? (
-                <span className="btn bg-warning w-100">
+                <button className="btn btn-warning w-100">
                   {isHold ? "N.A." : "N.A."}
-                </span>
-              ) : property.orderStatus === 1 ? (
-                <span className="btn bg-warning  w-100">
-                  {getOrderValue(isBidded.orderStatus)} -
-                  {formatDate(isBidded.statusDate)}
-                </span>
-              ) : property.orderStatus !== null ? (
-                <span className="btn bg-warning  w-100">
-                  {getOrderValue(isBidded.orderStatus)}
-                </span>
+                </button>
+              ) : isBidded.orderStatus !== 1 &&
+                isBidded.orderStatus !== null &&
+                isBidded.orderStatus !== undefined ? (
+                // <span className="btn bg-warning  w-100">
+                //   {getOrderValue(isBidded.orderStatus)}
+                // </span>
+                <div className="hover-text">
+                  <div
+                    className="tooltip-text"
+                    style={{
+                      marginTop: "-60px",
+                      marginLeft: "-100px",
+                    }}
+                  >
+                    <ul>
+                      <li style={{ fontSize: "15px" }}>
+                        {getOrderValue(isBidded.orderStatus)}
+                      </li>
+                    </ul>
+                  </div>
+                  <button className="btn btn-status">
+                    Current Status
+                    <span className="m-1">
+                      <i class="fa fa-info-circle" aria-hidden="true"></i>
+                    </span>
+                  </button>
+                </div>
+              ) : isBidded.$id &&
+                isBidded.status === 1 &&
+                isBidded.orderStatus === 1 &&
+                isBidded.orderStatus !== undefined ? (
+                // <span className="btn bg-warning  w-100">
+                //   {getOrderValue(isBidded.orderStatus)} -
+                //   {formatDate(isBidded.statusDate)}
+                // </span>
+                <div className="hover-text">
+                  <div
+                    className="tooltip-text"
+                    style={{
+                      marginTop: "-60px",
+                      marginLeft: "-100px",
+                    }}
+                  >
+                    <ul>
+                      <li style={{ fontSize: "15px" }}>
+                        {getOrderValue(isBidded.orderStatus)}
+                      </li>
+                    </ul>
+                  </div>
+                  <button className="btn btn-secondary">
+                    Current Status
+                    <span className="m-1">
+                      <i class="fa fa-info-circle" aria-hidden="true"></i>
+                    </span>
+                  </button>
+                </div>
               ) : (
-                <span className="btn bg-warning  w-100">N.A.</span>
+                <span className="btn btn-warning w-100">N.A.</span>
               ),
             address: `${property.streetNumber} ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
-            remark: isBidded?.remark ? isBidded?.remark : "N.A.",
+            remark: isBidded.remark ? isBidded.remark : "N.A.",
             // remark: property.remark ? property.remark : "N.A.",
             // user: property.applicantEmailAddress,
             type_of_building: property.typeOfBuilding,
-            amount: ` $ ${millify(property.estimatedValue)}`,
+            // amount: ` $ ${millify(property.estimatedValue)}`,
+            amount: `$ ${addCommasToNumber(property.estimatedValue)}`,
             purpose: property.purpose,
             type_of_appraisal: property.typeOfAppraisal,
             lender_information: property.lenderInformation
@@ -446,21 +431,13 @@ export default function Exemple({
                 </Link>
               </li> */}
 
-                {(isEditable || isStatus === 1) && (
+                {(isEditable || isStatus === 1) && !isCancel && (
                   <li>
-                    <Link href={`/create-listing/${property.propertyId}`}>
+                    <Link href={`/create-listing/${property.orderId}`}>
                       <span className="btn btn-color w-100 mb-1"> Edit </span>
                     </Link>{" "}
-                    {/* <Link
-                      className="btn btn-color-table"
-                      href={`/create-listing/${property.propertyId}`}
-                    >
-                      <span className="flaticon-edit"></span>
-                    </Link> */}
                   </li>
                 )}
-
-                {/* End li */}
 
                 {isEditable && (
                   <li>
@@ -470,15 +447,6 @@ export default function Exemple({
                         Order Cancel{" "}
                       </span>
                     </Link>{" "}
-                    {/* <button
-                      className="btn"
-                      style={{ border: "1px solid grey" }}
-                      onClick={() => open(property)}
-                    >
-                      <Link href="#">
-                        <span className="flaticon-garbage text-danger"></span>
-                      </Link>
-                    </button> */}
                   </li>
                 )}
 
@@ -494,32 +462,9 @@ export default function Exemple({
                         </span>
                       </Link>{" "}
                     </button>
-                    {/* <Link
-                      className="btn btn-color-table"
-                      href={`/create-listing/${property.propertyId}`}
-                    >
-                      <span className="flaticon-edit"></span>
-                    </Link> */}
                   </li>
                 )}
 
-                {/* {!isEditable && (
-                <li
-                  className="list-inline-item"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Archive Property"
-                >
-                  <span
-                    className="btn btn-color-table"
-                    onClick={() => archievePropertyHandler(property.propertyId)}
-                  >
-                    <Link className="color-light" href={`/archive-property`}>
-                      <span className="flaticon-box"></span>
-                    </Link>
-                  </span>
-                </li>
-              )} */}
                 {!isEditable && (
                   <li>
                     <Link
@@ -531,36 +476,13 @@ export default function Exemple({
                         Archive Property{" "}
                       </span>
                     </Link>
-                    {/* <span
-                      className="btn btn-color-table m-1"
-                      onClick={() =>
-                        archievePropertyHandler(property.propertyId)
-                      }
-                    >
-                      <Link className="color-light" href={`/archive-property`}>
-                        <span className="flaticon-box text-light"></span>
-                      </Link>
-                    </span> */}
                   </li>
                 )}
-
-                {/* End li */}
               </ul>
             ),
             actions_01: (
-              // <ul className="view_edit_delete_list mb0">
               <ul className="mb0 d-flex gap-1">
-                {/* {!isEditable && ( */}
                 <li title="Property Details" className="">
-                  {/* <Link href={"#"}>
-                      <span
-                        className="btn btn-color w-100 mb-1"
-                        onClick={() => openPopupModal(property)}
-                      >
-                        {" "}
-                        Property Details{" "}
-                      </span>
-                    </Link>{" "} */}
                   <span
                     className="btn btn-color-table"
                     onClick={() => openPopupModal(property)}
@@ -574,49 +496,14 @@ export default function Exemple({
 
                 {!isEditable && !isCancel && (
                   <li title="Quotes">
-                    {/* <Link href={`/my-property-bids/${property.propertyId}`}>
-                      <span className="btn btn-color w-100 mb-1"> Quotes </span>
-                    </Link>{" "} */}
                     <Link
                       className="btn btn-color-table"
-                      // style={{ marginLeft: "4.3rem" }}
                       href={`/my-property-bids/${property.orderId}`}
                     >
-                      <span className="flaticon-invoice">
-                        {/* <FaHandHoldingUsd /> */}
-                      </span>
+                      <span className="flaticon-invoice"></span>
                     </Link>
                   </li>
                 )}
-                {/* <li
-                className="list-inline-item"
-                data-toggle="tooltip"
-                data-placement="top"
-                title="Property Details"
-              >
-                <span
-                  className="btn btn-color-table"
-                  onClick={() => openPopupModal(property)}
-                >
-                  <Link href={"#"}>
-                    <span className="flaticon-view"></span>
-                  </Link>
-                </span>
-              </li>
-
-              <li
-                className="list-inline-item"
-                data-toggle="tooltip"
-                data-placement="top"
-                title="Bids"
-              >
-                <Link
-                  className="btn btn-color-table"
-                  href={`/my-property-bids/${property.propertyId}`}
-                >
-                  <span className="flaticon-invoice"></span>
-                </Link>
-              </li> */}
 
                 {(isEditable || isStatus === 1) && !isCancel && (
                   <li title="Edit Property">
@@ -788,30 +675,15 @@ export default function Exemple({
             setDataFetched(false);
             // setModalIsOpenError(true);
           });
-        axios
-          .get("/api/getAllArchivePropertiesByBroker", {
-            headers: {
-              Authorization: `Bearer ${data.token}`,
-            },
-            params: {
-              userId: data.userId,
-            },
-          })
-          .then((res) => {
-            console.log(res);
-            const temp = res.data.data.$values;
-            setArchive(temp);
-          })
-          .catch((err) => {
-            console.log(err);
-            toast.error(err);
-            setModalIsOpenError(true);
-          });
       })
       .catch((err) => {
         toast.dismiss();
         toast.error(err?.response?.data?.error);
       });
+    setSearchInput("");
+    setFilterQuery("All");
+    setProperties([]);
+    setBids([]);
 
     let tempBids = [];
 
@@ -822,14 +694,16 @@ export default function Exemple({
       {updatedData && (
         <SmartTable
           title=""
+          searchInput={searchInput}
           setFilterQuery={setFilterQuery}
           setSearchInput={setSearchInput}
           data={sortObjectsByOrderIdDescending(updatedData)}
           headCells={headCells}
+          filterQuery={filterQuery}
           refreshHandler={refreshHandler}
           start={start}
-          properties={updatedData}
           dataFetched={dataFetched}
+          properties={updatedData}
           end={end}
         />
       )}

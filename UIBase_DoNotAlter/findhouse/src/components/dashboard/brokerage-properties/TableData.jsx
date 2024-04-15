@@ -20,7 +20,9 @@ const TableData = ({
   setRefresh,
   setModalIsPopupOpen,
   archievePropertyHandler,
+  setWishlist,
   setCurrentProperty,
+  searchInput,
   setProperties,
   setFilterQuery,
   setSearchInput,
@@ -236,6 +238,8 @@ const TableData = ({
           onCancelHandler={onCancelHandler}
           setFilterQuery={setFilterQuery}
           setSearchInput={setSearchInput}
+          setWishlist={setWishlist}
+          searchInput={searchInput}
           setModalOpen={setModalOpen}
           setIsCancelProperty={setIsCancelProperty}
           setIsHoldProperty={setIsHoldProperty}

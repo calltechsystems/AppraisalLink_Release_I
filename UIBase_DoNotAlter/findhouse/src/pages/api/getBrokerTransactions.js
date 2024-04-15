@@ -3,7 +3,7 @@ import CryptoJS from "crypto-js";
 
 async function handler(request, response) {
   const decryptionKey = process.env.CRYPTO_SECRET_KEY;
-  const domain = process.env.BACKEND_DOMAIN;
+  const domain = process.env.BACKEND_DOMAIN2;
 
   try {
     const token = request.headers.authorization;
@@ -17,7 +17,7 @@ async function handler(request, response) {
           "Content-Type": "application/json",
         },
         params: {
-          userId: userId
+          userId: userId,
         },
       }
     );

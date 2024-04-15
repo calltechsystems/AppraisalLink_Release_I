@@ -2,24 +2,22 @@ import Header from "../../common/header/dashboard/Header";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
 import MobileMenu from "../../common/header/MobileMenu_02";
 import TableData from "./TableData";
-import Filtering from "./Filtering";
-import FilteringBy from "./FilteringBy";
 import Pagination from "./Pagination";
-import SearchBox from "./SearchBox";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { useRouter } from "next/router";
-import Image from "next/image";
-import Exemple from "./Exemple";
-import Link from "next/link";
 import millify from "millify";
-import { FaRedo } from "react-icons/fa";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import Image from "next/image";
+import Modal from "./Modal";
 import { encryptionData } from "../../../utils/dataEncryption";
+import Loader from "./Loader";
+import { AppraiserStatusOptions } from "../create-listing/data";
 
 const Index = () => {
-  const [disable, setdisable] = useState(false);
+  const [disable, setDisable] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [isStatusModal, setIsStatusModal] = useState(false);
@@ -156,7 +154,7 @@ const Index = () => {
   const archievePropertyHandler = (id) => {
     const data = JSON.parse(localStorage.getItem("user"));
 
-    toast.loading("archeiving this property");
+    toast.loading("Archiving this Property");
     axios
       .get("/api/propertyArcheive", {
         headers: {
@@ -171,8 +169,9 @@ const Index = () => {
       })
       .then((res) => {
         toast.dismiss();
-        toast.success("Successfully added to archived properties!!");
-        window.location.reload();
+        toast.success("Successfully Added to Archived Properties!!");
+        // window.location.reload();
+        router.push("/archive-property");
       })
       .catch((err) => {
         toast.error(err);
@@ -184,7 +183,7 @@ const Index = () => {
   const [propValue, setPropValue] = useState({});
 
   const onHoldHandler = () => {
-    setdisable(true);
+    setDisable(true);
     setModalOpen(false);
     const data = JSON.parse(localStorage.getItem("user"));
 
@@ -216,7 +215,7 @@ const Index = () => {
   };
 
   const onCancelHandler = () => {
-    setdisable(true);
+    setDisable(true);
     setModalOpen(false);
     const data = JSON.parse(localStorage.getItem("user"));
 
@@ -229,7 +228,7 @@ const Index = () => {
 
     const encryptedBody = encryptionData(payload);
 
-    toast.loading("Turning the Property Status....");
+    toast.loading("Turning the Property Status.....");
     axios
       .put("/api/setPropertyOnHold", encryptedBody)
       .then((res) => {
@@ -258,7 +257,6 @@ const Index = () => {
         return propertys;
       }
       const filteredProperties = propertys.filter((property) => {
-        console.log("property", property);
         // Convert the search input to lowercase for a case-insensitive search
         const searchTerm = searchInput.toLowerCase();
 
@@ -545,7 +543,7 @@ const Index = () => {
   return (
     <>
       {/* <!-- Main Header Nav --> */}
-      <Header />
+      <Header userData={userData} />
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
@@ -651,7 +649,9 @@ const Index = () => {
                           setModalIsOpenError={setModalIsOpenError}
                           setRefresh={setRefresh}
                           setModalIsPopupOpen={setModalIsPopupOpen}
+                          filterQuery = {filterQuery}
                           setFilterQuery={setFilterQuery}
+                          searchInput = {searchInput}
                           setSearchInput={setSearchInput}
                           refresh={refresh}
                           setWishlistedProperties={setWishlistedProperties}
@@ -1199,7 +1199,7 @@ const Index = () => {
                                       height={45}
                                       className="logo1 img-fluid"
                                       style={{ marginTop: "-20px" }}
-                                      src="/assets/images/Appraisal_Land_Logo.png"
+                                      src="/assets/images/logo.png"
                                       alt="header-logo2.png"
                                     />
                                     <span

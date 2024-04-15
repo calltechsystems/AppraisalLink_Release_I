@@ -28,24 +28,23 @@ const headCells = [
     width: 200,
   },
   {
-    id: "status",
-    numeric: false,
-    label: "Status",
-    width: 150,
-  },
-
-  {
     id: "emailaddress",
     numeric: false,
     label: "Email Address",
     width: 200,
   },
-  // {
-  //   id: "date",
-  //   numeric: false,
-  //   label: "Date",
-  //   width: 200,
-  // },
+  {
+    id: "date",
+    numeric: false,
+    label: "Start Date",
+    width: 200,
+  },
+  {
+    id: "status",
+    numeric: false,
+    label: "Status",
+    width: 150,
+  },
   {
     id: "action",
     numeric: false,
@@ -132,6 +131,7 @@ export default function Exemple({
   const [hideAction, setHideAction] = useState(false);
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
+  const [dataFetched, setDataFetched] = useState(false);
   let tempData = [];
 
   const filterBidsWithin24Hours = (property) => {
@@ -259,7 +259,8 @@ export default function Exemple({
           address: `${data?.streetName} ${data?.streetNumber},${data?.city}-${data?.postalCode}`,
           // date: dateNow,
           emailaddress: data?.emailId ? data?.emailId : "NA",
-          date: dateNow,
+          date: data?.isActive && data?.modifiedDateTime !== null ?
+          formatDate(data?.modifiedDateTime) : "-",
           action: (
             <div className="print-hidden-column">
               {data.firstName && (
@@ -322,11 +323,13 @@ export default function Exemple({
         },
       })
       .then((res) => {
+        setDataFetched(true)
         console.log(res.data);
         // setAppraiserCompanyInfo(res.data?.data?.brokerage);
         setAllBrokers(res.data?.data?.brokers.$values);
       })
       .catch((err) => {
+        setDataFetched(false)
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
@@ -349,6 +352,8 @@ export default function Exemple({
           setCloseRegisterModal={setCloseRegisterModal}
           refresh={refresh}
           refreshHandler={refreshHandler}
+          dataFetched={dataFetched}
+          properties={updatedData}
           setStartLoading={setStartLoading}
           start={start}
           end={end}

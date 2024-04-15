@@ -58,17 +58,18 @@ const headCells = [
     width: 220,
   },
   {
-    id: "urgency",
-    numeric: false,
-    label: "Request Type",
-    width: 140,
-  },
-  {
     id: "quote_required_by",
     numeric: false,
     label: "Appraisal Report Required By",
     width: 220,
   },
+  {
+    id: "urgency",
+    numeric: false,
+    label: "Request Type",
+    width: 140,
+  },
+
   // {
   //   id: "user",
   //   numeric: false,
@@ -138,6 +139,8 @@ export default function Exemple({
   properties,
   onHoldHandler,
   onCancelHandler,
+  searchInput,
+  filterQuery,
   refresh,
   setRefresh,
   setProperties,
@@ -155,14 +158,22 @@ export default function Exemple({
   const [updatedData, setUpdatedData] = useState([]);
   const [allBids, setBids] = useState([]);
   const [show, setShow] = useState(false);
-  
-  const [dataFetched,setDataFetched] = useState(false)
-  const [allListedProperties,setAllListedProperties]=useState([]);
+
+  const [dataFetched, setDataFetched] = useState(false);
+  const [allListedProperties, setAllListedProperties] = useState([]);
   let tempData = [];
   const [AllBrokers, setAllBrokers] = useState([]);
 
+  useEffect(()=>{
+    if(searchInput === ""){
+      setFilterQuery("All")
+      setSearchInput("")
+      setRefresh(true)
+    }
+  },[searchInput])
+
   const sortObjectsByOrderIdDescending = (data) => {
-    return data.sort((a, b) => b.order_id - a.order_id);
+    return data.sort((a, b) => b.property_id - a.property_id);
   };
 
   const getBrokerName = (id) => {
@@ -177,6 +188,11 @@ export default function Exemple({
 
     return `${selectedAppraiser.firstName} ${selectedAppraiser.lastName}`;
   };
+
+  function addCommasToNumber(number) {
+    if (Number(number) <= 100 || number === undefined) return number;
+    return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
 
   const AppraiserStatusOptions = [
     {
@@ -302,6 +318,9 @@ export default function Exemple({
   };
 
   const refreshHandler = () => {
+    setAllListedProperties([]);
+    setBids([]);
+    setProperties([]);
     setRefresh(true);
   };
 
@@ -327,17 +346,16 @@ export default function Exemple({
     return isCompleted ? 3 : isAccepted ? 2 : isQuoteProvided ? 1 : 0;
   };
 
-  const getPropertyInfoById = (userId)=>{
-    console.log("getprop",userId,allListedProperties)
+  const getPropertyInfoById = (userId) => {
+    console.log("getprop", userId, allListedProperties);
     let selectedProperty = {};
-    allListedProperties.map((prop,index)=>{
-      if(String(prop.userId) === String(userId)){
+    allListedProperties.map((prop, index) => {
+      if (String(prop.userId) === String(userId)) {
         selectedProperty = prop;
       }
-    })
+    });
     return selectedProperty;
-
-  }
+  };
 
   const openPopupModal = (property) => {
     setModalIsPopupOpen(true);
@@ -384,7 +402,7 @@ export default function Exemple({
                   {isHold ? "On Hold" : "Cancelled"}
                 </span>
               ) : isStatus === 3 ? (
-                <span className="btn bg-success w-100 text-light">
+                <span className="btn btn-completed w-100 text-light">
                   Completed
                 </span>
               ) : isStatus === 2 ? (
@@ -424,7 +442,7 @@ export default function Exemple({
             // remark: property.remark ? property.remark : "N.A.",
             // user: property.applicantEmailAddress,
             type_of_building: property.typeOfBuilding,
-            amount: ` $ ${millify(property.estimatedValue)}`,
+            amount: ` $ ${addCommasToNumber(property.estimatedValue)}`,
             purpose: property.purpose,
             type_of_appraisal: property.typeOfAppraisal,
             lender_information: property.lenderInformation
@@ -763,29 +781,21 @@ export default function Exemple({
                 </li>
               )} */}
 
-                <li title="Archive Property">
-                  {/* <Link
-                      href="#"
-                      onClick={() =>
-                        archievePropertyHandler(property.propertyId)
-                      }
-                    >
-                      <span className="btn btn-color w-100">
-                        {" "}
-                        Archive Property{" "}
-                      </span>
-                    </Link> */}
+                {/* <li title="Archive Property">
                   <span
                     className="btn btn-color-table"
                     onClick={() => archievePropertyHandler(property.orderId)}
                   >
-                    <Link className="color-light" href={`/brokerage-archive-properties`}>
+                    <Link
+                      className="color-light"
+                      href={`/brokerage-archive-properties`}
+                    >
                       <span className="text-light">
                         <FaArchive />
                       </span>
                     </Link>
                   </span>
-                </li>
+                </li> */}
 
                 {/* End li */}
               </ul>
@@ -800,12 +810,16 @@ export default function Exemple({
   }, [properties]);
 
   useEffect(() => {
+    setAllListedProperties([]);
+    setBids([]);
+    setProperties([]);
+    setFilterQuery("All")
+    setSearchInput("")
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
       token: userData.token,
     };
-
 
     axios
       .get("/api/getAllListedProperties", {
@@ -819,13 +833,12 @@ export default function Exemple({
       })
       .then((res) => {
         toast.dismiss();
-        setDataFetched(true)
-        console.log("properties",res.data.data.properties.$values);
-        setAllListedProperties( res.data.data.properties.$values);
+        setDataFetched(true);
+        setAllListedProperties(res.data.data.properties.$values);
       })
       .catch((err) => {
         toast.error(err);
-        setDataFetched(false)
+        setDataFetched(false);
         // setModalIsOpenError(true);
       });
 
@@ -841,7 +854,6 @@ export default function Exemple({
       })
       .then((res) => {
         toast.dismiss();
-        console.log("broker properties",res.data.data.$values);
         const temp = res.data.data.$values;
 
         axios
@@ -871,9 +883,7 @@ export default function Exemple({
 
         setAllBrokers(allbroker);
       })
-      .catch((err) => {
-
-      });
+      .catch((err) => {});
 
     let tempBids = [];
 
@@ -884,6 +894,8 @@ export default function Exemple({
       {updatedData && (
         <SmartTable
           title=""
+          searchInput={searchInput}
+          filterQuery={filterQuery}
           setFilterQuery={setFilterQuery}
           setSearchInput={setSearchInput}
           data={sortObjectsByOrderIdDescending(updatedData)}

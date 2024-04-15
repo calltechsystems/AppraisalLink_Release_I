@@ -144,22 +144,6 @@ const SidebarMenu = ({ userData }) => {
                 <span>Add New Property</span>
               </Link>
             </li>
-
-            <li
-              className={`treeview ${
-                isSinglePageActive(
-                  "/brokerage-archive-properties",
-                  route.pathname
-                )
-                  ? "active"
-                  : ""
-              }`}
-            >
-              <Link href="/brokerage-archive-properties">
-                <i className="flaticon-home"></i>
-                <span>Archive Properties</span>
-              </Link>
-            </li>
           </ul>
         </li>
 
@@ -181,6 +165,22 @@ const SidebarMenu = ({ userData }) => {
                 <span>Accepted Orders</span>
               </Link>
             </li> */}
+
+            <li
+              className={`treeview ${
+                isSinglePageActive(
+                  "/brokerage-archive-properties",
+                  route.pathname
+                )
+                  ? "active"
+                  : ""
+              }`}
+            >
+              <Link href="/brokerage-archive-properties">
+                <i className="flaticon-home"></i>
+                <span>Archive Properties</span>
+              </Link>
+            </li>
             <li
               className={`treeview ${
                 isSinglePageActive(

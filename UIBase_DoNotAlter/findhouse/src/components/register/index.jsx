@@ -6,6 +6,8 @@ import MobileMenu from "../common/header/MobileMenu";
 import PopupSignInUp from "../common/PopupSignInUp";
 import BreadCrumbBanner from "./BreadCrumbBanner";
 import Form from "./Form";
+import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 
 const Index = () => {
@@ -21,7 +23,7 @@ const Index = () => {
 
   const closeErrorModal = () => {
     setModalIsOpenError(false);
-    location.reload(true);
+    // location.reload(true);
   };
 
   return (
@@ -59,23 +61,74 @@ const Index = () => {
         <div className="modal">
           <div
             className="modal-content"
-            style={{ borderColor: "green", width: "20%" }}
+            style={{ borderColor: "green", width: "40%" }}
           >
-            <h3 className="text-center" style={{ color: "green" }}>
-              Success
-            </h3>
-            <div style={{ borderWidth: "2px", borderColor: "green" }}>
-              <br />
+            <div className="col-lg-12">
+              <div className="row">
+                <div className="col-lg-12">
+                  <Link href="/" className="">
+                    <Image
+                      width={60}
+                      height={45}
+                      className="logo1 img-fluid"
+                      style={{ marginTop: "-20px" }}
+                      src="/assets/images/Appraisal_Land_Logo.png"
+                      alt="header-logo2.png"
+                    />
+                    <span
+                      style={{
+                        color: "#2e008b",
+                        fontWeight: "bold",
+                        fontSize: "24px",
+                        // marginTop: "20px",
+                      }}
+                    >
+                      Appraisal
+                    </span>
+                    <span
+                      style={{
+                        color: "#97d700",
+                        fontWeight: "bold",
+                        fontSize: "24px",
+                        // marginTop: "20px",
+                      }}
+                    >
+                      {" "}
+                      Land
+                    </span>
+                  </Link>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-lg-12 text-center">
+                  <h3 className=" text-success mt-1">Success</h3>
+                </div>
+              </div>
+              <div
+                className="mt-2 mb-3"
+                style={{ border: "2px solid #97d700" }}
+              ></div>
             </div>
-            <h5 className="text-center">You are Successfully registered !!</h5>
+            <span
+              className="text-center mb-2 text-dark fw-bold"
+              style={{ fontSize: "18px" }}
+            >
+              Thanks for your registration with Appraisal Land, please verify
+              your account within 72 hours by validating the registration link
+              sent on the registered email !!
+            </span>
             <div
-              className="text-center"
-              style={{ display: "flex", flexDirection: "column" }}
+              className="mt-2 mb-3"
+              style={{ border: "2px solid #97d700" }}
+            ></div>
+            <div
+              className="col-lg-12 text-center"
+              style={{ display: "flex", justifyContent: "center" }}
             >
               <button
-                className="btn w-35 btn-white"
+                className="btn btn-color w-25"
                 onClick={() => closeModal()}
-                style={{ borderColor: "green", color: "green" }}
+                style={{}}
               >
                 Ok
               </button>
@@ -85,28 +138,103 @@ const Index = () => {
       )}
 
       {modalIsOpenError && (
+        // <div className="modal">
+        //   <div
+        //     className="modal-content"
+        //     style={{ borderColor: "orangered", width: "20%" }}
+        //   >
+        //     <h3 className="text-center" style={{ color: "orangered" }}>
+        //       Error
+        //     </h3>
+        //     <div style={{ borderWidth: "2px", borderColor: "orangered" }}>
+        //       <br />
+        //     </div>
+        //     <h5 className="text-center">{errorMessage}</h5>
+        //     <div
+        //       className="text-center"
+        //       style={{ display: "flex", flexDirection: "column" }}
+        //     >
+        //       <button
+        //         className="btn w-35 btn-white"
+        //         onClick={() => closeErrorModal()}
+        //         style={{ borderColor: "orangered", color: "orangered" }}
+        //       >
+        //         Cancel
+        //       </button>
+        //     </div>
+        //   </div>
+        // </div>
         <div className="modal">
           <div
             className="modal-content"
-            style={{ borderColor: "orangered", width: "20%" }}
+            style={{ borderColor: "orangered", width: "40%" }}
           >
-            <h3 className="text-center" style={{ color: "orangered" }}>
-              Error
-            </h3>
-            <div style={{ borderWidth: "2px", borderColor: "orangered" }}>
-              <br />
+            <div className="col-lg-12">
+              <div className="row">
+                <div className="col-lg-12">
+                  <Link href="/" className="">
+                    <Image
+                      width={60}
+                      height={45}
+                      className="logo1 img-fluid"
+                      style={{ marginTop: "-20px" }}
+                      src="/assets/images/Appraisal_Land_Logo.png"
+                      alt="header-logo2.png"
+                    />
+                    <span
+                      style={{
+                        color: "#2e008b",
+                        fontWeight: "bold",
+                        fontSize: "24px",
+                        // marginTop: "20px",
+                      }}
+                    >
+                      Appraisal
+                    </span>
+                    <span
+                      style={{
+                        color: "#97d700",
+                        fontWeight: "bold",
+                        fontSize: "24px",
+                        // marginTop: "20px",
+                      }}
+                    >
+                      {" "}
+                      Land
+                    </span>
+                  </Link>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-lg-12 text-center">
+                  <h3 className=" text-danger mt-1">Error</h3>
+                </div>
+              </div>
+              <div
+                className="mt-2 mb-3"
+                style={{ border: "2px solid #97d700" }}
+              ></div>
             </div>
-            <h5 className="text-center">{errorMessage}</h5>
+            <span
+              className="text-center mb-2 text-dark fw-bold"
+              style={{ fontSize: "18px" }}
+            >
+              {errorMessage}
+            </span>
             <div
-              className="text-center"
-              style={{ display: "flex", flexDirection: "column" }}
+              className="mt-2 mb-3"
+              style={{ border: "2px solid #97d700" }}
+            ></div>
+            <div
+              className="col-lg-12 text-center"
+              style={{ display: "flex", justifyContent: "center" }}
             >
               <button
-                className="btn w-35 btn-white"
+                className="btn btn-color w-25"
                 onClick={() => closeErrorModal()}
-                style={{ borderColor: "orangered", color: "orangered" }}
+                // style={{ borderColor: "orangered", color: "orangered" }}
               >
-                Cancel
+                Ok
               </button>
             </div>
           </div>

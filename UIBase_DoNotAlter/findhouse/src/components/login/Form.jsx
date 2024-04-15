@@ -58,6 +58,8 @@ const Form = ({
       setErrorMessage("Credentials Can't be empty");
       setModalIsOpenError(true);
     } else if (!captchaVerfied) {
+      setErrorMessage("Please fill the Captcha !");
+      setModalIsOpenError(true);
       setChange(true);
       return;
     } else {
@@ -341,29 +343,6 @@ const Form = ({
         <hr />
       </div> */}
             {/* devider */}
-
-            <div className="row mt25">
-              {/* <div className="col-lg-6">
-          <button
-            type="submit"
-            className="btn btn-block color-white bgc-fb mb0 w-100"
-          >
-            <i className="fa fa-facebook float-start mt5"></i> Facebook
-          </button>
-        </div> */}
-              {/* End .col */}
-
-              {/* <div className="col-lg-6">
-          <button
-            type="submit"
-            className="btn btn2 btn-block color-white bgc-gogle mb0 w-100"
-          >
-            <i className="fa fa-google float-start mt5"></i> Google
-          </button>
-        </div> */}
-              {/* End .col */}
-            </div>
-            {/* more signin options */}
           </form>
         </div>
       </div>

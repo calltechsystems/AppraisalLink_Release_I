@@ -3,7 +3,7 @@ import axios from "axios";
  async function handler (request,response) {
 
     const decryptionKey = process.env.CRYPTO_SECRET_KEY;
-    const domain = process.env.BACKEND_DOMAIN;
+    const domain = process.env.BACKEND_DOMAIN2;
 
   try {
     const token = request.headers.authorization;

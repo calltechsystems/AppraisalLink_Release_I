@@ -64,7 +64,7 @@ function SmartTable(props) {
     if (props.dataFetched && props.properties.length === 0) {
       const timer = setTimeout(() => {
         setShowNoData(true);
-      }, 2000);
+      }, 10000);
 
       return () => clearTimeout(timer);
     }
@@ -121,11 +121,11 @@ function SmartTable(props) {
       // Open print window and set up basic structure
       const printWindow = window.open("", "_blank");
       printWindow.document.write(
-        "<html><head><title>AllBrokerProperties</title></head><body>" +
+        "<html><head><title>All Quotes on Properties</title></head><body>" +
           // Add CSS styles within the <style> tag
           "<style>" +
           // Define your CSS styles here
-          "table { width: 100%; border-collapse: collapse; }" +
+          "table { width: 100%; border-collapse: collapse; font-size:12px; font-family:arial;}" +
           "th, td { border: 1px solid black; padding: 8px; }" +
           "th { background-color:#2e008b; color:white; }" +
           "</style>" +

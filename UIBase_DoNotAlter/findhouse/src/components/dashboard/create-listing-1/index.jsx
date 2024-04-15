@@ -12,6 +12,7 @@ import LocationField from "./LocationField";
 import { encryptionData } from "../../../utils/dataEncryption";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { typeOfBuilding } from "./data";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -20,23 +21,26 @@ const Index = ({ isView, propertyData }) => {
   const [userData, setUserData] = useState({});
   // const userData = JSON.parse(localStorage.getItem("user"));
   const data = JSON.parse(localStorage.getItem("user"));
+
   const [updateView, setUpdateView] = useState(propertyData);
   const [isDisable, setDisable] = useState(updateView);
-
-  const [disable, setdisable] = useState(false);
 
   const [appraisalQuoteDate, setAppraisalQuoteDate] = useState(
     propertyData ? propertyData.quoteRequiredDate : ""
   );
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalIsOpenError, setModalIsOpenError] = useState(false);
+
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalIsOpenError, setModalIsOpenError] = useState(false);
 
   const changeStringUrlHandler = (inputString) => {
     const resultArray = inputString?.split(",");
     return resultArray;
   };
+  const [errorMessage, setErrorMessage] = useState("");
+  const [refresh, setRefresh] = useState(false);
 
+  const [disable, setdisable] = useState(false);
   // let userData = {};
   const [updatedProperty, setUpdatedProperty] = useState([]);
 
@@ -48,7 +52,6 @@ const Index = ({ isView, propertyData }) => {
   const [streetNumberRef, setStreetNumberRef] = useState(
     propertyData?.streetNumber || ""
   );
-  const [refresh, setRefresh] = useState(false);
   const [cityRef, setCityRef] = useState(propertyData?.city || "");
   const [stateRef, setStateRef] = useState(propertyData?.province || "");
   const [zipCodeRef, setZipCodeRef] = useState(propertyData?.zipCode || null);
@@ -118,6 +121,7 @@ const Index = ({ isView, propertyData }) => {
   const [otherUrgency, setOtherUrgency] = useState(false);
 
   const [image, setImage] = useState(propertyData?.image || "");
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const changeUrlToStringHandler = () => {
     const resultString = filesUrl.join(",");
@@ -134,6 +138,11 @@ const Index = ({ isView, propertyData }) => {
     } else {
       field(value);
     }
+  };
+
+  const closeErrorModal = () => {
+    setModalIsOpenError(false);
+    location.reload(true);
   };
 
   useEffect(() => {
@@ -357,21 +366,15 @@ const Index = ({ isView, propertyData }) => {
     const type = urgencyRef;
   };
 
-  const closeErrorModal = () => {
-    setModalIsOpenError(false);
-    location.reload(true);
-  };
-
   const onCancelModalHandler = () => {
     window.location.reload();
   };
   const updateHandler = () => {
     setdisable(true);
     setModalIsOpen(false);
-    const nameRegex = /^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$/;
+    const nameRegex = /^[A-Za-z]+$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     const userInfo = JSON.parse(localStorage.getItem("user"));
-
     const phoneNumberRegex = /^\d{10}$/;
 
     if (
@@ -398,6 +401,7 @@ const Index = ({ isView, propertyData }) => {
         zipCode: zipCodeRef,
         area: "",
         community: communityRef,
+        propertyId: propertyData.propertyId,
         applicantFirstName: applicantFirstName,
         applicantLastName: applicantLatsName,
         applicantPhoneNumber: applicantNumber,
@@ -490,8 +494,6 @@ const Index = ({ isView, propertyData }) => {
 
         const propertyOrderId = url.split("/create-listing-1/")[1];
 
-        console.log(updateView, propertyData);
-
         toast.loading("Updating the property..");
         axios
           .put("/api/addPropertyByBroker", encryptedData, {
@@ -523,7 +525,7 @@ const Index = ({ isView, propertyData }) => {
   };
 
   const submitHandler = () => {
-    const nameRegex = /^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$/;
+    const nameRegex = /^[A-Za-z]+$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     const userInfo = JSON.parse(localStorage.getItem("user"));
     const phoneNumberRegex = /^\d{10}$/;
@@ -543,7 +545,6 @@ const Index = ({ isView, propertyData }) => {
     ) {
       toast.error("Please fill the Lender Information for this Purpose option");
     } else {
-      // setdisable(true);
       const payload = {
         streetName: streetNameRef,
         streetNumber: streetNumberRef,
@@ -649,7 +650,7 @@ const Index = ({ isView, propertyData }) => {
         });
       } else {
         setModalIsOpen(true);
-        setDisable(true);
+        setButtonDisabled(true);
       }
     }
   };
@@ -773,7 +774,7 @@ const Index = ({ isView, propertyData }) => {
 
         // console.log(updateView,propertyData);
 
-        toast.loading("Added the property for appraising ..");
+        toast.loading("Adding the property for appraisal ..");
         axios
           .post("/api/addBrokerProperty", encryptedData, {
             headers: {
@@ -793,8 +794,9 @@ const Index = ({ isView, propertyData }) => {
               toast.dismiss();
               setModalIsOpenError(true);
               // toast.error(
-              //   "Cant appraise the property all properties are being used!!"
+              //   "Can't appraise the property all properties are being used!!"
               // );
+              // setRefresh(true);
               // window.location.reload();
             } else if (String(status) === String(404)) {
               toast.dismiss();
@@ -838,7 +840,7 @@ const Index = ({ isView, propertyData }) => {
       <Header userData={data} />
 
       {/* <!--  Mobile Menu --> */}
-      <MobileMenu userData={userData} />
+      <MobileMenu />
 
       <div className="dashboard_sidebar_menu">
         <div
@@ -970,7 +972,6 @@ const Index = ({ isView, propertyData }) => {
                       errorLabel={errorLabel}
                       // areaRef={areaRef}
                       // setAreaRef={setAreaRef}
-                      disable={disable}
                       communityRef={communityRef}
                       setCommunityRef={setCommunityRef}
                       buildinRef={buildinRef}
@@ -1035,8 +1036,9 @@ const Index = ({ isView, propertyData }) => {
                       {/* <hr style={{ color: "#2e008b" }} /> */}
 
                       <DetailedInfo
+                        setButtonDisabled={setButtonDisabled}
+                        buttonDisabled={buttonDisabled}
                         isDisable={isDisable}
-                        disable={disable}
                         applicantFirstName={applicantFirstName}
                         setApplicantFirstName={setApplicantFirstName}
                         setApplicantAddress={setApplicantAddress}
@@ -1046,6 +1048,7 @@ const Index = ({ isView, propertyData }) => {
                         changeStringUrlHandler={changeStringUrlHandler}
                         filesUrl={filesUrl}
                         image={image}
+                        disable={disable}
                         setImage={setImage}
                         setAttachment={setAttachment}
                         errorLabel={errorLabel}
@@ -1515,7 +1518,7 @@ const Index = ({ isView, propertyData }) => {
                               updateView ? updateHandler : finalSubmitHandler
                             }
                           >
-                            Continue
+                            Submit
                           </button>
                         </div>
                       </div>
@@ -1589,11 +1592,8 @@ const Index = ({ isView, propertyData }) => {
                 </div>
               )}
 
-              <div className="row">
-                <div
-                  className="col-lg-12"
-                  style={{ backgroundColor: "#2e008b" }}
-                >
+              <div className="row mt50">
+                <div className="col-lg-12">
                   <div className="copyright-widget-dashboard text-center">
                     <p>
                       &copy; {new Date().getFullYear()} Appraisal Land. All
@@ -1608,15 +1608,6 @@ const Index = ({ isView, propertyData }) => {
           </div>
         </div>
       </section>
-      <div
-        style={{
-          width: "100%",
-          backgroundColor: "black",
-          position: "fixed",
-        }}
-      >
-        .
-      </div>
     </>
   );
 };

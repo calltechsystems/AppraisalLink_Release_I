@@ -23,9 +23,23 @@ const Index = () => {
   
   const [userData , setUserData] = useState({});
 
-
+  function getSelectedPlans(plans) {
+    // Get the current date
+    const currentDate = new Date();
+  
+    // Filter plans based on startDate and transactionDetail
+    const selectedPlans = plans.filter(plan => {
+      const startDate = new Date(plan.startDate);
+      const isBeforeOrEqualCurrentDate = startDate <= currentDate;
+      const isNotTopUp = !plan.transactionDetail.toLowerCase().includes("topup");
+      return isBeforeOrEqualCurrentDate && isNotTopUp;
+    });
+  
+    return selectedPlans;
+  }
   useEffect(()=>{
 
+    const userData = JSON.parse(localStorage.getItem("user"))
     axios
     .get("/api/getBrokerTransactions", {
       headers: {
@@ -39,20 +53,11 @@ const Index = () => {
     .then((res) => {
       toast.dismiss();
       let tempSub = (res.data.data.result.$values);
-      let requiredSucription = {};
-      tempSub.map((sub,index)=>{
-        if(new Date(sub.startDate) <= new Date() && new Date(sub.endDate) >= new Date()){
-          requiredSucription = sub;
-        }
-      })
-      setcurrentSubscription(requiredSucription)
+      setcurrentSubscription(getSelectedPlans(tempSub)[0])
       setRerender(false);
     })
     .catch((err) => {
       toast.dismiss();
-      // toast.error(err?.response?.data?.error);
-      // setErrorMessage(err.response);
-      // setModalIsOpenError(true);
     });
 
 
@@ -85,7 +90,7 @@ const Index = () => {
     <>
       <Seo pageTitle="My Plans" />
       <MyPlans currentSubscription={currentSubscription} setModalOpen={setModalOpen} setPrice={setPrice} userData={userData} modalOpen={modalOpen}/>
-      <Modal modalOpen={modalOpen} closeModal={closeModal} price={price}/>
+      <Modal currentSubscription={currentSubscription} modalOpen={modalOpen} closeModal={closeModal} price={price}/>
       {openRedirectionModal && (
         <div className="modal">
           <div className="modal-content">

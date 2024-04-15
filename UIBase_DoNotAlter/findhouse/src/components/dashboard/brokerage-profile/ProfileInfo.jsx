@@ -166,7 +166,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
 
     if (
       nameRegex.test(firstName) === false ||
-      (middleName.trim() !== "" && nameRegex.test(middleName) === false) ||
+      (middleName !== null &&
+        middleName.trim() !== "" &&
+        !nameRegex.test(middleName)) ||
       nameRegex.test(lastName) === false
     ) {
       toast.error("Name should be valid ");

@@ -12,9 +12,11 @@ const Filtering = ({ setRefresh , FilteringType , setFilteringType }) => {
             <select className="selectpicker show-tick form-select c_select"
             value={FilteringType}
             onChange={(e)=>setFilteringType(e.target.value)}>
-              <option value={"Last 3 Month"}>Quaterly</option>
-              <option value={"Last 7 days"}>Weekly</option>
-              <option value={"Last 30 Days"}>Monthly</option>
+              <option value={"All"}>All</option>
+              <option value={"Last 7 days"}>Last 7 Days</option>
+              <option value={"Last 30 Days"}>Last 30 Days</option>
+              <option value={"Last 3 Month"}>Last 90 Days</option>
+              
             </select>
           </div>
           <div className="col-lg-3">

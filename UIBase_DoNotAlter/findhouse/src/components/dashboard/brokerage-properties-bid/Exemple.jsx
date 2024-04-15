@@ -281,7 +281,8 @@ export default function Exemple({
     const prop = getCurrentPropertyInfoHandler();
     console.log(prop);
     const getData = () => {
-      properties.map((property, index) => {
+      properties.map((propertyWhole, index) => {
+        const property = propertyWhole.bid;
         const updatedRow = {
           AppraiserId: property.appraiserUserId ? property.appraiserUserId : 0,
           quote: `$ ${property.bidAmount}`,
@@ -347,8 +348,8 @@ export default function Exemple({
                         target="_blank"
                         rel="noopener noreferrer"
                         href={
-                          userData?.appraiser_Details?.lenderListUrl
-                            ? userData?.appraiser_Details?.lenderListUrl
+                          propertyWhole?.lenderListUrl
+                            ? propertyWhole?.lenderListUrl
                             : "#"
                         }
                         style={{ cursor: "pointer", color: "white" }}
@@ -410,25 +411,27 @@ export default function Exemple({
             ) : (
               <div>
                 <h5 className="btn btn-danger m-1">Declined</h5>
-                <div
-                  className="list-inline-item"
-                  onClick={() => reAssign(property.bidId)}
-                >
-                  <li
+                {property?.appraiserAssign === null && (
+                  <div
                     className="list-inline-item"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title="Change Appraiser"
+                    onClick={() => reAssign(property.bidId)}
                   >
-                    <div className=" btn btn-color fw-bold ">
-                      <span className="flaticon-replace text-light">
-                        {" "}
-                        Change Apprasier
-                      </span>
-                      {/* </Link> */}
-                    </div>
-                  </li>
-                </div>
+                    <li
+                      className="list-inline-item"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Change Appraiser"
+                    >
+                      <div className=" btn btn-color fw-bold ">
+                        <span className="flaticon-replace text-light">
+                          {" "}
+                          Change Apprasier
+                        </span>
+                        {/* </Link> */}
+                      </div>
+                    </li>
+                  </div>
+                )}
               </div>
             ),
         };

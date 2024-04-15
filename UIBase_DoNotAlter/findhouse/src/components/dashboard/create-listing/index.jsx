@@ -372,7 +372,7 @@ const Index = ({ isView, propertyData }) => {
   const updateHandler = () => {
     setdisable(true);
     setModalIsOpen(false);
-    const nameRegex = /^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$/;
+    const nameRegex = /^[A-Za-z]+$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     const userInfo = JSON.parse(localStorage.getItem("user"));
 
@@ -526,7 +526,7 @@ const Index = ({ isView, propertyData }) => {
   };
 
   const submitHandler = () => {
-    const nameRegex = /^[A-Za-z][A-Za-z\s'-]*[A-Za-z]$/;
+    const nameRegex = /^[A-Za-z]+$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     const userInfo = JSON.parse(localStorage.getItem("user"));
     const phoneNumberRegex = /^\d{10}$/;
@@ -1519,7 +1519,7 @@ const Index = ({ isView, propertyData }) => {
                               updateView ? updateHandler : finalSubmitHandler
                             }
                           >
-                            Continue
+                            Submit
                           </button>
                         </div>
                       </div>
@@ -1558,31 +1558,74 @@ const Index = ({ isView, propertyData }) => {
                 <div className="modal">
                   <div
                     className="modal-content"
-                    style={{ borderColor: "#2e008b", width: "20%" }}
+                    style={{ borderColor: "red", width: "40%" }}
                   >
-                    <h4 className="text-center mb-1" style={{ color: "red" }}>
-                      Error
-                    </h4>
-                    <div
-                      className="mt-2 mb-3"
-                      style={{ border: "2px solid #97d700" }}
-                    ></div>
-                    <span className="text-center mb-2 text-dark fw-bold">
+                    <div className="col-lg-12">
+                      <div className="row">
+                        <div className="col-lg-12">
+                          <Link href="/" className="">
+                            <Image
+                              width={60}
+                              height={45}
+                              className="logo1 img-fluid"
+                              style={{ marginTop: "-20px" }}
+                              src="/assets/images/Appraisal_Land_Logo.png"
+                              alt="header-logo2.png"
+                            />
+                            <span
+                              style={{
+                                color: "#2e008b",
+                                fontWeight: "bold",
+                                fontSize: "24px",
+                                // marginTop: "20px",
+                              }}
+                            >
+                              Appraisal
+                            </span>
+                            <span
+                              style={{
+                                color: "#97d700",
+                                fontWeight: "bold",
+                                fontSize: "24px",
+                                // marginTop: "20px",
+                              }}
+                            >
+                              {" "}
+                              Land
+                            </span>
+                          </Link>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-lg-12 text-center">
+                          <h3 className=" text-danger mt-1">Error</h3>
+                        </div>
+                      </div>
+                      <div
+                        className="mt-2 mb-3"
+                        style={{ border: "2px solid #97d700" }}
+                      ></div>
+                    </div>
+                    <span
+                      className="text-center mb-2 text-dark fw-bold"
+                      style={{ fontSize: "18px" }}
+                    >
                       {/* Can't appraise the property. All properties are being
                       used!! */}
-                      Your all properties have been used, so you cannot add more
-                      properties.
+                      Your All Properties have been Used, so you cannot add more
+                      properties.If you want to add more properties, you will
+                      have to add Top-up.
                     </span>
                     <div
                       className="mt-2 mb-3"
                       style={{ border: "2px solid #97d700" }}
                     ></div>
                     <div
-                      className="text-center"
-                      style={{ display: "flex", flexDirection: "column" }}
+                      className="col-lg-12 text-center"
+                      style={{ display: "flex", justifyContent: "center" }}
                     >
                       <button
-                        className="btn btn-color"
+                        className="btn btn-color w-50"
                         onClick={() => closeErrorModal()}
                         style={{}}
                       >

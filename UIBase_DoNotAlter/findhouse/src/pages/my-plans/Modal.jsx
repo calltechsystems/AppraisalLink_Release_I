@@ -10,6 +10,7 @@ const Modal = ({ modalOpen, closeModal, price }) => {
   const [paypalUrl, setPaypalUrl] = useState("");
   const [status, setStatus] = useState(0);
   const [countdown, setCountdown] = useState(180);
+  const [IsAgainLoginPopUp, setIsAgainLoginPopUp] = useState(false);
 
   const checkOutHandler = () => {
     const data = JSON.parse(localStorage.getItem("user"));
@@ -159,11 +160,11 @@ const Modal = ({ modalOpen, closeModal, price }) => {
             ></div>
             {status === 2 ? (
               <div className="text-center">
-                <span style={{ fontSize: "19px", color:"black" }}>
+                <span style={{ fontSize: "19px", color: "black" }}>
                   We have already redirected you to the paypal page.
                 </span>
                 <br />
-                <span style={{ fontSize: "19px", color:"black" }}>
+                <span style={{ fontSize: "19px", color: "black" }}>
                   Don&apos;t <span style={{ color: "red" }}>reload</span> or{" "}
                   <span style={{ color: "red" }}>refresh</span> the page
                 </span>
@@ -204,7 +205,7 @@ const Modal = ({ modalOpen, closeModal, price }) => {
                       fontSize: "19px",
                     }}
                   >
-                    Note : Cannot switch between the tabs while this modal is
+                    Note : Cannot switch between the tabs while this model is
                     being open.
                   </p>
                 </p>
@@ -222,19 +223,18 @@ const Modal = ({ modalOpen, closeModal, price }) => {
               )}
               {paypalUrl ? (
                 status === 1 ? (
-                  <div
+                  <a
+                    href={paypalUrl}
                     onClick={() => openPaypalUrl()}
                     className="btn btn-color w-25"
                   >
-                    <a href={paypalUrl} className="">
-                      <img
-                        src="https://th.bing.com/th/id/OIP.pQDcRxJ3IS71sWCWQ96IUwHaHa?w=171&h=180&c=7&r=0&o=5&pid=1.7"
-                        width={40}
-                        height={25}
-                        alt="PayPal"
-                      />
-                    </a>
-                  </div>
+                    <img
+                      src="https://th.bing.com/th/id/OIP.pQDcRxJ3IS71sWCWQ96IUwHaHa?w=171&h=180&c=7&r=0&o=5&pid=1.7"
+                      width={40}
+                      height={25}
+                      alt="PayPal"
+                    />
+                  </a>
                 ) : (
                   <label
                     className="btn btn-color w-25"

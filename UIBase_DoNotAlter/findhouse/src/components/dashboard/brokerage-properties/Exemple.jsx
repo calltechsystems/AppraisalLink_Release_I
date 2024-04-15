@@ -53,17 +53,18 @@ const headCells = [
     width: 220,
   },
   {
-    id: "urgency",
-    numeric: false,
-    label: "Request Type",
-    width: 140,
-  },
-  {
     id: "quote_required_by",
     numeric: false,
     label: "Appraisal Report Required By",
     width: 220,
   },
+  {
+    id: "urgency",
+    numeric: false,
+    label: "Request Type",
+    width: 140,
+  },
+
   // {
   //   id: "user",
   //   numeric: false,
@@ -133,7 +134,10 @@ export default function Exemple({
   properties,
   onHoldHandler,
   onCancelHandler,
+  setWishlist,
   refresh,
+  searchInput,
+  filterQuery,
   setRefresh,
   setProperties,
   setCurrentProperty,
@@ -151,6 +155,14 @@ export default function Exemple({
   const [show, setShow] = useState(false);
   const [dataFetched, setDataFetched] = useState(false);
   let tempData = [];
+
+  useEffect(()=>{
+    if(searchInput === ""){
+      setProperties([])
+      setBids([]);
+      setRefresh(true)
+    }
+  },[searchInput])
 
   const sortObjectsByOrderIdDescending = (data) => {
     return data.sort((a, b) => b.order_id - a.order_id);
@@ -267,8 +279,19 @@ export default function Exemple({
   };
 
   const refreshHandler = () => {
+    setProperties([]);
+    setBids([]);
     setRefresh(true);
   };
+
+  useState(() => {
+    if (searchInput === "") {
+      setProperties([]);
+      setBids([]);
+      // setWishlist([]);
+      setRefresh(true);
+    }
+  }, [searchInput]);
 
   const getPropertyStatusHandler = (property) => {
     let isInProgress = true;
@@ -291,6 +314,11 @@ export default function Exemple({
     });
     return isCompleted ? 3 : isAccepted ? 2 : isQuoteProvided ? 1 : 0;
   };
+
+  function addCommasToNumber(number) {
+    if (Number(number) <= 100 || number === undefined) return number;
+    return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
 
   const openPopupModal = (property) => {
     setModalIsPopupOpen(true);
@@ -318,7 +346,7 @@ export default function Exemple({
                   {isHold ? "On Hold" : "Cancelled"}
                 </span>
               ) : isStatus === 3 ? (
-                <span className="btn bg-success w-100 text-light">
+                <span className="btn btn-completed w-100 text-light">
                   Completed
                 </span>
               ) : isStatus === 2 ? (
@@ -341,14 +369,19 @@ export default function Exemple({
                 <span className="btn bg-warning w-100">
                   {isHold ? "N.A." : "N.A."}
                 </span>
-              ) : property.orderStatus === 1 ? (
+              ) : isBidded.orderStatus !== 1 &&
+                isBidded.orderStatus !== null &&
+                isBidded.orderStatus !== undefined ? (
+                <span className="btn bg-warning  w-100">
+                  {getOrderValue(isBidded.orderStatus)}
+                </span>
+              ) : isBidded.$id &&
+                isBidded.status === 1 &&
+                isBidded.orderStatus === 1 &&
+                isBidded.orderStatus !== undefined ? (
                 <span className="btn bg-warning  w-100">
                   {getOrderValue(isBidded.orderStatus)} -
                   {formatDate(isBidded.statusDate)}
-                </span>
-              ) : property.orderStatus !== null ? (
-                <span className="btn bg-warning  w-100">
-                  {getOrderValue(isBidded.orderStatus)}
                 </span>
               ) : (
                 <span className="btn bg-warning  w-100">N.A.</span>
@@ -358,7 +391,7 @@ export default function Exemple({
             // remark: property.remark ? property.remark : "N.A.",
             // user: property.applicantEmailAddress,
             type_of_building: property.typeOfBuilding,
-            amount: ` $ ${millify(property.estimatedValue)}`,
+            amount: ` $ ${addCommasToNumber(property.estimatedValue)}`,
             purpose: property.purpose,
             type_of_appraisal: property.typeOfAppraisal,
             lender_information: property.lenderInformation
@@ -735,6 +768,11 @@ export default function Exemple({
   }, [properties]);
 
   useEffect(() => {
+
+    setProperties([])
+    setBids([])
+    setFilterQuery("All")
+    setSearchInput("")
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -794,6 +832,8 @@ export default function Exemple({
       {updatedData && (
         <SmartTable
           title=""
+          searchInput={searchInput}
+          filterQuery={filterQuery}
           setFilterQuery={setFilterQuery}
           setSearchInput={setSearchInput}
           data={sortObjectsByOrderIdDescending(updatedData)}

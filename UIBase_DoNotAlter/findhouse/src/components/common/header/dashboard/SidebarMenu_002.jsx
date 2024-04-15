@@ -180,22 +180,6 @@ const SidebarMenu = ({ userData }) => {
               </Link>
             </li>
 
-            <li
-              className={`treeview ${
-                isSinglePageActive(
-                  "/appraiser-company-archive-property",
-                  route.pathname
-                )
-                  ? "active"
-                  : ""
-              }`}
-            >
-              <Link href="/appraiser-company-archive-property">
-                <i className="flaticon-home"></i>
-                <span>Archive Properties</span>
-              </Link>
-            </li>
-
             {/* End Review */}
 
             {/*<li
@@ -348,6 +332,21 @@ const SidebarMenu = ({ userData }) => {
         <li className="title">
           <span>Manage Orders</span>
           <ul>
+            <li
+              className={`treeview ${
+                isSinglePageActive(
+                  "/appraiser-company-archive-property",
+                  route.pathname
+                )
+                  ? "active"
+                  : ""
+              }`}
+            >
+              <Link href="/appraiser-company-archive-property">
+                <i className="flaticon-home"></i>
+                <span>Archive Properties</span>
+              </Link>
+            </li>
             <li
               className={`treeview ${
                 isSinglePageActive(

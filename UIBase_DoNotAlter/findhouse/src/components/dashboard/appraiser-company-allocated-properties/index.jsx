@@ -30,7 +30,7 @@ const Index = () => {
   const [typeView, setTypeView] = useState(0);
   const [startLoading, setStartLoading] = useState(false);
   const [filterProperty, setFilterProperty] = useState("");
-  const [generatedProp,setGeneratedProps]=useState([])
+  const [generatedProp, setGeneratedProps] = useState([]);
   const [showPropDetails, setShowPropDetails] = useState(false);
   const [filterQuery, setFilterQuery] = useState("All");
   const [searchQuery, setSearchQuery] = useState("city");
@@ -39,12 +39,15 @@ const Index = () => {
   const [lowRangeBid, setLowRangeBid] = useState("");
   const [propertyId, setPropertyId] = useState(null);
 
-  const [allAssignedprop,setAssignedProp]=useState([])
+  const [allAssignedprop, setAssignedProp] = useState([]);
 
   const [openAppraiser, setOpenAppraiser] = useState(false);
 
   const [disable, setDisble] = useState(false);
 
+  const [assignModal, setAssignModal] = useState(false);
+
+  const [AssignAppraisers, setAssignAppraisers] = useState([]);
   const [wishlistedProperties, setWishlistedProperties] = useState([]);
   const [updatedCode, setUpdatedCode] = useState(false);
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
@@ -61,21 +64,22 @@ const Index = () => {
 
   const [end, setEnd] = useState(4);
 
+  console.log("AssignAppraisers", AssignAppraisers);
   const closeErrorModal = () => {
     setModalIsOpenError(false);
   };
-
+  const [remark, setRemark] = useState("");
   const [currentBid, setCurrentBid] = useState(-1);
-
   const handleStatusUpdateHandler = () => {
     setDisble(true);
-    const userData = JSON.parse(localStorage.getItem("user"));
 
+    const data = JSON.parse(localStorage.getItem("user"));
     const payload = {
-      token: userData.token,
-      bidid: currentBid,
+      token: data.token,
+      Quoteid: currentBid.bidId,
       OrderStatus: Number(orderStatus),
-      remark: "",
+      remark: remark,
+      statusDate: statusDate,
     };
 
     const encryptedBody = encryptionData(payload);
@@ -89,10 +93,11 @@ const Index = () => {
       })
       .catch((err) => {
         toast.dismiss();
-        toast.error(err);
+        toast.error(err?.response?.data?.error);
       });
 
-    setCurrentBid(-1);
+    setRemark("");
+    setCurrentBid({});
     setIsStatusModal(false);
   };
 
@@ -103,6 +108,7 @@ const Index = () => {
     setIsStatusModal(false);
   };
 
+  const [searchedProperties, setSearchedProperties] = useState([]);
 
   const [openBrokerModal, setOpenBrokerModal] = useState(false);
   const [broker, setBroker] = useState({});
@@ -127,9 +133,18 @@ const Index = () => {
     if (String(value) === "Appraisal Visit Confirmed") {
       setOpenDate(true);
     }
+    if (String(value) !== "Appraisal Visit Confirmed") {
+      setOpenDate(false);
+    }
+    let selectedValue = 0;
+    AppraiserStatusOptions.map((prop, index) => {
+      if (String(prop.type) === String(value)) {
+        console.log("props", prop.type, value, prop.id);
+        selectedValue = prop.id;
+      }
+    });
 
-    console.log(value);
-    setOrderStatus(value);
+    setOrderStatus(selectedValue);
   };
 
   const [appraiser, setAppraiser] = useState({});
@@ -140,6 +155,18 @@ const Index = () => {
 
   const [moreBrokerInfo, setMoreBrokerInfo] = useState({});
   const [isBroker, setisBroker] = useState(false);
+
+  function getMinDateTime() {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
+    const day = currentDate.getDate().toString().padStart(2, "0");
+    const hours = currentDate.getHours().toString().padStart(2, "0");
+    const minutes = currentDate.getMinutes().toString().padStart(2, "0");
+
+    // Format the date as YYYY-MM-DDTHH:mm
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  }
 
   let [selectedBroker, setSelectedBroker] = useState({});
   const openModalBroker = (property, value) => {
@@ -255,7 +282,8 @@ const Index = () => {
   const setShowBroker = () => {};
 
   const closeAssignModal = () => {
-    setOpenAssignModal(false);
+    setAssignModal(false);
+    setAssignPropertyId(-1);
   };
 
   useEffect(() => {
@@ -263,7 +291,7 @@ const Index = () => {
       if (searchInput === "") {
         return propertys;
       }
-      const filteredProperties = propertys.filter((property) => {
+      const filteredProperties = properties.filter((property) => {
         // Convert the search input to lowercase for a case-insensitive search
         const searchTerm = searchInput.toLowerCase();
 
@@ -283,13 +311,14 @@ const Index = () => {
             property.typeOfBuilding?.toLowerCase().includes(searchTerm)
           );
       });
-
       return filteredProperties;
     };
     const filteredData = filterProperties(properties, searchInput);
-    setFilterProperty(filteredData);
+    setSearchedProperties(filteredData);
   }, [searchInput]);
-  
+
+  console.log("filterProperties", searchInput, filterProperty);
+
   const calculate = (searchDate, diff) => {
     const newDateObj = new Date(searchDate.addedDatetime);
     const currentObj = new Date();
@@ -306,8 +335,6 @@ const Index = () => {
   };
 
   const filterData = (tempData) => {
-
-    console.log("filterData",tempData)
     const currentDate = new Date();
     const oneYearAgo = new Date(currentDate);
     oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
@@ -334,7 +361,7 @@ const Index = () => {
   useEffect(() => {
     const tmpData = filterData(properties);
     setFilterProperty(tmpData);
-  }, [filterQuery]);
+  }, [filterQuery, generatedProp]);
 
   const handleDelete = () => {
     const data = JSON.parse(localStorage.getItem("user"));
@@ -525,6 +552,38 @@ const Index = () => {
     setModalOpen(true);
   };
 
+  const [selectedAppraiser, setSelectedAppraiser] = useState({});
+
+  const assignAppraiserUpdateHandler = () => {
+    const data = JSON.parse(localStorage.getItem("user"));
+    const payload = {
+      companyid: data.appraiserCompany_Datails.appraiserCompanyId,
+      propertyid: Number(assignPropertyId),
+      appraiserid: Number(
+        selectedAppraiser === -1 ? AssignAppraisers[0].id : selectedAppraiser
+      ),
+    };
+
+    const encryptedData = encryptionData(payload);
+    toast.loading("Assigning the property!!....");
+    axios
+      .post("/api/assignPropertyToAppraiser", encryptedData, {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+      })
+      .then((res) => {
+        toast.dismiss();
+        toast.success("Successfully assigned the property!");
+        location.reload(true);
+      })
+      .catch((err) => {
+        toast.dismiss();
+        toast.error(err);
+      });
+    setAssignPropertyId(-1);
+  };
+
   const onWishlistHandler = (id) => {
     const userData = JSON.parse(localStorage.getItem("user"));
 
@@ -550,7 +609,6 @@ const Index = () => {
       });
   };
 
- 
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -594,11 +652,11 @@ const Index = () => {
                 </div> */}
                 {/* End Dashboard Navigation */}
 
-                <div className="col-lg-12 col-xl-12 text-center mt-1">
+                {/* <div className="col-lg-12 col-xl-12 text-center mt-1">
                   <div className="style2 mb30-991">
                     <h3 className="breadcrumb_title">Allocated Properties</h3>
                   </div>
-                </div>
+                </div> */}
                 {/* End .col */}
 
                 {/*<div className="row">
@@ -649,8 +707,15 @@ const Index = () => {
                           setAssignedProp={setAssignedProp}
                           setGeneratedProps={setGeneratedProps}
                           properties={
-                            searchInput === ""  && filterQuery === "All"? properties : filterProperty
+                            searchInput === "" && filterQuery === "All"
+                              ? properties
+                              : searchInput !== ""
+                              ? searchedProperties
+                              : filterProperty
                           }
+                          searchInput={searchInput}
+                          filterQuery={filterQuery}
+                          setAssignAppraisers={setAssignAppraisers}
                           setUpdatedCode={setUpdatedCode}
                           onWishlistHandler={onWishlistHandler}
                           participateHandler={participateHandler}
@@ -668,6 +733,8 @@ const Index = () => {
                           setWishlistedProperties={setWishlistedProperties}
                           setStartLoading={setStartLoading}
                           openModalBroker={openModalBroker}
+                          setAssignModal={setAssignModal}
+                          setAssignPropertyId={setAssignPropertyId}
                           setAssignedAppraiser={openAppraisalModal}
                         />
 
@@ -725,7 +792,7 @@ const Index = () => {
                                       height={45}
                                       className="logo1 img-fluid"
                                       style={{ marginTop: "-20px" }}
-                                      src="/assets/images/Appraisal_Land_Logo.png"
+                                      src="/assets/images/logo.png"
                                       alt="header-logo2.png"
                                     />
                                     <span
@@ -760,7 +827,7 @@ const Index = () => {
                                 </div>
                               </div>
                               <div
-                                className="mb-2"
+                                className="mb-3 mt-2"
                                 style={{ border: "2px solid #97d700" }}
                               ></div>
                               <div
@@ -805,8 +872,9 @@ const Index = () => {
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -816,9 +884,9 @@ const Index = () => {
                                       <td
                                         style={{
                                           border: "1px solid #2e008b",
-                                          width: "465px",
+                                          width: "415px",
                                           color: "black",
-                                          padding: "5px",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {" "}
@@ -850,8 +918,9 @@ const Index = () => {
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -864,7 +933,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          padding: "5px",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {broker.typeOfBuilding}
@@ -873,8 +942,9 @@ const Index = () => {
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -887,7 +957,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          padding: "5px",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {broker.typeOfAppraisal}
@@ -896,8 +966,9 @@ const Index = () => {
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -910,7 +981,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          padding: "5px",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {broker.purpose}
@@ -919,8 +990,9 @@ const Index = () => {
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -933,7 +1005,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          padding: "5px",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {broker.lenderInformation
@@ -967,8 +1039,9 @@ const Index = () => {
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -980,7 +1053,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          padding: "5px",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         ${broker.estimatedValue}
@@ -989,8 +1062,9 @@ const Index = () => {
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -1002,7 +1076,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          padding: "5px",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {" "}
@@ -1016,8 +1090,9 @@ const Index = () => {
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -1029,7 +1104,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          padding: "5px",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {broker.quoteRequiredDate
@@ -1037,11 +1112,12 @@ const Index = () => {
                                           : "N.A."}
                                       </td>
                                     </tr>
-                                    <tr>
+                                    {/* <tr>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
+                                          paddingLeft:"10px"
                                         }}
                                       >
                                         <span className="text-start">
@@ -1053,7 +1129,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          padding: "5px",
+                                          paddingLeft:"10px"
                                         }}
                                       >
                                         {" "}
@@ -1064,8 +1140,9 @@ const Index = () => {
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
+                                          paddingLeft:"10px"
                                         }}
                                       >
                                         <span className="text-start">
@@ -1077,7 +1154,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          padding: "5px",
+                                          paddingLeft:"10px"
                                         }}
                                       >
                                         {" "}
@@ -1087,8 +1164,9 @@ const Index = () => {
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
+                                          paddingLeft:"10px"
                                         }}
                                       >
                                         <span className="text-start">
@@ -1100,13 +1178,13 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          padding: "5px",
+                                          paddingLeft:"10px"
                                         }}
                                       >
                                         {" "}
                                         {broker.applicantPhoneNumber}
                                       </td>
-                                    </tr>
+                                    </tr> */}
                                     {/* <tr>
                                     <td
                                       style={{
@@ -1133,8 +1211,9 @@ const Index = () => {
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -1146,7 +1225,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          padding: "5px",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {" "}
@@ -1156,8 +1235,9 @@ const Index = () => {
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -1169,7 +1249,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          padding: "5px",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {" "}
@@ -1181,8 +1261,9 @@ const Index = () => {
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -1195,7 +1276,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          padding: "5px",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {broker.applicantEmailAddress}
@@ -1204,12 +1285,13 @@ const Index = () => {
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
-                                          Applicant Number
+                                          Applicant Phone Number
                                         </span>
                                       </td>
                                       <td
@@ -1217,7 +1299,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          padding: "5px",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {" "}
@@ -1263,7 +1345,7 @@ const Index = () => {
                                       height={45}
                                       className="logo1 img-fluid"
                                       style={{ marginTop: "-20px" }}
-                                      src="/assets/images/Appraisal_Land_Logo.png"
+                                      src="/assets/images/logo.png"
                                       alt="header-logo2.png"
                                     />
                                     <span
@@ -1290,7 +1372,6 @@ const Index = () => {
                                   </Link>
                                 </div>
                               </div>
-
                               <div className="row">
                                 <div className="col-lg-12 text-center">
                                   <h1 className=" text-color mt-1">
@@ -1345,9 +1426,9 @@ const Index = () => {
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid grey",
+                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
-                                          padding: "5px",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -1359,141 +1440,20 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          padding: "5px",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {selectedBroker.firstName}{" "}
                                         {selectedBroker.lastName}
                                       </td>
                                     </tr>
+
                                     <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
-                                        <span className="text-start">
-                                          Address
-                                        </span>
-                                      </td>
                                       <td
                                         style={{
                                           border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
-                                        {selectedBroker.streetName}{" "}
-                                        {selectedBroker.streetNumber}{" "}
-                                        {selectedBroker.area} ,{" "}
-                                        {selectedBroker.city}{" "}
-                                        {selectedBroker.state}-
-                                        {selectedBroker.postalCode}
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
                                           color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
-                                        <span className="text-start">
-                                          Phone Number
-                                        </span>
-                                      </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
-                                        {selectedBroker.phoneNumber}
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
-                                        <span className="text-start">
-                                          Mortgage Broker Licence No
-                                        </span>
-                                      </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
-                                        {selectedBroker.mortageBrokerLicNo}
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
-                                        <span className="text-start">
-                                          Mortgage Brokerage Licence No
-                                        </span>
-                                      </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
-                                        {selectedBroker.mortageBrokerageLicNo}
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
-                                        <span className="text-start">
-                                          Brokerage Name
-                                        </span>
-                                      </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
-                                        {selectedBroker.brokerageName
-                                          ? selectedBroker.brokerageName
-                                          : "N.A."}
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          color: "#2e008b",
-                                          padding: "5px",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -1505,7 +1465,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          padding: "5px",
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {selectedBroker.companyName
@@ -1516,9 +1476,176 @@ const Index = () => {
                                     <tr>
                                       <td
                                         style={{
+                                          border: "1px solid #2e008b",
+                                          color: "#2e008b",
+                                          paddingLeft: "10px",
+                                        }}
+                                      >
+                                        <span className="text-start">
+                                          Email Address
+                                        </span>
+                                      </td>
+                                      <td
+                                        style={{
+                                          border: "1px solid #2e008b",
+                                          width: "250px",
+                                          color: "black",
+                                          paddingLeft: "10px",
+                                        }}
+                                      >
+                                        {selectedBroker.emailId}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        style={{
+                                          border: "1px solid #2e008b",
+                                          color: "#2e008b",
+                                          paddingLeft: "10px",
+                                        }}
+                                      >
+                                        <span className="text-start">
+                                          Phone Number
+                                        </span>
+                                      </td>
+                                      <td
+                                        style={{
+                                          border: "1px solid #2e008b",
+                                          width: "250px",
+                                          color: "black",
+                                          paddingLeft: "10px",
+                                        }}
+                                      >
+                                        {selectedBroker.phoneNumber}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        style={{
+                                          border: "1px solid #2e008b",
+                                          color: "#2e008b",
+                                          paddingLeft: "10px",
+                                        }}
+                                      >
+                                        <span className="text-start">
+                                          Cell Number
+                                        </span>
+                                      </td>
+                                      <td
+                                        style={{
+                                          border: "1px solid #2e008b",
+                                          width: "250px",
+                                          color: "black",
+                                          paddingLeft: "10px",
+                                        }}
+                                      >
+                                        {selectedBroker.cellNumber}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        style={{
+                                          border: "1px solid #2e008b",
+                                          color: "#2e008b",
+                                          paddingLeft: "10px",
+                                        }}
+                                      >
+                                        <span className="text-start">
+                                          Mortgage Broker Licence No
+                                        </span>
+                                      </td>
+                                      <td
+                                        style={{
+                                          border: "1px solid #2e008b",
+                                          width: "250px",
+                                          color: "black",
+                                          paddingLeft: "10px",
+                                        }}
+                                      >
+                                        {selectedBroker.mortageBrokerLicNo}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        style={{
+                                          border: "1px solid #2e008b",
+                                          color: "#2e008b",
+                                          paddingLeft: "10px",
+                                        }}
+                                      >
+                                        <span className="text-start">
+                                          Mortgage Brokerage Licence No
+                                        </span>
+                                      </td>
+                                      <td
+                                        style={{
+                                          border: "1px solid #2e008b",
+                                          width: "250px",
+                                          color: "black",
+                                          paddingLeft: "10px",
+                                        }}
+                                      >
+                                        {selectedBroker.mortageBrokerageLicNo}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        style={{
+                                          border: "1px solid #2e008b",
+                                          color: "#2e008b",
+                                          paddingLeft: "10px",
+                                        }}
+                                      >
+                                        <span className="text-start">
+                                          Address
+                                        </span>
+                                      </td>
+                                      <td
+                                        style={{
+                                          border: "1px solid #2e008b",
+                                          width: "400px",
+                                          color: "black",
+                                          paddingLeft: "10px",
+                                        }}
+                                      >
+                                        {selectedBroker.streetNumber}{" "}
+                                        {selectedBroker.streetName}{" "}
+                                        {selectedBroker.area} ,{" "}
+                                        {selectedBroker.city}{" "}
+                                        {selectedBroker.state}-
+                                        {selectedBroker.postalCode}
+                                      </td>
+                                    </tr>
+                                    {/* <tr>
+                                      <td
+                                        style={{
                                           border: "1px solid grey",
                                           color: "#2e008b",
-                                          padding: "5px",
+                                        }}
+                                      >
+                                        <span className="text-start">
+                                          Brokerage Name
+                                        </span>
+                                      </td>
+                                      <td
+                                        style={{
+                                          border: "1px solid #2e008b",
+                                          width: "250px",
+                                          color: "black",
+                                          paddingLeft:"10px"
+                                        }}
+                                      >
+                                        {selectedBroker.brokerageName
+                                          ? selectedBroker.brokerageName
+                                          : "N.A."}
+                                      </td>
+                                    </tr> */}
+
+                                    {/* <tr>
+                                      <td
+                                        style={{
+                                          border: "1px solid grey",
+                                          color: "#2e008b",
                                         }}
                                       >
                                         <span className="text-start">
@@ -1530,7 +1657,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          padding: "5px",
+                                          paddingLeft:"10px"
                                         }}
                                       >
                                         {selectedBroker.assistantFirstName
@@ -1543,7 +1670,6 @@ const Index = () => {
                                         style={{
                                           border: "1px solid grey",
                                           color: "#2e008b",
-                                          padding: "5px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -1555,7 +1681,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          padding: "5px",
+                                          paddingLeft:"10px"
                                         }}
                                       >
                                         {selectedBroker.assistantPhoneNumber
@@ -1568,7 +1694,6 @@ const Index = () => {
                                         style={{
                                           border: "1px solid grey",
                                           color: "#2e008b",
-                                          padding: "5px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -1580,14 +1705,14 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          padding: "5px",
+                                          paddingLeft:"10px"
                                         }}
                                       >
                                         {selectedBroker.assistantEmailAddress
                                           ? selectedBroker.assistantEmailAddress
                                           : "N.A."}
                                       </td>
-                                    </tr>
+                                    </tr> */}
                                   </tbody>
                                 </table>
                                 `
@@ -1601,7 +1726,7 @@ const Index = () => {
                                     }
                                     title="Download Pdf"
                                   >
-                                    Download Form
+                                    Download
                                   </div>
                                   <button
                                     className="btn btn-color w-25 text-center"
@@ -1983,11 +2108,55 @@ const Index = () => {
               {isStatusModal && (
                 <div className="modal">
                   <div className="modal-content">
-                    <h3 className="text-center">Quote Status Updation</h3>
-
+                    <div className="row">
+                      <div className="col-lg-12">
+                        <Link href="/" className="">
+                          <Image
+                            width={50}
+                            height={45}
+                            className="logo1 img-fluid"
+                            style={{ marginTop: "-20px" }}
+                            src="/assets/images/Appraisal_Land_Logo.png"
+                            alt="header-logo2.png"
+                          />
+                          <span
+                            style={{
+                              color: "#2e008b",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            Appraisal
+                          </span>
+                          <span
+                            style={{
+                              color: "#97d700",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            {" "}
+                            Land
+                          </span>
+                        </Link>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-lg-12 text-center">
+                        <h2 className=" text-color mt-1">
+                          Appraisal Status Updation
+                        </h2>
+                      </div>
+                    </div>
+                    <div
+                      className="mb-4"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
                     <select
                       required
-                      className="form-select"
+                      className="form-select mb-3"
                       data-live-search="true"
                       data-width="100%"
                       onChange={(e) => handleStatusSelect(e.target.value)}
@@ -2011,10 +2180,10 @@ const Index = () => {
                     </select>
                     {openDate && (
                       <div
-                        className="col-lg-12 pt-20"
-                        style={{ display: "flex", flexDirection: "row" }}
+                        className="col-lg-12"
+                        // style={{ display: "flex", flexDirection: "row" }}
                       >
-                        <label style={{ color: "black", fontWeight: "bold" }}>
+                        <label style={{ color: "#2e008b", fontWeight: "bold" }}>
                           Date and Time <span style={{ color: "red" }}>*</span>
                         </label>
                         <input
@@ -2024,22 +2193,39 @@ const Index = () => {
                           id="formGroupExampleInput3"
                           onChange={(e) => setStatusDate(e.target.value)}
                           value={statusDate}
+                          min={getMinDateTime()}
                         />
                       </div>
                     )}
-
+                    <div className="mt-3">
+                      <h4 style={{ color: "#2e008b", fontWeight: "bold" }}>
+                        Remark
+                      </h4>
+                      <input
+                        required
+                        type="text"
+                        className="form-control mb-3"
+                        id="formGroupExampleInput3"
+                        onChange={(e) => setRemark(e.target.value)}
+                        value={remark}
+                      />
+                    </div>
+                    <div
+                      className="mb-3 mt-2"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
                       <button
                         disabled={disable}
-                        className="btn w-35 btn-white"
+                        className="btn w-25 btn-color"
                         onClick={closeStatusUpdateHandler}
                       >
                         Cancel
                       </button>
                       <button
                         disabled={disable}
-                        className="btn btn-color w-10 mt-1"
+                        className="btn btn-color w-25"
                         style={{ marginLeft: "12px" }}
                         onClick={handleStatusUpdateHandler}
                       >
@@ -2050,62 +2236,108 @@ const Index = () => {
                 </div>
               )}
 
-              {/*openAssignModal && (
+              {assignModal && (
                 <div className="modal">
                   <div className="modal-content">
-                    <h3 className="text-center">Assign the appraiser</h3>
-                    
+                    <div className="row">
+                      <div className="col-lg-12">
+                        <Link href="/" className="">
+                          <Image
+                            width={50}
+                            height={45}
+                            className="logo1 img-fluid"
+                            style={{ marginTop: "-20px" }}
+                            src="/assets/images/Appraisal_Land_Logo.png"
+                            alt="header-logo2.png"
+                          />
+                          <span
+                            style={{
+                              color: "#2e008b",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            Appraisal
+                          </span>
+                          <span
+                            style={{
+                              color: "#97d700",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            {" "}
+                            Land
+                          </span>
+                        </Link>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-lg-12 text-center">
+                        <h1 className=" text-color mt-1">Asssign Appraiser</h1>
+                      </div>
+                    </div>
+                    <div
+                      className="mt-2 mb-3"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
                     <select
-                  required
-                  className="form-select"
-                  data-live-search="true"
-                  data-width="100%"
-                  onChange={(e)=>setAssignAppraiserId(e.target.value)}
-                  // value={buildinRef}
-                  // onChange={(e) => setBuildinRef(e.target.value)}
-                  // onChange={(e) => setBuildinRef(e.target.value)}
-                  // disabled={isDisable}
-                  style={{
-                          paddingTop: "15px",
-                          paddingBottom: "15px",
-                          backgroundColor: "#E8F0FE"
-                        }}
-                >
-                  {assignedAppraiser?.map((item, index) => {
-                    return (
-                      <option key={item.id} value={item.id}>
-                        {item.firstName ? `${item.firstName} ${item.lastName}` : "Name"}
-                      </option>
-                    );
-                  })}
-                </select>
-                
-                  
+                      required
+                      className="form-select"
+                      data-live-search="true"
+                      data-width="100%"
+                      onChange={(e) => setSelectedAppraiser(e.target.value)}
+                      // value={buildinRef}
+                      // onChange={(e) => setBuildinRef(e.target.value)}
+                      // onChange={(e) => setBuildinRef(e.target.value)}
+                      // disabled={isDisable}
+                      style={{
+                        // paddingTop: "15px",
+                        // paddingBottom: "15px",
+                        padding: "15px",
+                        backgroundColor: "#E8F0FE",
+                      }}
+                    >
+                      {AssignAppraisers.map((item, index) => {
+                        <option value={0}>....</option>;
+                        return item.isActive ? (
+                          <option key={item.id} value={item.id}>
+                            {item.firstName} {item.lastName}
+                          </option>
+                        ) : null;
+                      })}
+                    </select>
+                    <div
+                      className="mt-4 mb-3"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
+                    {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
-                    <button
-                    className="btn w-35 btn-white"
-                    onClick={closeAssignModal}
-                  >
-                    Cancel
-                  </button>
                       <button
-                      className="btn btn-color w-10 mt-1"
-                      style={{ marginLeft: "12px" }}
-                        onClick={handleAssignPropertyToAppraiser}
+                        className="btn btn-color m-1 w-25"
+                        onClick={() => closeAssignModal()}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        className="btn btn-color w-25"
+                        onClick={assignAppraiserUpdateHandler}
                       >
                         Submit
-                      </button>        
-                     
+                      </button>
                     </div>
                   </div>
                 </div>
-                )*/}
+              )}
               <div className="row">
                 <Modal
                   modalOpen={modalOpen}
                   setIsModalOpen={setIsModalOpen}
                   closeModal={closeModal}
                   lowRangeBid={lowRangeBid}
+                  currentBid={currentBid}
                   propertyId={propertyId}
                   openQuoteModal={openQuoteModal}
                   closeQuoteModal={closeQuoteModal}

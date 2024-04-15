@@ -87,7 +87,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   const [setODesignation, setSetODesignation] = useState(false);
 
   const [selectedImage2, setSelectedImage2] = useState({
-    name: userData?.appraiser_Details?.lenderListUrl ? "Uploaded File" : "",
+    name: userData?.appraiser_Details?.lenderListUrl ? "Lender List File" : "",
     url: userData?.appraiser_Details?.lenderListUrl || "",
   });
 
@@ -175,7 +175,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
 
     if (
       nameRegex.test(firstName) === false ||
-      (middleName.trim() !== "" && nameRegex.test(middleName) === false) ||
+      (middleName !== null &&
+        middleName.trim() !== "" &&
+        !nameRegex.test(middleName)) ||
       nameRegex.test(lastName) === false
     ) {
       toast.error("Appraiser Name should be valid ");
@@ -236,7 +238,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         !payload.phoneNumber ||
         !payload.emailId ||
         // !payload.companyName ||
-        !payload.lenderListUrl ||
+        // !payload.lenderListUrl ||
         !payload.streetName ||
         !payload.streetNumber ||
         !payload.city ||
@@ -653,7 +655,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           color: "#2e008b",
                         }}
                       >
-                        Add Lender List <span class="req-btn">*</span>
+                        Add Lender List 
                       </label>
                     </div>
                     <div className="col-lg-3">

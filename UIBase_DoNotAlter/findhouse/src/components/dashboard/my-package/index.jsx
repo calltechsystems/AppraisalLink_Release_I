@@ -11,6 +11,7 @@ const Index = () => {
   const [data, setData] = useState([]);
   const router = useRouter();
   let userData = {};
+  const [dataFetched, setDataFetched] = useState(false);
 
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
@@ -83,11 +84,13 @@ const Index = () => {
       })
       .then((res) => {
         toast.dismiss();
+        setDataFetched(true)
         setData(res.data.data.result.$values);
         setRerender(false);
       })
       .catch((err) => {
         toast.dismiss();
+        setDataFetched(false)
         // toast.error(err?.response?.data?.error);
         // setErrorMessage(err.response);
         // setModalIsOpenError(true);
@@ -165,7 +168,7 @@ const Index = () => {
                     <div className="col-lg-12">
                       <div className="packages_table">
                         <div className="mt0">
-                          <Exemple data={data} userData={userData} />
+                          <Exemple dataFetched={dataFetched} data={data} userData={userData} />
                           {modalIsOpenError && (
                             <div className="modal">
                               <div

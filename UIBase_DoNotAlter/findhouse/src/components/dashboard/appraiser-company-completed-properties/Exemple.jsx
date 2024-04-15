@@ -17,14 +17,12 @@ const headCells = [
     label: "Order ID",
     width: 100,
   },
-
   {
     id: "address",
     numeric: false,
     label: "Property Address",
     width: 200,
   },
-
   {
     id: "status",
     numeric: false,
@@ -49,7 +47,6 @@ const headCells = [
     label: "Urgency",
     width: 200,
   },
-
   {
     id: "date",
     numeric: false,
@@ -62,16 +59,14 @@ const headCells = [
     label: "Appraisal Report Required By",
     width: 200,
   },
-
   {
-    id: "typeOfBuilding",
+    id: "type_of_building",
     numeric: false,
     label: "Type of Property",
     width: 200,
   },
-
   {
-    id: "estimatedValue",
+    id: "estimated_value",
     numeric: false,
     label: "Estimated Property Value ($)",
     width: 200,
@@ -110,12 +105,12 @@ const headCells = [
     width: 200,
   },
 
-  {
-    id: "action",
-    numeric: false,
-    label: "Action",
-    width: 180,
-  },
+  // {
+  //   id: "action",
+  //   numeric: false,
+  //   label: "Action",
+  //   width: 180,
+  // },
 ];
 
 let count = 0;
@@ -128,6 +123,8 @@ export default function Exemple({
   end,
   setUpdatedCode,
   setRequiredProp,
+  filterQuery,
+  searchInput,
   properties,
   setCurrentBid,
   setIsStatusModal,
@@ -177,28 +174,69 @@ export default function Exemple({
     return isArchive;
   };
 
-  const filterBidsWithin24Hours = (property) => {
-    let tempBid = 0,
-      bidValue = {};
-    let isAccepted = {};
-    // console.log(bids);
-    bids.filter((bid) => {
-      if (bid.orderId === property.orderId) {
-        if (bid.status === 1) {
-          isAccepted = bid;
-        } else {
-          bidValue = bid;
+  const calculateDate = (oldBid,newBid)=>{
+
+    if(!oldBid.requestTime){
+      return newBid
+    }
+
+    const oldDate = new Date(oldBid.requestTime);
+    const newDate = new Date(newBid.requestTime);
+
+    if(oldDate <= newDate){
+      return newBid;
+    }
+    return oldBid;
+  }
+
+  const getFinalBid = (tempBids)=>{
+    
+    let finalBid = {};
+    tempBids.map((bid,index)=>{
+      if(!finalBid){
+        finalBid = bid;
+      }
+      else {
+        if(bid.status === 1){
+          if(finalBid.status === 1){
+            const customBid = calculateDate(finalBid,bid);
+            finalBid = customBid;
+          }
+          else{
+            finalBid = bid
+          }
         }
+        else{
+          const customBid = calculateDate(finalBid,bid);
+            finalBid = customBid;
+        }
+      }
+    })
+
+    return finalBid;
+  }
+
+  const filterBidsWithin24Hours = (property) => {
+    const data = JSON.parse(localStorage.getItem("user"));
+    let tempBid = 0;
+    let  bidValue = {};
+    let tempBids = []
+    bids.filter((bid) => {
+    if (
+        bid.orderId === property.orderId &&
+        bid.appraiserUserId === data.userId
+      )
+      {
+        tempBids.push(bid) ;
+        bidValue = (bid) ;
         tempBid = tempBid + 1;
       } else {
       }
     });
-    return isAccepted.$id ? isAccepted : bidValue;
-    // const currentTime = new Date();
-    // const twentyFourHoursAgo = currentTime - 24 * 60 * 60 * 1000; // Subtracting milliseconds for 24 hours
-    //    const requestTime = new Date(tempBid.requestTime);
-    //   return requestTime >= twentyFourHoursAgo && requestTime <= currentTime;
+    const customBid = getFinalBid(tempBids)
+    return customBid
   };
+
 
   const router = useRouter();
 
@@ -206,6 +244,11 @@ export default function Exemple({
     setCurrentBid(bid);
     setIsStatusModal(true);
   };
+
+  function addCommasToNumber(number) {
+    if (Number(number) <= 100 || number === undefined) return number;
+    return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
 
   const removeWishlistHandler = (id) => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -331,8 +374,8 @@ export default function Exemple({
           const updatedRow = {
             order_id: property.orderId,
             address: `${property.city}-${property.province},${property.zipCode}`,
-            estimatedValue: property.estimatedValue
-              ? `$ ${formatLargeNumber(property.estimatedValue)}`
+            estimated_value: property.estimatedValue
+              ? `$ ${addCommasToNumber(property.estimatedValue)}`
               : "$ 0",
             purpose: property.purpose ? property.purpose : "N.A.",
             appraisal_status:
@@ -350,23 +393,30 @@ export default function Exemple({
               ),
             remark:
               isBidded && isBidded.remark ? <p>{isBidded.remark}</p> : "N.A.",
-            status: isWait ? (
-              <span className="btn btn-danger  w-100">
-                {property.isOnHold ? "On Hold" : "Cancelled"}
-              </span>
-            ) : isBidded.bidId ? (
-              isBidded.orderStatus === 3 ? (
-                <span className="btn btn-success  w-100">Completed</span>
-              ) : isBidded.status === 0 ? (
-                <span className="btn btn-primary  w-100">Quote Provided</span>
-              ) : isBidded.status === 1 ? (
-                <span className="btn btn-success  w-100">Accepted</span>
-              ) : (
+              status: 
+              isBidded?.bidId && isBidded.status === 2 ?
+              (
                 <span className="btn btn-danger  w-100">Rejected</span>
-              )
-            ) : (
-              <span className="btn btn-warning  w-100">New</span>
-            ),
+              ) :
+              isWait ? (
+                <span className="btn btn-danger  w-100">
+                  {property.isOnCancel
+                    ? "Cancelled"
+                    : property.isOnHold
+                    ? "On Hold"
+                    : ""}
+                </span>
+              ) : isBidded.bidId ? (
+                isBidded.orderStatus === 3 ? (
+                  <span className="btn btn-completed w-100">Completed</span>
+                ) : isBidded.status === 0 ? (
+                  <span className="btn btn-primary  w-100">Quote Provided</span>
+                ) : isBidded.status === 1 ? (
+                  <span className="btn btn-success  w-100">Accepted</span>
+                ) : ""
+              ) : (
+                <span className="btn btn-warning  w-100">New</span>
+              ),
             broker: (
               <div>
                 {isBidded.status === 1 ? (
@@ -426,7 +476,7 @@ export default function Exemple({
             type_of_appraisal: property.typeOfAppraisal
               ? property.typeOfAppraisal
               : "NA",
-            typeOfBuilding:
+            type_of_building:
               property.typeOfBuilding > 0
                 ? "Apartment"
                 : property.typeOfBuilding,
@@ -502,7 +552,7 @@ export default function Exemple({
                     </li>
                   </ul>
                 ) : isBidded.orderStatus === 3 ? (
-                  <span className="btn btn-success  w-100">Completed</span>
+                  <span className="btn btn-completed  w-100">Completed</span>
                 ) : isBidded && isBidded.status !== 1 ? (
                   <ul className="mb0 d-flex gap-1">
                     {isWishlist.id ? (
@@ -588,7 +638,7 @@ export default function Exemple({
                   </ul>
                 ) : (
                   isBidded.orderStatus === 3 && (
-                    <span className="btn btn-success  w-100">Completed</span>
+                    <span className="btn btn-completed  w-100">Completed</span>
                   )
                 )}
               </div>
@@ -612,7 +662,12 @@ export default function Exemple({
     setStartLoading(true);
   };
   useEffect(() => {
+    setSearchInput("")
+    setFilterQuery("All")
+    setProperties([])
+    setBids([])
     console.log("inside");
+
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -764,6 +819,8 @@ export default function Exemple({
           setStartLoading={setStartLoading}
           start={start}
           end={end}
+          searchInput={searchInput}
+          filterQuery={filterQuery}
           dataFetched={dataFetched}
           properties={updatedData}
         />

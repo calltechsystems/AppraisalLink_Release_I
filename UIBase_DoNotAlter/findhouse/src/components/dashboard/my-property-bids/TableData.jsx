@@ -14,14 +14,14 @@ const TableData = ({
   properties,
   setProperties,
   setIsModalOpen,
-  setIsModalOpen_01,
-  orderId,
+  propertyId,
   setModalIsOpenError,
   setErrorMessage,
   property,
   setAppInfo,
   setOpenBrokerModal,
   setid,
+  setAllAppraiser,
   refresh,
   setRefresh,
   setProperty,
@@ -216,12 +216,11 @@ const TableData = ({
           close={close}
           setProperties={setProperties}
           properties={properties}
-          orderId={orderId}
+          propertyId={propertyId}
           setModalIsOpenError={setModalIsOpenError}
           setErrorMessage={setErrorMessage}
           deletePropertyHandler={deletePropertyHandler}
           setIsModalOpen={setIsModalOpen}
-          setIsModalOpen_01={setIsModalOpen_01}
           property={property}
           setOpenBrokerModal={setOpenBrokerModal}
           setProperty={setProperty}

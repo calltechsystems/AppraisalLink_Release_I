@@ -30,7 +30,7 @@ const Index = () => {
   const [startLoading, setStartLoading] = useState(false);
   const [filterProperty, setFilterProperty] = useState("");
   const [showPropDetails, setShowPropDetails] = useState(false);
-  const [filterQuery, setFilterQuery] = useState("Last 30 Days");
+  const [filterQuery, setFilterQuery] = useState("All");
   const [searchQuery, setSearchQuery] = useState("city");
   const [properties, setProperties] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
@@ -221,7 +221,7 @@ const Index = () => {
 
   useEffect(() => {
     const tmpData = filterData(properties);
-    setProperties(tmpData);
+    setFilterProperty(tmpData);
   }, [filterQuery]);
 
   const handleDelete = () => {
@@ -535,9 +535,11 @@ const Index = () => {
                           close={closeModal}
                           setProperties={setProperties}
                           start={start}
+                          filterQuery={filterQuery}
+                          searchInput={searchInput}
                           end={end}
                           properties={
-                            searchInput === "" ? properties : filterProperty
+                            searchInput === "" && filterQuery === "All" ? properties : filterProperty
                           }
                           setUpdatedCode={setUpdatedCode}
                           setModalIsPopupOpen={setModalIsPopupOpen}

@@ -11,6 +11,8 @@ const TableData = ({
   open,
   setGeneratedProps,
   close,
+  setAssignModal,
+  setAssignPropertyId,
   setAssignedProp,
   setAssignedAppraiser,
   setCurrentBid,
@@ -24,6 +26,8 @@ const TableData = ({
   setIsStatusModal,
   start,
   end,
+  searchInput,
+  filterQuery,
   onWishlistHandler,
   setStartLoading,
   setUpdatedCode,
@@ -32,6 +36,7 @@ const TableData = ({
   properties,
   setProperties,
   setErrorMessage,
+  setAssignAppraisers,
   setModalIsOpenError,
   setRefresh,
   refresh,
@@ -299,6 +304,8 @@ const TableData = ({
           setFilterQuery={setFilterQuery}
           setProperties={setProperties}
           properties={data}
+          searchInput={searchInput}
+                          filterQuery={filterQuery}
           openAppraiserInfoModal={openAppraiserInfoModal}
           setRefresh={setRefresh}
           refresh={refresh}
@@ -319,6 +326,9 @@ const TableData = ({
           setCurrentBid={setCurrentBid}
           setOpenAssignModal={setOpenAssignModal}
           end={end}
+          setAssignAppraisers={setAssignAppraisers}
+          setAssignModal = {setAssignModal}
+          setAssignPropertyId = {setAssignPropertyId}
           setAssignedProp={setAssignedProp}
         />
       )}
