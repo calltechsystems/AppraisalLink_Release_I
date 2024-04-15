@@ -46,7 +46,7 @@ const Index = () => {
   const [end, setEnd] = useState(4);
 
   useEffect(() => {
-    setRefresh(true);
+    // setRefresh(true);
     const activityHandler = () => {
       setLastActivityTimestamp(Date.now());
     };
@@ -98,7 +98,7 @@ const Index = () => {
   };
 
   useEffect(() => {
-    // setRefresh(true);
+    setRefresh(true);
     const filterProperties = (propertys, searchInput) => {
       if (searchInput === "") {
         return propertys;

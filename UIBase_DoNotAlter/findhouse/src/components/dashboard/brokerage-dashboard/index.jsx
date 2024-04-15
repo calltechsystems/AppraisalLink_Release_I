@@ -384,11 +384,11 @@ const Index = () => {
                 >
                   <div className="breadcrumb_content style2">
                     <h2 className="breadcrumb_title">
-                      {userData?.broker_Details?.firstName
-                        ? userData?.broker_Details?.firstName
+                      {userData?.brokerage_Details?.firstName
+                        ? userData?.brokerage_Details?.firstName
                         : "firstName"}{" "}
-                      {userData?.broker_Details?.lastName
-                        ? userData?.broker_Details?.lastName
+                      {userData?.brokerage_Details?.lastName
+                        ? userData?.brokerage_Details?.lastName
                         : "lastName"}
                     </h2>
                     {/* <p>We are glad to see you again!</p> */}
