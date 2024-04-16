@@ -1,12 +1,12 @@
 import dynamic from "next/dynamic";
 import Seo from "../../components/common/seo";
-import ManageBrokers from "../../components/dashboard-admin/manage-brokers";
+import MortgageBrokerageProperties from "../../components/dashboard-admin/mortgage-brokerage-properties";
 
 const index = () => {
   return (
     <>
-      <Seo pageTitle="Manage Brokers" />
-      <ManageBrokers />
+      <Seo pageTitle="Mortgage Brokerage Properties" />
+      <MortgageBrokerageProperties />
     </>
   );
 };

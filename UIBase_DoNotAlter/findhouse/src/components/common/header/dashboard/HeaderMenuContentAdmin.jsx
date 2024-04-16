@@ -244,7 +244,7 @@ const HeaderMenuContent = ({ float = "", hide, userData }) => {
       className="ace-responsive-menu text-end-01 d-lg-block d-none"
       data-menu-style="horizontal"
       style={{
-        backgroundColor: "grey",
+        backgroundColor: "#1d293e",
         marginTop: "5px",
         borderRadius: "2px",
       }}

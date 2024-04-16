@@ -3,8 +3,17 @@ import SmartTable from "./SmartTable";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import axios, { all } from "axios";
-import { AppraiserStatusOptions } from "../create-listing/data";
-import { FaArchive, FaPause } from "react-icons/fa";
+import millify from "millify";
+import { AppraiserStatusOptions } from "../data";
+import {
+  FaArchive,
+  FaHandHoldingHeart,
+  FaHandHoldingUsd,
+  FaHandPointer,
+  FaPause,
+  FaRedo,
+} from "react-icons/fa";
+// import "./SmartTable.css";
 
 const headCells = [
   {
@@ -23,7 +32,7 @@ const headCells = [
     id: "status",
     numeric: false,
     label: "Order Status",
-    width: 200,
+    width: 170,
   },
   {
     id: "appraisal_status",
@@ -56,6 +65,19 @@ const headCells = [
     width: 140,
   },
 
+  // {
+  //   id: "user",
+  //   numeric: false,
+  //   label: "Appraiser",
+  //   width: 200,
+  // },
+  // {
+  //   id: "amount",
+  //   numeric: false,
+  //   label: "Quote Amount",
+  //   width: 200,
+  // },
+
   {
     id: "type_of_building",
     numeric: false,
@@ -87,6 +109,12 @@ const headCells = [
     width: 160,
   },
 
+  // {
+  //   id: "actions",
+  //   numeric: false,
+  //   label: "Actions",
+  //   width: 170,
+  // },
   {
     id: "actions_01",
     numeric: false,
@@ -103,12 +131,13 @@ export default function Exemple({
   open,
   setModalIsPopupOpen,
   close,
-  filterQuery,
-  searchInput,
   properties,
   onHoldHandler,
   onCancelHandler,
+  setWishlist,
   refresh,
+  searchInput,
+  filterQuery,
   setRefresh,
   setProperties,
   setCurrentProperty,
@@ -128,13 +157,6 @@ export default function Exemple({
   let tempData = [];
 
   useEffect(() => {
-    if (refresh === true) {
-      setSearchInput("");
-      setFilterQuery("All");
-    }
-  }, [refresh]);
-
-  useEffect(() => {
     if (searchInput === "") {
       setProperties([]);
       setBids([]);
@@ -146,8 +168,55 @@ export default function Exemple({
     return data.sort((a, b) => b.order_id - a.order_id);
   };
 
+  // const AppraiserStatusOptions = [
+  //   {
+  //     id: -1,
+  //     type: "Select...",
+  //     value: "",
+  //   },
+  //   {
+  //     id: 0,
+  //     type: "Applicant Contacted by appraiser",
+  //     value: "Applicant Contacted by appraiser",
+  //   },
+  //   {
+  //     id: 1,
+  //     type: "Appraisal Visit Confirmed",
+  //     value: "Appraisal Visit Confirmed",
+  //   },
+  //   {
+  //     id: 2,
+  //     type: "Appraisal Report Writing in Progress",
+  //     value: "Appraisal Report Writing in Progress",
+  //   },
+  //   {
+  //     id: 3,
+  //     type: "Appraisal Report Writing Completed and Submitted",
+  //     value: "Appraisal Report Writing Completed and Submitted",
+  //   },
+
+  //   {
+  //     id: 4,
+  //     type: "Assignment on Hold",
+  //     value: "Assignment on Hold",
+  //   },
+
+  //   {
+  //     id: 5,
+  //     type: "Assignment Cancelled new status to be added",
+  //     value: "Assignment Cancelled new status to be added",
+  //   },
+
+  //   {
+  //     id: 6,
+  //     type: "Appraisal visit completed; report writing is pending until fee received",
+  //     value:
+  //       "Appraisal visit completed; report writing is pending until fee received",
+  //   },
+  // ];
+
   const getOrderValue = (val) => {
-    let title = "";
+    let title = "Applicant Contacted by appraiser";
     AppraiserStatusOptions?.map((status) => {
       if (String(status.id) === String(val)) {
         title = status.type;
@@ -215,10 +284,14 @@ export default function Exemple({
     setRefresh(true);
   };
 
-  function addCommasToNumber(number) {
-    if (Number(number) <= 100 || number === undefined) return number;
-    return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }
+  useState(() => {
+    if (searchInput === "") {
+      setProperties([]);
+      setBids([]);
+      // setWishlist([]);
+      setRefresh(true);
+    }
+  }, [searchInput]);
 
   const getPropertyStatusHandler = (property) => {
     let isInProgress = true;
@@ -242,6 +315,11 @@ export default function Exemple({
     return isCompleted ? 3 : isAccepted ? 2 : isQuoteProvided ? 1 : 0;
   };
 
+  function addCommasToNumber(number) {
+    if (Number(number) <= 100 || number === undefined) return number;
+    return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   const openPopupModal = (property) => {
     setModalIsPopupOpen(true);
     setCurrentProperty(property);
@@ -253,6 +331,7 @@ export default function Exemple({
         const isHold = property.isOnHold;
         const isCancel = property.isOnCancel;
         const isStatus = getPropertyStatusHandler(property);
+        console.log(isStatus);
         const isEditable = isStatus === 0 ? true : false;
         if (!property.isArchive) {
           const updatedRow = {
@@ -267,7 +346,9 @@ export default function Exemple({
                   {isHold ? "On Hold" : "Cancelled"}
                 </span>
               ) : isStatus === 3 ? (
-                <span className="btn btn-completed w-100">Completed</span>
+                <span className="btn btn-completed w-100 text-light">
+                  Completed
+                </span>
               ) : isStatus === 2 ? (
                 <span className="btn bg-success w-100 text-light">
                   Accepted
@@ -308,12 +389,12 @@ export default function Exemple({
                       </li>
                     </ul>
                   </div>
-                  <span className="btn btn-status w-100">
+                  <button className="btn btn-status">
                     Current Status
                     <span className="m-1">
                       <i class="fa fa-info-circle" aria-hidden="true"></i>
                     </span>
-                  </span>
+                  </button>
                 </div>
               ) : isBidded.$id &&
                 isBidded.status === 1 &&
@@ -333,28 +414,49 @@ export default function Exemple({
                   >
                     <ul>
                       <li style={{ fontSize: "15px" }}>
-                        {getOrderValue(isBidded.orderStatus)} -
+                        {getOrderValue(isBidded.orderStatus)} - {""}
                         {formatDate(isBidded.statusDate)}
                       </li>
                     </ul>
                   </div>
-                  <span className="btn btn-status w-100">
+                  <button className="btn btn-status">
                     Current Status
                     <span className="m-1">
                       <i class="fa fa-info-circle" aria-hidden="true"></i>
                     </span>
-                  </span>
+                  </button>
                 </div>
               ) : (
                 <span className="btn btn-warning w-100">N.A.</span>
               ),
+            // appraisal_status:
+            //   isHold || isCancel ? (
+            //     <span className="btn bg-warning w-100">
+            //       {isHold ? "N.A." : "N.A."}
+            //     </span>
+            //   ) : isBidded.orderStatus !== 1 &&
+            //     isBidded.orderStatus !== null &&
+            //     isBidded.orderStatus !== undefined ? (
+            //     <span className="btn bg-warning  w-100">
+            //       {getOrderValue(isBidded.orderStatus)}
+            //     </span>
+            //   ) : isBidded.$id &&
+            //     isBidded.status === 1 &&
+            //     isBidded.orderStatus === 1 &&
+            //     isBidded.orderStatus !== undefined ? (
+            //     <span className="btn bg-warning  w-100">
+            //       {getOrderValue(isBidded.orderStatus)} -
+            //       {formatDate(isBidded.statusDate)}
+            //     </span>
+            //   ) : (
+            //     <span className="btn bg-warning  w-100">N.A.</span>
+            //   ),
             address: `${property.streetNumber} ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
             remark: isBidded.remark ? isBidded.remark : "N.A.",
             // remark: property.remark ? property.remark : "N.A.",
             // user: property.applicantEmailAddress,
             type_of_building: property.typeOfBuilding,
-            // amount: ` $ ${millify(property.estimatedValue)}`,
-            amount: `$ ${addCommasToNumber(property.estimatedValue)}`,
+            amount: ` $ ${addCommasToNumber(property.estimatedValue)}`,
             purpose: property.purpose,
             type_of_appraisal: property.typeOfAppraisal,
             lender_information: property.lenderInformation
@@ -432,11 +534,19 @@ export default function Exemple({
 
                 {(isEditable || isStatus === 1) && !isCancel && (
                   <li>
-                    <Link href={`/create-listing/${property.orderId}`}>
+                    <Link href={`/create-listing-1/${property.orderId}`}>
                       <span className="btn btn-color w-100 mb-1"> Edit </span>
                     </Link>{" "}
+                    {/* <Link
+                      className="btn btn-color-table"
+                      href={`/create-listing/${property.propertyId}`}
+                    >
+                      <span className="flaticon-edit"></span>
+                    </Link> */}
                   </li>
                 )}
+
+                {/* End li */}
 
                 {isEditable && (
                   <li>
@@ -446,6 +556,15 @@ export default function Exemple({
                         Order Cancel{" "}
                       </span>
                     </Link>{" "}
+                    {/* <button
+                      className="btn"
+                      style={{ border: "1px solid grey" }}
+                      onClick={() => open(property)}
+                    >
+                      <Link href="#">
+                        <span className="flaticon-garbage text-danger"></span>
+                      </Link>
+                    </button> */}
                   </li>
                 )}
 
@@ -461,9 +580,32 @@ export default function Exemple({
                         </span>
                       </Link>{" "}
                     </button>
+                    {/* <Link
+                      className="btn btn-color-table"
+                      href={`/create-listing/${property.propertyId}`}
+                    >
+                      <span className="flaticon-edit"></span>
+                    </Link> */}
                   </li>
                 )}
 
+                {/* {!isEditable && (
+                <li
+                  className="list-inline-item"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Archive Property"
+                >
+                  <span
+                    className="btn btn-color-table"
+                    onClick={() => archievePropertyHandler(property.propertyId)}
+                  >
+                    <Link className="color-light" href={`/archive-property`}>
+                      <span className="flaticon-box"></span>
+                    </Link>
+                  </span>
+                </li>
+              )} */}
                 {!isEditable && (
                   <li>
                     <Link
@@ -475,13 +617,36 @@ export default function Exemple({
                         Archive Property{" "}
                       </span>
                     </Link>
+                    {/* <span
+                      className="btn btn-color-table m-1"
+                      onClick={() =>
+                        archievePropertyHandler(property.propertyId)
+                      }
+                    >
+                      <Link className="color-light" href={`/archive-property`}>
+                        <span className="flaticon-box text-light"></span>
+                      </Link>
+                    </span> */}
                   </li>
                 )}
+
+                {/* End li */}
               </ul>
             ),
             actions_01: (
+              // <ul className="view_edit_delete_list mb0">
               <ul className="mb0 d-flex gap-1">
+                {/* {!isEditable && ( */}
                 <li title="Property Details" className="">
+                  {/* <Link href={"#"}>
+                      <span
+                        className="btn btn-color w-100 mb-1"
+                        onClick={() => openPopupModal(property)}
+                      >
+                        {" "}
+                        Property Details{" "}
+                      </span>
+                    </Link>{" "} */}
                   <span
                     className="btn btn-color-table"
                     onClick={() => openPopupModal(property)}
@@ -495,14 +660,49 @@ export default function Exemple({
 
                 {!isEditable && !isCancel && (
                   <li title="Quotes">
+                    {/* <Link href={`/my-property-bids/${property.propertyId}`}>
+                      <span className="btn btn-color w-100 mb-1"> Quotes </span>
+                    </Link>{" "} */}
                     <Link
                       className="btn btn-color-table"
-                      href={`/my-property-bids/${property.orderId}`}
+                      // style={{ marginLeft: "4.3rem" }}
+                      href={`/brokerage-properties-bid/${property.orderId}`}
                     >
-                      <span className="flaticon-invoice"></span>
+                      <span className="flaticon-invoice">
+                        {/* <FaHandHoldingUsd /> */}
+                      </span>
                     </Link>
                   </li>
                 )}
+                {/* <li
+                className="list-inline-item"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="Property Details"
+              >
+                <span
+                  className="btn btn-color-table"
+                  onClick={() => openPopupModal(property)}
+                >
+                  <Link href={"#"}>
+                    <span className="flaticon-view"></span>
+                  </Link>
+                </span>
+              </li>
+
+              <li
+                className="list-inline-item"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="Bids"
+              >
+                <Link
+                  className="btn btn-color-table"
+                  href={`/my-property-bids/${property.propertyId}`}
+                >
+                  <span className="flaticon-invoice"></span>
+                </Link>
+              </li> */}
 
                 {(isEditable || isStatus === 1) && !isCancel && (
                   <li title="Edit Property">
@@ -511,7 +711,7 @@ export default function Exemple({
                     </Link>{" "} */}
                     <Link
                       className="btn btn-color-table"
-                      href={`/create-listing/${property.orderId}`}
+                      href={`/create-listing-1/${property.orderId}`}
                     >
                       <span className="flaticon-edit"></span>
                     </Link>
@@ -609,7 +809,10 @@ export default function Exemple({
                     className="btn btn-color-table"
                     onClick={() => archievePropertyHandler(property.orderId)}
                   >
-                    <Link className="color-light" href={`/archive-property`}>
+                    <Link
+                      className="color-light"
+                      href={`/brokerage-archive-properties`}
+                    >
                       <span className="text-light">
                         <FaArchive />
                       </span>
@@ -630,6 +833,10 @@ export default function Exemple({
   }, [properties]);
 
   useEffect(() => {
+    setProperties([]);
+    setBids([]);
+    setFilterQuery("All");
+    setSearchInput("");
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
@@ -679,10 +886,6 @@ export default function Exemple({
         toast.dismiss();
         toast.error(err?.response?.data?.error);
       });
-    setSearchInput("");
-    setFilterQuery("All");
-    setProperties([]);
-    setBids([]);
 
     let tempBids = [];
 
@@ -694,11 +897,11 @@ export default function Exemple({
         <SmartTable
           title=""
           searchInput={searchInput}
+          filterQuery={filterQuery}
           setFilterQuery={setFilterQuery}
           setSearchInput={setSearchInput}
           data={sortObjectsByOrderIdDescending(updatedData)}
           headCells={headCells}
-          filterQuery={filterQuery}
           refreshHandler={refreshHandler}
           start={start}
           dataFetched={dataFetched}

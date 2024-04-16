@@ -3,7 +3,7 @@ import SmartTable from "./SmartTable";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import axios, { all } from "axios";
-import { AppraiserStatusOptions } from "../create-listing/data";
+import { AppraiserStatusOptions } from "../data";
 import { FaArchive, FaPause } from "react-icons/fa";
 
 const headCells = [
@@ -12,6 +12,19 @@ const headCells = [
     numeric: false,
     label: "Order ID",
     width: 100,
+  },
+
+  {
+    id: "broker",
+    numeric: false,
+    label: "Broker Info",
+    width: 280,
+  },
+  {
+    id: "plan",
+    numeric: false,
+    label: "Plan Info",
+    width: 280,
   },
   {
     id: "address",
@@ -90,8 +103,8 @@ const headCells = [
   {
     id: "actions_01",
     numeric: false,
-    label: "Actions",
-    width: 170,
+    label: "Action",
+    width: 80,
   },
 ];
 
@@ -242,13 +255,27 @@ export default function Exemple({
     return isCompleted ? 3 : isAccepted ? 2 : isQuoteProvided ? 1 : 0;
   };
 
+  const data = [
+    {
+      orderId: 1,
+      propertyId: 1,
+      isOnHold: 0,
+      isOnCancel: 0,
+      isArchive: 0,
+      quoteRequiredDate: "16-09-2024",
+      addedDatetime: "16-09-2024",
+      isStatus: 1,
+      orderStatus: 2,
+    },
+  ];
+
   const openPopupModal = (property) => {
     setModalIsPopupOpen(true);
     setCurrentProperty(property);
   };
   useEffect(() => {
     const getData = () => {
-      properties.map((property, index) => {
+      data.map((property, index) => {
         const isBidded = getBidOfProperty(property.orderId);
         const isHold = property.isOnHold;
         const isCancel = property.isOnCancel;
@@ -361,250 +388,45 @@ export default function Exemple({
               ? property.lenderInformation
               : "N.A.",
             urgency: property.urgency === 0 ? "Rush" : "Regular",
-            actions: (
-              // <ul className="view_edit_delete_list mb0">
-              <ul className="mb0">
-                {!isEditable && (
-                  <li>
-                    <Link href={"#"}>
-                      <span
-                        className="btn btn-color w-100 mb-1"
-                        onClick={() => openPopupModal(property)}
-                      >
-                        {" "}
-                        Property Details{" "}
-                      </span>
-                    </Link>{" "}
-                    {/* <span
-                      className="btn btn-color-table m-1"
-                      onClick={() => openPopupModal(property)}
-                    >
-                      <Link href={"#"}>
-                        <span className="text-light flaticon-view"></span>
-                      </Link>
-                    </span> */}
-                  </li>
-                )}
-
-                {!isEditable && isStatus === 1 && (
-                  <li>
-                    <Link href={`/my-property-bids/${property.orderId}`}>
-                      <span className="btn btn-color w-100 mb-1"> Quotes </span>
-                    </Link>{" "}
-                    {/* <Link
-                      className="btn btn-color-table"
-                      style={{ marginLeft: "4.3rem" }}
-                      href={`/my-property-bids/${property.propertyId}`}
-                    >
-                      <span className="flaticon-invoice"></span>
-                    </Link> */}
-                  </li>
-                )}
-                {/* <li
-                className="list-inline-item"
-                data-toggle="tooltip"
-                data-placement="top"
-                title="Property Details"
-              >
-                <span
-                  className="btn btn-color-table"
-                  onClick={() => openPopupModal(property)}
+            broker: (
+              <a href="#">
+                <button
+                  className=""
+                  style={{
+                    border: "0px",
+                    color: "#2e008b",
+                    textDecoration: "underline",
+                    // fontWeight: "bold",
+                    backgroundColor: "transparent",
+                  }}
+                  // onClick={() => getAppraiser(property?.appraiserid)}
                 >
-                  <Link href={"#"}>
-                    <span className="flaticon-view"></span>
-                  </Link>
-                </span>
-              </li>
-
-              <li
-                className="list-inline-item"
-                data-toggle="tooltip"
-                data-placement="top"
-                title="Bids"
-              >
-                <Link
-                  className="btn btn-color-table"
-                  href={`/my-property-bids/${property.propertyId}`}
+                  name
+                  {/* {getAppraiserName(property?.appraiserid)} */}
+                </button>
+              </a>
+            ),
+            plan: (
+              <a href="#">
+                <button
+                  className=""
+                  style={{
+                    border: "0px",
+                    color: "#2e008b",
+                    textDecoration: "underline",
+                    // fontWeight: "bold",
+                    backgroundColor: "transparent",
+                  }}
+                  // onClick={() => getAppraiser(property?.appraiserid)}
                 >
-                  <span className="flaticon-invoice"></span>
-                </Link>
-              </li> */}
-
-                {(isEditable || isStatus === 1) && !isCancel && (
-                  <li>
-                    <Link href={`/create-listing/${property.orderId}`}>
-                      <span className="btn btn-color w-100 mb-1"> Edit </span>
-                    </Link>{" "}
-                  </li>
-                )}
-
-                {isEditable && (
-                  <li>
-                    <Link href="#" onClick={() => open(property)}>
-                      <span className="btn btn-color w-100 mb-1">
-                        {" "}
-                        Order Cancel{" "}
-                      </span>
-                    </Link>{" "}
-                  </li>
-                )}
-
-                {isEditable && (
-                  <li>
-                    <button
-                      onClick={() => onHoldHandler(property.propertyId, true)}
-                    >
-                      <Link href="#">
-                        <span className="btn btn-color w-100 mb-1 text-light">
-                          {" "}
-                          On Hold{" "}
-                        </span>
-                      </Link>{" "}
-                    </button>
-                  </li>
-                )}
-
-                {!isEditable && (
-                  <li>
-                    <Link
-                      href="#"
-                      onClick={() => archievePropertyHandler(property.orderId)}
-                    >
-                      <span className="btn btn-color w-100">
-                        {" "}
-                        Archive Property{" "}
-                      </span>
-                    </Link>
-                  </li>
-                )}
-              </ul>
+                  plan
+                  {/* {getAppraiserName(property?.appraiserid)} */}
+                </button>
+              </a>
             ),
             actions_01: (
-              <ul className="mb0 d-flex gap-1">
-                <li title="Property Details" className="">
-                  <span
-                    className="btn btn-color-table"
-                    onClick={() => openPopupModal(property)}
-                  >
-                    <Link href={"#"}>
-                      <span className="text-light flaticon-view"></span>
-                    </Link>
-                  </span>
-                </li>
-                {/* )} */}
-
-                {!isEditable && !isCancel && (
-                  <li title="Quotes">
-                    <Link
-                      className="btn btn-color-table"
-                      href={`/my-property-bids/${property.orderId}`}
-                    >
-                      <span className="flaticon-invoice"></span>
-                    </Link>
-                  </li>
-                )}
-
-                {(isEditable || isStatus === 1) && !isCancel && (
-                  <li title="Edit Property">
-                    {/* <Link href={`/create-listing/${property.propertyId}`}>
-                      <span className="btn btn-color w-100 mb-1"> Edit </span>
-                    </Link>{" "} */}
-                    <Link
-                      className="btn btn-color-table"
-                      href={`/create-listing/${property.orderId}`}
-                    >
-                      <span className="flaticon-edit"></span>
-                    </Link>
-                  </li>
-                )}
-
-                {/* End li */}
-
-                {/* {isEditable && ( */}
-                {!isCancel && isStatus !== 3 && (
-                  <li title={!isHold ? "On Hold" : "Remove Hold"}>
-                    <span
-                      className="btn btn-color-table "
-                      style={{ border: "1px solid grey" }}
-                      // onClick={() => onHoldHandler(property.propertyId, !isHold)}
-                      onClick={() =>
-                        openModal(property.orderId, 1, isHold ? 0 : property)
-                      }
-                    >
-                      <Link href="#" className="text-light">
-                        <FaPause />
-                      </Link>
-                    </span>
-                  </li>
-                )}
-                {/* )} */}
-
-                {/* {isEditable && ( */}
-                {!isCancel && isStatus !== 3 && !isHold && (
-                  <li title={"Order Cancel"}>
-                    <span
-                      className="btn btn-color-table"
-                      style={{ border: "1px solid grey" }}
-                      // onClick={() =>
-                      //   onCancelHandler(property.propertyId, !isCancel)
-                      // }
-                      onClick={() => openModal(property.orderId, 2, property)}
-                    >
-                      <Link href="#">
-                        <span className="flaticon-garbage text-light"></span>
-                      </Link>
-                    </span>
-                  </li>
-                )}
-                {/* )} */}
-
-                {/* {isEditable && (
-                  <li title="Edit Property">
-                    <Link href="#">
-                      <span className="btn btn-color w-100 mb-1">
-                        {" "}
-                        On Hold{" "}
-                      </span>
-                    </Link>{" "}
-                    <Link
-                      className="btn btn-color-table"
-                      href={`/create-listing/${property.propertyId}`}
-                    >
-                      <span className="flaticon-edit"></span>
-                    </Link>
-                  </li>
-                )} */}
-
-                {/* {!isEditable && (
-                <li
-                  className="list-inline-item"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Archive Property"
-                >
-                  <span
-                    className="btn btn-color-table"
-                    onClick={() => archievePropertyHandler(property.propertyId)}
-                  >
-                    <Link className="color-light" href={`/archive-property`}>
-                      <span className="flaticon-box"></span>
-                    </Link>
-                  </span>
-                </li>
-              )} */}
-
+              <ul>
                 <li title="Archive Property">
-                  {/* <Link
-                      href="#"
-                      onClick={() =>
-                        archievePropertyHandler(property.propertyId)
-                      }
-                    >
-                      <span className="btn btn-color w-100">
-                        {" "}
-                        Archive Property{" "}
-                      </span>
-                    </Link> */}
                   <span
                     className="btn btn-color-table"
                     onClick={() => archievePropertyHandler(property.orderId)}
@@ -616,8 +438,6 @@ export default function Exemple({
                     </Link>
                   </span>
                 </li>
-
-                {/* End li */}
               </ul>
             ),
           };

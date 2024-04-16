@@ -9,10 +9,47 @@ import Image from "next/image";
 const SidebarMenu = () => {
   const route = useRouter();
 
-  const myProperties = [
-    { id: 1, name: "Manage Brokers", route: "/manage-brokers" },
-    { id: 2, name: "Manage Appraisers", route: "/manage-appraisers" },
-    // { id: 3, name: "Editors", route: "/my-properties" },
+  const userManagement = [
+    { id: 1, name: "Appraiser Company", route: "/manage-appraiser-company" },
+    { id: 2, name: "Appraiser Individual", route: "/manage-appraisers" },
+    { id: 1, name: "Mortgage Brokerage", route: "/manage-mortgage-brokerage" },
+    { id: 2, name: "Mortgage Broker", route: "/manage-mortgage-broker" },
+  ];
+  const appraisersInformation = [
+    {
+      id: 1,
+      name: "Appraiser Company",
+      route: "/appraiser-company-properties",
+    },
+    { id: 2, name: "Appraiser Individual", route: "/appraiser-properties" },
+    { id: 3, name: "Archive", route: "/appraisers-archive-properties" },
+  ];
+  const brokersInformation = [
+    {
+      id: 1,
+      name: "Mortgage Brokerage",
+      route: "/mortgage-brokerage-properties",
+    },
+    { id: 2, name: "Mortgage Broker", route: "/mortgage-broker-properties" },
+    { id: 3, name: "Archive", route: "/brokers-archive-properties" },
+  ];
+
+  const manageSubscriptionPlan = [
+    { id: 1, name: "Appraiser Company", route: "/appraiser-company-plan" },
+    { id: 2, name: "Appraiser Individual", route: "/appraiser-plan" },
+    { id: 3, name: "Mortgage Brokerage", route: "/mortgage-brokerage-plan" },
+    { id: 3, name: "Mortgage Broker", route: "/mortgage-broker-plan" },
+  ];
+
+  const dashboard = [
+    { id: 1, name: "Appraiser Company", route: "/appraiser-company-dashboard" },
+    { id: 2, name: "Appraiser Individual", route: "/appraiser-dashboard" },
+    {
+      id: 3,
+      name: "Mortgage Brokerage",
+      route: "/mortgage-brokerage-dashboard",
+    },
+    { id: 3, name: "Mortgage Broker", route: "/mortgage-broker-dashboard" },
   ];
   const reviews = [
     { id: 1, name: "My Reviews", route: "/my-review" },
@@ -37,7 +74,10 @@ const SidebarMenu = () => {
   return (
     <>
       <ul className="sidebar-menu">
-        <li className="sidebar_header header">
+        <li
+          className="sidebar_header header"
+          style={{ backgroundColor: "white", padding: "30px" }}
+        >
           <Link href="/">
             <Image
               width={40}
@@ -45,7 +85,11 @@ const SidebarMenu = () => {
               src="/assets/images/Appraisal_Land_Logo.png"
               alt="header-logo2.png"
             />
-            <span>Appraisal Land</span>
+            <span style={{ color: "#2e008b", marginTop: "20px" }}>
+              Appraisal{" "}
+            </span>
+            &nbsp;
+            <span style={{ color: "#97d700", marginTop: "20px" }}> Land</span>
           </Link>
         </li>
         {/* End header */}
@@ -55,6 +99,27 @@ const SidebarMenu = () => {
           <ul>
             <li
               className={`treeview ${
+                isParentPageActive(dashboard, route.pathname) ? "active" : ""
+              }`}
+            >
+              <a data-bs-toggle="collapse" href="#my-property_1">
+                <i className="fa fa-dashboard"></i>{" "}
+                <span>Appraiser Land Dashboard</span>
+                <i className="fa fa-angle-down pull-right"></i>
+              </a>
+              <ul className="treeview-menu collapse" id="my-property_1">
+                {dashboard.map((item) => (
+                  <li key={item.id}>
+                    <Link href={item.route}>
+                      <i className="fa fa-circle"></i> {item.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </li>
+            {/* end properties */}
+            {/* <li
+              className={`treeview ${
                 isSinglePageActive("/appraiser-information", route.pathname)
                   ? "active"
                   : ""
@@ -62,7 +127,7 @@ const SidebarMenu = () => {
             >
               <Link href="/appraiser-information">
                 <i className="fa fa-user"></i>
-                <span>Appraiser Information</span>
+                <span>Appraiser Company Dashboard</span>
               </Link>
             </li>
             <li
@@ -74,9 +139,33 @@ const SidebarMenu = () => {
             >
               <Link href="/broker-information">
                 <i className="fa fa-user"></i>
-                <span>Broker Information</span>
+                <span>Appraiser Dashboard</span>
               </Link>
             </li>
+            <li
+              className={`treeview ${
+                isSinglePageActive("/appraiser-information", route.pathname)
+                  ? "active"
+                  : ""
+              }`}
+            >
+              <Link href="/appraiser-information">
+                <i className="fa fa-user"></i>
+                <span>Mortgage Brokerage Dashboard</span>
+              </Link>
+            </li>
+            <li
+              className={`treeview ${
+                isSinglePageActive("/broker-information", route.pathname)
+                  ? "active"
+                  : ""
+              }`}
+            >
+              <Link href="/broker-information">
+                <i className="fa fa-user"></i>
+                <span>Mortgage Broker Dashboard</span>
+              </Link>
+            </li> */}
             {/* <li
               className={`treeview ${
                 isSinglePageActive("/my-properties", route.pathname)
@@ -92,15 +181,18 @@ const SidebarMenu = () => {
 
             <li
               className={`treeview ${
-                isParentPageActive(myProperties, route.pathname) ? "active" : ""
+                isParentPageActive(appraisersInformation, route.pathname)
+                  ? "active"
+                  : ""
               }`}
             >
-              <a data-bs-toggle="collapse" href="#my-property">
-                <i className="fa fa-gear"></i> <span>User Management</span>
+              <a data-bs-toggle="collapse" href="#my-property_2">
+                <i className="fa fa-info-circle"></i>{" "}
+                <span>Appraisers Informations</span>
                 <i className="fa fa-angle-down pull-right"></i>
               </a>
-              <ul className="treeview-menu collapse" id="my-property">
-                {myProperties.map((item) => (
+              <ul className="treeview-menu collapse" id="my-property_2">
+                {appraisersInformation.map((item) => (
                   <li key={item.id}>
                     <Link href={item.route}>
                       <i className="fa fa-circle"></i> {item.name}
@@ -113,6 +205,53 @@ const SidebarMenu = () => {
 
             <li
               className={`treeview ${
+                isParentPageActive(brokersInformation, route.pathname)
+                  ? "active"
+                  : ""
+              }`}
+            >
+              <a data-bs-toggle="collapse" href="#my-property_3">
+                <i className="fa fa-info-circle"></i>{" "}
+                <span>Brokers Informations</span>
+                <i className="fa fa-angle-down pull-right"></i>
+              </a>
+              <ul className="treeview-menu collapse" id="my-property_3">
+                {brokersInformation.map((item) => (
+                  <li key={item.id}>
+                    <Link href={item.route}>
+                      <i className="fa fa-circle"></i> {item.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </li>
+            {/* end properties */}
+
+            <li
+              className={`treeview ${
+                isParentPageActive(manageSubscriptionPlan, route.pathname)
+                  ? "active"
+                  : ""
+              }`}
+            >
+              <a data-bs-toggle="collapse" href="#my-property_4">
+                <i className="fa fa-dollar"></i>{" "}
+                <span>Manage Subscription Plan</span>
+                <i className="fa fa-angle-down pull-right"></i>
+              </a>
+              <ul className="treeview-menu collapse" id="my-property_4">
+                {manageSubscriptionPlan.map((item) => (
+                  <li key={item.id}>
+                    <Link href={item.route}>
+                      <i className="fa fa-circle"></i> {item.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </li>
+
+            {/* <li
+              className={`treeview ${
                 isSinglePageActive("/manage-plans", route.pathname)
                   ? "active"
                   : ""
@@ -122,7 +261,30 @@ const SidebarMenu = () => {
                 <i className="fa fa-cogs"></i>
                 <span> Manage Plans</span>
               </Link>
+            </li> */}
+
+            <li
+              className={`treeview ${
+                isParentPageActive(userManagement, route.pathname)
+                  ? "active"
+                  : ""
+              }`}
+            >
+              <a data-bs-toggle="collapse" href="#my-property">
+                <i className="fa fa-users"></i> <span>User Management</span>
+                <i className="fa fa-angle-down pull-right"></i>
+              </a>
+              <ul className="treeview-menu collapse" id="my-property">
+                {userManagement.map((item) => (
+                  <li key={item.id}>
+                    <Link href={item.route}>
+                      <i className="fa fa-circle"></i> {item.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </li>
+            {/* end properties */}
 
             {/* <li
               className={`treeview ${
@@ -158,7 +320,6 @@ const SidebarMenu = () => {
                 </li>*/}
           </ul>
         </li>
-
       </ul>
     </>
   );
