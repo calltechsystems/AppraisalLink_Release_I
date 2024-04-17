@@ -22470,6 +22470,7 @@ input:checked + .slider:before {
   left: 0;
   background-color: #2e008b !important;
   text-align: center;
+  z-index: 1;
 }
 
 .smartTable-pointer {

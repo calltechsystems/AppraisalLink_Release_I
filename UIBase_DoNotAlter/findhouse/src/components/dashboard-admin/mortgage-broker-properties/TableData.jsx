@@ -9,6 +9,7 @@ const TableData = ({
   userData,
   open,
   start,
+  openModalBroker,
   end,
   close,
   searchInput,
@@ -20,6 +21,8 @@ const TableData = ({
   setPropValue,
   refresh,
   setRefresh,
+  setOpenPlanModal,
+  setViewPlanData,
   setModalIsPopupOpen,
   archievePropertyHandler,
   setCurrentProperty,
@@ -223,8 +226,11 @@ const TableData = ({
           setPropValue={setPropValue}
           setPropertyId={setPropertyId}
           close={close}
+          setViewPlanData={setViewPlanData}
+                          setOpenPlanModal={setOpenPlanModal}
           setProperties={setProperties}
           properties={data}
+          openModalBroker={openModalBroker}
           setRefresh={setRefresh}
           refresh={refresh}
           searchInput={searchInput}

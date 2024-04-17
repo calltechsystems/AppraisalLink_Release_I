@@ -9,8 +9,11 @@ const TableData = ({
   userData,
   open,
   start,
+  openModalBroker,
   end,
   close,
+  searchInput,
+  filterQuery,
   onHoldHandler,
   onCancelHandler,
   properties,
@@ -18,11 +21,11 @@ const TableData = ({
   setPropValue,
   refresh,
   setRefresh,
+  setOpenPlanModal,
+  setViewPlanData,
   setModalIsPopupOpen,
   archievePropertyHandler,
-  setWishlist,
   setCurrentProperty,
-  searchInput,
   setProperties,
   setFilterQuery,
   setSearchInput,
@@ -219,13 +222,18 @@ const TableData = ({
         <Exemple
           userData={userData}
           open={open}
+          filterQuery={filterQuery}
           setPropValue={setPropValue}
           setPropertyId={setPropertyId}
           close={close}
+          setViewPlanData={setViewPlanData}
+                          setOpenPlanModal={setOpenPlanModal}
           setProperties={setProperties}
           properties={data}
+          openModalBroker={openModalBroker}
           setRefresh={setRefresh}
           refresh={refresh}
+          searchInput={searchInput}
           setModalIsOpenError={setModalIsOpenError}
           setErrorMessage={setErrorMessage}
           deletePropertyHandler={deletePropertyHandler}
@@ -238,8 +246,6 @@ const TableData = ({
           onCancelHandler={onCancelHandler}
           setFilterQuery={setFilterQuery}
           setSearchInput={setSearchInput}
-          setWishlist={setWishlist}
-          searchInput={searchInput}
           setModalOpen={setModalOpen}
           setIsCancelProperty={setIsCancelProperty}
           setIsHoldProperty={setIsHoldProperty}

@@ -181,6 +181,28 @@ export default function Exemple({
     return isArchive;
   };
 
+  const alreadyAccepted = (property) => {
+    const data = JSON.parse(localStorage.getItem("user"));
+    let isAccepted = {};
+    
+    bids.filter((bid) => {
+      console.log("filter",bid.orderId,property.orderId,String(bid.orderId) === String(property.orderId),
+        bid.appraiserUserId,data.userId,String(bid.appraiserUserId) !== String(data.userId))
+        
+      if (
+        String(bid.orderId) === String(property.orderId) &&
+        String(bid.appraiserUserId) !== String(data.userId)
+      ) {
+        if (bid.status === 1) {
+          
+          isAccepted = bid;
+        }
+      }
+    });
+    return isAccepted.bidId ? true : false;
+  };
+
+
   function addCommasToNumber(number) {
     if (Number(number) <= 100 || number === undefined) return number;
     return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -363,7 +385,7 @@ export default function Exemple({
         const property = prop.property;
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
-
+        const anotherBid = alreadyAccepted(property);
         const isArchive = foundArchiveHandler(property.propertyId);
 
         const isWait = property.isOnHold || property.isOnCancel;
@@ -432,6 +454,10 @@ export default function Exemple({
             ),
           remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
           status:
+          (anotherBid === true && isBidded.status !== 2)    ? (
+            <span className="btn btn-danger  w-100">Broker has already selected the quote</span>
+          ) :
+            
             isBidded?.bidId && isBidded.status === 2 ? (
               <span className="btn btn-danger  w-100">Rejected</span>
             ) : isWait ? (
@@ -628,7 +654,7 @@ export default function Exemple({
               }
             });
 
-            setBids(updatedBids);
+            setBids(tempBids);
             axios
               .get("/api/appraiserWishlistedProperties", {
                 headers: {

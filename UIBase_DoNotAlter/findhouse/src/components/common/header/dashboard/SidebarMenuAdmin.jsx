@@ -12,8 +12,8 @@ const SidebarMenu = () => {
   const userManagement = [
     { id: 1, name: "Appraiser Company", route: "/manage-appraiser-company" },
     { id: 2, name: "Appraiser Individual", route: "/manage-appraisers" },
-    { id: 1, name: "Mortgage Brokerage", route: "/manage-mortgage-brokerage" },
-    { id: 2, name: "Mortgage Broker", route: "/manage-mortgage-broker" },
+    { id: 3, name: "Mortgage Brokerage", route: "/manage-mortgage-brokerage" },
+    { id: 4, name: "Mortgage Broker", route: "/manage-mortgage-broker" },
   ];
   const appraisersInformation = [
     {
@@ -38,7 +38,7 @@ const SidebarMenu = () => {
     { id: 1, name: "Appraiser Company", route: "/appraiser-company-plan" },
     { id: 2, name: "Appraiser Individual", route: "/appraiser-plan" },
     { id: 3, name: "Mortgage Brokerage", route: "/mortgage-brokerage-plan" },
-    { id: 3, name: "Mortgage Broker", route: "/mortgage-broker-plan" },
+    { id: 4, name: "Mortgage Broker", route: "/mortgage-broker-plan" },
   ];
 
   const dashboard = [
@@ -49,7 +49,7 @@ const SidebarMenu = () => {
       name: "Mortgage Brokerage",
       route: "/mortgage-brokerage-dashboard",
     },
-    { id: 3, name: "Mortgage Broker", route: "/mortgage-broker-dashboard" },
+    { id: 4, name: "Mortgage Broker", route: "/mortgage-broker-dashboard" },
   ];
   const reviews = [
     { id: 1, name: "My Reviews", route: "/my-review" },

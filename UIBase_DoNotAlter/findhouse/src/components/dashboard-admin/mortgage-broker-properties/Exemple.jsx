@@ -113,6 +113,7 @@ export default function Exemple({
   archievePropertyHandler,
   start,
   end,
+  openModalBroker,
   open,
   setModalIsPopupOpen,
   close,
@@ -124,6 +125,8 @@ export default function Exemple({
   refresh,
   setRefresh,
   setProperties,
+  setOpenPlanModal,
+  setViewPlanData,
   setCurrentProperty,
   setFilterQuery,
   setSearchInput,
@@ -137,6 +140,7 @@ export default function Exemple({
   const [updatedData, setUpdatedData] = useState([]);
   const [allBids, setBids] = useState([]);
   const [show, setShow] = useState(false);
+  const [allBrokers,setAllBrokers] = useState([])
   const [dataFetched, setDataFetched] = useState(false);
   let tempData = [];
 
@@ -228,6 +232,18 @@ export default function Exemple({
     setRefresh(true);
   };
 
+  const getBrokerName = (userId)=>{
+
+    
+    let requiredName = "";
+    allBrokers.map((broker,index)=>{
+      if(String(broker.userId) === String(userId)){
+        requiredName=`${broker.firstName} ${broker.lastName}`
+      }
+    })
+    return requiredName
+  }
+
   function addCommasToNumber(number) {
     if (Number(number) <= 100 || number === undefined) return number;
     return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -255,19 +271,47 @@ export default function Exemple({
     return isCompleted ? 3 : isAccepted ? 2 : isQuoteProvided ? 1 : 0;
   };
 
-  const data = [
-    {
-      orderId: 1,
-      propertyId: 1,
-      isOnHold: 0,
-      isOnCancel: 0,
-      isArchive: 0,
-      quoteRequiredDate: "16-09-2024",
-      addedDatetime: "16-09-2024",
-      isStatus: 1,
-      orderStatus: 2,
-    },
-  ];
+
+  
+  const getCurrentBrokerPlan = (property)=>{
+    const data = JSON.parse(localStorage.getItem("user"));
+    axios.get("/api/getBrokerTransactions",{
+      headers: {
+        Authorization: `Bearer ${data?.token}`,
+        "Content-Type": "application/json",
+      },
+      params: {
+        userId: property?.userId,
+      },
+    })
+    .then((res=>{
+       let allPlans = res.data.data.result.$values;
+       let requiredPlan = {};
+       allPlans.map((plan,index)=>{
+        if(new Date(plan.endDate) >= new Date() &&
+          new Date() >= new Date(plan.startDate) ){
+            requiredPlan = plan
+          }
+       })
+
+      setViewPlanData(requiredPlan)
+      setOpenPlanModal(true)
+       
+    }))
+    .catch((err)=>{
+      toast.error("Caught Error While Fetching the current Plan");
+    })
+  }
+
+  const openBrokerModalView = (userId)=>{
+    let currentBroker = {};
+    allBrokers.map((broker,index)=>{
+      if(String(broker.userId) === String(userId)){
+        currentBroker=broker;
+      }
+    })
+    openModalBroker(currentBroker,2);
+  }
 
   const openPopupModal = (property) => {
     setModalIsPopupOpen(true);
@@ -275,7 +319,7 @@ export default function Exemple({
   };
   useEffect(() => {
     const getData = () => {
-      data.map((property, index) => {
+      properties.map((property, index) => {
         const isBidded = getBidOfProperty(property.orderId);
         const isHold = property.isOnHold;
         const isCancel = property.isOnCancel;
@@ -390,21 +434,19 @@ export default function Exemple({
             urgency: property.urgency === 0 ? "Rush" : "Regular",
             broker: (
               <a href="#">
-                <button
-                  className=""
-                  style={{
-                    border: "0px",
-                    color: "#2e008b",
-                    textDecoration: "underline",
-                    // fontWeight: "bold",
-                    backgroundColor: "transparent",
-                  }}
-                  // onClick={() => getAppraiser(property?.appraiserid)}
-                >
-                  name
-                  {/* {getAppraiserName(property?.appraiserid)} */}
-                </button>
-              </a>
+                    <button
+                      className="list-inline-item"
+                      style={{
+                        border: "0px",
+                        color: "#2e008b",
+                        textDecoration: "underline",
+                        backgroundColor: "transparent",
+                      }}
+                      onClick={() => openBrokerModalView(property.userId)}
+                    >
+                      {getBrokerName(property.userId)}
+                    </button>
+                  </a>
             ),
             plan: (
               <a href="#">
@@ -417,10 +459,9 @@ export default function Exemple({
                     // fontWeight: "bold",
                     backgroundColor: "transparent",
                   }}
-                  // onClick={() => getAppraiser(property?.appraiserid)}
+                  onClick={() => getCurrentBrokerPlan(property)}
                 >
                   plan
-                  {/* {getAppraiserName(property?.appraiserid)} */}
                 </button>
               </a>
             ),
@@ -447,7 +488,7 @@ export default function Exemple({
       setUpdatedData(tempData);
     };
     getData();
-  }, [properties]);
+  }, [properties,allBids,allBrokers]);
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("user"));
@@ -457,26 +498,23 @@ export default function Exemple({
     };
 
     axios
-      .get("/api/getAllListedProperties2", {
+      .get("/api/getAllBrokerProperties", {
         headers: {
           Authorization: `Bearer ${data?.token}`,
           "Content-Type": "application/json",
-        },
-        params: {
-          UserID: data?.userId,
         },
       })
       .then((res) => {
         toast.dismiss();
         setDataFetched(true);
-        const temp = res.data.data.property.$values;
+        const temp = res.data.data.result.$values;
         let tempProperties = [];
-        tempProperties = temp.filter((prop, index) => {
-          if (String(prop.userId) === String(data.userId)) {
-            return true;
-          } else {
-            return false;
-          }
+        
+        temp.map((prop, index) => {
+         const allMentionedProp = prop.$values;
+         allMentionedProp.map((singleProp,idx)=>{
+          tempProperties.push(singleProp)
+         })
         });
         axios
           .get("/api/getAllBids", {
@@ -488,6 +526,39 @@ export default function Exemple({
             tempBids = res.data.data.$values;
             setProperties(tempProperties);
             setBids(tempBids);
+            axios
+      .get("/api/getAllBrokers", {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+      })
+
+      .then((res) => {
+        let allbroker = res.data.data.$values;
+        axios
+          .get("/api/getAllBrokerageCompany", {
+            headers: {
+              Authorization: `Bearer ${data.token}`,
+            },
+          })
+          .then((res) => {
+            const allbrokerage = res.data.data.result.$values;
+            let updated = allbroker;
+            allbrokerage.map((user, index) => {
+              updated.push(user);
+            });
+
+            setAllBrokers(updated);
+          })
+          .catch((err) => {
+            setErrorMessage(err?.response?.data?.error);
+            setModalIsOpenError(true);
+          });
+      })
+      .catch((err) => {
+        setErrorMessage(err?.response?.data?.error);
+        setModalIsOpenError(true);
+      });
           })
           .catch((err) => {
             toast.error(err);
@@ -499,6 +570,8 @@ export default function Exemple({
         toast.dismiss();
         toast.error(err?.response?.data?.error);
       });
+
+      
     setSearchInput("");
     setFilterQuery("All");
     setProperties([]);

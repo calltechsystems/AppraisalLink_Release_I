@@ -6,6 +6,7 @@ import SVGChevronLeft from "./icons/SVGChevronLeft";
 import SVGChevronRight from "./icons/SVGChevronRight";
 import { FaRedo } from "react-icons/fa";
 import * as XLSX from "xlsx";
+
 import { useReactToPrint } from "react-to-print";
 import toast from "react-hot-toast";
 import SearchBox from "./SearchBox";
@@ -37,10 +38,7 @@ function SmartTable(props) {
   const refreshHandler = () => {
     const refresh = !props.refresh;
     props.setRefresh(refresh);
-    // toast.loading("Loading....");
-    // window.location.reload();
   };
-
   const fetchData = useCallback(
     async (queryString) => {
       setLoading(true);
@@ -58,12 +56,24 @@ function SmartTable(props) {
           setTotal(data.data.total, 0);
         }
       } catch (e) {
-        console.log("Fetch error", e.message);
+        // console.log("Fetch error", e.message);
       }
       setLoading(false);
     },
     [props.url]
   );
+
+  const [showNoData, setShowNoData] = useState(false);
+
+  useEffect(() => {
+    if (props.dataFetched && props.properties.length === 0) {
+      const timer = setTimeout(() => {
+        setShowNoData(true);
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [props.dataFetched, props.properties]);
 
   function extractTextFromReactElement(element) {
     if (typeof element === 'string') {
@@ -79,7 +89,6 @@ function SmartTable(props) {
     }
 }
 
-
   const handlePrint = async () => {
     try {
       // Fetch data
@@ -88,7 +97,7 @@ function SmartTable(props) {
       // Open print window and set up basic structure
       const printWindow = window.open("", "_blank");
       printWindow.document.write(
-        "<html><head><title>Broker Properties</title></head><body>" +
+        "<html><head><title>Appraised Properties</title></head><body>" +
           // Add CSS styles within the <style> tag
           "<style>" +
           // Define your CSS styles here
@@ -98,15 +107,7 @@ function SmartTable(props) {
           "</style>" +
           "</head><body>"
       );
-      printWindow.document.write(
-        ' <img width="60" height="45" class="logo1 img-fluid" style="" src="/assets/images/Appraisal_Land_Logo.png" alt="header-logo2.png"/> <span style="color: #2e008b font-weight: bold; font-size: 24px;">Appraisal</span><span style="color: #97d700; font-weight: bold; font-size: 24px;">Land</span>'
-      );
-      printWindow.document.write(
-        "<h3>Brokers Properties</h3>" +
-          "<style>" +
-          "h3{text-align:center;}" +
-          "</style>"
-      );
+      printWindow.document.write("<h1>" + props.title + "</h1>");
       printWindow.document.write(
         '<button style="display:none;" onclick="window.print()">Print</button>'
       );
@@ -118,17 +119,17 @@ function SmartTable(props) {
       const tableHeaderRow = document.createElement("tr");
       const staticHeaders = [
         ["order_id", "Order Id"],
-        ["address", "Property Address"],
-        ["status", "Order Status"],
+        ["address", "Address"],
+        ["assigned_appraiser", "Assigned Appraiser"],
+        ["status", "Status"],
         ["appraisal_status", "Appraisal Status"],
         ["remark", "Remark"],
-        ["sub_date", "Submission Date"],
-        ["quote_required_by", "Appraisal Report Required By"],
-        ["urgency", "Request Type"],
-        ["type_of_building", "Property Type"],
-        ["amount", "Estimated Value ($)"],
-        ["purpose", "Purpose"],
+        ["urgency", "Urgency"],
+        ["date", "Submission Date"],
+        ["type_of_building", "Type Of Building"],
+        ["estimated_value", "Estimated Property Value ($)"],
         ["type_of_appraisal", "Type Of Appraisal"],
+        ["purpose", "Purpose"],
         ["lender_information", "Lender Information"],
       ];
       staticHeaders.forEach((headerText) => {
@@ -154,9 +155,12 @@ function SmartTable(props) {
             const content = header[0].toLowerCase() === "appraisal_status" ?
              extractTextFromReactElement(value.props.children).split("Current Status")[0] : value.props.children;
 
+
+            // Create a span element to contain the content
             const spanElement = document.createElement("span");
             spanElement.textContent = content;
 
+            // Apply styles based on className
             if (className.includes("btn-warning")) {
               spanElement.style.backgroundColor = "";
               spanElement.style.color = "#E4A11B";
@@ -191,6 +195,18 @@ function SmartTable(props) {
 
             // Append the span element to the cell
             cell.appendChild(spanElement);
+          } else if (header[0].toLowerCase() === "assigned_appraiser") {
+            const value = item[header[0].toLowerCase()];
+            const content = value.props.children;
+            const spanElement = document.createElement("span");
+            spanElement.textContent = content;
+            spanElement.style.backgroundColor = "transparent";
+            spanElement.style.border = "0px";
+            spanElement.style.color =
+              content === "Assigned" ? "green" : "black";
+            spanElement.style.textDecoration = "underline";
+
+            cell.appendChild(spanElement);
           } else {
             cell.textContent = item[header[0].toLowerCase()];
           }
@@ -221,20 +237,25 @@ function SmartTable(props) {
       return [item.bid, item.date, item.title, item.urgency];
     });
 
+    // Remove empty arrays from twoDData
     const filteredTwoDData = twoDData.filter((row) => row.length > 0);
 
+    // Create a workbook and add a worksheet
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.aoa_to_sheet(filteredTwoDData);
     XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
 
+    // Create a blob from the workbook
     const blob = XLSX.write(wb, {
       bookType: "xlsx",
       bookSST: false,
       type: "blob",
     });
 
+    // Create a new window for downloading Excel
     const excelWindow = window.open("", "_blank");
 
+    // Write the Excel blob to the new window
     excelWindow.document.write(
       "<html><head><title>AllBrokerProperties</title></head><body>"
     );
@@ -243,11 +264,13 @@ function SmartTable(props) {
       '<a id="download-link" download="your_excel_file.xlsx" href="#">Download Excel</a>'
     );
 
+    // Create a download link and trigger a click event to download the file
     const url = URL.createObjectURL(blob);
     const downloadLink = excelWindow.document.getElementById("download-link");
     downloadLink.href = url;
     downloadLink.click();
 
+    // Close the new window after the file is downloaded
     excelWindow.document.write("</body></html>");
     excelWindow.document.close();
   };
@@ -271,7 +294,7 @@ function SmartTable(props) {
     tableWidthFunc,
     fetchData,
   ]);
-  console.log(props.data);
+  // console.log(props.data);
 
   const buildQueryString = (search, page, rowsPerPage) => {
     const queries = [];
@@ -295,18 +318,6 @@ function SmartTable(props) {
     };
   };
 
-  const [showNoData, setShowNoData] = useState(false);
-
-  useEffect(() => {
-    if (props.dataFetched && props.properties.length === 0) {
-      const timer = setTimeout(() => {
-        setShowNoData(true);
-      }, 10000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [props.dataFetched, props.properties]);
-
   const handleSearch = debounce((event) => {
     const { value } = event.target;
     setSearch(value);
@@ -327,11 +338,12 @@ function SmartTable(props) {
 
   const extractTextContent = (cellValue) => {
     if (typeof cellValue === "string") {
-      return cellValue;
+      return cellValue; // If it's a string, return it as is
     } else if (typeof cellValue === "object" && cellValue.$$typeof) {
+      // If it's a React element, extract text content recursively from children
       return extractTextContent(cellValue.props.children);
     } else {
-      return String(cellValue);
+      return String(cellValue); // Convert other types to string and return
     }
   };
 
@@ -352,25 +364,30 @@ function SmartTable(props) {
   };
 
   const sortData = (cell) => {
+    // Clone props.properties to avoid mutating the original data
     let tempData = [...props.properties];
 
+    // Toggle sorting order for the current cell
     const newSortDesc = { ...sortDesc };
     newSortDesc[cell] = !newSortDesc[cell];
 
+    // Perform sorting
     tempData.sort((a, b) => {
+      // Extract text content from cell value (React element or other type)
       let valueA = extractTextContent(a[cell]);
       let valueB = extractTextContent(b[cell]);
 
-      if (String(cell) === "sub_date" || String(cell) === "quote_required_by") {
+      if (String(cell) === "date" || String(cell) === "quote_required_by") {
         valueA = extractTextContentFromDate(a[cell]);
         valueB = extractTextContentFromDate(b[cell]);
       }
 
-      if (String(cell) === "amount") {
+      if (String(cell) === "estimated_value") {
         valueA = extractNumericValue(a[cell]);
         valueB = extractNumericValue(b[cell]);
       }
 
+      // Perform comparison based on the sorting order
       if (newSortDesc[cell]) {
         return valueA < valueB ? 1 : -1;
       } else {
@@ -378,6 +395,7 @@ function SmartTable(props) {
       }
     });
 
+    // Update state with the new sorting order and sorted data
     setSortDesc(newSortDesc);
     setData(tempData);
   };
@@ -389,23 +407,25 @@ function SmartTable(props) {
 
     setData(sortObjectsByOrderIdDescending(props.data));
   }, [props.data]);
+
   return (
-    <div className="col-12 p-1">
+    <div className="col-12 p-2">
       <div className="smartTable-container row">
         <div className="candidate_revew_select style2 mb30-991">
           <ul className="mb0 mt-0">
             <li className="list-inline-item">
-              <Filtering
-                filterQuery={props.filterQuery}
-                setFilterQuery={props.setFilterQuery}
-              />
+              <Filtering 
+              filterQuery={props.filterQuery}
+              setFilterQuery={props.setFilterQuery} />
             </li>
+            {/* <li className="list-inline-item">
+          <FilteringBy setFilterQuery={props.setSearchQuery} />
+        </li> */}
             <li className="list-inline-item" style={{ marginRight: "15px" }}>
               <div className="candidate_revew_search_box course fn-520">
-                <SearchBox
-                  searchInput={props.searchInput}
-                  setSearchInput={props.setSearchInput}
-                />
+                <SearchBox 
+                searchInput={props.searchInput}
+                setSearchInput={props.setSearchInput} />
               </div>
             </li>
             <li className="list-inline-item">
@@ -473,10 +493,12 @@ function SmartTable(props) {
                             {headCell.label}
                             {sortDesc[headCell.id] ? (
                               <div></div>
-                            ) : sortDesc[headCell.id] === undefined ? (
+                            ) : // <SVGArrowDown />
+                            sortDesc[headCell.id] === undefined ? (
                               ""
                             ) : (
                               <div></div>
+                              // <SVGArrowUp />
                             )}
                           </th>
                         );
@@ -486,6 +508,7 @@ function SmartTable(props) {
                   <tbody>
                     {data.length > 0
                       ? data.map((row, idx) => {
+                          // if (idx >= props.start && idx <= props.end) {
                           return (
                             <tr key={"tr_" + idx}>
                               {props.headCells.map((headCell, idxx) => {
@@ -499,8 +522,12 @@ function SmartTable(props) {
                               })}
                             </tr>
                           );
+                          // } else {
+                          //   return null; // Skip rendering rows that don't meet the condition
+                          // }
                         })
                       : props.data.map((row, idx) => {
+                          // if (idx >= props.start && idx <= props.end) {
                           return (
                             <tr key={"tr_" + idx}>
                               {props.headCells.map((headCell, idxx) => {
@@ -514,6 +541,9 @@ function SmartTable(props) {
                               })}
                             </tr>
                           );
+                          // } else {
+                          //   return null; // Skip rendering rows that don't meet the condition
+                          // }
                         })}
                   </tbody>
                 </table>
@@ -523,7 +553,7 @@ function SmartTable(props) {
             <div className="row">
               <div
                 className="smartTable-noDataFound col-12"
-                style={{ marginTop: "110px", marginBottom: "40px" }}
+                style={{ marginTop: "100px", marginBottom: "40px" }}
               >
                 {props.dataFetched && props.properties.length === 0 ? (
                   showNoData ? (

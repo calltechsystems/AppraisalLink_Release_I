@@ -249,6 +249,22 @@ export default function Exemple({
     return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
+  const alreadyAccepted = (property) => {
+    const data = JSON.parse(localStorage.getItem("user"));
+    let isAccepted = {};
+    bids.filter((bid) => {
+      if (
+        String(bid.orderId) === String(property.orderId) &&
+        String(bid.appraiserUserId) !== String(data.userId)
+      ) {
+        if (bid.status === 1) {
+          isAccepted = bid;
+        }
+      }
+    });
+    return isAccepted.bidId ? true : false;
+  };
+
   const removeWishlistHandler = (id) => {
     const userData = JSON.parse(localStorage.getItem("user"));
 
@@ -363,6 +379,7 @@ export default function Exemple({
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
 
+        const anotherBid = alreadyAccepted(property);
         const isArchive = foundArchiveHandler(property.propertyId);
 
         const isWait = property.isOnHold || property.isOnCancel;
@@ -431,6 +448,9 @@ export default function Exemple({
             ),
           remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
           status:
+          (anotherBid === true && isBidded.status !== 2)    ? (
+            <span className="btn btn-danger  w-100">Broker has already selected the quote</span>
+          ) :
             isBidded?.bidId && isBidded.status === 2 ? (
               <span className="btn btn-danger  w-100">Rejected</span>
             ) : isWait ? (
@@ -627,7 +647,7 @@ export default function Exemple({
               }
             });
 
-            setBids(updatedBids);
+            setBids(tempBids);
             axios
               .get("/api/appraiserWishlistedProperties", {
                 headers: {

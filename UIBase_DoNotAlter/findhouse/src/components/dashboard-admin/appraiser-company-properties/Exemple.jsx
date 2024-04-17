@@ -7,7 +7,7 @@ import { encryptionData } from "../../../utils/dataEncryption";
 import { useRouter } from "next/router";
 import Loader from "./Loader";
 import { FaArchive } from "react-icons/fa";
-import { AppraiserStatusOptions } from "../create-listing/data";
+import { AppraiserStatusOptions } from "../data";
 import millify from "millify";
 // import "./SmartTable.css";
 
@@ -253,18 +253,20 @@ export default function Exemple({
   };
   const alreadyAccepted = (property) => {
     const data = JSON.parse(localStorage.getItem("user"));
+    
     let isAccepted = {};
+    // console.log(bids);
     bids.filter((bid) => {
       if (
-        String(bid.orderId) === String(property.orderId) &&
-        String(bid.appraiserUserId) !== String(data.userId)
+        bid.orderId === property.orderId &&
+        bid.appraiserUserId !== data.userId
       ) {
         if (bid.status === 1) {
           isAccepted = bid;
         }
       }
     });
-    return isAccepted.bidId ? true : false;
+    return isAccepted.$id ? true : false;
   };
 
   const router = useRouter();
@@ -498,11 +500,8 @@ export default function Exemple({
               ),
             remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
             status:
-            (anotherBid === true && isBidded.status !== 2)    ? (
-              <span className="btn btn-danger  w-100">Broker has already selected the quote</span>
-            ) :
-              
-             ( isBidded?.bidId && isBidded.status === 2)  ? (
+             ( isBidded?.bidId && isBidded.status === 2) ||
+             (anotherBid?.bidId) ? (
                 <span className="btn btn-danger  w-100">Rejected</span>
               ) : isWait ? (
                 <span className="btn btn-danger  w-100">
@@ -727,7 +726,7 @@ export default function Exemple({
                       </li>
                     ) : isBidded.orderStatus === 3 ? (
                       <span className="btn btn-success w-100">Completed</span>
-                    ) : !anotherBid && (
+                    ) : (
                       <li
                         className="list-inline-item"
                         title="Wishlist Property"
@@ -748,7 +747,7 @@ export default function Exemple({
                       </li>
                     )}
 
-                    {(!isBidded.$id || isBidded?.status < 1) && !isWait && !anotherBid && (
+                    {(!isBidded.$id || isBidded?.status < 1) && !isWait && (
                       <li
                         className="list-inline-item"
                         data-toggle="tooltip"
@@ -993,29 +992,18 @@ export default function Exemple({
               })
               .catch((err) => {
                 toast.error(err?.response);
+                setErrorMessage(err?.response);
+                setModalIsOpenError(true);
               });
-              axios
-      .get("/api/getAllAssignProperties", {
-        headers: {
-          Authorization: `Bearer ${data.token}`,
-        },
-        params: {
-          userId: data.appraiserCompany_Datails?.appraiserCompanyId,
-        },
-      })
-      .then((res) => {
-        // const endDate = new Date();\
-        let tempProperties = res.data.data.$values;
-        const temp = res.data.data.$values;
-
-        setAssignedProperties(tempProperties);
-      })
-      .catch((err) => {});
           })
           .catch((err) => {
+            setErrorMessage(err?.response?.data?.error);
+            setModalIsOpenError(true);
           });
       })
       .catch((err) => {
+        setErrorMessage(err?.response?.data?.error);
+        setModalIsOpenError(true);
       });
 
     axios
@@ -1042,12 +1030,32 @@ export default function Exemple({
             setAllBrokers(updated);
           })
           .catch((err) => {
+            setErrorMessage(err?.response?.data?.error);
+            setModalIsOpenError(true);
           });
       })
       .catch((err) => {
+        setErrorMessage(err?.response?.data?.error);
+        setModalIsOpenError(true);
       });
 
-    
+    axios
+      .get("/api/getAllAssignProperties", {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+        params: {
+          userId: data.appraiserCompany_Datails?.appraiserCompanyId,
+        },
+      })
+      .then((res) => {
+        // const endDate = new Date();\
+        let tempProperties = res.data.data.$values;
+        const temp = res.data.data.$values;
+
+        setAssignedProperties(tempProperties);
+      })
+      .catch((err) => {});
 
     axios
       .get("/api/getAllAppraiserByCompanyId", {
@@ -1062,6 +1070,8 @@ export default function Exemple({
         setAssignAppraiser(res.data.data.$values);
       })
       .catch((err) => {
+        setErrorMessage(err?.response?.data?.error);
+        setModalIsOpenError(true);
       });
 
     axios
@@ -1078,6 +1088,8 @@ export default function Exemple({
       })
       .catch((err) => {
         setDataFetched(false);
+        setErrorMessage(err?.response?.data?.error);
+        setModalIsOpenError(true);
       });
 
     setRefresh(false);
