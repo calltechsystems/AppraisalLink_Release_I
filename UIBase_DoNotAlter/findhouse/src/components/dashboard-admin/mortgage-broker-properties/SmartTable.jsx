@@ -8,6 +8,7 @@ import { FaRedo } from "react-icons/fa";
 import * as XLSX from "xlsx";
 import { useReactToPrint } from "react-to-print";
 import toast from "react-hot-toast";
+import SearchUser from "./SearchUser";
 import SearchBox from "./SearchBox";
 import FilteringBy from "./FilteringBy";
 import Filtering from "./Filtering";
