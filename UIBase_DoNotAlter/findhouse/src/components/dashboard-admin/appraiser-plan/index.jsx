@@ -1,0 +1,155 @@
+import Header from "../../common/header/dashboard/HeaderAdmin";
+import SidebarMenu from "../../common/header/dashboard/SidebarMenuAdmin";
+import MobileMenu from "../../common/header/MobileMenuAdmin";
+import SearchBox from "./SearchBox";
+import BreadCrumb2 from "./BreadCrumb2";
+import FeaturedItem from "./PricingMonthly";
+// import FeaturedItem_01 from "./PricingYearly";
+import FilterTopBar from "../../common/listing/FilterTopBar";
+import ShowFilter from "../../common/listing/ShowFilter";
+import SidebarListing from "../../common/listing/SidebarListing";
+import GridListButton from "../../common/listing/GridListButton";
+import { useEffect, useState } from "react";
+import Modal from "./MonthlyModal";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { Router, useRouter } from "next/router";
+// import Modal_01 from "./YearlyModal";
+
+const Index = () => {
+  const [data, setData] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [dataFetched, setDataFetched] = useState(false);
+  const [planData, setPlanData] = useState([]);
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get("/api/getAllPlans", {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        setPlanData(res.data.data.$values);
+      } catch (err) {
+        toast.error(err.message);
+      }
+    };
+
+    if (typeof window !== "undefined") {
+      fetchData();
+    }
+  }, [Router]);
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
+  // const [modalOpen_01, setModalOpen_01] = useState(false);
+
+  // const openModal_01 = () => {
+  //   setModalOpen_01(true);
+  // };
+
+  // const closeModal_01 = () => {
+  //   setModalOpen_01(false);
+  // };
+  return (
+    <>
+      {/* <!-- Main Header Nav --> */}
+      <Header />
+
+      {/* <!--  Mobile Menu --> */}
+      <MobileMenu />
+
+      <div className="dashboard_sidebar_menu">
+        <div
+          className="offcanvas offcanvas-dashboard offcanvas-start"
+          tabIndex="-1"
+          id="DashboardOffcanvasMenu"
+          data-bs-scroll="true"
+        >
+          <SidebarMenu />
+        </div>
+      </div>
+      {/* End sidebar_menu */}
+
+      {/* <!-- Our Dashbord --> */}
+      <section className="our-dashbord dashbord bgc-f7 pb50">
+        <div className="container-fluid ovh">
+          <div className="row">
+            <div className="col-lg-12 maxw100flex-992">
+              <div className="row">
+                {/* Start Dashboard Navigation */}
+                {/* <div className="col-lg-12">
+                  <div className="dashboard_navigationbar dn db-1024">
+                    <div className="dropdown">
+                      <button
+                        className="dropbtn"
+                        data-bs-toggle="offcanvas"
+                        data-bs-target="#DashboardOffcanvasMenu"
+                        aria-controls="DashboardOffcanvasMenu"
+                      >
+                        <i className="fa fa-bars pr10"></i> Dashboard Navigation
+                      </button>
+                    </div>
+                  </div>
+                </div> */}
+                {/* End Dashboard Navigation */}
+
+                <div className="our-listing bgc-f7 pb30-991 md-mt0 ">
+                  <div className="container">
+                    <div className="col-lg-12 col-xl-12 text-center mt-1 mb-3">
+                      <div className="style2 mb30-991">
+                        <h3 className="breadcrumb_title">
+                          Mortgage Broker Plans
+                        </h3>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-md-12 col-lg-12">
+                        <div className="row">
+                          <FeaturedItem
+                            data={planData}
+                            setModalOpen={openModal}
+                          />
+                          <Modal
+                            modalOpen={modalOpen}
+                            closeModal={closeModal}
+                          />
+                        </div>
+                        {/* End .row */}
+                      </div>
+                      {/* End  page conent */}
+                    </div>
+                    {/* End .row */}
+                  </div>
+                </div>
+              </div>
+              {/* End .row */}
+
+              <div className="row mt50">
+                <div className="col-lg-12">
+                  <div className="copyright-widget-dashboard text-center">
+                    <p>
+                      &copy; {new Date().getFullYear()} Appraisal Land. All
+                      Rights Reserved.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              {/* End .row */}
+            </div>
+            {/* End .col */}
+          </div>
+        </div>
+      </section>
+    </>
+  );
+};
+
+export default Index;

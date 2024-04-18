@@ -31,7 +31,7 @@ const SidebarMenu = () => {
       route: "/mortgage-brokerage-properties",
     },
     { id: 2, name: "Mortgage Broker", route: "/mortgage-broker-properties" },
-    { id: 3, name: "Archive", route: "/brokers-archive-properties" },
+    { id: 3, name: "Archive", route: "/mortgage-brokers-archive-properties" },
   ];
 
   const manageSubscriptionPlan = [

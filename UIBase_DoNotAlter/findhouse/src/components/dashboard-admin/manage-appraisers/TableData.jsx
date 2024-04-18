@@ -1,44 +1,114 @@
 "use client";
-import Image from "next/image";
-import properties from "../../../data/properties";
 import { useEffect, useState } from "react";
 
 import Link from "next/link";
 import axios from "axios";
-import { encryptionData } from "../../../utils/dataEncryption";
 import toast from "react-hot-toast";
-const TableData = ({userData , open ,close}) => {
+import Exemple from "./Exemple";
+import { useDispatch, useSelector } from "react-redux";
+const TableData = ({
+  userData,
+  open,
+  close,
+  setCurrentViewAppraiser,
+  setOpenViewModal,
+  setAppraiserCompanyInfo,
+  setSelectedAppraiser,
+  setAppraiser,
+  setOpenEditModal,
+  setFilterQuery,
+  setCloseRegisterModal,
+  setSearchInput,
+  setIsStatusModal,
+  start,
+  end,
+  onWishlistHandler,
+  setStartLoading,
+  setUpdatedCode,
+  openModalBroker,
+  participateHandler,
+  properties,
+  setProperties,
+  setErrorMessage,
+  setModalIsOpenError,
+  setRefresh,
+  refresh,
+}) => {
+  let userInfo = {};
+  const [Id, setId] = useState(-1);
 
-  const [Id,setId] = useState(-1);
-  const [toggle,setToggle] = useState(false);
+  const [rerender, setRerender] = useState(false);
 
-  const [rerender , setRerender] = useState(false);
- 
-  const [data , setData] = useState([]);
+  const [data, setData] = useState([]);
 
-  let theadConent = [
-    "Appraiser Name",
-    "Email Address",
-    "Phone No.",
-    "Address",
-    "Status",
-    "Action",
-  ];
+  const {
+    keyword,
+    location,
+    status,
+    propertyType,
+    price,
+    bathrooms,
+    bedrooms,
+    garages,
+    yearBuilt,
+    area,
+    amenities,
+  } = useSelector((state) => state.properties);
+  const { statusType, featured, isGridOrList } = useSelector(
+    (state) => state.filter
+  );
 
-  useEffect(()=>{
+  const dispatch = useDispatch();
+
+  // keyword filter
+  const keywordHandler = (item) =>
+    item.community.toLowerCase().includes(keyword?.toLowerCase()) ||
+    item.city.toLowerCase().includes(keyword?.toLowerCase()) ||
+    item.area.toLowerCase().includes(keyword?.toLowerCase()) ||
+    item.typeOfBuilding.toLowerCase().includes(keyword?.toLowerCase()) ||
+    item.state.toLowerCase().includes(keyword?.toLowerCase()) ||
+    item.streetNumber.toLowerCase().includes(keyword?.toLowerCase()) ||
+    item.streetName.toLowerCase().includes(keyword?.toLowerCase());
+
+  // location handler
+  const locationHandler = (item) => {
+    item.city.toLowerCase().includes(keyword?.toLowerCase()) ||
+      item.area.toLowerCase().includes(keyword?.toLowerCase()) ||
+      item.state.toLowerCase().includes(keyword?.toLowerCase()) ||
+      item.streetNumber.toLowerCase().includes(keyword?.toLowerCase()) ||
+      item.streetName.toLowerCase().includes(keyword?.toLowerCase());
+  };
+
+  // status handler
+  const statusHandler = (item) =>
+    item.community.toLowerCase().includes(keyword?.toLowerCase()) ||
+    item.typeOfBuilding.toLowerCase().includes(keyword?.toLowerCase());
+
+  // properties handler
+  const propertiesHandler = (item) =>
+    item.community.toLowerCase().includes(keyword?.toLowerCase()) ||
+    item.typeOfBuilding.toLowerCase().includes(keyword?.toLowerCase());
+
+  // price handler
+  const priceHandler = (item) =>
+    item.bidLowerRange < price?.max && item.bidUpperRange > price?.min;
+
+  let theadConent = ["Property Title", "Date", "Urgency", "Bids", "Action"];
+
+  {
+    /*useEffect(()=>{
     
    
 
     const data = (JSON.parse(localStorage.getItem("user")));
 
     const payload = {
-      token : userData?.token
+      token : userData.token
     };
 
 
-    toast.loading("Getting properties...");
     axios
-      .get("/api/getPropertiesById",
+      .get("/api/getAllListedProperties",
        {
         headers: {
           Authorization:`Bearer ${data?.token}`,
@@ -49,81 +119,63 @@ const TableData = ({userData , open ,close}) => {
         }
       })
       .then((res) => {
-        console.log(res.data);
+   
         toast.dismiss();
-        setData(res.data.data.property.$values);
+        
+        console.log(res.data.data.properties.$values);
+        setProperties(res.data.data.properties.$values);
         setRerender(false);
       })
       .catch((err) => {
         toast.dismiss();
-        toast.error(err?.response?.data?.error);
+        setErrorMessage(err?.response?.data?.error);
+        setModalIsOpenError(true);
       });
-  },[rerender]);
+  },[rerender]);*/
+  }
   const formatDate = (dateString) => {
     const options = {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
-      hour12: true, // Use 12-hour format
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     };
-  
-    const formattedDate = new Date(dateString).toLocaleString('en-US', options);
-  
+
+    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
+
     return formattedDate;
   };
 
-  const deletePropertyHandler = (id)=>{
+  useEffect(() => {
+    setData(properties);
+  }, [properties]);
+  const deletePropertyHandler = (id) => {
+    const data = JSON.parse(localStorage.getItem("user"));
 
-    const data = (JSON.parse(localStorage.getItem("user")));
-    
     axios
-      .delete("/api/deleteBrokerPropertyById",
-       {
+      .delete("/api/deleteBrokerPropertyById", {
         headers: {
-          Authorization:`Bearer ${data?.token}`,
-          "Content-Type":"application/json"
+          Authorization: `Bearer ${data?.token}`,
+          "Content-Type": "application/json",
         },
         params: {
-          propertyId : id
-        }
-        
+          propertyId: id,
+        },
       })
       .then((res) => {
-       setRerender(true);
-
+        setRerender(true);
       })
       .catch((err) => {
-        alert(err.response.data.error);
+        setErrorMessage(err.response.data.error);
+        setModalIsOpenError(true);
       });
-  }
-
-  const toggleDropdownDiv = (item)=>{
   };
 
-  let tbodyContent = data?.map((item,key) => (
+  const toggleDropdownDiv = (item) => {};
+
+  let tbodyContent = data?.map((item, key) => (
     <>
-    <tr key={item.id}>
-      <td scope="row">
-       {/* <div className="feat_property list favorite_page style2" >
-          {/*<div className="thumb">
-            <Image
-              width={150}
-              height={220}
-              className="img-whp cover"
-              src={item.img}
-              alt="fp1.jpg"
-            />
-            <div className="thmb_cntnt">
-              <ul className="tag mb0">
-                <li className="list-inline-item">
-                  <a href="#">For Rent</a>
-                </li>
-              </ul>
-            </div>
-         </div> */}
+      <tr key={item.id}>
+        <td scope="row">
           <div className="details">
             <div className="tc_content">
               <h4>{item.title}</h4>
@@ -137,43 +189,45 @@ const TableData = ({userData , open ,close}) => {
               </Link>
             </div>
           </div>
-      </td>
-      {/* End td */}
+        </td>
+        {/* End td */}
 
-      <td>{formatDate(item?.addedDatetime)}</td>
-      {/* End td */}
+        <td>{formatDate(item?.addedDatetime)}</td>
+        {/* End td */}
 
-      <td>
-        <span className="status_tag badge">Pending</span>
-      </td>
-      {/* End td */}
+        <td>
+          <span className="status_tag badge">
+            {item?.urgency === 1
+              ? "Low"
+              : item?.urgency === 2
+              ? "Medium"
+              : "High"}
+          </span>
+        </td>
+        {/* End td */}
 
-      <td>2,345</td>
-      {/* End td */}
+        <td>2,345</td>
+        {/* End td */}
 
-      <td>
-        <ul className="view_edit_delete_list mb0">
-          {/* <li
-            className="list-inline-item"
-            data-toggle="tooltip"
-            data-placement="top"
-            title="View"
-          >
-            <Link href={`/create-listing/${item.propertyId}`} >
-              <span className="flaticon-view"></span>
-            </Link>
-          </li>
-          <li 
-            className="list-inline-item"
-            data-toggle="tooltip"
-            data-placement="top"
-            title="Edit"
-          >
-            <Link href={`/create-listing/${item.propertyId}`} >
-              <span className="flaticon-edit"></span>
-            </Link>
-          </li> */}
-          {/* End li */}
+        <td>
+          <ul className="view_edit_delete_list mb0">
+           
+            <li
+              className="list-inline-item"
+              style={{
+                width: "30px",
+                border: "1px solid black",
+                textAlign: "center",
+                borderRadius: "5px",
+              }}
+            >
+              {/* <Link href="/agent-v1">{item.posterName}</Link> */}
+              <button onClick={() => onWishlistHandler(item.propertyId)}>
+                <span className="flaticon-heart text-color "></span>
+              </button>
+            </li>
+          </ul>
+          {/* <div className="fp_pdate float-end">{item.postedYear}</div> */}
 
           <li
             className="list-inline-item"
@@ -181,34 +235,57 @@ const TableData = ({userData , open ,close}) => {
             data-placement="top"
             title="Delete"
           >
-            <button style={{border:"none",backgroundColor:"white"}} onClick={()=>open(item)}><Link href="#">
-              <span className="flaticon-garbage"></span>
-            </Link></button>
+            <div
+              className="fp_pdate float-end mt-1 fw-bold"
+              onClick={() =>
+                participateHandler(item.bidLowerRange, item.propertyId)
+              }
+            >
+              <a href="#" className="text-color">
+                Provide Qoute
+              </a>
+            </div>
           </li>
-        </ul>  
-      </td>
-      {/* End td */}
-    </tr>
-    { Id === key ?<tr>property data </tr>:""}
+        </td>
+        {/* End td */}
+      </tr>
+      {Id === key ? <tr>property data </tr> : ""}
     </>
   ));
 
   return (
     <>
-      <table className="table">
-        <thead className="thead-light">
-          <tr>
-            {theadConent.map((value, i) => (
-              <th scope="col" key={i}>
-                {value}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        {/* End theaad */}
-
-        <tbody>{tbodyContent}</tbody>
-      </table>
+      {data && (
+        <Exemple
+          userData={userData}
+          open={open}
+          setAppraiser={setAppraiser}
+          close={close}
+          setSearchInput={setSearchInput}
+          setFilterQuery={setFilterQuery}
+          setProperties={setProperties}
+          properties={data}
+          setRefresh={setRefresh}
+          setOpenEditModal={setOpenEditModal}
+          refresh={refresh}
+          setSelectedAppraiser={setSelectedAppraiser}
+          setModalIsOpenError={setModalIsOpenError}
+          setErrorMessage={setErrorMessage}
+          deletePropertyHandler={deletePropertyHandler}
+          onWishlistHandler={onWishlistHandler}
+          participateHandler={participateHandler}
+          setUpdatedCode={setUpdatedCode}
+          setStartLoading={setStartLoading}
+          openModalBroker={openModalBroker}
+          setIsStatusModal={setIsStatusModal}
+          setCurrentViewAppraiser={setCurrentViewAppraiser}
+          setOpenViewModal={setOpenViewModal}
+          setAppraiserCompanyInfo={setAppraiserCompanyInfo}
+          setCloseRegisterModal={setCloseRegisterModal}
+          start={start}
+          end={end}
+        />
+      )}
     </>
   );
 };

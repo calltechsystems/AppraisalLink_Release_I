@@ -436,7 +436,7 @@ const CreateList = ({
                 onChange={(e) => setEstimatedValue(e.target.value)}
                 value={estimatedValue}
                 disabled={isDisable}
-                maxLength={30}
+                maxLength={10}
               />
             </div>
           </div>

@@ -66,19 +66,20 @@ function SmartTable(props) {
   );
 
   function extractTextFromReactElement(element) {
-    if (typeof element === 'string') {
-        return element; // If it's a string, return it directly
+    if (typeof element === "string") {
+      return element; // If it's a string, return it directly
     } else if (Array.isArray(element)) {
-        // If it's an array of elements, recursively call this function for each element
-        return element.map(child => extractTextFromReactElement(child)).join('');
-    } else if (typeof element === 'object' && element !== null) {
-        // If it's an object (React element), recursively call this function on its children
-        return extractTextFromReactElement(element.props.children);
+      // If it's an array of elements, recursively call this function for each element
+      return element
+        .map((child) => extractTextFromReactElement(child))
+        .join("");
+    } else if (typeof element === "object" && element !== null) {
+      // If it's an object (React element), recursively call this function on its children
+      return extractTextFromReactElement(element.props.children);
     } else {
-        return ''; // Return an empty string if the element is not recognized
+      return ""; // Return an empty string if the element is not recognized
     }
-}
-
+  }
 
   const handlePrint = async () => {
     try {
@@ -151,8 +152,12 @@ function SmartTable(props) {
           ) {
             const value = item[header[0].toLowerCase()];
             const className = value.props.className;
-            const content = header[0].toLowerCase() === "appraisal_status" ?
-             extractTextFromReactElement(value.props.children).split("Current Status")[0] : value.props.children;
+            const content =
+              header[0].toLowerCase() === "appraisal_status"
+                ? extractTextFromReactElement(value.props.children).split(
+                    "Current Status"
+                  )[0]
+                : value.props.children;
 
             const spanElement = document.createElement("span");
             spanElement.textContent = content;
@@ -406,6 +411,11 @@ function SmartTable(props) {
                   searchInput={props.searchInput}
                   setSearchInput={props.setSearchInput}
                 />
+              </div>
+            </li>
+            <li className="list-inline-item" style={{ marginRight: "15px" }}>
+              <div className="candidate_revew_search_box course fn-520">
+                <SearchUser />
               </div>
             </li>
             <li className="list-inline-item">
