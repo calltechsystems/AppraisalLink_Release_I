@@ -76,10 +76,12 @@ const Form = ({
         .post("/api/login", encryptedData)
         .then((res) => {
           toast.dismiss();
-          // console.log(res);
           localStorage.setItem("user", JSON.stringify(res.data.userData));
-          // setModalIsOpen(true);
           if (
+            res.data.userData.userType === 7
+          ) {
+            router.push("/admin");
+          }else if (
             res.data.userData.userType === 1 ||
             res.data.userData.userType === 6
           ) {
@@ -99,16 +101,6 @@ const Form = ({
           toast.dismiss();
           setErrorMessage(err.response.data.error);
           setModalIsOpenError(true);
-          // toast.error(
-          //   err.response.data.error
-          //     ? err.response.data.error
-          //     : "Internal server error.",
-          //   {
-          //     autoClose: 30000,
-          //   }
-          // );
-          // setReloadOption(true);
-          // router.reload();
         })
         .finally(() => {
           setLoading(false);
