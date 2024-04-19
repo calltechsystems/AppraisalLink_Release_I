@@ -816,7 +816,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                             >
                               <ul>
                                 <li style={{ fontSize: "15px" }}>
-                                  Updates Sends on Your Registered Email Address
+                                  Updates sent to your profile email address.
                                 </li>
                                 {/* <li>
                                   Regular Request : Timeline for the appraisal
@@ -857,7 +857,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                             >
                               <ul>
                                 <li style={{ fontSize: "15px" }}>
-                                  Updates Sends on Your Registered Phone Number
+                                  Updates sent to your registered cell number.
                                 </li>
                                 {/* <li>
                                   Regular Request : Timeline for the appraisal

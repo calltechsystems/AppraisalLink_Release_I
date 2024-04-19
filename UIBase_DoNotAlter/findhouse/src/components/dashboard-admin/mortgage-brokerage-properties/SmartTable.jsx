@@ -419,7 +419,10 @@ function SmartTable(props) {
                 <SearchUser />
               </div>
             </li>
-            <li className="list-inline-item">
+            <li className="list-inline-item" style={{ marginRight: "15px" }}>
+              <FilteringBy />
+            </li>
+            <li className="list-inline-item ">
               {loading && (
                 <div className="smartTable-loaderContainer text-primary">
                   <div className="spinner-border" role="status"></div>

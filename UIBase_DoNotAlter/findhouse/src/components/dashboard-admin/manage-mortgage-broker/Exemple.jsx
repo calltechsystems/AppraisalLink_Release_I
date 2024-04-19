@@ -9,6 +9,12 @@ import Loader from "./Loader";
 
 const headCells = [
   {
+    id: "get_info",
+    numeric: false,
+    label: "Get Info",
+    width: 200,
+  },
+  {
     id: "firstname",
     numeric: false,
     label: "First Name",
@@ -20,25 +26,25 @@ const headCells = [
     label: "Last Name",
     width: 200,
   },
-  {
-    id: "phone",
-    numeric: false,
-    label: "Phone",
-    width: 200,
-  },
+  // {
+  //   id: "phone",
+  //   numeric: false,
+  //   label: "Phone",
+  //   width: 200,
+  // },
 
   {
     id: "email",
     numeric: false,
-    label: "Email Address",
+    label: "User ID",
     width: 200,
   },
-  {
-    id: "date",
-    numeric: false,
-    label: "Start Date",
-    width: 200,
-  },
+  // {
+  //   id: "date",
+  //   numeric: false,
+  //   label: "Start Date",
+  //   width: 200,
+  // },
   {
     id: "status",
     numeric: false,
@@ -49,7 +55,7 @@ const headCells = [
     id: "action",
     numeric: false,
     label: "Action",
-    width: 180,
+    width: 100,
   },
 ];
 
@@ -128,11 +134,11 @@ export default function Exemple({
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [wishlist, setWishlist] = useState([]);
-  
+  const [allBrokers, setAllBrokers] = useState([]);
   const [dataFetched, setDataFetched] = useState(false);
   const [bids, setBids] = useState([]);
 
-  const [allAppraiser , setAllAppraiser] = useState([])
+  const [allAppraiser, setAllAppraiser] = useState([]);
   const [hideAction, setHideAction] = useState(false);
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
@@ -153,11 +159,21 @@ export default function Exemple({
       }
     });
     return tempBid > 0 ? bidValue : {};
-   };
+  };
 
   const openCredModal = (data) => {
     setCurrentViewAppraiser(data);
     setOpenViewModal(true);
+  };
+
+  const openBrokerModalView = (userId) => {
+    let currentBroker = {};
+    allBrokers.map((broker, index) => {
+      if (String(broker.userId) === String(userId)) {
+        currentBroker = broker;
+      }
+    });
+    openModalBroker(currentBroker, 2);
   };
 
   const router = useRouter();
@@ -240,65 +256,84 @@ export default function Exemple({
     setProperties([]);
   }, [checkData]);
 
-  const getCurrentDate = (id)=>{
-    let specificAppraiser = {}
-    allAppraiser.map((appraiser,index)=>{
-      if(String(appraiser.id) === String(id)){
+  const getCurrentDate = (id) => {
+    let specificAppraiser = {};
+    allAppraiser.map((appraiser, index) => {
+      if (String(appraiser.id) === String(id)) {
         specificAppraiser = appraiser;
       }
-    })
+    });
 
     return specificAppraiser;
-  }
+  };
 
   useEffect(() => {
     const getData = () => {
       const dateNow = formatDate(new Date());
       allAppraiser.map((data, index) => {
         const getCurrentdate = getCurrentDate(data?.item?.id);
-        if(!data?.brokerageId){
-        const updatedRow = {
-          appraiser_id: data.userId,
-          firstname: data.firstName ? data.firstName : "-",
-          lastname: data.lastName ? data.lastName : "-",
-          email: data.emailId ? data.emailId : "-",
-          status: data?.phoneNumber ? (
-            <span className="btn btn-success  w-100">Active</span>
-          ) : !data?.isActive && data?.mortageBrokerageLicNo ? (
-            <span className="btn btn-danger  w-100">In-Active </span>
-          ) : (
-            <span className="btn btn-warning  w-100">Not Registered</span>
-          ),
-          phone: data.phoneNumber ? data.phoneNumber : "-",
-          address: data.streetName
-            ? `${data.streetName} ${data.streetNumber},${data.province}-${data.postalCode}`
-            : "N.A.",
-          date:  data?.modifiedDateTime !==null ?
-          formatDate(data?.modifiedDateTime) : "-",
-
-          action: (
-            <div className="print-hidden-column">
-              {data.firstName && (
+        if (!data?.brokerageId) {
+          const updatedRow = {
+            appraiser_id: data.userId,
+            firstname: data.firstName ? data.firstName : "-",
+            lastname: data.lastName ? data.lastName : "-",
+            // email: data.emailId ? data.emailId : "-",
+            email: data.userEmail ? data.userEmail : "-",
+            status: data?.phoneNumber ? (
+              <span className="btn btn-success  w-100">Active</span>
+            ) : !data?.isActive && data?.mortageBrokerageLicNo ? (
+              <span className="btn btn-danger  w-100">In-Active </span>
+            ) : (
+              <span className="btn btn-warning  w-100">Not Registered</span>
+            ),
+            phone: data.phoneNumber ? data.phoneNumber : "-",
+            address: data.streetName
+              ? `${data.streetName} ${data.streetNumber},${data.province}-${data.postalCode}`
+              : "N.A.",
+            date:
+              data?.modifiedDateTime !== null
+                ? formatDate(data?.modifiedDateTime)
+                : "-",
+            get_info: (
+              <a href="#">
                 <button
-                  className="btn btn-color m-1"
-                  onClick={() => openEditModalHandler(data.item)}
+                  className="list-inline-item"
+                  style={{
+                    border: "0px",
+                    color: "#2e008b",
+                    textDecoration: "underline",
+                    backgroundColor: "transparent",
+                  }}
+                  onClick={() => openBrokerModalView(data.userId)}
                 >
-                  <i className="flaticon-edit"></i>
+                  Get Info
+                  {/* {getBrokerName(property.userId)} */}
                 </button>
-              )}
+              </a>
+            ),
+            action: (
+              <div className="print-hidden-column">
+                {data.firstName && (
+                  <button
+                    className="btn btn-color m-1"
+                    onClick={() => openEditModalHandler(data.item)}
+                  >
+                    <i className="flaticon-edit"></i>
+                  </button>
+                )}
 
-              <button
+                {/* <button
                 className="btn btn-color m-1"
                 onClick={() => openCredModal(data)}
               >
                 <i className="flaticon-view"></i>
-              </button>
-            </div>
-          ),
-        };
+              </button> */}
+              </div>
+            ),
+          };
 
-        tempData.push(updatedRow);
-      }
+          tempData.push(updatedRow);
+        }
       });
       setUpdatedData(tempData);
     };
@@ -316,19 +351,18 @@ export default function Exemple({
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("user"));
     axios
-    .get("/api/getAllBrokers", {
-      headers: {
-        Authorization: `Bearer ${data.token}`,
-      },
-    })
-    .then((res) => {
-      let allappraiser = res.data.data.$values;
-      console.log("res",res)
-      setAllAppraiser(allappraiser)
-    })
-    .catch((err) => {});
+      .get("/api/getAllBrokers", {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+      })
+      .then((res) => {
+        let allappraiser = res.data.data.$values;
+        console.log("res", res);
+        setAllAppraiser(allappraiser);
+      })
+      .catch((err) => {});
 
-      
     setRefresh(false);
   }, [refresh]);
   console.log(sortObjectsByOrderIdDescending(updatedData));

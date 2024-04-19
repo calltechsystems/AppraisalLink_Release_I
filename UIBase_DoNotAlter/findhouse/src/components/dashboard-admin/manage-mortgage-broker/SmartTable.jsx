@@ -278,13 +278,13 @@ function SmartTable(props) {
               <Filtering setFilterQuery={props.setFilterQuery} />
             </li>
             <li className="list-inline-item">
-          <FilteringBy setFilterQuery={props.setSearchQuery} />
-        </li>
+              <FilteringBy setFilterQuery={props.setSearchQuery} />
+            </li> */}
             <li className="list-inline-item" style={{ marginRight: "15px" }}>
               <div className="candidate_revew_search_box course fn-520">
                 <SearchBox setSearchInput={props.setSearchInput} />
               </div>
-            </li> */}
+            </li>
             <li className="list-inline-item">
               {loading && (
                 <div className="smartTable-loaderContainer text-primary">
@@ -405,7 +405,7 @@ function SmartTable(props) {
                 className="smartTable-noDataFound col-12"
                 style={{ marginTop: "50px", marginBottom: "40px" }}
               >
-                 {props.dataFetched && props.properties.length === 0 ? (
+                {props.dataFetched && props.properties.length === 0 ? (
                   showNoData ? (
                     <h3>No Data Found</h3>
                   ) : (
