@@ -70,8 +70,15 @@ const Index = ({ setModalOpen,currentSubscription, setPrice, modalOpen }) => {
           }
           localStorage.setItem("user",JSON.stringify(newInfo))
 
+          const tempPlans = res.data.data.$values;
+          let requiredPlans = [];
+          tempPlans.map((plan,index)=>{
+            if(String(plan?.userType) === "1"){
+              requiredPlans.push(plan)
+            }
+          })
           setTopUpData(res2.data.data.$values)
-          setPlanData(res.data.data.$values);
+          setPlanData(requiredPlans);
         } catch (err) {
           toast.error(err.message);
         }

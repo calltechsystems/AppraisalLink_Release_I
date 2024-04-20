@@ -1,3 +1,9 @@
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { encryptionData } from "../../utils/dataEncryption";
+import axios from "axios";
+import toast from "react-hot-toast";
 const Pricing = ({
   isPlan,
   hideButton,
@@ -52,9 +58,10 @@ const Pricing = ({
       ],
     },
   ];
+  const [currentActivePlan, setCurrentActivePlan] = useState({});
 
   const len = userData?.userSubscription?.$values?.length;
-  const currentPlan = userData?.userSubscription?.$values[len-1]
+  const currentPlan = userData?.userSubscription?.$values[len - 1];
   const selectedIdStyle = selectedId ? selectedId : "2";
   const content =
     isPlan === 1 ? pricingContentForMonthly : pricingContentForYearly;
@@ -74,14 +81,12 @@ const Pricing = ({
         <div className="col-sm-4 col-md-4 my_plan_pricing_header" key={item.id}>
           <div
             className={`pricing_table  ${
-              String(selectedIdStyle) === String(item.id)
-                ? "pricing_table"
-                : ""
+              String(selectedIdStyle) === String(item.id) ? "pricing_table" : ""
             }`}
           >
             <div className="pricing_header">
               <div className="price">{item.description}</div>
-              {/* {String(selectedIdStyle) === String(item.id) ? (
+              {String(selectedIdStyle) === String(item.id) ? (
                 <div
                   className="p-1 fw-bold"
                   style={{
@@ -91,22 +96,22 @@ const Pricing = ({
                     color: "#2e008b",
                   }}
                 >
-                    Recommended Plan{" "}
-                </div>
-              ) : ( 
-                <div
-                className="p-1 fw-bold"
-                style={{
-                  visibility:"hidden",
-                  backgroundColor: "white",
-                  borderRadius: "4px",
-                  fontSize: "19px",
-                  color: "#2e008b",
-                }}
-              >
                   Recommended Plan{" "}
-              </div>
-              )} */}
+                </div>
+              ) : (
+                <div
+                  className="p-1 fw-bold"
+                  style={{
+                    visibility: "hidden",
+                    backgroundColor: "white",
+                    borderRadius: "4px",
+                    fontSize: "19px",
+                    color: "#2e008b",
+                  }}
+                >
+                  Recommended Plan{" "}
+                </div>
+              )}
             </div>
             <div className="pricing_content">
               <ul className="mb0">
@@ -124,18 +129,7 @@ const Pricing = ({
                 </h2>
               </div>
             </div>
-            {/*!hideButton && (
-              currentPlan.planId === item.id ? <div
-                className="pricing_footer"
-                onClick={""}
-              >
-                <a className={`btn btn-color_1 btn-block w-100`} href="#">
-               Suspend Plan
-                </a>
-              </div>
-              
-               :
-              !currentPlan ?
+            {!hideButton && !currentActivePlan?.$id && (
               <div
                 className="pricing_footer"
                 onClick={() =>
@@ -144,31 +138,59 @@ const Pricing = ({
                     item.description,
                     isPlan === 1
                       ? item.monthlyAmount - item.discount
-                      : item.yearlyAmount - item.discount
+                      : item.yearlyAmount - item.discount,
+                    "plan"
                   )
                 }
               >
-                <a className={`btn btn-color_1 btn-block w-100`} href="#">
-                 Get Started
-                </a>
-              </div> :
-              <div
-                className="pricing_footer"
-                onClick={() =>
-                  selectPackageHandler(
-                    item.id,
-                    item.description,
-                    isPlan === 1
-                      ? item.monthlyAmount - item.discount
-                      : item.yearlyAmount - item.discount
-                  )
-                }
-              >
-                <a className={`btn btn-color_1 btn-block w-100`} href="#">
-                  Change Plan
+                <a className={`btn btn-color_01 w-100`} href="#">
+                  Get Started
                 </a>
               </div>
-              )*/}
+            )}
+
+            {!hideButton &&
+              currentActivePlan &&
+              String(currentActivePlan.id) !== String(item.id) && (
+                <div
+                  className="pricing_footer"
+                  onClick={() =>
+                    selectPackageHandler(
+                      item.id,
+                      item.description,
+                      isPlan === 1
+                        ? item.monthlyAmount - item.discount
+                        : item.yearlyAmount - item.discount,
+                      "plan"
+                    )
+                  }
+                >
+                  <a className={`btn btn-color_01 w-100`} href="#">
+                    Select Plan
+                  </a>
+                </div>
+              )}
+            {!hideButton &&
+              String(currentActivePlan?.id) === String(item.id) && (
+                <select
+                  style={{
+                    padding: "",
+                    borderColor: "black",
+                    borderWidth: "2px",
+                  }}
+                  onClick={(e) => setPlan(item.id, e.target.value)}
+                  className="pricing_footer btn btn-color_01 form-select"
+                >
+                  <option value={1}>Modify/Cancel Subscription </option>
+                  <option value={3}>
+                    Add {topupData[0].noOfProperties} Properties
+                  </option>
+                  <option value={4}>
+                    Add {topupData[1].noOfProperties} Properties
+                  </option>
+                  <option value={2}>Cancel Subscription</option>
+                </select>
+              )}
           </div>
         </div>
       ))}

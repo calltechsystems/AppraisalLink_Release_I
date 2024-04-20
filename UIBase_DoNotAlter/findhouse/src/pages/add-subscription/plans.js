@@ -26,8 +26,14 @@ const Index = ({ setModalOpen, setPrice, disable, userData }) => {
               Authorization: `Bearer ${data?.token}`,
               "Content-Type": "application/json",
             },
-          });
-          setPlanData(res.data.data.$values);
+          });const tempPlans = res.data.data.$values;
+          let requiredPlans = [];
+          tempPlans.map((plan,index)=>{
+            if(String(plan?.userType) === "3"){
+              requiredPlans.push(plan)
+            }
+          })
+          setPlanData(requiredPlans);
         } catch (err) {
           toast.error(err.message);
         }
