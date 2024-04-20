@@ -6,12 +6,15 @@ import SidebarMenu from "../../components/common/header/dashboard/SidebarMenuBro
 import axios from "axios";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
+import Link from "next/link";
+import Image from "next/image";
 
-const Index = ({ setModalOpen, setPrice, modalOpen }) => {
+const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen }) => {
   const [selectedPlan, setSelectedPlan] = useState("Monthly");
   const [planData, setPlanData] = useState([]);
   const [isChecked, setIsChecked] = useState(false);
-  const [TopUpData,setTopUpData]=useState([]);
+  const [TopUpData, setTopUpData] = useState([]);
+  const [IsAgainLoginPopUp, setIsAgainLoginPopUp] = useState(false);
 
   const router = useRouter();
   let userData = {};
@@ -20,11 +23,10 @@ const Index = ({ setModalOpen, setPrice, modalOpen }) => {
   });
 
   useEffect(() => {
-
-    const isPaying = JSON.parse(localStorage.getItem("isPaying"))
-    if(isPaying){
-      toast.success("Redirecting back to plans page after transaction took place.")
-      localStorage.removeItem("isPaying")
+    const isPaying = JSON.parse(localStorage.getItem("isPaying"));
+    if (isPaying) {
+      localStorage.removeItem("isPaying");
+      setIsAgainLoginPopUp(true);
     }
     const fetchData = async () => {
       const data = JSON.parse(localStorage.getItem("user"));
@@ -50,30 +52,31 @@ const Index = ({ setModalOpen, setPrice, modalOpen }) => {
               Authorization: `Bearer ${data?.token}`,
               "Content-Type": "application/json",
             },
-            params:{
-              userId : data?.userId
-            }
+            params: {
+              userId: data?.userId,
+            },
           });
 
-          const currentSubscriptionPlan = res3.data.data.$values;
+          const currentSubscriptionPlan = currentSubscription;
 
           let userInfo = JSON.parse(localStorage.getItem("user"));
           let newInfo = {
             ...userInfo,
-            plans : {
-              $id : userInfo?.plans?.$id,
-              $values : currentSubscriptionPlan
-            }
-          }
-          localStorage.setItem("user",JSON.stringify(newInfo))
+            plans: {
+              $id: userInfo?.plans?.$id,
+              $values: currentSubscriptionPlan,
+            },
+          };
+          localStorage.setItem("user", JSON.stringify(newInfo));
+
           const tempPlans = res.data.data.$values;
           let requiredPlans = [];
-          tempPlans.map((plan,index)=>{
-            if(String(plan?.userType) === "1"){
-              requiredPlans.push(plan)
+          tempPlans.map((plan, index) => {
+            if (String(plan?.userType) === "2") {
+              requiredPlans.push(plan);
             }
-          })
-          setTopUpData(res2.data.data.$values)
+          });
+          setTopUpData(res2.data.data.$values);
           setPlanData(requiredPlans);
         } catch (err) {
           toast.error(err.message);
@@ -83,6 +86,12 @@ const Index = ({ setModalOpen, setPrice, modalOpen }) => {
 
     fetchData();
   }, []);
+
+  const closeLoginPopup = () => {
+    setIsAgainLoginPopUp(false);
+    localStorage.removeItem("user");
+    router.push("/login");
+  };
 
   const sortFunction = (data) => {};
   const togglePlan = () => {
@@ -95,7 +104,7 @@ const Index = ({ setModalOpen, setPrice, modalOpen }) => {
 
   return (
     <>
-      <Header />
+      <Header userData={userData}/>
 
       <MobileMenu />
 
@@ -112,13 +121,18 @@ const Index = ({ setModalOpen, setPrice, modalOpen }) => {
 
       <section className="our-dashbord dashbord bgc-f7 pb50" style={{}}>
         <div className="container-fluid ovh">
+          <div className="col-lg-12 col-xl-12 text-center mt-1 mb-4">
+            <div className="style2 mb30-991">
+              <h3 className="heading-forms">Add / Modify Subscription Plans</h3>
+            </div>
+          </div>
           <div className="row">
-            <div className="col-lg-12 col-lg-6 maxw100flex-992">
+            {/* <div className="col-lg-12 col-lg-6 maxw100flex-992">
               <div className="main-title text-center">
-                {/* <h2 className="text-dark">Ready to get started?</h2> */}
-                {/* <p className="text-dark mb-2">
+                <h2 className="text-dark">Ready to get started?</h2>
+                <p className="text-dark mb-2">
                   Choose a plan tailored to your needs {selectedPlan}
-                </p> */}
+                </p>
                 <div className="toggleContainer">
                   <span className="fw-bold text-dark">Monthly</span>
                   <div style={{ width: "20%", height: "70%" }}>
@@ -145,16 +159,18 @@ const Index = ({ setModalOpen, setPrice, modalOpen }) => {
                   <span className="fw-bold text-dark">Yearly</span>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
           {/* End .row */}
 
-          <div className="row">
+          <div className="row mt-5">
             <Pricing
               isPlan={selectedPlan === "Monthly" ? 1 : 2}
               setModalOpen={setModalOpen}
               setPrice={setPrice}
+              currentSubscription={currentSubscription}
               data={planData}
+              setData={setPlanData}
               topupData={TopUpData}
               userData={userData}
             />
@@ -171,6 +187,80 @@ const Index = ({ setModalOpen, setPrice, modalOpen }) => {
             </div>
           </div>
         </div>
+
+        {IsAgainLoginPopUp && (
+          <div className="modal">
+            <div className="row">
+              <div className="col-lg-12">
+                <Link href="/" className="">
+                  <Image
+                    width={50}
+                    height={45}
+                    className="logo1 img-fluid"
+                    style={{ marginTop: "-20px" }}
+                    src="/assets/images/Appraisal_Land_Logo.png"
+                    alt="header-logo2.png"
+                  />
+                  <span
+                    style={{
+                      color: "#2e008b",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    Appraisal
+                  </span>
+                  <span
+                    style={{
+                      color: "#97d700",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    {" "}
+                    Land
+                  </span>
+                </Link>
+              </div>
+            </div>
+            <div
+              className="modal-content"
+              style={{ borderColor: "#2e008b", width: "20%" }}
+            >
+              <h4 className="text-center mb-1" style={{ color: "red" }}>
+                Transaction Occurred
+              </h4>
+              <div
+                className="mt-2 mb-3"
+                style={{ border: "2px solid #97d700" }}
+              ></div>
+              <span className="text-center mb-2 text-dark fw-bold">
+                {/* Can't appraise the property. All properties are being
+                      used!! */}
+                You have redirected Back to the home Screen after the
+                transaction , Please login again to your account again.
+              </span>
+              <div
+                className="mt-2 mb-3"
+                style={{ border: "2px solid #97d700" }}
+              ></div>
+              <div
+                className="text-center"
+                style={{ display: "flex", flexDirection: "column" }}
+              >
+                <button
+                  className="btn btn-color"
+                  onClick={() => closeLoginPopup()}
+                  style={{}}
+                >
+                  Ok
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
         {/* End .col */}
       </section>
     </>

@@ -4,13 +4,16 @@ import { useEffect, useState } from "react";
 import { encryptionData } from "../../utils/dataEncryption";
 import axios from "axios";
 import toast from "react-hot-toast";
+
 const Pricing = ({
   isPlan,
   hideButton,
   selectedId,
   setModalOpen,
   data,
-  userData,
+  topupData,
+  setData,
+  currentSubscription,
   setPrice,
 }) => {
   const pricingContentForMonthly = [
@@ -58,35 +61,163 @@ const Pricing = ({
       ],
     },
   ];
-  const [currentActivePlan, setCurrentActivePlan] = useState({});
+  let userData = {};
+  const [selectedPackage, setSelectedPackage] = useState({});
 
-  const len = userData?.userSubscription?.$values?.length;
-  const currentPlan = userData?.userSubscription?.$values[len - 1];
+  const [openCancelModal, setOpenCancelModal] = useState(false);
+  const [disable, setDisable] = useState(false);
+
+  const [currentActivePlan, setCurrentActivePlan] = useState({});
+  const [selectedPlanId, setSelectedPlanId] = useState(-1);
+  const [selectedTopUp, setSelectedTopUp] = useState(-1);
+  const [filteredData, setFilteredData] = useState([]);
+  const [type, setType] = useState(1);
+  useEffect(() => {
+    userData = JSON.parse(localStorage.getItem("user"));
+    const Packages = userData.userSubscription?.$values;
+    const len = Packages?.length;
+    setSelectedPackage(Packages?.length > 0 ? Packages[len - 1] : {});
+  }, []);
+
   const selectedIdStyle = selectedId ? selectedId : "2";
   const content =
     isPlan === 1 ? pricingContentForMonthly : pricingContentForYearly;
 
-  const selectPackageHandler = (id, title, price) => {
+  const selectPackageHandler = (id, title, price, type) => {
     setModalOpen(true);
     setPrice({
       id: id,
       title: title,
       price: price,
+      type: type,
     });
   };
 
+  const setPlan = (planId, type) => {
+    console.log(planId);
+    setSelectedPlanId(planId);
+    setType(type);
+    if (String(type) === "2" || String(type) === "3" || String(type) === "4") {
+      setOpenCancelModal(true);
+      if (String(type) === "3") {
+        setSelectedTopUp(topupData[0]);
+      } else if (String(type) === "4") {
+        setSelectedTopUp(topupData[1]);
+      }
+    }
+  };
+
+  const closeCancelHandler = () => {
+    setSelectedPlanId(-1);
+    setType(1);
+    setOpenCancelModal(false);
+    window.location.reload();
+  };
+
+  const cancelPackageHandler = () => {
+    setDisable(true);
+
+    const userData = JSON.parse(localStorage.getItem("user"));
+
+    if (String(type) === "2") {
+      const payload = {
+        UserId: userData.userId,
+        token: userData.token,
+      };
+
+      toast.loading("Cancelling the subscription !!");
+      const encryptedBody = encryptionData(payload);
+      axios
+        .post("/api/cancelSubscription", encryptedBody)
+        .then((res) => {
+          toast.success("Successfully cancelled the subscription!");
+        })
+        .catch((err) => {
+          toast.error("Try Again !!");
+        });
+
+      window.location.reload();
+    } else if (String(type) === "3" || String(type) === "4") {
+      //low add on topup
+
+      const payload = {
+        TopUpId: selectedTopUp.id,
+        UserId: userData.userId,
+      };
+
+      toast.loading("Adding the top-up !!");
+      const encryptedBody = encryptionData(payload);
+      axios
+        .post("/api/addTopUp", encryptedBody)
+        .then((res) => {
+          toast.success("Successfully added the top - up!");
+        })
+        .catch((err) => {
+          toast.error("Try Again !!");
+        });
+
+      window.location.reload();
+    }
+    window.location.reload();
+  };
+
+  useEffect(() => {
+    let requiredPlan = [];
+    data.map((plan, index) => {
+      const planName = String(plan.planName)
+        .toLowerCase()
+        .includes(String(currentSubscription?.planName).toLowerCase());
+      const amount =
+        String(
+          plan?.monthlyAmount === null ? plan.yearlyAmount : plan.monthlyAmount
+        ) === String(currentSubscription?.planAmount);
+      const totalPropeerties =
+        String(plan.noOfProperties) ===
+        String(currentSubscription?.noOfProperties);
+
+      if (planName && amount && totalPropeerties) {
+        requiredPlan.push(plan);
+      }
+    });
+
+    setCurrentActivePlan(requiredPlan[requiredPlan.length - 1]);
+  }, [currentSubscription, data]);
+
+  console.log("currnetPlan", currentActivePlan?.planName);
+
+  useEffect(() => {
+    let Monthly = [],
+      Yearly = [];
+    data?.map((row, index) => {
+      if (row.monthlyAmount !== null) {
+        Monthly.push(row);
+      } else {
+        Yearly.push(row);
+      }
+    });
+
+    if (String(isPlan) === "1") {
+      setFilteredData(Monthly);
+    } else {
+      setFilteredData(Yearly);
+    }
+  }, [isPlan, data]);
+
   return (
     <>
-      {data?.map((item, idx) => (
+      {filteredData?.map((item, idx) => (
         <div className="col-sm-4 col-md-4 my_plan_pricing_header" key={item.id}>
           <div
             className={`pricing_table  ${
-              String(selectedIdStyle) === String(item.id) ? "pricing_table" : ""
+              String(selectedIdStyle) === String(item.id)
+                ? "pricing_table_border_style"
+                : ""
             }`}
           >
             <div className="pricing_header">
               <div className="price">{item.description}</div>
-              {/* {String(selectedIdStyle) === String(item.id) ? (
+
+              {String(selectedIdStyle) === String(item.id) ? (
                 <div
                   className="p-1 fw-bold"
                   style={{
@@ -96,22 +227,22 @@ const Pricing = ({
                     color: "#2e008b",
                   }}
                 >
-                    Recommended Plan{" "}
-                </div>
-              ) : ( 
-                <div
-                className="p-1 fw-bold"
-                style={{
-                  visibility:"hidden",
-                  backgroundColor: "white",
-                  borderRadius: "4px",
-                  fontSize: "19px",
-                  color: "#2e008b",
-                }}
-              >
                   Recommended Plan{" "}
-              </div>
-              )} */}
+                </div>
+              ) : (
+                <div
+                  className="p-1 fw-bold"
+                  style={{
+                    visibility: "hidden",
+                    backgroundColor: "white",
+                    borderRadius: "4px",
+                    fontSize: "19px",
+                    color: "#2e008b",
+                  }}
+                >
+                  Recommended Plan{" "}
+                </div>
+              )}
             </div>
             <div className="pricing_content">
               <ul className="mb0">
@@ -121,7 +252,7 @@ const Pricing = ({
                 ))}
               </ul>
               <div className="pricing_header">
-                <h2 className="" style={{ color: "#2e008b" }}>
+                <h2 className="text-dark">
                   $
                   {isPlan === 1
                     ? item.monthlyAmount - item.discount
@@ -194,6 +325,94 @@ const Pricing = ({
           </div>
         </div>
       ))}
+
+      {openCancelModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <div className="row">
+              <div className="col-lg-12">
+                <Link href="/" className="">
+                  <Image
+                    width={50}
+                    height={45}
+                    className="logo1 img-fluid"
+                    style={{ marginTop: "-20px" }}
+                    src="/assets/images/Appraisal_Land_Logo.png"
+                    alt="header-logo2.png"
+                  />
+                  <span
+                    style={{
+                      color: "#2e008b",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    Appraisal
+                  </span>
+                  <span
+                    style={{
+                      color: "#97d700",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    {" "}
+                    Land
+                  </span>
+                </Link>
+              </div>
+            </div>
+            <h2 className="text-center mt-3" style={{ color: "#2e008b" }}>
+              {String(type) === "2"
+                ? "Subscription Cancellation"
+                : String(type) === "3"
+                ? ` Add On ${topupData[0].noOfProperties} Properties`
+                : ` Add On ${topupData[1].noOfProperties} Properties`}
+            </h2>
+            <div className="mb-2" style={{ border: "2px solid #97d700" }}></div>
+            <p className="fs-5 text-center text-dark mt-4">
+              {String(type) === "2"
+                ? "Are you sure you want to cancel this subscription?"
+                : String(type) === "3"
+                ? `Are you sure you want add ${topupData[0].noOfProperties} properties to your existing plan ?`
+                : `Are you sure you want add ${topupData[1].noOfProperties} properties to your existing plan?`}{" "}
+            </p>
+
+            <div
+              className="mb-3 mt-4"
+              style={{ border: "2px solid #97d700" }}
+            ></div>
+            <div className="col-lg-12 text-center">
+              <button
+                disabled={disable}
+                className="btn w-25 btn-color m-1"
+                onClick={closeCancelHandler}
+              >
+                Cancel
+              </button>
+              <button
+                disabled={disable}
+                className="btn w-25 btn-color"
+                onClick={
+                  String(type) === "3" || String(type) === "4"
+                    ? () =>
+                        selectPackageHandler(
+                          selectedTopUp.id,
+                          selectedTopUp.topupDescription,
+                          selectedTopUp.tupUpAmount,
+                          "topup"
+                        )
+                    : cancelPackageHandler
+                }
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
