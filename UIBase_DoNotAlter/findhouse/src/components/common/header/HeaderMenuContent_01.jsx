@@ -180,9 +180,13 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
     if (userInfo.userType === 1) {
       route.push("/my-dashboard");
     } else if (userInfo.userType === 2) {
-      route.push("/appraiser-dashboard");
+      route.push("/brokerage-dashboard");
+    } else if (userInfo.userType === 7) {
+      route.push("/appraiser-company-dashboard-admin");
+    } else if (userInfo.userType === 4) {
+      route.push("/appraiser-company-dashboard");
     } else {
-      route.push("/");
+      route.push("/appraiser-dashboard");
     }
   };
 
@@ -507,6 +511,8 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                         ? "/my-dashboard"
                         : userData.userType === 2
                         ? "/brokerage-dashboard"
+                        : userData.userType === 7
+                        ? "/appraiser-company-dashboard-admin"
                         : userData.userType === 4
                         ? "/appraiser-company-dashboard"
                         : "/appraiser-dashboard"
@@ -907,25 +913,30 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                         style={{ backgroundColor: "#c2c2c2" }}
                       >
                         <div className="row">
-                          <div className="col-lg-12 mt-3 fw-bold">
+                          <div className="col-lg-12 mt-1 fw-bold">
                             <Link href="/login">
                               <button className="btn btn2 w-100 btn-color">
-                                Appraiser
+                                Admin
                               </button>
                             </Link>
                             <Link href="/login">
-                              <button className="btn btn2 w-100 btn-color mt-3">
-                                Mortgage Broker
-                              </button>
-                            </Link>
-                            <Link href="/login">
-                              <button className="btn btn2 w-100 btn-color mt-3">
+                              <button className="btn btn2 w-100 btn-color mt-1">
                                 Appraiser Company
                               </button>
                             </Link>
                             <Link href="/login">
-                              <button className="btn btn2 w-100 btn-color mt-3 mb-2">
+                              <button className="btn btn2 w-100 btn-color mt-1">
+                                Appraiser Individual
+                              </button>
+                            </Link>
+                            <Link href="/login">
+                              <button className="btn btn2 w-100 btn-color mt-1">
                                 Mortgage Brokerage
+                              </button>
+                            </Link>
+                            <Link href="/login">
+                              <button className="btn btn2 w-100 btn-color mt-1 mb-2">
+                                Mortgage Broker
                               </button>
                             </Link>
                           </div>

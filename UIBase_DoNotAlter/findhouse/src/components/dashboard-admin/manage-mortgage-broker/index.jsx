@@ -28,6 +28,9 @@ const Index = () => {
   const [openEditModal, setOpenEditModal] = useState(false);
   const [typeView, setTypeView] = useState(0);
 
+  const [openBrokerInfoModel, setOpenBrokerInfoModal] = useState(false);
+  const [brokerInfoSelected, setBrokerInfoSelected] = useState({});
+
   const [closeRegisterModal, setCloseRegisterModal] = useState(false);
   const [toggleWishlist, setToggleWishlist] = useState(0);
   const [searchResult, setSearchResult] = useState([]);
@@ -85,6 +88,7 @@ const Index = () => {
   // const [userInfo, setUserInfo] = useState("");
   const [disable, setDisable] = useState(false);
 
+  const [allBroker, setAllBroker] = useState([]);
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(currentViewAppraiser.userInfo);
@@ -129,31 +133,6 @@ const Index = () => {
     setSelectedAppraiser(-1);
   };
 
-  // function copyToClipboard(text) {
-  //   // Create a temporary textarea element
-  //   const textarea = document.createElement("textarea");
-
-  //   // Set the text content to the provided text
-  //   textarea.value = text;
-
-  //   // Append the textarea to the document
-  //   document.body.appendChild(textarea);
-
-  //   // Select the text in the textarea
-  //   textarea.select();
-
-  //   try {
-  //     // Execute the copy command
-  //     document.execCommand("copy");
-  //     toast.success("Text copied to clipboard");
-  //   } catch (err) {
-  //     toast.error("Unable to copy text to clipboard", err);
-  //   } finally {
-  //     // Remove the textarea from the document
-  //     document.body.removeChild(textarea);
-  //   }
-  // }
-
   const closeStatusUpdateHandler = () => {
     setSelectedAppraiser(-1);
     setOpenEditModal(false);
@@ -162,8 +141,7 @@ const Index = () => {
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [paginatedRow, setPaginatedRow] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [refresh, setRefresh] = useState(false);
 
@@ -175,7 +153,7 @@ const Index = () => {
   const [broker, setBroker] = useState({});
 
   const closeBrokerModal = () => {
-    setOpenBrokerModal(false);
+    setOpenBrokerInfoModal(false);
   };
 
   const closeQuoteModal = () => {
@@ -295,19 +273,15 @@ const Index = () => {
 
         // Check if any of the fields contain the search term
         return (
-          property.zipCode.toLowerCase().includes(searchTerm) ||
-          property.area.toLowerCase().includes(searchTerm) ||
-          property.city.toLowerCase().includes(searchTerm) ||
-          property.province.toLowerCase().includes(searchTerm) ||
-          property.streetName.toLowerCase().includes(searchTerm) ||
-          property.streetNumber.toLowerCase().includes(searchTerm) ||
-          property.typeOfBuilding.toLowerCase().includes(searchTerm)
+          property.firstName?.toLowerCase().includes(searchTerm) ||
+          property.lastName?.toLowerCase().includes(searchTerm) ||
+          property.emailId?.toLowerCase().includes(searchTerm)
         );
       });
 
       return filteredProperties;
     };
-    const filteredData = filterProperties(properties, searchInput);
+    const filteredData = filterProperties(allBroker, searchInput);
     setFilterProperty(filteredData);
   }, [searchInput]);
 
@@ -469,6 +443,56 @@ const Index = () => {
     }
   }, [searchInput]);
 
+  const brokerInfoHandler = (orderId) => {
+    const printWindow = window.open("", "_blank");
+    printWindow.document.write(
+      "<html><head><title>Broker Information</title></head><body>"
+    );
+    printWindow.document.write(
+      "<h1>" + `Broker info of order ${orderId}` + "</h1>"
+    );
+    printWindow.document.write(
+      '<button style="display:none;" onclick="window.print()">Print</button>'
+    );
+
+    // Clone the table-container and remove the action column
+    const tableContainer = document.getElementById("broker-info-container");
+    const table = tableContainer.querySelector("table");
+    const clonedTable = table.cloneNode(true);
+    const rows = clonedTable.querySelectorAll("tr");
+    rows.forEach((row) => {
+      const lastCell = row.querySelector("td:last-child");
+    });
+
+    // Remove the action heading from the table
+    const tableHead = clonedTable.querySelector("thead");
+    const tableHeadRows = tableHead.querySelectorAll("tr");
+    tableHeadRows.forEach((row) => {
+      const lastCell = row.querySelector("th:last-child");
+    });
+
+    // Make the table responsive for all fields
+    const tableRows = clonedTable.querySelectorAll("tr");
+    tableRows.forEach((row) => {
+      const firstCell = row.querySelector("td:first-child");
+      if (firstCell) {
+        const columnHeading = tableHeadRows[0].querySelector(
+          "th:nth-child(" + (firstCell.cellIndex + 1) + ")"
+        ).innerText;
+        firstCell.setAttribute("data-th", columnHeading);
+      }
+    });
+
+    printWindow.document.write(clonedTable.outerHTML);
+    printWindow.document.write("</body></html>");
+    printWindow.document.close();
+    printWindow.print();
+    printWindow.onafterprint = () => {
+      printWindow.close();
+      toast.success("Saved the data");
+    };
+  };
+
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -515,11 +539,11 @@ const Index = () => {
                 </div> */}
                 {/* End Dashboard Navigation */}
 
-                {/* <div className="col-lg-4 col-xl-4 ">
+                <div className="col-lg-12 col-xl-12 text-center mt-3">
                   <div className="style2 mb30-991">
-                    <h3 className="breadcrumb_title">All Appraisers</h3>
+                    <h3 className="heading-forms">Manage Mortgage Broker</h3>
                   </div>
-                </div> */}
+                </div>
                 {/* End .col */}
                 {/*<div className="row">
                  <div className="col-lg-12 mt20">
@@ -533,25 +557,6 @@ const Index = () => {
                 </div> 
             </div>*/}
 
-                <div className="col-lg-12 col-xl-12">
-                  {/*<div className="candidate_revew_select style2 mb30-991">
-                    <ul className="mb0">
-                      <li className="list-inline-item">
-                        <Filtering setFilterQuery={setFilterQuery} />
-                      </li>
-                      <li className="list-inline-item">
-                        <FilteringBy setFilterQuery={setSearchQuery} />
-                      </li>
-                      <li className="list-inline-item">
-                        <div className="candidate_revew_search_box course fn-520">
-                          <SearchBox setSearchInput={setSearchInput} />
-                        </div>
-                      </li>
-                    </ul>
-              </div>*/}
-                </div>
-                {/* End .col */}
-
                 <div className="col-lg-12">
                   <div className="">
                     <div className="property_table">
@@ -563,6 +568,12 @@ const Index = () => {
                           setProperties={setProperties}
                           properties={
                             searchInput === "" ? properties : filterProperty
+                          }
+                          setBrokerInfoSelected={setBrokerInfoSelected}
+                          setOpenBrokerInfoModal={setOpenBrokerInfoModal}
+                          setAllBroker={setAllBroker}
+                          allBroker={
+                            searchInput === "" ? allBroker : filterProperty
                           }
                           setAppraiser={setAppraiser}
                           setUpdatedCode={setUpdatedCode}
@@ -680,7 +691,7 @@ const Index = () => {
                         )}*/}
                       </div>
                       <div>
-                        {openBrokerModal && (
+                        {openBrokerInfoModel && (
                           <div className="modal">
                             <div className="modal-content">
                               <div className="row">
@@ -789,7 +800,8 @@ const Index = () => {
                                           paddingLeft: "10px",
                                         }}
                                       >
-                                        {broker.firstName} {broker.lastName}
+                                        {brokerInfoSelected.firstName}{" "}
+                                        {brokerInfoSelected.lastName}
                                       </td>
                                     </tr>
 
@@ -813,8 +825,8 @@ const Index = () => {
                                           paddingLeft: "10px",
                                         }}
                                       >
-                                        {broker.companyName
-                                          ? broker.companyName
+                                        {brokerInfoSelected.companyName
+                                          ? brokerInfoSelected.companyName
                                           : "N.A."}
                                       </td>
                                     </tr>
@@ -838,7 +850,7 @@ const Index = () => {
                                           paddingLeft: "10px",
                                         }}
                                       >
-                                        {broker.emailId}
+                                        {brokerInfoSelected.emailId}
                                       </td>
                                     </tr>
                                     <tr>
@@ -861,7 +873,7 @@ const Index = () => {
                                           paddingLeft: "10px",
                                         }}
                                       >
-                                        {broker.phoneNumber}
+                                        {brokerInfoSelected.phoneNumber}
                                       </td>
                                     </tr>
                                     <tr>
@@ -884,7 +896,7 @@ const Index = () => {
                                           paddingLeft: "10px",
                                         }}
                                       >
-                                        {broker.cellNumber}
+                                        {brokerInfoSelected.cellNumber}
                                       </td>
                                     </tr>
                                     <tr>
@@ -907,7 +919,7 @@ const Index = () => {
                                           paddingLeft: "10px",
                                         }}
                                       >
-                                        {broker.mortageBrokerLicNo}
+                                        {brokerInfoSelected.mortageBrokerLicNo}
                                       </td>
                                     </tr>
                                     <tr>
@@ -930,7 +942,9 @@ const Index = () => {
                                           paddingLeft: "10px",
                                         }}
                                       >
-                                        {broker.mortageBrokerageLicNo}
+                                        {
+                                          brokerInfoSelected.mortageBrokerageLicNo
+                                        }
                                       </td>
                                     </tr>
                                     <tr>
@@ -953,10 +967,12 @@ const Index = () => {
                                           paddingLeft: "10px",
                                         }}
                                       >
-                                        {broker.streetNumber}{" "}
-                                        {broker.streetName} {broker.area} ,{" "}
-                                        {broker.city} {broker.state}-
-                                        {broker.postalCode}
+                                        {brokerInfoSelected.streetNumber}{" "}
+                                        {brokerInfoSelected.streetName}{" "}
+                                        {brokerInfoSelected.area} ,{" "}
+                                        {brokerInfoSelected.city}{" "}
+                                        {brokerInfoSelected.state}-
+                                        {brokerInfoSelected.postalCode}
                                       </td>
                                     </tr>
                                   </tbody>
@@ -996,59 +1012,7 @@ const Index = () => {
                 {/* End .col */}
               </div>
 
-              {closeRegisterModal && (
-                <div className="modal">
-                  <div className="modal-content">
-                    <div className="row">
-                      <div className="col-lg-12">
-                        <Link href="/" className="">
-                          <Image
-                            width={50}
-                            height={45}
-                            className="logo1 img-fluid"
-                            style={{ marginTop: "-20px" }}
-                            src="/assets/images/Appraisal_Land_Logo.png"
-                            alt="header-logo2.png"
-                          />
-                          <span
-                            style={{
-                              color: "#2e008b",
-                              fontWeight: "bold",
-                              fontSize: "24px",
-                              // marginTop: "20px",
-                            }}
-                          >
-                            Appraisal
-                          </span>
-                          <span
-                            style={{
-                              color: "#97d700",
-                              fontWeight: "bold",
-                              fontSize: "24px",
-                              // marginTop: "20px",
-                            }}
-                          >
-                            {" "}
-                            Land
-                          </span>
-                        </Link>
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-lg-12 text-center">
-                        <h1 className=" text-color mt-1">Add Appraiser </h1>
-                      </div>
-                    </div>
-                    <div
-                      className="mb-2"
-                      style={{ border: "2px solid #97d700" }}
-                    ></div>
-                    <Form setCloseRegisterModal={setCloseRegisterModal} />
-                  </div>
-                </div>
-              )}
-
-              {openViewModal && (
+              {/* {openViewModal && (
                 <div className="modal">
                   <div className="modal-content">
                     <div className="row">
@@ -1141,16 +1105,13 @@ const Index = () => {
                           className="mb-2"
                           style={{ border: "2px solid #97d700" }}
                         ></div>
-                        {/* End .col */}
                       </div>
                     </div>
                     <div
                       className="col-lg-12 text-center"
                       style={{ marginRight: "4%" }}
                     >
-                      {/* <button className="cancel-button" onClick={closeModal}>
-                  Cancel
-                </button> */}
+                     
                       <button
                         className="btn btn-color w-25"
                         onClick={() => closeViewModal()}
@@ -1160,144 +1121,9 @@ const Index = () => {
                     </div>
                   </div>
                 </div>
-              )}
-
-              {openEditModal && (
-                <div className="modal">
-                  <div className="modal-content">
-                    <div className="row">
-                      <div className="col-lg-12">
-                        <Link href="/" className="">
-                          <Image
-                            width={50}
-                            height={45}
-                            className="logo1 img-fluid"
-                            style={{ marginTop: "-20px" }}
-                            src="/assets/images/Appraisal_Land_Logo.png"
-                            alt="header-logo2.png"
-                          />
-                          <span
-                            style={{
-                              color: "#2e008b",
-                              fontWeight: "bold",
-                              fontSize: "24px",
-                              // marginTop: "20px",
-                            }}
-                          >
-                            Appraisal
-                          </span>
-                          <span
-                            style={{
-                              color: "#97d700",
-                              fontWeight: "bold",
-                              fontSize: "24px",
-                              // marginTop: "20px",
-                            }}
-                          >
-                            {" "}
-                            Land
-                          </span>
-                        </Link>
-                      </div>
-                    </div>
-                    <h3 className="text-center">Activity Status Updation</h3>
-                    <div
-                      className="mb-2"
-                      style={{ border: "2px solid #97d700" }}
-                    ></div>
-                    <div className="d-flex justify-content-center">
-                      <select
-                        required
-                        className="form-select"
-                        data-live-search="true"
-                        data-width="100%"
-                        // value={buildinRef}
-                        onChange={(e) => setIsActive(e.target.value)}
-                        // onChange={(e) => setBuildinRef(e.target.value)}
-                        // disabled={isDisable}
-                        style={{
-                          paddingTop: "10px",
-                          paddingBottom: "10px",
-                          backgroundColor: "#E8F0FE",
-                          width: "300px",
-                        }}
-                      >
-                        <option
-                          key={0}
-                          value={0}
-                          disabled={selectedAppraiser?.isActive ? false : true}
-                        >
-                          In-active
-                        </option>
-                        <option
-                          key={1}
-                          value={1}
-                          disabled={selectedAppraiser?.isActive ? true : false}
-                        >
-                          Active
-                        </option>
-                      </select>
-                    </div>
-                    {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
-                    <div
-                      className="mb-2 mt-3"
-                      style={{ border: "2px solid #97d700" }}
-                    ></div>
-                    <div className="text-center" style={{}}>
-                      <button
-                        disabled={disable}
-                        className="btn btn-color w-25"
-                        onClick={closeStatusUpdateHandler}
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        disabled={disable}
-                        className="btn btn-color w-25 "
-                        style={{ marginLeft: "12px" }}
-                        onClick={handleStatusUpdateHandler}
-                      >
-                        Submit
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
-              <div className="row">
-                <Modal
-                  modalOpen={modalOpen}
-                  setModalOpen={setModalOpen}
-                  setIsModalOpen={setIsModalOpen}
-                  closeModal={closeModal}
-                  lowRangeBid={lowRangeBid}
-                  propertyId={propertyId}
-                  openQuoteModal={openQuoteModal}
-                  closeQuoteModal={closeQuoteModal}
-                />
-              </div>
-              {/*<div className="row">
-                 <div className="col-lg-12 mt20">
-                  <div className="mbp_pagination">
-                    <Pagination
-                      properties={properties}
-                      setProperties={setProperties}
-                    />
-                  </div>
-                </div> 
-              </div>*/}
-              {/* End .row */}
+              )} */}
             </div>
-            {/* <div className="row">
-              <div className="col-lg-12 mt20">
-                <div className="mbp_pagination">
-                  <Pagination
-                    setStart={setStart}
-                    setEnd={setEnd}
-                    properties={properties}
-                  />
-                </div>
-              </div>
-            </div> */}
+
             <div className="row mt50">
               <div className="col-lg-12">
                 <div className="copyright-widget-dashboard text-center">

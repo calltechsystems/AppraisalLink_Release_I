@@ -20,8 +20,8 @@ const nextConfig = {
   images: {
     domains: [
       // "res.cloudinary.com",
-      // "appraisallandfiless.s3.amazonaws.com",
-      "appraisalfile.s3.amazonaws.com",
+      "appraisallandfiless.s3.amazonaws.com",
+      // "appraisalfile.s3.amazonaws.com",
       "avatars.githubusercontent.com",
       "lh3.googleusercontent.com",
     ],

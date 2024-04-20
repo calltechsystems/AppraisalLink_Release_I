@@ -46,7 +46,7 @@ const Index = () => {
             <div className="col-lg-12 maxw100flex-992">
               <div className="row">
                 {/* Start Dashboard Navigation */}
-                {/* <div className="col-lg-12">
+                <div className="col-lg-12">
                   <div className="dashboard_navigationbar dn db-1024">
                     <div className="dropdown">
                       <button
@@ -59,25 +59,26 @@ const Index = () => {
                       </button>
                     </div>
                   </div>
-                </div> */}
+                </div>
                 {/* End Dashboard Navigation */}
 
                 <div
-                  className="col-lg-12 mb10"
+                  className="row mb-2"
                   style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
+                    // display: "flex",
+                    // flexDirection: "row",
+                    // justifyContent: "space-between",
+                    // background: "#97d700",
                   }}
                 >
-                  <div className="breadcrumb_content">
-                    <h2 className="breadcrumb_title">
-                      {/* {"firstName"} {"lastName"} */}
-                      Mortgage Brokerage Dashboard
-                    </h2>
-                    {/* <p>We are glad to see you again!</p> */}
+                  <div className="col-lg-11">
+                    <div className="breadcrumb_content">
+                      <h2 className="breadcrumb_title">
+                        Appraiser Company Dashboard
+                      </h2>
+                    </div>
                   </div>
-                  <div>
+                  <div className="col-lg-1">
                     <Filtering />
                   </div>
                 </div>
@@ -96,7 +97,7 @@ const Index = () => {
                 </div>
                 <div className="col-lg-6">
                   <div className="application_statics">
-                    <h4 className="mb-4">Plan Wise Brokers</h4>
+                    <h4 className="mb-4">Plan Wise Appraisers</h4>
                     <StatisticsPieChart />
                   </div>
                 </div>

@@ -77,11 +77,9 @@ const Form = ({
         .then((res) => {
           toast.dismiss();
           localStorage.setItem("user", JSON.stringify(res.data.userData));
-          if (
-            res.data.userData.userType === 7
-          ) {
-            router.push("/admin");
-          }else if (
+          if (res.data.userData.userType === 7) {
+            router.push("/appraiser-company-dashboard-admin");
+          } else if (
             res.data.userData.userType === 1 ||
             res.data.userData.userType === 6
           ) {

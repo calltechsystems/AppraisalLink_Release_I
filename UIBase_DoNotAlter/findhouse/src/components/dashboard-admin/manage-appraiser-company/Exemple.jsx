@@ -21,24 +21,30 @@ const headCells = [
     width: 200,
   },
   {
-    id: "phone",
+    id: "get_info",
     numeric: false,
-    label: "Phone",
+    label: "Get Appraiser Company Info",
     width: 200,
   },
+  // {
+  //   id: "phone",
+  //   numeric: false,
+  //   label: "Phone",
+  //   width: 200,
+  // },
 
   {
     id: "email",
     numeric: false,
-    label: "Email Address",
+    label: "User ID",
     width: 200,
   },
-  {
-    id: "date",
-    numeric: false,
-    label: "Start Date",
-    width: 200,
-  },
+  // {
+  //   id: "date",
+  //   numeric: false,
+  //   label: "Start Date",
+  //   width: 200,
+  // },
   {
     id: "status",
     numeric: false,
@@ -49,52 +55,10 @@ const headCells = [
     id: "action",
     numeric: false,
     label: "Action",
-    width: 180,
+    width: 100,
   },
 ];
 
-const temporaryData = [
-  {
-    email: "test@gmail.com",
-    firstname: "Joe",
-    lastname: "Doe",
-    company: "Appraiser Company 1",
-    phone: "+91 12324 235644",
-    date: " 29 December 2023",
-  },
-  {
-    email: "test@gmail.com",
-    firstname: "Joe",
-    lastname: "Doe",
-    company: "Appraiser Company 1",
-    phone: "+91 12324 235644",
-    date: " 29 December 2023",
-  },
-  {
-    email: "test@gmail.com",
-    firstname: "Joe",
-    lastname: "Doe",
-    company: "Appraiser Company 1",
-    phone: "+91 12324 235644",
-    date: " 29 December 2023",
-  },
-  {
-    email: "test@gmail.com",
-    firstname: "Joe",
-    lastname: "Doe",
-    company: "Appraiser Company 1",
-    phone: "+91 12324 235644",
-    date: " 29 December 2023",
-  },
-  {
-    email: "test@gmail.com",
-    firstname: "Joe",
-    lastname: "Doe",
-    company: "Appraiser Company 1",
-    phone: "+91 12324 235644",
-    date: " 29 December 2023",
-  },
-];
 let count = 0;
 
 export default function Exemple({
@@ -104,12 +68,16 @@ export default function Exemple({
   start,
   setAppraiser,
   end,
+  setAllBroker,
+  allBroker,
   setUpdatedCode,
   setCurrentViewAppraiser,
   setOpenViewModal,
   setAppraiserCompanyInfo,
   setCloseRegisterModal,
   properties,
+  setBrokerInfoSelected,
+  setOpenBrokerInfoModal,
   setIsStatusModal,
   setProperties,
   deletePropertyHandler,
@@ -128,11 +96,10 @@ export default function Exemple({
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [wishlist, setWishlist] = useState([]);
-  
+  const [allBrokers, setAllBrokers] = useState([]);
   const [dataFetched, setDataFetched] = useState(false);
   const [bids, setBids] = useState([]);
 
-  const [allAppraiser , setAllAppraiser] = useState([])
   const [hideAction, setHideAction] = useState(false);
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
@@ -153,11 +120,21 @@ export default function Exemple({
       }
     });
     return tempBid > 0 ? bidValue : {};
-   };
+  };
 
-  const openCredModal = (data) => {
-    setCurrentViewAppraiser(data);
-    setOpenViewModal(true);
+  const openInfoModal = (data) => {
+    setBrokerInfoSelected(data);
+    setOpenBrokerInfoModal(true);
+  };
+
+  const openBrokerModalView = (userId) => {
+    let currentBroker = {};
+    allBrokers.map((broker, index) => {
+      if (String(broker.userId) === String(userId)) {
+        currentBroker = broker;
+      }
+    });
+    openModalBroker(currentBroker, 2);
   };
 
   const router = useRouter();
@@ -240,24 +217,24 @@ export default function Exemple({
     setProperties([]);
   }, [checkData]);
 
-  const getCurrentDate = (id)=>{
-    let specificAppraiser = {}
-    allAppraiser.map((appraiser,index)=>{
-      if(String(appraiser.id) === String(id)){
+  const getCurrentDate = (id) => {
+    let specificAppraiser = {};
+    allBroker.map((appraiser, index) => {
+      if (String(appraiser.id) === String(id)) {
         specificAppraiser = appraiser;
       }
-    })
+    });
 
     return specificAppraiser;
-  }
+  };
 
   useEffect(() => {
     const getData = () => {
       const dateNow = formatDate(new Date());
-      allAppraiser.map((data, index) => {
+      allBroker.map((data, index) => {
         const getCurrentdate = getCurrentDate(data?.item?.id);
         const updatedRow = {
-          appraiser_id: data.appraiserCompanyId,
+          appraiser_id: data.userId,
           firstname: data.firstName ? data.firstName : "-",
           lastname: data.lastName ? data.lastName : "-",
           email: data.emailId ? data.emailId : "-",
@@ -272,9 +249,26 @@ export default function Exemple({
           address: data.streetName
             ? `${data.streetName} ${data.streetNumber},${data.province}-${data.postalCode}`
             : "N.A.",
-          date:  data?.modifiedDateTime !==null ?
-          formatDate(data?.modifiedDateTime) : "-",
-
+          date:
+            data?.modifiedDateTime !== null
+              ? formatDate(data?.modifiedDateTime)
+              : "-",
+          get_info: (
+            <a href="#">
+              <button
+                className="list-inline-item"
+                style={{
+                  border: "0px",
+                  color: "#2e008b",
+                  textDecoration: "underline",
+                  backgroundColor: "transparent",
+                }}
+                onClick={() => openInfoModal(data)}
+              >
+                Get Info
+              </button>
+            </a>
+          ),
           action: (
             <div className="print-hidden-column">
               {data.firstName && (
@@ -286,12 +280,12 @@ export default function Exemple({
                 </button>
               )}
 
-              <button
+              {/* <button
                 className="btn btn-color m-1"
                 onClick={() => openCredModal(data)}
               >
                 <i className="flaticon-view"></i>
-              </button>
+              </button> */}
             </div>
           ),
         };
@@ -301,7 +295,7 @@ export default function Exemple({
       setUpdatedData(tempData);
     };
     getData();
-  }, [allAppraiser]);
+  }, [allBroker]);
 
   useEffect(() => {
     setUpdatedCode(true);
@@ -314,19 +308,21 @@ export default function Exemple({
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("user"));
     axios
-    .get("/api/getAllAppraiserCompanies", {
-      headers: {
-        Authorization: `Bearer ${data.token}`,
-      },
-    })
+      .get("/api/getAllAppraiserCompanies", {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+      })
 
-    .then((res) => {
-      let allappraiser = res.data.data.result.$values;
-      setAllAppraiser(allappraiser)
-    })
-    .catch((err) => {});
+      .then((res) => {
+        setDataFetched(true);
+        let allappraiser = res.data.data.result.$values;
+        setAllBroker(allappraiser);
+      })
+      .catch((err) => {
+        setDataFetched(false);
+      });
 
-      
     setRefresh(false);
   }, [refresh]);
   console.log(sortObjectsByOrderIdDescending(updatedData));

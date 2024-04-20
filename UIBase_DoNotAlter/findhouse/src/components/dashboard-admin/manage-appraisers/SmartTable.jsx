@@ -79,58 +79,137 @@ function SmartTable(props) {
     router.push("/appraiser-register");
   };
 
-  const handlePrint = () => {
-    const printWindow = window.open("", "_blank");
-    printWindow.document.write(
-      "<html><head><title>AllBrokerProperties</title></head><body>"
-    );
-    printWindow.document.write("<h1>" + props.title + "</h1>");
-    printWindow.document.write(
-      '<button style="display:none;" onclick="window.print()">Print</button>'
-    );
+  const handlePrint = async () => {
+    try {
+      // Fetch data
+      const allData = props.properties;
 
-    // Clone the table-container and remove the action column
-    const tableContainer = document.getElementById("table-container");
-    const table = tableContainer.querySelector("table");
-    const clonedTable = table.cloneNode(true);
-    const rows = clonedTable.querySelectorAll("tr");
-    rows.forEach((row) => {
-      const lastCell = row.querySelector("td:last-child");
-      if (lastCell) {
-        row.removeChild(lastCell);
-      }
-    });
+      // Open print window and set up basic structure
+      const printWindow = window.open("", "_blank");
+      printWindow.document.write(
+        "<html><head><title>Appraiser Info</title></head><body>" +
+          // Add CSS styles within the <style> tag
+          "<style>" +
+          // Define your CSS styles here
+          "table { width: 100%; border-collapse: collapse; font-size:12px; font-family:arial;}" +
+          "th, td { border: 1px solid black; padding: 8px; }" +
+          "th { background-color:#2e008b; color:white; }" +
+          "</style>" +
+          "</head><body>"
+      );
+      printWindow.document.write(
+        ' <img width="60" height="45" class="logo1 img-fluid" style="" src="/assets/images/Appraisal_Land_Logo.png" alt="header-logo2.png"/> <span style="color: #2e008b font-weight: bold; font-size: 24px;">Appraisal</span><span style="color: #97d700; font-weight: bold; font-size: 24px;">Land</span>'
+      );
+      printWindow.document.write(
+        "<h3>Appraiser's Info</h3>" +
+          "<style>" +
+          "h3{text-align:center;}" +
+          "</style>"
+      );
+      printWindow.document.write(
+        '<button style="display:none;" onclick="window.print()">Print</button>'
+      );
 
-    // Remove the action heading from the table
-    const tableHead = clonedTable.querySelector("thead");
-    const tableHeadRows = tableHead.querySelectorAll("tr");
-    tableHeadRows.forEach((row) => {
-      const lastCell = row.querySelector("th:last-child");
-      if (lastCell) {
-        row.removeChild(lastCell);
-      }
-    });
+      // Create a new table element to hold all data
+      const clonedTable = document.createElement("table");
 
-    // Make the table responsive for all fields
-    const tableRows = clonedTable.querySelectorAll("tr");
-    tableRows.forEach((row) => {
-      const firstCell = row.querySelector("td:first-child");
-      if (firstCell) {
-        const columnHeading = tableHeadRows[0].querySelector(
-          "th:nth-child(" + (firstCell.cellIndex + 1) + ")"
-        ).innerText;
-        firstCell.setAttribute("data-th", columnHeading);
-      }
-    });
+      // Create table headers
+      const tableHeaderRow = document.createElement("tr");
+      const staticHeaders = [
+        ["firstname", "First Name"],
+        ["lastname", "Last Name"],
+        ["phone", "Phone Number"],
+        ["email", "User Id"],
+        ["date", "Active Date"],
+        ["status", "Order Status"]
+      ];
+      staticHeaders.forEach((headerText) => {
+        const th = document.createElement("th");
+        th.textContent = headerText[1];
+        tableHeaderRow.appendChild(th);
+      });
+      clonedTable.appendChild(tableHeaderRow);
 
-    printWindow.document.write(clonedTable.outerHTML);
-    printWindow.document.write("</body></html>");
-    printWindow.document.close();
-    printWindow.print();
-    printWindow.onafterprint = () => {
-      printWindow.close();
-      toast.success("Saved the data");
-    };
+      // Iterate over all data and append rows to the table body
+      const tableBody = document.createElement("tbody");
+      // Iterate over all data and append rows to the table body
+      allData.forEach((item) => {
+        const row = tableBody.insertRow();
+        staticHeaders.forEach((header) => {
+          const cell = row.insertCell();
+          if (
+            header[0].toLowerCase() === "appraisal_status" ||
+            header[0].toLowerCase() === "status"
+          ) {
+            const value = item[header[0].toLowerCase()];
+            const className = value.props.className;
+            const content =
+              header[0].toLowerCase() === "appraisal_status"
+                ? extractTextFromReactElement(value.props.children).split(
+                    "Current Status"
+                  )[0]
+                : value.props.children;
+
+            const spanElement = document.createElement("span");
+            spanElement.textContent = content;
+
+            if (className.includes("btn-warning")) {
+              spanElement.style.backgroundColor = "";
+              spanElement.style.color = "#E4A11B";
+              spanElement.style.height = "max-content";
+              spanElement.style.width = "120px";
+              spanElement.style.padding = "8px";
+              spanElement.style.fontWeight = "bold";
+            } else if (className.includes("btn-danger")) {
+              spanElement.style.backgroundColor = "";
+              spanElement.style.color = "#DC4C64";
+              spanElement.style.height = "max-content";
+              spanElement.style.width = "120px";
+              spanElement.style.padding = "8px";
+              spanElement.style.fontWeight = "bold";
+              // Add more styles as needed
+            } else if (className.includes("btn-success")) {
+              spanElement.style.backgroundColor = "";
+              spanElement.style.color = "#14A44D";
+              spanElement.style.height = "max-content";
+              spanElement.style.width = "120px";
+              spanElement.style.padding = "8px";
+              spanElement.style.fontWeight = "bold";
+              // Add more styles as needed
+            } else {
+              spanElement.style.backgroundColor = "";
+              spanElement.style.color = "#54B4D3";
+              spanElement.style.height = "max-content";
+              spanElement.style.width = "120px";
+              spanElement.style.padding = "8px";
+              spanElement.style.fontWeight = "bold";
+            }
+
+            // Append the span element to the cell
+            cell.appendChild(spanElement);
+          } else {
+            cell.textContent = item[header[0].toLowerCase()];
+          }
+        });
+      });
+
+      clonedTable.appendChild(tableBody);
+      clonedTable.appendChild(tableBody);
+
+      // Write the table to the print window
+      printWindow.document.write(clonedTable.outerHTML);
+      printWindow.document.write("</body></html>");
+      printWindow.document.close();
+
+      // Print and handle post-print actions
+      printWindow.print();
+      printWindow.onafterprint = () => {
+        printWindow.close();
+        toast.success("Saved the data");
+      };
+    } catch (error) {
+      console.error("Error handling print:", error);
+    }
   };
   const handleExcelPrint = () => {
     const twoDData = props.data.map((item, index) => {
@@ -300,13 +379,24 @@ function SmartTable(props) {
               </div> */}
             </li>
             <li className="list-inline-item">
-              <button
-                className="btn btn-color w-100 h-10 m-1"
-                onClick={() => props.refreshHandler()}
-                title="Refresh"
-              >
-                <FaRedo />
-              </button>
+            <div className="row">
+                  <div
+                    className="col-lg-6 btn btn-color w-50"
+                    onClick={() => handlePrint()}
+                    title="Download Pdf"
+                  >
+                    <span className="flaticon-download "></span>
+                  </div>
+                  <div className="col-lg-6 w-50">
+                    <button
+                      className="btn btn-color"
+                      onClick={() => props.refreshHandler()}
+                      title="Refresh"
+                    >
+                      <FaRedo />
+                    </button>
+                  </div>
+                </div>
             </li>
           </ul>
         </div>

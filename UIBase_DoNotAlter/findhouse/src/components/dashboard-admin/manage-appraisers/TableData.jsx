@@ -12,9 +12,13 @@ const TableData = ({
   close,
   setCurrentViewAppraiser,
   setOpenViewModal,
+  setBrokerInfoSelected,
+  setOpenBrokerInfoModal,
   setAppraiserCompanyInfo,
   setSelectedAppraiser,
   setAppraiser,
+  setAllBroker,
+  allBroker,
   setOpenEditModal,
   setFilterQuery,
   setCloseRegisterModal,
@@ -176,6 +180,23 @@ const TableData = ({
     <>
       <tr key={item.id}>
         <td scope="row">
+          {/* <div className="feat_property list favorite_page style2" >
+          {/*<div className="thumb">
+            <Image
+              width={150}
+              height={220}
+              className="img-whp cover"
+              src={item.img}
+              alt="fp1.jpg"
+            />
+            <div className="thmb_cntnt">
+              <ul className="tag mb0">
+                <li className="list-inline-item">
+                  <a href="#">For Rent</a>
+                </li>
+              </ul>
+            </div>
+         </div> */}
           <div className="details">
             <div className="tc_content">
               <h4>{item.title}</h4>
@@ -211,7 +232,27 @@ const TableData = ({
 
         <td>
           <ul className="view_edit_delete_list mb0">
-           
+            {/* <li
+            className="list-inline-item"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="View"
+          > */}
+            {/* <Link href={`/create-listing/${item.propertyId}`} >
+              <span className="flaticon-view"></span>
+            </Link> */}
+            {/* </li> */}
+            {/* <li 
+            className="list-inline-item"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Edit"
+          > */}
+            {/* <Link href={`/create-listing/${item.propertyId}`} >
+              <span className="flaticon-edit"></span>
+            </Link> */}
+            {/* </li> */}
+            {/* End li */}
             <li
               className="list-inline-item"
               style={{
@@ -278,6 +319,10 @@ const TableData = ({
           setStartLoading={setStartLoading}
           openModalBroker={openModalBroker}
           setIsStatusModal={setIsStatusModal}
+          setAllBroker={setAllBroker}
+          allBroker={allBroker}
+          setBrokerInfoSelected={setBrokerInfoSelected}
+          setOpenBrokerInfoModal={setOpenBrokerInfoModal}
           setCurrentViewAppraiser={setCurrentViewAppraiser}
           setOpenViewModal={setOpenViewModal}
           setAppraiserCompanyInfo={setAppraiserCompanyInfo}

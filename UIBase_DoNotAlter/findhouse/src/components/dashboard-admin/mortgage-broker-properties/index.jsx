@@ -584,10 +584,10 @@ const Index = () => {
                 </div> */}
                 {/* End Dashboard Navigation */}
 
-                <div className="col-lg-4 col-xl-4 mb5 mt10">
+                <div className="col-lg-12 col-xl-12 mb5 mt10">
                   <div className="style2 mb30-991">
-                    <h4 className="breadcrumb_title">Mortgage broker</h4>
-                    {/* <p>We are glad to see you again!</p>                                                             */}
+                    {/* <h4 className="breadcrumb_title">Mortgage broker</h4> */}
+                    <h3 className="heading-forms">Mortgage Broker</h3>
                   </div>
                 </div>
                 {/* End .col */}

@@ -42,8 +42,16 @@ const SidebarMenu = () => {
   ];
 
   const dashboard = [
-    { id: 1, name: "Appraiser Company", route: "/appraiser-company-dashboard" },
-    { id: 2, name: "Appraiser Individual", route: "/appraiser-dashboard" },
+    {
+      id: 1,
+      name: "Appraiser Company",
+      route: "/appraiser-company-dashboard-admin",
+    },
+    {
+      id: 2,
+      name: "Appraiser Individual",
+      route: "/appraiser-dashboard-admin",
+    },
     {
       id: 3,
       name: "Mortgage Brokerage",

@@ -1,14 +1,7 @@
 import Header from "../../common/header/dashboard/HeaderAdmin";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenuAdmin";
 import MobileMenu from "../../common/header/MobileMenuAdmin";
-import SearchBox from "./SearchBox";
-import BreadCrumb2 from "./BreadCrumb2";
 import FeaturedItem from "./PricingMonthly";
-// import FeaturedItem_01 from "./PricingYearly";
-import FilterTopBar from "../../common/listing/FilterTopBar";
-import ShowFilter from "../../common/listing/ShowFilter";
-import SidebarListing from "../../common/listing/SidebarListing";
-import GridListButton from "../../common/listing/GridListButton";
 import { useEffect, useState } from "react";
 import Modal from "./MonthlyModal";
 import toast from "react-hot-toast";
@@ -21,6 +14,7 @@ const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [dataFetched, setDataFetched] = useState(false);
   const [planData, setPlanData] = useState([]);
+  const [editPlan,setEditPlan] = useState({});
   const router = useRouter();
 
   useEffect(() => {
@@ -31,7 +25,14 @@ const Index = () => {
             "Content-Type": "application/json",
           },
         });
-        setPlanData(res.data.data.$values);
+        const tempPlans = res.data.data.$values;
+        let selectivePlansAccordingToUser = [];
+        tempPlans.map((plan,index)=>{
+          if(String(plan.userType) === '4'){
+            selectivePlansAccordingToUser.push(plan)
+          }
+        })
+        setPlanData(selectivePlansAccordingToUser);
       } catch (err) {
         toast.error(err.message);
       }
@@ -84,29 +85,14 @@ const Index = () => {
           <div className="row">
             <div className="col-lg-12 maxw100flex-992">
               <div className="row">
-                {/* Start Dashboard Navigation */}
-                {/* <div className="col-lg-12">
-                  <div className="dashboard_navigationbar dn db-1024">
-                    <div className="dropdown">
-                      <button
-                        className="dropbtn"
-                        data-bs-toggle="offcanvas"
-                        data-bs-target="#DashboardOffcanvasMenu"
-                        aria-controls="DashboardOffcanvasMenu"
-                      >
-                        <i className="fa fa-bars pr10"></i> Dashboard Navigation
-                      </button>
-                    </div>
-                  </div>
-                </div> */}
-                {/* End Dashboard Navigation */}
+                
 
                 <div className="our-listing bgc-f7 pb30-991 md-mt0 ">
                   <div className="container">
                     <div className="col-lg-12 col-xl-12 text-center mt-1 mb-3">
                       <div className="style2 mb30-991">
                         <h3 className="breadcrumb_title">
-                          Mortgage Broker Plans
+                          Appraiser Company Plans
                         </h3>
                       </div>
                     </div>
@@ -115,11 +101,14 @@ const Index = () => {
                         <div className="row">
                           <FeaturedItem
                             data={planData}
+                            setEditPlan={setEditPlan}
+                            editPlan={editPlan}
                             setModalOpen={openModal}
                           />
                           <Modal
                             modalOpen={modalOpen}
                             closeModal={closeModal}
+                            editPlan={editPlan}
                           />
                         </div>
                         {/* End .row */}

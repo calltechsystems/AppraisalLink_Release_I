@@ -9,12 +9,6 @@ import Loader from "./Loader";
 
 const headCells = [
   {
-    id: "get_info",
-    numeric: false,
-    label: "Get Info",
-    width: 200,
-  },
-  {
     id: "firstname",
     numeric: false,
     label: "First Name",
@@ -24,6 +18,12 @@ const headCells = [
     id: "lastname",
     numeric: false,
     label: "Last Name",
+    width: 200,
+  },
+  {
+    id: "get_info",
+    numeric: false,
+    label: "Get Broker Info",
     width: 200,
   },
   // {
@@ -59,48 +59,6 @@ const headCells = [
   },
 ];
 
-const temporaryData = [
-  {
-    email: "test@gmail.com",
-    firstname: "Joe",
-    lastname: "Doe",
-    company: "Appraiser Company 1",
-    phone: "+91 12324 235644",
-    date: " 29 December 2023",
-  },
-  {
-    email: "test@gmail.com",
-    firstname: "Joe",
-    lastname: "Doe",
-    company: "Appraiser Company 1",
-    phone: "+91 12324 235644",
-    date: " 29 December 2023",
-  },
-  {
-    email: "test@gmail.com",
-    firstname: "Joe",
-    lastname: "Doe",
-    company: "Appraiser Company 1",
-    phone: "+91 12324 235644",
-    date: " 29 December 2023",
-  },
-  {
-    email: "test@gmail.com",
-    firstname: "Joe",
-    lastname: "Doe",
-    company: "Appraiser Company 1",
-    phone: "+91 12324 235644",
-    date: " 29 December 2023",
-  },
-  {
-    email: "test@gmail.com",
-    firstname: "Joe",
-    lastname: "Doe",
-    company: "Appraiser Company 1",
-    phone: "+91 12324 235644",
-    date: " 29 December 2023",
-  },
-];
 let count = 0;
 
 export default function Exemple({
@@ -110,12 +68,16 @@ export default function Exemple({
   start,
   setAppraiser,
   end,
+  setAllBroker,
+  allBroker,
   setUpdatedCode,
   setCurrentViewAppraiser,
   setOpenViewModal,
   setAppraiserCompanyInfo,
   setCloseRegisterModal,
   properties,
+  setBrokerInfoSelected,
+  setOpenBrokerInfoModal,
   setIsStatusModal,
   setProperties,
   deletePropertyHandler,
@@ -138,7 +100,6 @@ export default function Exemple({
   const [dataFetched, setDataFetched] = useState(false);
   const [bids, setBids] = useState([]);
 
-  const [allAppraiser, setAllAppraiser] = useState([]);
   const [hideAction, setHideAction] = useState(false);
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
@@ -161,9 +122,9 @@ export default function Exemple({
     return tempBid > 0 ? bidValue : {};
   };
 
-  const openCredModal = (data) => {
-    setCurrentViewAppraiser(data);
-    setOpenViewModal(true);
+  const openInfoModal = (data) => {
+    setBrokerInfoSelected(data);
+    setOpenBrokerInfoModal(true);
   };
 
   const openBrokerModalView = (userId) => {
@@ -258,7 +219,7 @@ export default function Exemple({
 
   const getCurrentDate = (id) => {
     let specificAppraiser = {};
-    allAppraiser.map((appraiser, index) => {
+    allBroker.map((appraiser, index) => {
       if (String(appraiser.id) === String(id)) {
         specificAppraiser = appraiser;
       }
@@ -270,15 +231,14 @@ export default function Exemple({
   useEffect(() => {
     const getData = () => {
       const dateNow = formatDate(new Date());
-      allAppraiser.map((data, index) => {
+      allBroker.map((data, index) => {
         const getCurrentdate = getCurrentDate(data?.item?.id);
-        if (!data?.brokerageId) {
+        if (data?.brokerageId === null) {
           const updatedRow = {
             appraiser_id: data.userId,
             firstname: data.firstName ? data.firstName : "-",
             lastname: data.lastName ? data.lastName : "-",
-            // email: data.emailId ? data.emailId : "-",
-            email: data.userEmail ? data.userEmail : "-",
+            email: data.emailId ? data.emailId : "-",
             status: data?.phoneNumber ? (
               <span className="btn btn-success  w-100">Active</span>
             ) : !data?.isActive && data?.mortageBrokerageLicNo ? (
@@ -304,10 +264,9 @@ export default function Exemple({
                     textDecoration: "underline",
                     backgroundColor: "transparent",
                   }}
-                  onClick={() => openBrokerModalView(data.userId)}
+                  onClick={() => openInfoModal(data)}
                 >
                   Get Info
-                  {/* {getBrokerName(property.userId)} */}
                 </button>
               </a>
             ),
@@ -338,7 +297,7 @@ export default function Exemple({
       setUpdatedData(tempData);
     };
     getData();
-  }, [allAppraiser]);
+  }, [allBroker]);
 
   useEffect(() => {
     setUpdatedCode(true);
@@ -357,9 +316,9 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        let allappraiser = res.data.data.$values;
+        let allBroker = res.data.data.$values;
         console.log("res", res);
-        setAllAppraiser(allappraiser);
+        setAllBroker(allBroker);
       })
       .catch((err) => {});
 

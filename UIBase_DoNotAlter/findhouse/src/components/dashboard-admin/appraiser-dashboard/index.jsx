@@ -1,4 +1,4 @@
-import Header from "../../common/header/dashboard/Header";
+import Header from "../../common/header/dashboard/HeaderAdmin";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenuAdmin";
 import MobileMenu from "../../common/header/MobileMenuAdmin";
 import Filtering from "./Filtering";
@@ -72,9 +72,10 @@ const Index = () => {
                 >
                   <div className="breadcrumb_content style2">
                     <h2 className="breadcrumb_title">
-                      {"firstName"} {"lastName"}
+                      {/* {"firstName"} {"lastName"} */}
+                      Appraiser Dashboard
                     </h2>
-                    <p>We are glad to see you again!</p>
+                    {/* <p>We are glad to see you again!</p> */}
                   </div>
                   <div>
                     <Filtering />

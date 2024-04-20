@@ -12,9 +12,13 @@ const TableData = ({
   close,
   setCurrentViewAppraiser,
   setOpenViewModal,
+  setBrokerInfoSelected,
+  setOpenBrokerInfoModal,
   setAppraiserCompanyInfo,
   setSelectedAppraiser,
   setAppraiser,
+  setAllBroker,
+  allBroker,
   setOpenEditModal,
   setFilterQuery,
   setCloseRegisterModal,
@@ -315,6 +319,10 @@ const TableData = ({
           setStartLoading={setStartLoading}
           openModalBroker={openModalBroker}
           setIsStatusModal={setIsStatusModal}
+          setAllBroker={setAllBroker}
+          allBroker={allBroker}
+          setBrokerInfoSelected={setBrokerInfoSelected}
+          setOpenBrokerInfoModal={setOpenBrokerInfoModal}
           setCurrentViewAppraiser={setCurrentViewAppraiser}
           setOpenViewModal={setOpenViewModal}
           setAppraiserCompanyInfo={setAppraiserCompanyInfo}

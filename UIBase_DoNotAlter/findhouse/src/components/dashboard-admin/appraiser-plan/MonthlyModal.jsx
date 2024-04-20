@@ -1,8 +1,57 @@
 // Modal.js (a React component)
 
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { encryptionData } from "../../../utils/dataEncryption";
 
-const Modal = ({ modalOpen, closeModal }) => {
+const Modal = ({ modalOpen, closeModal, editPlan }) => {
+  const [planAmount, setPlanAmount] = useState(0);
+  const [planProperties, setPlanProperties] = useState(0);
+  const [disable,setDisable] = useState(false)
+
+  useEffect(() => {
+    setPlanAmount(editPlan?.amount);
+    setPlanProperties(editPlan?.noOfProperties);
+  }, [editPlan]);
+
+  const updateHandler = () => {
+    if (
+      String(planAmount) === String(editPlan?.amount) &&
+      String(planProperties) === String(editPlan?.noOfProperties)
+    ) {
+      closeModal()
+      toast.error("No Change found !");
+    }
+    else{
+
+      const userData = JSON.parse(localStorage.getItem("user"))
+
+      const payload = {
+        planID : editPlan?.id,
+        numberOfProperty : planProperties,
+        amount : planAmount,
+        token : userData.token
+      }
+
+      setDisable(true)
+      const encryptedBody = encryptionData(payload);
+      axios.post("/api/updatePlanDetails",encryptedBody,{
+        headers:{
+          Authorization : `Bearer ${userData.token}`
+        }
+      })
+      .then((res)=>{
+        toast.success("Successfully Updated!!");
+        window.location.reload();
+      })
+      .catch((err)=>{
+        toast.error("Try Again!!");
+      })
+      setDisable(false)
+    }
+  };
+
   return (
     <div>
       {modalOpen && (
@@ -24,10 +73,6 @@ const Modal = ({ modalOpen, closeModal }) => {
                   Update Plan Details
                 </span>
               </h2>
-              {/* <p className="text-center">
-                {" "}
-                Please place a bid to fill your amount
-              </p> */}
             </div>
             <div
               style={{
@@ -55,7 +100,7 @@ const Modal = ({ modalOpen, closeModal }) => {
                           type="text"
                           className="form-control"
                           id="formGroupExampleInput3"
-                          value="Lite"
+                          value={editPlan?.planName}
                         />
                       </div>
                     </div>
@@ -74,7 +119,8 @@ const Modal = ({ modalOpen, closeModal }) => {
                           type="number"
                           className="form-control"
                           id="formGroupExampleInput3"
-                          value="11"
+                          value={planAmount}
+                          onChange={(e) => setPlanAmount(e.target.value)}
                         />
                       </div>
                     </div>
@@ -93,7 +139,8 @@ const Modal = ({ modalOpen, closeModal }) => {
                           type="number"
                           className="form-control"
                           id="formGroupExampleInput3"
-                          value="5"
+                          value={planProperties}
+                          onChange={(e) => setPlanProperties(e.target.value)}
                         />
                       </div>
                     </div>
@@ -165,7 +212,9 @@ const Modal = ({ modalOpen, closeModal }) => {
               {/* <button className="cancel-button" onClick={closeModal}>
                   Cancel
                 </button> */}
-              <button className="btn btn-log w-35 btn-thm">Submit</button>
+              <button className="btn btn-log w-35 btn-thm"
+              disabled={disable}
+              onClick={updateHandler}>Submit</button>
             </div>
           </div>
         </div>
