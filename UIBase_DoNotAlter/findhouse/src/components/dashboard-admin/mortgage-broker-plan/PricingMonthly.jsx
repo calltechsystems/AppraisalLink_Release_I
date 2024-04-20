@@ -33,13 +33,13 @@ const FeaturedItem = ({ setEditPlan, editPlan, setModalOpen, data }) => {
               {item.type}
             </p>
             <h2>
-              <Link href={`/listing-details-v1/${item.id}`} className="fw-bold">
+              <Link href={``} className="fw-bold">
                 {item.planName}
               </Link>
             </h2>
 
             <h1>
-              <Link href={`/listing-details-v1/${item.id}`} className="fw-bold">
+              <Link href={``} className="fw-bold">
                 {item.amount}
               </Link>
             </h1>

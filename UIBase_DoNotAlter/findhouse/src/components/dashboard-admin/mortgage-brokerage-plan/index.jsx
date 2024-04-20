@@ -89,10 +89,10 @@ const Index = () => {
 
                 <div className="our-listing bgc-f7 pb30-991 md-mt0 ">
                   <div className="container">
-                    <div className="col-lg-12 col-xl-12 text-center mt-1 mb-3">
+                    <div className="col-lg-12 col-xl-12 text-center mt-1 mb-5">
                       <div className="style2 mb30-991">
-                        <h3 className="breadcrumb_title">
-                          Brokerage Plans
+                        <h3 className="heading-forms">
+                          Mortgage Brokerage Plans
                         </h3>
                       </div>
                     </div>

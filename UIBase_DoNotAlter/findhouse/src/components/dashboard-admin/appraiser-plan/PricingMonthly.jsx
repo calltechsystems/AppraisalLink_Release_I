@@ -16,14 +16,14 @@ const FeaturedItem = ({ setEditPlan, editPlan, setModalOpen, data }) => {
   const dispatch = useDispatch();
 
   const openEditPlanModal = (plan) => {
-    setEditPlan(plan)
-    setModalOpen(true)
+    setEditPlan(plan);
+    setModalOpen(true);
   };
 
   // status handler
   let content = data?.map((item) => (
     <div className="col-md-4" key={item.id}>
-      <div className="feat_property home7 style4">
+      <div className="pricing_table">
         <div className="details">
           <div className="tc_content" style={{ textAlign: "center" }}>
             <p
@@ -32,20 +32,20 @@ const FeaturedItem = ({ setEditPlan, editPlan, setModalOpen, data }) => {
             >
               {item.type}
             </p>
-            <h3>
-              <Link href={`/listing-details-v1/${item.id}`} className="fw-bold">
+            <h2>
+              <Link href={``} className="fw-bold">
                 {item.planName}
               </Link>
-            </h3>
+            </h2>
 
-            <h2>
-              <Link href={`/listing-details-v1/${item.id}`} className="fw-bold">
+            <h1>
+              <Link href={``} className="fw-bold">
                 {item.amount}
               </Link>
-            </h2>
-            <ul>
+            </h1>
+            <ul className="mb-4">
               <li>
-                <span className="fs-6">
+                <span className="fs-6 text-dark">
                   {item.noOfProperties} Properties Appraisal
                 </span>
               </li>
@@ -62,10 +62,10 @@ const FeaturedItem = ({ setEditPlan, editPlan, setModalOpen, data }) => {
 
           <div className="fp_footer text-center">
             <div
-              className="fp_pdate float-center btn btn-color w-50"
+              className="fp_pdate float-center"
               onClick={() => openEditPlanModal(item)}
             >
-              <a href="#" className="text-light">
+              <a href="#" className="btn btn-color_01 w-100">
                 Edit Plan
               </a>
             </div>
