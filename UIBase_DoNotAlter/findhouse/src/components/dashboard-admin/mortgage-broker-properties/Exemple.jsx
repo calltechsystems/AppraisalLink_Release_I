@@ -11,20 +11,20 @@ const headCells = [
     id: "order_id",
     numeric: false,
     label: "Order ID",
-    width: 100,
+    width: 80,
   },
 
   {
     id: "broker",
     numeric: false,
     label: "Broker Info",
-    width: 280,
+    width: 150,
   },
   {
     id: "plan",
     numeric: false,
     label: "Plan Info",
-    width: 280,
+    width: 100,
   },
   {
     id: "address",
@@ -144,8 +144,8 @@ export default function Exemple({
   const [updatedData, setUpdatedData] = useState([]);
   const [allBids, setBids] = useState([]);
   const [show, setShow] = useState(false);
-  
-  const [isEdited,setIsEdited] = useState(false)
+
+  const [isEdited, setIsEdited] = useState(false);
   const [allBrokers, setAllBrokers] = useState([]);
   const [dataFetched, setDataFetched] = useState(false);
   let tempData = [];
@@ -165,11 +165,10 @@ export default function Exemple({
     }
   }, [searchInput]);
 
-  useEffect(()=>{
-    console.log("userNameSearch",userNameSearch)
-    setIsEdited(true)
-  },[userNameSearch,statusSearch])
-
+  useEffect(() => {
+    console.log("userNameSearch", userNameSearch);
+    setIsEdited(true);
+  }, [userNameSearch, statusSearch]);
 
   const sortObjectsByOrderIdDescending = (data) => {
     return data.sort((a, b) => b.order_id - a.order_id);
@@ -323,40 +322,36 @@ export default function Exemple({
     openModalBroker(currentBroker, 2);
   };
 
-  const isLikeUserSearchedType = (userInfo)=>{
-    
+  const isLikeUserSearchedType = (userInfo) => {
     const searchFrom = String(userInfo.firstName).toLowerCase();
     const searchFrom2 = String(userInfo.lastName).toLowerCase();
     const serachWith = String(userNameSearch).toLowerCase();
-    if(userNameSearch === "" || (searchFrom.includes(serachWith) || searchFrom2.includes(serachWith))){
+    if (
+      userNameSearch === "" ||
+      searchFrom.includes(serachWith) ||
+      searchFrom2.includes(serachWith)
+    ) {
       return true;
     }
     return false;
-  }
+  };
 
-  const isAccordingToStatus = (bidStatus,property)=>{
-      if(String(statusSearch) === "0")
-       return true;
-      else if(Boolean(property.isOnHold) && String(statusSearch) === "6" ){
-        return true;
-      }
-      else if(Boolean(property.isOnCancel) && String(statusSearch) === "5"){
-        return true;
-      }
-      else if(String(bidStatus)=== "2" && String(statusSearch) === "1"){
-        return true;
-      }
-      else if(String(bidStatus)=== "3" && String(statusSearch) === "2"){
-        return true;
-      }
-      else if(String(bidStatus)=== "1" && String(statusSearch) === "3"){
-        return true;
-      }
-      else if(String(bidStatus)=== "0" && String(statusSearch) === "4"){
-        return true;
-      }
-
-  }
+  const isAccordingToStatus = (bidStatus, property) => {
+    if (String(statusSearch) === "0") return true;
+    else if (Boolean(property.isOnHold) && String(statusSearch) === "6") {
+      return true;
+    } else if (Boolean(property.isOnCancel) && String(statusSearch) === "5") {
+      return true;
+    } else if (String(bidStatus) === "2" && String(statusSearch) === "1") {
+      return true;
+    } else if (String(bidStatus) === "3" && String(statusSearch) === "2") {
+      return true;
+    } else if (String(bidStatus) === "1" && String(statusSearch) === "3") {
+      return true;
+    } else if (String(bidStatus) === "0" && String(statusSearch) === "4") {
+      return true;
+    }
+  };
 
   const openPopupModal = (property) => {
     setModalIsPopupOpen(true);
@@ -370,8 +365,8 @@ export default function Exemple({
         const isCancel = property.isOnCancel;
         const isStatus = getPropertyStatusHandler(property);
         const showUser = getBrokerName(property.userId);
-        const isCorrect = isAccordingToStatus(isStatus,property);
-        const isAccordingToSelectedName = isLikeUserSearchedType(showUser)
+        const isCorrect = isAccordingToStatus(isStatus, property);
+        const isAccordingToSelectedName = isLikeUserSearchedType(showUser);
         const isEditable = isStatus === 0 ? true : false;
         if (!property.isArchive && isAccordingToSelectedName && isCorrect) {
           const updatedRow = {
@@ -533,11 +528,11 @@ export default function Exemple({
           tempData.push(updatedRow);
         }
       });
-      setIsEdited(false)
+      setIsEdited(false);
       setUpdatedData(tempData);
     };
     getData();
-  }, [properties, allBids,isEdited, allBrokers]);
+  }, [properties, allBids, isEdited, allBrokers]);
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("user"));
@@ -558,12 +553,12 @@ export default function Exemple({
         setDataFetched(true);
         const temp = res.data.data.result.$values;
         let tempProperties = [];
-        
+
         temp.map((prop, index) => {
-         const allMentionedProp = prop.$values;
-         allMentionedProp.map((singleProp,idx)=>{
-          tempProperties.push(singleProp)
-         })
+          const allMentionedProp = prop.$values;
+          allMentionedProp.map((singleProp, idx) => {
+            tempProperties.push(singleProp);
+          });
         });
         axios
           .get("/api/getAllBids", {
@@ -576,20 +571,20 @@ export default function Exemple({
             setProperties(tempProperties);
             setBids(tempBids);
             axios
-      .get("/api/getAllBrokers", {
-        headers: {
-          Authorization: `Bearer ${data.token}`,
-        },
-      })
+              .get("/api/getAllBrokers", {
+                headers: {
+                  Authorization: `Bearer ${data.token}`,
+                },
+              })
 
-      .then((res) => {
-        let allbroker = res.data.data.$values;
-       setAllBrokers(allBrokers)
-      })
-      .catch((err) => {
-        setErrorMessage(err?.response?.data?.error);
-        setModalIsOpenError(true);
-      });
+              .then((res) => {
+                let allbroker = res.data.data.$values;
+                setAllBrokers(allBrokers);
+              })
+              .catch((err) => {
+                setErrorMessage(err?.response?.data?.error);
+                setModalIsOpenError(true);
+              });
           })
           .catch((err) => {
             toast.error(err);
@@ -602,7 +597,6 @@ export default function Exemple({
         toast.error(err?.response?.data?.error);
       });
 
-      
     setSearchInput("");
     setFilterQuery("All");
     setProperties([]);
@@ -618,7 +612,6 @@ export default function Exemple({
         <SmartTable
           title=""
           searchInput={searchInput}
-          
           userNameSearch={userNameSearch}
           setUserNameSearch={setUserNameSearch}
           statusSearch={statusSearch}

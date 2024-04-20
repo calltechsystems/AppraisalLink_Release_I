@@ -120,6 +120,8 @@ function SmartTable(props) {
       const tableHeaderRow = document.createElement("tr");
       const staticHeaders = [
         ["order_id", "Order Id"],
+        ["broker", "Appraiser Company"],
+        // ["plan", "Plan Info"],
         ["address", "Property Address"],
         ["status", "Order Status"],
         ["appraisal_status", "Appraisal Status"],

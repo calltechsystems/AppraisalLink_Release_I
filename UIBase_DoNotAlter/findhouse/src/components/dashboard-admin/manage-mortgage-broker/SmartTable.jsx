@@ -352,7 +352,7 @@ function SmartTable(props) {
     <div className="col-12 p-2">
       <div className="smartTable-container row">
         <div className="candidate_revew_select style2 mb30-991">
-          <ul className="mb0">
+          <ul className="mb0 text-end_01">
             {/* <li className="list-inline-item">
               <Filtering setFilterQuery={props.setFilterQuery} />
             </li>

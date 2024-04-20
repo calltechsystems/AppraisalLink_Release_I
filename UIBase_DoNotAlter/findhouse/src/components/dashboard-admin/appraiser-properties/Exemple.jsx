@@ -11,20 +11,20 @@ const headCells = [
     id: "order_id",
     numeric: false,
     label: "Order ID",
-    width: 100,
+    width: 80,
   },
 
   {
     id: "broker",
     numeric: false,
     label: "Appraiser Info",
-    width: 280,
+    width: 180,
   },
   {
     id: "plan",
     numeric: false,
     label: "Plan Info",
-    width: 280,
+    width: 100,
   },
   {
     id: "address",

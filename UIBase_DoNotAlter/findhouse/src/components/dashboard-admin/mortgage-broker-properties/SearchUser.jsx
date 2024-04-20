@@ -4,7 +4,7 @@ const SearchUser = ({userNameSearch,setUserNameSearch}) => {
       <input
         className="form-control"
         type="search"
-        placeholder="Serach By Appraiser Company"
+        placeholder="Serach By Mortgage Broker"
         aria-label="Search"
         required
         value={userNameSearch}
