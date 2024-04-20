@@ -113,6 +113,10 @@ export default function Exemple({
   archievePropertyHandler,
   start,
   end,
+  userNameSearch,
+  setUserNameSearch,
+  statusSearch,
+  setStatusSearch,
   openModalBroker,
   open,
   setModalIsPopupOpen,
@@ -140,7 +144,9 @@ export default function Exemple({
   const [updatedData, setUpdatedData] = useState([]);
   const [allBids, setBids] = useState([]);
   const [show, setShow] = useState(false);
-  const [allBrokers,setAllBrokers] = useState([])
+  
+  const [isEdited,setIsEdited] = useState(false)
+  const [allBrokers, setAllBrokers] = useState([]);
   const [dataFetched, setDataFetched] = useState(false);
   let tempData = [];
 
@@ -158,6 +164,12 @@ export default function Exemple({
       setRefresh(true);
     }
   }, [searchInput]);
+
+  useEffect(()=>{
+    console.log("userNameSearch",userNameSearch)
+    setIsEdited(true)
+  },[userNameSearch,statusSearch])
+
 
   const sortObjectsByOrderIdDescending = (data) => {
     return data.sort((a, b) => b.order_id - a.order_id);
@@ -232,17 +244,15 @@ export default function Exemple({
     setRefresh(true);
   };
 
-  const getBrokerName = (userId)=>{
-
-    
+  const getBrokerName = (userId) => {
     let requiredName = "";
-    allBrokers.map((broker,index)=>{
-      if(String(broker.userId) === String(userId)){
-        requiredName=`${broker.firstName} ${broker.lastName}`
+    allBrokers.map((broker, index) => {
+      if (String(broker.userId) === String(userId)) {
+        requiredName = broker;
       }
-    })
-    return requiredName
-  }
+    });
+    return requiredName;
+  };
 
   function addCommasToNumber(number) {
     if (Number(number) <= 100 || number === undefined) return number;
@@ -271,46 +281,81 @@ export default function Exemple({
     return isCompleted ? 3 : isAccepted ? 2 : isQuoteProvided ? 1 : 0;
   };
 
-
-  
-  const getCurrentBrokerPlan = (property)=>{
+  const getCurrentBrokerPlan = (property) => {
     const data = JSON.parse(localStorage.getItem("user"));
-    axios.get("/api/getBrokerTransactions",{
-      headers: {
-        Authorization: `Bearer ${data?.token}`,
-        "Content-Type": "application/json",
-      },
-      params: {
-        userId: property?.userId,
-      },
-    })
-    .then((res=>{
-       let allPlans = res.data.data.result.$values;
-       let requiredPlan = {};
-       allPlans.map((plan,index)=>{
-        if(new Date(plan.endDate) >= new Date() &&
-          new Date() >= new Date(plan.startDate) ){
-            requiredPlan = plan
+    axios
+      .get("/api/getBrokerTransactions", {
+        headers: {
+          Authorization: `Bearer ${data?.token}`,
+          "Content-Type": "application/json",
+        },
+        params: {
+          userId: property?.userId,
+        },
+      })
+      .then((res) => {
+        let allPlans = res.data.data.result.$values;
+        let requiredPlan = {};
+        allPlans.map((plan, index) => {
+          if (
+            new Date(plan.endDate) >= new Date() &&
+            new Date() >= new Date(plan.startDate)
+          ) {
+            requiredPlan = plan;
           }
-       })
+        });
 
-      setViewPlanData(requiredPlan)
-      setOpenPlanModal(true)
-       
-    }))
-    .catch((err)=>{
-      toast.error("Caught Error While Fetching the current Plan");
-    })
+        setViewPlanData(requiredPlan);
+        setOpenPlanModal(true);
+      })
+      .catch((err) => {
+        toast.error("Caught Error While Fetching the current Plan");
+      });
+  };
+
+  const openBrokerModalView = (userId) => {
+    let currentBroker = {};
+    allBrokers.map((broker, index) => {
+      if (String(broker.userId) === String(userId)) {
+        currentBroker = broker;
+      }
+    });
+    openModalBroker(currentBroker, 2);
+  };
+
+  const isLikeUserSearchedType = (userInfo)=>{
+    
+    const searchFrom = String(userInfo.firstName).toLowerCase();
+    const searchFrom2 = String(userInfo.lastName).toLowerCase();
+    const serachWith = String(userNameSearch).toLowerCase();
+    if(userNameSearch === "" || (searchFrom.includes(serachWith) || searchFrom2.includes(serachWith))){
+      return true;
+    }
+    return false;
   }
 
-  const openBrokerModalView = (userId)=>{
-    let currentBroker = {};
-    allBrokers.map((broker,index)=>{
-      if(String(broker.userId) === String(userId)){
-        currentBroker=broker;
+  const isAccordingToStatus = (bidStatus,property)=>{
+      if(String(statusSearch) === "0")
+       return true;
+      else if(Boolean(property.isOnHold) && String(statusSearch) === "6" ){
+        return true;
       }
-    })
-    openModalBroker(currentBroker,2);
+      else if(Boolean(property.isOnCancel) && String(statusSearch) === "5"){
+        return true;
+      }
+      else if(String(bidStatus)=== "2" && String(statusSearch) === "1"){
+        return true;
+      }
+      else if(String(bidStatus)=== "3" && String(statusSearch) === "2"){
+        return true;
+      }
+      else if(String(bidStatus)=== "1" && String(statusSearch) === "3"){
+        return true;
+      }
+      else if(String(bidStatus)=== "0" && String(statusSearch) === "4"){
+        return true;
+      }
+
   }
 
   const openPopupModal = (property) => {
@@ -324,8 +369,11 @@ export default function Exemple({
         const isHold = property.isOnHold;
         const isCancel = property.isOnCancel;
         const isStatus = getPropertyStatusHandler(property);
+        const showUser = getBrokerName(property.userId);
+        const isCorrect = isAccordingToStatus(isStatus,property);
+        const isAccordingToSelectedName = isLikeUserSearchedType(showUser)
         const isEditable = isStatus === 0 ? true : false;
-        if (!property.isArchive) {
+        if (!property.isArchive && isAccordingToSelectedName && isCorrect) {
           const updatedRow = {
             order_id: property.orderId,
             sub_date: formatDate(property.addedDatetime),
@@ -434,19 +482,19 @@ export default function Exemple({
             urgency: property.urgency === 0 ? "Rush" : "Regular",
             broker: (
               <a href="#">
-                    <button
-                      className="list-inline-item"
-                      style={{
-                        border: "0px",
-                        color: "#2e008b",
-                        textDecoration: "underline",
-                        backgroundColor: "transparent",
-                      }}
-                      onClick={() => openBrokerModalView(property.userId)}
-                    >
-                      {getBrokerName(property.userId)}
-                    </button>
-                  </a>
+                <button
+                  className="list-inline-item"
+                  style={{
+                    border: "0px",
+                    color: "#2e008b",
+                    textDecoration: "underline",
+                    backgroundColor: "transparent",
+                  }}
+                  onClick={() => openBrokerModalView(property.userId)}
+                >
+                  {showUser?.firstName}
+                </button>
+              </a>
             ),
             plan: (
               <a href="#">
@@ -485,10 +533,11 @@ export default function Exemple({
           tempData.push(updatedRow);
         }
       });
+      setIsEdited(false)
       setUpdatedData(tempData);
     };
     getData();
-  }, [properties,allBids,allBrokers]);
+  }, [properties, allBids,isEdited, allBrokers]);
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("user"));
@@ -569,6 +618,11 @@ export default function Exemple({
         <SmartTable
           title=""
           searchInput={searchInput}
+          
+          userNameSearch={userNameSearch}
+          setUserNameSearch={setUserNameSearch}
+          statusSearch={statusSearch}
+          setStatusSearch={setStatusSearch}
           setFilterQuery={setFilterQuery}
           setSearchInput={setSearchInput}
           data={sortObjectsByOrderIdDescending(updatedData)}

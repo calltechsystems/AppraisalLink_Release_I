@@ -37,6 +37,12 @@ const Index = () => {
   const [lowRangeBid, setLowRangeBid] = useState("");
   const [propertyId, setPropertyId] = useState(null);
 
+  const [allBids, setBids] = useState([]);
+
+  const [userNameSearch, setUserNameSearch] = useState("");
+  const [statusSearch, setStatusSearch] = useState(0);
+  const [allAppraisers, setAllAppraisers] = useState([]);
+
   const [wishlistedProperties, setWishlistedProperties] = useState([]);
   const [updatedCode, setUpdatedCode] = useState(false);
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
@@ -265,9 +271,7 @@ const Index = () => {
 
         if (String(property.orderId) === String(searchTerm)) {
           return true;
-        }
-        // Check if any of the fields contain the search term
-        else
+        } else
           return (
             String(property.orderId).toLowerCase().includes(searchTerm) ||
             property.zipCode.toLowerCase().includes(searchTerm) ||
@@ -284,7 +288,7 @@ const Index = () => {
     };
     const filteredData = filterProperties(properties, searchInput);
     setFilterProperty(filteredData);
-  }, [searchInput]);
+  }, [searchInput, userNameSearch, statusSearch]);
 
   const calculate = (searchDate, diff) => {
     const newDateObj = new Date(searchDate.addedDatetime);
@@ -414,7 +418,7 @@ const Index = () => {
   //   printWindow.document.write(
   //     "<html><head><title>Plan Information</title></head><body>"
   //   );
-    
+
   //   printWindow.document.write(
   //     '<button style="display:none;" onclick="window.print()">Print</button>'
   //   );
@@ -586,7 +590,8 @@ const Index = () => {
 
                 <div className="col-lg-12 col-xl-12 mb5 mt10">
                   <div className="style2 mb30-991">
-                    <h4 className="heading-forms">Appraiser Properties</h4>
+                    <h3 className="heading-forms">Appraiser Properties</h3>
+
                     {/* <p>We are glad to see you again!</p>                                                             */}
                   </div>
                 </div>
@@ -630,6 +635,10 @@ const Index = () => {
                       <div className="mt0">
                         <TableData
                           userData={userData}
+                          allBids={allBids}
+                          setBids={setBids}
+                          statusSearch={statusSearch}
+                          userNameSearch={userNameSearch}
                           setModalOpen={setModalOpen}
                           setIsStatusModal={setIsStatusModal}
                           close={closeModal}
@@ -643,6 +652,10 @@ const Index = () => {
                               ? properties
                               : filterProperty
                           }
+                          allAppraisers={allAppraisers}
+                          setStatusSearch={setStatusSearch}
+                          setUserNameSearch={setUserNameSearch}
+                          setAllAppraisers={setAllAppraisers}
                           setUpdatedCode={setUpdatedCode}
                           onWishlistHandler={onWishlistHandler}
                           participateHandler={participateHandler}
@@ -883,7 +896,7 @@ const Index = () => {
                                           }}
                                         >
                                           <span className="text-start">
-                                          Appraiser Commission Rate
+                                            Appraiser Commission Rate
                                           </span>
                                         </td>
                                         <td
@@ -906,7 +919,8 @@ const Index = () => {
                                           }}
                                         >
                                           <span className="text-start">
-                                          Appraiser Max Number Of Assigned Orders
+                                            Appraiser Max Number Of Assigned
+                                            Orders
                                           </span>
                                         </td>
                                         <td
@@ -929,7 +943,7 @@ const Index = () => {
                                           }}
                                         >
                                           <span className="text-start">
-                                          Appraiser designation
+                                            Appraiser designation
                                           </span>
                                         </td>
                                         <td
@@ -1049,7 +1063,6 @@ const Index = () => {
                                   id="broker-info-container"
                                 >
                                   <table
-
                                     style={{
                                       width: "700px",
                                       textAlign: "start",
@@ -1252,7 +1265,6 @@ const Index = () => {
                                 </div>
                                 <div className="row text-center mt-3">
                                   <div className="col-lg-12">
-                                 
                                     <button
                                       className="btn btn-color w-25 text-center"
                                       onClick={closePlanModal}

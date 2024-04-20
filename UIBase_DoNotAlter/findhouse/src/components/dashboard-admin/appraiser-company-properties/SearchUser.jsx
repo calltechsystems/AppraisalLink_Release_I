@@ -1,12 +1,14 @@
-const SearchUser = () => {
+const SearchUser = ({userNameSearch,setUserNameSearch}) => {
   return (
     <form className="form-inline d-flex">
       <input
         className="form-control"
         type="search"
-        placeholder="Serach By Brokerage Company"
+        placeholder="Serach By Appraiser Company"
         aria-label="Search"
         required
+        value={userNameSearch}
+        onChange={(e)=>setUserNameSearch(e.target.value)}
       />
       <button className="" disabled>
         <span className="flaticon-magnifying-glass"></span>

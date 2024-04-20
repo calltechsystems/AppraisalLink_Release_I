@@ -122,6 +122,8 @@ export default function Exemple({
   properties,
   onHoldHandler,
   onCancelHandler,
+  userNameSearch,
+  statusSearch,
   refresh,
   setRefresh,
   setProperties,
@@ -132,15 +134,20 @@ export default function Exemple({
   setSearchInput,
   setPropertyId,
   setPropValue,
+  setBids,
+  allBids,
   setModalOpen,
+  allAppraisers,
+  setAllAppraisers,
+  setUserNameSearch,
+  setStatusSearch,
   setIsCancelProperty,
   setIsHoldProperty,
   isBidded,
 }) {
   const [updatedData, setUpdatedData] = useState([]);
-  const [allBids, setBids] = useState([]);
   const [show, setShow] = useState(false);
-  const [allAppraisers, setAllAppraisers] = useState([]);
+  const [isEdited,setIsEdited] = useState(false)
   const [dataFetched, setDataFetched] = useState(false);
   let tempData = [];
 
@@ -148,16 +155,16 @@ export default function Exemple({
     if (refresh === true) {
       setSearchInput("");
       setFilterQuery("All");
+      setUserNameSearch("");
+      setStatusSearch(0);
     }
   }, [refresh]);
 
-  useEffect(() => {
-    if (searchInput === "") {
-      setProperties([]);
-      setBids([]);
-      setRefresh(true);
-    }
-  }, [searchInput]);
+  useEffect(()=>{
+    console.log("userNameSearch",userNameSearch)
+    setIsEdited(true)
+  },[userNameSearch,statusSearch])
+
 
   const sortObjectsByOrderIdDescending = (data) => {
     return data.sort((a, b) => b.order_id - a.order_id);
@@ -193,8 +200,7 @@ export default function Exemple({
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
-      // second: "numeric",
-      hour12: true, // Set to false for 24-hour format
+      hour12: true, 
     };
 
     const formattedDate = new Date(dateString).toLocaleString("en-US", options);
@@ -206,10 +212,7 @@ export default function Exemple({
       year: "numeric",
       month: "short",
       day: "numeric",
-      // hour: "numeric",
-      // minute: "numeric",
-      // second: "numeric",
-      hour12: true, // Set to false for 24-hour format
+      hour12: true, 
     };
 
     const formattedDate = new Date(dateString).toLocaleString("en-US", options);
@@ -300,16 +303,6 @@ export default function Exemple({
     return isCompleted ? 3 : isAccepted ? 2 : isQuoteProvided ? 1 : 0;
   };
 
-  const getAllBidsWithOrderId = (orderId) => {
-    let allBids = [];
-    allBids.map((bid, index) => {
-      if (String(bid?.orderId) === String(orderId)) {
-        allBids.push(bid);
-      }
-    });
-    return allBids;
-  };
-
   const getCurrentBrokerPlan = (property) => {
     const data = JSON.parse(localStorage.getItem("user"));
     axios
@@ -352,15 +345,56 @@ export default function Exemple({
     setCurrentProperty(property);
   };
 
+  const isLikeUserSearchedType = (userInfo)=>{
+    
+    const searchFrom = String(userInfo.firstName).toLowerCase();
+    const searchFrom2 = String(userInfo.lastName).toLowerCase();
+    const serachWith = String(userNameSearch).toLowerCase();
+    if(userNameSearch === "" || (searchFrom.includes(serachWith) || searchFrom2.includes(serachWith))){
+      return true;
+    }
+    return false;
+  }
+
+  const isAccordingToStatus = (bidStatus,property)=>{
+      if(String(statusSearch) === "0")
+       return true;
+      else if(Boolean(property.isOnHold) && String(statusSearch) === "6" ){
+        return true;
+      }
+      else if(Boolean(property.isOnCancel) && String(statusSearch) === "5"){
+        return true;
+      }
+      else if(String(bidStatus)=== "2" && String(statusSearch) === "1"){
+        return true;
+      }
+      else if(String(bidStatus)=== "3" && String(statusSearch) === "2"){
+        return true;
+      }
+      else if(String(bidStatus)=== "1" && String(statusSearch) === "3"){
+        return true;
+      }
+      else if(String(bidStatus)=== "0" && String(statusSearch) === "4"){
+        return true;
+      }
+
+  }
+
   useEffect(() => {
+
+    
     const getData = () => {
       properties.map((property, index) => {
         const allListedBids = getBidOfProperty(property.orderId);
         allListedBids?.map((isBidded, index) => {
           const isHold = property.isOnHold;
           const isCancel = property.isOnCancel;
+          const showUser = getAppraiser(isBidded.appraiserUserId)
+          const isCorrect = isLikeUserSearchedType(showUser);
+          
           const isStatus = getPropertyStatusHandler(property);
-          if (!property.isArchive) {
+          const toSelectedStatus = isAccordingToStatus(isStatus,property)
+          if (!property.isArchive && toSelectedStatus && isCorrect) {
             const updatedRow = {
               order_id: property.orderId,
               sub_date: formatDate(property.addedDatetime),
@@ -399,9 +433,6 @@ export default function Exemple({
                 ) : isBidded.orderStatus !== 1 &&
                   isBidded.orderStatus !== null &&
                   isBidded.orderStatus !== undefined ? (
-                  // <span className="btn bg-warning  w-100">
-                  //   {getOrderValue(isBidded.orderStatus)}
-                  // </span>
                   <div className="hover-text">
                     <div
                       className="tooltip-text"
@@ -427,10 +458,6 @@ export default function Exemple({
                   isBidded.status === 1 &&
                   isBidded.orderStatus === 1 &&
                   isBidded.orderStatus !== undefined ? (
-                  // <span className="btn bg-warning  w-100">
-                  //   {getOrderValue(isBidded.orderStatus)} -
-                  //   {formatDate(isBidded.statusDate)}
-                  // </span>
                   <div className="hover-text">
                     <div
                       className="tooltip-text"
@@ -458,10 +485,7 @@ export default function Exemple({
                 ),
               address: `${property.streetNumber} ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
               remark: isBidded.remark ? isBidded.remark : "N.A.",
-              // remark: property.remark ? property.remark : "N.A.",
-              // user: property.applicantEmailAddress,
               type_of_building: property.typeOfBuilding,
-              // amount: ` $ ${millify(property.estimatedValue)}`,
               amount: `$ ${addCommasToNumber(property.estimatedValue)}`,
               purpose: property.purpose,
               type_of_appraisal: property.typeOfAppraisal,
@@ -481,7 +505,7 @@ export default function Exemple({
                     }}
                     onClick={() => openBrokerModalView(isBidded.appraiserUserId)}
                   >
-                    {getAppraiser(isBidded.appraiserUserId).firstName}
+                    {showUser.firstName}
                   </button>
                 </a>
               ),
@@ -493,7 +517,6 @@ export default function Exemple({
                       border: "0px",
                       color: "#2e008b",
                       textDecoration: "underline",
-                      // fontWeight: "bold",
                       backgroundColor: "transparent",
                     }}
                     onClick={() => getCurrentBrokerPlan(property)}
@@ -523,12 +546,16 @@ export default function Exemple({
           }
         });
       });
+      setIsEdited(false)
       setUpdatedData(tempData);
     };
     getData();
-  }, [properties, allBids, allAppraisers]);
+  }, [properties,allAppraisers , isEdited]);
 
   useEffect(() => {
+    setAllAppraisers([])
+    setProperties([])
+    setBids([])
     const data = JSON.parse(localStorage.getItem("user"));
 
     axios
@@ -592,6 +619,10 @@ export default function Exemple({
         <SmartTable
           title=""
           searchInput={searchInput}
+          userNameSearch={userNameSearch}
+          setUserNameSearch={setUserNameSearch}
+          statusSearch={statusSearch}
+          setStatusSearch={setStatusSearch}
           setFilterQuery={setFilterQuery}
           setSearchInput={setSearchInput}
           data={sortObjectsByOrderIdDescending(updatedData)}

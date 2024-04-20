@@ -21,6 +21,8 @@ const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [isStatusModal, setIsStatusModal] = useState(false);
+  const [userNameSearch, setUserNameSearch] = useState("");
+  const [statusSearch, setStatusSearch] = useState(0);
   const [toggleId, setToggleId] = useState(-1);
   const [toggleWishlist, setToggleWishlist] = useState(0);
   const [searchResult, setSearchResult] = useState([]);
@@ -364,9 +366,9 @@ const Index = () => {
   const brokerInfoHandler = (orderId) => {
     const printWindow = window.open("", "_blank");
     printWindow.document.write(
-      "<html><head><title>Broker Information</title></head><body>"
+      "<html><head><title>Brokerage Information</title></head><body>"
     );
-    printWindow.document.write("<h1>" + `Broker information` + "</h1>");
+    printWindow.document.write("<h1>" + `Brokerage information` + "</h1>");
     printWindow.document.write(
       '<button style="display:none;" onclick="window.print()">Print</button>'
     );
@@ -414,7 +416,7 @@ const Index = () => {
   //   printWindow.document.write(
   //     "<html><head><title>Plan Information</title></head><body>"
   //   );
-    
+
   //   printWindow.document.write(
   //     '<button style="display:none;" onclick="window.print()">Print</button>'
   //   );
@@ -586,7 +588,7 @@ const Index = () => {
 
                 <div className="col-lg-12 col-xl-12 mb5 mt10">
                   <div className="style2 mb30-991">
-                    <h4 className="heading-forms">Mortgage Brokerage</h4>
+                    <h3 className="heading-forms">Mortgage Brokerage Properties</h3>
                     {/* <p>We are glad to see you again!</p>                                                             */}
                   </div>
                 </div>
@@ -638,6 +640,10 @@ const Index = () => {
                           setProperties={setProperties}
                           start={start}
                           end={end}
+                          userNameSearch={userNameSearch}
+                          setUserNameSearch={setUserNameSearch}
+                          statusSearch={statusSearch}
+                          setStatusSearch={setStatusSearch}
                           properties={
                             searchInput === "" && filterQuery === "All"
                               ? properties
@@ -708,7 +714,7 @@ const Index = () => {
                                 <div className="row">
                                   <div className="col-lg-12 text-center">
                                     <h1 className=" text-color mt-1">
-                                      Broker Details
+                                      Brokerage Details
                                     </h1>
                                   </div>
                                 </div>
@@ -765,7 +771,7 @@ const Index = () => {
                                           }}
                                         >
                                           <span className="text-start">
-                                            Broker Name
+                                            Brokerage Name
                                           </span>
                                         </td>
                                         <td
@@ -1026,7 +1032,6 @@ const Index = () => {
                                   id="broker-info-container"
                                 >
                                   <table
-
                                     style={{
                                       width: "700px",
                                       textAlign: "start",
@@ -1229,7 +1234,6 @@ const Index = () => {
                                 </div>
                                 <div className="row text-center mt-3">
                                   <div className="col-lg-12">
-                                 
                                     <button
                                       className="btn btn-color w-25 text-center"
                                       onClick={closePlanModal}

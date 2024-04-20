@@ -8,10 +8,10 @@ import { FaRedo } from "react-icons/fa";
 import * as XLSX from "xlsx";
 import { useReactToPrint } from "react-to-print";
 import toast from "react-hot-toast";
-import SearchUser from "./SearchUser";
 import SearchBox from "./SearchBox";
 import FilteringBy from "./FilteringBy";
 import Filtering from "./Filtering";
+import SearchUser from "./SearchUser";
 
 function SmartTable(props) {
   const [loading, setLoading] = useState(false);
@@ -90,7 +90,7 @@ function SmartTable(props) {
       // Open print window and set up basic structure
       const printWindow = window.open("", "_blank");
       printWindow.document.write(
-        "<html><head><title>Broker Properties</title></head><body>" +
+        "<html><head><title>Brokers Properties</title></head><body>" +
           // Add CSS styles within the <style> tag
           "<style>" +
           // Define your CSS styles here
@@ -104,7 +104,7 @@ function SmartTable(props) {
         ' <img width="60" height="45" class="logo1 img-fluid" style="" src="/assets/images/Appraisal_Land_Logo.png" alt="header-logo2.png"/> <span style="color: #2e008b font-weight: bold; font-size: 24px;">Appraisal</span><span style="color: #97d700; font-weight: bold; font-size: 24px;">Land</span>'
       );
       printWindow.document.write(
-        "<h3>Brokers Properties</h3>" +
+        "<h3>Broker's Properties</h3>" +
           "<style>" +
           "h3{text-align:center;}" +
           "</style>"
@@ -277,7 +277,6 @@ function SmartTable(props) {
     tableWidthFunc,
     fetchData,
   ]);
-  console.log(props.data);
 
   const buildQueryString = (search, page, rowsPerPage) => {
     const queries = [];
@@ -416,11 +415,17 @@ function SmartTable(props) {
             </li>
             <li className="list-inline-item" style={{ marginRight: "15px" }}>
               <div className="candidate_revew_search_box course fn-520">
-                <SearchUser />
+                <SearchUser 
+                 userNameSearch={props.userNameSearch}
+                 setUserNameSearch={props.setUserNameSearch}
+                  />
               </div>
             </li>
             <li className="list-inline-item" style={{ marginRight: "15px" }}>
-              <FilteringBy />
+              <FilteringBy
+              statusSearch={props.statusSearch}
+              setStatusSearch={props.setStatusSearch}
+               />
             </li>
             <li className="list-inline-item">
               {loading && (

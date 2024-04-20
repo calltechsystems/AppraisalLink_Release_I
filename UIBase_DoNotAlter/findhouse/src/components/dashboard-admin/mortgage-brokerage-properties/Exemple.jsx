@@ -113,6 +113,10 @@ export default function Exemple({
   archievePropertyHandler,
   start,
   end,
+  userNameSearch,
+  setUserNameSearch,
+  statusSearch,
+  setStatusSearch,
   openModalBroker,
   open,
   setModalIsPopupOpen,
@@ -140,6 +144,8 @@ export default function Exemple({
   const [updatedData, setUpdatedData] = useState([]);
   const [allBids, setBids] = useState([]);
   const [show, setShow] = useState(false);
+  
+  const [isEdited,setIsEdited] = useState(false)
   const [allBrokers, setAllBrokers] = useState([]);
   const [dataFetched, setDataFetched] = useState(false);
   let tempData = [];
@@ -158,6 +164,12 @@ export default function Exemple({
       setRefresh(true);
     }
   }, [searchInput]);
+
+  useEffect(()=>{
+    console.log("userNameSearch",userNameSearch)
+    setIsEdited(true)
+  },[userNameSearch,statusSearch])
+
 
   const sortObjectsByOrderIdDescending = (data) => {
     return data.sort((a, b) => b.order_id - a.order_id);
@@ -236,7 +248,7 @@ export default function Exemple({
     let requiredName = "";
     allBrokers.map((broker, index) => {
       if (String(broker.userId) === String(userId)) {
-        requiredName = `${broker.firstName} ${broker.lastName}`;
+        requiredName = broker;
       }
     });
     return requiredName;
@@ -311,6 +323,41 @@ export default function Exemple({
     openModalBroker(currentBroker, 2);
   };
 
+  const isLikeUserSearchedType = (userInfo)=>{
+    
+    const searchFrom = String(userInfo.firstName).toLowerCase();
+    const searchFrom2 = String(userInfo.lastName).toLowerCase();
+    const serachWith = String(userNameSearch).toLowerCase();
+    if(userNameSearch === "" || (searchFrom.includes(serachWith) || searchFrom2.includes(serachWith))){
+      return true;
+    }
+    return false;
+  }
+
+  const isAccordingToStatus = (bidStatus,property)=>{
+      if(String(statusSearch) === "0")
+       return true;
+      else if(Boolean(property.isOnHold) && String(statusSearch) === "6" ){
+        return true;
+      }
+      else if(Boolean(property.isOnCancel) && String(statusSearch) === "5"){
+        return true;
+      }
+      else if(String(bidStatus)=== "2" && String(statusSearch) === "1"){
+        return true;
+      }
+      else if(String(bidStatus)=== "3" && String(statusSearch) === "2"){
+        return true;
+      }
+      else if(String(bidStatus)=== "1" && String(statusSearch) === "3"){
+        return true;
+      }
+      else if(String(bidStatus)=== "0" && String(statusSearch) === "4"){
+        return true;
+      }
+
+  }
+
   const openPopupModal = (property) => {
     setModalIsPopupOpen(true);
     setCurrentProperty(property);
@@ -322,8 +369,11 @@ export default function Exemple({
         const isHold = property.isOnHold;
         const isCancel = property.isOnCancel;
         const isStatus = getPropertyStatusHandler(property);
+        const showUser = getBrokerName(property.userId);
+        const isCorrect = isAccordingToStatus(isStatus,property);
+        const isAccordingToSelectedName = isLikeUserSearchedType(showUser)
         const isEditable = isStatus === 0 ? true : false;
-        if (!property.isArchive) {
+        if (!property.isArchive && isAccordingToSelectedName && isCorrect) {
           const updatedRow = {
             order_id: property.orderId,
             sub_date: formatDate(property.addedDatetime),
@@ -442,7 +492,7 @@ export default function Exemple({
                   }}
                   onClick={() => openBrokerModalView(property.userId)}
                 >
-                  {getBrokerName(property.userId)}
+                  {showUser?.firstName}
                 </button>
               </a>
             ),
@@ -483,10 +533,11 @@ export default function Exemple({
           tempData.push(updatedRow);
         }
       });
+      setIsEdited(false)
       setUpdatedData(tempData);
     };
     getData();
-  }, [properties, allBids, allBrokers]);
+  }, [properties, allBids,isEdited, allBrokers]);
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("user"));
@@ -585,6 +636,11 @@ export default function Exemple({
         <SmartTable
           title=""
           searchInput={searchInput}
+          
+          userNameSearch={userNameSearch}
+          setUserNameSearch={setUserNameSearch}
+          statusSearch={statusSearch}
+          setStatusSearch={setStatusSearch}
           setFilterQuery={setFilterQuery}
           setSearchInput={setSearchInput}
           data={sortObjectsByOrderIdDescending(updatedData)}

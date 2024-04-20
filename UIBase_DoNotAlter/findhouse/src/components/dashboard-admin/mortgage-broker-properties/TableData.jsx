@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 
 import Link from "next/link";
 import axios from "axios";
-import toast from "react-hot-toast";
 import Exemple from "./Exemple";
 const TableData = ({
   userData,
@@ -12,6 +11,12 @@ const TableData = ({
   openModalBroker,
   end,
   close,
+  userNameSearch,
+  statusSearch,
+  allAppraisers,
+  setAllAppraisers,
+  setUserNameSearch,
+  setStatusSearch,
   searchInput,
   filterQuery,
   onHoldHandler,
@@ -20,6 +25,8 @@ const TableData = ({
   setPropertyId,
   setPropValue,
   refresh,
+  setBids,
+  allBids,
   setRefresh,
   setOpenPlanModal,
   setViewPlanData,
@@ -35,7 +42,6 @@ const TableData = ({
   setIsCancelProperty,
   setIsHoldProperty,
 }) => {
-  console.log(properties);
 
   const [Id, setId] = useState(-1);
 
@@ -45,38 +51,6 @@ const TableData = ({
 
   let theadConent = ["Property Title", "Date", "Status", "Bids", "Action"];
 
-  // useEffect(()=>{
-
-  //   const data = (JSON.parse(localStorage.getItem("user")));
-
-  //   const payload = {
-  //     token : userData.token
-  //   };
-
-  //   toast.loading("Getting properties...");
-  //   axios
-  //     .get("/api/getPropertiesById",
-  //      {
-  //       headers: {
-  //         Authorization:`Bearer ${data?.token}`,
-  //         "Content-Type":"application/json"
-  //       },
-  //       params : {
-  //         userId : data?.userId
-  //       }
-  //     })
-  //     .then((res) => {
-
-  //       toast.dismiss();
-
-  //       setProperties(res.data.data.property.$values);
-  //       setRerender(false);
-  //     })
-  //     .catch((err) => {
-  //       toast.dismiss();
-  //       toast.error(err?.response?.data?.error);
-  //     });
-  // },[rerender]);
   const formatDate = (dateString) => {
     const options = {
       year: "numeric",
@@ -85,7 +59,7 @@ const TableData = ({
       hour: "numeric",
       minute: "numeric",
       second: "numeric",
-      hour12: true, // Use 12-hour format
+      hour12: true,
     };
 
     const formattedDate = new Date(dateString).toLocaleString("en-US", options);
@@ -93,9 +67,6 @@ const TableData = ({
     return formattedDate;
   };
 
-  useEffect(() => {
-    setData(properties);
-  }, [properties]);
   const deletePropertyHandler = (id) => {
     const data = JSON.parse(localStorage.getItem("user"));
 
@@ -123,23 +94,6 @@ const TableData = ({
     <>
       <tr key={item.id}>
         <td scope="row">
-          {/* <div className="feat_property list favorite_page style2" >
-          {/*<div className="thumb">
-            <Image
-              width={150}
-              height={220}
-              className="img-whp cover"
-              src={item.img}
-              alt="fp1.jpg"
-            />
-            <div className="thmb_cntnt">
-              <ul className="tag mb0">
-                <li className="list-inline-item">
-                  <a href="#">For Rent</a>
-                </li>
-              </ul>
-            </div>
-         </div> */}
           <div className="details">
             <div className="tc_content">
               <h4>{item.title}</h4>
@@ -218,7 +172,7 @@ const TableData = ({
 
   return (
     <>
-      {data && (
+      {
         <Exemple
           userData={userData}
           open={open}
@@ -227,12 +181,18 @@ const TableData = ({
           setPropertyId={setPropertyId}
           close={close}
           setViewPlanData={setViewPlanData}
-                          setOpenPlanModal={setOpenPlanModal}
+          setOpenPlanModal={setOpenPlanModal}
           setProperties={setProperties}
-          properties={data}
+          properties={properties}
+          statusSearch={statusSearch}
+          userNameSearch={userNameSearch}
           openModalBroker={openModalBroker}
           setRefresh={setRefresh}
           refresh={refresh}
+          allAppraisers={allAppraisers}
+          setStatusSearch={setStatusSearch}
+          setUserNameSearch={setUserNameSearch}
+          setAllAppraisers={setAllAppraisers}
           searchInput={searchInput}
           setModalIsOpenError={setModalIsOpenError}
           setErrorMessage={setErrorMessage}
@@ -242,6 +202,8 @@ const TableData = ({
           archievePropertyHandler={archievePropertyHandler}
           start={start}
           end={end}
+          allBids={allBids}
+                          setBids={setBids}
           onHoldHandler={onHoldHandler}
           onCancelHandler={onCancelHandler}
           setFilterQuery={setFilterQuery}
@@ -250,7 +212,7 @@ const TableData = ({
           setIsCancelProperty={setIsCancelProperty}
           setIsHoldProperty={setIsHoldProperty}
         />
-      )}
+      }
     </>
   );
 };

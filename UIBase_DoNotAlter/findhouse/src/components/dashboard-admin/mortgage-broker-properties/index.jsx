@@ -21,6 +21,8 @@ const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [isStatusModal, setIsStatusModal] = useState(false);
+  const [userNameSearch, setUserNameSearch] = useState("");
+  const [statusSearch, setStatusSearch] = useState(0);
   const [toggleId, setToggleId] = useState(-1);
   const [toggleWishlist, setToggleWishlist] = useState(0);
   const [searchResult, setSearchResult] = useState([]);
@@ -414,7 +416,7 @@ const Index = () => {
   //   printWindow.document.write(
   //     "<html><head><title>Plan Information</title></head><body>"
   //   );
-    
+
   //   printWindow.document.write(
   //     '<button style="display:none;" onclick="window.print()">Print</button>'
   //   );
@@ -567,27 +569,11 @@ const Index = () => {
           <div className="row">
             <div className="col-lg-12 maxw100flex-992">
               <div className="row">
-                {/* Start Dashboard Navigation */}
-                {/* <div className="col-lg-12">
-                  <div className="dashboard_navigationbar dn db-1024">
-                    <div className="dropdown">
-                      <button
-                        className="dropbtn"
-                        data-bs-toggle="offcanvas"
-                        data-bs-target="#DashboardOffcanvasMenu"
-                        aria-controls="DashboardOffcanvasMenu"
-                      >
-                        <i className="fa fa-bars pr10"></i> Dashboard Navigation
-                      </button>
-                    </div>
-                  </div>
-                </div> */}
-                {/* End Dashboard Navigation */}
-
                 <div className="col-lg-12 col-xl-12 mb5 mt10">
                   <div className="style2 mb30-991">
-                    {/* <h4 className="breadcrumb_title">Mortgage broker</h4> */}
-                    <h3 className="heading-forms">Mortgage Broker</h3>
+                    <h3 className="heading-forms">Mortgage Broker Properties</h3>
+
+                    {/* <p>We are glad to see you again!</p>                                                             */}
                   </div>
                 </div>
                 {/* End .col */}
@@ -638,6 +624,10 @@ const Index = () => {
                           setProperties={setProperties}
                           start={start}
                           end={end}
+                          userNameSearch={userNameSearch}
+                          setUserNameSearch={setUserNameSearch}
+                          statusSearch={statusSearch}
+                          setStatusSearch={setStatusSearch}
                           properties={
                             searchInput === "" && filterQuery === "All"
                               ? properties
@@ -1026,7 +1016,6 @@ const Index = () => {
                                   id="broker-info-container"
                                 >
                                   <table
-
                                     style={{
                                       width: "700px",
                                       textAlign: "start",
@@ -1229,7 +1218,6 @@ const Index = () => {
                                 </div>
                                 <div className="row text-center mt-3">
                                   <div className="col-lg-12">
-                                 
                                     <button
                                       className="btn btn-color w-25 text-center"
                                       onClick={closePlanModal}
