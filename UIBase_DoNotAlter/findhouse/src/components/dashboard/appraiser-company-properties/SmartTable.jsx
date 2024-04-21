@@ -97,7 +97,7 @@ function SmartTable(props) {
       // Open print window and set up basic structure
       const printWindow = window.open("", "_blank");
       printWindow.document.write(
-        "<html><head><title>Appraised Properties</title></head><body>" +
+        "<html><head><title>Appraiser Company Properties</title></head><body>" +
           // Add CSS styles within the <style> tag
           "<style>" +
           // Define your CSS styles here
@@ -107,7 +107,15 @@ function SmartTable(props) {
           "</style>" +
           "</head><body>"
       );
-      printWindow.document.write("<h1>" + props.title + "</h1>");
+      printWindow.document.write(
+        ' <img width="60" height="45" class="logo1 img-fluid" style="" src="/assets/images/Appraisal_Land_Logo.png" alt="header-logo2.png"/> <span style="color: #2e008b font-weight: bold; font-size: 24px;">Appraisal</span><span style="color: #97d700; font-weight: bold; font-size: 24px;">Land</span>'
+      );
+      printWindow.document.write(
+        "<h3>Appraiser Company Properties</h3>" +
+          "<style>" +
+          "h3{text-align:center;}" +
+          "</style>"
+      );
       printWindow.document.write(
         '<button style="display:none;" onclick="window.print()">Print</button>'
       );

@@ -75,6 +75,21 @@ function SmartTable(props) {
     }
   }, [props.dataFetched, props.properties]);
 
+  function extractTextFromReactElement(element) {
+    if (typeof element === 'string') {
+        return element; // If it's a string, return it directly
+    } else if (Array.isArray(element)) {
+        // If it's an array of elements, recursively call this function for each element
+        return element.map(child => extractTextFromReactElement(child)).join('');
+    } else if (typeof element === 'object' && element !== null) {
+        // If it's an object (React element), recursively call this function on its children
+        return extractTextFromReactElement(element.props.children);
+    } else {
+        return ''; // Return an empty string if the element is not recognized
+    }
+}
+
+
   const handlePrint = async () => {
     try {
       // Fetch data
@@ -95,7 +110,15 @@ function SmartTable(props) {
           "</style>" +
           "</head><body>"
       );
-      printWindow.document.write("<h1>" + props.title + "</h1>");
+      printWindow.document.write(
+        ' <img width="60" height="45" class="logo1 img-fluid" style="" src="/assets/images/Appraisal_Land_Logo.png" alt="header-logo2.png"/> <span style="color: #2e008b font-weight: bold; font-size: 24px;">Appraisal</span><span style="color: #97d700; font-weight: bold; font-size: 24px;">Land</span>'
+      );
+      printWindow.document.write(
+        "<h3>Company Assigned Properties</h3>" +
+          "<style>" +
+          "h3{text-align:center;}" +
+          "</style>"
+      );
       printWindow.document.write(
         '<button style="display:none;" onclick="window.print()">Print</button>'
       );
@@ -139,12 +162,14 @@ function SmartTable(props) {
           ) {
             const value = item[header[0].toLowerCase()];
             const className = value.props.className;
-            const content = value.props.children;
-
+            const content = header[0].toLowerCase() === "appraisal_status" ?
+             extractTextFromReactElement(value.props.children).split("Current Status")[0] : value.props.children;
+  
+  
             // Create a span element to contain the content
             const spanElement = document.createElement("span");
             spanElement.textContent = content;
-
+  
             // Apply styles based on className
             if (className.includes("btn-warning")) {
               spanElement.style.backgroundColor = "";
@@ -177,7 +202,7 @@ function SmartTable(props) {
               spanElement.style.padding = "8px";
               spanElement.style.fontWeight = "bold";
             }
-
+  
             // Append the span element to the cell
             cell.appendChild(spanElement);
           } else if (header[0].toLowerCase() === "appraiser_info") {

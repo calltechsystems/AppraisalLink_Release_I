@@ -94,7 +94,15 @@ function SmartTable(props) {
           "</style>" +
           "</head><body>"
       );
-      printWindow.document.write("<h1>" + props.title + "</h1>");
+      printWindow.document.write(
+        ' <img width="60" height="45" class="logo1 img-fluid" style="" src="/assets/images/Appraisal_Land_Logo.png" alt="header-logo2.png"/> <span style="color: #2e008b font-weight: bold; font-size: 24px;">Appraisal</span><span style="color: #97d700; font-weight: bold; font-size: 24px;">Land</span>'
+      );
+      printWindow.document.write(
+        "<h3>Appraiser Archived's Properties</h3>" +
+          "<style>" +
+          "h3{text-align:center;}" +
+          "</style>"
+      );
       printWindow.document.write(
         '<button style="display:none;" onclick="window.print()">Print</button>'
       );
@@ -266,7 +274,7 @@ function SmartTable(props) {
     tableWidthFunc,
     fetchData,
   ]);
-  console.log(props.data);
+  // console.log(props.data);
 
   const buildQueryString = (search, page, rowsPerPage) => {
     const queries = [];

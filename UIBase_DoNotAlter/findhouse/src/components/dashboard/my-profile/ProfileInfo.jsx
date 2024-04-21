@@ -499,6 +499,14 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     }
     setAssistantTwoPhoneNumber(truncatedValue);
   };
+
+  const [isChecked, setIsChecked] = useState(true); // Set initially to true for checked
+
+  // Function to toggle the checkbox
+  const toggleCheckbox = () => {
+    setIsChecked(!isChecked); // Toggle the state
+  };
+
   return (
     <>
       <div className="row">
@@ -794,7 +802,16 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                             value=""
                             id="terms"
                             style={{ border: "1px solid black" }}
+                            checked={isChecked} // Set the checked state based on the state variable
+                            onChange={toggleCheckbox} // Call the toggle function when checkbox changes
                           />
+                          {/* <input
+                            className="form-check-input mt-3"
+                            type="checkbox"
+                            value=""
+                            id="terms"
+                            style={{ border: "1px solid black" }}
+                          /> */}
                           <label
                             className="form-check-label form-check-label"
                             htmlFor="terms"
