@@ -46,7 +46,7 @@ const Index = () => {
   const [end, setEnd] = useState(4);
 
   useEffect(() => {
-    // setRefresh(true);
+    setRefresh(true);
     const activityHandler = () => {
       setLastActivityTimestamp(Date.now());
     };
@@ -178,8 +178,6 @@ const Index = () => {
   };
 
   useEffect(() => {
-    // setRefresh(true);
-
     const tmpData = filterData(properties);
     console.log("filterQuery", filterQuery, tmpData, tmpData.length);
     setFilterProperty(tmpData);
@@ -300,7 +298,7 @@ const Index = () => {
   return (
     <>
       {/* <!-- Main Header Nav --> */}
-      <Header />
+      <Header userData={userData} />
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
@@ -389,12 +387,12 @@ const Index = () => {
                               : filterProperty
                           }
                           setAllArchive={setAllArchive}
-                          searchInput = {searchInput}
-                          filterQuery = {filterQuery}
                           setModalIsOpenError={setModalIsOpenError}
                           setErrorMessage={setErrorMessage}
                           setRefresh={setRefresh}
                           refresh={refresh}
+                          filterQuery={filterQuery}
+                          searchInput={searchInput}
                           setFilterQuery={setFilterQuery}
                           setSearchInput={setSearchInput}
                           setModalIsPopupOpen={setModalIsPopupOpen}
@@ -1086,7 +1084,7 @@ const Index = () => {
             </div>
 
             <div className="row">
-              {/* <div className="row">
+              <div className="row">
                 <div className="col-lg-12 mt0">
                   <div className="mbp_pagination">
                     <Pagination
@@ -1096,7 +1094,7 @@ const Index = () => {
                     />
                   </div>
                 </div>
-              </div> */}
+              </div>
               {/* End paginaion .col */}
             </div>
             {/* End .row */}

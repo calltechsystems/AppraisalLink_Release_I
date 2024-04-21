@@ -76,6 +76,21 @@ function SmartTable(props) {
     }
   }, [props.dataFetched, props.properties]);
 
+  function extractTextFromReactElement(element) {
+    if (typeof element === 'string') {
+        return element; // If it's a string, return it directly
+    } else if (Array.isArray(element)) {
+        // If it's an array of elements, recursively call this function for each element
+        return element.map(child => extractTextFromReactElement(child)).join('');
+    } else if (typeof element === 'object' && element !== null) {
+        // If it's an object (React element), recursively call this function on its children
+        return extractTextFromReactElement(element.props.children);
+    } else {
+        return ''; // Return an empty string if the element is not recognized
+    }
+}
+
+
   const handlePrint = async () => {
     try {
       // Fetch data
@@ -84,7 +99,7 @@ function SmartTable(props) {
       // Open print window and set up basic structure
       const printWindow = window.open("", "_blank");
       printWindow.document.write(
-        "<html><head><title>Broker Properties</title></head><body>" +
+        "<html><head><title>Broker Archive Properties</title></head><body>" +
           // Add CSS styles within the <style> tag
           "<style>" +
           // Define your CSS styles here
@@ -98,7 +113,7 @@ function SmartTable(props) {
         ' <img width="60" height="45" class="logo1 img-fluid" style="" src="/assets/images/Appraisal_Land_Logo.png" alt="header-logo2.png"/> <span style="color: #2e008b font-weight: bold; font-size: 24px;">Appraisal</span><span style="color: #97d700; font-weight: bold; font-size: 24px;">Land</span>'
       );
       printWindow.document.write(
-        "<h3>Archive Brokers Properties</h3>" +
+        "<h3>Broker Archive Properties</h3>" +
           "<style>" +
           "h3{text-align:center;}" +
           "</style>"
@@ -114,17 +129,16 @@ function SmartTable(props) {
       const tableHeaderRow = document.createElement("tr");
       const staticHeaders = [
         ["order_id", "Order Id"],
-        ["address", "Property Address"],
-        ["status", "Order Status"],
+        ["address", "Address"],
+        ["status", "Status"],
         ["appraisal_status", "Appraisal Status"],
         ["remark", "Remark"],
+        ["urgency", "Urgency"],
         ["sub_date", "Submission Date"],
-        ["quote_required_by", "Appraisal Report Required By"],
-        ["urgency", "Request Type"],
-        ["type_of_building", "Property Type"],
-        ["amount", "Estimated Value ($)"],
-        ["purpose", "Purpose"],
+        ["type_of_building", "Type Of Building"],
+        ["amount", "Estimated Property Value ($)"],
         ["type_of_appraisal", "Type Of Appraisal"],
+        ["purpose", "Purpose"],
         ["lender_information", "Lender Information"],
       ];
       staticHeaders.forEach((headerText) => {
@@ -147,21 +161,23 @@ function SmartTable(props) {
           ) {
             const value = item[header[0].toLowerCase()];
             const className = value.props.className;
-            const content = value.props.children;
+            const content = header[0].toLowerCase() === "appraisal_status" ?
+             extractTextFromReactElement(value.props.children).split("Current Status")[0] : value.props.children;
+
 
             // Create a span element to contain the content
             const spanElement = document.createElement("span");
             spanElement.textContent = content;
 
             // Apply styles based on className
-            if (className.includes("bg-warning")) {
+            if (className.includes("btn-warning")) {
               spanElement.style.backgroundColor = "";
               spanElement.style.color = "#E4A11B";
               spanElement.style.height = "max-content";
               spanElement.style.width = "120px";
               spanElement.style.padding = "8px";
               spanElement.style.fontWeight = "bold";
-            } else if (className.includes("bg-danger")) {
+            } else if (className.includes("btn-danger")) {
               spanElement.style.backgroundColor = "";
               spanElement.style.color = "#DC4C64";
               spanElement.style.height = "max-content";
@@ -169,7 +185,7 @@ function SmartTable(props) {
               spanElement.style.padding = "8px";
               spanElement.style.fontWeight = "bold";
               // Add more styles as needed
-            } else if (className.includes("bg-success")) {
+            } else if (className.includes("btn-success")) {
               spanElement.style.backgroundColor = "";
               spanElement.style.color = "#14A44D";
               spanElement.style.height = "max-content";
@@ -327,6 +343,22 @@ function SmartTable(props) {
     }
   };
 
+  const extractTextContentFromDate = (value) => {
+    const date = new Date(value);
+
+    if (isNaN(date.getTime())) {
+      return null;
+    }
+    return date;
+  };
+
+  const extractNumericValue = (str) => {
+    const numericStr = str.replace(/[^0-9]/g, "");
+    const numericValue = parseInt(numericStr, 10);
+
+    return numericValue;
+  };
+
   const sortData = (cell) => {
     // Clone props.properties to avoid mutating the original data
     let tempData = [...props.properties];
@@ -338,9 +370,18 @@ function SmartTable(props) {
     // Perform sorting
     tempData.sort((a, b) => {
       // Extract text content from cell value (React element or other type)
-      const valueA = extractTextContent(a[cell]);
-      const valueB = extractTextContent(b[cell]);
+      let valueA = extractTextContent(a[cell]);
+      let valueB = extractTextContent(b[cell]);
 
+      if (String(cell) === "sub_date" || String(cell) === "quote_required_by") {
+        valueA = extractTextContentFromDate(a[cell]);
+        valueB = extractTextContentFromDate(b[cell]);
+      }
+
+      if (String(cell) === "amount") {
+        valueA = extractNumericValue(a[cell]);
+        valueB = extractNumericValue(b[cell]);
+      }
       // Perform comparison based on the sorting order
       if (newSortDesc[cell]) {
         return valueA < valueB ? 1 : -1;
@@ -369,19 +410,17 @@ function SmartTable(props) {
           <ul className="mb0 mt-0">
             <li className="list-inline-item">
               <Filtering
-                filterQuery={props.filterQuery}
-                setFilterQuery={props.setFilterQuery}
-              />
+              filterQuery={props.filterQuery}
+              setFilterQuery={props.setFilterQuery} />
             </li>
             {/* <li className="list-inline-item">
               <FilteringBy setFilterQuery={props.setSearchQuery} />
             </li> */}
             <li className="list-inline-item" style={{ marginRight: "15px" }}>
               <div className="candidate_revew_search_box course fn-520">
-                <SearchBox
-                  searchInput={props.searchInput}
-                  setSearchInput={props.setSearchInput}
-                />
+                <SearchBox 
+                searchInput = {props.searchInput}
+                setSearchInput={props.setSearchInput} />
               </div>
             </li>
             <li className="list-inline-item">

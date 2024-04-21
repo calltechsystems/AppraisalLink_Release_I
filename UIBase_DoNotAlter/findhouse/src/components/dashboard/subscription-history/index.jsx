@@ -11,6 +11,7 @@ const Index = () => {
   const [data, setData] = useState([]);
   const router = useRouter();
   let userData = {};
+  const [dataFetched, setDataFetched] = useState(false);
 
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
@@ -59,17 +60,16 @@ const Index = () => {
   };
 
   const updatePlan = () => {
-    router.push("/my-plans");
+    router.push("/add-subscription");
   };
 
   useEffect(() => {
     userData = JSON.parse(localStorage.getItem("user"));
     if (!userData) {
       router.push("/login");
+    } else if (!userData?.appraiser_Details?.firstName) {
+      router.push("/appraiser-profile");
     }
-    //  else if (!userData?.broker_Details?.firstName) {
-    //   router.push("/my-profile");
-    // }
 
     toast.loading("Getting Transactions...");
     axios
@@ -84,12 +84,13 @@ const Index = () => {
       })
       .then((res) => {
         toast.dismiss();
-        // console.log(res.data.data.$values);
-        setData(res.data.data.$values);
+        setDataFetched(true);
+        setData(res.data.data.result.$values);
         setRerender(false);
       })
       .catch((err) => {
         toast.dismiss();
+        setDataFetched(false);
         // toast.error(err?.response?.data?.error);
         // setErrorMessage(err.response);
         // setModalIsOpenError(true);
@@ -117,9 +118,9 @@ const Index = () => {
       {/* End sidebar_menu */}
 
       {/* <!-- Our Dashbord --> */}
-      <section className="our-dashbord dashbord bgc-f7 pb50">
+      <section className="our-dashbord dashbord bgc-f7 pb50 dashboard-height">
         <div
-          className="container-fluid ovh"
+          className="container-fluid ovh table-padding container-padding"
           style={{ marginLeft: "-10px", marginTop: "" }}
         >
           <div className="row">
@@ -145,29 +146,32 @@ const Index = () => {
               {/* End .row */}
 
               <div className="row align-items-center">
-                <div className="col-md-8 col-lg-8 col-xl-9 mb20">
-                  <div className="breadcrumb_content style2 mb30-991">
-                    <h2 className="breadcrumb_title">My Transactions</h2>
-                    <p>You can see your transactions history here!</p>
+                {/* <div className="col-md-8 col-lg-8 col-xl-9">
+                  <div className="style2 mb30-991">
+                    <h2 className="breadcrumb_title m-3">Transactions</h2>
                   </div>
-                </div>
+                </div> */}
                 {/* End .col */}
-                <div className="col-md-4 col-lg-4 col-xl-3 mb20">
+                {/* <div className="col-md-4 col-lg-4 col-xl-3">
                   <ul className="sasw_list mb0">
-                    <li className="search_area">{/* <SearchBox /> */}</li>
+                    <li className="search_area"><SearchBox /></li>
                   </ul>
-                </div>
+                </div> */}
                 {/* End .col */}
               </div>
               {/* End .row */}
 
               <div className="row">
                 <div className="col-lg-12">
-                  <div className="my_dashboard_review mb40">
+                  <div className="">
                     <div className="col-lg-12">
                       <div className="packages_table">
-                        <div className="table-responsive mt0">
-                          <Exemple data={data} userData={userData} />
+                        <div className="mt0">
+                          <Exemple
+                            dataFetched={dataFetched}
+                            data={data}
+                            userData={userData}
+                          />
                           {modalIsOpenError && (
                             <div className="modal">
                               <div
@@ -217,9 +221,9 @@ const Index = () => {
                       </div>
                       {/* End .packages_table */}
 
-                      <div className="pck_chng_btn text-end">
-                        <button className="btn btn-lg" onClick={updatePlan}>
-                          Update Package
+                      <div className="col-lg-12 text-center pck_chng_btn mb100 mt-5">
+                        <button className="btn btn-color" onClick={updatePlan}>
+                          Update Subscription
                         </button>
                       </div>
                     </div>
@@ -230,7 +234,7 @@ const Index = () => {
 
               <div className="row mt50">
                 <div className="col-lg-12">
-                  <div className="copyright-widget-dashboard text-center">
+                  <div className="copyright-widget text-center">
                     <p>
                       &copy; {new Date().getFullYear()} Appraisal Land. All
                       Rights Reserved.

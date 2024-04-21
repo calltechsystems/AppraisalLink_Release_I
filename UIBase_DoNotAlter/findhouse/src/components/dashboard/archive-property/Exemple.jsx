@@ -37,7 +37,7 @@ const headCells = [
     id: "appraisal_status",
     numeric: false,
     label: "Appraisal Status",
-    width: 180,
+    width: 190,
   },
   {
     id: "sub_date",
@@ -157,12 +157,12 @@ export default function Exemple({
   setModalIsPopupOpen,
   setAllArchive,
   refresh,
+  filterQuery,
+  searchInput,
   setFilterQuery,
   setModalIsOpenError,
   setSearchInput,
   setProperties,
-  searchInput,
-  filterQuery,
   deletePropertyHandler,
   setModalOpen,
   setIsCancelProperty,
@@ -177,19 +177,20 @@ export default function Exemple({
   const [dataFetched, setDataFetched] = useState(false);
   let tempData = [];
 
-  const refreshHandler = () => {
-    setProperties([]);
-    setBids([]);
-    setRefresh(true);
-  };
-
   useEffect(() => {
     if (searchInput === "") {
-      setProperties([]);
-      setBids([]);
       setRefresh(true);
     }
   }, [searchInput]);
+
+  const refreshHandler = () => {
+    setProperties([]);
+    setBids([]);
+    setFilterQuery("All");
+    setSearchInput("");
+    setRefresh(true);
+  };
+
   const router = useRouter();
 
   const openStatusUpdateHandler = () => {
@@ -250,7 +251,6 @@ export default function Exemple({
         title = status.type;
       }
     });
-
     return title;
   };
 
@@ -258,6 +258,11 @@ export default function Exemple({
     setModalIsPopupOpen(true);
     setCurrentProperty(property);
   };
+
+  function addCommasToNumber(number) {
+    if (Number(number) <= 100 || number === undefined) return number;
+    return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
 
   const onUnarchiveHandler = (id) => {
     const data = JSON.parse(localStorage.getItem("user"));
@@ -376,6 +381,7 @@ export default function Exemple({
           const isBidded = getBidOfProperty(property.orderId);
           const isHold = property.isOnHold;
           const isCancel = property.isOnCancel;
+          console.log("property", property);
           const isEditable = isStatus === 0 ? true : false;
           if (true) {
             const updatedRow = {
@@ -478,14 +484,13 @@ export default function Exemple({
               address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
               // user: property.applicantEmailAddress,
               type_of_building: property.typeOfBuilding,
-              amount: ` $${property.estimatedValue}`,
+              amount: ` $ ${addCommasToNumber(property.estimatedValue)}`,
               purpose: property.purpose,
               type_of_appraisal: property.typeOfAppraisal,
               lender_information: property.lenderInformation
                 ? property.lenderInformation
                 : "N.A.",
               urgency: property.urgency === 0 ? "Rush" : "Regular",
-
               actions_01: (
                 <ul>
                   <li title="Un-Archive Property">
@@ -493,7 +498,10 @@ export default function Exemple({
                       className="btn btn-color-table"
                       onClick={() => onUnarchiveHandler(property.orderId)}
                     >
-                      <Link className="color-light" href={`/archive-property`}>
+                      <Link
+                        className="color-light"
+                        href={`/brokerage-archive-properties`}
+                      >
                         <span className="text-light">
                           <FaArchive />
                         </span>
@@ -517,7 +525,7 @@ export default function Exemple({
                 //     <li title="Quotes">
                 //       <Link
                 //         className="btn btn-color-table"
-                //         href={`/my-property-bids/${property.orderId}`}
+                //         href={`/brokerage-properties-bid/${property.orderId}`}
                 //       >
                 //         <span className="flaticon-invoice"></span>
                 //       </Link>
@@ -528,7 +536,7 @@ export default function Exemple({
                 //     <li title="Edit Property">
                 //       <Link
                 //         className="btn btn-color-table"
-                //         href={`/create-listing/${property.orderId}`}
+                //         href={`/create-listing-1/${property.orderId}`}
                 //       >
                 //         <span className="flaticon-edit"></span>
                 //       </Link>
@@ -570,7 +578,10 @@ export default function Exemple({
                 //       className="btn btn-color-table"
                 //       onClick={() => onUnarchiveHandler(property.orderId)}
                 //     >
-                //       <Link className="color-light" href={`/archive-property`}>
+                //       <Link
+                //         className="color-light"
+                //         href={`/brokerage-archive-properties`}
+                //       >
                 //         <span className="text-light flaticon-close"></span>
                 //       </Link>
                 //     </span>
@@ -589,10 +600,10 @@ export default function Exemple({
   }, [properties]);
 
   useEffect(() => {
+    setFilterQuery("All");
+    setSearchInput("");
     setProperties([]);
     setBids([]);
-    setSearchInput("");
-    setFilterQuery("All");
 
     const data = JSON.parse(localStorage.getItem("user"));
 
@@ -652,13 +663,13 @@ export default function Exemple({
         <SmartTable
           title=""
           setFilterQuery={setFilterQuery}
-          searchInput={searchInput}
-          filterQuery={filterQuery}
           setSearchInput={setSearchInput}
           data={sortObjectsByOrderIdDescending(updatedData)}
           headCells={headCells}
           refreshHandler={refreshHandler}
           start={start}
+          searchInput={searchInput}
+          filterQuery={filterQuery}
           dataFetched={dataFetched}
           properties={updatedData}
           end={end}

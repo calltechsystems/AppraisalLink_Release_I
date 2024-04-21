@@ -1,4 +1,5 @@
 const SearchData = ({data}) => {
+  console.log(data);
   return (
     <table className="table">
       <thead className="thead-light">
