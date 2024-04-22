@@ -32,25 +32,27 @@ const FeaturedItem = ({ setEditPlan, editPlan, setModalOpen, data }) => {
             >
               {item.type}
             </p>
-            <h2>
+            <h1>
               <Link href={``} className="fw-bold">
                 {item.planName}
               </Link>
-            </h2>
-
-            <h1>
-              <Link href={``} className="fw-bold">
-                {item.amount}
-              </Link>
             </h1>
-            <ul className="mb-4">
-              <li>
+
+            <ul className="mb-4 mt-4">
+              <li className="mb-2">
                 <span className="fs-6 text-dark">
                   {item.noOfProperties} Properties Appraisal
                 </span>
               </li>
+              <li>
+                <span className="fs-6 text-dark">30 Days Validity</span>
+              </li>
             </ul>
-
+            <h2 className="mb-5">
+              <Link href={``} className="fw-bold">
+                $ {item.amount}
+              </Link>
+            </h2>
             {/* <ul className=" mb0">
               {data?.map((val, i) => (
                 <li className="" key={i}>

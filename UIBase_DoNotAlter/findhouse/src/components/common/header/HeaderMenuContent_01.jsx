@@ -335,7 +335,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                         <div className="row text-center">
                           <div className="col-lg-10 m-5 fw-bold">
                             <span>
-                              Ready to see Appraisal Land help make you more
+                              Ready to see Appraisal Land help you make more
                               money at record speed?
                             </span>
                             <br />
@@ -412,7 +412,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                         <div className="row">
                           <div className="col-lg-8 m-5 fw-bold">
                             <span>
-                              Ready to see Appraisal Land help make you more
+                              Ready to see Appraisal Land help you make more
                               money at record speed?
                             </span>
                             <br />
@@ -567,7 +567,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                           <div className="col-lg-8 m-5 fw-bold">
                             <span style={{ lineHeight: "1.9" }}>
                               Revolutionize Your Experience : Conquer the real
-                              estate buisness with{" "}
+                              estate business with{" "}
                               <span className="text-color fw-bold">
                                 Appraisal Land
                               </span>
@@ -880,7 +880,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                         <div className="row text-end">
                           <div className="col-lg-12 mt-5 fw-bold">
                             <span>
-                              Ready to see Appraisal Land help make you more
+                              Ready to see Appraisal Land help you make more
                               money at record speed?
                             </span>
                             <br />

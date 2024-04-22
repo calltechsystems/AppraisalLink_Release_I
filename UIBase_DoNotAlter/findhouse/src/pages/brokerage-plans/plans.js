@@ -104,7 +104,7 @@ const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen }) => {
 
   return (
     <>
-      <Header userData={userData}/>
+      <Header userData={userData} />
 
       <MobileMenu />
 
@@ -123,7 +123,7 @@ const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen }) => {
         <div className="container-fluid ovh">
           <div className="col-lg-12 col-xl-12 text-center mt-1 mb-4">
             <div className="style2 mb30-991">
-              <h3 className="heading-forms">Add / Modify Subscription Plans</h3>
+              <h3 className="heading-forms">Add / Modify / Cancel Subscriptions</h3>
             </div>
           </div>
           <div className="row">

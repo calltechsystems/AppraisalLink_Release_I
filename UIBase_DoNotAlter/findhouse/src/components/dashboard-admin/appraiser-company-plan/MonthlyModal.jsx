@@ -139,6 +139,7 @@ const Modal = ({ modalOpen, closeModal, editPlan }) => {
                           className="form-control"
                           id="formGroupExampleInput3"
                           value={editPlan?.planName}
+                          readOnly
                         />
                       </div>
                     </div>
@@ -216,7 +217,7 @@ const Modal = ({ modalOpen, closeModal, editPlan }) => {
                         />
                       </div>
                     </div>
-                    <div className="row mb-2 mt-2">
+                    {/* <div className="row mb-2 mt-2">
                       <div className="col-lg-4 mb-2 text-end_01">
                         <label
                           htmlFor=""
@@ -240,7 +241,7 @@ const Modal = ({ modalOpen, closeModal, editPlan }) => {
                           // placeholder="Limited"
                         />
                       </div>
-                    </div>
+                    </div> */}
                   </div>
 
                   {/* End .col */}

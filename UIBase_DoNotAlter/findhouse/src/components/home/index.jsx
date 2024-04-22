@@ -101,10 +101,10 @@ const Index = () => {
                   style={{ marginTop: "-190px", marginBottom: "100px" }}
                 >
                   <h2 className="fz50">
-                    Brokers Paradise for all Real Estate Appraisals
+                    Brokers Paradise for all real estate appraisals
                   </h2>
                   <p className="fz18 color-white">
-                    From as low as $11 per month for limited time.
+                    From as low as $11 per month for a limited time.
                   </p>
                 </div>
 
@@ -115,7 +115,7 @@ const Index = () => {
                   style={{ marginTop: "0px", marginBottom: "50px" }}
                 >
                   <h2 className="fz50">
-                    Brokers Paradise for all Real Estate Appraisals
+                    Brokers Paradise for all real estate appraisals
                   </h2>
                   <p className="fz18 color-white">
                     From as low as $11 per month for limited time.
@@ -244,7 +244,7 @@ const Index = () => {
               >
                 Our Brokerage Partners
               </h2>
-              <p>We work with the best Brokers around the country.</p>
+              <p>We work with the best brokers around the country.</p>
             </div>
           </div>
         </div>

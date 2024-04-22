@@ -4,7 +4,7 @@ const WhyChoose = ({ style = "" }) => {
       id: 1,
       icon: "flaticon-high-five",
       title: "Collabrative and Transparent Process", //Collabrative and Transparent Process
-      descriptions: `Transparent ordering and appraising process. The process, ensuring transparency and understanding.`,
+      descriptions: `Transparent ordering and appraisal process. The process ensures transparency and understanding.`,
     },
     {
       id: 2,
@@ -16,7 +16,7 @@ const WhyChoose = ({ style = "" }) => {
       id: 3,
       icon: "flaticon-profit",
       title: "Cost Saving, Flexibility & User Friendly",
-      descriptions: `Compare the quotes by various property appraisers. Provide value by streamlining processes, and finding opportunities. `,
+      descriptions: `Compare the quotes from various property appraisers. Provide value by streamlining processes and finding opportunities. `,
     },
     // {
     //   id: 4,

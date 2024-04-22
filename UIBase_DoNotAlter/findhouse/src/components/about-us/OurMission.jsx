@@ -37,7 +37,7 @@ const OurMission = () => {
             efficient, compliant, and reliable manner possible. Our objective is
             to nurture our relationships by ensuring timely communication,
             fostering strong collaboration with stakeholders, and proactively
-            addressing concerns with a solution-oriented, analytical.
+            addressing concerns with a solution-oriented, analytical approach.
           </p>
           <ul className="ab_counting">
             {missionContent.map((item) => (
