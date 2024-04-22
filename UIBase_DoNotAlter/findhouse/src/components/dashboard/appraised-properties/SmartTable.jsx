@@ -206,6 +206,7 @@ function SmartTable(props) {
 
       clonedTable.appendChild(tableBody);
       clonedTable.appendChild(tableBody);
+      
       // Write the table to the print window
       printWindow.document.write(clonedTable.outerHTML);
       printWindow.document.write("</body>");

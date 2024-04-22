@@ -134,8 +134,9 @@ const Index = () => {
       return filteredProperties;
     };
     const filteredData = filterProperties(properties, searchInput);
+    console.log("searchInput",searchInput,filteredData)
     setFilterProperty(filteredData);
-  }, [searchInput]);
+  }, [properties,searchInput]);
 
   const calculate = (searchDate, diff) => {
     const newDateObj = new Date(searchDate.property.addedDatetime);
@@ -148,8 +149,7 @@ const Index = () => {
     const estimatedDiff =
       gettingDiff + getMonthsFDiff * 30 + gettingYearDiff * 365;
 
-    console.log("dayss", diff, newDateObj.getDate(), currentObj.getDate());
-    return estimatedDiff <= diff;
+   return estimatedDiff <= diff;
   };
 
   const filterData = (tempData) => {
@@ -173,13 +173,12 @@ const Index = () => {
         return tempData.filter((item) => calculate(item, 90));
 
       default:
-        return tempData; // Return all data if no valid timeFrame is specified
+        return tempData;
     }
   };
 
   useEffect(() => {
     const tmpData = filterData(properties);
-    console.log("filterQuery", filterQuery, tmpData, tmpData.length);
     setFilterProperty(tmpData);
   }, [filterQuery]);
   const [propValue, setPropValue] = useState({});

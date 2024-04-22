@@ -375,13 +375,11 @@ export default function Exemple({
     const getData = () => {
       properties.map((temp, index) => {
         const property = temp.property;
-
         if (property.$id) {
           const isStatus = getPropertyStatusHandler(property);
           const isBidded = getBidOfProperty(property.orderId);
           const isHold = property.isOnHold;
           const isCancel = property.isOnCancel;
-          console.log("property", property);
           const isEditable = isStatus === 0 ? true : false;
           if (true) {
             const updatedRow = {
