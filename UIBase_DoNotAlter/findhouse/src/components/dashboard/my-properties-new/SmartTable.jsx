@@ -220,7 +220,6 @@ function SmartTable(props) {
 
       printWindow.document.write("</html>");
       printWindow.document.close();
-      printWindow.document.close();
 
       // Print and handle post-print actions
       printWindow.print();
