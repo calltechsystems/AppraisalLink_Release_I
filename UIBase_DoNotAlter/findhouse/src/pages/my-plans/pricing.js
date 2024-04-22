@@ -175,14 +175,13 @@ const Pricing = ({
         String(plan.noOfProperties) ===
         String(currentSubscription?.noOfProperties);
 
-      if (planName ) {
+      if (planName) {
         requiredPlan.push(plan);
       }
     });
 
     setCurrentActivePlan(requiredPlan[requiredPlan.length - 1]);
   }, [currentSubscription, data]);
-
 
   useEffect(() => {
     let Monthly = [],
@@ -202,16 +201,14 @@ const Pricing = ({
     }
   }, [isPlan, data]);
 
-  console.log("currentActivePlan",currentActivePlan)
+  console.log("currentActivePlan", currentActivePlan);
   return (
     <>
       {filteredData?.map((item, idx) => (
         <div className="col-sm-4 col-md-4 my_plan_pricing_header" key={item.id}>
           <div
             className={`pricing_table  ${
-              String(selectedIdStyle) === String(item.id)
-                ? "pricing_table_border_style"
-                : ""
+              String(selectedIdStyle) === String(item.id) ? "pricing_table" : ""
             }`}
           >
             <div className="pricing_header">
@@ -221,6 +218,7 @@ const Pricing = ({
                 <div
                   className="p-1 fw-bold"
                   style={{
+                    visibility: "hidden",
                     backgroundColor: "white",
                     borderRadius: "4px",
                     fontSize: "19px",

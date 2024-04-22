@@ -15,13 +15,13 @@ const headCells = [
     id: "planName",
     numeric: false,
     label: "Selected Plan",
-    width: 150,
+    width: 120,
   },
   {
     id: "planType",
     numeric: false,
     label: "Selected Plan",
-    width: 150,
+    width: 120,
   },
 
   {
@@ -40,19 +40,19 @@ const headCells = [
     id: "amount",
     numeric: false,
     label: "Amount",
-    width: 150,
+    width: 100,
   },
   {
     id: "remained_prop",
     numeric: false,
     label: "Used Properties",
-    width: 150,
+    width: 100,
   },
   {
     id: "status",
     numeric: false,
     label: "Status",
-    width: 150,
+    width: 190,
   },
 ];
 

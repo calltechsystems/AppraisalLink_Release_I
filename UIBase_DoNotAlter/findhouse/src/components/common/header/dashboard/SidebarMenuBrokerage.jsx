@@ -19,7 +19,7 @@ const SidebarMenu = ({ userData }) => {
   const manageAccountTag = [
     {
       id: 3,
-      name: "Add / Modify / Cancel Subscriptions",
+      name: "Add / Modify Subscriptions",
       route: "/brokerage-plans",
       icon: "flaticon-telephone",
     },

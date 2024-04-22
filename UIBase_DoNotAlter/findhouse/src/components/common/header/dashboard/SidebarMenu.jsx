@@ -37,7 +37,7 @@ const SidebarMenu = () => {
   const manageAccount = [
     {
       id: 1,
-      name: "Add/Modify/Cancel Subscriptions",
+      name: "Add / Modify Subscriptions",
       route: "/my-plans",
       icon: "flaticon-box",
     },

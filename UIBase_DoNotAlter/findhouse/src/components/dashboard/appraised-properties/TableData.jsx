@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-
+import TablePropertyData from './TabularAppAgentView'
 import Link from "next/link";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -248,7 +248,46 @@ const TableData = ({userData ,setCurrentBiddedView,setOpenQuoteView,searchInput,
 
   return (
     <>
-    {data && (<Exemple 
+    {data && (
+     userData?.userType === 5 ?
+    <TablePropertyData 
+    userData={userData}
+    open={open}
+    close={close}
+    setShowBroker={setShowBroker}
+    setSearchInput={setSearchInput}
+    setFilterQuery={setFilterQuery}
+    setProperties={setProperties}
+    properties={data}
+    setRefresh={setRefresh}
+    refresh={refresh}
+    setModalIsOpenError = {setModalIsOpenError}
+    setErrorMessage = {setErrorMessage}
+    deletePropertyHandler = {deletePropertyHandler}
+    onWishlistHandler={onWishlistHandler}
+    participateHandler={participateHandler}
+    setUpdatedCode={setUpdatedCode}
+    searchInput={searchInput}
+    filterQuery={filterQuery}
+    setCurrentBiddedView={setCurrentBiddedView}
+    setStartLoading={setStartLoading}
+    setShowMore={setShowMore}
+    setOpenQuoteView={setOpenQuoteView}
+    setIsStatusModal={setIsStatusModal}
+    start={start}
+    setAssignPropertyId={setAssignPropertyId}
+    onArchivePropertyHandler={ onArchivePropertyHandler}
+    setAssignedAppraiser={setAssignedAppraiser}
+    openModalBroker={openModalBroker}
+    setAllBrokers={setAllBrokers}
+    setCurrentBid={setCurrentBid}
+    setAllAppraiser={setAllAppraiser}
+setAssignModal={setAssignModal}
+    setOpenAssignModal={setOpenAssignModal}
+    end={end}
+    />
+    :
+    <Exemple 
       userData={userData}
       open={open}
       close={close}

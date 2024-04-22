@@ -28,7 +28,7 @@ const SidebarMenu = () => {
   const manageAccountTag = [
     {
       id: 3,
-      name: "Add/Modify Subscription",
+      name: "Add / Modify Subscription",
       route: "/add-subscription",
       icon: "flaticon-building",
     },

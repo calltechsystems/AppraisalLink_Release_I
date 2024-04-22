@@ -23010,3 +23010,8 @@ input:checked + .slider:before {
   color: #2e008b;
   /* padding: 15px; */
 }
+
+.active-plan{
+  background-color: #2e008b;
+  padding-top: 10px;
+}
