@@ -311,7 +311,7 @@ const Form = ({
               }}
             >
               <div>
-                <p style={{ fontSize: "16px" }}>Don't have an account? </p>
+                <p style={{ fontSize: "16px" }}>Don&apos;t have an account? </p>
               </div>
               <div
                 style={{
