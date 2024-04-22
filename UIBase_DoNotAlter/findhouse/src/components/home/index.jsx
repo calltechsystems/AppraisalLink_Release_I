@@ -13,7 +13,7 @@ import ComfortPlace from "./ComfortPlace";
 import Testimonials from "./Testimonials";
 import Header from "../common/header/DefaultHeader_01";
 import { useRouter } from "next/router";
-import Partners_01 from "../common/Partners";
+import Partners_01 from "../common/Partners_01";
 import { useEffect, useState } from "react";
 
 const Index = () => {
@@ -213,7 +213,7 @@ const Index = () => {
               >
                 Meet Our Team
               </h2>
-              <p>Our team of experts is there to grow your buisness.</p>
+              <p>Our team of experts is there to grow your business.</p>
             </div>
           </div>
         </div>
@@ -300,7 +300,7 @@ const Index = () => {
                 What Our Users Says
               </h2>
               <p>
-                Discover how Listable can you help you find everything you want.
+                Discover how Listable can help you find everything you want.
               </p>
             </div>
           </div>

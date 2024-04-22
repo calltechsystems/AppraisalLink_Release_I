@@ -12,7 +12,7 @@ const TermsCondions = () => {
     {
       id: 2,
       title: "Step 2. Address Validation",
-      text1: `Address validation begins after the Broker submits the property. Address validation services are provided by our company for properties. We ensure that the property addresses provided are accurate and up to date by utilizing advanced technology and reliable data sources. We cross-reference the address details against comprehensive databases during the validation process to ensure their accuracy. `,
+      text1: `Address validation begins after the broker submits the property. Address validation services are provided by our company for properties. We ensure that the property addresses provided are accurate and up to date by utilizing advanced technology and reliable data sources. We cross-reference the address details against comprehensive databases during the validation process to ensure their accuracy. `,
       text2: `To be discussed`,
     },
     {
@@ -23,15 +23,15 @@ const TermsCondions = () => {
     },
     {
       id: 4,
-      title: "Step 5. Quote available to broker",
+      title: "Step 4. Quote available to broker",
       text1: `We give the broker the best quote after verifying the appraiser's estimate and being certain of its accuracy. We gather all the relevant data for the verified quote, including the property's specifics, the appraisal report, and any supporting records. The objective is to offer the broker the best quote based on the verified appraisal. A smooth and successful transaction will be facilitated by open and honest communication with all parties involved.  `,
 
       text2: `To be discussed`,
     },
     {
       id: 5,
-      title: "Step 4. Validate quote",
-      text1: `Once the appraiser has provided us with a quote for the property, we validate it by verifying the accuracy of the property description used by the appraiser to make the appraisal. This may entail physically inspecting the property to ensure that it matches the appraiser's description. We verify the appraiser's use of appropriate appraisal methodologies and techniques, as well as recent sales of comparable properties in the area to compare the appraiser's valuation with market trends.`,
+      title: "Step 5. Validate quote",
+      text1: `Once the appraiser has provided us with a quote for the property, we validate it by verifying the accuracy of the property description used by the appraiser to make the appraisal. This may entail physically inspecting the property to ensure that it matches the appraiser's description. We verify the appraiser's use of appropriate appraisal methodologies and techniques, as well as recent sales of comparable properties in the area, to compare the appraiser's valuation with market trends.`,
       text2: `To be discussed`,
     },
     {

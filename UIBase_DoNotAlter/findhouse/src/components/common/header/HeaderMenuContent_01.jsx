@@ -177,7 +177,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
 
   const handleInsightClick = () => {
     const userInfo = JSON.parse(localStorage.getItem("user"));
-    if (userInfo.userType === 1) {
+    if (userInfo.userType === 1 || userInfo.userType === 6) {
       route.push("/my-dashboard");
     } else if (userInfo.userType === 2) {
       route.push("/brokerage-dashboard");
@@ -568,10 +568,9 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                             <span style={{ lineHeight: "1.9" }}>
                               Revolutionize Your Experience : Conquer the real
                               estate business with{" "}
-                              <span className="text-color fw-bold">
-                                Appraisal Land
-                              </span>
-                              .
+                              {/* <span className="text-color fw-bold"> */}
+                              Appraisal Land
+                              {/* </span> */}.
                             </span>
                             <br />
                           </div>
@@ -600,7 +599,8 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                         <div className="row">
                           <div className="col-lg-12 mt-5 fw-bold">
                             <span>
-                              To accessing your dashboard <br /> by click on it.
+                              {/* To accessing your dashboard <br /> by click on it. */}
+                              To access your dashboard <br /> by clicking on it
                             </span>
                             <br />
                             <button

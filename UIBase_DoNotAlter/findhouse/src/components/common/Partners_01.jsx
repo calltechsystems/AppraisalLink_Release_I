@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Slider from "react-slick";
 
-const Partners = () => {
+const Partners_01 = () => {
   const settings = {
     dots: false,
     arrow: false,
@@ -33,4 +33,4 @@ const Partners = () => {
   );
 };
 
-export default Partners;
+export default Partners_01;

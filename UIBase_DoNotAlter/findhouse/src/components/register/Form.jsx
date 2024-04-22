@@ -481,7 +481,7 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
           >
             <div>
               <p className="text-center" style={{ fontSize: "16px" }}>
-                Already have Account?{" "}
+                Already have an Account?{" "}
               </p>
             </div>
             <div

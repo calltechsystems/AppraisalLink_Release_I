@@ -74,20 +74,36 @@ const SidebarMenu = ({ userData }) => {
       <ul className="sidebar-menu">
         <li
           className="sidebar_header header"
-          style={{ backgroundColor: "white", padding: "30px" }}
+          style={{ backgroundColor: "white" }}
         >
           <Link href="/">
             <Image
-              width={40}
+              width={60}
               height={45}
+              className="logo1 img-fluid"
               src="/assets/images/Appraisal_Land_Logo.png"
               alt="header-logo2.png"
             />
-            <span style={{ color: "#2e008b", marginTop: "20px" }}>
+            <span
+              style={{
+                color: "#2e008b",
+                marginTop: "35px",
+                marginLeft: "-10px",
+              }}
+            >
               Appraisal{" "}
             </span>
             &nbsp;
-            <span style={{ color: "#97d700", marginTop: "20px" }}> Land</span>
+            <span
+              style={{
+                color: "#97d700",
+                marginTop: "35px",
+                paddingLeft: "5px",
+              }}
+            >
+              {" "}
+              Land
+            </span>
           </Link>
         </li>
         {/* End header */}

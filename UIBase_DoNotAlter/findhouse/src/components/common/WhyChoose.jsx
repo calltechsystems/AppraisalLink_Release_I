@@ -3,14 +3,14 @@ const WhyChoose = ({ style = "" }) => {
     {
       id: 1,
       icon: "flaticon-high-five",
-      title: "Collabrative and Transparent Process", //Collabrative and Transparent Process
+      title: "Collaborative and Transparent Process", //Collabrative and Transparent Process
       descriptions: `Transparent ordering and appraisal process. The process ensures transparency and understanding.`,
     },
     {
       id: 2,
       icon: "flaticon-chat",
       title: "Real Time Analytics & 24X7 Accessibility",
-      descriptions: `Data analytics, Dashboard, Historical data. Analysis of data as it is generated, providing immediate insights. `,
+      descriptions: `Data analytics, dashboard, historical data. Analysis of data as it is generated, providing immediate insights. `,
     },
     {
       id: 3,
