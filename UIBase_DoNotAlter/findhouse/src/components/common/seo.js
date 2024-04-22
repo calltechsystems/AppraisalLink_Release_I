@@ -4,7 +4,7 @@ const Seo = ({ pageTitle, font }) => (
   <>
     <Head>
       <title>
-        {pageTitle && `${pageTitle} || Appraisal Link`}
+        {pageTitle && `${pageTitle} || Appraisal Land`}
       </title>
       <meta httpEquiv="x-ua-compatible" content="ie=edge" />
       <meta
