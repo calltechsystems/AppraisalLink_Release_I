@@ -18,7 +18,7 @@ const Modal = ({ modalOpen, closeModal, price }) => {
     console.log(price);
     if (String(price.type) === "plan") {
       const payload = {
-        planId: price.id,
+        PlanName: price.title,
         userId: data.userId,
         token: data.token,
       };

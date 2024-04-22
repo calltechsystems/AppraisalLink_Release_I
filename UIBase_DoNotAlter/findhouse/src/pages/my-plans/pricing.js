@@ -175,7 +175,7 @@ const Pricing = ({
         String(plan.noOfProperties) ===
         String(currentSubscription?.noOfProperties);
 
-      if (planName && amount && totalPropeerties) {
+      if (planName ) {
         requiredPlan.push(plan);
       }
     });
@@ -183,7 +183,6 @@ const Pricing = ({
     setCurrentActivePlan(requiredPlan[requiredPlan.length - 1]);
   }, [currentSubscription, data]);
 
-  console.log("currnetPlan", currentActivePlan?.planName);
 
   useEffect(() => {
     let Monthly = [],
@@ -203,6 +202,7 @@ const Pricing = ({
     }
   }, [isPlan, data]);
 
+  console.log("currentActivePlan",currentActivePlan)
   return (
     <>
       {filteredData?.map((item, idx) => (
