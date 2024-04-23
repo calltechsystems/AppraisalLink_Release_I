@@ -13,7 +13,7 @@ import ComfortPlace from "./ComfortPlace";
 import Testimonials from "./Testimonials";
 import Header from "../common/header/DefaultHeader_01";
 import { useRouter } from "next/router";
-import Partners_01 from "../common/Partners";
+import Partners_01 from "../common/Partners_01";
 import { useEffect, useState } from "react";
 
 const Index = () => {
@@ -101,10 +101,10 @@ const Index = () => {
                   style={{ marginTop: "-190px", marginBottom: "100px" }}
                 >
                   <h2 className="fz50">
-                    Brokers Paradise for all Real Estate Appraisals
+                    Brokers Paradise for all real estate appraisals
                   </h2>
                   <p className="fz18 color-white">
-                    From as low as $11 per month for limited time.
+                    From as low as $11 per month for a limited time.
                   </p>
                 </div>
 
@@ -115,7 +115,7 @@ const Index = () => {
                   style={{ marginTop: "0px", marginBottom: "50px" }}
                 >
                   <h2 className="fz50">
-                    Brokers Paradise for all Real Estate Appraisals
+                    Brokers Paradise for all real estate appraisals
                   </h2>
                   <p className="fz18 color-white">
                     From as low as $11 per month for limited time.
@@ -213,7 +213,7 @@ const Index = () => {
               >
                 Meet Our Team
               </h2>
-              <p>Our team of experts is there to grow your buisness.</p>
+              <p>Our team of experts is there to grow your business.</p>
             </div>
           </div>
         </div>
@@ -244,7 +244,7 @@ const Index = () => {
               >
                 Our Brokerage Partners
               </h2>
-              <p>We work with the best Brokers around the country.</p>
+              <p>We work with the best brokers around the country.</p>
             </div>
           </div>
         </div>
@@ -300,7 +300,7 @@ const Index = () => {
                 What Our Users Says
               </h2>
               <p>
-                Discover how Listable can you help you find everything you want.
+                Discover how Listable can help you find everything you want.
               </p>
             </div>
           </div>

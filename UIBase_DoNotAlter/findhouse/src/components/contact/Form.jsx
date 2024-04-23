@@ -519,7 +519,7 @@ const Form = () => {
               rows="4"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              maxLength={300}
+              maxLength={2000}
               style={{
                 // paddingTop: "15px",
                 // paddingBottom: "15px",

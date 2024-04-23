@@ -6,7 +6,6 @@ const SearchBox = ({ searchInput,setSearchInput }) => {
         type="search"
         placeholder="Search By Order ID, City, State, Postal Code"
         aria-label="Search"
-        value={searchInput}
         onChange={(e) => setSearchInput(e.target.value)}
       />
       <button className=" my-2 my-sm-0" disabled>

@@ -5,14 +5,14 @@ const TermsCondions = () => {
     {
       id: 1,
       title: "Events",
-      text1: `Updaed Soon`,
-      text2: `Updaed Soon`,
+      text1: `Updated Soon`,
+      text2: `Updated Soon`,
     },
     {
       id: 2,
       title: "Our Culture",
-      text1: `Updaed Soon`,
-      text2: `Updaed Soon`,
+      text1: `Updated Soon`,
+      text2: `Updated Soon`,
     },
   ];
 

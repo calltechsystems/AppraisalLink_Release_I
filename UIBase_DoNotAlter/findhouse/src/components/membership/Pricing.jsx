@@ -117,9 +117,9 @@ const Pricing = ({
             <div className="pricing_content">
               <ul className="mb0">
                 <li key={idx}>{item.noOfProperties} Properties Appraisal</li>
-                {content[idx]?.features?.map((val, i) => (
+                {/* {content[idx]?.features?.map((val, i) => (
                   <li key={i}>{val}</li>
-                ))}
+                ))} */}
               </ul>
               <div className="pricing_header">
                 <h2 className="" style={{ color: "#2e008b" }}>

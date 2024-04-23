@@ -247,15 +247,15 @@ export default function Exemple({
     let isAccepted = {};
     bids.filter((bid) => {
       if (
-        bid.orderId === property.orderId &&
-        bid.appraiserUserId !== data.userId
+        String(bid.orderId) === String(property.orderId) &&
+        String(bid.appraiserUserId) !== String(data.userId)
       ) {
         if (bid.status === 1) {
           isAccepted = bid;
         }
       }
     });
-    return isAccepted.$id ? true : false;
+    return isAccepted.bidId ? true : false;
   };
   const router = useRouter();
 
@@ -398,7 +398,7 @@ export default function Exemple({
         const isBidded = filterBidsWithin24Hours(property);
         const anotherBid = alreadyAccepted(property);
 
-        // console.log("wishlisted",isWishlist);
+      
         const isWait = property.isOnHold || property.isOnCancel;
         const isArchive = false;
 
@@ -476,7 +476,10 @@ export default function Exemple({
                   : isBidded.remark
                 : "N.A.",
             status:
-              ((isBidded?.bidId && isBidded.status === 2) || anotherBid?.bidId)  ? (
+            (anotherBid === true && isBidded.status !== 2)    ? (
+              <span className="btn btn-danger  w-100">Broker has already selected the quote</span>
+            ) :
+              (isBidded?.bidId && isBidded.status === 2)   ? (
                 <span className="btn btn-danger  w-100">Rejected</span>
               ) : isWait ? (
                 <span className="btn btn-danger  w-100">
@@ -596,7 +599,7 @@ export default function Exemple({
                     </li>
                   )}
 
-                {(isBidded.status === 2 || anotherBid?.bidId)? (
+                {(isBidded.status === 2 || anotherBid)? (
                   <>
                     <ul>
                       <li
@@ -684,7 +687,7 @@ export default function Exemple({
                         />
                       </button>
                     ) : (
-                      <li
+                      !anotherBid && <li
                         className="list-inline-item"
                         title="Wishlist Property"
                       >
@@ -702,7 +705,7 @@ export default function Exemple({
                       </li>
                     )}
 
-                    {(!isBidded.$id || isBidded?.status < 1) && (
+                    {(!isBidded.$id || isBidded?.status < 1) && !anotherBid && (
                       <li
                         className="list-inline-item"
                         data-toggle="tooltip"

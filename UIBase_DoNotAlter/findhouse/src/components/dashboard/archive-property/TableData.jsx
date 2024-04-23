@@ -10,9 +10,9 @@ const TableData = ({
   open,start,end,
   close,
   properties,
+  refresh,
   searchInput,
   filterQuery,
-  refresh,
   setFilterQuery,
   setSearchInput,
   setModalIsPopupOpen,
@@ -220,8 +220,6 @@ const TableData = ({
           setFilterQuery={setFilterQuery}
           setSearchInput={setSearchInput}
           close={close}
-          searchInput = {searchInput}
-          filterQuery = {filterQuery}
           setProperties={setProperties}
           properties={data}
           setRefresh={setRefresh}
@@ -238,6 +236,8 @@ const TableData = ({
           setPropertyId={setPropertyId}
           onCancelHandler={onCancelHandler}
           setModalOpen={setModalOpen}
+          filterQuery={filterQuery}
+                          searchInput={searchInput}
           setIsCancelProperty={setIsCancelProperty}
           setIsHoldProperty={setIsHoldProperty}
           setCurrentProperty={setCurrentProperty}

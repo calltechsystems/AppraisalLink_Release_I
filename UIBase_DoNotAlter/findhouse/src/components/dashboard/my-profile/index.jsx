@@ -9,7 +9,6 @@ import Form from "./Form";
 
 const Index = () => {
   const [profileCount, setProfileCount] = useState(7);
-
   const [showCard, setShowCard] = useState(true);
   const [data, setData] = useState({});
   let userData = {};

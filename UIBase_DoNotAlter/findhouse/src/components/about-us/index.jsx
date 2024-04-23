@@ -77,7 +77,7 @@ const Index = () => {
               }}
             >
               <h2 className="mt0 text-light">
-                Our Mission Is To Appraisal Land
+                Our Mission is to Appraise Land
               </h2>
             </div>
           </div>

@@ -6,7 +6,7 @@ const TermsCondions = () => {
     {
       id: 1,
       title: "Mortgage Broker",
-      text1: `A mortgage broker is a professional who assists borrowers in securing mortgage loans. They act as intermediaries between borrowers and lenders, helping borrowers find the best mortgage options available to them. Mortgage brokers have access to a wide range of lenders and loan products, allowing them to shop around on behalf of the borrower and negotiate favorable terms, rates, and conditions. They guide borrowers through the entire mortgage process, from initial application to closing, and help simplify the complex paperwork and documentation requirements. Ultimately, the goal of a mortgage broker is to assist borrowers in obtaining a mortgage loan that fits their financial needs and goals `,
+      text1: `A mortgage broker is a professional who assists borrowers in securing mortgage loans. They act as intermediaries between borrowers and lenders, helping borrowers find the best mortgage options available to them. Mortgage brokers have access to a wide range of lenders and loan products, allowing them to shop around on behalf of the borrower and negotiate favorable terms, rates, and conditions. They guide borrowers through the entire mortgage process, from initial application to closing, and help simplify the complex paperwork and documentation requirements. Ultimately, the goal of a mortgage broker is to assist borrowers in obtaining a mortgage loan that fits their financial needs and goals. `,
     },
     // {
     //   id: 2,

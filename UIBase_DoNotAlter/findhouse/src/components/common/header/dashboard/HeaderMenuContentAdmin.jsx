@@ -244,7 +244,7 @@ const HeaderMenuContent = ({ float = "", hide, userData }) => {
       className="ace-responsive-menu text-end-01 d-lg-block d-none"
       data-menu-style="horizontal"
       style={{
-        backgroundColor: "grey",
+        backgroundColor: "#1d293e",
         marginTop: "5px",
         borderRadius: "2px",
       }}
@@ -518,10 +518,10 @@ const HeaderMenuContent = ({ float = "", hide, userData }) => {
               src="/assets/images/team/a2.jpg"
               alt="e1.png"
             />
-            <span className="dn-1199 ms-1 text-dark">
+            <span className="dn-1199 ms-1 text-light">
               {userData?.brokerage_Details?.firstName
                 ? `${userData.brokerage_Details?.firstName} ${userData?.brokerage_Details?.lastName}`
-                : "xyz"}
+                : "Admin"}
             </span>
           </a>
           <div className="dropdown-menu">

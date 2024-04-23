@@ -5,7 +5,7 @@ import CryptoJS from "crypto-js";
  async function handler (request,response) {
 
     const decryptionKey = process.env.CRYPTO_SECRET_KEY;
-    const domain = process.env.BACKEND_DOMAIN;
+    const domain = process.env.BACKEND_DOMAIN2;
 
   try {
     const encryptedBody = await request.body.data;
@@ -26,7 +26,6 @@ import CryptoJS from "crypto-js";
         "Content-Type":"application/json"
       },
       params:{
-        TopUpId : TopUpId,
         UserId : UserId
       }
     }

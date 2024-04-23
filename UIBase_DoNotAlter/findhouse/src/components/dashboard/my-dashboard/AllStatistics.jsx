@@ -12,7 +12,7 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
       blockStyle: "style2",
       icon: "flaticon-invoice",
       timer: views,
-      name: "Total Quotes",
+      name: "Quotes Provided",
     },
     {
       id: 3,

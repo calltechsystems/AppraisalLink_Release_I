@@ -1,5 +1,4 @@
 import axios from "axios";
-import CryptoJS from "crypto-js";
 
 async function handler(request, response) {
   const decryptionKey = process.env.CRYPTO_SECRET_KEY;

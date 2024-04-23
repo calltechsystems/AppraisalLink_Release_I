@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
+import { uploadFile } from "./functions";
 import { encryptionData } from "../../../utils/dataEncryption";
 import axios from "axios";
 import { CldUploadWidget } from "next-cloudinary";
@@ -19,6 +20,14 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   const [SelectedImage, setSelectedImage] = useState(
     userData?.broker_Details?.profileImage ||
       "/assets/images/home/placeholder_01.jpg"
+  );
+
+  const [emailNotification, setEmailNotification] = useState(
+    userData?.emailNotification !== null ? userData?.emailNotification : false
+  );
+
+  const [smsNotification, setSmsNotification] = useState(
+    userData?.smsNotification !== null ? userData?.smsNotification : false
   );
 
   const [edit, setEdit] = useState(true);
@@ -128,6 +137,23 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     }
 
     console.log(typeof profilePhoto);
+  };
+
+  const firstFunction = () => {
+    if (smsNotification === null || smsNotification === false) {
+      toast.error(
+        "As SMS Notification is disabled you wont be notified for listed changes and updates over SMS.",
+        { duration: 3000 }
+      );
+    }
+    if (emailNotification === null || emailNotification === false) {
+      toast.error(
+        "As Email Notification is disabled you wont be notified for listed changes and updates over Email.",
+        { duration: 3000 }
+      );
+    }
+
+    setTimeout(onUpdatHandler, 2000); // Call onUpdatHandler after 6 seconds
   };
 
   const onUpdatHandler = () => {
@@ -311,7 +337,10 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         mortageBrokerLicNo: mortgageBrokerLicNoRef,
         mortgageBrokerageLicNo: mortgageBrokrageLicNoRef,
         profileImage: SelectedImage,
+        emailNotification: emailNotification,
+        smsNotification: smsNotification,
       };
+
       if (
         !payload.lastName ||
         !payload.firstName ||
@@ -362,47 +391,23 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
 
   const openWidget = () => {
     if (uploadInputRef.current) {
-      uploadInputRef.current.click(); // Trigger the hidden file input
+      uploadInputRef.current.click();
     }
   };
 
-  const handleFileChange = (e, type) => {
+  const handleFileChange = async (e, type) => {
     const file = e.target.files[0];
-    const userData = JSON.parse(localStorage.getItem("user"));
-
-    const BACKEND_DOMAIN = process.env.BACKEND_DOMAIN;
-    const formdata = {
-      file: file,
-    };
-
-    toast.dismiss("Uploading !!!");
-    axios
-      .post(`${BACKEND_DOMAIN}/FileUpload/fileupload`, formdata, {
-        headers: {
-          Authorization: `Bearer ${userData?.token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((res) => {
-        toast.dismiss();
-        toast.success("Uploaded Successfully !");
-        const image = res.data;
-
-        const imageUrl = image.split("! Access it at: ")[1];
-        if (String(type) === "1") {
-          setSelectedImage(imageUrl);
-        } else {
-          setSelectedImage2({
-            name: file.name,
-            url: imageUrl,
-          });
-        }
-      })
-      .catch((err) => {
-        toast.dismiss();
-        console.log(err);
-        toast.error("Try Again !!");
-      });
+    toast.loading("Uploading..");
+    try {
+      const generatedUrl = await uploadFile(file);
+      toast.dismiss();
+      toast.success("Uploaded Successfully");
+      console.log("generatedUrl", generatedUrl);
+      setSelectedImage(generatedUrl);
+    } catch (err) {
+      toast.dismiss();
+      toast.error("Try Again!");
+    }
   };
 
   const handleUpload = (result) => {
@@ -499,6 +504,14 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     }
     setAssistantTwoPhoneNumber(truncatedValue);
   };
+
+  const [isChecked, setIsChecked] = useState(true); // Set initially to true for checked
+
+  // Function to toggle the checkbox
+  const toggleCheckbox = () => {
+    setIsChecked(!isChecked); // Toggle the state
+  };
+
   return (
     <>
       <div className="row">
@@ -516,35 +529,27 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                     alt="Uploaded Image"
                   />
                   {edit && (
-                    <div className="">
+                    <div>
                       <input
                         type="file"
+                        id="fileInput"
                         onChange={(e) => handleFileChange(e, 1)}
+                        style={{ display: "none" }} // Hide the actual input element
                       />
+                      {/* You can add a button or any other element to trigger file selection */}
+                      <button
+                        className="btn btn-color mt-2"
+                        onClick={() =>
+                          document.getElementById("fileInput").click()
+                        }
+                      >
+                        Browse
+                      </button>
+                      <p className="mt-2">
+                        {SelectedImage !== "" && "Note -: Image Only"}
+                      </p>
                     </div>
                   )}
-                  {/* {edit && (
-                    <CldUploadWidget
-                      onUpload={handleUpload}
-                      uploadPreset="mpbjdclg"
-                      options={{
-                        cloudName: "dcrq3m6dx", // Your Cloudinary upload preset
-                        maxFiles: 1,
-                      }}
-                    >
-                      {({ open }) => (
-                        <div>
-                          <button
-                            className="btn btn-color profile_edit_button mb-5"
-                            style={{}}
-                            onClick={open} // This will open the upload widget
-                          >
-                            Upload Photo
-                          </button>
-                        </div>
-                      )}
-                    </CldUploadWidget>
-                  )} */}
                 </div>
               </div>
               <div className="col-lg-9">
@@ -791,10 +796,20 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           <input
                             className="form-check-input mt-3"
                             type="checkbox"
+                            id="terms"
+                            style={{ border: "1px solid black" }}
+                            value={emailNotification}
+                            onChange={(e) =>
+                              setEmailNotification(e.target.value)
+                            }
+                          />
+                          {/* <input
+                            className="form-check-input mt-3"
+                            type="checkbox"
                             value=""
                             id="terms"
                             style={{ border: "1px solid black" }}
-                          />
+                          /> */}
                           <label
                             className="form-check-label form-check-label"
                             htmlFor="terms"
@@ -816,7 +831,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                             >
                               <ul>
                                 <li style={{ fontSize: "15px" }}>
-                                  Updates Sends on Your Registered Email Address
+                                  Updates sent to your profile email address.
                                 </li>
                                 {/* <li>
                                   Regular Request : Timeline for the appraisal
@@ -833,8 +848,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           <input
                             className="form-check-input mt-3"
                             type="checkbox"
-                            value=""
                             id="terms"
+                            value={smsNotification}
+                            onChange={(e) => setSmsNotification(e.target.value)}
                             style={{ border: "1px solid black" }}
                           />
                           <label
@@ -857,7 +873,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                             >
                               <ul>
                                 <li style={{ fontSize: "15px" }}>
-                                  Updates Sends on Your Registered Phone Number
+                                  Updates sent to your profile cell number.
                                 </li>
                                 {/* <li>
                                   Regular Request : Timeline for the appraisal
@@ -1561,7 +1577,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                         >
                           Cancel
                         </button>
-                        <button className="btn btn5" onClick={onUpdatHandler}>
+                        <button className="btn btn5" onClick={firstFunction}>
                           {userData?.broker_Details
                             ? "Update Profile"
                             : "Create Profile"}

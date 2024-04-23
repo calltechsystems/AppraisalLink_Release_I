@@ -24,7 +24,7 @@ const Partners = () => {
               src={`/assets/images/partners/${val}.png`}
               alt="1.png"
             /> */}
-            <h3 style={{}}>{`Appraiser ${i}`}</h3>
+            <h3 style={{}}>{`Broker ${i}`}</h3>
           </div>
         </div>
       ))}

@@ -73,13 +73,16 @@ function SmartTable(props) {
       // Open print window and set up basic structure
       const printWindow = window.open("", "_blank");
       printWindow.document.write(
-        "<html><head><title>Broker Properties</title></head><body>" +
+        "<html><head><title>Appraiser Land</title></head><body>" +
           // Add CSS styles within the <style> tag
           "<style>" +
           // Define your CSS styles here
+          "@media print {" +
+          "  footer { position: fixed; bottom: 0; width: 100%; text-align: center; }" +
+          "}" +
           "table { width: 100%; border-collapse: collapse; font-size:12px; font-family:arial;}" +
           "th, td { border: 1px solid black; padding: 8px; }" +
-          "th { background-color:#2e008b; color:white; }" +
+          "th { background-color:; color:black;  }" +
           "</style>" +
           "</head><body>"
       );
@@ -87,7 +90,7 @@ function SmartTable(props) {
         ' <img width="60" height="45" class="logo1 img-fluid" style="" src="/assets/images/Appraisal_Land_Logo.png" alt="header-logo2.png"/> <span style="color: #2e008b font-weight: bold; font-size: 24px;">Appraisal</span><span style="color: #97d700; font-weight: bold; font-size: 24px;">Land</span>'
       );
       printWindow.document.write(
-        "<h3>Brokerage Properties</h3>" +
+        "<h3>Properties Information</h3>" +
           "<style>" +
           "h3{text-align:center;}" +
           "</style>"
@@ -188,7 +191,15 @@ function SmartTable(props) {
 
       // Write the table to the print window
       printWindow.document.write(clonedTable.outerHTML);
-      printWindow.document.write("</body></html>");
+      printWindow.document.write("</body>");
+      // Add footer link
+      printWindow.document.write("<footer>");
+      printWindow.document.write(
+        '<p style="text-align:center;"><a href="https://appraisalland.vercel.app/">https://appraisalland.vercel.app/</a></p>'
+      );
+      printWindow.document.write("</footer>");
+
+      printWindow.document.write("</html>");
       printWindow.document.close();
 
       // Print and handle post-print actions

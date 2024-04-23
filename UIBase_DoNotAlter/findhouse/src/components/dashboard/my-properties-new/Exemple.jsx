@@ -23,13 +23,13 @@ const headCells = [
     id: "status",
     numeric: false,
     label: "Order Status",
-    width: 170,
+    width: 200,
   },
   {
     id: "appraisal_status",
     numeric: false,
     label: "Appraisal Status",
-    width: 220,
+    width: 200,
   },
   {
     id: "remark",
@@ -267,9 +267,7 @@ export default function Exemple({
                   {isHold ? "On Hold" : "Cancelled"}
                 </span>
               ) : isStatus === 3 ? (
-                <span className="btn btn-completed w-100 text-light">
-                  Completed
-                </span>
+                <span className="btn btn-completed w-100">Completed</span>
               ) : isStatus === 2 ? (
                 <span className="btn bg-success w-100 text-light">
                   Accepted
@@ -310,12 +308,12 @@ export default function Exemple({
                       </li>
                     </ul>
                   </div>
-                  <button className="btn btn-status">
+                  <span className="btn btn-status w-100">
                     Current Status
                     <span className="m-1">
                       <i class="fa fa-info-circle" aria-hidden="true"></i>
                     </span>
-                  </button>
+                  </span>
                 </div>
               ) : isBidded.$id &&
                 isBidded.status === 1 &&
@@ -340,12 +338,12 @@ export default function Exemple({
                       </li>
                     </ul>
                   </div>
-                  <button className="btn btn-status">
+                  <span className="btn btn-status w-100">
                     Current Status
                     <span className="m-1">
                       <i class="fa fa-info-circle" aria-hidden="true"></i>
                     </span>
-                  </button>
+                  </span>
                 </div>
               ) : (
                 <span className="btn btn-warning w-100">N.A.</span>

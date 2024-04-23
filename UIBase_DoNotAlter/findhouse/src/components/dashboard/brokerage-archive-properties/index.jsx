@@ -135,7 +135,7 @@ const Index = () => {
     };
     const filteredData = filterProperties(properties, searchInput);
     setFilterProperty(filteredData);
-  }, [searchInput]);
+  }, [searchInput,properties]);
 
   const calculate = (searchDate, diff) => {
     const newDateObj = new Date(searchDate.property.addedDatetime);

@@ -245,36 +245,35 @@ const Index = () => {
       if (searchInput === "") {
         return propertys;
       }
-      const filteredProperties = properties.filter((property) => {
+      const filteredProperties = allArchive.filter((wholeInfo) => {
+        const property = wholeInfo?.property;
         // Convert the search input to lowercase for a case-insensitive search
         const searchTerm = searchInput.toLowerCase();
-
-        console.log("propertiessss", property);
         if (String(property.orderId) === String(searchTerm)) {
           return true;
         }
         // Check if any of the fields contain the search term
         else
           return (
-            String(property.orderId).toLowerCase().includes(searchTerm) ||
-            property.zipCode.toLowerCase().includes(searchTerm) ||
-            property.area.toLowerCase().includes(searchTerm) ||
-            property.city.toLowerCase().includes(searchTerm) ||
-            property.province.toLowerCase().includes(searchTerm) ||
-            property.streetName.toLowerCase().includes(searchTerm) ||
-            property.streetNumber.toLowerCase().includes(searchTerm) ||
-            property.typeOfBuilding.toLowerCase().includes(searchTerm)
+            property.zipCode?.toLowerCase().includes(searchTerm) ||
+            property.area?.toLowerCase().includes(searchTerm) ||
+            property.city?.toLowerCase().includes(searchTerm) ||
+            property.province?.toLowerCase().includes(searchTerm) ||
+            property.streetName?.toLowerCase().includes(searchTerm) ||
+            property.streetNumber?.toLowerCase().includes(searchTerm) ||
+            property.typeOfBuilding?.toLowerCase().includes(searchTerm)
           );
       });
 
       return filteredProperties;
     };
-    const filteredData = filterProperties(properties, searchInput);
+    const filteredData = filterProperties(allArchive, searchInput);
     setFilterProperty(filteredData);
   }, [searchInput]);
 
   const calculate = (searchDate, diff) => {
-    const newDateObj = new Date(searchDate.addedDatetime);
+    console.log("calculate",searchDate)
+    const newDateObj = new Date(searchDate?.property?.addedDatetime);
     const currentObj = new Date();
 
     const getMonthsFDiff = currentObj.getMonth() - newDateObj.getMonth();
@@ -308,13 +307,12 @@ const Index = () => {
         return tempData.filter((item) => calculate(item, 90));
 
       default:
-        return tempData; // Return all data if no valid timeFrame is specified
+        return tempData;
     }
   };
 
   useEffect(() => {
-    const tmpData = filterData(properties);
-    console.log("filterQuery", filterQuery, tmpData, tmpData.length);
+    const tmpData = filterData(allArchive);
     setFilterProperty(tmpData);
   }, [filterQuery]);
 
@@ -695,7 +693,9 @@ const Index = () => {
                         <TableData
                           userData={userData}
                           setAllArchive={setAllArchive}
-                          allArchive={allArchive}
+                          allArchive={searchInput === "" && filterQuery === "All"
+                          ? allArchive
+                          : filterProperty}
                           setModalOpen={openModal}
                           setIsStatusModal={setIsStatusModal}
                           close={closeModal}

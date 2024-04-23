@@ -33,7 +33,7 @@ const headCells = [
     id: "appraisal_status",
     numeric: false,
     label: "Appraisal Status",
-    width: 210,
+    width: 190,
   },
   {
     id: "remark",
@@ -108,7 +108,7 @@ const headCells = [
   {
     id: "action",
     numeric: false,
-    label: "Action",
+    label: "Actions",
     width: 100,
   },
 ];
@@ -181,11 +181,6 @@ export default function Exemple({
     return isArchive;
   };
 
-  function addCommasToNumber(number) {
-    if (Number(number) <= 100 || number === undefined) return number;
-    return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }
-
   const calculateDate = (oldBid, newBid) => {
     if (!oldBid.requestTime) {
       return newBid;
@@ -242,12 +237,32 @@ export default function Exemple({
     const customBid = getFinalBid(tempBids);
     return customBid;
   };
-
   const router = useRouter();
 
   const openStatusUpdateHandler = (bidId) => {
     setCurrentBid(bidId);
     setIsStatusModal(true);
+  };
+
+  function addCommasToNumber(number) {
+    if (Number(number) <= 100 || number === undefined) return number;
+    return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  const alreadyAccepted = (property) => {
+    const data = JSON.parse(localStorage.getItem("user"));
+    let isAccepted = {};
+    bids.filter((bid) => {
+      if (
+        String(bid.orderId) === String(property.orderId) &&
+        String(bid.appraiserUserId) !== String(data.userId)
+      ) {
+        if (bid.status === 1) {
+          isAccepted = bid;
+        }
+      }
+    });
+    return isAccepted.bidId ? true : false;
   };
 
   const removeWishlistHandler = (id) => {
@@ -364,6 +379,7 @@ export default function Exemple({
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
 
+        const anotherBid = alreadyAccepted(property);
         const isArchive = foundArchiveHandler(property.propertyId);
 
         const isWait = property.isOnHold || property.isOnCancel;
@@ -432,6 +448,9 @@ export default function Exemple({
             ),
           remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
           status:
+          (anotherBid === true && isBidded.status !== 2)    ? (
+            <span className="btn btn-danger  w-100">Broker has already selected the quote</span>
+          ) :
             isBidded?.bidId && isBidded.status === 2 ? (
               <span className="btn btn-danger  w-100">Rejected</span>
             ) : isWait ? (
@@ -539,7 +558,7 @@ export default function Exemple({
                 className="list-inline-item"
                 data-toggle="tooltip"
                 data-placement="top"
-                title="Archive Property"
+                title="Un-Archive Property"
               >
                 <div
                   className="w-100"
@@ -628,7 +647,7 @@ export default function Exemple({
               }
             });
 
-            setBids(updatedBids);
+            setBids(tempBids);
             axios
               .get("/api/appraiserWishlistedProperties", {
                 headers: {
@@ -723,7 +742,6 @@ export default function Exemple({
     console.log("end", bids, properties, wishlist);
     setRefresh(false);
   }, [refresh]);
-  // console.log(sortObjectsByOrderIdDescending(updatedData));
   return (
     <>
       {refresh ? (
@@ -738,11 +756,11 @@ export default function Exemple({
           setRefresh={setRefresh}
           setProperties={setProperties}
           refresh={refresh}
+          searchInput={searchInput}
+          filterQuery={filterQuery}
           refreshHandler={refreshHandler}
           setStartLoading={setStartLoading}
           start={start}
-          searchInput={searchInput}
-          filterQuery={filterQuery}
           properties={updatedData}
           dataFetched={dataFetched}
           end={end}

@@ -177,6 +177,21 @@ const CreateList = ({
     }
   };
 
+  const handleInputChange = (e) => {
+    const inputValue = e.target.value;
+
+    // Allow only numeric input
+    const numericValue = inputValue.replace(/\D/g, "");
+
+    // Restrict to 10 digits
+    const truncatedValue = numericValue.slice(0, 10);
+    if (truncatedValue.length === 10) {
+      setEstimatedValue(truncatedValue);
+    }
+
+    setEstimatedValue(truncatedValue);
+  };
+
   return (
     <>
       {/* <div className="row">
@@ -433,10 +448,11 @@ const CreateList = ({
                     ? errorLabelStyle
                     : { backgroundColor: "#E8F0FE", marginLeft: "-5px" }
                 }
-                onChange={(e) => setEstimatedValue(e.target.value)}
+                // onChange={(e) => setEstimatedValue(e.target.value)}
+                onChange={handleInputChange}
                 value={estimatedValue}
                 disabled={isDisable}
-                maxLength={30}
+                maxLength={10}
               />
             </div>
           </div>

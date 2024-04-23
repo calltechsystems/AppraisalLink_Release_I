@@ -14,7 +14,7 @@ import { useRouter } from "next/router";
 
 const Index = () => {
   const [isSelected, setSelected] = useState(0);
-  const [selectedPlan, setSelectedPlan] = useState("Yearly");
+  const [selectedPlan, setSelectedPlan] = useState("Monthly");
   const [modalOpen, setModalOpen] = useState(false);
   const [planData, setPlanData] = useState([]);
   const [price, setPrice] = useState({
@@ -100,10 +100,8 @@ const Index = () => {
                 >
                   Ready to get started?
                 </h2>
-                {/* <p className="text-dark">
-                  Choose a plan tailored to your needs.
-                </p> */}
-                <div className="toggleContainer mt-3">
+
+                {/* <div className="toggleContainer mt-3">
                   <span
                     className="fw-bold text-dark"
                     style={{ fontSize: "20px" }}
@@ -115,8 +113,6 @@ const Index = () => {
                     // className={`toggleLabel ${selectedPlan}`}
                     // onClick={togglePlan}
                     >
-                      {/* <button className="toggleSwitch"></button> */}
-
                       <div className="toggle-switch">
                         <label className="switch">
                           <input
@@ -137,7 +133,7 @@ const Index = () => {
                   >
                     Monthly
                   </span>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
@@ -155,7 +151,6 @@ const Index = () => {
               <Modal
                 modalOpen={modalOpen}
                 closeModal={closeModal}
-                
                 price={price}
                 selectedPlan={selectedPlan}
               />

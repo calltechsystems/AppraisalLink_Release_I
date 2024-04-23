@@ -5,7 +5,7 @@ import CryptoJS from "crypto-js";
  async function handler (request,response) {
 
     const decryptionKey = process.env.CRYPTO_SECRET_KEY;
-    const domain = process.env.BACKEND_DOMAIN;
+    const domain = process.env.BACKEND_DOMAIN2;
 
   try {
 
@@ -15,10 +15,10 @@ import CryptoJS from "crypto-js";
     const body = JSON.parse(decryptedBytes.toString(CryptoJS.enc.Utf8));
    
 
-    const {userId,planId,token} = body;
+    const {userId,PlanName,token} = body;
    
 
-    const userResponse = await axios.post(`${domain}/com.appraisalland.Payments/paymenturl?Planid=${planId}&UserId=${userId}`,
+    const userResponse = await axios.post(`${domain}/com.appraisalland.Payments/paymenturl?PlanName=${PlanName}&UserId=${userId}`,
     null,{
         headers: {
           Authorization:`Bearer ${token}`

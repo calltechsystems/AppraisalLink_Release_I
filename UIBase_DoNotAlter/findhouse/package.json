@@ -13,6 +13,7 @@
     "@formspree/react": "^2.5.1",
     "@popperjs/core": "2.11.7",
     "@reduxjs/toolkit": "^1.8.6",
+    "aws-sdk": "^2.1604.0",
     "axios": "^1.5.0",
     "bcrypt": "^5.1.1",
     "bootstrap": "^5.2.1",

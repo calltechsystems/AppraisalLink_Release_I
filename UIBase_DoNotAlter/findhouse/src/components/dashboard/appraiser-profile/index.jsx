@@ -94,11 +94,11 @@ const Index = ({ profileCount, setProfileCount }) => {
               <div className="row">
                 <div className="col-lg-12 maxw100flex-992">
                   <div className="row">
-                    <div className="col-lg-12">
+                    {/* <div className="col-lg-12">
                       <div className="breadcrumb_content style2">
                         <h2 className="breadcrumb_title">My Profile</h2>
                       </div>
-                    </div>
+                    </div> */}
                     <div className="col-lg-12">
                       <div className="my_dashboard_review">
                         <div className="row">

@@ -15,10 +15,10 @@ const Modal = ({ modalOpen, closeModal, price }) => {
   const checkOutHandler = () => {
     const data = JSON.parse(localStorage.getItem("user"));
 
-    console.log(price);
+    console.log("price",price);
     if (String(price.type) === "plan") {
       const payload = {
-        planId: price.id,
+        PlanName: price.title,
         userId: data.userId,
         token: data.token,
       };

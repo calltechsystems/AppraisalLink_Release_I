@@ -46,7 +46,7 @@ const Index = () => {
   const [end, setEnd] = useState(4);
 
   useEffect(() => {
-    // setRefresh(true);
+    setRefresh(true);
     const activityHandler = () => {
       setLastActivityTimestamp(Date.now());
     };
@@ -134,8 +134,9 @@ const Index = () => {
       return filteredProperties;
     };
     const filteredData = filterProperties(properties, searchInput);
+    console.log("searchInput",searchInput,filteredData)
     setFilterProperty(filteredData);
-  }, [searchInput]);
+  }, [properties,searchInput]);
 
   const calculate = (searchDate, diff) => {
     const newDateObj = new Date(searchDate.property.addedDatetime);
@@ -148,8 +149,7 @@ const Index = () => {
     const estimatedDiff =
       gettingDiff + getMonthsFDiff * 30 + gettingYearDiff * 365;
 
-    console.log("dayss", diff, newDateObj.getDate(), currentObj.getDate());
-    return estimatedDiff <= diff;
+   return estimatedDiff <= diff;
   };
 
   const filterData = (tempData) => {
@@ -173,15 +173,12 @@ const Index = () => {
         return tempData.filter((item) => calculate(item, 90));
 
       default:
-        return tempData; // Return all data if no valid timeFrame is specified
+        return tempData;
     }
   };
 
   useEffect(() => {
-    // setRefresh(true);
-
     const tmpData = filterData(properties);
-    console.log("filterQuery", filterQuery, tmpData, tmpData.length);
     setFilterProperty(tmpData);
   }, [filterQuery]);
   const [propValue, setPropValue] = useState({});
@@ -300,7 +297,7 @@ const Index = () => {
   return (
     <>
       {/* <!-- Main Header Nav --> */}
-      <Header />
+      <Header userData={userData} />
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
@@ -389,12 +386,12 @@ const Index = () => {
                               : filterProperty
                           }
                           setAllArchive={setAllArchive}
-                          searchInput = {searchInput}
-                          filterQuery = {filterQuery}
                           setModalIsOpenError={setModalIsOpenError}
                           setErrorMessage={setErrorMessage}
                           setRefresh={setRefresh}
                           refresh={refresh}
+                          filterQuery={filterQuery}
+                          searchInput={searchInput}
                           setFilterQuery={setFilterQuery}
                           setSearchInput={setSearchInput}
                           setModalIsPopupOpen={setModalIsPopupOpen}
@@ -1086,7 +1083,7 @@ const Index = () => {
             </div>
 
             <div className="row">
-              {/* <div className="row">
+              <div className="row">
                 <div className="col-lg-12 mt0">
                   <div className="mbp_pagination">
                     <Pagination
@@ -1096,7 +1093,7 @@ const Index = () => {
                     />
                   </div>
                 </div>
-              </div> */}
+              </div>
               {/* End paginaion .col */}
             </div>
             {/* End .row */}
