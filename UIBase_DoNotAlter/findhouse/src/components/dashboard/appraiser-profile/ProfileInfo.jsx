@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import { province } from "../create-listing/data";
 import { designations } from "../create-listing/data";
 import Link from "next/link";
+import { uploadFile } from "./functions";
 
 const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   const [profilePhoto, setProfilePhoto] = useState(null);
@@ -23,6 +24,15 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   const hiddenStyle = { backgroundColor: "#E8F0FE", display: "none" };
   const viewStyle = { backgroundColor: "#E8F0FE", display: "block" };
   const [edit, setEdit] = useState(true);
+
+  const [emailNotification, setEmailNotification] = useState(
+    userData?.emailNotification !== null ? userData?.emailNotification : false
+  );
+
+  const [smsNotification, setSmsNotification] = useState(
+    userData?.smsNotification !== null ? userData?.smsNotification : false
+  );
+
 
   const [firstNameRef, setFirstNameRef] = useState(
     userData?.appraiser_Details?.firstName || ""
@@ -136,23 +146,22 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     userData?.appraiser_Details?.apartmentNo || ""
   );
 
-  console.log(stateRef);
-  const uploadProfile = (e) => {
-    const file = e.target.files[0];
 
-    if (file) {
-      const reader = new FileReader();
-
-      reader.onload = (event) => {
-        const dataUrl = event.target.result;
-
-        setProfilePhoto(dataUrl);
-      };
-
-      reader.readAsDataURL(file);
+  const firstFunction = () => {
+    if (smsNotification === null || smsNotification === false) {
+      toast.error(
+        "As SMS Notification is disabled you wont be notified for listed changes and updates over SMS.",
+        { duration: 3000 }
+      );
     }
-
-    console.log(typeof profilePhoto);
+    if (emailNotification === null || emailNotification === false) {
+      toast.error(
+        "As Email Notification is disabled you wont be notified for listed changes and updates over Email.",
+        { duration: 3000 }
+      );
+    }
+    
+    setTimeout(onUpdatHandler, 2000); // Call onUpdatHandler after 6 seconds
   };
 
   const onUpdatHandler = () => {
@@ -316,50 +325,28 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     }
   };
 
-  const handleFileUpload = async (event) => {
-    const file = event.target.files[0];
-    const url = uploadImage(file);
-    console.log(url);
-  };
-
-  const handleFileChange = (e, type) => {
+  const handleFileChange = async (e, type) => {
     const file = e.target.files[0];
-    const userData = JSON.parse(localStorage.getItem("user"));
-
-    const BACKEND_DOMAIN = process.env.BACKEND_DOMAIN;
-    const formdata = {
-      file: file,
+    toast.loading("Uploading..");
+    try {
+      const generatedUrl = await uploadFile(file);
+      toast.dismiss();
+      toast.success("Uploaded Successfully");
+      console.log("generatedUrl", generatedUrl);
+      if (String(type) === "1") {
+        setSelectedImage(generatedUrl);
+      } else {
+        setSelectedImage2({
+          name: file.name,
+          url: generatedUrl,
+        });
+      }
+    } catch (err) {
+      toast.dismiss();
+      toast.error("Try Again!");
+    }
     };
 
-    toast.dismiss("Uploading !!!");
-    axios
-      .post(`${BACKEND_DOMAIN}/FileUpload/fileupload`, formdata, {
-        headers: {
-          Authorization: `Bearer ${userData?.token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((res) => {
-        toast.dismiss();
-        toast.success("Uploaded Successfully !");
-        const image = res.data;
-
-        const imageUrl = image.split("! Access it at: ")[1];
-        if (String(type) === "1") {
-          setSelectedImage(imageUrl);
-        } else {
-          setSelectedImage2({
-            name: file.name,
-            url: imageUrl,
-          });
-        }
-      })
-      .catch((err) => {
-        toast.dismiss();
-        console.log(err);
-        toast.error("Try Again !!");
-      });
-  };
 
   return (
     <>
@@ -392,12 +379,27 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                     alt="Uploaded Image"
                   />
                   {edit && (
-                    <div className="">
+                    <div className="col-lg-3">
+                    <div>
                       <input
                         type="file"
-                        onChange={(e) => handleFileChange(e, 1)}
+                        id="fileInput"
+                        onChange={(e)=>handleFileChange(e,1)}
+                        style={{ display: "none" }} // Hide the actual input element
                       />
+                      {/* You can add a button or any other element to trigger file selection */}
+                      <button
+                        onClick={() =>
+                          document.getElementById("fileInput").click()
+                        }
+                      >
+                        Browse
+                      </button>
+                      <p>
+                        {selectedImage2.name !== "" && "Image Only"}
+                      </p>
                     </div>
+                  </div>
                   )}
                   {/*edit && (
                     <CldUploadWidget
@@ -659,10 +661,25 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       </label>
                     </div>
                     <div className="col-lg-3">
-                      <input
-                        type="file"
-                        onChange={(e) => handleFileChange(e, 2)}
-                      />
+                      <div>
+                        <input
+                          type="file"
+                          id="fileInput"
+                          onChange={(e)=>handleFileChange(e,2)}
+                          style={{ display: "none" }} // Hide the actual input element
+                        />
+                        {/* You can add a button or any other element to trigger file selection */}
+                        <button
+                          onClick={() =>
+                            document.getElementById("fileInput").click()
+                          }
+                        >
+                          Browse
+                        </button>
+                        <p>
+                          {selectedImage2.name !== "" && "Upload pdf only"}
+                        </p>
+                      </div>
                     </div>
                     <div className="col-lg-5 mt-1">
                       <Link
@@ -681,7 +698,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           <input
                             className="form-check-input mt-3"
                             type="checkbox"
-                            value=""
+                            value={emailNotification}
+                            onChange={(e)=>setEmailNotification(e.target.value)}
                             id="terms"
                             style={{ border: "1px solid black" }}
                           />
@@ -723,7 +741,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           <input
                             className="form-check-input mt-3"
                             type="checkbox"
-                            onSelect={() => setSMSAlert(true)}
+                            value={smsNotification}
+                            onChange={(e)=>setSmsNotification(e.target.value)}
                             id="terms"
                             style={{ border: "1px solid black" }}
                           />
@@ -938,7 +957,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           </button>
                           <button
                             className="btn btn2 btn-dark"
-                            onClick={onUpdatHandler}
+                            onClick={firstFunction}
                           >
                             {userData?.appraiser_Details
                               ? "Update Profile"

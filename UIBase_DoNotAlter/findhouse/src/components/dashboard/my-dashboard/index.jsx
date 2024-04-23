@@ -72,41 +72,7 @@ const Index = () => {
     return () => clearInterval(inactivityCheckInterval);
   }, [lastActivityTimestamp]);
 
-  // if (!userData) {
-  //   router.push("/login");
-  // } else if (!userData?.broker_Details?.firstName) {
-  //   router.push("/my-profile");
-  // }
 
-  const categorizeDataByMonth = (data) => {
-    if (data.length <= 0) return [];
-    // Initialize an object to store data by month
-    const dataByMonth = {};
-
-    const currentMonth = new Date().getMonth();
-
-    data.forEach((property) => {
-      const createdAtDate = new Date(property.createdAt);
-      const month = createdAtDate.getMonth();
-      if (month <= currentMonth) {
-        if (!dataByMonth[month]) {
-          dataByMonth[month] = [];
-        }
-        dataByMonth[month].push(property);
-      }
-    });
-
-    const categorizedData = Object.entries(dataByMonth)?.map(
-      ([month, properties]) => ({
-        month: parseInt(month, 10),
-        properties,
-      })
-    );
-
-    categorizedData.sort((a, b) => a.month - b.month);
-
-    return categorizedData;
-  };
 
   const getBiddedTime = (orderId) => {
     let time = "";
@@ -124,6 +90,23 @@ const Index = () => {
         [(time = bid.requestTime)];
     });
     return time;
+  };
+
+  const calculate = (searchDate, diff) => {
+    const newDateObj = new Date(searchDate.addedDatetime);
+    const currentObj = new Date();
+
+    const getMonthsFDiff = currentObj.getMonth() - newDateObj.getMonth();
+    const gettingDiff = currentObj.getDate() - newDateObj.getDate();
+    const gettingYearDiff = currentObj.getFullYear() - newDateObj.getFullYear();
+
+    const estimatedDiff =
+      gettingDiff + getMonthsFDiff * 30 + gettingYearDiff * 365;
+
+      if(estimatedDiff<=diff){
+        console.log("difference",diff,estimatedDiff,searchDate.addedDatetime)
+      }
+    return estimatedDiff <= diff && searchDate?.isArchive === false;
   };
 
 
@@ -150,15 +133,15 @@ const Index = () => {
             tempAllQuotesBids += 1;
           }
 
-          if(new Date(item.addedDatetime) >= oneMonthAgo){
-            currentAllProperties += 1;
+          if(calculate(item,30) === true){
+            currentAllProperties ++;
           }
 
           return new Date(item.addedDatetime) >= oneMonthAgo;
         });
         setAllQuotesBids(tempAllQuotesBids);
         setAcceptedBids(tempAllAcceptedBids);
-        setAllProperties(currentAllProperties)
+        setAllProperties(currentAllProperties);
         return tempData;
 
       case "Yearly":
@@ -171,8 +154,8 @@ const Index = () => {
           if(isAllBid !== "" && new Date(isAllBid) >= oneYearAgo){
             tempAllQuotesBids += 1;
           }
-          if(new Date(item.addedDatetime) >= oneYearAgo){
-            currentAllProperties += 1;
+          if(calculate(item,90) === true){
+            currentAllProperties ++;
           }
           return new Date(item.addedDatetime) >= oneYearAgo;
         });
@@ -191,9 +174,9 @@ const Index = () => {
             tempAllAcceptedBids += 1;
           }
           if(isAllBid !== "" && new Date(isAllBid) >= oneWeekAgo){
-            tempAllQuotesBids += 1;
+            tempAllQuotesBids ++;
           }
-          if(new Date(item.addedDatetime) >= oneWeekAgo){
+          if(calculate(item , 7) === true){
             currentAllProperties += 1;
           }
           return new Date(item.addedDatetime) >= oneWeekAgo;
@@ -213,11 +196,12 @@ const Index = () => {
           if(isAllBid !== "" ){
             tempAllQuotesBids += 1;
           }
-          currentAllProperties += 1;
+          currentAllProperties ++;
 
           return new Date(item.addedDatetime) >= oneYearAgo;
         });
         setAllQuotesBids(tempAllQuotesBids);
+        setAcceptedBids(tempAllAcceptedBids);
         setAllProperties(currentAllProperties);
         return tempData;
     }
@@ -242,6 +226,9 @@ const Index = () => {
   }, [filterQuery,bids,data]);
 
   useEffect(() => {
+
+    setData([])
+    setBids([])
     const data = JSON.parse(localStorage.getItem("user"));
     setUserData(data);
     if (!data) {
@@ -308,7 +295,6 @@ const Index = () => {
         })
         .catch((err) => {
           toast.error(err);
-          // setModalIsOpenError(true);
         });
     };
     func();
@@ -369,22 +355,6 @@ const Index = () => {
           <div className="row">
             <div className="col-lg-12 maxw100flex-992">
               <div className="row">
-                {/* Start Dashboard Navigation */}
-                {/* <div className="col-lg-12">
-                  <div className="dashboard_navigationbar dn db-1024">
-                    <div className="dropdown">
-                      <button
-                        className="dropbtn"
-                        data-bs-toggle="offcanvas"
-                        data-bs-target="#DashboardOffcanvasMenu"
-                        aria-controls="DashboardOffcanvasMenu"
-                      >
-                        <i className="fa fa-bars pr10"></i> Dashboard Navigation
-                      </button>
-                    </div>
-                  </div>
-                </div> */}
-                {/* End Dashboard Navigation */}
 
                 <div
                   className="col-lg-12 mb10"
@@ -403,7 +373,6 @@ const Index = () => {
                         ? userData?.broker_Details?.lastName
                         : "lastName"}
                     </h2>
-                    {/* <p>We are glad to see you again!</p> */}
                   </div>
                   <div>
                     <Filtering

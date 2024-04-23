@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import {uploadFile} from "./functions"
 import { useRouter } from "next/router";
 import { encryptionData } from "../../../utils/dataEncryption";
 import axios from "axios";
@@ -17,6 +18,14 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   const [SelectedImage, setSelectedImage] = useState(
     userData?.brokerage_Details?.profileImage ||
       "/assets/images/home/placeholder_01.jpg"
+  );
+
+  const [emailNotification, setEmailNotification] = useState(
+    userData?.emailNotification !== null ? userData?.emailNotification : false
+  );
+
+  const [smsNotification, setSmsNotification] = useState(
+    userData?.smsNotification !== null ? userData?.smsNotification : false
   );
 
   const hiddenStyle = { backgroundColor: "#E8F0FE", display: "none" };
@@ -133,6 +142,23 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     }
 
     console.log(typeof profilePhoto);
+  };
+
+  const firstFunction = () => {
+    if (smsNotification === null || smsNotification === false) {
+      toast.error(
+        "As SMS Notification is disabled you wont be notified for listed changes and updates over SMS.",
+        { duration: 3000 }
+      );
+    }
+    if (emailNotification === null || emailNotification === false) {
+      toast.error(
+        "As Email Notification is disabled you wont be notified for listed changes and updates over Email.",
+        { duration: 3000 }
+      );
+    }
+    
+    setTimeout(onUpdatHandler, 2000); // Call onUpdatHandler after 6 seconds
   };
 
   const onUpdatHandler = () => {
@@ -345,44 +371,20 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     }
   };
 
-  const handleFileChange = (e, type) => {
+  const handleFileChange = async (e, type) => {
     const file = e.target.files[0];
-    const userData = JSON.parse(localStorage.getItem("user"));
-
-    const BACKEND_DOMAIN = process.env.BACKEND_DOMAIN;
-    const formdata = {
-      file: file,
+    toast.loading("Uploading..");
+    try {
+      const generatedUrl = await uploadFile(file);
+      toast.dismiss();
+      toast.success("Uploaded Successfully");
+      console.log("generatedUrl", generatedUrl);
+      setSelectedImage(generatedUrl);
+    } catch (err) {
+      toast.dismiss();
+      toast.error("Try Again!");
+    }
     };
-
-    toast.dismiss("Uploading !!!");
-    axios
-      .post(`${BACKEND_DOMAIN}/FileUpload/fileupload`, formdata, {
-        headers: {
-          Authorization: `Bearer ${userData?.token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((res) => {
-        toast.dismiss();
-        toast.success("Uploaded Successfully !");
-        const image = res.data;
-
-        const imageUrl = image.split("! Access it at: ")[1];
-        if (String(type) === "1") {
-          setSelectedImage(imageUrl);
-        } else {
-          setSelectedImage2({
-            name: file.name,
-            url: imageUrl,
-          });
-        }
-      })
-      .catch((err) => {
-        toast.dismiss();
-        console.log(err);
-        toast.error("Try Again !!");
-      });
-  };
 
   const handleUpload = (result) => {
     // Handle the image upload result here
@@ -509,12 +511,25 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                     alt="Uploaded Image"
                   />
                   {!edit && (
-                    <div className="">
-                      <input
-                        type="file"
-                        onChange={(e) => handleFileChange(e, 1)}
-                      />
-                    </div>
+                    <div>
+                    <input
+                      type="file"
+                      id="fileInput"
+                      onChange={(e)=>handleFileChange(e,1)}
+                      style={{ display: "none" }} // Hide the actual input element
+                    />
+                    {/* You can add a button or any other element to trigger file selection */}
+                    <button
+                      onClick={() =>
+                        document.getElementById("fileInput").click()
+                      }
+                    >
+                      Browse
+                    </button>
+                    <p>
+                      {SelectedImage !== "" && "Image Only"}
+                    </p>
+                  </div>
                   )}
                   {/* {!edit && (
                     <CldUploadWidget
@@ -778,10 +793,10 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           <input
                             className="form-check-input mt-3"
                             type="checkbox"
-                            value=""
+                            value={emailNotification}
+                            onChange={(e)=>setEmailNotification(e.target.value)}
                             required
                             id="terms"
-                            checked
                             style={{ border: "1px solid black" }}
                           />
                           <label
@@ -822,10 +837,10 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           <input
                             className="form-check-input mt-3"
                             type="checkbox"
-                            value=""
+                            value={smsNotification}
+                            onChange={(e)=>setSmsNotification(e.target.value)}
                             required
                             id="terms"
-                            checked
                             style={{ border: "1px solid black" }}
                           />
                           <label
@@ -1261,7 +1276,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                         </button>
                         <button
                           className="btn btn2 btn-dark"
-                          onClick={onUpdatHandler}
+                          onClick={firstFunction}
                         >
                           {userData?.brokerage_Details
                             ? "Update Profile"

@@ -290,13 +290,17 @@ export default function Exemple({
       if (
         bid.orderId === property.orderId &&
         bid.status === 1 &&
-        bid.orderStatus === 3
+        bid.orderStatus === 3 && !property.isOnCancel &&
+        !property.isOnHold
       ) {
         isCompleted = true;
       }
-      if (bid.orderId === property.orderId && bid.status === 1) {
+      if (bid.orderId === property.orderId && bid.status === 1 
+        && !property.isOnCancel &&
+        !property.isOnHold) {
         isAccepted = true;
-      } else if (bid.orderId === property.orderId) {
+      } else if (bid.orderId === property.orderId && !property.isOnCancel &&
+        !property.isOnHold) {
         isQuoteProvided = true;
       }
     });
@@ -356,27 +360,31 @@ export default function Exemple({
     return false;
   }
 
-  const isAccordingToStatus = (bidStatus,property)=>{
+  const isAccordingToStatus = (bidStatus,property,isBidded)=>{
+    if(isBidded.status === 2)
+     return false;
       if(String(statusSearch) === "0")
        return true;
-      else if(Boolean(property.isOnHold) && String(statusSearch) === "6" ){
+      if((property.isOnHold)  && String(statusSearch) === "6" ){
         return true;
       }
-      else if(Boolean(property.isOnCancel) && String(statusSearch) === "5"){
+      if((property.isOnCancel) && String(statusSearch) === "5"){
         return true;
       }
-      else if(String(bidStatus)=== "2" && String(statusSearch) === "1"){
+      if(String(bidStatus)=== "2" && String(statusSearch) === "1"){
         return true;
       }
-      else if(String(bidStatus)=== "3" && String(statusSearch) === "2"){
+      if(String(bidStatus)=== "3" && String(statusSearch) === "2"){
         return true;
       }
-      else if(String(bidStatus)=== "1" && String(statusSearch) === "3"){
+      if(String(bidStatus)=== "1" && String(statusSearch) === "3"){
         return true;
       }
-      else if(String(bidStatus)=== "0" && String(statusSearch) === "4"){
+      if(String(bidStatus)=== "0" && String(statusSearch) === "4"){
         return true;
       }
+
+      return false
 
   }
 
@@ -392,8 +400,8 @@ export default function Exemple({
           const showUser = getAppraiser(isBidded.appraiserUserId)
           const isCorrect = isLikeUserSearchedType(showUser);
           
-          const isStatus = getPropertyStatusHandler(property);
-          const toSelectedStatus = isAccordingToStatus(isStatus,property)
+         const isStatus = getPropertyStatusHandler(property);
+          const toSelectedStatus =  isAccordingToStatus(isStatus,property,isBidded) ;
           if (!property.isArchive && toSelectedStatus && isCorrect) {
             const updatedRow = {
               order_id: property.orderId,

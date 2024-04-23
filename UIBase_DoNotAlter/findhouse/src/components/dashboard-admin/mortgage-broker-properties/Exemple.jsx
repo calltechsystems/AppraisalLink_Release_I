@@ -267,13 +267,24 @@ export default function Exemple({
       if (
         bid.orderId === property.orderId &&
         bid.status === 1 &&
-        bid.orderStatus === 3
+        bid.orderStatus === 3 &&
+        !property.isOnCancel &&
+        !property.isOnHold
       ) {
         isCompleted = true;
       }
-      if (bid.orderId === property.orderId && bid.status === 1) {
+      if (
+        bid.orderId === property.orderId &&
+        bid.status === 1 &&
+        !property.isOnCancel &&
+        !property.isOnHold
+      ) {
         isAccepted = true;
-      } else if (bid.orderId === property.orderId) {
+      } else if (
+        bid.orderId === property.orderId &&
+        !property.isOnCancel &&
+        !property.isOnHold
+      ) {
         isQuoteProvided = true;
       }
     });
@@ -579,7 +590,7 @@ export default function Exemple({
 
               .then((res) => {
                 let allbroker = res.data.data.$values;
-                setAllBrokers(allBrokers);
+                setAllBrokers(allbroker);
               })
               .catch((err) => {
                 setErrorMessage(err?.response?.data?.error);

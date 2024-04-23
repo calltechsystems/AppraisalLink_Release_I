@@ -3,9 +3,7 @@ import { FaRedo } from "react-icons/fa";
 
 const Filtering = ({ setRefresh, FilterQuery, setFilterQuery }) => {
   const refreshHandler = () => {
-    // toast.loading("Loading......");
     setRefresh(true);
-    // window.location.reload();
   };
   return (
     <>
