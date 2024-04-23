@@ -680,7 +680,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       <div>
                         <input
                           type="file"
-                          id="fileInput"
+                          id="fileInput_01"
                           onChange={(e) =>
                             handleFileChange2(
                               e,
@@ -695,7 +695,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           className="btn btn-color"
                           style={{ marginLeft: "10px" }}
                           onClick={() =>
-                            document.getElementById("fileInput").click()
+                            document.getElementById("fileInput_01").click()
                           }
                         >
                           Browse
