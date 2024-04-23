@@ -152,10 +152,10 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         { duration: 3000 }
       );
     }
-    
+
     setTimeout(onUpdatHandler, 2000); // Call onUpdatHandler after 6 seconds
   };
-  
+
   const onUpdatHandler = () => {
     const firstName =
       firstNameRef !== "" ? firstNameRef : userData.broker_Details.firstName;
@@ -391,7 +391,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
 
   const openWidget = () => {
     if (uploadInputRef.current) {
-      uploadInputRef.current.click(); 
+      uploadInputRef.current.click();
     }
   };
 
@@ -408,7 +408,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
       toast.dismiss();
       toast.error("Try Again!");
     }
-    };
+  };
 
   const handleUpload = (result) => {
     // Handle the image upload result here
@@ -530,26 +530,26 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   />
                   {edit && (
                     <div>
-                    <input
-                      type="file"
-                      id="fileInput"
-                      onChange={(e)=>handleFileChange(e,1)}
-                      style={{ display: "none" }} // Hide the actual input element
-                    />
-                    {/* You can add a button or any other element to trigger file selection */}
-                    <button
-                      onClick={() =>
-                        document.getElementById("fileInput").click()
-                      }
-                    >
-                      Browse
-                    </button>
-                    <p>
-                      {SelectedImage !== "" && "Image Only"}
-                    </p>
-                  </div>
+                      <input
+                        type="file"
+                        id="fileInput"
+                        onChange={(e) => handleFileChange(e, 1)}
+                        style={{ display: "none" }} // Hide the actual input element
+                      />
+                      {/* You can add a button or any other element to trigger file selection */}
+                      <button
+                        className="btn btn-color mt-2"
+                        onClick={() =>
+                          document.getElementById("fileInput").click()
+                        }
+                      >
+                        Browse
+                      </button>
+                      <p className="mt-2">
+                        {SelectedImage !== "" && "Note -: Image Only"}
+                      </p>
+                    </div>
                   )}
-                  
                 </div>
               </div>
               <div className="col-lg-9">

@@ -339,7 +339,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     }
   };
 
-  const handleFileChange2 = async (e,field, func) => {
+  const handleFileChange2 = async (e, field, func) => {
     const file = e.target.files[0];
     toast.loading("Uploading..");
     try {
@@ -348,11 +348,11 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
       toast.success("Uploaded Successfully");
       console.log("generated", generatedUrl, type);
 
-      if(String(field).toLowerCase().includes(field)){
+      if (String(field).toLowerCase().includes(field)) {
         func({
-          name : file.name,
-          url : generatedUrl
-        })
+          name: file.name,
+          url: generatedUrl,
+        });
       }
     } catch (err) {
       toast.dismiss();
@@ -433,7 +433,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                     alt="Uploaded Image"
                   />
                   {edit && (
-                    <div className="col-lg-3">
+                    <div className="col-lg-12">
                       <div>
                         <input
                           type="file"
@@ -443,13 +443,16 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                         />
                         {/* You can add a button or any other element to trigger file selection */}
                         <button
+                          className="btn btn-color mt-2"
                           onClick={() =>
                             document.getElementById("fileInput").click()
                           }
                         >
                           Browse
                         </button>
-                        <p>{SelectedImage !== "" && "Image Only"}</p>
+                        <p className="mt-2">
+                          {SelectedImage !== "" && "Note -: Image Only"}
+                        </p>
                       </div>
                     </div>
                   )}
@@ -678,18 +681,29 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                         <input
                           type="file"
                           id="fileInput"
-                          onChange={(e) => handleFileChange2(e, "lenderList", setSelectedImage2)}
+                          onChange={(e) =>
+                            handleFileChange2(
+                              e,
+                              "lenderList",
+                              setSelectedImage2
+                            )
+                          }
                           style={{ display: "none" }} // Hide the actual input element
                         />
                         {/* You can add a button or any other element to trigger file selection */}
                         <button
+                          className="btn btn-color"
+                          style={{ marginLeft: "10px" }}
                           onClick={() =>
                             document.getElementById("fileInput").click()
                           }
                         >
                           Browse
                         </button>
-                        <p>{selectedImage2.name !== "" && "Upload pdf only"}</p>
+                        <p className="mt-2" style={{ marginLeft: "10px" }}>
+                          {selectedImage2.name !== "" &&
+                            "Note -: Upload pdf only"}
+                        </p>
                       </div>
                     </div>
                     <div className="col-lg-5 mt-1">

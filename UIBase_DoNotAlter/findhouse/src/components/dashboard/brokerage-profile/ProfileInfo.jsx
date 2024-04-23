@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import {uploadFile} from "./functions"
+import { uploadFile } from "./functions";
 import { useRouter } from "next/router";
 import { encryptionData } from "../../../utils/dataEncryption";
 import axios from "axios";
@@ -157,7 +157,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         { duration: 3000 }
       );
     }
-    
+
     setTimeout(onUpdatHandler, 2000); // Call onUpdatHandler after 6 seconds
   };
 
@@ -384,7 +384,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
       toast.dismiss();
       toast.error("Try Again!");
     }
-    };
+  };
 
   const handleUpload = (result) => {
     // Handle the image upload result here
@@ -512,24 +512,25 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                   />
                   {!edit && (
                     <div>
-                    <input
-                      type="file"
-                      id="fileInput"
-                      onChange={(e)=>handleFileChange(e,1)}
-                      style={{ display: "none" }} // Hide the actual input element
-                    />
-                    {/* You can add a button or any other element to trigger file selection */}
-                    <button
-                      onClick={() =>
-                        document.getElementById("fileInput").click()
-                      }
-                    >
-                      Browse
-                    </button>
-                    <p>
-                      {SelectedImage !== "" && "Image Only"}
-                    </p>
-                  </div>
+                      <input
+                        type="file"
+                        id="fileInput"
+                        onChange={(e) => handleFileChange(e, 1)}
+                        style={{ display: "none" }} // Hide the actual input element
+                      />
+                      {/* You can add a button or any other element to trigger file selection */}
+                      <button
+                        className="btn btn-color mt-2"
+                        onClick={() =>
+                          document.getElementById("fileInput").click()
+                        }
+                      >
+                        Browse
+                      </button>
+                      <p className="mt-2">
+                        {SelectedImage !== "" && "Note -: Image Only"}
+                      </p>
+                    </div>
                   )}
                   {/* {!edit && (
                     <CldUploadWidget
@@ -794,7 +795,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                             className="form-check-input mt-3"
                             type="checkbox"
                             value={emailNotification}
-                            onChange={(e)=>setEmailNotification(e.target.value)}
+                            onChange={(e) =>
+                              setEmailNotification(e.target.value)
+                            }
                             required
                             id="terms"
                             style={{ border: "1px solid black" }}
@@ -838,7 +841,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                             className="form-check-input mt-3"
                             type="checkbox"
                             value={smsNotification}
-                            onChange={(e)=>setSmsNotification(e.target.value)}
+                            onChange={(e) => setSmsNotification(e.target.value)}
                             required
                             id="terms"
                             style={{ border: "1px solid black" }}

@@ -33,7 +33,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     userData?.smsNotification !== null ? userData?.smsNotification : false
   );
 
-
   const [firstNameRef, setFirstNameRef] = useState(
     userData?.appraiser_Details?.firstName || ""
   );
@@ -146,7 +145,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     userData?.appraiser_Details?.apartmentNo || ""
   );
 
-
   const firstFunction = () => {
     if (smsNotification === null || smsNotification === false) {
       toast.error(
@@ -160,7 +158,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         { duration: 3000 }
       );
     }
-    
+
     setTimeout(onUpdatHandler, 2000); // Call onUpdatHandler after 6 seconds
   };
 
@@ -345,8 +343,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
       toast.dismiss();
       toast.error("Try Again!");
     }
-    };
-
+  };
 
   return (
     <>
@@ -379,27 +376,28 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                     alt="Uploaded Image"
                   />
                   {edit && (
-                    <div className="col-lg-3">
-                    <div>
-                      <input
-                        type="file"
-                        id="fileInput"
-                        onChange={(e)=>handleFileChange(e,1)}
-                        style={{ display: "none" }} // Hide the actual input element
-                      />
-                      {/* You can add a button or any other element to trigger file selection */}
-                      <button
-                        onClick={() =>
-                          document.getElementById("fileInput").click()
-                        }
-                      >
-                        Browse
-                      </button>
-                      <p>
-                        {selectedImage2.name !== "" && "Image Only"}
-                      </p>
+                    <div className="col-lg-12">
+                      <div>
+                        <input
+                          type="file"
+                          id="fileInput"
+                          onChange={(e) => handleFileChange(e, 1)}
+                          style={{ display: "none" }} // Hide the actual input element
+                        />
+                        {/* You can add a button or any other element to trigger file selection */}
+                        <button
+                          className="btn btn-color mt-2"
+                          onClick={() =>
+                            document.getElementById("fileInput").click()
+                          }
+                        >
+                          Browse
+                        </button>
+                        <p className="mt-2">
+                          {selectedImage2.name !== "" && "Note -: Image Only"}
+                        </p>
+                      </div>
                     </div>
-                  </div>
                   )}
                   {/*edit && (
                     <CldUploadWidget
@@ -665,23 +663,26 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                         <input
                           type="file"
                           id="fileInput"
-                          onChange={(e)=>handleFileChange(e,2)}
+                          onChange={(e) => handleFileChange(e, 2)}
                           style={{ display: "none" }} // Hide the actual input element
                         />
                         {/* You can add a button or any other element to trigger file selection */}
                         <button
+                          className="btn btn-color"
+                          style={{ marginLeft: "10px" }}
                           onClick={() =>
                             document.getElementById("fileInput").click()
                           }
                         >
                           Browse
                         </button>
-                        <p>
-                          {selectedImage2.name !== "" && "Upload pdf only"}
+                        <p className="mt-2" style={{ marginLeft: "10px" }}>
+                          {selectedImage2.name !== "" &&
+                            "Note -: Upload pdf only"}
                         </p>
                       </div>
                     </div>
-                    <div className="col-lg-5 mt-1">
+                    <div className="col-lg-5 mt-1 text-start">
                       <Link
                         target="_blank"
                         rel="noopener noreferrer"
@@ -699,7 +700,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                             className="form-check-input mt-3"
                             type="checkbox"
                             value={emailNotification}
-                            onChange={(e)=>setEmailNotification(e.target.value)}
+                            onChange={(e) =>
+                              setEmailNotification(e.target.value)
+                            }
                             id="terms"
                             style={{ border: "1px solid black" }}
                           />
@@ -742,7 +745,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                             className="form-check-input mt-3"
                             type="checkbox"
                             value={smsNotification}
-                            onChange={(e)=>setSmsNotification(e.target.value)}
+                            onChange={(e) => setSmsNotification(e.target.value)}
                             id="terms"
                             style={{ border: "1px solid black" }}
                           />
