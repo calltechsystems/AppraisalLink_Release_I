@@ -394,7 +394,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           Browse
                         </button>
                         <p className="mt-2">
-                          {selectedImage2.name !== "" && "Note -: Image Only"}
+                          {SelectedImage !== "" && "Note -: Image Only"}
                         </p>
                       </div>
                     </div>
@@ -662,7 +662,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       <div>
                         <input
                           type="file"
-                          id="fileInput"
+                          id="fileInput_01"
                           onChange={(e) => handleFileChange(e, 2)}
                           style={{ display: "none" }} // Hide the actual input element
                         />
@@ -671,7 +671,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           className="btn btn-color"
                           style={{ marginLeft: "10px" }}
                           onClick={() =>
-                            document.getElementById("fileInput").click()
+                            document.getElementById("fileInput_01").click()
                           }
                         >
                           Browse
