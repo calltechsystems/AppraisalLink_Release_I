@@ -76,169 +76,185 @@ function SmartTable(props) {
   }, [props.dataFetched, props.properties]);
 
   function extractTextFromReactElement(element) {
-    if (typeof element === 'string') {
-        return element; // If it's a string, return it directly
+    if (typeof element === "string") {
+      return element; // If it's a string, return it directly
     } else if (Array.isArray(element)) {
-        // If it's an array of elements, recursively call this function for each element
-        return element.map(child => extractTextFromReactElement(child)).join('');
-    } else if (typeof element === 'object' && element !== null) {
-        // If it's an object (React element), recursively call this function on its children
-        return extractTextFromReactElement(element.props.children);
+      // If it's an array of elements, recursively call this function for each element
+      return element
+        .map((child) => extractTextFromReactElement(child))
+        .join("");
+    } else if (typeof element === "object" && element !== null) {
+      // If it's an object (React element), recursively call this function on its children
+      return extractTextFromReactElement(element.props.children);
     } else {
-        return ''; // Return an empty string if the element is not recognized
+      return ""; // Return an empty string if the element is not recognized
     }
-}
-
-const handlePrint = async () => {
-  try {
-    // Fetch data
-    const allData = props.properties;
-
-    // Open print window and set up basic structure
-    const printWindow = window.open("", "_blank");
-    printWindow.document.write(
-      "<html><head><title>Company Wishlisted Properties</title></head><body>" +
-      // Add CSS styles within the <style> tag
-      "<style>" +
-      // Define your CSS styles here
-      "table { width: 100%; border-collapse: collapse; font-size:12px; font-family:arial;}" +
-      "th, td { border: 1px solid black; padding: 8px; }" +
-      "th { background-color:#2e008b; color:white; }" +
-      "</style>" +
-      "</head><body>"
-  );
-  printWindow.document.write(
-    ' <img width="60" height="45" class="logo1 img-fluid" style="" src="/assets/images/Appraisal_Land_Logo.png" alt="header-logo2.png"/> <span style="color: #2e008b font-weight: bold; font-size: 24px;">Appraisal</span><span style="color: #97d700; font-weight: bold; font-size: 24px;">Land</span>'
-  );
-  printWindow.document.write(
-    "<h3>Company Wishlisted's Properties</h3>" +
-      "<style>" +
-      "h3{text-align:center;}" +
-      "</style>"
-  );
-  printWindow.document.write(
-    '<button style="display:none;" onclick="window.print()">Print</button>'
-  );
-
-    // Create a new table element to hold all data
-    const clonedTable = document.createElement("table");
-
-    // Create table headers
-    const tableHeaderRow = document.createElement("tr");
-    const staticHeaders = [
-      ["order_id", "Order Id"],
-      ["address", "Address"],
-      ["status", "Status"],
-      ["appraisal_status", "Appraisal Status"],
-      ["remark", "Remark"],
-      ["urgency", "Urgency"],
-      ["date", "Submission Date"],
-      ["type_of_building", "Type Of Building"],
-      ["estimated_value", "Estimated Property Value ($)"],
-      ["type_of_appraisal", "Type Of Appraisal"],
-      ["purpose", "Purpose"],
-      ["lender_information", "Lender Information"],
-    ];
-    staticHeaders.forEach((headerText) => {
-      const th = document.createElement("th");
-      th.textContent = headerText[1];
-      tableHeaderRow.appendChild(th);
-    });
-    clonedTable.appendChild(tableHeaderRow);
-
-    // Iterate over all data and append rows to the table body
-    const tableBody = document.createElement("tbody");
-    // Iterate over all data and append rows to the table body
-    allData.forEach((item) => {
-      const row = tableBody.insertRow();
-      staticHeaders.forEach((header) => {
-        const cell = row.insertCell();
-        if (
-          header[0].toLowerCase() === "appraisal_status" ||
-          header[0].toLowerCase() === "status"
-        ) {
-          const value = item[header[0].toLowerCase()];
-          const className = value.props.className;
-          const content = header[0].toLowerCase() === "appraisal_status" ?
-           extractTextFromReactElement(value.props.children).split("Current Status")[0] : value.props.children;
-
-
-          // Create a span element to contain the content
-          const spanElement = document.createElement("span");
-          spanElement.textContent = content;
-
-          // Apply styles based on className
-          if (className.includes("btn-warning")) {
-            spanElement.style.backgroundColor = "";
-            spanElement.style.color = "#E4A11B";
-            spanElement.style.height = "max-content";
-            spanElement.style.width = "120px";
-            spanElement.style.padding = "8px";
-            spanElement.style.fontWeight = "bold";
-          } else if (className.includes("btn-danger")) {
-            spanElement.style.backgroundColor = "";
-            spanElement.style.color = "#DC4C64";
-            spanElement.style.height = "max-content";
-            spanElement.style.width = "120px";
-            spanElement.style.padding = "8px";
-            spanElement.style.fontWeight = "bold";
-            // Add more styles as needed
-          } else if (className.includes("btn-success")) {
-            spanElement.style.backgroundColor = "";
-            spanElement.style.color = "#14A44D";
-            spanElement.style.height = "max-content";
-            spanElement.style.width = "120px";
-            spanElement.style.padding = "8px";
-            spanElement.style.fontWeight = "bold";
-            // Add more styles as needed
-          } else {
-            spanElement.style.backgroundColor = "";
-            spanElement.style.color = "#54B4D3";
-            spanElement.style.height = "max-content";
-            spanElement.style.width = "120px";
-            spanElement.style.padding = "8px";
-            spanElement.style.fontWeight = "bold";
-          }
-
-          // Append the span element to the cell
-          cell.appendChild(spanElement);
-        } else if (header[0].toLowerCase() === "assigned_appraiser") {
-          const value = item[header[0].toLowerCase()];
-          const content = value.props.children;
-          const spanElement = document.createElement("span");
-          spanElement.textContent = content;
-          spanElement.style.backgroundColor = "transparent";
-          spanElement.style.border = "0px";
-          spanElement.style.color =
-            content === "Assigned" ? "green" : "black";
-          spanElement.style.textDecoration = "underline";
-
-          cell.appendChild(spanElement);
-        } else {
-          cell.textContent = item[header[0].toLowerCase()];
-        }
-      });
-    });
-
-    clonedTable.appendChild(tableBody);
-    clonedTable.appendChild(tableBody);
-
-    // Write the table to the print window
-    printWindow.document.write(clonedTable.outerHTML);
-    printWindow.document.write("</body></html>");
-    printWindow.document.close();
-
-    // Print and handle post-print actions
-    printWindow.print();
-    printWindow.onafterprint = () => {
-      printWindow.close();
-      toast.success("Saved the data");
-    };
-  } catch (error) {
-    console.error("Error handling print:", error);
   }
-};
 
+  const handlePrint = async () => {
+    try {
+      // Fetch data
+      const allData = props.properties;
+
+      // Open print window and set up basic structure
+      const printWindow = window.open("", "_blank");
+      printWindow.document.write(
+        "<html><head><title>Appraiser Land</title></head><body>" +
+          // Add CSS styles within the <style> tag
+          "<style>" +
+          // Define your CSS styles here
+          "@media print {" +
+          "  footer { position: fixed; bottom: 0; width: 100%; text-align: center; }" +
+          "}" +
+          "table { width: 100%; border-collapse: collapse; font-size:12px; font-family:arial;}" +
+          "th, td { border: 1px solid black; padding: 8px; }" +
+          "th { background-color:; color:black;  }" +
+          "</style>" +
+          "</head><body>"
+      );
+      printWindow.document.write(
+        ' <img width="60" height="45" class="logo1 img-fluid" style="" src="/assets/images/Appraisal_Land_Logo.png" alt="header-logo2.png"/> <span style="color: #2e008b font-weight: bold; font-size: 24px;">Appraisal</span><span style="color: #97d700; font-weight: bold; font-size: 24px;">Land</span>'
+      );
+      printWindow.document.write(
+        "<h3>Properties Information</h3>" +
+          "<style>" +
+          "h3{text-align:center;}" +
+          "</style>"
+      );
+      printWindow.document.write(
+        '<button style="display:none;" onclick="window.print()">Print</button>'
+      );
+
+      // Create a new table element to hold all data
+      const clonedTable = document.createElement("table");
+
+      // Create table headers
+      const tableHeaderRow = document.createElement("tr");
+      const staticHeaders = [
+        ["order_id", "Order Id"],
+        ["address", "Property Address"],
+        ["status", "Order Status"],
+        ["appraisal_status", "Appraisal Status"],
+        ["remark", "Remark"],
+        ["date", "Submission Date"],
+        ["quote_required_by", "Appraisal Report Required By"],
+        ["urgency", "Request Type"],
+        ["type_of_building", "Property Type"],
+        ["estimated_value", "Estimated Property Value ($)"],
+        ["purpose", "Purpose"],
+        ["type_of_appraisal", "Type Of Appraisal"],
+        ["lender_information", "Lender Information"],
+      ];
+      staticHeaders.forEach((headerText) => {
+        const th = document.createElement("th");
+        th.textContent = headerText[1];
+        tableHeaderRow.appendChild(th);
+      });
+      clonedTable.appendChild(tableHeaderRow);
+
+      // Iterate over all data and append rows to the table body
+      const tableBody = document.createElement("tbody");
+      // Iterate over all data and append rows to the table body
+      allData.forEach((item) => {
+        const row = tableBody.insertRow();
+        staticHeaders.forEach((header) => {
+          const cell = row.insertCell();
+          if (
+            header[0].toLowerCase() === "appraisal_status" ||
+            header[0].toLowerCase() === "status"
+          ) {
+            const value = item[header[0].toLowerCase()];
+            const className = value.props.className;
+            const content =
+              header[0].toLowerCase() === "appraisal_status"
+                ? extractTextFromReactElement(value.props.children).split(
+                    "Current Status"
+                  )[0]
+                : value.props.children;
+
+            // Create a span element to contain the content
+            const spanElement = document.createElement("span");
+            spanElement.textContent = content;
+
+            // Apply styles based on className
+            if (className.includes("btn-warning")) {
+              spanElement.style.backgroundColor = "";
+              spanElement.style.color = "#E4A11B";
+              spanElement.style.height = "max-content";
+              spanElement.style.width = "120px";
+              spanElement.style.padding = "8px";
+              spanElement.style.fontWeight = "bold";
+            } else if (className.includes("btn-danger")) {
+              spanElement.style.backgroundColor = "";
+              spanElement.style.color = "#DC4C64";
+              spanElement.style.height = "max-content";
+              spanElement.style.width = "120px";
+              spanElement.style.padding = "8px";
+              spanElement.style.fontWeight = "bold";
+              // Add more styles as needed
+            } else if (className.includes("btn-success")) {
+              spanElement.style.backgroundColor = "";
+              spanElement.style.color = "#14A44D";
+              spanElement.style.height = "max-content";
+              spanElement.style.width = "120px";
+              spanElement.style.padding = "8px";
+              spanElement.style.fontWeight = "bold";
+              // Add more styles as needed
+            } else {
+              spanElement.style.backgroundColor = "";
+              spanElement.style.color = "#54B4D3";
+              spanElement.style.height = "max-content";
+              spanElement.style.width = "120px";
+              spanElement.style.padding = "8px";
+              spanElement.style.fontWeight = "bold";
+            }
+
+            // Append the span element to the cell
+            cell.appendChild(spanElement);
+          } else if (header[0].toLowerCase() === "assigned_appraiser") {
+            const value = item[header[0].toLowerCase()];
+            const content = value.props.children;
+            const spanElement = document.createElement("span");
+            spanElement.textContent = content;
+            spanElement.style.backgroundColor = "transparent";
+            spanElement.style.border = "0px";
+            spanElement.style.color =
+              content === "Assigned" ? "green" : "black";
+            spanElement.style.textDecoration = "underline";
+
+            cell.appendChild(spanElement);
+          } else {
+            cell.textContent = item[header[0].toLowerCase()];
+          }
+        });
+      });
+
+      clonedTable.appendChild(tableBody);
+      clonedTable.appendChild(tableBody);
+
+      // Write the table to the print window
+      printWindow.document.write(clonedTable.outerHTML);
+      printWindow.document.write("</body>");
+      // Add footer link
+      printWindow.document.write("<footer>");
+      printWindow.document.write(
+        '<p style="text-align:center;"><a href="https://appraisalland.vercel.app/">https://appraisalland.vercel.app/</a></p>'
+      );
+      printWindow.document.write("</footer>");
+
+      printWindow.document.write("</html>");
+      printWindow.document.close();
+
+      // Print and handle post-print actions
+      printWindow.print();
+      printWindow.onafterprint = () => {
+        printWindow.close();
+        toast.success("Saved the data");
+      };
+    } catch (error) {
+      console.error("Error handling print:", error);
+    }
+  };
 
   const handleExcelPrint = () => {
     const twoDData = props.data.map((item, index) => {
@@ -420,8 +436,9 @@ const handlePrint = async () => {
           <ul className="mb0 mt-0">
             <li className="list-inline-item">
               <Filtering
-               filterQuery={props.filterQuery}
-               setFilterQuery={props.setFilterQuery} />
+                filterQuery={props.filterQuery}
+                setFilterQuery={props.setFilterQuery}
+              />
             </li>
             {/* <li className="list-inline-item">
           <FilteringBy setFilterQuery={props.setSearchQuery} />
@@ -429,8 +446,9 @@ const handlePrint = async () => {
             <li className="list-inline-item" style={{ marginRight: "15px" }}>
               <div className="candidate_revew_search_box course fn-520">
                 <SearchBox
-                 searchInput={props.searchInput}
-                 setSearchInput={props.setSearchInput} />
+                  searchInput={props.searchInput}
+                  setSearchInput={props.setSearchInput}
+                />
               </div>
             </li>
             <li className="list-inline-item">

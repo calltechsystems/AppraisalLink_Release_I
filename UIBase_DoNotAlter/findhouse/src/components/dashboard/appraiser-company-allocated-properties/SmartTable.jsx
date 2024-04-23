@@ -76,19 +76,20 @@ function SmartTable(props) {
   }, [props.dataFetched, props.properties]);
 
   function extractTextFromReactElement(element) {
-    if (typeof element === 'string') {
-        return element; // If it's a string, return it directly
+    if (typeof element === "string") {
+      return element; // If it's a string, return it directly
     } else if (Array.isArray(element)) {
-        // If it's an array of elements, recursively call this function for each element
-        return element.map(child => extractTextFromReactElement(child)).join('');
-    } else if (typeof element === 'object' && element !== null) {
-        // If it's an object (React element), recursively call this function on its children
-        return extractTextFromReactElement(element.props.children);
+      // If it's an array of elements, recursively call this function for each element
+      return element
+        .map((child) => extractTextFromReactElement(child))
+        .join("");
+    } else if (typeof element === "object" && element !== null) {
+      // If it's an object (React element), recursively call this function on its children
+      return extractTextFromReactElement(element.props.children);
     } else {
-        return ''; // Return an empty string if the element is not recognized
+      return ""; // Return an empty string if the element is not recognized
     }
-}
-
+  }
 
   const handlePrint = async () => {
     try {
@@ -100,13 +101,16 @@ function SmartTable(props) {
       // Open print window and set up basic structure
       const printWindow = window.open("", "_blank");
       printWindow.document.write(
-        "<html><head><title>Company Assigned Properties</title></head><body>" +
+        "<html><head><title>Appraiser Land</title></head><body>" +
           // Add CSS styles within the <style> tag
           "<style>" +
           // Define your CSS styles here
+          "@media print {" +
+          "  footer { position: fixed; bottom: 0; width: 100%; text-align: center; }" +
+          "}" +
           "table { width: 100%; border-collapse: collapse; font-size:12px; font-family:arial;}" +
           "th, td { border: 1px solid black; padding: 8px; }" +
-          "th { background-color:#2e008b; color:white; }" +
+          "th { background-color:; color:black;  }" +
           "</style>" +
           "</head><body>"
       );
@@ -114,7 +118,7 @@ function SmartTable(props) {
         ' <img width="60" height="45" class="logo1 img-fluid" style="" src="/assets/images/Appraisal_Land_Logo.png" alt="header-logo2.png"/> <span style="color: #2e008b font-weight: bold; font-size: 24px;">Appraisal</span><span style="color: #97d700; font-weight: bold; font-size: 24px;">Land</span>'
       );
       printWindow.document.write(
-        "<h3>Company Assigned Properties</h3>" +
+        "<h3>Properties Information</h3>" +
           "<style>" +
           "h3{text-align:center;}" +
           "</style>"
@@ -122,7 +126,6 @@ function SmartTable(props) {
       printWindow.document.write(
         '<button style="display:none;" onclick="window.print()">Print</button>'
       );
-
       // Create a new table element to hold all data
       const clonedTable = document.createElement("table");
 
@@ -131,15 +134,17 @@ function SmartTable(props) {
       const staticHeaders = [
         ["order_id", "Order Id"],
         ["appraiser_info", "AppraiserInfo"],
-        ["address", "Address"],
-        ["status", "Status"],
+        ["address", "Property Address"],
+        ["status", "Order Status"],
         ["appraisal_status", "Appraisal Status"],
         ["remark", "Remark"],
-        ["urgency", "Urgency"],
         ["date", "Submission Date"],
-        ["type_of_building", "Type Of Building"],
+        ["quote_required_by", "Appraisal Report Required By"],
+        ["urgency", "Request Type"],
+        ["type_of_building", "Property Type"],
         ["estimated_value", "Estimated Property Value ($)"],
         ["purpose", "Purpose"],
+        ["type_of_appraisal", "Type Of Appraisal"],
         ["lender_information", "Lender Information"],
       ];
       staticHeaders.forEach((headerText) => {
@@ -162,14 +167,17 @@ function SmartTable(props) {
           ) {
             const value = item[header[0].toLowerCase()];
             const className = value.props.className;
-            const content = header[0].toLowerCase() === "appraisal_status" ?
-             extractTextFromReactElement(value.props.children).split("Current Status")[0] : value.props.children;
-  
-  
+            const content =
+              header[0].toLowerCase() === "appraisal_status"
+                ? extractTextFromReactElement(value.props.children).split(
+                    "Current Status"
+                  )[0]
+                : value.props.children;
+
             // Create a span element to contain the content
             const spanElement = document.createElement("span");
             spanElement.textContent = content;
-  
+
             // Apply styles based on className
             if (className.includes("btn-warning")) {
               spanElement.style.backgroundColor = "";
@@ -202,7 +210,7 @@ function SmartTable(props) {
               spanElement.style.padding = "8px";
               spanElement.style.fontWeight = "bold";
             }
-  
+
             // Append the span element to the cell
             cell.appendChild(spanElement);
           } else if (header[0].toLowerCase() === "appraiser_info") {
@@ -228,7 +236,15 @@ function SmartTable(props) {
 
       // Write the table to the print window
       printWindow.document.write(clonedTable.outerHTML);
-      printWindow.document.write("</body></html>");
+      printWindow.document.write("</body>");
+      // Add footer link
+      printWindow.document.write("<footer>");
+      printWindow.document.write(
+        '<p style="text-align:center;"><a href="https://appraisalland.vercel.app/">https://appraisalland.vercel.app/</a></p>'
+      );
+      printWindow.document.write("</footer>");
+
+      printWindow.document.write("</html>");
       printWindow.document.close();
 
       // Print and handle post-print actions
@@ -417,9 +433,10 @@ function SmartTable(props) {
         <div className="candidate_revew_select style2 mb30-991">
           <ul className="mb0 mt-0">
             <li className="list-inline-item">
-              <Filtering 
-              filterQuery={props.filterQuery}
-              setFilterQuery={props.setFilterQuery} />
+              <Filtering
+                filterQuery={props.filterQuery}
+                setFilterQuery={props.setFilterQuery}
+              />
             </li>
             {/* <li className="list-inline-item">
           <FilteringBy setFilterQuery={props.setSearchQuery} />
@@ -427,9 +444,10 @@ function SmartTable(props) {
             .
             <li className="list-inline-item" style={{ marginRight: "15px" }}>
               <div className="candidate_revew_search_box course fn-520">
-                <SearchBox 
-                searchInput={props.searchInput}
-                setSearchInput={props.setSearchInput} />
+                <SearchBox
+                  searchInput={props.searchInput}
+                  setSearchInput={props.setSearchInput}
+                />
               </div>
             </li>
             <li className="list-inline-item">
