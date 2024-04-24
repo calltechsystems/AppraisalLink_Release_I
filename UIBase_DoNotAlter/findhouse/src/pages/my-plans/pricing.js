@@ -311,9 +311,9 @@ const Pricing = ({
                   className="pricing_footer btn btn-color_01 form-select"
                 >
                   <option value={1}>Modify/Cancel Subscription </option>
-                  <option value={3}>
+                  {/* <option value={3}>
                     Add {topupData[0].noOfProperties} Properties
-                  </option>
+                  </option> */}
                   <option value={4}>
                     Add {topupData[1].noOfProperties} Properties
                   </option>

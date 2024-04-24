@@ -336,7 +336,12 @@ export default function Exemple({
                 >
                   <div className="btn btn-color fw-bold m-1">
                     {/* <Link
-                      href="assets/images/Terms & Conditions.pdf"
+                      href={
+                        propertyWhole?.lenderListUrl
+                          ? propertyWhole?.lenderListUrl
+                          : "#"
+                      }
+                      download
                       target="_blank"
                       className="form-check-label text-primary"
                     >
