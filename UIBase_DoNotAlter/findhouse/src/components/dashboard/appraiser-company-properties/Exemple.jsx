@@ -418,11 +418,14 @@ export default function Exemple({
     return assigned;
   };
   useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    const userActivePlans = userData?.userSubscription?.$values;
     const getData = () => {
       properties.map((property, index) => {
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
         const anotherBid = alreadyAccepted(property);
+        const haveSubscription = userActivePlans?.length > 0 ? userActivePlans[0]?.$id ? true : false : false;
 
         const isAssigned = checkIfPropertyAlreadyAssigned(property.$id);
 
@@ -748,7 +751,7 @@ export default function Exemple({
                       </li>
                     )}
 
-                    {(!isBidded.$id || isBidded?.status < 1) && !isWait && !anotherBid && (
+                    {(!isBidded.$id || isBidded?.status < 1) && !isWait && !anotherBid &&haveSubscription && (
                       <li
                         className="list-inline-item"
                         data-toggle="tooltip"

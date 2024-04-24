@@ -8,16 +8,203 @@ import StatisticsPieChart from "./StatisticsPieChart";
 import PackageData from "./PackageData";
 import { useRouter } from "next/router";
 import SearchUser from "./SearchUser";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const Index = () => {
-  // let userData =(JSON.parse(localStorage.getItem("user"))) ;
-  // const router = useRouter();
+  const [filterQuery, setFilterQuery] = useState("All");
+  const [searchInput, setSearchInput] = useState("");
+  const [allAppraiser, setAllAppraiser] = useState([]);
+  const [properties, setProperties] = useState([]);
+  const [bidChartData, setBidChartData] = useState([]);
+  const [allBids, setBids] = useState([]);
+  const [allPlans, setAllPlans] = useState([]);
+  const [acceptedBids, setAcceptedBids] = useState(0);
+  const [wishlist, setWishlist] = useState([]);
+  const [dataFetched, setDataFetched] = useState([]);
+  const [FilteredData, setFilteredData] = useState();
+  const [refresh, setRefresh] = useState(false);
 
-  // if (!userData) {
-  //   router.push("/login");
-  // } else if (!userData?.broker_Details?.firstName) {
-  //   router.push("/my-profile");
-  // }
+  useEffect(() => {
+    setAllAppraiser([]);
+    setBids([]);
+
+    const data = JSON.parse(localStorage.getItem("user"));
+
+    axios
+      .get("/api/getAllListedProperties", {
+        headers: {
+          Authorization: `Bearer ${data?.token}`,
+          "Content-Type": "application/json",
+        },
+        params: {
+          userId: data?.userId,
+        },
+      })
+      .then((res) => {
+        toast.dismiss();
+
+        setDataFetched(true);
+        const prop = res.data.data.properties.$values;
+
+        axios
+          .get("/api/getAllAppraiserCompanies", {
+            headers: {
+              Authorization: `Bearer ${data.token}`,
+            },
+          })
+          .then((appraisersCompany) => {
+            let allActiveAppraiser = 0;
+            const allRequiredAppraiser =
+              appraisersCompany.data.data.result.$values;
+            allRequiredAppraiser.map((appraiser, index) => {
+              if (appraiser.firstName !== null) {
+                allActiveAppraiser += 1;
+              }
+            });
+            setAcceptedBids(allActiveAppraiser);
+            setAllAppraiser(allRequiredAppraiser);
+            axios
+              .get("/api/getAllBids", {
+                headers: {
+                  Authorization: `Bearer ${data.token}`,
+                },
+                params: {
+                  email: data.userEmail,
+                },
+              })
+              .then((res) => {
+                let allAcceptedBids = 0;
+                tempBids = res.data.data.$values;
+
+                setBids(tempBids);
+                axios
+                  .get("/api/appraiserWishlistedProperties", {
+                    headers: {
+                      Authorization: `Bearer ${data?.token}`,
+                      "Content-Type": "application/json",
+                    },
+                  })
+                  .then((res) => {
+                    const tempData = res.data.data.$values;
+                    const responseData = tempData.filter((prop, index) => {
+                      if (String(prop.userId) === String(data.userId)) {
+                        return true;
+                      } else {
+                        return false;
+                      }
+                    });
+                    const tempId = responseData;
+                    setWishlist(responseData);
+                    setProperties(prop);
+                  })
+                  .catch((err) => {
+                    toast.error(err?.response);
+                    setErrorMessage(err?.response);
+                  });
+              })
+              .catch((err) => {});
+          })
+          .catch((err) => {});
+      })
+      .catch((err) => {
+        toast.dismiss();
+        toast.error(err);
+        setDataFetched(false);
+      });
+
+    let tempBids = [];
+
+    setRefresh(false);
+  }, [refresh]);
+
+  useEffect(() => {
+    setBidChartData(generateMonthCountArray());
+  }, [allBids, filterQuery]);
+
+  useEffect(() => {
+    let filteredData = [];
+    allAppraiser.map((appraiser, index) => {
+      if (
+        String(appraiser.firstName)
+          .toLowerCase()
+          .includes(String(searchInput).toLowerCase()) ||
+        String(appraiser.lastName)
+          .toLowerCase()
+          .includes(String(searchInput).toLowerCase())
+      ) {
+        filteredData.push(appraiser);
+      }
+    });
+    setFilteredData(filteredData);
+  }, [searchInput]);
+
+  useEffect(() => {
+    let allAppraisers = [],
+      activeAppraiser = 0;
+    allAppraiser.map((appraiser, index) => {
+      if (filterByDateRange(filterQuery, appraiser.modifiedDateTime)) {
+        allAppraisers.push(appraiser);
+        if (appraiser.firstName !== null) {
+          activeAppraiser += 1;
+        }
+      }
+    });
+
+    setFilteredData(allAppraisers);
+    setAcceptedBids(activeAppraiser);
+  }, [filterQuery]);
+
+  function filterByDateRange(filterQuery, date) {
+    const currentDate = new Date();
+    const dateToCheck = new Date(date);
+    const timeDifference = currentDate - dateToCheck;
+    let timeThreshold;
+    switch (filterQuery) {
+      case "Monthly":
+        timeThreshold = 30 * 24 * 60 * 60 * 1000;
+        break;
+      case "Weekly":
+        timeThreshold = 7 * 24 * 60 * 60 * 1000;
+        break;
+      case "Yearly":
+        timeThreshold = 90 * 24 * 60 * 60 * 1000;
+        break;
+      default:
+        return true;
+    }
+    return timeDifference <= timeThreshold;
+  }
+
+  const refreshHandler = () => {
+    setRefresh(true);
+  };
+
+  const checkIfIsOfAppraiserCompanyBid = (id) => {
+    let isPresent = false;
+    allAppraiser.map((appraiser, index) => {
+      if (String(appraiser.userId) === String(id)) {
+        isPresent = true;
+      }
+    });
+    return isPresent;
+  };
+
+  function generateMonthCountArray() {
+    const monthCountArray = Array(12).fill(0);
+    allBids.map((obj, index) => {
+      const requestMonth = new Date(obj.requestTime).getMonth();
+      if (
+        checkIfIsOfAppraiserCompanyBid(obj.appraiserUserId) &&
+        filterByDateRange(filterQuery, obj.requestTime)
+      ) {
+        monthCountArray[requestMonth]++;
+      }
+    });
+
+    return monthCountArray;
+  }
 
   return (
     <>
@@ -62,15 +249,7 @@ const Index = () => {
                 </div>
                 {/* End Dashboard Navigation */}
 
-                <div
-                  className="row mb-2"
-                  style={{
-                    // display: "flex",
-                    // flexDirection: "row",
-                    // justifyContent: "space-between",
-                    // background: "#97d700",
-                  }}
-                >
+                <div className="row mb-2" style={{}}>
                   <div className="col-lg-11">
                     <div className="breadcrumb_content">
                       <h2 className="breadcrumb_title">
@@ -79,30 +258,43 @@ const Index = () => {
                     </div>
                   </div>
                   <div className="col-lg-1">
-                    <Filtering />
+                    <Filtering
+                      refreshHandler={refreshHandler}
+                      filterQuery={filterQuery}
+                      setFilterQuery={setFilterQuery}
+                    />
                   </div>
                 </div>
               </div>
               {/* End .row */}
 
-              <div className="row">
-                <div className="col-lg-6">
-                  <div className="row">
-                    <AllStatistics />
+              {allAppraiser.length === 0 ? (
+                <div className="ring" style={{ marginBottom: "300px" }}>
+                  Loading
+                  <span className="load"></span>
+                </div>
+              ) : (
+                <div className="row">
+                  <div className="col-lg-6">
+                    <div className="row">
+                      <AllStatistics
+                        totalBids={allAppraiser.length}
+                        acceptedBids={acceptedBids}
+                      />
+                    </div>
+                    <div className="application_statics">
+                      <h4 className="mb-4">View Statistics (Bids Wise)</h4>
+                      <StatisticsChart data={bidChartData} />
+                    </div>
                   </div>
-                  <div className="application_statics">
-                    <h4 className="mb-4">View Statistics</h4>
-                    <StatisticsChart />
+                  <div className="col-lg-6">
+                    <div className="application_statics">
+                      <h4 className="mb-4">Plan Wise Appraisers</h4>
+                      <StatisticsPieChart />
+                    </div>
                   </div>
                 </div>
-                <div className="col-lg-6">
-                  <div className="application_statics">
-                    <h4 className="mb-4">Plan Wise Appraisers</h4>
-                    <StatisticsPieChart />
-                  </div>
-                </div>
-              </div>
-              {/* End .row Dashboard top statistics */}
+              )}
 
               <div className="row mt-5">
                 <div className="col-lg-12">
@@ -110,52 +302,31 @@ const Index = () => {
                     <div className="col-lg-12">
                       <div className="row">
                         <div className="col-lg-8">
-                          <h4 className="mt-2">All Brokers</h4>
+                          <h4 className="mt-2">All Appraiser Companies</h4>
                         </div>
                         <div className="col-lg-4 mb-2 candidate_revew_search_box">
-                          <SearchUser />
+                          <SearchUser
+                            searchInput={searchInput}
+                            setSearchInput={setSearchInput}
+                          />
                         </div>
                       </div>
                       <div className="packages_table">
                         <div className="table-responsive mt0">
-                          <PackageData />
+                          <PackageData
+                            data={
+                              searchInput !== "" ? FilteredData : allAppraiser
+                            }
+                            allBids={allBids}
+                          />
                         </div>
                       </div>
-                      {/* End .packages_table */}
-
-                      {/* <div className="pck_chng_btn text-end">
-                        <button className="btn btn-lg">Update Package</button>
-                      </div> */}
                     </div>
                   </div>
                 </div>
               </div>
-              {/* End .row */}
 
-              <div className="row">
-                {/* <div className="col-xl-6">
-                  <div className="application_statics">
-                    <h4 className="mb-4">View Statistics</h4>
-                    <StatisticsChart />
-                  </div>
-                </div>
-                <div className="col-xl-6">
-                  <div className="application_statics">
-                    <h4 className="mb-4">Plan Wise Brokers</h4>
-                    <StatisticsPieChart />
-                  </div>
-                </div> */}
-
-                {/* End statistics chart */}
-
-                {/*<div className="col-xl-5">
-                  <div className="recent_job_activity">
-                    <h4 className="title mb-4">Recent Activities</h4>
-                    <Activities />
-                  </div>
-                </div>*/}
-              </div>
-              {/* End .row  */}
+              <div className="row"></div>
 
               <div className="row mt50">
                 <div className="col-lg-12">
@@ -164,9 +335,7 @@ const Index = () => {
                   </div>
                 </div>
               </div>
-              {/* End .row */}
             </div>
-            {/* End .col */}
           </div>
         </div>
       </section>

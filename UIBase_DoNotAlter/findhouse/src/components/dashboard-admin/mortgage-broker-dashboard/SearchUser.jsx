@@ -1,4 +1,4 @@
-const SearchUser = () => {
+const SearchUser = ({searchInput,setSearchInput}) => {
   return (
     <form className="form-inline d-flex">
       <input
@@ -7,6 +7,8 @@ const SearchUser = () => {
         placeholder="Serach Broker"
         aria-label="Search"
         required
+        value={searchInput}
+        onChange={(e)=>setSearchInput(e.target.value)}
       />
       <button className="btn" type="submit">
         <span className="flaticon-magnifying-glass"></span>
