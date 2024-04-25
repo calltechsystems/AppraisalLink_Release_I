@@ -12,85 +12,85 @@ import Image from "next/image";
 const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const router = useRouter();
-  const [currentSubscription , setcurrentSubscription]  = useState({})
-  const [openRedirectionModal,setopenRedirectionModal] = useState(false)
+  const [currentSubscription, setcurrentSubscription] = useState({});
+  const [openRedirectionModal, setopenRedirectionModal] = useState(false);
   const [price, setPrice] = useState({
-    title : "Basic",
-    price : 0,
-    type : "plan"
+    title: "Basic",
+    price: 0,
+    type: "plan",
   });
 
-  
-  const [userData , setUserData] = useState({});
+  const [userData, setUserData] = useState({});
 
   function getSelectedPlans(plans) {
     // Get the current date
     const currentDate = new Date();
-  
+
     // Filter plans based on startDate and transactionDetail
-    const selectedPlans = plans.filter(plan => {
+    const selectedPlans = plans.filter((plan) => {
       const startDate = new Date(plan.startDate);
       const isBeforeOrEqualCurrentDate = startDate <= currentDate;
-      const isNotTopUp = !plan.transactionDetail.toLowerCase().includes("topup");
+      const isNotTopUp = !plan.transactionDetail
+        .toLowerCase()
+        .includes("topup");
       return isBeforeOrEqualCurrentDate && isNotTopUp;
     });
-  
+
     return selectedPlans;
   }
-  useEffect(()=>{
-
-    const userData = JSON.parse(localStorage.getItem("user"))
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("user"));
     axios
-    .get("/api/getBrokerTransactions", {
-      headers: {
-        Authorization: `Bearer ${userData?.token}`,
-        "Content-Type": "application/json",
-      },
-      params: {
-        userId: userData?.userId,
-      },
-    })
-    .then((res) => {
-      toast.dismiss();
-      
-      let tempSub = (res.data.data.result.$values);
-
-      let newPlan = {};
-      tempSub?.map((plan,index)=>{
-        const isAccordingToDate = new Date(plan.startDate) <= new Date() &&
-        new Date(plan?.endDate) >= new Date();
-        const isNormalPlan = String(plan.planName).toLowerCase().includes("lite") ||
-        String(plan.planName).toLowerCase().includes("pro") ||
-        String(plan.planName).toLowerCase().includes("ultimate") ;
-        if( isAccordingToDate && isNormalPlan){
-          newPlan=plan
-        }
+      .get("/api/getBrokerTransactions", {
+        headers: {
+          Authorization: `Bearer ${userData?.token}`,
+          "Content-Type": "application/json",
+        },
+        params: {
+          userId: userData?.userId,
+        },
       })
-      setcurrentSubscription(newPlan)
-      setRerender(false);
-    })
-    .catch((err) => {
-      toast.dismiss();
-    });
+      .then((res) => {
+        toast.dismiss();
 
+        let tempSub = res.data.data.result.$values;
 
-    const fetchData = ()=>{
-      const isPaying = (JSON.parse(localStorage.getItem("isPaying")));
-      const data =  (JSON.parse(localStorage.getItem("user"))) ;
+        let newPlan = {};
+        tempSub?.map((plan, index) => {
+          const isAccordingToDate =
+            new Date(plan.startDate) <= new Date() &&
+            new Date(plan?.endDate) >= new Date();
+          const isNormalPlan =
+            String(plan.planName).toLowerCase().includes("lite") ||
+            String(plan.planName).toLowerCase().includes("pro") ||
+            String(plan.planName).toLowerCase().includes("ultimate");
+          if (isAccordingToDate && isNormalPlan) {
+            newPlan = plan;
+          }
+        });
+        setcurrentSubscription(newPlan);
+        setRerender(false);
+      })
+      .catch((err) => {
+        toast.dismiss();
+      });
 
-      if(data){
-       setUserData(data);
-        if(isPaying) {
-         setopenRedirectionModal(true) 
+    const fetchData = () => {
+      const isPaying = JSON.parse(localStorage.getItem("isPaying"));
+      const data = JSON.parse(localStorage.getItem("user"));
+
+      if (data) {
+        setUserData(data);
+        if (isPaying) {
+          setopenRedirectionModal(true);
         }
+      } else {
+        router.push("/login");
       }
-      else{
-        router.push("/login")
-      }
-    }
-    
+    };
+
     fetchData();
-  },[]);
+  }, []);
 
   const openModal = () => {
     setModalOpen(true);
@@ -102,8 +102,19 @@ const Index = () => {
   return (
     <>
       <Seo pageTitle="My Plans" />
-      <MyPlans currentSubscription={currentSubscription} setModalOpen={setModalOpen} setPrice={setPrice} userData={userData} modalOpen={modalOpen}/>
-      <Modal currentSubscription={currentSubscription} modalOpen={modalOpen} closeModal={closeModal} price={price}/>
+      <MyPlans
+        currentSubscription={currentSubscription}
+        setModalOpen={setModalOpen}
+        setPrice={setPrice}
+        userData={userData}
+        modalOpen={modalOpen}
+      />
+      <Modal
+        currentSubscription={currentSubscription}
+        modalOpen={modalOpen}
+        closeModal={closeModal}
+        price={price}
+      />
       {openRedirectionModal && (
         <div className="modal">
           <div className="modal-content">
@@ -155,11 +166,10 @@ const Index = () => {
               style={{ border: "2px solid #97d700" }}
             ></div>
             <div className="col-lg-12 text-center">
-              
               <button
                 disabled={disable}
                 className="btn w-25 btn-color"
-                onClick={()=>setopenRedirectionModal(false)}
+                onClick={() => setopenRedirectionModal(false)}
               >
                 Confirm
               </button>

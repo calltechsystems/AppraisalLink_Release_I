@@ -15,11 +15,11 @@ const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen }) => {
   const [isChecked, setIsChecked] = useState(false);
   const [TopUpData, setTopUpData] = useState([]);
   const [IsAgainLoginPopUp, setIsAgainLoginPopUp] = useState(false);
-  const [userInfo,setUserInfo] = useState({});
-  useEffect(()=>{
+  const [userInfo, setUserInfo] = useState({});
+  useEffect(() => {
     const dataa = JSON.parse(localStorage.getItem("user"));
-    setUserInfo(dataa)
-  },[]);
+    setUserInfo(dataa);
+  }, []);
   const router = useRouter();
   let userData = {};
   useEffect(() => {
@@ -83,11 +83,11 @@ const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen }) => {
 
           const allTopUp = res2.data.data.$values;
           let getUserTopUpData = [];
-          allTopUp.map((top,index)=>{
-            if(String(top.userType) === String(userInfo.userType)){
-              getUserTopUpData.push(top)
+          allTopUp.map((top, index) => {
+            if (String(top.userType) === String(userInfo.userType)) {
+              getUserTopUpData.push(top);
             }
-          })
+          });
           setTopUpData(getUserTopUpData);
           setPlanData(requiredPlans);
         } catch (err) {
@@ -116,7 +116,7 @@ const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen }) => {
 
   return (
     <>
-      <Header userData={userInfo}/>
+      <Header userData={userInfo} />
 
       <MobileMenu />
 
@@ -141,26 +141,29 @@ const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen }) => {
             </div>
           </div>
           <div className="row">
-            <div className="col-lg-12 col-lg-6 maxw100flex-992">
-              
-            </div>
+            <div className="col-lg-12 col-lg-6 maxw100flex-992"></div>
           </div>
           <div className="row">
-            {planData.length === 0 ?
-             <div className="ring">
-             Loading
-             <span className="load"></span>
-           </div>
-            : <Pricing
-              isPlan={selectedPlan === "Monthly" ? 1 : 2}
-              setModalOpen={setModalOpen}
-              setPrice={setPrice}
-              currentSubscription={currentSubscription}
-              data={planData}
-              setData={setPlanData}
-              topupData={TopUpData}
-              userData={userData}
-            />}
+            {planData.length === 0 ? (
+              <div
+                className="ring"
+                style={{ marginTop: "6%", marginLeft: "6%" }}
+              >
+                Loading
+                <span className="load"></span>
+              </div>
+            ) : (
+              <Pricing
+                isPlan={selectedPlan === "Monthly" ? 1 : 2}
+                setModalOpen={setModalOpen}
+                setPrice={setPrice}
+                currentSubscription={currentSubscription}
+                data={planData}
+                setData={setPlanData}
+                topupData={TopUpData}
+                userData={userData}
+              />
+            )}
           </div>
           {/* End .row */}
         </div>
