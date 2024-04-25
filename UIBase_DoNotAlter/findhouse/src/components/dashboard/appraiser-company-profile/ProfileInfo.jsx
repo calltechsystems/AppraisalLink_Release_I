@@ -1,5 +1,5 @@
 "use client";
-
+import { handleDownloadClick } from "./downloadFunction";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { encryptionData } from "../../../utils/dataEncryption";
@@ -682,10 +682,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           type="file"
                           id="fileInput"
                           onChange={(e) =>
-                            handleFileChange2(
+                            handleFileChange(
                               e,
-                              "lenderList",
-                              setSelectedImage2
+                              2
                             )
                           }
                           style={{ display: "none" }} // Hide the actual input element
@@ -716,6 +715,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                             ? selectedImage2.url
                             : ""
                         }
+                        onClick={(event)=>handleDownloadClick(event,selectedImage2.url,`${firstNameRef}_lenderlist.pdf`)}
+                        style={{cursor:"pointer"}}
                       >
                         {selectedImage2.name}
                       </Link>

@@ -10,6 +10,7 @@ import { province } from "../create-listing/data";
 import { designations } from "../create-listing/data";
 import Link from "next/link";
 import { uploadFile } from "./functions";
+import { handleDownloadClick } from "./downloadFunction";
 
 const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   const [profilePhoto, setProfilePhoto] = useState(null);
@@ -686,6 +687,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       <Link
                         target="_blank"
                         rel="noopener noreferrer"
+                        style={{textDecoration:"underline"}}
+                        onClick={(event)=>handleDownloadClick(event,selectedImage2.url,`${firstNameRef}_lenderlist.pdf`)}
                         href={selectedImage2.url}
                       >
                         {selectedImage2.name}

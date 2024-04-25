@@ -53,6 +53,7 @@ const Form = ({
   const passwordRegisterRef = useRef("");
   const userTypeRef = useRef(1);
   const checkRef = useRef("");
+  const [disable,setDisable] =useState(false);
 
   const [isLoading, setLoading] = useState(false);
 
@@ -95,6 +96,7 @@ const Form = ({
     event.preventDefault();
 
     setRegister(false);
+    setDisable(true)
 
     const email = emailRegisterRef.current.value;
     const password = passwordRegister;
@@ -142,12 +144,15 @@ const Form = ({
           } else {
             toast.dismiss();
             toast.error(err.message);
+            window.location.reload()
           }
         })
         .finally(() => {
           setLoading(false);
         });
     }
+    setDisable(false);
+    
   };
 
   const checkPasswordRegisterHandler = (event) => {

@@ -15,7 +15,11 @@ const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen }) => {
   const [isChecked, setIsChecked] = useState(false);
   const [TopUpData, setTopUpData] = useState([]);
   const [IsAgainLoginPopUp, setIsAgainLoginPopUp] = useState(false);
-
+  const [userInfo,setUserInfo] = useState({});
+  useEffect(()=>{
+    const dataa = JSON.parse(localStorage.getItem("user"));
+    setUserInfo(dataa)
+  },[]);
   const router = useRouter();
   let userData = {};
   useEffect(() => {
@@ -72,11 +76,19 @@ const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen }) => {
           const tempPlans = res.data.data.$values;
           let requiredPlans = [];
           tempPlans.map((plan, index) => {
-            if (String(plan?.userType) === "4") {
+            if (String(plan?.userType) === String(userInfo?.userType)) {
               requiredPlans.push(plan);
             }
           });
-          setTopUpData(res2.data.data.$values);
+
+          const allTopUp = res2.data.data.$values;
+          let getUserTopUpData = [];
+          allTopUp.map((top,index)=>{
+            if(String(top.userType) === String(userInfo.userType)){
+              getUserTopUpData.push(top)
+            }
+          })
+          setTopUpData(getUserTopUpData);
           setPlanData(requiredPlans);
         } catch (err) {
           toast.error(err.message);
@@ -104,7 +116,7 @@ const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen }) => {
 
   return (
     <>
-      <Header />
+      <Header userData={userInfo}/>
 
       <MobileMenu />
 
@@ -121,7 +133,7 @@ const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen }) => {
 
       <section className="our-dashbord dashbord bgc-f7 pb50" style={{}}>
         <div className="container-fluid ovh">
-          <div className="col-lg-12 col-xl-12 text-center mt-1 mb-4">
+          <div className="col-lg-12 col-xl-12 text-center mt-1 mb-5">
             <div className="style2 mb30-991">
               <h3 className="heading-forms">
                 Add / Modify / Cancel Subscriptions
@@ -129,44 +141,17 @@ const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen }) => {
             </div>
           </div>
           <div className="row">
-            {/* <div className="col-lg-12 col-lg-6 maxw100flex-992">
-              <div className="main-title text-center">
-                <h2 className="text-dark">Ready to get started?</h2>
-                <p className="text-dark mb-2">
-                  Choose a plan tailored to your needs {selectedPlan}
-                </p>
-                <div className="toggleContainer">
-                  <span className="fw-bold text-dark">Monthly</span>
-                  <div style={{ width: "20%", height: "70%" }}>
-                    <label
-                    // className={`toggleLabel ${selectedPlan}`}
-                    // onClick={togglePlan}
-                    >
-                      <button className="toggleSwitch"></button>
-
-                      <div className="toggle-switch">
-                        <label className="switch">
-                          <input
-                            type="checkbox"
-                            onClick={togglePlan}
-                            checked={isChecked}
-                            onChange={toggleSwitch}
-                          />
-                          <span className="slider round"></span>
-                        </label>
-                      </div>
-                    </label>
-                  </div>
-
-                  <span className="fw-bold text-dark">Yearly</span>
-                </div>
-              </div>
-            </div> */}
+            <div className="col-lg-12 col-lg-6 maxw100flex-992">
+              
+            </div>
           </div>
-          {/* End .row */}
-
-          <div className="row mt-5">
-            <Pricing
+          <div className="row">
+            {planData.length === 0 ?
+             <div className="ring">
+             Loading
+             <span className="load"></span>
+           </div>
+            : <Pricing
               isPlan={selectedPlan === "Monthly" ? 1 : 2}
               setModalOpen={setModalOpen}
               setPrice={setPrice}
@@ -175,7 +160,7 @@ const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen }) => {
               setData={setPlanData}
               topupData={TopUpData}
               userData={userData}
-            />
+            />}
           </div>
           {/* End .row */}
         </div>

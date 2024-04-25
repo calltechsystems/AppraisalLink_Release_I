@@ -283,6 +283,7 @@ const Index = () => {
 
   const closeAssignModal = () => {
     setAssignModal(false);
+    setSelectedAppraiser({})
     setAssignPropertyId(-1);
   };
 

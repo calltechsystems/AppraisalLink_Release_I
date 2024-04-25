@@ -1,7 +1,7 @@
 import Chart from 'chart.js/auto';
 import React, { useRef, useEffect } from 'react';
 
-export default function StatisticsPieChart() {
+export default function StatisticsPieChart({planData}) {
   const canvas = useRef();
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export default function StatisticsPieChart() {
         datasets: [
           {
             label: '',
-            data: [17, 16, 13],
+            data: [...planData],
             backgroundColor: [
               'rgba(255, 99, 132, 0.2)',
               'rgba(54, 162, 235, 0.2)',
@@ -44,7 +44,7 @@ export default function StatisticsPieChart() {
           },
           title: {
             display: true,
-            text: 'Number of Purchased Plans by Brokers',
+            text: 'Number of Active Plans by Appraisers',
           },
         },
       },

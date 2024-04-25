@@ -32,6 +32,7 @@ const Index = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [modalIsPopupOpen, setModalIsPopupOpen] = useState(false);
   const router = useRouter();
+  const [userData,setUserData] = useState({})
   const [modalOpen, setModalOpen] = useState(false);
   const [currentProperty, setCurrentProperty] = useState("");
   const [propertyId, setPropertyId] = useState(null);
@@ -44,6 +45,11 @@ const Index = () => {
   const [start, setStart] = useState(0);
 
   const [end, setEnd] = useState(4);
+
+  useState(()=>{
+    const data = JSON.parse(localStorage.getItem("user"));
+    setUserData(data)
+  },[]);
 
   useEffect(() => {
     setRefresh(true);
@@ -275,25 +281,7 @@ const Index = () => {
     closeModal();
   };
 
-  const [userData, setUserData] = useState({});
 
-  // useEffect(() => {
-  //   const data = JSON.parse(localStorage.getItem("user"));
-  //   if (!data) {
-  //     router.push("/login");
-  //   } else if (!data?.broker_Details?.firstName) {
-  //     router.push("/my-profile");
-  //   }
-  //   if (!data) {
-  //     router.push("/login");
-  //   }
-  //   const fetchData = () => {
-  //     if (data) {
-  //       setUserData(data);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
 
   return (
     <>

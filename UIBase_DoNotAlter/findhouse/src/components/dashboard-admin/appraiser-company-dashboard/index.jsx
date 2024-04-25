@@ -18,6 +18,8 @@ const Index = () => {
   const [allAppraiser, setAllAppraiser] = useState([]);
   const [properties, setProperties] = useState([]);
   const [bidChartData, setBidChartData] = useState([]);
+  const [allHistory, setAllHistory] = useState([]);
+  const [planCount, setPlanCount] = useState([]);
   const [allBids, setBids] = useState([]);
   const [allPlans, setAllPlans] = useState([]);
   const [acceptedBids, setAcceptedBids] = useState(0);
@@ -63,6 +65,60 @@ const Index = () => {
                 allActiveAppraiser += 1;
               }
             });
+            axios
+              .get("/api/getAllSubscriptionHistory", {
+                headers: {
+                  Authorization: `Bearer ${data.token}`,
+                },
+              })
+              .then((historyRes) => {
+                const allHistoryy = historyRes.data.data.$values;
+                let finalHistory = [];
+                let liteCount = 0,
+                  ultimateCount = 0,
+                  proCount = 0;
+                allHistoryy.map((data, index) => {
+                  let row = {};
+                  allRequiredAppraiser.map((app, idx) => {
+                    if (
+                      String(app.userId) === String(data.userId) &&
+                      !row?.$id
+                    ) {
+                      row = data;
+                    }
+                  });
+                  if (row?.$id) {
+                    if (
+                      String(row?.planName).toLowerCase().includes("lite") &&
+                      filterByDateRange(row.createdTime)
+                    ) {
+                      liteCount++;
+                    }
+                    if (
+                      String(row?.planName)
+                        .toLowerCase()
+                        .includes("ultimate") &&
+                      filterByDateRange(row.createdTime)
+                    ) {
+                      ultimateCount++;
+                    }
+                    if (
+                      String(row?.planName).toLowerCase().includes("pro") &&
+                      filterByDateRange(row.createdTime)
+                    ) {
+                      proCount++;
+                    }
+                    finalHistory.push(row);
+                  }
+                });
+                let planArray = [];
+                planArray.push(liteCount);
+                planArray.push(proCount);
+                planArray.push(ultimateCount);
+                setPlanCount(planArray);
+                setAllHistory(finalHistory);
+              })
+              .catch((err) => {});
             setAcceptedBids(allActiveAppraiser);
             setAllAppraiser(allRequiredAppraiser);
             axios
@@ -120,6 +176,38 @@ const Index = () => {
   }, [refresh]);
 
   useEffect(() => {
+    let liteCount = 0,
+      ultimateCount = 0,
+      proCount = 0;
+    allHistory.map((transaction, index) => {
+      if (
+        String(transaction?.planName).toLowerCase().includes("lite") &&
+        filterByDateRange(transaction.createdTime)
+      ) {
+        liteCount++;
+      }
+      if (
+        String(transaction?.planName).toLowerCase().includes("ultimate") &&
+        filterByDateRange(transaction.createdTime)
+      ) {
+        ultimateCount++;
+      }
+      if (
+        String(transaction?.planName).toLowerCase().includes("pro") &&
+        filterByDateRange(transaction.createdTime)
+      ) {
+        proCount++;
+      }
+    });
+
+    let planArray = [];
+    planArray.push(liteCount);
+    planArray.push(proCount);
+    planArray.push(ultimateCount);
+    setPlanCount(planArray);
+  }, [allAppraiser, allBids, allHistory, bidChartData, filterQuery]);
+
+  useEffect(() => {
     setBidChartData(generateMonthCountArray());
   }, [allBids, filterQuery]);
 
@@ -155,6 +243,19 @@ const Index = () => {
     setFilteredData(allAppraisers);
     setAcceptedBids(activeAppraiser);
   }, [filterQuery]);
+
+  const sortFunction = (rows) => {
+    const appraisers = rows;
+    appraisers.sort((a, b) => {
+      if (a?.firstName === null && b?.firstName !== null) {
+      } else if (a?.firstName !== null && b?.firstName === null) {
+        return -1;
+      } else {
+        return a?.firstName?.localeCompare(b?.firstName);
+      }
+    });
+    return appraisers;
+  };
 
   function filterByDateRange(filterQuery, date) {
     const currentDate = new Date();
@@ -290,7 +391,7 @@ const Index = () => {
                   <div className="col-lg-6">
                     <div className="application_statics">
                       <h4 className="mb-4">Plan Wise Appraisers</h4>
-                      <StatisticsPieChart />
+                      <StatisticsPieChart planData={planCount} />
                     </div>
                   </div>
                 </div>
@@ -315,7 +416,9 @@ const Index = () => {
                         <div className="table-responsive mt0">
                           <PackageData
                             data={
-                              searchInput !== "" ? FilteredData : allAppraiser
+                              searchInput !== ""
+                                ? sortFunction(FilteredData)
+                                : sortFunction(allAppraiser)
                             }
                             allBids={allBids}
                           />

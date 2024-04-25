@@ -1,11 +1,8 @@
-import ReCAPTCHA from "react-google-recaptcha";
-import Image from "next/image";
-
-// function onChange(value) {
-//   console.log("Captcha value:", value);
-// }
+import { handleDownloadClick } from "./downloadFunction";
 
 const Form = ({ userData, chnageShowCardHandler }) => {
+
+
   return (
     <form className="contact_form" action="#" style={{ borderRadius: "5px" }}>
       <div className="d-flex justify-content-end mb-2">
@@ -274,11 +271,15 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 href={
-                                  userData?.appraiser_Details?.lenderListUrl !== ""
+                                  userData?.appraiser_Details?.lenderListUrl !==
+                                  ""
                                     ? userData?.appraiser_Details?.lenderListUrl
                                     : ""
                                 }
-                                style={{ cursor: "pointer" }}
+                                onClick={(event)=>handleDownloadClick(event,
+                                  userData?.appraiser_Details?.lenderListUrl,
+                                  `${userData?.appraiser_Details?.firstName}_lenderlist.pdf`)}
+                                style={{ cursor: "pointer",textDecoration:"underline" }}
                               >
                                 Lender List Pdf
                               </a>
@@ -289,129 +290,6 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                     </tbody>
                   </table>
                 </div>
-                {/* <span style={{ fontWeight: "bold" }}>
-                  <h3 className="text-center"> Appraiser Details </h3>
-                </span>
-                <hr />
-                <div className=" col-lg-12">
-                  <div className="row">
-                    <div className="col-lg-12 mt-1 text-start">
-                      <span className="fs-18 fw-bold text-color">Name </span>
-                      {"   "}
-                      <span className="">:</span>
-                      {"   "}
-                      <span className="text-start text-dark fw-bold">
-                        {userData?.appraiser_Details?.firstName}{" "}
-                        {userData?.appraiser_Details?.middleName}{" "}
-                        {userData?.appraiser_Details?.lastName}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-lg-12 mt-1 text-start">
-                      <span className="fs-18 fw-bold text-color">
-                        Company Name{" "}
-                      </span>
-                      {"   "}
-                      <span className="">:</span>
-                      {"   "}
-                      <span className="text-start text-dark fw-bold">
-                        {userData?.appraiser_Details?.companyName}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-lg-12 mt-1 text-start">
-                      <span className="fs-18 fw-bold text-color">
-                        Email Address{" "}
-                      </span>
-                      {"   "}
-                      <span className="">:</span>
-                      {"   "}
-                      <span className="text-start text-dark fw-bold">
-                        {userData?.userEmail}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-lg-12 mt-1 text-start">
-                      <span className="fs-18 fw-bold text-color">Phone </span>
-                      {"   "}
-                      <span className="">:</span>
-                      {"   "}
-                      <span className="text-start text-dark fw-bold">
-                        {userData?.appraiser_Details?.phoneNumber}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-lg-12 mt-1 text-start">
-                      <span className="fs-18 fw-bold text-color">
-                        Cell Number{" "}
-                      </span>
-                      {"   "}
-                      <span className="">:</span>
-                      {"   "}
-                      <span className="text-start text-dark fw-bold">
-                        {userData?.appraiser_Details?.cellNumber}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-lg-12 mt-1 text-start">
-                      <span className="fs-18 fw-bold text-color">
-                        Lender List{" "}
-                      </span>
-                      {"   "}
-                      <span className="">:</span>
-                      {"   "}
-                      <span className="text-start text-dark fw-bold">
-                        <a
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          href={
-                            userData?.appraiser_Details?.lenderListUrl
-                              ? userData?.appraiser_Details?.lenderListUrl
-                              : "#"
-                          }
-                          style={{ cursor: "pointer" }}
-                        >
-                          Lender List Pdf
-                        </a>
-                      </span>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-lg-12 mt-1 text-start">
-                      <span className="fs-18 fw-bold text-color">
-                        Designation{" "}
-                      </span>
-                      {"   "}
-                      <span className="">:</span>
-                      {"   "}
-                      <span className="text-start text-dark fw-bold">
-                        {userData?.appraiser_Details?.mortageBrokerageLicNo}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-lg-12 mt-1 text-start">
-                      <span className="fs-18 fw-bold text-color">Address </span>
-                      {"   "}
-                      <span className="">:</span>
-                      {"   "}
-                      <span className="text-start text-dark fw-bold">
-                        {userData?.appraiser_Details?.streetNumber}{" "}
-                        {userData?.appraiser_Details?.streetName}
-                        {userData?.appraiser_Details?.unit}{" "}
-                        {userData?.appraiser_Details?.city},{" "}
-                        {userData?.appraiser_Details?.province},{" "}
-                        {userData?.appraiser_Details?.postalCode}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <hr /> */}
               </div>
             </div>
             {/* End .col */}

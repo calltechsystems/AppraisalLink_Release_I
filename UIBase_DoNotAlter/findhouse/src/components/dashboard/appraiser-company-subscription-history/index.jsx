@@ -11,12 +11,17 @@ const Index = () => {
   const [data, setData] = useState([]);
   const router = useRouter();
   let userData = {};
+  const [userInfo,setUserInfo] = useState({});
   const [dataFetched, setDataFetched] = useState(false);
 
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
   );
 
+  useState(()=>{
+    const dataa = JSON.parse(localStorage.getItem("user"));
+    setUserInfo(dataa)
+  },[]);
   useEffect(() => {
     const activityHandler = () => {
       setLastActivityTimestamp(Date.now());
@@ -100,7 +105,7 @@ const Index = () => {
   return (
     <>
       {/* <!-- Main Header Nav --> */}
-      <Header userData={userData} />
+      <Header userData={userInfo} />
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />

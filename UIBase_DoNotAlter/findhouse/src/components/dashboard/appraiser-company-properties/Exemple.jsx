@@ -502,7 +502,7 @@ export default function Exemple({
             remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
             status:
             (anotherBid === true && isBidded.status !== 2)    ? (
-              <span className="btn btn-danger  w-100">Broker has already selected the quote</span>
+              <span className="btn btn-danger  w-100">Rejected</span>
             ) :
               
              ( isBidded?.bidId && isBidded.status === 2)  ? (

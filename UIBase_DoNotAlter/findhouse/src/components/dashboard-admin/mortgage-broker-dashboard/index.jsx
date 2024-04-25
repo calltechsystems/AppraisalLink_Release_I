@@ -19,16 +19,19 @@ const Index = () => {
   const [properties, setProperties] = useState([]);
   const [bidChartData, setBidChartData] = useState([]);
   const [allBids, setBids] = useState([]);
+  const [allHistory, setAllHistory] = useState([]);
+  const [planCount, setPlanCount] = useState([]);
   const [allPlans, setAllPlans] = useState([]);
   const [acceptedBids, setAcceptedBids] = useState(0);
   const [wishlist, setWishlist] = useState([]);
   const [dataFetched, setDataFetched] = useState([]);
   const [FilteredData, setFilteredData] = useState();
   const [refresh, setRefresh] = useState(false);
+  const [pieData, setPieData] = useState([]);
 
   useEffect(() => {
     setAllAppraiser([]);
-    setProperties([])
+    setProperties([]);
     setBids([]);
 
     const data = JSON.parse(localStorage.getItem("user"));
@@ -48,7 +51,6 @@ const Index = () => {
 
         setDataFetched(true);
         const prop = res.data.data.properties.$values;
-         
 
         axios
           .get("/api/getAllBrokers", {
@@ -58,26 +60,77 @@ const Index = () => {
           })
           .then((brokerrr) => {
             let allActiveAppraiser = 0;
-            const allrequiredBroker =
-            brokerrr.data.data.$values;
-            let allfinalBrokers = []
-              allrequiredBroker.map((broker, index) => {
-                  prop.map((property,idx)=>{
-                    if(String(property.userId) === String(broker.userId)){
-                      allfinalBrokers.push({
-                        ...property,
-                        firstName : broker.firstName,
-                        lastName : broker.lastName
-                      })
-                      
-                    }
-                  })
-                  if(broker.firstName !==null)
-                   allActiveAppraiser += 1;
+            const allrequiredBroker = brokerrr.data.data.$values;
+            let allfinalBrokers = [];
+            allrequiredBroker.map((broker, index) => {
+              prop.map((property, idx) => {
+                if (String(property.userId) === String(broker.userId)) {
+                  allfinalBrokers.push({
+                    ...property,
+                    firstName: broker.firstName,
+                    lastName: broker.lastName,
+                  });
+                }
+              });
+              if (broker.firstName !== null) allActiveAppraiser += 1;
             });
+            axios
+              .get("/api/getAllSubscriptionHistory", {
+                headers: {
+                  Authorization: `Bearer ${data.token}`,
+                },
+              })
+              .then((historyRes) => {
+                const allHistoryy = historyRes.data.data.$values;
+                let finalHistory = [];
+                let liteCount = 0,
+                  ultimateCount = 0,
+                  proCount = 0;
+                allHistoryy.map((data, index) => {
+                  let row = {};
+                  allrequiredBroker.map((app, idx) => {
+                    if (
+                      String(app.userId) === String(data.userId) &&
+                      !row?.$id
+                    ) {
+                      row = data;
+                    }
+                  });
+                  if (row?.$id) {
+                    if (
+                      String(row?.planName).toLowerCase().includes("lite") &&
+                      filterByDateRange(row.createdTime)
+                    ) {
+                      liteCount++;
+                    }
+                    if (
+                      String(row?.planName)
+                        .toLowerCase()
+                        .includes("ultimate") &&
+                      filterByDateRange(row.createdTime)
+                    ) {
+                      ultimateCount++;
+                    }
+                    if (
+                      String(row?.planName).toLowerCase().includes("pro") &&
+                      filterByDateRange(row.createdTime)
+                    ) {
+                      proCount++;
+                    }
+                    finalHistory.push(row);
+                  }
+                });
+                setAllHistory(finalHistory);
+                let planArray = [];
+                planArray.push(liteCount);
+                planArray.push(proCount);
+                planArray.push(ultimateCount);
+                setPlanCount(planArray);
+              })
+              .catch((err) => {});
             setAcceptedBids(allActiveAppraiser);
             setAllAppraiser(allrequiredBroker);
-            setProperties(allfinalBrokers)
+            setProperties(allfinalBrokers);
             axios
               .get("/api/getAllBids", {
                 headers: {
@@ -137,6 +190,47 @@ const Index = () => {
   }, [properties, filterQuery]);
 
   useEffect(() => {
+    let liteCount = 0,
+      ultimateCount = 0,
+      proCount = 0;
+
+    allHistory.map((transaction, index) => {
+      allAppraiser.map((user, index2) => {
+        if (
+          String(transaction.userId) === String(user?.userId) &&
+          String(transaction?.planName).toLowerCase().includes("lite") &&
+          filterByDateRange(transaction.createdTime)
+        ) {
+          liteCount++;
+        }
+        if (
+          String(transaction.userId) === String(user?.userId) &&
+          String(transaction?.planName).toLowerCase().includes("ultimate") &&
+          filterByDateRange(transaction.createdTime)
+        ) {
+          ultimateCount++;
+        }
+        if (
+          String(transaction.userId) === String(user?.userId) &&
+          String(transaction?.planName).toLowerCase().includes("pro") &&
+          filterByDateRange(transaction.createdTime)
+        ) {
+          proCount++;
+        }
+      });
+    });
+
+    let planArray = [];
+    planArray.push(liteCount);
+    planArray.push(proCount);
+    planArray.push(ultimateCount);
+    setPlanCount(planArray);
+  }, [allHistory, filterQuery, allAppraiser]);
+
+  useEffect(() => {
+    setPieData([...planCount]);
+  }, [planCount]);
+  useEffect(() => {
     let filteredData = [];
     allAppraiser.map((appraiser, index) => {
       if (
@@ -169,6 +263,48 @@ const Index = () => {
     setAcceptedBids(activeAppraiser);
   }, [filterQuery]);
 
+  const isRegularPlan = (planName) => {
+    if (
+      String(planName).toLowerCase().includes("lite") ||
+      String(planName).toLowerCase().includes("lite") ||
+      String(planName).toLowerCase().includes("lite")
+    ) {
+      return true;
+    }
+    return false;
+  };
+
+  const getFormattedData = (users, transactions) => {
+    let formattedUsers = [];
+
+    users.map((user, index) => {
+      let updatedUser = {};
+      transactions.map((detail, index2) => {
+        if (
+          String(user.userId) === String(detail?.userId) &&
+          !updatedUser?.$id &&
+          isRegularPlan(detail?.transactionDetail)
+        ) {
+          updatedUser = {
+            ...user,
+            planName: detail?.transactionDetail,
+            endDate: detail?.endDate,
+          };
+        }
+      });
+      if (updatedUser?.$id) {
+        formattedUsers.push(updatedUser);
+      } else {
+        formattedUsers.push({
+          ...user,
+          planName: "-",
+          endDate: "-",
+        });
+      }
+    });
+    return formattedUsers;
+  };
+
   function filterByDateRange(filterQuery, date) {
     const currentDate = new Date();
     const dateToCheck = new Date(date);
@@ -194,15 +330,24 @@ const Index = () => {
     setRefresh(true);
   };
 
-
+  const sortFunction = (rows) => {
+    const appraisers = rows;
+    appraisers.sort((a, b) => {
+      if (a?.firstName === null && b?.firstName !== null) {
+      } else if (a?.firstName !== null && b?.firstName === null) {
+        return -1;
+      } else {
+        return a?.firstName?.localeCompare(b?.firstName);
+      }
+    });
+    return appraisers;
+  };
 
   function generateMonthCountArray() {
     const monthCountArray = Array(12).fill(0);
     properties.map((obj, index) => {
       const requestMonth = new Date(obj.modifiedDatetime).getMonth();
-      if (
-        filterByDateRange(filterQuery, obj.modifiedDatetime)
-      ) {
+      if (filterByDateRange(filterQuery, obj.modifiedDatetime)) {
         monthCountArray[requestMonth]++;
       }
     });
@@ -287,14 +432,16 @@ const Index = () => {
                       />
                     </div>
                     <div className="application_statics">
-                      <h4 className="mb-4">View Statistics (Appraised Properties Wise)</h4>
+                      <h4 className="mb-4">
+                        View Statistics (Appraised Properties Wise)
+                      </h4>
                       <StatisticsChart data={bidChartData} />
                     </div>
                   </div>
                   <div className="col-lg-6">
                     <div className="application_statics">
                       <h4 className="mb-4">Plan Wise Brokers</h4>
-                      <StatisticsPieChart />
+                      <StatisticsPieChart planData={pieData} />
                     </div>
                   </div>
                 </div>
@@ -319,9 +466,15 @@ const Index = () => {
                         <div className="table-responsive mt0">
                           <PackageData
                             data={
-                              searchInput !== "" ? FilteredData : allAppraiser
+                              searchInput !== ""
+                                ? sortFunction(
+                                    getFormattedData(FilteredData, allHistory)
+                                  )
+                                : sortFunction(
+                                    getFormattedData(allAppraiser, allHistory)
+                                  )
                             }
-                            properties = {properties}
+                            properties={properties}
                             allBids={allBids}
                           />
                         </div>

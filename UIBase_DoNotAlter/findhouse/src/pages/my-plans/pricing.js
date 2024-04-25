@@ -94,7 +94,6 @@ const Pricing = ({
   };
 
   const setPlan = (planId, type) => {
-    console.log(planId);
     setSelectedPlanId(planId);
     setType(type);
     if (String(type) === "2" || String(type) === "3" || String(type) === "4") {
@@ -201,7 +200,6 @@ const Pricing = ({
     }
   }, [isPlan, data]);
 
-  console.log("currentActivePlan", currentActivePlan);
   return (
     <>
       {filteredData?.map((item, idx) => (
@@ -311,11 +309,8 @@ const Pricing = ({
                   className="pricing_footer btn btn-color_01 form-select"
                 >
                   <option value={1}>Modify/Cancel Subscription </option>
-                  {/* <option value={3}>
-                    Add {topupData[0].noOfProperties} Properties
-                  </option> */}
-                  <option value={4}>
-                    Add {topupData[1].noOfProperties} Properties
+                  <option value={3}>
+                    Add {topupData[0]?.noOfProperties} Properties
                   </option>
                   <option value={2}>Cancel Subscription</option>
                 </select>
@@ -366,16 +361,14 @@ const Pricing = ({
               {String(type) === "2"
                 ? "Subscription Cancellation"
                 : String(type) === "3"
-                ? ` Add On ${topupData[0].noOfProperties} Properties`
-                : ` Add On ${topupData[1].noOfProperties} Properties`}
+                ? ` Add On ${topupData[0]?.noOfProperties} Properties`:""}
             </h2>
             <div className="mb-2" style={{ border: "2px solid #97d700" }}></div>
             <p className="fs-5 text-center text-dark mt-4">
               {String(type) === "2"
                 ? "Are you sure you want to cancel this subscription?"
                 : String(type) === "3"
-                ? `Are you sure you want add ${topupData[0].noOfProperties} properties to your existing plan ?`
-                : `Are you sure you want add ${topupData[1].noOfProperties} properties to your existing plan?`}{" "}
+                ? `Are you sure you want add ${topupData[0]?.noOfProperties} properties to your existing plan ?`:""}{" "}
             </p>
 
             <div

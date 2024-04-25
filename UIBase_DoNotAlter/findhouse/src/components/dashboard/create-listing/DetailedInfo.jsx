@@ -2,86 +2,10 @@ import React, { Component, useState } from "react";
 import { useRouter } from "next/router";
 import { CldUploadWidget } from "next-cloudinary";
 
-// const DetailedInfo = () =>{
-
-//     const [userInfo,setUserInfo] = useState( {
-//       firstName: '',
-//       lastName: '',
-//       email: '',
-//       password: '',
-//     });
-
-//   const handleChange = (event) => {
-//     const { name, value } = event.target;
-//     setUserInfo({ [name]: value });
-//   };
-
-//   const handleSubmit = (event) => {
-//     event.preventDefault();
-//     // You can handle form submission here, e.g., send data to a server
-//     console.log('Form data submitted:', userInfo);
-//   };
-
-//     return (
-//       <div className="user-form">
-//         <h2>User Registration</h2>
-//         <form onSubmit={handleSubmit}>
-//           <div className="form-group">
-//             <label htmlFor="firstName">First Name</label>
-//             <input
-//               type="text"
-//               id="firstName"
-//               name="firstName"
-//               value={userInfo.firstName}
-//               onChange={handleChange}
-//               required
-//             />
-//           </div>
-//           <div className="form-group">
-//             <label htmlFor="lastName">Last Name</label>
-//             <input
-//               type="text"
-//               id="lastName"
-//               name="lastName"
-//               value={userInfo.lastName}
-//               onChange={handleChange}
-//               required
-//             />
-//           </div>
-//           <div className="form-group">
-//             <label htmlFor="email">Email</label>
-//             <input
-//               type="email"
-//               id="email"
-//               name="email"
-//               value={userInfo.email}
-//               onChange={handleChange}
-//               required
-//             />
-//           </div>
-//           <div className="form-group">
-//             <label htmlFor="password">Password</label>
-//             <input
-//               type="password"
-//               id="password"
-//               name="password"
-//               value={userInfo.password}
-//               onChange={handleChange}
-//               required
-//             />
-//           </div>
-//           <button type="submit">Register</button>
-//         </form>
-//       </div>
-//     );
-
-// }
-
-// export default DetailedInfo;
-
 import CheckBoxFilter from "../../common/CheckBoxFilter";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { uploadFile } from "./functions";
 const DetailedInfo = ({
   onCancelHandler,
   isDisable,
@@ -138,39 +62,21 @@ const DetailedInfo = ({
     console.log("Number of selected images:", images.length);
   };
 
-  const handleUpload = (e) => {
+  const handleUpload = async (e, type) => {
     const file = e.target.files[0];
-    const userData = JSON.parse(localStorage.getItem("user"));
-
-    const BACKEND_DOMAIN = process.env.BACKEND_DOMAIN;
-    const formdata = {
-      file: file,
-    };
-
-    toast.dismiss("Uploading !!!");
-    axios
-      .post(`${BACKEND_DOMAIN}/FileUpload/fileupload`, formdata, {
-        headers: {
-          Authorization: `Bearer ${userData?.token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((res) => {
-        toast.dismiss();
-        toast.success("Uploaded Successfully !");
-        const image = res.data;
-
-        const imageUrl = image.split("! Access it at: ")[1];
-        let olderUrl = filesUrl;
-        olderUrl.push(imageUrl);
-        setFilesUrl(olderUrl);
-        setAttachment(imageUrl);
-      })
-      .catch((err) => {
-        toast.dismiss();
-        console.log(err);
-        toast.error("Try Again !!");
-      });
+    toast.loading("Uploading..");
+    try {
+      const generatedUrl = await uploadFile(file);
+      toast.dismiss();
+      toast.success("Uploaded Successfully");
+      let allUrl = [...filesUrl];
+      allUrl.push(generatedUrl);
+      setFilesUrl(allUrl)
+      setAttachment(generatedUrl);
+    } catch (err) {
+      toast.dismiss();
+      toast.error("Try Again!");
+    }
   };
 
   const errorLabelStyle = { borderColor: "red" };
@@ -205,239 +111,7 @@ const DetailedInfo = ({
   };
   return (
     <>
-      {/* <div className="row">
-        <div className="col-lg-12">
-          <div className="row mb-2">
-            <div className="col-lg-6">
-              <div className="my_profile_setting_input form-group">
-                <label
-                  htmlFor=""
-                  style={{
-                    paddingTop: "15px",
-                    color: "#1560bd",
-                    fontWeight: "",
-                  }}
-                >
-                  First Name
-                </label>
-              </div>
-              <div className="">
-                <input
-                  style={{
-                    // paddingTop: "15px",
-                    // paddingBottom: "15px",
-                    backgroundColor: "#E8F0FE",
-                    //color: "white",
-                  }}
-                  type="text"
-                  className="form-control"
-                  id="formGroupExampleInput3"
-                  onChange={(e) => setApplicantFirstName(e.target.value)}
-                  value={applicantFirstName}
-                  disabled={isDisable}
-                />
-              </div>
-            </div>
-            <div className="col-lg-6">
-              <div className="my_profile_setting_input form-group">
-                <label
-                  htmlFor=""
-                  style={{
-                    paddingTop: "15px",
-                    color: "#1560bd",
-                    fontWeight: "",
-                  }}
-                >
-                  Last Name
-                </label>
-              </div>
-              <div className="">
-                <input
-                  style={{
-                    // paddingTop: "15px",
-                    // paddingBottom: "15px",
-                    backgroundColor: "#E8F0FE",
-                    //color: "white",
-                  }}
-                  type="text"
-                  className="form-control"
-                  id="formGroupExampleInput3"
-                  onChange={(e) => setApplicantLastName(e.target.value)}
-                  value={applicantLatsName}
-                  disabled={isDisable}
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="row mb-2">
-            <div className="col-lg-6">
-              <div className="my_profile_setting_input form-group">
-                <label
-                  htmlFor=""
-                  style={{
-                    paddingTop: "15px",
-                    color: "#1560bd",
-                    fontWeight: "",
-                  }}
-                >
-                  Phone Number
-                </label>
-              </div>
-              <div className="">
-                <input
-                  style={{
-                    // paddingTop: "15px",
-                    // paddingBottom: "15px",
-                    backgroundColor: "#E8F0FE",
-                    //color: "white",
-                  }}
-                  type="number"
-                  className="form-control"
-                  id="formGroupExampleInput3"
-                  onChange={(e) => setApplicantNumber(e.target.value)}
-                  value={applicantNumber}
-                  disabled={isDisable}
-                />
-              </div>
-            </div>
-            <div className="col-lg-6">
-              <div className="my_profile_setting_input form-group">
-                <label
-                  htmlFor=""
-                  style={{
-                    paddingTop: "15px",
-                    color: "#1560bd",
-                    fontWeight: "",
-                  }}
-                >
-                  Email Address
-                </label>
-              </div>
-              <div className="">
-                <input
-                  style={{
-                    // paddingTop: "15px",
-                    // paddingBottom: "15px",
-                    backgroundColor: "#E8F0FE",
-                    //color: "white",
-                  }}
-                  type="text"
-                  className="form-control"
-                  id="formGroupExampleInput3"
-                  onChange={(e) => setApplicantEmail(e.target.value)}
-                  value={applicantEmail}
-                  disabled={isDisable}
-                />
-              </div>
-            </div>
-          </div>
-          <div className="row mb-2">
-            <div className="col-lg-6">
-              <div className="my_profile_setting_input form-group">
-                <label
-                  htmlFor=""
-                  style={{
-                    paddingTop: "15px",
-                    color: "#1560bd",
-                    fontWeight: "",
-                  }}
-                >
-                  Address
-                </label>
-              </div>
-              <div className="">
-                <input
-                  style={{
-                    // paddingTop: "15px",
-                    // paddingBottom: "15px",
-                    backgroundColor: "#E8F0FE",
-                    //color: "white",
-                  }}
-                  type="text"
-                  className="form-control"
-                  id="formGroupExampleInput3"
-                  // onChange={(e) => setApplicantNumber(e.target.value)}
-                  // value={applicantNumber}
-                  disabled={isDisable}
-                />
-              </div>
-            </div>
-            <div className="col-xl-6">
-              <div className="my_profile_setting_input form-group">
-                <label
-                  htmlFor=""
-                  style={{
-                    paddingTop: "15px",
-                    color: "#1560bd",
-                    fontWeight: "",
-                  }}
-                >
-                  Attachment
-                </label>
-                <form className="form-inline d-flex flex-wrap wrap">
-                  <label className="upload">
-                    <input
-                      style={{
-                        // paddingTop: "15px",
-                        // paddingBottom: "15px",
-                        backgroundColor: "#E8F0FE",
-                        //color: "white",
-                      }}
-                      className="form-control"
-                      type="file"
-                    />
-                  </label>
-                </form>
-              </div>
-            </div>
-          </div>
-          <div className="col-lg-12">
-            <div className="my_profile_setting_textarea">
-              <label
-                htmlFor="propertyDescription"
-                style={{
-                  paddingTop: "15px",
-                  color: "#1560bd",
-                  fontWeight: "",
-                }}
-              >
-                Summary
-              </label>
-              <textarea
-                style={{
-                  // paddingTop: "15px",
-                  // paddingBottom: "15px",
-                  backgroundColor: "#E8F0FE",
-                  //color: "white",
-                }}
-                className="form-control"
-                id="propertyDescription"
-                rows="4"
-              ></textarea>
-            </div>
-          </div>
-          
-          <div className="col-xl-12">
-            <div className="my_profile_setting_input overflow-hidden mt20 text-center">
-              <button className="btn btn5 m-1" onClick={onCancelHandler}>
-                Cancel
-              </button>
-              {!isDisable &&
-                (propertyData ? (
-                  <button className="btn btn5" onClick={updateHandler}>
-                    Update
-                  </button>
-                ) : (
-                  <button className="btn btn5" onClick={submitHandler}>
-                    Submit
-                  </button>
-                ))}
-            </div>
-          </div>
-        </div>
-      </div> */}
-
+     
       <div className="row">
         <div className="col-lg-12">
           <div className="row" style={{ marginBottom: "10px" }}>
@@ -455,8 +129,6 @@ const DetailedInfo = ({
                   checkIsError("applicantFirstName")
                     ? errorLabelStyle
                     : {
-                        // paddingTop: "15px",
-                        // paddingBottom: "15px",
                         backgroundColor: "#E8F0FE",
                         //color: "white",
                       }
@@ -512,27 +184,7 @@ const DetailedInfo = ({
               </label>
             </div>
             <div className="col-lg-7">
-              {/* <input
-                style={
-                  checkIsError("applicantPhoneNumber")
-                    ? errorLabelStyle
-                    : {
-                        // paddingTop: "15px",
-                        // paddingBottom: "15px",
-                        backgroundColor: "#E8F0FE",
-                        //color: "white",
-                      }
-                }
-                type="text"
-                maxLength={10}
-                className="form-control"
-                id="formGroupExampleInput3"
-                onChange={(e) => setApplicantNumber(e.target.value)}
-                pattern="[0-9]*"
-                title="Please enter only 10 digits"
-                value={applicantNumber}
-                disabled={isDisable}
-              /> */}
+            
               <input
                 style={
                   checkIsError("applicantPhoneNumber")
@@ -591,36 +243,7 @@ const DetailedInfo = ({
             </div>
           </div>
 
-          {/*<div className="row" style={{ marginBottom: "10px" }}>
-            <div className="col-lg-3 my_profile_setting_input form-group">
-              <label
-                className="text-color"
-                style={{ paddingTop: "15px", fontWeight: "" }}
-              >
-                Address
-              </label>
-            </div>
-            <div className="col-lg-7">
-              <input
-                style={{
-                  // paddingTop: "15px",
-                  // paddingBottom: "15px",
-                  backgroundColor: "#E8F0FE",
-                  //color: "white",
-                }}
-                type="text"
-                className="form-control"
-                id="formGroupExampleInput3"
-                maxLength={30}
-                onChange={(e)=>setApplicantAddress(e.target.value)}
-                value={applicantAddress}
-                // onChange={(e) => setApplicantEmail(e.target.value)}
-                // value={applicantEmail}
-                // disabled={isDisable}
-              />
-            </div>
-              </div>*/}
-
+        
           <div className="">
             <div className="row my_profile_setting_textarea">
               <div className="col-lg-3">
