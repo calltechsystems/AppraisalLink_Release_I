@@ -249,7 +249,7 @@ const Index = () => {
         }
       }
     });
-
+    
     setFilteredData(allAppraisers);
     setAcceptedBids(activeAppraiser);
   }, [filterQuery]);
@@ -465,6 +465,7 @@ const Index = () => {
                                     getFormattedData(allAppraiser, allHistory)
                                   )
                             }
+                            setRefresh={setRefresh}
                             properties={properties}
                             allBids={allBids}
                           />

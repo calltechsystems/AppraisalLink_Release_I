@@ -420,6 +420,7 @@ const Index = () => {
                                 ? sortFunction(FilteredData)
                                 : sortFunction(allAppraiser)
                             }
+                            setRefresh={setRefresh}
                             allBids={allBids}
                           />
                         </div>

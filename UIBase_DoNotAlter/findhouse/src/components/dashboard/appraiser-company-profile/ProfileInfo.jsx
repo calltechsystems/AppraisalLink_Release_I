@@ -325,6 +325,19 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     }
   };
 
+  // const handleFileChange = async (e, type) => {
+  //   const file = e.target.files[0];
+  //   toast.loading("Uploading..");
+  //   try {
+  //     const generatedUrl = await uploadFile(file);
+  //     toast.dismiss();
+  //     toast.success("Uploaded Successfully");
+  //     setSelectedImage(generatedUrl);
+  //   } catch (err) {
+  //     toast.dismiss();
+  //     toast.error("Try Again!");
+  //   }
+  // };
   const handleFileChange = async (e, type) => {
     const file = e.target.files[0];
     toast.loading("Uploading..");
@@ -332,7 +345,15 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
       const generatedUrl = await uploadFile(file);
       toast.dismiss();
       toast.success("Uploaded Successfully");
-      setSelectedImage(generatedUrl);
+      console.log("generatedUrl", generatedUrl);
+      if (String(type) === "1") {
+        setSelectedImage(generatedUrl);
+      } else {
+        setSelectedImage2({
+          name: file.name,
+          url: generatedUrl,
+        });
+      }
     } catch (err) {
       toast.dismiss();
       toast.error("Try Again!");
@@ -680,13 +701,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       <div>
                         <input
                           type="file"
-                          id="fileInput"
-                          onChange={(e) =>
-                            handleFileChange(
-                              e,
-                              2
-                            )
-                          }
+                          id="fileInput_01"
+                          onChange={(e) => handleFileChange(e, 2)}
                           style={{ display: "none" }} // Hide the actual input element
                         />
                         {/* You can add a button or any other element to trigger file selection */}
@@ -694,7 +710,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           className="btn btn-color"
                           style={{ marginLeft: "10px" }}
                           onClick={() =>
-                            document.getElementById("fileInput").click()
+                            document.getElementById("fileInput_01").click()
                           }
                         >
                           Browse
@@ -715,8 +731,14 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                             ? selectedImage2.url
                             : ""
                         }
-                        onClick={(event)=>handleDownloadClick(event,selectedImage2.url,`${firstNameRef}_lenderlist.pdf`)}
-                        style={{cursor:"pointer"}}
+                        onClick={(event) =>
+                          handleDownloadClick(
+                            event,
+                            selectedImage2.url,
+                            `${firstNameRef}_lenderlist.pdf`
+                          )
+                        }
+                        style={{ cursor: "pointer" }}
                       >
                         {selectedImage2.name}
                       </Link>

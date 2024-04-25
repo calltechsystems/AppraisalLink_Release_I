@@ -414,6 +414,7 @@ const Index = () => {
                       <div className="packages_table">
                         <div className="table-responsive mt0">
                           <PackageData
+                            setRefresh={setRefresh}
                             data={
                               searchInput !== ""
                                 ? sortFunction(FilteredData)

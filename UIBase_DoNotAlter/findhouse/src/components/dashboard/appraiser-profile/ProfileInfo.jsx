@@ -687,8 +687,14 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       <Link
                         target="_blank"
                         rel="noopener noreferrer"
-                        style={{textDecoration:"underline"}}
-                        onClick={(event)=>handleDownloadClick(event,selectedImage2.url,`${firstNameRef}_lenderlist.pdf`)}
+                        style={{ textDecoration: "underline" }}
+                        onClick={(event) =>
+                          handleDownloadClick(
+                            event,
+                            selectedImage2.url,
+                            `${firstNameRef}_lenderlist.pdf`
+                          )
+                        }
                         href={selectedImage2.url}
                       >
                         {selectedImage2.name}

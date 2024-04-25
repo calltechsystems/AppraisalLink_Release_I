@@ -474,6 +474,7 @@ const Index = () => {
                                     getFormattedData(allAppraiser, allHistory)
                                   )
                             }
+                            setRefresh={setRefresh}
                             properties={properties}
                             allBids={allBids}
                           />

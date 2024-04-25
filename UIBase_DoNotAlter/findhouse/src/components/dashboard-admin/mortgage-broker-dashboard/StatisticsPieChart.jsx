@@ -49,7 +49,7 @@ export default function StatisticsPieChart({planData}) {
         },
       },
     });
-  }, []);
+  }, [planData]);
 
   return (
     <div className='container pt-1 pb-2'>

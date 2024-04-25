@@ -2,6 +2,7 @@ import Chart from 'chart.js/auto';
 import React, { useRef, useEffect } from 'react';
 
 export default function StatisticsPieChart({planData}) {
+  
   const canvas = useRef();
 
   useEffect(() => {
@@ -49,7 +50,7 @@ export default function StatisticsPieChart({planData}) {
         },
       },
     });
-  }, []);
+  }, [planData]);
 
   return (
     <div className='container pt-1 pb-2'>

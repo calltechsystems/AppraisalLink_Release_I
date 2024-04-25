@@ -1,5 +1,83 @@
-const SearchData = ({data,allBids}) => {
+import { useEffect, useState } from "react";
+import SmartTable from "./TabularView";
 
+const SearchData = ({data,allBids,setRefresh}) => {
+
+  const [updatedCode,setUpdatedCode] = useState([]);
+  const [dataFetched,setDataFetched] = useState(true);
+  
+
+  const headCells = [
+    {
+      id: "sno",
+      numeric: false,
+      label: "S.no",
+      width: 200,
+    },
+  
+    {
+      id: "appraiser_company",
+      numeric: false,
+      label: "Appraiser Company Name",
+      width: 200,
+    },
+  
+    {
+      id: "bids",
+      numeric: false,
+      label: "No of Bids",
+      width: 200,
+    },
+  
+    {
+      id: "pending_bids",
+      numeric: false,
+      label: "Pending Bids",
+      width: 200,
+    },
+    {
+      id: "completed_bids",
+      numeric: false,
+      label: "Completed Bids",
+      width: 200,
+    },
+  
+    {
+      id: "status",
+      numeric: false,
+      label: "Status",
+      width: 280,
+    },
+  ];
+
+  useEffect(()=>{
+    let tempData = [];
+      const getData = ()=>{
+        data?.map((row,index)=>{
+          const totalBids =  allBidForUser(row.userId).allBid;
+          const pendingBids = allBidForUser(row.userId).pendingBids;
+          const acceptedBids = allBidForUser(row.userId).acceptedBids;
+          const newRow = {
+            sno : index+1,
+            appraiser_company : `${row.firstName} ${row.lastName}`,
+            bids : totalBids,
+            pending_bids : pendingBids,
+            completed_bids : acceptedBids,
+            status : row.firstName ? (
+              <span className="btn btn-success  w-100">Active</span>
+            ) : (
+              <span className="btn btn-danger  w-100">In-Active </span>
+            )
+          };
+
+          tempData.push(newRow);
+        });
+        return tempData;
+       
+      }
+      const resultedArray = getData();
+      setUpdatedCode(resultedArray);
+  },[data,allBids])
   
   const allBidForUser = (id)=>{
     let allBid = 0, acceptedBids = 0;
@@ -11,45 +89,24 @@ const SearchData = ({data,allBids}) => {
         }
       }
     })
-
     const pendingBids = allBid - acceptedBids;
     return {allBid,pendingBids,acceptedBids}
   }
-  return (
-    <table className="table">
-      <thead className="thead-light">
-        <tr>
-          <th scope="col">S.No.</th>
-          <th scope="col">Appraiser Name</th>
-          <th scope="col">No. of Bids</th>
-          <th scope="col">Pending Bids</th>
-          <th scope="col">Completed Bids</th>
-          <th scope="col">Status</th>
-        </tr>
-      </thead>
-      {/* End thead */}
 
-      <tbody>
-        
-        { data ? data.map((item,index)=>{
-          return <tr key={index}>
-          <th scope="row">{index + 1 }</th>
-          <td>{`${item.firstName} ${item.lastName}`}</td>
-          <td>{allBidForUser(item.userId).allBid}</td>
-          <td>{allBidForUser(item.userId).pendingBids}</td>
-          <td>{allBidForUser(item.userId).acceptedBids}</td>
-          <td>{
-          item.firstName ? (
-            <span className="btn btn-success  w-100">Active</span>
-          ) : (
-            <span className="btn btn-danger  w-100">In-Active </span>
-          )}</td>
-        </tr> 
-        }) : ""}
-          
-       
-      </tbody>
-    </table>
+  const refreshHandler = ()=>{
+    setRefresh(true)
+  }
+
+  return (
+   <>
+    <SmartTable
+    headCells={headCells}
+      data={updatedCode}
+      properties={updatedCode}
+      dataFetched={dataFetched}
+      refreshHandler={refreshHandler} 
+    />
+   </>
   );
 };
 

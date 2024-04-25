@@ -255,30 +255,29 @@ export default function Exemple({
 
   function handleDownloadClick(event, url, fileName) {
     event.preventDefault(); // Prevent the default link behavior
-  
+
     // Fetch the PDF file
     fetch(url)
-      .then(response => response.blob())
-      .then(blob => {
+      .then((response) => response.blob())
+      .then((blob) => {
         // Create a URL for the blob
         const blobUrl = window.URL.createObjectURL(blob);
-  
+
         // Create a temporary link element
-        const link = document.createElement('a');
+        const link = document.createElement("a");
         link.href = blobUrl;
         link.download = fileName;
-  
+
         // Append the link to the body and trigger the click event
         document.body.appendChild(link);
         link.click();
-  
+
         // Clean up
         document.body.removeChild(link);
         window.URL.revokeObjectURL(blobUrl);
       })
-      .catch(error => console.error('Error downloading file:', error));
+      .catch((error) => console.error("Error downloading file:", error));
   }
-  
 
   useEffect(() => {
     const prop = getCurrentPropertyInfoHandler();
@@ -348,7 +347,13 @@ export default function Exemple({
                             ? propertyWhole?.lenderListUrl
                             : "#"
                         }
-                        onClick={(event)=>handleDownloadClick(event,propertyWhole?.lenderListUrl,`lenderlist.pdf`)}
+                        onClick={(event) =>
+                          handleDownloadClick(
+                            event,
+                            propertyWhole?.lenderListUrl,
+                            `lenderlist.pdf`
+                          )
+                        }
                         style={{ cursor: "pointer", color: "white" }}
                       >
                         Lender List Pdf
@@ -390,18 +395,20 @@ export default function Exemple({
                       {" "}
                       <a
                         target="_blank"
+                        rel="noopener noreferrer"
                         href={
                           propertyWhole?.lenderListUrl
                             ? propertyWhole?.lenderListUrl
                             : "#"
                         }
-                        download={`${orderId}_LenderlistPDF.pdf`}
-                        // href={
-                        //   userData?.appraiser_Details?.lenderListUrl
-                        //     ? userData?.appraiser_Details?.lenderListUrl
-                        //     : "#"
-                        // }
-                        style={{ cursor: "pointer" }}
+                        onClick={(event) =>
+                          handleDownloadClick(
+                            event,
+                            propertyWhole?.lenderListUrl,
+                            `lenderlist.pdf`
+                          )
+                        }
+                        style={{ cursor: "pointer", color: "white" }}
                       >
                         Lender List Pdf
                       </a>
