@@ -316,9 +316,9 @@ const Pricing = ({
                   <option value={3}>
                     Add {topupData[0].noOfProperties} Properties
                   </option>
-                  <option value={4}>
+                  {/* <option value={4}>
                     Add {topupData[1].noOfProperties} Properties
-                  </option>
+                  </option> */}
                   <option value={2}>Cancel Subscription</option>
                 </select>
               )}
