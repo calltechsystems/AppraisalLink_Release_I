@@ -267,7 +267,7 @@ const Pricing = ({
                 }
               >
                 <a className={`btn btn-color_01 w-100`} href="#">
-                  Get Started
+                  {currentActivePlan?.$id ? "Modify Plan" : "Get Started"}
                 </a>
               </div>
             )}
@@ -289,7 +289,7 @@ const Pricing = ({
                   }
                 >
                   <a className={`btn btn-color_01 w-100`} href="#">
-                    Select Plan
+                    {currentActivePlan?.$id ? "Modify Plan" : "Select Plan"}
                   </a>
                 </div>
               )}
@@ -304,7 +304,7 @@ const Pricing = ({
                   onClick={(e) => setPlan(item.id, e.target.value)}
                   className="pricing_footer btn btn-color_01 form-select"
                 >
-                  <option value={1}>Add Top Up / Cancel  Subscription </option>
+                  <option value={1}>Add Top Up / Cancel Subscription </option>
                   <option value={3}>
                     Add {topupData[0]?.noOfProperties} Properties
                   </option>
