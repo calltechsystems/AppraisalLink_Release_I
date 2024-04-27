@@ -28,16 +28,24 @@ const SearchData = ({
     {
       id: "bids",
       numeric: false,
-      label: "No of Quotes",
+      label: "Quote Provided",
       width: 200,
     },
 
     {
-      id: "pending_bids",
+      id: "quote_accepted",
       numeric: false,
-      label: "Pending Quotes",
+      label: "Quote Accepted",
       width: 200,
     },
+
+    {
+      id: "quote_pending",
+      numeric: false,
+      label: "Quote Pending",
+      width: 200,
+    },
+
     {
       id: "completed_bids",
       numeric: false,
@@ -60,13 +68,15 @@ const SearchData = ({
         const totalBids = allBidForUser(row.userId).allBid;
         const pendingBids = allBidForUser(row.userId).pendingBids;
         const acceptedBids = allBidForUser(row.userId).acceptedBids;
+        const completedBids = allBidForUser(row.userId).completedBids;
         const newRow = {
           sno: index + 1,
           appraiser_company: 
           <span onClick={()=>openViewModal(row)} style={{textDecoration:"underline",color:"blueviolet",cursor:"pointer"}}>{row.firstName} {row.lastName}</span>,
           bids: totalBids,
-          pending_bids: pendingBids,
-          completed_bids: acceptedBids,
+          quote_accepted : acceptedBids,
+          quote_pending: pendingBids,
+          completed_bids: completedBids,
           status: row.firstName ? (
             <span className="btn btn-success  w-100">Active</span>
           ) : (
@@ -84,17 +94,23 @@ const SearchData = ({
 
   const allBidForUser = (id) => {
     let allBid = 0,
-      acceptedBids = 0;
+      acceptedBids = 0,completedBids = 0,pendingBids = 0;
     allBids?.map((bid, index) => {
       if (String(bid.appraiserUserId) === String(id)) {
         allBid += 1;
+        if(bid.status === 1 && bid.orderStatus === 3){
+          completedBids+=1;
+        }
         if (bid.status === 1) {
           acceptedBids += 1;
         }
+        if(bid.status === 0){
+          pendingBids += 1;
+        }
+       
       }
     });
-    const pendingBids = allBid - acceptedBids;
-    return { allBid, pendingBids, acceptedBids };
+    return { allBid, completedBids,pendingBids, acceptedBids };
   };
 
   const openViewModal = (user)=>{

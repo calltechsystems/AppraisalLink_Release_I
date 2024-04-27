@@ -203,7 +203,11 @@ const Pricing = ({
           <div
             className={`pricing_table  ${
               String(selectedIdStyle) === String(item.id) ? "pricing_table" : ""
-            }`}
+            }
+            ${currentActivePlan && currentActivePlan?.id ? "active-selected-plan" : ""}
+            `
+            
+          }
           >
             <div className="pricing_header">
               <div className="price">{item.description}</div>
@@ -267,7 +271,7 @@ const Pricing = ({
                 }
               >
                 <a className={`btn btn-color_01 w-100`} href="#">
-                  Get Started
+                  {currentActivePlan?.$id ? 'Update Plan' : 'Get Started'}
                 </a>
               </div>
             )}
@@ -289,7 +293,7 @@ const Pricing = ({
                   }
                 >
                   <a className={`btn btn-color_01 w-100`} href="#">
-                    Select Plan
+                  {currentActivePlan?.$id ? 'Modify Plan' : 'Select Plan'}
                   </a>
                 </div>
               )}

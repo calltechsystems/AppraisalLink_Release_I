@@ -23011,7 +23011,7 @@ input:checked + .slider:before {
   /* padding: 15px; */
 }
 
-.active-plan{
-  background-color: #2e008b;
-  padding-top: 10px;
+.active-selected-plan{
+  background-color: #2e008b ;
+  /* padding-top: 10px; */
 }

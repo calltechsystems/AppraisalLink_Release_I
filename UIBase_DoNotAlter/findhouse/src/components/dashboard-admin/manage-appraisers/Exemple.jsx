@@ -265,7 +265,7 @@ export default function Exemple({
                 }}
                 onClick={() => openInfoModal(data)}
               >
-                Get Info
+                {`${data.firstName} ${data.lastName}`}
               </button>
             </a>
           ),

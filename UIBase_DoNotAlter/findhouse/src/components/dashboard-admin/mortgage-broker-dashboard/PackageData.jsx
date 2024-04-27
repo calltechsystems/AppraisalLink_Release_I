@@ -3,12 +3,16 @@ import toast from "react-hot-toast";
 import SmartTable from "./TabularView";
 import { useEffect, useState } from "react";
 
-const SearchData = ({ data, properties , setRefresh,
+const SearchData = ({
+  data,
+  properties,
+  setRefresh,
   setBroker,
-  setOpenBrokerModal}) => {
-
-  const [updatedCode,setUpdatedCode] = useState([]);
-  const [dataFetched,setDataFetched] = useState(true);
+  allBids,
+  setOpenBrokerModal,
+}) => {
+  const [updatedCode, setUpdatedCode] = useState([]);
+  const [dataFetched, setDataFetched] = useState(true);
 
   const headCells = [
     {
@@ -17,25 +21,43 @@ const SearchData = ({ data, properties , setRefresh,
       label: "S.no",
       width: 200,
     },
-  
+
     {
       id: "broker_name",
       numeric: false,
       label: "Broker Name",
       width: 200,
     },
-  
+
     {
       id: "active_plan",
       numeric: false,
       label: "Active Plans",
       width: 200,
     },
-  
+
     {
-      id: "appraised_properties",
+      id: "submitted_properties",
       numeric: false,
-      label: "No of Appraised Properties",
+      label: "Submitted Properties",
+      width: 200,
+    },
+    {
+      id: "accepted_properties",
+      numeric: false,
+      label: "Property Accepted",
+      width: 200,
+    },
+    {
+      id: "progress_properties",
+      numeric: false,
+      label: "Property Appraisal In Progress",
+      width: 200,
+    },
+    {
+      id: "completed_properties",
+      numeric: false,
+      label: "Appraisal Completed",
       width: 200,
     },
     {
@@ -44,7 +66,7 @@ const SearchData = ({ data, properties , setRefresh,
       label: "Status",
       width: 200,
     },
-  
+
     {
       id: "expiry_date",
       numeric: false,
@@ -53,35 +75,51 @@ const SearchData = ({ data, properties , setRefresh,
     },
   ];
 
-  useEffect(()=>{
+  useEffect(() => {
     let tempData = [];
-      const getData = ()=>{
-        data?.map((row,index)=>{
-          const newRow = {
-            sno : index+1,
-            broker_name : <span onClick={()=>openViewModal(row)} style={{textDecoration:"underline",color:"blueviolet",cursor:"pointer"}}>{row.firstName} {row.lastName}</span>,
-            active_plan : row.planName,
-            appraised_properties : allPropertiesForUser(row.userId),
-            status : row.firstName ? (
-              <span className="btn btn-success  w-100">Active</span>
-            ) : (
-              <span className="btn btn-danger  w-100">In-Active </span>
-            ),
-            expiry_date : formatDate(row.endDate)
-          };
+    const getData = () => {
+      data?.map((row, index) => {
+        const completedProperties = getPropertySubmitted(row.userId).completedProperties;
+        const acceptedProperties = getPropertySubmitted(row.userId).acceptedProperties;
+        const allProperties = getPropertySubmitted(row.userId).allProperties;
+        const pendingProperties = getPropertySubmitted(row.userId).pendingProperties;
+        const newRow = {
+          sno: index + 1,
+          broker_name: (
+            <span
+              onClick={() => openViewModal(row)}
+              style={{
+                textDecoration: "underline",
+                color: "blueviolet",
+                cursor: "pointer",
+              }}
+            >
+              {row.firstName} {row.lastName}
+            </span>
+          ),
+          active_plan: row.planName,
+          submitted_properties: allProperties,
+          accepted_properties : acceptedProperties,
+          progress_properties : pendingProperties,
+          completed_properties : completedProperties,
+          status: row.firstName ? (
+            <span className="btn btn-success  w-100">Active</span>
+          ) : (
+            <span className="btn btn-danger  w-100">In-Active </span>
+          ),
+          expiry_date: formatDate(row.endDate),
+        };
 
-          tempData.push(newRow);
-        });
-        return tempData;
-       
-      }
-      const resultedArray = getData();
-      setUpdatedCode(resultedArray);
-  },[data,properties]);
+        tempData.push(newRow);
+      });
+      return tempData;
+    };
+    const resultedArray = getData();
+    setUpdatedCode(resultedArray);
+  }, [data, properties]);
 
   const formatDate = (dateString) => {
-
-    if(dateString === "-"){
+    if (dateString === "-") {
       return dateString;
     }
     const options = {
@@ -110,24 +148,49 @@ const SearchData = ({ data, properties , setRefresh,
     return allProperties;
   };
 
-  const openViewModal = (user)=>{
-    setBroker(user)
-    setOpenBrokerModal(true)
-  }
+  const getPropertySubmitted = (userId) => {
+    let completedProperties = 0,
+      acceptedProperties = 0,
+      pendingProperties = 0,
+      allProperties = 0;
+    allBids.map((bid, index) => {
+      if (String(userId) === String(bid.userId)) {
+        allProperties += 1;
+        if (bid.status === 1 && bid.orderStatus === 3) {
+          completedProperties += 1;
+        }
+        if (bid.status === 1) {
+          acceptedProperties += 1;
+        }
+        if (bid.status === 0) {
+          pendingProperties += 1;
+        }
+      }
+    });
 
-  const refreshHandler = ()=>{
-    setRefresh(true)
-  }
+    return {
+      acceptedProperties, completedProperties, allProperties, pendingProperties
+    }
+  };
+
+  const openViewModal = (user) => {
+    setBroker(user);
+    setOpenBrokerModal(true);
+  };
+
+  const refreshHandler = () => {
+    setRefresh(true);
+  };
   return (
     <>
-    <SmartTable
-    headCells={headCells}
-      data={updatedCode}
-      properties={updatedCode}
-      dataFetched={dataFetched}
-      refreshHandler={refreshHandler} 
-    />
-   </>
+      <SmartTable
+        headCells={headCells}
+        data={updatedCode}
+        properties={updatedCode}
+        dataFetched={dataFetched}
+        refreshHandler={refreshHandler}
+      />
+    </>
   );
 };
 
