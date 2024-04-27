@@ -11,7 +11,12 @@ import { designation } from "../create-listing/data";
 import Link from "next/link";
 import { uploadFile } from "./functions";
 
-const ProfileInfo = ({ setProfileCount, setShowCard }) => {
+const ProfileInfo = ({
+  setProfileCount,
+  setShowCard,
+  setModalIsOpenError,
+  setModalIsOpenError_01,
+}) => {
   const [profilePhoto, setProfilePhoto] = useState(null);
   let userData = JSON.parse(localStorage.getItem("user")) || {};
   const router = useRouter();
@@ -182,12 +187,14 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         "As SMS Notification is disabled you wont be notified for listed changes and updates over SMS.",
         { duration: 3000 }
       );
+      // setModalIsOpenError(true);
     }
     if (emailNotification === null || emailNotification === false) {
       toast.error(
         "As Email Notification is disabled you wont be notified for listed changes and updates over Email.",
         { duration: 3000 }
       );
+      // setModalIsOpenError_01(true);
     }
 
     setTimeout(onUpdatHandler, 2000); // Call onUpdatHandler after 6 seconds

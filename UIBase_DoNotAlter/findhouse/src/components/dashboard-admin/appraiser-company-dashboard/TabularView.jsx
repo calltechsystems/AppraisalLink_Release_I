@@ -8,6 +8,7 @@ import { FaRedo } from "react-icons/fa";
 import * as XLSX from "xlsx";
 
 import toast from "react-hot-toast";
+import SearchUser from "./SearchUser";
 
 function SmartTable(props) {
   const [loading, setLoading] = useState(false);
@@ -115,7 +116,7 @@ function SmartTable(props) {
         ["bids", "No of Bids"],
         ["pending_bids", "Pending Bids"],
         ["completed_bids", "Completed Bids"],
-        ["status", "Status"]
+        ["status", "Status"],
       ];
       staticHeaders.forEach((headerText) => {
         const th = document.createElement("th");
@@ -131,9 +132,7 @@ function SmartTable(props) {
         const row = tableBody.insertRow();
         staticHeaders.forEach((header) => {
           const cell = row.insertCell();
-          if (
-            header[0].toLowerCase() === "status"
-          ) {
+          if (header[0].toLowerCase() === "status") {
             const value = item[header[0].toLowerCase()];
             const className = value.props.className;
             const content =
@@ -327,17 +326,26 @@ function SmartTable(props) {
   };
 
   return (
-    <div className="col-12 p-2">
-      <div className="col-lg-2">
+    <div className="col-12 p-0">
+      <div className="col-lg-12">
         <div className="row">
-          <div
-            className="col-lg-2 btn btn-color w-50"
-            onClick={() => handlePrint()}
-            title="Download Pdf"
-          >
-            <span className="flaticon-download "></span>
+          <div className="col-lg-7">
+            <span className="fw-bold text-dark fs-5">
+              All Appraiser Companies
+            </span>
           </div>
-          <div className="col-lg-6 w-50">
+          <div className="col-lg-4 text-end_01 mb-1 ">
+            <SearchUser
+              // searchInput={searchInput}
+              // setSearchInput={setSearchInput}
+            />
+          </div>
+          <div className="col-lg-1">
+            <button
+              className="btn btn-color flaticon-download m-1"
+              onClick={() => handlePrint()}
+              title="Download Pdf"
+            ></button>
             <button
               className="btn btn-color"
               onClick={() => props.refreshHandler()}

@@ -3,7 +3,9 @@ import toast from "react-hot-toast";
 import SmartTable from "./TabularView";
 import { useEffect, useState } from "react";
 
-const SearchData = ({ data, properties , setRefresh}) => {
+const SearchData = ({ data, properties , setRefresh,
+  setBroker,
+  setOpenBrokerModal}) => {
 
   const [updatedCode,setUpdatedCode] = useState([]);
   const [dataFetched,setDataFetched] = useState(true);
@@ -57,7 +59,7 @@ const SearchData = ({ data, properties , setRefresh}) => {
         data?.map((row,index)=>{
           const newRow = {
             sno : index+1,
-            broker_name : `${row.firstName} ${row.lastName}`,
+            broker_name : <span onClick={()=>openViewModal(row)} style={{textDecoration:"underline",color:"blueviolet",cursor:"pointer"}}>{row.firstName} {row.lastName}</span>,
             active_plan : row.planName,
             appraised_properties : allPropertiesForUser(row.userId),
             status : row.firstName ? (
@@ -107,6 +109,11 @@ const SearchData = ({ data, properties , setRefresh}) => {
 
     return allProperties;
   };
+
+  const openViewModal = (user)=>{
+    setBroker(user)
+    setOpenBrokerModal(true)
+  }
 
   const refreshHandler = ()=>{
     setRefresh(true)

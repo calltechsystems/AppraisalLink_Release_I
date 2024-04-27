@@ -11,6 +11,8 @@ import SearchUser from "./SearchUser";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import Image from "next/image";
+import Link from "next/link";
 
 const Index = () => {
   const [filterQuery, setFilterQuery] = useState("All");
@@ -28,6 +30,8 @@ const Index = () => {
   const [dataFetched, setDataFetched] = useState([]);
   const [FilteredData, setFilteredData] = useState();
   const [refresh, setRefresh] = useState(false);
+  const [openBrokerModal, setOpenBrokerModal] = useState(false);
+  const [broker, setBroker] = useState({});
 
   useEffect(() => {
     setAllAppraiser([]);
@@ -249,7 +253,7 @@ const Index = () => {
         }
       }
     });
-    
+
     setFilteredData(allAppraisers);
     setAcceptedBids(activeAppraiser);
   }, [filterQuery]);
@@ -307,6 +311,58 @@ const Index = () => {
       }
     });
     return appraisers;
+  };
+
+  const closeBrokerModal = () => {
+    setOpenBrokerModal(false);
+  };
+
+  const brokerInfoHandler = (orderId) => {
+    const printWindow = window.open("", "_blank");
+    printWindow.document.write(
+      "<html><head><title>Brokerage Information</title></head><body>"
+    );
+    printWindow.document.write("<h1>" + `Broker information` + "</h1>");
+    printWindow.document.write(
+      '<button style="display:none;" onclick="window.print()">Print</button>'
+    );
+
+    // Clone the table-container and remove the action column
+    const tableContainer = document.getElementById("broker-info-container");
+    const table = tableContainer.querySelector("table");
+    const clonedTable = table.cloneNode(true);
+    const rows = clonedTable.querySelectorAll("tr");
+    rows.forEach((row) => {
+      const lastCell = row.querySelector("td:last-child");
+    });
+
+    // Remove the action heading from the table
+    const tableHead = clonedTable.querySelector("thead");
+    const tableHeadRows = tableHead.querySelectorAll("tr");
+    tableHeadRows.forEach((row) => {
+      const lastCell = row.querySelector("th:last-child");
+    });
+
+    // Make the table responsive for all fields
+    const tableRows = clonedTable.querySelectorAll("tr");
+    tableRows.forEach((row) => {
+      const firstCell = row.querySelector("td:first-child");
+      if (firstCell) {
+        const columnHeading = tableHeadRows[0].querySelector(
+          "th:nth-child(" + (firstCell.cellIndex + 1) + ")"
+        ).innerText;
+        firstCell.setAttribute("data-th", columnHeading);
+      }
+    });
+
+    printWindow.document.write(clonedTable.outerHTML);
+    printWindow.document.write("</body></html>");
+    printWindow.document.close();
+    printWindow.print();
+    printWindow.onafterprint = () => {
+      printWindow.close();
+      toast.success("Saved the data");
+    };
   };
 
   function filterByDateRange(filterQuery, date) {
@@ -456,6 +512,8 @@ const Index = () => {
                       <div className="packages_table">
                         <div className="table-responsive mt0">
                           <PackageData
+                            setBroker={setBroker}
+                            setOpenBrokerModal={setOpenBrokerModal}
                             data={
                               searchInput !== ""
                                 ? sortFunction(
@@ -475,6 +533,292 @@ const Index = () => {
                   </div>
                 </div>
               </div>
+
+              {openBrokerModal && (
+                <div className="modal">
+                  <div className="modal-content">
+                    <div className="row">
+                      <div className="col-lg-12">
+                        <Link href="/" className="">
+                          <Image
+                            width={50}
+                            height={45}
+                            className="logo1 img-fluid"
+                            style={{ marginTop: "-20px" }}
+                            src="/assets/images/logo.png"
+                            alt="header-logo2.png"
+                          />
+                          <span
+                            style={{
+                              color: "#2e008b",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            Appraisal
+                          </span>
+                          <span
+                            style={{
+                              color: "#97d700",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            {" "}
+                            Land
+                          </span>
+                        </Link>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-lg-12 text-center">
+                        <h1 className=" text-color mt-1">Brokerage Details</h1>
+                      </div>
+                    </div>
+                    <div
+                      className="mt-2 mb-3"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
+                    <div
+                      className="d-flex justify-content-center"
+                      id="broker-info-container"
+                    >
+                      <table
+                        style={{
+                          width: "700px",
+                          textAlign: "start",
+                          borderRadius: "5px",
+                          fontSize: "17px",
+                          fontWeight: "bold",
+                        }}
+                        id="table-broker-info"
+                      >
+                        <thead>
+                          <tr>
+                            <th
+                              style={{
+                                border: "1px solid #2e008b",
+                                color: "#2e008b",
+                                // padding: "5px",
+                                textAlign: "center",
+                              }}
+                            >
+                              Headers
+                            </th>
+                            <th
+                              style={{
+                                border: "1px solid #2e008b",
+                                // width: "470px",
+                                color: "#2e008b",
+                                // padding: "5px",
+                                textAlign: "center",
+                              }}
+                            >
+                              Value
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td
+                              style={{
+                                border: "1px solid #2e008b",
+                                color: "#2e008b",
+                                paddingLeft: "10px",
+                              }}
+                            >
+                              <span className="text-start">Brokerage Name</span>
+                            </td>
+                            <td
+                              style={{
+                                border: "1px solid #2e008b",
+                                width: "250px",
+                                color: "black",
+                                paddingLeft: "10px",
+                              }}
+                            >
+                              {broker.firstName} {broker.lastName}
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <td
+                              style={{
+                                border: "1px solid #2e008b",
+                                color: "#2e008b",
+                                paddingLeft: "10px",
+                              }}
+                            >
+                              <span className="text-start">Company Name</span>
+                            </td>
+                            <td
+                              style={{
+                                border: "1px solid #2e008b",
+                                width: "250px",
+                                color: "black",
+                                paddingLeft: "10px",
+                              }}
+                            >
+                              {broker.companyName ? broker.companyName : "N.A."}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              style={{
+                                border: "1px solid #2e008b",
+                                color: "#2e008b",
+                                paddingLeft: "10px",
+                              }}
+                            >
+                              <span className="text-start">Email Address</span>
+                            </td>
+                            <td
+                              style={{
+                                border: "1px solid #2e008b",
+                                width: "250px",
+                                color: "black",
+                                paddingLeft: "10px",
+                              }}
+                            >
+                              {broker.emailId}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              style={{
+                                border: "1px solid #2e008b",
+                                color: "#2e008b",
+                                paddingLeft: "10px",
+                              }}
+                            >
+                              <span className="text-start">Phone Number</span>
+                            </td>
+                            <td
+                              style={{
+                                border: "1px solid #2e008b",
+                                width: "250px",
+                                color: "black",
+                                paddingLeft: "10px",
+                              }}
+                            >
+                              {broker.phoneNumber}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              style={{
+                                border: "1px solid #2e008b",
+                                color: "#2e008b",
+                                paddingLeft: "10px",
+                              }}
+                            >
+                              <span className="text-start">Cell Number</span>
+                            </td>
+                            <td
+                              style={{
+                                border: "1px solid #2e008b",
+                                width: "250px",
+                                color: "black",
+                                paddingLeft: "10px",
+                              }}
+                            >
+                              {broker.cellNumber}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              style={{
+                                border: "1px solid #2e008b",
+                                color: "#2e008b",
+                                paddingLeft: "10px",
+                              }}
+                            >
+                              <span className="text-start">
+                                Mortgage Broker Licence No
+                              </span>
+                            </td>
+                            <td
+                              style={{
+                                border: "1px solid #2e008b",
+                                width: "250px",
+                                color: "black",
+                                paddingLeft: "10px",
+                              }}
+                            >
+                              {broker.mortageBrokerLicNo}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              style={{
+                                border: "1px solid #2e008b",
+                                color: "#2e008b",
+                                paddingLeft: "10px",
+                              }}
+                            >
+                              <span className="text-start">
+                                Mortgage Brokerage Licence No
+                              </span>
+                            </td>
+                            <td
+                              style={{
+                                border: "1px solid #2e008b",
+                                width: "250px",
+                                color: "black",
+                                paddingLeft: "10px",
+                              }}
+                            >
+                              {broker.mortageBrokerageLicNo}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              style={{
+                                border: "1px solid #2e008b",
+                                color: "#2e008b",
+                                paddingLeft: "10px",
+                              }}
+                            >
+                              <span className="text-start">Address</span>
+                            </td>
+                            <td
+                              style={{
+                                border: "1px solid #2e008b",
+                                width: "400px",
+                                color: "black",
+                                paddingLeft: "10px",
+                              }}
+                            >
+                              {broker.streetNumber} {broker.streetName}{" "}
+                              {broker.area} , {broker.city} {broker.state}-
+                              {broker.postalCode}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="row text-center mt-3">
+                      <div className="col-lg-12">
+                        <div
+                          className="btn btn-color w-25 m-1"
+                          onClick={() => brokerInfoHandler(broker.orderId)}
+                          title="Download Pdf"
+                        >
+                          Download
+                        </div>
+                        <button
+                          className="btn btn-color w-25 text-center"
+                          onClick={closeBrokerModal}
+                        >
+                          Ok
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               <div className="row"></div>
 

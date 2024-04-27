@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import SmartTable from "./TabularView";
 
-const SearchData = ({data,allBids,setRefresh}) => {
+const SearchData = ({
+  data,
+  allBids,
+  setRefresh,
+  setBroker,
+  setOpenBrokerModal}) => {
 
   const [updatedCode,setUpdatedCode] = useState([]);
   const [dataFetched,setDataFetched] = useState(true);
@@ -59,7 +64,8 @@ const SearchData = ({data,allBids,setRefresh}) => {
           const acceptedBids = allBidForUser(row.userId).acceptedBids;
           const newRow = {
             sno : index+1,
-            appraiser_company : `${row.firstName} ${row.lastName}`,
+            appraiser_company : 
+            <span onClick={()=>openViewModal(row)} style={{textDecoration:"underline",color:"blueviolet",cursor:"pointer"}}>{row.firstName} {row.lastName}</span>,
             bids : totalBids,
             pending_bids : pendingBids,
             completed_bids : acceptedBids,
@@ -78,6 +84,11 @@ const SearchData = ({data,allBids,setRefresh}) => {
       const resultedArray = getData();
       setUpdatedCode(resultedArray);
   },[data,allBids])
+
+  const openViewModal = (user)=>{
+    setBroker(user)
+    setOpenBrokerModal(true)
+  }
   
   const allBidForUser = (id)=>{
     let allBid = 0, acceptedBids = 0;
