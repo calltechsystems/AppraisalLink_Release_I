@@ -238,7 +238,7 @@ const Pricing = ({
             </div>
             <div className="pricing_content">
               <ul className="mb0">
-                <li key={idx}>{item.noOfProperties} Properties Appraisal</li>
+                <li key={idx}>{item.noOfProperties} Properties Quotes</li>
                 {content[idx]?.features?.map((val, i) => (
                   <li key={i}>{val}</li>
                 ))}
@@ -304,7 +304,7 @@ const Pricing = ({
                   onClick={(e) => setPlan(item.id, e.target.value)}
                   className="pricing_footer btn btn-color_01 form-select"
                 >
-                  <option value={1}>Modify/Cancel Subscription </option>
+                  <option value={1}>Add Top Up / Cancel Subscription </option>
                   <option value={3}>
                     Add {topupData[0]?.noOfProperties} Properties
                   </option>

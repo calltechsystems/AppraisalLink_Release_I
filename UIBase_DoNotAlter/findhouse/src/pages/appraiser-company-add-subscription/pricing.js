@@ -21,19 +21,19 @@ const Pricing = ({
       id: 1,
       price: "11",
       title: "Lite",
-      features: ["30 Days Validity", "No Roll Over", "Limited Support"],
+      features: ["30 Days Validity"],
     },
     {
       id: 2,
       price: "19",
       title: "Pro",
-      features: ["30 Days Validity", "Partial Roll Over", "Enhanced Support"],
+      features: ["30 Days Validity"],
     },
     {
       id: 3,
       price: "35",
       title: "Ultimate",
-      features: ["30 Days Validity", "Unlimited Roll Over", "Complete Support"],
+      features: ["30 Days Validity"],
     },
   ];
 
@@ -42,23 +42,19 @@ const Pricing = ({
       id: 1,
       price: "132",
       title: "Lite",
-      features: ["365 Days Validity", "Partial Roll Over", "Limited Support"],
+      features: ["365 Days Validity"],
     },
     {
       id: 2,
       price: "228",
       title: "Pro",
-      features: ["365 Days Validity", "Partial Roll Over", "Complete Support"],
+      features: ["365 Days Validity"],
     },
     {
       id: 3,
       price: "420",
       title: "Ultimate",
-      features: [
-        "365 Days Validity",
-        "Unlimited Roll Over",
-        "Complete Support",
-      ],
+      features: ["365 Days Validity"],
     },
   ];
   let userData = {};
@@ -308,7 +304,7 @@ const Pricing = ({
                   onClick={(e) => setPlan(item.id, e.target.value)}
                   className="pricing_footer btn btn-color_01 form-select"
                 >
-                  <option value={1}>Modify/Cancel Subscription </option>
+                  <option value={1}>Add Top Up / Cancel  Subscription </option>
                   <option value={3}>
                     Add {topupData[0]?.noOfProperties} Properties
                   </option>
@@ -361,14 +357,16 @@ const Pricing = ({
               {String(type) === "2"
                 ? "Subscription Cancellation"
                 : String(type) === "3"
-                ? ` Add On ${topupData[0]?.noOfProperties} Properties`:""}
+                ? ` Add On ${topupData[0]?.noOfProperties} Properties`
+                : ""}
             </h2>
             <div className="mb-2" style={{ border: "2px solid #97d700" }}></div>
             <p className="fs-5 text-center text-dark mt-4">
               {String(type) === "2"
                 ? "Are you sure you want to cancel this subscription?"
                 : String(type) === "3"
-                ? `Are you sure you want add ${topupData[0]?.noOfProperties} properties to your existing plan ?`:""}{" "}
+                ? `Are you sure you want add ${topupData[0]?.noOfProperties} properties to your existing plan ?`
+                : ""}{" "}
             </p>
 
             <div

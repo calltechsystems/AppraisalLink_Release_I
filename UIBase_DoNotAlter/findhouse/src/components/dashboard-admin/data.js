@@ -1,7 +1,7 @@
 export const typeOfBuilding = [
   {
     id: 0,
-    type: "Select..",
+    type: "Appraisal Process Not Yet Started",
     value: "",
   },
   {
@@ -153,7 +153,7 @@ export const Urgency = [
 export const AppraiserStatusOptions = [
   {
     id: -1,
-    type: "Select...",
+    type: "Appraisal Process Not Yet Started",
     value: "",
   },
   {
@@ -166,7 +166,7 @@ export const AppraiserStatusOptions = [
     type: "Appraisal Visit Confirmed",
     value: "Appraisal Visit Confirmed",
   },
-  
+
   {
     id: 6,
     type: "Appraisal visit completed; report writing is pending until fee received",
@@ -195,7 +195,6 @@ export const AppraiserStatusOptions = [
     type: "Assignment Cancelled",
     value: "Assignment Cancelled",
   },
-
 ];
 
 export const province = [

@@ -81,15 +81,17 @@ const Index = () => {
 
       {/* <!-- Our Dashbord --> */}
       <section className="our-dashbord dashbord bgc-f7 pb50">
-        <div className="container-fluid ovh">
+        <div className="container-fluid container-padding ovh">
           <div className="row">
             <div className="col-lg-12 maxw100flex-992">
               <div className="row">
                 <div className="our-listing bgc-f7 pb30-991 md-mt0 ">
-                  <div className="container">
+                  <div className="container-fluid">
                     <div className="col-lg-12 col-xl-12 text-center mt-1 mb-5">
                       <div className="style2 mb30-991">
-                        <h3 className="heading-forms">Appraiser Company Plans</h3>
+                        <h3 className="heading-forms">
+                          Appraiser Company Plans
+                        </h3>
                       </div>
                     </div>
                     <div className="row">
