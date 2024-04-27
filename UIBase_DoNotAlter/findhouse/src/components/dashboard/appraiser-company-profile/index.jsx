@@ -187,8 +187,8 @@ const Index = ({ profileCount, setProfileCount }) => {
                             style={{ border: "2px solid #97d700" }}
                           ></div>
                           <h5 className="text-center">
-                            "As SMS Notification is disabled you wont be
-                            notified for listed changes and updates over SMS.
+                            As SMS Notification is disabled you wont be notified
+                            for listed changes and updates over SMS.
                           </h5>
                           <div
                             className="mb-3 mt-2"
