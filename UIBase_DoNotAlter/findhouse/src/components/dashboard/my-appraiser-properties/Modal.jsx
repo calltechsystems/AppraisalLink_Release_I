@@ -110,10 +110,15 @@ const Modal = ({
         })
         .catch((err) => {
           toast.dismiss();
-          toast.error("Try Again");
+          toast.error(`Got error while ${alreadyBidded ? 'updating the' : 'setting the'} bid, Try Again!!`);
         });
       setToggle(false);
+    
     }
+    setValue(null);
+    setDescription("");
+    setDisable(false);
+    closeModal();
   };
 
   const formatLargeNumber = (number) => {
@@ -359,3 +364,4 @@ const Modal = ({
 };
 
 export default Modal;
+

@@ -10,6 +10,7 @@ import { province } from "../create-listing/data";
 import { designations } from "../create-listing/data";
 import Link from "next/link";
 import { uploadFile } from "./functions";
+import { handleDownloadClick } from "./downloadFunction";
 
 const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   const [profilePhoto, setProfilePhoto] = useState(null);
@@ -394,7 +395,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           Browse
                         </button>
                         <p className="mt-2">
-                          {selectedImage2.name !== "" && "Note -: Image Only"}
+                          {SelectedImage !== "" && "Note -: Image Only"}
                         </p>
                       </div>
                     </div>
@@ -662,7 +663,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       <div>
                         <input
                           type="file"
-                          id="fileInput"
+                          id="fileInput_01"
                           onChange={(e) => handleFileChange(e, 2)}
                           style={{ display: "none" }} // Hide the actual input element
                         />
@@ -671,7 +672,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           className="btn btn-color"
                           style={{ marginLeft: "10px" }}
                           onClick={() =>
-                            document.getElementById("fileInput").click()
+                            document.getElementById("fileInput_01").click()
                           }
                         >
                           Browse
@@ -686,6 +687,14 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       <Link
                         target="_blank"
                         rel="noopener noreferrer"
+                        style={{ textDecoration: "underline" }}
+                        onClick={(event) =>
+                          handleDownloadClick(
+                            event,
+                            selectedImage2.url,
+                            `${firstNameRef}_lenderlist.pdf`
+                          )
+                        }
                         href={selectedImage2.url}
                       >
                         {selectedImage2.name}

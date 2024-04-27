@@ -300,7 +300,7 @@ const Index = () => {
                 What Our Users Says
               </h2>
               <p>
-                Discover how Listable can help you find everything you want.
+                Discover how listable can help you find everything you want.
               </p>
             </div>
           </div>

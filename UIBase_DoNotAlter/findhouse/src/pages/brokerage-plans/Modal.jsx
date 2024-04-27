@@ -15,7 +15,6 @@ const Modal = ({ modalOpen, closeModal, price }) => {
   const checkOutHandler = () => {
     const data = JSON.parse(localStorage.getItem("user"));
 
-    console.log(price);
     if (String(price.type) === "plan") {
       const payload = {
         PlanName: price.title,
@@ -46,7 +45,6 @@ const Modal = ({ modalOpen, closeModal, price }) => {
       axios
         .post("/api/addTopUp", encryptiondata)
         .then((res) => {
-          console.log(res.data);
           setPaypalUrl(res.data.userData.response);
           setStatus(1);
         })

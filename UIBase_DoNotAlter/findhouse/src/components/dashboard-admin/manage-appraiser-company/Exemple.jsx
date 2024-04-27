@@ -148,6 +148,16 @@ export default function Exemple({
     setOpenEditModal(true);
   };
 
+  const getUserName = (userId)=>{
+    let selectedUser = {};
+    allBroker.map((user,index)=>{
+      if(String(user.userId) === String(userId)){
+        selectedUser= user;
+      }
+    });
+    return selectedUser;
+  }
+
   const removeWishlistHandler = (id) => {
     const userData = JSON.parse(localStorage.getItem("user"));
 
@@ -265,7 +275,7 @@ export default function Exemple({
                 }}
                 onClick={() => openInfoModal(data)}
               >
-                Get Info
+                {`${data.firstName} ${data.lastName}`}
               </button>
             </a>
           ),

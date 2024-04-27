@@ -10,7 +10,7 @@ import { useRouter } from "next/router";
 const Index = () => {
   const [data, setData] = useState([]);
   const router = useRouter();
-  let userData = {};
+  const [userData,setUserData] = useState({});
   const [dataFetched, setDataFetched] = useState(false);
 
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
@@ -64,10 +64,11 @@ const Index = () => {
   };
 
   useEffect(() => {
-    userData = JSON.parse(localStorage.getItem("user"));
-    if (!userData) {
+    const userData1 = JSON.parse(localStorage.getItem("user"));
+    setUserData(userData1)
+    if (!userData1) {
       router.push("/login");
-    } else if (!userData?.appraiser_Details?.firstName) {
+    } else if (!userData1?.appraiser_Details?.firstName) {
       router.push("/appraiser-profile");
     }
 
@@ -75,11 +76,11 @@ const Index = () => {
     axios
       .get("/api/getBrokerTransactions", {
         headers: {
-          Authorization: `Bearer ${userData?.token}`,
+          Authorization: `Bearer ${userData1?.token}`,
           "Content-Type": "application/json",
         },
         params: {
-          userId: userData?.userId,
+          userId: userData1?.userId,
         },
       })
       .then((res) => {
@@ -91,9 +92,6 @@ const Index = () => {
       .catch((err) => {
         toast.dismiss();
         setDataFetched(false);
-        // toast.error(err?.response?.data?.error);
-        // setErrorMessage(err.response);
-        // setModalIsOpenError(true);
       });
   }, []);
 

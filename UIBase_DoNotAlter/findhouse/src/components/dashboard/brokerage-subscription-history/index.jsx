@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "../../common/header/dashboard/HeaderBrokerage";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenuBrokerage";
 import MobileMenu from "../../common/header/MobileMenu";
@@ -10,11 +10,17 @@ import { useRouter } from "next/router";
 const Index = () => {
   const [data, setData] = useState([]);
   const router = useRouter();
-  let userData = {};
+  let userData = {}
 
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
   );
+  const [userInfo,setUserInfo] = useState({})
+
+  useEffect(() => {
+    const datas = JSON.parse(localStorage.getItem("user"));
+    setUserInfo(datas)
+  },[]);
 
   useEffect(() => {
     const activityHandler = () => {
@@ -89,18 +95,13 @@ const Index = () => {
       })
       .catch((err) => {
         toast.dismiss();
-        // toast.error(err?.response?.data?.error);
-        // setErrorMessage(err.response);
-        // setModalIsOpenError(true);
       });
   }, []);
 
   return (
     <>
-      {/* <!-- Main Header Nav --> */}
-      <Header userData={userData} />
+      <Header userData={userInfo} />
 
-      {/* <!--  Mobile Menu --> */}
       <MobileMenu />
 
       <div className="dashboard_sidebar_menu">

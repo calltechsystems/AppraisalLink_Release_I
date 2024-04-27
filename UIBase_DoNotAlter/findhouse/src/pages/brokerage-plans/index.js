@@ -52,8 +52,21 @@ const Index = () => {
     })
     .then((res) => {
       toast.dismiss();
+      
       let tempSub = (res.data.data.result.$values);
-      setcurrentSubscription(getSelectedPlans(tempSub)[0])
+
+      let newPlan = {};
+      tempSub?.map((plan,index)=>{
+        const isAccordingToDate = new Date(plan.startDate) <= new Date() &&
+        new Date(plan?.endDate) >= new Date();
+        const isNormalPlan = String(plan.planName).toLowerCase().includes("lite") ||
+        String(plan.planName).toLowerCase().includes("pro") ||
+        String(plan.planName).toLowerCase().includes("ultimate") ;
+        if( isAccordingToDate && isNormalPlan){
+          newPlan=plan
+        }
+      })
+      setcurrentSubscription(newPlan)
       setRerender(false);
     })
     .catch((err) => {

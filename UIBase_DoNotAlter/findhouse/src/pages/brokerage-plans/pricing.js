@@ -21,19 +21,19 @@ const Pricing = ({
       id: 1,
       price: "11",
       title: "Lite",
-      features: ["30 Days Validity", "No Roll Over", "Limited Support"],
+      features: ["30 Days Validity"],
     },
     {
       id: 2,
       price: "19",
       title: "Pro",
-      features: ["30 Days Validity", "Partial Roll Over", "Enhanced Support"],
+      features: ["30 Days Validity"],
     },
     {
       id: 3,
       price: "35",
       title: "Ultimate",
-      features: ["30 Days Validity", "Unlimited Roll Over", "Complete Support"],
+      features: ["30 Days Validity"],
     },
   ];
 
@@ -42,23 +42,19 @@ const Pricing = ({
       id: 1,
       price: "132",
       title: "Lite",
-      features: ["365 Days Validity", "Partial Roll Over", "Limited Support"],
+      features: ["365 Days Validity"],
     },
     {
       id: 2,
       price: "228",
       title: "Pro",
-      features: ["365 Days Validity", "Partial Roll Over", "Complete Support"],
+      features: ["365 Days Validity"],
     },
     {
       id: 3,
       price: "420",
       title: "Ultimate",
-      features: [
-        "365 Days Validity",
-        "Unlimited Roll Over",
-        "Complete Support",
-      ],
+      features: ["365 Days Validity"],
     },
   ];
   let userData = {};
@@ -246,7 +242,7 @@ const Pricing = ({
             </div>
             <div className="pricing_content">
               <ul className="mb0">
-                <li key={idx}>{item.noOfProperties} Properties Appraisal</li>
+                <li key={idx}>{item.noOfProperties} Properties Quotes</li>
                 {content[idx]?.features?.map((val, i) => (
                   <li key={i}>{val}</li>
                 ))}
@@ -312,13 +308,13 @@ const Pricing = ({
                   onClick={(e) => setPlan(item.id, e.target.value)}
                   className="pricing_footer btn btn-color_01 form-select"
                 >
-                  <option value={1}>Modify/Cancel Subscription </option>
+                  <option value={1}>Add Top Up / Cancel Subscription </option>
                   <option value={3}>
                     Add {topupData[0].noOfProperties} Properties
                   </option>
-                  <option value={4}>
+                  {/* <option value={4}>
                     Add {topupData[1].noOfProperties} Properties
-                  </option>
+                  </option> */}
                   <option value={2}>Cancel Subscription</option>
                 </select>
               )}

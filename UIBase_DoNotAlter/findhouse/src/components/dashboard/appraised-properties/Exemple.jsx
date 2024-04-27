@@ -392,12 +392,12 @@ export default function Exemple({
     let tempStatusData = [];
     const getData = () => {
       const userData = JSON.parse(localStorage.getItem("user"));
-
+      const userActivePlans = userData?.userSubscription?.$values;
       properties.map((property, index) => {
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
         const anotherBid = alreadyAccepted(property);
-
+        const haveSubscription = userActivePlans?.length > 0 ? userActivePlans[0]?.$id ? true : false : false;
       
         const isWait = property.isOnHold || property.isOnCancel;
         const isArchive = false;
@@ -477,7 +477,7 @@ export default function Exemple({
                 : "N.A.",
             status:
             (anotherBid === true && isBidded.status !== 2)    ? (
-              <span className="btn btn-danger  w-100">Broker has already selected the quote</span>
+              <span className="btn btn-danger  w-100">Rejected</span>
             ) :
               (isBidded?.bidId && isBidded.status === 2)   ? (
                 <span className="btn btn-danger  w-100">Rejected</span>
@@ -705,7 +705,7 @@ export default function Exemple({
                       </li>
                     )}
 
-                    {(!isBidded.$id || isBidded?.status < 1) && !anotherBid && (
+                    {(!isBidded.$id || isBidded?.status < 1) && !anotherBid && haveSubscription && (
                       <li
                         className="list-inline-item"
                         data-toggle="tooltip"

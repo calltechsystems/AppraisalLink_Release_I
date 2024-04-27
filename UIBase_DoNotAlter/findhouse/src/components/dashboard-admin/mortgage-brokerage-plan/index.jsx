@@ -14,7 +14,7 @@ const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [dataFetched, setDataFetched] = useState(false);
   const [planData, setPlanData] = useState([]);
-  const [editPlan,setEditPlan] = useState({});
+  const [editPlan, setEditPlan] = useState({});
   const router = useRouter();
 
   useEffect(() => {
@@ -27,11 +27,11 @@ const Index = () => {
         });
         const tempPlans = res.data.data.$values;
         let selectivePlansAccordingToUser = [];
-        tempPlans.map((plan,index)=>{
-          if(String(plan.userType) === '2'){
-            selectivePlansAccordingToUser.push(plan)
+        tempPlans.map((plan, index) => {
+          if (String(plan.userType) === "2") {
+            selectivePlansAccordingToUser.push(plan);
           }
-        })
+        });
         setPlanData(selectivePlansAccordingToUser);
       } catch (err) {
         toast.error(err.message);
@@ -81,14 +81,12 @@ const Index = () => {
 
       {/* <!-- Our Dashbord --> */}
       <section className="our-dashbord dashbord bgc-f7 pb50">
-        <div className="container-fluid ovh">
+        <div className="container-fluid container-padding ovh">
           <div className="row">
             <div className="col-lg-12 maxw100flex-992">
               <div className="row">
-                
-
                 <div className="our-listing bgc-f7 pb30-991 md-mt0 ">
-                  <div className="container">
+                  <div className="container-fluid">
                     <div className="col-lg-12 col-xl-12 text-center mt-1 mb-5">
                       <div className="style2 mb30-991">
                         <h3 className="heading-forms">

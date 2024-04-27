@@ -18,7 +18,7 @@ const TermsCondions = () => {
     {
       id: 3,
       title: "Step 3. Appraisers provide Quotes",
-      text1: `Once the address has been validated, our certified appraiser will be able to provide a quote for the property appraisal. The appraisal quote will be based on various factors, including the property's location, size, condition, features, and market trends. During the appraisal process, the appraiser will conduct a thorough inspection of the property and gather relevant data. They will analyse comparable properties, market conditions, and other factors to determine the fair market value of the property.  `,
+      text1: `Once the address has been validated, our certified appraiser will be able to provide a quote for the property appraisal. The appraisal quote will be based on various factors, including the property's location, size, condition, features, and market trends. During the appraisal process, the appraiser will conduct a thorough inspection of the property and gather relevant data. They will analyze comparable properties, market conditions, and other factors to determine the fair market value of the property.  `,
       text2: `To be discussed`,
     },
     {

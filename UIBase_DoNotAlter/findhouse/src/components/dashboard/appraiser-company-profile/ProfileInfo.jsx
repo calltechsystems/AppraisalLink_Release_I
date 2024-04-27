@@ -1,5 +1,5 @@
 "use client";
-
+import { handleDownloadClick } from "./downloadFunction";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { encryptionData } from "../../../utils/dataEncryption";
@@ -11,7 +11,12 @@ import { designation } from "../create-listing/data";
 import Link from "next/link";
 import { uploadFile } from "./functions";
 
-const ProfileInfo = ({ setProfileCount, setShowCard }) => {
+const ProfileInfo = ({
+  setProfileCount,
+  setShowCard,
+  setModalIsOpenError,
+  setModalIsOpenError_01,
+}) => {
   const [profilePhoto, setProfilePhoto] = useState(null);
   let userData = JSON.parse(localStorage.getItem("user")) || {};
   const router = useRouter();
@@ -182,12 +187,14 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         "As SMS Notification is disabled you wont be notified for listed changes and updates over SMS.",
         { duration: 3000 }
       );
+      // setModalIsOpenError(true);
     }
     if (emailNotification === null || emailNotification === false) {
       toast.error(
         "As Email Notification is disabled you wont be notified for listed changes and updates over Email.",
         { duration: 3000 }
       );
+      // setModalIsOpenError_01(true);
     }
 
     setTimeout(onUpdatHandler, 2000); // Call onUpdatHandler after 6 seconds
@@ -325,6 +332,19 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     }
   };
 
+  // const handleFileChange = async (e, type) => {
+  //   const file = e.target.files[0];
+  //   toast.loading("Uploading..");
+  //   try {
+  //     const generatedUrl = await uploadFile(file);
+  //     toast.dismiss();
+  //     toast.success("Uploaded Successfully");
+  //     setSelectedImage(generatedUrl);
+  //   } catch (err) {
+  //     toast.dismiss();
+  //     toast.error("Try Again!");
+  //   }
+  // };
   const handleFileChange = async (e, type) => {
     const file = e.target.files[0];
     toast.loading("Uploading..");
@@ -332,7 +352,15 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
       const generatedUrl = await uploadFile(file);
       toast.dismiss();
       toast.success("Uploaded Successfully");
-      setSelectedImage(generatedUrl);
+      console.log("generatedUrl", generatedUrl);
+      if (String(type) === "1") {
+        setSelectedImage(generatedUrl);
+      } else {
+        setSelectedImage2({
+          name: file.name,
+          url: generatedUrl,
+        });
+      }
     } catch (err) {
       toast.dismiss();
       toast.error("Try Again!");
@@ -680,14 +708,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       <div>
                         <input
                           type="file"
-                          id="fileInput"
-                          onChange={(e) =>
-                            handleFileChange2(
-                              e,
-                              "lenderList",
-                              setSelectedImage2
-                            )
-                          }
+                          id="fileInput_01"
+                          onChange={(e) => handleFileChange(e, 2)}
                           style={{ display: "none" }} // Hide the actual input element
                         />
                         {/* You can add a button or any other element to trigger file selection */}
@@ -695,7 +717,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           className="btn btn-color"
                           style={{ marginLeft: "10px" }}
                           onClick={() =>
-                            document.getElementById("fileInput").click()
+                            document.getElementById("fileInput_01").click()
                           }
                         >
                           Browse
@@ -716,6 +738,14 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                             ? selectedImage2.url
                             : ""
                         }
+                        onClick={(event) =>
+                          handleDownloadClick(
+                            event,
+                            selectedImage2.url,
+                            `${firstNameRef}_lenderlist.pdf`
+                          )
+                        }
+                        style={{ cursor: "pointer" }}
                       >
                         {selectedImage2.name}
                       </Link>

@@ -3,6 +3,8 @@ import Header from "../../common/header/dashboard/HeaderAppraiserCompany";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenu_002";
 import MobileMenu from "../../common/header/MobileMenu_01";
 import ProfileInfo from "./ProfileInfo";
+import Link from "next/link";
+import Image from "next/image";
 import Form from "./Form";
 import { useRouter } from "next/router";
 
@@ -10,6 +12,9 @@ const Index = ({ profileCount, setProfileCount }) => {
   const [showCard, setShowCard] = useState(true); // Set to false by default
   const [userData, setUserData] = useState({}); // State to hold user data
   const router = useRouter();
+  const [modalIsOpenError, setModalIsOpenError] = useState(false);
+  const [modalIsOpenError_01, setModalIsOpenError_01] = useState(false);
+
   // const user = JSON.parse(localStorage.getItem("user"));
 
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
@@ -68,6 +73,11 @@ const Index = ({ profileCount, setProfileCount }) => {
     setShowCard(val);
   };
 
+  const closeErrorModal = () => {
+    setModalIsOpenError(false);
+    setModalIsOpenError_01(false);
+  };
+
   return (
     <>
       <Header
@@ -117,12 +127,174 @@ const Index = ({ profileCount, setProfileCount }) => {
                                 profileCount={profileCount}
                                 setProfileCount={setProfileCount}
                                 setShowCard={setShowCard}
+                                setModalIsOpenError={setModalIsOpenError}
+                                setModalIsOpenError_01={setModalIsOpenError_01}
                               />
                             )}
                           </div>
                         </div>
                       </div>
                     </div>
+                    {modalIsOpenError && (
+                      <div className="modal">
+                        <div
+                          className="modal-content"
+                          style={{ borderColor: "#2e008b", width: "20%" }}
+                        >
+                          <div className="row">
+                            <div className="col-lg-12">
+                              <Link href="/" className="">
+                                <Image
+                                  width={50}
+                                  height={45}
+                                  className="logo1 img-fluid"
+                                  style={{ marginTop: "-20px" }}
+                                  src="/assets/images/logo.png"
+                                  alt="header-logo2.png"
+                                />
+                                <span
+                                  style={{
+                                    color: "#2e008b",
+                                    fontWeight: "bold",
+                                    fontSize: "24px",
+                                    // marginTop: "20px",
+                                  }}
+                                >
+                                  Appraisal
+                                </span>
+                                <span
+                                  style={{
+                                    color: "#97d700",
+                                    fontWeight: "bold",
+                                    fontSize: "24px",
+                                    // marginTop: "20px",
+                                  }}
+                                >
+                                  {" "}
+                                  Land
+                                </span>
+                              </Link>
+                            </div>
+                          </div>
+                          <h2
+                            className="text-center"
+                            style={{ color: "orangered" }}
+                          >
+                            Alert
+                          </h2>
+                          <div
+                            className="mb-3 mt-2"
+                            style={{ border: "2px solid #97d700" }}
+                          ></div>
+                          <h5 className="text-center">
+                            As SMS Notification is disabled you wont be notified
+                            for listed changes and updates over SMS.
+                          </h5>
+                          <div
+                            className="mb-3 mt-2"
+                            style={{ border: "2px solid #97d700" }}
+                          ></div>
+                          <div
+                            className="text-center"
+                            // style={{
+                            //   display: "flex",
+                            //   flexDirection: "column",
+                            // }}
+                          >
+                            <button
+                              className="btn btn-color w-25"
+                              onClick={() => closeErrorModal()}
+                              // style={{
+                              //   borderColor: "orangered",
+                              //   color: "orangered",
+                              // }}
+                            >
+                              Ok
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    {modalIsOpenError_01 && (
+                      <div className="modal">
+                        <div
+                          className="modal-content"
+                          style={{ borderColor: "#2e008b", width: "20%" }}
+                        >
+                          <div className="row">
+                            <div className="col-lg-12">
+                              <Link href="/" className="">
+                                <Image
+                                  width={50}
+                                  height={45}
+                                  className="logo1 img-fluid"
+                                  style={{ marginTop: "-20px" }}
+                                  src="/assets/images/logo.png"
+                                  alt="header-logo2.png"
+                                />
+                                <span
+                                  style={{
+                                    color: "#2e008b",
+                                    fontWeight: "bold",
+                                    fontSize: "24px",
+                                    // marginTop: "20px",
+                                  }}
+                                >
+                                  Appraisal
+                                </span>
+                                <span
+                                  style={{
+                                    color: "#97d700",
+                                    fontWeight: "bold",
+                                    fontSize: "24px",
+                                    // marginTop: "20px",
+                                  }}
+                                >
+                                  {" "}
+                                  Land
+                                </span>
+                              </Link>
+                            </div>
+                          </div>
+                          <h2
+                            className="text-center"
+                            style={{ color: "orangered" }}
+                          >
+                            Alert
+                          </h2>
+                          <div
+                            className="mb-3 mt-2"
+                            style={{ border: "2px solid #97d700" }}
+                          ></div>
+                          <h5 className="text-center">
+                            As Email Notification is disabled you wont be
+                            notified for listed changes and updates over Email.
+                          </h5>
+                          <div
+                            className="mb-3 mt-2"
+                            style={{ border: "2px solid #97d700" }}
+                          ></div>
+                          <div
+                            className="text-center"
+                            // style={{
+                            //   display: "flex",
+                            //   flexDirection: "column",
+                            // }}
+                          >
+                            <button
+                              className="btn btn-color w-25"
+                              onClick={() => closeErrorModal()}
+                              // style={{
+                              //   borderColor: "orangered",
+                              //   color: "orangered",
+                              // }}
+                            >
+                              Ok
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

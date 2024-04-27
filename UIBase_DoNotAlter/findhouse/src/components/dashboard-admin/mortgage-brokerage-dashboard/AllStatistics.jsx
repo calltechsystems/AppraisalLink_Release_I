@@ -1,33 +1,20 @@
-const AllStatistics = () => {
+const AllStatistics = ({totalBids , acceptedBids}) => {
+  console.log(totalBids,acceptedBids)
   const allStatistics = [
     {
       id: 1,
       blockStyle: "",
       icon: "flaticon-home-1",
-      timer: "37",
-      name: "Total Brokers",
+      timer: totalBids,
+      name: "Total Brokerage",
     },
     {
       id: 2,
       blockStyle: "style3",
       icon: "flaticon-house-1",
-      timer: "24",
-      name: "Total Active Brokers",
-    },
-    // {
-    //   id: 3,
-    //   blockStyle: "style3",
-    //   icon: "flaticon-chat",
-    //   timer: "12",
-    //   name: "Bids",
-    // },
-    // {
-    //   id: 4,
-    //   blockStyle: "style4",
-    //   icon: "flaticon-heart",
-    //   timer: "18",
-    //   name: "Favorites",
-    // },
+      timer: acceptedBids,
+      name: "Total Active Brokerage",
+    }
   ];
 
   return (

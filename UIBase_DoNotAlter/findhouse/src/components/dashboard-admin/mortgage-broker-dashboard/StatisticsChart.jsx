@@ -50,20 +50,21 @@ export const options = {
 
 const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: "Dataset",
-      data: labels.map(() => faker.datatype.number({ min: 30, max: 100 })),
-      borderColor: "rgb(255, 99, 132)",
-      backgroundColor: "rgba(255, 99, 132, 0.5)",
-      data: [19, 113, 91, 36, 21, 85, 19, 13, 21, 36, 156, 95],
-      fill: false,
-    },
-  ],
-};
 
-export default function StatisticsChart() {
-  return <Line options={options} data={data} />;
+
+export default function StatisticsChart({data}) {
+  const biddata = {
+    labels,
+    datasets: [
+      {
+        label: "Dataset",
+        data: labels.map(() => faker.datatype.number({ min: 30, max: 100 })),
+        borderColor: "rgb(255, 99, 132)",
+        backgroundColor: "rgba(255, 99, 132, 0.5)",
+        data: data,
+        fill: false,
+      },
+    ],
+  };
+  return <Line options={options} data={biddata} />;
 }
