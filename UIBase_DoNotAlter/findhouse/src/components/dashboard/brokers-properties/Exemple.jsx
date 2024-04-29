@@ -343,8 +343,8 @@ export default function Exemple({
   useEffect(() => {
     const getData = () => {
       properties.map((item, index) => {
-        const itemWitnin = getPropertyInfoById(item.item.userId);
-        const property = itemWitnin;
+        const orderId = getPropertyInfoById(item.item.userId);
+        const property = item.item;
         const isBidded = getBidOfProperty(property.orderId);
         const isHold = property.isOnHold;
         const isCancel = property.isOnCancel;
@@ -466,8 +466,6 @@ export default function Exemple({
               ),
             address: `${property.streetNumber} ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
             remark: isBidded.remark ? isBidded.remark : "N.A.",
-            // remark: property.remark ? property.remark : "N.A.",
-            // user: property.applicantEmailAddress,
             type_of_building: property.typeOfBuilding,
             amount: ` $ ${addCommasToNumber(property.estimatedValue)}`,
             purpose: property.purpose,
@@ -488,58 +486,6 @@ export default function Exemple({
                     </Link>
                   </span>
                 </li>
-
-                {/* {!isEditable && !isCancel && (
-                  <li title="Quotes">
-                    <Link
-                      className="btn btn-color-table"
-                      href={`/brokerage-properties-bid/${property.orderId}`}
-                    >
-                      <span className="flaticon-invoice"></span>
-                    </Link>
-                  </li>
-                )}
-
-                {(isEditable || isStatus === 1) && !isCancel && (
-                  <li title="Edit Property">
-                    <Link
-                      className="btn btn-color-table"
-                      href={`/create-listing-1/${property.orderId}`}
-                    >
-                      <span className="flaticon-edit"></span>
-                    </Link>
-                  </li>
-                )}
-
-                {!isCancel && isStatus !== 3 && (
-                  <li title={!isHold ? "On Hold" : "Remove Hold"}>
-                    <span
-                      className="btn btn-color-table "
-                      style={{ border: "1px solid grey" }}
-                      onClick={() =>
-                        openModal(property.orderId, 1, isHold ? 0 : property)
-                      }
-                    >
-                      <Link href="#" className="text-light">
-                        <FaPause />
-                      </Link>
-                    </span>
-                  </li>
-                )}
-
-                {!isCancel && isStatus !== 3 && !isHold && (
-                  <li title={"Order Cancel"}>
-                    <span
-                      className="btn btn-color-table"
-                      style={{ border: "1px solid grey" }}
-                      onClick={() => openModal(property.orderId, 2, property)}
-                    >
-                      <Link href="#">
-                        <span className="flaticon-garbage text-light"></span>
-                      </Link>
-                    </span>
-                  </li>
-                )} */}
               </ul>
             ),
           };
@@ -581,7 +527,6 @@ export default function Exemple({
       .catch((err) => {
         toast.error(err);
         setDataFetched(false);
-        // setModalIsOpenError(true);
       });
 
     axios
@@ -611,7 +556,6 @@ export default function Exemple({
           })
           .catch((err) => {
             toast.error(err);
-            // setModalIsOpenError(true);
           });
       });
     axios

@@ -139,7 +139,7 @@ const Index = ({ profileCount, setProfileCount }) => {
                       <div className="modal">
                         <div
                           className="modal-content"
-                          style={{ borderColor: "#2e008b", width: "20%" }}
+                          style={{ borderColor: "#2e008b", width: "40%" }}
                         >
                           <div className="row">
                             <div className="col-lg-12">
@@ -186,28 +186,18 @@ const Index = ({ profileCount, setProfileCount }) => {
                             className="mb-3 mt-2"
                             style={{ border: "2px solid #97d700" }}
                           ></div>
-                          <h5 className="text-center">
-                            As SMS Notification is disabled you wont be notified
-                            for listed changes and updates over SMS.
-                          </h5>
+                          <span className="text-center text-dark fs-4">
+                            "As SMS Notification is disabled you won't be
+                            notified for listed changes and updates over SMS.
+                          </span>
                           <div
                             className="mb-3 mt-2"
                             style={{ border: "2px solid #97d700" }}
                           ></div>
-                          <div
-                            className="text-center"
-                            // style={{
-                            //   display: "flex",
-                            //   flexDirection: "column",
-                            // }}
-                          >
+                          <div className="text-center">
                             <button
                               className="btn btn-color w-25"
                               onClick={() => closeErrorModal()}
-                              // style={{
-                              //   borderColor: "orangered",
-                              //   color: "orangered",
-                              // }}
                             >
                               Ok
                             </button>
@@ -219,7 +209,7 @@ const Index = ({ profileCount, setProfileCount }) => {
                       <div className="modal">
                         <div
                           className="modal-content"
-                          style={{ borderColor: "#2e008b", width: "20%" }}
+                          style={{ borderColor: "#2e008b", width: "40%" }}
                         >
                           <div className="row">
                             <div className="col-lg-12">
@@ -237,7 +227,6 @@ const Index = ({ profileCount, setProfileCount }) => {
                                     color: "#2e008b",
                                     fontWeight: "bold",
                                     fontSize: "24px",
-                                    // marginTop: "20px",
                                   }}
                                 >
                                   Appraisal
@@ -247,7 +236,6 @@ const Index = ({ profileCount, setProfileCount }) => {
                                     color: "#97d700",
                                     fontWeight: "bold",
                                     fontSize: "24px",
-                                    // marginTop: "20px",
                                   }}
                                 >
                                   {" "}
@@ -266,28 +254,18 @@ const Index = ({ profileCount, setProfileCount }) => {
                             className="mb-3 mt-2"
                             style={{ border: "2px solid #97d700" }}
                           ></div>
-                          <h5 className="text-center">
-                            As Email Notification is disabled you wont be
+                          <span className="text-center text-dark fs-4">
+                            "As Email Notification is disabled you won't be
                             notified for listed changes and updates over Email.
-                          </h5>
+                          </span>
                           <div
                             className="mb-3 mt-2"
                             style={{ border: "2px solid #97d700" }}
                           ></div>
-                          <div
-                            className="text-center"
-                            // style={{
-                            //   display: "flex",
-                            //   flexDirection: "column",
-                            // }}
-                          >
+                          <div className="text-center">
                             <button
                               className="btn btn-color w-25"
                               onClick={() => closeErrorModal()}
-                              // style={{
-                              //   borderColor: "orangered",
-                              //   color: "orangered",
-                              // }}
                             >
                               Ok
                             </button>
