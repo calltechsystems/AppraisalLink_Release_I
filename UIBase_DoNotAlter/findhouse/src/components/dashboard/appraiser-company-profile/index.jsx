@@ -187,7 +187,7 @@ const Index = ({ profileCount, setProfileCount }) => {
                             style={{ border: "2px solid #97d700" }}
                           ></div>
                           <span className="text-center text-dark fs-4">
-                            "As SMS Notification is disabled you won't be
+                            As SMS Notification is disabled you won&apos;t be
                             notified for listed changes and updates over SMS.
                           </span>
                           <div
@@ -255,7 +255,7 @@ const Index = ({ profileCount, setProfileCount }) => {
                             style={{ border: "2px solid #97d700" }}
                           ></div>
                           <span className="text-center text-dark fs-4">
-                            "As Email Notification is disabled you won't be
+                            As Email Notification is disabled you won&apos;t be
                             notified for listed changes and updates over Email.
                           </span>
                           <div
