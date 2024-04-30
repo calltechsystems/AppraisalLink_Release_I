@@ -468,61 +468,7 @@ const Index = () => {
           <div className="row">
             <div className="col-lg-12 maxw100flex-992">
               <div className="row">
-                {/* Start Dashboard Navigation */}
-                {/* <div className="col-lg-12">
-                  <div className="dashboard_navigationbar dn db-1024">
-                    <div className="dropdown">
-                      <button
-                        className="dropbtn"
-                        data-bs-toggle="offcanvas"
-                        data-bs-target="#DashboardOffcanvasMenu"
-                        aria-controls="DashboardOffcanvasMenu"
-                      >
-                        <i className="fa fa-bars pr10"></i> Dashboard Navigation
-                      </button>
-                    </div>
-                  </div>
-                </div> */}
-                {/* End Dashboard Navigation */}
-
-                {/* <div className="col-lg-4 col-xl-4 mb10">
-                  <div className="style2 mb30-991">
-                    <h3 className="breadcrumb_title">Accepted Orders</h3>
-                  </div>
-                </div> */}
-                {/* End .col */}
-
-                {/*<div className="row">
-                <div className="col-lg-12 mt20">
-                 <div className="mbp_pagination">
-                   <Pagination
-                     setStart={setStart}
-                     setEnd={setEnd}
-                     properties={properties}
-                   />
-                 </div>
-               </div> 
-              </div>*/}
-
-                <div className="col-lg-12 col-xl-12">
-                  {/* <div className="candidate_revew_select style2 mb30-991">
-                    <ul className="mb0">
-                      <li className="list-inline-item">
-                        <Filtering setFilterQuery={setFilterQuery} />
-                      </li>
-                      <li className="list-inline-item">
-                        <FilteringBy setFilterQuery={setSearchQuery} />
-                      </li>
-                      <li className="list-inline-item">
-                        <div className="candidate_revew_search_box course fn-520">
-                          <SearchBox setSearchInput={setSearchInput} />
-                        </div>
-                      </li>
-                    
-                    </ul>
-                  </div> */}
-                </div>
-                {/* End .col */}
+                <div className="col-lg-12 col-xl-12"></div>
 
                 <div className="col-lg-12">
                   <div className="">
@@ -539,7 +485,9 @@ const Index = () => {
                           searchInput={searchInput}
                           end={end}
                           properties={
-                            searchInput === "" && filterQuery === "All" ? properties : filterProperty
+                            searchInput === "" && filterQuery === "All"
+                              ? properties
+                              : filterProperty
                           }
                           setUpdatedCode={setUpdatedCode}
                           setModalIsPopupOpen={setModalIsPopupOpen}
@@ -652,10 +600,7 @@ const Index = () => {
                                     style={{ border: "2px solid #97d700" }}
                                   ></div>
                                 </div>
-                                {/* <p className="text-center mb-3">
-                                  All of the details on the assessed property
-                                  are here.
-                                </p> */}
+
                                 <div
                                   className="d-flex justify-content-center"
                                   id="property-info-container"
@@ -724,27 +669,7 @@ const Index = () => {
                                           {currentProperty.zipCode}
                                         </td>
                                       </tr>
-                                      {/* <tr>
-                                      <td
-                                         style={{
-                                          border: "1px solid #2e008b",
-                                          color: "#2e008b",
-                                          padding:"5px"
-                                        }}
-                                      >
-                                        <span className="text-start">
-                                          Property Area
-                                        </span>
-                                      </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                        }}
-                                      >
-                                        {currentProperty.area} sqft
-                                      </td>
-                                    </tr> */}
+
                                       <tr>
                                         <td
                                           style={{
@@ -843,30 +768,7 @@ const Index = () => {
                                             : "N.A."}
                                         </td>
                                       </tr>
-                                      {/* <tr>
-                                      <td
-                                         style={{
-                                          border: "1px solid #2e008b",
-                                          color: "#2e008b",
-                                          padding:"5px"
-                                        }}
-                                      >
-                                        <span className="text-start">
-                                          Community
-                                        </span>
-                                      </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                        }}
-                                      >
-                                        {" "}
-                                        {currentProperty.community
-                                          ? currentProperty.community
-                                          : "NA"}
-                                      </td>
-                                    </tr> */}
+
                                       <tr>
                                         <td
                                           style={{
@@ -1021,30 +923,7 @@ const Index = () => {
                                           {currentProperty.applicantPhoneNumber}
                                         </td>
                                       </tr>
-                                      {/* <tr>
-                                      <td
-                                         style={{
-                                          border: "1px solid #2e008b",
-                                          color: "#2e008b",
-                                          padding:"5px"
-                                        }}
-                                      >
-                                        <span className="text-start">
-                                          Address
-                                        </span>
-                                      </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                        }}
-                                      >
-                                        {" "}
-                                        {currentProperty.applicantAddress
-                                          ? currentProperty.applicantAddress
-                                          : "NA"}
-                                      </td>
-                                    </tr> */}
+
                                       <tr>
                                         <td
                                           style={{
@@ -1095,32 +974,6 @@ const Index = () => {
                                     </button>
                                   </div>
                                 </div>
-
-                                {/* <div
-                                className="text-center"
-                                style={{ display: "flex", flexDirection: "column" }}
-                              >
-                                <label>Property Value : ${bidLowerRangeRef}</label>
-                                <label>community Type : {communityRef}</label>
-                                <label>Property type : {buildinRef}</label>
-                                <label>
-                                  {streetNameRef} {streetNumberRef} {cityRef}
-                                </label>
-                                <label>zipCode : {zipCodeRef}</label>
-                                <label>
-                                  Property By : {applicantFirstName} {applicantLatsName}
-                                </label>
-                                <label>
-                                  {applicantEmail} - {applicantNumber}
-                                </label>
-        
-                                <button
-                                  className="btn w-35 btn-white"
-                                  onClick={() => finalSubmitHandler()}
-                                >
-                                  OK
-                                </button>
-                              </div> */}
                               </div>
                             </div>
                           )}
