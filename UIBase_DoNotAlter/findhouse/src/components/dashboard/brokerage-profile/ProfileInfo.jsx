@@ -157,23 +157,6 @@ const ProfileInfo = ({
     }
   }, [smsNotification, emailNotification]);
 
-  // const firstFunction = () => {
-  //   if (smsNotification === null || smsNotification === false) {
-  //     toast.error(
-  //       "As SMS Notification is disabled you wont be notified for listed changes and updates over SMS.",
-  //       { duration: 3000 }
-  //     );
-  //   }
-  //   if (emailNotification === null || emailNotification === false) {
-  //     toast.error(
-  //       "As Email Notification is disabled you wont be notified for listed changes and updates over Email.",
-  //       { duration: 3000 }
-  //     );
-  //   }
-
-  //   setTimeout(onUpdatHandler, 2000); // Call onUpdatHandler after 6 seconds
-  // };
-
   const onUpdatHandler = () => {
     const firstName = firstNameRef;
     const lastName = lastNameRef;
@@ -194,14 +177,12 @@ const ProfileInfo = ({
       mortageBrokrageLicNoRef !== ""
         ? mortageBrokrageLicNoRef
         : userData.brokerage_Details.mortageBrokerageLicNo;
-    // const assistantEmailAddress = assistantEmailAddress;
-    // const assistantFirstName = assistantFirstName;
-    // const assistantPhoneNumber = assistantPhoneNumber;
+  
 
     const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const cellNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const nameRegex = /^[A-Za-z]+$/;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex for email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
 
     if (
       nameRegex.test(firstName) === false ||
@@ -290,9 +271,6 @@ const ProfileInfo = ({
         count--;
       }
 
-      // const percentage = Math.floor(count / 13) * 100;
-      // setProfileCount(percentage);
-
       const payload = {
         id: userData.userId,
         token: userData.token,
@@ -300,14 +278,6 @@ const ProfileInfo = ({
         middleName: middleName,
         lastName: lastName,
         brokerageName: brokerageName,
-        // mortageBrokerLicNo:
-        //   mortageBrokerLicNoRef !== ""
-        //     ? mortageBrokerLicNoRef
-        //     : userData.brokerage_Details.mortageBrokerLicNo,
-        // mortageBrokerageLicNo:
-        //   mortageBrokrageLicNoRef !== ""
-        //     ? mortageBrokrageLicNoRef
-        //     : userData.brokerage_Details.mortageBrokerageLicNo,
         streetNumber: streetNumber,
         apartmentNo: apartmentNo,
         streetName: streetName,
@@ -329,6 +299,8 @@ const ProfileInfo = ({
         mortageBrokerLicNo: mortageBrokerLicNoRef,
         mortageBrokerageLicNo: mortageBrokrageLicNoRef,
         emailId: emailId,
+        smsNotification : smsNotification === true ? 1 : 0,
+        emailNotification : emailNotification === true ? 1 : 0
       };
       if (
         !payload.lastName ||
@@ -380,7 +352,7 @@ const ProfileInfo = ({
 
   const openWidget = () => {
     if (uploadInputRef.current) {
-      uploadInputRef.current.click(); // Trigger the hidden file input
+      uploadInputRef.current.click(); 
     }
   };
 
@@ -400,14 +372,11 @@ const ProfileInfo = ({
   };
 
   const handleUpload = (result) => {
-    // Handle the image upload result here
     console.log("handleUpload called");
     if (result.info.secure_url) {
       setSelectedImage(result.info.secure_url);
       setProfilePhoto(result.info.secure_url);
-      // You can also save the URL to your state or do other operations here
     } else {
-      // Handle the case when the upload failed
       console.error("Image upload failed");
     }
   };
@@ -439,11 +408,7 @@ const ProfileInfo = ({
 
   const handleInputChange = (e) => {
     const inputValue = e.target.value;
-
-    // Allow only numeric input
     const numericValue = inputValue.replace(/\D/g, "");
-
-    // Restrict to 10 digits
     const truncatedValue = numericValue.slice(0, 10);
     if (truncatedValue.length === 10) {
       setPhoneNumberRef(truncatedValue);
@@ -453,11 +418,7 @@ const ProfileInfo = ({
 
   const handleInputChange_01 = (e) => {
     const inputValue = e.target.value;
-
-    // Allow only numeric input
     const numericValue = inputValue.replace(/\D/g, "");
-
-    // Restrict to 10 digits
     const truncatedValue = numericValue.slice(0, 10);
     if (truncatedValue.length === 10) {
       setCellNumberRef(truncatedValue);
@@ -467,11 +428,7 @@ const ProfileInfo = ({
 
   const handleInputChange_02 = (e) => {
     const inputValue = e.target.value;
-
-    // Allow only numeric input
     const numericValue = inputValue.replace(/\D/g, "");
-
-    // Restrict to 10 digits
     const truncatedValue = numericValue.slice(0, 10);
     if (truncatedValue.length === 10) {
       setAssistantPhoneNumber(truncatedValue);
@@ -481,11 +438,7 @@ const ProfileInfo = ({
 
   const handleInputChange_03 = (e) => {
     const inputValue = e.target.value;
-
-    // Allow only numeric input
     const numericValue = inputValue.replace(/\D/g, "");
-
-    // Restrict to 10 digits
     const truncatedValue = numericValue.slice(0, 10);
     if (truncatedValue.length === 10) {
       setAssistantTwoPhoneNumber(truncatedValue);
@@ -496,23 +449,7 @@ const ProfileInfo = ({
   return (
     <>
       <div className="row">
-        {/* <h4 className="mb-3">Personal Information</h4> */}
         <div className="col-lg-12"></div>
-        {/* {!edit && (
-          <div>
-            <button
-              className="btn btn2 btn-color profile_edit_button"
-              onClick={changeEditHandler}
-            >
-              <span
-                className="flaticon-edit"
-                data-toggle="tooltip"
-                data-placement="top"
-                title="Edit Profile"
-              ></span>
-            </button>
-          </div>
-        )} */}
         <div className="col-lg-12 col-xl-12 mt-2">
           <div className="my_profile_setting_input form-group">
             <div className="row">
@@ -529,10 +466,9 @@ const ProfileInfo = ({
                         type="file"
                         id="fileInput"
                         onChange={(e) => handleFileChange(e, 1)}
-                        style={{ display: "none" }} // Hide the actual input element
+                        style={{ display: "none" }} 
                       />
-                      {/* You can add a button or any other element to trigger file selection */}
-                      <button
+                       <button
                         className="btn btn-color mt-2"
                         onClick={() =>
                           document.getElementById("fileInput").click()
@@ -541,32 +477,11 @@ const ProfileInfo = ({
                         Browse
                       </button>
                       <p className="mt-2">
-                        {SelectedImage !== "" && "Note -: Image Only"}
+                        {SelectedImage !== "" && "Image Only"}
                       </p>
                     </div>
                   )}
-                  {/* {!edit && (
-                    <CldUploadWidget
-                      onUpload={handleUpload}
-                      uploadPreset="mpbjdclg"
-                      options={{
-                        cloudName: "dcrq3m6dx", // Your Cloudinary upload preset
-                        maxFiles: 1,
-                      }}
-                    >
-                      {({ open }) => (
-                        <div>
-                          <button
-                            className="btn btn-color profile_edit_button mb-5"
-                            style={{ marginLeft: "0px" }}
-                            onClick={open} // This will open the upload widget
-                          >
-                            Upload Photo
-                          </button>
-                        </div>
-                      )}
-                    </CldUploadWidget>
-                  )} */}
+                 
                 </div>
               </div>
               <div className="col-lg-9">
@@ -623,27 +538,6 @@ const ProfileInfo = ({
                       </div>
                     </div>
                   </div>
-                  {/* <div className="col-lg-12 mb-3">
-                    <div className="row">
-                      <div className="col-lg-4">
-                        <label htmlFor="" style={{ paddingTop: "10px" }}>
-                          Middle Name
-                        </label>
-                      </div>
-                      <div className="col-lg-7">
-                        <input
-                          type="text"
-                          required
-                          className="form-control"
-                          id="formGroupExampleInput3"
-                          style={{ backgroundColor: "#E8F0FE" }}
-                          
-                          value={middleNameRef}
-                          onChange={(e) => setMiddleNameRef(e.target.value)}
-                        />
-                      </div>
-                    </div>
-                  </div> */}
                   <div className="col-lg-12 mb-3">
                     <div className="row">
                       <div className="col-lg-5">

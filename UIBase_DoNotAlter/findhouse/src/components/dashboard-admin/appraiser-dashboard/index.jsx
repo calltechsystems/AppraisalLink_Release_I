@@ -297,9 +297,9 @@ const Index = () => {
     return isPresent;
   };
 
-  const closeBrokerModal = ()=>{
+  const closeBrokerModal = () => {
     setOpenBrokerModal(false);
-  }
+  };
 
   const brokerInfoHandler = (orderId) => {
     const printWindow = window.open("", "_blank");
@@ -407,13 +407,20 @@ const Index = () => {
                 </div>
                 {/* End Dashboard Navigation */}
 
-                <div className="row mb-2" style={{}}>
-                  <div className="col-lg-11">
-                    <div className="breadcrumb_content">
-                      <h2 className="breadcrumb_title">Appraiser Dashboard</h2>
-                    </div>
+                <div
+                  className="col-lg-12 mb10"
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <div className="breadcrumb_content">
+                    <h2 className="breadcrumb_title">
+                      Appraiser Dashboard
+                    </h2>
                   </div>
-                  <div className="col-lg-1">
+                  <div>
                     <Filtering
                       refreshHandler={refreshHandler}
                       filterQuery={filterQuery}
