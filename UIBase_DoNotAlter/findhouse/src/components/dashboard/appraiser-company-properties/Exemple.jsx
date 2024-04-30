@@ -28,7 +28,7 @@ const headCells = [
   {
     id: "assigned_appraiser",
     numeric: false,
-    label: "Appraiser Assigned",
+    label: "Assigned Status",
     width: 200,
   },
   {
@@ -46,13 +46,13 @@ const headCells = [
   {
     id: "remark",
     numeric: false,
-    label: "Remark",
+    label: "Appraisal Remark",
     width: 160,
   },
   {
     id: "urgency",
     numeric: false,
-    label: "Urgency",
+    label: "Request Type",
     width: 200,
   },
   {
@@ -314,19 +314,49 @@ export default function Exemple({
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
-      second: "numeric",
+      // second: "numeric",
+      hour12: true, // Set to false for 24-hour format
     };
 
-    const originalDate = new Date(dateString);
-
-    // Adjust for Eastern Standard Time (EST) by subtracting 5 hours
-    const estDate = new Date(originalDate.getTime() - 5 * 60 * 60 * 1000);
-
-    // Format the EST date
-    const formattedDate = estDate.toLocaleString("en-US", options);
-
+    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
     return formattedDate;
   };
+
+  const formatDateNew = (dateString) => {
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      // hour: "numeric",
+      // minute: "numeric",
+      // second: "numeric",
+      hour12: true, // Set to false for 24-hour format
+    };
+
+    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
+    return formattedDate;
+  };
+
+  // const formatDate = (dateString) => {
+  //   const options = {
+  //     year: "numeric",
+  //     month: "short",
+  //     day: "numeric",
+  //     hour: "numeric",
+  //     minute: "numeric",
+  //     second: "numeric",
+  //   };
+
+  //   const originalDate = new Date(dateString);
+
+  //   // Adjust for Eastern Standard Time (EST) by subtracting 5 hours
+  //   const estDate = new Date(originalDate.getTime() - 5 * 60 * 60 * 1000);
+
+  //   // Format the EST date
+  //   const formattedDate = estDate.toLocaleString("en-US", options);
+
+  //   return formattedDate;
+  // };
 
   const formatLargeNumber = (number) => {
     // Convert the number to a string
@@ -425,7 +455,12 @@ export default function Exemple({
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
         const anotherBid = alreadyAccepted(property);
-        const haveSubscription = userActivePlans?.length > 0 ? userActivePlans[0]?.$id ? true : false : false;
+        const haveSubscription =
+          userActivePlans?.length > 0
+            ? userActivePlans[0]?.$id
+              ? true
+              : false
+            : false;
 
         const isAssigned = checkIfPropertyAlreadyAssigned(property.$id);
 
@@ -501,11 +536,9 @@ export default function Exemple({
               ),
             remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
             status:
-            (anotherBid === true && isBidded.status !== 2)    ? (
-              <span className="btn btn-danger  w-100">Rejected</span>
-            ) :
-              
-             ( isBidded?.bidId && isBidded.status === 2)  ? (
+              anotherBid === true && isBidded.status !== 2 ? (
+                <span className="btn btn-danger  w-100">Rejected</span>
+              ) : isBidded?.bidId && isBidded.status === 2 ? (
                 <span className="btn btn-danger  w-100">Rejected</span>
               ) : isWait ? (
                 <span className="btn btn-danger  w-100">
@@ -610,7 +643,7 @@ export default function Exemple({
               property.typeOfBuilding > 0
                 ? "Apartment"
                 : property.typeOfBuilding,
-            quote_required_by: formatDate(property.quoteRequiredDate),
+            quote_required_by: formatDateNew(property.quoteRequiredDate),
             date: formatDate(property.addedDatetime),
             bidAmount: millify(property.bidLowerRange),
             lender_information: property.lenderInformation
@@ -730,60 +763,65 @@ export default function Exemple({
                       </li>
                     ) : isBidded.orderStatus === 3 ? (
                       <span className="btn btn-success w-100">Completed</span>
-                    ) : !anotherBid && (
-                      <li
-                        className="list-inline-item"
-                        title="Wishlist Property"
-                      >
-                        {
-                          <button
-                            className="btn"
-                            style={{
-                              border: "1px solid grey",
-                            }}
-                            onClick={() =>
-                              onWishlistHandler(property.propertyId)
-                            }
-                          >
-                            <span className="flaticon-heart text-color"></span>
-                          </button>
-                        }
-                      </li>
+                    ) : (
+                      !anotherBid && (
+                        <li
+                          className="list-inline-item"
+                          title="Wishlist Property"
+                        >
+                          {
+                            <button
+                              className="btn"
+                              style={{
+                                border: "1px solid grey",
+                              }}
+                              onClick={() =>
+                                onWishlistHandler(property.propertyId)
+                              }
+                            >
+                              <span className="flaticon-heart text-color"></span>
+                            </button>
+                          }
+                        </li>
+                      )
                     )}
 
-                    {(!isBidded.$id || isBidded?.status < 1) && !isWait && !anotherBid &&haveSubscription && (
-                      <li
-                        className="list-inline-item"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title={`${
-                          isBidded.$id ? "View/Update Quote" : "Provide Quote"
-                        }`}
-                      >
-                        <div
-                          className="w-100"
-                          onClick={() =>
-                            participateHandler(
-                              property.bidLowerRange,
-                              property.orderId,
-                              isBidded.status < 1,
-                              isBidded.bidAmount,
-                              isBidded.$id ? true : false
-                            )
-                          }
+                    {(!isBidded.$id || isBidded?.status < 1) &&
+                      !isWait &&
+                      !anotherBid &&
+                      haveSubscription && (
+                        <li
+                          className="list-inline-item"
+                          data-toggle="tooltip"
+                          data-placement="top"
+                          title={`${
+                            isBidded.$id ? "View/Update Quote" : "Provide Quote"
+                          }`}
                         >
-                          <button
-                            href="#"
-                            className="btn btn-color"
-                            // style={{ marginLeft: "12px" }}
+                          <div
+                            className="w-100"
+                            onClick={() =>
+                              participateHandler(
+                                property.bidLowerRange,
+                                property.orderId,
+                                isBidded.status < 1,
+                                isBidded.bidAmount,
+                                isBidded.$id ? true : false
+                              )
+                            }
                           >
-                            <Link href="#">
-                              <span className="flaticon-invoice text-light"></span>
-                            </Link>
-                          </button>
-                        </div>
-                      </li>
-                    )}
+                            <button
+                              href="#"
+                              className="btn btn-color"
+                              // style={{ marginLeft: "12px" }}
+                            >
+                              <Link href="#">
+                                <span className="flaticon-invoice text-light"></span>
+                              </Link>
+                            </button>
+                          </div>
+                        </li>
+                      )}
 
                     <li
                       className="list-inline-item"
@@ -997,29 +1035,27 @@ export default function Exemple({
               .catch((err) => {
                 toast.error(err?.response);
               });
-              axios
-      .get("/api/getAllAssignProperties", {
-        headers: {
-          Authorization: `Bearer ${data.token}`,
-        },
-        params: {
-          userId: data.appraiserCompany_Datails?.appraiserCompanyId,
-        },
-      })
-      .then((res) => {
-        // const endDate = new Date();\
-        let tempProperties = res.data.data.$values;
-        const temp = res.data.data.$values;
+            axios
+              .get("/api/getAllAssignProperties", {
+                headers: {
+                  Authorization: `Bearer ${data.token}`,
+                },
+                params: {
+                  userId: data.appraiserCompany_Datails?.appraiserCompanyId,
+                },
+              })
+              .then((res) => {
+                // const endDate = new Date();\
+                let tempProperties = res.data.data.$values;
+                const temp = res.data.data.$values;
 
-        setAssignedProperties(tempProperties);
+                setAssignedProperties(tempProperties);
+              })
+              .catch((err) => {});
+          })
+          .catch((err) => {});
       })
       .catch((err) => {});
-          })
-          .catch((err) => {
-          });
-      })
-      .catch((err) => {
-      });
 
     axios
       .get("/api/getAllBrokers", {
@@ -1044,13 +1080,9 @@ export default function Exemple({
 
             setAllBrokers(updated);
           })
-          .catch((err) => {
-          });
+          .catch((err) => {});
       })
-      .catch((err) => {
-      });
-
-    
+      .catch((err) => {});
 
     axios
       .get("/api/getAllAppraiserByCompanyId", {
@@ -1064,8 +1096,7 @@ export default function Exemple({
       .then((res) => {
         setAssignAppraiser(res.data.data.$values);
       })
-      .catch((err) => {
-      });
+      .catch((err) => {});
 
     axios
       .get("/api/getArchiveAppraiserProperty", {

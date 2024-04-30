@@ -39,19 +39,19 @@ const headCells = [
   {
     id: "remark",
     numeric: false,
-    label: "Remark",
+    label: "Appraisal Remark",
     width: 160,
   },
   {
     id: "urgency",
     numeric: false,
-    label: "Urgency",
+    label: "Request Type",
     width: 200,
   },
   {
     id: "date",
     numeric: false,
-    label: "Order Submission Date",
+    label: "Quote Submitted Date",
     width: 200,
   },
   {
@@ -69,7 +69,7 @@ const headCells = [
   {
     id: "estimated_value",
     numeric: false,
-    label: "Estimated Property Value ($)",
+    label: "Estimated Value / Purchase Price($)",
     width: 200,
   },
   {
@@ -320,18 +320,48 @@ export default function Exemple({
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
-      second: "numeric",
+      // second: "numeric",
+      hour12: true, // Set to false for 24-hour format
     };
 
-    const originalDate = new Date(dateString);
-
-    // Adjust for Eastern Standard Time (EST) by subtracting 5 hours
-    const estDate = new Date(originalDate.getTime() - 5 * 60 * 60 * 1000);
-
-    // Format the EST date
-    const formattedDate = estDate.toLocaleString("en-US", options);
+    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
     return formattedDate;
   };
+
+  const formatDateNew = (dateString) => {
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      // hour: "numeric",
+      // minute: "numeric",
+      // second: "numeric",
+      hour12: true, // Set to false for 24-hour format
+    };
+
+    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
+    return formattedDate;
+  };
+
+  // const formatDate = (dateString) => {
+  //   const options = {
+  //     year: "numeric",
+  //     month: "short",
+  //     day: "numeric",
+  //     hour: "numeric",
+  //     minute: "numeric",
+  //     second: "numeric",
+  //   };
+
+  //   const originalDate = new Date(dateString);
+
+  //   // Adjust for Eastern Standard Time (EST) by subtracting 5 hours
+  //   const estDate = new Date(originalDate.getTime() - 5 * 60 * 60 * 1000);
+
+  //   // Format the EST date
+  //   const formattedDate = estDate.toLocaleString("en-US", options);
+  //   return formattedDate;
+  // };
 
   const checkWishlistedHandler = (data) => {
     let temp = {};
@@ -524,7 +554,7 @@ export default function Exemple({
               property.typeOfBuilding > 0
                 ? "Apartment"
                 : property.typeOfBuilding,
-            quote_required_by: formatDate(property.quoteRequiredDate),
+            quote_required_by: formatDateNew(property.quoteRequiredDate),
             date: formatDate(property.addedDatetime),
             bidAmount: millify(property.bidLowerRange),
             lender_information: property.lenderInformation

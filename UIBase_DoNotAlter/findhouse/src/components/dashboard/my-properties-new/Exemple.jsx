@@ -34,7 +34,7 @@ const headCells = [
   {
     id: "remark",
     numeric: false,
-    label: "Appraiser Remark",
+    label: "Appraisal Remark",
     width: 170,
   },
   {

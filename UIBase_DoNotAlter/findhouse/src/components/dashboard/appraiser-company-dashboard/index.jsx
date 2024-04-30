@@ -513,7 +513,7 @@ const Index = () => {
                 {/* End Dashboard Navigation */}
 
                 <div
-                  className="mb-2"
+                  className="mb10"
                   style={{
                     display: "flex",
                     flexDirection: "row",
