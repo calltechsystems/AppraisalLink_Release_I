@@ -22497,7 +22497,7 @@ input:checked + .slider:before {
   margin-top: 15px;
   background-color: transparent;
   border-radius: 5px;
-  width: 1200px;
+  /* width: 1200px; */
 }
 
 .packages_table .table td,

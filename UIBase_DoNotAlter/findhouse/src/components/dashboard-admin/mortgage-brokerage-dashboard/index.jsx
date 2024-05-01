@@ -503,7 +503,7 @@ const Index = () => {
                 <div className="col-lg-12">
                   <div className="my_dashboard_review mb40">
                     <div className="col-lg-12">
-                      <div className="row">
+                      {/* <div className="row">
                         <div className="col-lg-8">
                           <h4 className="mt-2">All Brokerages</h4>
                         </div>
@@ -513,9 +513,9 @@ const Index = () => {
                             setSearchInput={setSearchInput}
                           />
                         </div>
-                      </div>
+                      </div> */}
                       <div className="packages_table">
-                        <div className="table-responsive mt0">
+                        <div className=" mt0">
                           <PackageData
                             setBroker={setBroker}
                             setOpenBrokerModal={setOpenBrokerModal}

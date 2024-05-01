@@ -207,78 +207,64 @@ const Pricing = ({
           <div
             className={`pricing_table  ${
               String(selectedIdStyle) === String(item.id) ? "pricing_table" : ""
-            }`}
+            }
+          ${true ? "active-selected-plan" : ""}
+          `}
           >
-            <div className="pricing_header">
-              <div className="price">{item.description}</div>
-
-              {String(selectedIdStyle) === String(item.id) ? (
-                <div
-                  className="p-1 fw-bold"
-                  style={{
-                    visibility: "hidden",
-                    backgroundColor: "white",
-                    borderRadius: "4px",
-                    fontSize: "19px",
-                    color: "#2e008b",
-                  }}
-                >
-                  Recommended Plan{" "}
-                </div>
-              ) : (
-                <div
-                  className="p-1 fw-bold"
-                  style={{
-                    visibility: "hidden",
-                    backgroundColor: "white",
-                    borderRadius: "4px",
-                    fontSize: "19px",
-                    color: "#2e008b",
-                  }}
-                >
-                  Recommended Plan{" "}
-                </div>
-              )}
-            </div>
-            <div className="pricing_content">
-              <ul className="mb0">
-                <li key={idx}>{item.noOfProperties} Properties Appraisal</li>
-                {content[idx]?.features?.map((val, i) => (
-                  <li key={i}>{val}</li>
-                ))}
-              </ul>
+            <div
+              className={`${
+                currentActivePlan.id === item.id ? "active-selected-plan" : ""
+              }
+`}
+            >
               <div className="pricing_header">
-                <h2 className="text-dark">
-                  $
-                  {isPlan === 1
-                    ? item.monthlyAmount - item.discount
-                    : item.yearlyAmount - item.discount}
-                </h2>
-              </div>
-            </div>
-            {!hideButton && !currentActivePlan?.$id && (
-              <div
-                className="pricing_footer"
-                onClick={() =>
-                  selectPackageHandler(
-                    item.id,
-                    item.description,
-                    isPlan === 1
-                      ? item.monthlyAmount - item.discount
-                      : item.yearlyAmount - item.discount,
-                    "plan"
-                  )
-                }
-              >
-                <a className={`btn btn-color_01 w-100`} href="#">
-                  {currentActivePlan?.$id ? "Modify Plan" : "Get Started"}
-                </a>
-              </div>
-            )}
+                <div className="price">{item.planName}</div>
 
-            {!hideButton &&
-              currentActivePlan &&
-              String(currentActivePlan.id) !== String(item.id) && (
+                {String(selectedIdStyle) === String(item.id) ? (
+                  <div
+                    className="p-1 fw-bold"
+                    style={{
+                      visibility: "hidden",
+                      backgroundColor: "white",
+                      borderRadius: "4px",
+                      fontSize: "19px",
+                      color: "#2e008b",
+                    }}
+                  >
+                    Recommended Plan{" "}
+                  </div>
+                ) : (
+                  <div
+                    className="p-1 fw-bold"
+                    style={{
+                      visibility: "hidden",
+                      backgroundColor: "white",
+                      borderRadius: "4px",
+                      fontSize: "19px",
+                      color: "#2e008b",
+                    }}
+                  >
+                    Recommended Plan{" "}
+                  </div>
+                )}
+              </div>
+              <div className="pricing_content">
+                <ul className="mb0">
+                  <li key={idx}>{item.noOfProperties} Properties Quotes</li>
+                  {content[idx]?.features?.map((val, i) => (
+                    <li key={i}>{val}</li>
+                  ))}
+                </ul>
+                <div className="pricing_header">
+                  <h2 className="text-dark">
+                    $
+                    {isPlan === 1
+                      ? item.monthlyAmount - item.discount
+                      : item.yearlyAmount - item.discount}
+                  </h2>
+                </div>
+              </div>
+              {!hideButton && !currentActivePlan?.$id && (
                 <div
                   className="pricing_footer"
                   onClick={() =>
@@ -293,28 +279,51 @@ const Pricing = ({
                   }
                 >
                   <a className={`btn btn-color_01 w-100`} href="#">
-                    {currentActivePlan?.$id ? "Modify Plan" : "Select Plan"}
+                    {currentActivePlan?.$id ? "Modify Plan" : "Get Started"}
                   </a>
                 </div>
               )}
-            {!hideButton &&
-              String(currentActivePlan?.id) === String(item.id) && (
-                <select
-                  style={{
-                    padding: "",
-                    borderColor: "black",
-                    borderWidth: "2px",
-                  }}
-                  onClick={(e) => setPlan(item.id, e.target.value)}
-                  className="pricing_footer btn btn-color_01 form-select"
-                >
-                  <option value={1}>Add Top Up / Cancel Subscription </option>
-                  <option value={3}>
-                    Add {topupData[0]?.noOfProperties} Properties
-                  </option>
-                  <option value={2}>Cancel Subscription</option>
-                </select>
-              )}
+
+              {!hideButton &&
+                currentActivePlan &&
+                String(currentActivePlan.id) !== String(item.id) && (
+                  <div
+                    className="pricing_footer"
+                    onClick={() =>
+                      selectPackageHandler(
+                        item.id,
+                        item.description,
+                        isPlan === 1
+                          ? item.monthlyAmount - item.discount
+                          : item.yearlyAmount - item.discount,
+                        "plan"
+                      )
+                    }
+                  >
+                    <a className={`btn btn-color_01 w-100`} href="#">
+                      {currentActivePlan?.$id ? "Modify Plan" : "Select Plan"}
+                    </a>
+                  </div>
+                )}
+              {!hideButton &&
+                String(currentActivePlan?.id) === String(item.id) && (
+                  <select
+                    style={{
+                      padding: "",
+                      borderColor: "black",
+                      borderWidth: "2px",
+                    }}
+                    onClick={(e) => setPlan(item.id, e.target.value)}
+                    className="pricing_footer btn btn-color_01 form-select"
+                  >
+                    <option value={1}>Add Top Up / Cancel Subscription </option>
+                    <option value={3}>
+                      Add {topupData[0]?.noOfProperties} Properties
+                    </option>
+                    <option value={2}>Cancel Subscription</option>
+                  </select>
+                )}
+            </div>
           </div>
         </div>
       ))}
