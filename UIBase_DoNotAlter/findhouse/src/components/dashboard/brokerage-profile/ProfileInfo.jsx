@@ -10,7 +10,12 @@ import toast from "react-hot-toast";
 import { province } from "../create-listing/data";
 import { designation } from "../create-listing/data";
 
-const ProfileInfo = ({ setProfileCount, setShowCard }) => {
+const ProfileInfo = ({
+  setProfileCount,
+  setShowCard,
+  setModalIsOpenError,
+  setModalIsOpenError_01,
+}) => {
   const [profilePhoto, setProfilePhoto] = useState(null);
   let userData = JSON.parse(localStorage.getItem("user")) || {};
   const router = useRouter();
@@ -21,11 +26,11 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   );
 
   const [emailNotification, setEmailNotification] = useState(
-    userData?.emailNotification !== null ? userData?.emailNotification : false
+    userData?.emailNotification !== null ? userData?.emailNotification : true
   );
 
   const [smsNotification, setSmsNotification] = useState(
-    userData?.smsNotification !== null ? userData?.smsNotification : false
+    userData?.smsNotification !== null ? userData?.smsNotification : true
   );
 
   const hiddenStyle = { backgroundColor: "#E8F0FE", display: "none" };
@@ -144,22 +149,13 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     console.log(typeof profilePhoto);
   };
 
-  const firstFunction = () => {
+  useEffect(() => {
     if (smsNotification === null || smsNotification === false) {
-      toast.error(
-        "As SMS Notification is disabled you wont be notified for listed changes and updates over SMS.",
-        { duration: 3000 }
-      );
+      setModalIsOpenError(true);
+    } else if (emailNotification === null || emailNotification === false) {
+      setModalIsOpenError_01(true);
     }
-    if (emailNotification === null || emailNotification === false) {
-      toast.error(
-        "As Email Notification is disabled you wont be notified for listed changes and updates over Email.",
-        { duration: 3000 }
-      );
-    }
-
-    setTimeout(onUpdatHandler, 2000); // Call onUpdatHandler after 6 seconds
-  };
+  }, [smsNotification, emailNotification]);
 
   const onUpdatHandler = () => {
     const firstName = firstNameRef;
@@ -181,14 +177,11 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
       mortageBrokrageLicNoRef !== ""
         ? mortageBrokrageLicNoRef
         : userData.brokerage_Details.mortageBrokerageLicNo;
-    // const assistantEmailAddress = assistantEmailAddress;
-    // const assistantFirstName = assistantFirstName;
-    // const assistantPhoneNumber = assistantPhoneNumber;
 
     const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const cellNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const nameRegex = /^[A-Za-z]+$/;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex for email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (
       nameRegex.test(firstName) === false ||
@@ -277,9 +270,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         count--;
       }
 
-      // const percentage = Math.floor(count / 13) * 100;
-      // setProfileCount(percentage);
-
       const payload = {
         id: userData.userId,
         token: userData.token,
@@ -287,14 +277,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         middleName: middleName,
         lastName: lastName,
         brokerageName: brokerageName,
-        // mortageBrokerLicNo:
-        //   mortageBrokerLicNoRef !== ""
-        //     ? mortageBrokerLicNoRef
-        //     : userData.brokerage_Details.mortageBrokerLicNo,
-        // mortageBrokerageLicNo:
-        //   mortageBrokrageLicNoRef !== ""
-        //     ? mortageBrokrageLicNoRef
-        //     : userData.brokerage_Details.mortageBrokerageLicNo,
         streetNumber: streetNumber,
         apartmentNo: apartmentNo,
         streetName: streetName,
@@ -316,6 +298,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
         mortageBrokerLicNo: mortageBrokerLicNoRef,
         mortageBrokerageLicNo: mortageBrokrageLicNoRef,
         emailId: emailId,
+        smsNotification: smsNotification === true ? 1 : 0,
+        emailNotification: emailNotification === true ? 1 : 0,
       };
       if (
         !payload.lastName ||
@@ -367,34 +351,39 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
 
   const openWidget = () => {
     if (uploadInputRef.current) {
-      uploadInputRef.current.click(); // Trigger the hidden file input
+      uploadInputRef.current.click();
     }
   };
 
   const handleFileChange = async (e, type) => {
     const file = e.target.files[0];
-    toast.loading("Uploading..");
-    try {
-      const generatedUrl = await uploadFile(file);
-      toast.dismiss();
-      toast.success("Uploaded Successfully");
-      console.log("generatedUrl", generatedUrl);
-      setSelectedImage(generatedUrl);
-    } catch (err) {
-      toast.dismiss();
-      toast.error("Try Again!");
+    const allowedImageTypes = ["image/jpeg", "image/png", "image/gif"];
+
+    if (!allowedImageTypes.includes(file?.type)) {
+      toast.error("Please select a valid image file (JPEG, PNG, GIF).");
+      return;
+    } else {
+      const file = e.target.files[0];
+      toast.loading("Uploading..");
+      try {
+        const generatedUrl = await uploadFile(file);
+        toast.dismiss();
+        toast.success("Uploaded Successfully");
+        console.log("generatedUrl", generatedUrl);
+        setSelectedImage(generatedUrl);
+      } catch (err) {
+        toast.dismiss();
+        toast.error("Try Again!");
+      }
     }
   };
 
   const handleUpload = (result) => {
-    // Handle the image upload result here
     console.log("handleUpload called");
     if (result.info.secure_url) {
       setSelectedImage(result.info.secure_url);
       setProfilePhoto(result.info.secure_url);
-      // You can also save the URL to your state or do other operations here
     } else {
-      // Handle the case when the upload failed
       console.error("Image upload failed");
     }
   };
@@ -426,11 +415,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
 
   const handleInputChange = (e) => {
     const inputValue = e.target.value;
-
-    // Allow only numeric input
     const numericValue = inputValue.replace(/\D/g, "");
-
-    // Restrict to 10 digits
     const truncatedValue = numericValue.slice(0, 10);
     if (truncatedValue.length === 10) {
       setPhoneNumberRef(truncatedValue);
@@ -440,11 +425,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
 
   const handleInputChange_01 = (e) => {
     const inputValue = e.target.value;
-
-    // Allow only numeric input
     const numericValue = inputValue.replace(/\D/g, "");
-
-    // Restrict to 10 digits
     const truncatedValue = numericValue.slice(0, 10);
     if (truncatedValue.length === 10) {
       setCellNumberRef(truncatedValue);
@@ -454,11 +435,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
 
   const handleInputChange_02 = (e) => {
     const inputValue = e.target.value;
-
-    // Allow only numeric input
     const numericValue = inputValue.replace(/\D/g, "");
-
-    // Restrict to 10 digits
     const truncatedValue = numericValue.slice(0, 10);
     if (truncatedValue.length === 10) {
       setAssistantPhoneNumber(truncatedValue);
@@ -468,11 +445,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
 
   const handleInputChange_03 = (e) => {
     const inputValue = e.target.value;
-
-    // Allow only numeric input
     const numericValue = inputValue.replace(/\D/g, "");
-
-    // Restrict to 10 digits
     const truncatedValue = numericValue.slice(0, 10);
     if (truncatedValue.length === 10) {
       setAssistantTwoPhoneNumber(truncatedValue);
@@ -483,23 +456,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   return (
     <>
       <div className="row">
-        {/* <h4 className="mb-3">Personal Information</h4> */}
         <div className="col-lg-12"></div>
-        {/* {!edit && (
-          <div>
-            <button
-              className="btn btn2 btn-color profile_edit_button"
-              onClick={changeEditHandler}
-            >
-              <span
-                className="flaticon-edit"
-                data-toggle="tooltip"
-                data-placement="top"
-                title="Edit Profile"
-              ></span>
-            </button>
-          </div>
-        )} */}
         <div className="col-lg-12 col-xl-12 mt-2">
           <div className="my_profile_setting_input form-group">
             <div className="row">
@@ -516,9 +473,8 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                         type="file"
                         id="fileInput"
                         onChange={(e) => handleFileChange(e, 1)}
-                        style={{ display: "none" }} // Hide the actual input element
+                        style={{ display: "none" }}
                       />
-                      {/* You can add a button or any other element to trigger file selection */}
                       <button
                         className="btn btn-color mt-2"
                         onClick={() =>
@@ -528,32 +484,10 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                         Browse
                       </button>
                       <p className="mt-2">
-                        {SelectedImage !== "" && "Note -: Image Only"}
+                        {SelectedImage !== "" && "Image Only"}
                       </p>
                     </div>
                   )}
-                  {/* {!edit && (
-                    <CldUploadWidget
-                      onUpload={handleUpload}
-                      uploadPreset="mpbjdclg"
-                      options={{
-                        cloudName: "dcrq3m6dx", // Your Cloudinary upload preset
-                        maxFiles: 1,
-                      }}
-                    >
-                      {({ open }) => (
-                        <div>
-                          <button
-                            className="btn btn-color profile_edit_button mb-5"
-                            style={{ marginLeft: "0px" }}
-                            onClick={open} // This will open the upload widget
-                          >
-                            Upload Photo
-                          </button>
-                        </div>
-                      )}
-                    </CldUploadWidget>
-                  )} */}
                 </div>
               </div>
               <div className="col-lg-9">
@@ -610,27 +544,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                       </div>
                     </div>
                   </div>
-                  {/* <div className="col-lg-12 mb-3">
-                    <div className="row">
-                      <div className="col-lg-4">
-                        <label htmlFor="" style={{ paddingTop: "10px" }}>
-                          Middle Name
-                        </label>
-                      </div>
-                      <div className="col-lg-7">
-                        <input
-                          type="text"
-                          required
-                          className="form-control"
-                          id="formGroupExampleInput3"
-                          style={{ backgroundColor: "#E8F0FE" }}
-                          
-                          value={middleNameRef}
-                          onChange={(e) => setMiddleNameRef(e.target.value)}
-                        />
-                      </div>
-                    </div>
-                  </div> */}
                   <div className="col-lg-12 mb-3">
                     <div className="row">
                       <div className="col-lg-5">
@@ -794,11 +707,10 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           <input
                             className="form-check-input mt-3"
                             type="checkbox"
-                            value={emailNotification}
+                            checked={emailNotification}
                             onChange={(e) =>
-                              setEmailNotification(e.target.value)
+                              setEmailNotification(!emailNotification)
                             }
-                            required
                             id="terms"
                             style={{ border: "1px solid black" }}
                           />
@@ -840,11 +752,12 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           <input
                             className="form-check-input mt-3"
                             type="checkbox"
-                            value={smsNotification}
-                            onChange={(e) => setSmsNotification(e.target.value)}
-                            required
+                            checked={smsNotification}
                             id="terms"
                             style={{ border: "1px solid black" }}
+                            onChange={(e) =>
+                              setSmsNotification(!smsNotification)
+                            }
                           />
                           <label
                             className="form-check-label form-check-label"
@@ -1279,7 +1192,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                         </button>
                         <button
                           className="btn btn2 btn-dark"
-                          onClick={firstFunction}
+                          onClick={onUpdatHandler}
                         >
                           {userData?.brokerage_Details
                             ? "Update Profile"

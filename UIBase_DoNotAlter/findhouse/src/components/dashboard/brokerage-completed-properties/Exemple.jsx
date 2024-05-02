@@ -13,7 +13,6 @@ import {
   FaPause,
   FaRedo,
 } from "react-icons/fa";
-// import "./SmartTable.css";
 
 const headCells = [
   {
@@ -22,12 +21,6 @@ const headCells = [
     label: "Order ID",
     width: 100,
   },
-  // {
-  //   id: "broker",
-  //   numeric: false,
-  //   label: "Broker",
-  //   width: 100,
-  // },
   {
     id: "address",
     numeric: false,
@@ -70,18 +63,6 @@ const headCells = [
     label: "Appraisal Report Required By",
     width: 220,
   },
-  // {
-  //   id: "user",
-  //   numeric: false,
-  //   label: "Appraiser",
-  //   width: 200,
-  // },
-  // {
-  //   id: "amount",
-  //   numeric: false,
-  //   label: "Quote Amount",
-  //   width: 200,
-  // },
 
   {
     id: "type_of_building",
@@ -113,13 +94,6 @@ const headCells = [
     label: "Lender Information",
     width: 160,
   },
-
-  // {
-  //   id: "actions",
-  //   numeric: false,
-  //   label: "Actions",
-  //   width: 170,
-  // },
   {
     id: "actions_01",
     numeric: false,
@@ -178,7 +152,6 @@ export default function Exemple({
     let tempBid = 0,
       bidValue = {};
     let isAccepted = {};
-    // console.log(bids);
     bids.filter((bid) => {
       if (bid.orderId === property.orderId) {
         if (bid.status === 1) {
@@ -191,10 +164,6 @@ export default function Exemple({
       }
     });
     return isAccepted.$id ? isAccepted : bidValue;
-    // const currentTime = new Date();
-    // const twentyFourHoursAgo = currentTime - 24 * 60 * 60 * 1000; // Subtracting milliseconds for 24 hours
-    //    const requestTime = new Date(tempBid.requestTime);
-    //   return requestTime >= twentyFourHoursAgo && requestTime <= currentTime;
   };
 
   const AppraiserStatusOptions = [
@@ -244,20 +213,14 @@ export default function Exemple({
     },
   ];
 
-  // const getOrderValue = (val) => {
-  //   let title = "";
-  //   AppraiserStatusOptions?.map((status) => {
-  //     if (String(status.id) === String(val)) {
-  //       title = status.type;
-  //     }
-  //   });
-  //   return title;
-  // };
-
   const getBidOfProperty = (orderId) => {
     let Bid = {};
+    const data = JSON.parse(localStorage.getItem("user"));
     allBids.map((bid, index) => {
-      if (String(bid.orderId) === String(orderId)) {
+      if (
+        String(bid.orderId) === String(orderId) &&
+        String(data.userId) === String(bid.userId)
+      ) {
         Bid = bid;
       }
     });
@@ -348,10 +311,8 @@ export default function Exemple({
         const isHold = property.isOnHold;
         const isCancel = property.isOnCancel;
         const isStatus = getPropertyStatusHandler(property);
-        console.log(isStatus);
         const isEditable = isStatus === 0 ? true : false;
-        if (!property.isArchive && isStatus === 3 && !isCancel) {
-          console.log(property);
+        if (isBidded.$id && isStatus === 3) {
           const updatedRow = {
             order_id: property.orderId,
             sub_date: formatDate(property.addedDatetime),
@@ -390,9 +351,6 @@ export default function Exemple({
               ) : isBidded.orderStatus !== 1 &&
                 isBidded.orderStatus !== null &&
                 isBidded.orderStatus !== undefined ? (
-                // <span className="btn bg-warning  w-100">
-                //   {getOrderValue(isBidded.orderStatus)}
-                // </span>
                 <div className="hover-text">
                   <div
                     className="tooltip-text"
@@ -418,10 +376,6 @@ export default function Exemple({
                 isBidded.status === 1 &&
                 isBidded.orderStatus === 1 &&
                 isBidded.orderStatus !== undefined ? (
-                // <span className="btn bg-warning  w-100">
-                //   {getOrderValue(isBidded.orderStatus)} -
-                //   {formatDate(isBidded.statusDate)}
-                // </span>
                 <div className="hover-text">
                   <div
                     className="tooltip-text"
@@ -449,7 +403,6 @@ export default function Exemple({
               ),
             address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
             remark: isBidded.remark ? isBidded.remark : "N.A.",
-            // user: property.applicantEmailAddress,
             type_of_building: property.typeOfBuilding,
             amount: ` $ ${addCommasToNumber(property.estimatedValue)}`,
             purpose: property.purpose,
@@ -461,90 +414,6 @@ export default function Exemple({
 
             actions_01: (
               <button className="btn btn-completed w-100">Completed</button>
-              // <ul className="mb0 d-flex gap-1">
-              //   <li title="Property Details" className="">
-              //     <span
-              //       className="btn btn-color-table"
-              //       onClick={() => openPopupModal(property)}
-              //     >
-              //       <Link href={"#"}>
-              //         <span className="text-light flaticon-view"></span>
-              //       </Link>
-              //     </span>
-              //   </li>
-              //   {/* )} */}
-
-              //   {!isEditable && !isCancel && (
-              //     <li title="Quotes">
-              //       <Link
-              //         className="btn btn-color-table"
-              //         href={`/brokerage-properties-bid/${property.orderId}`}
-              //       >
-              //         <span className="flaticon-invoice"></span>
-              //       </Link>
-              //     </li>
-              //   )}
-              //   {(isEditable || isStatus === 1) && !isCancel && (
-              //     <li title="Edit Property">
-              //       <Link
-              //         className="btn btn-color-table"
-              //         href={`/create-listing-1/${property.orderId}`}
-              //       >
-              //         <span className="flaticon-edit"></span>
-              //       </Link>
-              //     </li>
-              //   )}
-
-              //   {!isCancel && isStatus !== 3 && (
-              //     <li title={!isHold ? "On Hold" : "Remove Hold"}>
-              //       <span
-              //         className="btn btn-color-table "
-              //         style={{ border: "1px solid grey" }}
-              //         onClick={() =>
-              //           openModal(property.orderId, 1, isHold ? 0 : 1)
-              //         }
-              //       >
-              //         <Link href="#" className="text-light">
-              //           <FaPause />
-              //         </Link>
-              //       </span>
-              //     </li>
-              //   )}
-
-              //   {!isCancel && isStatus !== 3 && !isHold && (
-              //     <li title={!isCancel ? "Order Cancel" : "Remove Cancel"}>
-              //       <span
-              //         className="btn btn-color-table"
-              //         style={{ border: "1px solid grey" }}
-              //         onClick={() =>
-              //           openModal(property.orderId, 2, isCancel ? 0 : 1)
-              //         }
-              //       >
-              //         <Link href="#">
-              //           <span className="flaticon-garbage text-light"></span>
-              //         </Link>
-              //       </span>
-              //     </li>
-              //   )}
-
-              //   {!isCancel && isStatus !== 3 && (
-              //     <li title="Archive Property">
-              //       <span
-              //         className="btn btn-color-table"
-              //         onClick={() => archievePropertyHandler(property.orderId)}
-              //       >
-              //         <Link
-              //           className="color-light"
-              //           href={`/brokerage-archive-properties`}
-              //         >
-              //           <span className="text-light">
-              //             <FaArchive />
-              //           </span>
-              //         </Link>
-              //       </span>
-              //     </li>
-              //   )}
-              // </ul>
             ),
           };
           tempData.push(updatedRow);
@@ -553,7 +422,7 @@ export default function Exemple({
       setUpdatedData(tempData);
     };
     getData();
-  }, [properties]);
+  }, [properties, allBids]);
 
   useEffect(() => {
     setProperties([]);
@@ -607,7 +476,6 @@ export default function Exemple({
       })
       .catch((err) => {
         toast.error(err);
-        // setModalIsOpenError(true);
       });
     setRefresh(false);
   }, [refresh]);

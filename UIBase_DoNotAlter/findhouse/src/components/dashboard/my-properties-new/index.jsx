@@ -427,11 +427,23 @@ const Index = () => {
   const PropertyInfoHandler = (orderId) => {
     const printWindow = window.open("", "_blank");
     printWindow.document.write(
-      "<html><head><title>Property Information</title></head><body>"
+      "<html><head><title>Appraiser Land</title></head><body>"
     );
     printWindow.document.write(
-      "<h1>" + `Property info of order ${orderId}` + "</h1>"
+      ' <img width="60" height="45" class="logo1 img-fluid" style="" src="/assets/images/Appraisal_Land_Logo.png" alt="header-logo2.png"/> <span style="color: #2e008b font-weight: bold; font-size: 24px;">Appraisal</span><span style="color: #97d700; font-weight: bold; font-size: 24px;">Land</span>'
     );
+    printWindow.document.write(
+      "<h3>" +
+        `Properties Information of Order ID ${orderId}` +
+        "</h3>" +
+        "<style>" +
+        "h3{text-align:center;}" +
+        "</style>"
+    );
+    // printWindow.document.write(
+    //   "<h1>" + `Property info of order ${orderId}` + "</h1>"
+    // );
+
     printWindow.document.write(
       '<button style="display:none;" onclick="window.print()">Print</button>'
     );
@@ -649,9 +661,9 @@ const Index = () => {
                           setModalIsOpenError={setModalIsOpenError}
                           setRefresh={setRefresh}
                           setModalIsPopupOpen={setModalIsPopupOpen}
-                          filterQuery = {filterQuery}
+                          filterQuery={filterQuery}
                           setFilterQuery={setFilterQuery}
-                          searchInput = {searchInput}
+                          searchInput={searchInput}
                           setSearchInput={setSearchInput}
                           refresh={refresh}
                           setWishlistedProperties={setWishlistedProperties}

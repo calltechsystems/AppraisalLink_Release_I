@@ -38,19 +38,19 @@ const headCells = [
   {
     id: "remark",
     numeric: false,
-    label: "Remark",
+    label: "Appraisal Remark",
     width: 160,
   },
   {
     id: "urgency",
     numeric: false,
-    label: "Urgency",
+    label: "Request Type",
     width: 200,
   },
   {
     id: "date",
     numeric: false,
-    label: "Order Submission Date",
+    label: "Quote Submitted Date",
     width: 200,
   },
   {
@@ -68,7 +68,7 @@ const headCells = [
   {
     id: "estimated_value",
     numeric: false,
-    label: "Estimated Property Value ($)",
+    label: "Estimated Value / Purchase Price($)",
     width: 200,
   },
   {
@@ -340,16 +340,26 @@ export default function Exemple({
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
-      second: "numeric",
+      // second: "numeric",
+      hour12: true, // Set to false for 24-hour format
     };
 
-    const originalDate = new Date(dateString);
+    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
+    return formattedDate;
+  };
 
-    // Adjust for Eastern Standard Time (EST) by subtracting 5 hours
-    const estDate = new Date(originalDate.getTime() - 5 * 60 * 60 * 1000);
+  const formatDateNew = (dateString) => {
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      // hour: "numeric",
+      // minute: "numeric",
+      // second: "numeric",
+      hour12: true, // Set to false for 24-hour format
+    };
 
-    // Format the EST date
-    const formattedDate = estDate.toLocaleString("en-US", options);
+    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
     return formattedDate;
   };
 
@@ -397,8 +407,13 @@ export default function Exemple({
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
         const anotherBid = alreadyAccepted(property);
-        const haveSubscription = userActivePlans?.length > 0 ? userActivePlans[0]?.$id ? true : false : false;
-      
+        const haveSubscription =
+          userActivePlans?.length > 0
+            ? userActivePlans[0]?.$id
+              ? true
+              : false
+            : false;
+
         const isWait = property.isOnHold || property.isOnCancel;
         const isArchive = false;
 
@@ -443,8 +458,7 @@ export default function Exemple({
                     </span>
                   </button>
                 </div>
-              ) :
-               isBidded.status === 1 && isBidded.orderStatus !== null ? (
+              ) : isBidded.status === 1 && isBidded.orderStatus !== null ? (
                 <div className="hover-text">
                   <div
                     className="tooltip-text"
@@ -469,17 +483,11 @@ export default function Exemple({
               ) : (
                 <span className="btn btn-warning  w-100">N.A.</span>
               ),
-            remark:
-              isBidded && isBidded.remark
-                ? isBidded.orderStatus === 1
-                  ? `${isBidded.remark} on ${formatDate(isBidded.modifiedDate)}`
-                  : isBidded.remark
-                : "N.A.",
+            remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
             status:
-            (anotherBid === true && isBidded.status !== 2)    ? (
-              <span className="btn btn-danger  w-100">Rejected</span>
-            ) :
-              (isBidded?.bidId && isBidded.status === 2)   ? (
+              anotherBid === true && isBidded.status !== 2 ? (
+                <span className="btn btn-danger  w-100">Rejected</span>
+              ) : isBidded?.bidId && isBidded.status === 2 ? (
                 <span className="btn btn-danger  w-100">Rejected</span>
               ) : isWait ? (
                 <span className="btn btn-danger  w-100">
@@ -519,7 +527,7 @@ export default function Exemple({
                       Broker Info
                     </button>
                   </a>
-                ) : isBidded.status === 2 || anotherBid?.bidId ? (
+                ) : isBidded.status === 2 || anotherBid?.bidId || (anotherBid === true && isBidded.status !== 2) ? (
                   <h6 style={{ color: "red" }}> Declined</h6>
                 ) : alreadyAccepted ? (
                   <span>
@@ -547,7 +555,7 @@ export default function Exemple({
                       Property Info
                     </button>
                   </a>
-                ) : isBidded.status === 2 || anotherBid?.bidId ? (
+                ) : isBidded.status === 2 || anotherBid?.bidId || (anotherBid === true && isBidded.status !== 2)? (
                   <h6 style={{ color: "red" }}> Declined</h6>
                 ) : alreadyAccepted ? (
                   <span>
@@ -565,7 +573,7 @@ export default function Exemple({
               property.typeOfBuilding > 0
                 ? "Apartment"
                 : property.typeOfBuilding,
-            quote_required_by: formatDate(property.quoteRequiredDate),
+            quote_required_by: formatDateNew(property.quoteRequiredDate),
             date: formatDate(property.addedDatetime),
             bidAmount: millify(property.bidLowerRange),
             lender_information: property.lenderInformation
@@ -581,11 +589,13 @@ export default function Exemple({
             action: (
               <div className="print-hidden-column" style={{ display: "flex" }}>
                 {isBidded.$id &&
-                  (isBidded.status === 2 || isBidded.status === 1) && !anotherBid?.bidId && (
+                  (isBidded.status === 2 || isBidded.status === 1) &&
+                  !anotherBid?.bidId && (
                     <li
                       className="list-inline-item"
                       data-toggle="tooltip"
                       data-placement="top"
+                      title="View Quote"
                     >
                       {" "}
                       <span
@@ -599,15 +609,9 @@ export default function Exemple({
                     </li>
                   )}
 
-                {(isBidded.status === 2 || anotherBid)? (
+                {isBidded.status === 2 || anotherBid ? (
                   <>
                     <ul>
-                      <li
-                        className="list-inline-item"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                      >
-                      </li>
                       <li
                         className="list-inline-item"
                         data-toggle="tooltip"
@@ -679,6 +683,7 @@ export default function Exemple({
                         className="btn "
                         style={{ border: "1px solid grey" }}
                         onClick={() => removeWishlistHandler(isWishlist.id)}
+                        title="Remove Wishlist Property"
                       >
                         <img
                           width={26}
@@ -687,53 +692,57 @@ export default function Exemple({
                         />
                       </button>
                     ) : (
-                      !anotherBid && <li
-                        className="list-inline-item"
-                        title="Wishlist Property"
-                      >
-                        {
-                          <button
-                            className="btn"
-                            style={{ border: "1px solid grey" }}
-                            onClick={() =>
-                              onWishlistHandler(property.propertyId)
-                            }
-                          >
-                            <span className="flaticon-heart text-color"></span>
-                          </button>
-                        }
-                      </li>
+                      !anotherBid && (
+                        <li
+                          className="list-inline-item"
+                          title="Wishlist Property"
+                        >
+                          {
+                            <button
+                              className="btn"
+                              style={{ border: "1px solid grey" }}
+                              onClick={() =>
+                                onWishlistHandler(property.propertyId)
+                              }
+                            >
+                              <span className="flaticon-heart text-color"></span>
+                            </button>
+                          }
+                        </li>
+                      )
                     )}
 
-                    {(!isBidded.$id || isBidded?.status < 1) && !anotherBid && haveSubscription && (
-                      <li
-                        className="list-inline-item"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title={`${
-                          isBidded.$id ? "View/Update Quote" : "Provide Quote"
-                        }`}
-                      >
-                        <div
-                          className="w-100"
-                          onClick={() =>
-                            participateHandler(
-                              property.bidLowerRange,
-                              property.orderId,
-                              isBidded.status < 1,
-                              isBidded.bidAmount,
-                              isBidded.$id ? true : false
-                            )
-                          }
+                    {(!isBidded.$id || isBidded?.status < 1) &&
+                      !anotherBid &&
+                      haveSubscription && (
+                        <li
+                          className="list-inline-item"
+                          data-toggle="tooltip"
+                          data-placement="top"
+                          title={`${
+                            isBidded.$id ? "View / Update Quote" : "Provide Quote"
+                          }`}
                         >
-                          <button href="#" className="btn btn-color">
-                            <Link href="#">
-                              <span className="flaticon-invoice text-light"></span>
-                            </Link>
-                          </button>
-                        </div>
-                      </li>
-                    )}
+                          <div
+                            className="w-100"
+                            onClick={() =>
+                              participateHandler(
+                                property.bidLowerRange,
+                                property.orderId,
+                                isBidded.status < 1,
+                                isBidded.bidAmount,
+                                isBidded.$id ? true : false
+                              )
+                            }
+                          >
+                            <button href="#" className="btn btn-color">
+                              <Link href="#">
+                                <span className="flaticon-invoice text-light"></span>
+                              </Link>
+                            </button>
+                          </div>
+                        </li>
+                      )}
                     {isBidded.status === 1 && isBidded.orderStatus !== 3 ? (
                       <>
                         <ul>
@@ -1141,10 +1150,10 @@ export default function Exemple({
     //   setErrorMessage(err?.response?.data?.error);
     //   setModalIsOpenError(true);
     // });
- 
+
     setRefresh(false);
   }, [refresh]);
-  
+
   return (
     <>
       {refresh ? (

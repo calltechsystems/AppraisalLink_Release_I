@@ -39,19 +39,19 @@ const headCells = [
   {
     id: "remark",
     numeric: false,
-    label: "Remark",
+    label: "Appraisal Remark",
     width: 160,
   },
   {
     id: "urgency",
     numeric: false,
-    label: "Urgency",
+    label: "Request Type",
     width: 200,
   },
   {
     id: "date",
     numeric: false,
-    label: "Order Submission Date",
+    label: "Quote Submitted Date",
     width: 200,
   },
   {
@@ -69,7 +69,7 @@ const headCells = [
   {
     id: "estimated_value",
     numeric: false,
-    label: "Estimated Property Value ($)",
+    label: "Estimated Value / Purchase Price($)",
     width: 200,
   },
   {
@@ -106,12 +106,12 @@ const headCells = [
     width: 200,
   },
 
-  // {
-  //   id: "action",
-  //   numeric: false,
-  //   label: "Action",
-  //   width: 180,
-  // },
+  {
+    id: "action",
+    numeric: false,
+    label: "Action",
+    width: 180,
+  },
 ];
 
 let count = 0;
@@ -122,6 +122,8 @@ export default function Exemple({
   close,
   start,
   end,
+  setCurrentBiddedView,
+  setOpenQuoteView,
   searchInput,
   filterQuery,
   setUpdatedCode,
@@ -225,6 +227,12 @@ export default function Exemple({
     return finalBid;
   };
 
+  
+  const openQuoteViewModal = (bid) => {
+    setCurrentBiddedView(bid);
+    setOpenQuoteView(true);
+  };
+
   const filterBidsWithin24Hours = (property) => {
     const data = JSON.parse(localStorage.getItem("user"));
     let tempBid = 0;
@@ -317,18 +325,48 @@ export default function Exemple({
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
-      second: "numeric",
+      // second: "numeric",
+      hour12: true, // Set to false for 24-hour format
     };
 
-    const originalDate = new Date(dateString);
-
-    // Adjust for Eastern Standard Time (EST) by subtracting 5 hours
-    const estDate = new Date(originalDate.getTime() - 5 * 60 * 60 * 1000);
-
-    // Format the EST date
-    const formattedDate = estDate.toLocaleString("en-US", options);
+    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
     return formattedDate;
   };
+
+  const formatDateNew = (dateString) => {
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      // hour: "numeric",
+      // minute: "numeric",
+      // second: "numeric",
+      hour12: true, // Set to false for 24-hour format
+    };
+
+    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
+    return formattedDate;
+  };
+
+  // const formatDate = (dateString) => {
+  //   const options = {
+  //     year: "numeric",
+  //     month: "short",
+  //     day: "numeric",
+  //     hour: "numeric",
+  //     minute: "numeric",
+  //     second: "numeric",
+  //   };
+
+  //   const originalDate = new Date(dateString);
+
+  //   // Adjust for Eastern Standard Time (EST) by subtracting 5 hours
+  //   const estDate = new Date(originalDate.getTime() - 5 * 60 * 60 * 1000);
+
+  //   // Format the EST date
+  //   const formattedDate = estDate.toLocaleString("en-US", options);
+  //   return formattedDate;
+  // };
 
   const checkWishlistedHandler = (data) => {
     let temp = {};
@@ -480,7 +518,7 @@ export default function Exemple({
                       Broker Info
                     </button>
                   </a>
-                ) : isBidded.status === 2 ? (
+                ) : isBidded.status === 2 || (anotherBid === true && isBidded.status !== 2) ? (
                   <h6 style={{ color: "red" }}> Declined</h6>
                 ) : (
                   <p>Information will be available post quote acceptance.</p>
@@ -505,7 +543,7 @@ export default function Exemple({
                       Property Info
                     </button>
                   </a>
-                ) : isBidded.status === 2 ? (
+                ) : isBidded.status === 2 || (anotherBid === true && isBidded.status !== 2)? (
                   <h6 style={{ color: "red" }}> Declined</h6>
                 ) : (
                   <p>Information will be available post quote acceptance.</p>
@@ -519,7 +557,7 @@ export default function Exemple({
               property.typeOfBuilding > 0
                 ? "Apartment"
                 : property.typeOfBuilding,
-            quote_required_by: formatDate(property.quoteRequiredDate),
+            quote_required_by: formatDateNew(property.quoteRequiredDate),
             date: formatDate(property.addedDatetime),
             bidAmount: millify(property.bidLowerRange),
             lender_information: property.lenderInformation
@@ -534,178 +572,22 @@ export default function Exemple({
 
             action: (
               <div className="print-hidden-column">
-                {isBidded.status === 2 ? (
-                  <>
-                    <p className="btn btn-danger  w-100">Rejected </p>
-                    <li
+                <li
                       className="list-inline-item"
                       data-toggle="tooltip"
                       data-placement="top"
-                      title="Archive Property"
+                      title="View Quote"
                     >
-                      <div
-                        className="w-100"
-                        onClick={() =>
-                          onArchivePropertyHandler(property.orderId)
-                        }
+                      {" "}
+                      <span
+                        className="btn btn-color-table"
+                        onClick={() => openQuoteViewModal(isBidded)}
                       >
-                        <button href="#" className="btn btn-color">
-                          <Link href="#">
-                            <span className="text-light">
-                              {" "}
-                              <FaArchive />
-                            </span>
-                          </Link>
-                        </button>
-                      </div>
+                        <Link href={"#"}>
+                          <span className="text-light flaticon-view"></span>
+                        </Link>
+                      </span>
                     </li>
-                  </>
-                ) : isWait ? (
-                  <ul>
-                    <p className="btn btn-danger  w-100">
-                      {`No further actions can be taken on this property since it is ${
-                        property.isOnCancel ? "Cancelled" : "On Hold"
-                      } .`}
-                    </p>
-                    <li
-                      className="list-inline-item"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Archive Property"
-                    >
-                      <div
-                        className="w-100"
-                        onClick={() =>
-                          onArchivePropertyHandler(property.orderId)
-                        }
-                      >
-                        <button href="#" className="btn btn-color">
-                          <Link href="#">
-                            <span className="text-light">
-                              {" "}
-                              <FaArchive />
-                            </span>
-                          </Link>
-                        </button>
-                      </div>
-                    </li>
-                  </ul>
-                ) : isBidded && isBidded.status !== 1 ? (
-                  <ul className="mb0 d-flex gap-1">
-                    {(!isBidded.$id || isBidded?.status < 1) && (
-                      <li
-                        className="list-inline-item"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title={`${
-                          isBidded.$id ? "View/Update Quote" : "Provide Quote"
-                        }`}
-                      >
-                        <div
-                          className="w-100"
-                          onClick={() =>
-                            participateHandler(
-                              property.bidLowerRange,
-                              property.orderId,
-                              isBidded.status < 1,
-                              isBidded.bidAmount,
-                              isBidded.$id ? true : false
-                            )
-                          }
-                        >
-                          <button href="#" className="btn btn-color">
-                            <Link href="#">
-                              <span className="flaticon-invoice text-light"></span>
-                            </Link>
-                          </button>
-                        </div>
-                      </li>
-                    )}
-
-                    {/* <li
-                  className="list-inline-item"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Assign Appraiser"
-                >
-                  <div
-                    className="w-100"
-                    onClick={() =>
-                      openAssignModalHandler(property)
-                    }
-                  >
-                    <button
-                      href="#"
-                      className="btn btn-color w-100 mt-1"
-                      style={{ marginLeft: "12px" }}
-                    >
-                    <Link href="#">
-                    <span className="text-light flaticon-edit"></span>
-                  </Link>
-                    </button>
-                  </div>
-                  </li>*/}
-
-                    <li
-                      className="list-inline-item"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Archive Property"
-                    >
-                      <div
-                        className="w-100"
-                        onClick={() =>
-                          onArchivePropertyHandler(property.orderId)
-                        }
-                      >
-                        <button href="#" className="btn btn-color">
-                          <Link href="#">
-                            <span className="text-light">
-                              {" "}
-                              <FaArchive />
-                            </span>
-                          </Link>
-                        </button>
-                      </div>
-                    </li>
-                  </ul>
-                ) : isBidded.orderStatus <= 6 && isBidded.orderStatus === 3 ? (
-                  <>
-                    <button
-                      href="#"
-                      className="btn btn-color m-1"
-                      onClick={() => openStatusUpdateHandler(isBidded)}
-                    >
-                      <Link href="#">
-                        <span className="flaticon-edit text-light"></span>
-                      </Link>
-                    </button>
-                    <li
-                      className="list-inline-item"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Archive Property"
-                    >
-                      <div
-                        className="w-100"
-                        onClick={() =>
-                          onArchivePropertyHandler(property.orderId)
-                        }
-                      >
-                        <button href="#" className="btn btn-color">
-                          <Link href="#">
-                            <span className="text-light">
-                              {" "}
-                              <FaArchive />
-                            </span>
-                          </Link>
-                        </button>
-                      </div>
-                    </li>
-                  </>
-                ) : (
-                  <p className="btn btn-completed  w-100">Completed </p>
-                )}
               </div>
             ),
           };

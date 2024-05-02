@@ -34,7 +34,7 @@ const headCells = [
   {
     id: "remark",
     numeric: false,
-    label: "Appraiser Remark",
+    label: "Appraisal Remark",
     width: 170,
   },
   {
@@ -551,7 +551,9 @@ export default function Exemple({
                       onClick={() => openModal(property.orderId, 2, property)}
                     >
                       <Link href="#">
-                        <span className="flaticon-garbage text-light"></span>
+                        <span className="text-light">
+                          <i className="fa fa-times"></i>
+                        </span>
                       </Link>
                     </span>
                   </li>

@@ -297,9 +297,9 @@ const Index = () => {
     return isPresent;
   };
 
-  const closeBrokerModal = ()=>{
+  const closeBrokerModal = () => {
     setOpenBrokerModal(false);
-  }
+  };
 
   const brokerInfoHandler = (orderId) => {
     const printWindow = window.open("", "_blank");
@@ -407,13 +407,18 @@ const Index = () => {
                 </div>
                 {/* End Dashboard Navigation */}
 
-                <div className="row mb-2" style={{}}>
-                  <div className="col-lg-11">
-                    <div className="breadcrumb_content">
-                      <h2 className="breadcrumb_title">Appraiser Dashboard</h2>
-                    </div>
+                <div
+                  className="col-lg-12 mb10"
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <div className="breadcrumb_content">
+                    <h2 className="breadcrumb_title">Appraiser Dashboard</h2>
                   </div>
-                  <div className="col-lg-1">
+                  <div>
                     <Filtering
                       refreshHandler={refreshHandler}
                       filterQuery={filterQuery}
@@ -456,7 +461,7 @@ const Index = () => {
                 <div className="col-lg-12">
                   <div className="my_dashboard_review mb40">
                     <div className="col-lg-12">
-                      <div className="row">
+                      {/* <div className="row">
                         <div className="col-lg-8">
                           <h4 className="mt-2">All Appraisers</h4>
                         </div>
@@ -466,9 +471,9 @@ const Index = () => {
                             setSearchInput={setSearchInput}
                           />
                         </div>
-                      </div>
+                      </div> */}
                       <div className="packages_table">
-                        <div className="table-responsive mt0">
+                        <div className="mt0">
                           <PackageData
                             setBroker={setBroker}
                             setOpenBrokerModal={setOpenBrokerModal}

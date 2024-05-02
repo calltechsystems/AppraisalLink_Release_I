@@ -70,7 +70,7 @@ function SmartTable(props) {
     if (props.dataFetched && props.properties.length === 0) {
       const timer = setTimeout(() => {
         setShowNoData(true);
-      }, 10000);
+      }, 30000);
 
       return () => clearTimeout(timer);
     }
@@ -565,12 +565,12 @@ function SmartTable(props) {
           ) : (
             <div className="row">
               <div
-                className="smartTable-noDataFound col-12"
+                className="smartTable-noDataFound col-lg-12"
                 style={{ marginTop: "110px", marginBottom: "40px" }}
               >
                 {props.dataFetched && props.properties.length === 0 ? (
                   showNoData ? (
-                    <h3>No Data Found</h3>
+                    <h3 className="text-center">No Data Found</h3>
                   ) : (
                     <div className="ring">
                       Loading

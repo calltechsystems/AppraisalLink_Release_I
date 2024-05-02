@@ -12,7 +12,12 @@ import Link from "next/link";
 import { uploadFile } from "./functions";
 import { handleDownloadClick } from "./downloadFunction";
 
-const ProfileInfo = ({ setProfileCount, setShowCard }) => {
+const ProfileInfo = ({
+  setProfileCount,
+  setShowCard,
+  setModalIsOpenError,
+  setModalIsOpenError_01,
+}) => {
   const [profilePhoto, setProfilePhoto] = useState(null);
   let userData = JSON.parse(localStorage.getItem("user")) || {};
   const router = useRouter();
@@ -27,11 +32,11 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   const [edit, setEdit] = useState(true);
 
   const [emailNotification, setEmailNotification] = useState(
-    userData?.emailNotification !== null ? userData?.emailNotification : false
+    userData?.emailNotification !== null ? userData?.emailNotification : true
   );
 
   const [smsNotification, setSmsNotification] = useState(
-    userData?.smsNotification !== null ? userData?.smsNotification : false
+    userData?.smsNotification !== null ? userData?.smsNotification : true
   );
 
   const [firstNameRef, setFirstNameRef] = useState(
@@ -110,6 +115,14 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     });
   };
 
+  useEffect(() => {
+    if (smsNotification === null || smsNotification === false) {
+      setModalIsOpenError(true);
+    } else if (emailNotification === null || emailNotification === false) {
+      setModalIsOpenError_01(true);
+    }
+  }, [smsNotification, emailNotification]);
+
   const handleInputChange = (e) => {
     const inputValue = e.target.value;
 
@@ -146,22 +159,22 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     userData?.appraiser_Details?.apartmentNo || ""
   );
 
-  const firstFunction = () => {
-    if (smsNotification === null || smsNotification === false) {
-      toast.error(
-        "As SMS Notification is disabled you wont be notified for listed changes and updates over SMS.",
-        { duration: 3000 }
-      );
-    }
-    if (emailNotification === null || emailNotification === false) {
-      toast.error(
-        "As Email Notification is disabled you wont be notified for listed changes and updates over Email.",
-        { duration: 3000 }
-      );
-    }
+  // const firstFunction = () => {
+  //   if (smsNotification === null || smsNotification === false) {
+  //     toast.error(
+  //       "As SMS Notification is disabled you wont be notified for listed changes and updates over SMS.",
+  //       { duration: 3000 }
+  //     );
+  //   }
+  //   if (emailNotification === null || emailNotification === false) {
+  //     toast.error(
+  //       "As Email Notification is disabled you wont be notified for listed changes and updates over Email.",
+  //       { duration: 3000 }
+  //     );
+  //   }
 
-    setTimeout(onUpdatHandler, 2000); // Call onUpdatHandler after 6 seconds
-  };
+  //   setTimeout(onUpdatHandler, 2000); // Call onUpdatHandler after 6 seconds
+  // };
 
   const onUpdatHandler = () => {
     const firstName = firstNameRef;
@@ -708,9 +721,9 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           <input
                             className="form-check-input mt-3"
                             type="checkbox"
-                            value={emailNotification}
+                            checked={emailNotification}
                             onChange={(e) =>
-                              setEmailNotification(e.target.value)
+                              setEmailNotification(!emailNotification)
                             }
                             id="terms"
                             style={{ border: "1px solid black" }}
@@ -753,10 +766,12 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           <input
                             className="form-check-input mt-3"
                             type="checkbox"
-                            value={smsNotification}
-                            onChange={(e) => setSmsNotification(e.target.value)}
+                            checked={smsNotification}
                             id="terms"
                             style={{ border: "1px solid black" }}
+                            onChange={(e) =>
+                              setSmsNotification(!smsNotification)
+                            }
                           />
                           <label
                             className="form-check-label form-check-label"
@@ -969,7 +984,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           </button>
                           <button
                             className="btn btn2 btn-dark"
-                            onClick={firstFunction}
+                            onClick={onUpdatHandler}
                           >
                             {userData?.appraiser_Details
                               ? "Update Profile"

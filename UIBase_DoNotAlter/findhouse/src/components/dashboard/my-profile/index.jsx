@@ -4,6 +4,8 @@ import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
 import MobileMenu from "../../common/header/MobileMenu_02";
 import ChangePassword from "./ChangePassword";
 import ProfileInfo from "./ProfileInfo";
+import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import Form from "./Form";
 
@@ -11,6 +13,9 @@ const Index = () => {
   const [profileCount, setProfileCount] = useState(7);
   const [showCard, setShowCard] = useState(true);
   const [data, setData] = useState({});
+  const [modalIsOpenError, setModalIsOpenError] = useState(false);
+  const [modalIsOpenError_01, setModalIsOpenError_01] = useState(false);
+
   let userData = {};
   const router = useRouter();
   // const userData = JSON.parse(localStorage.getItem("user"));
@@ -70,6 +75,11 @@ const Index = () => {
 
   const chnageShowCardHandler = (val) => {
     setShowCard(val);
+  };
+
+  const closeErrorModal = () => {
+    setModalIsOpenError(false);
+    setModalIsOpenError_01(false);
   };
 
   return (
@@ -150,36 +160,152 @@ const Index = () => {
                             profileCount={profileCount}
                             setProfileCount={setProfileCount}
                             setShowCard={setShowCard}
+                            setModalIsOpenError={setModalIsOpenError}
+                            setModalIsOpenError_01={setModalIsOpenError_01}
                           />
                         )}
                       </div>
                     </div>
                   </div>
-                  {/* End prifle info wrapper end */}
-
-                  {/*<div className="my_dashboard_review mt30">
-                    <div className="row">
-                      <div className="col-xl-2">
-                        <h4>Social Media</h4>
-                      </div> 
-                      <div className="col-xl-12">
-                        <SocialMedia />
-                      </div>
-                    </div>
-                    </div>*/}
-                  {/* End .SocialMedia */}
-
-                  {/* <div className="my_dashboard_review mt30">
-                    <div className="row">
-                       <div className="col-xl-2">
-                        <h4>Change password</h4>
-                      </div> 
-                      <div className="col-xl-12">
-                        <ChangePassword />
-                      </div>
-                    </div>
-                    </div>*/}
                 </div>
+                {modalIsOpenError && (
+                  <div className="modal">
+                    <div
+                      className="modal-content"
+                      style={{ borderColor: "#2e008b", width: "40%" }}
+                    >
+                      <div className="row">
+                        <div className="col-lg-12">
+                          <Link href="/" className="">
+                            <Image
+                              width={50}
+                              height={45}
+                              className="logo1 img-fluid"
+                              style={{ marginTop: "-20px" }}
+                              src="/assets/images/logo.png"
+                              alt="header-logo2.png"
+                            />
+                            <span
+                              style={{
+                                color: "#2e008b",
+                                fontWeight: "bold",
+                                fontSize: "24px",
+                                // marginTop: "20px",
+                              }}
+                            >
+                              Appraisal
+                            </span>
+                            <span
+                              style={{
+                                color: "#97d700",
+                                fontWeight: "bold",
+                                fontSize: "24px",
+                                // marginTop: "20px",
+                              }}
+                            >
+                              {" "}
+                              Land
+                            </span>
+                          </Link>
+                        </div>
+                      </div>
+                      <h2
+                        className="text-center"
+                        style={{ color: "orangered" }}
+                      >
+                        Alert
+                      </h2>
+                      <div
+                        className="mb-3 mt-2"
+                        style={{ border: "2px solid #97d700" }}
+                      ></div>
+                      <span className="text-center text-dark fs-4">
+                        As SMS Notification is disabled you won&apos;t be
+                        notified for listed changes and updates over SMS.
+                      </span>
+                      <div
+                        className="mb-3 mt-2"
+                        style={{ border: "2px solid #97d700" }}
+                      ></div>
+                      <div className="text-center">
+                        <button
+                          className="btn btn-color w-25"
+                          onClick={() => closeErrorModal()}
+                        >
+                          Ok
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {modalIsOpenError_01 && (
+                  <div className="modal">
+                    <div
+                      className="modal-content"
+                      style={{ borderColor: "#2e008b", width: "40%" }}
+                    >
+                      <div className="row">
+                        <div className="col-lg-12">
+                          <Link href="/" className="">
+                            <Image
+                              width={50}
+                              height={45}
+                              className="logo1 img-fluid"
+                              style={{ marginTop: "-20px" }}
+                              src="/assets/images/logo.png"
+                              alt="header-logo2.png"
+                            />
+                            <span
+                              style={{
+                                color: "#2e008b",
+                                fontWeight: "bold",
+                                fontSize: "24px",
+                              }}
+                            >
+                              Appraisal
+                            </span>
+                            <span
+                              style={{
+                                color: "#97d700",
+                                fontWeight: "bold",
+                                fontSize: "24px",
+                              }}
+                            >
+                              {" "}
+                              Land
+                            </span>
+                          </Link>
+                        </div>
+                      </div>
+                      <h2
+                        className="text-center"
+                        style={{ color: "orangered" }}
+                      >
+                        Alert
+                      </h2>
+                      <div
+                        className="mb-3 mt-2"
+                        style={{ border: "2px solid #97d700" }}
+                      ></div>
+                      <span className="text-center text-dark fs-4">
+                        As Email Notification is disabled you won&apos;t be
+                        notified for listed changes and updates over Email.
+                      </span>
+                      <div
+                        className="mb-3 mt-2"
+                        style={{ border: "2px solid #97d700" }}
+                      ></div>
+                      <div className="text-center">
+                        <button
+                          className="btn btn-color w-25"
+                          onClick={() => closeErrorModal()}
+                        >
+                          Ok
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
               {/* End .row */}
 

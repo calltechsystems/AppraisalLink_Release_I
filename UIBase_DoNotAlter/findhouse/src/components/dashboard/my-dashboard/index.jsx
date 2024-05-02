@@ -23,8 +23,8 @@ const Index = () => {
   const [wishlist, setWishlist] = useState([]);
   const [lineData, setLineData] = useState([]);
   const [acceptedBids, setAcceptedBids] = useState(0);
-  const [allQuotesBids , setAllQuotesBids] = useState(0);
-  const [allProperties , setAllProperties] = useState([])
+  const [allQuotesBids, setAllQuotesBids] = useState(0);
+  const [allProperties, setAllProperties] = useState([]);
   const [chartData, setChartData] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const router = useRouter();
@@ -72,8 +72,6 @@ const Index = () => {
     return () => clearInterval(inactivityCheckInterval);
   }, [lastActivityTimestamp]);
 
-
-
   const getBiddedTime = (orderId) => {
     let time = "";
     bids.map((bid, index) => {
@@ -86,8 +84,7 @@ const Index = () => {
   const getAllBiddedTime = (orderId) => {
     let time = "";
     bids.map((bid, index) => {
-      if (String(bid.orderId) === String(orderId) )
-        [(time = bid.requestTime)];
+      if (String(bid.orderId) === String(orderId)) [(time = bid.requestTime)];
     });
     return time;
   };
@@ -103,19 +100,18 @@ const Index = () => {
     const estimatedDiff =
       gettingDiff + getMonthsFDiff * 30 + gettingYearDiff * 365;
 
-      if(estimatedDiff<=diff){
-        console.log("difference",diff,estimatedDiff,searchDate.addedDatetime)
-      }
+    if (estimatedDiff <= diff) {
+      console.log("difference", diff, estimatedDiff, searchDate.addedDatetime);
+    }
     return estimatedDiff <= diff && searchDate?.isArchive === false;
   };
-
 
   const filterData = (tempData) => {
     const currentDate = new Date();
     const oneYearAgo = new Date(currentDate);
     oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
     let tempAllAcceptedBids = 0;
-    let tempAllQuotesBids = 0 ;
+    let tempAllQuotesBids = 0;
     let currentAllProperties = 0;
 
     switch (filterQuery) {
@@ -129,12 +125,12 @@ const Index = () => {
             tempAllAcceptedBids += 1;
           }
 
-          if(isAllBid !== "" && new Date(isAllBid) >= oneMonthAgo){
+          if (isAllBid !== "" && new Date(isAllBid) >= oneMonthAgo) {
             tempAllQuotesBids += 1;
           }
 
-          if(calculate(item,30) === true){
-            currentAllProperties ++;
+          if (calculate(item, 30) === true) {
+            currentAllProperties++;
           }
 
           return new Date(item.addedDatetime) >= oneMonthAgo;
@@ -151,11 +147,11 @@ const Index = () => {
           if (isBidded !== "" && new Date(isBidded) >= oneYearAgo) {
             tempAllAcceptedBids += 1;
           }
-          if(isAllBid !== "" && new Date(isAllBid) >= oneYearAgo){
+          if (isAllBid !== "" && new Date(isAllBid) >= oneYearAgo) {
             tempAllQuotesBids += 1;
           }
-          if(calculate(item,90) === true){
-            currentAllProperties ++;
+          if (calculate(item, 90) === true) {
+            currentAllProperties++;
           }
           return new Date(item.addedDatetime) >= oneYearAgo;
         });
@@ -173,10 +169,10 @@ const Index = () => {
           if (isBidded !== "" && new Date(isBidded) >= oneWeekAgo) {
             tempAllAcceptedBids += 1;
           }
-          if(isAllBid !== "" && new Date(isAllBid) >= oneWeekAgo){
-            tempAllQuotesBids ++;
+          if (isAllBid !== "" && new Date(isAllBid) >= oneWeekAgo) {
+            tempAllQuotesBids++;
           }
-          if(calculate(item , 7) === true){
+          if (calculate(item, 7) === true) {
             currentAllProperties += 1;
           }
           return new Date(item.addedDatetime) >= oneWeekAgo;
@@ -193,10 +189,10 @@ const Index = () => {
           if (isBidded !== "") {
             tempAllAcceptedBids += 1;
           }
-          if(isAllBid !== "" ){
+          if (isAllBid !== "") {
             tempAllQuotesBids += 1;
           }
-          currentAllProperties ++;
+          currentAllProperties++;
 
           return new Date(item.addedDatetime) >= oneYearAgo;
         });
@@ -223,12 +219,11 @@ const Index = () => {
   useEffect(() => {
     const dataTemp = filterData(data);
     setChartData(dataTemp);
-  }, [filterQuery,bids,data]);
+  }, [filterQuery, bids, data]);
 
   useEffect(() => {
-
-    setData([])
-    setBids([])
+    setData([]);
+    setBids([]);
     const data = JSON.parse(localStorage.getItem("user"));
     setUserData(data);
     if (!data) {
@@ -355,7 +350,6 @@ const Index = () => {
           <div className="row">
             <div className="col-lg-12 maxw100flex-992">
               <div className="row">
-
                 <div
                   className="col-lg-12 mb10"
                   style={{

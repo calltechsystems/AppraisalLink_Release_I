@@ -9,7 +9,12 @@ import { CldUploadWidget } from "next-cloudinary";
 import toast from "react-hot-toast";
 import { province } from "../create-listing/data";
 
-const ProfileInfo = ({ setProfileCount, setShowCard }) => {
+const ProfileInfo = ({
+  setProfileCount,
+  setShowCard,
+  setModalIsOpenError,
+  setModalIsOpenError_01,
+}) => {
   const [profilePhoto, setProfilePhoto] = useState(null);
   let userData = JSON.parse(localStorage.getItem("user")) || {};
   const router = useRouter();
@@ -23,11 +28,11 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
   );
 
   const [emailNotification, setEmailNotification] = useState(
-    userData?.emailNotification !== null ? userData?.emailNotification : false
+    userData?.emailNotification !== null ? userData?.emailNotification : true
   );
 
   const [smsNotification, setSmsNotification] = useState(
-    userData?.smsNotification !== null ? userData?.smsNotification : false
+    userData?.smsNotification !== null ? userData?.smsNotification : true
   );
 
   const [edit, setEdit] = useState(true);
@@ -139,22 +144,30 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
     console.log(typeof profilePhoto);
   };
 
-  const firstFunction = () => {
+  useEffect(() => {
     if (smsNotification === null || smsNotification === false) {
-      toast.error(
-        "As SMS Notification is disabled you wont be notified for listed changes and updates over SMS.",
-        { duration: 3000 }
-      );
+      setModalIsOpenError(true);
+    } else if (emailNotification === null || emailNotification === false) {
+      setModalIsOpenError_01(true);
     }
-    if (emailNotification === null || emailNotification === false) {
-      toast.error(
-        "As Email Notification is disabled you wont be notified for listed changes and updates over Email.",
-        { duration: 3000 }
-      );
-    }
+  }, [smsNotification, emailNotification]);
 
-    setTimeout(onUpdatHandler, 2000); // Call onUpdatHandler after 6 seconds
-  };
+  // const firstFunction = () => {
+  //   if (smsNotification === null || smsNotification === false) {
+  //     toast.error(
+  //       "As SMS Notification is disabled you wont be notified for listed changes and updates over SMS.",
+  //       { duration: 3000 }
+  //     );
+  //   }
+  //   if (emailNotification === null || emailNotification === false) {
+  //     toast.error(
+  //       "As Email Notification is disabled you wont be notified for listed changes and updates over Email.",
+  //       { duration: 3000 }
+  //     );
+  //   }
+
+  //   setTimeout(onUpdatHandler, 2000); // Call onUpdatHandler after 6 seconds
+  // };
 
   const onUpdatHandler = () => {
     const firstName =
@@ -195,23 +208,6 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
       companyNameRef !== ""
         ? companyNameRef
         : userData.broker_Details.companyName;
-    // const assistantTwoFirstName =
-    //   assistantTwoFirstName !== ""
-    //     ? assistantTwoFirstName
-    //     : userData.broker_Details.assistantTwoFirstName;
-    // const assistantTwoLastName =
-    //   assistantTwoLastName !== ""
-    //     ? assistantTwoLastName
-    //     : userData.broker_Details.assistantTwoLastName;
-    // const assistantTwoEmailAddress =
-    //   assistantTwoEmailAddress !== ""
-    //     ? assistantTwoEmailAddress
-    //     : userData.broker_Details.assistantTwoEmailAddress;
-    // const assistantTwoPhoneNumber =
-    //   assistantTwoPhoneNumber !== ""
-    //     ? assistantTwoPhoneNumber
-    //     : userData.broker_Details.assistantTwoPhoneNumber;
-    // const emailId = emailId !== "" ? emailId : userData.broker_Details.emailId;
 
     const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const cellNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
@@ -397,31 +393,28 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
 
   const handleFileChange = async (e, type) => {
     const file = e.target.files[0];
-    toast.loading("Uploading..");
-    try {
-      const generatedUrl = await uploadFile(file);
-      toast.dismiss();
-      toast.success("Uploaded Successfully");
-      console.log("generatedUrl", generatedUrl);
-      setSelectedImage(generatedUrl);
-    } catch (err) {
-      toast.dismiss();
-      toast.error("Try Again!");
+    const allowedImageTypes = ["image/jpeg", "image/png", "image/gif"];
+ 
+
+    if (!allowedImageTypes.includes(file?.type)) {
+      toast.error("Please select a valid image file (JPEG, PNG, GIF).");
+      return;
+    } else {
+      const file = e.target.files[0];
+      toast.loading("Uploading..");
+      try {
+        const generatedUrl = await uploadFile(file);
+        toast.dismiss();
+        toast.success("Uploaded Successfully");
+        console.log("generatedUrl", generatedUrl);
+        setSelectedImage(generatedUrl);
+      } catch (err) {
+        toast.dismiss();
+        toast.error("Try Again!");
+      }
     }
   };
 
-  const handleUpload = (result) => {
-    // Handle the image upload result here
-    console.log("handleUpload called");
-    if (result.info.secure_url) {
-      setSelectedImage(result.info.secure_url);
-      setProfilePhoto(result.info.secure_url);
-      // You can also save the URL to your state or do other operations here
-    } else {
-      // Handle the case when the upload failed
-      console.error("Image upload failed");
-    }
-  };
 
   const handleZipCodeChange = async (val) => {
     setZipcodeRef(val);
@@ -796,12 +789,12 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           <input
                             className="form-check-input mt-3"
                             type="checkbox"
+                            checked={emailNotification}
+                            onChange={(e) =>
+                              setEmailNotification(!emailNotification)
+                            }
                             id="terms"
                             style={{ border: "1px solid black" }}
-                            value={emailNotification}
-                            onChange={(e) =>
-                              setEmailNotification(e.target.value)
-                            }
                           />
                           {/* <input
                             className="form-check-input mt-3"
@@ -848,10 +841,12 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                           <input
                             className="form-check-input mt-3"
                             type="checkbox"
+                            checked={smsNotification}
                             id="terms"
-                            value={smsNotification}
-                            onChange={(e) => setSmsNotification(e.target.value)}
                             style={{ border: "1px solid black" }}
+                            onChange={(e) =>
+                              setSmsNotification(!smsNotification)
+                            }
                           />
                           <label
                             className="form-check-label form-check-label"
@@ -1577,7 +1572,7 @@ const ProfileInfo = ({ setProfileCount, setShowCard }) => {
                         >
                           Cancel
                         </button>
-                        <button className="btn btn5" onClick={firstFunction}>
+                        <button className="btn btn5" onClick={onUpdatHandler}>
                           {userData?.broker_Details
                             ? "Update Profile"
                             : "Create Profile"}

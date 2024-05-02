@@ -17,6 +17,7 @@ import Exemple from "./Exemple";
 import { encryptionData } from "../../../utils/dataEncryption";
 
 const Index = ({ propertyId }) => {
+  const [disable, setDisable] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [appInfo, setAppInfo] = useState({});
@@ -35,6 +36,7 @@ const Index = ({ propertyId }) => {
   const [properties, setProperties] = useState([]);
 
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
+  const [modalIsBidError, setModalIsBidError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   const router = useRouter();
@@ -54,6 +56,8 @@ const Index = ({ propertyId }) => {
   };
 
   const acceptRequestHandler = () => {
+    setDisable(true);
+    setIsModalOpen(false);
     const data = JSON.parse(localStorage.getItem("user"));
     toast.loading("Accepting the Quote ...");
     const payload = {
@@ -78,9 +82,17 @@ const Index = ({ propertyId }) => {
         router.push("/brokerage-properties");
       })
       .catch((err) => {
-        toast.dismiss();
-        console.log(err);
-        toast.error(err?.response?.data?.error);
+        const status = err.response.request.status;
+        if (String(status) === String(403)) {
+          toast.dismiss();
+          setModalIsBidError(true);
+        } else {
+          toast.dismiss();
+          toast.error(err.message);
+        }
+        // toast.dismiss();
+        // console.log(err);
+        // toast.error(err?.response?.data?.error);
       });
   };
 
@@ -152,6 +164,7 @@ const Index = ({ propertyId }) => {
 
   const closeModal = () => {
     setIsModalOpen(false);
+    setModalIsBidError(false);
   };
 
   useEffect(() => {
@@ -406,6 +419,97 @@ const Index = ({ propertyId }) => {
                                   }}
                                 >
                                   Cancel
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {modalIsBidError && (
+                          <div className="modal">
+                            <div
+                              className="modal-content"
+                              style={{ borderColor: "red", width: "40%" }}
+                            >
+                              <div className="col-lg-12">
+                                <div className="row">
+                                  <div className="col-lg-12">
+                                    <Link href="/" className="">
+                                      <Image
+                                        width={60}
+                                        height={45}
+                                        className="logo1 img-fluid"
+                                        style={{ marginTop: "-20px" }}
+                                        src="/assets/images/Appraisal_Land_Logo.png"
+                                        alt="header-logo2.png"
+                                      />
+                                      <span
+                                        style={{
+                                          color: "#2e008b",
+                                          fontWeight: "bold",
+                                          fontSize: "24px",
+                                          // marginTop: "20px",
+                                        }}
+                                      >
+                                        Appraisal
+                                      </span>
+                                      <span
+                                        style={{
+                                          color: "#97d700",
+                                          fontWeight: "bold",
+                                          fontSize: "24px",
+                                          // marginTop: "20px",
+                                        }}
+                                      >
+                                        {" "}
+                                        Land
+                                      </span>
+                                    </Link>
+                                  </div>
+                                </div>
+                                <div className="row">
+                                  <div className="col-lg-12 text-center">
+                                    <h3 className=" text-danger mt-1">Error</h3>
+                                  </div>
+                                </div>
+                                <div
+                                  className="mt-2 mb-3"
+                                  style={{ border: "2px solid #97d700" }}
+                                ></div>
+                              </div>
+                              <div
+                                style={{
+                                  borderWidth: "2px",
+                                  borderColor: "orangered",
+                                }}
+                              >
+                                <br />
+                              </div>
+                              <span
+                                className="text-center mb-2 text-dark fw-bold"
+                                style={{ fontSize: "18px" }}
+                              >
+                                Due to technical issues, the originally selected
+                                appraiser is unavailable. Kindly choose quotes
+                                from different appraisers.
+                              </span>
+                              <div
+                                className="mt-2 mb-3"
+                                style={{ border: "2px solid #97d700" }}
+                              ></div>
+                              <div
+                                className="col-lg-12 text-center"
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "center",
+                                }}
+                              >
+                                <button
+                                  className="btn btn-color w-50"
+                                  onClick={() => closeModal()}
+                                  style={{}}
+                                >
+                                  Ok
                                 </button>
                               </div>
                             </div>
@@ -939,19 +1043,28 @@ const Index = ({ propertyId }) => {
                       </Link>
                     </div>
                   </div>
-                  <h3 className="text-center">Accept Bid Confirmation</h3>
+                  <span
+                    className="text-center"
+                    style={{
+                      fontWeight: "bold",
+                      fontSize: "29px",
+                      color: "#2e008b",
+                    }}
+                  >
+                    Accept Bid Confirmation
+                  </span>
                   <div
                     className="mt-2 mb-3"
                     style={{ border: "2px solid #97d700" }}
                   ></div>
-                  <p className="text-center fs-6">
+                  <p className="text-center fs-4">
                     Are you sure you want to accept the quote with value?
                   </p>
 
-                  <h4 className="text-center">
+                  <h3 className="text-center">
                     Quote Amount : $ {property.bidAmount}
-                  </h4>
-                  <p className="text-center mt-3 mb-0">
+                  </h3>
+                  <p className="text-center mt-3 mb-0 fs-5">
                     ( Note <span className="text-danger">*</span> : All Other
                     Quotes from other appriasers will be Rejected.)
                   </p>
@@ -965,15 +1078,17 @@ const Index = ({ propertyId }) => {
                     <div className="row">
                       <div className="col-lg-12 text-center m-1">
                         <button
-                          className="btn btn-color"
+                          className="btn btn-color w-25"
                           style={{ marginRight: "5px" }}
                           onClick={closeModal}
+                          disabled={disable}
                         >
                           Cancel
                         </button>
                         <button
-                          className="btn btn-color"
+                          className="btn btn-color w-25"
                           onClick={() => acceptRequestHandler(property.bidId)}
+                          disabled={disable}
                         >
                           Submit
                         </button>

@@ -4,22 +4,53 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
 import toast from "react-hot-toast";
-import Exemple from "./Exemple"
+import Exemple from "./Exemple";
 import { useDispatch, useSelector } from "react-redux";
-const TableData = ({userData , open ,searchInput,filterQuery,close ,setAssignedAppraiser,setAssignPropertyId,setAssignModal,setAllAppraiser, onArchivePropertyHandler,setCurrentBid,setShowBroker,setOpenAssignModal,setAllBrokers,setShowMore,setFilterQuery,setSearchInput,setIsStatusModal,start,end, onWishlistHandler ,setStartLoading,setUpdatedCode, openModalBroker,participateHandler , properties, setProperties,setErrorMessage,setModalIsOpenError,setRefresh,refresh}) => {
-
-
+const TableData = ({
+  userData,
+  setOpenQuoteView,
+  setCurrentBiddedView,
+  open,
+  searchInput,
+  filterQuery,
+  close,
+  setAssignedAppraiser,
+  setAssignPropertyId,
+  setAssignModal,
+  setAllAppraiser,
+  onArchivePropertyHandler,
+  setCurrentBid,
+  setShowBroker,
+  setOpenAssignModal,
+  setAllBrokers,
+  setShowMore,
+  setFilterQuery,
+  setSearchInput,
+  setIsStatusModal,
+  start,
+  end,
+  onWishlistHandler,
+  setStartLoading,
+  setUpdatedCode,
+  openModalBroker,
+  participateHandler,
+  properties,
+  setProperties,
+  setErrorMessage,
+  setModalIsOpenError,
+  setRefresh,
+  refresh,
+}) => {
   let userInfo = {};
-  const [Id,setId] = useState(-1);  
+  const [Id, setId] = useState(-1);
 
-  const [rerender , setRerender] = useState(false);
- 
-  const [data , setData] = useState([]);
+  const [rerender, setRerender] = useState(false);
 
-  
+  const [data, setData] = useState([]);
+
   const {
     keyword,
-    location,   
+    location,
     status,
     propertyType,
     price,
@@ -38,109 +69,90 @@ const TableData = ({userData , open ,searchInput,filterQuery,close ,setAssignedA
 
   // keyword filter
   const keywordHandler = (item) =>
-    item.community.toLowerCase().includes(keyword?.toLowerCase())||
-    item.city.toLowerCase().includes(keyword?.toLowerCase())||
-    item.area.toLowerCase().includes(keyword?.toLowerCase())||
-    item.typeOfBuilding.toLowerCase().includes(keyword?.toLowerCase())||
-    item.state.toLowerCase().includes(keyword?.toLowerCase())||
-    item.streetNumber.toLowerCase().includes(keyword?.toLowerCase())||
+    item.community.toLowerCase().includes(keyword?.toLowerCase()) ||
+    item.city.toLowerCase().includes(keyword?.toLowerCase()) ||
+    item.area.toLowerCase().includes(keyword?.toLowerCase()) ||
+    item.typeOfBuilding.toLowerCase().includes(keyword?.toLowerCase()) ||
+    item.state.toLowerCase().includes(keyword?.toLowerCase()) ||
+    item.streetNumber.toLowerCase().includes(keyword?.toLowerCase()) ||
     item.streetName.toLowerCase().includes(keyword?.toLowerCase());
-
 
   // location handler
   const locationHandler = (item) => {
-    item.city.toLowerCase().includes(keyword?.toLowerCase())||
-    item.area.toLowerCase().includes(keyword?.toLowerCase())||
-    item.state.toLowerCase().includes(keyword?.toLowerCase())||
-    item.streetNumber.toLowerCase().includes(keyword?.toLowerCase())||
-    item.streetName.toLowerCase().includes(keyword?.toLowerCase());
+    item.city.toLowerCase().includes(keyword?.toLowerCase()) ||
+      item.area.toLowerCase().includes(keyword?.toLowerCase()) ||
+      item.state.toLowerCase().includes(keyword?.toLowerCase()) ||
+      item.streetNumber.toLowerCase().includes(keyword?.toLowerCase()) ||
+      item.streetName.toLowerCase().includes(keyword?.toLowerCase());
   };
 
   // status handler
   const statusHandler = (item) =>
-  item.community.toLowerCase().includes(keyword?.toLowerCase())||
-  item.typeOfBuilding.toLowerCase().includes(keyword?.toLowerCase());
+    item.community.toLowerCase().includes(keyword?.toLowerCase()) ||
+    item.typeOfBuilding.toLowerCase().includes(keyword?.toLowerCase());
 
   // properties handler
   const propertiesHandler = (item) =>
-  item.community.toLowerCase().includes(keyword?.toLowerCase())||
-  item.typeOfBuilding.toLowerCase().includes(keyword?.toLowerCase());
+    item.community.toLowerCase().includes(keyword?.toLowerCase()) ||
+    item.typeOfBuilding.toLowerCase().includes(keyword?.toLowerCase());
 
   // price handler
   const priceHandler = (item) =>
     item.bidLowerRange < price?.max && item.bidUpperRange > price?.min;
 
+  let theadConent = ["Property Title", "Date", "Urgency", "Bids", "Action"];
 
-  let theadConent = [
-    "Property Title",
-    "Date",
-    "Urgency",
-    "Bids",
-    "Action",
-  ];
-
-  useEffect(()=>{
-    
-   
-
-    const data = (JSON.parse(localStorage.getItem("user")));
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
-      token : userData.token
+      token: userData.token,
     };
-
-
-    
-  },[rerender]);
+  }, [rerender]);
   const formatDate = (dateString) => {
     const options = {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     };
-  
-    const formattedDate = new Date(dateString).toLocaleString('en-US', options);
-  
+
+    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
+
     return formattedDate;
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     setData(properties);
-  },[properties]);
-  const deletePropertyHandler = (id)=>{
+  }, [properties]);
+  const deletePropertyHandler = (id) => {
+    const data = JSON.parse(localStorage.getItem("user"));
 
-    const data = (JSON.parse(localStorage.getItem("user")));
-    
     axios
-      .delete("/api/deleteBrokerPropertyById",
-       {
+      .delete("/api/deleteBrokerPropertyById", {
         headers: {
-          Authorization:`Bearer ${data?.token}`,
-          "Content-Type":"application/json"
+          Authorization: `Bearer ${data?.token}`,
+          "Content-Type": "application/json",
         },
         params: {
-          propertyId : id
-        }
-        
+          propertyId: id,
+        },
       })
       .then((res) => {
-       setRerender(true);
-
+        setRerender(true);
       })
       .catch((err) => {
         setErrorMessage(err.response.data.error);
         setModalIsOpenError(true);
       });
-  }
-
-  const toggleDropdownDiv = (item)=>{
   };
 
-  let tbodyContent = data?.map((item,key) => (
+  const toggleDropdownDiv = (item) => {};
+
+  let tbodyContent = data?.map((item, key) => (
     <>
-    <tr key={item.id}>
-      <td scope="row">
-       {/* <div className="feat_property list favorite_page style2" >
+      <tr key={item.id}>
+        <td scope="row">
+          {/* <div className="feat_property list favorite_page style2" >
           {/*<div className="thumb">
             <Image
               width={150}
@@ -170,23 +182,29 @@ const TableData = ({userData , open ,searchInput,filterQuery,close ,setAssignedA
               </Link>
             </div>
           </div>
-      </td>
-      {/* End td */}
+        </td>
+        {/* End td */}
 
-      <td>{formatDate(item?.addedDatetime)}</td>
-      {/* End td */}
+        <td>{formatDate(item?.addedDatetime)}</td>
+        {/* End td */}
 
-      <td>
-        <span className="status_tag badge">{item?.urgency === 1? "Low" : item?.urgency === 2 ? "Medium" : "High"}</span>
-      </td>
-      {/* End td */}
+        <td>
+          <span className="status_tag badge">
+            {item?.urgency === 1
+              ? "Low"
+              : item?.urgency === 2
+              ? "Medium"
+              : "High"}
+          </span>
+        </td>
+        {/* End td */}
 
-      <td>2,345</td>
-      {/* End td */}
+        <td>2,345</td>
+        {/* End td */}
 
-      <td>
-        <ul className="view_edit_delete_list mb0">
-          {/* <li
+        <td>
+          <ul className="view_edit_delete_list mb0">
+            {/* <li
             className="list-inline-item"
             data-toggle="tooltip"
             data-placement="top"
@@ -195,8 +213,8 @@ const TableData = ({userData , open ,searchInput,filterQuery,close ,setAssignedA
             {/* <Link href={`/create-listing/${item.propertyId}`} >
               <span className="flaticon-view"></span>
             </Link> */}
-          {/* </li> */}
-          {/* <li 
+            {/* </li> */}
+            {/* <li 
             className="list-inline-item"
             data-toggle="tooltip"
             data-placement="top"
@@ -205,25 +223,25 @@ const TableData = ({userData , open ,searchInput,filterQuery,close ,setAssignedA
             {/* <Link href={`/create-listing/${item.propertyId}`} >
               <span className="flaticon-edit"></span>
             </Link> */}
-          {/* </li> */}
-          {/* End li */}
-          <li
-                className="list-inline-item"
-                style={{
-                  width: "30px",
-                  border: "1px solid black",
-                  textAlign: "center",
-                  borderRadius: "5px",
-                }}
-              >
-                {/* <Link href="/agent-v1">{item.posterName}</Link> */}
-                <button onClick={()=>onWishlistHandler(item.propertyId)}>
-                  <span className="flaticon-heart text-color "></span>
-                </button>
-              </li>
-            </ul>
-            {/* <div className="fp_pdate float-end">{item.postedYear}</div> */}
-            
+            {/* </li> */}
+            {/* End li */}
+            <li
+              className="list-inline-item"
+              style={{
+                width: "30px",
+                border: "1px solid black",
+                textAlign: "center",
+                borderRadius: "5px",
+              }}
+            >
+              {/* <Link href="/agent-v1">{item.posterName}</Link> */}
+              <button onClick={() => onWishlistHandler(item.propertyId)}>
+                <span className="flaticon-heart text-color "></span>
+              </button>
+            </li>
+          </ul>
+          {/* <div className="fp_pdate float-end">{item.postedYear}</div> */}
+
           <li
             className="list-inline-item"
             data-toggle="tooltip"
@@ -232,59 +250,64 @@ const TableData = ({userData , open ,searchInput,filterQuery,close ,setAssignedA
           >
             <div
               className="fp_pdate float-end mt-1 fw-bold"
-              onClick={()=>participateHandler(item.bidLowerRange , item.propertyId)}
+              onClick={() =>
+                participateHandler(item.bidLowerRange, item.propertyId)
+              }
             >
               <a href="#" className="text-color">
                 Provide Qoute
               </a>
             </div>
           </li>
-      </td>
-      {/* End td */}
-    </tr>
-    { Id === key ?<tr>property data </tr>:""}
+        </td>
+        {/* End td */}
+      </tr>
+      {Id === key ? <tr>property data </tr> : ""}
     </>
   ));
 
   return (
     <>
-    {data && (<Exemple 
-      userData={userData}
-      open={open}
-      close={close}
-      searchInput={searchInput}
-                          filterQuery={filterQuery}
-      setShowBroker={setShowBroker}
-      setSearchInput={setSearchInput}
-      setFilterQuery={setFilterQuery}
-      setProperties={setProperties}
-      properties={data}
-      setRefresh={setRefresh}
-      refresh={refresh}
-      setModalIsOpenError = {setModalIsOpenError}
-      setErrorMessage = {setErrorMessage}
-      deletePropertyHandler = {deletePropertyHandler}
-      onWishlistHandler={onWishlistHandler}
-      participateHandler={participateHandler}
-      setUpdatedCode={setUpdatedCode}
-      setStartLoading={setStartLoading}
-      setShowMore={setShowMore}
-      setIsStatusModal={setIsStatusModal}
-      start={start}
-      setAssignPropertyId={setAssignPropertyId}
-      onArchivePropertyHandler={ onArchivePropertyHandler}
-      setAssignedAppraiser={setAssignedAppraiser}
-      openModalBroker={openModalBroker}
-      setAllBrokers={setAllBrokers}
-      setCurrentBid={setCurrentBid}
-      setAllAppraiser={setAllAppraiser}
-  setAssignModal={setAssignModal}
-      setOpenAssignModal={setOpenAssignModal}
-      end={end}
-      />)}
+      {data && (
+        <Exemple
+          userData={userData}
+          open={open}
+          close={close}
+          searchInput={searchInput}
+          filterQuery={filterQuery}
+          setShowBroker={setShowBroker}
+          setSearchInput={setSearchInput}
+          setFilterQuery={setFilterQuery}
+          setProperties={setProperties}
+          properties={data}
+          setRefresh={setRefresh}
+          refresh={refresh}
+          setModalIsOpenError={setModalIsOpenError}
+          setErrorMessage={setErrorMessage}
+          deletePropertyHandler={deletePropertyHandler}
+          onWishlistHandler={onWishlistHandler}
+          participateHandler={participateHandler}
+          setUpdatedCode={setUpdatedCode}
+          setStartLoading={setStartLoading}
+          setShowMore={setShowMore}
+          setIsStatusModal={setIsStatusModal}
+          start={start}
+          setCurrentBiddedView={setCurrentBiddedView}
+          setOpenQuoteView={setOpenQuoteView}
+          setAssignPropertyId={setAssignPropertyId}
+          onArchivePropertyHandler={onArchivePropertyHandler}
+          setAssignedAppraiser={setAssignedAppraiser}
+          openModalBroker={openModalBroker}
+          setAllBrokers={setAllBrokers}
+          setCurrentBid={setCurrentBid}
+          setAllAppraiser={setAllAppraiser}
+          setAssignModal={setAssignModal}
+          setOpenAssignModal={setOpenAssignModal}
+          end={end}
+        />
+      )}
     </>
   );
 };
 
 export default TableData;
-

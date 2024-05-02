@@ -46,11 +46,11 @@ const ProfileInfo = ({
   );
 
   const [emailNotification, setEmailNotification] = useState(
-    userData?.emailNotification !== null ? userData?.emailNotification : false
+    userData?.emailNotification !== null ? userData?.emailNotification : true
   );
 
   const [smsNotification, setSmsNotification] = useState(
-    userData?.smsNotification !== null ? userData?.smsNotification : false
+    userData?.smsNotification !== null ? userData?.smsNotification : true
   );
 
   const [SMSAlert, setSMSAlert] = useState(false);
@@ -106,10 +106,6 @@ const ProfileInfo = ({
     userData?.appraiserCompany_Datails?.officeContactEmail || ""
   );
 
-  // const [designation, setDesignation] = useState(
-  //   userData?.brokerage_Details?.designation || ""
-  // );
-
   const [officeContactPhone, setOfficeContactPhone] = useState(
     userData?.appraiserCompany_Datails?.officeContactPhone || ""
   );
@@ -124,14 +120,14 @@ const ProfileInfo = ({
     userData?.appraiserCompany_Datails?.apartmentNumber || ""
   );
 
-  const handleUpload2 = (result) => {
-    // Handle the image upload result here
-    console.log("handleUpload called", result.info);
-    setSelectedImage2({
-      url: result.info.secure_url,
-      name: result.info.original_filename + "." + result.info.format,
-    });
-  };
+  useEffect(()=>{
+    if(smsNotification === null || smsNotification === false){
+      setModalIsOpenError(true);
+    }
+    else if(emailNotification === null || emailNotification === false){
+      setModalIsOpenError_01(true)
+    }
+  },[smsNotification,emailNotification]);
 
   const handleInputChange = (e) => {
     const inputValue = e.target.value;
@@ -181,24 +177,6 @@ const ProfileInfo = ({
     console.log(typeof profilePhoto);
   };
 
-  const firstFunction = () => {
-    if (smsNotification === null || smsNotification === false) {
-      toast.error(
-        "As SMS Notification is disabled you wont be notified for listed changes and updates over SMS.",
-        { duration: 3000 }
-      );
-      // setModalIsOpenError(true);
-    }
-    if (emailNotification === null || emailNotification === false) {
-      toast.error(
-        "As Email Notification is disabled you wont be notified for listed changes and updates over Email.",
-        { duration: 3000 }
-      );
-      // setModalIsOpenError_01(true);
-    }
-
-    setTimeout(onUpdatHandler, 2000); // Call onUpdatHandler after 6 seconds
-  };
 
   const onUpdatHandler = () => {
     const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
@@ -258,9 +236,6 @@ const ProfileInfo = ({
     } else {
       let count = 9;
 
-      // const percentage = Math.floor(count / 13) * 100;
-      // setProfileCount(percentage);
-
       const payload = {
         id: userData.userId,
         token: userData.token,
@@ -294,8 +269,6 @@ const ProfileInfo = ({
         !payload.phoneNumber ||
         !payload.emailId ||
         !payload.licenseNumber ||
-        // !payload.mortgageBrokerageLicNo ||
-        // !payload.lenderListUrl ||
         !payload.streetName ||
         !payload.streetNumber ||
         !payload.city ||
@@ -332,19 +305,6 @@ const ProfileInfo = ({
     }
   };
 
-  // const handleFileChange = async (e, type) => {
-  //   const file = e.target.files[0];
-  //   toast.loading("Uploading..");
-  //   try {
-  //     const generatedUrl = await uploadFile(file);
-  //     toast.dismiss();
-  //     toast.success("Uploaded Successfully");
-  //     setSelectedImage(generatedUrl);
-  //   } catch (err) {
-  //     toast.dismiss();
-  //     toast.error("Try Again!");
-  //   }
-  // };
   const handleFileChange = async (e, type) => {
     const file = e.target.files[0];
     toast.loading("Uploading..");
@@ -395,19 +355,16 @@ const ProfileInfo = ({
 
   const openWidget = () => {
     if (uploadInputRef.current) {
-      uploadInputRef.current.click(); // Trigger the hidden file input
+      uploadInputRef.current.click();
     }
   };
 
   const handleUpload = (result) => {
-    // Handle the image upload result here
     console.log("handleUpload called");
     if (result.info.secure_url) {
       setSelectedImage(result.info.secure_url);
       setProfilePhoto(result.info.secure_url);
-      // You can also save the URL to your state or do other operations here
     } else {
-      // Handle the case when the upload failed
       console.error("Image upload failed");
     }
   };
@@ -435,21 +392,7 @@ const ProfileInfo = ({
       <div className="row">
         {/* <h4 className="mb-3">Personal Information</h4> */}
         <div className="col-lg-12"></div>
-        {/* {!edit && (
-          <div>
-            <button
-              className="btn btn2 btn-color profile_edit_button"
-              onClick={changeEditHandler}
-            >
-              <span
-                className="flaticon-edit"
-                data-toggle="tooltip"
-                data-placement="top"
-                title="Edit Profile"
-              ></span>
-            </button>
-          </div>
-        )} */}
+        
         <div className="col-lg-12 col-xl-12 mt-2">
           <div className="my_profile_setting_input form-group">
             <div className="row">
@@ -479,7 +422,7 @@ const ProfileInfo = ({
                           Browse
                         </button>
                         <p className="mt-2">
-                          {SelectedImage !== "" && "Note -: Image Only"}
+                          {SelectedImage !== "" && "Image Only"}
                         </p>
                       </div>
                     </div>
@@ -542,27 +485,7 @@ const ProfileInfo = ({
                       </div>
                     </div>
                   </div>
-                  {/* <div className="col-lg-12 mb-3">
-                    <div className="row">
-                      <div className="col-lg-4">
-                        <label htmlFor="" style={{ paddingTop: "10px" }}>
-                          Middle Name
-                        </label>
-                      </div>
-                      <div className="col-lg-7">
-                        <input
-                          type="text"
-                          required
-                          className="form-control"
-                          id="formGroupExampleInput3"
-                          style={{ backgroundColor: "#E8F0FE" }}
-                          disabled={!edit}
-                          value={middleNameRef}
-                          onChange={(e) => setMiddleNameRef(e.target.value)}
-                        />
-                      </div>
-                    </div>
-                  </div> */}
+                  
                   <div className="col-lg-12 mb-3">
                     <div className="row">
                       <div className="col-lg-4">
@@ -724,7 +647,7 @@ const ProfileInfo = ({
                         </button>
                         <p className="mt-2" style={{ marginLeft: "10px" }}>
                           {selectedImage2.name !== "" &&
-                            "Note -: Upload pdf only"}
+                            "Upload pdf only"}
                         </p>
                       </div>
                     </div>
@@ -759,9 +682,9 @@ const ProfileInfo = ({
                           <input
                             className="form-check-input mt-3"
                             type="checkbox"
-                            value={emailNotification}
+                            checked={emailNotification}
                             onChange={(e) =>
-                              setEmailNotification(e.target.value)
+                              setEmailNotification(!emailNotification)
                             }
                             id="terms"
                             style={{ border: "1px solid black" }}
@@ -804,10 +727,10 @@ const ProfileInfo = ({
                           <input
                             className="form-check-input mt-3"
                             type="checkbox"
-                            value={smsNotification}
+                            checked={smsNotification}
                             id="terms"
                             style={{ border: "1px solid black" }}
-                            onChange={(e) => setSmsNotification(e.target.value)}
+                            onChange={(e) => setSmsNotification(!smsNotification)}
                           />
                           <label
                             className="form-check-label form-check-label"
@@ -1285,7 +1208,7 @@ const ProfileInfo = ({
                       <div className="col-xl-12">
                         <div
                           className="my_profile_setting_input"
-                          style={{ textAlign: "end" }}
+                          style={{ textAlign: "center" }}
                         >
                           <button
                             className="btn btn5 m-1"
@@ -1295,7 +1218,7 @@ const ProfileInfo = ({
                           </button>
                           <button
                             className="btn btn2 btn-dark"
-                            onClick={firstFunction}
+                            onClick={onUpdatHandler}
                           >
                             {userData?.appraiserCompany_Datails
                               ? "Update Profile"
