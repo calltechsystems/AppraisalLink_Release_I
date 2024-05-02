@@ -652,29 +652,7 @@ export default function Exemple({
                       </li>
                     )}
 
-                    {/* <li
-                  className="list-inline-item"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Assign Appraiser"
-                >
-                  <div
-                    className="w-100"
-                    onClick={() =>
-                      openAssignModalHandler(property)
-                    }
-                  >
-                    <button
-                      href="#"
-                      className="btn btn-color"
-                      
-                    >
-                    <Link href="#">
-                    <span className="text-light flaticon-edit"></span>
-                  </Link>
-                    </button>
-                  </div>
-                  </li>*/}
+                  
 
                     <li
                       className="list-inline-item"

@@ -453,12 +453,13 @@ export default function Exemple({
               ) : (
                 <span className="btn btn-warning  w-100">N.A.</span>
               ),
-            remark:
-              isBidded && isBidded.remark
-                ? isBidded.orderStatus === 1
-                  ? `${isBidded.remark} on ${formatDate(isBidded.modifiedDate)}`
-                  : isBidded.remark
-                : "N.A.",
+            // remark:
+            //   isBidded && isBidded.remark
+            //     ? isBidded.orderStatus === 1
+            //       ? `${isBidded.remark} on ${formatDate(isBidded.modifiedDate)}`
+            //       : isBidded.remark
+            //     : "N.A.",
+            remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
             order_status: isBidded.orderStatus,
             status: isWait ? (
               <span className="btn btn-danger  w-100">

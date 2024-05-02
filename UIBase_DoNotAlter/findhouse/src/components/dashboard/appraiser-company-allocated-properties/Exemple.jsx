@@ -493,7 +493,8 @@ export default function Exemple({
             ? `$ ${addCommasToNumber(property?.estimatedValue)}`
             : "$ 0",
           purpose: property?.purpose ? property?.purpose : "N.A.",
-          remark: isBidded?.remark ? <p>{isBidded.remark}</p> : "N.A.",
+          // remark: isBidded?.remark ? <p>{isBidded.remark}</p> : "N.A.",
+          remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
           appraiser_assign_date: property?.createdDateTime
             ? formatDate(property?.createdDateTime)
             : "-",

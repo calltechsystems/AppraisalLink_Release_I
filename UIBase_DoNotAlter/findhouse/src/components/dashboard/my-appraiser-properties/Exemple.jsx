@@ -579,6 +579,7 @@ export default function Exemple({
                         className="btn "
                         style={{ border: "1px solid grey" }}
                         onClick={() => removeWishlistHandler(isWishlist.id)}
+                        title="Remove Wishlist Property"
                       >
                         <img
                           width={26}
@@ -611,7 +612,7 @@ export default function Exemple({
                         data-toggle="tooltip"
                         data-placement="top"
                         title={`${
-                          isBidded.$id ? "View/Update Quote" : "Provide Quote"
+                          isBidded.$id ? "View / Update Quote" : "Provide Quote"
                         }`}
                       >
                         <div
@@ -734,7 +735,7 @@ export default function Exemple({
                         className="list-inline-item"
                         data-toggle="tooltip"
                         data-placement="top"
-                        title=""
+                        title="Status Update"
                       >
                         <button
                           href="#"

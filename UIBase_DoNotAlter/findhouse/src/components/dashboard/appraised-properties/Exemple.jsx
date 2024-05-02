@@ -483,12 +483,13 @@ export default function Exemple({
               ) : (
                 <span className="btn btn-warning  w-100">N.A.</span>
               ),
-            remark:
-              isBidded && isBidded.remark
-                ? isBidded.orderStatus === 1
-                  ? `${isBidded.remark} on ${formatDate(isBidded.modifiedDate)}`
-                  : isBidded.remark
-                : "N.A.",
+            // remark:
+            //   isBidded && isBidded.remark
+            //     ? isBidded.orderStatus === 1
+            //       ? `${isBidded.remark} on ${formatDate(isBidded.modifiedDate)}`
+            //       : isBidded.remark
+            //     : "N.A.",
+            remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
             status:
               anotherBid === true && isBidded.status !== 2 ? (
                 <span className="btn btn-danger  w-100">Rejected</span>
@@ -600,6 +601,7 @@ export default function Exemple({
                       className="list-inline-item"
                       data-toggle="tooltip"
                       data-placement="top"
+                      title="View Quote"
                     >
                       {" "}
                       <span
@@ -616,11 +618,6 @@ export default function Exemple({
                 {isBidded.status === 2 || anotherBid ? (
                   <>
                     <ul>
-                      <li
-                        className="list-inline-item"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                      ></li>
                       <li
                         className="list-inline-item"
                         data-toggle="tooltip"
@@ -692,6 +689,7 @@ export default function Exemple({
                         className="btn "
                         style={{ border: "1px solid grey" }}
                         onClick={() => removeWishlistHandler(isWishlist.id)}
+                        title="Remove Wishlist Property"
                       >
                         <img
                           width={26}
@@ -728,7 +726,7 @@ export default function Exemple({
                           data-toggle="tooltip"
                           data-placement="top"
                           title={`${
-                            isBidded.$id ? "View/Update Quote" : "Provide Quote"
+                            isBidded.$id ? "View / Update Quote" : "Provide Quote"
                           }`}
                         >
                           <div
