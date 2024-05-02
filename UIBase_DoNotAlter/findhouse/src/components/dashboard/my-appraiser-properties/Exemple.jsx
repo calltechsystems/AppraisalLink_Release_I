@@ -343,26 +343,7 @@ export default function Exemple({
     return formattedDate;
   };
 
-  // const formatDate = (dateString) => {
-  //   const options = {
-  //     year: "numeric",
-  //     month: "short",
-  //     day: "numeric",
-  //     hour: "numeric",
-  //     minute: "numeric",
-  //     second: "numeric",
-  //   };
-
-  //   const originalDate = new Date(dateString);
-
-  //   // Adjust for Eastern Standard Time (EST) by subtracting 5 hours
-  //   const estDate = new Date(originalDate.getTime() - 5 * 60 * 60 * 1000);
-
-  //   // Format the EST date
-  //   const formattedDate = estDate.toLocaleString("en-US", options);
-  //   return formattedDate;
-  // };
-
+ 
   const checkWishlistedHandler = (data) => {
     let temp = {};
     // console.log(wishlist, data);
@@ -418,10 +399,7 @@ export default function Exemple({
             purpose: property.purpose ? property.purpose : "N.A.",
             appraisal_status:
               isBidded.status === 1 && isBidded.orderStatus === 1 ? (
-                // <span className="btn btn-warning  w-100">
-                //   {getOrderValue(isBidded.orderStatus)} -
-                //   {formatDate(isBidded.statusDate)}
-                // </span>
+        
                 <div className="hover-text">
                   <div
                     className="tooltip-text"
@@ -445,9 +423,7 @@ export default function Exemple({
                   </button>
                 </div>
               ) : isBidded.status === 1 && isBidded.orderStatus !== null ? (
-                // <span className="btn btn-warning  w-100">
-                //   {getOrderValue(isBidded.orderStatus)}
-                // </span>
+              
                 <div className="hover-text">
                   <div
                     className="tooltip-text"
@@ -515,7 +491,7 @@ export default function Exemple({
                       Broker Info
                     </button>
                   </a>
-                ) : isBidded.status === 2 ? (
+                ) : isBidded.status === 2 || (anotherBid === true && isBidded.status !== 2)? (
                   <h5 style={{ color: "red" }}> Declined</h5>
                 ) : (
                   <p>Information will be available post quote acceptance.</p>
@@ -540,7 +516,7 @@ export default function Exemple({
                       Property Info
                     </button>
                   </a>
-                ) : isBidded.status === 2 ? (
+                ) : isBidded.status === 2 || (anotherBid === true && isBidded.status !== 2) ? (
                   <h5 style={{ color: "red" }}> Declined</h5>
                 ) : (
                   <p>Information will be available post quote acceptance.</p>

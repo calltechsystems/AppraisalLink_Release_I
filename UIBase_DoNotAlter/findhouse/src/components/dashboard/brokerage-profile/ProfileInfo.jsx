@@ -177,12 +177,11 @@ const ProfileInfo = ({
       mortageBrokrageLicNoRef !== ""
         ? mortageBrokrageLicNoRef
         : userData.brokerage_Details.mortageBrokerageLicNo;
-  
 
     const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const cellNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const nameRegex = /^[A-Za-z]+$/;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (
       nameRegex.test(firstName) === false ||
@@ -299,8 +298,8 @@ const ProfileInfo = ({
         mortageBrokerLicNo: mortageBrokerLicNoRef,
         mortageBrokerageLicNo: mortageBrokrageLicNoRef,
         emailId: emailId,
-        smsNotification : smsNotification === true ? 1 : 0,
-        emailNotification : emailNotification === true ? 1 : 0
+        smsNotification: smsNotification === true ? 1 : 0,
+        emailNotification: emailNotification === true ? 1 : 0,
       };
       if (
         !payload.lastName ||
@@ -352,22 +351,30 @@ const ProfileInfo = ({
 
   const openWidget = () => {
     if (uploadInputRef.current) {
-      uploadInputRef.current.click(); 
+      uploadInputRef.current.click();
     }
   };
 
   const handleFileChange = async (e, type) => {
     const file = e.target.files[0];
-    toast.loading("Uploading..");
-    try {
-      const generatedUrl = await uploadFile(file);
-      toast.dismiss();
-      toast.success("Uploaded Successfully");
-      console.log("generatedUrl", generatedUrl);
-      setSelectedImage(generatedUrl);
-    } catch (err) {
-      toast.dismiss();
-      toast.error("Try Again!");
+    const allowedImageTypes = ["image/jpeg", "image/png", "image/gif"];
+
+    if (!allowedImageTypes.includes(file?.type)) {
+      toast.error("Please select a valid image file (JPEG, PNG, GIF).");
+      return;
+    } else {
+      const file = e.target.files[0];
+      toast.loading("Uploading..");
+      try {
+        const generatedUrl = await uploadFile(file);
+        toast.dismiss();
+        toast.success("Uploaded Successfully");
+        console.log("generatedUrl", generatedUrl);
+        setSelectedImage(generatedUrl);
+      } catch (err) {
+        toast.dismiss();
+        toast.error("Try Again!");
+      }
     }
   };
 
@@ -466,9 +473,9 @@ const ProfileInfo = ({
                         type="file"
                         id="fileInput"
                         onChange={(e) => handleFileChange(e, 1)}
-                        style={{ display: "none" }} 
+                        style={{ display: "none" }}
                       />
-                       <button
+                      <button
                         className="btn btn-color mt-2"
                         onClick={() =>
                           document.getElementById("fileInput").click()
@@ -481,7 +488,6 @@ const ProfileInfo = ({
                       </p>
                     </div>
                   )}
-                 
                 </div>
               </div>
               <div className="col-lg-9">

@@ -208,23 +208,6 @@ const ProfileInfo = ({
       companyNameRef !== ""
         ? companyNameRef
         : userData.broker_Details.companyName;
-    // const assistantTwoFirstName =
-    //   assistantTwoFirstName !== ""
-    //     ? assistantTwoFirstName
-    //     : userData.broker_Details.assistantTwoFirstName;
-    // const assistantTwoLastName =
-    //   assistantTwoLastName !== ""
-    //     ? assistantTwoLastName
-    //     : userData.broker_Details.assistantTwoLastName;
-    // const assistantTwoEmailAddress =
-    //   assistantTwoEmailAddress !== ""
-    //     ? assistantTwoEmailAddress
-    //     : userData.broker_Details.assistantTwoEmailAddress;
-    // const assistantTwoPhoneNumber =
-    //   assistantTwoPhoneNumber !== ""
-    //     ? assistantTwoPhoneNumber
-    //     : userData.broker_Details.assistantTwoPhoneNumber;
-    // const emailId = emailId !== "" ? emailId : userData.broker_Details.emailId;
 
     const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const cellNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
@@ -410,31 +393,28 @@ const ProfileInfo = ({
 
   const handleFileChange = async (e, type) => {
     const file = e.target.files[0];
-    toast.loading("Uploading..");
-    try {
-      const generatedUrl = await uploadFile(file);
-      toast.dismiss();
-      toast.success("Uploaded Successfully");
-      console.log("generatedUrl", generatedUrl);
-      setSelectedImage(generatedUrl);
-    } catch (err) {
-      toast.dismiss();
-      toast.error("Try Again!");
+    const allowedImageTypes = ["image/jpeg", "image/png", "image/gif"];
+ 
+
+    if (!allowedImageTypes.includes(file?.type)) {
+      toast.error("Please select a valid image file (JPEG, PNG, GIF).");
+      return;
+    } else {
+      const file = e.target.files[0];
+      toast.loading("Uploading..");
+      try {
+        const generatedUrl = await uploadFile(file);
+        toast.dismiss();
+        toast.success("Uploaded Successfully");
+        console.log("generatedUrl", generatedUrl);
+        setSelectedImage(generatedUrl);
+      } catch (err) {
+        toast.dismiss();
+        toast.error("Try Again!");
+      }
     }
   };
 
-  const handleUpload = (result) => {
-    // Handle the image upload result here
-    console.log("handleUpload called");
-    if (result.info.secure_url) {
-      setSelectedImage(result.info.secure_url);
-      setProfilePhoto(result.info.secure_url);
-      // You can also save the URL to your state or do other operations here
-    } else {
-      // Handle the case when the upload failed
-      console.error("Image upload failed");
-    }
-  };
 
   const handleZipCodeChange = async (val) => {
     setZipcodeRef(val);

@@ -47,6 +47,8 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const [refresh, setRefresh] = useState(false);
+  const [openQuoteView, setOpenQuoteView] = useState(false);
+  const [currentBiddedView, setCurrentBiddedView] = useState({});
 
   const [orderStatus, setOrderStatus] = useState(-1);
 
@@ -111,6 +113,36 @@ const Index = () => {
   const openQuoteModal = () => {
     setIsModalOpen(false);
     setIsQuoteModalOpen(true);
+  };
+
+  const formatDate = (dateString) => {
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+    };
+
+    const originalDate = new Date(dateString);
+
+    // Adjust for Eastern Standard Time (EST) by subtracting 5 hours
+    const estDate = new Date(originalDate.getTime() - 5 * 60 * 60 * 1000);
+
+    // Format the EST date
+    const formattedDate = estDate.toLocaleString("en-US", options);
+    return formattedDate;
+  };
+
+  function addCommasToNumber(number) {
+    if (Number(number) <= 100 || number === undefined) return number;
+    return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  const closeQuoteViewModal = () => {
+    setOpenQuoteView(false);
+    setCurrentBiddedView({});
   };
 
   const [openDate, setOpenDate] = useState(false);
@@ -747,6 +779,8 @@ const Index = () => {
                           setFilterQuery={setFilterQuery}
                           setSearchInput={setSearchInput}
                           refresh={refresh}
+                          setCurrentBiddedView={setCurrentBiddedView}
+                          setOpenQuoteView={setOpenQuoteView}
                           searchInput={searchInput}
                           filterQuery={filterQuery}
                           setWishlistedProperties={setWishlistedProperties}
@@ -1349,6 +1383,77 @@ const Index = () => {
                             </div>
                           </div>
                         )}
+
+{openQuoteView && (
+                <div className="modal">
+                  <div className="modal-content">
+                    <div className="row">
+                      <div className="col-lg-12">
+                        <Link href="/" className="">
+                          <Image
+                            width={50}
+                            height={45}
+                            className="logo1 img-fluid"
+                            style={{ marginTop: "-20px" }}
+                            src="/assets/images/Appraisal_Land_Logo.png"
+                            alt="header-logo2.png"
+                          />
+                          <span
+                            style={{
+                              color: "#2e008b",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            Appraisal
+                          </span>
+                          <span
+                            style={{
+                              color: "#97d700",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            {" "}
+                            Land
+                          </span>
+                        </Link>
+                      </div>
+                    </div>
+                    <h3 className="text-center">Quote View</h3>
+                    <div>
+                      <div
+                        className="mt-2 mb-3"
+                        style={{ border: "2px solid #97d700" }}
+                      ></div>
+                    </div>
+                    <h5 className="text-center">
+                      The Last Provided Quote was for ${" "}
+                      <span style={{color:"green",fontWeight:"bold",fontSize:"22px"}}>{addCommasToNumber(currentBiddedView?.bidAmount)}</span>
+                    </h5>
+                    <h5 className="text-center">
+                      Updated At : {formatDate(currentBiddedView?.requestTime)}
+                    </h5>
+                    {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
+                    <div className="text-center" style={{}}>
+                      <div>
+                        <div
+                          className="mt-2 mb-3"
+                          style={{ border: "2px solid #97d700" }}
+                        ></div>
+                      </div>
+                      <button
+                        className="btn btn-color w-25 m-1"
+                        onClick={closeQuoteViewModal}
+                      >
+                        Ok
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
 
                         {openBrokerModal && typeView === 2 && (
                           <div className="modal">

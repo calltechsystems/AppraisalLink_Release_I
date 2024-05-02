@@ -480,10 +480,7 @@ export default function Exemple({
             purpose: property.purpose ? property.purpose : "N.A.",
             appraisal_status:
               isBidded.status === 1 && isBidded.orderStatus === 1 ? (
-                // <span className="btn btn-warning  w-100">
-                //   {getOrderValue(isBidded.orderStatus)} -
-                //   {formatDate(isBidded.statusDate)}
-                // </span>
+
                 <div className="hover-text">
                   <div
                     className="tooltip-text"
@@ -507,9 +504,7 @@ export default function Exemple({
                   </button>
                 </div>
               ) : isBidded.status === 1 && isBidded.orderStatus !== null ? (
-                // <span className="btn btn-warning  w-100">
-                //   {getOrderValue(isBidded.orderStatus)}
-                // </span>
+               
                 <div className="hover-text">
                   <div
                     className="tooltip-text"
@@ -579,7 +574,7 @@ export default function Exemple({
                       Broker Info
                     </button>
                   </a>
-                ) : isBidded.status === 2 || anotherBid?.bidId ? (
+                ) : isBidded.status === 2 || anotherBid?.bidId || (anotherBid === true && isBidded.status !== 2)? (
                   <h6 style={{ color: "red" }}> Declined</h6>
                 ) : (
                   <p>Information will be available post quote acceptance.</p>
@@ -604,7 +599,7 @@ export default function Exemple({
                       Property Info
                     </button>
                   </a>
-                ) : isBidded.status === 2 || anotherBid?.bidId ? (
+                ) : isBidded.status === 2 || anotherBid?.bidId || (anotherBid === true && isBidded.status !== 2)? (
                   <h6 style={{ color: "red" }}> Declined</h6>
                 ) : (
                   <p>Information will be available post quote acceptance.</p>

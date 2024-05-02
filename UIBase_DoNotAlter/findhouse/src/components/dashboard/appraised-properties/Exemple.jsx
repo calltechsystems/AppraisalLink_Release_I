@@ -483,12 +483,6 @@ export default function Exemple({
               ) : (
                 <span className="btn btn-warning  w-100">N.A.</span>
               ),
-            // remark:
-            //   isBidded && isBidded.remark
-            //     ? isBidded.orderStatus === 1
-            //       ? `${isBidded.remark} on ${formatDate(isBidded.modifiedDate)}`
-            //       : isBidded.remark
-            //     : "N.A.",
             remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
             status:
               anotherBid === true && isBidded.status !== 2 ? (
@@ -533,7 +527,7 @@ export default function Exemple({
                       Broker Info
                     </button>
                   </a>
-                ) : isBidded.status === 2 || anotherBid?.bidId ? (
+                ) : isBidded.status === 2 || anotherBid?.bidId || (anotherBid === true && isBidded.status !== 2) ? (
                   <h6 style={{ color: "red" }}> Declined</h6>
                 ) : alreadyAccepted ? (
                   <span>
@@ -561,7 +555,7 @@ export default function Exemple({
                       Property Info
                     </button>
                   </a>
-                ) : isBidded.status === 2 || anotherBid?.bidId ? (
+                ) : isBidded.status === 2 || anotherBid?.bidId || (anotherBid === true && isBidded.status !== 2)? (
                   <h6 style={{ color: "red" }}> Declined</h6>
                 ) : alreadyAccepted ? (
                   <span>
