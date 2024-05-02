@@ -209,7 +209,7 @@ const Pricing = ({
           >
             <div
               className={`${
-                currentActivePlan.id === item.id ? "active-selected-plan" : ""
+                currentActivePlan?.id === item.id ? "active-selected-plan" : ""
               }
 `}
             >

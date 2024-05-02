@@ -104,7 +104,6 @@ function SmartTable(props) {
       setData(tempData);
     }
   }, props.searchDebounceTime ?? 800);
-  
 
   const sortData = (cell) => {
     let tempData = [...data];
