@@ -192,12 +192,34 @@ export default function Exemple({
 
     return { nextMonth: nextMonthDateStr, nextYear: nextYearDateStr };
   };
+  const sortFunction = (hisotries)=>{
+    const data = hisotries;
+    data?.sort((a, b) => {
+      const startDateA = new Date(a.startDate);
+      const startDateB = new Date(b.startDate);
+      
+      if (startDateA < startDateB) return -1;
+      if (startDateA > startDateB) return 1;
+      
+      // If start dates are equal, compare by end date
+      const endDateA = new Date(a.endDate);
+      const endDateB = new Date(b.endDate);
+      
+      if (endDateA < endDateB) return -1;
+      if (endDateA > endDateB) return 1;
+      
+      return 0;
+  });
+  return data;
+  }
 
   useEffect(() => {
+    
     const getData = () => {
+      const sortedData = sortFunction(data?.result?.$values);
       const date = formatDate(new Date());
 
-      data?.result?.$values.map((property, index) => {
+      sortedData?.map((property, index) => {
         const propertyCount = 26;
         const { nextMonth, nextYear } = NextMonthAndYearCalculator(
           property.createdTime
@@ -208,19 +230,14 @@ export default function Exemple({
         if (property.isActive) {
           const updatedRow = {
             id: property.paymentid,
-            planName: property.transactionDetail,
-            planType:
-              property.planAmount < 500 ? (
+            planName: property.planName,
+            planType:(
                 <span>Monthly</span>
-              ) : (
-                <span>Yearly</span>
               ),
             amount: property.planAmount ? `$ ${property.planAmount}` : "$ -",
             st_date: formatDate(property.createdTime),
             end_date: formatDate(endDate),
-            remained_prop: `${
-              propertyCount - data.noUsedProperties
-            } of ${propertyCount}`,
+            remained_prop: `${property.usedProperties} of ${property.noOfProperties}`,
             status: expired ? (
               <span className="btn btn-danger  w-100">In-Active</span>
             ) : (

@@ -201,13 +201,35 @@ export default function Exemple({
     return { nextMonth: nextMonthDateStr, nextYear: nextYearDateStr };
   };
 
-  console.log("getData", data);
+  const sortFunction = (hisotries)=>{
+    const data = hisotries;
+    data.sort((a, b) => {
+      const startDateA = new Date(a.startDate);
+      const startDateB = new Date(b.startDate);
+      
+      if (startDateA < startDateB) return -1;
+      if (startDateA > startDateB) return 1;
+      
+      // If start dates are equal, compare by end date
+      const endDateA = new Date(a.endDate);
+      const endDateB = new Date(b.endDate);
+      
+      if (endDateA < endDateB) return -1;
+      if (endDateA > endDateB) return 1;
+      
+      return 0;
+  });
+  return data;
+  }
+
 
   useEffect(() => {
     const getData = () => {
+
+      const sortedData = sortFunction(data);
       const date = formatDate(new Date());
 
-      data?.map((property, index) => {
+      sortedData?.map((property, index) => {
         const propertyCount = 26;
         const { nextMonth, nextYear } = NextMonthAndYearCalculator(
           property.createdTime
@@ -222,19 +244,14 @@ export default function Exemple({
         if (true) {
           const updatedRow = {
             id: property.paymentid,
-            planName: property.transactionDetail,
+            planName: property.planName,
             planType:
-              property.planAmount < 500 ? (
-                <span>Monthly</span>
-              ) : (
-                <span>Yearly</span>
-              ),
+              <span>Monthly</span>,
             amount: property.planAmount ? `$ ${property.planAmount}` : "$ -",
             st_date: formatDate(property.startDate),
             end_date: formatDate(property.endDate),
             remained_prop: `${
-              property.usedProperties === null ? 0 : property.usedProperties
-            } of ${property.noOfProperties}`,
+              property.usedProperties} of ${property.noOfProperties}`,
             status: !expired ? (
               <span className="btn btn-info  w-100">
                 Will Be Active on {formatDate(property.startDate)}

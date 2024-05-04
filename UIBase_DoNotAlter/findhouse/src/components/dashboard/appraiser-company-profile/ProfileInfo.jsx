@@ -320,7 +320,7 @@ const ProfileInfo = ({
       }
     } else {
       const file = e.target.files[0];
-      toast.loading("Uploading..");
+      toast.loading("Uploading....");
       try {
         const generatedUrl = await uploadFile(file);
         toast.dismiss();

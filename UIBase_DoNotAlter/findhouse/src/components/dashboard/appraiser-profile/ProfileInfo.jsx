@@ -312,7 +312,6 @@ const ProfileInfo = ({
   };
 
   const handleFileChange = async (e, type) => {
-    
     const allowedImageTypes = ["image/jpeg", "image/png", "image/gif"];
     const allowedPdfTypes = ["application/pdf"];
 
@@ -329,50 +328,45 @@ const ProfileInfo = ({
         toast.dismiss();
         toast.success("Uploaded Successfully");
         console.log("generatedUrl", generatedUrl);
-        
-          setSelectedImage(generatedUrl);
-        
+
+        setSelectedImage(generatedUrl);
       } catch (err) {
         toast.dismiss();
         toast.error("Try Again!");
       }
-    
     } else if (String(type) === "2") {
       if (!allowedPdfTypes.includes(file?.type)) {
         toast.error("Please select a valid PDF file.");
         return;
       }
       const file = e.target.files[0];
-      toast.loading("Uploading..");
+      toast.loading("Uploading....");
       try {
         const generatedUrl = await uploadFile(file);
         toast.dismiss();
         toast.success("Uploaded Successfully");
         console.log("generatedUrl", generatedUrl);
         setSelectedImage2({
-            name: file.name,
-            url: generatedUrl,
-          });
-        
+          name: file.name,
+          url: generatedUrl,
+        });
       } catch (err) {
         toast.dismiss();
         toast.error("Try Again!");
       }
-    } 
-      
+    }
   };
 
-  const getLenderListName = ()=>{
+  const getLenderListName = () => {
     const lenderlistUrl = userData?.appraiser_Details?.lenderListUrl;
-    if(lenderlistUrl === ""){
+    if (lenderlistUrl === "") {
       return "";
-    }
-    else{
+    } else {
       const name2 = selectedImage2.name;
       const name = lenderlistUrl.split("amazonaws.com/")[1];
-      return (lenderlistUrl !== selectedImage2.url ? name2 : name);
+      return lenderlistUrl !== selectedImage2.url ? name2 : name;
     }
-  }
+  };
 
   return (
     <>

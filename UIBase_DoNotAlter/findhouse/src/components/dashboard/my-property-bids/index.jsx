@@ -326,7 +326,7 @@ const Index = ({ propertyId }) => {
 
                 <div className="col-lg-12 col-xl-12 mt-3 mb-1 text-center">
                   <div className="style2 mb30-991">
-                    <h3 className="breadcrumb_title">Provided Quotes</h3>
+                    <h3 className="heading-forms">Provided Quotes</h3>
                   </div>
                 </div>
                 {/* End .col */}
