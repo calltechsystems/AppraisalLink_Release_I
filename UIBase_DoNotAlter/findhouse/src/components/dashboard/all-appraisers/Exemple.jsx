@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import SmartTable from "./SmartTable";
-import Link from "next/link";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { encryptionData } from "../../../utils/dataEncryption";
 import { useRouter } from "next/router";
 import Loader from "./Loader";
-// import "./SmartTable.css";
 
 const headCells = [
   {
@@ -35,12 +33,6 @@ const headCells = [
     width: 200,
   },
 
-  // {
-  //   id: "address",
-  //   numeric: false,
-  //   label: "Address",
-  //   width: 200,
-  // },
 
   {
     id: "date",
@@ -110,6 +102,7 @@ export default function Exemple({
   userData,
   open,
   close,
+  setAssignAppraiserId,
   start,
   setAppraiser,
   end,
@@ -146,26 +139,6 @@ export default function Exemple({
   const [show, setShow] = useState(false);
   let tempData = [];
 
-  const filterBidsWithin24Hours = (property) => {
-    const userData = JSON.parse(localStorage.getItem("user"));
-    let tempBid = 0,
-      bidValue = {};
-
-    console.log(bids);
-    bids.filter((bid) => {
-      if (bid.propertyId === property.propertyId) {
-        console.log("matched", bid);
-        tempBid = tempBid + 1;
-        bidValue = bid;
-      } else {
-      }
-    });
-    return tempBid > 0 ? bidValue : {};
-    // const currentTime = new Date();
-    // const twentyFourHoursAgo = currentTime - 24 * 60 * 60 * 1000; // Subtracting milliseconds for 24 hours
-    //    const requestTime = new Date(tempBid.requestTime);
-    //   return requestTime >= twentyFourHoursAgo && requestTime <= currentTime;
-  };
 
   const openCredModal = (data) => {
     setCurrentViewAppraiser(data);
@@ -179,6 +152,7 @@ export default function Exemple({
   };
 
   const openEditModalHandler = (appraiser) => {
+    setAssignAppraiserId(appraiser.id);
     setSelectedAppraiser(appraiser);
     setOpenEditModal(true);
   };
@@ -219,8 +193,6 @@ export default function Exemple({
     setOpenEditModal(true);
   };
 
-  const onDeletePropertyHandler = () => {};
-
   const formatDate = (dateString) => {
     const options = {
       year: "numeric",
@@ -230,22 +202,6 @@ export default function Exemple({
 
     const formattedDate = new Date(dateString).toLocaleString("en-US", options);
     return formattedDate;
-  };
-
-  const checkWishlistedHandler = (data) => {
-    let temp = {};
-    console.log(wishlist, data);
-    wishlist.map((prop, index) => {
-      if (String(prop.propertyId) === String(data.propertyId)) {
-        temp = prop;
-      }
-    });
-    return temp ? temp : {};
-  };
-
-  const checkCanBidAgainHandler = (data) => {
-    let temp = true;
-    return temp;
   };
 
   const sortObjectsByOrderIdDescending = (data) => {
@@ -275,14 +231,12 @@ export default function Exemple({
       properties.map((data, index) => {
 
         const getCurrentdate = getCurrentDate(data?.item?.id);
-
-        console.log("getCurrentdate",getCurrentdate)
         const updatedRow = {
           appraiser_id: data.item.id,
           firstname: data.item.firstName ? data.item.firstName : "-",
           lastname: data.item.lastName ? data.item.lastName : "-",
           email: data.item.emailId ? data.item.emailId : "-",
-          status: data.item.isActive ? (
+          status: data.item.isActive && data?.item?.firstName ? (
             <span className="btn btn-success  w-100">Active</span>
           ) : !data?.item?.isActive && data?.item?.firstName ? (
             <span className="btn btn-danger  w-100">In-Active </span>
@@ -295,7 +249,6 @@ export default function Exemple({
             : "N.A.",
           date: data?.item?.isActive  && data?.item?.modifiedDateTime !==null ?
           formatDate(data?.item?.modifiedDateTime) : "-",
-
           action: (
             <div className="print-hidden-column">
               {data.item.firstName && (
@@ -306,15 +259,12 @@ export default function Exemple({
                   <i className="flaticon-edit"></i>
                 </button>
               )}
-
-              {/* {!data.item.firstName && ( */}
               <button
                 className="btn btn-color m-1"
                 onClick={() => openCredModal(data)}
               >
                 <i className="flaticon-view"></i>
               </button>
-              {/* )} */}
             </div>
           ),
         };
@@ -353,7 +303,6 @@ export default function Exemple({
       })
       .then((res) => {
         setDataFetched(true)
-        // console.log(res.data);
         setAppraiserCompanyInfo([]);
         setProperties(res.data.data.$values);
       })

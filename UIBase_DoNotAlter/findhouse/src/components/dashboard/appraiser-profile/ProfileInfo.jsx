@@ -102,18 +102,9 @@ const ProfileInfo = ({
   const [setODesignation, setSetODesignation] = useState(false);
 
   const [selectedImage2, setSelectedImage2] = useState({
-    name: userData?.appraiser_Details?.lenderListUrl ? "Lender List File" : "",
+    name: userData?.appraiser_Details?.lenderListUrl ? "" : "",
     url: userData?.appraiser_Details?.lenderListUrl || "",
   });
-
-  const handleUpload2 = (result) => {
-    // Handle the image upload result here
-    console.log("handleUpload called", result.info);
-    setSelectedImage2({
-      url: result.info.secure_url,
-      name: result.info.original_filename + "." + result.info.format,
-    });
-  };
 
   useEffect(() => {
     if (smsNotification === null || smsNotification === false) {
@@ -158,23 +149,6 @@ const ProfileInfo = ({
   const [apartmentNo, setApartmentNo] = useState(
     userData?.appraiser_Details?.apartmentNo || ""
   );
-
-  // const firstFunction = () => {
-  //   if (smsNotification === null || smsNotification === false) {
-  //     toast.error(
-  //       "As SMS Notification is disabled you wont be notified for listed changes and updates over SMS.",
-  //       { duration: 3000 }
-  //     );
-  //   }
-  //   if (emailNotification === null || emailNotification === false) {
-  //     toast.error(
-  //       "As Email Notification is disabled you wont be notified for listed changes and updates over Email.",
-  //       { duration: 3000 }
-  //     );
-  //   }
-
-  //   setTimeout(onUpdatHandler, 2000); // Call onUpdatHandler after 6 seconds
-  // };
 
   const onUpdatHandler = () => {
     const firstName = firstNameRef;
@@ -338,26 +312,67 @@ const ProfileInfo = ({
   };
 
   const handleFileChange = async (e, type) => {
-    const file = e.target.files[0];
-    toast.loading("Uploading..");
-    try {
-      const generatedUrl = await uploadFile(file);
-      toast.dismiss();
-      toast.success("Uploaded Successfully");
-      console.log("generatedUrl", generatedUrl);
-      if (String(type) === "1") {
-        setSelectedImage(generatedUrl);
-      } else {
-        setSelectedImage2({
-          name: file.name,
-          url: generatedUrl,
-        });
+    
+    const allowedImageTypes = ["image/jpeg", "image/png", "image/gif"];
+    const allowedPdfTypes = ["application/pdf"];
+
+    if (String(type) === "1") {
+      const fileTemp = e.target.files[0];
+      if (!allowedImageTypes.includes(fileTemp?.type)) {
+        toast.error("Please select a valid image file (JPEG, PNG, GIF).");
+        return;
       }
-    } catch (err) {
-      toast.dismiss();
-      toast.error("Try Again!");
-    }
+      const file = e.target.files[0];
+      toast.loading("Uploading..");
+      try {
+        const generatedUrl = await uploadFile(file);
+        toast.dismiss();
+        toast.success("Uploaded Successfully");
+        console.log("generatedUrl", generatedUrl);
+        
+          setSelectedImage(generatedUrl);
+        
+      } catch (err) {
+        toast.dismiss();
+        toast.error("Try Again!");
+      }
+    
+    } else if (String(type) === "2") {
+      if (!allowedPdfTypes.includes(file?.type)) {
+        toast.error("Please select a valid PDF file.");
+        return;
+      }
+      const file = e.target.files[0];
+      toast.loading("Uploading..");
+      try {
+        const generatedUrl = await uploadFile(file);
+        toast.dismiss();
+        toast.success("Uploaded Successfully");
+        console.log("generatedUrl", generatedUrl);
+        setSelectedImage2({
+            name: file.name,
+            url: generatedUrl,
+          });
+        
+      } catch (err) {
+        toast.dismiss();
+        toast.error("Try Again!");
+      }
+    } 
+      
   };
+
+  const getLenderListName = ()=>{
+    const lenderlistUrl = userData?.appraiser_Details?.lenderListUrl;
+    if(lenderlistUrl === ""){
+      return "";
+    }
+    else{
+      const name2 = selectedImage2.name;
+      const name = lenderlistUrl.split("amazonaws.com/")[1];
+      return (lenderlistUrl !== selectedImage2.url ? name2 : name);
+    }
+  }
 
   return (
     <>
@@ -408,7 +423,7 @@ const ProfileInfo = ({
                           Browse
                         </button>
                         <p className="mt-2">
-                          {SelectedImage !== "" && "Note -: Image Only"}
+                          {SelectedImage !== "" && "Image Only"}
                         </p>
                       </div>
                     </div>
@@ -691,8 +706,7 @@ const ProfileInfo = ({
                           Browse
                         </button>
                         <p className="mt-2" style={{ marginLeft: "10px" }}>
-                          {selectedImage2.name !== "" &&
-                            "Note -: Upload pdf only"}
+                          {selectedImage2.name !== "" && "Upload pdf only"}
                         </p>
                       </div>
                     </div>

@@ -751,7 +751,13 @@ export default function Exemple({
                       onClick={() => openModal(property.orderId, 2, property)}
                     >
                       <Link href="#">
-                        <span className="flaticon-garbage text-light"></span>
+                        {/* <img
+                          width="25px"
+                          style={{ backgroundColor: "white" }}
+                          src="https://static.thenounproject.com/png/225895-200.png"
+                          alt=""
+                        /> */}
+                        <i className="fa fa-times text-light"></i>
                       </Link>
                     </span>
                   </li>

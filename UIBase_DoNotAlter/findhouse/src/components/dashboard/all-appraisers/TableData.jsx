@@ -10,6 +10,7 @@ const TableData = ({
   userData,
   open,
   close,
+  setAssignAppraiserId,
   setCurrentViewAppraiser,
   setOpenViewModal,
   setAppraiserCompanyInfo,
@@ -302,6 +303,7 @@ const TableData = ({
           setFilterQuery={setFilterQuery}
           setProperties={setProperties}
           properties={data}
+          setAssignAppraiserId={setAssignAppraiserId}
           setRefresh={setRefresh}
           setOpenEditModal={setOpenEditModal}
           refresh={refresh}

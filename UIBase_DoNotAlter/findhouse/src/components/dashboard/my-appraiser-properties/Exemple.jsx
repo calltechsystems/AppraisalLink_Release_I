@@ -9,7 +9,6 @@ import Loader from "./Loader";
 import { FaArchive } from "react-icons/fa";
 import { AppraiserStatusOptions } from "../create-listing/data";
 import millify from "millify";
-// import "./SmartTable.css";
 
 const headCells = [
   {
@@ -286,32 +285,23 @@ export default function Exemple({
   };
 
   const formatLargeNumber = (number) => {
-    // Convert the number to a string
     const numberString = number.toString();
-
-    // Determine the length of the integer part
     const integerLength = Math.floor(Math.log10(Math.abs(number))) + 1;
-
-    // Choose the appropriate unit based on the length of the integer part
     let unit = "";
 
     if (integerLength >= 10) {
-      unit = "B"; // Billion
+      unit = "B";
     } else if (integerLength >= 7) {
-      unit = "M"; // Million
+      unit = "M";
     } else if (integerLength >= 4) {
-      unit = "K"; // Thousand
+      unit = "K";
     }
-
-    // Divide the number by the appropriate factor
     const formattedNumber = (number / Math.pow(10, integerLength - 1)).toFixed(
       2
     );
 
     return `${formattedNumber}${unit}`;
   };
-
-  const onDeletePropertyHandler = () => {};
 
   const formatDate = (dateString) => {
     const options = {
@@ -320,8 +310,7 @@ export default function Exemple({
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
-      // second: "numeric",
-      hour12: true, // Set to false for 24-hour format
+      hour12: true,
     };
 
     const formattedDate = new Date(dateString).toLocaleString("en-US", options);
@@ -333,17 +322,13 @@ export default function Exemple({
       year: "numeric",
       month: "short",
       day: "numeric",
-      // hour: "numeric",
-      // minute: "numeric",
-      // second: "numeric",
-      hour12: true, // Set to false for 24-hour format
+      hour12: true,
     };
 
     const formattedDate = new Date(dateString).toLocaleString("en-US", options);
     return formattedDate;
   };
 
- 
   const checkWishlistedHandler = (data) => {
     let temp = {};
     // console.log(wishlist, data);
@@ -399,7 +384,6 @@ export default function Exemple({
             purpose: property.purpose ? property.purpose : "N.A.",
             appraisal_status:
               isBidded.status === 1 && isBidded.orderStatus === 1 ? (
-        
                 <div className="hover-text">
                   <div
                     className="tooltip-text"
@@ -423,7 +407,6 @@ export default function Exemple({
                   </button>
                 </div>
               ) : isBidded.status === 1 && isBidded.orderStatus !== null ? (
-              
                 <div className="hover-text">
                   <div
                     className="tooltip-text"
@@ -491,7 +474,7 @@ export default function Exemple({
                       Broker Info
                     </button>
                   </a>
-                ) : isBidded.status === 2 || (anotherBid === true && isBidded.status !== 2)? (
+                ) : isBidded.status === 2 ? (
                   <h5 style={{ color: "red" }}> Declined</h5>
                 ) : (
                   <p>Information will be available post quote acceptance.</p>
@@ -516,7 +499,7 @@ export default function Exemple({
                       Property Info
                     </button>
                   </a>
-                ) : isBidded.status === 2 || (anotherBid === true && isBidded.status !== 2) ? (
+                ) : isBidded.status === 2 ? (
                   <h5 style={{ color: "red" }}> Declined</h5>
                 ) : (
                   <p>Information will be available post quote acceptance.</p>
@@ -611,42 +594,11 @@ export default function Exemple({
                         </div>
                       </li>
                     )}
-
-                    {/* <li
-                    className="list-inline-item"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title="Assign Appraiser"
-                  >
-                    <div
-                      className="w-100"
-                      onClick={() =>
-                        openAssignModalHandler(property)
-                      }
-                    >
-                      <button
-                        href="#"
-                        className="btn btn-color"
-                        
-                      >
-                      <Link href="#">
-                      <span className="text-light flaticon-edit"></span>
-                    </Link>
-                      </button>
-                    </div>
-                    </li>*/}
                   </ul>
                 }
                 {isBidded.status === 2 ? (
                   <>
                     <ul>
-                      {/* <li
-                        className="list-inline-item"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                      >
-                        <span className="btn btn-danger  w-100">Rejected </span>
-                      </li> */}
                       <li
                         className="list-inline-item"
                         data-toggle="tooltip"

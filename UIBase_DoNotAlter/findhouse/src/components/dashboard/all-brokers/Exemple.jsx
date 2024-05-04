@@ -242,18 +242,15 @@ export default function Exemple({
         console.log(temp);
         const data = temp.broker;
         const updatedRow = {
-          // appraiser_id: data?.item.id,
-          // emailaddress: data?.emailId ? data?.emailId : "NA",
           firstname: data?.firstName ? data?.firstName : "NA",
           lastname: data?.lastName ? data?.lastName : "NA",
-          // company: data?.company,
           status:
             data?.isActive && data.firstName !== null ? (
               <span className="btn btn-success  w-100">Active</span>
-            ) : !data?.firstName ? (
-              <span className="btn btn-warning  w-100">Not Registered</span>
-            ) : (
+            ) : !data?.isActive && data?.firstName ? (
               <span className="btn btn-danger  w-100">In-Active</span>
+            ) : (
+              <span className="btn btn-warning  w-100">Not Registered</span>
             ),
           phone: data?.phoneNumber ? data?.phoneNumber : "NA",
           address: `${data?.streetName} ${data?.streetNumber},${data?.city}-${data?.postalCode}`,
