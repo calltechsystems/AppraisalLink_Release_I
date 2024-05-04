@@ -201,13 +201,34 @@ export default function Exemple({
     return { nextMonth: nextMonthDateStr, nextYear: nextYearDateStr };
   };
 
-  console.log("getData", data);
+  const sortFunction = (hisotries)=>{
+    const data = hisotries;
+    data?.sort((a, b) => {
+      const startDateA = new Date(a.startDate);
+      const startDateB = new Date(b.startDate);
+      
+      if (startDateA < startDateB) return -1;
+      if (startDateA > startDateB) return 1;
+      
+      // If start dates are equal, compare by end date
+      const endDateA = new Date(a.endDate);
+      const endDateB = new Date(b.endDate);
+      
+      if (endDateA < endDateB) return -1;
+      if (endDateA > endDateB) return 1;
+      
+      return 0;
+  });
+  return data;
+  }
+
 
   useEffect(() => {
     const getData = () => {
       const date = formatDate(new Date());
 
-      data?.map((property, index) => {
+      const sortedData = sortFunction(data); 
+      sortedData?.map((property, index) => {
         const propertyCount = 26;
         const { nextMonth, nextYear } = NextMonthAndYearCalculator(
           property.createdTime
@@ -222,12 +243,9 @@ export default function Exemple({
         if (true) {
           const updatedRow = {
             id: property.paymentid,
-            planName: property.transactionDetail,
-            planType:
-              property.planAmount < 500 ? (
+            planName: property.planName,
+            planType:(
                 <span>Monthly</span>
-              ) : (
-                <span>Yearly</span>
               ),
             amount: property.planAmount ? `$ ${property.planAmount}` : "$ -",
             st_date: formatDate(property.startDate),
