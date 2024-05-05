@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import SmartTable from "./SmartTable";
-import Link from "next/link";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { encryptionData } from "../../../utils/dataEncryption";
 import { useRouter } from "next/router";
 import Loader from "./Loader";
-// import "./SmartTable.css";
 
 const headCells = [
   {
@@ -35,12 +33,6 @@ const headCells = [
     width: 200,
   },
 
-  // {
-  //   id: "address",
-  //   numeric: false,
-  //   label: "Address",
-  //   width: 200,
-  // },
 
   {
     id: "date",
@@ -110,6 +102,7 @@ export default function Exemple({
   userData,
   open,
   close,
+  setAssignAppraiserId,
   start,
   setAppraiser,
   end,
@@ -121,9 +114,6 @@ export default function Exemple({
   properties,
   setIsStatusModal,
   setProperties,
-  deletePropertyHandler,
-  onWishlistHandler,
-  participateHandler,
   setFilterQuery,
   setSearchInput,
   openModalBroker,
@@ -131,12 +121,14 @@ export default function Exemple({
   setModalIsOpenError,
   setOpenEditModal,
   setSelectedAppraiser,
+  setallListedAssignAppraiser,
   setRefresh,
   setStartLoading,
   refresh,
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [wishlist, setWishlist] = useState([]);
+  
   
   const [dataFetched, setDataFetched] = useState(false);
   const [bids, setBids] = useState([]);
@@ -146,26 +138,6 @@ export default function Exemple({
   const [show, setShow] = useState(false);
   let tempData = [];
 
-  const filterBidsWithin24Hours = (property) => {
-    const userData = JSON.parse(localStorage.getItem("user"));
-    let tempBid = 0,
-      bidValue = {};
-
-    console.log(bids);
-    bids.filter((bid) => {
-      if (bid.propertyId === property.propertyId) {
-        console.log("matched", bid);
-        tempBid = tempBid + 1;
-        bidValue = bid;
-      } else {
-      }
-    });
-    return tempBid > 0 ? bidValue : {};
-    // const currentTime = new Date();
-    // const twentyFourHoursAgo = currentTime - 24 * 60 * 60 * 1000; // Subtracting milliseconds for 24 hours
-    //    const requestTime = new Date(tempBid.requestTime);
-    //   return requestTime >= twentyFourHoursAgo && requestTime <= currentTime;
-  };
 
   const openCredModal = (data) => {
     setCurrentViewAppraiser(data);
@@ -178,48 +150,14 @@ export default function Exemple({
     setIsStatusModal(true);
   };
 
+
   const openEditModalHandler = (appraiser) => {
+    setAssignAppraiserId(appraiser.id);
     setSelectedAppraiser(appraiser);
     setOpenEditModal(true);
   };
 
-  const removeWishlistHandler = (id) => {
-    const userData = JSON.parse(localStorage.getItem("user"));
 
-    const formData = {
-      userId: userData.userId,
-      propertyId: id,
-      token: userData.token,
-    };
-
-    const payload = encryptionData(formData);
-    toast.loading("removing this property into your wishlist");
-    axios
-      .delete("/api/removeWishlistProperty", {
-        headers: {
-          Authorization: `Bearer ${userData.token}`,
-        },
-        params: {
-          userId: id,
-        },
-      })
-      .then((res) => {
-        toast.dismiss();
-        toast.success("Successfully removed !!! ");
-        location.reload(true);
-      })
-      .catch((err) => {
-        toast.dismiss();
-        toast.error(err?.response?.data?.error);
-      });
-  };
-
-  const openModalEdit = (appraiser) => {
-    setAppraiser(appraiser);
-    setOpenEditModal(true);
-  };
-
-  const onDeletePropertyHandler = () => {};
 
   const formatDate = (dateString) => {
     const options = {
@@ -230,22 +168,6 @@ export default function Exemple({
 
     const formattedDate = new Date(dateString).toLocaleString("en-US", options);
     return formattedDate;
-  };
-
-  const checkWishlistedHandler = (data) => {
-    let temp = {};
-    console.log(wishlist, data);
-    wishlist.map((prop, index) => {
-      if (String(prop.propertyId) === String(data.propertyId)) {
-        temp = prop;
-      }
-    });
-    return temp ? temp : {};
-  };
-
-  const checkCanBidAgainHandler = (data) => {
-    let temp = true;
-    return temp;
   };
 
   const sortObjectsByOrderIdDescending = (data) => {
@@ -259,15 +181,15 @@ export default function Exemple({
 
   const getCurrentDate = (id)=>{
     let specificAppraiser = {}
-
     allAppraiser.map((appraiser,index)=>{
       if(String(appraiser.id) === String(id)){
         specificAppraiser = appraiser;
       }
-    })
-
+    });
     return specificAppraiser;
   }
+
+
 
   useEffect(() => {
     const getData = () => {
@@ -276,13 +198,12 @@ export default function Exemple({
 
         const getCurrentdate = getCurrentDate(data?.item?.id);
 
-        console.log("getCurrentdate",getCurrentdate)
         const updatedRow = {
           appraiser_id: data.item.id,
           firstname: data.item.firstName ? data.item.firstName : "-",
           lastname: data.item.lastName ? data.item.lastName : "-",
           email: data.item.emailId ? data.item.emailId : "-",
-          status: data.item.isActive ? (
+          status: data.item.isActive && data?.item?.firstName ? (
             <span className="btn btn-success  w-100">Active</span>
           ) : !data?.item?.isActive && data?.item?.firstName ? (
             <span className="btn btn-danger  w-100">In-Active </span>
@@ -295,7 +216,6 @@ export default function Exemple({
             : "N.A.",
           date: data?.item?.isActive  && data?.item?.modifiedDateTime !==null ?
           formatDate(data?.item?.modifiedDateTime) : "-",
-
           action: (
             <div className="print-hidden-column">
               {data.item.firstName && (
@@ -306,15 +226,12 @@ export default function Exemple({
                   <i className="flaticon-edit"></i>
                 </button>
               )}
-
-              {/* {!data.item.firstName && ( */}
               <button
                 className="btn btn-color m-1"
                 onClick={() => openCredModal(data)}
               >
                 <i className="flaticon-view"></i>
               </button>
-              {/* )} */}
             </div>
           ),
         };
@@ -353,7 +270,6 @@ export default function Exemple({
       })
       .then((res) => {
         setDataFetched(true)
-        // console.log(res.data);
         setAppraiserCompanyInfo([]);
         setProperties(res.data.data.$values);
       })
@@ -362,11 +278,53 @@ export default function Exemple({
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
+      axios
+      .get("/api/getAllAssignProperties", {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+        params: {
+          userId: data.appraiserCompany_Datails?.appraiserCompanyId,
+        },
+      })
+      .then((res) => {
+        let tempProperties = res.data.data.$values;
+        const temp = res.data.data.$values;
+
+        setallListedAssignAppraiser(tempProperties);
+      })
+      .catch((err) => {});
+
 
       
     setRefresh(false);
   }, [refresh]);
-  console.log(sortObjectsByOrderIdDescending(updatedData));
+
+  function sortAppraisersByStatus(appraisers) {
+    const users = appraisers;
+    let finalResult = [];
+    let active = [],
+      inactive = [],
+      registered = [];
+    users.map((user, index) => {
+      const status = user.status.props.children.trim();
+      if (String(status) === "Active") {
+        active.push(user);
+      }
+      if (String(status) === "In-Active") {
+        inactive.push(user);
+      }
+      if (String(status) === "Not Registered") {
+        registered.push(user);
+      }
+    });
+
+    finalResult.push(...active);
+    finalResult.push(...inactive);
+    finalResult.push(...registered);
+    return finalResult;
+  }
+
   return (
     <>
       {refresh ? (
@@ -376,7 +334,7 @@ export default function Exemple({
           title=""
           setSearchInput={setSearchInput}
           setFilterQuery={setFilterQuery}
-          data={sortObjectsByOrderIdDescending(updatedData)}
+          data={sortAppraisersByStatus(updatedData)}
           headCells={headCells}
           setRefresh={setRefresh}
           setProperties={setProperties}

@@ -748,6 +748,7 @@ export default function Exemple({
                             border: "1px solid grey",
                           }}
                           onClick={() => removeWishlistHandler(isWishlist.id)}
+                          title="Remove Wishlist Prperty"
                         >
                           <img
                             width={26}
@@ -853,6 +854,7 @@ export default function Exemple({
                         className="list-inline-item btn btn-color w-20"
                         // style={{ marginLeft: "12px" }}
                         onClick={() => openStatusUpdateHandler(isBidded)}
+                        title="Status Update"
                       >
                         <Link href="#">
                           <span className="flaticon-edit text-light"></span>

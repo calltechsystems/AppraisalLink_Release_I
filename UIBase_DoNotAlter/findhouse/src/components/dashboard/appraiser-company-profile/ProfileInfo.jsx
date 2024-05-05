@@ -24,7 +24,7 @@ const ProfileInfo = ({
   const [selectedImage2, setSelectedImage2] = useState({
     name:
       userData?.appraiserCompany_Datails?.lenderListUrl !== null
-        ? "uploaded file"
+        ? "uploaded_lenderlist"
         : "",
     url:
       userData?.appraiserCompany_Datails?.lenderListUrl !== null
@@ -120,14 +120,13 @@ const ProfileInfo = ({
     userData?.appraiserCompany_Datails?.apartmentNumber || ""
   );
 
-  useEffect(()=>{
-    if(smsNotification === null || smsNotification === false){
+  useEffect(() => {
+    if (smsNotification === null || smsNotification === false) {
       setModalIsOpenError(true);
+    } else if (emailNotification === null || emailNotification === false) {
+      setModalIsOpenError_01(true);
     }
-    else if(emailNotification === null || emailNotification === false){
-      setModalIsOpenError_01(true)
-    }
-  },[smsNotification,emailNotification]);
+  }, [smsNotification, emailNotification]);
 
   const handleInputChange = (e) => {
     const inputValue = e.target.value;
@@ -176,7 +175,6 @@ const ProfileInfo = ({
 
     console.log(typeof profilePhoto);
   };
-
 
   const onUpdatHandler = () => {
     const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
@@ -307,65 +305,39 @@ const ProfileInfo = ({
 
   const handleFileChange = async (e, type) => {
     const file = e.target.files[0];
-    toast.loading("Uploading..");
-    try {
-      const generatedUrl = await uploadFile(file);
-      toast.dismiss();
-      toast.success("Uploaded Successfully");
-      console.log("generatedUrl", generatedUrl);
-      if (String(type) === "1") {
-        setSelectedImage(generatedUrl);
-      } else {
-        setSelectedImage2({
-          name: file.name,
-          url: generatedUrl,
-        });
+    const allowedImageTypes = ["image/jpeg", "image/png", "image/gif"];
+    const allowedPdfTypes = ["application/pdf"];
+
+    if (String(type) === "1") {
+      if (!allowedImageTypes.includes(file?.type)) {
+        toast.error("Please select a valid image file (JPEG, PNG, GIF).");
+        return;
       }
-    } catch (err) {
-      toast.dismiss();
-      toast.error("Try Again!");
-    }
-  };
-
-  const handleFileChange2 = async (e, field, func) => {
-    const file = e.target.files[0];
-    toast.loading("Uploading..");
-    try {
-      const generatedUrl = await uploadFile(file);
-      toast.dismiss();
-      toast.success("Uploaded Successfully");
-      console.log("generated", generatedUrl, type);
-
-      if (String(field).toLowerCase().includes(field)) {
-        func({
-          name: file.name,
-          url: generatedUrl,
-        });
+    } else if (String(type) === "2") {
+      if (!allowedPdfTypes.includes(file?.type)) {
+        toast.error("Please select a valid PDF file.");
+        return;
       }
-    } catch (err) {
-      toast.dismiss();
-      toast.error("Try Again!");
-    }
-  };
-
-  const changeEditHandler = () => {
-    setEdit(true);
-  };
-  const uploadInputRef = useRef(null);
-
-  const openWidget = () => {
-    if (uploadInputRef.current) {
-      uploadInputRef.current.click();
-    }
-  };
-
-  const handleUpload = (result) => {
-    console.log("handleUpload called");
-    if (result.info.secure_url) {
-      setSelectedImage(result.info.secure_url);
-      setProfilePhoto(result.info.secure_url);
     } else {
-      console.error("Image upload failed");
+      const file = e.target.files[0];
+      toast.loading("Uploading....");
+      try {
+        const generatedUrl = await uploadFile(file);
+        toast.dismiss();
+        toast.success("Uploaded Successfully");
+        console.log("generatedUrl", generatedUrl);
+        if (String(type) === "1") {
+          setSelectedImage(generatedUrl);
+        } else {
+          setSelectedImage2({
+            name: file.name,
+            url: generatedUrl,
+          });
+        }
+      } catch (err) {
+        toast.dismiss();
+        toast.error("Try Again!");
+      }
     }
   };
 
@@ -392,7 +364,7 @@ const ProfileInfo = ({
       <div className="row">
         {/* <h4 className="mb-3">Personal Information</h4> */}
         <div className="col-lg-12"></div>
-        
+
         <div className="col-lg-12 col-xl-12 mt-2">
           <div className="my_profile_setting_input form-group">
             <div className="row">
@@ -485,7 +457,7 @@ const ProfileInfo = ({
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="col-lg-12 mb-3">
                     <div className="row">
                       <div className="col-lg-4">
@@ -646,8 +618,7 @@ const ProfileInfo = ({
                           Browse
                         </button>
                         <p className="mt-2" style={{ marginLeft: "10px" }}>
-                          {selectedImage2.name !== "" &&
-                            "Upload pdf only"}
+                          {selectedImage2.name !== "" && "Upload pdf only"}
                         </p>
                       </div>
                     </div>
@@ -730,7 +701,9 @@ const ProfileInfo = ({
                             checked={smsNotification}
                             id="terms"
                             style={{ border: "1px solid black" }}
-                            onChange={(e) => setSmsNotification(!smsNotification)}
+                            onChange={(e) =>
+                              setSmsNotification(!smsNotification)
+                            }
                           />
                           <label
                             className="form-check-label form-check-label"

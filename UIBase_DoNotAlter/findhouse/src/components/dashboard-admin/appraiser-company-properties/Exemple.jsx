@@ -231,10 +231,10 @@ export default function Exemple({
   };
 
 
-  const checkAlreadythere = (data,userId)=>{
+  const checkAlreadythere = (data,orderId)=>{
     let isPresent = false;
     data.map((row,index)=>{
-      if(String(row.userId) === String(userId)){
+      if(String(row.orderId) === String(orderId)){
         isPresent = true;
       }
     })
@@ -244,19 +244,17 @@ export default function Exemple({
   const getBidOfProperty = (orderId) => {
     let allBid = [];
 
-    console.log("orderId", allBids, orderId);
     allBids.map((bid, index) => {
       if ( String(bid.orderId) === String(orderId)) {
         allAppraisers.map((appraiser, idx) => {
           if ((String(appraiser.userId) === String(bid.appraiserUserId)) &&
-          !checkAlreadythere(allBid,appraiser.userId)) {
+          !checkAlreadythere(allBid,bid.orderId)) {
             allBid.push(bid);
           }
         });
       }
     });
 
-    console.log("allBids", allBid);
     return allBid;
   };
 
@@ -307,6 +305,13 @@ export default function Exemple({
     return isCompleted ? 3 : isAccepted ? 2 : isQuoteProvided ? 1 : 0;
   };
 
+  const isPlanOnly = (plan)=>{
+    const isLite = String(plan.planName).toLowerCase().includes("lite");
+    const isPro = String(plan.planName).toLowerCase().includes("pro");
+    const isUltimate = String(plan.planName).toLowerCase().includes("ultimate");
+    return isLite || isPro || isUltimate;
+  }
+
   const getCurrentBrokerPlan = (property) => {
     const data = JSON.parse(localStorage.getItem("user"));
     axios
@@ -325,7 +330,8 @@ export default function Exemple({
         allPlans.map((plan, index) => {
           if (
             new Date(plan.endDate) >= new Date() &&
-            new Date() >= new Date(plan.startDate)
+            new Date() >= new Date(plan.startDate) &&
+            isPlanOnly(plan)
           ) {
             requiredPlan = plan;
           }

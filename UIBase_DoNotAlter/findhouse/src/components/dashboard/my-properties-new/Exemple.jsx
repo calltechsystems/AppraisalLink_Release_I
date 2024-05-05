@@ -23,13 +23,13 @@ const headCells = [
     id: "status",
     numeric: false,
     label: "Order Status",
-    width: 200,
+    width: 160,
   },
   {
     id: "appraisal_status",
     numeric: false,
     label: "Appraisal Status",
-    width: 200,
+    width: 160,
   },
   {
     id: "remark",
@@ -91,7 +91,7 @@ const headCells = [
     id: "actions_01",
     numeric: false,
     label: "Actions",
-    width: 170,
+    width: 190,
   },
 ];
 
@@ -553,6 +553,12 @@ export default function Exemple({
                       <Link href="#">
                         <span className="text-light">
                           <i className="fa fa-times"></i>
+                          {/* <img
+                            width="25px"
+                            style={{ backgroundColor: "white" }}
+                            src="/assets/images/order-cancel.png"
+                            alt=""
+                          /> */}
                         </span>
                       </Link>
                     </span>
@@ -596,17 +602,6 @@ export default function Exemple({
               )} */}
 
                 <li title="Archive Property">
-                  {/* <Link
-                      href="#"
-                      onClick={() =>
-                        archievePropertyHandler(property.propertyId)
-                      }
-                    >
-                      <span className="btn btn-color w-100">
-                        {" "}
-                        Archive Property{" "}
-                      </span>
-                    </Link> */}
                   <span
                     className="btn btn-color-table"
                     onClick={() => archievePropertyHandler(property.orderId)}

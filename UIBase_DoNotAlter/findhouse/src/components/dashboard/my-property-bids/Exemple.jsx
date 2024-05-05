@@ -21,12 +21,7 @@ const headCells = [
     label: "Quote Amount",
     width: 150,
   },
-  // {
-  //   id: "amount",
-  //   numeric: false,
-  //   label: "Bid Amount",
-  //   width: 200,
-  // },
+
   {
     id: "description",
     numeric: false,
@@ -138,6 +133,11 @@ export default function Exemple({
     setRefresh(true);
   };
 
+  function addCommasToNumber(number) {
+    if (Number(number) <= 100 || number === undefined) return number;
+    return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   const getCurrentPropertyInfoHandler = () => {
     let currentProperty = {};
     const url = window.location.pathname;
@@ -148,6 +148,16 @@ export default function Exemple({
       }
     });
     return currentProperty;
+  };
+
+  const getUserName = (id) => {
+    let requiredUser = "";
+    appraiser.map((user, index) => {
+      if (String(user?.userId) === String(id)) {
+        requiredUser = `${user.firstName} ${user.lastName}`;
+      }
+    });
+    return requiredUser;
   };
 
   const triggerAppraiserInfo = (id) => {
@@ -189,70 +199,6 @@ export default function Exemple({
     // toast.success("Successfully Re assigned Appraiser");
   };
 
-  const getPropertyHandler = (currentProperty) => {
-    let temp = {};
-
-    allProperties.forEach((prop) => {
-      if (prop.propertyId === currentProperty.propertyId) {
-        temp = prop;
-      }
-    });
-    return temp;
-  };
-
-  const acceptRequestHandler = (id) => {
-    const data = JSON.parse(localStorage.getItem("user"));
-    toast.loading("Accepting the bid ...");
-    const payload = {
-      bidId: id,
-      token: data.token,
-    };
-
-    const encryptedBody = encryptionData(payload);
-    axios
-      .post("/api/acceptBid", encryptedBody, {
-        headers: {
-          Authorization: `Bearer ${data?.token}`,
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => {
-        toast.dismiss();
-        toast.success("Successfully accepted the requested Bid");
-        router.push("/my-property-bids");
-      })
-      .catch((err) => {
-        toast.dismiss();
-        console.log(err);
-        toast.error(err?.response?.data?.error);
-      });
-  };
-
-  const rejectRequestHandler = (id) => {
-    const data = JSON.parse(localStorage.getItem("user"));
-    toast.loading("Declining the bid ...");
-    const payload = {
-      bidId: id,
-    };
-    const encryptedBody = encryptionData(payload);
-    axios
-      .post("/api/declineBid", encryptedBody, {
-        headers: {
-          Authorization: `Bearer ${data?.token}`,
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => {
-        toast.dismiss();
-        toast.success("Successfully declined the requested Bid");
-        router.push("/my-property-bids");
-      })
-      .catch((err) => {
-        toast.dismiss();
-        toast.error(err?.response?.data?.error);
-      });
-  };
-
   function handleDownloadClick(event, url, fileName) {
     event.preventDefault(); // Prevent the default link behavior
 
@@ -287,7 +233,8 @@ export default function Exemple({
         const property = propertyWhole.bid;
         const updatedRow = {
           AppraiserId: property.appraiserUserId ? property.appraiserUserId : 0,
-          quote: `$ ${property.bidAmount}`,
+          // quote: `$ ${property.bidAmount}`,
+          quote: `$ ${addCommasToNumber(property.bidAmount)}`,
           amount: ` ${property.bidAmount}`,
           description: property.description != "" ? property.description : "NA",
           date: formatDate(property.requestTime),
@@ -298,10 +245,11 @@ export default function Exemple({
                   border: "0px",
                   color: "blue",
                   backgroundColor: "transparent",
+                  textDecoration: "underline",
                 }}
                 onClick={() => triggerAppraiserInfo(property.appraiserUserId)}
               >
-                Get Info
+                {getUserName(property.appraiserUserId)}
               </button>
             </a>
           ),
@@ -312,10 +260,11 @@ export default function Exemple({
                   border: "0px",
                   color: "blue",
                   backgroundColor: "transparent",
+                  textDecoration: "underline",
                 }}
                 onClick={() => triggerAppraiserInfo(property.appraiserUserId)}
               >
-                Get Info
+                {getUserName(property.appraiserUserId)}
               </button>
             </a>
           ),
@@ -420,7 +369,7 @@ export default function Exemple({
             ) : (
               <div>
                 <h5 className="btn btn-danger m-1">Declined</h5>
-                {property?.appraiserAssign === null && (
+                {property?.appraiserAssign === false && (
                   <div
                     className="list-inline-item"
                     onClick={() => reAssign(property.bidId)}

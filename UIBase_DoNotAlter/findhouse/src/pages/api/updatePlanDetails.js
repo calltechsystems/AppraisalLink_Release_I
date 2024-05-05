@@ -28,7 +28,7 @@ async function handler(request, response) {
         params: {
           planID: Number(planID),
           numberOfProperty: Number(numberOfProperty),
-          amount: Math.floor(amount),
+          amount: (amount),
         },
       }
     );

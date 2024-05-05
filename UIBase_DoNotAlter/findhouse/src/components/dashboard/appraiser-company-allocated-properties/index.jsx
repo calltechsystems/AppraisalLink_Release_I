@@ -896,26 +896,7 @@ const Index = () => {
                                         {broker.province} {broker.zipCode}
                                       </td>
                                     </tr>
-                                    {/* <tr>
-                                    <td
-                                      style={{
-                                        border: "1px solid grey",
-                                        color: "#2e008b",
-                                      }}
-                                    >
-                                      <span className="text-start">
-                                        Property Area
-                                      </span>
-                                    </td>
-                                    <td
-                                      style={{
-                                        border: "1px solid grey",
-                                        width: "250px",
-                                      }}
-                                    >
-                                      {currentProperty.area} sqft
-                                    </td>
-                                  </tr> */}
+                                    
                                     <tr>
                                       <td
                                         style={{
@@ -1014,29 +995,7 @@ const Index = () => {
                                           : "N.A."}
                                       </td>
                                     </tr>
-                                    {/* <tr>
-                                    <td
-                                      style={{
-                                        border: "1px solid grey",
-                                        color: "#2e008b",
-                                      }}
-                                    >
-                                      <span className="text-start">
-                                        Community
-                                      </span>
-                                    </td>
-                                    <td
-                                      style={{
-                                        border: "1px solid grey",
-                                        width: "250px",
-                                      }}
-                                    >
-                                      {" "}
-                                      {currentProperty.community
-                                        ? currentProperty.community
-                                        : "NA"}
-                                    </td>
-                                  </tr> */}
+                                 
                                     <tr>
                                       <td
                                         style={{
@@ -1113,102 +1072,7 @@ const Index = () => {
                                           : "N.A."}
                                       </td>
                                     </tr>
-                                    {/* <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          color: "#2e008b",
-                                          paddingLeft:"10px"
-                                        }}
-                                      >
-                                        <span className="text-start">
-                                          Applicant Name
-                                        </span>
-                                      </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          paddingLeft:"10px"
-                                        }}
-                                      >
-                                        {" "}
-                                        {broker.applicantFirstName}{" "}
-                                        {broker.applicantLastName}
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          color: "#2e008b",
-                                          paddingLeft:"10px"
-                                        }}
-                                      >
-                                        <span className="text-start">
-                                          Email Address
-                                        </span>
-                                      </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          paddingLeft:"10px"
-                                        }}
-                                      >
-                                        {" "}
-                                        {broker.applicantEmailAddress}
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          color: "#2e008b",
-                                          paddingLeft:"10px"
-                                        }}
-                                      >
-                                        <span className="text-start">
-                                          Phone Number
-                                        </span>
-                                      </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          paddingLeft:"10px"
-                                        }}
-                                      >
-                                        {" "}
-                                        {broker.applicantPhoneNumber}
-                                      </td>
-                                    </tr> */}
-                                    {/* <tr>
-                                    <td
-                                      style={{
-                                        border: "1px solid grey",
-                                        color: "#2e008b",
-                                      }}
-                                    >
-                                      <span className="text-start">
-                                        Address
-                                      </span>
-                                    </td>
-                                    <td
-                                      style={{
-                                        border: "1px solid grey",
-                                        width: "250px",
-                                      }}
-                                    >
-                                      {" "}
-                                      {currentProperty.applicantAddress
-                                        ? currentProperty.applicantAddress
-                                        : "NA"}
-                                    </td>
-                                  </tr> */}
+                                    
                                     <tr>
                                       <td
                                         style={{
@@ -1617,103 +1481,7 @@ const Index = () => {
                                         {selectedBroker.postalCode}
                                       </td>
                                     </tr>
-                                    {/* <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          color: "#2e008b",
-                                        }}
-                                      >
-                                        <span className="text-start">
-                                          Brokerage Name
-                                        </span>
-                                      </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          paddingLeft:"10px"
-                                        }}
-                                      >
-                                        {selectedBroker.brokerageName
-                                          ? selectedBroker.brokerageName
-                                          : "N.A."}
-                                      </td>
-                                    </tr> */}
-
-                                    {/* <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          color: "#2e008b",
-                                        }}
-                                      >
-                                        <span className="text-start">
-                                          Applicant Name
-                                        </span>
-                                      </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          paddingLeft:"10px"
-                                        }}
-                                      >
-                                        {selectedBroker.assistantFirstName
-                                          ? selectedBroker.assistantFirstName
-                                          : "N.A."}
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          color: "#2e008b",
-                                        }}
-                                      >
-                                        <span className="text-start">
-                                          Applicant Phone Number
-                                        </span>
-                                      </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          paddingLeft:"10px"
-                                        }}
-                                      >
-                                        {selectedBroker.assistantPhoneNumber
-                                          ? selectedBroker.assistantPhoneNumber
-                                          : "N.A."}
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          color: "#2e008b",
-                                        }}
-                                      >
-                                        <span className="text-start">
-                                          Applicant Email Address
-                                        </span>
-                                      </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          paddingLeft:"10px"
-                                        }}
-                                      >
-                                        {selectedBroker.assistantEmailAddress
-                                          ? selectedBroker.assistantEmailAddress
-                                          : "N.A."}
-                                      </td>
-                                    </tr> */}
+                                   
                                   </tbody>
                                 </table>
                                 `
@@ -2290,13 +2058,8 @@ const Index = () => {
                       data-live-search="true"
                       data-width="100%"
                       onChange={(e) => setSelectedAppraiser(e.target.value)}
-                      // value={buildinRef}
-                      // onChange={(e) => setBuildinRef(e.target.value)}
-                      // onChange={(e) => setBuildinRef(e.target.value)}
-                      // disabled={isDisable}
+                     
                       style={{
-                        // paddingTop: "15px",
-                        // paddingBottom: "15px",
                         padding: "15px",
                         backgroundColor: "#E8F0FE",
                       }}
@@ -2314,7 +2077,6 @@ const Index = () => {
                       className="mt-4 mb-3"
                       style={{ border: "2px solid #97d700" }}
                     ></div>
-                    {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                     <div className="text-center" style={{}}>
                       <button
                         className="btn btn-color m-1 w-25"
