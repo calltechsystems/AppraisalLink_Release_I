@@ -27,6 +27,8 @@ const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [toggleId, setToggleId] = useState(-1);
+  const [allListedAssignAppraiser, setallListedAssignAppraiser] = useState([]);
+
 
   const [openEditModal, setOpenEditModal] = useState(false);
 
@@ -105,10 +107,23 @@ const Index = () => {
     setAssignAppraiserId(-1);
   };
 
+  const getIfAssignedProperties = (id)=>{
+    let ifPresent = 0;
+    allListedAssignAppraiser.map((assign,index)=>{
+      if(String(assign.appraiserid) === String(id)){
+        ifPresent += 1;
+      }
+    });
+    return ifPresent > 0 ?true : false;
+  }
+
+
   const handleStatusUpdateHandler = () => {
-    if(selectedAppraiser.isActive && selectedAppraiser.firstName){
+    if(getIfAssignedProperties(selectedAppraiser.id) && selectedAppraiser.isActive){
       setOpenEditModal(false);
-      setAssignModal(true);
+      toast.error("This appraiser Individual cannot be In-Active , this have ongoing alloted Properties.Please reAssign those properties to other Appraisal Individual ",
+        {autoClose : 10000}
+      );
     }
     else{
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -117,8 +132,6 @@ const Index = () => {
       id: selectedAppraiser.userId,
       IsActive: !selectedAppraiser.isActive,
     };
-
-    console.log(payload);
 
     const encryptedData = encryptionData(payload);
 
@@ -142,6 +155,7 @@ const Index = () => {
 
     setSelectedAppraiser(-1);
     }
+    
   };
 
   const closeStatusUpdateHandler = () => {
@@ -504,6 +518,7 @@ const Index = () => {
                           setModalIsOpenError={setModalIsOpenError}
                           setRefresh={setRefresh}
                           refresh={refresh}
+                          setallListedAssignAppraiser={setallListedAssignAppraiser}
                           setAssignAppraiserId={setAssignAppraiserId}
                           setCurrentViewAppraiser={setCurrentViewAppraiser}
                           setOpenViewModal={setOpenViewModal}

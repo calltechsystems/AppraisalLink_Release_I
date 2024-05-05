@@ -16,6 +16,7 @@ const TableData = ({
   setAppraiserCompanyInfo,
   setSelectedAppraiser,
   setAppraiser,
+  setallListedAssignAppraiser,
   setOpenEditModal,
   setFilterQuery,
   setCloseRegisterModal,
@@ -297,6 +298,7 @@ const TableData = ({
         <Exemple
           userData={userData}
           open={open}
+          setallListedAssignAppraiser={setallListedAssignAppraiser}
           setAppraiser={setAppraiser}
           close={close}
           setSearchInput={setSearchInput}

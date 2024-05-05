@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import SmartTable from "./TabularView";
 
 const SearchData = ({
-   data, 
-  allBids, 
-  setRefresh ,
+  data,
+  allBids,
+  setRefresh,
   setBroker,
-  setOpenBrokerModal}) => {
+  setOpenBrokerModal,
+}) => {
   const [updatedCode, setUpdatedCode] = useState([]);
   const [dataFetched, setDataFetched] = useState(true);
 
@@ -71,10 +72,20 @@ const SearchData = ({
         const completedBids = allBidForUser(row.userId).completedBids;
         const newRow = {
           sno: index + 1,
-          appraiser_company: 
-          <span onClick={()=>openViewModal(row)} style={{textDecoration:"underline",color:"blueviolet",cursor:"pointer"}}>{row.firstName} {row.lastName}</span>,
+          appraiser_company: (
+            <span
+              onClick={() => openViewModal(row)}
+              style={{
+                textDecoration: "underline",
+                color: "blueviolet",
+                cursor: "pointer",
+              }}
+            >
+              {!row.firstName ? "NA" : `${row.firstName} ${row.lastName}`}
+            </span>
+          ),
           bids: totalBids,
-          quote_accepted : acceptedBids,
+          quote_accepted: acceptedBids,
           quote_pending: pendingBids,
           completed_bids: completedBids,
           status: row.firstName ? (
@@ -94,29 +105,30 @@ const SearchData = ({
 
   const allBidForUser = (id) => {
     let allBid = 0,
-      acceptedBids = 0,completedBids = 0,pendingBids = 0;
+      acceptedBids = 0,
+      completedBids = 0,
+      pendingBids = 0;
     allBids?.map((bid, index) => {
       if (String(bid.appraiserUserId) === String(id)) {
         allBid += 1;
-        if(bid.status === 1 && bid.orderStatus === 3){
-          completedBids+=1;
+        if (bid.status === 1 && bid.orderStatus === 3) {
+          completedBids += 1;
         }
         if (bid.status === 1) {
           acceptedBids += 1;
         }
-        if(bid.status === 0){
+        if (bid.status === 0) {
           pendingBids += 1;
         }
-       
       }
     });
-    return { allBid, completedBids,pendingBids, acceptedBids };
+    return { allBid, completedBids, pendingBids, acceptedBids };
   };
 
-  const openViewModal = (user)=>{
-    setBroker(user)
-    setOpenBrokerModal(true)
-  }
+  const openViewModal = (user) => {
+    setBroker(user);
+    setOpenBrokerModal(true);
+  };
 
   const refreshHandler = () => {
     setRefresh(true);

@@ -114,9 +114,6 @@ export default function Exemple({
   properties,
   setIsStatusModal,
   setProperties,
-  deletePropertyHandler,
-  onWishlistHandler,
-  participateHandler,
   setFilterQuery,
   setSearchInput,
   openModalBroker,
@@ -124,12 +121,14 @@ export default function Exemple({
   setModalIsOpenError,
   setOpenEditModal,
   setSelectedAppraiser,
+  setallListedAssignAppraiser,
   setRefresh,
   setStartLoading,
   refresh,
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [wishlist, setWishlist] = useState([]);
+  
   
   const [dataFetched, setDataFetched] = useState(false);
   const [bids, setBids] = useState([]);
@@ -151,47 +150,14 @@ export default function Exemple({
     setIsStatusModal(true);
   };
 
+
   const openEditModalHandler = (appraiser) => {
     setAssignAppraiserId(appraiser.id);
     setSelectedAppraiser(appraiser);
     setOpenEditModal(true);
   };
 
-  const removeWishlistHandler = (id) => {
-    const userData = JSON.parse(localStorage.getItem("user"));
 
-    const formData = {
-      userId: userData.userId,
-      propertyId: id,
-      token: userData.token,
-    };
-
-    const payload = encryptionData(formData);
-    toast.loading("removing this property into your wishlist");
-    axios
-      .delete("/api/removeWishlistProperty", {
-        headers: {
-          Authorization: `Bearer ${userData.token}`,
-        },
-        params: {
-          userId: id,
-        },
-      })
-      .then((res) => {
-        toast.dismiss();
-        toast.success("Successfully removed !!! ");
-        location.reload(true);
-      })
-      .catch((err) => {
-        toast.dismiss();
-        toast.error(err?.response?.data?.error);
-      });
-  };
-
-  const openModalEdit = (appraiser) => {
-    setAppraiser(appraiser);
-    setOpenEditModal(true);
-  };
 
   const formatDate = (dateString) => {
     const options = {
@@ -215,15 +181,15 @@ export default function Exemple({
 
   const getCurrentDate = (id)=>{
     let specificAppraiser = {}
-
     allAppraiser.map((appraiser,index)=>{
       if(String(appraiser.id) === String(id)){
         specificAppraiser = appraiser;
       }
-    })
-
+    });
     return specificAppraiser;
   }
+
+
 
   useEffect(() => {
     const getData = () => {
@@ -231,6 +197,7 @@ export default function Exemple({
       properties.map((data, index) => {
 
         const getCurrentdate = getCurrentDate(data?.item?.id);
+
         const updatedRow = {
           appraiser_id: data.item.id,
           firstname: data.item.firstName ? data.item.firstName : "-",
@@ -311,11 +278,27 @@ export default function Exemple({
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
+      axios
+      .get("/api/getAllAssignProperties", {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+        params: {
+          userId: data.appraiserCompany_Datails?.appraiserCompanyId,
+        },
+      })
+      .then((res) => {
+        let tempProperties = res.data.data.$values;
+        const temp = res.data.data.$values;
+
+        setallListedAssignAppraiser(tempProperties);
+      })
+      .catch((err) => {});
+
 
       
     setRefresh(false);
   }, [refresh]);
-  console.log(sortObjectsByOrderIdDescending(updatedData));
   return (
     <>
       {refresh ? (
