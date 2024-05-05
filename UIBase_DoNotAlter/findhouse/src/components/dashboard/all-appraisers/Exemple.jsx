@@ -299,6 +299,32 @@ export default function Exemple({
       
     setRefresh(false);
   }, [refresh]);
+
+  function sortAppraisersByStatus(appraisers) {
+    const users = appraisers;
+    let finalResult = [];
+    let active = [],
+      inactive = [],
+      registered = [];
+    users.map((user, index) => {
+      const status = user.status.props.children.trim();
+      if (String(status) === "Active") {
+        active.push(user);
+      }
+      if (String(status) === "In-Active") {
+        inactive.push(user);
+      }
+      if (String(status) === "Not Registered") {
+        registered.push(user);
+      }
+    });
+
+    finalResult.push(...active);
+    finalResult.push(...inactive);
+    finalResult.push(...registered);
+    return finalResult;
+  }
+
   return (
     <>
       {refresh ? (
@@ -308,7 +334,7 @@ export default function Exemple({
           title=""
           setSearchInput={setSearchInput}
           setFilterQuery={setFilterQuery}
-          data={sortObjectsByOrderIdDescending(updatedData)}
+          data={sortAppraisersByStatus(updatedData)}
           headCells={headCells}
           setRefresh={setRefresh}
           setProperties={setProperties}
