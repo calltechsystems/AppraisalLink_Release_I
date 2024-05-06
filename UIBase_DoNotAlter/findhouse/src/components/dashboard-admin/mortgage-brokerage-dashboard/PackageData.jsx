@@ -94,7 +94,8 @@ const SearchData = ({
                 cursor: "pointer",
               }}
             >
-              {row.firstName} {row.lastName}
+              {/* {row.firstName} {row.lastName} */}
+              {!row.firstName ? "NA" : `${row.firstName} ${row.lastName}`}
             </span>
           ),
           active_plan: row.planName,
