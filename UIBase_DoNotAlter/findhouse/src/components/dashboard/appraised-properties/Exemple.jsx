@@ -152,6 +152,7 @@ export default function Exemple({
   const [hideAction, setHideAction] = useState(false);
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
+  const [archivedProperties,setArchivedProperties] = useState([]);
   const [dataFetched, setDataFetched] = useState(false);
 
   const [statusData, setStatusData] = useState([]);
@@ -221,6 +222,16 @@ export default function Exemple({
 
     return finalBid;
   };
+
+  const getisAlreadyArchived = (propertyId)=>{
+    let isPresent = false;
+    archivedProperties.map((prop,index)=>{
+      if(String(prop.propertyId) === String(propertyId)){
+        isPresent = true;
+      }
+    });
+    return isPresent;
+  }
 
   const filterBidsWithin24Hours = (property) => {
     const data = JSON.parse(localStorage.getItem("user"));
@@ -407,6 +418,7 @@ export default function Exemple({
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
         const anotherBid = alreadyAccepted(property);
+        const isAlreadyArchived = getisAlreadyArchived(property.propertyId);
         const haveSubscription =
           userActivePlans?.length > 0
             ? userActivePlans[0]?.$id
@@ -417,7 +429,7 @@ export default function Exemple({
         const isWait = property.isOnHold || property.isOnCancel;
         const isArchive = false;
 
-        if (!isArchive) {
+        if (!isAlreadyArchived) {
           if (isBidded.status === 1) {
             console.log(getOrderValue(isBidded.orderStatus));
           }
@@ -847,8 +859,30 @@ export default function Exemple({
     const payload = {
       token: userData.token,
     };
-    let tempProperties = [],
-      tempWishlist = [];
+
+    axios
+    .get("/api/getArchiveAppraiserProperty", {
+      headers: {
+        Authorization: `Bearer ${data.token}`,
+      },
+      params: {
+        userId: data.userId,
+      },
+    })
+    .then((propertiess) => {
+      const temp = propertiess.data.data.$values;
+      let requiredProperties = [];
+      temp.map((property,index)=>{
+          requiredProperties.push(property.property);
+      });
+      setArchivedProperties(requiredProperties)
+    })
+    .catch((err) => {
+      setErrorMessage(err?.response?.data?.error);
+      setModalIsOpenError(true);
+    });
+
+
 
     if (data?.userType === 5) {
       axios
@@ -879,12 +913,10 @@ export default function Exemple({
               toast.dismiss();
 
               const allProperties = result.data.data.properties.$values;
-              console.log("prop", allProperties, prop);
               let requiredProperties = [];
               prop.map((assign, index) => {
                 let id = assign.propertyid;
                 allProperties.map((tempProp, idx) => {
-                  console.log("assign", assign, tempProp);
                   if (
                     String(tempProp.$id) === String(id) &&
                     String(assign.appraiserid) ===
@@ -904,7 +936,6 @@ export default function Exemple({
                   id = prop.$id;
                 }
               });
-              console.log("finalProperties", finalProperties);
               setProperties(finalProperties);
             })
             .catch((err) => {})
@@ -1051,39 +1082,6 @@ export default function Exemple({
 
     let tempBids = [];
 
-    // axios
-    // .get("/api/getAllAssignProperties", {
-    //   headers: {
-    //     Authorization: `Bearer ${data?.token}`,
-    //     "Content-Type": "application/json",
-    //   },
-    //   params:{
-    //     userId : data.appraiser_Details?.companyId
-    //   }
-    // })
-    // .then((res) => {
-
-    //   // console.log(res.data.data.$values);
-    //   // tempProperties = res.data.data.$values;
-    //   const temp = res.data.data.$values;
-
-    // //   tempProperties = temp.filter((prop,index)=>{
-    // //     if(String(prop.userId) === String(data.userId)){
-    // //       return true
-    // //     }
-    // //     else{
-    // //       return false
-    // //     }
-    // //   })
-
-    //   setProperties(temp);
-    // console.log("props",temp)
-    // })
-    // .catch((err) => {
-    //   setErrorMessage(err?.response?.data?.error);
-    //   setModalIsOpenError(true);
-    // });
-
     axios
       .get("/api/getAllBrokers", {
         headers: {
@@ -1132,24 +1130,7 @@ export default function Exemple({
         setModalIsOpenError(true);
       });
 
-    // axios
-    // .get("/api/getArchive?   m ppraiserProperty", {
-    //   headers: {
-    //     Authorization: `Bearer ${data.token}`,
-    //   },
-    //   params:{
-    //   userId : data.userId
-    //   }
-    // })
-    // .then((res) => {
-
-    //   setAllArchive(res.data.data.$values);
-
-    // })
-    // .catch((err) => {
-    //   setErrorMessage(err?.response?.data?.error);
-    //   setModalIsOpenError(true);
-    // });
+    
 
     setRefresh(false);
   }, [refresh]);

@@ -18,12 +18,11 @@ async function handler(request, response) {
     const token = request.headers.authorization;
     const { companyid, appraiserid , propertyid} = body;
 
-   
     const userResponse = await axios.post(`${domain}/com.appraisalland.AppraiserCompany/assignPropopertyByAppCompany`, 
     {
-      companyid:companyid,
-      propertyid:propertyid,
-      appraiserid:appraiserid
+      companyid:Number(companyid),
+      propertyid:Number(propertyid),
+      appraiserid:Number(appraiserid)
     },
     {
         headers: {
