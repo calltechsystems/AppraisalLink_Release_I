@@ -9,7 +9,6 @@ import Loader from "./Loader";
 import { FaArchive } from "react-icons/fa";
 import { AppraiserStatusOptions } from "../create-listing/data";
 import millify from "millify";
-// import "./SmartTable.css";
 
 const headCells = [
   {
@@ -161,6 +160,8 @@ export default function Exemple({
   const [hideAction, setHideAction] = useState(false);
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
+
+  const [archivedProperties, setArchivedProperties] = useState([]);
 
   const [dataFetched, setDataFetched] = useState(false);
   const [assignedProperties, setAssignedProperties] = useState([]);
@@ -337,27 +338,6 @@ export default function Exemple({
     return formattedDate;
   };
 
-  // const formatDate = (dateString) => {
-  //   const options = {
-  //     year: "numeric",
-  //     month: "short",
-  //     day: "numeric",
-  //     hour: "numeric",
-  //     minute: "numeric",
-  //     second: "numeric",
-  //   };
-
-  //   const originalDate = new Date(dateString);
-
-  //   // Adjust for Eastern Standard Time (EST) by subtracting 5 hours
-  //   const estDate = new Date(originalDate.getTime() - 5 * 60 * 60 * 1000);
-
-  //   // Format the EST date
-  //   const formattedDate = estDate.toLocaleString("en-US", options);
-
-  //   return formattedDate;
-  // };
-
   const formatLargeNumber = (number) => {
     // Convert the number to a string
     const numberString = number.toString();
@@ -447,6 +427,16 @@ export default function Exemple({
     });
     return assigned;
   };
+
+  const getisAlreadyArchived = (propertyId) => {
+    let isPresent = false;
+    archivedProperties.map((prop, index) => {
+      if (String(prop.propertyId) === String(propertyId)) {
+        isPresent = true;
+      }
+    });
+    return isPresent;
+  };
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
     const userActivePlans = userData?.userSubscription?.$values;
@@ -455,6 +445,8 @@ export default function Exemple({
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
         const anotherBid = alreadyAccepted(property);
+        const isAlreadyArchived = getisAlreadyArchived(property.propertyId);
+
         const haveSubscription =
           userActivePlans?.length > 0
             ? userActivePlans[0]?.$id
@@ -466,7 +458,7 @@ export default function Exemple({
 
         const isArchive = foundArchiveHandler(property.propertyId);
 
-        if (!isArchive) {
+        if (!isAlreadyArchived) {
           if (isBidded.status === 1) {
             console.log(getOrderValue(isBidded.orderStatus));
           }
@@ -480,7 +472,6 @@ export default function Exemple({
             purpose: property.purpose ? property.purpose : "N.A.",
             appraisal_status:
               isBidded.status === 1 && isBidded.orderStatus === 1 ? (
-
                 <div className="hover-text">
                   <div
                     className="tooltip-text"
@@ -504,7 +495,6 @@ export default function Exemple({
                   </button>
                 </div>
               ) : isBidded.status === 1 && isBidded.orderStatus !== null ? (
-               
                 <div className="hover-text">
                   <div
                     className="tooltip-text"
@@ -574,7 +564,9 @@ export default function Exemple({
                       Broker Info
                     </button>
                   </a>
-                ) : isBidded.status === 2 || anotherBid?.bidId || (anotherBid === true && isBidded.status !== 2)? (
+                ) : isBidded.status === 2 ||
+                  anotherBid?.bidId ||
+                  (anotherBid === true && isBidded.status !== 2) ? (
                   <h6 style={{ color: "red" }}> Declined</h6>
                 ) : (
                   <p>Information will be available post quote acceptance.</p>
@@ -599,7 +591,9 @@ export default function Exemple({
                       Property Info
                     </button>
                   </a>
-                ) : isBidded.status === 2 || anotherBid?.bidId || (anotherBid === true && isBidded.status !== 2)? (
+                ) : isBidded.status === 2 ||
+                  anotherBid?.bidId ||
+                  (anotherBid === true && isBidded.status !== 2) ? (
                   <h6 style={{ color: "red" }}> Declined</h6>
                 ) : (
                   <p>Information will be available post quote acceptance.</p>
@@ -748,7 +742,6 @@ export default function Exemple({
                             border: "1px solid grey",
                           }}
                           onClick={() => removeWishlistHandler(isWishlist.id)}
-                          title="Remove Wishlist Prperty"
                         >
                           <img
                             width={26}
@@ -854,7 +847,6 @@ export default function Exemple({
                         className="list-inline-item btn btn-color w-20"
                         // style={{ marginLeft: "12px" }}
                         onClick={() => openStatusUpdateHandler(isBidded)}
-                        title="Status Update"
                       >
                         <Link href="#">
                           <span className="flaticon-edit text-light"></span>
@@ -970,8 +962,27 @@ export default function Exemple({
     const payload = {
       token: userData.token,
     };
-    let tempProperties = [],
-      tempWishlist = [];
+    axios
+      .get("/api/getArchiveAppraiserProperty", {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+        params: {
+          userId: data.userId,
+        },
+      })
+      .then((propertiess) => {
+        const temp = propertiess.data.data.$values;
+        let requiredProperties = [];
+        temp.map((property, index) => {
+          requiredProperties.push(property.property);
+        });
+        setArchivedProperties(requiredProperties);
+      })
+      .catch((err) => {
+        setErrorMessage(err?.response?.data?.error);
+        setModalIsOpenError(true);
+      });
 
     const startDate = new Date();
     axios

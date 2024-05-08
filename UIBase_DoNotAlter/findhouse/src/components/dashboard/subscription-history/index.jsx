@@ -10,7 +10,7 @@ import { useRouter } from "next/router";
 const Index = () => {
   const [data, setData] = useState([]);
   const router = useRouter();
-  const [userData,setUserData] = useState({});
+  const [userData, setUserData] = useState({});
   const [dataFetched, setDataFetched] = useState(false);
 
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
@@ -65,7 +65,7 @@ const Index = () => {
 
   useEffect(() => {
     const userData1 = JSON.parse(localStorage.getItem("user"));
-    setUserData(userData1)
+    setUserData(userData1);
     if (!userData1) {
       router.push("/login");
     } else if (!userData1?.appraiser_Details?.firstName) {
@@ -232,7 +232,7 @@ const Index = () => {
 
               <div className="row mt50">
                 <div className="col-lg-12">
-                  <div className="copyright-widget text-center">
+                  <div className="copyright-widget-dashboard text-center">
                     <p>
                       &copy; {new Date().getFullYear()} Appraisal Land. All
                       Rights Reserved.

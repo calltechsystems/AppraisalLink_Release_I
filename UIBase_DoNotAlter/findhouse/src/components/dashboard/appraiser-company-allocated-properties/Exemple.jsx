@@ -400,11 +400,6 @@ export default function Exemple({
     return temp ? temp : {};
   };
 
-  const checkCanBidAgainHandler = (data) => {
-    let temp = true;
-    return temp;
-  };
-
   const openAssignModalHandler = (property) => {
     setAssignPropertyId(property.$id);
     setAssignModal(true);

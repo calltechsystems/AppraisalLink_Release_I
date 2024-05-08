@@ -26,11 +26,11 @@ const ProfileInfo = ({
   );
 
   const [emailNotification, setEmailNotification] = useState(
-    userData?.emailNotification !== null ? userData?.emailNotification : true
+    userData?.emailNotification !== null ? userData?.emailNotification : 1
   );
 
   const [smsNotification, setSmsNotification] = useState(
-    userData?.smsNotification !== null ? userData?.smsNotification : true
+    userData?.smsNotification !== null ? userData?.smsNotification : 1
   );
 
   const hiddenStyle = { backgroundColor: "#E8F0FE", display: "none" };
@@ -298,8 +298,8 @@ const ProfileInfo = ({
         mortageBrokerLicNo: mortageBrokerLicNoRef,
         mortageBrokerageLicNo: mortageBrokrageLicNoRef,
         emailId: emailId,
-        smsNotification: smsNotification === true ? 1 : 0,
-        emailNotification: emailNotification === true ? 1 : 0,
+        smsNotification: smsNotification ,
+        emailNotification: emailNotification 
       };
       if (
         !payload.lastName ||
@@ -330,6 +330,9 @@ const ProfileInfo = ({
 
             let data = userData;
             data.brokerage_Details = res.data.userData.broker;
+            data.smsNotification = res.data.userData.isSms;
+            data.emailNotification = res.data.userData.isEmail;
+            console.log("brokerageProfile",res.data.userData.broker)
             localStorage.removeItem("user");
             localStorage.setItem("user", JSON.stringify(data));
             setShowCard(true);

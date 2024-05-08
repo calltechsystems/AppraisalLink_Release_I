@@ -283,7 +283,7 @@ const Index = () => {
 
   const closeAssignModal = () => {
     setAssignModal(false);
-    setSelectedAppraiser({})
+    setSelectedAppraiser({});
     setAssignPropertyId(-1);
   };
 
@@ -556,6 +556,10 @@ const Index = () => {
   const [selectedAppraiser, setSelectedAppraiser] = useState({});
 
   const assignAppraiserUpdateHandler = () => {
+    if (!selectedAppraiser) {
+      toast.error("Please select Appropriate Appraiser Individual!");
+      return;
+    }
     const data = JSON.parse(localStorage.getItem("user"));
     const payload = {
       companyid: data.appraiserCompany_Datails.appraiserCompanyId,
@@ -896,7 +900,7 @@ const Index = () => {
                                         {broker.province} {broker.zipCode}
                                       </td>
                                     </tr>
-                                    
+
                                     <tr>
                                       <td
                                         style={{
@@ -995,7 +999,7 @@ const Index = () => {
                                           : "N.A."}
                                       </td>
                                     </tr>
-                                 
+
                                     <tr>
                                       <td
                                         style={{
@@ -1072,7 +1076,7 @@ const Index = () => {
                                           : "N.A."}
                                       </td>
                                     </tr>
-                                    
+
                                     <tr>
                                       <td
                                         style={{
@@ -1481,7 +1485,6 @@ const Index = () => {
                                         {selectedBroker.postalCode}
                                       </td>
                                     </tr>
-                                   
                                   </tbody>
                                 </table>
                                 `
@@ -2058,14 +2061,13 @@ const Index = () => {
                       data-live-search="true"
                       data-width="100%"
                       onChange={(e) => setSelectedAppraiser(e.target.value)}
-                     
                       style={{
                         padding: "15px",
                         backgroundColor: "#E8F0FE",
                       }}
                     >
+                      <option value={0}>....</option>;
                       {AssignAppraisers.map((item, index) => {
-                        <option value={0}>....</option>;
                         return item.isActive ? (
                           <option key={item.id} value={item.id}>
                             {item.firstName} {item.lastName}

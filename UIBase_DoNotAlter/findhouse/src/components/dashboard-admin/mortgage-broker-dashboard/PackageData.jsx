@@ -79,10 +79,16 @@ const SearchData = ({
     let tempData = [];
     const getData = () => {
       data?.map((row, index) => {
-        const completedProperties = getPropertySubmitted(row.userId).completedProperties;
-        const acceptedProperties = getPropertySubmitted(row.userId).acceptedProperties;
+        const completedProperties = getPropertySubmitted(
+          row.userId
+        ).completedProperties;
+        const acceptedProperties = getPropertySubmitted(
+          row.userId
+        ).acceptedProperties;
         const allProperties = getPropertySubmitted(row.userId).allProperties;
-        const pendingProperties = getPropertySubmitted(row.userId).pendingProperties;
+        const pendingProperties = getPropertySubmitted(
+          row.userId
+        ).pendingProperties;
         const newRow = {
           sno: index + 1,
           broker_name: (
@@ -94,14 +100,15 @@ const SearchData = ({
                 cursor: "pointer",
               }}
             >
-              {row.firstName} {row.lastName}
+              {/* {row.firstName} {row.lastName} */}
+              {!row.firstName ? "NA" : `${row.firstName} ${row.lastName}`}
             </span>
           ),
           active_plan: row.planName,
           submitted_properties: allProperties,
-          accepted_properties : acceptedProperties,
-          progress_properties : pendingProperties,
-          completed_properties : completedProperties,
+          accepted_properties: acceptedProperties,
+          progress_properties: pendingProperties,
+          completed_properties: completedProperties,
           status: row.firstName ? (
             <span className="btn btn-success  w-100">Active</span>
           ) : (
@@ -169,8 +176,11 @@ const SearchData = ({
     });
 
     return {
-      acceptedProperties, completedProperties, allProperties, pendingProperties
-    }
+      acceptedProperties,
+      completedProperties,
+      allProperties,
+      pendingProperties,
+    };
   };
 
   const openViewModal = (user) => {
