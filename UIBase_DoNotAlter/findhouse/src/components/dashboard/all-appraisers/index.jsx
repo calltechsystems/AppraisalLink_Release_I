@@ -121,7 +121,7 @@ const Index = () => {
   const handleStatusUpdateHandler = () => {
     if(getIfAssignedProperties(selectedAppraiser.id) && selectedAppraiser.isActive){
       setOpenEditModal(false);
-      toast.error("This appraiser Individual cannot be In-Active , this have ongoing alloted Properties.Please reAssign those properties to other Appraisal Individual ",
+      toast.error("This appraiser individual cannot be turned inactive as they currently have ongoing properties allotted to them. Please reassign those properties to another appraisal individual.",
         {autoClose : 10000}
       );
     }

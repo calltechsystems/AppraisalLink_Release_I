@@ -158,24 +158,6 @@ const ProfileInfo = ({
     setCellNumber(truncatedValue);
   };
 
-  const uploadProfile = (e) => {
-    const file = e.target.files[0];
-
-    if (file) {
-      const reader = new FileReader();
-
-      reader.onload = (event) => {
-        const dataUrl = event.target.result;
-
-        setProfilePhoto(dataUrl);
-      };
-
-      reader.readAsDataURL(file);
-    }
-
-    console.log(typeof profilePhoto);
-  };
-
   const onUpdatHandler = () => {
     const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const cellNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
@@ -312,16 +294,14 @@ const ProfileInfo = ({
     const allowedImageTypes = ["image/jpeg", "image/png", "image/gif"];
     const allowedPdfTypes = ["application/pdf"];
 
-    if (String(type) === "1") {
-      if (!allowedImageTypes.includes(file?.type)) {
+    if (String(type) === "1" && !allowedImageTypes.includes(file?.type)) {
+      
         toast.error("Please select a valid image file (JPEG, PNG, GIF).");
         return;
-      }
-    } else if (String(type) === "2") {
-      if (!allowedPdfTypes.includes(file?.type)) {
+      
+    } else if (String(type) === "2" && !allowedPdfTypes.includes(file?.type)) {
         toast.error("Please select a valid PDF file.");
         return;
-      }
     } else {
       const file = e.target.files[0];
       toast.loading("Uploading..");
