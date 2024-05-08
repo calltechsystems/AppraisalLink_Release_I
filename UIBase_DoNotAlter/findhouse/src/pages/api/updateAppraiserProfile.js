@@ -36,6 +36,8 @@ async function handler(request, response) {
       commissionRate,
       emailId,
       apartmentNo,
+      smsNotification,
+      emailNotification
     } = body;
 
     const formData = {
@@ -58,6 +60,8 @@ async function handler(request, response) {
       designation: designation,
       profileImage: profileImage,
       emailId: emailId,
+      getSms : smsNotification ? 1 : 0,
+      getEmail : emailNotification ? 1 : 0
     };
 
     const userResponse = await axios.put(

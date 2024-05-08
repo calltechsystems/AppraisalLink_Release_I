@@ -258,6 +258,8 @@ const ProfileInfo = ({
         streetName: streetName,
         apartmentNumber: apartmentNumber,
         profileImage: SelectedImage,
+        emailNotification: emailNotification,
+        smsNotification: smsNotification,
       };
 
       if (
@@ -288,6 +290,8 @@ const ProfileInfo = ({
             toast.success("Successfully Updated Profile!");
 
             let data = userData;
+            data.smsNotification = res.data.userData.isSms;
+            data.emailNotification = res.data.userData.isEmail;
             data.appraiserCompany_Datails = res.data.userData.appraiserCompany;
             localStorage.removeItem("user");
             localStorage.setItem("user", JSON.stringify(data));
@@ -320,7 +324,7 @@ const ProfileInfo = ({
       }
     } else {
       const file = e.target.files[0];
-      toast.loading("Uploading....");
+      toast.loading("Uploading..");
       try {
         const generatedUrl = await uploadFile(file);
         toast.dismiss();

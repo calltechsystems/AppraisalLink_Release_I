@@ -365,6 +365,8 @@ const ProfileInfo = ({
           .then((res) => {
             toast.success("Successfully Updated Profile!");
             let data = userData;
+            data.smsNotification = res.data.userData.isSms;
+            data.emailNotification = res.data.userData.isEmail;
             data.broker_Details = res.data.userData.brokerage;
             localStorage.removeItem("user");
             localStorage.setItem("user", JSON.stringify(data));

@@ -43,6 +43,8 @@ async function handler(request, response) {
       assistantTwoPhoneNumber,
       emailId,
       profileImage,
+      smsNotification,
+      emailNotification
     } = body;
 
     const formData = {
@@ -75,6 +77,8 @@ async function handler(request, response) {
       mortageBrokerageLicNo: mortageBrokerageLicNo,
       mortageBrokerLicNo: mortageBrokerLicNo,
       profileImage: profileImage,
+      getSms : smsNotification ? 1 : 0,
+      getEmail : emailNotification ? 1 : 0
     };
     console.log(formData);
 
