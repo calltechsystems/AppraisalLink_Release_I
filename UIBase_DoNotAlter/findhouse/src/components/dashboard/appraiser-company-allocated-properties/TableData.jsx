@@ -11,6 +11,7 @@ const TableData = ({
   open,
   setGeneratedProps,
   close,
+  setAssignedAppraiserInfo,
   setAssignModal,
   setAssignPropertyId,
   setAssignedProp,
@@ -320,6 +321,7 @@ const TableData = ({
           setShowMore={setShowMore}
           setIsStatusModal={setIsStatusModal}
           start={start}
+          setAssignedAppraiserInfo={setAssignedAppraiserInfo}
           setAssignedAppraiser={setAssignedAppraiser}
           openModalBroker={openModalBroker}
           setAllBrokers={setAllBrokers}

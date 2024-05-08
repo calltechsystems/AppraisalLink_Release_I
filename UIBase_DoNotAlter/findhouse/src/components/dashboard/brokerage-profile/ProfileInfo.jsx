@@ -487,7 +487,7 @@ const ProfileInfo = ({
                         Browse
                       </button>
                       <p className="mt-2">
-                        {SelectedImage !== "" && "Image Only"}
+                        {SelectedImage !== "" && "Note -: JPG, PNG formats only"}
                       </p>
                     </div>
                   )}

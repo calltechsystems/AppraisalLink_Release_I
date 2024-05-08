@@ -18,6 +18,7 @@ import Image from "next/image";
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
+  const [AssignedAppraiserInfo,setAssignedAppraiserInfo] = useState({});
   const [orderStatus, setOrderStatus] = useState(-1);
   const [isStatusModal, setIsStatusModal] = useState(false);
   const [showMore, setShowMore] = useState(false);
@@ -284,6 +285,7 @@ const Index = () => {
   const closeAssignModal = () => {
     setAssignModal(false);
     setSelectedAppraiser({});
+    setAssignedAppraiserInfo({});
     setAssignPropertyId(-1);
   };
 
@@ -722,6 +724,7 @@ const Index = () => {
                           filterQuery={filterQuery}
                           setAssignAppraisers={setAssignAppraisers}
                           setUpdatedCode={setUpdatedCode}
+                          setAssignedAppraiserInfo={setAssignedAppraiserInfo}
                           onWishlistHandler={onWishlistHandler}
                           participateHandler={participateHandler}
                           setErrorMessage={setErrorMessage}
@@ -2068,7 +2071,7 @@ const Index = () => {
                     >
                       <option value={0}>....</option>;
                       {AssignAppraisers.map((item, index) => {
-                        return item.isActive ? (
+                        return item.isActive && AssignedAppraiserInfo.userId !== item.userId ? (
                           <option key={item.id} value={item.id}>
                             {item.firstName} {item.lastName}
                           </option>

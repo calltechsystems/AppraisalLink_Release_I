@@ -138,6 +138,7 @@ export default function Exemple({
   setAssignPropertyId,
   setUpdatedCode,
   properties,
+  setAssignedAppraiserInfo,
   setCurrentBid,
   setIsStatusModal,
   searchInput,
@@ -401,7 +402,14 @@ export default function Exemple({
   };
 
   const openAssignModalHandler = (property) => {
+    let requiredAppraiser = {};
+    allAssignAppraiser.map((appraiser,index)=>{
+      if(String(appraiser.id) === String(property.appraiserid)){
+        requiredAppraiser=appraiser;
+      }
+    })
     setAssignPropertyId(property.$id);
+    setAssignedAppraiserInfo(requiredAppraiser);
     setAssignModal(true);
   };
 
@@ -423,7 +431,7 @@ export default function Exemple({
       allAssignAppraiser.map((appraiser, index) => {
         const isPresent = checkIsAlreadyExisting(appraiser, requiredAssign);
         if (
-          String(appraiser.id) === String(assigned.appraiserid) &&
+          String(appraiser.id) === String(assigned.appraiserid) && appraiser.isActive &&
           !isPresent
         ) {
           requiredAssign.push(appraiser);
@@ -810,8 +818,6 @@ export default function Exemple({
               });
             });
 
-            console.log("assignedProps", assignedProps);
-
             let tempBids = [];
             axios
               .get("/api/getAllBids", {
@@ -829,7 +835,6 @@ export default function Exemple({
                     return false;
                   }
                 });
-                console.log("bids", updatedBids.length);
                 setBids(updatedBids);
                 setProperties(assignedProps);
 
