@@ -23,12 +23,11 @@ import Image from "next/image";
 const Index = () => {
   const [assignModal, setAssignModal] = useState(false);
   const [assignAppraiserId, setAssignAppraiserId] = useState(-1);
-  
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [toggleId, setToggleId] = useState(-1);
   const [allListedAssignAppraiser, setallListedAssignAppraiser] = useState([]);
-
 
   const [openEditModal, setOpenEditModal] = useState(false);
 
@@ -45,7 +44,6 @@ const Index = () => {
   const [lowRangeBid, setLowRangeBid] = useState("");
   const [propertyId, setPropertyId] = useState(null);
   const [updatedCode, setUpdatedCode] = useState(false);
- 
 
   const [appraiser, setAppraiser] = useState({});
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
@@ -103,59 +101,61 @@ const Index = () => {
 
   const closeAssignModal = () => {
     setAssignModal(false);
-    setSelectedAppraiser({})
+    setSelectedAppraiser({});
     setAssignAppraiserId(-1);
   };
 
-  const getIfAssignedProperties = (id)=>{
+  const getIfAssignedProperties = (id) => {
     let ifPresent = 0;
-    allListedAssignAppraiser.map((assign,index)=>{
-      if(String(assign.appraiserid) === String(id)){
+    allListedAssignAppraiser.map((assign, index) => {
+      if (String(assign.appraiserid) === String(id)) {
         ifPresent += 1;
       }
     });
-    return ifPresent > 0 ?true : false;
-  }
-
+    return ifPresent > 0 ? true : false;
+  };
 
   const handleStatusUpdateHandler = () => {
-    if(getIfAssignedProperties(selectedAppraiser.id) && selectedAppraiser.isActive){
+    if (
+      getIfAssignedProperties(selectedAppraiser.id) &&
+      selectedAppraiser.isActive
+    ) {
       setOpenEditModal(false);
-      toast.error("This appraiser individual cannot be turned inactive as they currently have ongoing properties allotted to them. Please reassign those properties to another appraisal individual.",
-        {autoClose : 10000}
-      );
+      setModalIsOpenError_01(true);
+      // toast.error(
+      //   "This appraiser individual cannot be turned inactive as they currently have ongoing properties allotted to them. Please reassign those properties to another appraisal individual.",
+      //   { autoClose: 10000 }
+      // );
+    } else {
+      const userData = JSON.parse(localStorage.getItem("user"));
+      setDisable(true);
+      const payload = {
+        id: selectedAppraiser.userId,
+        IsActive: !selectedAppraiser.isActive,
+      };
+
+      const encryptedData = encryptionData(payload);
+
+      toast.loading("Updating the status");
+      axios
+        .put("/api/updateIsActiveAppraiser", encryptedData, {
+          headers: {
+            Authorization: `Bearer ${userData.token}`,
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          toast.dismiss();
+          toast.success("Successfully Updated!!");
+          window.location.reload();
+        })
+        .catch((err) => {
+          toast.dismiss();
+          toast.error(err);
+        });
+
+      setSelectedAppraiser(-1);
     }
-    else{
-    const userData = JSON.parse(localStorage.getItem("user"));
-    setDisable(true);
-    const payload = {
-      id: selectedAppraiser.userId,
-      IsActive: !selectedAppraiser.isActive,
-    };
-
-    const encryptedData = encryptionData(payload);
-
-    toast.loading("Updating the status");
-    axios
-      .put("/api/updateIsActiveAppraiser", encryptedData, {
-        headers: {
-          Authorization: `Bearer ${userData.token}`,
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => {
-        toast.dismiss();
-        toast.success("Successfully Updated!!");
-        window.location.reload();
-      })
-      .catch((err) => {
-        toast.dismiss();
-        toast.error(err);
-      });
-
-    setSelectedAppraiser(-1);
-    }
-    
   };
 
   const closeStatusUpdateHandler = () => {
@@ -163,6 +163,7 @@ const Index = () => {
     setOpenEditModal(false);
   };
 
+  const [modalIsOpenError_01, setModalIsOpenError_01] = useState(false);
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -173,6 +174,7 @@ const Index = () => {
 
   const closeErrorModal = () => {
     setModalIsOpenError(false);
+    setModalIsOpenError_01(false);
   };
 
   const [openBrokerModal, setOpenBrokerModal] = useState(false);
@@ -518,7 +520,9 @@ const Index = () => {
                           setModalIsOpenError={setModalIsOpenError}
                           setRefresh={setRefresh}
                           refresh={refresh}
-                          setallListedAssignAppraiser={setallListedAssignAppraiser}
+                          setallListedAssignAppraiser={
+                            setallListedAssignAppraiser
+                          }
                           setAssignAppraiserId={setAssignAppraiserId}
                           setCurrentViewAppraiser={setCurrentViewAppraiser}
                           setOpenViewModal={setOpenViewModal}
@@ -1236,7 +1240,6 @@ const Index = () => {
                         data-live-search="true"
                         data-width="100%"
                         onChange={(e) => setIsActive(e.target.value)}
-                        
                         style={{
                           paddingTop: "10px",
                           paddingBottom: "10px",
@@ -1285,7 +1288,7 @@ const Index = () => {
                   </div>
                 </div>
               )}
-                {assignModal && (
+              {assignModal && (
                 <div className="modal">
                   <div className="modal-content">
                     <div className="row">
@@ -1325,7 +1328,9 @@ const Index = () => {
                     </div>
                     <div className="row">
                       <div className="col-lg-12 text-center">
-                        <h1 className=" text-color mt-1">Re-Asssign Appraiser</h1>
+                        <h1 className=" text-color mt-1">
+                          Re-Asssign Appraiser
+                        </h1>
                       </div>
                     </div>
                     <div
@@ -1338,7 +1343,6 @@ const Index = () => {
                       data-live-search="true"
                       data-width="100%"
                       onChange={(e) => setSelectedAppraiser(e.target.value)}
-                     
                       style={{
                         padding: "15px",
                         backgroundColor: "#E8F0FE",
@@ -1346,7 +1350,8 @@ const Index = () => {
                     >
                       {properties.map((item, index) => {
                         <option value={0}>....</option>;
-                        return item.item.isActive &&item.item.id !== assignAppraiserId? (
+                        return item.item.isActive &&
+                          item.item.id !== assignAppraiserId ? (
                           <option key={item.item.id} value={item.item.id}>
                             {item.item.firstName} {item.item.lastName}
                           </option>
@@ -1364,11 +1369,78 @@ const Index = () => {
                       >
                         Cancel
                       </button>
+                      <button className="btn btn-color w-25" onClick={""}>
+                        Submit
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {modalIsOpenError_01 && (
+                <div className="modal">
+                  <div
+                    className="modal-content"
+                    style={{ borderColor: "#2e008b", width: "40%" }}
+                  >
+                    <div className="row">
+                      <div className="col-lg-12">
+                        <Link href="/" className="">
+                          <Image
+                            width={50}
+                            height={45}
+                            className="logo1 img-fluid"
+                            style={{ marginTop: "-20px" }}
+                            src="/assets/images/logo.png"
+                            alt="header-logo2.png"
+                          />
+                          <span
+                            style={{
+                              color: "#2e008b",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            Appraisal
+                          </span>
+                          <span
+                            style={{
+                              color: "#97d700",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            {" "}
+                            Land
+                          </span>
+                        </Link>
+                      </div>
+                    </div>
+                    <h2 className="text-center" style={{ color: "orangered" }}>
+                      Alert
+                    </h2>
+                    <div
+                      className="mb-3 mt-2"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
+                    <span className="text-center text-dark fs-4">
+                      This appraiser individual cannot be turned inactive as
+                      they currently have ongoing properties allotted to them.
+                      Please reassign those properties to another appraisal
+                      individual.
+                    </span>
+                    <div
+                      className="mb-3 mt-2"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
+                    <div className="text-center">
                       <button
                         className="btn btn-color w-25"
-                        onClick={""}
+                        onClick={() => closeErrorModal()}
                       >
-                        Submit
+                        Ok
                       </button>
                     </div>
                   </div>
@@ -1386,9 +1458,8 @@ const Index = () => {
                   closeQuoteModal={closeQuoteModal}
                 />
               </div>
-             
             </div>
-           
+
             <div className="row mt50">
               <div className="col-lg-12">
                 <div className="copyright-widget-dashboard text-center">

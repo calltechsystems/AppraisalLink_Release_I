@@ -33,7 +33,6 @@ const headCells = [
     width: 200,
   },
 
-
   {
     id: "date",
     numeric: false,
@@ -128,16 +127,14 @@ export default function Exemple({
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [wishlist, setWishlist] = useState([]);
-  
-  
+
   const [dataFetched, setDataFetched] = useState(false);
   const [bids, setBids] = useState([]);
-  const [allAppraiser , setAllAppraiser] = useState([])
+  const [allAppraiser, setAllAppraiser] = useState([]);
   const [hideAction, setHideAction] = useState(false);
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
   let tempData = [];
-
 
   const openCredModal = (data) => {
     setCurrentViewAppraiser(data);
@@ -150,14 +147,11 @@ export default function Exemple({
     setIsStatusModal(true);
   };
 
-
   const openEditModalHandler = (appraiser) => {
     setAssignAppraiserId(appraiser.id);
     setSelectedAppraiser(appraiser);
     setOpenEditModal(true);
   };
-
-
 
   const formatDate = (dateString) => {
     const options = {
@@ -179,23 +173,20 @@ export default function Exemple({
     setProperties([]);
   }, [checkData]);
 
-  const getCurrentDate = (id)=>{
-    let specificAppraiser = {}
-    allAppraiser.map((appraiser,index)=>{
-      if(String(appraiser.id) === String(id)){
+  const getCurrentDate = (id) => {
+    let specificAppraiser = {};
+    allAppraiser.map((appraiser, index) => {
+      if (String(appraiser.id) === String(id)) {
         specificAppraiser = appraiser;
       }
     });
     return specificAppraiser;
-  }
-
-
+  };
 
   useEffect(() => {
     const getData = () => {
       const dateNow = formatDate(new Date());
       properties.map((data, index) => {
-
         const getCurrentdate = getCurrentDate(data?.item?.id);
 
         const updatedRow = {
@@ -203,19 +194,22 @@ export default function Exemple({
           firstname: data.item.firstName ? data.item.firstName : "-",
           lastname: data.item.lastName ? data.item.lastName : "-",
           email: data.item.emailId ? data.item.emailId : "-",
-          status: data.item.isActive && data?.item?.firstName ? (
-            <span className="btn btn-success  w-100">Active</span>
-          ) : !data?.item?.isActive && data?.item?.firstName ? (
-            <span className="btn btn-danger  w-100">In-Active </span>
-          ) : (
-            <span className="btn btn-warning  w-100">Not Registered</span>
-          ),
+          status:
+            data.item.isActive && data?.item?.firstName ? (
+              <span className="btn btn-success  w-100">Active</span>
+            ) : !data?.item?.isActive && data?.item?.firstName ? (
+              <span className="btn btn-danger  w-100">In-Active </span>
+            ) : (
+              <span className="btn btn-warning  w-100">Not Registered</span>
+            ),
           phone: data.item.phoneNumber ? data.item.phoneNumber : "-",
           address: data.item.streetName
             ? `${data.item.streetName} ${data.item.streetNumber},${data.item.province}-${data.item.postalCode}`
             : "N.A.",
-          date: data?.item?.isActive  && data?.item?.modifiedDateTime !==null ?
-          formatDate(data?.item?.modifiedDateTime) : "-",
+          date:
+            data?.item?.isActive && data?.item?.modifiedDateTime !== null
+              ? formatDate(data?.item?.modifiedDateTime)
+              : "-",
           action: (
             <div className="print-hidden-column">
               {data.item.firstName && (
@@ -269,16 +263,16 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        setDataFetched(true)
+        setDataFetched(true);
         setAppraiserCompanyInfo([]);
         setProperties(res.data.data.$values);
       })
       .catch((err) => {
-        setDataFetched(false)
+        setDataFetched(false);
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
-      axios
+    axios
       .get("/api/getAllAssignProperties", {
         headers: {
           Authorization: `Bearer ${data.token}`,
@@ -295,8 +289,6 @@ export default function Exemple({
       })
       .catch((err) => {});
 
-
-      
     setRefresh(false);
   }, [refresh]);
 

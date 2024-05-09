@@ -96,9 +96,19 @@ const Form = ({
           }
         })
         .catch((err) => {
-          toast.dismiss();
-          setErrorMessage(err.response.data.error);
-          setModalIsOpenError(true);
+          const status = err.response.request.status;
+          if (String(status) === String(403)) {
+            toast.dismiss();
+            setErrorMessage(
+              "Your account is not yet verified.or resend email verification  Please check your email and follow the verification link to activate your account."
+            );
+            setModalIsOpenError(true);
+          } else {
+            // console.log(err);
+            toast.dismiss();
+            setErrorMessage(err.response.data.error);
+            setModalIsOpenError(true);
+          }
         })
         .finally(() => {
           setLoading(false);

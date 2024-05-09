@@ -889,7 +889,7 @@ const Index = () => {
                                           {broker.cellNumber}
                                         </td>
                                       </tr>
-                                      <tr>
+                                      {/* <tr>
                                         <td
                                           style={{
                                             border: "1px solid #2e008b",
@@ -935,7 +935,7 @@ const Index = () => {
                                         >
                                           {broker.maxNumberOfAssignedOrders}
                                         </td>
-                                      </tr>
+                                      </tr> */}
                                       <tr>
                                         <td
                                           style={{

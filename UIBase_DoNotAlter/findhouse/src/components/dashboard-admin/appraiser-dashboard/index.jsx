@@ -413,6 +413,9 @@ const Index = () => {
                     display: "flex",
                     flexDirection: "row",
                     justifyContent: "space-between",
+                    backgroundColor:"#97d700",
+                    padding:"5px", 
+                    borderRadius:"5px"
                   }}
                 >
                   <div className="breadcrumb_content">

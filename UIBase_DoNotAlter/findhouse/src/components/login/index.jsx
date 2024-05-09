@@ -7,6 +7,8 @@ import PopupSignInUp from "../common/PopupSignInUp";
 import BreadCrumbBanner from "./BreadCrumbBanner";
 import Form from "./Form";
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import ErrorModal from "../common/popUpModal/errorModal/index";
 
 const Index = ({ user }) => {
@@ -120,25 +122,74 @@ const Index = ({ user }) => {
         <div className="modal">
           <div
             className="modal-content"
-            style={{ borderColor: "#2e008b", width: "20%" }}
+            style={{ borderColor: "red", width: "40%" }}
           >
-            <h4 className="text-center mb-1" style={{ color: "red" }}>
-              Error
-            </h4>
-            <div style={{ borderWidth: "2px", borderColor: "red" }}>
-              <br />
+            <div className="col-lg-12">
+              <div className="row">
+                <div className="col-lg-12">
+                  <Link href="/" className="">
+                    <Image
+                      width={60}
+                      height={45}
+                      className="logo1 img-fluid"
+                      style={{ marginTop: "-20px" }}
+                      src="/assets/images/Appraisal_Land_Logo.png"
+                      alt="header-logo2.png"
+                    />
+                    <span
+                      style={{
+                        color: "#2e008b",
+                        fontWeight: "bold",
+                        fontSize: "24px",
+                        // marginTop: "20px",
+                      }}
+                    >
+                      Appraisal
+                    </span>
+                    <span
+                      style={{
+                        color: "#97d700",
+                        fontWeight: "bold",
+                        fontSize: "24px",
+                        // marginTop: "20px",
+                      }}
+                    >
+                      {" "}
+                      Land
+                    </span>
+                  </Link>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-lg-12 text-center">
+                  <h3 className=" text-danger mt-1">Error</h3>
+                </div>
+              </div>
+              <div
+                className="mt-2 mb-3"
+                style={{ border: "2px solid #97d700" }}
+              ></div>
             </div>
-            <h5 className="text-center mb-3">{errorMessage}</h5>
+            <span
+              className="text-center mb-2 text-dark fw-bold"
+              style={{ fontSize: "18px" }}
+            >
+              {errorMessage}
+            </span>
             <div
-              className="text-center"
-              style={{ display: "flex", flexDirection: "column" }}
+              className="mt-2 mb-3"
+              style={{ border: "2px solid #97d700" }}
+            ></div>
+            <div
+              className="col-lg-12 text-center"
+              style={{ display: "flex", justifyContent: "center" }}
             >
               <button
-                className="btn w-35 btn-color"
+                className="btn btn-color w-50"
                 onClick={() => closeErrorModal()}
                 style={{}}
               >
-                Cancel
+                Ok
               </button>
             </div>
           </div>
