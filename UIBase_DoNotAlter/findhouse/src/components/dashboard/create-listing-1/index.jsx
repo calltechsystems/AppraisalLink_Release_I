@@ -112,6 +112,8 @@ const Index = ({ isView, propertyData }) => {
 
   const [otherUrgencyValue, setOtherUrgencyValue] = useState(false);
 
+  const [modalIsOpenError_01, setModalIsOpenError_01] = useState(false);
+
   const [otherTypeOfBuildingValue, setOtherTypeOfBuildingValue] =
     useState(false);
   const [otherPurposeValue, setOtherPurposeValue] = useState(false);
@@ -142,6 +144,7 @@ const Index = ({ isView, propertyData }) => {
 
   const closeErrorModal = () => {
     setModalIsOpenError(false);
+    setModalIsOpenError_01(false);
     location.reload(true);
   };
 
@@ -800,17 +803,21 @@ const Index = ({ isView, propertyData }) => {
               // window.location.reload();
             } else if (String(status) === String(404)) {
               toast.dismiss();
-              toast.error(
-                "You do not have any subscription. Please get a subscription to access the full features."
-              );
-              window.location.reload();
+              setErrorMessage(err.response.data.error);
+              setModalIsOpenError_01(true);
+              // toast.error(
+              //   "You do not have any subscription. Please get a subscription to access the full features."
+              // );
+              // window.location.reload();
             } else if (/^5\d{2}$/.test(String(status))) {
               toast.dismiss();
               toast.error("Server error occurred Try Again !! ");
               window.location.reload();
             } else {
               toast.dismiss();
-              toast.error(err.message);
+              setErrorMessage(err.response.data.error);
+              setModalIsOpenError_01(true);
+              // toast.error(err.message);
             }
           });
       }
@@ -1552,6 +1559,84 @@ const Index = ({ isView, propertyData }) => {
                   </div>
                 )}
               </div>
+
+              {modalIsOpenError_01 && (
+                <div className="modal">
+                  <div
+                    className="modal-content"
+                    style={{ borderColor: "red", width: "40%" }}
+                  >
+                    <div className="col-lg-12">
+                      <div className="row">
+                        <div className="col-lg-12">
+                          <Link href="/" className="">
+                            <Image
+                              width={60}
+                              height={45}
+                              className="logo1 img-fluid"
+                              style={{ marginTop: "-20px" }}
+                              src="/assets/images/Appraisal_Land_Logo.png"
+                              alt="header-logo2.png"
+                            />
+                            <span
+                              style={{
+                                color: "#2e008b",
+                                fontWeight: "bold",
+                                fontSize: "24px",
+                                // marginTop: "20px",
+                              }}
+                            >
+                              Appraisal
+                            </span>
+                            <span
+                              style={{
+                                color: "#97d700",
+                                fontWeight: "bold",
+                                fontSize: "24px",
+                                // marginTop: "20px",
+                              }}
+                            >
+                              {" "}
+                              Land
+                            </span>
+                          </Link>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-lg-12 text-center">
+                          <h3 className=" text-danger mt-1">Error</h3>
+                        </div>
+                      </div>
+                      <div
+                        className="mt-2 mb-3"
+                        style={{ border: "2px solid #97d700" }}
+                      ></div>
+                    </div>
+                    <span
+                      className="text-center mb-2 text-dark fw-bold"
+                      style={{ fontSize: "18px" }}
+                    >
+                      {errorMessage}
+                    </span>
+                    <div
+                      className="mt-2 mb-3"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
+                    <div
+                      className="col-lg-12 text-center"
+                      style={{ display: "flex", justifyContent: "center" }}
+                    >
+                      <button
+                        className="btn btn-color w-50"
+                        onClick={() => closeErrorModal()}
+                        style={{}}
+                      >
+                        Ok
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {modalIsOpenError && (
                 <div className="modal">

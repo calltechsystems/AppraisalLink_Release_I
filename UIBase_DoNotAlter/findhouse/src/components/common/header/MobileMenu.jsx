@@ -13,10 +13,31 @@ const MobileMenu = () => {
               width={40}
               height={45}
               className="nav_logo_img contain mt20"
-              src="/assets/images/logo_new.png"
+              src="/assets/images/Appraisal_Land_Logo.png"
               alt="header-logo2.png"
             />
-            <span className="mt20">Appraisal Land</span>
+            <span
+              className="brand-text"
+              style={{
+                // marginTop: "35px",
+                color: "#2e008b",
+                marginLeft: "1px",
+                fontSize: "22px",
+              }}
+            >
+              Appraisal
+            </span>
+            <span
+              className="brand-text"
+              style={{
+                // marginTop: "35px",
+                color: "#97d700",
+                paddingLeft: "2px",
+                fontSize: "22px",
+              }}
+            >
+              Land
+            </span>
           </div>
           {/* main_logo_home2 */}
 

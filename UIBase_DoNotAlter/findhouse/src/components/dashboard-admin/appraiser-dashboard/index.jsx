@@ -419,7 +419,7 @@ const Index = () => {
                   }}
                 >
                   <div className="breadcrumb_content">
-                    <h2 className="breadcrumb_title">Appraiser Dashboard</h2>
+                    <h2 className="breadcrumb_title text-color" style={{marginLeft:"15px"}}>Appraiser Dashboard</h2>
                   </div>
                   <div>
                     <Filtering

@@ -254,15 +254,38 @@ const property = [
 const insights = [
   {
     id: 1,
-    name: "Dashboard",
+    name: "Insights",
     routerPath: "/my-dashboard",
   },
 ];
 
+const whychooseus = [
+  {
+    id: 1,
+    name: "Appraiser Company ",
+    routerPath: "/appraiser-user-guide",
+  },
+  {
+    id: 1,
+    name: "Appraiser ",
+    routerPath: "/appraiser-user-guide",
+  },
+  {
+    id: 1,
+    name: "Mortgage Brokerage ",
+    routerPath: "/broker-user-guide",
+  },
+  {
+    id: 1,
+    name: "Mortgage Broker ",
+    routerPath: "/broker-user-guide",
+  },
+];
+
 const blog = [
-  { id: 1, name: "Events", routerPath: "/events" },
+  { id: 1, name: "Who We Are", routerPath: "/about-us" },
   { id: 2, name: "How We Work", routerPath: "/how-we-work" },
-  { id: 3, name: "About Appraisal Link", routerPath: "/about-us" },
+  { id: 3, name: "Events", routerPath: "/events" },
   // {
   //   id: 4,
   //   name: "Blog Details",
@@ -316,18 +339,39 @@ const MobileMenuContent = () => {
         <div className="sidebar-header">
           <Link href="/" className="sidebar-header-inner">
             <Image
-              width={40}
+              width={60}
               height={45}
               className="nav_logo_img img-fluid mt20"
-              src="/assets/images/logo_new.png"
+              src="/assets/images/Appraisal_Land_Logo.png"
               alt="header-logo.png"
             />
-            <span className="brand-text">Appraisal Land</span>
+            {/* <span className="brand-text">Appraisal Land</span> */}
+            <span
+              className="brand-text"
+              style={{
+                marginTop: "35px",
+                color: "#2e008b",
+                marginLeft: "-25px",
+              }}
+            >
+              Appraisal
+            </span>
+            <span
+              className="brand-text"
+              style={{
+                marginTop: "35px",
+                color: "#97d700",
+                paddingLeft: "5px",
+              }}
+            >
+              Land
+            </span>
           </Link>
           {/* End .logo */}
 
           <div
-            className="fix-icon"
+            className="fix-icon text-danger"
+            style={{}}
             data-bs-dismiss="offcanvas"
             aria-label="Close"
           >
@@ -350,7 +394,36 @@ const MobileMenuContent = () => {
             </Link>
           </MenuItem>
 
-          <MenuItem>
+          <SubMenu
+            title="About Us"
+            className={
+              blog.some(
+                (page) =>
+                  page.routerPath === route.pathname ||
+                  page.routerPath + "/[id]" === route.pathname
+              )
+                ? "parent-menu-active"
+                : undefined
+            }
+          >
+            {blog.map((val, i) => (
+              <MenuItem key={i}>
+                <Link
+                  href={val.routerPath}
+                  className={
+                    route.pathname === val.routerPath ||
+                    val.routerPath + "/[id]" === route.pathname
+                      ? "ui-active"
+                      : undefined
+                  }
+                >
+                  {val.name}
+                </Link>
+              </MenuItem>
+            ))}
+          </SubMenu>
+
+          {/* <MenuItem>
             <Link
               href="/choose-us"
               className={
@@ -359,16 +432,16 @@ const MobileMenuContent = () => {
             >
               Why Choose Us
             </Link>
-          </MenuItem>
-          {/* <SubMenu
-            title="Home"
+          </MenuItem> */}
+          <SubMenu
+            title="Why Choose Us"
             className={
-              home.some((page) => page.routerPath === route.pathname)
+              whychooseus.some((page) => page.routerPath === route.pathname)
                 ? "parent-menu-active"
                 : undefined
             }
           >
-            {home.map((val, i) => (
+            {whychooseus.map((val, i) => (
               <MenuItem key={i} active={true}>
                 <Link
                   href={val.routerPath}
@@ -380,7 +453,7 @@ const MobileMenuContent = () => {
                 </Link>
               </MenuItem>
             ))}
-          </SubMenu> */}
+          </SubMenu>
           {/* End Home Home */}
 
           {/* <SubMenu
@@ -473,7 +546,7 @@ const MobileMenuContent = () => {
           {/* End Pages Property */}
 
           <SubMenu
-            title="Insights"
+            title="Dashboard"
             className={
               insights.some(
                 (page) =>
@@ -501,34 +574,7 @@ const MobileMenuContent = () => {
             ))}
           </SubMenu>
 
-          <SubMenu
-            title="About Us"
-            className={
-              blog.some(
-                (page) =>
-                  page.routerPath === route.pathname ||
-                  page.routerPath + "/[id]" === route.pathname
-              )
-                ? "parent-menu-active"
-                : undefined
-            }
-          >
-            {blog.map((val, i) => (
-              <MenuItem key={i}>
-                <Link
-                  href={val.routerPath}
-                  className={
-                    route.pathname === val.routerPath ||
-                    val.routerPath + "/[id]" === route.pathname
-                      ? "ui-active"
-                      : undefined
-                  }
-                >
-                  {val.name}
-                </Link>
-              </MenuItem>
-            ))}
-          </SubMenu>
+          
           {/* End pages Blog */}
 
           {/* <SubMenu

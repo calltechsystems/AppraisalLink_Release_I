@@ -23,13 +23,13 @@ const headCells = [
     id: "status",
     numeric: false,
     label: "Order Status",
-    width: 160,
+    width: 170,
   },
   {
     id: "appraisal_status",
     numeric: false,
     label: "Appraisal Status",
-    width: 160,
+    width: 170,
   },
   {
     id: "remark",
