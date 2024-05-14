@@ -50,15 +50,35 @@ const SidebarMenu = () => {
         <ul className="sidebar-menu">
           <SidebarHeader>
             <div className="sidebar-header">
-              <Link href="#" className="sidebar-header-inner">
+              <Link href="/" className="sidebar-header-inner">
                 <Image
-                  width={40}
+                  width={60}
                   height={45}
                   className="nav_logo_img img-fluid mt20"
-                  src="/assets/images/logo_new.png"
+                  src="/assets/images/Appraisal_Land_Logo.png"
                   alt="header-logo.png"
                 />
-                <span className="brand-text">Appraisal Land</span>
+                {/* <span className="brand-text">Appraisal Land</span> */}
+                <span
+                  className="brand-text"
+                  style={{
+                    marginTop: "35px",
+                    color: "#2e008b",
+                    marginLeft: "-25px",
+                  }}
+                >
+                  Appraisal
+                </span>
+                <span
+                  className="brand-text"
+                  style={{
+                    marginTop: "35px",
+                    color: "#97d700",
+                    paddingLeft: "5px",
+                  }}
+                >
+                  Land
+                </span>
               </Link>
               {/* End .logo */}
 
@@ -100,7 +120,7 @@ const SidebarMenu = () => {
               >
                 <Link href="/my-dashboard">
                   <i className="flaticon-layers"></i>
-                  <span>Broker Dashboard</span>
+                  <span>Dashboard</span>
                 </Link>
               </li>
               <li
@@ -154,17 +174,15 @@ const SidebarMenu = () => {
           </li>
 
           <li
-              className={`treeview ${
-                isSinglePageActive("/my-package", route.pathname)
-                  ? "active"
-                  : ""
-              }`}
-            >
-               <Link href="/my-package">
-                <i className="flaticon-envelope"></i>
-                <span> Transactions</span>
-              </Link> 
-            </li>
+            className={`treeview ${
+              isSinglePageActive("/my-package", route.pathname) ? "active" : ""
+            }`}
+          >
+            <Link href="/my-package">
+              <i className="flaticon-envelope"></i>
+              <span> Transactions</span>
+            </Link>
+          </li>
 
           {/* End Main */}
 

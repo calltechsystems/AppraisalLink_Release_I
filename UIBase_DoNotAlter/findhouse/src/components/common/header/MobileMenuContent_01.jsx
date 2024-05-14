@@ -50,15 +50,35 @@ const SidebarMenu = () => {
         <ul className="sidebar-menu">
           <SidebarHeader>
             <div className="sidebar-header">
-              <Link href="#" className="sidebar-header-inner">
+              <Link href="/" className="sidebar-header-inner">
                 <Image
-                  width={40}
+                  width={60}
                   height={45}
                   className="nav_logo_img img-fluid mt20"
-                  src="/assets/images/logo_new.png"
+                  src="/assets/images/Appraisal_Land_Logo.png"
                   alt="header-logo.png"
                 />
-                <span className="brand-text">Appraisal Land</span>
+                {/* <span className="brand-text">Appraisal Land</span> */}
+                <span
+                  className="brand-text"
+                  style={{
+                    marginTop: "35px",
+                    color: "#2e008b",
+                    marginLeft: "-25px",
+                  }}
+                >
+                  Appraisal
+                </span>
+                <span
+                  className="brand-text"
+                  style={{
+                    marginTop: "35px",
+                    color: "#97d700",
+                    paddingLeft: "5px",
+                  }}
+                >
+                  Land
+                </span>
               </Link>
               {/* End .logo */}
 
@@ -245,22 +265,24 @@ const SidebarMenu = () => {
           {/* End manage listing */}
 
           <li className="title">
-          <span>Manage Account</span>
-          <ul>
-            {manageAccount.map((item) => (
-              <li
-                className={
-                  isSinglePageActive(item.route, route.pathname) ? "active" : ""
-                }
-                key={item.id}
-              >
-                <Link href={item.route}>
-                  <i className={item.icon}></i> <span>{item.name}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </li>
+            <span>Manage Account</span>
+            <ul>
+              {manageAccount.map((item) => (
+                <li
+                  className={
+                    isSinglePageActive(item.route, route.pathname)
+                      ? "active"
+                      : ""
+                  }
+                  key={item.id}
+                >
+                  <Link href={item.route}>
+                    <i className={item.icon}></i> <span>{item.name}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </li>
         </ul>
       </ProSidebar>
     </>

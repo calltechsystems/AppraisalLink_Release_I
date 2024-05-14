@@ -443,7 +443,7 @@ const Index = () => {
                 </div>
               ) : (
                 <div className="row">
-                  <div className="col-lg-6">
+                  <div className="col-lg-7">
                     <div className="row">
                       <AllStatistics
                         totalBids={allAppraiser.length}
@@ -455,7 +455,7 @@ const Index = () => {
                       <StatisticsChart data={bidChartData} />
                     </div>
                   </div>
-                  <div className="col-lg-6">
+                  <div className="col-lg-5">
                     <div className="application_statics">
                       <h4 className="mb-4">Plan Wise Appraisers</h4>
                       <StatisticsPieChart planData={planCount} />

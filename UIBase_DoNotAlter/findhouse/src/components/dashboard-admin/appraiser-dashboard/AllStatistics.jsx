@@ -21,7 +21,7 @@ const AllStatistics = ({totalBids , acceptedBids}) => {
     <>
       {allStatistics.map((item) => (
         // <div className="col-sm-6 col-md-6 col-lg-6 col-xl-3" key={item.id}>
-        <div className="col-lg-6" key={item.id}>
+        <div className="col-lg-12" key={item.id}>
           <div className={`ff_one ${item.blockStyle}`}>
             <div className="detais">
               <div className="timer">{item.timer}</div>
