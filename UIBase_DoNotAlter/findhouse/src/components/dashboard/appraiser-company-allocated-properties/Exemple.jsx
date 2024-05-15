@@ -403,11 +403,11 @@ export default function Exemple({
 
   const openAssignModalHandler = (property) => {
     let requiredAppraiser = {};
-    allAssignAppraiser.map((appraiser,index)=>{
-      if(String(appraiser.id) === String(property.appraiserid)){
-        requiredAppraiser=appraiser;
+    allAssignAppraiser.map((appraiser, index) => {
+      if (String(appraiser.id) === String(property.appraiserid)) {
+        requiredAppraiser = appraiser;
       }
-    })
+    });
     setAssignPropertyId(property.$id);
     setAssignedAppraiserInfo(requiredAppraiser);
     setAssignModal(true);
@@ -431,7 +431,8 @@ export default function Exemple({
       allAssignAppraiser.map((appraiser, index) => {
         const isPresent = checkIsAlreadyExisting(appraiser, requiredAssign);
         if (
-          String(appraiser.id) === String(assigned.appraiserid) && appraiser.isActive &&
+          String(appraiser.id) === String(assigned.appraiserid) &&
+          appraiser.isActive &&
           !isPresent
         ) {
           requiredAssign.push(appraiser);
@@ -734,6 +735,7 @@ export default function Exemple({
                     isBidded.orderStatus !== 3 && (
                       <button
                         href="#"
+                        title="Update Status"
                         className="btn btn-color m-1"
                         onClick={() => openStatusUpdateHandler(isBidded)}
                       >

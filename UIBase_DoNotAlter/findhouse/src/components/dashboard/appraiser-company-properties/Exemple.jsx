@@ -737,6 +737,7 @@ export default function Exemple({
                     {isWishlist.id ? (
                       <li>
                         <button
+                          title="Remove Wishlist"
                           className="btn"
                           style={{
                             border: "1px solid grey",
@@ -844,6 +845,7 @@ export default function Exemple({
                     <>
                       <button
                         href="#"
+                        title="Update Status"
                         className="list-inline-item btn btn-color w-20"
                         // style={{ marginLeft: "12px" }}
                         onClick={() => openStatusUpdateHandler(isBidded)}
