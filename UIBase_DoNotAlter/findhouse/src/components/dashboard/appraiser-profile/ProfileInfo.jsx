@@ -318,6 +318,7 @@ const ProfileInfo = ({
   const handleFileChange = async (e, type) => {
     const allowedImageTypes = ["image/jpeg", "image/png", "image/gif"];
     const allowedPdfTypes = ["application/pdf"];
+    const file = e.target.files[0];
 
     if (String(type) === "1") {
       const fileTemp = e.target.files[0];
@@ -343,7 +344,7 @@ const ProfileInfo = ({
         toast.error("Please select a valid PDF file.");
         return;
       }
-      const file = e.target.files[0];
+      
       toast.loading("Uploading..");
       try {
         const generatedUrl = await uploadFile(file);

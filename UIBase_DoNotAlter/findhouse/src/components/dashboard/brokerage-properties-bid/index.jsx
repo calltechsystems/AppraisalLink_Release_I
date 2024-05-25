@@ -89,6 +89,7 @@ const Index = ({ propertyId }) => {
         } else {
           toast.dismiss();
           toast.error(err.message);
+          
         }
         // toast.dismiss();
         // console.log(err);

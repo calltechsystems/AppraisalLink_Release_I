@@ -132,7 +132,7 @@ const SidebarMenu = () => {
               >
                 <Link href="/my-properties">
                   <i className="flaticon-home"></i>
-                  <span>My Appraised Properties</span>
+                  <span>My Properties</span>
                 </Link>
               </li>
               <li
@@ -144,10 +144,21 @@ const SidebarMenu = () => {
               >
                 <Link href="/create-listing">
                   <i className="flaticon-plus"></i>
-                  <span> Appraise New Property</span>
+                  <span>Add New Property</span>
                 </Link>
               </li>
-
+              <li
+                className={`treeview ${
+                  isSinglePageActive("/archive-property", route.pathname)
+                    ? "active"
+                    : ""
+                }`}
+              >
+                <Link href="/archive-property">
+                  <i className="flaticon-home"></i>
+                  <span>Archived Properties</span>
+                </Link>
+              </li>
               <li
                 className={`treeview ${
                   isSinglePageActive("/my-plans", route.pathname)
