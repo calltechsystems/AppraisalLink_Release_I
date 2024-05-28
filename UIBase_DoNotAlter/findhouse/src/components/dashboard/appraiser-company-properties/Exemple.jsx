@@ -116,7 +116,7 @@ const headCells = [
     id: "action",
     numeric: false,
     label: "Action",
-    width: 280,
+    width: 170,
   },
 ];
 
@@ -647,7 +647,10 @@ export default function Exemple({
                 : "",
 
             action: (
-              <div className="print-hidden-column" style={{ display: "flex" }}>
+              <div
+                className="print-hidden-column"
+                style={{ display: "flex", justifyContent: "center" }}
+              >
                 {isBidded.$id &&
                   (isBidded.status === 2 || isBidded.status === 1) && (
                     <li
@@ -704,11 +707,11 @@ export default function Exemple({
                   </>
                 ) : isWait && property.status !== 2 ? (
                   <>
-                    <p className="btn btn-danger  w-100">
+                    {/* <p className="btn btn-danger  w-100">
                       {`No further actions can be taken on this property since it is ${
                         property.isOnCancel ? "Cancelled" : "On Hold"
                       } .`}
-                    </p>
+                    </p> */}
                     <li
                       className="list-inline-item"
                       data-toggle="tooltip"

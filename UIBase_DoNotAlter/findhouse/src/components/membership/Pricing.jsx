@@ -86,7 +86,7 @@ const Pricing = ({
             }`}
           >
             <div className="pricing_header">
-              <div className="price">{item.description}</div>
+              <div className="price">{item.planName}</div>
               {/* {String(selectedIdStyle) === String(item.id) ? (
                 <div
                   className="p-1 fw-bold"

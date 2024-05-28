@@ -10,17 +10,17 @@ import { useRouter } from "next/router";
 const Index = () => {
   const [data, setData] = useState([]);
   const router = useRouter();
-  let userData = {}
+  let userData = {};
 
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
   );
-  const [userInfo,setUserInfo] = useState({})
+  const [userInfo, setUserInfo] = useState({});
 
   useEffect(() => {
     const datas = JSON.parse(localStorage.getItem("user"));
-    setUserInfo(datas)
-  },[]);
+    setUserInfo(datas);
+  }, []);
 
   useEffect(() => {
     const activityHandler = () => {
@@ -145,9 +145,9 @@ const Index = () => {
               {/* End .row */}
 
               <div className="row align-items-center">
-                <div className="col-md-8 col-lg-8 col-xl-9">
+                <div className="col-lg-12 col-xl-12 text-center mt-1">
                   <div className="style2 mb30-991">
-                    <h2 className="breadcrumb_title m-3">Transactions</h2>
+                    <h2 className="heading-forms">Subscription History</h2>
                     {/* <p>You can see your transactions history here!</p> */}
                   </div>
                 </div>

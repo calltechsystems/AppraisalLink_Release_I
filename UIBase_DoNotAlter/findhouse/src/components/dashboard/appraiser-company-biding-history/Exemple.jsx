@@ -110,7 +110,7 @@ const headCells = [
     id: "action",
     numeric: false,
     label: "Action",
-    width: 180,
+    width: 100,
   },
 ];
 
@@ -227,7 +227,6 @@ export default function Exemple({
     return finalBid;
   };
 
-  
   const openQuoteViewModal = (bid) => {
     setCurrentBiddedView(bid);
     setOpenQuoteView(true);
@@ -421,7 +420,6 @@ export default function Exemple({
             purpose: property.purpose ? property.purpose : "N.A.",
             appraisal_status:
               isBidded.status === 1 && isBidded.orderStatus === 1 ? (
-               
                 <div className="hover-text">
                   <div
                     className="tooltip-text"
@@ -445,7 +443,6 @@ export default function Exemple({
                   </button>
                 </div>
               ) : isBidded.status === 1 && isBidded.orderStatus !== null ? (
-               
                 <div className="hover-text">
                   <div
                     className="tooltip-text"
@@ -468,7 +465,7 @@ export default function Exemple({
                   </button>
                 </div>
               ) : (
-                <span className="btn btn-warning  w-100">N.A.</span>
+                <span className="btn btn-warning w-100">N.A.</span>
               ),
             remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
             status:
@@ -568,21 +565,21 @@ export default function Exemple({
             action: (
               <div className="print-hidden-column">
                 <li
-                      className="list-inline-item"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="View Quote"
-                    >
-                      {" "}
-                      <span
-                        className="btn btn-color-table"
-                        onClick={() => openQuoteViewModal(isBidded)}
-                      >
-                        <Link href={"#"}>
-                          <span className="text-light flaticon-view"></span>
-                        </Link>
-                      </span>
-                    </li>
+                  className="list-inline-item"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="View Quote"
+                >
+                  {" "}
+                  <span
+                    className="btn btn-color-table"
+                    onClick={() => openQuoteViewModal(isBidded)}
+                  >
+                    <Link href={"#"}>
+                      <span className="text-light flaticon-view"></span>
+                    </Link>
+                  </span>
+                </li>
               </div>
             ),
           };
