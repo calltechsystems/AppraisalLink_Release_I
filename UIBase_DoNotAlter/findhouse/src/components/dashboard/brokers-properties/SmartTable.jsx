@@ -63,6 +63,23 @@ function SmartTable(props) {
     },
     [props.url]
   );
+
+  function extractTextFromReactElement(element) {
+    if (typeof element === "string") {
+      return element; // If it's a string, return it directly
+    } else if (Array.isArray(element)) {
+      // If it's an array of elements, recursively call this function for each element
+      return element
+        .map((child) => extractTextFromReactElement(child))
+        .join("");
+    } else if (typeof element === "object" && element !== null) {
+      // If it's an object (React element), recursively call this function on its children
+      return extractTextFromReactElement(element.props.children);
+    } else {
+      return ""; // Return an empty string if the element is not recognized
+    }
+  }
+  
   const handlePrint = async () => {
     try {
       // Fetch data
@@ -138,12 +155,15 @@ function SmartTable(props) {
           ) {
             const value = item[header[0].toLowerCase()];
             const className = value.props.className;
-            const content = value.props.children;
+            const content =
+              header[0].toLowerCase() === "appraisal_status"
+                ? extractTextFromReactElement(value.props.children).split(
+                    "Current Status"
+                  )[0]
+                : value.props.children;
 
-            // Create a span element to contain the content
             const spanElement = document.createElement("span");
             spanElement.textContent = content;
-
             // Apply styles based on className
             if (className.includes("bg-warning")) {
               spanElement.style.backgroundColor = "";
@@ -222,48 +242,6 @@ function SmartTable(props) {
     } catch (error) {
       console.error("Error handling print:", error);
     }
-  };
-  const handleExcelPrint = () => {
-    const twoDData = props.data.map((item, index) => {
-      return [item.bid, item.date, item.title, item.urgency];
-    });
-
-    // Remove empty arrays from twoDData
-    const filteredTwoDData = twoDData.filter((row) => row.length > 0);
-
-    // Create a workbook and add a worksheet
-    const wb = XLSX.utils.book_new();
-    const ws = XLSX.utils.aoa_to_sheet(filteredTwoDData);
-    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
-
-    // Create a blob from the workbook
-    const blob = XLSX.write(wb, {
-      bookType: "xlsx",
-      bookSST: false,
-      type: "blob",
-    });
-
-    // Create a new window for downloading Excel
-    const excelWindow = window.open("", "_blank");
-
-    // Write the Excel blob to the new window
-    excelWindow.document.write(
-      "<html><head><title>AllBrokerProperties</title></head><body>"
-    );
-    excelWindow.document.write("<h1>" + props.title + "</h1>");
-    excelWindow.document.write(
-      '<a id="download-link" download="your_excel_file.xlsx" href="#">Download Excel</a>'
-    );
-
-    // Create a download link and trigger a click event to download the file
-    const url = URL.createObjectURL(blob);
-    const downloadLink = excelWindow.document.getElementById("download-link");
-    downloadLink.href = url;
-    downloadLink.click();
-
-    // Close the new window after the file is downloaded
-    excelWindow.document.write("</body></html>");
-    excelWindow.document.close();
   };
 
   const tableWidthFunc = useCallback(() => {
