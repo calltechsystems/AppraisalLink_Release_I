@@ -151,7 +151,8 @@ const FaqContent = () => {
               aria-expanded="false"
               aria-controls="collapseSeven"
             >
-              Ques5. I didn't receive my verification email, what should I do?
+              Ques5. I didn&apos;t receive my verification email, what should I
+              do?
             </button>
           </div>
           <div
@@ -162,8 +163,8 @@ const FaqContent = () => {
           >
             <div className="card-body">
               <p>
-                Ans- Check your spam folder or click "Resend Verification Email"
-                on the sign-up page.
+                Ans- Check your spam folder or click &quot;Resend Verification
+                Email&quot; on the sign-up page.
               </p>
             </div>
           </div>
@@ -289,9 +290,9 @@ const FaqContent = () => {
           >
             <div className="card-body">
               <p>
-                Ans- To contact customer support, visit the "Contact Us"
-                section, and use available options such as email, live chat,
-                phone.
+                Ans- To contact customer support, visit the &quot;Contact
+                Us&quot; section, and use available options such as email, live
+                chat, phone.
               </p>
             </div>
           </div>
@@ -320,8 +321,8 @@ const FaqContent = () => {
             <div className="card-body">
               <p>
                 Ans- To subscribe, visit our website and click on the
-                "Subscribe" button. Follow the on-screen instructions to
-                complete the registration and payment process.
+                &quot;Subscribe&quot; button. Follow the on-screen instructions
+                to complete the registration and payment process.
               </p>
             </div>
           </div>
