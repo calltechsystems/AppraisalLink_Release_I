@@ -262,7 +262,8 @@ const FaqContent = () => {
             <div className="card-body">
               <p>
                 Ans - To change your password, log in to your account, navigate
-                to account settings, and choose the "Change Password" option.
+                to account settings, and choose the &quot;Change Password&quot;
+                option.
               </p>
             </div>
           </div>
