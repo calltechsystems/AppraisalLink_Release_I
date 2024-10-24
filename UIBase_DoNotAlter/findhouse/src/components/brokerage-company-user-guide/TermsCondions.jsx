@@ -6,7 +6,7 @@ const TermsCondions = () => {
   //   {
   //     id: 1,
   //     title: "Step 1",
-  //     text1: `Description `,
+  //     text1: `Description`,
   //     text2: `To be discussed`,
   //   },
   //   // {
@@ -70,7 +70,7 @@ const TermsCondions = () => {
         <button className=" btn btn-color">
           {" "}
           <Link
-            href="assets/images/Broker User Guide_v0.5.pdf"
+            href="assets/images/BROKERAGE MORTGAGE USER GUIDE v.2.pdf"
             target="_blank"
             className="text-light"
           >
@@ -87,6 +87,7 @@ const TermsCondions = () => {
             </div>
           ))} */}
         </div>
+        
         {/* <div className="about_thumb terms_condition_grid">
           {" "}
           <Image

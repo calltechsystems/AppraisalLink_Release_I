@@ -243,6 +243,67 @@ const Index = () => {
     setModalOpen(false);
   };
 
+  const PropertyInfoHandler = (orderId) => {
+    const printWindow = window.open("", "_blank");
+    printWindow.document.write(
+      "<html><head><title>Property Information</title></head><body>"
+    );
+    printWindow.document.write(
+      ' <img width="60" height="45" class="logo1 img-fluid" style="" src="/assets/images/Appraisal_Land_Logo.png" alt="header-logo2.png"/> <span style="color: #2e008b font-weight: bold; font-size: 24px;">Appraisal</span><span style="color: #97d700; font-weight: bold; font-size: 24px;">Land</span>'
+    );
+    printWindow.document.write(
+      "<h3>" +
+        `Properties Information of Order ID ${orderId}` +
+        "</h3>" +
+        "<style>" +
+        "h3{text-align:center;}" +
+        "</style>"
+    );
+    // printWindow.document.write(
+    //   "<h1>" + `Property info of order ${orderId}` + "</h1>"
+    // );
+    printWindow.document.write(
+      '<button style="display:none;" onclick="window.print()">Print</button>'
+    );
+
+    // Clone the table-container and remove the action column
+    const tableContainer = document.getElementById("property-info-container");
+    const table = tableContainer.querySelector("table");
+    const clonedTable = table.cloneNode(true);
+    const rows = clonedTable.querySelectorAll("tr");
+    rows.forEach((row) => {
+      const lastCell = row.querySelector("td:last-child");
+    });
+
+    // Remove the action heading from the table
+    const tableHead = clonedTable.querySelector("thead");
+    const tableHeadRows = tableHead.querySelectorAll("tr");
+    tableHeadRows.forEach((row) => {
+      const lastCell = row.querySelector("th:last-child");
+    });
+
+    // Make the table responsive for all fields
+    const tableRows = clonedTable.querySelectorAll("tr");
+    tableRows.forEach((row) => {
+      const firstCell = row.querySelector("td:first-child");
+      if (firstCell) {
+        const columnHeading = tableHeadRows[0].querySelector(
+          "th:nth-child(" + (firstCell.cellIndex + 1) + ")"
+        ).innerText;
+        firstCell.setAttribute("data-th", columnHeading);
+      }
+    });
+
+    printWindow.document.write(clonedTable.outerHTML);
+    printWindow.document.write("</body></html>");
+    printWindow.document.close();
+    printWindow.print();
+    printWindow.onafterprint = () => {
+      printWindow.close();
+      toast.success("Saved the data");
+    };
+  };
+
   useEffect(() => {
     const filterProperties = (propertys, searchInput) => {
       if (searchInput === "") {
@@ -502,7 +563,9 @@ const Index = () => {
                           searchInput={searchInput}
                           filterQuery={filterQuery}
                           properties={
-                            searchInput === "" && filterQuery === "All" ? properties : filterProperty
+                            searchInput === "" && filterQuery === "All"
+                              ? properties
+                              : filterProperty
                           }
                           setUpdatedCode={setUpdatedCode}
                           onWishlistHandler={onWishlistHandler}

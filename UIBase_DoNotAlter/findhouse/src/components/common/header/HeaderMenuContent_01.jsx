@@ -287,10 +287,10 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                       </div>
                       <div
                         className="col-lg-3"
-                        style={{ backgroundColor: "#c2c2c2" }}
+                        style={{ backgroundColor: "#dccdfa" }}
                       >
                         <div className="row">
-                          <div className="col-lg-12 mt-3 fw-bold text-center">
+                          <div className="col-lg-12 mt-4 fw-bold text-center">
                             <Link href="/about-us">
                               <button className="btn btn2 w-75 btn-color">
                                 Who We Are
@@ -391,7 +391,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                       // right: "-500px",
                       width: "1300px",
                       margin: "-16px",
-                      height: "230px",
+                      height: "220px",
                       backgroundColor: "#fff",
                       color: "#333",
                       borderTopColor: "#2e008b",
@@ -426,12 +426,12 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                       </div>
                       <div className="col-lg-2 text-start">
                         <div className="row">
-                          <div className="col-lg-12 m-4 fw-bold">
+                          <div className="col-lg-12 fw-bold">
                             <Link href="/">
                               <Image
                                 width={190}
                                 height={125}
-                                className="logo2 img-fluid mt-3"
+                                className="logo2 img-fluid mt-5"
                                 // style={{ marginRight: "10px" }}
                                 src="/assets/images/about/home-inspector-checks-condition-house-writes-report-flat-illustration_2175-8129.png"
                                 alt="header-logo2.png"
@@ -441,8 +441,8 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                         </div>
                       </div>
                       <div
-                        className="col-lg-3 text-end"
-                        style={{ backgroundColor: "#c2c2c2" }}
+                        className="col-lg-4"
+                        style={{ backgroundColor: "#dccdfa" }}
                       >
                         <div className="row">
                           <div className="col-lg-12 mt-4"></div>
@@ -461,14 +461,14 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                             </Link>
                           </div>
                           <div className="col-lg-12 mb-2">
-                            <Link href="/appraiser-user-guide">
+                            <Link href="/appraiser-company-user-guide">
                               <button className="btn w-100 btn-color">
                                 For Appraiser Company
                               </button>
                             </Link>
                           </div>
-                          <div className="col-lg-12">
-                            <Link href="/broker-user-guide">
+                          <div className="col-lg-12 mb-3">
+                            <Link href="/brokerage-company-user-guide">
                               <button className="btn w-100 btn-color">
                                 For Mortgage Brokerage
                               </button>
@@ -478,12 +478,12 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                       </div>
                       <div className="col-lg-2 text-start">
                         <div className="row">
-                          <div className="col-lg-12 m-5 fw-bold" style={{}}>
+                          <div className="col-lg-12 fw-bold" style={{marginLeft:"50px"}}>
                             <Link href="/">
                               <Image
                                 width={160}
                                 height={125}
-                                className="logo2 img-fluid"
+                                className="logo2 img-fluid mt-5"
                                 // style={{ marginRight: "10px" }}
                                 src="/assets/images/about/house-mortgage-property-inspection-audit-icon-graphic-home-real-estate-deal-review-assessment_101884-2246.png"
                                 alt="header-logo2.png"
@@ -542,10 +542,10 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                       position: "absolute",
                       top: "100%",
                       // left: "20px",
-                      right: "-470px",
-                      width: "1400px",
+                      right: "-450px",
+                      width: "1300px",
                       margin: "-16px",
-                      height: "225px",
+                      height: "220px",
                       backgroundColor: "#fff",
                       color: "#333",
                       borderTopColor: "#2e008b",
@@ -594,7 +594,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                       </div>
                       <div
                         className="col-lg-3 text-center"
-                        style={{ backgroundColor: "#c2c2c2" }}
+                        style={{ backgroundColor: "#dccdfa" }}
                       >
                         <div className="row">
                           <div className="col-lg-12 mt-5 fw-bold">
@@ -673,7 +673,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                       right: "-380px",
                       width: "1400px",
                       margin: "-16px",
-                      height: "225px",
+                      height: "220px",
                       backgroundColor: "#fff",
                       color: "#333",
                       borderTopColor: "#2e008b",
@@ -727,11 +727,11 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
 
                       <div
                         className="col-lg-3 text-end"
-                        style={{ backgroundColor: "#c2c2c2" }}
+                        style={{ backgroundColor: "#dccdfa" }}
                       >
                         <div className="row">
-                          <div className="col-lg-12 mt-4"></div>
-                          <div className="col-lg-12 mb-2">
+                          {/* <div className="col-lg-12 mt-4"></div> */}
+                          <div className="col-lg-12 mb-2 mt-4">
                             <Link href="/membership">
                               <button className="btn w-100 btn-color">
                                 For Appraiser
@@ -752,7 +752,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                               </button>
                             </Link>
                           </div>
-                          <div className="col-lg-12 mb-2">
+                          <div className="col-lg-12 mb-3">
                             <Link href="/membership">
                               <button className="btn w-100 btn-color">
                                 For Mortgage Brokerage
@@ -843,7 +843,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                       right: "-250px",
                       width: "1300px",
                       margin: "-16px",
-                      height: "225px",
+                      height: "222px",
                       backgroundColor: "#fff",
                       color: "#333",
                       borderTopColor: "#2e008b",
@@ -875,7 +875,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                       </div>
                       <div
                         className="col-lg-3 text-center"
-                        style={{ backgroundColor: "#c2c2c2" }}
+                        style={{ backgroundColor: "#dccdfa" }}
                       >
                         <div className="row text-end">
                           <div className="col-lg-12 mt-5 fw-bold">
@@ -910,7 +910,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                       </div>
                       <div
                         className="col-lg-3 text-center"
-                        style={{ backgroundColor: "#c2c2c2" }}
+                        style={{ backgroundColor: "#dccdfa" }}
                       >
                         <div className="row">
                           <div className="col-lg-12 mt-1 fw-bold">
