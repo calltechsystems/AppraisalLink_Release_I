@@ -7,7 +7,7 @@ import axios from "axios";
 import { encryptionData } from "../../utils/dataEncryption";
 import Captcha from "../common/Captcha";
 
-const Form = () => {
+const Form = ({ setModalIsOpen }) => {
   const [captchaVerfied, setCaptchaVerified] = useState(false);
   const [reloadOption, setReloadOption] = useState(false);
   const [change, setChange] = useState(false);
@@ -47,11 +47,13 @@ const Form = () => {
         .then((res) => {
           toast.dismiss();
           setShow(true);
-          toast.success("Sent Successfully");
+          // toast.success("Sent Successfully");
+          setModalIsOpen(true);
         })
         .catch((err) => {
           toast.dismiss();
-          toast.success("Sent Successfully");
+          // toast.success("Sent Successfully");
+          setModalIsOpen(true);
           // toast.error("Try again");
         });
     }
@@ -161,18 +163,22 @@ const Form = () => {
     <>
       <div className="row">
         <Link
-        title="Close"
+          title="Close"
           href={"/login"}
           className="text-end text-light mt-2"
           style={{ marginLeft: "34rem" }}
         >
-          <span className="flaticon-close bg-danger p-2" style={{borderRadius:"10%"}}></span>
+          <span
+            className="flaticon-close bg-danger p-2"
+            style={{ borderRadius: "10%" }}
+          ></span>
         </Link>
         <div className="col-lg-6">
           <Image
             width={157}
             height={300}
-            className="img-fluid w100 h-90 cover mt-5"
+            className="img-fluid w100 h-90 cover"
+            style={{ marginTop: "17%" }}
             src="/assets/images/home/forgot-password.avif"
             alt="login.jpg"
           />
@@ -192,6 +198,34 @@ const Form = () => {
                 ref={emailRef}
                 required
                 placeholder="Email Address"
+              />
+              <div className="">
+                <div className="button-class-close-forgot">
+                  <button
+                    onClick={onClickHandler}
+                    className="btn btn-log w-100 btn-thm mb-0"
+                    style={{ marginLeft: "5px" }}
+                  >
+                    Send OTP
+                  </button>
+                </div>
+              </div>
+            </div>
+            {/* End .input-group */}
+
+            <div className="divide">
+              <span className="lf_divider">Or</span>
+              <hr />
+            </div>
+            {/* devider */}
+
+            <div className="input-group mb-2 mr-sm-2">
+              <input
+                type="email"
+                className="form-control"
+                ref={emailRef}
+                required
+                placeholder="Phone Number"
               />
               <div className="">
                 <div className="button-class-close-forgot">

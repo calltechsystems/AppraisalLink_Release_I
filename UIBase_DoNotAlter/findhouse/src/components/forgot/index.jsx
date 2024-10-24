@@ -4,16 +4,24 @@ import Footer from "../common/footer/Footer";
 import Header from "../common/header/DefaultHeader_01";
 import MobileMenu from "../common/header/MobileMenu";
 // import PopupSignInUp from "../common/PopupSignInUp";
+import Link from "next/link";
 import BreadCrumbBanner from "./BreadCrumbBanner";
+import Image from "next/image";
 import Form from "./Form";
 import { useEffect, useState } from "react";
 
 const Index = () => {
   const router = useRouter();
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
   );
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+    // router.push("/");
+  };
 
   useEffect(() => {
     const activityHandler = () => {
@@ -75,7 +83,7 @@ const Index = () => {
                   marginTop: "25px",
                 }}
               >
-                <Form />
+                <Form setModalIsOpen={setModalIsOpen} />
               </div>
             </div>
           </div>
@@ -97,6 +105,86 @@ const Index = () => {
           <CopyrightFooter />
         </div>
       </section>
+
+      {modalIsOpen && (
+        <div className="modal">
+          <div
+            className="modal-content"
+            style={{ borderColor: "green", width: "40%" }}
+          >
+            <div className="col-lg-12">
+              <div className="row">
+                <div className="col-lg-12">
+                  <Link href="/" className="">
+                    <Image
+                      width={60}
+                      height={45}
+                      className="logo1 img-fluid"
+                      style={{ marginTop: "-20px" }}
+                      src="/assets/images/Appraisal_Land_Logo.png"
+                      alt="header-logo2.png"
+                    />
+                    <span
+                      style={{
+                        color: "#2e008b",
+                        fontWeight: "bold",
+                        fontSize: "24px",
+                        // marginTop: "20px",
+                      }}
+                    >
+                      Appraisal
+                    </span>
+                    <span
+                      style={{
+                        color: "#97d700",
+                        fontWeight: "bold",
+                        fontSize: "24px",
+                        // marginTop: "20px",
+                      }}
+                    >
+                      {" "}
+                      Land
+                    </span>
+                  </Link>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-lg-12 text-center">
+                  <h3 className=" text-success mt-1">Success</h3>
+                </div>
+              </div>
+              <div
+                className="mt-2 mb-3"
+                style={{ border: "2px solid #97d700" }}
+              ></div>
+            </div>
+            <span
+              className="text-center mb-2 text-dark fw-bold"
+              style={{ fontSize: "18px" }}
+            >
+               Your OTP has been successfully sent to your registered email and
+              phone number. Please check your inbox and messages to complete the
+              verification.
+            </span>
+            <div
+              className="mt-2 mb-3"
+              style={{ border: "2px solid #97d700" }}
+            ></div>
+            <div
+              className="col-lg-12 text-center"
+              style={{ display: "flex", justifyContent: "center" }}
+            >
+              <button
+                className="btn btn-color w-50"
+                onClick={() => closeModal()}
+                style={{}}
+              >
+                Ok
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

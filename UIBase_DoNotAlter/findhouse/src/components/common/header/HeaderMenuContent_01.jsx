@@ -287,7 +287,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                       </div>
                       <div
                         className="col-lg-3"
-                        style={{ backgroundColor: "#dccdfa" }}
+                        style={{ backgroundColor: "#f6f5f7" }}
                       >
                         <div className="row">
                           <div className="col-lg-12 mt-4 fw-bold text-center">
@@ -442,7 +442,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                       </div>
                       <div
                         className="col-lg-4"
-                        style={{ backgroundColor: "#dccdfa" }}
+                        style={{ backgroundColor: "#f6f5f7" }}
                       >
                         <div className="row">
                           <div className="col-lg-12 mt-4"></div>
@@ -594,7 +594,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                       </div>
                       <div
                         className="col-lg-3 text-center"
-                        style={{ backgroundColor: "#dccdfa" }}
+                        style={{ backgroundColor: "#f6f5f7" }}
                       >
                         <div className="row">
                           <div className="col-lg-12 mt-5 fw-bold">
@@ -727,7 +727,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
 
                       <div
                         className="col-lg-3 text-end"
-                        style={{ backgroundColor: "#dccdfa" }}
+                        style={{ backgroundColor: "#f6f5f7" }}
                       >
                         <div className="row">
                           {/* <div className="col-lg-12 mt-4"></div> */}
@@ -875,7 +875,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                       </div>
                       <div
                         className="col-lg-3 text-center"
-                        style={{ backgroundColor: "#dccdfa" }}
+                        style={{ backgroundColor: "#f6f5f7" }}
                       >
                         <div className="row text-end">
                           <div className="col-lg-12 mt-5 fw-bold">
@@ -910,7 +910,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                       </div>
                       <div
                         className="col-lg-3 text-center"
-                        style={{ backgroundColor: "#dccdfa" }}
+                        style={{ backgroundColor: "#f6f5f7" }}
                       >
                         <div className="row">
                           <div className="col-lg-12 mt-1 fw-bold">
