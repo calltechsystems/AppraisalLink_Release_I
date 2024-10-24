@@ -73,7 +73,8 @@ const Index = () => {
               style={{
                 backgroundColor: "#2e008b",
                 color: "white",
-                padding: "15px",
+                paddingTop: "10px",
+                paddingBottom: "2px"
               }}
             >
               <h2 className="mt0 text-light">
