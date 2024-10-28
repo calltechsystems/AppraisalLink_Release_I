@@ -162,7 +162,7 @@ const Form = ({ setModalIsOpen }) => {
   return (
     <>
       <div className="row">
-        <Link
+        {/* <Link
           title="Close"
           href={"/login"}
           className="text-end text-light mt-2"
@@ -172,7 +172,7 @@ const Form = ({ setModalIsOpen }) => {
             className="flaticon-close bg-danger p-2"
             style={{ borderRadius: "10%" }}
           ></span>
-        </Link>
+        </Link> */}
         <div className="col-lg-6">
           <Image
             width={157}
@@ -187,7 +187,7 @@ const Form = ({ setModalIsOpen }) => {
         <div className="col-lg-6 pt60 ">
           <div style={{ padding: "20px" }}>
             <div className="heading text-center">
-              <h3>Reset your password via registered email.</h3>
+              <h3>Reset your password via registered email or Phone.</h3>
             </div>
             {/* End .heading */}
 

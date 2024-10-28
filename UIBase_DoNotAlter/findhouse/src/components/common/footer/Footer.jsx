@@ -53,22 +53,25 @@ const Footer = () => {
           <h4>Contact Us</h4>
           <ul className="list-unstyled">
             <li>
-              <a href="#" className="text-light">
+              <a className="text-light">
                 123 Main Street
               </a>
             </li>
             <li>
-              <a href="#" className="text-light">
+              <a className="text-light">
                 Brampton, LX23Y2, Ontario
               </a>
             </li>
             <li>
               <Link href="mailto:info@appraisalLand.ca" className="text-light">
+              <span className="flaticon-envelope p-1"></span>
                 info@appraisalLand.ca
               </Link>
             </li>
             <li>
-              <a href="tel:+13020001111" className="text-light">
+              {/* <a href="tel:+13020001111" className="text-light"> */}
+              <a className="text-light">
+              <span className="flaticon-telephone p-1"></span>
                 +1 302-000-1111
               </a>
             </li>

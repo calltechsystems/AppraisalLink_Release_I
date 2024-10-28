@@ -97,6 +97,45 @@ const Index = () => {
             <div className="col-lg-12">
               <div className="home_content home4">
                 <div
+                  className="social-icons d-none d-lg-block"
+                  style={{
+                    position: "fixed",
+                    right: "2px",
+                    top: "160px",
+                    borderRadius: "5px",
+                    padding: "5px",
+                    backgroundColor: "#2e008b",
+                  }}
+                >
+                  <a
+                    href="https://facebook.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="social-link social"
+                  >
+                    <i className="fa fa-facebook mx-2"></i>
+                  </a>
+                  <br />
+                  <a
+                    href="https://twitter.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="social-link"
+                  >
+                    <i className="fa fa-instagram mx-2"></i>
+                  </a>
+                  <br />
+                  <a
+                    href="https://instagram.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="social-link"
+                  >
+                    <i className="fa fa-linkedin mx-2"></i>
+                  </a>
+                </div>
+
+                <div
                   className="d-none d-lg-block d-xl-block d-md-block home-text text-center"
                   style={{ marginTop: "-190px", marginBottom: "100px" }}
                 >

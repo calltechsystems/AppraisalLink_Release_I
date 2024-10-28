@@ -23035,3 +23035,32 @@ input:checked + .slider:before {
   transition: all 0.3s ease;
   z-index: 0;
 }
+
+.social-link {
+  color: white;
+  width: 30px;
+  font-weight: bold;
+  transition: transform 0.3s ease-in-out;
+
+}
+
+.social-link:hover {
+  width: 30px;
+  color: #97d700;
+  transform: scale(1.2);
+}
+
+
+.social {
+  
+  /* position: relative;
+  text-align: center; */
+  transition: all 0.6s ease !important;
+}
+
+.social:hover {
+  /* box-shadow: 0px 0px 50px 0px rgba(19, 19, 28, 0.12); */
+  /* cursor: pointer; */
+  box-shadow: 0px 0px 50px 0px rgb(151, 215, 0, 0.22) !important;
+  transform: scale(1.1) !important;
+}

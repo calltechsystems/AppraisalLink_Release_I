@@ -72,15 +72,15 @@ const Index = () => {
       {/* <BreadCrumbBanner /> */}
 
       {/* <!-- Our LogIn Register --> */}
-      <section className="our-log bgc-fa pt100">
+      <section className="our-log bgc-fa pt50">
         <div className="container">
           <div className="row  ">
             <div className="col-sm-12 col-lg-12 offset-lg-0">
               <div
                 className="login_form  inner_page"
                 style={{
-                  boxShadow: "10px 10px 50px 10px rgba(19, 19, 28, 0.52)",
-                  marginTop: "25px",
+                  // boxShadow: "10px 10px 50px 10px rgba(19, 19, 28, 0.52)",
+                  marginTop: "5px",
                 }}
               >
                 <Form setModalIsOpen={setModalIsOpen} />
