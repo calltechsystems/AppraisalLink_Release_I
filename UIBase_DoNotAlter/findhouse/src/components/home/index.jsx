@@ -283,7 +283,7 @@ const Index = () => {
               >
                 Our Brokerage Partners
               </h2>
-              <p>We work with the best brokers around the country.</p>
+              <p>We work with the Best Brokers at Brokerage Companies.</p>
             </div>
           </div>
         </div>
@@ -310,7 +310,7 @@ const Index = () => {
               >
                 Our Appraiser Partners
               </h2>
-              <p>We work with the best appraisers around the country.</p>
+              <p>We work with the Best Appraisers at Appraisal Companies.</p>
             </div>
           </div>
         </div>

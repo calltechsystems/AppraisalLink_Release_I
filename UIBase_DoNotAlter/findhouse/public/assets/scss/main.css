@@ -10077,7 +10077,7 @@ form.home5_advanced_search_form
 .inner_page_breadcrumb {
   background-image: url(../images/home/Membership-Page.jpg);
   background-repeat: no-repeat;
-  height: 220px;
+  /* height: 220px; */
   margin-top: 18px;
   position: relative;
   text-align: center;

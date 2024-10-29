@@ -64,12 +64,12 @@ const Index = () => {
       <BreadCrumbBanner />
 
       {/* <!-- About Text Content --> */}
-      <section className="about-section">
+      <div className="about-section">
         {/* <div className="container"> */}
         <div className="row">
           <div className="col-lg-12">
             <div
-              className="main-title text-center"
+              className="main-title text-center mt-2"
               style={{
                 backgroundColor: "#2e008b",
                 color: "white",
@@ -162,7 +162,7 @@ const Index = () => {
         </div>
         {/* End .row */}
         {/* </div> */}
-      </section>
+      </div>
 
       {/* <!-- Property Search --> */}
       <section

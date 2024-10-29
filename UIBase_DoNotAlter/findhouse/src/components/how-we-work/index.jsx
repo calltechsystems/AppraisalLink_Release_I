@@ -66,12 +66,12 @@ const Index = () => {
       <BreadCrumbBanner />
 
       {/* <!-- About Text Content --> */}
-      <section className="about-section" style={{ background: "aliceblue" }}>
+      <div className="about-section" style={{  }}>
         {/* <div className="container"> */}
         <div className="row">
           <div className="col-lg-12">
             <div
-              className="main-title text-center"
+              className="main-title text-center mt-2"
               style={{
                 backgroundColor: "#2e008b",
                 color: "white",
@@ -85,7 +85,7 @@ const Index = () => {
         </div>
         {/* End .row */}
 
-        <div className="container mb-5">
+        <div className="container mb-5 bgc-f7">
           <div className="row">
             {/* <OurMission /> */}
             <TermsCondions />
@@ -115,7 +115,7 @@ const Index = () => {
             </div>
           </div>
         </section>
-      </section>
+      </div>
 
       {/* <!-- Our Footer --> */}
       <section className="footer_one p20">

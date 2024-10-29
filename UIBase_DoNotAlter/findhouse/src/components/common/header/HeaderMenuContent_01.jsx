@@ -949,7 +949,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                   </div>
                 ) : null}
               </li>
-              <li
+              {/* <li
                 className="dropitem"
                 onMouseEnter={() => setInsight()}
                 onMouseOver={() => setAbout()}
@@ -969,7 +969,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                   >
                     En
                   </span>
-                  {/* <span className="arrow" style={{ marginLeft: "-5px" }}></span> */}
+                  <span className="arrow" style={{ marginLeft: "-5px" }}></span>
                 </Link>
                 <ul className="sub-menu" style={{ fontWeight: "bold" }}>
                   {blog.map((item) => (
@@ -987,7 +987,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                     </li>
                   ))}
                 </ul>
-              </li>{" "}
+              </li>{" "} */}
               <li
                 className={`list-inline-item add_listing ${float}`}
                 style={{ padding: "0px" }}

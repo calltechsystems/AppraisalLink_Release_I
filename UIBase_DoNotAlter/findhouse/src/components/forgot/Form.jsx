@@ -187,7 +187,7 @@ const Form = ({ setModalIsOpen }) => {
         <div className="col-lg-6 pt60 ">
           <div style={{ padding: "20px" }}>
             <div className="heading text-center">
-              <h3>Reset your password via registered email or Phone.</h3>
+              <h2>Reset your password</h2>
             </div>
             {/* End .heading */}
 
@@ -197,7 +197,7 @@ const Form = ({ setModalIsOpen }) => {
                 className="form-control"
                 ref={emailRef}
                 required
-                placeholder="Email Address"
+                placeholder="Registered email address"
               />
               <div className="">
                 <div className="button-class-close-forgot">
@@ -214,7 +214,7 @@ const Form = ({ setModalIsOpen }) => {
             {/* End .input-group */}
 
             <div className="divide">
-              <span className="lf_divider">Or</span>
+              <span className="lf_divider fw-bold">OR</span>
               <hr />
             </div>
             {/* devider */}
@@ -225,7 +225,7 @@ const Form = ({ setModalIsOpen }) => {
                 className="form-control"
                 ref={emailRef}
                 required
-                placeholder="Phone Number"
+                placeholder="Registered phone number"
               />
               <div className="">
                 <div className="button-class-close-forgot">
