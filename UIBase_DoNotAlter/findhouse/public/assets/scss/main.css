@@ -12351,10 +12351,11 @@ a.btn.btn_error {
 }
 
 .terms_condition_grid .grids p {
-  font-size: 15px;
+  font-size: 16px;
   font-family: "Nunito";
   color: #484848;
-  line-height: 1.714;
+  line-height: 1.314;
+  /* line-height: 1.714; */
   text-align: justify;
 }
 

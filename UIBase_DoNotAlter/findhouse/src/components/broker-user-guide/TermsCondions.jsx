@@ -67,18 +67,16 @@ const TermsCondions = () => {
         </div>
       </div> */}
       <div className="col-lg-12 col-xl-12">
-        <button className=" btn btn-color">
-          {" "}
-          <Link
-            href="assets/images/Broker User Guide_v0.5.pdf"
-            target="_blank"
-            className="text-light"
-          >
-            Download pdf
-          </Link>
-        </button>
         <div className="terms_condition_grid mt-1">
-          <h4>Step 1</h4>
+          <div className="grids mb30">
+            <h4></h4>
+            <p>
+              This guide will help you navigate through each step of our portal,
+              from registration to managing your profile and accessing property
+              details.
+            </p>
+          </div>
+
           {/* {termsContent.map((item) => (
             <div className="grids mb30" key={item.id}>
               <h4>{item.title}</h4>
@@ -86,6 +84,16 @@ const TermsCondions = () => {
               <p>{item.text2}</p>
             </div>
           ))} */}
+          <button className=" btn btn-color">
+            {" "}
+            <Link
+              href="assets/images/Broker User Guide_v0.5.pdf"
+              target="_blank"
+              className="text-light"
+            >
+              Download pdf
+            </Link>
+          </button>
         </div>
         {/* <div className="about_thumb terms_condition_grid">
           {" "}

@@ -11,6 +11,8 @@ import Team from "./Team";
 import OurMission from "./OurMission";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import Event from "./Event"
+// import { Events } from "react-toast/dist/types";
 
 const Index = () => {
   const router = useRouter();
@@ -64,30 +66,31 @@ const Index = () => {
       <BreadCrumbBanner />
 
       {/* <!-- About Text Content --> */}
-      <section className="about-section">
+      <div className="about-section">
         {/* <div className="container"> */}
         <div className="row">
           <div className="col-lg-12">
             <div
-              className="main-title text-center"
+              className="main-title text-center mt-2"
               style={{
                 backgroundColor: "#2e008b",
                 color: "white",
                 paddingTop: "10px",
-                paddingBottom: "2px"
+                paddingBottom: "2px",
               }}
             >
-              <h2 className="mt0 text-light">Our Events on Appraisal Link</h2>
+              <h2 className="mt0 text-light">Our Events on Appraisal Land</h2>
             </div>
           </div>
         </div>
         {/* End .row */}
 
-        <section className="our-terms bgc-f7">
+        <div className="our-terms bgc-f7 mb-5 ">
           <div className="container">
             <TermsCondions />
+            {/* <Event /> */}
           </div>
-        </section>
+        </div>
 
         {/* <div className="container">
           <div className="row">
@@ -115,7 +118,7 @@ const Index = () => {
         </div> */}
         {/* End .row */}
         {/* </div> */}
-      </section>
+      </div>
 
       {/* <!-- Our Team --> */}
       {/* <section className="our-team bgc-f7">

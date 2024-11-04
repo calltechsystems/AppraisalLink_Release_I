@@ -13,7 +13,7 @@ import TermsCondions from "./TermsCondions";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-
+import UserGuide from "./UserGuide";
 const Index = () => {
   const router = useRouter();
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
@@ -66,12 +66,12 @@ const Index = () => {
       <BreadCrumbBanner />
 
       {/* <!-- About Text Content --> */}
-      <section className="about-section" style={{ background: "aliceblue" }}>
+      <div className="about-section" style={{ background: "aliceblue" }}>
         {/* <div className="container"> */}
         <div className="row">
           <div className="col-lg-12">
             <div
-              className="main-title text-center"
+              className="main-title text-center mt-2"
               style={{
                 backgroundColor: "#2e008b",
                 color: "white",
@@ -88,6 +88,7 @@ const Index = () => {
           <div className="row">
             {/* <OurMission /> */}
             <TermsCondions />
+            {/* <UserGuide /> */}
           </div>
         </div>
         {/* End .row */}
@@ -114,7 +115,7 @@ const Index = () => {
             </div>
           </div>
         </section>
-      </section>
+      </div>
 
       {/* <!-- Our Footer --> */}
       <section className="footer_one p20">
