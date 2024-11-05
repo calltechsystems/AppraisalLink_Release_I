@@ -149,7 +149,7 @@ const UserGuide_01 = () => {
                 target="_blank"
                 className="text-light"
               >
-                Download pdf
+                <i className="fa fa-download mr10"></i> Download pdf
               </Link>
             </button>
           </div>
@@ -159,7 +159,7 @@ const UserGuide_01 = () => {
 
       <div className="col-lg-4 col-xl-4">
         <div className="terms_condition_widget">
-          <h4 className="title">Navigation</h4>
+          <h4 className="title">Navigation for Mortgage Broker</h4>
           <div className="widget_list">
             <ul className="list_details">
               {navigationList.map((list) => (
@@ -171,6 +171,19 @@ const UserGuide_01 = () => {
                 </li>
               ))}
             </ul>
+          </div>
+          <div className="mt-4">
+            <h5>For More Info download pdf below link.</h5>
+            <button className=" btn btn-color">
+              {" "}
+              <Link
+                href="assets/images/Broker User Guide_v0.5.pdf"
+                target="_blank"
+                className="text-light"
+              >
+                <i className="fa fa-download mr10"></i> Download pdf
+              </Link>
+            </button>
           </div>
         </div>
       </div>
