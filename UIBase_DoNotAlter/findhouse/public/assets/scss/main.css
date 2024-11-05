@@ -23065,3 +23065,72 @@ input:checked + .slider:before {
   box-shadow: 0px 0px 50px 0px rgb(151, 215, 0, 0.22) !important;
   transform: scale(1.1) !important;
 }
+
+/* user guide page */
+
+.userGuide {
+  display: flex;
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+.sidebar_userguide {
+  width: 20%;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-right: 1px solid #ddd;
+}
+
+.sidebar_userguide h2 {
+  margin-bottom: 20px;
+  font-size: 1.2em;
+  color: #007bff;
+}
+
+.sidebarLink {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.sidebarLink:hover, .activeLink {
+  font-weight: bold;
+  color: #0056b3;
+}
+
+.scrollTop {
+  margin-top: 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.content {
+  width: 80%;
+  padding: 20px;
+}
+
+.section_userguide {
+  margin-bottom: 40px;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.section_userguide h2 {
+  display: flex;
+  align-items: center;
+  font-size: 1.4em;
+  color: #333;
+  margin-bottom: 10px;
+}

@@ -6,13 +6,15 @@ import Partners from "../common/Partners";
 import WhyChoose from "../common/WhyChoose";
 import Testimonial from "../home-7/Testimonial";
 import BreadCrumbBanner from "./BreadCrumbBanner";
-import Team from "./Team";
-import OurMission from "./OurMission";
+import Team from "./UserGuide_01";
+// import OurMission from "./OurMission";
 import Image from "next/image";
 import TermsCondions from "./TermsCondions";
 import Land from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import UserGuide from "./UserGuide";
+import UserGuide_01 from "./UserGuide_01";
 
 const Index = () => {
   const router = useRouter();
@@ -84,10 +86,12 @@ const Index = () => {
         </div>
         {/* End .row */}
 
-        <div className="container mb-5">
+        <div className="container-fluid mb-5">
           <div className="row">
             {/* <OurMission /> */}
-            <TermsCondions />
+            {/* <TermsCondions /> */}
+            {/* <UserGuide/> */}
+            <UserGuide_01/>
           </div>
         </div>
         {/* End .row */}
