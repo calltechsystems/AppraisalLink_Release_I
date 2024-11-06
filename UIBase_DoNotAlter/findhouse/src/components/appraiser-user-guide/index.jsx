@@ -7,7 +7,7 @@ import WhyChoose from "../common/WhyChoose";
 import Testimonial from "../home-7/Testimonial";
 import BreadCrumbBanner from "./BreadCrumbBanner";
 import Team from "./Team";
-import OurMission from "./OurMission";
+// import OurMission from "./OurMission";
 import Image from "next/image";
 import TermsCondions from "./TermsCondions";
 import Link from "next/link";
