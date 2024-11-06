@@ -13,6 +13,7 @@ import TermsCondions from "./TermsCondions";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import UserGuide from "./UserGuide";
 
 const Index = () => {
   const router = useRouter();
@@ -84,10 +85,10 @@ const Index = () => {
         </div>
         {/* End .row */}
 
-        <div className="container mb-5">
+        <div className="container-fluid mb-5">
           <div className="row">
-            {/* <OurMission /> */}
-            <TermsCondions />
+            {/* <TermsCondions /> */}
+            <UserGuide />
           </div>
         </div>
         {/* End .row */}

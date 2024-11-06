@@ -84,11 +84,10 @@ const Index = () => {
         </div>
         {/* End .row */}
 
-        <div className="container mb-5">
+        <div className="container-fluid mb-5">
           <div className="row">
-            {/* <OurMission /> */}
-            <TermsCondions />
-            {/* <UserGuide /> */}
+            {/* <TermsCondions /> */}
+            <UserGuide />
           </div>
         </div>
         {/* End .row */}
