@@ -91,7 +91,7 @@ const Index = () => {
         <div className="ovh">
           <div className="row">
             <div className="col-lg-12 col-lg-6 maxw100flex-992">
-              <div className="main-title text-center">
+              <div className="main-title text-center mt-2">
                 <h2
                   className=""
                   style={{
