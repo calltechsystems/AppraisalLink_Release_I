@@ -8,7 +8,7 @@ const BreadCrumbBanner = () => {
           <div className="col-xl-12">
             <div className="breadcrumb_content">
               {/* <BreadCrumb title="Membership" /> */}
-              <h4 className="breadcrumb_title">Subscription For Mortgage Broker</h4>
+              <h4 className="breadcrumb_title">Subscription For Appraiser</h4>
             </div>
           </div>
           {/* End .col */}

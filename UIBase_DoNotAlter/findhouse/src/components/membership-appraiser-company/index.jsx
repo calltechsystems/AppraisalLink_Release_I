@@ -87,7 +87,7 @@ const Index = () => {
       <BreadCrumbBanner />
 
       {/* <!-- Service Section Area --> */}
-      <section className="our-dashbord" style={{}}>
+      <div className="our-dashbord" style={{}}>
         <div className="ovh">
           <div className="row">
             <div className="col-lg-12 col-lg-6 maxw100flex-992">
@@ -168,7 +168,7 @@ const Index = () => {
           </div>
           {/* End .row */}
         </div>
-      </section>
+      </div>
 
       {/* <!-- Property Search --> */}
       <section
