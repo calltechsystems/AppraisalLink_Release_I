@@ -9,6 +9,8 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/router";
+import Package from "./Package";
+import BreadCrumbBanner from "./BreadCrumbBanner";
 
 // import Header from "../home/Header";
 
@@ -82,10 +84,10 @@ const Index = () => {
       {/* <!-- Modal --> */}
 
       {/* <!-- Inner Page Breadcrumb --> */}
-      {/* <BreadCrumbBanner /> */}
+      <BreadCrumbBanner />
 
       {/* <!-- Service Section Area --> */}
-      <section className="our-dashbord mt-5" style={{}}>
+      <section className="our-dashbord" style={{}}>
         <div className="ovh">
           <div className="row">
             <div className="col-lg-12 col-lg-6 maxw100flex-992">
@@ -141,13 +143,20 @@ const Index = () => {
 
           <div className="container">
             <div className="row">
-              <Pricing
+              <Package
                 isPlan={selectedPlan}
                 setModalOpen={setModalOpen}
                 setPrice={setPrice}
                 data={planData}
                 selectedplan={selectedPlan}
               />
+              {/* <Pricing
+                isPlan={selectedPlan}
+                setModalOpen={setModalOpen}
+                setPrice={setPrice}
+                data={planData}
+                selectedplan={selectedPlan}
+              /> */}
               <Modal
                 modalOpen={modalOpen}
                 closeModal={closeModal}

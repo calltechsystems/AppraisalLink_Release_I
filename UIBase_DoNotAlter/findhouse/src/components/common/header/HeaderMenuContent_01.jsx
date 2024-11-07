@@ -643,10 +643,10 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                 onMouseEnter={() => setInsight()}
               >
                 <Link
-                  href="/membership"
+                  href="/membership-broker"
                   onMouseOver={() => setAbout()}
                   className={
-                    route.pathname === "/membership" ? "ui-active" : undefined
+                    route.pathname === "/membership-broker" ? "ui-active" : undefined
                   }
                 >
                   <span
@@ -732,28 +732,28 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                         <div className="row">
                           {/* <div className="col-lg-12 mt-4"></div> */}
                           <div className="col-lg-12 mb-2 mt-4">
-                            <Link href="/membership">
+                            <Link href="/membership-appraiser">
                               <button className="btn w-100 btn-color">
                                 For Appraiser
                               </button>
                             </Link>
                           </div>
                           <div className="col-lg-12 mb-2">
-                            <Link href="/membership">
+                            <Link href="/membership-broker">
                               <button className="btn w-100 btn-color">
                                 For Mortgage Broker
                               </button>
                             </Link>
                           </div>
                           <div className="col-lg-12 mb-2">
-                            <Link href="/membership">
+                            <Link href="/membership-appraiser-company">
                               <button className="btn w-100 btn-color">
                                 For Appraiser Company
                               </button>
                             </Link>
                           </div>
                           <div className="col-lg-12 mb-3">
-                            <Link href="/membership">
+                            <Link href="/membership-brokerage-company">
                               <button className="btn w-100 btn-color">
                                 For Mortgage Brokerage
                               </button>
