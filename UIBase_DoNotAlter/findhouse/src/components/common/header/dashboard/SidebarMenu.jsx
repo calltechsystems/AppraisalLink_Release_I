@@ -304,7 +304,7 @@ const SidebarMenu = () => {
             </Link>
           </li>
         )}
-        {!isBrokerByBrokerage ? (
+        {isBrokerByBrokerage ? (
           ""
         ) : (
           <li className="link-hover sidebar-menu">
