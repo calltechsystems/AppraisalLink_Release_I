@@ -52,8 +52,21 @@ const TermsCondions = () => {
 
   return (
     <div className="row">
-      
-      <div className="col-lg-8 col-xl-8">
+      <div className="col-lg-12 col-xl-12">
+        <div className="terms_condition_widget">
+          <div className="widget_list">
+            <Image
+              width={461}
+              height={359}
+              priority
+              className="w100 cover responsive-img"  
+              src="/assets/images/service/Flowchart_new.png"
+              alt="1.jpg"
+            />
+          </div>
+        </div>
+      </div>
+      <div className="col-lg-12 col-xl-12">
         <div className="terms_condition_grid">
           {termsContent.map((item) => (
             <div className="grids mb30" key={item.id}>
@@ -82,7 +95,7 @@ const TermsCondions = () => {
         </div> */}
       </div>
 
-      <div className="col-lg-4 col-xl-4">
+      {/* <div className="col-lg-4 col-xl-4">
         <div className="terms_condition_widget">
           <div className="widget_list">
             <Image
@@ -90,12 +103,12 @@ const TermsCondions = () => {
               height={359}
               priority
               className="w100 cover"
-              src="/assets/images/service/flowchart.png"
+              src="/assets/images/service/Flowchart_new.png"
               alt="1.jpg"
             />
           </div>
         </div>
-      </div>
+      </div> */}
       {/* End .col */}
     </div>
   );

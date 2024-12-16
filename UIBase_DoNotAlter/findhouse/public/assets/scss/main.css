@@ -23134,3 +23134,21 @@ input:checked + .slider:before {
   color: #333;
   margin-bottom: 10px;
 }
+.responsive-img {
+  width: 100%;
+  height: auto;
+}
+
+@media (max-width: 768px) {
+  .widget_list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .responsive-img {
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+  }
+}
