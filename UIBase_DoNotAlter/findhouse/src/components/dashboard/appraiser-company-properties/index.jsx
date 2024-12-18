@@ -41,7 +41,6 @@ const Index = () => {
   const [openQuoteView, setOpenQuoteView] = useState(false);
   const [currentBiddedView, setCurrentBiddedView] = useState({});
 
-
   const [assignAppraiserId, setassignAppraiserId] = useState(-1);
 
   const [wishlistedProperties, setWishlistedProperties] = useState([]);
@@ -202,7 +201,14 @@ const Index = () => {
       })
       .catch((err) => {
         toast.dismiss();
-        toast.error(err);
+        // Extract a meaningful error message
+        const errorMessage =
+          err.response?.data?.message || // API-provided error message
+          err.message || // General Axios error message
+          "An unexpected error occurred."; // Fallback message
+
+        toast.error(errorMessage);
+        // toast.error(err);
       });
     setAssignPropertyId(-1);
   };
@@ -595,7 +601,6 @@ const Index = () => {
     const formattedDate = estDate.toLocaleString("en-US", options);
     return formattedDate;
   };
-
 
   const participateHandler = (val, id, isUpdate, value, isBidded) => {
     console.log(val, id, isUpdate, value);
@@ -1862,7 +1867,15 @@ const Index = () => {
                     </div>
                     <h5 className="text-center">
                       The Last Provided Quote was for ${" "}
-                      <span style={{color:"green",fontWeight:"bold",fontSize:"22px"}}>{addCommasToNumber(currentBiddedView?.bidAmount)}</span>
+                      <span
+                        style={{
+                          color: "green",
+                          fontWeight: "bold",
+                          fontSize: "22px",
+                        }}
+                      >
+                        {addCommasToNumber(currentBiddedView?.bidAmount)}
+                      </span>
                     </h5>
                     <h5 className="text-center">
                       Updated At : {formatDate(currentBiddedView?.requestTime)}
