@@ -14,7 +14,7 @@ const SidebarMenu = () => {
   const [isBrokerByBrokerage, setIsBrokerByBrokerage] = useState(false);
   useEffect(() => {
     userData = JSON.parse(localStorage.getItem("user"));
-    if (userData?.broker_Details?.brokerageId !== null) {
+    if (userData?.broker_Details?.brokerageid !== null) {
       setIsBrokerByBrokerage(true);
     }
   }, []);
@@ -273,7 +273,7 @@ const SidebarMenu = () => {
 
         <li className="title">
           <span>Manage Account</span>
-          {!isBrokerByBrokerage ? (
+          {isBrokerByBrokerage ? (
             ""
           ) : (
             <ul>
@@ -294,7 +294,7 @@ const SidebarMenu = () => {
             </ul>
           )}
         </li>
-        {isBrokerByBrokerage ? (
+        {!isBrokerByBrokerage ? (
           ""
         ) : (
           <li className="link-hover sidebar-menu">
@@ -304,7 +304,7 @@ const SidebarMenu = () => {
             </Link>
           </li>
         )}
-        {isBrokerByBrokerage ? (
+        {!isBrokerByBrokerage ? (
           ""
         ) : (
           <li className="link-hover sidebar-menu">

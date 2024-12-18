@@ -147,7 +147,7 @@ export default function Exemple({
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [show, setShow] = useState(false);
-  const [isEdited,setIsEdited] = useState(false)
+  const [isEdited, setIsEdited] = useState(false);
   const [dataFetched, setDataFetched] = useState(false);
   let tempData = [];
 
@@ -160,11 +160,10 @@ export default function Exemple({
     }
   }, [refresh]);
 
-  useEffect(()=>{
-    console.log("userNameSearch",userNameSearch)
-    setIsEdited(true)
-  },[userNameSearch,statusSearch])
-
+  useEffect(() => {
+    console.log("userNameSearch", userNameSearch);
+    setIsEdited(true);
+  }, [userNameSearch, statusSearch]);
 
   const sortObjectsByOrderIdDescending = (data) => {
     return data.sort((a, b) => b.order_id - a.order_id);
@@ -200,7 +199,7 @@ export default function Exemple({
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
-      hour12: true, 
+      hour12: true,
     };
 
     const formattedDate = new Date(dateString).toLocaleString("en-US", options);
@@ -212,7 +211,7 @@ export default function Exemple({
       year: "numeric",
       month: "short",
       day: "numeric",
-      hour12: true, 
+      hour12: true,
     };
 
     const formattedDate = new Date(dateString).toLocaleString("en-US", options);
@@ -230,25 +229,26 @@ export default function Exemple({
     return app?.userId ? true : false;
   };
 
-
-  const checkAlreadythere = (data,orderId)=>{
+  const checkAlreadythere = (data, orderId) => {
     let isPresent = false;
-    data.map((row,index)=>{
-      if(String(row.orderId) === String(orderId)){
+    data.map((row, index) => {
+      if (String(row.orderId) === String(orderId)) {
         isPresent = true;
       }
-    })
-    return isPresent
-  }
+    });
+    return isPresent;
+  };
 
   const getBidOfProperty = (orderId) => {
     let allBid = [];
 
     allBids.map((bid, index) => {
-      if ( String(bid.orderId) === String(orderId)) {
+      if (String(bid.orderId) === String(orderId)) {
         allAppraisers.map((appraiser, idx) => {
-          if ((String(appraiser.userId) === String(bid.appraiserUserId)) &&
-          !checkAlreadythere(allBid,bid.orderId)) {
+          if (
+            String(appraiser.userId) === String(bid.appraiserUserId) &&
+            !checkAlreadythere(allBid, bid.orderId)
+          ) {
             allBid.push(bid);
           }
         });
@@ -288,29 +288,36 @@ export default function Exemple({
       if (
         bid.orderId === property.orderId &&
         bid.status === 1 &&
-        bid.orderStatus === 3 && !property.isOnCancel &&
+        bid.orderStatus === 3 &&
+        !property.isOnCancel &&
         !property.isOnHold
       ) {
         isCompleted = true;
       }
-      if (bid.orderId === property.orderId && bid.status === 1 
-        && !property.isOnCancel &&
-        !property.isOnHold) {
+      if (
+        bid.orderId === property.orderId &&
+        bid.status === 1 &&
+        !property.isOnCancel &&
+        !property.isOnHold
+      ) {
         isAccepted = true;
-      } else if (bid.orderId === property.orderId && !property.isOnCancel &&
-        !property.isOnHold) {
+      } else if (
+        bid.orderId === property.orderId &&
+        !property.isOnCancel &&
+        !property.isOnHold
+      ) {
         isQuoteProvided = true;
       }
     });
     return isCompleted ? 3 : isAccepted ? 2 : isQuoteProvided ? 1 : 0;
   };
 
-  const isPlanOnly = (plan)=>{
+  const isPlanOnly = (plan) => {
     const isLite = String(plan.planName).toLowerCase().includes("lite");
     const isPro = String(plan.planName).toLowerCase().includes("pro");
     const isUltimate = String(plan.planName).toLowerCase().includes("ultimate");
     return isLite || isPro || isUltimate;
-  }
+  };
 
   const getCurrentBrokerPlan = (property) => {
     const data = JSON.parse(localStorage.getItem("user"));
@@ -346,7 +353,7 @@ export default function Exemple({
   };
 
   const openBrokerModalView = (appraiserId) => {
-    const selectedAppraiser = getAppraiser(appraiserId)
+    const selectedAppraiser = getAppraiser(appraiserId);
     openModalBroker(selectedAppraiser, 2);
   };
 
@@ -355,59 +362,61 @@ export default function Exemple({
     setCurrentProperty(property);
   };
 
-  const isLikeUserSearchedType = (userInfo)=>{
-    
+  const isLikeUserSearchedType = (userInfo) => {
     const searchFrom = String(userInfo.firstName).toLowerCase();
     const searchFrom2 = String(userInfo.lastName).toLowerCase();
     const serachWith = String(userNameSearch).toLowerCase();
-    if(userNameSearch === "" || (searchFrom.includes(serachWith) || searchFrom2.includes(serachWith))){
+    if (
+      userNameSearch === "" ||
+      searchFrom.includes(serachWith) ||
+      searchFrom2.includes(serachWith)
+    ) {
       return true;
     }
     return false;
-  }
+  };
 
-  const isAccordingToStatus = (bidStatus,property,isBidded)=>{
-    if(isBidded.status === 2)
-     return false;
-      if(String(statusSearch) === "0")
-       return true;
-      if((property.isOnHold)  && String(statusSearch) === "6" ){
-        return true;
-      }
-      if((property.isOnCancel) && String(statusSearch) === "5"){
-        return true;
-      }
-      if(String(bidStatus)=== "2" && String(statusSearch) === "1"){
-        return true;
-      }
-      if(String(bidStatus)=== "3" && String(statusSearch) === "2"){
-        return true;
-      }
-      if(String(bidStatus)=== "1" && String(statusSearch) === "3"){
-        return true;
-      }
-      if(String(bidStatus)=== "0" && String(statusSearch) === "4"){
-        return true;
-      }
+  const isAccordingToStatus = (bidStatus, property, isBidded) => {
+    if (isBidded.status === 2) return false;
+    if (String(statusSearch) === "0") return true;
+    if (property.isOnHold && String(statusSearch) === "6") {
+      return true;
+    }
+    if (property.isOnCancel && String(statusSearch) === "5") {
+      return true;
+    }
+    if (String(bidStatus) === "2" && String(statusSearch) === "1") {
+      return true;
+    }
+    if (String(bidStatus) === "3" && String(statusSearch) === "2") {
+      return true;
+    }
+    if (String(bidStatus) === "1" && String(statusSearch) === "3") {
+      return true;
+    }
+    if (String(bidStatus) === "0" && String(statusSearch) === "4") {
+      return true;
+    }
 
-      return false
-
-  }
+    return false;
+  };
 
   useEffect(() => {
-
-    
     const getData = () => {
       properties.map((property, index) => {
         const allListedBids = getBidOfProperty(property.orderId);
         allListedBids?.map((isBidded, index) => {
           const isHold = property.isOnHold;
           const isCancel = property.isOnCancel;
-          const showUser = getAppraiser(isBidded.appraiserUserId)
+          const showUser = getAppraiser(isBidded.appraiserUserId);
           const isCorrect = isLikeUserSearchedType(showUser);
-          
-         const isStatus = getPropertyStatusHandler(property);
-          const toSelectedStatus =  isAccordingToStatus(isStatus,property,isBidded) ;
+
+          const isStatus = getPropertyStatusHandler(property);
+          const toSelectedStatus = isAccordingToStatus(
+            isStatus,
+            property,
+            isBidded
+          );
           if (!property.isArchive && toSelectedStatus && isCorrect) {
             const updatedRow = {
               order_id: property.orderId,
@@ -517,7 +526,9 @@ export default function Exemple({
                       textDecoration: "underline",
                       backgroundColor: "transparent",
                     }}
-                    onClick={() => openBrokerModalView(isBidded.appraiserUserId)}
+                    onClick={() =>
+                      openBrokerModalView(isBidded.appraiserUserId)
+                    }
                   >
                     {showUser.firstName}
                   </button>
@@ -560,52 +571,52 @@ export default function Exemple({
           }
         });
       });
-      setIsEdited(false)
+      setIsEdited(false);
       setUpdatedData(tempData);
     };
     getData();
-  }, [properties,allAppraisers , isEdited]);
+  }, [properties, allAppraisers, isEdited]);
 
   useEffect(() => {
-    setAllAppraisers([])
-    setProperties([])
-    setBids([])
+    setAllAppraisers([]);
+    setProperties([]);
+    setBids([]);
     const data = JSON.parse(localStorage.getItem("user"));
 
     axios
-    .get("/api/getAllListedProperties", {
-      headers: {
-        Authorization: `Bearer ${data?.token}`,
-        "Content-Type": "application/json",
-      },
-    })
-    .then((res) => {
-      toast.dismiss();
-      setDataFetched(true);
-      const AllMentionedProperties = res.data.data.properties.$values;
-      
-      axios
-        .get("/api/getAllBids", {
-          headers: {
-            Authorization: `Bearer ${data.token}`,
-          },
-        })
-        .then((result) => {
-          tempBids = result.data.data.$values;
+      .get("/api/getAllListedProperties", {
+        headers: {
+          Authorization: `Bearer ${data?.token}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        toast.dismiss();
+        setDataFetched(true);
+        const AllMentionedProperties = res.data.data.properties.$values;
 
-          setBids(tempBids);
-          setProperties(AllMentionedProperties);
-        })
-        .catch((err) => {
-          toast.error(err);
-          setDataFetched(false);
-          // setModalIsOpenError(true);
-        });
-    })
-    .catch((err) => {
-      toast.dismiss();
-      toast.error(err?.response?.data?.error);
-    });
+        axios
+          .get("/api/getAllBids", {
+            headers: {
+              Authorization: `Bearer ${data.token}`,
+            },
+          })
+          .then((result) => {
+            tempBids = result.data.data.$values;
+
+            setBids(tempBids);
+            setProperties(AllMentionedProperties);
+          })
+          .catch((err) => {
+            toast.error(err);
+            setDataFetched(false);
+            // setModalIsOpenError(true);
+          });
+      })
+      .catch((err) => {
+        toast.dismiss();
+        toast.error(err?.response?.data?.error);
+      });
 
     axios
       .get("/api/getAllAppraiserCompanies", {
@@ -616,7 +627,7 @@ export default function Exemple({
 
       .then((res) => {
         let allappraiser = res.data.data.result.$values;
-        setAllAppraisers(allappraiser)
+        setAllAppraisers(allappraiser);
       })
       .catch((err) => {});
 
