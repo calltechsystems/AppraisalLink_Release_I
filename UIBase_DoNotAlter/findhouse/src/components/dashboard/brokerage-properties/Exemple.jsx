@@ -302,7 +302,7 @@ export default function Exemple({
       if (
         bid.orderId === property.orderId &&
         bid.status === 1 &&
-        bid.orderStatus === 3
+        bid.orderstatus === 3
       ) {
         isCompleted = true;
       }
@@ -328,8 +328,8 @@ export default function Exemple({
     const getData = () => {
       properties.map((property, index) => {
         const isBidded = getBidOfProperty(property.orderId);
-        const isHold = property.isOnHold;
-        const isCancel = property.isOnCancel;
+        const isHold = property.isonhold;
+        const isCancel = property.isoncancel;
         const isStatus = getPropertyStatusHandler(property);
         console.log(isStatus);
         const isEditable = isStatus === 0 ? true : false;
@@ -369,11 +369,11 @@ export default function Exemple({
                 <button className="btn btn-warning w-100">
                   {isHold ? "N.A." : "N.A."}
                 </button>
-              ) : isBidded.orderStatus !== 1 &&
-                isBidded.orderStatus !== null &&
-                isBidded.orderStatus !== undefined ? (
+              ) : isBidded.orderstatus !== 1 &&
+                isBidded.orderstatus !== null &&
+                isBidded.orderstatus !== undefined ? (
                 // <span className="btn bg-warning  w-100">
-                //   {getOrderValue(isBidded.orderStatus)}
+                //   {getOrderValue(isBidded.orderstatus)}
                 // </span>
                 <div className="hover-text">
                   <div
@@ -385,7 +385,7 @@ export default function Exemple({
                   >
                     <ul>
                       <li style={{ fontSize: "15px" }}>
-                        {getOrderValue(isBidded.orderStatus)}
+                        {getOrderValue(isBidded.orderstatus)}
                       </li>
                     </ul>
                   </div>
@@ -398,10 +398,10 @@ export default function Exemple({
                 </div>
               ) : isBidded.$id &&
                 isBidded.status === 1 &&
-                isBidded.orderStatus === 1 &&
-                isBidded.orderStatus !== undefined ? (
+                isBidded.orderstatus === 1 &&
+                isBidded.orderstatus !== undefined ? (
                 // <span className="btn bg-warning  w-100">
-                //   {getOrderValue(isBidded.orderStatus)} -
+                //   {getOrderValue(isBidded.orderstatus)} -
                 //   {formatDate(isBidded.statusDate)}
                 // </span>
                 <div className="hover-text">
@@ -414,7 +414,7 @@ export default function Exemple({
                   >
                     <ul>
                       <li style={{ fontSize: "15px" }}>
-                        {getOrderValue(isBidded.orderStatus)} - {""}
+                        {getOrderValue(isBidded.orderstatus)} - {""}
                         {formatDate(isBidded.statusDate)}
                       </li>
                     </ul>
@@ -434,18 +434,18 @@ export default function Exemple({
             //     <span className="btn bg-warning w-100">
             //       {isHold ? "N.A." : "N.A."}
             //     </span>
-            //   ) : isBidded.orderStatus !== 1 &&
-            //     isBidded.orderStatus !== null &&
-            //     isBidded.orderStatus !== undefined ? (
+            //   ) : isBidded.orderstatus !== 1 &&
+            //     isBidded.orderstatus !== null &&
+            //     isBidded.orderstatus !== undefined ? (
             //     <span className="btn bg-warning  w-100">
-            //       {getOrderValue(isBidded.orderStatus)}
+            //       {getOrderValue(isBidded.orderstatus)}
             //     </span>
             //   ) : isBidded.$id &&
             //     isBidded.status === 1 &&
-            //     isBidded.orderStatus === 1 &&
-            //     isBidded.orderStatus !== undefined ? (
+            //     isBidded.orderstatus === 1 &&
+            //     isBidded.orderstatus !== undefined ? (
             //     <span className="btn bg-warning  w-100">
-            //       {getOrderValue(isBidded.orderStatus)} -
+            //       {getOrderValue(isBidded.orderstatus)} -
             //       {formatDate(isBidded.statusDate)}
             //     </span>
             //   ) : (

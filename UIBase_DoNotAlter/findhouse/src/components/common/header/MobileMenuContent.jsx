@@ -292,6 +292,20 @@ const blog = [
   //   routerPath: "/blog-details",
   // },
 ];
+const membership = [
+  { id: 1, name: "Mortgage Broker", routerPath: "/membership-broker" },
+  { id: 2, name: "Appraiser", routerPath: "/membership-appraiser" },
+  {
+    id: 3,
+    name: "Mortgage Brokerage",
+    routerPath: "/membership-brokerage-company",
+  },
+  {
+    id: 4,
+    name: "Appraiser Company",
+    routerPath: "/membership-appraiser-company",
+  },
+];
 
 const pages = [
   {
@@ -574,7 +588,6 @@ const MobileMenuContent = () => {
             ))}
           </SubMenu>
 
-          
           {/* End pages Blog */}
 
           {/* <SubMenu
@@ -610,6 +623,28 @@ const MobileMenuContent = () => {
               Subscription
             </Link>
           </MenuItem>
+
+          <SubMenu
+            title="Subscription"
+            className={
+              membership.some((page) => page.routerPath === route.pathname)
+                ? "parent-menu-active"
+                : undefined
+            }
+          >
+            {membership.map((val, i) => (
+              <MenuItem key={i}>
+                <Link
+                  href={val.routerPath}
+                  className={
+                    route.pathname === val.routerPath ? "ui-active" : undefined
+                  }
+                >
+                  {val.name}
+                </Link>
+              </MenuItem>
+            ))}
+          </SubMenu>
 
           {/* <MenuItem>
             <Link

@@ -229,7 +229,7 @@ export default function Exemple({
       if (
         bid.orderId === property.orderId &&
         bid.status === 1 &&
-        bid.orderStatus === 3
+        bid.orderstatus === 3
       ) {
         isCompleted = true;
       }
@@ -250,8 +250,8 @@ export default function Exemple({
     const getData = () => {
       properties.map((property, index) => {
         const isBidded = getBidOfProperty(property.orderId);
-        const isHold = property.isOnHold;
-        const isCancel = property.isOnCancel;
+        const isHold = property.isonhold;
+        const isCancel = property.isoncancel;
         const isStatus = getPropertyStatusHandler(property);
         const isEditable = isStatus === 0 ? true : false;
         if (!property.isArchive) {
@@ -288,11 +288,11 @@ export default function Exemple({
                 <button className="btn btn-warning w-100">
                   {isHold ? "N.A." : "N.A."}
                 </button>
-              ) : isBidded.orderStatus !== 1 &&
-                isBidded.orderStatus !== null &&
-                isBidded.orderStatus !== undefined ? (
+              ) : isBidded.orderstatus !== 1 &&
+                isBidded.orderstatus !== null &&
+                isBidded.orderstatus !== undefined ? (
                 // <span className="btn bg-warning  w-100">
-                //   {getOrderValue(isBidded.orderStatus)}
+                //   {getOrderValue(isBidded.orderstatus)}
                 // </span>
                 <div className="hover-text">
                   <div
@@ -304,7 +304,7 @@ export default function Exemple({
                   >
                     <ul>
                       <li style={{ fontSize: "15px" }}>
-                        {getOrderValue(isBidded.orderStatus)}
+                        {getOrderValue(isBidded.orderstatus)}
                       </li>
                     </ul>
                   </div>
@@ -317,10 +317,10 @@ export default function Exemple({
                 </div>
               ) : isBidded.$id &&
                 isBidded.status === 1 &&
-                isBidded.orderStatus === 1 &&
-                isBidded.orderStatus !== undefined ? (
+                isBidded.orderstatus === 1 &&
+                isBidded.orderstatus !== undefined ? (
                 // <span className="btn bg-warning  w-100">
-                //   {getOrderValue(isBidded.orderStatus)} -
+                //   {getOrderValue(isBidded.orderstatus)} -
                 //   {formatDate(isBidded.statusDate)}
                 // </span>
                 <div className="hover-text">
@@ -333,7 +333,7 @@ export default function Exemple({
                   >
                     <ul>
                       <li style={{ fontSize: "15px" }}>
-                        {getOrderValue(isBidded.orderStatus)} -
+                        {getOrderValue(isBidded.orderstatus)} -
                         {formatDate(isBidded.statusDate)}
                       </li>
                     </ul>
@@ -523,7 +523,7 @@ export default function Exemple({
                 {/* {isEditable && ( */}
                 {!isCancel && isStatus !== 3 && (
                   <li title={!isHold ? "On Hold" : "Remove Hold"}>
-                    <span
+                    {/* <span
                       className="btn btn-color-table "
                       style={{ border: "1px solid grey" }}
                       // onClick={() => onHoldHandler(property.propertyId, !isHold)}
@@ -534,7 +534,17 @@ export default function Exemple({
                       <Link href="#" className="text-light">
                         <FaPause />
                       </Link>
-                    </span>
+                    </span> */}
+                    <button
+                      className="btn btn-color-table"
+                      style={{ border: "1px solid grey" }}
+                      onClick={() =>
+                        openModal(property.orderId, 1, isHold ? 0 : property)
+                      }
+                      aria-label="Pause Property"
+                    >
+                      <FaPause className="text-light" />
+                    </button>
                   </li>
                 )}
                 {/* )} */}

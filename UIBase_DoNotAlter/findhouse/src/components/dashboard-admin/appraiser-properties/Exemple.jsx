@@ -313,12 +313,12 @@ export default function Exemple({
     return isCompleted ? 3 : isAccepted ? 2 : isQuoteProvided ? 1 : 0;
   };
 
-  const isPlanOnly = (plan)=>{
+  const isPlanOnly = (plan) => {
     const isLite = String(plan.planName).toLowerCase().includes("lite");
     const isPro = String(plan.planName).toLowerCase().includes("pro");
     const isUltimate = String(plan.planName).toLowerCase().includes("ultimate");
     return isLite || isPro || isUltimate;
-  }
+  };
   const getCurrentBrokerPlan = (property) => {
     const data = JSON.parse(localStorage.getItem("user"));
     axios

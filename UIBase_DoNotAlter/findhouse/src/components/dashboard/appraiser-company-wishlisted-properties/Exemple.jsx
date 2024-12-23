@@ -421,9 +421,9 @@ export default function Exemple({
 
         if (!isArchive && !isAssigned && isWishlist.id) {
           if (isBidded.status === 1) {
-            console.log(getOrderValue(isBidded.orderStatus));
+            console.log(getOrderValue(isBidded.orderstatus));
           }
-          const isWait = property.isOnHold || property.isOnCancel;
+          const isWait = property.isonhold || property.isOnCancel;
           const updatedRow = {
             order_id: property.orderId,
             address: `${property.city}-${property.province},${property.zipCode}`,
@@ -432,9 +432,9 @@ export default function Exemple({
               : "$ 0",
             purpose: property.purpose ? property.purpose : "N.A.",
             appraisal_status:
-              isBidded.status === 1 && isBidded.orderStatus === 1 ? (
+              isBidded.status === 1 && isBidded.orderstatus === 1 ? (
                 // <span className="btn btn-warning  w-100">
-                //   {getOrderValue(isBidded.orderStatus)} -
+                //   {getOrderValue(isBidded.orderstatus)} -
                 //   {formatDate(isBidded.statusDate)}
                 // </span>
                 <div className="hover-text">
@@ -447,7 +447,7 @@ export default function Exemple({
                   >
                     <ul>
                       <li style={{ fontSize: "15px" }}>
-                        {getOrderValue(isBidded.orderStatus)} -
+                        {getOrderValue(isBidded.orderstatus)} -
                         {formatDate(isBidded.statusDate)}
                       </li>
                     </ul>
@@ -459,9 +459,9 @@ export default function Exemple({
                     </span>
                   </button>
                 </div>
-              ) : isBidded.status === 1 && isBidded.orderStatus !== null ? (
+              ) : isBidded.status === 1 && isBidded.orderstatus !== null ? (
                 // <span className="btn btn-warning  w-100">
-                //   {getOrderValue(isBidded.orderStatus)}
+                //   {getOrderValue(isBidded.orderstatus)}
                 // </span>
                 <div className="hover-text">
                   <div
@@ -473,7 +473,7 @@ export default function Exemple({
                   >
                     <ul>
                       <li style={{ fontSize: "15px" }}>
-                        {getOrderValue(isBidded.orderStatus)}
+                        {getOrderValue(isBidded.orderstatus)}
                       </li>
                     </ul>
                   </div>
@@ -495,12 +495,12 @@ export default function Exemple({
                 <span className="btn btn-danger  w-100">
                   {property.isOnCancel
                     ? "Cancelled"
-                    : property.isOnHold
+                    : property.isonhold
                     ? "On Hold"
                     : ""}
                 </span>
               ) : isBidded.bidId ? (
-                isBidded.orderStatus === 3 ? (
+                isBidded.orderstatus === 3 ? (
                   <span className="btn btn-completed w-100">Completed</span>
                 ) : isBidded.status === 0 ? (
                   <span className="btn btn-primary  w-100">Quote Provided</span>
@@ -728,8 +728,8 @@ export default function Exemple({
                       </div>
                     </li>
                   </>
-                ) : isBidded.orderStatus <= 6 &&
-                  isBidded.orderStatus !== 3 &&
+                ) : isBidded.orderstatus <= 6 &&
+                  isBidded.orderstatus !== 3 &&
                   isBidded.status === 1 ? (
                   <>
                     <li
@@ -767,7 +767,7 @@ export default function Exemple({
                   </>
                 ) : (
                   isBidded.status === 1 &&
-                  isBidded.orderStatus === 3 && (
+                  isBidded.orderstatus === 3 && (
                     <ul>
                       <li
                         className="list-inline-item"

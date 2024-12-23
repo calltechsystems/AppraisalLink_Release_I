@@ -380,16 +380,16 @@ export default function Exemple({
 
         const isArchive = foundArchiveHandler(property.propertyId);
 
-        if (!isArchive && isBidded.status === 1 && isBidded.orderStatus !== 3) {
+        if (!isArchive && isBidded.status === 1 && isBidded.orderstatus !== 3) {
           if (isBidded.status === 1) {
-            console.log(getOrderValue(isBidded.orderStatus));
+            console.log(getOrderValue(isBidded.orderstatus));
           }
 
           if (isBidded.status === 1) {
             console.log(isBidded);
           }
           tempProp.push(property);
-          const isWait = property.isOnHold || property.isOnCancel;
+          const isWait = property.isonhold || property.isoncancel;
           const updatedRow = {
             order_id: property.orderId,
             address: `${property.city}-${property.province},${property.zipCode}`,
@@ -398,9 +398,9 @@ export default function Exemple({
               : "$ 0",
             purpose: property.purpose ? property.purpose : "N.A.",
             appraisal_status:
-              isBidded.status === 1 && isBidded.orderStatus === 1 ? (
+              isBidded.status === 1 && isBidded.orderstatus === 1 ? (
                 // <span className="btn btn-warning  w-100">
-                //   {getOrderValue(isBidded.orderStatus)} -
+                //   {getOrderValue(isBidded.orderstatus)} -
                 //   {formatDate(isBidded.statusDate)}
                 // </span>
                 <div className="hover-text">
@@ -413,7 +413,7 @@ export default function Exemple({
                   >
                     <ul>
                       <li style={{ fontSize: "15px" }}>
-                        {getOrderValue(isBidded.orderStatus)} -
+                        {getOrderValue(isBidded.orderstatus)} -
                         {formatDate(isBidded.statusDate)}
                       </li>
                     </ul>
@@ -425,9 +425,9 @@ export default function Exemple({
                     </span>
                   </button>
                 </div>
-              ) : isBidded.status === 1 && isBidded.orderStatus !== null ? (
+              ) : isBidded.status === 1 && isBidded.orderstatus !== null ? (
                 // <span className="btn btn-warning  w-100">
-                //   {getOrderValue(isBidded.orderStatus)}
+                //   {getOrderValue(isBidded.orderstatus)}
                 // </span>
                 <div className="hover-text">
                   <div
@@ -439,7 +439,7 @@ export default function Exemple({
                   >
                     <ul>
                       <li style={{ fontSize: "15px" }}>
-                        {getOrderValue(isBidded.orderStatus)}
+                        {getOrderValue(isBidded.orderstatus)}
                       </li>
                     </ul>
                   </div>
@@ -455,18 +455,18 @@ export default function Exemple({
               ),
             // remark:
             //   isBidded && isBidded.remark
-            //     ? isBidded.orderStatus === 1
+            //     ? isBidded.orderstatus === 1
             //       ? `${isBidded.remark} on ${formatDate(isBidded.modifiedDate)}`
             //       : isBidded.remark
             //     : "N.A.",
             remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
-            order_status: isBidded.orderStatus,
+            order_status: isBidded.orderstatus,
             status: isWait ? (
               <span className="btn btn-danger  w-100">
-                {property.isOnHold ? "On Hold" : "Cancelled"}
+                {property.isonhold ? "On Hold" : "Cancelled"}
               </span>
             ) : isBidded.bidId ? (
-              isBidded.orderStatus === 3 ? (
+              isBidded.orderstatus === 3 ? (
                 <span className="btn btn-completed  w-100">Completed</span>
               ) : isBidded.status === 0 ? (
                 <span className="btn btn-primary  w-100">Quote Provided</span>
@@ -587,7 +587,7 @@ export default function Exemple({
               //     <ul>
               //       <p className="btn btn-danger  w-100">
               //         {`No further actions can be taken on this property since it is ${
-              //           property.isOnCancel ? "Cancelled" : "On Hold"
+              //           property.isoncancel ? "Cancelled" : "On Hold"
               //         } .`}
               //       </p>
               //       <li
@@ -707,7 +707,7 @@ export default function Exemple({
               //       </li>
               //     </ul>
               //   ) : (
-              //     isBidded.orderStatus <= 6 && (
+              //     isBidded.orderstatus <= 6 && (
               //       <>
               //         <button
               //           href="#"
