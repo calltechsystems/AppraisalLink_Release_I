@@ -528,8 +528,8 @@ export default function Exemple({
 
             action: (
               <div
-                className="print-hidden-column"
-                style={{ display: "flex", justifyContent: "space-evenly" }}
+                className="print-hidden-column d-flex gap-1"
+                // style={{ display: "flex", justifyContent: "center" }}
               >
                 {
                   <ul className="mb0 d-flex gap-1">
@@ -627,11 +627,11 @@ export default function Exemple({
                   <span className="btn btn-success  w-100">Completed</span>
                 ) : isWait && property.status !== 2 ? (
                   <>
-                    <p className="btn btn-danger  w-100">
+                    {/* <p className="btn btn-danger  w-100">
                       {`No further actions can be taken on this property since it is ${
                         property.isoncancel ? "Cancelled" : "On Hold"
                       } !.`}
-                    </p>
+                    </p> */}
                     <li
                       className="list-inline-item"
                       data-toggle="tooltip"

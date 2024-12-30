@@ -700,11 +700,11 @@ export default function Exemple({
                   </>
                 ) : isWait && property.status !== 2 ? (
                   <>
-                    <p className="btn btn-danger  w-100">
+                    {/* <p className="btn btn-danger  w-100">
                       {`No further actions can be taken on this property since it is ${
                         property.isOnCancel ? "Cancelled" : "On Hold"
                       } .`}
-                    </p>
+                    </p> */}
                     <li
                       className="list-inline-item"
                       data-toggle="tooltip"

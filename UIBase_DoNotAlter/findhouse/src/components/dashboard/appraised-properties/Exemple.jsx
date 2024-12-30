@@ -109,7 +109,7 @@ const headCells = [
     id: "action",
     numeric: false,
     label: "Action",
-    width: 280,
+    width: 170,
   },
 ];
 
@@ -152,7 +152,7 @@ export default function Exemple({
   const [hideAction, setHideAction] = useState(false);
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
-  const [archivedProperties,setArchivedProperties] = useState([]);
+  const [archivedProperties, setArchivedProperties] = useState([]);
   const [dataFetched, setDataFetched] = useState(false);
 
   const [statusData, setStatusData] = useState([]);
@@ -223,15 +223,15 @@ export default function Exemple({
     return finalBid;
   };
 
-  const getisAlreadyArchived = (propertyId)=>{
+  const getisAlreadyArchived = (propertyId) => {
     let isPresent = false;
-    archivedProperties.map((prop,index)=>{
-      if(String(prop.propertyId) === String(propertyId)){
+    archivedProperties.map((prop, index) => {
+      if (String(prop.propertyId) === String(propertyId)) {
         isPresent = true;
       }
     });
     return isPresent;
-  }
+  };
 
   const filterBidsWithin24Hours = (property) => {
     const data = JSON.parse(localStorage.getItem("user"));
@@ -493,7 +493,9 @@ export default function Exemple({
                   </button>
                 </div>
               ) : (
-                <button className="btn btn-warning" style={{width:"90%"}}><span>N.A.</span></button>
+                <button className="btn btn-warning" style={{ width: "90%" }}>
+                  <span>N.A.</span>
+                </button>
               ),
             remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
             status:
@@ -513,7 +515,9 @@ export default function Exemple({
                 isBidded.orderstatus === 3 ? (
                   <span className="btn btn-completed w-100">Completed</span>
                 ) : isBidded.status === 0 ? (
-                  <span className="btn bg-info text-light w-100">Quote Provided</span>
+                  <span className="btn bg-info text-light w-100">
+                    Quote Provided
+                  </span>
                 ) : isBidded.status === 1 ? (
                   <span className="btn btn-success  w-100">Accepted</span>
                 ) : (
@@ -539,7 +543,9 @@ export default function Exemple({
                       Broker Info
                     </button>
                   </a>
-                ) : isBidded.status === 2 || anotherBid?.bidId || (anotherBid === true && isBidded.status !== 2) ? (
+                ) : isBidded.status === 2 ||
+                  anotherBid?.bidId ||
+                  (anotherBid === true && isBidded.status !== 2) ? (
                   <h6 style={{ color: "red" }}> Declined</h6>
                 ) : alreadyAccepted ? (
                   <span>
@@ -567,7 +573,9 @@ export default function Exemple({
                       Property Info
                     </button>
                   </a>
-                ) : isBidded.status === 2 || anotherBid?.bidId || (anotherBid === true && isBidded.status !== 2)? (
+                ) : isBidded.status === 2 ||
+                  anotherBid?.bidId ||
+                  (anotherBid === true && isBidded.status !== 2) ? (
                   <h6 style={{ color: "red" }}> Declined</h6>
                 ) : alreadyAccepted ? (
                   <span>
@@ -599,7 +607,10 @@ export default function Exemple({
                 : "N.A.",
 
             action: (
-              <div className="print-hidden-column" style={{ display: "flex" }}>
+              <div
+                className="print-hidden-column"
+                style={{ display: "flex", justifyContent: "center" }}
+              >
                 {isBidded.$id &&
                   (isBidded.status === 2 || isBidded.status === 1) &&
                   !anotherBid?.bidId && (
@@ -621,7 +632,7 @@ export default function Exemple({
                     </li>
                   )}
 
-                {isBidded.status === 2 || anotherBid ? (
+                {isBidded.status === 2 || anotherBid.bidId ? (
                   <>
                     <ul>
                       <li
@@ -650,11 +661,11 @@ export default function Exemple({
                   </>
                 ) : isWait ? (
                   <>
-                    <p className="btn btn-danger  w-100">
+                    {/* <p className="btn btn-danger  w-100">
                       {`No further actions can be taken on this property since it is ${
                         property.isoncancel ? "Cancelled" : "On Hold"
                       } .`}
-                    </p>
+                    </p> */}
                     <li
                       className="list-inline-item"
                       data-toggle="tooltip"
@@ -667,7 +678,7 @@ export default function Exemple({
                           onArchivePropertyHandler(property.orderId)
                         }
                       >
-                        <button href="#" className="btn btn-color m-1">
+                        <button href="#" className="btn btn-color ">
                           <Link href="#">
                             <span className="text-light">
                               {" "}
@@ -680,13 +691,29 @@ export default function Exemple({
                   </>
                 ) : isBidded.$id && isBidded.orderstatus === 3 ? (
                   <>
-                    <p className="btn btn-success  w-100">Completed </p>
+                    {/* <p className="btn btn-success  w-100">Completed </p> */}
                     <li
                       className="list-inline-item"
                       data-toggle="tooltip"
                       data-placement="top"
                       title="Archive Property"
-                    ></li>
+                    >
+                      <div
+                        className="w-100"
+                        onClick={() =>
+                          onArchivePropertyHandler(property.orderId)
+                        }
+                      >
+                        <button href="#" className="btn btn-color ">
+                          <Link href="#">
+                            <span className="text-light">
+                              {" "}
+                              <FaArchive />
+                            </span>
+                          </Link>
+                        </button>
+                      </div>
+                    </li>
                   </>
                 ) : (
                   <ul className="mb0 d-flex gap-1">
@@ -732,7 +759,9 @@ export default function Exemple({
                           data-toggle="tooltip"
                           data-placement="top"
                           title={`${
-                            isBidded.$id ? "View / Update Quote" : "Provide Quote"
+                            isBidded.$id
+                              ? "View / Update Quote"
+                              : "Provide Quote"
                           }`}
                         >
                           <div
@@ -861,28 +890,26 @@ export default function Exemple({
     };
 
     axios
-    .get("/api/getArchiveAppraiserProperty", {
-      headers: {
-        Authorization: `Bearer ${data.token}`,
-      },
-      params: {
-        userId: data.userId,
-      },
-    })
-    .then((propertiess) => {
-      const temp = propertiess.data.data.$values;
-      let requiredProperties = [];
-      temp.map((property,index)=>{
+      .get("/api/getArchiveAppraiserProperty", {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+        params: {
+          userId: data.userId,
+        },
+      })
+      .then((propertiess) => {
+        const temp = propertiess.data.data.$values;
+        let requiredProperties = [];
+        temp.map((property, index) => {
           requiredProperties.push(property.property);
+        });
+        setArchivedProperties(requiredProperties);
+      })
+      .catch((err) => {
+        setErrorMessage(err?.response?.data?.error);
+        setModalIsOpenError(true);
       });
-      setArchivedProperties(requiredProperties)
-    })
-    .catch((err) => {
-      setErrorMessage(err?.response?.data?.error);
-      setModalIsOpenError(true);
-    });
-
-
 
     if (data?.userType === 5) {
       axios
@@ -1129,8 +1156,6 @@ export default function Exemple({
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });
-
-    
 
     setRefresh(false);
   }, [refresh]);
