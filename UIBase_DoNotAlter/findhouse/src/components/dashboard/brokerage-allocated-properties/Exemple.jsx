@@ -268,7 +268,7 @@ export default function Exemple({
           appraisal_status: isBidded.bidId ? (
             isBidded.status === 0 ? (
               <span
-                className="btn btn-primary  w-100"
+                className="btn bg-info text-light  w-100"
               >
                 Quote Provided
               </span>
@@ -288,7 +288,7 @@ export default function Exemple({
           status: isBidded.bidId ? (
             isBidded.status === 0 ? (
               <span
-                className="btn btn-primary  w-100"
+                className="btn bg-info text-light  w-100"
               >
                 Quote Provided
               </span>

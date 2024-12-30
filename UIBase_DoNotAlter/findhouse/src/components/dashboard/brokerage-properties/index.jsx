@@ -170,7 +170,8 @@ const Index = () => {
       .then((res) => {
         toast.dismiss();
         toast.success("Successfully Added to Archived Properties!!");
-        window.location.reload();
+        // window.location.reload();
+        router.push("/brokerage-archive-properties");
       })
       .catch((err) => {
         toast.error(err);

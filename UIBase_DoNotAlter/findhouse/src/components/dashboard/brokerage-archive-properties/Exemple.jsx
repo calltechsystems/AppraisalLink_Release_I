@@ -424,7 +424,7 @@ export default function Exemple({
                 ),
               appraisal_status:
                 isHold || isCancel ? (
-                  <button className="btn btn-warning w-100">
+                  <button className="btn btn-warning" style={{width:"90%"}}>
                     {isHold ? "N.A." : "N.A."}
                   </button>
                 ) : isBidded.orderstatus !== 1 &&
@@ -485,7 +485,7 @@ export default function Exemple({
                     </button>
                   </div>
                 ) : (
-                  <span className="btn btn-warning w-100">N.A.</span>
+                  <button className="btn btn-warning" style={{width:"90%"}}><span>N.A.</span></button>
                 ),
               address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
               // user: property.applicantEmailAddress,

@@ -23014,6 +23014,12 @@ input:checked + .slider:before {
   /* padding: 15px; */
 }
 
+.btn-status-na{
+  background-color: orange;
+  color: #2e008b;
+  /* padding: 15px; */
+}
+
 .active-selected-plan{
   background-color: #7e7cfc;
   border-radius: 5px;

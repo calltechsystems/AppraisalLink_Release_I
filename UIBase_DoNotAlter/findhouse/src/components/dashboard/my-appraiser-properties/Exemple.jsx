@@ -33,7 +33,7 @@ const headCells = [
     id: "appraisal_status",
     numeric: false,
     label: "Appraisal Status",
-    width: 190,
+    width: 200,
   },
   {
     id: "remark",
@@ -429,7 +429,7 @@ export default function Exemple({
                   </button>
                 </div>
               ) : (
-                <span className="btn btn-warning  w-100">N.A.</span>
+                <button className="btn btn-warning" style={{width:"90%"}}><span>N.A.</span></button>
               ),
             remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
             status:
@@ -447,7 +447,7 @@ export default function Exemple({
                 isBidded.orderstatus === 3 ? (
                   <span className="btn btn-completed w-100">Completed</span>
                 ) : isBidded.status === 0 ? (
-                  <span className="btn btn-primary  w-100">Quote Provided</span>
+                  <span className="btn bg-info text-light  w-100">Quote Provided</span>
                 ) : isBidded.status === 1 ? (
                   <span className="btn btn-success  w-100">Accepted</span>
                 ) : (

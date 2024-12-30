@@ -460,7 +460,7 @@ export default function Exemple({
                   </button>
                 </div>
               ) : (
-                <span className="btn btn-warning  w-100">N.A.</span>
+                <button className="btn btn-warning" style={{width:"90%"}}><span>N.A.</span></button>
               ),
             remark:
               isBidded && isBidded.remark ? <p>{isBidded.remark}</p> : "N.A.",
