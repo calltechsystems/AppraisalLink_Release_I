@@ -1990,9 +1990,12 @@ const Index = () => {
                         backgroundColor: "#E8F0FE",
                       }}
                     >
+                      {/* <option>Select</option>; */}
+                      <option value="" >Select</option>
                       {assignAppraiser.map((item, index) => {
-                        <option value={0}>....</option>;
+                        <option value={-1}>....</option>;
                         return item.item.isActive ? (
+                          // <option>Select</option>
                           <option key={item.item.id} value={item.item.id}>
                             {item.item.firstName} {item.item.lastName}
                           </option>

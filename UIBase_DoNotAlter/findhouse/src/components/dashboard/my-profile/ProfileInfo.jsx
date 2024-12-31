@@ -152,6 +152,17 @@ const ProfileInfo = ({
     }
   }, [smsNotification, emailNotification]);
 
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   if (firstNameRef.trim() === "") {
+  //     setHasError(true); // Set error if field is empty
+  //   } else {
+  //     setHasError(false); // Clear error if valid
+  //     // Proceed with form submission
+  //     console.log("Form submitted successfully:", firstNameRef);
+  //   }
+  // };
+
   // const firstFunction = () => {
   //   if (smsNotification === null || smsNotification === false) {
   //     toast.error(
@@ -168,6 +179,25 @@ const ProfileInfo = ({
 
   //   setTimeout(onUpdatHandler, 2000); // Call onUpdatHandler after 6 seconds
   // };
+
+  // Validation for input fields
+
+  const [hasError, setHasError] = useState(false); // State to track the error
+  const firstNameInputRef = useRef(null); // Reference for the input field
+  const [isValid, setIsValid] = useState(false); // State to track if input is valid
+
+  const handleInputChangeFirstName = (e) => {
+    const value = e.target.value;
+    if (value.length <= 10) setFirstNameRef(value);
+
+    // Basic validation: Check if at least 3 characters are typed
+    if (value.trim().length >= 3) {
+      setIsValid(true);
+      setHasError(false);
+    } else {
+      setIsValid(false);
+    }
+  };
 
   const onUpdatHandler = () => {
     const firstName =
@@ -214,22 +244,55 @@ const ProfileInfo = ({
     const nameRegex = /^[A-Za-z]+$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex for email validation
 
+    // if (
+    //   nameRegex.test(firstName) === false ||
+    //   (middleName !== null &&
+    //     middleName.trim() !== "" &&
+    //     !nameRegex.test(middleName)) ||
+    //   nameRegex.test(lastName) === false
+    // )
     if (
-      nameRegex.test(firstName) === false ||
+      firstName.trim().length < 3 ||
+      firstName.trim().length > 10 ||
+      !nameRegex.test(firstName) ||
       (middleName !== null &&
         middleName.trim() !== "" &&
-        !nameRegex.test(middleName)) ||
-      nameRegex.test(lastName) === false
+        (middleName.trim().length < 3 ||
+          middleName.trim().length > 10 ||
+          !nameRegex.test(middleName))) ||
+      lastName.trim().length < 3 ||
+      lastName.trim().length > 10 ||
+      !nameRegex.test(lastName)
     ) {
       toast.error("Name should be valid ");
     } else if (
+      // (assistantFirstName.trim() !== "" &&
+      //   !nameRegex.test(assistantFirstName)) ||
+      // (assistantLastName.trim() !== "" && !nameRegex.test(assistantLastName)) ||
+      // (assistantTwoFirstName.trim() !== "" &&
+      //   !nameRegex.test(assistantTwoFirstName)) ||
+      // (assistantTwoLastName.trim() !== "" &&
+      //   !nameRegex.test(assistantTwoLastName))
+      // Assistant First Name
       (assistantFirstName.trim() !== "" &&
-        !nameRegex.test(assistantFirstName)) ||
-      (assistantLastName.trim() !== "" && !nameRegex.test(assistantLastName)) ||
+        (assistantFirstName.trim().length < 3 ||
+          assistantFirstName.trim().length > 10 ||
+          !nameRegex.test(assistantFirstName))) ||
+      // Assistant Last Name
+      (assistantLastName.trim() !== "" &&
+        (assistantLastName.trim().length < 3 ||
+          assistantLastName.trim().length > 10 ||
+          !nameRegex.test(assistantLastName))) ||
+      // Assistant Two First Name
       (assistantTwoFirstName.trim() !== "" &&
-        !nameRegex.test(assistantTwoFirstName)) ||
+        (assistantTwoFirstName.trim().length < 3 ||
+          assistantTwoFirstName.trim().length > 10 ||
+          !nameRegex.test(assistantTwoFirstName))) ||
+      // Assistant Two Last Name
       (assistantTwoLastName.trim() !== "" &&
-        !nameRegex.test(assistantTwoLastName))
+        (assistantTwoLastName.trim().length < 3 ||
+          assistantTwoLastName.trim().length > 10 ||
+          !nameRegex.test(assistantTwoLastName)))
     ) {
       toast.error("Applicant Name should be valid ");
     } else if (phoneNumberRegex.test(phoneNumber) === false || !phoneNumber) {
@@ -379,6 +442,27 @@ const ProfileInfo = ({
           .finally(() => {});
         toast.dismiss();
       }
+    }
+
+    // if (firstNameRef.trim() === "") {
+    //   setHasError(true); // Set error if field is empty
+    // } else {
+    //   setHasError(false); // Clear error if valid
+    //   // Proceed with form submission
+    //   console.log("Form submitted successfully:", firstNameRef);
+    // }
+
+    if (firstNameRef.trim().length < 3 || firstNameRef.trim().length > 10) {
+      setHasError(true); // Set error if field is empty
+      firstNameInputRef.current.scrollIntoView({
+        behavior: "smooth", // Smooth scroll to the field
+        block: "center", // Align the field to the center
+      });
+      firstNameInputRef.current.focus(); // Focus on the field for the user
+    } else {
+      setHasError(false); // Clear error if valid
+      // Proceed with form submission
+      // console.log("Form submitted successfully:", firstNameRef);
     }
   };
 
@@ -564,14 +648,32 @@ const ProfileInfo = ({
                       <div className="col-lg-7">
                         <input
                           type="text"
+                          ref={firstNameInputRef} // Attach the ref to the input field
                           className="form-control"
                           id="formGroupExampleInput3"
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          // style={{
+                          //   backgroundColor: "#E8F0FE",
+                          //   borderColor: hasError ? "red" : "",
+                          // }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: hasError
+                              ? "red"
+                              : isValid
+                              ? "green"
+                              : "", // Green border if valid, red if error
+                          }}
                           required
                           value={firstNameRef}
-                          onChange={(e) => setFirstNameRef(e.target.value)}
+                          // onChange={(e) => setFirstNameRef(e.target.value)}
+                          onChange={handleInputChangeFirstName} // Handle input changes
                           disabled={!edit}
                         />
+                        {hasError && (
+                          <small className="text-danger">
+                            First Name must be between 3 and 10 characters.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
