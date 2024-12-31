@@ -493,7 +493,11 @@ const ProfileInfo = ({
       setPhoneNumberError,
       phoneNumberInputRef
     );
-    const isEmailValid = validateField(emailId, setEmailError, emailInputRef);
+    const isEmailValid = validateEmailField(
+      emailId,
+      setEmailError,
+      emailInputRef
+    );
     const isMortgageLicenceValid = validateField(
       mortgageBrokrageLicNoRef,
       setMortgageLicenceError,
@@ -509,6 +513,58 @@ const ProfileInfo = ({
   const validateField = (value, setError, inputRef) => {
     if (value.trim().length < 3 || value.trim().length > 10) {
       setError(true); // Set error if field length is invalid
+      // Ensure inputRef exists before calling scrollIntoView
+      if (inputRef && inputRef.current) {
+        inputRef.current.scrollIntoView({
+          behavior: "smooth", // Smooth scroll to the field
+          block: "center", // Align the field to the center
+        });
+        inputRef.current.focus(); // Focus on the field for the user
+      }
+      return false;
+    }
+    setError(false);
+    return true;
+  };
+
+  const handleInputChange = (value, setValue, setValid, setError) => {
+    if (value.length <= 10) {
+      setValue(value);
+
+      // Validate: Check if length is between 3 and 10
+      if (value.trim().length >= 10) {
+        setValid(true);
+        setError(false);
+      } else {
+        setValid(false);
+        setError(true);
+      }
+    }
+  };
+
+  const validateFieldNumber = (value, setError, inputRef) => {
+    if (value.trim().length < 10 || value.trim().length > 10) {
+      setError(true); // Set error if field length is invalid
+      // Ensure inputRef exists before calling scrollIntoView
+      if (inputRef && inputRef.current) {
+        inputRef.current.scrollIntoView({
+          behavior: "smooth", // Smooth scroll to the field
+          block: "center", // Align the field to the center
+        });
+        inputRef.current.focus(); // Focus on the field for the user
+      }
+      return false;
+    }
+    setError(false);
+    return true;
+  };
+
+  const validateEmailField = (value, setError, inputRef) => {
+    // Define a basic email regex pattern for validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(value.trim())) {
+      setError(true); // Set error if the email format is invalid
       // Ensure inputRef exists before calling scrollIntoView
       if (inputRef && inputRef.current) {
         inputRef.current.scrollIntoView({
@@ -580,38 +636,6 @@ const ProfileInfo = ({
 
     const url = uploadImage(file);
     console.log(url);
-  };
-
-  const handleInputChange = (value, setValue, setValid, setError) => {
-    if (value.length <= 10) {
-      setValue(value);
-
-      // Validate: Check if length is between 3 and 10
-      if (value.trim().length >= 10) {
-        setValid(true);
-        setError(false);
-      } else {
-        setValid(false);
-        setError(true);
-      }
-    }
-  };
-
-  const validateFieldNumber = (value, setError, inputRef) => {
-    if (value.trim().length < 10 || value.trim().length > 10) {
-      setError(true); // Set error if field length is invalid
-      // Ensure inputRef exists before calling scrollIntoView
-      if (inputRef && inputRef.current) {
-        inputRef.current.scrollIntoView({
-          behavior: "smooth", // Smooth scroll to the field
-          block: "center", // Align the field to the center
-        });
-        inputRef.current.focus(); // Focus on the field for the user
-      }
-      return false;
-    }
-    setError(false);
-    return true;
   };
 
   const [phoneNumber_01, setPhoneNumber_01] = useState("");
@@ -1017,14 +1041,34 @@ const ProfileInfo = ({
                       <div className="col-lg-7">
                         <input
                           type="text"
+                          ref={mortgageLicenceInputRef}
                           required
                           className="form-control"
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: mortgageLicenceError
+                              ? "red"
+                              : mortgageLicenceValid
+                              ? "green"
+                              : "",
+                          }}
                           id="formGroupExampleInput3"
                           value={mortgageBrokrageLicNoRef}
-                          onChange={(e) => setMortgageLicNoRef(e.target.value)}
+                          onChange={(e) =>
+                            handleInputChangeName(
+                              e.target.value,
+                              setMortgageLicNoRef,
+                              setMortgageLicenceValid,
+                              setMortgageLicenceError
+                            )
+                          }
                           disabled={!edit}
                         />
+                         {mortgageLicenceError && (
+                          <small className="text-danger">
+                            Enter valid Mortgage Brokerage Licence Number.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -1043,16 +1087,34 @@ const ProfileInfo = ({
                       <div className="col-lg-7">
                         <input
                           type="text"
+                          ref={mortgageLicenceTwoInputRef}
                           required
                           className="form-control"
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: mortgageLicenceTwoError
+                              ? "red"
+                              : mortgageLicenceTwoValid
+                              ? "green"
+                              : "",
+                          }}
                           id="formGroupExampleInput3"
                           value={mortgageBrokerLicNoRef}
                           onChange={(e) =>
-                            setMortgageBrokerLicNoRef(e.target.value)
+                            handleInputChangeName(
+                              e.target.value,
+                              setMortgageBrokerLicNoRef,
+                              setMortgageLicenceTwoValid,
+                              setMortgageLicenceTwoError
+                            )
                           }
                           disabled={!edit}
                         />
+                          {mortgageLicenceTwoError && (
+                          <small className="text-danger">
+                            Enter valid Mortgage Broker Licence Number.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
