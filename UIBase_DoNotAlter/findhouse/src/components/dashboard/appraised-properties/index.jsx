@@ -362,8 +362,8 @@ const Index = () => {
       .then((res) => {
         toast.dismiss();
         toast.success("Archived property!");
-        // location.reload(true);
-        router.push("/appraiser-archive-property");
+        location.reload(true);
+        // router.push("/appraiser-archive-property");
       })
       .catch((err) => {
         toast.dismiss();

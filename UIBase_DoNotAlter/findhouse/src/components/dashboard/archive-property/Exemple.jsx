@@ -267,7 +267,7 @@ export default function Exemple({
   const onUnarchiveHandler = (id) => {
     const data = JSON.parse(localStorage.getItem("user"));
 
-    toast.loading("un-archiving the property!!...");
+    toast.loading("Un-archiving the property!!...");
     // const encryptedBody = encryptionData(payload);
     axios
       .get("/api/propertyArcheive", {
@@ -284,7 +284,8 @@ export default function Exemple({
       .then((res) => {
         toast.dismiss();
         toast.success("Successfully unarchived the property!");
-        window.location.reload();
+        location.reload();
+        // setRefresh(true);
       })
       .catch((err) => {
         toast.dismiss();
@@ -394,9 +395,7 @@ export default function Exemple({
                     {isHold ? "On Hold" : "Cancelled"}
                   </span>
                 ) : isStatus === 3 ? (
-                  <span className="btn btn-completed w-100 ">
-                    Completed
-                  </span>
+                  <span className="btn btn-completed w-100 ">Completed</span>
                 ) : isStatus === 2 ? (
                   <span className="btn bg-success w-100 text-light">
                     Accepted
@@ -477,7 +476,9 @@ export default function Exemple({
                     </button>
                   </div>
                 ) : (
-                  <button className="btn btn-warning" style={{width:"90%"}}><span>N.A.</span></button>
+                  <button className="btn btn-warning" style={{ width: "90%" }}>
+                    <span>N.A.</span>
+                  </button>
                 ),
               address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
               // user: property.applicantEmailAddress,

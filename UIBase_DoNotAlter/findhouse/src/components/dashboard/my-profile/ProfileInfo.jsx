@@ -396,7 +396,6 @@ const ProfileInfo = ({
   const handleFileChange = async (e, type) => {
     const file = e.target.files[0];
     const allowedImageTypes = ["image/jpeg", "image/png", "image/gif"];
- 
 
     if (!allowedImageTypes.includes(file?.type)) {
       toast.error("Please select a valid image file (JPEG, PNG, GIF).");
@@ -416,7 +415,6 @@ const ProfileInfo = ({
       }
     }
   };
-
 
   const handleZipCodeChange = async (val) => {
     setZipcodeRef(val);
@@ -541,7 +539,8 @@ const ProfileInfo = ({
                         Browse
                       </button>
                       <p className="mt-2">
-                        {SelectedImage !== "" && "Note -: JPG, PNG formats only"}
+                        {SelectedImage !== "" &&
+                          "Note -: JPG, PNG formats only"}
                       </p>
                     </div>
                   )}
@@ -1282,285 +1281,8 @@ const ProfileInfo = ({
                       </div>
                     </div>
                   </div>
-                  {/* <div className="col-lg-5">
-                  <label
-                    htmlFor=""
-                    style={{ paddingTop: "15px" }}
-                  >
-                    First Name <span class="req-btn">*</span> :
-                  </label>
                 </div>
-                <div className="col-lg-7">
-                  <input
-                    type="text"
-                    required
-                    className="form-control"
-                    id="formGroupExampleInput3"
-                    onChange={
-                     (e)=>setFirstNameRef(e.target.value)
-                    } 
-                    value={firstNameRef}
-                    disabled={!edit}
-                  />
-                </div> */}
-                </div>
-                {/* <div className="row mb-2">
-                <div className="col-lg-5">
-                  <label
-                    htmlFor=""
-                    style={{ paddingTop: "15px" }}
-                  >
-                    Middle Name :
-                  </label>
-                </div>
-                <div className="col-lg-7">
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="formGroupExampleInput3"
-                    onChange={(e)=>setMiddleNameRef(e.target.value)}
-                    value={middleNameRef}
-                  />
-                </div>
-              </div>
-              <div className="row mb-2">
-                <div className="col-lg-5">
-                  <label
-                    htmlFor=""
-                    style={{ paddingTop: "15px" }}
-                  >
-                    Last Name <span class="req-btn">*</span> :
-                  </label>
-                </div>
-                <div className="col-lg-7">
-                  <input
-                    type="text"
-                    required
-                    className="form-control"
-                    id="formGroupExampleInput3"
-                    onChange={
-                     (e)=>setLastNameRef(e.target.value)
-                    }
-                    value={lastNameRef}
-                    disabled={!edit}
-                  />
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-lg-5 mb-2">
-                  <label
-                    htmlFor=""
-                    style={{ paddingTop: "15px" }}
-                  >
-                    Company Name{" "}
-                  </label>
-                </div>
-                <div className="col-lg-7">
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="formGroupExampleInput3"
-                    onChange={
-                      (e)=>setCompanyNameRef(e.target.value)
-                    }
-                    value={companyNameRef}
-                    disabled={!edit}
-                  />
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-lg-5 mb-2">
-                  <label
-                    htmlFor=""
-                    style={{ paddingTop: "15px" }}
-                  >
-                    Address Line 1 <span class="req-btn">*</span> :
-                  </label>
-                </div>
-                <div className="col-lg-7 mb-2">
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="formGroupExampleInput3"
-                    required
-                    onChange={
-                     (e)=>setAddressLineRef(e.target.value)
-                    }
-                    value={addressLineRef}
-                    disabled={!edit}
-                  />
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-lg-5 mb-2">
-                  <label
-                    htmlFor=""
-                    style={{ paddingTop: "15px" }}
-                  >
-                    Address Line 2 :
-                  </label>
-                </div>
-                <div className="col-lg-7 mb-2">
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="formGroupExampleInput3"
-                    onChange={
-                     (e)=>setAddressLineTwoRef(e.target.value)
-                    }
-                    value={addressLineTwoRef}
-                    disabled={!edit}
-                  />
-                </div>
-              </div> */}
-                {/* <div className="row">
-                <div className="col-lg-5 mb-2">
-                  <label
-                    htmlFor=""
-                    style={{ paddingTop: "15px" }}
-                  >
-                    City <span class="req-btn">*</span> :
-                  </label>
-                </div>
-                <div className="col-lg-7 mb-2">
-                  <input
-                    type="text"
-                    className="form-control"
-                    required
-                    id="formGroupExampleInput3"
-                    placeholder={
-                      userData
-                        ? userData?.broker_Details?.city
-                        : "Enter your city"
-                    }
-                    ref={cityRef}
-                    disabled={!edit}
-                  />
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-lg-5 mb-2">
-                  <label
-                    htmlFor=""
-                    style={{ paddingTop: "15px" }}
-                  >
-                    State <span class="req-btn">*</span> :
-                  </label>
-                </div>
-                <div className="col-lg-7 mb-2">
-                  <input
-                    type="text"
-                    className="form-control"
-                    required
-                    id="formGroupExampleInput3"
-                    placeholder={
-                      userData
-                        ? userData?.broker_Details?.state
-                        : "Enter your state"
-                    }
-                    ref={stateRef}
-                    disabled={!edit}
-                  />
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-lg-5 mb-2">
-                  <label
-                    htmlFor=""
-                    style={{ paddingTop: "15px" }}
-                  >
-                    Zip-Code <span class="req-btn">*</span> :
-                  </label>
-                </div>
-                <div className="col-lg-7 mb-2">
-                  <input
-                    type="text"
-                    required
-                    className="form-control"
-                    id="formGroupExampleInput3"
-                    placeholder={
-                      userData
-                        ? userData?.broker_Details?.zipCode
-                        : "Enter your zipcode"
-                    }
-                    ref={zipcodeRef}
-                    disabled={!edit}
-                  />
-                </div>
-              </div> 
-              <div className="row">
-                <div className="col-lg-5 mb-2">
-                  <label
-                    htmlFor=""
-                    style={{ paddingTop: "15px" }}
-                  >
-                    Phone Number <span class="req-btn">*</span> :
-                  </label>
-                </div>
-                <div className="col-lg-7">
-                  <input
-                    type="text"
-                    required
-                    className="form-control"
-                    id="formGroupExampleInput3"
-                    placeholder={
-                      userData
-                        ? userData?.broker_Details?.phoneNumber
-                        : "Enter your phoneNumber"
-                    }
-                    ref={phoneNumberRef}
-                    disabled={!edit}
-                  />
-                </div>
-              </div>*/}
-                {/* <div className="row">
-                <div className="col-lg-5 mb-2">
-                  <label
-                    htmlFor=""
-                    style={{ paddingTop: "15px" }}
-                  >
-                    Mortgage Brokerage Lic. No. <span class="req-btn">*</span> :
-                  </label>
-                </div>
-                <div className="col-lg-7">
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="formGroupExampleInput3"
-                    placeholder={
-                      userData
-                        ? userData?.broker_Details?.mortageBrokerLicNo
-                        : "Enter your Bokerage Lic No"
-                    }
-                    ref={mortgageBrokrageLicNoRef}
-                    disabled={!edit}
-                  />
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-lg-5">
-                  <label
-                    htmlFor=""
-                    style={{ paddingTop: "15px" }}
-                  >
-                    Mortgage Broker Licence No. <span class="req-btn">*</span> :
-                  </label>
-                </div>
-                <div className="col-lg-7">
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="formGroupExampleInput3"
-                    placeholder={
-                      userData
-                        ? userData?.broker_Details?.mortageBrokerLicNo
-                        : "Enter your Broker Lic No"
-                    }
-                    ref={mortgageBrokerLicNoRef}
-                    disabled={!edit}
-                  />
-                </div>
-              </div> */}
+
                 {edit && (
                   <div className="row mt-4">
                     <div className="col-xl-12">

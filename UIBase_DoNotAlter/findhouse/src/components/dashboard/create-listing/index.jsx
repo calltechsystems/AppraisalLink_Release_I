@@ -209,6 +209,14 @@ const Index = ({ isView, propertyData }) => {
     }
   }, [buildinRef]);
 
+  // useEffect(() => {
+  //   if (buildinRef !== "") {
+  //     const updatedError = errorLabel.filter((err) => err !== "typeOfBuilding");
+  //     console.log("building", buildinRef, updatedError);
+  //     setErrorLabel(updatedError);
+  //   }
+  // }, [buildinRef]);  
+
   useEffect(() => {
     if (purpose !== "") {
       let updatedError = errorLabel.filter((err) => {
