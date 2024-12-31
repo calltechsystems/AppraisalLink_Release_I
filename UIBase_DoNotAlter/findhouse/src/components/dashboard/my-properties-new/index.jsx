@@ -170,9 +170,9 @@ const Index = () => {
       .then((res) => {
         toast.dismiss();
         toast.success("Successfully Added to Archived Properties!!");
-        location.reload();
+        // location.reload();
         // router.push("/my-properties");
-        // setRefresh(true);
+        setRefresh(true);
       })
       .catch((err) => {
         toast.error(err);

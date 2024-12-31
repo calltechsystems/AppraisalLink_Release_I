@@ -284,8 +284,8 @@ export default function Exemple({
       .then((res) => {
         toast.dismiss();
         toast.success("Successfully unarchived the property!");
-        location.reload();
-        // setRefresh(true);
+        // location.reload();
+        setRefresh(true);
       })
       .catch((err) => {
         toast.dismiss();
