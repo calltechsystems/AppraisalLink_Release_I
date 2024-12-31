@@ -290,8 +290,8 @@ export default function Exemple({
       .then((res) => {
         toast.dismiss();
         toast.success("Successfully unarchived the property!");
-        // location.reload();
-        setRefresh(true);
+        location.reload();
+        // setRefresh(true);
       })
       .catch((err) => {
         toast.dismiss();
@@ -510,7 +510,7 @@ export default function Exemple({
                     >
                       <Link
                         className="color-light"
-                        href={`/brokerage-archive-properties`}
+                        href="#"
                       >
                         <span className="text-light">
                           <FaArchive />

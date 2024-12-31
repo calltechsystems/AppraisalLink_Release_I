@@ -366,7 +366,7 @@ export default function Exemple({
               ),
             appraisal_status:
               isHold || isCancel ? (
-                <button className="btn btn-warning" style={{width:"90%"}}>
+                <button className="btn btn-warning" style={{ width: "90%" }}>
                   {isHold ? "N.A." : "N.A."}
                 </button>
               ) : isBidded.orderstatus !== 1 &&
@@ -427,7 +427,9 @@ export default function Exemple({
                   </button>
                 </div>
               ) : (
-                <button className="btn btn-warning" style={{width:"90%"}}><span>N.A.</span></button>
+                <button className="btn btn-warning" style={{ width: "90%" }}>
+                  <span>N.A.</span>
+                </button>
               ),
             // appraisal_status:
             //   isHold || isCancel ? (
@@ -815,10 +817,7 @@ export default function Exemple({
                     className="btn btn-color-table"
                     onClick={() => archievePropertyHandler(property.orderId)}
                   >
-                    <Link
-                      className="color-light"
-                      href={`/brokerage-archive-properties`}
-                    >
+                    <Link className="color-light" href="#">
                       <span className="text-light">
                         <FaArchive />
                       </span>
