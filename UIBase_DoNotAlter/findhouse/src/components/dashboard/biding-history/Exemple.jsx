@@ -449,7 +449,7 @@ export default function Exemple({
             remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
             status:
               isBidded?.bidId && isBidded.status === 2 ? (
-                <span className="btn btn-danger  w-100">Rejected</span>
+                <span className="btn btn-danger  w-100">Declined</span>
               ) : isWait ? (
                 <span className="btn btn-danger  w-100">
                   {property.isoncancel

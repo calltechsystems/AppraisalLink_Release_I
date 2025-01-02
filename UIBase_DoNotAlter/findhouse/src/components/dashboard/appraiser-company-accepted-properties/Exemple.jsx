@@ -473,7 +473,7 @@ export default function Exemple({
               ) : isBidded.status === 1 ? (
                 <span className="btn btn-success  w-100">Accepted</span>
               ) : (
-                <span className="btn btn-danger  w-100">Rejected</span>
+                <span className="btn btn-danger  w-100">Declined</span>
               )
             ) : (
               <span className="btn btn-warning  w-100">New</span>
@@ -559,7 +559,7 @@ export default function Exemple({
               // <div className="print-hidden-column">
               //   {isBidded.status === 2 ? (
               //     <>
-              //       <p className="btn btn-danger  w-100">Rejected </p>
+              //       <p className="btn btn-danger  w-100">Declined </p>
               //       <li
               //         className="list-inline-item"
               //         data-toggle="tooltip"

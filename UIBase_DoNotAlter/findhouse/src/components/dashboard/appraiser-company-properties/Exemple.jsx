@@ -524,7 +524,7 @@ export default function Exemple({
               anotherBid === true && isBidded.status !== 2 ? (
                 <span className="btn btn-danger  w-100">Declined</span>
               ) : isBidded?.bidId && isBidded.status === 2 ? (
-                <span className="btn btn-danger  w-100">Rejected</span>
+                <span className="btn btn-danger  w-100">Declined</span>
               ) : isWait ? (
                 <span className="btn btn-danger  w-100">
                   {property.isoncancel
@@ -683,7 +683,7 @@ export default function Exemple({
                         data-toggle="tooltip"
                         data-placement="top"
                       >
-                        {/* <span className="btn btn-danger  w-100">Rejected </span> */}
+                        {/* <span className="btn btn-danger  w-100">Declined </span> */}
                       </li>
                       <li
                         className="list-inline-item"

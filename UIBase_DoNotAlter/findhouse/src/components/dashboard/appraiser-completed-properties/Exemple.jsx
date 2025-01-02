@@ -545,7 +545,7 @@ export default function Exemple({
               <div className="print-hidden-column">
                 {isBidded.status === 2 ? (
                   <>
-                    <p className="btn btn-danger  w-100">Rejected </p>
+                    <p className="btn btn-danger  w-100">Declined </p>
                     <li
                       className=""
                       data-toggle="tooltip"

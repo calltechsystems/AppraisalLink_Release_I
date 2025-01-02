@@ -441,7 +441,7 @@ export default function Exemple({
               isBidded && isBidded.remark ? <p>{isBidded.remark}</p> : "N.A.",
             status:
               isBidded?.bidId && isBidded.status === 2 ? (
-                <span className="btn btn-danger  w-100">Rejected</span>
+                <span className="btn btn-danger  w-100">Declined</span>
               ) : isWait ? (
                 <span className="btn btn-danger  w-100">
                   {property.isoncancel
@@ -543,7 +543,7 @@ export default function Exemple({
               <div className="print-hidden-column">
                 {isBidded.status === 2 ? (
                   <>
-                    <p className="btn btn-danger  w-100">Rejected </p>
+                    <p className="btn btn-danger  w-100">Declined </p>
                     <li
                       className="list-inline-item"
                       data-toggle="tooltip"

@@ -490,7 +490,7 @@ export default function Exemple({
             remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
             status:
               isBidded?.bidId && isBidded.status === 2 ? (
-                <span className="btn btn-danger  w-100">Rejected</span>
+                <span className="btn btn-danger  w-100">Declined</span>
               ) : isWait ? (
                 <span className="btn btn-danger  w-100">
                   {property.isOnCancel
@@ -672,7 +672,7 @@ export default function Exemple({
                         data-toggle="tooltip"
                         data-placement="top"
                       >
-                        <span className="btn btn-danger  w-100">Rejected </span>
+                        <span className="btn btn-danger  w-100">Declined </span>
                       </li>
                       <li
                         className="list-inline-item"
