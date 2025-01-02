@@ -524,7 +524,9 @@ export default function Exemple({
               isBidded.orderstatus === 3 ? (
                 <span className="btn btn-completed w-100">Completed</span>
               ) : isBidded.status === 0 ? (
-                <span className="btn bg-info text-light  w-100">Quote Provided</span>
+                <span className="btn bg-info text-light  w-100">
+                  Quote Provided
+                </span>
               ) : isBidded.status === 1 ? (
                 <span className="btn btn-success  w-100">Accepted</span>
               ) : (
@@ -587,7 +589,9 @@ export default function Exemple({
                 </button>
               </div>
             ) : (
-              <button className="btn btn-warning" style={{width:"90%"}}><span>N.A.</span></button>
+              <button className="btn btn-warning" style={{ width: "90%" }}>
+                <span>N.A.</span>
+              </button>
             ),
           broker: (
             <div>
@@ -691,11 +695,14 @@ export default function Exemple({
                 </>
               ) : isWait ? (
                 <ul>
-                  <p className="btn btn-danger  w-100">
+                  {/* <p className="btn btn-danger  w-100">
                     {`No further actions can be taken on this property since it is ${
                       property.isoncancel ? "Cancelled" : "On Hold"
                     } .`}
-                  </p>
+                  </p> */}
+                  <p>{`No further actions available because property is ${
+                    property.isoncancel ? "Cancelled" : "On Hold"
+                  }.`}</p>
                 </ul>
               ) : isBidded.$id && isBidded.orderstatus === 3 ? (
                 <span className="btn btn-completed  w-100">Completed</span>

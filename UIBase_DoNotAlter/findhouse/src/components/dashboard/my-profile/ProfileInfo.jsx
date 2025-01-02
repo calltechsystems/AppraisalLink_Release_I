@@ -190,11 +190,16 @@ const ProfileInfo = ({
   const [emailError, setEmailError] = useState(false);
   const [mortgageLicenceError, setMortgageLicenceError] = useState(false);
   const [mortgageLicenceTwoError, setMortgageLicenceTwoError] = useState(false);
+  const [streetNumberError, setStreetNumberError] = useState(false);
+  const [streetNameError, setStreetNameError] = useState(false);
+  const [cityError, setCityError] = useState(false);
+  const [zipCodeError, setZipCodeError] = useState(false);
 
   // State for dropdown
   const [selectedOption, setSelectedOption] = useState("");
   const [dropdownError, setDropdownError] = useState(false);
 
+  // validate fields
   const [firstNameValid, setFirstNameValid] = useState(false);
   const [companyNameValid, setCompanyNameValid] = useState(false);
   const [lastNameValid, setLastNameValid] = useState(false);
@@ -202,6 +207,10 @@ const ProfileInfo = ({
   const [emailValid, setEmailValid] = useState(false);
   const [mortgageLicenceValid, setMortgageLicenceValid] = useState(false);
   const [mortgageLicenceTwoValid, setMortgageLicenceTwoValid] = useState(false);
+  const [streetNumberValid, setStreetNumberValid] = useState(false);
+  const [streetNameValid, setStreetNameValid] = useState(false);
+  const [cityValid, setCityValid] = useState(false);
+  const [zipCodeValid, setZipCodeValid] = useState(false);
 
   // Refs for each input field
   const firstNameInputRef = useRef(null);
@@ -212,6 +221,10 @@ const ProfileInfo = ({
   const mortgageLicenceInputRef = useRef(null);
   const mortgageLicenceTwoInputRef = useRef(null);
   const dropdownRef = useRef(null);
+  const streetNumberInputRef = useRef(null);
+  const streetNameInputRef = useRef(null);
+  const cityInputRef = useRef(null);
+  const zipCodeInputRef = useRef(null);
 
   // const [hasError, setHasError] = useState(false); // State to track the error
   // const firstNameInputRef = useRef(null); // Reference for the input field
@@ -513,6 +526,11 @@ const ProfileInfo = ({
       setMortgageLicenceTwoError,
       mortgageLicenceTwoInputRef
     );
+    const isStreetNumberValid = validateFieldStreetNumber(
+      streetNumber,
+      setStreetNumberError,
+      streetNumberInputRef
+    );
 
     // Validate dropdown
 
@@ -531,11 +549,11 @@ const ProfileInfo = ({
       setError(true); // Set error if field length is invalid
       // Ensure inputRef exists before calling scrollIntoView
       if (inputRef && inputRef.current) {
-        inputRef.current.scrollIntoView({
-          behavior: "smooth", // Smooth scroll to the field
-          block: "center", // Align the field to the center
-        });
-        inputRef.current.focus(); // Focus on the field for the user
+        // inputRef.current.scrollIntoView({
+        //   behavior: "smooth",
+        //   block: "center",
+        // });
+        // inputRef.current.focus();
       }
       return false;
     }
@@ -549,6 +567,21 @@ const ProfileInfo = ({
 
       // Validate: Check if length is between 3 and 10
       if (value.trim().length >= 10) {
+        setValid(true);
+        setError(false);
+      } else {
+        setValid(false);
+        setError(true);
+      }
+    }
+  };
+
+  const handleInputChangeStreet = (value, setValue, setValid, setError) => {
+    if (value.length <= 10) {
+      setValue(value);
+
+      // Validate: Check if length is between 3 and 10
+      if (value.trim().length >= 1) {
         setValid(true);
         setError(false);
       } else {
@@ -620,6 +653,23 @@ const ProfileInfo = ({
           block: "center", // Align the field to the center
         });
         inputRef.current.focus(); // Focus on the field for the user
+      }
+      return false;
+    }
+    setError(false);
+    return true;
+  };
+
+  const validateFieldStreetNumber = (value, setError, inputRef) => {
+    if (value.trim().length < 1 || value.trim().length > 10) {
+      setError(true); // Set error if field length is invalid
+      // Ensure inputRef exists before calling scrollIntoView
+      if (inputRef && inputRef.current) {
+        // inputRef.current.scrollIntoView({
+        //   behavior: "smooth", // Smooth scroll to the field
+        //   block: "center", // Align the field to the center
+        // });
+        // inputRef.current.focus(); // Focus on the field for the user
       }
       return false;
     }
@@ -1298,14 +1348,35 @@ const ProfileInfo = ({
                       <div className="col-lg-7">
                         <input
                           type="text"
+                          ref={streetNumberInputRef}
                           className="form-control"
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: streetNumberError
+                              ? "red"
+                              : streetNumberValid
+                              ? "green"
+                              : "",
+                          }}
                           id="formGroupExampleInput3"
                           required
                           value={streetNumber}
-                          onChange={(e) => setStreetNumber(e.target.value)}
+                          // onChange={(e) => setStreetNumber(e.target.value)}
+                          onChange={(e) =>
+                            handleInputChangeStreet(
+                              e.target.value,
+                              setStreetNumber,
+                              setStreetNumberValid,
+                              setStreetNumberError
+                            )
+                          }
                           disabled={!edit}
                         />
+                        {streetNumberError && (
+                          <small className="text-danger">
+                            Enter valid street Number.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>

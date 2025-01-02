@@ -705,7 +705,7 @@ export default function Exemple({
                         property.isOnCancel ? "Cancelled" : "On Hold"
                       } .`}
                     </p> */}
-                    <li
+                    {/* <li
                       className="list-inline-item"
                       data-toggle="tooltip"
                       data-placement="top"
@@ -726,7 +726,7 @@ export default function Exemple({
                           </Link>
                         </button>
                       </div>
-                    </li>
+                    </li> */}
                   </>
                 ) : isBidded.orderstatus <= 6 &&
                   isBidded.orderstatus !== 3 &&
@@ -769,13 +769,13 @@ export default function Exemple({
                   isBidded.status === 1 &&
                   isBidded.orderstatus === 3 && (
                     <ul>
-                      <li
+                      {/* <li
                         className="list-inline-item"
                         data-toggle="tooltip"
                         data-placement="top"
                       >
-                        {/* <span className="btn btn-completed w-100">Completed </span> */}
-                      </li>
+                        <span className="btn btn-completed w-100">Completed </span>
+                      </li> */}
                     </ul>
                   )
                 )}
