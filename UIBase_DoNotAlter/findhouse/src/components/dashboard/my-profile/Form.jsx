@@ -470,6 +470,14 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       >
                         {userData?.broker_Details?.assistantFirstName}
                         {userData?.broker_Details?.assistantLastName}
+                        {/* <span>
+                          {userData?.broker_Details?.assistantFirstName
+                            ? userData.broker_Details.assistantFirstName
+                            : "Not Provided"}{" "}
+                          {userData?.broker_Details?.assistantLastName
+                            ? userData.broker_Details.assistantLastName
+                            : " "}
+                        </span> */}
                       </td>
                     </tr>
                     <tr>

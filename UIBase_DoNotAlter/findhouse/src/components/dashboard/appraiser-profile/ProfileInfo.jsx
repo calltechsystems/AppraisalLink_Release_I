@@ -148,7 +148,7 @@ const ProfileInfo = ({
   );
   const [apartmentNo, setApartmentNo] = useState(
     userData?.appraiser_Details?.apartmentNo || ""
-  );
+  );  
 
   const onUpdatHandler = () => {
     const firstName = firstNameRef;

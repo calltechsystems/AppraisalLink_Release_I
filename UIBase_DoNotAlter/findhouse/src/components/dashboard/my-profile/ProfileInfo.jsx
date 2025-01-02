@@ -211,6 +211,7 @@ const ProfileInfo = ({
   const [streetNameValid, setStreetNameValid] = useState(false);
   const [cityValid, setCityValid] = useState(false);
   const [zipCodeValid, setZipCodeValid] = useState(false);
+  const [dropdownValid, setDropdownValid] = useState(false);
 
   // Refs for each input field
   const firstNameInputRef = useRef(null);
@@ -352,24 +353,24 @@ const ProfileInfo = ({
       cellNumberRegex.test(assistantPhoneNumber) === false &&
       assistantPhoneNumber.trim() !== ""
     ) {
-      toast.error("Please Enter a valid assistant phone number");
+      toast.error("Please enter a valid assistant phone number");
     } else if (
       cellNumberRegex.test(assistantTwoPhoneNumber) === false &&
       assistantTwoPhoneNumber.trim() !== ""
     ) {
-      toast.error("Please Enter a valid assistant phone number");
+      toast.error("Please enter a valid assistant phone number");
     } else if (emailRegex.test(emailId) === false) {
-      toast.error("Please Enter a valid email address");
+      toast.error("Please enter a valid email address");
     } else if (
       emailRegex.test(assistantEmailAddress) === false &&
       assistantEmailAddress.trim() !== ""
     ) {
-      toast.error("Please Enter a valid assistant email address");
+      toast.error("Please enter a valid assistant email address");
     } else if (
       emailRegex.test(assistantTwoEmailAddress) === false &&
       assistantTwoEmailAddress.trim() !== ""
     ) {
-      toast.error("Please Enter a valid assistant email address");
+      toast.error("Please enter a valid assistant email address");
     } else if (
       (!firstName ||
         !lastName ||
@@ -436,6 +437,7 @@ const ProfileInfo = ({
         emailId: emailId,
         city: city,
         state: state,
+        // province: state,
         postalCode: zipCode,
         phoneNumber: phoneNumberRef,
         cellNumber: cellNumberRef,
@@ -531,6 +533,21 @@ const ProfileInfo = ({
       setStreetNumberError,
       streetNumberInputRef
     );
+    const isStreetNameValid = validateFieldStreetNumber(
+      streetName,
+      setStreetNameError,
+      streetNameInputRef
+    );
+    const isCityValid = validateFieldStreetNumber(
+      cityRef,
+      setCityError,
+      cityInputRef
+    );
+    const isZipCodeValid = validateFieldStreetNumber(
+      zipcodeRef,
+      setZipCodeError,
+      zipCodeInputRef
+    );
 
     // Validate dropdown
 
@@ -577,7 +594,7 @@ const ProfileInfo = ({
   };
 
   const handleInputChangeStreet = (value, setValue, setValid, setError) => {
-    if (value.length <= 10) {
+    if (value.length <= 30) {
       setValue(value);
 
       // Validate: Check if length is between 3 and 10
@@ -1394,13 +1411,33 @@ const ProfileInfo = ({
                       <div className="col-lg-7">
                         <input
                           type="text"
+                          ref={streetNameInputRef}
                           className="form-control"
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: streetNameError
+                              ? "red"
+                              : streetNameValid
+                              ? "green"
+                              : "",
+                          }}
                           id="formGroupExampleInput3"
                           value={streetName}
-                          onChange={(e) => setStreetName(e.target.value)}
+                          onChange={(e) =>
+                            handleInputChangeStreet(
+                              e.target.value,
+                              setStreetName,
+                              setStreetNameValid,
+                              setStreetNameError
+                            )
+                          }
                           disabled={!edit}
                         />
+                        {streetNameError && (
+                          <small className="text-danger">
+                            Enter valid street Name.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -1446,13 +1483,32 @@ const ProfileInfo = ({
                         <input
                           type="text"
                           className="form-control"
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: cityError
+                              ? "red"
+                              : cityValid
+                              ? "green"
+                              : "",
+                          }}
                           id="formGroupExampleInput3"
                           required
                           value={cityRef}
-                          onChange={(e) => setCityRef(e.target.value)}
+                          onChange={(e) =>
+                            handleInputChangeStreet(
+                              e.target.value,
+                              setCityRef,
+                              setCityValid,
+                              setCityError
+                            )
+                          }
                           disabled={!edit}
                         />
+                        {cityError && (
+                          <small className="text-danger">
+                            Enter valid city Name.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -1476,13 +1532,31 @@ const ProfileInfo = ({
                             data-width="100%"
                             value={
                               stateRef
-                                ? stateRef
-                                : userData?.broker_Details?.province
+                              // ? stateRef
+                              // : userData?.broker_Details?.province
                             }
-                            onChange={(e) => setStateRef(e.target.value)}
-                            disabled={!edit}
+                            // onChange={(e) => setStateRef(e.target.value)}
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              setStateRef(value); // Update state
+                              if (value === "") {
+                                setDropdownError(true);
+                              } else {
+                                setDropdownError(false);
+                                setDropdownValid(true);
+                              }
+                            }}
+                            // disabled={!edit}
+                            // style={{
+                            //   backgroundColor: "#E8F0FE",
+                            // }}
                             style={{
                               backgroundColor: "#E8F0FE",
+                              borderColor: dropdownError
+                                ? "red"
+                                : dropdownValid
+                                ? "green"
+                                : "", // Add red border for error
                             }}
                           >
                             {province.map((item, index) => {
@@ -1493,8 +1567,14 @@ const ProfileInfo = ({
                               );
                             })}
                           </select>
+                          {dropdownError && (
+                            <small className="text-danger">
+                              Please select a valid option.
+                            </small>
+                          )}
                           {/* <select
-                            ref={dropdownRef} // Ref for smooth scrolling and focus
+                            ref={dropdownRef} 
+                            focus
                             required
                             className="form-select"
                             data-live-search="true"
@@ -1508,9 +1588,9 @@ const ProfileInfo = ({
                               const value = e.target.value;
                               setStateRef(value); // Update state
                               if (value === "") {
-                                setDropdownError(true); // Trigger error if no valid option is selected
+                                setDropdownError(true);
                               } else {
-                                setDropdownError(false); // Clear error if valid
+                                setDropdownError(false);
                               }
                             }}
                             disabled={!edit} // Conditionally enable/disable
@@ -1526,8 +1606,8 @@ const ProfileInfo = ({
                                 </option>
                               );
                             })}
-                          </select>
-                          {dropdownError && (
+                          </select> */}
+                          {/* {dropdownError && (
                             <small className="text-danger">
                               Please select a valid option.
                             </small>
@@ -1551,13 +1631,32 @@ const ProfileInfo = ({
                         <input
                           type="text"
                           className="form-control"
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: zipCodeError
+                              ? "red"
+                              : zipCodeValid
+                              ? "green"
+                              : "",
+                          }}
                           required
                           id="formGroupExampleInput3"
-                          onChange={(e) => handleZipCodeChange(e.target.value)}
+                          onChange={(e) =>
+                            handleInputChangeStreet(
+                              e.target.value,
+                              setZipcodeRef,
+                              setZipCodeValid,
+                              setZipCodeError
+                            )
+                          }
                           value={zipcodeRef}
                           disabled={!edit}
                         />
+                        {zipCodeError && (
+                          <small className="text-danger">
+                            Enter valid postal code.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
