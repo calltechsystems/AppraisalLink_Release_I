@@ -515,14 +515,15 @@ const ProfileInfo = ({
     );
 
     // Validate dropdown
-    if (selectedOption === "") {
-      setDropdownError(true);
-      dropdownRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-      dropdownRef.current.focus();
-    }
+
+    // if (selectedOption === "") {
+    //   setDropdownError(true);
+    //   dropdownRef.current.scrollIntoView({
+    //     behavior: "smooth",
+    //     block: "center",
+    //   });
+    //   dropdownRef.current.focus();
+    // }
   };
 
   const validateField = (value, setError, inputRef) => {
@@ -557,20 +558,52 @@ const ProfileInfo = ({
     }
   };
 
+  // const validateFieldNumber = (value, setError, inputRef) => {
+  //   if (value.trim().length < 10 || value.trim().length > 10) {
+  //     setError(true); // Set error if field length is invalid
+  //     // Ensure inputRef exists before calling scrollIntoView
+  //     if (inputRef && inputRef.current) {
+  //       inputRef.current.scrollIntoView({
+  //         behavior: "smooth", // Smooth scroll to the field
+  //         block: "center", // Align the field to the center
+  //       });
+  //       inputRef.current.focus(); // Focus on the field for the user
+  //     }
+  //     return false;
+  //   }
+  //   setError(false);
+  //   return true;
+  // };
+
   const validateFieldNumber = (value, setError, inputRef) => {
-    if (value.trim().length < 10 || value.trim().length > 10) {
-      setError(true); // Set error if field length is invalid
-      // Ensure inputRef exists before calling scrollIntoView
+    // Check if value contains only digits
+    const isNumeric = /^[0-9]*$/.test(value.trim());
+    if (!isNumeric) {
+      setError(true); // Set error for non-numeric input
       if (inputRef && inputRef.current) {
         inputRef.current.scrollIntoView({
-          behavior: "smooth", // Smooth scroll to the field
-          block: "center", // Align the field to the center
+          behavior: "smooth",
+          block: "center",
         });
-        inputRef.current.focus(); // Focus on the field for the user
+        inputRef.current.focus();
       }
       return false;
     }
-    setError(false);
+
+    // Check if length is exactly 10
+    if (value.trim().length !== 10) {
+      setError(true); // Set error if field length is invalid
+      if (inputRef && inputRef.current) {
+        inputRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+        inputRef.current.focus();
+      }
+      return false;
+    }
+
+    setError(false); // Clear error if valid
     return true;
   };
 
@@ -977,7 +1010,7 @@ const ProfileInfo = ({
                         />
                         {phoneNumberError && (
                           <small className="text-danger">
-                            Phone Number should be 10 digit.
+                            Phone Number should be valid and 10 digit only.
                           </small>
                         )}
                       </div>
@@ -1365,7 +1398,7 @@ const ProfileInfo = ({
                       </div>
                       <div className="col-lg-7">
                         <div className="form-group input-group ui_kit_select_search">
-                          {/* <select
+                          <select
                             required
                             className="form-select"
                             data-live-search="true"
@@ -1388,8 +1421,8 @@ const ProfileInfo = ({
                                 </option>
                               );
                             })}
-                          </select> */}
-                          <select
+                          </select>
+                          {/* <select
                             ref={dropdownRef} // Ref for smooth scrolling and focus
                             required
                             className="form-select"
@@ -1415,7 +1448,6 @@ const ProfileInfo = ({
                               borderColor: dropdownError ? "red" : "", // Add red border for error
                             }}
                           >
-                            {/* Map options */}
                             {province.map((item, index) => {
                               return (
                                 <option key={item.id} value={item.value}>
@@ -1428,7 +1460,7 @@ const ProfileInfo = ({
                             <small className="text-danger">
                               Please select a valid option.
                             </small>
-                          )}
+                          )} */}
                         </div>
                       </div>
                     </div>
