@@ -21910,9 +21910,10 @@ a::before {
 }
 
 .sidebar-menu li.active a {
-  font-weight: 700;
-  color: white;
-  background-color: black !important;
+  font-weight: 800;
+  color: black;
+  /* background-color: black !important; */
+  background-color: #97d700 !important;
   border-left-color: var(--color-primary) !important;
 }
 

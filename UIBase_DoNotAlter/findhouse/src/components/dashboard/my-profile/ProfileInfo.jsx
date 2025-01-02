@@ -191,6 +191,10 @@ const ProfileInfo = ({
   const [mortgageLicenceError, setMortgageLicenceError] = useState(false);
   const [mortgageLicenceTwoError, setMortgageLicenceTwoError] = useState(false);
 
+  // State for dropdown
+  const [selectedOption, setSelectedOption] = useState("");
+  const [dropdownError, setDropdownError] = useState(false);
+
   const [firstNameValid, setFirstNameValid] = useState(false);
   const [companyNameValid, setCompanyNameValid] = useState(false);
   const [lastNameValid, setLastNameValid] = useState(false);
@@ -207,6 +211,7 @@ const ProfileInfo = ({
   const emailInputRef = useRef(null);
   const mortgageLicenceInputRef = useRef(null);
   const mortgageLicenceTwoInputRef = useRef(null);
+  const dropdownRef = useRef(null);
 
   // const [hasError, setHasError] = useState(false); // State to track the error
   // const firstNameInputRef = useRef(null); // Reference for the input field
@@ -324,34 +329,34 @@ const ProfileInfo = ({
     ) {
       toast.error("Applicant Name should be valid ");
     } else if (phoneNumberRegex.test(phoneNumber) === false || !phoneNumber) {
-      toast.error("Enter a Valid Phone Number Please");
+      toast.error("Please enter a valid phone number");
     } else if (
       cellNumberRegex.test(cellNumber) === false &&
       cellNumber.trim() !== ""
     ) {
-      toast.error("Enter a Valid Cell Number Please");
+      toast.error("Please enter a valid cell number");
     } else if (
       cellNumberRegex.test(assistantPhoneNumber) === false &&
       assistantPhoneNumber.trim() !== ""
     ) {
-      toast.error("Enter a Valid Assistant Phone Number Please");
+      toast.error("Please Enter a valid assistant phone number");
     } else if (
       cellNumberRegex.test(assistantTwoPhoneNumber) === false &&
       assistantTwoPhoneNumber.trim() !== ""
     ) {
-      toast.error("Enter a Valid Assistant Phone Number Please");
+      toast.error("Please Enter a valid assistant phone number");
     } else if (emailRegex.test(emailId) === false) {
-      toast.error("Enter a Valid Email Address Please");
+      toast.error("Please Enter a valid email address");
     } else if (
       emailRegex.test(assistantEmailAddress) === false &&
       assistantEmailAddress.trim() !== ""
     ) {
-      toast.error("Enter a Valid Assistant Email Address Please");
+      toast.error("Please Enter a valid assistant email address");
     } else if (
       emailRegex.test(assistantTwoEmailAddress) === false &&
       assistantTwoEmailAddress.trim() !== ""
     ) {
-      toast.error("Enter a Valid Assistant Email Address Please");
+      toast.error("Please Enter a valid assistant email address");
     } else if (
       (!firstName ||
         !lastName ||
@@ -366,7 +371,7 @@ const ProfileInfo = ({
         !mortageBrokerageLicNo) &&
       !userData
     ) {
-      toast.error("All marked fields arent filled !!");
+      toast.error("All required fields are not filled !!");
     } else {
       let count = 9;
       if (adressLine2) {
@@ -508,6 +513,16 @@ const ProfileInfo = ({
       setMortgageLicenceTwoError,
       mortgageLicenceTwoInputRef
     );
+
+    // Validate dropdown
+    if (selectedOption === "") {
+      setDropdownError(true);
+      dropdownRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+      dropdownRef.current.focus();
+    }
   };
 
   const validateField = (value, setError, inputRef) => {
@@ -577,6 +592,18 @@ const ProfileInfo = ({
     }
     setError(false);
     return true;
+  };
+
+  const handleDropdownChange = (e) => {
+    const value = e.target.value;
+    setSelectedOption(value);
+
+    // Validate: Ensure a valid option is selected
+    if (value === "") {
+      setDropdownError(true);
+    } else {
+      setDropdownError(false);
+    }
   };
 
   const changeEditHandler = () => {
@@ -1064,7 +1091,7 @@ const ProfileInfo = ({
                           }
                           disabled={!edit}
                         />
-                         {mortgageLicenceError && (
+                        {mortgageLicenceError && (
                           <small className="text-danger">
                             Enter valid Mortgage Brokerage Licence Number.
                           </small>
@@ -1110,7 +1137,7 @@ const ProfileInfo = ({
                           }
                           disabled={!edit}
                         />
-                          {mortgageLicenceTwoError && (
+                        {mortgageLicenceTwoError && (
                           <small className="text-danger">
                             Enter valid Mortgage Broker Licence Number.
                           </small>
@@ -1338,7 +1365,7 @@ const ProfileInfo = ({
                       </div>
                       <div className="col-lg-7">
                         <div className="form-group input-group ui_kit_select_search">
-                          <select
+                          {/* <select
                             required
                             className="form-select"
                             data-live-search="true"
@@ -1351,10 +1378,7 @@ const ProfileInfo = ({
                             onChange={(e) => setStateRef(e.target.value)}
                             disabled={!edit}
                             style={{
-                              // paddingTop: "15px",
-                              // paddingBottom: "15px",
                               backgroundColor: "#E8F0FE",
-                              // color:"white"
                             }}
                           >
                             {province.map((item, index) => {
@@ -1364,7 +1388,47 @@ const ProfileInfo = ({
                                 </option>
                               );
                             })}
+                          </select> */}
+                          <select
+                            ref={dropdownRef} // Ref for smooth scrolling and focus
+                            required
+                            className="form-select"
+                            data-live-search="true"
+                            data-width="100%"
+                            value={
+                              stateRef
+                                ? stateRef
+                                : userData?.broker_Details?.province
+                            } // Current value
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              setStateRef(value); // Update state
+                              if (value === "") {
+                                setDropdownError(true); // Trigger error if no valid option is selected
+                              } else {
+                                setDropdownError(false); // Clear error if valid
+                              }
+                            }}
+                            disabled={!edit} // Conditionally enable/disable
+                            style={{
+                              backgroundColor: "#E8F0FE",
+                              borderColor: dropdownError ? "red" : "", // Add red border for error
+                            }}
+                          >
+                            {/* Map options */}
+                            {province.map((item, index) => {
+                              return (
+                                <option key={item.id} value={item.value}>
+                                  {item.type}
+                                </option>
+                              );
+                            })}
                           </select>
+                          {dropdownError && (
+                            <small className="text-danger">
+                              Please select a valid option.
+                            </small>
+                          )}
                         </div>
                       </div>
                     </div>
