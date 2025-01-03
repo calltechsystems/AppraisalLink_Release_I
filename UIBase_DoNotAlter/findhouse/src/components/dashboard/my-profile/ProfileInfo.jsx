@@ -493,6 +493,7 @@ const ProfileInfo = ({
     }
 
     // Validate fields individually
+
     const isFirstNameValid = validateField(
       firstNameRef,
       setFirstNameError,

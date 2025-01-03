@@ -114,18 +114,18 @@ const ProfileInfo = ({
     }
   }, [smsNotification, emailNotification]);
 
-  const handleInputChange = (e) => {
-    const inputValue = e.target.value;
+  // const handleInputChange = (e) => {
+  //   const inputValue = e.target.value;
 
-    const numericValue = inputValue.replace(/\D/g, "");
+  //   const numericValue = inputValue.replace(/\D/g, "");
 
-    const truncatedValue = numericValue.slice(0, 10);
-    if (truncatedValue.length === 10) {
-      setPhoneNumberRef(truncatedValue);
-    }
+  //   const truncatedValue = numericValue.slice(0, 10);
+  //   if (truncatedValue.length === 10) {
+  //     setPhoneNumberRef(truncatedValue);
+  //   }
 
-    setPhoneNumberRef(truncatedValue);
-  };
+  //   setPhoneNumberRef(truncatedValue);
+  // };
 
   const handleInputCellChange = (e) => {
     const inputValue = e.target.value;
@@ -148,7 +148,55 @@ const ProfileInfo = ({
   );
   const [apartmentNo, setApartmentNo] = useState(
     userData?.appraiser_Details?.apartmentNo || ""
-  );  
+  );
+
+  // Validation for input fields
+
+  // State for errors and validation
+  const [firstNameError, setFirstNameError] = useState(false);
+  const [companyNameError, setCompanyNameError] = useState(false);
+  const [lastNameError, setLastNameError] = useState(false);
+  const [phoneNumberError, setPhoneNumberError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [mortgageLicenceError, setMortgageLicenceError] = useState(false);
+  const [mortgageLicenceTwoError, setMortgageLicenceTwoError] = useState(false);
+  const [streetNumberError, setStreetNumberError] = useState(false);
+  const [streetNameError, setStreetNameError] = useState(false);
+  const [cityError, setCityError] = useState(false);
+  const [zipCodeError, setZipCodeError] = useState(false);
+
+  // State for dropdown
+  const [selectedOption, setSelectedOption] = useState("");
+  const [dropdownError, setDropdownError] = useState(false);
+
+  // validate fields
+  const [firstNameValid, setFirstNameValid] = useState(false);
+  const [companyNameValid, setCompanyNameValid] = useState(false);
+  const [lastNameValid, setLastNameValid] = useState(false);
+  const [phoneNumberValid, setPhoneNumberValid] = useState(false);
+  const [emailValid, setEmailValid] = useState(false);
+  const [mortgageLicenceValid, setMortgageLicenceValid] = useState(false);
+  const [mortgageLicenceTwoValid, setMortgageLicenceTwoValid] = useState(false);
+  const [streetNumberValid, setStreetNumberValid] = useState(false);
+  const [streetNameValid, setStreetNameValid] = useState(false);
+  const [cityValid, setCityValid] = useState(false);
+  const [zipCodeValid, setZipCodeValid] = useState(false);
+  const [dropdownValid, setDropdownValid] = useState(false);
+
+  const handleInputChangeName = (value, setValue, setValid, setError) => {
+    if (value.length <= 30) {
+      setValue(value);
+
+      // Validate: Check if length is between 3 and 10
+      if (value.trim().length >= 3) {
+        setValid(true);
+        setError(false);
+      } else {
+        setValid(false);
+        setError(true);
+      }
+    }
+  };
 
   const onUpdatHandler = () => {
     const firstName = firstNameRef;
@@ -177,14 +225,14 @@ const ProfileInfo = ({
     ) {
       toast.error("Appraiser Name should be valid ");
     } else if (phoneNumberRegex.test(phoneNumber) === false || !phoneNumber) {
-      toast.error("Enter a Valid Phone Number Please");
+      toast.error("Please enter a valid phone number");
     } else if (
       cellNumberRegex.test(cellNumber) === false &&
       cellNumber.trim() !== ""
     ) {
-      toast.error("Enter a Valid Cell Number Please");
+      toast.error("Please enter a valid cell number");
     } else if (emailRegex.test(emailId) === false) {
-      toast.error("Enter a Valid Email Address Please");
+      toast.error("Please enter a valid email address");
     } else if (
       (!firstName ||
         !lastName ||
@@ -201,7 +249,7 @@ const ProfileInfo = ({
         !phoneNumber) &&
       !userData
     ) {
-      toast.error("All marked fields arent filled !!");
+      toast.error("All required fields are not filled !!");
     } else {
       const payload = {
         id: userData.userId,
@@ -270,6 +318,208 @@ const ProfileInfo = ({
           .finally(() => {});
         toast.dismiss();
       }
+    }
+    // Validate fields individually
+
+    const isFirstNameValid = validateField(
+      firstNameRef,
+      setFirstNameError,
+    );
+    const isCompanyeNameValid = validateField(
+      companyNameRef,
+      setCompanyNameError,
+    );
+    const isLastNameValid = validateField(
+      lastNameRef,
+      setLastNameError,
+    );
+    const isPhoneNumberValid = validateFieldNumber(
+      phoneNumberRef,
+      setPhoneNumberError,
+    );
+    const isEmailValid = validateEmailField(
+      emailId,
+      setEmailError,
+    );
+    const isMortgageLicenceValid = validateField(
+      mortgageBrokrageLicNoRef,
+      setMortgageLicenceError,
+    );
+    const isMortgageLicenceTwoValid = validateField(
+      mortgageBrokerLicNoRef,
+      setMortgageLicenceTwoError,
+    );
+    const isStreetNumberValid = validateFieldStreetNumber(
+      streetNumber,
+      setStreetNumberError,
+    );
+    const isStreetNameValid = validateFieldStreetNumber(
+      streetName,
+      setStreetNameError,
+    );
+    const isCityValid = validateFieldStreetNumber(
+      cityRef,
+      setCityError,
+    );
+    const isZipCodeValid = validateFieldStreetNumber(
+      zipcodeRef,
+      setZipCodeError,
+    );
+
+    // Validate dropdown
+
+    // if (selectedOption === "") {
+    //   setDropdownError(true);
+    //   dropdownRef.current.scrollIntoView({
+    //     behavior: "smooth",
+    //     block: "center",
+    //   });
+    //   dropdownRef.current.focus();
+    // }
+  };
+
+  const validateField = (value, setError, inputRef) => {
+    if (value.trim().length < 3 || value.trim().length > 10) {
+      setError(true); // Set error if field length is invalid
+      // Ensure inputRef exists before calling scrollIntoView
+      if (inputRef && inputRef.current) {
+        // inputRef.current.scrollIntoView({
+        //   behavior: "smooth",
+        //   block: "center",
+        // });
+        // inputRef.current.focus();
+      }
+      return false;
+    }
+    setError(false);
+    return true;
+  };
+
+  const handleInputChange = (value, setValue, setValid, setError) => {
+    if (value.length <= 10) {
+      setValue(value);
+
+      // Validate: Check if length is between 3 and 10
+      if (value.trim().length >= 10) {
+        setValid(true);
+        setError(false);
+      } else {
+        setValid(false);
+        setError(true);
+      }
+    }
+  };
+
+  const handleInputChangeStreet = (value, setValue, setValid, setError) => {
+    if (value.length <= 30) {
+      setValue(value);
+
+      // Validate: Check if length is between 3 and 10
+      if (value.trim().length >= 1) {
+        setValid(true);
+        setError(false);
+      } else {
+        setValid(false);
+        setError(true);
+      }
+    }
+  };
+
+  // const validateFieldNumber = (value, setError, inputRef) => {
+  //   if (value.trim().length < 10 || value.trim().length > 10) {
+  //     setError(true); // Set error if field length is invalid
+  //     // Ensure inputRef exists before calling scrollIntoView
+  //     if (inputRef && inputRef.current) {
+  //       inputRef.current.scrollIntoView({
+  //         behavior: "smooth", // Smooth scroll to the field
+  //         block: "center", // Align the field to the center
+  //       });
+  //       inputRef.current.focus(); // Focus on the field for the user
+  //     }
+  //     return false;
+  //   }
+  //   setError(false);
+  //   return true;
+  // };
+
+  const validateFieldNumber = (value, setError, inputRef) => {
+    // Check if value contains only digits
+    const isNumeric = /^[0-9]*$/.test(value.trim());
+    if (!isNumeric) {
+      setError(true); // Set error for non-numeric input
+      if (inputRef && inputRef.current) {
+        inputRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+        inputRef.current.focus();
+      }
+      return false;
+    }
+
+    // Check if length is exactly 10
+    if (value.trim().length !== 10) {
+      setError(true); // Set error if field length is invalid
+      if (inputRef && inputRef.current) {
+        inputRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+        inputRef.current.focus();
+      }
+      return false;
+    }
+
+    setError(false); // Clear error if valid
+    return true;
+  };
+
+  const validateEmailField = (value, setError, inputRef) => {
+    // Define a basic email regex pattern for validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(value.trim())) {
+      setError(true); // Set error if the email format is invalid
+      // Ensure inputRef exists before calling scrollIntoView
+      if (inputRef && inputRef.current) {
+        inputRef.current.scrollIntoView({
+          behavior: "smooth", // Smooth scroll to the field
+          block: "center", // Align the field to the center
+        });
+        inputRef.current.focus(); // Focus on the field for the user
+      }
+      return false;
+    }
+    setError(false);
+    return true;
+  };
+
+  const validateFieldStreetNumber = (value, setError, inputRef) => {
+    if (value.trim().length < 1 || value.trim().length > 10) {
+      setError(true); // Set error if field length is invalid
+      // Ensure inputRef exists before calling scrollIntoView
+      if (inputRef && inputRef.current) {
+        // inputRef.current.scrollIntoView({
+        //   behavior: "smooth", // Smooth scroll to the field
+        //   block: "center", // Align the field to the center
+        // });
+        // inputRef.current.focus(); // Focus on the field for the user
+      }
+      return false;
+    }
+    setError(false);
+    return true;
+  };
+
+  const handleDropdownChange = (e) => {
+    const value = e.target.value;
+    setSelectedOption(value);
+
+    // Validate: Ensure a valid option is selected
+    if (value === "") {
+      setDropdownError(true);
+    } else {
+      setDropdownError(false);
     }
   };
 
@@ -344,7 +594,7 @@ const ProfileInfo = ({
         toast.error("Please select a valid PDF file.");
         return;
       }
-      
+
       toast.loading("Uploading..");
       try {
         const generatedUrl = await uploadFile(file);
@@ -472,11 +722,30 @@ const ProfileInfo = ({
                           className="form-control"
                           id="formGroupExampleInput3"
                           required
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: firstNameError
+                              ? "red"
+                              : firstNameValid
+                              ? "green"
+                              : "",
+                          }}
                           value={firstNameRef}
-                          onChange={(e) => setFirstNameRef(e.target.value)}
+                          onChange={(e) =>
+                            handleInputChangeName(
+                              e.target.value,
+                              setFirstNameRef,
+                              setFirstNameValid,
+                              setFirstNameError
+                            )
+                          }
                           disabled={!edit}
                         />
+                        {firstNameError && (
+                          <small className="text-danger">
+                            First Name must be 3 characters minimum.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -520,11 +789,30 @@ const ProfileInfo = ({
                           required
                           className="form-control"
                           id="formGroupExampleInput3"
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: lastNameError
+                              ? "red"
+                              : lastNameValid
+                              ? "green"
+                              : "",
+                          }}
                           value={lastNameRef}
-                          onChange={(e) => setLastNameRef(e.target.value)}
+                          onChange={(e) =>
+                            handleInputChangeName(
+                              e.target.value,
+                              setLastNameRef,
+                              setLastNameValid,
+                              setLastNameError
+                            )
+                          }
                           disabled={!edit}
                         />
+                        {lastNameError && (
+                          <small className="text-danger">
+                            Last Name must be 3 characters minimum.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -542,12 +830,31 @@ const ProfileInfo = ({
                         <input
                           type="text"
                           className="form-control"
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: companyNameError
+                              ? "red"
+                              : companyNameValid
+                              ? "green"
+                              : "",
+                          }}
                           id="formGroupExampleInput3"
                           value={companyNameRef}
-                          onChange={(e) => setCompanyNameRef(e.target.value)}
+                          onChange={(e) =>
+                            handleInputChangeName(
+                              e.target.value,
+                              setCompanyNameRef,
+                              setCompanyNameValid,
+                              setCompanyNameError
+                            )
+                          }
                           disabled={!edit}
                         />
+                        {companyNameError && (
+                          <small className="text-danger">
+                            Company Name must be 3 characters minimum.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -567,11 +874,30 @@ const ProfileInfo = ({
                           required
                           className="form-control"
                           id="formGroupExampleInput3"
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: phoneNumberError
+                              ? "red"
+                              : phoneNumberValid
+                              ? "green"
+                              : "",
+                          }}
                           value={phoneNumberRef}
-                          onChange={(e) => handleInputChange(e)}
+                          onChange={(e) =>
+                            handleInputChange(
+                              e.target.value,
+                              setPhoneNumberRef,
+                              setPhoneNumberValid,
+                              setPhoneNumberError
+                            )
+                          }
                           disabled={!edit}
                         />
+                        {phoneNumberError && (
+                          <small className="text-danger">
+                            Phone Number should be valid and 10 digit only.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -614,11 +940,30 @@ const ProfileInfo = ({
                           className="form-control"
                           required
                           id="formGroupExampleInput3"
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: emailError
+                              ? "red"
+                              : emailValid
+                              ? "green"
+                              : "",
+                          }}
                           value={emailId}
-                          onChange={(e) => setEmailId(e.target.value)}
+                          onChange={(e) =>
+                            handleInputChangeName(
+                              e.target.value,
+                              setEmailId,
+                              setEmailValid,
+                              setEmailError
+                            )
+                          }
                           disabled={!edit}
                         />
+                        {emailError && (
+                          <small className="text-danger">
+                            Enter valid email address.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -639,11 +984,29 @@ const ProfileInfo = ({
                           data-live-search="true"
                           data-width="100%"
                           value={designation}
-                          onChange={(e) => setDesignation(e.target.value)}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            setDesignation(value); // Update state
+                            if (value === "") {
+                              setDropdownError(true);
+                            } else {
+                              setDropdownError(false);
+                              setDropdownValid(true);
+                            }
+                          }}
+                          // onChange={(e) => setDesignation(e.target.value)}
                           // disabled={!edit}
+                          // style={{
+                          //   backgroundColor: "#E8F0FE",
+                          //   color: "black",
+                          // }}
                           style={{
                             backgroundColor: "#E8F0FE",
-                            color: "black",
+                            borderColor: dropdownError
+                              ? "red"
+                              : dropdownValid
+                              ? "green"
+                              : "", // Add red border for error
                           }}
                         >
                           {designations.map((item, index) => {
@@ -654,6 +1017,11 @@ const ProfileInfo = ({
                             );
                           })}
                         </select>
+                        {dropdownError && (
+                          <small className="text-danger">
+                            Please select a valid option.
+                          </small>
+                        )}
                       </div>
                       {setODesignation && (
                         <div className="col-lg-3" id="other-div">
@@ -839,12 +1207,31 @@ const ProfileInfo = ({
                           type="text"
                           className="form-control"
                           id="formGroupExampleInput3"
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: streetNumberError
+                              ? "red"
+                              : streetNumberValid
+                              ? "green"
+                              : "",
+                          }}
                           required
                           value={streetNumber}
-                          onChange={(e) => setStreetNumber(e.target.value)}
+                          onChange={(e) =>
+                            handleInputChangeStreet(
+                              e.target.value,
+                              setStreetNumber,
+                              setStreetNumberValid,
+                              setStreetNumberError
+                            )
+                          }
                           disabled={!edit}
                         />
+                        {streetNumberError && (
+                          <small className="text-danger">
+                            Enter valid street Number.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -863,11 +1250,30 @@ const ProfileInfo = ({
                           type="text"
                           className="form-control"
                           id="formGroupExampleInput3"
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: streetNameError
+                              ? "red"
+                              : streetNameValid
+                              ? "green"
+                              : "",
+                          }}
                           value={streetName}
-                          onChange={(e) => setStreetName(e.target.value)}
+                          onChange={(e) =>
+                            handleInputChangeStreet(
+                              e.target.value,
+                              setStreetName,
+                              setStreetNameValid,
+                              setStreetNameError
+                            )
+                          }
                           disabled={!edit}
                         />
+                        {streetNameError && (
+                          <small className="text-danger">
+                            Enter valid street Name.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -913,12 +1319,31 @@ const ProfileInfo = ({
                           type="text"
                           className="form-control"
                           id="formGroupExampleInput3"
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: cityError
+                              ? "red"
+                              : cityValid
+                              ? "green"
+                              : "",
+                          }}
                           required
                           value={cityRef}
-                          onChange={(e) => setCityRef(e.target.value)}
+                          onChange={(e) =>
+                            handleInputChangeStreet(
+                              e.target.value,
+                              setCityRef,
+                              setCityValid,
+                              setCityError
+                            )
+                          }
                           disabled={!edit}
                         />
+                        {cityError && (
+                          <small className="text-danger">
+                            Enter valid city Name.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -938,12 +1363,25 @@ const ProfileInfo = ({
                           className="form-select"
                           data-live-search="true"
                           data-width="100%"
-                          onChange={(e) => setStateRef(e.target.value)}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            setStateRef(value); // Update state
+                            if (value === "") {
+                              setDropdownError(true);
+                            } else {
+                              setDropdownError(false);
+                              setDropdownValid(true);
+                            }
+                          }}
                           value={stateRef}
                           disabled={!edit}
                           style={{
                             backgroundColor: "#E8F0FE",
-                            // color:"white"
+                            borderColor: dropdownError
+                              ? "red"
+                              : dropdownValid
+                              ? "green"
+                              : "", // Add red border for error
                           }}
                         >
                           {province.map((item, index) => {
@@ -954,6 +1392,11 @@ const ProfileInfo = ({
                             );
                           })}
                         </select>
+                        {dropdownError && (
+                          <small className="text-danger">
+                            Please select a valid option.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -973,11 +1416,30 @@ const ProfileInfo = ({
                           className="form-control"
                           required
                           id="formGroupExampleInput3"
-                          style={{ backgroundColor: "#E8F0FE" }}
-                          onChange={(e) => handleZipCodeChange(e.target.value)}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: zipCodeError
+                              ? "red"
+                              : zipCodeValid
+                              ? "green"
+                              : "",
+                          }}
+                          onChange={(e) =>
+                            handleInputChangeStreet(
+                              e.target.value,
+                              setZipcodeRef,
+                              setZipCodeValid,
+                              setZipCodeError
+                            )
+                          }
                           value={zipcodeRef}
                           disabled={!edit}
                         />
+                        {zipCodeError && (
+                          <small className="text-danger">
+                            Enter valid postal code.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
