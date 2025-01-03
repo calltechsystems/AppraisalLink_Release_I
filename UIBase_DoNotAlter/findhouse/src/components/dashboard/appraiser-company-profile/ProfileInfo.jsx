@@ -158,6 +158,8 @@ const ProfileInfo = ({
     setCellNumber(truncatedValue);
   };
 
+  
+
   const onUpdatHandler = () => {
     const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const cellNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
@@ -295,13 +297,11 @@ const ProfileInfo = ({
     const allowedPdfTypes = ["application/pdf"];
 
     if (String(type) === "1" && !allowedImageTypes.includes(file?.type)) {
-      
-        toast.error("Please select a valid image file (JPEG, PNG, GIF).");
-        return;
-      
+      toast.error("Please select a valid image file (JPEG, PNG, GIF).");
+      return;
     } else if (String(type) === "2" && !allowedPdfTypes.includes(file?.type)) {
-        toast.error("Please select a valid PDF file.");
-        return;
+      toast.error("Please select a valid PDF file.");
+      return;
     } else {
       const file = e.target.files[0];
       toast.loading("Uploading..");

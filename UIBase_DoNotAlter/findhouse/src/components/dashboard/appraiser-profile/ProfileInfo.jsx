@@ -321,49 +321,37 @@ const ProfileInfo = ({
     }
     // Validate fields individually
 
-    const isFirstNameValid = validateField(
-      firstNameRef,
-      setFirstNameError,
-    );
+    const isFirstNameValid = validateField(firstNameRef, setFirstNameError);
     const isCompanyeNameValid = validateField(
       companyNameRef,
-      setCompanyNameError,
+      setCompanyNameError
     );
-    const isLastNameValid = validateField(
-      lastNameRef,
-      setLastNameError,
-    );
+    const isLastNameValid = validateField(lastNameRef, setLastNameError);
     const isPhoneNumberValid = validateFieldNumber(
       phoneNumberRef,
-      setPhoneNumberError,
+      setPhoneNumberError
     );
-    const isEmailValid = validateEmailField(
-      emailId,
-      setEmailError,
-    );
+    const isEmailValid = validateEmailField(emailId, setEmailError);
     const isMortgageLicenceValid = validateField(
       mortgageBrokrageLicNoRef,
-      setMortgageLicenceError,
+      setMortgageLicenceError
     );
     const isMortgageLicenceTwoValid = validateField(
       mortgageBrokerLicNoRef,
-      setMortgageLicenceTwoError,
+      setMortgageLicenceTwoError
     );
     const isStreetNumberValid = validateFieldStreetNumber(
       streetNumber,
-      setStreetNumberError,
+      setStreetNumberError
     );
     const isStreetNameValid = validateFieldStreetNumber(
       streetName,
-      setStreetNameError,
+      setStreetNameError
     );
-    const isCityValid = validateFieldStreetNumber(
-      cityRef,
-      setCityError,
-    );
+    const isCityValid = validateFieldStreetNumber(cityRef, setCityError);
     const isZipCodeValid = validateFieldStreetNumber(
       zipcodeRef,
-      setZipCodeError,
+      setZipCodeError
     );
 
     // Validate dropdown
@@ -830,31 +818,12 @@ const ProfileInfo = ({
                         <input
                           type="text"
                           className="form-control"
-                          style={{
-                            backgroundColor: "#E8F0FE",
-                            borderColor: companyNameError
-                              ? "red"
-                              : companyNameValid
-                              ? "green"
-                              : "",
-                          }}
+                          style={{ backgroundColor: "#E8F0FE" }}
                           id="formGroupExampleInput3"
                           value={companyNameRef}
-                          onChange={(e) =>
-                            handleInputChangeName(
-                              e.target.value,
-                              setCompanyNameRef,
-                              setCompanyNameValid,
-                              setCompanyNameError
-                            )
-                          }
+                          onChange={(e) => setCompanyNameRef(e.target.value)}
                           disabled={!edit}
                         />
-                        {companyNameError && (
-                          <small className="text-danger">
-                            Company Name must be 3 characters minimum.
-                          </small>
-                        )}
                       </div>
                     </div>
                   </div>
