@@ -210,7 +210,7 @@ export default function Exemple({
         console.log(temp);
         const data = temp.broker;
         const updatedRow = {
-          username: data?.userInformation,
+          username: temp.userInformation,
           firstname: data?.firstName ? data?.firstName : "NA",
           lastname: data?.lastName ? data?.lastName : "NA",
           status:
@@ -226,6 +226,10 @@ export default function Exemple({
           // date: dateNow,
           emailaddress: data?.emailId ? data?.emailId : "NA",
           date:
+            data?.isActive && data?.dateEstablished !== null
+              ? formatDate(data?.dateEstablished)
+              : "-",
+          enddate:
             data?.isActive && data?.modifiedDateTime !== null
               ? formatDate(data?.modifiedDateTime)
               : "-",
@@ -293,8 +297,6 @@ export default function Exemple({
       .then((res) => {
         setDataFetched(true);
         console.log(res.data);
-        const userInformation = res.data?.data?.brokers?.$values[0]?.userInformation;
-        console.log("User Information:", userInformation);
         // setAppraiserCompanyInfo(res.data?.data?.brokerage);
         setAllBrokers(res.data?.data?.brokers.$values);
       })
