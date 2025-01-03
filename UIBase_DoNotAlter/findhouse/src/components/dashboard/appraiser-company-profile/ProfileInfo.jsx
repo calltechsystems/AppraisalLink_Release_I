@@ -349,13 +349,10 @@ const ProfileInfo = ({
     );
     const isEmailValid = validateEmailField(emailId, setEmailError);
     const isMortgageLicenceValid = validateField(
-      mortgageBrokrageLicNoRef,
-      setMortgageLicenceError
+      licenseNumber,
+      setLicenceError
     );
-    const isMortgageLicenceTwoValid = validateField(
-      mortgageBrokerLicNoRef,
-      setMortgageLicenceTwoError
-    );
+
     const isStreetNumberValid = validateFieldStreetNumber(
       streetNumber,
       setStreetNumberError
@@ -901,7 +898,7 @@ const ProfileInfo = ({
                           }
                           disabled={!edit}
                         />
-                         {LicenceError && (
+                        {LicenceError && (
                           <small className="text-danger">
                             Enter valid Licence Number.
                           </small>
@@ -1082,12 +1079,31 @@ const ProfileInfo = ({
                           type="text"
                           className="form-control"
                           id="formGroupExampleInput3"
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: streetNumberError
+                              ? "red"
+                              : streetNumberValid
+                              ? "green"
+                              : "",
+                          }}
                           required
                           value={streetNumber}
-                          onChange={(e) => setStreetNumber(e.target.value)}
+                          onChange={(e) =>
+                            handleInputChangeStreet(
+                              e.target.value,
+                              setStreetNumber,
+                              setStreetNumberValid,
+                              setStreetNumberError
+                            )
+                          }
                           disabled={!edit}
                         />
+                        {streetNumberError && (
+                          <small className="text-danger">
+                            Enter valid street Number.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -1107,12 +1123,31 @@ const ProfileInfo = ({
                           type="text"
                           className="form-control"
                           id="formGroupExampleInput3"
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: streetNameError
+                              ? "red"
+                              : streetNameValid
+                              ? "green"
+                              : "",
+                          }}
                           required
                           value={streetName}
-                          onChange={(e) => setStreetName(e.target.value)}
+                          onChange={(e) =>
+                            handleInputChangeStreet(
+                              e.target.value,
+                              setStreetName,
+                              setStreetNameValid,
+                              setStreetNameError
+                            )
+                          }
                           disabled={!edit}
                         />
+                        {streetNameError && (
+                          <small className="text-danger">
+                            Enter valid street Name.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -1159,12 +1194,31 @@ const ProfileInfo = ({
                           type="text"
                           className="form-control"
                           id="formGroupExampleInput3"
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: cityError
+                              ? "red"
+                              : cityValid
+                              ? "green"
+                              : "",
+                          }}
                           required
                           value={cityRef}
-                          onChange={(e) => setCityRef(e.target.value)}
+                          onChange={(e) =>
+                            handleInputChangeStreet(
+                              e.target.value,
+                              setCityRef,
+                              setCityValid,
+                              setCityError
+                            )
+                          }
                           disabled={!edit}
                         />
+                        {cityError && (
+                          <small className="text-danger">
+                            Enter valid city Name.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -1186,11 +1240,24 @@ const ProfileInfo = ({
                           data-live-search="true"
                           data-width="100%"
                           value={stateRef}
-                          onChange={(e) => setStateRef(e.target.value)}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            setStateRef(value); // Update state
+                            if (value === "") {
+                              setDropdownError(true);
+                            } else {
+                              setDropdownError(false);
+                              setDropdownValid(true);
+                            }
+                          }}
                           disabled={!edit}
                           style={{
                             backgroundColor: "#E8F0FE",
-                            // color:"white"
+                            borderColor: dropdownError
+                              ? "red"
+                              : dropdownValid
+                              ? "green"
+                              : "", // Add red border for error
                           }}
                         >
                           {province.map((item, index) => {
@@ -1201,6 +1268,11 @@ const ProfileInfo = ({
                             );
                           })}
                         </select>
+                        {dropdownError && (
+                          <small className="text-danger">
+                            Please select a valid option.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -1221,11 +1293,31 @@ const ProfileInfo = ({
                           className="form-control"
                           required
                           id="formGroupExampleInput3"
-                          style={{ backgroundColor: "#E8F0FE" }}
-                          onChange={(e) => handleZipCodeChange(e.target.value)}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: zipCodeError
+                              ? "red"
+                              : zipCodeValid
+                              ? "green"
+                              : "",
+                          }}
+                          // onChange={(e) => handleZipCodeChange(e.target.value)}
+                          onChange={(e) =>
+                            handleInputChangeStreet(
+                              e.target.value,
+                              setZipcodeRef,
+                              setZipCodeValid,
+                              setZipCodeError
+                            )
+                          }
                           value={zipcodeRef}
                           disabled={!edit}
                         />
+                        {zipCodeError && (
+                          <small className="text-danger">
+                            Enter valid postal code.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
