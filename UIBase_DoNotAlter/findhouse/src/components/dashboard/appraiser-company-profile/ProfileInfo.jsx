@@ -704,6 +704,11 @@ const ProfileInfo = ({
                           }
                           disabled={!edit}
                         />
+                        {firstNameError && (
+                          <small className="text-danger">
+                            First Name must be 3 characters minimum.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -745,6 +750,11 @@ const ProfileInfo = ({
                           }
                           disabled={!edit}
                         />
+                        {lastNameError && (
+                          <small className="text-danger">
+                            Last Name must be 3 characters minimum.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
