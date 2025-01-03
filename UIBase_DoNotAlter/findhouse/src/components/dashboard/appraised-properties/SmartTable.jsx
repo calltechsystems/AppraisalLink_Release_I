@@ -6,7 +6,7 @@ import SVGChevronLeft from "./icons/SVGChevronLeft";
 import SVGChevronRight from "./icons/SVGChevronRight";
 import { FaRedo } from "react-icons/fa";
 import * as XLSX from "xlsx";
-
+import Image from "next/image";
 import millify from "millify";
 
 import { useReactToPrint } from "react-to-print";
