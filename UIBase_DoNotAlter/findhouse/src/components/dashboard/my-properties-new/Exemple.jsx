@@ -29,7 +29,7 @@ const headCells = [
     id: "appraisal_status",
     numeric: false,
     label: "Appraisal Status",
-    width: 200,
+    width: 160,
   },
   {
     id: "remark",
@@ -169,6 +169,13 @@ export default function Exemple({
     setModalOpen(true);
   };
 
+  const getStatusButtonClass = (orderStatus) => {
+    if (orderStatus === 4 || orderStatus === 5) {
+      return "btn btn-status-na w-100"; // Orange color class
+    }
+    return "btn btn-status w-100"; // Default color
+  };
+
   const formatDate = (dateString) => {
     const options = {
       year: "numeric",
@@ -285,7 +292,7 @@ export default function Exemple({
               ),
             appraisal_status:
               isHold || isCancel ? (
-                <button className="btn btn-warning" style={{width:"90%"}}>
+                <button className="btn btn-warning" style={{ width: "70%" }}>
                   {isHold ? "N.A." : "N.A."}
                 </button>
               ) : isBidded.orderstatus !== 1 &&
@@ -308,8 +315,8 @@ export default function Exemple({
                       </li>
                     </ul>
                   </div>
-                  <span className="btn btn-status w-100">
-                    Current Status
+                  <span className={getStatusButtonClass(isBidded.orderstatus)}>
+                    Status
                     <span className="m-1">
                       <i class="fa fa-info-circle" aria-hidden="true"></i>
                     </span>
@@ -338,15 +345,17 @@ export default function Exemple({
                       </li>
                     </ul>
                   </div>
-                  <span className="btn btn-status w-100">
-                    Current Status
+                  <span className={getStatusButtonClass(isBidded.orderstatus)}>
+                    Status
                     <span className="m-1">
                       <i class="fa fa-info-circle" aria-hidden="true"></i>
                     </span>
                   </span>
                 </div>
               ) : (
-                <button className="btn btn-warning" style={{width:"90%"}}><span>N.A.</span></button>
+                <button className="btn btn-warning" style={{ width: "70%" }}>
+                  <span>N.A.</span>
+                </button>
               ),
             address: `${property.streetNumber} ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
             remark: isBidded.remark ? isBidded.remark : "N.A.",
