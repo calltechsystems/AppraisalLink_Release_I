@@ -6,7 +6,7 @@ import SVGChevronLeft from "./icons/SVGChevronLeft";
 import SVGChevronRight from "./icons/SVGChevronRight";
 import { FaRedo } from "react-icons/fa";
 import * as XLSX from "xlsx";
-
+import Image from "next/image";
 import { useReactToPrint } from "react-to-print";
 import toast from "react-hot-toast";
 import SearchBox from "./SearchBox";
@@ -576,11 +576,20 @@ function SmartTable(props) {
             <div className="row">
               <div
                 className="smartTable-noDataFound col-12"
-                style={{ marginTop: "100px", marginBottom: "40px" }}
+                style={{ marginTop: "5px", marginBottom: "10px" }}
               >
                 {props.dataFetched && props.properties.length === 0 ? (
                   showNoData ? (
-                    <h3>No Data Found</h3>
+                    // <h3>No Data Found</h3>
+                    <div className="col-lg-12">
+                      <Image
+                        width={500}
+                        height={400}
+                        className="img-fluid"
+                        src="/assets/images/home/no-data-found.avif"
+                        alt="login.jpg"
+                      />
+                    </div>
                   ) : (
                     <div className="ring">
                       Loading

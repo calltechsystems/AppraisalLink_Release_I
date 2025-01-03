@@ -33,7 +33,7 @@ const headCells = [
     id: "appraisal_status",
     numeric: false,
     label: "Appraisal Status",
-    width: 200,
+    width: 160,
   },
   {
     id: "remark",
@@ -464,7 +464,7 @@ export default function Exemple({
                     </ul>
                   </div>
                   <button className="btn btn-status">
-                    Current Status
+                    Status
                     <span className="m-1">
                       <i class="fa fa-info-circle" aria-hidden="true"></i>
                     </span>
@@ -485,15 +485,15 @@ export default function Exemple({
                       </li>
                     </ul>
                   </div>
-                  <button className="btn btn-status w-100">
-                    Current Status
+                  <span className="btn btn-status w-100">
+                    Status
                     <span className="m-1">
                       <i class="fa fa-info-circle" aria-hidden="true"></i>
                     </span>
-                  </button>
+                  </span>
                 </div>
               ) : (
-                <button className="btn btn-warning" style={{ width: "85%" }}>
+                <button className="btn btn-warning" style={{ width: "70%" }}>
                   <span>N.A.</span>
                 </button>
               ),

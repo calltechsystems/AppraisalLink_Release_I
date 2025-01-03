@@ -1082,14 +1082,14 @@ const Index = ({ propertyId }) => {
                           className="btn btn-color w-25"
                           style={{ marginRight: "5px" }}
                           onClick={closeModal}
-                          disabled={disable}
+                          // disabled={disable}
                         >
                           Cancel
                         </button>
                         <button
                           className="btn btn-color w-25"
                           onClick={() => acceptRequestHandler(property.bidId)}
-                          disabled={disable}
+                          // disabled={disable}
                         >
                           Submit
                         </button>

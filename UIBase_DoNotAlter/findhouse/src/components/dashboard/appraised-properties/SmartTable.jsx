@@ -599,7 +599,16 @@ function SmartTable(props) {
               >
                 {props.dataFetched && props.properties.length === 0 ? (
                   showNoData ? (
-                    <h3>No Data Found</h3>
+                    // <h3>No Data Found</h3>
+                    <div className="col-lg-6">
+                      <Image
+                        width={157}
+                        height={100}
+                        className="img-fluid w100 h-80 cover"
+                        src="/assets/images/home/no-data-found.avif"
+                        alt="login.jpg"
+                      />
+                    </div>
                   ) : (
                     <div className="ring">
                       Loading

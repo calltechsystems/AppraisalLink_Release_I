@@ -1850,6 +1850,7 @@ const Index = () => {
                         id="formGroupExampleInput3"
                         onChange={(e) => setRemark(e.target.value)}
                         value={remark}
+                        maxlength="50"
                       />
                     </div>
                     <div

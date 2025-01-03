@@ -108,8 +108,8 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
       setErrorMessage("Email cant be empty or non valid.");
       setModalIsOpenError(true);
     } else if (!captchaVerfied) {
-      setErrorMessage("Please fill the Captcha !")
-      setModalIsOpenError(true)
+      setErrorMessage("Please fill the Captcha !");
+      setModalIsOpenError(true);
       setChange(true);
       return;
     } else {
@@ -128,34 +128,33 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
           console.log(res);
           const isAdding = JSON.parse(localStorage.getItem("addAppraiser"));
           toast.dismiss();
-          if(isAdding){
+          if (isAdding) {
             const userData = isAdding.user;
-            localStorage.setItem("user",JSON.stringify(userData));
+            localStorage.setItem("user", JSON.stringify(userData));
             localStorage.removeItem("addAppraiser");
             router.push("/all-appraisers");
-          }
-          else{
-          setModalIsOpen(true);
-          // router.push("/login");
+          } else {
+            setModalIsOpen(true);
+            // router.push("/login");
           }
         })
         .catch((err) => {
           // console.log(err);
           // return ;
           let statusText = err.response;
-          if( String(err.response.request.status) === "409"){
-            statusText="The used email is already being registered!";
+          if (String(err.response.request.status) === "409") {
+            statusText = "The used email is already being registered!";
           }
-          if( String(err.response.request.status) === "500"){
-            statusText="Server issues ,Please Try again !!";
+          if (String(err.response.request.status) === "500") {
+            statusText = "Server issues ,Please Try again !!";
           }
-          if( String(err.response.request.status) === "403"){
-            statusText="You are being forbidden to access this !";
+          if (String(err.response.request.status) === "403") {
+            statusText = "You are being forbidden to access this !";
           }
-          if( String(err.response.request.status) === "304"){
-            statusText="Not found!";
+          if (String(err.response.request.status) === "304") {
+            statusText = "Not found!";
           }
-          
+
           toast.dismiss();
           setErrorMessage(statusText);
           setModalIsOpenError(true);
@@ -350,8 +349,8 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
                 <div
                   className="input-group-text m-1"
                   style={{ border: "1px solid #2e008b" }}
-                  onMouseEnter={togglePasswordVisibility}
-                  onMouseLeave={togglePasswordVisibility}
+                  onClick={togglePasswordVisibility}
+                  // onMouseLeave={togglePasswordVisibility}
                 >
                   <FaEye />
                 </div>
@@ -397,8 +396,8 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
                 <div
                   className="input-group-text m-1"
                   style={{ border: "1px solid #2e008b" }}
-                  onMouseEnter={togglePasswordVisibility_01}
-                  onMouseLeave={togglePasswordVisibility_01}
+                  onClick={togglePasswordVisibility_01}
+                  // onMouseLeave={togglePasswordVisibility_01}
                 >
                   <FaEye />
                 </div>

@@ -449,11 +449,11 @@ const ProfileInfo = ({
     if (!isNumeric) {
       setError(true); // Set error for non-numeric input
       if (inputRef && inputRef.current) {
-        inputRef.current.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-        inputRef.current.focus();
+        // inputRef.current.scrollIntoView({
+        //   behavior: "smooth",
+        //   block: "center",
+        // });
+        // inputRef.current.focus();
       }
       return false;
     }
@@ -462,11 +462,11 @@ const ProfileInfo = ({
     if (value.trim().length !== 10) {
       setError(true); // Set error if field length is invalid
       if (inputRef && inputRef.current) {
-        inputRef.current.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-        inputRef.current.focus();
+        // inputRef.current.scrollIntoView({
+        //   behavior: "smooth",
+        //   block: "center",
+        // });
+        // inputRef.current.focus();
       }
       return false;
     }

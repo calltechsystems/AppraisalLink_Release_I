@@ -899,6 +899,86 @@ const Index = ({ propertyId }) => {
               </div>
             )}
             {isModalOpen && (
+              // <div className="modal">
+              //   <div className="modal-content">
+              //     <div className="row">
+              //       <div className="col-lg-12">
+              //         <Link href="/" className="">
+              //           <Image
+              //             width={60}
+              //             height={45}
+              //             className="logo1 img-fluid"
+              //             style={{ marginTop: "-20px" }}
+              //             src="/assets/images/Appraisal_Land_Logo.png"
+              //             alt="header-logo2.png"
+              //           />
+              //           <span
+              //             style={{
+              //               color: "#2e008b",
+              //               fontWeight: "bold",
+              //               fontSize: "24px",
+              //               // marginTop: "20px",
+              //             }}
+              //           >
+              //             Appraisal
+              //           </span>
+              //           <span
+              //             style={{
+              //               color: "#97d700",
+              //               fontWeight: "bold",
+              //               fontSize: "24px",
+              //               // marginTop: "20px",
+              //             }}
+              //           >
+              //             {" "}
+              //             Land
+              //           </span>
+              //         </Link>
+              //       </div>
+              //     </div>
+              //     <h3 className="text-center">Accept Bid Confirmation</h3>
+              //     <div
+              //       className="mt-2 mb-3"
+              //       style={{ border: "2px solid #97d700" }}
+              //     ></div>
+              //     <p className="text-center fs-6">
+              //       Are you sure you want to accept the quote with value?
+              //     </p>
+
+              //     <h4 className="text-center">
+              //       Quote Amount : $ {property.bidAmount}
+              //     </h4>
+              //     <p className="text-center mt-3 mb-0">
+              //       ( Note <span className="text-danger">*</span> : All Other
+              //       Quotes from other appriasers will be Rejected.)
+              //     </p>
+              //     <div
+              //       className="mt-2 mb-3"
+              //       style={{ border: "2px solid #97d700" }}
+              //     ></div>
+
+              //     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
+              //     <div className="col-lg-12">
+              //       <div className="row">
+              //         <div className="col-lg-12 text-center m-1">
+              //           <button
+              //             className="btn btn-color"
+              //             style={{ marginRight: "5px" }}
+              //             onClick={closeModal}
+              //           >
+              //             Cancel
+              //           </button>
+              //           <button
+              //             className="btn btn-color"
+              //             onClick={() => acceptRequestHandler(property.bidId)}
+              //           >
+              //             Submit
+              //           </button>
+              //         </div>
+              //       </div>
+              //     </div>
+              //   </div>
+              // </div>
               <div className="modal">
                 <div className="modal-content">
                   <div className="row">
@@ -936,19 +1016,28 @@ const Index = ({ propertyId }) => {
                       </Link>
                     </div>
                   </div>
-                  <h3 className="text-center">Accept Bid Confirmation</h3>
+                  <span
+                    className="text-center"
+                    style={{
+                      fontWeight: "bold",
+                      fontSize: "29px",
+                      color: "#2e008b",
+                    }}
+                  >
+                    Accept Bid Confirmation
+                  </span>
                   <div
                     className="mt-2 mb-3"
                     style={{ border: "2px solid #97d700" }}
                   ></div>
-                  <p className="text-center fs-6">
+                  <p className="text-center fs-4">
                     Are you sure you want to accept the quote with value?
                   </p>
 
-                  <h4 className="text-center">
+                  <h3 className="text-center">
                     Quote Amount : $ {property.bidAmount}
-                  </h4>
-                  <p className="text-center mt-3 mb-0">
+                  </h3>
+                  <p className="text-center mt-3 mb-0 fs-5">
                     ( Note <span className="text-danger">*</span> : All Other
                     Quotes from other appriasers will be Rejected.)
                   </p>
@@ -962,15 +1051,17 @@ const Index = ({ propertyId }) => {
                     <div className="row">
                       <div className="col-lg-12 text-center m-1">
                         <button
-                          className="btn btn-color"
+                          className="btn btn-color w-25"
                           style={{ marginRight: "5px" }}
                           onClick={closeModal}
+                          // disabled={disable}
                         >
                           Cancel
                         </button>
                         <button
-                          className="btn btn-color"
+                          className="btn btn-color w-25"
                           onClick={() => acceptRequestHandler(property.bidId)}
+                          // disabled={disable}
                         >
                           Submit
                         </button>

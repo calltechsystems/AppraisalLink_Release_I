@@ -23016,8 +23016,8 @@ input:checked + .slider:before {
 }
 
 .btn-status-na{
-  background-color: orange;
-  color: #2e008b;
+  background-color: #FF7518;
+  color: white;
   /* padding: 15px; */
 }
 

@@ -40,7 +40,7 @@ const headCells = [
     id: "appraisal_status",
     numeric: false,
     label: "Appraisal Status",
-    width: 200,
+    width: 160,
   },
   {
     id: "remark",
@@ -308,6 +308,13 @@ export default function Exemple({
 
   const onDeletePropertyHandler = () => {};
 
+  const getStatusButtonClass = (orderStatus) => {
+    if (orderStatus === 4 || orderStatus === 5) {
+      return "btn btn-status-na w-100"; // Orange color class
+    }
+    return "btn btn-status w-100"; // Default color
+  };
+
   const formatDate = (dateString) => {
     const options = {
       year: "numeric",
@@ -315,7 +322,7 @@ export default function Exemple({
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
-      // second: "numeric",
+      second: "numeric",
       hour12: true, // Set to false for 24-hour format
     };
 
@@ -484,11 +491,14 @@ export default function Exemple({
                       <li style={{ fontSize: "15px" }}>
                         {getOrderValue(isBidded.orderstatus)} -
                         {formatDate(isBidded.statusDate)}
+                        {console.log("statusDate:", isBidded.statusDate)}
                       </li>
                     </ul>
                   </div>
-                  <button className="btn btn-status w-100">
-                    Current Status
+                  <button
+                    className={getStatusButtonClass(isBidded.orderstatus)}
+                  >
+                    Status
                     <span className="m-1">
                       <i class="fa fa-info-circle" aria-hidden="true"></i>
                     </span>
@@ -509,15 +519,19 @@ export default function Exemple({
                       </li>
                     </ul>
                   </div>
-                  <button className="btn btn-status w-100">
-                    Current Status
+                  <button
+                    className={getStatusButtonClass(isBidded.orderstatus)}
+                  >
+                    Status
                     <span className="m-1">
                       <i class="fa fa-info-circle" aria-hidden="true"></i>
                     </span>
                   </button>
                 </div>
               ) : (
-                <button className="btn btn-warning" style={{width:"85%"}}><span>N.A.</span></button>
+                <button className="btn btn-warning" style={{ width: "70%" }}>
+                  <span>N.A.</span>
+                </button>
               ),
             remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
             status:
@@ -537,7 +551,9 @@ export default function Exemple({
                 isBidded.orderstatus === 3 ? (
                   <span className="btn btn-completed w-100">Completed</span>
                 ) : isBidded.status === 0 ? (
-                  <span className="btn bg-info text-light  w-100">Quote Provided</span>
+                  <span className="btn bg-info text-light  w-100">
+                    Quote Provided
+                  </span>
                 ) : isBidded.status === 1 ? (
                   <span className="btn btn-success  w-100">Accepted</span>
                 ) : (

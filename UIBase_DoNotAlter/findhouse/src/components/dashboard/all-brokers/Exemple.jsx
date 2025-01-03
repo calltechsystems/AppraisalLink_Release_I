@@ -10,6 +10,12 @@ import Loader from "./Loader";
 
 const headCells = [
   {
+    id: "username",
+    numeric: false,
+    label: "User Name",
+    width: 200,
+  },
+  {
     id: "firstname",
     numeric: false,
     label: "First Name",
@@ -40,6 +46,12 @@ const headCells = [
     width: 200,
   },
   {
+    id: "enddate",
+    numeric: false,
+    label: "End Date",
+    width: 200,
+  },
+  {
     id: "status",
     numeric: false,
     label: "Status",
@@ -52,50 +64,6 @@ const headCells = [
     width: 100,
   },
 ];
-
-const temporaryData = [
-  {
-    email: "test@gmail.com",
-    firstname: "Joe",
-    lastname: "Doe",
-    company: "Appraiser Company 1",
-    phone: "+91 12324 235644",
-    date: " 29 December 2023",
-  },
-  {
-    email: "test@gmail.com",
-    firstname: "Joe",
-    lastname: "Doe",
-    company: "Appraiser Company 1",
-    phone: "+91 12324 235644",
-    date: " 29 December 2023",
-  },
-  {
-    email: "test@gmail.com",
-    firstname: "Joe",
-    lastname: "Doe",
-    company: "Appraiser Company 1",
-    phone: "+91 12324 235644",
-    date: " 29 December 2023",
-  },
-  {
-    email: "test@gmail.com",
-    firstname: "Joe",
-    lastname: "Doe",
-    company: "Appraiser Company 1",
-    phone: "+91 12324 235644",
-    date: " 29 December 2023",
-  },
-  {
-    email: "test@gmail.com",
-    firstname: "Joe",
-    lastname: "Doe",
-    company: "Appraiser Company 1",
-    phone: "+91 12324 235644",
-    date: " 29 December 2023",
-  },
-];
-let count = 0;
 
 export default function Exemple({
   userData,
@@ -242,6 +210,7 @@ export default function Exemple({
         console.log(temp);
         const data = temp.broker;
         const updatedRow = {
+          username: data?.userInformation,
           firstname: data?.firstName ? data?.firstName : "NA",
           lastname: data?.lastName ? data?.lastName : "NA",
           status:
@@ -256,8 +225,10 @@ export default function Exemple({
           address: `${data?.streetName} ${data?.streetNumber},${data?.city}-${data?.postalCode}`,
           // date: dateNow,
           emailaddress: data?.emailId ? data?.emailId : "NA",
-          date: data?.isActive && data?.modifiedDateTime !== null ?
-          formatDate(data?.modifiedDateTime) : "-",
+          date:
+            data?.isActive && data?.modifiedDateTime !== null
+              ? formatDate(data?.modifiedDateTime)
+              : "-",
           action: (
             <div className="print-hidden-column">
               {data.firstName && (
@@ -320,13 +291,15 @@ export default function Exemple({
         },
       })
       .then((res) => {
-        setDataFetched(true)
+        setDataFetched(true);
         console.log(res.data);
+        const userInformation = res.data?.data?.brokers?.$values[0]?.userInformation;
+        console.log("User Information:", userInformation);
         // setAppraiserCompanyInfo(res.data?.data?.brokerage);
         setAllBrokers(res.data?.data?.brokers.$values);
       })
       .catch((err) => {
-        setDataFetched(false)
+        setDataFetched(false);
         setErrorMessage(err?.response?.data?.error);
         setModalIsOpenError(true);
       });

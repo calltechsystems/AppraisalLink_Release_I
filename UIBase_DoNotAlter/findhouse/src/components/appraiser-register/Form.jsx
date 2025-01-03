@@ -337,9 +337,9 @@ const Form = ({
                   <div className="input-group-prepend">
                     <div
                       className="input-group-text m-1"
-                      style={{ border: "1px solid #2e008b" }}
-                      onMouseEnter={togglePasswordVisibility}
-                      onMouseLeave={togglePasswordVisibility}
+                      style={{ border: "1px solid #2e008b", cursor: "pointer" }}
+                      onClick={togglePasswordVisibility}
+                      // onMouseLeave={togglePasswordVisibility}
                     >
                       <FaEye />
                     </div>
@@ -385,9 +385,9 @@ const Form = ({
                   <div className="input-group-prepend mt-3">
                     <div
                       className="input-group-text m-1"
-                      style={{ border: "1px solid #2e008b" }}
-                      onMouseEnter={togglePasswordVisibility}
-                      onMouseLeave={togglePasswordVisibility}
+                      style={{ border: "1px solid #2e008b", cursor: "pointer" }}
+                      onClick={togglePasswordVisibility_01}
+                      // onMouseLeave={togglePasswordVisibility}
                     >
                       <FaEye />
                     </div>
