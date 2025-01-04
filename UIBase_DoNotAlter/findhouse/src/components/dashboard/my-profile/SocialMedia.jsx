@@ -1,157 +1,140 @@
-const SocialMedia = () => {
+import React, { useState, useRef } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+const ProfileForm = () => {
+  // State for form fields
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
+    email: "",
+    assistantFirstName: "",
+    assistantLastName: "",
+    assistantPhoneNumber: "",
+    assistantEmail: "",
+  });
+
+  // State for errors
+  const [errors, setErrors] = useState({});
+
+  // Refs for scrolling to invalid inputs
+  const inputRefs = {
+    firstName: useRef(null),
+    lastName: useRef(null),
+    phoneNumber: useRef(null),
+    email: useRef(null),
+    assistantFirstName: useRef(null),
+    assistantLastName: useRef(null),
+    assistantPhoneNumber: useRef(null),
+    assistantEmail: useRef(null),
+  };
+
+  // Validation rules
+  const validationRules = {
+    name: /^[A-Za-z]{3,10}$/, // Letters only, 3-10 characters
+    phone: /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/,
+    email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+  };
+
+  // Generic validation function
+  const validateField = (name, value) => {
+    switch (name) {
+      case "firstName":
+      case "lastName":
+      case "assistantFirstName":
+      case "assistantLastName":
+        return validationRules.name.test(value);
+      case "phoneNumber":
+      case "assistantPhoneNumber":
+        return validationRules.phone.test(value);
+      case "email":
+      case "assistantEmail":
+        return validationRules.email.test(value);
+      default:
+        return value.trim() !== "";
+    }
+  };
+
+  // Validate all fields
+  const validateAllFields = () => {
+    const newErrors = {};
+    let isValid = true;
+
+    Object.keys(formData).forEach((field) => {
+      if (!validateField(field, formData[field])) {
+        newErrors[field] = true;
+        isValid = false;
+      }
+    });
+
+    setErrors(newErrors);
+    if (!isValid) {
+      const firstInvalidField = Object.keys(newErrors)[0];
+      if (inputRefs[firstInvalidField]?.current) {
+        inputRefs[firstInvalidField].current.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+        inputRefs[firstInvalidField].current.focus();
+      }
+    }
+
+    return isValid;
+  };
+
+  // Handle input change
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    setErrors({ ...errors, [name]: false });
+  };
+
+  // Handle form submission
+  const handleSubmit = () => {
+    if (!validateAllFields()) {
+      toast.error("Please fix the highlighted errors!");
+      return;
+    }
+
+    const payload = { ...formData };
+    console.log("Submitting data:", payload);
+    toast.success("Profile updated successfully!");
+  };
+
   return (
-    <div className="row">
-     <h4 className="mb-3">Other Information</h4>
-
-
-      <div class="accordion" id="accordionExample">
-         <div class="accordion-item">
-         <h2 class="accordion-header" id="headingOne">
-         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-           Social Media
-         </button>
-         </h2>
-      <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"       data-bs-parent="#accordionExample">
-        <div class="accordion-body">
-          <div className="row">
-        <div className="col-lg-6 col-xl-6">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="formGroupExampleSkype">Skype</label>
-          <input
-            type="text"
-            className="form-control"
-            id="formGroupExampleSkype"
-            placeholder="alitfn"
-          />
-        </div>
-      </div>
-      {/* End .col */}
-
-      <div className="col-lg-6 col-xl-6">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="formGroupExampleWebsite">Website</label>
-          <input
-            type="text"
-            className="form-control"
-            id="formGroupExampleWebsite"
-            placeholder="creativelayers@gmail.com"
-          />
-        </div>
-      </div>
-      {/* End .col */}
-
-      <div className="col-lg-6 col-xl-6">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="formGroupExampleFaceBook">Facebook</label>
-          <input
-            type="text"
-            className="form-control"
-            id="formGroupExampleFaceBook"
-          />
-        </div>
-      </div>
-      {/* End .col */}
-
-      <div className="col-lg-6 col-xl-6">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="formGroupExampleTwitter">Twitter</label>
-          <input
-            type="text"
-            className="form-control"
-            id="formGroupExampleTwitter"
-          />
-        </div>
-      </div>
-      {/* End .col */}
-
-      <div className="col-lg-6 col-xl-6">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="formGroupExampleLinkedin">Linkedin</label>
-          <input
-            type="text"
-            className="form-control"
-            id="formGroupExampleLinkedin"
-          />
-        </div>
-      </div>
-      {/* End .col */}
-
-      <div className="col-lg-6 col-xl-6">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="formGroupExampleInstagram">Instagram</label>
-          <input
-            type="text"
-            className="form-control"
-            id="formGroupExampleInstagram"
-          />
-        </div>
-      </div>
-      {/* End .col */}
-
-      <div className="col-lg-6 col-xl-6">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="formGroupExampleGooglePlus">Google Plus</label>
-          <input
-            type="text"
-            className="form-control"
-            id="formGroupExampleGooglePlus"
-          />
-        </div>
-      </div>
-      {/* End .col */}
-
-      <div className="col-lg-6 col-xl-6">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="formGroupExampleYoutube">Youtube</label>
-          <input
-            type="text"
-            className="form-control"
-            id="formGroupExampleYoutube"
-          />
-        </div>
-      </div>
-      {/* End .col */}
-
-      <div className="col-lg-6 col-xl-6">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="formGroupExamplePinterest">Pinterest</label>
-          <input
-            type="text"
-            className="form-control"
-            id="formGroupExamplePinterest"
-          />
-        </div>
-      </div>
-      {/* End .col */}
-
-      <div className="col-lg-6 col-xl-6">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="formGroupExampleVimeo">Vimeo</label>
-          <input
-            type="text"
-            className="form-control"
-            id="formGroupExampleVimeo"
-          />
-        </div>
-      </div>
-      {/* End .col */}
-
-      <div className="col-xl-12 text-right">
-        <div className="my_profile_setting_input">
-          <button className="btn btn2">Update Profile</button>
-        </div>
-      </div>
-      {/* End .col */}
-      </div>
-      </div>
-  </div>
-  </div>
-</div>
-
-
-
+    <div className="profile-form">
+      <h2>Profile Form</h2>
+      <form>
+        {Object.keys(formData).map((field) => (
+          <div key={field} className="form-group">
+            <label htmlFor={field}>
+              {field
+                .replace(/([A-Z])/g, " $1")
+                .replace(/^./, (str) => str.toUpperCase())}
+            </label>
+            <input
+              type={field.includes("Email") ? "email" : "text"}
+              id={field}
+              name={field}
+              ref={inputRefs[field]}
+              value={formData[field]}
+              onChange={handleInputChange}
+              className={errors[field] ? "input-error" : ""}
+            />
+            {errors[field] && (
+              <small className="error-text">
+                Invalid {field.replace(/([A-Z])/g, " $1").toLowerCase()}.
+              </small>
+            )}
+          </div>
+        ))}
+        <button type="button" onClick={handleSubmit} className="submit-btn">
+          Update Profile
+        </button>
+      </form>
     </div>
   );
 };
 
-export default SocialMedia;
+export default ProfileForm;

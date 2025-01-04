@@ -12,7 +12,7 @@ const headCells = [
   {
     id: "username",
     numeric: false,
-    label: "User Name",
+    label: "User ID",
     width: 200,
   },
   {
@@ -55,7 +55,7 @@ const headCells = [
     id: "status",
     numeric: false,
     label: "Status",
-    width: 150,
+    width: 160,
   },
   {
     id: "action",
@@ -228,8 +228,13 @@ export default function Exemple({
           date:
             data?.isActive && data?.dateEstablished !== null
               ? formatDate(data?.dateEstablished)
-              : "-",
+              : formatDate(data?.dateEstablished),
           enddate:
+            // !data?.isActive &&
+            // data?.status !== "not registered" &&
+            // data?.modifiedDateTime
+            //   ? formatDate(data?.modifiedDateTime)
+            //   : "-",
             data?.isActive && data?.modifiedDateTime !== null
               ? formatDate(data?.modifiedDateTime)
               : "-",
@@ -247,12 +252,12 @@ export default function Exemple({
                   </Link>
                 </button>
               )}
-              <button
+              {/* <button
                 className="btn btn-color m-1"
                 onClick={() => openCredModal(temp)}
               >
                 <i className="flaticon-view"></i>
-              </button>
+              </button> */}
             </div>
           ),
         };

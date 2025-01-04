@@ -246,6 +246,48 @@ const ProfileInfo = ({
     }
   };
 
+  const handleInputChangeStreet = (value, setValue, setValid, setError) => {
+    if (value.length <= 30) {
+      setValue(value);
+
+      // Validate: Check if length is between 3 and 10
+      if (value.trim().length >= 1) {
+        setValid(true);
+        setError(false);
+      } else {
+        setValid(false);
+        setError(true);
+      }
+    }
+  };
+
+  const handleInputChange = (value, setValue, setValid, setError) => {
+    if (value.length <= 10) {
+      setValue(value);
+
+      // Validate: Check if length is between 3 and 10
+      if (value.trim().length >= 10) {
+        setValid(true);
+        setError(false);
+      } else {
+        setValid(false);
+        setError(true);
+      }
+    }
+  };
+
+  const handleDropdownChange = (e) => {
+    const value = e.target.value;
+    setSelectedOption(value);
+
+    // Validate: Ensure a valid option is selected
+    if (value === "") {
+      setDropdownError(true);
+    } else {
+      setDropdownError(false);
+    }
+  };
+
   const onUpdatHandler = () => {
     const firstName =
       firstNameRef !== "" ? firstNameRef : userData.broker_Details.firstName;
@@ -534,17 +576,13 @@ const ProfileInfo = ({
       setStreetNumberError,
       streetNumberInputRef
     );
-    const isStreetNameValid = validateFieldStreetNumber(
+    const isStreetNameValid = validateField(
       streetName,
       setStreetNameError,
       streetNameInputRef
     );
-    const isCityValid = validateFieldStreetNumber(
-      cityRef,
-      setCityError,
-      cityInputRef
-    );
-    const isZipCodeValid = validateFieldStreetNumber(
+    const isCityValid = validateField(cityRef, setCityError, cityInputRef);
+    const isZipCodeValid = validateField(
       zipcodeRef,
       setZipCodeError,
       zipCodeInputRef
@@ -561,53 +599,39 @@ const ProfileInfo = ({
     //   dropdownRef.current.focus();
     // }
   };
-
-  const validateField = (value, setError, inputRef) => {
+  const validateField = (value, setError) => {
     if (value.trim().length < 3 || value.trim().length > 10) {
       setError(true); // Set error if field length is invalid
-      // Ensure inputRef exists before calling scrollIntoView
-      if (inputRef && inputRef.current) {
-        // inputRef.current.scrollIntoView({
-        //   behavior: "smooth",
-        //   block: "center",
-        // });
-        // inputRef.current.focus();
-      }
+
+      // Scroll to the top of the page
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+
       return false;
     }
+
     setError(false);
     return true;
   };
 
-  const handleInputChange = (value, setValue, setValid, setError) => {
-    if (value.length <= 10) {
-      setValue(value);
-
-      // Validate: Check if length is between 3 and 10
-      if (value.trim().length >= 10) {
-        setValid(true);
-        setError(false);
-      } else {
-        setValid(false);
-        setError(true);
-      }
-    }
-  };
-
-  const handleInputChangeStreet = (value, setValue, setValid, setError) => {
-    if (value.length <= 30) {
-      setValue(value);
-
-      // Validate: Check if length is between 3 and 10
-      if (value.trim().length >= 1) {
-        setValid(true);
-        setError(false);
-      } else {
-        setValid(false);
-        setError(true);
-      }
-    }
-  };
+  // const validateField = (value, setError, inputRef) => {
+  //   if (value.trim().length < 3 || value.trim().length > 30) {
+  //     setError(true); // Set error if field length is invalid
+  //     // Ensure inputRef exists before calling scrollIntoView
+  //     if (inputRef && inputRef.current) {
+  //       inputRef.current.scrollIntoView({
+  //         behavior: "smooth",
+  //         block: "center",
+  //       });
+  //       inputRef.current.focus();
+  //     }
+  //     return false;
+  //   }
+  //   setError(false);
+  //   return true;
+  // };
 
   // const validateFieldNumber = (value, setError, inputRef) => {
   //   if (value.trim().length < 10 || value.trim().length > 10) {
@@ -682,29 +706,15 @@ const ProfileInfo = ({
     if (value.trim().length < 1 || value.trim().length > 10) {
       setError(true); // Set error if field length is invalid
       // Ensure inputRef exists before calling scrollIntoView
-      if (inputRef && inputRef.current) {
-        // inputRef.current.scrollIntoView({
-        //   behavior: "smooth", // Smooth scroll to the field
-        //   block: "center", // Align the field to the center
-        // });
-        // inputRef.current.focus(); // Focus on the field for the user
-      }
+      // Scroll to the top of the page
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
       return false;
     }
     setError(false);
     return true;
-  };
-
-  const handleDropdownChange = (e) => {
-    const value = e.target.value;
-    setSelectedOption(value);
-
-    // Validate: Ensure a valid option is selected
-    if (value === "") {
-      setDropdownError(true);
-    } else {
-      setDropdownError(false);
-    }
   };
 
   const changeEditHandler = () => {
@@ -1425,7 +1435,7 @@ const ProfileInfo = ({
                           id="formGroupExampleInput3"
                           value={streetName}
                           onChange={(e) =>
-                            handleInputChangeStreet(
+                            handleInputChangeName(
                               e.target.value,
                               setStreetName,
                               setStreetNameValid,
@@ -1496,7 +1506,7 @@ const ProfileInfo = ({
                           required
                           value={cityRef}
                           onChange={(e) =>
-                            handleInputChangeStreet(
+                            handleInputChangeName(
                               e.target.value,
                               setCityRef,
                               setCityValid,

@@ -8,6 +8,12 @@ import Loader from "./Loader";
 
 const headCells = [
   {
+    id: "username",
+    numeric: false,
+    label: "User ID",
+    width: 200,
+  },
+  {
     id: "firstname",
     numeric: false,
     label: "First Name",
@@ -37,6 +43,12 @@ const headCells = [
     id: "date",
     numeric: false,
     label: "Start Date",
+    width: 200,
+  },
+  {
+    id: "enddate",
+    numeric: false,
+    label: "End Date",
     width: 200,
   },
   {
@@ -190,6 +202,7 @@ export default function Exemple({
         const getCurrentdate = getCurrentDate(data?.item?.id);
 
         const updatedRow = {
+          username: data.userInfo,
           appraiser_id: data.item.id,
           firstname: data.item.firstName ? data.item.firstName : "-",
           lastname: data.item.lastName ? data.item.lastName : "-",
@@ -210,6 +223,15 @@ export default function Exemple({
             data?.item?.isActive && data?.item?.modifiedDateTime !== null
               ? formatDate(data?.item?.modifiedDateTime)
               : "-",
+          enddate:
+            // !data?.isActive &&
+            // data?.status !== "not registered" &&
+            // data?.modifiedDateTime
+            //   ? formatDate(data?.modifiedDateTime)
+            //   : "-",
+            data?.item?.isActive && data?.item?.modifiedDateTime !== null
+              ? formatDate(data?.item?.modifiedDateTime)
+              : "-",
           action: (
             <div className="print-hidden-column">
               {data.item.firstName && (
@@ -220,12 +242,12 @@ export default function Exemple({
                   <i className="flaticon-edit"></i>
                 </button>
               )}
-              <button
+              {/* <button
                 className="btn btn-color m-1"
                 onClick={() => openCredModal(data)}
               >
                 <i className="flaticon-view"></i>
-              </button>
+              </button> */}
             </div>
           ),
         };

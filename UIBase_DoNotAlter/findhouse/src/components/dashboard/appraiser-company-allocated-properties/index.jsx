@@ -18,7 +18,7 @@ import Image from "next/image";
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
-  const [AssignedAppraiserInfo,setAssignedAppraiserInfo] = useState({});
+  const [AssignedAppraiserInfo, setAssignedAppraiserInfo] = useState({});
   const [orderStatus, setOrderStatus] = useState(-1);
   const [isStatusModal, setIsStatusModal] = useState(false);
   const [showMore, setShowMore] = useState(false);
@@ -557,39 +557,104 @@ const Index = () => {
 
   const [selectedAppraiser, setSelectedAppraiser] = useState({});
 
-  const assignAppraiserUpdateHandler = () => {
+  
+
+  const assignAppraiserUpdateHandler = async () => {
     if (!selectedAppraiser) {
-      toast.error("Please select Appropriate Appraiser Individual!");
+      toast.error("Please select an appropriate appraiser!");
       return;
     }
-    const data = JSON.parse(localStorage.getItem("user"));
-    const payload = {
-      companyid: data.appraiserCompany_Datails.appraiserCompanyId,
-      propertyid: Number(assignPropertyId),
-      appraiserid: Number(
-        selectedAppraiser === -1 ? AssignAppraisers[0].id : selectedAppraiser
-      ),
-    };
 
-    const encryptedData = encryptionData(payload);
-    toast.loading("Assigning the property!!....");
-    axios
-      .post("/api/assignPropertyToAppraiser", encryptedData, {
-        headers: {
-          Authorization: `Bearer ${data.token}`,
-        },
-      })
-      .then((res) => {
-        toast.dismiss();
-        toast.success("Successfully assigned the property!");
-        location.reload(true);
-      })
-      .catch((err) => {
-        toast.dismiss();
-        toast.error(err);
-      });
-    setAssignPropertyId(-1);
+    try {
+      const data = JSON.parse(localStorage.getItem("user"));
+      if (!data || !data.token) {
+        toast.error("User authentication failed. Please log in again.");
+        return;
+      }
+
+      const payload = {
+        companyid: data.appraiserCompany_Datails?.appraiserCompanyId,
+        propertyid: Number(assignPropertyId),
+        appraiserid: Number(
+          selectedAppraiser === -1 ? AssignAppraisers[0]?.id : selectedAppraiser
+        ),
+      };
+
+      if (!payload.companyid || !payload.propertyid || !payload.appraiserid) {
+        toast.error("Invalid data. Please check the inputs and try again.");
+        return;
+      }
+
+      const encryptedData = encryptionData(payload);
+
+      toast.loading("Assigning the property...");
+      const response = await axios.post(
+        "/api/assignPropertyToAppraiser",
+        encryptedData,
+        {
+          headers: {
+            Authorization: `Bearer ${data.token}`,
+          },
+        }
+      );
+
+      toast.dismiss();
+      toast.success("Property successfully assigned!");
+      setAssignPropertyId(-1);
+      location.reload(true); // Consider replacing this with a more user-friendly update mechanism
+    } catch (error) {
+      toast.dismiss();
+
+      if (error.response) {
+        // Server responded with a status code outside the 2xx range
+        toast.error(
+          `Error ${error.response.status}: ${
+            error.response.data.message || "Failed to assign property."
+          }`
+        );
+      } else if (error.request) {
+        // Request was made but no response received
+        toast.error("No response from the server. Please try again later.");
+      } else {
+        // Something else caused the error
+        toast.error(`Error: ${error.message}`);
+      }
+    }
   };
+
+  // const assignAppraiserUpdateHandler = () => {
+  //   if (!selectedAppraiser) {
+  //     toast.error("Please select Appropriate Appraiser Individual!");
+  //     return;
+  //   }
+  //   const data = JSON.parse(localStorage.getItem("user"));
+  //   const payload = {
+  //     companyid: data.appraiserCompany_Datails.appraiserCompanyId,
+  //     propertyid: Number(assignPropertyId),
+  //     appraiserid: Number(
+  //       selectedAppraiser === -1 ? AssignAppraisers[0].id : selectedAppraiser
+  //     ),
+  //   };
+
+  //   const encryptedData = encryptionData(payload);
+  //   toast.loading("Assigning the property!!....");
+  //   axios
+  //     .post("/api/assignPropertyToAppraiser", encryptedData, {
+  //       headers: {
+  //         Authorization: `Bearer ${data.token}`,
+  //       },
+  //     })
+  //     .then((res) => {
+  //       toast.dismiss();
+  //       toast.success("Successfully assigned the property!");
+  //       location.reload(true);
+  //     })
+  //     .catch((err) => {
+  //       toast.dismiss();
+  //       toast.error(err);
+  //     });
+  //   setAssignPropertyId(-1);
+  // };
 
   const onWishlistHandler = (id) => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -2072,7 +2137,8 @@ const Index = () => {
                     >
                       <option value={0}>....</option>;
                       {AssignAppraisers.map((item, index) => {
-                        return item.isActive && AssignedAppraiserInfo.userId !== item.userId ? (
+                        return item.isActive &&
+                          AssignedAppraiserInfo.userId !== item.userId ? (
                           <option key={item.id} value={item.id}>
                             {item.firstName} {item.lastName}
                           </option>

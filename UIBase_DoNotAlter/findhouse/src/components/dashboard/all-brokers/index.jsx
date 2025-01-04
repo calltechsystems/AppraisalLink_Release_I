@@ -61,36 +61,93 @@ const Index = () => {
     }
   };
 
-  const handleStatusUpdateHandler = () => {
+// change by gpt
+
+  const handleStatusUpdateHandler = async () => {
     const userData = JSON.parse(localStorage.getItem("user"));
+    if (!userData || !selectedBroker.id) {
+      toast.error("Invalid user or broker information.");
+      return;
+    }
+  
     setDisable(true);
+  
     const payload = {
       brokerageId: userData?.brokerage_Details?.id,
       brokerId: selectedBroker.id,
       IsActive: !selectedBroker.isActive,
     };
+  
     const encryptedData = encryptionData(payload);
-
-    toast.loading("Updating the status");
-    axios
-      .put("/api/UpdateIsActiveBroker", encryptedData, {
-        headers: {
-          Authorization: `Bearer ${userData.token}`,
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => {
-        toast.dismiss();
-        toast.success("Successfully Updated!!");
-        window.location.reload();
-      })
-      .catch((err) => {
-        toast.dismiss();
-        toast.error(err);
-      });
-
-    setSelectedBroker({});
+  
+    try {
+      toast.loading("Updating the status...");
+      const response = await axios.put(
+        "/api/UpdateIsActiveBroker",
+        encryptedData,
+        {
+          headers: {
+            Authorization: `Bearer ${userData.token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+  
+      toast.dismiss();
+      toast.success("Successfully Updated!");
+  
+      // Update UI dynamically instead of reloading
+      setSelectedBroker((prev) => ({
+        ...prev,
+        isActive: !prev.isActive,
+      }));
+      setDisable(false);
+    } catch (err) {
+      toast.dismiss();
+  
+      if (err.response) {
+        toast.error(err.response.data?.message || "Failed to update status.");
+      } else if (err.request) {
+        toast.error("No response from the server. Please try again later.");
+      } else {
+        toast.error(err.message || "An unexpected error occurred.");
+      }
+  
+      setDisable(false);
+    }
   };
+  
+
+  // const handleStatusUpdateHandler = () => {
+  //   const userData = JSON.parse(localStorage.getItem("user"));
+  //   setDisable(true);
+  //   const payload = {
+  //     brokerageId: userData?.brokerage_Details?.id,
+  //     brokerId: selectedBroker.id,
+  //     IsActive: !selectedBroker.isActive,
+  //   };
+  //   const encryptedData = encryptionData(payload);
+
+  //   toast.loading("Updating the status");
+  //   axios
+  //     .put("/api/UpdateIsActiveBroker", encryptedData, {
+  //       headers: {
+  //         Authorization: `Bearer ${userData.token}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //     })
+  //     .then((res) => {
+  //       toast.dismiss();
+  //       toast.success("Successfully Updated!!");
+  //       window.location.reload();
+  //     })
+  //     .catch((err) => {
+  //       toast.dismiss();
+  //       toast.error(err);
+  //     });
+
+  //   setSelectedBroker({});
+  // };
 
   const closeStatusUpdateHandler = () => {
     setIsStatusModal(false);

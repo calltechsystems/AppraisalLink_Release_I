@@ -848,6 +848,12 @@ const Index = ({ isView, propertyData }) => {
     }
   };
 
+  useEffect(() => {
+    if (isDisable) {
+      setDisable(false);
+    }
+  }, [isDisable]);
+
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -901,7 +907,7 @@ const Index = ({ isView, propertyData }) => {
                   </div>
                 </div>
                 {/* End .col */}
-                {isDisable && (
+                {/* {isDisable && (
                   <div className="col-lg-12 text-end_01">
                     <button
                       className="btn btn-color mb-2 text-end"
@@ -910,7 +916,7 @@ const Index = ({ isView, propertyData }) => {
                       Edit Property
                     </button>
                   </div>
-                )}
+                )} */}
                 <div className="col-lg-12">
                   <div className="my_dashboard_review">
                     <div className="row">
