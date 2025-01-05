@@ -22,6 +22,8 @@ const nextConfig = {
       "appraisallandfiless.s3.amazonaws.com",
       "avatars.githubusercontent.com",
       "lh3.googleusercontent.com",
+      "https://www.paypalobjects.com/webstatic/mktg/logo/",
+      "www.paypalobjects.com"
     ],
   },
 };
