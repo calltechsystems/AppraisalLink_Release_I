@@ -240,18 +240,18 @@ const ProfileInfo = ({
     // )
     if (
       firstName.trim().length < 3 ||
-      firstName.trim().length > 10 ||
+      firstName.trim().length > 30 ||
       !nameRegex.test(firstName) ||
       (middleName !== null &&
         middleName.trim() !== "" &&
         (middleName.trim().length < 3 ||
-          middleName.trim().length > 10 ||
+          middleName.trim().length > 30 ||
           !nameRegex.test(middleName))) ||
       lastName.trim().length < 3 ||
-      lastName.trim().length > 10 ||
+      lastName.trim().length > 30 ||
       !nameRegex.test(lastName)
     ) {
-      toast.error("Name should be valid ");
+      toast.error("Please enter a valid broker/owner name");
     } else if (
       // (assistantFirstName.trim() !== "" &&
       //   !nameRegex.test(assistantFirstName)) ||
@@ -262,25 +262,25 @@ const ProfileInfo = ({
       //   !nameRegex.test(assistantTwoLastName))
       (assistantFirstName.trim() !== "" &&
         (assistantFirstName.trim().length < 3 ||
-          assistantFirstName.trim().length > 10 ||
+          assistantFirstName.trim().length > 30 ||
           !nameRegex.test(assistantFirstName))) ||
       // Assistant Last Name
       (assistantLastName.trim() !== "" &&
         (assistantLastName.trim().length < 3 ||
-          assistantLastName.trim().length > 10 ||
+          assistantLastName.trim().length > 30 ||
           !nameRegex.test(assistantLastName))) ||
       // Assistant Two First Name
       (assistantTwoFirstName.trim() !== "" &&
         (assistantTwoFirstName.trim().length < 3 ||
-          assistantTwoFirstName.trim().length > 10 ||
+          assistantTwoFirstName.trim().length > 30 ||
           !nameRegex.test(assistantTwoFirstName))) ||
       // Assistant Two Last Name
       (assistantTwoLastName.trim() !== "" &&
         (assistantTwoLastName.trim().length < 3 ||
-          assistantTwoLastName.trim().length > 10 ||
+          assistantTwoLastName.trim().length > 30 ||
           !nameRegex.test(assistantTwoLastName)))
     ) {
-      toast.error("Applicant Name should be valid ");
+      toast.error("Please enter a valid assistant name");
     } else if (phoneNumberRegex.test(phoneNumber) === false || !phoneNumber) {
       toast.error("Please enter a valid phone number");
     } else if (
@@ -406,7 +406,7 @@ const ProfileInfo = ({
         axios
           .put("/api/UpdateBrokerageCompanyProfile", encryptedData)
           .then((res) => {
-            toast.success("Successfully Updated Profile!");
+            toast.success("Successfully Updated !");
 
             let data = userData;
             data.brokerage_Details = res.data.userData.broker;
@@ -495,16 +495,13 @@ const ProfileInfo = ({
   };
 
   const validateField = (value, setError, inputRef) => {
-    if (value.trim().length < 3 || value.trim().length > 10) {
+    if (value.trim().length < 3 || value.trim().length > 30) {
       setError(true); // Set error if field length is invalid
-      // Ensure inputRef exists before calling scrollIntoView
-      if (inputRef && inputRef.current) {
-        // inputRef.current.scrollIntoView({
-        //   behavior: "smooth",
-        //   block: "center",
-        // });
-        // inputRef.current.focus();
-      }
+      // Scroll to the top of the page
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
       return false;
     }
     setError(false);
@@ -563,26 +560,22 @@ const ProfileInfo = ({
     const isNumeric = /^[0-9]*$/.test(value.trim());
     if (!isNumeric) {
       setError(true); // Set error for non-numeric input
-      if (inputRef && inputRef.current) {
-        inputRef.current.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-        inputRef.current.focus();
-      }
+      // Scroll to the top of the page
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
       return false;
     }
 
     // Check if length is exactly 10
     if (value.trim().length !== 10) {
       setError(true); // Set error if field length is invalid
-      if (inputRef && inputRef.current) {
-        inputRef.current.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-        inputRef.current.focus();
-      }
+      // Scroll to the top of the page
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
       return false;
     }
 
@@ -596,14 +589,11 @@ const ProfileInfo = ({
 
     if (!emailRegex.test(value.trim())) {
       setError(true); // Set error if the email format is invalid
-      // Ensure inputRef exists before calling scrollIntoView
-      if (inputRef && inputRef.current) {
-        inputRef.current.scrollIntoView({
-          behavior: "smooth", // Smooth scroll to the field
-          block: "center", // Align the field to the center
-        });
-        inputRef.current.focus(); // Focus on the field for the user
-      }
+      // Scroll to the top of the page
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
       return false;
     }
     setError(false);
@@ -613,14 +603,11 @@ const ProfileInfo = ({
   const validateFieldStreetNumber = (value, setError, inputRef) => {
     if (value.trim().length < 1 || value.trim().length > 10) {
       setError(true); // Set error if field length is invalid
-
-      if (inputRef && inputRef.current) {
-        // inputRef.current.scrollIntoView({
-        //   behavior: "smooth", // Smooth scroll to the field
-        //   block: "center", // Align the field to the center
-        // });
-        // inputRef.current.focus(); // Focus on the field for the user
-      }
+      // Scroll to the top of the page
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
       return false;
     }
     setError(false);
@@ -828,7 +815,7 @@ const ProfileInfo = ({
                         />
                         {brokerageError && (
                           <small className="text-danger">
-                            Brokerage Name must be 3 characters minimum.
+                            Brokerage name must be 3 characters minimum.
                           </small>
                         )}
                       </div>
@@ -872,7 +859,7 @@ const ProfileInfo = ({
                         />
                         {firstNameError && (
                           <small className="text-danger">
-                            First Name must be 3 characters minimum.
+                            First name must be 3 characters minimum.
                           </small>
                         )}
                       </div>
@@ -916,7 +903,7 @@ const ProfileInfo = ({
                         />
                         {lastNameError && (
                           <small className="text-danger">
-                            Last Name must be 3 characters minimum.
+                            Last name must be 3 characters minimum.
                           </small>
                         )}
                       </div>
@@ -961,7 +948,7 @@ const ProfileInfo = ({
                         />
                         {mortgageLicenceError && (
                           <small className="text-danger">
-                            Enter valid Mortgage Brokerage Licence Number.
+                            Enter valid mortgage brokerage licence number.
                           </small>
                         )}
                       </div>
@@ -1005,7 +992,7 @@ const ProfileInfo = ({
                         />
                         {mortgageLicenceTwoError && (
                           <small className="text-danger">
-                            Enter valid Mortgage Broker Licence Number.
+                            Enter valid mortgage broker licence number.
                           </small>
                         )}
                       </div>
@@ -1050,7 +1037,7 @@ const ProfileInfo = ({
                         />
                         {phoneNumberError && (
                           <small className="text-danger">
-                            Phone Number should be valid and 10 digit only.
+                            Enter valid phone number.
                           </small>
                         )}
                       </div>
@@ -1258,7 +1245,7 @@ const ProfileInfo = ({
                         />
                         {streetNumberError && (
                           <small className="text-danger">
-                            Enter valid street Number.
+                            Enter valid street number.
                           </small>
                         )}
                       </div>
@@ -1300,7 +1287,7 @@ const ProfileInfo = ({
                         />
                         {streetNameError && (
                           <small className="text-danger">
-                            Enter valid street Name.
+                            Enter valid street name.
                           </small>
                         )}
                       </div>
@@ -1369,7 +1356,7 @@ const ProfileInfo = ({
                         />
                         {cityError && (
                           <small className="text-danger">
-                            Enter valid city Name.
+                            Enter valid city name.
                           </small>
                         )}
                       </div>

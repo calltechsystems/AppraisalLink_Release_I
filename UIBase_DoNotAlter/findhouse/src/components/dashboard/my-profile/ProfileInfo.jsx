@@ -345,18 +345,18 @@ const ProfileInfo = ({
     // )
     if (
       firstName.trim().length < 3 ||
-      firstName.trim().length > 10 ||
+      firstName.trim().length > 30 ||
       !nameRegex.test(firstName) ||
       (middleName !== null &&
         middleName.trim() !== "" &&
         (middleName.trim().length < 3 ||
-          middleName.trim().length > 10 ||
+          middleName.trim().length > 30 ||
           !nameRegex.test(middleName))) ||
       lastName.trim().length < 3 ||
-      lastName.trim().length > 10 ||
+      lastName.trim().length > 30 ||
       !nameRegex.test(lastName)
     ) {
-      toast.error("Name should be valid ");
+      toast.error("Please enter a valid broker name");
     } else if (
       // (assistantFirstName.trim() !== "" &&
       //   !nameRegex.test(assistantFirstName)) ||
@@ -368,22 +368,22 @@ const ProfileInfo = ({
       // Assistant First Name
       (assistantFirstName.trim() !== "" &&
         (assistantFirstName.trim().length < 3 ||
-          assistantFirstName.trim().length > 10 ||
+          assistantFirstName.trim().length > 30 ||
           !nameRegex.test(assistantFirstName))) ||
       // Assistant Last Name
       (assistantLastName.trim() !== "" &&
         (assistantLastName.trim().length < 3 ||
-          assistantLastName.trim().length > 10 ||
+          assistantLastName.trim().length > 30 ||
           !nameRegex.test(assistantLastName))) ||
       // Assistant Two First Name
       (assistantTwoFirstName.trim() !== "" &&
         (assistantTwoFirstName.trim().length < 3 ||
-          assistantTwoFirstName.trim().length > 10 ||
+          assistantTwoFirstName.trim().length > 30 ||
           !nameRegex.test(assistantTwoFirstName))) ||
       // Assistant Two Last Name
       (assistantTwoLastName.trim() !== "" &&
         (assistantTwoLastName.trim().length < 3 ||
-          assistantTwoLastName.trim().length > 10 ||
+          assistantTwoLastName.trim().length > 30 ||
           !nameRegex.test(assistantTwoLastName)))
     ) {
       toast.error("Applicant Name should be valid ");
@@ -701,8 +701,7 @@ const ProfileInfo = ({
 
   const validateFieldStreetNumber = (value, setError, inputRef) => {
     if (value.trim().length < 1 || value.trim().length > 10) {
-      setError(true); // Set error if field length is invalid
-      // Ensure inputRef exists before calling scrollIntoView
+      setError(true);
       // Scroll to the top of the page
       window.scrollTo({
         top: 0,

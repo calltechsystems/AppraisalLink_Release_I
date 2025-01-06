@@ -213,39 +213,43 @@ const ProfileInfo = ({
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex for email validation
 
     if (
-      nameRegex.test(firstNameRef) === false ||
-      nameRegex.test(lastNameRef) === false
+      firstNameRef.trim().length < 3 ||
+      firstNameRef.trim().length > 30 ||
+      !nameRegex.test(firstNameRef) ||
+      lastNameRef.trim().length < 3 ||
+      lastNameRef.trim().length > 30 ||
+      !nameRegex.test(lastNameRef)
     ) {
-      toast.error("Primary Contact Name should be valid ");
+      toast.error("Please enter a valid primary contact name");
     } else if (
       (officeContactFirstName.trim() !== "" &&
         !nameRegex.test(officeContactFirstName)) ||
       (officeContactLastName.trim() !== "" &&
         !nameRegex.test(officeContactLastName))
     ) {
-      toast.error("Applicant Name should be valid ");
+      toast.error("Please enter a valid applicant name");
     } else if (
       phoneNumberRegex.test(phoneNumberRef) === false ||
       !phoneNumberRef
     ) {
-      toast.error("Enter a Valid Phone Number Please");
+      toast.error("Please enter a valid phone number");
     } else if (
       cellNumberRegex.test(cellNumber) === false &&
       cellNumber.trim() !== ""
     ) {
-      toast.error("Enter a Valid Cell Number Please");
+      toast.error("Please enter a valid cell number");
     } else if (
       cellNumberRegex.test(officeContactPhone) === false &&
       officeContactPhone.trim() !== ""
     ) {
-      toast.error("Enter a Valid Office Phone Number Please");
+      toast.error("Please enter a valid office phone number");
     } else if (emailRegex.test(emailId) === false) {
-      toast.error("Enter a Valid Email Address Please");
+      toast.error("Please enter a valid email address");
     } else if (
       emailRegex.test(officeContactEmail) === false &&
       officeContactEmail.trim() !== ""
     ) {
-      toast.error("Enter a Valid Office Email Address Please");
+      toast.error("Please enter a valid office email address");
     } else if (
       (!firstNameRef ||
         !lastNameRef ||
@@ -260,7 +264,7 @@ const ProfileInfo = ({
         !cityRef) &&
       !userData
     ) {
-      toast.error("All marked fields arent filled !!");
+      toast.error("All marked field's are not filled !!");
     } else {
       let count = 9;
 
@@ -357,12 +361,12 @@ const ProfileInfo = ({
       streetNumber,
       setStreetNumberError
     );
-    const isStreetNameValid = validateFieldStreetNumber(
+    const isStreetNameValid = validateField(
       streetName,
       setStreetNameError
     );
-    const isCityValid = validateFieldStreetNumber(cityRef, setCityError);
-    const isZipCodeValid = validateFieldStreetNumber(
+    const isCityValid = validateField(cityRef, setCityError);
+    const isZipCodeValid = validateField(
       zipcodeRef,
       setZipCodeError
     );
@@ -380,16 +384,12 @@ const ProfileInfo = ({
   };
 
   const validateField = (value, setError, inputRef) => {
-    if (value.trim().length < 3 || value.trim().length > 10) {
+    if (value.trim().length < 3 || value.trim().length > 30) {
       setError(true); // Set error if field length is invalid
-      // Ensure inputRef exists before calling scrollIntoView
-      if (inputRef && inputRef.current) {
-        // inputRef.current.scrollIntoView({
-        //   behavior: "smooth",
-        //   block: "center",
-        // });
-        // inputRef.current.focus();
-      }
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
       return false;
     }
     setError(false);
@@ -448,26 +448,22 @@ const ProfileInfo = ({
     const isNumeric = /^[0-9]*$/.test(value.trim());
     if (!isNumeric) {
       setError(true); // Set error for non-numeric input
-      if (inputRef && inputRef.current) {
-        // inputRef.current.scrollIntoView({
-        //   behavior: "smooth",
-        //   block: "center",
-        // });
-        // inputRef.current.focus();
-      }
+      // Scroll to the top of the page
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
       return false;
     }
 
     // Check if length is exactly 10
     if (value.trim().length !== 10) {
       setError(true); // Set error if field length is invalid
-      if (inputRef && inputRef.current) {
-        // inputRef.current.scrollIntoView({
-        //   behavior: "smooth",
-        //   block: "center",
-        // });
-        // inputRef.current.focus();
-      }
+      // Scroll to the top of the page
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
       return false;
     }
 
@@ -481,14 +477,11 @@ const ProfileInfo = ({
 
     if (!emailRegex.test(value.trim())) {
       setError(true); // Set error if the email format is invalid
-      // Ensure inputRef exists before calling scrollIntoView
-      if (inputRef && inputRef.current) {
-        inputRef.current.scrollIntoView({
-          behavior: "smooth", // Smooth scroll to the field
-          block: "center", // Align the field to the center
-        });
-        inputRef.current.focus(); // Focus on the field for the user
-      }
+      // Scroll to the top of the page
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
       return false;
     }
     setError(false);
@@ -498,14 +491,11 @@ const ProfileInfo = ({
   const validateFieldStreetNumber = (value, setError, inputRef) => {
     if (value.trim().length < 1 || value.trim().length > 10) {
       setError(true); // Set error if field length is invalid
-      // Ensure inputRef exists before calling scrollIntoView
-      if (inputRef && inputRef.current) {
-        // inputRef.current.scrollIntoView({
-        //   behavior: "smooth", // Smooth scroll to the field
-        //   block: "center", // Align the field to the center
-        // });
-        // inputRef.current.focus(); // Focus on the field for the user
-      }
+      // Scroll to the top of the page
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
       return false;
     }
     setError(false);
@@ -661,7 +651,7 @@ const ProfileInfo = ({
                         />
                         {companyNameError && (
                           <small className="text-danger">
-                            Company Name must be 3 characters minimum.
+                            Company name must be 3 characters minimum.
                           </small>
                         )}
                       </div>
@@ -706,7 +696,7 @@ const ProfileInfo = ({
                         />
                         {firstNameError && (
                           <small className="text-danger">
-                            First Name must be 3 characters minimum.
+                            First name must be 3 characters minimum.
                           </small>
                         )}
                       </div>
@@ -752,7 +742,7 @@ const ProfileInfo = ({
                         />
                         {lastNameError && (
                           <small className="text-danger">
-                            Last Name must be 3 characters minimum.
+                            Last name must be 3 characters minimum.
                           </small>
                         )}
                       </div>
@@ -797,7 +787,7 @@ const ProfileInfo = ({
                         />
                         {phoneNumberError && (
                           <small className="text-danger">
-                            Phone Number should be valid and 10 digit only.
+                            Enter valid phone number.
                           </small>
                         )}
                       </div>
@@ -910,7 +900,7 @@ const ProfileInfo = ({
                         />
                         {LicenceError && (
                           <small className="text-danger">
-                            Enter valid Licence Number.
+                            Enter valid licence number.
                           </small>
                         )}
                       </div>
@@ -1111,7 +1101,7 @@ const ProfileInfo = ({
                         />
                         {streetNumberError && (
                           <small className="text-danger">
-                            Enter valid street Number.
+                            Enter valid street number.
                           </small>
                         )}
                       </div>
@@ -1144,7 +1134,7 @@ const ProfileInfo = ({
                           required
                           value={streetName}
                           onChange={(e) =>
-                            handleInputChangeStreet(
+                            handleInputChangeName(
                               e.target.value,
                               setStreetName,
                               setStreetNameValid,
@@ -1155,7 +1145,7 @@ const ProfileInfo = ({
                         />
                         {streetNameError && (
                           <small className="text-danger">
-                            Enter valid street Name.
+                            Enter valid street name.
                           </small>
                         )}
                       </div>
@@ -1215,7 +1205,7 @@ const ProfileInfo = ({
                           required
                           value={cityRef}
                           onChange={(e) =>
-                            handleInputChangeStreet(
+                            handleInputChangeName(
                               e.target.value,
                               setCityRef,
                               setCityValid,
@@ -1226,7 +1216,7 @@ const ProfileInfo = ({
                         />
                         {cityError && (
                           <small className="text-danger">
-                            Enter valid city Name.
+                            Enter valid city name.
                           </small>
                         )}
                       </div>
@@ -1313,7 +1303,7 @@ const ProfileInfo = ({
                           }}
                           // onChange={(e) => handleZipCodeChange(e.target.value)}
                           onChange={(e) =>
-                            handleInputChangeStreet(
+                            handleInputChangeName(
                               e.target.value,
                               setZipcodeRef,
                               setZipCodeValid,

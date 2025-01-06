@@ -99,7 +99,8 @@ const ProfileInfo = ({
   );
 
   const [otherDesignation, setOtherDesignation] = useState("");
-  const [setODesignation, setSetODesignation] = useState(false);
+  // const [setODesignation, setSetODesignation] = useState(false);
+  const [oDesignation, setODesignation] = useState(false); // Toggle for "Other" input
 
   const [selectedImage2, setSelectedImage2] = useState({
     name: userData?.appraiser_Details?.lenderListUrl ? "" : "",
@@ -150,6 +151,32 @@ const ProfileInfo = ({
     userData?.appraiser_Details?.apartmentNo || ""
   );
 
+  // Handler for Designation Change
+  const handleDesignationChange = (e) => {
+    const value = e.target.value;
+    setDesignation(value);
+
+    if (value === "") {
+      setDesignationError(true);
+      setODesignation(false); // Hide "Other" input field
+    } else if (value === "Other") {
+      setDesignationError(false);
+      setDesignationValid(true);
+      setODesignation(true); // Show "Other" input field
+    } else {
+      setDesignationError(false);
+      setDesignationValid(true);
+      setODesignation(false); // Hide "Other" input field
+      setOtherDesignation(""); // Clear "Other Designation" value
+    }
+  };
+
+  const getBorderColor = () => {
+    if (designationError) return "red";
+    if (designationValid) return "green";
+    return "";
+  };
+
   // Validation for input fields
 
   // State for errors and validation
@@ -197,8 +224,12 @@ const ProfileInfo = ({
       }
     }
   };
+  let finalDesignation = designation;
 
   const onUpdatHandler = () => {
+    if (designation === "Other" && otherDesignation.trim()) {
+      finalDesignation = otherDesignation; // Use "Other Designation" value
+    }
     const firstName = firstNameRef;
     const lastName = lastNameRef;
     const adressLine1 = addressLineRef;
@@ -223,7 +254,7 @@ const ProfileInfo = ({
         !nameRegex.test(middleName)) ||
       nameRegex.test(lastName) === false
     ) {
-      toast.error("Appraiser Name should be valid ");
+      toast.error("Please enter a valid appraiser name ");
     } else if (phoneNumberRegex.test(phoneNumber) === false || !phoneNumber) {
       toast.error("Please enter a valid phone number");
     } else if (
@@ -265,7 +296,7 @@ const ProfileInfo = ({
         streetName: streetName,
         commissionRate: commissionRate,
         maxNumberOfAssignedOrders: maxNumberOfAssignedOrders,
-        designation: designation,
+        designation: finalDesignation,
         city: city,
         province: state,
         postalCode: zipCode,
@@ -301,7 +332,7 @@ const ProfileInfo = ({
         axios
           .put("/api/updateAppraiserProfile", encryptedData)
           .then((res) => {
-            toast.success("Successfully Updated Profile!");
+            toast.success("Successfully Updated !");
             console.log(res.data.userData);
             let data = userData;
             data.smsNotification = res.data.userData.isSms;
@@ -714,7 +745,7 @@ const ProfileInfo = ({
                         />
                         {firstNameError && (
                           <small className="text-danger">
-                            First Name must be 3 characters minimum.
+                            First name must be 3 characters minimum.
                           </small>
                         )}
                       </div>
@@ -781,7 +812,7 @@ const ProfileInfo = ({
                         />
                         {lastNameError && (
                           <small className="text-danger">
-                            Last Name must be 3 characters minimum.
+                            Last name must be 3 characters minimum.
                           </small>
                         )}
                       </div>
@@ -847,7 +878,7 @@ const ProfileInfo = ({
                         />
                         {phoneNumberError && (
                           <small className="text-danger">
-                            Phone Number should be valid and 10 digit only.
+                            Phone number should be valid and 10 digit only.
                           </small>
                         )}
                       </div>
@@ -936,16 +967,17 @@ const ProfileInfo = ({
                           data-live-search="true"
                           data-width="100%"
                           value={designation}
-                          onChange={(e) => {
-                            const value = e.target.value;
-                            setDesignation(value); // Update state
-                            if (value === "") {
-                              setDesignationError(true);
-                            } else {
-                              setDesignationError(false);
-                              setDesignationValid(true);
-                            }
-                          }}
+                          onChange={handleDesignationChange}
+                          // onChange={(e) => {
+                          //   const value = e.target.value;
+                          //   setDesignation(value); // Update state
+                          //   if (value === "") {
+                          //     setDesignationError(true);
+                          //   } else {
+                          //     setDesignationError(false);
+                          //     setDesignationValid(true);
+                          //   }
+                          // }}
                           // onChange={(e) => setDesignation(e.target.value)}
                           // disabled={!edit}
                           // style={{
@@ -975,7 +1007,24 @@ const ProfileInfo = ({
                           </small>
                         )}
                       </div>
-                      {setODesignation && (
+                      {/* Other Designation Input */}
+                      {oDesignation && (
+                        <div className="col-lg-3" id="other-div">
+                          <input
+                            required
+                            value={otherDesignation}
+                            onChange={(e) =>
+                              setOtherDesignation(e.target.value)
+                            }
+                            type="text"
+                            className="form-control"
+                            id="formGroupExampleInput3"
+                            style={{ backgroundColor: "#E8F0FE" }}
+                            maxLength={30}
+                          />
+                        </div>
+                      )}
+                      {/* {setODesignation && (
                         <div className="col-lg-3" id="other-div">
                           <input
                             required
@@ -991,7 +1040,7 @@ const ProfileInfo = ({
                             maxLength={30}
                           />
                         </div>
-                      )}
+                      )} */}
                     </div>
                   </div>
                   <div className="row mt-1">
@@ -1181,7 +1230,7 @@ const ProfileInfo = ({
                         />
                         {streetNumberError && (
                           <small className="text-danger">
-                            Enter valid street Number.
+                            Enter valid street number.
                           </small>
                         )}
                       </div>
@@ -1223,7 +1272,7 @@ const ProfileInfo = ({
                         />
                         {streetNameError && (
                           <small className="text-danger">
-                            Enter valid street Name.
+                            Enter valid street name.
                           </small>
                         )}
                       </div>
@@ -1293,7 +1342,7 @@ const ProfileInfo = ({
                         />
                         {cityError && (
                           <small className="text-danger">
-                            Enter valid city Name.
+                            Enter valid city name.
                           </small>
                         )}
                       </div>

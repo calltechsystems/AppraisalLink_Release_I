@@ -306,10 +306,9 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                           padding: "5px",
                         }}
                       >
-                        {" "}
-                        {
-                          userData?.brokerage_Details?.assistantEmailAddress
-                        }{" "}
+                        {userData?.brokerage_Details?.assistantEmailAddress
+                          ? userData?.brokerage_Details?.assistantEmailAddress
+                          : "Not Provided"}
                       </td>
                     </tr>
                     <tr>
@@ -330,8 +329,9 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                           padding: "5px",
                         }}
                       >
-                        {" "}
-                        {userData?.brokerage_Details?.assistantPhoneNumber}
+                        {userData?.brokerage_Details?.assistantPhoneNumber
+                          ? userData?.brokerage_Details?.assistantPhoneNumber
+                          : "Not Provided"}
                       </td>
                     </tr>
                     <tr>
@@ -374,10 +374,10 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                           padding: "5px",
                         }}
                       >
-                        {" "}
-                        {
-                          userData?.brokerage_Details?.assistantTwoEmailAddress
-                        }{" "}
+                        {userData?.brokerage_Details?.assistantTwoEmailAddress
+                          ? userData?.brokerage_Details
+                              ?.assistantTwoEmailAddress
+                          : "Not Provided"}{" "}
                       </td>
                     </tr>
                     <tr>
@@ -398,8 +398,9 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                           padding: "5px",
                         }}
                       >
-                        {" "}
-                        {userData?.brokerage_Details?.assistantTwoPhoneNumber}
+                        {userData?.brokerage_Details?.assistantTwoPhoneNumber
+                          ? userData?.brokerage_Details?.assistantTwoPhoneNumber
+                          : "Not Provided"}{" "}  
                       </td>
                     </tr>
                   </tbody>
