@@ -61,7 +61,7 @@ const Index = () => {
     }
   };
 
-// change by gpt
+  // change by gpt
 
   const handleStatusUpdateHandler = async () => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -69,17 +69,17 @@ const Index = () => {
       toast.error("Invalid user or broker information.");
       return;
     }
-  
+
     setDisable(true);
-  
+
     const payload = {
       brokerageId: userData?.brokerage_Details?.id,
       brokerId: selectedBroker.id,
       IsActive: !selectedBroker.isActive,
     };
-  
+
     const encryptedData = encryptionData(payload);
-  
+
     try {
       toast.loading("Updating the status...");
       const response = await axios.put(
@@ -92,10 +92,10 @@ const Index = () => {
           },
         }
       );
-  
+
       toast.dismiss();
       toast.success("Successfully Updated!");
-  
+      window.location.reload(true);
       // Update UI dynamically instead of reloading
       setSelectedBroker((prev) => ({
         ...prev,
@@ -104,7 +104,7 @@ const Index = () => {
       setDisable(false);
     } catch (err) {
       toast.dismiss();
-  
+
       if (err.response) {
         toast.error(err.response.data?.message || "Failed to update status.");
       } else if (err.request) {
@@ -112,11 +112,10 @@ const Index = () => {
       } else {
         toast.error(err.message || "An unexpected error occurred.");
       }
-  
+
       setDisable(false);
     }
   };
-  
 
   // const handleStatusUpdateHandler = () => {
   //   const userData = JSON.parse(localStorage.getItem("user"));

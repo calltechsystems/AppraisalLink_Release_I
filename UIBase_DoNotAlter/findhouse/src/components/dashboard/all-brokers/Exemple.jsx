@@ -235,9 +235,9 @@ export default function Exemple({
             // data?.modifiedDateTime
             //   ? formatDate(data?.modifiedDateTime)
             //   : "-",
-            data?.isActive && data?.modifiedDateTime !== null
-              ? formatDate(data?.modifiedDateTime)
-              : "-",
+            !data?.isActive && data?.modifiedDateTime !== null
+            ? formatDate(data?.modifiedDateTime)
+            : "-",          
           action: (
             <div className="print-hidden-column">
               {data.firstName && (

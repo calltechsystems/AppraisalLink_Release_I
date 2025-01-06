@@ -519,19 +519,17 @@ export default function Exemple({
                       </li>
                     </ul>
                   </div>
-                  <button
+                  <span
                     className={getStatusButtonClass(isBidded.orderstatus)}
                   >
-                    Status
+                   <span style={{paddingLeft:"10px", paddingRight:"10px"}}>Status</span> 
                     <span className="m-1">
                       <i class="fa fa-info-circle" aria-hidden="true"></i>
                     </span>
-                  </button>
+                  </span>
                 </div>
               ) : (
-                <button className="btn btn-warning" style={{ width: "70%" }}>
-                  <span>N.A.</span>
-                </button>
+                <span className="btn btn-warning w-100">N.A.</span>
               ),
             remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
             status:

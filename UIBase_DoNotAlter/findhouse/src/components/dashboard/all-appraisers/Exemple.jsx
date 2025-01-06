@@ -229,7 +229,7 @@ export default function Exemple({
             // data?.modifiedDateTime
             //   ? formatDate(data?.modifiedDateTime)
             //   : "-",
-            data?.item?.isActive && data?.item?.modifiedDateTime !== null
+            !data?.item?.isActive && data?.item?.modifiedDateTime !== null
               ? formatDate(data?.item?.modifiedDateTime)
               : "-",
           action: (
