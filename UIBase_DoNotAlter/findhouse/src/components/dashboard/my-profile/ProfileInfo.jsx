@@ -198,6 +198,7 @@ const ProfileInfo = ({
   // State for dropdown
   const [selectedOption, setSelectedOption] = useState("");
   const [dropdownError, setDropdownError] = useState(false);
+  const [designationError, setDesignationError] = useState(false);
 
   // validate fields
   const [firstNameValid, setFirstNameValid] = useState(false);
@@ -212,6 +213,8 @@ const ProfileInfo = ({
   const [cityValid, setCityValid] = useState(false);
   const [zipCodeValid, setZipCodeValid] = useState(false);
   const [dropdownValid, setDropdownValid] = useState(false);
+  const [designationValid, setDesignationValid] = useState(false);
+
 
   // Refs for each input field
   const firstNameInputRef = useRef(null);

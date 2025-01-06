@@ -163,6 +163,7 @@ const ProfileInfo = ({
   const [streetNameError, setStreetNameError] = useState(false);
   const [cityError, setCityError] = useState(false);
   const [zipCodeError, setZipCodeError] = useState(false);
+  const [designationError, setDesignationError] = useState(false);
 
   // State for dropdown
   const [selectedOption, setSelectedOption] = useState("");
@@ -180,6 +181,7 @@ const ProfileInfo = ({
   const [cityValid, setCityValid] = useState(false);
   const [zipCodeValid, setZipCodeValid] = useState(false);
   const [dropdownValid, setDropdownValid] = useState(false);
+  const [designationValid, setDesignationValid] = useState(false);
 
   const handleInputChangeName = (value, setValue, setValid, setError) => {
     if (value.length <= 30) {
@@ -938,10 +940,10 @@ const ProfileInfo = ({
                             const value = e.target.value;
                             setDesignation(value); // Update state
                             if (value === "") {
-                              setDropdownError(true);
+                              setDesignationError(true);
                             } else {
-                              setDropdownError(false);
-                              setDropdownValid(true);
+                              setDesignationError(false);
+                              setDesignationValid(true);
                             }
                           }}
                           // onChange={(e) => setDesignation(e.target.value)}
@@ -952,9 +954,9 @@ const ProfileInfo = ({
                           // }}
                           style={{
                             backgroundColor: "#E8F0FE",
-                            borderColor: dropdownError
+                            borderColor: designationError
                               ? "red"
-                              : dropdownValid
+                              : designationValid
                               ? "green"
                               : "", // Add red border for error
                           }}
@@ -967,7 +969,7 @@ const ProfileInfo = ({
                             );
                           })}
                         </select>
-                        {dropdownError && (
+                        {designationError && (
                           <small className="text-danger">
                             Please select a valid option.
                           </small>
