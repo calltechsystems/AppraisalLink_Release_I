@@ -5,10 +5,11 @@ import toast from "react-hot-toast";
 import { ClipLoader } from "react-spinners";
 import Link from "next/link";
 import Image from "next/image";
+import PayPalLogo from "../../components/common/PaypalImage";
 
 const Modal = ({ modalOpen, closeModal, price }) => {
   const [paypalUrl, setPaypalUrl] = useState("");
-  const [status, setStatus] = useState(0);
+  const [status, setStatus] = useState(0); // 0-> start , 1-> paypal url , 2-> transaction in progress
   const [countdown, setCountdown] = useState(180);
   const [IsAgainLoginPopUp, setIsAgainLoginPopUp] = useState(false);
 
@@ -226,12 +227,13 @@ const Modal = ({ modalOpen, closeModal, price }) => {
                     onClick={() => openPaypalUrl()}
                     className="btn btn-color w-25"
                   >
-                    <img
+                    {/* <img
                       src="https://th.bing.com/th/id/OIP.pQDcRxJ3IS71sWCWQ96IUwHaHa?w=171&h=180&c=7&r=0&o=5&pid=1.7"
                       width={40}
                       height={25}
                       alt="PayPal"
-                    />
+                    /> */}
+                    <PayPalLogo/>
                   </a>
                 ) : (
                   <label

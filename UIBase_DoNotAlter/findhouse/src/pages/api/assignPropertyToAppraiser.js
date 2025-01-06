@@ -16,20 +16,23 @@ async function handler(request, response) {
     }
 
     const token = request.headers.authorization;
-    const { companyid, appraiserid , propertyid} = body;
+    const { companyid, appraiserid, propertyid } = body;
 
-    const userResponse = await axios.post(`${domain}/com.appraisalland.AppraiserCompany/assignPropopertyByAppCompany`, 
-    {
-      companyid:Number(companyid),
-      propertyid:Number(propertyid),
-      appraiserid:Number(appraiserid)
-    },
-    {
+    const payload = {
+      companyid: Number(companyid),
+      propertyid: Number(propertyid),
+      appraiserid: Number(appraiserid),
+    };
+
+    const userResponse = await axios.post(
+      `${domain}/com.appraisalland.AppraiserCompany/assignPropopertyByAppCompany`,
+      payload,
+      {
         headers: {
-          Authorization:token,
-          "Content-Type":"application/json"
-        }
-      },
+          Authorization: token,
+          "Content-Type": "application/json",
+        },
+      }
     );
     const user = userResponse.data;
 
@@ -39,7 +42,7 @@ async function handler(request, response) {
     console.log(user);
     return response.status(200).json({ msg: "OK", userData: user });
   } catch (err) {
-   console.log(err);
+    console.log(err);
     if (err.response) {
       // If the error is from an axios request (e.g., HTTP 4xx or 5xx error)
       const axiosError = err.response.data;

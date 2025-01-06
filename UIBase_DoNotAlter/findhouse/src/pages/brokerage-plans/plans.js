@@ -226,8 +226,8 @@ const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen }) => {
               <span className="text-center mb-2 text-dark fw-bold">
                 {/* Can't appraise the property. All properties are being
                       used!! */}
-                You have redirected Back to the home Screen after the
-                transaction , Please login again to your account again.
+                Due to a failed payment or page reload, you have been redirected
+                to the home page. Please click here to log in again.
               </span>
               <div
                 className="mt-2 mb-3"
