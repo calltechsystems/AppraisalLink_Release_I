@@ -12,7 +12,7 @@ import {
   FaRedo,
 } from "react-icons/fa";
 import { useRouter } from "next/router";
-import { Button } from "bootstrap";
+// import { Button } from "bootstrap";
 // import "./SmartTable.css";
 
 const headCells = [
@@ -480,14 +480,14 @@ export default function Exemple({
                           </li>
                         </ul>
                       </div>
-                      <Button
+                      <button
                         className={getStatusButtonClass(isBidded.orderstatus)}
                       >
                         Status
                         <span className="m-1">
                           <i class="fa fa-info-circle" aria-hidden="true"></i>
                         </span>
-                      </Button>
+                      </button>
                     </div>
                   </div>
                 ) : (

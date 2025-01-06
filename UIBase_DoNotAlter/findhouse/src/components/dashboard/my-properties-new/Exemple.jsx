@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import axios, { all } from "axios";
 import { AppraiserStatusOptions } from "../create-listing/data";
 import { FaArchive, FaPause } from "react-icons/fa";
-import { Button } from "bootstrap";
+// import { Button } from "bootstrap";
 
 const headCells = [
   {
@@ -347,14 +347,14 @@ export default function Exemple({
                         </li>
                       </ul>
                     </div>
-                    <Button
+                    <button
                       className={getStatusButtonClass(isBidded.orderstatus)}
                     >
                       Status
                       <span className="m-1">
                         <i class="fa fa-info-circle" aria-hidden="true"></i>
                       </span>
-                    </Button>
+                    </button>
                   </div>
                 </div>
               ) : (
