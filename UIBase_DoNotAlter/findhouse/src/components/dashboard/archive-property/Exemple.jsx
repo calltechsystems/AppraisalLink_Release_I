@@ -12,6 +12,7 @@ import {
   FaRedo,
 } from "react-icons/fa";
 import { useRouter } from "next/router";
+import { Button } from "bootstrap";
 // import "./SmartTable.css";
 
 const headCells = [
@@ -37,7 +38,7 @@ const headCells = [
     id: "appraisal_status",
     numeric: false,
     label: "Appraisal Status",
-    width: 160,
+    width: 170,
   },
   {
     id: "sub_date",
@@ -423,7 +424,7 @@ export default function Exemple({
                 ),
               appraisal_status:
                 isHold || isCancel ? (
-                  <button className="btn btn-warning" style={{ width: "70%" }}>
+                  <button className="btn btn-warning w-100">
                     {isHold ? "N.A." : "N.A."}
                   </button>
                 ) : isBidded.orderstatus !== 1 &&
@@ -446,7 +447,9 @@ export default function Exemple({
                         </li>
                       </ul>
                     </div>
-                    <button className={getStatusButtonClass(isBidded.orderstatus)}>
+                    <button
+                      className={getStatusButtonClass(isBidded.orderstatus)}
+                    >
                       Status
                       <span className="m-1">
                         <i class="fa fa-info-circle" aria-hidden="true"></i>
@@ -461,30 +464,34 @@ export default function Exemple({
                   //   {getOrderValue(isBidded.orderstatus)} -
                   //   {formatDate(isBidded.statusDate)}
                   // </span>
-                  <div className="hover-text">
-                    <div
-                      className="tooltip-text"
-                      style={{
-                        marginTop: "-60px",
-                        marginLeft: "-100px",
-                      }}
-                    >
-                      <ul>
-                        <li style={{ fontSize: "15px" }}>
-                          {getOrderValue(isBidded.orderstatus)} -
-                          {formatDate(isBidded.statusDate)}
-                        </li>
-                      </ul>
+                  <div class="parent-container">
+                    <div className="hover-text">
+                      <div
+                        className="tooltip-text"
+                        style={{
+                          marginTop: "-60px",
+                          marginLeft: "-100px",
+                        }}
+                      >
+                        <ul>
+                          <li style={{ fontSize: "15px" }}>
+                            {getOrderValue(isBidded.orderstatus)} -
+                            {formatDate(isBidded.statusDate)}
+                          </li>
+                        </ul>
+                      </div>
+                      <Button
+                        className={getStatusButtonClass(isBidded.orderstatus)}
+                      >
+                        Status
+                        <span className="m-1">
+                          <i class="fa fa-info-circle" aria-hidden="true"></i>
+                        </span>
+                      </Button>
                     </div>
-                    <button className={getStatusButtonClass(isBidded.orderstatus)}>
-                      Status
-                      <span className="m-1">
-                        <i class="fa fa-info-circle" aria-hidden="true"></i>
-                      </span>
-                    </button>
                   </div>
                 ) : (
-                  <button className="btn btn-warning" style={{ width: "70%" }}>
+                  <button className="btn btn-warning w-100">
                     <span>N.A.</span>
                   </button>
                 ),
@@ -505,10 +512,7 @@ export default function Exemple({
                       className="btn btn-color-table"
                       onClick={() => onUnarchiveHandler(property.orderId)}
                     >
-                      <Link
-                        className="color-light"
-                        href="#"
-                      >
+                      <Link className="color-light" href="#">
                         <span className="text-light">
                           <FaArchive />
                         </span>

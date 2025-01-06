@@ -29,7 +29,7 @@ const headCells = [
     id: "appraisal_status",
     numeric: false,
     label: "Appraisal Status",
-    width: 160,
+    width: 170,
   },
   {
     id: "remark",
@@ -292,7 +292,7 @@ export default function Exemple({
               ),
             appraisal_status:
               isHold || isCancel ? (
-                <button className="btn btn-warning" style={{ width: "70%" }}>
+                <button className="btn btn-warning w-100">
                   {isHold ? "N.A." : "N.A."}
                 </button>
               ) : isBidded.orderstatus !== 1 &&
@@ -330,30 +330,34 @@ export default function Exemple({
                 //   {getOrderValue(isBidded.orderstatus)} -
                 //   {formatDate(isBidded.statusDate)}
                 // </span>
-                <div className="hover-text">
-                  <div
-                    className="tooltip-text"
-                    style={{
-                      marginTop: "-60px",
-                      marginLeft: "-100px",
-                    }}
-                  >
-                    <ul>
-                      <li style={{ fontSize: "15px" }}>
-                        {getOrderValue(isBidded.orderstatus)} -
-                        {formatDate(isBidded.statusDate)}
-                      </li>
-                    </ul>
+                <div class="parent-container">
+                  <div className="hover-text">
+                    <div
+                      className="tooltip-text"
+                      style={{
+                        marginTop: "-60px",
+                        marginLeft: "-100px",
+                      }}
+                    >
+                      <ul>
+                        <li style={{ fontSize: "15px" }}>
+                          {getOrderValue(isBidded.orderstatus)} -
+                          {formatDate(isBidded.statusDate)}
+                        </li>
+                      </ul>
+                    </div>
+                    <Button
+                      className={getStatusButtonClass(isBidded.orderstatus)}
+                    >
+                      Status
+                      <span className="m-1">
+                        <i class="fa fa-info-circle" aria-hidden="true"></i>
+                      </span>
+                    </Button>
                   </div>
-                  <span className={getStatusButtonClass(isBidded.orderstatus)}>
-                    Status
-                    <span className="m-1">
-                      <i class="fa fa-info-circle" aria-hidden="true"></i>
-                    </span>
-                  </span>
                 </div>
               ) : (
-                <button className="btn btn-warning" style={{ width: "70%" }}>
+                <button className="btn btn-warning w-100">
                   <span>N.A.</span>
                 </button>
               ),

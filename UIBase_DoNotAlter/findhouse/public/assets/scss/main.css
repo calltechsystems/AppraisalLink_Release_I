@@ -22948,15 +22948,14 @@ input:checked + .slider:before {
   left: 120%;
 }
 
-.hover-text {
+/* .hover-text {
   position: relative;
-  display: inline-block;
+  display: block;
   margin: 10px;
   font-family: Arial;
   text-align: center;
-  /* margin-right: -15px; */
   margin-top: 10px;
-}
+} */
 
 /* .tooltip {
   position: relative;
@@ -23158,4 +23157,25 @@ input:checked + .slider:before {
     width: 100%;
     height: auto;
   }
+}
+.hover-text {
+  position: relative;
+  display: block;
+  margin: 10px auto; /* Center horizontally */
+  font-family: Arial;
+  text-align: center;
+}
+
+.hover-text button {
+  display: block; /* Ensure block-level behavior */
+  width: 100%; /* Full width */
+  /* padding: 10px;  */
+  margin: 0; /* Remove default margin */
+  box-sizing: border-box; /* Include padding in width */
+  text-align: center; /* Center the button's text */
+}
+
+.parent-container {
+  width: 100%;
+  max-width: 100%; /* Prevent overflow */
 }
