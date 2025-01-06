@@ -158,8 +158,7 @@ const ProfileInfo = ({
   const [lastNameError, setLastNameError] = useState(false);
   const [phoneNumberError, setPhoneNumberError] = useState(false);
   const [emailError, setEmailError] = useState(false);
-  const [mortgageLicenceError, setMortgageLicenceError] = useState(false);
-  const [mortgageLicenceTwoError, setMortgageLicenceTwoError] = useState(false);
+
   const [streetNumberError, setStreetNumberError] = useState(false);
   const [streetNameError, setStreetNameError] = useState(false);
   const [cityError, setCityError] = useState(false);
@@ -175,8 +174,7 @@ const ProfileInfo = ({
   const [lastNameValid, setLastNameValid] = useState(false);
   const [phoneNumberValid, setPhoneNumberValid] = useState(false);
   const [emailValid, setEmailValid] = useState(false);
-  const [mortgageLicenceValid, setMortgageLicenceValid] = useState(false);
-  const [mortgageLicenceTwoValid, setMortgageLicenceTwoValid] = useState(false);
+
   const [streetNumberValid, setStreetNumberValid] = useState(false);
   const [streetNameValid, setStreetNameValid] = useState(false);
   const [cityValid, setCityValid] = useState(false);
@@ -332,23 +330,13 @@ const ProfileInfo = ({
       setPhoneNumberError
     );
     const isEmailValid = validateEmailField(emailId, setEmailError);
-    const isMortgageLicenceValid = validateField(
-      mortgageBrokrageLicNoRef,
-      setMortgageLicenceError
-    );
-    const isMortgageLicenceTwoValid = validateField(
-      mortgageBrokerLicNoRef,
-      setMortgageLicenceTwoError
-    );
+
     const isStreetNumberValid = validateFieldStreetNumber(
       streetNumber,
       setStreetNumberError
     );
-    const isStreetNameValid = validateFieldStreetNumber(
-      streetName,
-      setStreetNameError
-    );
-    const isCityValid = validateFieldStreetNumber(cityRef, setCityError);
+    const isStreetNameValid = validateField(streetName, setStreetNameError);
+    const isCityValid = validateField(cityRef, setCityError);
     const isZipCodeValid = validateFieldStreetNumber(
       zipcodeRef,
       setZipCodeError
@@ -367,16 +355,13 @@ const ProfileInfo = ({
   };
 
   const validateField = (value, setError, inputRef) => {
-    if (value.trim().length < 3 || value.trim().length > 10) {
+    if (value.trim().length < 3 || value.trim().length > 30) {
       setError(true); // Set error if field length is invalid
-      // Ensure inputRef exists before calling scrollIntoView
-      if (inputRef && inputRef.current) {
-        // inputRef.current.scrollIntoView({
-        //   behavior: "smooth",
-        //   block: "center",
-        // });
-        // inputRef.current.focus();
-      }
+      // Scroll to the top of the page
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
       return false;
     }
     setError(false);
@@ -434,27 +419,29 @@ const ProfileInfo = ({
     // Check if value contains only digits
     const isNumeric = /^[0-9]*$/.test(value.trim());
     if (!isNumeric) {
-      setError(true); // Set error for non-numeric input
-      if (inputRef && inputRef.current) {
-        inputRef.current.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-        inputRef.current.focus();
-      }
+      setError(true);
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
       return false;
     }
 
     // Check if length is exactly 10
     if (value.trim().length !== 10) {
       setError(true); // Set error if field length is invalid
-      if (inputRef && inputRef.current) {
-        inputRef.current.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-        inputRef.current.focus();
-      }
+      // Scroll to the top of the page
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      // if (inputRef && inputRef.current) {
+      //   inputRef.current.scrollIntoView({
+      //     behavior: "smooth",
+      //     block: "center",
+      //   });
+      //   inputRef.current.focus();
+      // }
       return false;
     }
 
@@ -468,14 +455,11 @@ const ProfileInfo = ({
 
     if (!emailRegex.test(value.trim())) {
       setError(true); // Set error if the email format is invalid
-      // Ensure inputRef exists before calling scrollIntoView
-      if (inputRef && inputRef.current) {
-        inputRef.current.scrollIntoView({
-          behavior: "smooth", // Smooth scroll to the field
-          block: "center", // Align the field to the center
-        });
-        inputRef.current.focus(); // Focus on the field for the user
-      }
+      // Scroll to the top of the page
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
       return false;
     }
     setError(false);
@@ -485,14 +469,11 @@ const ProfileInfo = ({
   const validateFieldStreetNumber = (value, setError, inputRef) => {
     if (value.trim().length < 1 || value.trim().length > 10) {
       setError(true); // Set error if field length is invalid
-      // Ensure inputRef exists before calling scrollIntoView
-      if (inputRef && inputRef.current) {
-        // inputRef.current.scrollIntoView({
-        //   behavior: "smooth", // Smooth scroll to the field
-        //   block: "center", // Align the field to the center
-        // });
-        // inputRef.current.focus(); // Focus on the field for the user
-      }
+      // Scroll to the top of the page
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
       return false;
     }
     setError(false);
@@ -1229,7 +1210,7 @@ const ProfileInfo = ({
                           }}
                           value={streetName}
                           onChange={(e) =>
-                            handleInputChangeStreet(
+                            handleInputChangeName(
                               e.target.value,
                               setStreetName,
                               setStreetNameValid,
@@ -1299,7 +1280,7 @@ const ProfileInfo = ({
                           required
                           value={cityRef}
                           onChange={(e) =>
-                            handleInputChangeStreet(
+                            handleInputChangeName(
                               e.target.value,
                               setCityRef,
                               setCityValid,

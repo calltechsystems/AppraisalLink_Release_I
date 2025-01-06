@@ -477,8 +477,8 @@ const ProfileInfo = ({
         assistantTwoEmailAddress: assistantTwoEmailAddress,
         assistantTwoPhoneNumber: assistantTwoPhoneNumber,
         emailId: emailId,
-        city: city,
-        state: state,
+        city: cityRef,
+        state: stateRef,
         // province: state,
         postalCode: zipCode,
         phoneNumber: phoneNumberRef,
@@ -600,7 +600,7 @@ const ProfileInfo = ({
     // }
   };
   const validateField = (value, setError) => {
-    if (value.trim().length < 3 || value.trim().length > 10) {
+    if (value.trim().length < 3 || value.trim().length > 30) {
       setError(true); // Set error if field length is invalid
 
       // Scroll to the top of the page
@@ -655,26 +655,23 @@ const ProfileInfo = ({
     const isNumeric = /^[0-9]*$/.test(value.trim());
     if (!isNumeric) {
       setError(true); // Set error for non-numeric input
-      if (inputRef && inputRef.current) {
-        inputRef.current.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-        inputRef.current.focus();
-      }
+      // Scroll to the top of the page
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+
       return false;
     }
 
     // Check if length is exactly 10
     if (value.trim().length !== 10) {
       setError(true); // Set error if field length is invalid
-      if (inputRef && inputRef.current) {
-        inputRef.current.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-        inputRef.current.focus();
-      }
+      // Scroll to the top of the page
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
       return false;
     }
 
@@ -688,14 +685,11 @@ const ProfileInfo = ({
 
     if (!emailRegex.test(value.trim())) {
       setError(true); // Set error if the email format is invalid
-      // Ensure inputRef exists before calling scrollIntoView
-      if (inputRef && inputRef.current) {
-        inputRef.current.scrollIntoView({
-          behavior: "smooth", // Smooth scroll to the field
-          block: "center", // Align the field to the center
-        });
-        inputRef.current.focus(); // Focus on the field for the user
-      }
+      // Scroll to the top of the page
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
       return false;
     }
     setError(false);
@@ -1535,95 +1529,55 @@ const ProfileInfo = ({
                         </label>
                       </div>
                       <div className="col-lg-7">
-                        <div className="form-group input-group ui_kit_select_search">
-                          <select
-                            required
-                            className="form-select"
-                            data-live-search="true"
-                            data-width="100%"
-                            value={
-                              stateRef
-                              // ? stateRef
-                              // : userData?.broker_Details?.province
+                        {/* <div className="form-group input-group ui_kit_select_search"> */}
+                        <select
+                          required
+                          className="form-select"
+                          data-live-search="true"
+                          data-width="100%"
+                          value={
+                            stateRef
+                            // ? stateRef
+                            // : userData?.broker_Details?.province
+                          }
+                          // onChange={(e) => setStateRef(e.target.value)}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            setStateRef(value); // Update state
+                            if (value === "") {
+                              setDropdownError(true);
+                            } else {
+                              setDropdownError(false);
+                              setDropdownValid(true);
                             }
-                            // onChange={(e) => setStateRef(e.target.value)}
-                            onChange={(e) => {
-                              const value = e.target.value;
-                              setStateRef(value); // Update state
-                              if (value === "") {
-                                setDropdownError(true);
-                              } else {
-                                setDropdownError(false);
-                                setDropdownValid(true);
-                              }
-                            }}
-                            // disabled={!edit}
-                            // style={{
-                            //   backgroundColor: "#E8F0FE",
-                            // }}
-                            style={{
-                              backgroundColor: "#E8F0FE",
-                              borderColor: dropdownError
-                                ? "red"
-                                : dropdownValid
-                                ? "green"
-                                : "", // Add red border for error
-                            }}
-                          >
-                            {province.map((item, index) => {
-                              return (
-                                <option key={item.id} value={item.value}>
-                                  {item.type}
-                                </option>
-                              );
-                            })}
-                          </select>
-                          {dropdownError && (
-                            <small className="text-danger">
-                              Please select a valid option.
-                            </small>
-                          )}
-                          {/* <select
-                            ref={dropdownRef} 
-                            focus
-                            required
-                            className="form-select"
-                            data-live-search="true"
-                            data-width="100%"
-                            value={
-                              stateRef
-                                ? stateRef
-                                : userData?.broker_Details?.province
-                            } // Current value
-                            onChange={(e) => {
-                              const value = e.target.value;
-                              setStateRef(value); // Update state
-                              if (value === "") {
-                                setDropdownError(true);
-                              } else {
-                                setDropdownError(false);
-                              }
-                            }}
-                            disabled={!edit} // Conditionally enable/disable
-                            style={{
-                              backgroundColor: "#E8F0FE",
-                              borderColor: dropdownError ? "red" : "", // Add red border for error
-                            }}
-                          >
-                            {province.map((item, index) => {
-                              return (
-                                <option key={item.id} value={item.value}>
-                                  {item.type}
-                                </option>
-                              );
-                            })}
-                          </select> */}
-                          {/* {dropdownError && (
-                            <small className="text-danger">
-                              Please select a valid option.
-                            </small>
-                          )} */}
-                        </div>
+                          }}
+                          // disabled={!edit}
+                          // style={{
+                          //   backgroundColor: "#E8F0FE",
+                          // }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: dropdownError
+                              ? "red"
+                              : dropdownValid
+                              ? "green"
+                              : "", // Add red border for error
+                          }}
+                        >
+                          {province.map((item, index) => {
+                            return (
+                              <option key={item.id} value={item.value}>
+                                {item.type}
+                              </option>
+                            );
+                          })}
+                        </select>
+                        {dropdownError && (
+                          <small className="text-danger">
+                            Please select a valid option.
+                          </small>
+                        )}
+                        {/* </div> */}
                       </div>
                     </div>
                   </div>

@@ -123,7 +123,9 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                             padding: "5px",
                           }}
                         >
-                          {userData?.appraiser_Details?.companyName}
+                          {userData?.appraiser_Details?.companyName
+                              ? userData?.appraiser_Details?.companyName
+                              : "Not Provided"}
                         </td>
                       </tr>
                       <tr>

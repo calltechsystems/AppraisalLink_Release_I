@@ -220,9 +220,9 @@ export default function Exemple({
             ? `${data.item.streetName} ${data.item.streetNumber},${data.item.province}-${data.item.postalCode}`
             : "N.A.",
           date:
-            data?.item?.isActive && data?.item?.modifiedDateTime !== null
-              ? formatDate(data?.item?.modifiedDateTime)
-              : "-",
+            data?.item?.isActive && data?.item?.dateEstablished !== null
+              ? formatDate(data?.item?.dateEstablished)
+              : formatDate(data?.item?.dateEstablished),
           enddate:
             // !data?.isActive &&
             // data?.status !== "not registered" &&
