@@ -374,6 +374,13 @@ export default function Exemple({
     return formattedDate;
   };
 
+  const getStatusButtonClass = (orderStatus) => {
+    if (orderStatus === 4 || orderStatus === 5) {
+      return "btn btn-status-na w-100"; // Orange color class
+    }
+    return "btn btn-status w-100"; // Default color
+  };
+
   const checkWishlistedHandler = (data) => {
     const userInfo = JSON.parse(localStorage.getItem("user"));
     let temp = {};
@@ -463,7 +470,7 @@ export default function Exemple({
                       </li>
                     </ul>
                   </div>
-                  <button className="btn btn-status">
+                  <button className={getStatusButtonClass(isBidded.orderstatus)}>
                     Status
                     <span className="m-1">
                       <i class="fa fa-info-circle" aria-hidden="true"></i>
@@ -485,7 +492,7 @@ export default function Exemple({
                       </li>
                     </ul>
                   </div>
-                  <span className="btn btn-status w-100">
+                  <span className={getStatusButtonClass(isBidded.orderstatus)}>
                     Status
                     <span className="m-1">
                       <i class="fa fa-info-circle" aria-hidden="true"></i>
@@ -493,7 +500,7 @@ export default function Exemple({
                   </span>
                 </div>
               ) : (
-                <button className="btn btn-warning" style={{ width: "70%" }}>
+                <button className="btn btn-warning w-100">
                   <span>N.A.</span>
                 </button>
               ),

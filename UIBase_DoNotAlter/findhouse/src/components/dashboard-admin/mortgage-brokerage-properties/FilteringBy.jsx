@@ -5,7 +5,7 @@ const FilteringBy = ({ statusSearch, setStatusSearch }) => {
       value={statusSearch}
       onChange={(e) => setStatusSearch(e.target.value)}
     >
-      <option value={"0"}>Search By Status</option>
+      <option value={"0"}>Search by status</option>
       <option value={"1"}>Accepted</option>
       <option value={"2"}>Completed</option>
       <option value={"3"}>Quote Provided</option>

@@ -31,13 +31,13 @@ const headCells = [
     id: "status",
     numeric: false,
     label: "Order Status",
-    width: 170,
+    width: 160,
   },
   {
     id: "appraisal_status",
     numeric: false,
     label: "Appraisal Status",
-    width: 190,
+    width: 160,
   },
   {
     id: "remark",
@@ -342,6 +342,13 @@ export default function Exemple({
     return formattedDate;
   };
 
+  const getStatusButtonClass = (orderStatus) => {
+    if (orderStatus === 4 || orderStatus === 5) {
+      return "btn btn-status-na w-100"; // Orange color class
+    }
+    return "btn btn-status w-100"; // Default color
+  };
+
   const getBidOfProperty = (orderId) => {
     let Bid = {};
     allBids.map((bid, index) => {
@@ -425,7 +432,7 @@ export default function Exemple({
                 ),
               appraisal_status:
                 isHold || isCancel ? (
-                  <button className="btn btn-warning" style={{ width: "90%" }}>
+                  <button className="btn btn-warning w-100">
                     {isHold ? "N.A." : "N.A."}
                   </button>
                 ) : isBidded.orderstatus !== 1 &&
@@ -448,8 +455,8 @@ export default function Exemple({
                         </li>
                       </ul>
                     </div>
-                    <button className="btn btn-status">
-                      Current Status
+                    <button className={getStatusButtonClass(isBidded.orderstatus)}>
+                      Status
                       <span className="m-1">
                         <i class="fa fa-info-circle" aria-hidden="true"></i>
                       </span>
@@ -478,15 +485,15 @@ export default function Exemple({
                         </li>
                       </ul>
                     </div>
-                    <button className="btn btn-status">
-                      Current Status
+                    <button className={getStatusButtonClass(isBidded.orderstatus)}>
+                      Status
                       <span className="m-1">
                         <i class="fa fa-info-circle" aria-hidden="true"></i>
                       </span>
                     </button>
                   </div>
                 ) : (
-                  <button className="btn btn-warning" style={{ width: "90%" }}>
+                  <button className="btn btn-warning w-100">
                     <span>N.A.</span>
                   </button>
                 ),

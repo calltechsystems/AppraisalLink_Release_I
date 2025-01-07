@@ -992,9 +992,9 @@ const ProfileInfo = ({
                           >
                             Email Alerts
                           </label>
-                          <div className="hover-text">
+                          <div className="hover-text-01">
                             <div
-                              className="tooltip-text"
+                              className="tooltip-text-01"
                               style={{
                                 marginTop: "-60px",
                                 marginLeft: "-100px",
@@ -1036,9 +1036,9 @@ const ProfileInfo = ({
                           >
                             SMS Alerts
                           </label>
-                          <div className="hover-text">
+                          <div className="hover-text-01">
                             <div
-                              className="tooltip-text"
+                              className="tooltip-text-01"
                               style={{
                                 marginTop: "-60px",
                                 marginLeft: "-100px",
