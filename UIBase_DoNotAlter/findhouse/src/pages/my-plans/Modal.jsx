@@ -136,11 +136,11 @@ const Modal = ({ modalOpen, closeModal, price }) => {
                   textAlign: "center",
                 }}
               >
-                {/* <img
-                  src="data:image/jpeg;base64,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"
-                  width={60}
-                  height={30}
-                /> */}
+                <img
+                  src="https://www.paypalobjects.com/webstatic/mktg/logo/bdg_payments_by_pp_2line.png"
+                  alt="Payments by PayPal"
+                  style={{ width: "60px", height: "30" }}
+                />
               </div>
             ) : (
               <div
@@ -204,8 +204,8 @@ const Modal = ({ modalOpen, closeModal, price }) => {
                       fontSize: "19px",
                     }}
                   >
-                    Note : Cannot switch between the tabs while this model is
-                    being open.
+                    Note: Switching between tabs is disabled while this modal is
+                    open.
                   </p>
                 </p>
               </div>
