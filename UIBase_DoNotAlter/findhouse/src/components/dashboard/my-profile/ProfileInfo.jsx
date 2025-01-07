@@ -215,7 +215,6 @@ const ProfileInfo = ({
   const [dropdownValid, setDropdownValid] = useState(false);
   const [designationValid, setDesignationValid] = useState(false);
 
-
   // Refs for each input field
   const firstNameInputRef = useRef(null);
   const companyNameInputRef = useRef(null);
@@ -493,22 +492,91 @@ const ProfileInfo = ({
         smsNotification: smsNotification,
       };
 
-      if (
-        !payload.lastName ||
-        !payload.firstName ||
-        !payload.companyName ||
-        !payload.phoneNumber ||
-        !payload.emailId ||
-        !payload.mortageBrokerLicNo ||
-        !payload.mortgageBrokerageLicNo ||
-        // !payload.lenderListUrl ||
-        !payload.streetName ||
-        !payload.streetNumber ||
-        !payload.city ||
-        !payload.state ||
-        !payload.postalCode
-      ) {
-        toast.error("Please fill all the mandatory fields!");
+      // if (!payload.lastName) {
+      //   toast.error("Last Name is required!");
+      // }
+      // if (!payload.firstName) {
+      //   toast.error("First Name is required!");
+      // }
+      // if (!payload.companyName) {
+      //   toast.error("Company Name is required!");
+      // }
+      // if (!payload.phoneNumber) {
+      //   toast.error("Phone Number is required!");
+      // }
+      // if (!payload.emailId) {
+      //   toast.error("Email ID is required!");
+      // }
+      // if (!payload.mortageBrokerLicNo) {
+      //   toast.error("Mortgage Broker License Number is required!");
+      // }
+      // if (!payload.mortgageBrokerageLicNo) {
+      //   toast.error("Mortgage Brokerage License Number is required!");
+      // }
+      // // if (!payload.lenderListUrl) {
+      // //   toast.error("Lender List URL is required!");
+      // // }
+      // if (!payload.streetName) {
+      //   toast.error("Street Name is required!");
+      // }
+      // if (!payload.streetNumber) {
+      //   toast.error("Street Number is required!");
+      // }
+      // if (!payload.city) {
+      //   toast.error("City is required!");
+      // }
+      // if (!payload.state) {
+      //   toast.error("State is required!");
+      // }
+      // if (!payload.postalCode) {
+      //   toast.error("Postal Code is required!");
+      // } else if (
+      //   !payload.lastName ||
+      //   !payload.firstName ||
+      //   !payload.companyName ||
+      //   !payload.phoneNumber ||
+      //   !payload.emailId ||
+      //   !payload.mortageBrokerLicNo ||
+      //   !payload.mortgageBrokerageLicNo ||
+      //   // !payload.lenderListUrl ||
+      //   !payload.streetName ||
+      //   !payload.streetNumber ||
+      //   !payload.city ||
+      //   !payload.state ||
+      //   !payload.postalCode
+      // ) {
+      //   toast.error("Please fill all the mandatory fields!");
+      // }
+      const fields = [
+        { key: "lastName", message: "Last Name is required!" },
+        { key: "firstName", message: "First Name is required!" },
+        { key: "companyName", message: "Company Name is required!" },
+        { key: "phoneNumber", message: "Phone Number is required!" },
+        { key: "emailId", message: "Email ID is required!" },
+        {
+          key: "mortageBrokerLicNo",
+          message: "Mortgage Broker License Number is required!",
+        },
+        {
+          key: "mortgageBrokerageLicNo",
+          message: "Mortgage Brokerage License Number is required!",
+        },
+        // { key: "lenderListUrl", message: "Lender List URL is required!" },
+        { key: "streetName", message: "Street Name is required!" },
+        { key: "streetNumber", message: "Street Number is required!" },
+        { key: "city", message: "City is required!" },
+        { key: "state", message: "State is required!" },
+        { key: "postalCode", message: "Postal Code is required!" },
+      ];
+
+      const missingFields = fields.filter(({ key }) => !payload[key]);
+
+      if (missingFields.length === 1) {
+        // Show specific error for a single missing field
+        toast.error(missingFields[0].message);
+      } else if (missingFields.length > 1) {
+        // Show generic error for multiple missing fields
+        toast.error("Please fill all mandatory fields!");
       } else if (SMSAlert && !phoneNumber) {
         toast.error(
           "As SMS Alert is selected but phone number is not provided so SMS Alert will not work properly!"
@@ -1287,9 +1355,9 @@ const ProfileInfo = ({
                           >
                             Email Alerts
                           </label>
-                          <div className="hover-text">
+                          <div className="hover-text-01">
                             <div
-                              className="tooltip-text"
+                              className="tooltip-text-01"
                               style={{
                                 marginTop: "-60px",
                                 marginLeft: "-100px",
@@ -1331,9 +1399,9 @@ const ProfileInfo = ({
                           >
                             SMS Alerts
                           </label>
-                          <div className="hover-text">
+                          <div className="hover-text-01">
                             <div
-                              className="tooltip-text"
+                              className="tooltip-text-01"
                               style={{
                                 marginTop: "-60px",
                                 marginLeft: "-100px",

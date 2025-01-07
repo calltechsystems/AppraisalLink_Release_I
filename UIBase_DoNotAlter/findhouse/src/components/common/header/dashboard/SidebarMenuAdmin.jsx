@@ -123,7 +123,7 @@ const SidebarMenu = () => {
           <ul>
             <li
               className={`treeview ${
-                isParentPageActive(dashboard, route.pathname) ? "active" : ""
+                isParentPageActive(dashboard, route.pathname) ? "" : ""
               }`}
             >
               <a data-bs-toggle="collapse" href="#my-property_1">
@@ -142,71 +142,10 @@ const SidebarMenu = () => {
               </ul>
             </li>
             {/* end properties */}
-            {/* <li
-              className={`treeview ${
-                isSinglePageActive("/appraiser-information", route.pathname)
-                  ? "active"
-                  : ""
-              }`}
-            >
-              <Link href="/appraiser-information">
-                <i className="fa fa-user"></i>
-                <span>Appraiser Company Dashboard</span>
-              </Link>
-            </li>
-            <li
-              className={`treeview ${
-                isSinglePageActive("/broker-information", route.pathname)
-                  ? "active"
-                  : ""
-              }`}
-            >
-              <Link href="/broker-information">
-                <i className="fa fa-user"></i>
-                <span>Appraiser Dashboard</span>
-              </Link>
-            </li>
-            <li
-              className={`treeview ${
-                isSinglePageActive("/appraiser-information", route.pathname)
-                  ? "active"
-                  : ""
-              }`}
-            >
-              <Link href="/appraiser-information">
-                <i className="fa fa-user"></i>
-                <span>Mortgage Brokerage Dashboard</span>
-              </Link>
-            </li>
-            <li
-              className={`treeview ${
-                isSinglePageActive("/broker-information", route.pathname)
-                  ? "active"
-                  : ""
-              }`}
-            >
-              <Link href="/broker-information">
-                <i className="fa fa-user"></i>
-                <span>Mortgage Broker Dashboard</span>
-              </Link>
-            </li> */}
-            {/* <li
-              className={`treeview ${
-                isSinglePageActive("/my-properties", route.pathname)
-                  ? "active"
-                  : ""
-              }`}
-            >
-              <Link href="/appraise-properties">
-                <i className="flaticon-user"></i>
-                <span>Users Information</span>
-              </Link>
-            </li> */}
-
             <li
               className={`treeview ${
                 isParentPageActive(appraisersInformation, route.pathname)
-                  ? "active"
+                  ? ""
                   : ""
               }`}
             >
@@ -229,9 +168,7 @@ const SidebarMenu = () => {
 
             <li
               className={`treeview ${
-                isParentPageActive(brokersInformation, route.pathname)
-                  ? "active"
-                  : ""
+                isParentPageActive(brokersInformation, route.pathname) ? "" : ""
               }`}
             >
               <a data-bs-toggle="collapse" href="#my-property_3">
@@ -254,7 +191,7 @@ const SidebarMenu = () => {
             <li
               className={`treeview ${
                 isParentPageActive(manageSubscriptionPlan, route.pathname)
-                  ? "active"
+                  ? ""
                   : ""
               }`}
             >
@@ -289,9 +226,7 @@ const SidebarMenu = () => {
 
             <li
               className={`treeview ${
-                isParentPageActive(userManagement, route.pathname)
-                  ? "active"
-                  : ""
+                isParentPageActive(userManagement, route.pathname) ? "" : ""
               }`}
             >
               <a data-bs-toggle="collapse" href="#my-property">
@@ -312,18 +247,6 @@ const SidebarMenu = () => {
 
             {/* <li
               className={`treeview ${
-                isSinglePageActive("/biding-history", route.pathname)
-                  ? "active"
-                  : ""
-              }`}
-            >
-              <Link href="/biding-history">
-                <i className="flaticon-pdf"></i>
-                <span> Manage Free Plan</span>
-              </Link>
-            </li> */}
-            <li
-              className={`treeview ${
                 isSinglePageActive("#", route.pathname) ? "active" : ""
               }`}
             >
@@ -331,17 +254,7 @@ const SidebarMenu = () => {
                 <i className="fa fa-cog"></i>
                 <span> Settings</span>
               </Link>
-            </li>
-            {/* <li
-              className={`treeview ${
-                    isParentPageActive("/my-properties", route.pathname) ? "active" : ""
-                  }`}
-                >
-                <Link href="/my-properties">
-                <i className="flaticon-home"></i>
-                <span>Properties</span>
-              </Link>
-                </li>*/}
+            </li> */}
           </ul>
         </li>
       </ul>

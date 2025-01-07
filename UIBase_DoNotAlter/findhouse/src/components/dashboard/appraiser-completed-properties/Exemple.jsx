@@ -33,7 +33,7 @@ const headCells = [
     id: "appraisal_status",
     numeric: false,
     label: "Appraisal Status",
-    width: 190,
+    width: 160,
   },
   {
     id: "remark",
@@ -335,6 +335,13 @@ export default function Exemple({
     return formattedDate;
   };
 
+  const getStatusButtonClass = (orderStatus) => {
+    if (orderStatus === 4 || orderStatus === 5) {
+      return "btn btn-status-na w-100"; // Orange color class
+    }
+    return "btn btn-status w-100"; // Default color
+  };
+
   // const formatDate = (dateString) => {
   //   const options = {
   //     year: "numeric",
@@ -427,8 +434,8 @@ export default function Exemple({
                       </li>
                     </ul>
                   </div>
-                  <button className="btn btn-status">
-                    Current Status
+                  <button className={getStatusButtonClass(isBidded.orderstatus)}>
+                    Status
                     <span className="m-1">
                       <i class="fa fa-info-circle" aria-hidden="true"></i>
                     </span>
@@ -452,15 +459,15 @@ export default function Exemple({
                       </li>
                     </ul>
                   </div>
-                  <button className="btn btn-status">
-                    Current Status
+                  <button className={getStatusButtonClass(isBidded.orderstatus)}>
+                    Status
                     <span className="m-1">
                       <i class="fa fa-info-circle" aria-hidden="true"></i>
                     </span>
                   </button>
                 </div>
               ) : (
-                <button className="btn btn-warning" style={{width:"90%"}}><span>N.A.</span></button>
+                <button className="btn btn-warning w-100"><span>N.A.</span></button>
               ),
             remark:
               isBidded && isBidded.remark ? <p>{isBidded.remark}</p> : "N.A.",

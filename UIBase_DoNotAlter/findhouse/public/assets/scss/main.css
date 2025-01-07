@@ -22924,7 +22924,23 @@ input:checked + .slider:before {
   padding: 10px 15px 10px 15px;
 }
 
+.tooltip-text-01 {
+  visibility: hidden;
+  position: absolute;
+  z-index: 1;
+  width: 400px;
+  color: white;
+  font-size: 12px;
+  background-color: #2e008b;
+  border-radius: 5px;
+  padding: 10px 15px 10px 15px;
+}
+
 .hover-text:hover .tooltip-text {
+  visibility: visible;
+}
+
+.hover-text-01:hover .tooltip-text-01 {
   visibility: visible;
 }
 
@@ -22956,6 +22972,15 @@ input:checked + .slider:before {
   text-align: center;
   margin-top: 10px;
 } */
+
+ .hover-text-01 {
+  position: relative;
+  display: inline-block;
+  margin: 10px;
+  font-family: Arial;
+  text-align: center;
+  margin-top: 10px;
+}
 
 /* .tooltip {
   position: relative;

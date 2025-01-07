@@ -305,6 +305,11 @@ export const AppraiserList = [
 
 export const designations = [
   {
+    id: 0,
+    type: "Select..",
+    value: "",
+  },
+  {
     id: "0",
     type: "Candidate Appraiser",
     value: "Candidate Appraiser",

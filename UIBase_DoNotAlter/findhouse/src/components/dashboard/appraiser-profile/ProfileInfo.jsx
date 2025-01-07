@@ -248,11 +248,17 @@ const ProfileInfo = ({
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex for email validation
 
     if (
-      nameRegex.test(firstName) === false ||
+      firstName.trim().length < 3 ||
+      firstName.trim().length > 30 ||
+      !nameRegex.test(firstName) ||
       (middleName !== null &&
         middleName.trim() !== "" &&
-        !nameRegex.test(middleName)) ||
-      nameRegex.test(lastName) === false
+        (middleName.trim().length < 3 ||
+          middleName.trim().length > 30 ||
+          !nameRegex.test(middleName))) ||
+      lastName.trim().length < 3 ||
+      lastName.trim().length > 30 ||
+      !nameRegex.test(lastName)
     ) {
       toast.error("Please enter a valid appraiser name ");
     } else if (phoneNumberRegex.test(phoneNumber) === false || !phoneNumber) {
@@ -262,6 +268,18 @@ const ProfileInfo = ({
       cellNumber.trim() !== ""
     ) {
       toast.error("Please enter a valid cell number");
+    } else if (
+      city.trim().length < 3 ||
+      city.trim().length > 30 ||
+      !nameRegex.test(city)
+    ) {
+      toast.error("Please enter a valid city");
+    } else if (
+      streetName.trim().length < 3 ||
+      streetName.trim().length > 30 ||
+      !nameRegex.test(streetName)
+    ) {
+      toast.error("Please enter a valid street name");
     } else if (emailRegex.test(emailId) === false) {
       toast.error("Please enter a valid email address");
     } else if (
@@ -387,16 +405,30 @@ const ProfileInfo = ({
     // }
   };
 
+  // for names
   const validateField = (value, setError, inputRef) => {
-    if (value.trim().length < 3 || value.trim().length > 30) {
-      setError(true); // Set error if field length is invalid
-      // Scroll to the top of the page
+    // Check if the value contains only alphabets
+    const isAlphabetic = /^[A-Za-z]+$/.test(value.trim());
+
+    if (!isAlphabetic) {
+      setError(true); // Set error if value contains non-alphabetic characters
       window.scrollTo({
         top: 0,
         behavior: "smooth",
       });
       return false;
     }
+
+    // Check the length constraints
+    if (value.trim().length < 3 || value.trim().length > 30) {
+      setError(true); // Set error if field length is invalid
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return false;
+    }
+
     setError(false);
     return true;
   };
@@ -431,23 +463,7 @@ const ProfileInfo = ({
     }
   };
 
-  // const validateFieldNumber = (value, setError, inputRef) => {
-  //   if (value.trim().length < 10 || value.trim().length > 10) {
-  //     setError(true); // Set error if field length is invalid
-  //     // Ensure inputRef exists before calling scrollIntoView
-  //     if (inputRef && inputRef.current) {
-  //       inputRef.current.scrollIntoView({
-  //         behavior: "smooth", // Smooth scroll to the field
-  //         block: "center", // Align the field to the center
-  //       });
-  //       inputRef.current.focus(); // Focus on the field for the user
-  //     }
-  //     return false;
-  //   }
-  //   setError(false);
-  //   return true;
-  // };
-
+  // for phone number
   const validateFieldNumber = (value, setError, inputRef) => {
     // Check if value contains only digits
     const isNumeric = /^[0-9]*$/.test(value.trim());
@@ -482,6 +498,7 @@ const ProfileInfo = ({
     return true;
   };
 
+  // for valid mail
   const validateEmailField = (value, setError, inputRef) => {
     // Define a basic email regex pattern for validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -499,10 +516,10 @@ const ProfileInfo = ({
     return true;
   };
 
+  // this is for 10 digit input
   const validateFieldStreetNumber = (value, setError, inputRef) => {
     if (value.trim().length < 1 || value.trim().length > 10) {
-      setError(true); // Set error if field length is invalid
-      // Scroll to the top of the page
+      setError(true);
       window.scrollTo({
         top: 0,
         behavior: "smooth",
@@ -1122,9 +1139,9 @@ const ProfileInfo = ({
                           >
                             Email Alerts
                           </label>
-                          <div className="hover-text">
+                          <div className="hover-text-01">
                             <div
-                              className="tooltip-text"
+                              className="tooltip-text-01"
                               style={{
                                 marginTop: "-60px",
                                 marginLeft: "-100px",
@@ -1166,9 +1183,9 @@ const ProfileInfo = ({
                           >
                             SMS Alerts
                           </label>
-                          <div className="hover-text">
+                          <div className="hover-text-01">
                             <div
-                              className="tooltip-text"
+                              className="tooltip-text-01"
                               style={{
                                 marginTop: "-60px",
                                 marginLeft: "-100px",
