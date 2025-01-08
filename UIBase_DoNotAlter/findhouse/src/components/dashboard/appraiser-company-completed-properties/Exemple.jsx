@@ -14,8 +14,8 @@ const headCells = [
   {
     id: "order_id",
     numeric: false,
-    label: "Order ID",
-    width: 100,
+    label: "Property ID",
+    width: 110,
   },
   {
     id: "address",
@@ -331,6 +331,32 @@ export default function Exemple({
     return formattedDate;
   };
 
+    // For EST date and time
+
+    const formatDateTimeEST = (date) => {
+      return new Intl.DateTimeFormat("en-US", {
+        timeZone: "America/Toronto", // EST/Canada timezone
+        dateStyle: "medium",
+        timeStyle: "short",
+      }).format(new Date(date));
+    };
+  
+    // Only for time
+  
+    const formatDateToEST = (date) => {
+      try {
+        // Convert input date string to a Date object
+        const utcDate = new Date(`${date}T00:00:00Z`); // Treat input as UTC midnight
+        return new Intl.DateTimeFormat("en-US", {
+          timeZone: "America/Toronto", // EST/Canada timezone
+          dateStyle: "medium",        // Format only the date
+        }).format(utcDate);
+      } catch (error) {
+        console.error("Error formatting date:", error);
+        return "Invalid date";
+      }
+    };
+  
   const getStatusButtonClass = (orderStatus) => {
     if (orderStatus === 4 || orderStatus === 5) {
       return "btn btn-status-na w-100"; // Orange color class
@@ -405,7 +431,7 @@ export default function Exemple({
                     <ul>
                       <li style={{ fontSize: "15px" }}>
                         {getOrderValue(isBidded.orderstatus)} -
-                        {formatDate(isBidded.statusDate)}
+                        {formatDateTimeEST(isBidded.statusdate)}
                       </li>
                     </ul>
                   </div>
@@ -533,8 +559,8 @@ export default function Exemple({
               property.typeOfBuilding > 0
                 ? "Apartment"
                 : property.typeOfBuilding,
-            quote_required_by: formatDateNew(property.quoteRequiredDate),
-            date: formatDate(property.addedDatetime),
+            quote_required_by: formatDateToEST(property.quoteRequiredDate),
+            date: formatDateTimeEST(property.addedDatetime),
             bidAmount: property.bidLowerRange,
             lender_information: property.lenderInformation
               ? property.lenderInformation

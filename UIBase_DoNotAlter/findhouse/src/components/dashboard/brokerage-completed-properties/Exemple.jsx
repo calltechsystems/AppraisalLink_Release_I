@@ -18,8 +18,8 @@ const headCells = [
   {
     id: "order_id",
     numeric: false,
-    label: "Order ID",
-    width: 100,
+    label: "Property ID",
+    width: 110,
   },
   {
     id: "address",
@@ -277,6 +277,33 @@ export default function Exemple({
     return "btn btn-status w-100"; // Default color
   };
 
+    // For EST date and time
+
+    const formatDateTimeEST = (date) => {
+      return new Intl.DateTimeFormat("en-US", {
+        timeZone: "America/Toronto", // EST/Canada timezone
+        dateStyle: "medium",
+        timeStyle: "short",
+      }).format(new Date(date));
+    };
+  
+    // Only for time
+  
+    const formatDateToEST = (date) => {
+      try {
+        // Convert input date string to a Date object
+        const utcDate = new Date(`${date}T00:00:00Z`); // Treat input as UTC midnight
+        return new Intl.DateTimeFormat("en-US", {
+          timeZone: "America/Toronto", // EST/Canada timezone
+          dateStyle: "medium",        // Format only the date
+        }).format(utcDate);
+      } catch (error) {
+        console.error("Error formatting date:", error);
+        return "Invalid date";
+      }
+    };
+  
+
   const refreshHandler = () => {
     setProperties([]);
     setBids([]);
@@ -322,10 +349,10 @@ export default function Exemple({
         if (isBidded.$id && isStatus === 3) {
           const updatedRow = {
             order_id: property.orderId,
-            sub_date: formatDate(property.addedDatetime),
+            sub_date: formatDateTimeEST(property.addedDatetime),
             quote_required_by: property.quoteRequiredDate
-              ? formatDate(property.quoteRequiredDate)
-              : formatDate(property.addedDatetime),
+              ? formatDateTimeEST(property.quoteRequiredDate)
+              : formatDateTimeEST(property.addedDatetime),
             status:
               isHold || isCancel ? (
                 <span className="btn bg-warning w-100">
@@ -394,7 +421,7 @@ export default function Exemple({
                     <ul>
                       <li style={{ fontSize: "15px" }}>
                         {getOrderValue(isBidded.orderstatus)} -
-                        {formatDate(isBidded.statusDate)}
+                        {formatDateTimeEST(isBidded.statusdate)}
                       </li>
                     </ul>
                   </div>

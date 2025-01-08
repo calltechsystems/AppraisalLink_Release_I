@@ -19,8 +19,8 @@ const headCells = [
   {
     id: "order_id",
     numeric: false,
-    label: "Order ID",
-    width: 100,
+    label: "Property ID",
+    width: 110,
   },
   {
     id: "address",
@@ -32,13 +32,13 @@ const headCells = [
     id: "status",
     numeric: false,
     label: "Order Status",
-    width: 160,
+    width: 170,
   },
   {
     id: "appraisal_status",
     numeric: false,
     label: "Appraisal Status",
-    width: 160,
+    width: 170,
   },
   {
     id: "remark",
@@ -268,6 +268,33 @@ export default function Exemple({
     return formattedDate;
   };
 
+    // For EST date and time
+
+    const formatDateTimeEST = (date) => {
+      return new Intl.DateTimeFormat("en-US", {
+        timeZone: "America/Toronto", // EST/Canada timezone
+        dateStyle: "medium",
+        timeStyle: "short",
+      }).format(new Date(date));
+    };
+  
+    // Only for time
+  
+    const formatDateToEST = (date) => {
+      try {
+        // Convert input date string to a Date object
+        const utcDate = new Date(`${date}T00:00:00Z`); // Treat input as UTC midnight
+        return new Intl.DateTimeFormat("en-US", {
+          timeZone: "America/Toronto", // EST/Canada timezone
+          dateStyle: "medium",        // Format only the date
+        }).format(utcDate);
+      } catch (error) {
+        console.error("Error formatting date:", error);
+        return "Invalid date";
+      }
+    };
+  
+
   const getStatusButtonClass = (orderStatus) => {
     if (orderStatus === 4 || orderStatus === 5) {
       return "btn btn-status-na w-100"; // Orange color class
@@ -343,10 +370,10 @@ export default function Exemple({
         if (!property.isArchive) {
           const updatedRow = {
             order_id: property.orderId,
-            sub_date: formatDate(property.addedDatetime),
+            sub_date: formatDateTimeEST(property.addedDatetime),
             quote_required_by: property.quoteRequiredDate
-              ? formatDateNew(property.quoteRequiredDate)
-              : formatDateNew(property.addedDatetime),
+              ? formatDateToEST(property.quoteRequiredDate)
+              : formatDateToEST(property.addedDatetime),
             status:
               isHold || isCancel ? (
                 <span className="btn bg-danger text-light w-100">
@@ -422,7 +449,7 @@ export default function Exemple({
                     <ul>
                       <li style={{ fontSize: "15px" }}>
                         {getOrderValue(isBidded.orderstatus)} - {""}
-                        {formatDate(isBidded.statusDate)}
+                        {formatDateTimeEST(isBidded.statusdate)}
                       </li>
                     </ul>
                   </div>
