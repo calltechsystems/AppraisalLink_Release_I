@@ -65,7 +65,6 @@ const Team = () => {
                   </ul> */}
                 </div>
               </div>
-              {/* End .thumb */}
 
               <div className="details">
                 <h4>
