@@ -245,6 +245,7 @@ const ProfileInfo = ({
     const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const cellNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const nameRegex = /^[A-Za-z]+$/;
+    const nameTwoRegex = /^[A-Za-z ]+$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex for email validation
 
     if (
@@ -271,13 +272,13 @@ const ProfileInfo = ({
     } else if (
       city.trim().length < 3 ||
       city.trim().length > 30 ||
-      !nameRegex.test(city)
+      !nameTwoRegex.test(city)
     ) {
       toast.error("Please enter a valid city");
     } else if (
       streetName.trim().length < 3 ||
       streetName.trim().length > 30 ||
-      !nameRegex.test(streetName)
+      !nameTwoRegex.test(streetName)
     ) {
       toast.error("Please enter a valid street name");
     } else if (emailRegex.test(emailId) === false) {
@@ -388,7 +389,7 @@ const ProfileInfo = ({
     );
     const isStreetNameValid = validateField(streetName, setStreetNameError);
     const isCityValid = validateField(cityRef, setCityError);
-    const isZipCodeValid = validateFieldStreetNumber(
+    const isZipCodeValid = validateField(
       zipcodeRef,
       setZipCodeError
     );
@@ -408,16 +409,16 @@ const ProfileInfo = ({
   // for names
   const validateField = (value, setError, inputRef) => {
     // Check if the value contains only alphabets
-    const isAlphabetic = /^[A-Za-z]+$/.test(value.trim());
+    // const isAlphabetic = /^[A-Za-z]+$/.test(value.trim());
 
-    if (!isAlphabetic) {
-      setError(true); // Set error if value contains non-alphabetic characters
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-      return false;
-    }
+    // if (!isAlphabetic) {
+    //   setError(true); // Set error if value contains non-alphabetic characters
+    //   window.scrollTo({
+    //     top: 0,
+    //     behavior: "smooth",
+    //   });
+    //   return false;
+    // }
 
     // Check the length constraints
     if (value.trim().length < 3 || value.trim().length > 30) {
@@ -542,6 +543,8 @@ const ProfileInfo = ({
     }
   };
 
+
+  
   const changeEditHandler = () => {
     setEdit(true);
   };

@@ -12,7 +12,7 @@ const headCells = [
   {
     id: "orderId",
     numeric: false,
-    label: "Order ID",
+    label: "Property ID",
     width: 100,
   },
 

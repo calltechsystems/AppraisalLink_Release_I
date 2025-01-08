@@ -28,13 +28,13 @@ const headCells = [
     id: "st_date",
     numeric: false,
     label: "Start Date",
-    width: 100,
+    width: 120,
   },
   {
     id: "end_date",
     numeric: false,
     label: "End Date",
-    width: 100,
+    width: 120,
   },
   {
     id: "amount",
@@ -114,6 +114,33 @@ export default function Exemple({
 
     return formattedDate;
   };
+
+    // For EST date and time
+
+    const formatDateTimeEST = (date) => {
+      return new Intl.DateTimeFormat("en-US", {
+        timeZone: "America/Toronto", // EST/Canada timezone
+        dateStyle: "medium",
+        timeStyle: "short",
+      }).format(new Date(date));
+    };
+  
+    // Only for time
+  
+    const formatDateToEST = (date) => {
+      try {
+        // Convert input date string to a Date object
+        const utcDate = new Date(`${date}T00:00:00Z`); // Treat input as UTC midnight
+        return new Intl.DateTimeFormat("en-US", {
+          timeZone: "America/Toronto", // EST/Canada timezone
+          dateStyle: "medium",        // Format only the date
+        }).format(utcDate);
+      } catch (error) {
+        console.error("Error formatting date:", error);
+        return "Invalid date";
+      }
+    };
+  
 
   const prices = [
     {
@@ -248,8 +275,8 @@ export default function Exemple({
                 <span>Monthly</span>
               ),
             amount: property.planAmount ? `$ ${property.planAmount}` : "$ -",
-            st_date: formatDate(property.startDate),
-            end_date: formatDate(property.endDate),
+            st_date: formatDateTimeEST(property.startDate),
+            end_date: formatDateTimeEST(property.endDate),
             remained_prop: `${
               property.usedProperties === null ? 0 : property.usedProperties
             } of ${property.noOfProperties}`,
