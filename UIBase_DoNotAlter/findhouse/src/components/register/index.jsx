@@ -61,7 +61,7 @@ const Index = () => {
         <div className="modal">
           <div
             className="modal-content"
-            style={{ borderColor: "green", width: "40%" }}
+            style={{ border: "2px solid #97d700", width: "40%" }}
           >
             <div className="col-lg-12">
               <div className="row">
@@ -101,7 +101,7 @@ const Index = () => {
               </div>
               <div className="row">
                 <div className="col-lg-12 text-center">
-                  <h3 className=" text-success mt-1">Success</h3>
+                  <h3 className=" text-color mt-1">Success</h3>
                 </div>
               </div>
               <div
@@ -167,7 +167,7 @@ const Index = () => {
         <div className="modal">
           <div
             className="modal-content"
-            style={{ borderColor: "orangered", width: "40%" }}
+            style={{ border: "2px solid #97d700", width: "40%" }}
           >
             <div className="col-lg-12">
               <div className="row">
@@ -207,7 +207,7 @@ const Index = () => {
               </div>
               <div className="row">
                 <div className="col-lg-12 text-center">
-                  <h3 className=" text-danger mt-1">Error</h3>
+                  <h3 className="text-color mt-1">Error</h3>
                 </div>
               </div>
               <div

@@ -123,7 +123,7 @@ const DetailedInfo = ({
                 First Name <span class="req-btn">*</span>
               </label>
             </div>
-            <div className="col-lg-7">
+            <div className="col-lg-5">
               <input
                 style={
                   checkIsError("applicantFirstName")
@@ -152,7 +152,7 @@ const DetailedInfo = ({
                 Last Name <span class="req-btn">*</span>
               </label>
             </div>
-            <div className="col-lg-7">
+            <div className="col-lg-5">
               <input
                 style={
                   checkIsError("applicantLastName")
@@ -183,7 +183,7 @@ const DetailedInfo = ({
                 Phone Number <span class="req-btn">*</span>
               </label>
             </div>
-            <div className="col-lg-7">
+            <div className="col-lg-5">
             
               <input
                 style={
@@ -220,7 +220,7 @@ const DetailedInfo = ({
                 Email Address <span class="req-btn">*</span>
               </label>
             </div>
-            <div className="col-lg-7">
+            <div className="col-lg-5">
               <input
                 style={
                   checkIsError("applicantEmailAddress")
@@ -260,7 +260,7 @@ const DetailedInfo = ({
                 </label>
               </div>
 
-              <div className="col-lg-7">
+              <div className="col-lg-5">
                 <textarea
                   style={{
                     // paddingTop: "15px",
@@ -293,7 +293,7 @@ const DetailedInfo = ({
                   Attachment
                 </label>
               </div>
-              <div className="col-lg-7 mb-2">
+              <div className="col-lg-5 mb-2">
                 <label className="upload">
                   <input type="file" onChange={(e) => handleUpload(e)} />
                 </label>

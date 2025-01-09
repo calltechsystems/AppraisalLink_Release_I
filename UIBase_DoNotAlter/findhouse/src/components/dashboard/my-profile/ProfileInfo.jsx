@@ -248,6 +248,21 @@ const ProfileInfo = ({
     }
   };
 
+  const handleInputChangeEmail = (value, setValue, setValid, setError) => {
+    if (value.length <= 100) {
+      setValue(value);
+
+      // Validate: Check if length is between 3 and 10
+      if (value.trim().length >= 10) {
+        setValid(true);
+        setError(false);
+      } else {
+        setValid(false);
+        setError(true);
+      }
+    }
+  };
+
   const handleInputChangeStreet = (value, setValue, setValid, setError) => {
     if (value.length <= 30) {
       setValue(value);
@@ -333,6 +348,7 @@ const ProfileInfo = ({
     const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const cellNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const nameRegex = /^[A-Za-z]+$/;
+    const nameCityRegex = /^[A-Za-z ]+$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex for email validation
 
     // if (
@@ -355,7 +371,34 @@ const ProfileInfo = ({
       lastName.trim().length > 30 ||
       !nameRegex.test(lastName)
     ) {
-      toast.error("Please enter a valid broker name");
+      toast.error("Please enter a valid name");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return false;
+    } else if (
+      companyName.trim().length < 3 ||
+      companyName.trim().length > 30 ||
+      !nameCityRegex.test(companyName)
+    ) {
+      toast.error("Please enter a valid company name");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return false;
+    } else if (
+      city.trim().length < 3 ||
+      city.trim().length > 30 ||
+      !nameCityRegex.test(city)
+    ) {
+      toast.error("Please enter a valid city name");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return false;
     } else if (
       // (assistantFirstName.trim() !== "" &&
       //   !nameRegex.test(assistantFirstName)) ||
@@ -388,6 +431,11 @@ const ProfileInfo = ({
       toast.error("Applicant Name should be valid ");
     } else if (phoneNumberRegex.test(phoneNumber) === false || !phoneNumber) {
       toast.error("Please enter a valid phone number");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return false;
     } else if (
       cellNumberRegex.test(cellNumber) === false &&
       cellNumber.trim() !== ""
@@ -405,6 +453,11 @@ const ProfileInfo = ({
       toast.error("Please enter a valid assistant phone number");
     } else if (emailRegex.test(emailId) === false) {
       toast.error("Please enter a valid email address");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return false;
     } else if (
       emailRegex.test(assistantEmailAddress) === false &&
       assistantEmailAddress.trim() !== ""
@@ -946,7 +999,58 @@ const ProfileInfo = ({
               <div className="col-lg-9">
                 <div className="row mb-2">
                   <h3 className="heading-forms">Personal Information</h3>
-                  <hr />
+                  {/* <hr /> */}
+                  <div className="col-lg-12 mb-3 mt-2">
+                    <div className="row">
+                      <div className="col-lg-4">
+                        <label
+                          className="text-color"
+                          htmlFor=""
+                          style={{ paddingTop: "5px" }}
+                        >
+                          Registered Email ID{" "}
+                        </label>
+                      </div>
+                      <div className="col-lg-7">
+                        <input
+                          type="text"
+                          readOnly
+                          className="form-control"
+                          style={{ backgroundColor: "" }}
+                          id="formGroupExampleInput3"
+                          value={userData.userEmail}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-lg-12 mb-3">
+                    <div className="row">
+                      <div className="col-lg-4">
+                        <label
+                          className="text-color"
+                          htmlFor=""
+                          style={{ paddingTop: "5px" }}
+                        >
+                          User Type{" "}
+                        </label>
+                      </div>
+                      <div className="col-lg-7">
+                        <input
+                          type="text"
+                          readOnly
+                          className="form-control"
+                          style={{ backgroundColor: "" }}
+                          id="formGroupExampleInput3"
+                          value={
+                            {
+                              1: "Mortgage Broker",
+                              6: "Sub Broker",
+                            }[userData.userType] || "Unknown User Type"
+                          }
+                        />
+                      </div>
+                    </div>
+                  </div>
                   <div className="col-lg-12 mb-3">
                     <div className="row">
                       <div className="col-lg-4">
@@ -1211,7 +1315,7 @@ const ProfileInfo = ({
                           id="formGroupExampleInput3"
                           value={emailId}
                           onChange={(e) =>
-                            handleInputChangeName(
+                            handleInputChangeEmail(
                               e.target.value,
                               setEmailId,
                               setEmailValid,
@@ -1659,7 +1763,7 @@ const ProfileInfo = ({
                           htmlFor=""
                           style={{ paddingTop: "5px" }}
                         >
-                          Postal-Code <span class="req-btn">*</span>
+                          Postal Code <span class="req-btn">*</span>
                         </label>
                       </div>
                       <div className="col-lg-7">

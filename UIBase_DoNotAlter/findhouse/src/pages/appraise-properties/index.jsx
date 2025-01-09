@@ -5,7 +5,7 @@ import AppraiseProperties from "../../components/dashboard/appraised-properties"
 const index = () => {
   return (
     <>
-      <Seo pageTitle="Appraise Properties" />
+      <Seo pageTitle="Appraised Properties" />
       <AppraiseProperties />
     </>
   );

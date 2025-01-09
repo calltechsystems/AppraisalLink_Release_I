@@ -241,11 +241,20 @@ const Modal = ({
                             color: "black",
                           }}
                         >
-                          {`${
-                            alreadyBidded
-                              ? `Your Eariler Quote was $ ${bidAmount}`
-                              : "Please Provide a Quote for this Property"
-                          }`}
+                          <span
+                            className={
+                              alreadyBidded ? "already-bidded" : "provide-quote"
+                            }
+                          >
+                            {alreadyBidded ? (
+                              <>
+                                Your Earlier Quote was{" "}
+                                <span className="bid-amount">${bidAmount}</span>
+                              </>
+                            ) : (
+                              "Please Provide a Quote for this Property"
+                            )}
+                          </span>
                         </label>
                         {/* <span style={{ color: 'red' }}>{bidAmount}</span> */}
                       </div>

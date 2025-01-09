@@ -5,7 +5,7 @@ import AppraiserCompanyPlan from "../../components/dashboard-admin/appraiser-com
 const index = () => {
   return (
     <>
-      <Seo pageTitle="Appraiser Company Plans" />
+      <Seo pageTitle="Plans" />
       <AppraiserCompanyPlan />
     </>
   );

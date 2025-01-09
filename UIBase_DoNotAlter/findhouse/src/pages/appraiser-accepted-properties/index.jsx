@@ -5,7 +5,7 @@ import BidingHistory from "../../components/dashboard/appraiser-accepted-propert
 const index = () => {
   return (
     <>
-      <Seo pageTitle="Accepted Orders" />
+      <Seo pageTitle="Accepted Properties" />
       <BidingHistory />
     </>
   );

@@ -206,6 +206,21 @@ const ProfileInfo = ({
     }
   };
 
+  const handleInputChangeEmail = (value, setValue, setValid, setError) => {
+    if (value.length <= 100) {
+      setValue(value);
+
+      // Validate: Check if length is between 3 and 10
+      if (value.trim().length >= 10) {
+        setValid(true);
+        setError(false);
+      } else {
+        setValid(false);
+        setError(true);
+      }
+    }
+  };
+
   const onUpdatHandler = () => {
     const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const cellNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
@@ -361,15 +376,9 @@ const ProfileInfo = ({
       streetNumber,
       setStreetNumberError
     );
-    const isStreetNameValid = validateField(
-      streetName,
-      setStreetNameError
-    );
+    const isStreetNameValid = validateField(streetName, setStreetNameError);
     const isCityValid = validateField(cityRef, setCityError);
-    const isZipCodeValid = validateField(
-      zipcodeRef,
-      setZipCodeError
-    );
+    const isZipCodeValid = validateField(zipcodeRef, setZipCodeError);
 
     // Validate dropdown
 
@@ -614,7 +623,57 @@ const ProfileInfo = ({
                     Appraiser Company Information
                   </h3>
                   {/* <hr /> */}
-                  <div className="col-lg-12 mb-3 mt-2">
+                  <div className="col-lg-12 mb-3 mt-3">
+                    <div className="row">
+                      <div className="col-lg-4">
+                        <label
+                          className="text-color"
+                          htmlFor=""
+                          style={{ paddingTop: "10px" }}
+                        >
+                          Registered Email ID{" "}
+                        </label>
+                      </div>
+                      <div className="col-lg-7">
+                        <input
+                          type="text"
+                          readOnly
+                          className="form-control"
+                          style={{ backgroundColor: "" }}
+                          id="formGroupExampleInput3"
+                          value={userData.userEmail}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-lg-12 mb-3">
+                    <div className="row">
+                      <div className="col-lg-4">
+                        <label
+                          className="text-color"
+                          htmlFor=""
+                          style={{ paddingTop: "10px" }}
+                        >
+                          User Type{" "}
+                        </label>
+                      </div>
+                      <div className="col-lg-7">
+                        <input
+                          type="text"
+                          readOnly
+                          className="form-control"
+                          style={{ backgroundColor: "#" }}
+                          id="formGroupExampleInput3"
+                          value={
+                            {
+                              4: "Appraiser Company",
+                            }[userData.userType] || "Unknown User Type"
+                          }
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-lg-12 mb-3">
                     <div className="row">
                       <div className="col-lg-4">
                         <label
@@ -844,7 +903,7 @@ const ProfileInfo = ({
                           }}
                           value={emailId}
                           onChange={(e) =>
-                            handleInputChangeName(
+                            handleInputChangeEmail(
                               e.target.value,
                               setEmailId,
                               setEmailValid,
@@ -1284,7 +1343,7 @@ const ProfileInfo = ({
                           htmlFor=""
                           style={{ paddingTop: "10px" }}
                         >
-                          Postal-Code <span class="req-btn">*</span>
+                          Postal Code <span class="req-btn">*</span>
                         </label>
                       </div>
                       <div className="col-lg-7">

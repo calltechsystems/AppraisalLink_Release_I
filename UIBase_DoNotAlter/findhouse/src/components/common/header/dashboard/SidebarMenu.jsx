@@ -62,6 +62,11 @@ const SidebarMenu = () => {
     },
   ];
 
+  const handleOpenHelpDesk = () => {
+    // Open the link with a query parameter to ignore the session
+    const newTab = window.open('/contact?logout=true', '_blank', 'noopener,noreferrer');
+  };
+
   return (
     <>
       {/* <button className="collapse-btn flaticon-home" onClick={toggleCollapse}>
@@ -204,71 +209,8 @@ const SidebarMenu = () => {
           </ul>
         </li>
 
-        {/*<li
-              className={`treeview ${
-                isSinglePageActive("/my-message", route.pathname)
-                  ? "active"
-                  : ""
-              }`}
-            >
-               <Link href="/my-message">
-                <i className="flaticon-envelope"></i>
-                <span> Message</span>
-              </Link> 
-            </li>*/}
-
         {/* End Main */}
 
-        {/* <li className="title">
-          <span>Manage Appraise Properties</span>
-          <ul>
-            <li
-              className={`treeview ${
-                isParentPageActive(myProperties, route.pathname) ? "active" : ""
-              }`}
-            >
-              <a data-bs-toggle="collapse" href="#my-property">
-                <i className="flaticon-home"></i> <span>My Properties</span>
-              </a>
-            </li>
-            <i className="fa fa-angle-down pull-right"></i>
-
-            <ul className="treeview-menu collapse" id="my-property">
-              {myProperties.map((item) => (
-                <li key={item.id}>
-                  <Link href={item.route}>
-                    <i className="fa fa-circle"></i> {item.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-
-            <li
-              className={`treeview ${
-                isSinglePageActive("/my-favourites", route.pathname)
-                  ? "active"
-                  : ""
-              }`}
-            >
-              <Link href="/my-favourites">
-                <i className="flaticon-magnifying-glass"></i>
-                <span> My Favorites</span>
-              </Link>
-            </li>
-            <li
-              className={`treeview ${
-                isSinglePageActive("/my-saved-search", route.pathname)
-                  ? "active"
-                  : ""
-              }`}
-            >
-              <Link href="/my-saved-search">
-                <i className="flaticon-magnifying-glass"></i>
-                <span> Saved Search</span>
-              </Link>
-            </li>
-          </ul>
-        </li> */}
         {/* End manage listing */}
 
         <li className="title">
@@ -297,8 +239,20 @@ const SidebarMenu = () => {
         {!isBrokerByBrokerage ? (
           ""
         ) : (
+          // <li className="link-hover sidebar-menu">
+          //   <Link href="/contact">
+          //     <i className="flaticon-envelope"></i>
+          //     <span>Help Desk</span>
+          //   </Link>
+          // </li>
           <li className="link-hover sidebar-menu">
-            <Link href="/contact">
+            <Link
+              href="#"
+              onClick={(e) => {
+                e.preventDefault(); // Prevent default link behavior
+                handleOpenHelpDesk(); // Handle manual opening
+              }}
+            >
               <i className="flaticon-envelope"></i>
               <span>Help Desk</span>
             </Link>

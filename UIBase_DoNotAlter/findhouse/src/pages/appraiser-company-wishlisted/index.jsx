@@ -5,7 +5,7 @@ import AppraiserWishlist from "../../components/dashboard/appraiser-company-wish
 const index = () => {
   return (
     <>
-      <Seo pageTitle="Appraiser Company Wishlisted" />
+      <Seo pageTitle="Wishlisted Properties" />
       <AppraiserWishlist />
     </>
   );

@@ -59,7 +59,7 @@ const LocationField = ({
                 Street Number <span class="req-btn">*</span>
               </label>
             </div>
-            <div className="col-lg-7">
+            <div className="col-lg-5">
               <input
                 style={
                   checkIsError("streetNumber")
@@ -90,7 +90,7 @@ const LocationField = ({
                 Street Name <span class="req-btn">*</span>
               </label>
             </div>
-            <div className="col-lg-7">
+            <div className="col-lg-5">
               <input
                 style={
                   checkIsError("streetName")
@@ -121,7 +121,7 @@ const LocationField = ({
                 Unit / Apt. No.
               </label>
             </div>
-            <div className="col-lg-7">
+            <div className="col-lg-5">
               <input
                 style={{ backgroundColor: "#E8F0FE" }}
                 type="text"
@@ -148,7 +148,7 @@ const LocationField = ({
                 City <span class="req-btn">*</span>
               </label>
             </div>
-            <div className="col-lg-7">
+            <div className="col-lg-5">
               <input
                 style={
                   checkIsError("city")
@@ -179,7 +179,7 @@ const LocationField = ({
                 Province <span class="req-btn">*</span>
               </label>
             </div>
-            <div className="col-lg-7">
+            <div className="col-lg-5">
               {/*<input
               style={checkIsError("state") ? errorLabelStyle : { backgroundColor: "#E8F0FE" }}
                 type="text"
@@ -238,7 +238,7 @@ const LocationField = ({
                 Postal Code <span class="req-btn">*</span>
               </label>
             </div>
-            <div className="col-lg-7">
+            <div className="col-lg-5">
               <input
                 style={
                   checkIsError("zipCode")

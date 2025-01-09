@@ -5,7 +5,7 @@ import MyPackage from "../../components/dashboard/appraiser-company-subscription
 const index = () => {
   return (
     <>
-      <Seo pageTitle="My Package" />
+      <Seo pageTitle="Plans" />
       <MyPackage />
     </>
   );

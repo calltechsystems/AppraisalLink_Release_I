@@ -210,10 +210,10 @@ const CreateList = ({
                 Property Type <span class="req-btn">*</span>
               </label>
             </div>
-            <div className="col-lg-4">
+            <div className="col-lg-5">
               <div
                 className="form-group input-group ui_kit_select_search"
-                style={{ marginLeft: "-5px" }}
+                style={{ marginLeft: "-6px" }}
               >
                 <select
                   required
@@ -277,7 +277,7 @@ const CreateList = ({
                 <span class="req-btn">*</span>
               </label>
             </div>
-            <div className="col-lg-4">
+            <div className="col-lg-5">
               <input
                 required
                 type="number"
@@ -310,7 +310,7 @@ const CreateList = ({
                 Purpose <span class="req-btn">*</span>
               </label>
             </div>
-            <div className="col-lg-4">
+            <div className="col-lg-5">
               <div
                 className="form-group input-group ui_kit_select_search"
                 style={{ marginLeft: "-5px" }}
@@ -391,7 +391,7 @@ const CreateList = ({
                 Type of Appraisal <span class="req-btn">*</span>
               </label>
             </div>
-            <div className="col-lg-4">
+            <div className="col-lg-5">
               <div
                 className="form-group input-group ui_kit_select_search"
                 style={{ marginLeft: "-5px" }}
@@ -487,7 +487,7 @@ const CreateList = ({
                 Lender Information
               </label>
             </div>
-            <div className="col-lg-4">
+            <div className="col-lg-5">
               <input
                 type="text"
                 className="form-control"
@@ -514,9 +514,9 @@ const CreateList = ({
               >
                 Urgency <span class="req-btn">*</span>
               </label>
-              <div className="hover-text">
+              <div className="hover-text-01">
                 <div
-                  className="tooltip-text"
+                  className="tooltip-text-01"
                   style={{ marginTop: "-60px", marginLeft: "-100px" }}
                 >
                   <ul>
@@ -533,7 +533,7 @@ const CreateList = ({
                 <i class="fa fa-info-circle" aria-hidden="true"></i>
               </div>
             </div>
-            <div className="col-lg-4">
+            <div className="col-lg-5">
               <div
                 className="form-group input-group ui_kit_select_search mb-3"
                 style={{ marginLeft: "-5px" }}
@@ -577,7 +577,7 @@ const CreateList = ({
                 Appraisal Report Required By <span class="req-btn">*</span>
               </label>
             </div>
-            <div className="col-lg-4">
+            <div className="col-lg-5">
               {/* <MyDatePicker /> */}
               <input
                 required

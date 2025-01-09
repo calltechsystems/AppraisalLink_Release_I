@@ -7,10 +7,14 @@ import { useEffect } from "react";
 import { useState } from "react";
 
 const MyAccount = ({ user, profileCount, setProfile, userData }) => {
+  const logout = () => {
+    localStorage.removeItem("user");
+    route.push("/login");
+  };
   const profileMenuItems = [
     { id: 1, name: "Profile", ruterPath: "/my-profile" },
     { id: 4, name: "Change Password ", ruterPath: "/broker-change-password" },
-    { id: 5, name: "Log out", ruterPath: "/login" },
+    { id: 5, name: "Log out", onClick: { logout }, ruterPath: "/login" },
   ];
 
   const [profileValue, setProfileValue] = useState(0);
@@ -136,10 +140,7 @@ const MyAccount = ({ user, profileCount, setProfile, userData }) => {
     }
   }, []);
   const route = useRouter();
-  const logout = () => {
-    localStorage.removeItem("user");
-    route.push("/login");
-  };
+
   return (
     <>
       <div className="user_set_header">
