@@ -519,7 +519,7 @@ export default function Exemple({
                       <li style={{ fontSize: "15px" }}>
                         {getOrderValue(isBidded.orderstatus)} -
                         {formatDateTimeEST(isBidded.statusdate)}
-                        {console.log("statusDate:", isBidded.statusDate)}
+                        {console.log("statusDate:", isBidded.statusDate)}             
                       </li>
                     </ul>
                   </div>
