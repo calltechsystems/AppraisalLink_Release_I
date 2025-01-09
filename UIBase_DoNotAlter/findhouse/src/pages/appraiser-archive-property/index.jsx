@@ -5,7 +5,7 @@ import ArchiveProperty from "../../components/dashboard/appraised-properties cop
 const index = () => {
   return (
     <>
-      <Seo pageTitle="Appraiser Archive  Properties" />
+      <Seo pageTitle="Archive Properties" />
       <ArchiveProperty />
     </>
   );

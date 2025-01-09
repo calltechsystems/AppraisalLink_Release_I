@@ -5,7 +5,7 @@ import BrokerageArchiveProperties from "../../components/dashboard/brokerage-arc
 const index = () => {
   return (
     <>
-      <Seo pageTitle="Mortgage Brokerage Archive Properties" />
+      <Seo pageTitle="Archive Properties" />
       <BrokerageArchiveProperties />
     </>
   );

@@ -248,8 +248,8 @@ export default function Exemple({
             : "N.A.",
           date:
             data?.item?.isActive && data?.item?.dateEstablished !== null
-              ? formatDate(data?.item?.dateEstablished)
-              : formatDate(data?.item?.dateEstablished),
+              ? formatDateTimeEST(data?.item?.dateEstablished)
+              : formatDateTimeEST(data?.item?.dateEstablished),
           enddate:
             // !data?.isActive &&
             // data?.status !== "not registered" &&
@@ -257,7 +257,7 @@ export default function Exemple({
             //   ? formatDate(data?.modifiedDateTime)
             //   : "-",
             !data?.item?.isActive && data?.item?.modifiedDateTime !== null
-              ? formatDate(data?.item?.modifiedDateTime)
+              ? formatDateTimeEST(data?.item?.modifiedDateTime)
               : "-",
           action: (
             <div className="print-hidden-column">

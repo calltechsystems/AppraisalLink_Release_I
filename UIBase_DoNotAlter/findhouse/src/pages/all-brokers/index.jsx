@@ -5,7 +5,7 @@ import AllBrokers from "../../components/dashboard/all-brokers";
 const index = () => {
   return (
     <>
-      <Seo pageTitle="All Brokers" />
+      <Seo pageTitle="All Sub Brokers" />
       <AllBrokers />
     </>
   );

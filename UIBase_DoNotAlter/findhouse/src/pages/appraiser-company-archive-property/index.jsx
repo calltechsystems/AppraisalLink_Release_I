@@ -5,7 +5,7 @@ import ArchiveProperty from "../../components/dashboard/appraiser-company-archiv
 const index = () => {
   return (
     <>
-      <Seo pageTitle="Appraiser Company Archive  Properties" />
+      <Seo pageTitle="Archive Properties" />
       <ArchiveProperty />
     </>
   );

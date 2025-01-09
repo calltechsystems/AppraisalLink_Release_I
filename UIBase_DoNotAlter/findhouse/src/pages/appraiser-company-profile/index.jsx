@@ -5,7 +5,7 @@ import AppraiserCompanyProfile from "../../components/dashboard/appraiser-compan
 const index = () => {
   return (
     <>
-      <Seo pageTitle="Appraiser Company Profile" />
+      <Seo pageTitle="Profile" />
       <AppraiserCompanyProfile />
     </>
   );

@@ -23204,3 +23204,18 @@ input:checked + .slider:before {
   width: 100%;
   max-width: 100%; /* Prevent overflow */
 }
+.already-bidded {
+  color: #97d700;
+  font-weight: bold;
+}
+
+.provide-quote {
+  color: red;
+  font-style: italic;
+}
+
+.bid-amount {
+  color: #2e008b;
+  font-weight: bold;
+  font-size: 1.2em; /* Slightly larger to make it stand out */
+}

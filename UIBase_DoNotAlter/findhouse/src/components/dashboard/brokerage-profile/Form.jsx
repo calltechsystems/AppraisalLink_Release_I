@@ -6,6 +6,15 @@ import Image from "next/image";
 // }
 
 const Form = ({ userData, chnageShowCardHandler }) => {
+  const userData_01 = userData.userType ; // Example data, replace with actual data
+
+  const renderUserType = (userData_01) => {
+    if (userData_01 === 2) {
+      return "Mortgage Brokerage Company";
+    } else {
+      return "Unknown User Type"; // Default value if userType is not 1 or 6
+    }
+  };
   return (
     <form className="contact_form" action="#" style={{ borderRadius: "5px" }}>
       <div className="d-flex justify-content-end mb-2">
@@ -82,6 +91,49 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                     </tr>
                   </thead>
                   <tbody>
+                  <tr>
+                      <td
+                        style={{
+                          border: "1px solid #2e008b",
+                          color: "#2e008b",
+                          padding: "5px",
+                        }}
+                      >
+                        <span className="text-start">Registered Email ID</span>
+                      </td>
+                      <td
+                        style={{
+                          border: "1px solid #2e008b",
+                          width: "420px",
+                          color: "black",
+                          padding: "5px",
+                        }}
+                      >
+                        {" "}
+                        {userData.userEmail}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        style={{
+                          border: "1px solid #2e008b",
+                          color: "#2e008b",
+                          padding: "5px",
+                        }}
+                      >
+                        <span className="text-start"> User Type</span>
+                      </td>
+                      <td
+                        style={{
+                          border: "1px solid #2e008b",
+                          width: "250px",
+                          color: "black",
+                          padding: "5px",
+                        }}
+                      >
+                        {renderUserType(userData_01)}
+                      </td>
+                    </tr>
                     <tr>
                       <td
                         style={{

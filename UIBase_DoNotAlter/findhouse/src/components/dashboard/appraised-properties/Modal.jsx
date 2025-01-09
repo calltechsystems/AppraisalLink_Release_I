@@ -110,10 +110,13 @@ const Modal = ({
         })
         .catch((err) => {
           toast.dismiss();
-          toast.error(`Got error while ${alreadyBidded ? 'updating the' : 'setting the'} bid, Try Again!!`);
+          toast.error(
+            `Got error while ${
+              alreadyBidded ? "updating the" : "setting the"
+            } bid, Try Again!!`
+          );
         });
       setToggle(false);
-    
     }
     setValue(null);
     setDescription("");
@@ -246,11 +249,25 @@ const Modal = ({
                             color: "black",
                           }}
                         >
-                          {`${
+                          {/* {`${
                             alreadyBidded
                               ? `Your Eariler Quote was $ ${bidAmount}`
                               : "Please Provide a Quote for this Property"
-                          }`}
+                          }`} */}
+                          <span
+                            className={
+                              alreadyBidded ? "already-bidded" : "provide-quote"
+                            }
+                          >
+                            {alreadyBidded ? (
+                              <>
+                                Your Earlier Quote was{" "}
+                                <span className="bid-amount">${bidAmount}</span>
+                              </>
+                            ) : (
+                              "Please Provide a Quote for this Property"
+                            )}
+                          </span>
                         </label>
                         {/* <span style={{ color: 'red' }}>{bidAmount}</span> */}
                       </div>

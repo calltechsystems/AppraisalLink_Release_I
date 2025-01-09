@@ -205,6 +205,21 @@ const ProfileInfo = ({
     }
   };
 
+  const handleInputChangeEmail = (value, setValue, setValid, setError) => {
+    if (value.length <= 100) {
+      setValue(value);
+
+      // Validate: Check if length is between 3 and 10
+      if (value.trim().length >= 10) {
+        setValid(true);
+        setError(false);
+      } else {
+        setValid(false);
+        setError(true);
+      }
+    }
+  };
+
   const onUpdatHandler = () => {
     const firstName = firstNameRef;
     const lastName = lastNameRef;
@@ -778,7 +793,57 @@ const ProfileInfo = ({
                   <h3 className="heading-forms">
                     Mortgage Brokerage Information
                   </h3>
-                  <hr />
+                  {/* <hr /> */}
+                  <div className="col-lg-12 mb-3 mt-3">
+                    <div className="row">
+                      <div className="col-lg-4">
+                        <label
+                          className="text-color"
+                          htmlFor=""
+                          style={{ paddingTop: "10px" }}
+                        >
+                          Registered Email ID{" "}
+                        </label>
+                      </div>
+                      <div className="col-lg-7">
+                        <input
+                          type="text"
+                          readOnly
+                          className="form-control"
+                          style={{ backgroundColor: "" }}
+                          id="formGroupExampleInput3"
+                          value={userData.userEmail}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-lg-12 mb-3">
+                    <div className="row">
+                      <div className="col-lg-4">
+                        <label
+                          className="text-color"
+                          htmlFor=""
+                          style={{ paddingTop: "10px" }}
+                        >
+                          User Type{" "}
+                        </label>
+                      </div>
+                      <div className="col-lg-7">
+                        <input
+                          type="text"
+                          readOnly
+                          className="form-control"
+                          style={{ backgroundColor: "" }}
+                          id="formGroupExampleInput3"
+                          value={
+                            {
+                              2: "Mortgage Brokerage Company",
+                            }[userData.userType] || "Unknown User Type"
+                          }
+                        />
+                      </div>
+                    </div>
+                  </div>
                   <div className="col-lg-12 mb-3">
                     <div className="row">
                       <div className="col-lg-5">
@@ -1095,7 +1160,7 @@ const ProfileInfo = ({
                           }}
                           value={emailId}
                           onChange={(e) =>
-                            handleInputChangeName(
+                            handleInputChangeEmail(
                               e.target.value,
                               setEmailId,
                               setEmailValid,
@@ -1427,7 +1492,7 @@ const ProfileInfo = ({
                           htmlFor=""
                           style={{ paddingTop: "10px" }}
                         >
-                          Postal-Code <span class="req-btn">*</span>
+                          Postal Code <span class="req-btn">*</span>
                         </label>
                       </div>
                       <div className="col-lg-7">

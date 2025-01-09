@@ -254,8 +254,8 @@ export default function Exemple({
           emailaddress: data?.emailId ? data?.emailId : "NA",
           date:
             data?.isActive && data?.dateEstablished !== null
-              ? formatDate(data?.dateEstablished)
-              : formatDate(data?.dateEstablished),
+              ? formatDateTimeEST(data?.dateEstablished)
+              : formatDateTimeEST(data?.dateEstablished),
           enddate:
             // !data?.isActive &&
             // data?.status !== "not registered" &&
@@ -263,7 +263,7 @@ export default function Exemple({
             //   ? formatDate(data?.modifiedDateTime)
             //   : "-",
             !data?.isActive && data?.modifiedDateTime !== null
-            ? formatDate(data?.modifiedDateTime)
+            ? formatDateTimeEST(data?.modifiedDateTime)
             : "-",          
           action: (
             <div className="print-hidden-column">
