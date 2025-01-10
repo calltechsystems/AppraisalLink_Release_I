@@ -4,7 +4,7 @@ import SVGArrowDown from "./icons/SVGArrowDown";
 import SVGArrowUp from "./icons/SVGArrowUp";
 import SVGChevronLeft from "./icons/SVGChevronLeft";
 import SVGChevronRight from "./icons/SVGChevronRight";
-import { FaRedo } from "react-icons/fa";
+import { FaDownload, FaRedo } from "react-icons/fa";
 import * as XLSX from "xlsx";
 import { useReactToPrint } from "react-to-print";
 import toast from "react-hot-toast";
@@ -432,12 +432,14 @@ function SmartTable(props) {
               )}
               <div className="col-lg-12">
                 <div className="row">
-                  <div
-                    className="col-lg-6 btn btn-color w-50"
-                    onClick={() => handlePrint()}
-                    title="Download Pdf"
-                  >
-                    <span className="flaticon-download "></span>
+                  <div className="col-lg-6 w-50">
+                    <button
+                      className="btn btn-color"
+                      onClick={() => handlePrint()}
+                      title="Download Pdf"
+                    >
+                      <FaDownload />
+                    </button>
                   </div>
                   <div className="col-lg-6 w-50">
                     <button
@@ -562,7 +564,7 @@ function SmartTable(props) {
           {props.noPagination || data.length === 0 || !props.url ? (
             <div className="row">
               <div className="col-12 text-end p-3">
-                {props.data.length > 0 ? props.data.length : 0} Rows
+                {props.data.length > 0 ? props.data.length : 0} Records
               </div>
             </div>
           ) : (

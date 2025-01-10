@@ -99,7 +99,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                           padding: "5px",
                         }}
                       >
-                        <span className="text-start">Registered Email ID</span>
+                        <span className="text-start">User ID</span>
                       </td>
                       <td
                         style={{

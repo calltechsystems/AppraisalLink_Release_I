@@ -41,9 +41,27 @@ const headCells = [
     width: 160,
   },
   {
+    id: "remark",
+    numeric: false,
+    label: "Appraisal Remark",
+    width: 170,
+  },
+  {
+    id: "actions_01",
+    numeric: false,
+    label: "Actions",
+    width: 110,
+  },
+  {
     id: "sub_date",
     numeric: false,
     label: "Quote Submitted Date",
+    width: 200,
+  },
+  {
+    id: "quote_required_by",
+    numeric: false,
+    label: "Appraisal Report Required By",
     width: 200,
   },
   {
@@ -52,25 +70,6 @@ const headCells = [
     label: "Type of Request",
     width: 100,
   },
-  {
-    id: "quote_required_by",
-    numeric: false,
-    label: "Appraisal Report Required By",
-    width: 200,
-  },
-  // {
-  //   id: "user",
-  //   numeric: false,
-  //   label: "Appraiser",
-  //   width: 200,
-  // },
-  // {
-  //   id: "amount",
-  //   numeric: false,
-  //   label: "Quote Amount",
-  //   width: 200,
-  // },
-
   {
     id: "type_of_building",
     numeric: false,
@@ -108,12 +107,6 @@ const headCells = [
   //   label: "Actions",
   //   width: 170,
   // },
-  {
-    id: "actions_01",
-    numeric: false,
-    label: "Actions",
-    width: 110,
-  },
 ];
 
 const data = [
@@ -523,6 +516,7 @@ export default function Exemple({
                 ),
               address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
               // user: property.applicantEmailAddress,
+              remark: isBidded.remark ? isBidded.remark : "N.A.",
               type_of_building: property.typeOfBuilding,
               amount: ` $ ${addCommasToNumber(property.estimatedValue)}`,
               purpose: property.purpose,

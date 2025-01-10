@@ -74,6 +74,11 @@ const LocationField = ({
                 disabled={isDisable}
                 maxLength={30}
               />
+              {errorLabel.streetNameRef && (
+                <span className="text-danger">
+                  {errorLabel.streetNameRef}
+                </span>
+              )}
             </div>
           </div>
           <div className="row" style={{ marginBottom: "10px" }}>

@@ -194,6 +194,7 @@ const ProfileInfo = ({
   const [streetNameError, setStreetNameError] = useState(false);
   const [cityError, setCityError] = useState(false);
   const [zipCodeError, setZipCodeError] = useState(false);
+  const [assistantFirstNameError, setAssistantFirstNameError] = useState(false);
 
   // State for dropdown
   const [selectedOption, setSelectedOption] = useState("");
@@ -214,6 +215,7 @@ const ProfileInfo = ({
   const [zipCodeValid, setZipCodeValid] = useState(false);
   const [dropdownValid, setDropdownValid] = useState(false);
   const [designationValid, setDesignationValid] = useState(false);
+  const [assistantFirstNameValid, setAssistantFirstNameValid] = useState(false);
 
   // Refs for each input field
   const firstNameInputRef = useRef(null);
@@ -344,34 +346,51 @@ const ProfileInfo = ({
       companyNameRef !== ""
         ? companyNameRef
         : userData.broker_Details.companyName;
+    const emailIdRef =
+      emailId !== "" ? emailId : userData.broker_Details.emailId;
+    const streetNameRef =
+      streetName !== "" ? streetName : userData.broker_Details.streetName;
 
     const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const cellNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const nameRegex = /^[A-Za-z]+$/;
     const nameCityRegex = /^[A-Za-z ]+$/;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex for email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const alphanumericRegex = /^[a-zA-Z0-9]+$/;
+    const alphanumericWithSpacesRegex = /^[a-zA-Z0-9 ]+$/;
 
-    // if (
-    //   nameRegex.test(firstName) === false ||
-    //   (middleName !== null &&
-    //     middleName.trim() !== "" &&
-    //     !nameRegex.test(middleName)) ||
-    //   nameRegex.test(lastName) === false
-    // )
     if (
       firstName.trim().length < 3 ||
       firstName.trim().length > 30 ||
-      !nameRegex.test(firstName) ||
-      (middleName !== null &&
-        middleName.trim() !== "" &&
-        (middleName.trim().length < 3 ||
-          middleName.trim().length > 30 ||
-          !nameRegex.test(middleName))) ||
+      !nameRegex.test(firstName)
+    ) {
+      setFirstNameError(true);
+      toast.error("Please enter a valid first name");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return false;
+    } else if (
+      middleName !== null &&
+      middleName.trim() !== "" &&
+      (middleName.trim().length < 3 ||
+        middleName.trim().length > 30 ||
+        !nameRegex.test(middleName))
+    ) {
+      toast.error("Please enter a valid middle name");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return false;
+    } else if (
       lastName.trim().length < 3 ||
       lastName.trim().length > 30 ||
       !nameRegex.test(lastName)
     ) {
-      toast.error("Please enter a valid name");
+      setLastNameError(true);
+      toast.error("Please enter a valid last name");
       window.scrollTo({
         top: 0,
         behavior: "smooth",
@@ -382,7 +401,20 @@ const ProfileInfo = ({
       companyName.trim().length > 30 ||
       !nameCityRegex.test(companyName)
     ) {
+      setCompanyNameError(true);
       toast.error("Please enter a valid company name");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return false;
+    } else if (
+      streetNameRef.trim().length < 3 ||
+      streetNameRef.trim().length > 30 ||
+      !nameCityRegex.test(streetNameRef)
+    ) {
+      setStreetNameError(true); // Set error state to true
+      toast.error("Please enter a valid street name");
       window.scrollTo({
         top: 0,
         behavior: "smooth",
@@ -393,6 +425,7 @@ const ProfileInfo = ({
       city.trim().length > 30 ||
       !nameCityRegex.test(city)
     ) {
+      setCityError(true); // Set error state to true
       toast.error("Please enter a valid city name");
       window.scrollTo({
         top: 0,
@@ -400,13 +433,6 @@ const ProfileInfo = ({
       });
       return false;
     } else if (
-      // (assistantFirstName.trim() !== "" &&
-      //   !nameRegex.test(assistantFirstName)) ||
-      // (assistantLastName.trim() !== "" && !nameRegex.test(assistantLastName)) ||
-      // (assistantTwoFirstName.trim() !== "" &&
-      //   !nameRegex.test(assistantTwoFirstName)) ||
-      // (assistantTwoLastName.trim() !== "" &&
-      //   !nameRegex.test(assistantTwoLastName))
       // Assistant First Name
       (assistantFirstName.trim() !== "" &&
         (assistantFirstName.trim().length < 3 ||
@@ -428,8 +454,10 @@ const ProfileInfo = ({
           assistantTwoLastName.trim().length > 30 ||
           !nameRegex.test(assistantTwoLastName)))
     ) {
-      toast.error("Applicant Name should be valid ");
-    } else if (phoneNumberRegex.test(phoneNumber) === false || !phoneNumber) {
+      setAssistantFirstNameError(true);
+      toast.error("Please enter a valid assistant name");
+    } else if (cellNumberRegex.test(phoneNumber) === false || !phoneNumber) {
+      setPhoneNumberError(true);
       toast.error("Please enter a valid phone number");
       window.scrollTo({
         top: 0,
@@ -451,8 +479,17 @@ const ProfileInfo = ({
       assistantTwoPhoneNumber.trim() !== ""
     ) {
       toast.error("Please enter a valid assistant phone number");
-    } else if (emailRegex.test(emailId) === false) {
+    } else if (emailRegex.test(emailIdRef) === false) {
+      setEmailError(true);
       toast.error("Please enter a valid email address");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return false;
+    } else if (alphanumericWithSpacesRegex.test(zipCode) === false) {
+      setZipCodeError(true);
+      toast.error("Please enter a valid postal code");
       window.scrollTo({
         top: 0,
         behavior: "smooth",
@@ -598,7 +635,7 @@ const ProfileInfo = ({
       //   !payload.state ||
       //   !payload.postalCode
       // ) {
-      //   toast.error("Please fill all the mandatory fields!");
+      //   toast.error("Please fill all the required fields!");
       // }
       const fields = [
         { key: "lastName", message: "Last Name is required!" },
@@ -629,7 +666,7 @@ const ProfileInfo = ({
         toast.error(missingFields[0].message);
       } else if (missingFields.length > 1) {
         // Show generic error for multiple missing fields
-        toast.error("Please fill all mandatory fields!");
+        toast.error("Please fill all required fields!");
       } else if (SMSAlert && !phoneNumber) {
         toast.error(
           "As SMS Alert is selected but phone number is not provided so SMS Alert will not work properly!"
@@ -999,7 +1036,7 @@ const ProfileInfo = ({
               <div className="col-lg-9">
                 <div className="row mb-2">
                   <h3 className="heading-forms">Personal Information</h3>
-                  {/* <hr /> */}
+
                   <div className="col-lg-12 mb-3 mt-2">
                     <div className="row">
                       <div className="col-lg-4">
@@ -1008,7 +1045,7 @@ const ProfileInfo = ({
                           htmlFor=""
                           style={{ paddingTop: "5px" }}
                         >
-                          Registered Email ID{" "}
+                          User ID{" "}
                         </label>
                       </div>
                       <div className="col-lg-7">
@@ -1077,7 +1114,7 @@ const ProfileInfo = ({
                             borderColor: firstNameError
                               ? "red"
                               : firstNameValid
-                              ? "green"
+                              ? ""
                               : "",
                           }}
                           required
@@ -1148,7 +1185,7 @@ const ProfileInfo = ({
                             borderColor: lastNameError
                               ? "red"
                               : lastNameValid
-                              ? "green"
+                              ? ""
                               : "",
                           }}
                           id="formGroupExampleInput3"
@@ -1193,7 +1230,7 @@ const ProfileInfo = ({
                             borderColor: companyNameError
                               ? "red"
                               : companyNameValid
-                              ? "green"
+                              ? ""
                               : "",
                           }}
                           id="formGroupExampleInput3"
@@ -1226,6 +1263,26 @@ const ProfileInfo = ({
                         >
                           Phone Number(Primary) <span class="req-btn">*</span>
                         </label>
+                        <div className="hover-text-01">
+                          <div
+                            className="tooltip-text-01"
+                            style={{
+                              marginTop: "-60px",
+                              marginLeft: "-100px",
+                            }}
+                          >
+                            <ul>
+                              <li style={{ fontSize: "15px" }}>
+                                Please enter phone number without country code.
+                              </li>
+                              {/* <li>
+                                  Regular Request : Timeline for the appraisal
+                                  report is 3 – 4 days.
+                                </li> */}
+                            </ul>
+                          </div>
+                          <i class="fa fa-info-circle" aria-hidden="true"></i>
+                        </div>
                       </div>
                       <div className="col-lg-7">
                         <input
@@ -1238,7 +1295,7 @@ const ProfileInfo = ({
                             borderColor: phoneNumberError
                               ? "red"
                               : phoneNumberValid
-                              ? "green"
+                              ? ""
                               : "",
                           }}
                           id="formGroupExampleInput3"
@@ -1308,7 +1365,7 @@ const ProfileInfo = ({
                             borderColor: emailError
                               ? "red"
                               : emailValid
-                              ? "green"
+                              ? ""
                               : "",
                           }}
                           required
@@ -1355,7 +1412,7 @@ const ProfileInfo = ({
                             borderColor: mortgageLicenceError
                               ? "red"
                               : mortgageLicenceValid
-                              ? "green"
+                              ? ""
                               : "",
                           }}
                           id="formGroupExampleInput3"
@@ -1401,7 +1458,7 @@ const ProfileInfo = ({
                             borderColor: mortgageLicenceTwoError
                               ? "red"
                               : mortgageLicenceTwoValid
-                              ? "green"
+                              ? ""
                               : "",
                           }}
                           id="formGroupExampleInput3"
@@ -1424,9 +1481,6 @@ const ProfileInfo = ({
                       </div>
                     </div>
                   </div>
-
-                  {/* <h3 className="mt-4 heading-forms">Alerts</h3>
-                  <hr /> */}
                   <div className="col-lg-12 mb-3">
                     <div className="row">
                       <div className="col-lg-4">
@@ -1469,7 +1523,8 @@ const ProfileInfo = ({
                             >
                               <ul>
                                 <li style={{ fontSize: "15px" }}>
-                                  Updates sent to your profile email address.
+                                  Alerts will be sent to the registered email
+                                  address.
                                 </li>
                                 {/* <li>
                                   Regular Request : Timeline for the appraisal
@@ -1513,7 +1568,8 @@ const ProfileInfo = ({
                             >
                               <ul>
                                 <li style={{ fontSize: "15px" }}>
-                                  Updates sent to your profile cell number.
+                                  Alerts will be sent to the registered phone
+                                  number.
                                 </li>
                                 {/* <li>
                                   Regular Request : Timeline for the appraisal
@@ -1527,10 +1583,8 @@ const ProfileInfo = ({
                       </div>
                     </div>
                   </div>
-
                   <h3 className="mt-4 heading-forms">Address</h3>
-                  <hr />
-                  <div className="col-lg-12 mb-3">
+                  <div className="col-lg-12 mb-3 mt-2">
                     <div className="row">
                       <div className="col-lg-4">
                         <label
@@ -1551,7 +1605,7 @@ const ProfileInfo = ({
                             borderColor: streetNumberError
                               ? "red"
                               : streetNumberValid
-                              ? "green"
+                              ? ""
                               : "",
                           }}
                           id="formGroupExampleInput3"
@@ -1597,7 +1651,7 @@ const ProfileInfo = ({
                             borderColor: streetNameError
                               ? "red"
                               : streetNameValid
-                              ? "green"
+                              ? ""
                               : "",
                           }}
                           id="formGroupExampleInput3"
@@ -1667,7 +1721,7 @@ const ProfileInfo = ({
                             borderColor: cityError
                               ? "red"
                               : cityValid
-                              ? "green"
+                              ? ""
                               : "",
                           }}
                           id="formGroupExampleInput3"
@@ -1734,7 +1788,7 @@ const ProfileInfo = ({
                             borderColor: dropdownError
                               ? "red"
                               : dropdownValid
-                              ? "green"
+                              ? ""
                               : "", // Add red border for error
                           }}
                         >
@@ -1775,7 +1829,7 @@ const ProfileInfo = ({
                             borderColor: zipCodeError
                               ? "red"
                               : zipCodeValid
-                              ? "green"
+                              ? ""
                               : "",
                           }}
                           required
@@ -1801,14 +1855,9 @@ const ProfileInfo = ({
                   </div>
 
                   <div className="mt-5">
-                    {/* <p>
-                      If you have an Administrative Assistant, fill in the
-                      following:
-                    </p> */}
                     <h3 className="heading-forms">Assistant#1 Information</h3>
-                    <hr />
                   </div>
-                  <div className="col-lg-12 mb-3">
+                  <div className="col-lg-12 mb-3 mt-2">
                     <div className="row">
                       <div className="col-lg-4">
                         <label
@@ -1823,7 +1872,14 @@ const ProfileInfo = ({
                         <input
                           type="text"
                           className="form-control"
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: assistantFirstNameError
+                              ? "red"
+                              : assistantFirstNameValid
+                              ? ""
+                              : "",
+                          }}
                           id="formGroupExampleInput3"
                           value={assistantFirstName}
                           onChange={(e) =>
@@ -1913,11 +1969,11 @@ const ProfileInfo = ({
                       </div>
                     </div>
                   </div>
+
                   <div className="mt-4">
                     <h3 className="heading-forms">Assistant#2 Information</h3>
-                    <hr />
                   </div>
-                  <div className="col-lg-12 mb-3">
+                  <div className="col-lg-12 mb-3 mt-2">
                     <div className="row">
                       <div className="col-lg-4">
                         <label

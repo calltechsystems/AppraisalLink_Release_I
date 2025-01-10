@@ -71,7 +71,7 @@ const DetailedInfo = ({
       toast.success("Uploaded Successfully");
       let allUrl = [...filesUrl];
       allUrl.push(generatedUrl);
-      setFilesUrl(allUrl)
+      setFilesUrl(allUrl);
       setAttachment(generatedUrl);
     } catch (err) {
       toast.dismiss();
@@ -111,7 +111,6 @@ const DetailedInfo = ({
   };
   return (
     <>
-     
       <div className="row">
         <div className="col-lg-12">
           <div className="row" style={{ marginBottom: "10px" }}>
@@ -123,7 +122,7 @@ const DetailedInfo = ({
                 First Name <span class="req-btn">*</span>
               </label>
             </div>
-            <div className="col-lg-7">
+            <div className="col-lg-5">
               <input
                 style={
                   checkIsError("applicantFirstName")
@@ -152,7 +151,7 @@ const DetailedInfo = ({
                 Last Name <span class="req-btn">*</span>
               </label>
             </div>
-            <div className="col-lg-7">
+            <div className="col-lg-5">
               <input
                 style={
                   checkIsError("applicantLastName")
@@ -182,9 +181,28 @@ const DetailedInfo = ({
               >
                 Phone Number <span class="req-btn">*</span>
               </label>
+              <div className="hover-text-01">
+                <div
+                  className="tooltip-text-01"
+                  style={{
+                    marginTop: "-60px",
+                    marginLeft: "-100px",
+                  }}
+                >
+                  <ul>
+                    <li style={{ fontSize: "15px" }}>
+                      Please enter phone number without country code.
+                    </li>
+                    {/* <li>
+                                  Regular Request : Timeline for the appraisal
+                                  report is 3 – 4 days.
+                                </li> */}
+                  </ul>
+                </div>
+                <i class="fa fa-info-circle" aria-hidden="true"></i>
+              </div>
             </div>
-            <div className="col-lg-7">
-            
+            <div className="col-lg-5">
               <input
                 style={
                   checkIsError("applicantPhoneNumber")
@@ -220,7 +238,7 @@ const DetailedInfo = ({
                 Email Address <span class="req-btn">*</span>
               </label>
             </div>
-            <div className="col-lg-7">
+            <div className="col-lg-5">
               <input
                 style={
                   checkIsError("applicantEmailAddress")
@@ -243,7 +261,6 @@ const DetailedInfo = ({
             </div>
           </div>
 
-        
           <div className="">
             <div className="row my_profile_setting_textarea">
               <div className="col-lg-3">
@@ -260,7 +277,7 @@ const DetailedInfo = ({
                 </label>
               </div>
 
-              <div className="col-lg-7">
+              <div className="col-lg-5">
                 <textarea
                   style={{
                     // paddingTop: "15px",
