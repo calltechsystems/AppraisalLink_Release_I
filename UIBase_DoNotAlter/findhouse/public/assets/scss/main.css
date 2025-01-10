@@ -22475,7 +22475,7 @@ input:checked + .slider:before {
   left: 0;
   background-color: #2e008b !important;
   text-align: center;
-  z-index: 1;
+  z-index: 3 !important;
 }
 
 .smartTable-pointer {
@@ -23219,3 +23219,25 @@ input:checked + .slider:before {
   font-weight: bold;
   font-size: 1.2em; /* Slightly larger to make it stand out */
 }
+/* Sticky header */
+.smartTable-thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2; /* Keep the header above other content */
+  background-color: #2e008b; /* Match your header color */
+  color: white; /* Match your header text color */
+}
+
+/* Sticky first column */
+.sticky-cell {
+  position: sticky;
+  left: 0;
+  background-color: white; /* Match the table body background */
+  z-index: 1;
+}
+
+/* Ensure the first header column is above the body */
+.smartTable-thead th:first-child {
+  z-index: 3;
+}
+

@@ -410,7 +410,7 @@ const ProfileInfo = ({
         !payload.province ||
         !payload.postalCode
       ) {
-        toast.error("Please fill all the mandatory fields!");
+        toast.error("Please fill all the required fields!");
       } else if (SMSAlert && !phoneNumber) {
         toast.error(
           "As SMS Alert is selected but phone number is not provided so SMS Alert will not work properly!"
@@ -802,7 +802,7 @@ const ProfileInfo = ({
                           htmlFor=""
                           style={{ paddingTop: "10px" }}
                         >
-                          Registered Email ID{" "}
+                          User ID{" "}
                         </label>
                       </div>
                       <div className="col-lg-7">
@@ -1074,6 +1074,26 @@ const ProfileInfo = ({
                         >
                           Phone Number (Primary) <span class="req-btn">*</span>
                         </label>
+                        <div className="hover-text-01">
+                          <div
+                            className="tooltip-text-01"
+                            style={{
+                              marginTop: "-60px",
+                              marginLeft: "-100px",
+                            }}
+                          >
+                            <ul>
+                              <li style={{ fontSize: "15px" }}>
+                                Please enter phone number without country code.
+                              </li>
+                              {/* <li>
+                                  Regular Request : Timeline for the appraisal
+                                  report is 3 – 4 days.
+                                </li> */}
+                            </ul>
+                          </div>
+                          <i class="fa fa-info-circle" aria-hidden="true"></i>
+                        </div>
                       </div>
                       <div className="col-lg-7">
                         <input
@@ -1212,7 +1232,8 @@ const ProfileInfo = ({
                             >
                               <ul>
                                 <li style={{ fontSize: "15px" }}>
-                                  Updates sent to your profile email address.
+                                  Alerts will be sent to the registered email
+                                  address.
                                 </li>
                                 {/* <li>
                                   Regular Request : Timeline for the appraisal
@@ -1256,7 +1277,7 @@ const ProfileInfo = ({
                             >
                               <ul>
                                 <li style={{ fontSize: "15px" }}>
-                                  Updates sent to your profile cell number.
+                                  Alerts will be sent to the registered phone number.
                                 </li>
                                 {/* <li>
                                   Regular Request : Timeline for the appraisal

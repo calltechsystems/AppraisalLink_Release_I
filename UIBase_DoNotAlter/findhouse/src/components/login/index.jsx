@@ -93,7 +93,7 @@ const Index = ({ user }) => {
         <div className="modal">
           <div
             className="modal-content"
-            style={{ borderColor: "green", width: "20%" }}
+            style={{ border: "2px solid #97d700", width: "20%" }}
           >
             <h3 className="text-center" style={{ color: "green" }}>
               Success
@@ -122,7 +122,7 @@ const Index = ({ user }) => {
         <div className="modal">
           <div
             className="modal-content"
-            style={{ borderColor: "red", width: "40%" }}
+            style={{ border: "2px solid #97d700", width: "40%" }}
           >
             <div className="col-lg-12">
               <div className="row">
