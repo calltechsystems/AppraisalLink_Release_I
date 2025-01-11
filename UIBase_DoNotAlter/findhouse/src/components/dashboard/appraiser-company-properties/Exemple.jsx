@@ -363,15 +363,13 @@ export default function Exemple({
       const utcDate = new Date(`${date}T00:00:00Z`); // Treat input as UTC midnight
       return new Intl.DateTimeFormat("en-US", {
         timeZone: "America/Toronto", // EST/Canada timezone
-        dateStyle: "medium",        // Format only the date
+        dateStyle: "medium", // Format only the date
       }).format(utcDate);
     } catch (error) {
       console.error("Error formatting date:", error);
       return "Invalid date";
     }
   };
-  
-  
 
   const formatLargeNumber = (number) => {
     // Convert the number to a string
@@ -517,9 +515,9 @@ export default function Exemple({
                   >
                     <ul>
                       <li style={{ fontSize: "15px" }}>
-                        {getOrderValue(isBidded.orderstatus)} -
+                        {getOrderValue(isBidded.orderstatus)} -{" "}
                         {formatDateTimeEST(isBidded.statusdate)}
-                        {console.log("statusDate:", isBidded.statusDate)}             
+                        {console.log("statusDate:", isBidded.statusDate)}
                       </li>
                     </ul>
                   </div>
@@ -547,10 +545,10 @@ export default function Exemple({
                       </li>
                     </ul>
                   </div>
-                  <span
-                    className={getStatusButtonClass(isBidded.orderstatus)}
-                  >
-                   <span style={{paddingLeft:"10px", paddingRight:"10px"}}>Status</span> 
+                  <span className={getStatusButtonClass(isBidded.orderstatus)}>
+                    <span style={{ paddingLeft: "10px", paddingRight: "10px" }}>
+                      Status
+                    </span>
                     <span className="m-1">
                       <i class="fa fa-info-circle" aria-hidden="true"></i>
                     </span>

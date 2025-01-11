@@ -246,59 +246,131 @@ const ProfileInfo = ({
     if (designation === "Other" && otherDesignation.trim()) {
       finalDesignation = otherDesignation; // Use "Other Designation" value
     }
-    const firstName = firstNameRef;
-    const lastName = lastNameRef;
-    const adressLine1 = addressLineRef;
-    const city = cityRef;
+    const firstName =
+      firstNameRef !== "" ? firstNameRef : userData.appraiser_Details.firstName;
+    const lastName =
+      lastNameRef !== "" ? lastNameRef : userData.appraiser_Details.lastName;
+    const city = cityRef !== "" ? cityRef : userData.appraiser_Details.city;
     const state = stateRef;
-    const zipCode = zipcodeRef;
-    const phoneNumber = phoneNumberRef;
-    // const unit = unit;
+    const zipCode =
+      zipcodeRef !== "" ? zipcodeRef : userData.appraiser_Details.zipCode;
+    const phoneNumber =
+      phoneNumberRef !== ""
+        ? phoneNumberRef
+        : userData.appraiser_Details.phoneNumber;
+    // const cellNumber =
+    //   cellNumber!== "" ? cellNumber : userData.appraiser_Details.cellNumber;
     const adressLine2 = addressLineTwoRef;
-    const middleName = middleNameRef;
+    const middleName =
+      middleNameRef !== ""
+        ? middleNameRef
+        : userData?.appraiser_Details?.middleName;
+    const emailIdRef =
+      emailId !== "" ? emailId : userData.appraiser_Details.emailId;
+    const streetNameRef =
+      streetName !== "" ? streetName : userData.appraiser_Details.streetName;
     const companyName = companyNameRef;
-    // const emailId = emailId;
+
     const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const cellNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const nameRegex = /^[A-Za-z]+$/;
-    const nameTwoRegex = /^[A-Za-z ]+$/;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex for email validation
+    const nameCityRegex = /^[A-Za-z ]+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const alphanumericRegex = /^[a-zA-Z0-9]+$/;
+    const alphanumericWithSpacesRegex = /^[a-zA-Z0-9 ]+$/;
 
     if (
       firstName.trim().length < 3 ||
       firstName.trim().length > 30 ||
-      !nameRegex.test(firstName) ||
-      (middleName !== null &&
-        middleName.trim() !== "" &&
-        (middleName.trim().length < 3 ||
-          middleName.trim().length > 30 ||
-          !nameRegex.test(middleName))) ||
+      !nameRegex.test(firstName)
+    ) {
+      setFirstNameError(true);
+      toast.error("Please enter a valid first name");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return false;
+    } else if (
+      typeof middleName === "string" &&
+      middleName.trim() !== "" &&
+      (middleName.trim().length < 3 ||
+        middleName.trim().length > 30 ||
+        !nameRegex.test(middleName.trim()))
+    ) {
+      toast.error(
+        "Please enter a valid middle name (3-30 characters, letters and spaces only)."
+      );
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return false;
+    } else if (
       lastName.trim().length < 3 ||
       lastName.trim().length > 30 ||
       !nameRegex.test(lastName)
     ) {
-      toast.error("Please enter a valid appraiser name ");
-    } else if (phoneNumberRegex.test(phoneNumber) === false || !phoneNumber) {
+      setLastNameError(true);
+      toast.error("Please enter a valid last name");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return false;
+    } else if (
+      streetNameRef.trim().length < 3 ||
+      streetNameRef.trim().length > 30 ||
+      !nameCityRegex.test(streetNameRef)
+    ) {
+      setStreetNameError(true); // Set error state to true
+      toast.error("Please enter a valid street name");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return false;
+    } else if (
+      city.trim().length < 3 ||
+      city.trim().length > 30 ||
+      !nameCityRegex.test(city)
+    ) {
+      setCityError(true); // Set error state to true
+      toast.error("Please enter a valid city name");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return false;
+    } else if (cellNumberRegex.test(phoneNumber) === false || !phoneNumber) {
+      setPhoneNumberError(true);
       toast.error("Please enter a valid phone number");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return false;
     } else if (
       cellNumberRegex.test(cellNumber) === false &&
       cellNumber.trim() !== ""
     ) {
       toast.error("Please enter a valid cell number");
-    } else if (
-      city.trim().length < 3 ||
-      city.trim().length > 30 ||
-      !nameTwoRegex.test(city)
-    ) {
-      toast.error("Please enter a valid city");
-    } else if (
-      streetName.trim().length < 3 ||
-      streetName.trim().length > 30 ||
-      !nameTwoRegex.test(streetName)
-    ) {
-      toast.error("Please enter a valid street name");
-    } else if (emailRegex.test(emailId) === false) {
+    } else if (emailRegex.test(emailIdRef) === false) {
+      setEmailError(true);
       toast.error("Please enter a valid email address");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return false;
+    } else if (alphanumericWithSpacesRegex.test(zipCode) === false) {
+      setZipCodeError(true);
+      toast.error("Please enter a valid postal code");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return false;
     } else if (
       (!firstName ||
         !lastName ||
@@ -320,9 +392,9 @@ const ProfileInfo = ({
       const payload = {
         id: userData.userId,
         token: userData.token,
-        firstName: firstName,
-        middleName: middleName,
-        lastName: lastName,
+        firstName: firstNameRef,
+        middleName: middleNameRef,
+        lastName: lastNameRef,
         companyName: companyName,
         lenderListUrl: selectedImage2.url,
         streetNumber: streetNumber,
@@ -332,31 +404,53 @@ const ProfileInfo = ({
         commissionRate: commissionRate,
         maxNumberOfAssignedOrders: maxNumberOfAssignedOrders,
         designation: finalDesignation,
-        city: city,
-        province: state,
+        city: cityRef,
+        province: stateRef,
         postalCode: zipCode,
         area: "",
-        phoneNumber: phoneNumber,
+        phoneNumber: phoneNumberRef,
         profileImage: SelectedImage,
         emailId: emailId,
         emailNotification: emailNotification,
         smsNotification: smsNotification,
       };
-      if (
-        !payload.lastName ||
-        !payload.firstName ||
-        !payload.designation ||
-        !payload.phoneNumber ||
-        !payload.emailId ||
-        // !payload.companyName ||
-        // !payload.lenderListUrl ||
-        !payload.streetName ||
-        !payload.streetNumber ||
-        !payload.city ||
-        !payload.province ||
-        !payload.postalCode
-      ) {
-        toast.error("Please fill all the required fields!");
+      // if (
+      //   !payload.lastName ||
+      //   !payload.firstName ||
+      //   !payload.designation ||
+      //   !payload.phoneNumber ||
+      //   !payload.emailId ||
+      //   // !payload.companyName ||
+      //   // !payload.lenderListUrl ||
+      //   !payload.streetName ||
+      //   !payload.streetNumber ||
+      //   !payload.city ||
+      //   !payload.province ||
+      //   !payload.postalCode
+      // ) {
+      //   toast.error("Please fill all the required fields!");
+      // }
+      const fields = [
+        { key: "lastName", message: "Last Name is required!" },
+        { key: "firstName", message: "First Name is required!" },
+        { key: "designation", message: "Designation is required!" },
+        { key: "phoneNumber", message: "Phone Number is required!" },
+        { key: "emailId", message: "Email ID is required!" },
+        { key: "streetName", message: "Street Name is required!" },
+        { key: "streetNumber", message: "Street Number is required!" },
+        { key: "city", message: "City is required!" },
+        { key: "province", message: "State is required!" },
+        { key: "postalCode", message: "Postal Code is required!" },
+      ];
+
+      const missingFields = fields.filter(({ key }) => !payload[key]);
+
+      if (missingFields.length === 1) {
+        // Show specific error for a single missing field
+        toast.error(missingFields[0].message);
+      } else if (missingFields.length > 1) {
+        // Show generic error for multiple missing fields
+        toast.error("Please fill all required fields!");
       } else if (SMSAlert && !phoneNumber) {
         toast.error(
           "As SMS Alert is selected but phone number is not provided so SMS Alert will not work properly!"
@@ -405,10 +499,7 @@ const ProfileInfo = ({
     );
     const isStreetNameValid = validateField(streetName, setStreetNameError);
     const isCityValid = validateField(cityRef, setCityError);
-    const isZipCodeValid = validateField(
-      zipcodeRef,
-      setZipCodeError
-    );
+    const isZipCodeValid = validateField(zipcodeRef, setZipCodeError);
 
     // Validate dropdown
 
@@ -559,8 +650,6 @@ const ProfileInfo = ({
     }
   };
 
-
-  
   const changeEditHandler = () => {
     setEdit(true);
   };
@@ -1284,7 +1373,8 @@ const ProfileInfo = ({
                             >
                               <ul>
                                 <li style={{ fontSize: "15px" }}>
-                                  Alerts will be sent to the registered phone number.
+                                  Alerts will be sent to the registered phone
+                                  number.
                                 </li>
                                 {/* <li>
                                   Regular Request : Timeline for the appraisal

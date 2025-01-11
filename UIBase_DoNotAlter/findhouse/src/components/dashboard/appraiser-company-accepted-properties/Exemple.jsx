@@ -434,7 +434,7 @@ export default function Exemple({
             appraisal_status:
               isBidded.status === 1 && isBidded.orderstatus === 1 ? (
                 // <span className="btn btn-warning  w-100">
-                //   {getOrderValue(isBidded.orderstatus)} -
+                //   {getOrderValue(isBidded.orderstatus)} -{" "}
                 //   {formatDate(isBidded.statusDate)}
                 // </span>
                 <div className="hover-text">
@@ -447,7 +447,7 @@ export default function Exemple({
                   >
                     <ul>
                       <li style={{ fontSize: "15px" }}>
-                        {getOrderValue(isBidded.orderstatus)} -
+                        {getOrderValue(isBidded.orderstatus)} -{" "}
                         {formatDateTimeEST(isBidded.statusdate)}
                       </li>
                     </ul>

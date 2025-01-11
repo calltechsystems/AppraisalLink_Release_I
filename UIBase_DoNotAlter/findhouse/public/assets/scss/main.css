@@ -22915,7 +22915,7 @@ input:checked + .slider:before {
 .tooltip-text {
   visibility: hidden;
   position: absolute;
-  z-index: 1;
+  z-index: 3;
   width: 400px;
   color: white;
   font-size: 12px;

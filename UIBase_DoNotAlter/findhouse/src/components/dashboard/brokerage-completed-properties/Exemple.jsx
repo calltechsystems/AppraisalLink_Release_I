@@ -420,7 +420,7 @@ export default function Exemple({
                   >
                     <ul>
                       <li style={{ fontSize: "15px" }}>
-                        {getOrderValue(isBidded.orderstatus)} -
+                        {getOrderValue(isBidded.orderstatus)} -{" "}
                         {formatDateTimeEST(isBidded.statusdate)}
                       </li>
                     </ul>

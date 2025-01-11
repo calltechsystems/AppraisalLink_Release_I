@@ -221,17 +221,29 @@ const ProfileInfo = ({
   };
 
   const onUpdatHandler = () => {
-    const firstName = firstNameRef;
-    const lastName = lastNameRef;
+    const firstName =
+      firstNameRef !== "" ? firstNameRef : userData.brokerage_Details.firstName;
+    const lastName =
+      lastNameRef !== "" ? lastNameRef : userData.brokerage_Details.lastName;
     const adressLine1 = addressLineRef;
-    const city = cityRef;
+    const city = cityRef !== "" ? cityRef : userData.brokerage_Details.city;
     const state = stateRef;
-    const zipCode = zipcodeRef;
-    const phoneNumber = phoneNumberRef;
-    const cellNumber = cellNumberRef;
+    const zipCode =
+      zipcodeRef !== "" ? zipcodeRef : userData.brokerage_Details.zipCode;
+    const phoneNumber =
+      phoneNumberRef !== ""
+        ? phoneNumberRef
+        : userData.brokerage_Details.phoneNumber;
+    const cellNumber =
+      cellNumberRef !== ""
+        ? cellNumberRef
+        : userData.brokerage_Details.cellNumber;
     const adressLine2 = addressLineTwoRef;
     const middleName = middleNameRef;
-    const brokerageName = brokerageNameRef;
+    const brokerageName =
+      brokerageNameRef !== ""
+        ? brokerageNameRef
+        : userData.brokerage_Details.brokerageName;
     const mortageBrokerLicNo =
       mortageBrokerLicNoRef !== ""
         ? mortageBrokerLicNoRef
@@ -240,41 +252,80 @@ const ProfileInfo = ({
       mortageBrokrageLicNoRef !== ""
         ? mortageBrokrageLicNoRef
         : userData.brokerage_Details.mortageBrokerageLicNo;
+    const emailIdRef =
+      emailId !== "" ? emailId : userData.brokerage_Details.emailId;
+    const streetNameRef =
+      streetName !== "" ? streetName : userData.brokerage_Details.streetName;
 
     const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const cellNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const nameRegex = /^[A-Za-z]+$/;
+    const nameCityRegex = /^[A-Za-z ]+$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const alphanumericRegex = /^[a-zA-Z0-9]+$/;
+    const alphanumericWithSpacesRegex = /^[a-zA-Z0-9 ]+$/;
 
-    // if (
-    //   nameRegex.test(firstName) === false ||
-    //   (middleName !== null &&
-    //     middleName.trim() !== "" &&
-    //     !nameRegex.test(middleName)) ||
-    //   nameRegex.test(lastName) === false
-    // )
     if (
       firstName.trim().length < 3 ||
       firstName.trim().length > 30 ||
-      !nameRegex.test(firstName) ||
-      (middleName !== null &&
-        middleName.trim() !== "" &&
-        (middleName.trim().length < 3 ||
-          middleName.trim().length > 30 ||
-          !nameRegex.test(middleName))) ||
+      !nameRegex.test(firstName)
+    ) {
+      setFirstNameError(true);
+      toast.error("Please enter a valid first name");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return false;
+    } else if (
       lastName.trim().length < 3 ||
       lastName.trim().length > 30 ||
       !nameRegex.test(lastName)
     ) {
-      toast.error("Please enter a valid broker/owner name");
+      setLastNameError(true);
+      toast.error("Please enter a valid last name");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return false;
     } else if (
-      // (assistantFirstName.trim() !== "" &&
-      //   !nameRegex.test(assistantFirstName)) ||
-      // (assistantLastName.trim() !== "" && !nameRegex.test(assistantLastName)) ||
-      // (assistantTwoFirstName.trim() !== "" &&
-      //   !nameRegex.test(assistantTwoFirstName)) ||
-      // (assistantTwoLastName.trim() !== "" &&
-      //   !nameRegex.test(assistantTwoLastName))
+      brokerageName.trim().length < 3 ||
+      brokerageName.trim().length > 30 ||
+      !nameCityRegex.test(brokerageName)
+    ) {
+      setBrokerageError(true);
+      toast.error("Please enter a valid brokerage name");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return false;
+    } else if (
+      streetNameRef.trim().length < 3 ||
+      streetNameRef.trim().length > 30 ||
+      !nameCityRegex.test(streetNameRef)
+    ) {
+      setStreetNameError(true); // Set error state to true
+      toast.error("Please enter a valid street name");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return false;
+    } else if (
+      city.trim().length < 3 ||
+      city.trim().length > 30 ||
+      !nameCityRegex.test(city)
+    ) {
+      setCityError(true); // Set error state to true
+      toast.error("Please enter a valid city name");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return false;
+    } else if (
       (assistantFirstName.trim() !== "" &&
         (assistantFirstName.trim().length < 3 ||
           assistantFirstName.trim().length > 30 ||
@@ -296,9 +347,16 @@ const ProfileInfo = ({
           !nameRegex.test(assistantTwoLastName)))
     ) {
       toast.error("Please enter a valid assistant name");
-    } else if (phoneNumberRegex.test(phoneNumber) === false || !phoneNumber) {
+    } else if (cellNumberRegex.test(phoneNumber) === false || !phoneNumber) {
+      setPhoneNumberError(true);
       toast.error("Please enter a valid phone number");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return false;
     } else if (
+      cellNumber &&
       cellNumberRegex.test(cellNumber) === false &&
       cellNumber.trim() !== ""
     ) {
@@ -313,8 +371,22 @@ const ProfileInfo = ({
       assistantTwoPhoneNumber.trim() !== ""
     ) {
       toast.error("Please enter a valid assistant phone number");
-    } else if (emailRegex.test(emailId) === false) {
+    } else if (emailRegex.test(emailIdRef) === false) {
+      setEmailError(true);
       toast.error("Please enter a valid email address");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return false;
+    } else if (alphanumericWithSpacesRegex.test(zipCode) === false) {
+      setZipCodeError(true);
+      toast.error("Please enter a valid postal code");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return false;
     } else if (
       emailRegex.test(assistantEmailAddress) === false &&
       assistantEmailAddress.trim() !== ""
@@ -368,19 +440,18 @@ const ProfileInfo = ({
       const payload = {
         id: userData.userId,
         token: userData.token,
-        firstName: firstName,
-        middleName: middleName,
-        lastName: lastName,
-        brokerageName: brokerageName,
+        firstName: firstNameRef,
+        lastName: lastNameRef,
+        brokerageName: brokerageNameRef,
         streetNumber: streetNumber,
         apartmentNo: apartmentNo,
         streetName: streetName,
-        city: city,
-        province: state,
+        city: cityRef,
+        province: stateRef,
         postalCode: zipCode,
         area: "",
-        phoneNumber: phoneNumber,
-        cellNumber: cellNumber,
+        phoneNumber: phoneNumberRef,
+        cellNumber: cellNumberRef,
         profileImage: SelectedImage,
         assistantEmailAddress: assistantEmailAddress,
         assistantFirstName: assistantFirstName,
@@ -396,21 +467,55 @@ const ProfileInfo = ({
         smsNotification: smsNotification,
         emailNotification: emailNotification,
       };
-      if (
-        !payload.lastName ||
-        !payload.firstName ||
-        !payload.brokerageName ||
-        !payload.phoneNumber ||
-        !payload.emailId ||
-        !payload.mortageBrokerLicNo ||
-        !payload.mortageBrokerageLicNo ||
-        !payload.streetName ||
-        !payload.streetNumber ||
-        !payload.city ||
-        !payload.province ||
-        !payload.postalCode
-      ) {
-        toast.error("Please fill all the required fields!");
+      // if (
+      //   !payload.lastName ||
+      //   !payload.firstName ||
+      //   !payload.brokerageName ||
+      //   !payload.phoneNumber ||
+      //   !payload.emailId ||
+      //   !payload.mortageBrokerLicNo ||
+      //   !payload.mortageBrokerageLicNo ||
+      //   !payload.streetName ||
+      //   !payload.streetNumber ||
+      //   !payload.city ||
+      //   !payload.province ||
+      //   !payload.postalCode
+      // ) {
+      //   toast.error("Please fill all the required fields!");
+      // }
+      const fields = [
+        { key: "lastName", message: "Last Name is required!" },
+        { key: "firstName", message: "First Name is required!" },
+        {
+          key: "brokerageName",
+          message: "Brokerage Name is required!",
+        },
+        { key: "phoneNumber", message: "Phone Number is required!" },
+        { key: "emailId", message: "Email ID is required!" },
+        {
+          key: "mortageBrokerLicNo",
+          message: "Mortgage Broker License Number is required!",
+        },
+        {
+          key: "mortageBrokerageLicNo",
+          message: "Mortgage Brokerage License Number is required!",
+        },
+        // { key: "lenderListUrl", message: "Lender List URL is required!" },
+        { key: "streetName", message: "Street Name is required!" },
+        { key: "streetNumber", message: "Street Number is required!" },
+        { key: "city", message: "City is required!" },
+        { key: "province", message: "State is required!" },
+        { key: "postalCode", message: "Postal Code is required!" },
+      ];
+
+      const missingFields = fields.filter(({ key }) => !payload[key]);
+
+      if (missingFields.length === 1) {
+        // Show specific error for a single missing field
+        toast.error(missingFields[0].message);
+      } else if (missingFields.length > 1) {
+        // Show generic error for multiple missing fields
+        toast.error("Please fill all required fields!");
       } else if (SMSAlert && !phoneNumber) {
         toast.error(
           "As SMS Alert is selected but phone number is not provided so SMS Alert will not work properly!"
@@ -796,7 +901,7 @@ const ProfileInfo = ({
                   {/* <hr /> */}
                   <div className="col-lg-12 mb-3 mt-3">
                     <div className="row">
-                      <div className="col-lg-4">
+                      <div className="col-lg-5">
                         <label
                           className="text-color"
                           htmlFor=""
@@ -819,7 +924,7 @@ const ProfileInfo = ({
                   </div>
                   <div className="col-lg-12 mb-3">
                     <div className="row">
-                      <div className="col-lg-4">
+                      <div className="col-lg-5">
                         <label
                           className="text-color"
                           htmlFor=""
@@ -864,7 +969,7 @@ const ProfileInfo = ({
                             borderColor: brokerageError
                               ? "red"
                               : brokerageValid
-                              ? "green"
+                              ? ""
                               : "",
                           }}
                           id="formGroupExampleInput3"
@@ -909,7 +1014,7 @@ const ProfileInfo = ({
                             borderColor: firstNameError
                               ? "red"
                               : firstNameValid
-                              ? "green"
+                              ? ""
                               : "",
                           }}
                           value={firstNameRef}
@@ -953,7 +1058,7 @@ const ProfileInfo = ({
                             borderColor: lastNameError
                               ? "red"
                               : lastNameValid
-                              ? "green"
+                              ? ""
                               : "",
                           }}
                           value={lastNameRef}
@@ -997,7 +1102,7 @@ const ProfileInfo = ({
                             borderColor: mortgageLicenceError
                               ? "red"
                               : mortgageLicenceValid
-                              ? "green"
+                              ? ""
                               : "",
                           }}
                           id="formGroupExampleInput3"
@@ -1041,7 +1146,7 @@ const ProfileInfo = ({
                             borderColor: mortgageLicenceTwoError
                               ? "red"
                               : mortgageLicenceTwoValid
-                              ? "green"
+                              ? ""
                               : "",
                           }}
                           id="formGroupExampleInput3"
@@ -1106,7 +1211,7 @@ const ProfileInfo = ({
                             borderColor: phoneNumberError
                               ? "red"
                               : phoneNumberValid
-                              ? "green"
+                              ? ""
                               : "",
                           }}
                           value={phoneNumberRef}
@@ -1175,7 +1280,7 @@ const ProfileInfo = ({
                             borderColor: emailError
                               ? "red"
                               : emailValid
-                              ? "green"
+                              ? ""
                               : "",
                           }}
                           value={emailId}
@@ -1277,7 +1382,8 @@ const ProfileInfo = ({
                             >
                               <ul>
                                 <li style={{ fontSize: "15px" }}>
-                                  Alerts will be sent to the registered phone number.
+                                  Alerts will be sent to the registered phone
+                                  number.
                                 </li>
                                 {/* <li>
                                   Regular Request : Timeline for the appraisal
@@ -1315,7 +1421,7 @@ const ProfileInfo = ({
                             borderColor: streetNumberError
                               ? "red"
                               : streetNumberValid
-                              ? "green"
+                              ? ""
                               : "",
                           }}
                           required
@@ -1358,7 +1464,7 @@ const ProfileInfo = ({
                             borderColor: streetNameError
                               ? "red"
                               : streetNameValid
-                              ? "green"
+                              ? ""
                               : "",
                           }}
                           value={streetName}
@@ -1426,7 +1532,7 @@ const ProfileInfo = ({
                             borderColor: cityError
                               ? "red"
                               : cityValid
-                              ? "green"
+                              ? ""
                               : "",
                           }}
                           required
@@ -1485,7 +1591,7 @@ const ProfileInfo = ({
                             borderColor: dropdownError
                               ? "red"
                               : dropdownValid
-                              ? "green"
+                              ? ""
                               : "", // Add red border for error
                           }}
                         >
@@ -1527,7 +1633,7 @@ const ProfileInfo = ({
                             borderColor: zipCodeError
                               ? "red"
                               : zipCodeValid
-                              ? "green"
+                              ? ""
                               : "",
                           }}
                           onChange={(e) =>

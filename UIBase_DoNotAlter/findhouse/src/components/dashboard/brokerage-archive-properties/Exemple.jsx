@@ -494,7 +494,7 @@ export default function Exemple({
                   isBidded.orderstatus === 1 &&
                   isBidded.orderstatus !== undefined ? (
                   // <span className="btn bg-warning  w-100">
-                  //   {getOrderValue(isBidded.orderstatus)} -
+                  //   {getOrderValue(isBidded.orderstatus)} -{" "}
                   //   {formatDate(isBidded.statusDate)}
                   // </span>
                   <div className="hover-text">
@@ -507,7 +507,7 @@ export default function Exemple({
                     >
                       <ul>
                         <li style={{ fontSize: "15px" }}>
-                          {getOrderValue(isBidded.orderstatus)} -
+                          {getOrderValue(isBidded.orderstatus)} -{" "}
                           {formatDateTimeEST(isBidded.statusdate)}
                         </li>
                       </ul>

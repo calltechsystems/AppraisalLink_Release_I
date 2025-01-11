@@ -470,8 +470,8 @@ export default function Exemple({
                 >
                   <ul>
                     <li style={{ fontSize: "15px" }}>
-                      {getOrderValue(isBidded.orderstatus)} -
-                      {formatDateTimeEST(isBidded.statusdate)}
+                      {getOrderValue(isBidded.orderstatus)} -{" "}
+                      {formatDate(isBidded.statusdate)}
                     </li>
                   </ul>
                 </div>
@@ -592,8 +592,8 @@ export default function Exemple({
             : "N.A.",
           type_of_building:
             property.typeOfBuilding > 0 ? "Apartment" : property.typeOfBuilding,
-          quote_required_by: formatDateToEST(property.quoteRequiredDate),
-          date: formatDateTimeEST(property.addedDatetime),
+          quote_required_by: formatDateNew(property.quoteRequiredDate),
+          date: formatDate(property.addedDatetime),
           bidAmount: property.bidLowerRange,
           lender_information: property.lenderInformation
             ? property.lenderInformation
