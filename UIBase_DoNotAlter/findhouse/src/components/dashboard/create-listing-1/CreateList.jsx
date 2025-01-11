@@ -286,7 +286,7 @@ const CreateList = ({
                 style={
                   checkIsError("estimatedValue")
                     ? errorLabelStyle
-                    : { backgroundColor: "#E8F0FE", marginLeft: "-5px" }
+                    : { backgroundColor: "#E8F0FE" }
                 }
                 // onChange={(e) => setEstimatedValue(e.target.value)}
                 onChange={handleInputChange}
@@ -492,7 +492,7 @@ const CreateList = ({
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                style={{ backgroundColor: "#E8F0FE", marginLeft: "-5px" }}
+                style={{ backgroundColor: "#E8F0FE" }}
                 maxLength={30}
                 onChange={(e) => setLenderInformation(e.target.value)}
                 value={lenderInformation}
@@ -588,7 +588,7 @@ const CreateList = ({
                         paddingTop: "15px",
                         paddingBottom: "15px",
                         backgroundColor: "#E8F0FE",
-                        marginLeft: "-5px",
+                        // marginLeft: "-5px",
                       }
                 }
                 type="date"

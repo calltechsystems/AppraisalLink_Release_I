@@ -543,6 +543,8 @@ function SmartTable(props) {
                                         idxx === 0 ? "sticky" : "static",
                                       left: idxx === 0 ? "0" : undefined,
                                       backgroundColor:
+                                        idxx === 0 ? "#2e008b" : undefined,
+                                        color:
                                         idxx === 0 ? "white" : undefined,
                                       zIndex: idxx === 0 ? "2" : "1",
                                     }}
