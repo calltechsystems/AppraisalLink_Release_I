@@ -455,6 +455,7 @@ const ProfileInfo = ({
           !nameRegex.test(assistantTwoLastName)))
     ) {
       setAssistantFirstNameError(true);
+      setAssistantLastNameError(true);
       toast.error("Please enter a valid assistant name");
     } else if (cellNumberRegex.test(phoneNumber) === false || !phoneNumber) {
       setPhoneNumberError(true);
