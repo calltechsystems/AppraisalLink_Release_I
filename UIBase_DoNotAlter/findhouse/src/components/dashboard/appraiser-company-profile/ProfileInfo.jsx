@@ -172,6 +172,12 @@ const ProfileInfo = ({
   const [streetNameError, setStreetNameError] = useState(false);
   const [cityError, setCityError] = useState(false);
   const [zipCodeError, setZipCodeError] = useState(false);
+  const [officeContactFirstNameError, setOfficeContactFirstNameError] =
+    useState(false);
+  const [officeContactLastNameError, setOfficeContactLastNameError] =
+    useState(false);
+  const [officeContactPhoneError, setOfficeContactPhoneError] = useState(false);
+  const [officeContactEmailError, setOfficeContactEmailError] = useState(false);
 
   // State for dropdown
   const [selectedOption, setSelectedOption] = useState("");
@@ -190,6 +196,12 @@ const ProfileInfo = ({
   const [cityValid, setCityValid] = useState(false);
   const [zipCodeValid, setZipCodeValid] = useState(false);
   const [dropdownValid, setDropdownValid] = useState(false);
+  const [officeContactFirstNameValid, setOfficeContactFirstNameValid] =
+    useState(false);
+  const [officeContactLastNameValid, setOfficeContactLastNameValid] =
+    useState(false);
+  const [officeContactPhoneValid, setOfficeContactPhoneValid] = useState(false);
+  const [officeContactEmailValid, setOfficeContactEmailValid] = useState(false);
 
   const handleInputChangeName = (value, setValue, setValid, setError) => {
     if (value.length <= 30) {
@@ -222,49 +234,169 @@ const ProfileInfo = ({
   };
 
   const onUpdatHandler = () => {
+    const firstName =
+      firstNameRef !== ""
+        ? firstNameRef
+        : userData.appraiserCompany_Datails.firstName;
+    const lastName =
+      lastNameRef !== ""
+        ? lastNameRef
+        : userData.appraiserCompany_Datails.lastName;
+    const city =
+      cityRef !== "" ? cityRef : userData.appraiserCompany_Datails.city;
+    const state = stateRef;
+    const zipCode =
+      zipcodeRef !== ""
+        ? zipcodeRef
+        : userData.appraiserCompany_Datails.zipCode;
+    const phoneNumber =
+      phoneNumberRef !== ""
+        ? phoneNumberRef
+        : userData.appraiserCompany_Datails.phoneNumber;
+    // const cellNumber =
+    //   cellNumber!== "" ? cellNumber : userData.appraiserCompany_Datails.cellNumber;
+    const adressLine2 = addressLineTwoRef;
+    const companyName =
+      companyNameRef !== ""
+        ? companyNameRef
+        : userData.appraiserCompany_Datails.companyName;
+    // const licenseNumber =
+    //   licenseNumberRef !== ""
+    //     ? licenseNumberRef
+    //     : userData.appraiserCompany_Datails.licenseNumber;
+    const emailIdRef =
+      emailId !== "" ? emailId : userData.appraiserCompany_Datails.emailId;
+    const streetNameRef =
+      streetName !== ""
+        ? streetName
+        : userData.appraiserCompany_Datails.streetName;
+
     const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const cellNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const nameRegex = /^[A-Za-z]+$/;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex for email validation
+    const nameCityRegex = /^[A-Za-z ]+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const alphanumericRegex = /^[a-zA-Z0-9]+$/;
+    const alphanumericWithSpacesRegex = /^[a-zA-Z0-9 ]+$/;
 
     if (
-      firstNameRef.trim().length < 3 ||
-      firstNameRef.trim().length > 30 ||
-      !nameRegex.test(firstNameRef) ||
-      lastNameRef.trim().length < 3 ||
-      lastNameRef.trim().length > 30 ||
-      !nameRegex.test(lastNameRef)
+      firstName.trim().length < 3 ||
+      firstName.trim().length > 30 ||
+      !nameRegex.test(firstName)
     ) {
-      toast.error("Please enter a valid primary contact name");
+      setFirstNameError(true);
+      toast.error("Please enter a valid first name");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return false;
     } else if (
-      (officeContactFirstName.trim() !== "" &&
-        !nameRegex.test(officeContactFirstName)) ||
-      (officeContactLastName.trim() !== "" &&
-        !nameRegex.test(officeContactLastName))
+      lastName.trim().length < 3 ||
+      lastName.trim().length > 30 ||
+      !nameRegex.test(lastName)
     ) {
-      toast.error("Please enter a valid applicant name");
+      setLastNameError(true);
+      toast.error("Please enter a valid last name");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return false;
     } else if (
-      phoneNumberRegex.test(phoneNumberRef) === false ||
-      !phoneNumberRef
+      companyName.trim().length < 3 ||
+      companyName.trim().length > 30 ||
+      !nameCityRegex.test(companyName)
     ) {
+      setCompanyNameError(true);
+      toast.error("Please enter a valid appraiser company name");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return false;
+    } else if (cellNumberRegex.test(phoneNumber) === false || !phoneNumber) {
+      setPhoneNumberError(true);
       toast.error("Please enter a valid phone number");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return false;
     } else if (
       cellNumberRegex.test(cellNumber) === false &&
       cellNumber.trim() !== ""
     ) {
       toast.error("Please enter a valid cell number");
-    } else if (
-      cellNumberRegex.test(officeContactPhone) === false &&
-      officeContactPhone.trim() !== ""
-    ) {
-      toast.error("Please enter a valid office phone number");
-    } else if (emailRegex.test(emailId) === false) {
+    } else if (emailRegex.test(emailIdRef) === false) {
+      setEmailError(true);
       toast.error("Please enter a valid email address");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return false;
+    } else if (
+      streetNameRef.trim().length < 3 ||
+      streetNameRef.trim().length > 30 ||
+      !nameCityRegex.test(streetNameRef)
+    ) {
+      setStreetNameError(true); // Set error state to true
+      toast.error("Please enter a valid street name");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return false;
+    } else if (
+      city.trim().length < 3 ||
+      city.trim().length > 30 ||
+      !nameCityRegex.test(city)
+    ) {
+      setCityError(true); // Set error state to true
+      toast.error("Please enter a valid city name");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return false;
+    } else if (alphanumericWithSpacesRegex.test(zipCode) === false) {
+      setZipCodeError(true);
+      toast.error("Please enter a valid postal code");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return false;
+    } else if (
+      officeContactFirstName.trim() !== "" &&
+      (officeContactFirstName.trim().length < 3 ||
+        officeContactFirstName.trim().length > 30 ||
+        !nameRegex.test(officeContactFirstName))
+    ) {
+      setOfficeContactFirstNameError(true);
+      toast.error("Please enter a valid office first name");
+    } else if (
+      // Assistant Last Name
+      officeContactLastName.trim() !== "" &&
+      (officeContactLastName.trim().length < 3 ||
+        officeContactLastName.trim().length > 30 ||
+        !nameRegex.test(officeContactLastName))
+    ) {
+      setOfficeContactLastNameError(true);
+      toast.error("Please enter a valid office last name");
     } else if (
       emailRegex.test(officeContactEmail) === false &&
       officeContactEmail.trim() !== ""
     ) {
+      setOfficeContactEmailError(true);
       toast.error("Please enter a valid office email address");
+    } else if (
+      cellNumberRegex.test(officeContactPhone) === false &&
+      officeContactPhone.trim() !== ""
+    ) {
+      setOfficeContactPhoneError(true);
+      toast.error("Please enter a valid office phone number");
     } else if (
       (!firstNameRef ||
         !lastNameRef ||
@@ -311,20 +443,43 @@ const ProfileInfo = ({
         smsNotification: smsNotification,
       };
 
-      if (
-        !payload.lastName ||
-        !payload.firstName ||
-        !payload.appraiserCompanyName ||
-        !payload.phoneNumber ||
-        !payload.emailId ||
-        !payload.licenseNumber ||
-        !payload.streetName ||
-        !payload.streetNumber ||
-        !payload.city ||
-        !payload.state ||
-        !payload.postalCode
-      ) {
-        toast.error("Please fill all the required fields!");
+      // if (
+      //   !payload.lastName ||
+      //   !payload.firstName ||
+      //   !payload.appraiserCompanyName ||
+      //   !payload.phoneNumber ||
+      //   !payload.emailId ||
+      //   !payload.licenseNumber ||
+      //   !payload.streetName ||
+      //   !payload.streetNumber ||
+      //   !payload.city ||
+      //   !payload.state ||
+      //   !payload.postalCode
+      // ) {
+      //   toast.error("Please fill all the required fields!");
+      // }
+      const fields = [
+        { key: "lastName", message: "Last Name is required!" },
+        { key: "firstName", message: "First Name is required!" },
+        { key: "licenseNumber", message: "License Number is required!" },
+        { key: "appraiserCompanyName", message: "Company Name is required!" },
+        { key: "phoneNumber", message: "Phone Number is required!" },
+        { key: "emailId", message: "Email ID is required!" },
+        { key: "streetName", message: "Street Name is required!" },
+        { key: "streetNumber", message: "Street Number is required!" },
+        { key: "city", message: "City is required!" },
+        { key: "state", message: "State is required!" },
+        { key: "postalCode", message: "Postal Code is required!" },
+      ];
+
+      const missingFields = fields.filter(({ key }) => !payload[key]);
+
+      if (missingFields.length === 1) {
+        // Show specific error for a single missing field
+        toast.error(missingFields[0].message);
+      } else if (missingFields.length > 1) {
+        // Show generic error for multiple missing fields
+        toast.error("Please fill all required fields!");
       } else if (SMSAlert && !phoneNumberRef) {
         toast.error(
           "As SMS Alert is selected but phone number is not provided so SMS Alert will not work properly!"
@@ -1126,7 +1281,8 @@ const ProfileInfo = ({
                             >
                               <ul>
                                 <li style={{ fontSize: "15px" }}>
-                                  Alerts will be sent to the registered phone number.
+                                  Alerts will be sent to the registered phone
+                                  number.
                                 </li>
                                 {/* <li>
                                   Regular Request : Timeline for the appraisal
@@ -1239,7 +1395,7 @@ const ProfileInfo = ({
                           htmlFor=""
                           style={{ paddingTop: "5px" }}
                         >
-                          Unit / Apt. No.
+                          Unit / Apartment No.
                         </label>
                       </div>
                       <div className="col-lg-7">
@@ -1421,11 +1577,26 @@ const ProfileInfo = ({
                           type="text"
                           className="form-control"
                           id="formGroupExampleInput3"
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: officeContactFirstNameError
+                              ? "red"
+                              : officeContactFirstNameValid
+                              ? ""
+                              : "",
+                          }}
                           required
                           value={officeContactFirstName}
+                          // onChange={(e) =>
+                          //   setOfficeContactFirstName(e.target.value)
+                          // }
                           onChange={(e) =>
-                            setOfficeContactFirstName(e.target.value)
+                            handleInputChangeName(
+                              e.target.value,
+                              setOfficeContactFirstName,
+                              setOfficeContactFirstNameValid,
+                              setOfficeContactFirstNameError
+                            )
                           }
                           disabled={!edit}
                         />
@@ -1448,11 +1619,26 @@ const ProfileInfo = ({
                           type="text"
                           className="form-control"
                           id="formGroupExampleInput3"
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: officeContactLastNameError
+                              ? "red"
+                              : officeContactLastNameValid
+                              ? ""
+                              : "",
+                          }}
                           required
                           value={officeContactLastName}
+                          // onChange={(e) =>
+                          //   setOfficeContactLastName(e.target.value)
+                          // }
                           onChange={(e) =>
-                            setOfficeContactLastName(e.target.value)
+                            handleInputChangeName(
+                              e.target.value,
+                              setOfficeContactLastName,
+                              setOfficeContactLastNameValid,
+                              setOfficeContactLastNameError
+                            )
                           }
                           disabled={!edit}
                         />
@@ -1475,11 +1661,26 @@ const ProfileInfo = ({
                           type="text"
                           className="form-control"
                           id="formGroupExampleInput3"
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: officeContactEmailError
+                              ? "red"
+                              : officeContactEmailValid
+                              ? ""
+                              : "",
+                          }}
                           required
                           value={officeContactEmail}
+                          // onChange={(e) =>
+                          //   setOfficeContactEmail(e.target.value)
+                          // }
                           onChange={(e) =>
-                            setOfficeContactEmail(e.target.value)
+                            handleInputChangeName(
+                              e.target.value,
+                              setOfficeContactEmail,
+                              setOfficeContactEmailValid,
+                              setOfficeContactEmailError
+                            )
                           }
                           disabled={!edit}
                         />
@@ -1502,11 +1703,26 @@ const ProfileInfo = ({
                           type="text"
                           className="form-control"
                           id="formGroupExampleInput3"
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: officeContactPhoneError
+                              ? "red"
+                              : officeContactPhoneValid
+                              ? ""
+                              : "",
+                          }}
                           required
                           value={officeContactPhone}
+                          // onChange={(e) =>
+                          //   setOfficeContactPhone(e.target.value)
+                          // }
                           onChange={(e) =>
-                            setOfficeContactPhone(e.target.value)
+                            handleInputChangeName(
+                              e.target.value,
+                              setOfficeContactPhone,
+                              setOfficeContactPhoneValid,
+                              setOfficeContactPhoneError
+                            )
                           }
                           disabled={!edit}
                         />
