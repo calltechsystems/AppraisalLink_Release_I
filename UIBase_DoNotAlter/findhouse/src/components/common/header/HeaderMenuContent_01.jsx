@@ -884,7 +884,7 @@ const HeaderMenuContent = ({ float = "", hide, isListing }) => {
                               money at record speed?
                             </span>
                             <br />
-                            <Link href="/register">
+                            <Link href="/sign-up">
                               <button className="btn btn2 w-50 btn-color">
                                 Register
                               </button>

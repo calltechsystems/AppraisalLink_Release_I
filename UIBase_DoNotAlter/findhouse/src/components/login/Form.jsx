@@ -331,7 +331,7 @@ const Form = ({
                   lineHeight: "1.6",
                 }}
               >
-                <Link href="/register" className="text-thm">
+                <Link href="/sign-up" className="text-thm">
                   Sign Up !
                 </Link>
               </div>

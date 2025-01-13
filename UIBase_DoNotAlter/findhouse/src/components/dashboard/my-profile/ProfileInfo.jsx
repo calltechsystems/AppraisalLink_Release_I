@@ -195,6 +195,19 @@ const ProfileInfo = ({
   const [cityError, setCityError] = useState(false);
   const [zipCodeError, setZipCodeError] = useState(false);
   const [assistantFirstNameError, setAssistantFirstNameError] = useState(false);
+  const [assistantLastNameError, setAssistantLastNameError] = useState(false);
+  const [assistanTwotFirstNameError, setAssistantTwoFirstNameError] =
+    useState(false);
+  const [assistantTwoLastNameError, setAssistantTwoLastNameError] =
+    useState(false);
+  const [assistantPhoneNumberError, setAssistantPhoneNumberError] =
+    useState(false);
+  const [assistantTwoPhoneNumberError, setAssistantTwoPhoneNumberError] =
+    useState(false);
+  const [assistantEmailAddressError, setAssistantEmailAddressError] =
+    useState(false);
+  const [assistantTwoEmailAddressError, setAssistantTwoEmailAddressError] =
+    useState(false);
 
   // State for dropdown
   const [selectedOption, setSelectedOption] = useState("");
@@ -216,6 +229,19 @@ const ProfileInfo = ({
   const [dropdownValid, setDropdownValid] = useState(false);
   const [designationValid, setDesignationValid] = useState(false);
   const [assistantFirstNameValid, setAssistantFirstNameValid] = useState(false);
+  const [assistantLastNameValid, setAssistantLastNameValid] = useState(false);
+  const [assistantTwoFirstNameValid, setAssistantTwoFirstNameValid] =
+    useState(false);
+  const [assistantTwoLastNameValid, setAssistantTwoLastNameValid] =
+    useState(false);
+  const [assistantPhoneNumberValid, setAssistantPhoneNumberValid] =
+    useState(false);
+  const [assistantTwoPhoneNumberValid, setAssistantTwoPhoneNumberValid] =
+    useState(false);
+  const [assistantEmailAddressValid, setAssistantEmailAddressValid] =
+    useState(false);
+  const [assistantTwoEmailAddressValid, setAssistantTwoEmailAddressValid] =
+    useState(false);
 
   // Refs for each input field
   const firstNameInputRef = useRef(null);
@@ -408,6 +434,27 @@ const ProfileInfo = ({
         behavior: "smooth",
       });
       return false;
+    } else if (cellNumberRegex.test(phoneNumber) === false || !phoneNumber) {
+      setPhoneNumberError(true);
+      toast.error("Please enter a valid phone number");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return false;
+    } else if (
+      cellNumberRegex.test(cellNumber) === false &&
+      cellNumber.trim() !== ""
+    ) {
+      toast.error("Please enter a valid cell number");
+    } else if (emailRegex.test(emailIdRef) === false) {
+      setEmailError(true);
+      toast.error("Please enter a valid email address");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return false;
     } else if (
       streetNameRef.trim().length < 3 ||
       streetNameRef.trim().length > 30 ||
@@ -432,62 +479,6 @@ const ProfileInfo = ({
         behavior: "smooth",
       });
       return false;
-    } else if (
-      // Assistant First Name
-      (assistantFirstName.trim() !== "" &&
-        (assistantFirstName.trim().length < 3 ||
-          assistantFirstName.trim().length > 30 ||
-          !nameRegex.test(assistantFirstName))) ||
-      // Assistant Last Name
-      (assistantLastName.trim() !== "" &&
-        (assistantLastName.trim().length < 3 ||
-          assistantLastName.trim().length > 30 ||
-          !nameRegex.test(assistantLastName))) ||
-      // Assistant Two First Name
-      (assistantTwoFirstName.trim() !== "" &&
-        (assistantTwoFirstName.trim().length < 3 ||
-          assistantTwoFirstName.trim().length > 30 ||
-          !nameRegex.test(assistantTwoFirstName))) ||
-      // Assistant Two Last Name
-      (assistantTwoLastName.trim() !== "" &&
-        (assistantTwoLastName.trim().length < 3 ||
-          assistantTwoLastName.trim().length > 30 ||
-          !nameRegex.test(assistantTwoLastName)))
-    ) {
-      setAssistantFirstNameError(true);
-      setAssistantLastNameError(true);
-      toast.error("Please enter a valid assistant name");
-    } else if (cellNumberRegex.test(phoneNumber) === false || !phoneNumber) {
-      setPhoneNumberError(true);
-      toast.error("Please enter a valid phone number");
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-      return false;
-    } else if (
-      cellNumberRegex.test(cellNumber) === false &&
-      cellNumber.trim() !== ""
-    ) {
-      toast.error("Please enter a valid cell number");
-    } else if (
-      cellNumberRegex.test(assistantPhoneNumber) === false &&
-      assistantPhoneNumber.trim() !== ""
-    ) {
-      toast.error("Please enter a valid assistant phone number");
-    } else if (
-      cellNumberRegex.test(assistantTwoPhoneNumber) === false &&
-      assistantTwoPhoneNumber.trim() !== ""
-    ) {
-      toast.error("Please enter a valid assistant phone number");
-    } else if (emailRegex.test(emailIdRef) === false) {
-      setEmailError(true);
-      toast.error("Please enter a valid email address");
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-      return false;
     } else if (alphanumericWithSpacesRegex.test(zipCode) === false) {
       setZipCodeError(true);
       toast.error("Please enter a valid postal code");
@@ -497,15 +488,61 @@ const ProfileInfo = ({
       });
       return false;
     } else if (
+      assistantFirstName.trim() !== "" &&
+      (assistantFirstName.trim().length < 3 ||
+        assistantFirstName.trim().length > 30 ||
+        !nameRegex.test(assistantFirstName))
+    ) {
+      setAssistantFirstNameError(true);
+      toast.error("Please enter a valid first name for assistant 1.");
+    } else if (
+      assistantLastName.trim() !== "" &&
+      (assistantLastName.trim().length < 3 ||
+        assistantLastName.trim().length > 30 ||
+        !nameRegex.test(assistantLastName))
+    ) {
+      setAssistantLastNameError(true);
+      toast.error("Please enter a valid last name for assistant 1.");
+    } else if (
+      assistantTwoFirstName.trim() !== "" &&
+      (assistantTwoFirstName.trim().length < 3 ||
+        assistantTwoFirstName.trim().length > 30 ||
+        !nameRegex.test(assistantTwoFirstName))
+    ) {
+      setAssistantTwoFirstNameError(true);
+      toast.error("Please enter a valid first name for assistant 2.");
+    } else if (
+      assistantTwoLastName.trim() !== "" &&
+      (assistantTwoLastName.trim().length < 3 ||
+        assistantTwoLastName.trim().length > 30 ||
+        !nameRegex.test(assistantTwoLastName))
+    ) {
+      setAssistantTwoLastNameError(true);
+      toast.error("Please enter a valid last name for assistant 2.");
+    } else if (
+      cellNumberRegex.test(assistantPhoneNumber) === false &&
+      assistantPhoneNumber.trim() !== ""
+    ) {
+      setAssistantPhoneNumberError(true);
+      toast.error("Please enter a valid assistant phone number for assistant 1.");
+    } else if (
+      cellNumberRegex.test(assistantTwoPhoneNumber) === false &&
+      assistantTwoPhoneNumber.trim() !== ""
+    ) {
+      setAssistantTwoPhoneNumberError(true);
+      toast.error("Please enter a valid assistant phone number for assistant 2.");
+    } else if (
       emailRegex.test(assistantEmailAddress) === false &&
       assistantEmailAddress.trim() !== ""
     ) {
-      toast.error("Please enter a valid assistant email address");
+      setAssistantEmailAddressError(true);
+      toast.error("Please enter a valid assistant email address for assistant 1.");
     } else if (
       emailRegex.test(assistantTwoEmailAddress) === false &&
       assistantTwoEmailAddress.trim() !== ""
     ) {
-      toast.error("Please enter a valid assistant email address");
+      setAssistantTwoEmailAddressError(true);
+      toast.error("Please enter a valid assistant email address for assistant 2.");
     } else if (
       (!firstName ||
         !lastName ||
@@ -1883,11 +1920,24 @@ const ProfileInfo = ({
                           }}
                           id="formGroupExampleInput3"
                           value={assistantFirstName}
+                          // onChange={(e) =>
+                          //   setAssistantFirstName(e.target.value)
+                          // }
                           onChange={(e) =>
-                            setAssistantFirstName(e.target.value)
+                            handleInputChangeName(
+                              e.target.value,
+                              setAssistantFirstName,
+                              setAssistantFirstNameValid,
+                              setAssistantFirstNameError
+                            )
                           }
                           disabled={!edit}
                         />
+                         {assistantFirstNameError && (
+                          <small className="text-danger">
+                            Enter valid assistant first name.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -1906,12 +1956,32 @@ const ProfileInfo = ({
                         <input
                           type="text"
                           className="form-control"
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: assistantLastNameError
+                              ? "red"
+                              : assistantLastNameValid
+                              ? ""
+                              : "",
+                          }}
                           id="formGroupExampleInput3"
                           value={assistantLastName}
-                          onChange={(e) => setAssistantLastName(e.target.value)}
+                          // onChange={(e) => setAssistantLastName(e.target.value)}
+                          onChange={(e) =>
+                            handleInputChangeName(
+                              e.target.value,
+                              setAssistantLastName,
+                              setAssistantLastNameValid,
+                              setAssistantLastNameError
+                            )
+                          }
                           disabled={!edit}
                         />
+                        {assistantLastNameError && (
+                          <small className="text-danger">
+                            Enter valid assistant last name.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -1931,15 +2001,34 @@ const ProfileInfo = ({
                           type="text"
                           required
                           className="form-control"
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: assistantPhoneNumberError
+                              ? "red"
+                              : assistantPhoneNumberValid
+                              ? ""
+                              : "",
+                          }}
                           id="formGroupExampleInput3"
                           value={assistantPhoneNumber}
-                          onChange={handleInputChange_02}
+                          onChange={(e) =>
+                            handleInputChange(
+                              e.target.value,
+                              setAssistantPhoneNumber,
+                              setAssistantPhoneNumberValid,
+                              setAssistantPhoneNumberError
+                            )
+                          }
                           // onChange={(e) =>
                           //   setAssistantPhoneNumber(e.target.value)
                           // }
                           disabled={!edit}
                         />
+                        {assistantPhoneNumberError && (
+                          <small className="text-danger">
+                            Enter valid phone number.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -1958,15 +2047,32 @@ const ProfileInfo = ({
                         <input
                           type="email"
                           className="form-control"
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: assistantEmailAddressError
+                              ? "red"
+                              : assistantEmailAddressValid
+                              ? ""
+                              : "",
+                          }}
                           required
                           id="formGroupExampleInput3"
                           value={assistantEmailAddress}
                           onChange={(e) =>
-                            setAssistantEmailAddress(e.target.value)
+                            handleInputChangeName(
+                              e.target.value,
+                              setAssistantEmailAddress,
+                              setAssistantEmailAddressValid,
+                              setAssistantEmailAddressError
+                            )
                           }
                           disabled={!edit}
                         />
+                        {assistantEmailAddressError && (
+                          <small className="text-danger">
+                            Enter valid email address.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -1989,14 +2095,31 @@ const ProfileInfo = ({
                         <input
                           type="text"
                           className="form-control"
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: assistantTwoFirstNameError
+                              ? "red"
+                              : assistantTwoFirstNameValid
+                              ? ""
+                              : "",
+                          }}
                           id="formGroupExampleInput3"
                           value={assistantTwoFirstName}
                           onChange={(e) =>
-                            setAssistantTwoFirstName(e.target.value)
+                            handleInputChangeName(
+                              e.target.value,
+                              setAssistantTwoFirstName,
+                              setAssistantTwoFirstNameValid,
+                              setAssistantTwoFirstNameError
+                            )
                           }
                           disabled={!edit}
                         />
+                        {assistantTwoFirstNameError && (
+                          <small className="text-danger">
+                            Enter valid assistant first name.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -2015,14 +2138,31 @@ const ProfileInfo = ({
                         <input
                           type="text"
                           className="form-control"
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: assistantTwoLastNameError
+                              ? "red"
+                              : assistantTwoLastNameValid
+                              ? ""
+                              : "",
+                          }}
                           id="formGroupExampleInput3"
                           value={assistantTwoLastName}
                           onChange={(e) =>
-                            setAssistantTwoLastName(e.target.value)
+                            handleInputChangeName(
+                              e.target.value,
+                              setAssistantTwoLastName,
+                              setAssistantTwoLastNameValid,
+                              setAssistantTwoLastNameError
+                            )
                           }
                           disabled={!edit}
                         />
+                         {assistantTwoLastNameError && (
+                          <small className="text-danger">
+                            Enter valid assistant last name.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -2042,15 +2182,34 @@ const ProfileInfo = ({
                           type="text"
                           required
                           className="form-control"
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: assistantTwoPhoneNumberError
+                              ? "red"
+                              : assistantTwoPhoneNumberValid
+                              ? ""
+                              : "",
+                          }}
                           id="formGroupExampleInput3"
                           value={assistantTwoPhoneNumber}
-                          onChange={handleInputChange_03}
+                          onChange={(e) =>
+                            handleInputChange(
+                              e.target.value,
+                              setAssistantTwoPhoneNumber,
+                              setAssistantTwoPhoneNumberValid,
+                              setAssistantTwoPhoneNumberError
+                            )
+                          }
                           // onChange={(e) =>
                           //   setAssistantTwoPhoneNumber(e.target.value)
                           // }
                           disabled={!edit}
                         />
+                        {assistantTwoPhoneNumberError && (
+                          <small className="text-danger">
+                            Enter valid phone number.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -2069,15 +2228,33 @@ const ProfileInfo = ({
                         <input
                           type="email"
                           className="form-control"
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: assistantTwoEmailAddressError
+                              ? "red"
+                              : assistantTwoEmailAddressValid
+                              ? ""
+                              : "",
+                          }}
                           required
                           id="formGroupExampleInput3"
                           value={assistantTwoEmailAddress}
+                          
                           onChange={(e) =>
-                            setAssistantTwoEmailAddress(e.target.value)
+                            handleInputChangeName(
+                              e.target.value,
+                              setAssistantTwoEmailAddress,
+                              setAssistantTwoEmailAddressValid,
+                              setAssistantTwoEmailAddressError
+                            )
                           }
                           disabled={!edit}
                         />
+                        {assistantTwoEmailAddressError && (
+                          <small className="text-danger">
+                            Enter valid email address.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>

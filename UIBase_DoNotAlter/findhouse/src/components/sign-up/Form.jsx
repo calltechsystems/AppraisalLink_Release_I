@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import Captcha from "../common/Captcha";
 import { encryptionData } from "../../utils/dataEncryption";
 import { useRouter } from "next/router";
-import { FaEye } from "react-icons/fa";
+import { FaEnvelope, FaEye } from "react-icons/fa";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -39,12 +39,8 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
   const [passwordRegisterVerified, setPasswordRegisterVerified] =
     useState(false);
 
-  const [passwordVisible, setPasswordVisible] = useState(false); // State variable to toggle password visibility
-  const [passwordVisible_01, setPasswordVisible_01] = useState(false); // State variable to toggle password visibility
-  const [passwordRegister, setPasswordRegister] = useState(""); // State variable to store the password value
-
   const emailRegisterRef = useRef();
-  const passwordRegisterRef = useRef("");
+  // const passwordRegisterRef = useRef("");
   const userTypeRef = useRef(1);
   const checkRef = useRef("");
 
@@ -76,49 +72,33 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
     // setUserinput(false);
   };
 
-  // Toggle password visibility hnadler
-  const togglePasswordVisibility = () => {
-    setPasswordVisible(!passwordVisible);
-  };
-
-  const togglePasswordVisibility_01 = () => {
-    setPasswordVisible_01(!passwordVisible_01);
-  };
-
   const registerHandler = (event) => {
     event.preventDefault();
 
     setRegister(false);
 
     const email = emailRegisterRef.current.value;
-    const password = passwordRegister;
-    const reEnterPassword = passwordRegisterRef.current.value;
+    // const password = passwordRegister;
+    // const reEnterPassword = passwordRegisterRef.current.value;
     const user = userTypeRef.current.value;
 
-    if (password !== reEnterPassword) {
+    if (user === "") {
       setChange(true);
-      setErrorMessage("Password are meant to be same ");
+      setErrorMessage("Please select user type.");
       setModalIsOpenError(true);
-    }
-    // else if (user === "") {
-    //   setChange(true);
-    //   setErrorMessage("User Type must be selected for registration!!");
-    //   setModalIsOpenError(true);
-    // }
-    // else if (!email) {
-    //   setChange(true);
-    //   setErrorMessage("Email cant be empty or non valid.");
-    //   setModalIsOpenError(true);
-    // }
-    else if (!captchaVerfied) {
-      setErrorMessage("Please fill the Captcha !");
+    } else if (!email) {
+      setChange(true);
+      setErrorMessage("Please enter a valid email address.");
+      setModalIsOpenError(true);
+    } else if (!captchaVerfied) {
+      setErrorMessage("Please fill the captcha.");
       setModalIsOpenError(true);
       setChange(true);
       return;
     } else {
       const data = {
         email: email,
-        password: password,
+        // password: password,
         userType: Number(user),
       };
 
@@ -126,7 +106,7 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
       setLoading(true);
       toast.loading("Registering user...");
       axios
-        .post("/api/signUpUser", encryptedData)
+        .post("/api/register", encryptedData)
         .then((res) => {
           console.log(res);
           const isAdding = JSON.parse(localStorage.getItem("addAppraiser"));
@@ -174,28 +154,6 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
         .finally(() => {
           setLoading(false);
         });
-    }
-  };
-
-  const checkPasswordRegisterHandler = (event) => {
-    setFirstClick(false);
-    setPasswordRegister(event.target.value);
-    const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/;
-    if (passwordRegex.test(event.target.value)) {
-      setPasswordRegisterVerified(true);
-    } else {
-      setPasswordRegisterVerified(false);
-    }
-  };
-
-  const checkConfirmHandler = (event) => {
-    const password = passwordRegister;
-    const confirmPassword = passwordRegisterRef.current.value;
-
-    if (password === confirmPassword) {
-      setCheckRegisterConfrim(true);
-    } else {
-      setCheckRegisterConfrim(false);
     }
   };
 
@@ -271,7 +229,7 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
             </div>
           )}
 
-          <div className="heading text-center">
+          <div className="heading text-center mt-5">
             <h3>Signup to your account</h3>
           </div>
           {/* End .heading */}
@@ -316,113 +274,15 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
               <div className="input-group-prepend">
                 <div
                   className="input-group-text m-1"
-                  style={{ border: "1px solid #2e008b" }}
+                  style={{ border: "1px solid #2e008b", borderRadius: "3px" }}
                 >
-                  <i className="fa fa-envelope-o"></i>
+                  <FaEnvelope />
+                  {/* <i className="fa fa-envelope-o"></i> */}
                 </div>
               </div>
             </div>
             {/* End .form-group */}
           </div>
-
-          <div className="col-lg-12" style={{ marginTop: "10px" }}>
-            <div
-              className="form-group input-group  "
-              style={{ position: "relative", marginBottom: "6px" }}
-            >
-              {/* <label htmlFor="passwordInput" style={labelStyle}>
-                Password must have a A-Z,a-z,0-9,!@#$%^& a & 8 - 15 characters
-                long.
-              </label> */}
-              <input
-                type={passwordVisible ? "text" : "password"} // Conditionally set the input type
-                className="form-control"
-                placeholder="Password"
-                id="passwordInput"
-                style={inputStyle}
-                required
-                value={passwordRegister}
-                onChange={(e) => checkPasswordRegisterHandler(e)}
-                onFocus={() => setIsFocused(true)}
-                onBlur={() => setIsFocused(false)}
-                maxLength={15}
-                minLength={8}
-              />
-              <div className="input-group-prepend">
-                <div
-                  className="input-group-text m-1"
-                  style={{ border: "1px solid #2e008b" }}
-                  onClick={togglePasswordVisibility}
-                  // onMouseLeave={togglePasswordVisibility}
-                >
-                  <FaEye />
-                </div>
-              </div>
-            </div>
-            {/* End .form-group */}
-          </div>
-          <div style={{ marginTop: "10px" }}>
-            {isFocused ? (
-              passwordRegisterVerified ? (
-                <span style={{ color: "green" }}>Strong Password &#10004;</span>
-              ) : !firstClick ? (
-                <span style={{ color: "red" }}> Weak Password &#10008;</span>
-              ) : (
-                ""
-              )
-            ) : (
-              ""
-            )}
-          </div>
-
-          <div className="col-lg-12">
-            <div
-              className="form-group input-group  "
-              style={{ position: "", marginTop: "-10px", marginBottom: "15px" }}
-            >
-              <label htmlFor="passwordInput" style={labelStyle}>
-                Password must have a A-Z,a-z,0-9,!@#$%^& a & 8 - 15 characters
-                long.
-              </label>
-              <input
-                type={passwordVisible_01 ? "text" : "password"} // Conditionally set the input type
-                className="form-control mt-3"
-                placeholder="Re enter Password"
-                required
-                onChange={(e) => checkConfirmHandler(e)}
-                onFocus={() => setIs2Focused(true)}
-                onBlur={() => setIs2Focused(false)}
-                ref={passwordRegisterRef}
-                style={{ paddingRight: "40px" }} // Add right padding to accommodate the button
-              />
-              <div className="input-group-prepend mt-3">
-                <div
-                  className="input-group-text m-1"
-                  style={{ border: "1px solid #2e008b" }}
-                  onClick={togglePasswordVisibility_01}
-                  // onMouseLeave={togglePasswordVisibility_01}
-                >
-                  <FaEye />
-                </div>
-              </div>
-            </div>
-            {/* End .form-group */}
-          </div>
-          {is2Focused ? (
-            checkRegisterConfrim ? (
-              ""
-            ) : (
-              <div style={{ marginTop: "-2%" }}>
-                <span style={{ color: "red" }}>
-                  {" "}
-                  Both password arent same &#10008;
-                </span>{" "}
-              </div>
-            )
-          ) : (
-            ""
-          )}
-
           <div className="col-lg-12">
             <div>
               <Captcha

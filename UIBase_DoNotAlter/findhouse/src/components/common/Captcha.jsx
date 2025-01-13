@@ -110,18 +110,21 @@ const Captcha = ({ verified, reload, change, setChange }) => {
           <button
             type="button"
             id="succesBTN"
-            className="w-15 m-2 text-color"
-            style={{ cursor: "pointer", borderRadius: "5px" }}
+            className="input-group-text text-color m-1"
+            style={{
+              cursor: "pointer",
+              border: "1px solid #2e008b",
+              borderRadius: "3px",
+            }}
             onClick={refreshHandler}
           >
-            <FaRedo style={{ padding: "2px" }} />
+            <FaRedo />
           </button>
         </div>
         <div></div>
       </div>
       <div className="col-lg-2 text-end"></div>
 
-      {/* <div className="mt-0"></div> */}
       {/* End input-group */}
     </>
   );

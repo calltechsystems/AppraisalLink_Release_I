@@ -923,24 +923,24 @@ export default function Exemple({
         setModalIsOpenError(true);
       });
 
-    axios
-      .get("/api/getAllAppraiserByCompanyId", {
-        headers: {
-          Authorization: `Bearer ${data.token}`,
-        },
-        params: {
-          userId: data.appraiserCompany_Datails?.appraiserCompanyId,
-        },
-      })
-      .then((res) => {
-        // const endDate = new Date();
-        // console.log("all appraiser by company",res.data.data);
-        setAssignAppraiser(res.data.data.$values);
-      })
-      .catch((err) => {
-        setErrorMessage(err?.response?.data?.error);
-        setModalIsOpenError(true);
-      });
+    // axios
+    //   .get("/api/getAllAppraiserByCompanyId", {
+    //     headers: {
+    //       Authorization: `Bearer ${data.token}`,
+    //     },
+    //     params: {
+    //       userId: data.appraiserCompany_Datails?.appraiserCompanyId,
+    //     },
+    //   })
+    //   .then((res) => {
+    //     // const endDate = new Date();
+    //     // console.log("all appraiser by company",res.data.data);
+    //     setAssignAppraiser(res.data.data.$values);
+    //   })
+    //   .catch((err) => {
+    //     setErrorMessage(err?.response?.data?.error);
+    //     setModalIsOpenError(true);
+    //   });
 
     axios
       .get("/api/getAllBrokers", {
@@ -994,22 +994,22 @@ export default function Exemple({
         setModalIsOpenError(true);
       });
 
-    axios
-      .get("/api/getAllAppraiserByCompanyId", {
-        headers: {
-          Authorization: `Bearer ${data.token}`,
-        },
-        params: {
-          userId: data.appraiserCompany_Datails?.appraiserCompanyId,
-        },
-      })
-      .then((res) => {
-        setAssignAppraiser(res.data.data.$values);
-      })
-      .catch((err) => {
-        setErrorMessage(err?.response?.data?.error);
-        setModalIsOpenError(true);
-      });
+    // axios
+    //   .get("/api/getAllAppraiserByCompanyId", {
+    //     headers: {
+    //       Authorization: `Bearer ${data.token}`,
+    //     },
+    //     params: {
+    //       userId: data.appraiserCompany_Datails?.appraiserCompanyId,
+    //     },
+    //   })
+    //   .then((res) => {
+    //     setAssignAppraiser(res.data.data.$values);
+    //   })
+    //   .catch((err) => {
+    //     setErrorMessage(err?.response?.data?.error);
+    //     setModalIsOpenError(true);
+    //   });
 
     axios
       .get("/api/getArchiveAppraiserProperty", {
