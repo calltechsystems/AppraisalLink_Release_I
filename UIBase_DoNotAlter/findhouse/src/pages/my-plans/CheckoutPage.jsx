@@ -132,9 +132,8 @@ const Checkout = ({ planDetails, setErrorOccurred }) => {
 const CheckoutPage = ({ planDetails,setErrorOccurred}) => (
   <PayPalScriptProvider
     options={{
-      "client-id":
-        "AWiI79b9Fzj8xuGQZ2ZuiZZsDlX18Ykyn63VhWevE2_E5eKKXo05IUqVRDJ3qLcvjLRQGen3N19B-kJ8", // Replace with your PayPal Client ID
-      currency: "USD", // Default currency
+      "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
+      currency: "USD", 
     }}
   >
     <Checkout planDetails={planDetails} setErrorOccurred={setErrorOccurred}/>
