@@ -57,7 +57,7 @@ const OurMission = () => {
           {/* End .ab_counting */}
         </div>
       </div>
-      {/* End .col */}
+      
 
       <div className="col-lg-4 col-xl-5">
         <div className="about_thumb">
