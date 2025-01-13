@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 const Checkout = ({ planDetails, setErrorOccurred }) => {
   const [{ options, isPending }, dispatch] = usePayPalScriptReducer();
   const [currency, setCurrency] = useState(options.currency || "USD");
-  const userData = {};
+  let userData = {};
   
   useEffect(() => {
     userData = localStorage.getItem("user") || {};
