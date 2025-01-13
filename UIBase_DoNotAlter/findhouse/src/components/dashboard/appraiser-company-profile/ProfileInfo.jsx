@@ -1717,7 +1717,7 @@ const ProfileInfo = ({
                           //   setOfficeContactPhone(e.target.value)
                           // }
                           onChange={(e) =>
-                            handleInputChangeName(
+                            handleInputChange(
                               e.target.value,
                               setOfficeContactPhone,
                               setOfficeContactPhoneValid,
