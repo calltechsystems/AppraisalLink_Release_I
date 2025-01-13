@@ -113,9 +113,7 @@ const Index = () => {
               className="text-center mb-2 text-dark fw-bold"
               style={{ fontSize: "18px" }}
             >
-              Thanks for your registration with Appraisal Land, please verify
-              your account within 72 hours by validating the registration link
-              sent on the registered email !!
+              Thanks for completing your registration with Appraisal Land !!
             </span>
             <div
               className="mt-2 mb-3"
