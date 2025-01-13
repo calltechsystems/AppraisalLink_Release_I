@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   PayPalButtons,
   PayPalScriptProvider,
@@ -9,7 +9,11 @@ import toast from "react-hot-toast";
 const Checkout = ({ planDetails, setErrorOccurred }) => {
   const [{ options, isPending }, dispatch] = usePayPalScriptReducer();
   const [currency, setCurrency] = useState(options.currency || "USD");
-  const userData = localStorage.getItem("user") || {};
+  const userData = {};
+  
+  useEffect(() => {
+    userData = localStorage.getItem("user") || {};
+  },[]);
 
   function generateCustomId(brokerId, planId) {
     const currentDate = new Date();
