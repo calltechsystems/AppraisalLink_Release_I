@@ -5,7 +5,7 @@ import Header from "../common/header/DefaultHeader_01";
 import MobileMenu from "../common/header/MobileMenu";
 import PopupSignInUp from "../common/PopupSignInUp";
 import BreadCrumbBanner from "./BreadCrumbBanner";
-import Form from "./FormNew";
+import Form from "./Form";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";

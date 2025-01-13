@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Captcha from "../common/Captcha";
 import { encryptionData } from "../../utils/dataEncryption";
 import { useRouter } from "next/router";
@@ -9,6 +9,9 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
+  const [email, setEmail] = useState("");
+  const [userType, setUserType] = useState("");
+
   const [showhide, setShowhide] = useState("");
 
   const [change, setChange] = useState(false);
@@ -23,6 +26,21 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
   const [successContent, setSuccessContent] = useState("");
 
   const [firstClick, setFirstClick] = useState(true);
+
+  useEffect(() => {
+    // Extract query parameters from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const emailId = urlParams.get("emailId"); // Extract emailId
+    const userType = urlParams.get("UserType"); // Extract UserType
+
+    if (emailId) {
+      setEmail(emailId); // Set email state
+      console.log;
+    }
+    if (userType) {
+      setUserType(userType); // Set userType state
+    }
+  }, []);
 
   const handleErrorModalCancel = () => {
     setError(false);
@@ -279,26 +297,19 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
           <div className="col-lg-12">
             <div className="form-group input-group ui_kit_select_search mb-3">
               <select
-                required
                 className="form-select"
                 data-live-search="true"
                 data-width="100%"
-                ref={userTypeRef}
+                // ref={userTypeRef}
+                value={userType}
+                disabled // Disables the dropdown
                 style={{ paddingTop: "15px", paddingBottom: "15px" }}
               >
-                <option value="">Choose User...</option>
-                <option data-tokens="SelectRole" value={1}>
-                  Mortgage Broker
-                </option>
-                <option data-tokens="Agent/Agency" value={2}>
-                  Mortgage Brokerage
-                </option>
-                <option data-tokens="SingleUser" value={3}>
-                  Appraiser
-                </option>
-                <option data-tokens="SingleUser" value={4}>
-                  Appraiser Company
-                </option>
+                <option value="">Select User Type</option>
+                <option value="1">Mortgage Broker</option>
+                <option value="2">Mortgage Brokerage</option>
+                <option value="3">Appraiser</option>
+                <option value="4">Appraiser Company</option>
               </select>
             </div>
           </div>
@@ -309,9 +320,9 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
               <input
                 type="email"
                 className="form-control"
-                required
-                placeholder="Email Address"
-                ref={emailRegisterRef}
+                // ref={emailRegisterRef}
+                value={email}
+                disabled // Disables the input
               />
               <div className="input-group-prepend">
                 <div
@@ -432,7 +443,7 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
               />
             </div>
           </div>
-          <div className="form-group form-check custom-checkbox mb-3">
+          {/* <div className="form-group form-check custom-checkbox mb-3">
             <input
               className="form-check-input"
               type="checkbox"
@@ -455,7 +466,7 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
               </Link>
               ?
             </label>
-          </div>
+          </div> */}
           {/* End .form-group */}
 
           <button type="submit" className="btn btn-log w-100 btn-thm">
