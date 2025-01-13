@@ -111,7 +111,7 @@ const Index = () => {
                   Throughout the home appraisal process of appraisal Land serves
                   as a point of contact between the broker and the appraiser.
                 </p>
-                <Land href="/register" className="my_profile_setting_input">
+                <Land href="/sign-up" className="my_profile_setting_input">
                   <button className="btn btn2">Register</button>
                 </Land>
               </div>
