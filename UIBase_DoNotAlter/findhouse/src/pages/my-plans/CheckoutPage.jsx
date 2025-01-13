@@ -35,11 +35,12 @@ const Checkout = ({ planDetails, setErrorOccurred }) => {
 
   const onCreateOrder = (data, actions) => {
     return actions.order.create({
+        intent: "CAPTURE",
       purchase_units: [
         {
           description: `Broker ${planDetails?.title} Subscription Plan`,
           custom_id: generateCustomId(userData?.userId, planDetails?.id),
-          soft_descriptor: `RealEstateBrokerSub${planDetails?.title}Plan`,
+        //   soft_descriptor: `RealEstateBrokerSub${planDetails?.title}Plan`,
           amount: {
             value: planDetails?.price,
             currency_code: currency,
