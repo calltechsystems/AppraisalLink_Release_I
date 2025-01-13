@@ -86,7 +86,7 @@ const Form = ({
             <button
               type="button"
               onClick={() => setCloseRegisterModal(false)}
-              className="btn btn-secondary w-25 mx-1"
+              className="btn btn-color w-25 mx-1"
             >
               Cancel
             </button>

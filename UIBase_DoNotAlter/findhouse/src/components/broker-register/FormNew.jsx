@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { encryptionData } from "../../utils/dataEncryption";
 import { useRouter } from "next/router";
-import { FaEnvelope } from "react-icons/fa";
+import { FaEnvelope, FaEye } from "react-icons/fa";
 import axios from "axios";
 import toast from "react-hot-toast";
 
