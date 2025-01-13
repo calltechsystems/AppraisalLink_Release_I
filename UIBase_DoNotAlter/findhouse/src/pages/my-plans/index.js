@@ -7,6 +7,8 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Checkout from "./CheckoutPage";
+import Link from "next/link";
+import Image from "next/image";
 
 const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
