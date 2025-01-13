@@ -73,7 +73,6 @@ const Team = () => {
                 </h4>
                 <p>{item.type}</p>
               </div>
-              {/* End .details */}
             </div>
           </div>
         ))}
