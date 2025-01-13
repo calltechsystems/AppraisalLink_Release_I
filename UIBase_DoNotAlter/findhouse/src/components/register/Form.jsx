@@ -208,7 +208,7 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
             {is2Focused && !checkRegisterConfrim && (
               <div>
                 <span style={{ color: "red" }}>
-                  Both passwords aren't the same &#10008;
+                  Both passwords aren&apos;t the same &#10008;
                 </span>
               </div>
             )}
