@@ -121,6 +121,9 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
               <option value="2">Mortgage Brokerage</option>
               <option value="3">Appraiser</option>
               <option value="4">Appraiser Company</option>
+              <option value="5">Sub Appraiser</option>
+              <option value="6">Sub Broker</option>
+
             </select>
           </div>
 
