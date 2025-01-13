@@ -196,7 +196,7 @@ const ProfileInfo = ({
   const [zipCodeError, setZipCodeError] = useState(false);
   const [assistantFirstNameError, setAssistantFirstNameError] = useState(false);
   const [assistantLastNameError, setAssistantLastNameError] = useState(false);
-  const [assistanTwotFirstNameError, setAssistantTwoFirstNameError] =
+  const [assistantTwotFirstNameError, setAssistantTwoFirstNameError] =
     useState(false);
   const [assistantTwoLastNameError, setAssistantTwoLastNameError] =
     useState(false);
@@ -2097,7 +2097,7 @@ const ProfileInfo = ({
                           className="form-control"
                           style={{
                             backgroundColor: "#E8F0FE",
-                            borderColor: assistantTwoFirstNameError
+                            borderColor: assistantTwotFirstNameError
                               ? "red"
                               : assistantTwoFirstNameValid
                               ? ""
@@ -2115,7 +2115,7 @@ const ProfileInfo = ({
                           }
                           disabled={!edit}
                         />
-                        {assistantTwoFirstNameError && (
+                        {assistantTwotFirstNameError && (
                           <small className="text-danger">
                             Enter valid assistant first name.
                           </small>
