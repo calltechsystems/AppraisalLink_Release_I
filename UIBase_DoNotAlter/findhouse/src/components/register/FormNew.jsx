@@ -12,6 +12,7 @@ const Form = () => {
 
     if (emailId) {
       setEmail(emailId); // Set email state
+      console.log
     }
     if (userType) {
       setUserType(userType); // Set userType state
