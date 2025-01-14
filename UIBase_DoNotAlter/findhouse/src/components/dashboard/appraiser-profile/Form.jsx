@@ -8,7 +8,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
     if (userData_01 === 3) {
       return "Appraiser";
     } else if (userData_01 === 5) {
-      return "Sub Appraiser";
+      return "Appraiser";
     } else {
       return "Unknown User Type"; // Default value if userType is not 1 or 6
     }

@@ -39,12 +39,6 @@ const headCells = [
     width: 170,
   },
   {
-    id: "actions_01",
-    numeric: false,
-    label: "Actions",
-    width: 190,
-  },
-  {
     id: "sub_date",
     numeric: false,
     label: "Quote Submitted Date",
@@ -92,6 +86,12 @@ const headCells = [
     numeric: false,
     label: "Lender Information",
     width: 160,
+  },
+  {
+    id: "actions_01",
+    numeric: false,
+    label: "Actions",
+    width: 190,
   },
 ];
 

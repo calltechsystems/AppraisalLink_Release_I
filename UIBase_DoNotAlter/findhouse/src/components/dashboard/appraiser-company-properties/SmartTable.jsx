@@ -76,18 +76,20 @@ function SmartTable(props) {
   }, [props.dataFetched, props.properties]);
 
   function extractTextFromReactElement(element) {
-    if (typeof element === 'string') {
-        return element; // If it's a string, return it directly
+    if (typeof element === "string") {
+      return element; // If it's a string, return it directly
     } else if (Array.isArray(element)) {
-        // If it's an array of elements, recursively call this function for each element
-        return element.map(child => extractTextFromReactElement(child)).join('');
-    } else if (typeof element === 'object' && element !== null) {
-        // If it's an object (React element), recursively call this function on its children
-        return extractTextFromReactElement(element.props.children);
+      // If it's an array of elements, recursively call this function for each element
+      return element
+        .map((child) => extractTextFromReactElement(child))
+        .join("");
+    } else if (typeof element === "object" && element !== null) {
+      // If it's an object (React element), recursively call this function on its children
+      return extractTextFromReactElement(element.props.children);
     } else {
-        return ''; // Return an empty string if the element is not recognized
+      return ""; // Return an empty string if the element is not recognized
     }
-}
+  }
 
   const handlePrint = async () => {
     try {
@@ -160,9 +162,12 @@ function SmartTable(props) {
           ) {
             const value = item[header[0].toLowerCase()];
             const className = value.props.className;
-            const content = header[0].toLowerCase() === "appraisal_status" ?
-             extractTextFromReactElement(value.props.children).split("Current Status")[0] : value.props.children;
-
+            const content =
+              header[0].toLowerCase() === "appraisal_status"
+                ? extractTextFromReactElement(value.props.children).split(
+                    "Current Status"
+                  )[0]
+                : value.props.children;
 
             // Create a span element to contain the content
             const spanElement = document.createElement("span");
@@ -422,18 +427,20 @@ function SmartTable(props) {
         <div className="candidate_revew_select style2 mb30-991">
           <ul className="mb0 mt-0">
             <li className="list-inline-item">
-              <Filtering 
-              filterQuery={props.filterQuery}
-              setFilterQuery={props.setFilterQuery} />
+              <Filtering
+                filterQuery={props.filterQuery}
+                setFilterQuery={props.setFilterQuery}
+              />
             </li>
             {/* <li className="list-inline-item">
           <FilteringBy setFilterQuery={props.setSearchQuery} />
         </li> */}
             <li className="list-inline-item" style={{ marginRight: "15px" }}>
               <div className="candidate_revew_search_box course fn-520">
-                <SearchBox 
-                searchInput={props.searchInput}
-                setSearchInput={props.setSearchInput} />
+                <SearchBox
+                  searchInput={props.searchInput}
+                  setSearchInput={props.setSearchInput}
+                />
               </div>
             </li>
             <li className="list-inline-item">
@@ -468,14 +475,22 @@ function SmartTable(props) {
         <div className="col-12">
           {props.data.length > 0 ? (
             <div className="row mt-3">
-              <div className="smartTable-tableContainer" id="table-container">
+              <div
+                className="smartTable-tableContainer"
+                id="table-container"
+                style={{
+                  overflow: "auto",
+                  position: "relative",
+                  maxHeight: "500px",
+                }}
+              >
                 <table
                   className={"smartTable-table table table-striped border"}
                   style={{ minWidth: tableWidth }}
                 >
                   <thead className="smartTable-thead">
                     <tr>
-                      {props.headCells.map((headCell) => {
+                      {props.headCells.map((headCell, index) => {
                         return (
                           <th
                             id={headCell.id}
@@ -484,7 +499,11 @@ function SmartTable(props) {
                             style={{
                               width: headCell.width,
                               backgroundColor: "#2e008b",
-                              color: "white" ?? "auto",
+                              color: "white",
+                              position: "sticky",
+                              top: "0", // Keep the header visible when scrolling vertically
+                              left: index === 0 ? "0" : undefined, // Make the first column sticky
+                              zIndex: index === 0 ? "3" : "2", // Ensure layering
                             }}
                             className={
                               headCell.sortable !== false
@@ -501,12 +520,10 @@ function SmartTable(props) {
                             {headCell.label}
                             {sortDesc[headCell.id] ? (
                               <div></div>
-                            ) : // <SVGArrowDown />
-                            sortDesc[headCell.id] === undefined ? (
+                            ) : sortDesc[headCell.id] === undefined ? (
                               ""
                             ) : (
                               <div></div>
-                              // <SVGArrowUp />
                             )}
                           </th>
                         );
@@ -516,12 +533,23 @@ function SmartTable(props) {
                   <tbody>
                     {data.length > 0
                       ? data.map((row, idx) => {
-                          // if (idx >= props.start && idx <= props.end) {
                           return (
                             <tr key={"tr_" + idx}>
                               {props.headCells.map((headCell, idxx) => {
                                 return (
-                                  <td key={"td_" + idx + "_" + idxx}>
+                                  <td
+                                    key={"td_" + idx + "_" + idxx}
+                                    className={idxx === 0 ? "sticky-cell" : ""}
+                                    style={{
+                                      position:
+                                        idxx === 0 ? "sticky" : "static",
+                                      left: idxx === 0 ? "0" : undefined,
+                                      backgroundColor:
+                                        idxx === 0 ? "gray" : undefined,
+                                      color: idxx === 0 ? "white" : undefined,
+                                      zIndex: idxx === 0 ? "2" : "1",
+                                    }}
+                                  >
                                     {headCell.render
                                       ? headCell.render(row)
                                       : row[headCell.id]}
@@ -530,29 +558,8 @@ function SmartTable(props) {
                               })}
                             </tr>
                           );
-                          // } else {
-                          //   return null; // Skip rendering rows that don't meet the condition
-                          // }
                         })
-                      : props.data.map((row, idx) => {
-                          // if (idx >= props.start && idx <= props.end) {
-                          return (
-                            <tr key={"tr_" + idx}>
-                              {props.headCells.map((headCell, idxx) => {
-                                return (
-                                  <td key={"td_" + idx + "_" + idxx}>
-                                    {headCell.render
-                                      ? headCell.render(row)
-                                      : row[headCell.id]}
-                                  </td>
-                                );
-                              })}
-                            </tr>
-                          );
-                          // } else {
-                          //   return null; // Skip rendering rows that don't meet the condition
-                          // }
-                        })}
+                      : null}
                   </tbody>
                 </table>
               </div>

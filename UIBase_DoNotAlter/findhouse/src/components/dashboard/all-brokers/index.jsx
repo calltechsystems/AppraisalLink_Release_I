@@ -1172,7 +1172,7 @@ const Index = () => {
 
               {closeRegisterModal && (
                 <div className="modal">
-                  <div className="modal-content" style={{ width: "500px" }}>
+                  <div className="modal-content">
                     <div className="row">
                       <div className="col-lg-12">
                         <Link href="/" className="">
@@ -1208,7 +1208,11 @@ const Index = () => {
                         </Link>
                       </div>
                     </div>
-                    <h3 className="text-center">Add Broker</h3>
+                    <div className="row">
+                      <div className="col-lg-12 text-center">
+                        <h1 className=" text-color mt-1">Add Broker </h1>
+                      </div>
+                    </div>
                     <div
                       className="mb-2"
                       style={{ border: "2px solid #97d700" }}

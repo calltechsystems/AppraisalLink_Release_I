@@ -12,7 +12,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
     if (userData_01 === 1) {
       return "Mortgage Broker";
     } else if (userData_01 === 6) {
-      return "Sub Broker";
+      return "Mortgage Broker";
     } else {
       return "Unknown User Type"; // Default value if userType is not 1 or 6
     }

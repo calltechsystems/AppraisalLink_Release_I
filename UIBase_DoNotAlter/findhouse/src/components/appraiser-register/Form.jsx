@@ -20,27 +20,30 @@ const Form = ({
     if (!email) {
       setErrorMessage("Email cannot be empty.");
       setModalIsOpenError(true);
-      return;
-    }
+      // return;
+    } else {
+      const userData = JSON.parse(localStorage.getItem("user"));
 
-    const data = {
-      email,
-      companyId: userData.appraiserCompany_Datails.appraiserCompanyId, // Replace with actual company ID
-    };
+      const data = {
+        email,
+        companyId: userData.appraiserCompany_Datails.appraiserCompanyId, // Replace with actual company ID
+      };
 
-    try {
-      const encryptedData = encryptionData(data);
-      setLoading(true);
-      toast.loading("Registering user...");
-      await axios.post("/api/registerByCompany", encryptedData);
-      toast.dismiss();
-      toast.success("User registered successfully!");
-    } catch (err) {
-      toast.dismiss();
-      toast.error(err.response?.data?.message || "An error occurred.");
-    } finally {
-      setLoading(false);
+      try {
+        const encryptedData = encryptionData(data);
+        setLoading(true);
+        toast.loading("Registering user...");
+        await axios.post("/api/registerByCompany", encryptedData);
+        toast.dismiss();
+        toast.success("User registered successfully!");
+      } catch (err) {
+        toast.dismiss();
+        toast.error(err.response?.data?.message || "An error occurred.");
+      } finally {
+        // setLoading(false);
+      }
     }
+    setDisable(false);
   };
 
   return (
@@ -66,7 +69,7 @@ const Form = ({
             <button
               type="button"
               onClick={() => setCloseRegisterModal(false)}
-              className="btn btn-secondary w-25 mx-1"
+              className="btn btn-color w-25 mx-1"
             >
               Cancel
             </button>
