@@ -336,32 +336,31 @@ export default function Exemple({
     return formattedDate;
   };
 
-    // For EST date and time
+  // For EST date and time
 
-    const formatDateTimeEST = (date) => {
+  const formatDateTimeEST = (date) => {
+    return new Intl.DateTimeFormat("en-US", {
+      timeZone: "America/Toronto", // EST/Canada timezone
+      dateStyle: "medium",
+      timeStyle: "short",
+    }).format(new Date(date));
+  };
+
+  // Only for time
+
+  const formatDateToEST = (date) => {
+    try {
+      // Convert input date string to a Date object
+      const utcDate = new Date(`${date}T00:00:00Z`); // Treat input as UTC midnight
       return new Intl.DateTimeFormat("en-US", {
         timeZone: "America/Toronto", // EST/Canada timezone
-        dateStyle: "medium",
-        timeStyle: "short",
-      }).format(new Date(date));
-    };
-  
-    // Only for time
-  
-    const formatDateToEST = (date) => {
-      try {
-        // Convert input date string to a Date object
-        const utcDate = new Date(`${date}T00:00:00Z`); // Treat input as UTC midnight
-        return new Intl.DateTimeFormat("en-US", {
-          timeZone: "America/Toronto", // EST/Canada timezone
-          dateStyle: "medium",        // Format only the date
-        }).format(utcDate);
-      } catch (error) {
-        console.error("Error formatting date:", error);
-        return "Invalid date";
-      }
-    };
-  
+        dateStyle: "medium", // Format only the date
+      }).format(utcDate);
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return "Invalid date";
+    }
+  };
 
   const checkWishlistedHandler = (data) => {
     let temp = {};
@@ -433,7 +432,9 @@ export default function Exemple({
                       </li>
                     </ul>
                   </div>
-                  <button className={getStatusButtonClass(isBidded.orderstatus)}>
+                  <button
+                    className={getStatusButtonClass(isBidded.orderstatus)}
+                  >
                     Status
                     <span className="m-1">
                       <i class="fa fa-info-circle" aria-hidden="true"></i>
@@ -455,7 +456,9 @@ export default function Exemple({
                       </li>
                     </ul>
                   </div>
-                  <button className={getStatusButtonClass(isBidded.orderstatus)}>
+                  <button
+                    className={getStatusButtonClass(isBidded.orderstatus)}
+                  >
                     Status
                     <span className="m-1">
                       <i class="fa fa-info-circle" aria-hidden="true"></i>
@@ -463,7 +466,9 @@ export default function Exemple({
                   </button>
                 </div>
               ) : (
-                <button className="btn btn-warning w-100"><span>N.A.</span></button>
+                <button className="btn btn-warning w-100">
+                  <span>N.A.</span>
+                </button>
               ),
             remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
             status:
@@ -481,7 +486,9 @@ export default function Exemple({
                 isBidded.orderstatus === 3 ? (
                   <span className="btn btn-completed w-100">Completed</span>
                 ) : isBidded.status === 0 ? (
-                  <span className="btn bg-info text-light  w-100">Quote Provided</span>
+                  <span className="btn bg-info text-light  w-100">
+                    Quote Provided
+                  </span>
                 ) : isBidded.status === 1 ? (
                   <span className="btn btn-success  w-100">Accepted</span>
                 ) : (
@@ -561,10 +568,7 @@ export default function Exemple({
                 : "N.A.",
 
             action: (
-              <div
-                className="print-hidden-column d-flex gap-1"
-                // style={{ display: "flex", justifyContent: "center" }}
-              >
+              <div className="print-hidden-column d-flex justify-content-center gap-1">
                 {
                   <ul className="mb0 d-flex gap-1">
                     {isWishlist.id ? (
@@ -633,7 +637,7 @@ export default function Exemple({
                 {isBidded.status === 2 ? (
                   <>
                     <ul>
-                      <li
+                      {/* <li
                         className="list-inline-item"
                         data-toggle="tooltip"
                         data-placement="top"
@@ -654,7 +658,7 @@ export default function Exemple({
                             </Link>
                           </button>
                         </div>
-                      </li>
+                      </li> */}
                     </ul>
                   </>
                 ) : isBidded.orderstatus === 6 ? (
@@ -666,7 +670,7 @@ export default function Exemple({
                         property.isoncancel ? "Cancelled" : "On Hold"
                       } !.`}
                     </p> */}
-                    <li
+                    {/* <li
                       className="list-inline-item"
                       data-toggle="tooltip"
                       data-placement="top"
@@ -687,7 +691,7 @@ export default function Exemple({
                           </Link>
                         </button>
                       </div>
-                    </li>
+                    </li> */}
                   </>
                 ) : (
                   isBidded.orderstatus <= 6 &&
@@ -709,7 +713,7 @@ export default function Exemple({
                           </Link>
                         </button>
                       </li>
-                      <li
+                      {/* <li
                         className="list-inline-item"
                         data-toggle="tooltip"
                         data-placement="top"
@@ -730,33 +734,33 @@ export default function Exemple({
                             </Link>
                           </button>
                         </div>
-                      </li>
+                      </li> */}
                     </>
                   )
                 )}
 
-                {!isBidded.$id && (
-                  <li
-                    className="list-inline-item"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title="Archive Property"
-                  >
-                    <div
-                      className="w-100"
-                      onClick={() => onArchivePropertyHandler(property.orderId)}
-                    >
-                      <button href="#" className="btn btn-color">
-                        <Link href="#">
-                          <span className="text-light">
-                            {" "}
-                            <FaArchive />
-                          </span>
-                        </Link>
-                      </button>
-                    </div>
-                  </li>
-                )}
+                {/* {!isBidded.$id && (
+                  // <li
+                  //   className="list-inline-item"
+                  //   data-toggle="tooltip"
+                  //   data-placement="top"
+                  //   title="Archive Property"
+                  // >
+                  //   <div
+                  //     className="w-100"
+                  //     onClick={() => onArchivePropertyHandler(property.orderId)}
+                  //   >
+                  //     <button href="#" className="btn btn-color">
+                  //       <Link href="#">
+                  //         <span className="text-light">
+                  //           {" "}
+                  //           <FaArchive />
+                  //         </span>
+                  //       </Link>
+                  //     </button>
+                  //   </div>
+                  // </li>
+                )} */}
               </div>
             ),
           };

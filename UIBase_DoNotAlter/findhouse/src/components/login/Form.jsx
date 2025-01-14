@@ -12,6 +12,7 @@ import toast from "react-hot-toast";
 const Form = ({
   user,
   setModalIsOpen,
+  setOpenViewModal,
   setModalIsOpenError,
   setErrorMessage,
 }) => {
@@ -42,6 +43,10 @@ const Form = ({
     const getuser = event.target.value;
     setShowhide(getuser);
     // setUserinput(false);
+  };
+
+  const openModal = () => {
+    setOpenViewModal(true);
   };
 
   const togglePasswordVisibility = () => {
@@ -316,33 +321,41 @@ const Form = ({
               style={{
                 display: "flex",
                 flexDirection: "row",
-                justifyContent: "center",
+                justifyContent: "space-between",
                 // marginLeft: "20%",
               }}
             >
               <div>
-                <p style={{ fontSize: "16px" }}>Don&apos;t have an account? </p>
+                <p style={{ fontSize: "16px" }}>
+                  Don&apos;t have an account?
+                  <Link
+                    href="/sign-up"
+                    className="text-thm"
+                    style={{
+                      // textDecoration: "underline",
+                      fontWeight: "bold",
+                      marginLeft: "5px",
+                      lineHeight: "1.6",
+                    }}
+                  >
+                    Sign Up !
+                  </Link>
+                </p>
               </div>
-              <div
-                style={{
-                  // textDecoration: "underline",
-                  fontWeight: "bold",
-                  marginLeft: "5px",
-                  lineHeight: "1.6",
-                }}
-              >
-                <Link href="/sign-up" className="text-thm">
-                  Sign Up !
+              <div>
+                <Link
+                  href="#"
+                  className="text-thm"
+                  onClick={(e) => {
+                    e.preventDefault(); // Prevent default navigation
+                    openModal(); // Call your function
+                  }}
+                >
+                  Resend activation link!
                 </Link>
               </div>
             </div>
             {/* login button */}
-
-            {/* <div className="divide">
-        <span className="lf_divider">Or</span>
-        <hr />
-      </div> */}
-            {/* devider */}
           </form>
         </div>
       </div>

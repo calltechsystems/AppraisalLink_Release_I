@@ -483,14 +483,19 @@ function SmartTable(props) {
         <div className="col-12">
           {props.data.length > 0 ? (
             <div className="row mt-3">
-              <div className="smartTable-tableContainer" id="table-container">
+              <div className="smartTable-tableContainer" id="table-container"
+                style={{
+                  overflow: "auto",
+                  position: "relative",
+                  maxHeight: "500px",
+                }}>
                 <table
                   className={"smartTable-table table table-striped border"}
                   style={{ minWidth: tableWidth }}
                 >
                   <thead className="smartTable-thead">
                     <tr>
-                      {props.headCells.map((headCell) => {
+                      {props.headCells.map((headCell, index) => {
                         return (
                           <th
                             id={headCell.id}
@@ -499,7 +504,11 @@ function SmartTable(props) {
                             style={{
                               width: headCell.width,
                               backgroundColor: "#2e008b",
-                              color: "white" ?? "auto",
+                              color: "white",
+                              position: "sticky",
+                              top: "0", // Keep the header visible when scrolling vertically
+                              left: index === 0 ? "0" : undefined, // Make the first column sticky
+                              zIndex: index === 0 ? "3" : "2", // Ensure layering
                             }}
                             className={
                               headCell.sortable !== false
@@ -516,12 +525,10 @@ function SmartTable(props) {
                             {headCell.label}
                             {sortDesc[headCell.id] ? (
                               <div></div>
-                            ) : // <SVGArrowDown />
-                            sortDesc[headCell.id] === undefined ? (
+                            ) : sortDesc[headCell.id] === undefined ? (
                               ""
                             ) : (
                               <div></div>
-                              // <SVGArrowUp />
                             )}
                           </th>
                         );
@@ -531,12 +538,24 @@ function SmartTable(props) {
                   <tbody>
                     {data.length > 0
                       ? data.map((row, idx) => {
-                          // if (idx >= props.start && idx <= props.end) {
                           return (
                             <tr key={"tr_" + idx}>
                               {props.headCells.map((headCell, idxx) => {
                                 return (
-                                  <td key={"td_" + idx + "_" + idxx}>
+                                  <td
+                                    key={"td_" + idx + "_" + idxx}
+                                    className={idxx === 0 ? "sticky-cell" : ""}
+                                    style={{
+                                      position:
+                                        idxx === 0 ? "sticky" : "static",
+                                      left: idxx === 0 ? "0" : undefined,
+                                      backgroundColor:
+                                        idxx === 0 ? "gray" : undefined,
+                                        color:
+                                        idxx === 0 ? "white" : undefined,
+                                      zIndex: idxx === 0 ? "2" : "1",
+                                    }}
+                                  >
                                     {headCell.render
                                       ? headCell.render(row)
                                       : row[headCell.id]}
@@ -545,29 +564,8 @@ function SmartTable(props) {
                               })}
                             </tr>
                           );
-                          // } else {
-                          //   return null; // Skip rendering rows that don't meet the condition
-                          // }
                         })
-                      : props.data.map((row, idx) => {
-                          // if (idx >= props.start && idx <= props.end) {
-                          return (
-                            <tr key={"tr_" + idx}>
-                              {props.headCells.map((headCell, idxx) => {
-                                return (
-                                  <td key={"td_" + idx + "_" + idxx}>
-                                    {headCell.render
-                                      ? headCell.render(row)
-                                      : row[headCell.id]}
-                                  </td>
-                                );
-                              })}
-                            </tr>
-                          );
-                          // } else {
-                          //   return null; // Skip rendering rows that don't meet the condition
-                          // }
-                        })}
+                      : null}
                   </tbody>
                 </table>
               </div>
@@ -576,7 +574,7 @@ function SmartTable(props) {
             <div className="row">
               <div
                 className="smartTable-noDataFound col-12"
-                style={{ marginTop: "5px", marginBottom: "10px" }}
+                style={{ marginTop: "60px", marginBottom: "20px" }}
               >
                 {props.dataFetched && props.properties.length === 0 ? (
                   showNoData ? (

@@ -877,7 +877,7 @@ const ProfileInfo = ({
                           value={
                             {
                               3: "Appraiser",
-                              5: "Sub Appraiser",
+                              5: "Appraiser",
                             }[userData.userType] || "Unknown User Type"
                           }
                         />

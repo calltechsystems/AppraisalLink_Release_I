@@ -617,7 +617,7 @@ export default function Exemple({
                 : "",
 
             action: (
-              <div className="print-hidden-column d-flex gap-1">
+              <div className="print-hidden-column d-flex justify-content-center gap-1">
                 {
                   <ul className="mb0 d-flex gap-1">
                     <li>
@@ -670,7 +670,7 @@ export default function Exemple({
                       </li>
                     )}
 
-                    <li
+                    {/* <li
                       className="list-inline-item"
                       data-toggle="tooltip"
                       data-placement="top"
@@ -695,7 +695,7 @@ export default function Exemple({
                           </Link>
                         </button>
                       </div>
-                    </li>
+                    </li> */}
                   </ul>
                 }
                 {isBidded.status === 2 ? (
@@ -708,7 +708,7 @@ export default function Exemple({
                       >
                         <span className="btn btn-danger  w-100">Declined </span>
                       </li>
-                      <li
+                      {/* <li
                         className="list-inline-item"
                         data-toggle="tooltip"
                         data-placement="top"
@@ -729,7 +729,7 @@ export default function Exemple({
                             </Link>
                           </button>
                         </div>
-                      </li>
+                      </li> */}
                     </ul>
                   </>
                 ) : isWait && property.status !== 2 ? (
@@ -766,7 +766,7 @@ export default function Exemple({
                   isBidded.orderstatus !== 3 &&
                   isBidded.status === 1 ? (
                   <>
-                    <li
+                    {/* <li
                       className="list-inline-item"
                       data-toggle="tooltip"
                       data-placement="top"
@@ -787,7 +787,7 @@ export default function Exemple({
                           </Link>
                         </button>
                       </div>
-                    </li>
+                    </li> */}
                     <button
                       href="#"
                       className="list-inline-item btn btn-color w-20"
