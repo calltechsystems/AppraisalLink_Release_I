@@ -6,6 +6,7 @@ import Modal from "./Modal";
 import { useRouter } from "next/router";
 import axios from "axios";
 import toast from "react-hot-toast";
+import Checkout from "./CheckoutPage";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -19,6 +20,8 @@ const Index = () => {
     price: 0,
     type: "plan",
   });
+
+  const [checkout, setCheckOut] = useState(false);
 
   const [userData, setUserData] = useState({});
 
@@ -102,7 +105,7 @@ const Index = () => {
   return (
     <>
       <Seo pageTitle="My Plans" />
-      <MyPlans
+       <MyPlans
         currentSubscription={currentSubscription}
         setModalOpen={setModalOpen}
         setPrice={setPrice}
@@ -176,9 +179,24 @@ const Index = () => {
             </div>
           </div>
         </div>
-      )}
+      )} 
     </>
   );
 };
 
 export default dynamic(() => Promise.resolve(Index), { ssr: false });
+
+
+// <div className="App">
+//       {checkout ? (
+//         <Paypal />
+//       ) : (
+//         <button
+//           onClick={() => {
+//             setCheckOut(true);
+//           }}
+//         >
+//           Checkout
+//         </button>
+//       )}
+//     </div>

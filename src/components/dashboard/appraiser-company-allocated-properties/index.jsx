@@ -262,13 +262,11 @@ const Index = () => {
         const searchTerm = searchInput.toLowerCase();
 
         return (
-          property.zipCode.toLowerCase().includes(searchTerm) ||
-          property.area.toLowerCase().includes(searchTerm) ||
-          property.city.toLowerCase().includes(searchTerm) ||
-          property.province.toLowerCase().includes(searchTerm) ||
-          property.streetName.toLowerCase().includes(searchTerm) ||
-          property.streetNumber.toLowerCase().includes(searchTerm) ||
-          property.typeOfBuilding.toLowerCase().includes(searchTerm)
+          //implment search over this only
+      String(property.orderId).toLowerCase().includes(searchTerm) ||
+      property.zipCode.toLowerCase().includes(searchTerm) ||
+      property.city.toLowerCase().includes(searchTerm) ||
+      property.province.toLowerCase().includes(searchTerm)
         );
       });
 
