@@ -37,7 +37,7 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
       console.warn("Email query parameter missing");
     }
 
-    if (userTypeParam && ["1", "2", "3", "4"].includes(userTypeParam)) {
+    if (userTypeParam && ["1", "2", "3", "4", "5", "6"].includes(userTypeParam)) {
       setUserType(userTypeParam);
     } else {
       console.warn("Invalid or missing UserType query parameter");
@@ -121,9 +121,8 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
               <option value="2">Mortgage Brokerage</option>
               <option value="3">Appraiser</option>
               <option value="4">Appraiser Company</option>
-              <option value="5">Sub Appraiser</option>
-              <option value="6">Sub Broker</option>
-
+              <option value="5">Appraiser</option>
+              <option value="6">Broker</option>
             </select>
           </div>
 

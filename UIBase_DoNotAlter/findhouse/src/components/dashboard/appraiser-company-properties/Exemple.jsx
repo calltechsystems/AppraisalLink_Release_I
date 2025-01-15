@@ -437,7 +437,7 @@ export default function Exemple({
   }
 
   const openAssignModalHandler = (property) => {
-    setAssignPropertyId(property.$id);
+    setAssignPropertyId(property.propertyId);
     setAssignModal(true);
   };
 
@@ -451,15 +451,24 @@ export default function Exemple({
   }, [checkData]);
 
   const checkIfPropertyAlreadyAssigned = (propertyId) => {
-    let assigned = {};
     console.log("assignedProp", propertyId, assignedProperties);
-    assignedProperties.map((prop, index) => {
-      if (String(prop.propertyid) === propertyId) {
-        assigned = prop;
-      }
-    });
-    return assigned;
+    return (
+      assignedProperties.find(
+        (prop) => String(prop.propertyid) === propertyId
+      ) || {}
+    );
   };
+
+  // const checkIfPropertyAlreadyAssigned = (propertyId) => {
+  //   let assigned = {};
+  //   console.log("assignedProp", propertyId, assignedProperties);
+  //   assignedProperties.map((prop, index) => {
+  //     if (String(prop.propertyid) === propertyId) {
+  //       assigned = prop;
+  //     }
+  //   });
+  //   return assigned;
+  // };
 
   const getisAlreadyArchived = (propertyId) => {
     let isPresent = false;
