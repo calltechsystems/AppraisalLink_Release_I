@@ -12,6 +12,11 @@ const MyAccount = ({ user, profileCount, setProfile, userData }) => {
     userInfo = JSON.parse(localStorage.getItem("user"));
   }, []);
 
+  const logout = () => {
+    localStorage.removeItem("user");
+    route.push("/login");
+  };
+
   const profileMenuItems = [
     { id: 1, name: "Profile", ruterPath: "/appraiser-profile" },
     // { id: 2, name: " My Message", ruterPath: "/my-message" },
@@ -21,7 +26,7 @@ const MyAccount = ({ user, profileCount, setProfile, userData }) => {
       name: "Change Password ",
       ruterPath: "/appraiser-change-password",
     },
-    { id: 5, name: "Log out", ruterPath: "/login" },
+    { id: 5, name: "Log out", onClick: { logout }, ruterPath: "/login" },
   ];
 
   const [profileValue, setProfileValue] = useState(0);
@@ -147,10 +152,6 @@ const MyAccount = ({ user, profileCount, setProfile, userData }) => {
     }
   }, []);
   const route = useRouter();
-  const logout = () => {
-    localStorage.removeItem("user");
-    route.push("/login");
-  };
   return (
     <>
       <div className="user_set_header">

@@ -271,6 +271,83 @@ const ProfileInfo = ({
         ? streetName
         : userData.appraiserCompany_Datails.streetName;
 
+    const payload = {
+      id: userData.userId,
+      token: userData.token,
+      firstName: firstNameRef,
+      lastName: lastNameRef,
+      appraiserCompanyName: companyNameRef,
+      licenseNumber: licenseNumber,
+      addressLineOne: addressLineRef,
+      addressLineTwo: addressLineTwoRef,
+      officeContactFirstName: officeContactFirstName,
+      officeContactLastName: officeContactLastName,
+      officeContactEmail: officeContactEmail,
+      city: cityRef,
+      state: stateRef,
+      lenderListUrl: selectedImage2.url,
+      postalCode: zipcodeRef,
+      phoneNumber: phoneNumberRef,
+      officeContactPhone: officeContactPhone,
+      cellNumber: cellNumber,
+      emailId: emailId,
+      streetNumber: streetNumber,
+      streetName: streetName,
+      apartmentNumber: apartmentNumber,
+      profileImage: SelectedImage,
+      emailNotification: emailNotification,
+      smsNotification: smsNotification,
+    };
+
+    // if (
+    //   !payload.lastName ||
+    //   !payload.firstName ||
+    //   !payload.appraiserCompanyName ||
+    //   !payload.phoneNumber ||
+    //   !payload.emailId ||
+    //   !payload.licenseNumber ||
+    //   !payload.streetName ||
+    //   !payload.streetNumber ||
+    //   !payload.city ||
+    //   !payload.state ||
+    //   !payload.postalCode
+    // ) {
+    //   toast.error("Please fill all the required fields!");
+    // }
+    const fields = [
+      { key: "lastName", message: "Last Name is required!" },
+      { key: "firstName", message: "First Name is required!" },
+      { key: "licenseNumber", message: "License Number is required!" },
+      { key: "appraiserCompanyName", message: "Company Name is required!" },
+      { key: "phoneNumber", message: "Phone Number is required!" },
+      { key: "emailId", message: "Email ID is required!" },
+      { key: "streetName", message: "Street Name is required!" },
+      { key: "streetNumber", message: "Street Number is required!" },
+      { key: "city", message: "City is required!" },
+      { key: "state", message: "State is required!" },
+      { key: "postalCode", message: "Postal Code is required!" },
+    ];
+
+    const missingFields = fields.filter(({ key }) => !payload[key]);
+
+    if (missingFields.length === 1) {
+      // Show specific error for a single missing field
+      toast.error(missingFields[0].message);
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return;
+    } else if (missingFields.length > 1) {
+      // Show generic error for multiple missing fields
+      toast.error("Please fill all required fields!");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return;
+    }
+
     const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const cellNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const nameRegex = /^[A-Za-z]+$/;
@@ -415,72 +492,7 @@ const ProfileInfo = ({
     } else {
       let count = 9;
 
-      const payload = {
-        id: userData.userId,
-        token: userData.token,
-        firstName: firstNameRef,
-        lastName: lastNameRef,
-        appraiserCompanyName: companyNameRef,
-        licenseNumber: licenseNumber,
-        addressLineOne: addressLineRef,
-        addressLineTwo: addressLineTwoRef,
-        officeContactFirstName: officeContactFirstName,
-        officeContactLastName: officeContactLastName,
-        officeContactEmail: officeContactEmail,
-        city: cityRef,
-        state: stateRef,
-        lenderListUrl: selectedImage2.url,
-        postalCode: zipcodeRef,
-        phoneNumber: phoneNumberRef,
-        officeContactPhone: officeContactPhone,
-        cellNumber: cellNumber,
-        emailId: emailId,
-        streetNumber: streetNumber,
-        streetName: streetName,
-        apartmentNumber: apartmentNumber,
-        profileImage: SelectedImage,
-        emailNotification: emailNotification,
-        smsNotification: smsNotification,
-      };
-
-      // if (
-      //   !payload.lastName ||
-      //   !payload.firstName ||
-      //   !payload.appraiserCompanyName ||
-      //   !payload.phoneNumber ||
-      //   !payload.emailId ||
-      //   !payload.licenseNumber ||
-      //   !payload.streetName ||
-      //   !payload.streetNumber ||
-      //   !payload.city ||
-      //   !payload.state ||
-      //   !payload.postalCode
-      // ) {
-      //   toast.error("Please fill all the required fields!");
-      // }
-      const fields = [
-        { key: "lastName", message: "Last Name is required!" },
-        { key: "firstName", message: "First Name is required!" },
-        { key: "licenseNumber", message: "License Number is required!" },
-        { key: "appraiserCompanyName", message: "Company Name is required!" },
-        { key: "phoneNumber", message: "Phone Number is required!" },
-        { key: "emailId", message: "Email ID is required!" },
-        { key: "streetName", message: "Street Name is required!" },
-        { key: "streetNumber", message: "Street Number is required!" },
-        { key: "city", message: "City is required!" },
-        { key: "state", message: "State is required!" },
-        { key: "postalCode", message: "Postal Code is required!" },
-      ];
-
-      const missingFields = fields.filter(({ key }) => !payload[key]);
-
-      if (missingFields.length === 1) {
-        // Show specific error for a single missing field
-        toast.error(missingFields[0].message);
-      } else if (missingFields.length > 1) {
-        // Show generic error for multiple missing fields
-        toast.error("Please fill all required fields!");
-      } else if (SMSAlert && !phoneNumberRef) {
+      if (SMSAlert && !phoneNumberRef) {
         toast.error(
           "As SMS Alert is selected but phone number is not provided so SMS Alert will not work properly!"
         );

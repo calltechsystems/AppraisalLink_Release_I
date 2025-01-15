@@ -221,7 +221,26 @@ const Index = () => {
       })
       .catch((err) => {
         toast.dismiss();
-        toast.error(err);
+        if (err.response) {
+          // Server responded with a status code outside the 2xx range
+          const status = err.response.status;
+          const errorMessage =
+            err.response.data?.message || "Something went wrong!";
+
+          if (status === 400) {
+            toast.error(`Error 400: ${errorMessage}`);
+          } else {
+            toast.error(`Error ${status}: ${errorMessage}`);
+          }
+        } else if (err.request) {
+          // Request was made but no response was received
+          toast.error(
+            "Error: No response from server. Please try again later."
+          );
+        } else {
+          // Something else caused the error
+          toast.error(`Error: ${err.message}`);
+        }
       });
   };
 
@@ -557,8 +576,6 @@ const Index = () => {
 
   const [selectedAppraiser, setSelectedAppraiser] = useState({});
 
-  
-
   const assignAppraiserUpdateHandler = async () => {
     if (!selectedAppraiser) {
       toast.error("Please select an appropriate appraiser!");
@@ -602,22 +619,41 @@ const Index = () => {
       toast.success("Property successfully assigned!");
       setAssignPropertyId(-1);
       location.reload(true); // Consider replacing this with a more user-friendly update mechanism
-    } catch (error) {
+    } catch (err) {
       toast.dismiss();
 
-      if (error.response) {
-        // Server responded with a status code outside the 2xx range
-        toast.error(
-          `Error ${error.response.status}: ${
-            error.response.data.message || "Failed to assign property."
-          }`
-        );
-      } else if (error.request) {
-        // Request was made but no response received
-        toast.error("No response from the server. Please try again later.");
+      // if (error.response) {
+      //   // Server responded with a status code outside the 2xx range
+      //   toast.error(
+      //     `Error ${error.response.status}: ${
+      //       error.response.data.message || "Failed to assign property."
+      //     }`
+      //   );
+      // } else if (error.request) {
+      //   // Request was made but no response received
+      //   toast.error("No response from the server. Please try again later.");
+      // } else {
+      //   // Something else caused the error
+      //   toast.error(`Error: ${error.message}`);
+      // }
+      if (err.response) {
+        // Extract status and server error message
+        const { status, data } = err.response;
+        const errorMessage = data?.message || "An error occurred";
+
+        if (status === 400) {
+          // Specific message for 400 errors
+          toast.error(`Error 400: ${errorMessage}`);
+        } else {
+          // Generic message for other status codes
+          toast.error(`Error ${status}: ${errorMessage}`);
+        }
+      } else if (err.request) {
+        // No response received from server
+        toast.error("No response from server. Please try again later.");
       } else {
-        // Something else caused the error
-        toast.error(`Error: ${error.message}`);
+        // Axios or unexpected error
+        toast.error(`Unexpected error: ${err.message}`);
       }
     }
   };

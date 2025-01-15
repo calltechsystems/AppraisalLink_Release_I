@@ -112,6 +112,7 @@ const Form = ({
             // console.log(err);
             toast.dismiss();
             setErrorMessage(err.response.data.error);
+            console.log("err", err.response.data.error);
             setModalIsOpenError(true);
           }
         })

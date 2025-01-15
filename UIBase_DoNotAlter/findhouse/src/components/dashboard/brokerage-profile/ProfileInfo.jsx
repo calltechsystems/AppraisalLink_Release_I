@@ -257,6 +257,97 @@ const ProfileInfo = ({
     const streetNameRef =
       streetName !== "" ? streetName : userData.brokerage_Details.streetName;
 
+    const payload = {
+      id: userData.userId,
+      token: userData.token,
+      firstName: firstNameRef,
+      lastName: lastNameRef,
+      brokerageName: brokerageNameRef,
+      streetNumber: streetNumber,
+      apartmentNo: apartmentNo,
+      streetName: streetName,
+      city: cityRef,
+      province: stateRef,
+      postalCode: zipCode,
+      area: "",
+      phoneNumber: phoneNumberRef,
+      cellNumber: cellNumberRef,
+      profileImage: SelectedImage,
+      assistantEmailAddress: assistantEmailAddress,
+      assistantFirstName: assistantFirstName,
+      assistantLastName: assistantLastName,
+      assistantPhoneNumber: assistantPhoneNumber,
+      assistantTwoFirstName: assistantTwoFirstName,
+      assistantTwoLastName: assistantTwoLastName,
+      assistantTwoEmailAddress: assistantTwoEmailAddress,
+      assistantTwoPhoneNumber: assistantTwoPhoneNumber,
+      mortageBrokerLicNo: mortageBrokerLicNoRef,
+      mortageBrokerageLicNo: mortageBrokrageLicNoRef,
+      emailId: emailId,
+      smsNotification: smsNotification,
+      emailNotification: emailNotification,
+    };
+    // if (
+    //   !payload.lastName ||
+    //   !payload.firstName ||
+    //   !payload.brokerageName ||
+    //   !payload.phoneNumber ||
+    //   !payload.emailId ||
+    //   !payload.mortageBrokerLicNo ||
+    //   !payload.mortageBrokerageLicNo ||
+    //   !payload.streetName ||
+    //   !payload.streetNumber ||
+    //   !payload.city ||
+    //   !payload.province ||
+    //   !payload.postalCode
+    // ) {
+    //   toast.error("Please fill all the required fields!");
+    // }
+    const fields = [
+      { key: "lastName", message: "Last Name is required!" },
+      { key: "firstName", message: "First Name is required!" },
+      {
+        key: "brokerageName",
+        message: "Brokerage Name is required!",
+      },
+      { key: "phoneNumber", message: "Phone Number is required!" },
+      { key: "emailId", message: "Email ID is required!" },
+      {
+        key: "mortageBrokerLicNo",
+        message: "Mortgage Broker License Number is required!",
+      },
+      {
+        key: "mortageBrokerageLicNo",
+        message: "Mortgage Brokerage License Number is required!",
+      },
+      // { key: "lenderListUrl", message: "Lender List URL is required!" },
+      { key: "streetName", message: "Street Name is required!" },
+      { key: "streetNumber", message: "Street Number is required!" },
+      { key: "city", message: "City is required!" },
+      { key: "province", message: "State is required!" },
+      { key: "postalCode", message: "Postal Code is required!" },
+    ];
+
+    const missingFields = fields.filter(({ key }) => !payload[key]);
+
+    if (missingFields.length === 1) {
+      // Show specific error for a single missing field
+      toast.error(missingFields[0].message);
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return;
+    } else if (missingFields.length > 1) {
+      // Show generic error for multiple missing fields
+      toast.error("Please fill all required fields!");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return;
+    }
+
     const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const cellNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const nameRegex = /^[A-Za-z]+$/;
@@ -437,86 +528,7 @@ const ProfileInfo = ({
         count--;
       }
 
-      const payload = {
-        id: userData.userId,
-        token: userData.token,
-        firstName: firstNameRef,
-        lastName: lastNameRef,
-        brokerageName: brokerageNameRef,
-        streetNumber: streetNumber,
-        apartmentNo: apartmentNo,
-        streetName: streetName,
-        city: cityRef,
-        province: stateRef,
-        postalCode: zipCode,
-        area: "",
-        phoneNumber: phoneNumberRef,
-        cellNumber: cellNumberRef,
-        profileImage: SelectedImage,
-        assistantEmailAddress: assistantEmailAddress,
-        assistantFirstName: assistantFirstName,
-        assistantLastName: assistantLastName,
-        assistantPhoneNumber: assistantPhoneNumber,
-        assistantTwoFirstName: assistantTwoFirstName,
-        assistantTwoLastName: assistantTwoLastName,
-        assistantTwoEmailAddress: assistantTwoEmailAddress,
-        assistantTwoPhoneNumber: assistantTwoPhoneNumber,
-        mortageBrokerLicNo: mortageBrokerLicNoRef,
-        mortageBrokerageLicNo: mortageBrokrageLicNoRef,
-        emailId: emailId,
-        smsNotification: smsNotification,
-        emailNotification: emailNotification,
-      };
-      // if (
-      //   !payload.lastName ||
-      //   !payload.firstName ||
-      //   !payload.brokerageName ||
-      //   !payload.phoneNumber ||
-      //   !payload.emailId ||
-      //   !payload.mortageBrokerLicNo ||
-      //   !payload.mortageBrokerageLicNo ||
-      //   !payload.streetName ||
-      //   !payload.streetNumber ||
-      //   !payload.city ||
-      //   !payload.province ||
-      //   !payload.postalCode
-      // ) {
-      //   toast.error("Please fill all the required fields!");
-      // }
-      const fields = [
-        { key: "lastName", message: "Last Name is required!" },
-        { key: "firstName", message: "First Name is required!" },
-        {
-          key: "brokerageName",
-          message: "Brokerage Name is required!",
-        },
-        { key: "phoneNumber", message: "Phone Number is required!" },
-        { key: "emailId", message: "Email ID is required!" },
-        {
-          key: "mortageBrokerLicNo",
-          message: "Mortgage Broker License Number is required!",
-        },
-        {
-          key: "mortageBrokerageLicNo",
-          message: "Mortgage Brokerage License Number is required!",
-        },
-        // { key: "lenderListUrl", message: "Lender List URL is required!" },
-        { key: "streetName", message: "Street Name is required!" },
-        { key: "streetNumber", message: "Street Number is required!" },
-        { key: "city", message: "City is required!" },
-        { key: "province", message: "State is required!" },
-        { key: "postalCode", message: "Postal Code is required!" },
-      ];
-
-      const missingFields = fields.filter(({ key }) => !payload[key]);
-
-      if (missingFields.length === 1) {
-        // Show specific error for a single missing field
-        toast.error(missingFields[0].message);
-      } else if (missingFields.length > 1) {
-        // Show generic error for multiple missing fields
-        toast.error("Please fill all required fields!");
-      } else if (SMSAlert && !phoneNumber) {
+      if (SMSAlert && !phoneNumber) {
         toast.error(
           "As SMS Alert is selected but phone number is not provided so SMS Alert will not work properly!"
         );

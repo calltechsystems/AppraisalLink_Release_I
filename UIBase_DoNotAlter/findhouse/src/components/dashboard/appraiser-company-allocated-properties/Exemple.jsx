@@ -441,7 +441,7 @@ export default function Exemple({
         requiredAppraiser = appraiser;
       }
     });
-    setAssignPropertyId(property.$id);
+    setAssignPropertyId(property.propertyId);
     setAssignedAppraiserInfo(requiredAppraiser);
     setAssignModal(true);
   };
