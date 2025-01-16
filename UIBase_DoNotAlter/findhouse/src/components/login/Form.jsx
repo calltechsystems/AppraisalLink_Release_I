@@ -26,6 +26,8 @@ const Form = ({
   const [successContent, setSuccessContent] = useState("");
   const [captchaVerfied, setCaptchaVerified] = useState(false);
 
+  const [modalIsOpenNew, setModalIsOpenNew] = useState(false);
+
   const [reloadOption, setReloadOption] = useState(false);
 
   const router = useRouter();
@@ -78,12 +80,13 @@ const Form = ({
         const status = err.response?.status;
         const errorMessage =
           status === 403
-            ? "Your account is not verified. Please check your email for the verification link."
+            ? "Verification email sent successfully! Please check your inbox."
             : err.response?.data?.error ||
               "An unexpected error occurred. Please try again.";
 
         setErrorMessage(errorMessage);
-        setModalIsOpenError(true);
+        setModalIsOpenNew(true);
+        // setModalIsOpenError(true);
       })
       .finally(() => {
         setLoading(false);
@@ -184,6 +187,7 @@ const Form = ({
   const closeModalLink = () => {
     // setModalIsOpen(false);
     setOpenViewModal(false);
+    setModalIsOpenNew(false);
     // router.push("/");
   };
 
@@ -470,6 +474,7 @@ const Form = ({
                         >
                           <input
                             type="text"
+                            ref={emailLoginRef}
                             // value={currentViewAppraiser.userInfo}
                             // // value={userInfo}
                             // onChange={(e) => setUserInfo(e.target.value)}
@@ -498,6 +503,84 @@ const Form = ({
                     onClick={() => resendLink()}
                   >
                     Send
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {modalIsOpenNew && (
+            <div className="modal">
+              <div
+                className="modal-content"
+                style={{ border: "2px solid #97d700", width: "40%" }}
+              >
+                <div className="col-lg-12">
+                  <div className="row">
+                    <div className="col-lg-12">
+                      <Link href="/" className="">
+                        <Image
+                          width={60}
+                          height={45}
+                          className="logo1 img-fluid"
+                          style={{ marginTop: "-20px" }}
+                          src="/assets/images/Appraisal_Land_Logo.png"
+                          alt="header-logo2.png"
+                        />
+                        <span
+                          style={{
+                            color: "#2e008b",
+                            fontWeight: "bold",
+                            fontSize: "24px",
+                            // marginTop: "20px",
+                          }}
+                        >
+                          Appraisal
+                        </span>
+                        <span
+                          style={{
+                            color: "#97d700",
+                            fontWeight: "bold",
+                            fontSize: "24px",
+                            // marginTop: "20px",
+                          }}
+                        >
+                          {" "}
+                          Land
+                        </span>
+                      </Link>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-lg-12 text-center">
+                      <h3 className=" text-color mt-1">Successful</h3>
+                    </div>
+                  </div>
+                  <div
+                    className="mt-2 mb-3"
+                    style={{ border: "2px solid #97d700" }}
+                  ></div>
+                </div>
+                <h5
+                  className="text-center text-dark"
+                  style={{ fontSize: "18px" }}
+                >
+                  Verification email sent successfully. <br />Please check your inbox.
+                </h5>
+                <div
+                  className="mt-2 mb-3"
+                  style={{ border: "2px solid #97d700" }}
+                ></div>
+                <div
+                  className="col-lg-12 text-center"
+                  style={{ display: "flex", justifyContent: "center" }}
+                >
+                  <button
+                    className="btn btn-color w-50"
+                    onClick={() => closeModalLink()}
+                    style={{}}
+                  >
+                    Ok
                   </button>
                 </div>
               </div>
