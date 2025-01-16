@@ -15,6 +15,7 @@ const Pricing = ({
   setData,
   currentSubscription,
   setPrice,
+  planData
 }) => {
   const pricingContentForMonthly = [
     {
@@ -79,13 +80,15 @@ const Pricing = ({
   const content =
     isPlan === 1 ? pricingContentForMonthly : pricingContentForYearly;
 
-  const selectPackageHandler = (id, title, price, type) => {
+  const selectPackageHandler = (id, title, price, type, item) => {
+    console.log({item})
     setModalOpen(true);
     setPrice({
       id: id,
       title: title,
       price: price,
       type: type,
+      item
     });
   };
 
@@ -270,7 +273,8 @@ const Pricing = ({
                       isPlan === 1
                         ? item.monthlyAmount - item.discount
                         : item.yearlyAmount - item.discount,
-                      "plan"
+                      "plan",
+                      item
                     )
                   }
                 >
@@ -292,7 +296,8 @@ const Pricing = ({
                         isPlan === 1
                           ? item.monthlyAmount - item.discount
                           : item.yearlyAmount - item.discount,
-                        "plan"
+                        "plan",
+                        item
                       )
                     }
                   >
@@ -400,7 +405,8 @@ const Pricing = ({
                           selectedTopUp.id,
                           selectedTopUp.topupDescription,
                           selectedTopUp.tupUpAmount,
-                          "topup"
+                          "topup",
+                          item
                         )
                     : cancelPackageHandler
                 }

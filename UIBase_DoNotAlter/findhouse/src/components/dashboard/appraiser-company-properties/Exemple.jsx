@@ -424,7 +424,7 @@ export default function Exemple({
   const checkInAssignedProperty = (id) => {
     let isAssigned = false;
     assignedProperties.map((prop, index) => {
-      if (String(prop.propertyId) === String(id)) {
+      if (String(prop?.property?.propertyId) === String(id)) {
         isAssigned = true;
       }
     });
@@ -451,12 +451,14 @@ export default function Exemple({
   }, [checkData]);
 
   const checkIfPropertyAlreadyAssigned = (propertyId) => {
-    console.log("assignedProp", propertyId, assignedProperties);
-    return (
-      assignedProperties.find(
-        (prop) => String(prop.propertyid) === propertyId
-      ) || {}
-    );
+    let assigned = {};
+    assignedProperties.map((prop, index) => {
+      if (prop?.propertyid == propertyId) {
+        assigned = prop;
+      }
+    });
+    
+    return assigned;
   };
 
   // const checkIfPropertyAlreadyAssigned = (propertyId) => {
@@ -496,7 +498,7 @@ export default function Exemple({
               : false
             : false;
 
-        const isAssigned = checkIfPropertyAlreadyAssigned(property.$id);
+        const isAssigned = checkIfPropertyAlreadyAssigned(property.propertyId);
 
         const isArchive = foundArchiveHandler(property.propertyId);
 
@@ -1114,6 +1116,7 @@ export default function Exemple({
                 // const endDate = new Date();\
                 let tempProperties = res.data.data.$values;
                 const temp = res.data.data.$values;
+                console.log({assginedProperty: res.data})
 
                 setAssignedProperties(tempProperties);
               })

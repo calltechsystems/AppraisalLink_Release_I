@@ -186,6 +186,8 @@ const Index = () => {
       ),
     };
 
+    console.log({payload});
+
     const encryptedData = encryptionData(payload);
     toast.loading("Assigning the property!!....");
     axios

@@ -6,27 +6,38 @@ import {
 } from "@paypal/react-paypal-js";
 import toast from "react-hot-toast";
 
-const Checkout = ({ planDetails, setErrorOccurred }) => {
+const Checkout = ({ planDetails, setErrorOccurred, setOnSuccess }) => {
   const [{ options, isPending }, dispatch] = usePayPalScriptReducer();
   const [currency, setCurrency] = useState(options.currency || "USD");
-  let userData = {};
-  
+  const [userData, setUserData] = useState({});
+
   useEffect(() => {
-    userData = localStorage.getItem("user") || {};
-  },[]);
-  
-  `console.log({paypal_clientid: 'process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID'});`
-  function generateCustomId(brokerId, planId) {
+    setUserData(JSON.parse(localStorage.getItem("user")) || {});
+  }, [planDetails]);
+
+  const generateCustomId = (brokerId, planId) => {
+    if (!brokerId || !planId) {
+      console.error("Missing brokerId or planId");
+      return "invalid-id";
+    }
     const currentDate = new Date();
     const formattedDate = currentDate
       .toISOString()
       .slice(0, 10)
       .replace(/-/g, "");
     const timestamp = currentDate.getTime();
-    const customId = `${brokerId}-${planId}-${formattedDate}-${timestamp}`;
+    return `${brokerId}-${planId}-${formattedDate}-${timestamp}`;
+  };
 
-    return customId;
+  function getNextMonthDateWithYearCheck() {
+    const currentDate = new Date();
+
+    const nextMonthDate = new Date(currentDate);
+    nextMonthDate.setMonth(currentDate.getMonth() + 1);
+
+    return nextMonthDate;
   }
+
   const onCurrencyChange = ({ target: { value } }) => {
     setCurrency(value);
     dispatch({
@@ -40,12 +51,12 @@ const Checkout = ({ planDetails, setErrorOccurred }) => {
 
   const onCreateOrder = (data, actions) => {
     return actions.order.create({
-        intent: "CAPTURE",
+      intent: "CAPTURE",
       purchase_units: [
         {
           description: `Broker ${planDetails?.title} Subscription Plan`,
           custom_id: generateCustomId(userData?.userId, planDetails?.id),
-        //   soft_descriptor: `RealEstateBrokerSub${planDetails?.title}Plan`,
+          //   soft_descriptor: `RealEstateBrokerSub${planDetails?.title}Plan`,
           amount: {
             value: planDetails?.price,
             currency_code: currency,
@@ -75,7 +86,7 @@ const Checkout = ({ planDetails, setErrorOccurred }) => {
         },
       ],
       application_context: {
-        brand_name: userData?.broker_Details?.companyName,
+        brand_name: userData?.broker_Details?.companyName || "My Business",
         locale: "en-US",
         user_action: "PAY_NOW",
         shipping_preference: "NO_SHIPPING",
@@ -83,25 +94,48 @@ const Checkout = ({ planDetails, setErrorOccurred }) => {
     });
   };
 
+  const generateTheTransactionPayload = (details) => {
+    return {
+      transactionDetails: {
+        transaction_detail: details,
+        user_id: userData?.userId,
+        created_time: details?.create_time,
+        plan_amount: planDetails?.price,
+        plan_name: planDetails?.title,
+        Is_Active: true,
+        start_date: new Date(),
+        end_date: getNextMonthDateWithYearCheck(),
+        used_properties: 0,
+        no_of_properties: planDetails?.item?.noOfProperties,
+        total_properties: planDetails?.item?.noOfProperties,
+      },
+      subscriptionDetails: {
+        start_date: new Date(),
+        end_date: getNextMonthDateWithYearCheck(),
+        plan_id: planDetails?.id,
+        total_properties: planDetails?.item?.noOfProperties,
+        used_properties: 0,
+        user_id: userData?.userId,
+      },
+    };
+  };
+
   const onApproveOrder = (data, actions) => {
     return actions.order.capture().then((details) => {
-      toast.success(`Transaction completed.`);
-      const payload = {
-        payerUserId: userData?.userId,
-        planId: planDetails?.id,
-        orderCapturedDetails: details,
-      };
-      console.log({payload})
+      const payload = generateTheTransactionPayload(details);
+      console.log({ payload });
       //save this payload to the DB
+      setOnSuccess(true);
     });
   };
 
   const onCancelOrder = (data) => {
+    console.error("PayPal On Cancel data:", data);
     setErrorOccurred(true);
   };
 
   const onError = (err) => {
-    console.error("PayPal Error:", err); 
+    console.error("PayPal On Error data:", err);
     setErrorOccurred(true);
   };
 
@@ -134,14 +168,16 @@ const Checkout = ({ planDetails, setErrorOccurred }) => {
 };
 
 // Wrap the Checkout component with PayPalScriptProvider
-const CheckoutPage = ({ planDetails,setErrorOccurred}) => (
+const CheckoutPage = ({ planDetails, setErrorOccurred, setOnSuccess }) => (
   <PayPalScriptProvider
     options={{
-      "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
-      currency: "USD", 
+      "client-id":
+        "AR1CYFbM_D9uUk9mRvFJSsJHTdny-Lddd_tKSVtFUeSK7r-M2dJeEIR6PA5TIkpIr8keinWycBpiikvh",
+      // "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
+      currency: "USD",
     }}
   >
-    <Checkout planDetails={planDetails} setErrorOccurred={setErrorOccurred}/>
+    <Checkout planDetails={planDetails} setErrorOccurred={setErrorOccurred} setOnSuccess={setOnSuccess}/>
   </PayPalScriptProvider>
 );
 
