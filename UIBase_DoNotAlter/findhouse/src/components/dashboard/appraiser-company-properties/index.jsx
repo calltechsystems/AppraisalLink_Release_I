@@ -197,7 +197,7 @@ const Index = () => {
       .then((res) => {
         toast.dismiss();
         toast.success("Successfully assigned the property!");
-        location.reload(true);
+        // location.reload(true);
       })
       .catch((err) => {
         toast.dismiss();

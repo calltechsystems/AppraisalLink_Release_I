@@ -210,7 +210,8 @@ export default function Exemple({
         toast.dismiss();
         toast.error("Try Again!!");
       });
-    setRefresh(true);
+    // setRefresh(true);
+    window.location.reload();
   };
 
   const getUserName = (id)=>{

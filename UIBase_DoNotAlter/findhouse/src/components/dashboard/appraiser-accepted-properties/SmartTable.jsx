@@ -4,7 +4,7 @@ import SVGArrowDown from "./icons/SVGArrowDown";
 import SVGArrowUp from "./icons/SVGArrowUp";
 import SVGChevronLeft from "./icons/SVGChevronLeft";
 import SVGChevronRight from "./icons/SVGChevronRight";
-import { FaRedo } from "react-icons/fa";
+import { FaDownload, FaRedo } from "react-icons/fa";
 import * as XLSX from "xlsx";
 
 import { useReactToPrint } from "react-to-print";
@@ -431,7 +431,7 @@ function SmartTable(props) {
   }, [props.data]);
 
   return (
-    <div className="col-12 p-1">
+    <div className="col-12 pt-3">
       <div className="smartTable-container row">
         <div className="candidate_revew_select style2 mb30-991">
           <ul className="mb0 mt-0">
@@ -441,9 +441,7 @@ function SmartTable(props) {
                 setFilterQuery={props.setFilterQuery}
               />
             </li>
-            {/* <li className="list-inline-item">
-          <FilteringBy setFilterQuery={props.setSearchQuery} />
-        </li> */}
+         
             <li className="list-inline-item" style={{ marginRight: "15px" }}>
               <div className="candidate_revew_search_box course fn-520">
                 <SearchBox
@@ -461,14 +459,14 @@ function SmartTable(props) {
               )}
               <div className="col-lg-12">
                 <div className="row">
-                  <div
-                    className="col-lg-6 btn btn-color w-50"
-                    onClick={() => handlePrint()}
-                    title="Download Pdf"
-                  >
-                    <span className="flaticon-download "></span>
-                  </div>
-                  <div className="col-lg-6 w-50">
+                  <div className="d-flex gap-1">
+                    <button
+                      className="btn btn-color"
+                      onClick={() => handlePrint()}
+                      title="Download Pdf"
+                    >
+                      <FaDownload />
+                    </button>
                     <button
                       className="btn btn-color"
                       onClick={() => props.refreshHandler()}
@@ -578,7 +576,7 @@ function SmartTable(props) {
             <div className="row">
               <div
                 className="smartTable-noDataFound col-12"
-                style={{ marginTop: "110px", marginBottom: "40px" }}
+                style={{ marginTop: "100px", marginBottom: "40px" }}
               >
                 {props.dataFetched && props.properties.length === 0 ? (
                   showNoData ? (

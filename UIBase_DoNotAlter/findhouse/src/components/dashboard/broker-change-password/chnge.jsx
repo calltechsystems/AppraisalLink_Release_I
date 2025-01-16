@@ -1,14 +1,14 @@
 import axios from "axios";
 import { useRef, useState } from "react";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaEye } from "react-icons/fa";
 import { encryptionData } from "../../../utils/dataEncryption";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 
 const ChangePassword = () => {
   const oldPasswordRef = useRef("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const newPasswordRef = useRef("");
+  const confirmPasswordRef = useRef("");
 
   const [passwordVisibility, setPasswordVisibility] = useState({
     old: false,
@@ -16,15 +16,7 @@ const ChangePassword = () => {
     confirm: false,
   });
 
-  const [passwordStrength, setPasswordStrength] = useState("");
-  const [passwordCriteria, setPasswordCriteria] = useState({
-    length: false,
-    uppercase: false,
-    lowercase: false,
-    number: false,
-    specialChar: false,
-  });
-  const [validationErrors, setValidationErrors] = useState({});
+  const [validationErrors, setValidationErrors] = useState({}); // State for validation errors
 
   const userData = JSON.parse(localStorage.getItem("user")) || {};
   const router = useRouter();
@@ -33,66 +25,47 @@ const ChangePassword = () => {
     setPasswordVisibility((prev) => ({ ...prev, [field]: !prev[field] }));
   };
 
-  const checkPasswordStrength = (password) => {
-    const length = password.length >= 8;
-    const uppercase = /[A-Z]/.test(password);
-    const lowercase = /[a-z]/.test(password);
-    const number = /[0-9]/.test(password);
-    const specialChar = /[!@#$%^&*]/.test(password);
-
-    setPasswordCriteria({ length, uppercase, lowercase, number, specialChar });
-
-    if (length && uppercase && lowercase && number && specialChar)
-      return "Strong";
-    if (length && (uppercase || lowercase) && (number || specialChar))
-      return "Moderate";
-    return "Weak";
-  };
-
-  const handleNewPasswordChange = (e) => {
-    const password = e.target.value;
-    setNewPassword(password);
-    setPasswordStrength(checkPasswordStrength(password));
-  };
-
-  const handleConfirmPasswordChange = (e) => {
-    setConfirmPassword(e.target.value);
-    if (e.target.value !== newPassword) {
-      setValidationErrors((prev) => ({
-        ...prev,
-        confirmPassword: "Passwords do not match.",
-      }));
-    } else {
-      setValidationErrors((prev) => {
-        const { confirmPassword, ...rest } = prev;
-        return rest;
-      });
-    }
-  };
-
   const validateFields = () => {
     const errors = {};
     if (!oldPasswordRef.current.value)
       errors.oldPassword = "Old Password is required.";
-    if (!newPassword) errors.newPassword = "New Password is required.";
-    if (!confirmPassword)
+    if (!newPasswordRef.current.value)
+      errors.newPassword = "New Password is required.";
+    if (!confirmPasswordRef.current.value)
       errors.confirmPassword = "Confirm Password is required.";
-    if (newPassword && confirmPassword && newPassword !== confirmPassword) {
+    if (
+      newPasswordRef.current.value &&
+      confirmPasswordRef.current.value &&
+      newPasswordRef.current.value !== confirmPasswordRef.current.value
+    ) {
       errors.confirmPassword = "Passwords do not match.";
     }
     return errors;
   };
 
-  const submitHandler = async () => {
-    setValidationErrors({});
+  const validatePasswords = () => {
     const errors = validateFields();
     if (Object.keys(errors).length > 0) {
       setValidationErrors(errors);
-      return;
+      return false;
     }
+
+    if (newPasswordRef.current.value.length < 8) {
+      toast.error("Password should be at least 8 characters long.");
+      return false;
+    }
+
+    return true;
+  };
+
+  const submitHandler = async () => {
+    setValidationErrors({}); // Clear previous errors
+
+    if (!validatePasswords()) return;
 
     const email = userData.userEmail;
     const oldPassword = oldPasswordRef.current.value;
+    const newPassword = newPasswordRef.current.value;
 
     try {
       const payload = {
@@ -101,6 +74,7 @@ const ChangePassword = () => {
         newPassword,
         token: userData.token,
       };
+
       const encryptedData = encryptionData(payload);
       toast.loading("Changing the password");
 
@@ -108,10 +82,11 @@ const ChangePassword = () => {
         "/api/change-broker-password",
         encryptedData
       );
-      toast.dismiss();
       if (!response) {
+        toast.dismiss();
         toast.error("Failed. Please try again.");
       } else {
+        toast.dismiss();
         toast.success("Password updated successfully.");
         localStorage.removeItem("user");
         router.push("/login");
@@ -159,6 +134,7 @@ const ChangePassword = () => {
                       className="form-control"
                       id="oldPassword"
                       ref={oldPasswordRef}
+                      style={{ paddingRight: "40px" }}
                     />
                     {validationErrors.oldPassword && (
                       <small className="text-danger">
@@ -177,15 +153,10 @@ const ChangePassword = () => {
                   onClick={() => togglePasswordVisibility("old")}
                 >
                   <div
-                    className={`input-group-text ${
-                      passwordVisibility.old ? "eye-active" : "eye-inactive"
-                    }`}
-                    style={{
-                      cursor: "pointer",
-                      transition: "color 0.3s, transform 0.3s",
-                    }}
+                    className="input-group-text"
+                    style={{ cursor: "pointer" }}
                   >
-                    {passwordVisibility.old ? <FaEyeSlash /> : <FaEye />}
+                    <FaEye />
                   </div>
                 </div>
 
@@ -201,65 +172,9 @@ const ChangePassword = () => {
                       type={passwordVisibility.new ? "text" : "password"}
                       className="form-control"
                       id="newPassword"
-                      value={newPassword}
-                      onChange={handleNewPasswordChange}
+                      ref={newPasswordRef}
+                      style={{ paddingRight: "40px" }}
                     />
-                    {passwordStrength && (
-                      <small
-                        className={`text-${
-                          passwordStrength === "Weak" ? "danger" : "success"
-                        }`}
-                      >
-                        Strength: {passwordStrength}
-                      </small>
-                    )}
-                    <ul className="password-suggestions">
-                      <li
-                        className={
-                          passwordCriteria.length
-                            ? "text-success"
-                            : "text-danger"
-                        }
-                      >
-                        At least 8 characters
-                      </li>
-                      <li
-                        className={
-                          passwordCriteria.uppercase
-                            ? "text-success"
-                            : "text-danger"
-                        }
-                      >
-                        At least 1 uppercase letter
-                      </li>
-                      <li
-                        className={
-                          passwordCriteria.lowercase
-                            ? "text-success"
-                            : "text-danger"
-                        }
-                      >
-                        At least 1 lowercase letter
-                      </li>
-                      <li
-                        className={
-                          passwordCriteria.number
-                            ? "text-success"
-                            : "text-danger"
-                        }
-                      >
-                        At least 1 number
-                      </li>
-                      <li
-                        className={
-                          passwordCriteria.specialChar
-                            ? "text-success"
-                            : "text-danger"
-                        }
-                      >
-                        At least 1 special character (!@#$%^&*)
-                      </li>
-                    </ul>
                     {validationErrors.newPassword && (
                       <small className="text-danger">
                         {validationErrors.newPassword}
@@ -277,15 +192,10 @@ const ChangePassword = () => {
                   onClick={() => togglePasswordVisibility("new")}
                 >
                   <div
-                    className={`input-group-text ${
-                      passwordVisibility.new ? "eye-active" : "eye-inactive"
-                    }`}
-                    style={{
-                      cursor: "pointer",
-                      transition: "color 0.3s, transform 0.3s",
-                    }}
+                    className="input-group-text"
+                    style={{ cursor: "pointer" }}
                   >
-                    {passwordVisibility.new ? <FaEyeSlash /> : <FaEye />}
+                    <FaEye />
                   </div>
                 </div>
 
@@ -301,8 +211,8 @@ const ChangePassword = () => {
                       type={passwordVisibility.confirm ? "text" : "password"}
                       className="form-control"
                       id="confirmPassword"
-                      value={confirmPassword}
-                      onChange={handleConfirmPasswordChange}
+                      ref={confirmPasswordRef}
+                      style={{ paddingRight: "40px" }}
                     />
                     {validationErrors.confirmPassword && (
                       <small className="text-danger">
@@ -321,15 +231,10 @@ const ChangePassword = () => {
                   onClick={() => togglePasswordVisibility("confirm")}
                 >
                   <div
-                    className={`input-group-text ${
-                      passwordVisibility.confirm ? "eye-active" : "eye-inactive"
-                    }`}
-                    style={{
-                      cursor: "pointer",
-                      transition: "color 0.3s, transform 0.3s",
-                    }}
+                    className="input-group-text"
+                    style={{ cursor: "pointer" }}
                   >
-                    {passwordVisibility.confirm ? <FaEyeSlash /> : <FaEye />}
+                    <FaEye />
                   </div>
                 </div>
 

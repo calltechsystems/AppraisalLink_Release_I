@@ -447,7 +447,7 @@ function SmartTable(props) {
               )}
               <div className="col-lg-12">
                 <div className="row">
-                  <div className="col-lg-6 w-50">
+                  <div className="d-flex gap-1">
                     <button
                       className="btn btn-color"
                       onClick={() => handlePrint()}
@@ -455,8 +455,6 @@ function SmartTable(props) {
                     >
                       <FaDownload />
                     </button>
-                  </div>
-                  <div className="col-lg-6 w-50">
                     <button
                       className="btn btn-color"
                       onClick={() => props.refreshHandler()}
@@ -544,8 +542,7 @@ function SmartTable(props) {
                                       left: idxx === 0 ? "0" : undefined,
                                       backgroundColor:
                                         idxx === 0 ? "gray" : undefined,
-                                        color:
-                                        idxx === 0 ? "white" : undefined,
+                                      color: idxx === 0 ? "white" : undefined,
                                       zIndex: idxx === 0 ? "2" : "1",
                                     }}
                                   >
