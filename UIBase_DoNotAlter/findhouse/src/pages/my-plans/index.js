@@ -19,6 +19,7 @@ const Index = () => {
     title: "Basic",
     price: 0,
     type: "plan",
+    item: {}
   });
 
   const [checkout, setCheckOut] = useState(false);

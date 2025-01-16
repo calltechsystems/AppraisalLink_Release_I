@@ -408,7 +408,7 @@ export default function Exemple({
         requiredAppraiser = appraiser;
       }
     });
-    setAssignPropertyId(property.$id);
+    setAssignPropertyId(property.propertyId);
     setAssignedAppraiserInfo(requiredAppraiser);
     setAssignModal(true);
   };
@@ -428,6 +428,8 @@ export default function Exemple({
   useEffect(() => {
     let requiredAssign = [];
     allListedAssignAppraiser.map((assigned, idx) => {
+      
+      console.log({"within the loop":"", assigned})
       allAssignAppraiser.map((appraiser, index) => {
         const isPresent = checkIsAlreadyExisting(appraiser, requiredAssign);
         if (

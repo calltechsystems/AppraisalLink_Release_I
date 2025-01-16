@@ -16,6 +16,7 @@ const Modal = ({ modalOpen, closeModal, price }) => {
   const [showPaypalPage, setShowPaypalPage] = useState(false);
 
   const [errorOcurred, setErrorOccurred] = useState(false);
+  const [onSuccess, setOnSuccess] = useState(false);
 
   //checkout handler default setup
   const checkOutHandler = () => {
@@ -103,13 +104,13 @@ const Modal = ({ modalOpen, closeModal, price }) => {
     closeModal();
   };
 
-  const resetFields = () =>{
+  const resetFields = () => {
     setErrorOccurred(false);
     setStatus(0);
     setShowPaypalPage(false);
     setCurrentSelectedPlan({});
     closeModal();
-  }
+  };
 
   return (
     <div>
@@ -204,11 +205,18 @@ const Modal = ({ modalOpen, closeModal, price }) => {
                     <CheckoutPage
                       planDetails={currentSelectedPlan}
                       setErrorOccurred={setErrorOccurred}
+                      setOnSuccess={setOnSuccess}
                     />
                   </>
                 ) : (
                   ""
                 )
+              ) : onSuccess ? (
+                <div className="text-center" style={{ fontSize: "19px" }}>
+                  <span className="text-dark">
+                  Your payment was successfully completed. Thank you for your transaction.
+                  </span>
+                </div>
               ) : (
                 <div className="text-center" style={{ fontSize: "19px" }}>
                   <span className="text-dark">

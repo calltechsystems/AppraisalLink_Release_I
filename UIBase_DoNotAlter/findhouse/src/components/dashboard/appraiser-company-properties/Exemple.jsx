@@ -398,7 +398,7 @@ export default function Exemple({
   const checkInAssignedProperty = (id) => {
     let isAssigned = false;
     assignedProperties.map((prop, index) => {
-      if (String(prop.propertyId) === String(id)) {
+      if (String(prop?.property?.propertyId) === String(id)) {
         isAssigned = true;
       }
     });
@@ -411,7 +411,8 @@ export default function Exemple({
   }
 
   const openAssignModalHandler = (property) => {
-    setAssignPropertyId(property.$id);
+    console.log({Assignable_property: property});
+    setAssignPropertyId(property.propertyId);
     setAssignModal(true);
   };
 
@@ -426,12 +427,12 @@ export default function Exemple({
 
   const checkIfPropertyAlreadyAssigned = (propertyId) => {
     let assigned = {};
-    console.log("assignedProp", propertyId, assignedProperties);
     assignedProperties.map((prop, index) => {
-      if (String(prop.propertyid) === propertyId) {
+      if (prop?.propertyid == propertyId) {
         assigned = prop;
       }
     });
+    
     return assigned;
   };
 
@@ -461,7 +462,7 @@ export default function Exemple({
               : false
             : false;
 
-        const isAssigned = checkIfPropertyAlreadyAssigned(property.$id);
+        const isAssigned = checkIfPropertyAlreadyAssigned(property.propertyId);
 
         const isArchive = foundArchiveHandler(property.propertyId);
 
@@ -1080,6 +1081,7 @@ export default function Exemple({
                 // const endDate = new Date();\
                 let tempProperties = res.data.data.$values;
                 const temp = res.data.data.$values;
+                console.log({assginedProperty: res.data})
 
                 setAssignedProperties(tempProperties);
               })
