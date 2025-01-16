@@ -15,7 +15,7 @@ const Checkout = ({ planDetails, setErrorOccurred }) => {
     userData = localStorage.getItem("user") || {};
   },[]);
   
-  console.log({paypal_clientid: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID});
+  `console.log({paypal_clientid: 'process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID'});`
   function generateCustomId(brokerId, planId) {
     const currentDate = new Date();
     const formattedDate = currentDate
