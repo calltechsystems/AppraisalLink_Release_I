@@ -432,7 +432,7 @@ function SmartTable(props) {
               )}
               <div className="col-lg-12">
                 <div className="row">
-                  <div className="col-lg-6 w-50">
+                  <div className="d-flex gap-1">
                     <button
                       className="btn btn-color"
                       onClick={() => handlePrint()}
@@ -440,8 +440,6 @@ function SmartTable(props) {
                     >
                       <FaDownload />
                     </button>
-                  </div>
-                  <div className="col-lg-6 w-50">
                     <button
                       className="btn btn-color"
                       onClick={() => props.refreshHandler()}
@@ -458,12 +456,15 @@ function SmartTable(props) {
         <div className="col-12">
           {props.data.length > 0 ? (
             <div className="row mt-3">
-              <div className="smartTable-tableContainer" id="table-container"
-              style={{
-                overflow: "auto",
-                position: "relative",
-                maxHeight: "500px",
-              }}>
+              <div
+                className="smartTable-tableContainer"
+                id="table-container"
+                style={{
+                  overflow: "auto",
+                  position: "relative",
+                  maxHeight: "500px",
+                }}
+              >
                 <table
                   className={"smartTable-table table table-striped border"}
                   style={{ minWidth: tableWidth }}
@@ -526,8 +527,7 @@ function SmartTable(props) {
                                       left: idxx === 0 ? "0" : undefined,
                                       backgroundColor:
                                         idxx === 0 ? "gray" : undefined,
-                                        color:
-                                        idxx === 0 ? "white" : undefined,
+                                      color: idxx === 0 ? "white" : undefined,
                                       zIndex: idxx === 0 ? "2" : "1",
                                     }}
                                   >
@@ -549,7 +549,7 @@ function SmartTable(props) {
             <div className="row">
               <div
                 className="smartTable-noDataFound col-12"
-                style={{ marginTop: "110px", marginBottom: "40px" }}
+                style={{ marginTop: "100px", marginBottom: "40px" }}
               >
                 {props.dataFetched && props.properties.length === 0 ? (
                   showNoData ? (

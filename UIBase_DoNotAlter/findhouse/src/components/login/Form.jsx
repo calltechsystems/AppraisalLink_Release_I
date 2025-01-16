@@ -12,7 +12,7 @@ import toast from "react-hot-toast";
 const Form = ({
   user,
   setModalIsOpen,
-  setOpenViewModal,
+  // setOpenViewModal,
   setModalIsOpenError,
   setErrorMessage,
 }) => {
@@ -22,7 +22,7 @@ const Form = ({
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
   const [errorContent, setErrorContent] = useState("");
-
+  const [openViewModal, setOpenViewModal] = useState(false);
   const [successContent, setSuccessContent] = useState("");
   const [captchaVerfied, setCaptchaVerified] = useState(false);
 
@@ -47,6 +47,47 @@ const Form = ({
 
   const openModal = () => {
     setOpenViewModal(true);
+  };
+
+  const resendLink = () => {
+    const email = emailLoginRef.current?.value;
+
+    if (!email) {
+      setErrorMessage("Email address is required.");
+      setModalIsOpenError(true);
+      return;
+    }
+
+    const data = { email };
+    const encryptedData = encryptionData(data);
+
+    setLoading(true);
+    toast.loading("Sending verification link...");
+
+    axios
+      .post("/api/resendActivationLink", encryptedData) // Use a more descriptive endpoint
+      .then((res) => {
+        toast.dismiss();
+        toast.success(
+          "Verification email sent successfully! Please check your inbox."
+        );
+      })
+      .catch((err) => {
+        toast.dismiss();
+
+        const status = err.response?.status;
+        const errorMessage =
+          status === 403
+            ? "Your account is not verified. Please check your email for the verification link."
+            : err.response?.data?.error ||
+              "An unexpected error occurred. Please try again.";
+
+        setErrorMessage(errorMessage);
+        setModalIsOpenError(true);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const togglePasswordVisibility = () => {
@@ -138,6 +179,12 @@ const Form = ({
     } else {
       setPasswordLoginVerified(false); // Change this to false for invalid passwords
     }
+  };
+
+  const closeModalLink = () => {
+    // setModalIsOpen(false);
+    setOpenViewModal(false);
+    // router.push("/");
   };
 
   return (
@@ -358,6 +405,104 @@ const Form = ({
             </div>
             {/* login button */}
           </form>
+          {openViewModal && (
+            <div className="modal">
+              <div className="modal-content">
+                <div className="row">
+                  <div className="col-lg-12">
+                    <Link href="/" className="">
+                      <Image
+                        width={50}
+                        height={45}
+                        className="logo1 img-fluid"
+                        style={{ marginTop: "-20px" }}
+                        src="/assets/images/Appraisal_Land_Logo.png"
+                        alt="header-logo2.png"
+                      />
+                      <span
+                        style={{
+                          color: "#2e008b",
+                          fontWeight: "bold",
+                          fontSize: "24px",
+                          // marginTop: "20px",
+                        }}
+                      >
+                        Appraisal
+                      </span>
+                      <span
+                        style={{
+                          color: "#97d700",
+                          fontWeight: "bold",
+                          fontSize: "24px",
+                          // marginTop: "20px",
+                        }}
+                      >
+                        {" "}
+                        Land
+                      </span>
+                    </Link>
+                  </div>
+                </div>
+                <h3 className="text-center">Resend Activation Link</h3>
+                <div
+                  className="mb-2"
+                  style={{ border: "2px solid #97d700" }}
+                ></div>
+                <div className="row">
+                  <div className="col-lg-12">
+                    <div className="row mb-2 mt-2 text-center">
+                      <div className="row mb-2 mt-2">
+                        <div className="col-lg-3 mb-2">
+                          <label
+                            htmlFor=""
+                            style={{
+                              paddingTop: "15px",
+                              fontWeight: "bold",
+                              color: "#2e008b",
+                            }}
+                          >
+                            Email / User ID :
+                          </label>
+                        </div>
+                        <div
+                          className="col-lg-7"
+                          style={{ display: "flex", flexDirection: "row" }}
+                        >
+                          <input
+                            type="text"
+                            // value={currentViewAppraiser.userInfo}
+                            // // value={userInfo}
+                            // onChange={(e) => setUserInfo(e.target.value)}
+                            className="form-control"
+                            id="formGroupExampleInput3"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className="mb-2"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
+                    {/* End .col */}
+                  </div>
+                </div>
+                <div className="d-flex justify-content-center gap-2">
+                  <button
+                    className="btn btn-color w-25"
+                    onClick={closeModalLink}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className="btn btn-color w-25"
+                    onClick={() => resendLink()}
+                  >
+                    Send
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </>

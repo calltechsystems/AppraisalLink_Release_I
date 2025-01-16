@@ -23241,3 +23241,18 @@ input:checked + .slider:before {
   z-index: 3;
 }
 
+.eye-active {
+  color: #1560bd; /* Active color */
+  transform: scale(1.2); /* Slightly enlarge when active */
+}
+
+.eye-inactive {
+  color: #6c757d; /* Inactive color (gray) */
+  transform: scale(1); /* Default size */
+}
+
+.eye-active:hover, .eye-inactive:hover {
+  color: #0d6efd; /* Hover color */
+  transform: scale(1.25); /* Slight hover effect */
+}
+

@@ -25,7 +25,7 @@ const headCells = [
     id: "broker",
     numeric: false,
     label: "Broker Name",
-    width: 280,
+    width: 200,
   },
   {
     id: "address",
@@ -37,13 +37,13 @@ const headCells = [
     id: "status",
     numeric: false,
     label: "Order Status",
-    width: 160,
+    width: 170,
   },
   {
     id: "appraisal_status",
     numeric: false,
     label: "Appraisal Status",
-    width: 160,
+    width: 170,
   },
   {
     id: "remark",
@@ -282,32 +282,31 @@ export default function Exemple({
     return formattedDate;
   };
 
-    // For EST date and time
+  // For EST date and time
 
-    const formatDateTimeEST = (date) => {
+  const formatDateTimeEST = (date) => {
+    return new Intl.DateTimeFormat("en-US", {
+      timeZone: "America/Toronto", // EST/Canada timezone
+      dateStyle: "medium",
+      timeStyle: "short",
+    }).format(new Date(date));
+  };
+
+  // Only for time
+
+  const formatDateToEST = (date) => {
+    try {
+      // Convert input date string to a Date object
+      const utcDate = new Date(`${date}T00:00:00Z`); // Treat input as UTC midnight
       return new Intl.DateTimeFormat("en-US", {
         timeZone: "America/Toronto", // EST/Canada timezone
-        dateStyle: "medium",
-        timeStyle: "short",
-      }).format(new Date(date));
-    };
-  
-    // Only for time
-  
-    const formatDateToEST = (date) => {
-      try {
-        // Convert input date string to a Date object
-        const utcDate = new Date(`${date}T00:00:00Z`); // Treat input as UTC midnight
-        return new Intl.DateTimeFormat("en-US", {
-          timeZone: "America/Toronto", // EST/Canada timezone
-          dateStyle: "medium",        // Format only the date
-        }).format(utcDate);
-      } catch (error) {
-        console.error("Error formatting date:", error);
-        return "Invalid date";
-      }
-    };
-  
+        dateStyle: "medium", // Format only the date
+      }).format(utcDate);
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return "Invalid date";
+    }
+  };
 
   const getStatusButtonClass = (orderStatus) => {
     if (orderStatus === 4 || orderStatus === 5) {
@@ -446,7 +445,9 @@ export default function Exemple({
                       </li>
                     </ul>
                   </div>
-                  <button className={getStatusButtonClass(isBidded.orderstatus)}>
+                  <button
+                    className={getStatusButtonClass(isBidded.orderstatus)}
+                  >
                     Status
                     <span className="m-1">
                       <i class="fa fa-info-circle" aria-hidden="true"></i>
@@ -472,7 +473,9 @@ export default function Exemple({
                       </li>
                     </ul>
                   </div>
-                  <button className={getStatusButtonClass(isBidded.orderstatus)}>
+                  <button
+                    className={getStatusButtonClass(isBidded.orderstatus)}
+                  >
                     Status
                     <span className="m-1">
                       <i class="fa fa-info-circle" aria-hidden="true"></i>
@@ -480,7 +483,9 @@ export default function Exemple({
                   </button>
                 </div>
               ) : (
-                <button className="btn btn-warning w-100"><span>N.A.</span></button>
+                <button className="btn btn-warning w-100">
+                  <span>N.A.</span>
+                </button>
               ),
             address: `${property.streetNumber} ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
             remark: isBidded.remark ? isBidded.remark : "N.A.",
@@ -504,6 +509,169 @@ export default function Exemple({
                     </Link>
                   </span>
                 </li>
+                {!isEditable && !isCancel && (
+                  <li title="Quotes">
+                    {/* <Link href={`/my-property-bids/${property.propertyId}`}>
+                      <span className="btn btn-color w-100 mb-1"> Quotes </span>
+                    </Link>{" "} */}
+                    <Link
+                      className="btn btn-color-table"
+                      // style={{ marginLeft: "4.3rem" }}
+                      href={`/brokerage-properties-bid/${property.orderId}`}
+                    >
+                      <span className="flaticon-invoice">
+                        {/* <FaHandHoldingUsd /> */}
+                      </span>
+                    </Link>
+                  </li>
+                )}
+                {/* <li
+                className="list-inline-item"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="Property Details"
+              >
+                <span
+                  className="btn btn-color-table"
+                  onClick={() => openPopupModal(property)}
+                >
+                  <Link href={"#"}>
+                    <span className="flaticon-view"></span>
+                  </Link>
+                </span>
+              </li>
+
+              <li
+                className="list-inline-item"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="Bids"
+              >
+                <Link
+                  className="btn btn-color-table"
+                  href={`/my-property-bids/${property.propertyId}`}
+                >
+                  <span className="flaticon-invoice"></span>
+                </Link>
+              </li> */}
+
+                {(isEditable || isStatus === 1) && !isCancel && (
+                  <li title="Edit Property">
+                    {/* <Link href={`/create-listing/${property.propertyId}`}>
+                      <span className="btn btn-color w-100 mb-1"> Edit </span>
+                    </Link>{" "} */}
+                    <Link
+                      className="btn btn-color-table"
+                      href={`/create-listing-1/${property.orderId}`}
+                    >
+                      <span className="flaticon-edit"></span>
+                    </Link>
+                  </li>
+                )}
+
+                {/* End li */}
+
+                {/* {isEditable && ( */}
+                {!isCancel && isStatus !== 3 && (
+                  <li title={!isHold ? "On Hold" : "Remove Hold"}>
+                    <span
+                      className="btn btn-color-table "
+                      style={{ border: "1px solid grey" }}
+                      // onClick={() => onHoldHandler(property.propertyId, !isHold)}
+                      onClick={() =>
+                        openModal(property.orderId, 1, isHold ? 0 : property)
+                      }
+                    >
+                      <Link href="#" className="text-light">
+                        <FaPause />
+                      </Link>
+                    </span>
+                  </li>
+                )}
+                {/* )} */}
+
+                {/* {isEditable && ( */}
+                {!isCancel && isStatus !== 3 && !isHold && (
+                  <li title={"Order Cancel"}>
+                    <span
+                      className="btn btn-color-table"
+                      style={{ border: "1px solid grey" }}
+                      // onClick={() =>
+                      //   onCancelHandler(property.propertyId, !isCancel)
+                      // }
+                      onClick={() => openModal(property.orderId, 2, property)}
+                    >
+                      <Link href="#">
+                        <span className="flaticon-garbage text-light"></span>
+                      </Link>
+                    </span>
+                  </li>
+                )}
+                {/* )} */}
+
+                {/* {isEditable && (
+                  <li title="Edit Property">
+                    <Link href="#">
+                      <span className="btn btn-color w-100 mb-1">
+                        {" "}
+                        On Hold{" "}
+                      </span>
+                    </Link>{" "}
+                    <Link
+                      className="btn btn-color-table"
+                      href={`/create-listing/${property.propertyId}`}
+                    >
+                      <span className="flaticon-edit"></span>
+                    </Link>
+                  </li>
+                )} */}
+
+                {/* {!isEditable && (
+                <li
+                  className="list-inline-item"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Archive Property"
+                >
+                  <span
+                    className="btn btn-color-table"
+                    onClick={() => archievePropertyHandler(property.propertyId)}
+                  >
+                    <Link className="color-light" href={`/archive-property`}>
+                      <span className="flaticon-box"></span>
+                    </Link>
+                  </span>
+                </li>
+              )} */}
+
+                <li title="Archive Property">
+                  {/* <Link
+                      href="#"
+                      onClick={() =>
+                        archievePropertyHandler(property.propertyId)
+                      }
+                    >
+                      <span className="btn btn-color w-100">
+                        {" "}
+                        Archive Property{" "}
+                      </span>
+                    </Link> */}
+                  <span
+                    className="btn btn-color-table"
+                    onClick={() => archievePropertyHandler(property.orderId)}
+                  >
+                    <Link
+                      className="color-light"
+                      href={`/brokerage-archive-properties`}
+                    >
+                      <span className="text-light">
+                        <FaArchive />
+                      </span>
+                    </Link>
+                  </span>
+                </li>
+
+                {/* End li */}
               </ul>
             ),
           };

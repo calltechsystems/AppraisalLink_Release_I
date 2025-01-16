@@ -511,7 +511,7 @@ export default function Exemple({
           status:
             anotherBid === true && isBidded.status !== 2 ? (
               <span className="btn btn-danger  w-100">
-                Broker has already selected the quote
+                Declined
               </span>
             ) : isBidded?.bidId && isBidded.status === 2 ? (
               <span className="btn btn-danger  w-100">Declined</span>

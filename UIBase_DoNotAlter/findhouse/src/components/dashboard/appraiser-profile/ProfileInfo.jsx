@@ -1660,7 +1660,7 @@ const ProfileInfo = ({
                       <div className="col-xl-12">
                         <div
                           className="my_profile_setting_input"
-                          style={{ textAlign: "end" }}
+                          style={{ textAlign: "center" }}
                         >
                           <button
                             className="btn btn5 m-1"

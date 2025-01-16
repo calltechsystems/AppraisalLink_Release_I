@@ -221,8 +221,8 @@ export default function Exemple({
         toast.dismiss();
         toast.error("Try Again!!");
       });
-    setRefresh(true);
-    // window.location.reload();
+    // setRefresh(true);
+    window.location.reload();
     // toast.success("Successfully Re assigned Appraiser");
   };
 

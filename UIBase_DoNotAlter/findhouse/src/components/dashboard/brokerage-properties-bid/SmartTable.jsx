@@ -4,7 +4,7 @@ import SVGArrowDown from "./icons/SVGArrowDown";
 import SVGArrowUp from "./icons/SVGArrowUp";
 import SVGChevronLeft from "./icons/SVGChevronLeft";
 import SVGChevronRight from "./icons/SVGChevronRight";
-import { FaRedo } from "react-icons/fa";
+import { FaDownload, FaRedo } from "react-icons/fa";
 import Filtering from "./Filtering";
 import SearchBox from "./SearchBox";
 
@@ -269,14 +269,14 @@ function SmartTable(props) {
           )}
           <div className="col-lg-1 mt-1">
             <div className="row">
-              <div
-                className="w-50"
-                onClick={() => handlePrint()}
-                title="Download Pdf"
-              >
-                <span className="btn btn-color flaticon-download "></span>
-              </div>
-              <div className="w-50">
+              <div className="d-flex gap-1">
+                <button
+                  className="btn btn-color"
+                  onClick={() => handlePrint()}
+                  title="Download Pdf"
+                >
+                  <FaDownload />
+                </button>
                 <button
                   className="btn btn-color"
                   onClick={() => props.refreshHandler()}
@@ -383,7 +383,7 @@ function SmartTable(props) {
             <div className="row p-4">
               <div
                 className="smartTable-noDataFound col-12"
-                style={{ marginTop: "50px", marginBottom: "40px" }}
+                style={{ marginTop: "100px", marginBottom: "40px" }}
               >
                 {props.dataFetched && props.properties.length === 0 ? (
                   showNoData ? (
