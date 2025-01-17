@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 
 const Checkout = ({ planDetails, setErrorOccurred, setOnSuccess }) => {
   const [{ options, isPending }, dispatch] = usePayPalScriptReducer();
-  const [currency, setCurrency] = useState(options.currency || "USD");
+  const [currency, setCurrency] = useState(options.currency || "CAD");
   const [userData, setUserData] = useState({});
 
   useEffect(() => {
@@ -151,7 +151,6 @@ const Checkout = ({ planDetails, setErrorOccurred, setOnSuccess }) => {
             value={currency}
             onChange={onCurrencyChange}
           >
-            <option value="USD">💵 USD (US Dollar)</option>
             <option value="CAD">🇨🇦 CAD (Canadian Dollar)</option>
           </select>
           <PayPalButtons
