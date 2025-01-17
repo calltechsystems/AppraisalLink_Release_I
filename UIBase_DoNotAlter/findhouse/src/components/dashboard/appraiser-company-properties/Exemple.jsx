@@ -437,6 +437,7 @@ export default function Exemple({
   }
 
   const openAssignModalHandler = (property) => {
+    console.log({Assignable_property: property});
     setAssignPropertyId(property.propertyId);
     setAssignModal(true);
   };

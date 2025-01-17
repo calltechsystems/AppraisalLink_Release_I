@@ -62,6 +62,11 @@ const OneTimePaymentModal = ({
   //   }
   // };
 
+  // const openPaypalUrl = () => {
+  //   localStorage.setItem("isPaying", JSON.stringify("true"));
+  //   setStatus(2);
+  // };
+
   const openPaypalUrl = () => {
     localStorage.setItem("isPaying", JSON.stringify("true"));
     setStatus(2);
