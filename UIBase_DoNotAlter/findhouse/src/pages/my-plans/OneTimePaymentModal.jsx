@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { encryptionData } from "../../utils/dataEncryption";
-import toast from "react-hot-toast";
 import { ClipLoader } from "react-spinners";
 import Link from "next/link";
 import Image from "next/image";
+import CheckoutPage from "./CheckoutPage";
 
-const Modal = ({ modalOpen, closeModal, price }) => {
+const OneTimePaymentModal = ({
+  currentSubscription,
+  modalOpen,
+  closeModal,
+  price,
+}) => {
   const [paypalUrl, setPaypalUrl] = useState("");
   const [status, setStatus] = useState(0);
   const [countdown, setCountdown] = useState(180);
@@ -14,49 +17,50 @@ const Modal = ({ modalOpen, closeModal, price }) => {
 
   const [errorOcurred, setErrorOccurred] = useState(false);
   const [onSuccess, setOnSuccess] = useState(false);
+  const [termsPolicyAccepted, setTermsPolicyAccepted] = useState(0);
 
   //checkout handler default setup
-  const checkOutHandler = () => {
-    const data = JSON.parse(localStorage.getItem("user"));
+  // const checkOutHandler = () => {
+  //   const data = JSON.parse(localStorage.getItem("user"));
 
-    if (String(price.type) === "plan") {
-      const payload = {
-        PlanName: price.title,
-        userId: data.userId,
-        token: data.token,
-      };
+  //   if (String(price.type) === "plan") {
+  //     const payload = {
+  //       PlanName: price.title,
+  //       userId: data.userId,
+  //       token: data.token,
+  //     };
 
-      const encryptiondata = encryptionData(payload);
+  //     const encryptiondata = encryptionData(payload);
 
-      axios
-        .post("/api/paypalPayement", encryptiondata)
-        .then((res) => {
-          setPaypalUrl(res.data.data.response);
-          setStatus(1);
-        })
-        .catch((err) => {
-          toast.error(err.message);
-        });
-    } else {
-      const payload = {
-        TopUpId: price.id,
-        UserId: data.userId,
-        token: data.token,
-      };
+  //     axios
+  //       .post("/api/paypalPayement", encryptiondata)
+  //       .then((res) => {
+  //         setPaypalUrl(res.data.data.response);
+  //         setStatus(1);
+  //       })
+  //       .catch((err) => {
+  //         toast.error(err.message);
+  //       });
+  //   } else {
+  //     const payload = {
+  //       TopUpId: price.id,
+  //       UserId: data.userId,
+  //       token: data.token,
+  //     };
 
-      const encryptiondata = encryptionData(payload);
+  //     const encryptiondata = encryptionData(payload);
 
-      axios
-        .post("/api/addTopUp", encryptiondata)
-        .then((res) => {
-          setPaypalUrl(res.data.userData.response);
-          setStatus(1);
-        })
-        .catch((err) => {
-          toast.error(err.message);
-        });
-    }
-  };
+  //     axios
+  //       .post("/api/addTopUp", encryptiondata)
+  //       .then((res) => {
+  //         setPaypalUrl(res.data.userData.response);
+  //         setStatus(1);
+  //       })
+  //       .catch((err) => {
+  //         toast.error(err.message);
+  //       });
+  //   }
+  // };
 
   const openPaypalUrl = () => {
     localStorage.setItem("isPaying", JSON.stringify("true"));
@@ -79,6 +83,12 @@ const Modal = ({ modalOpen, closeModal, price }) => {
       clearInterval(countdownInterval);
     };
   }, [status, countdown]);
+
+  useEffect(() => {
+    if (onSuccess || errorOcurred) {
+      // resetFields();
+    }
+  }, [onSuccess, errorOcurred]);
 
   const capitalizeFirstLetter = (word) => {
     if (!word || typeof word !== "string") {
@@ -159,7 +169,6 @@ const Modal = ({ modalOpen, closeModal, price }) => {
                 </div>
               </div>
             </div>
-            {/* {status === 2 ? ( */}
               <div
                 className="mt-2 mb-3"
                 style={{ border: "2px solid #97d700" }}
@@ -173,7 +182,7 @@ const Modal = ({ modalOpen, closeModal, price }) => {
                     </span>
                     <br />
                     <span className="text-dark">
-                      Your selected Package{" "}
+                      Your selected TopUp plan{" "}
                       <label
                         style={{
                           fontWeight: "bold",
@@ -192,12 +201,14 @@ const Modal = ({ modalOpen, closeModal, price }) => {
                         }}
                       >
                         $ {price.price}
-                      </label>
+                      </label>{" "}
+                      for {price?.selectedTopUp?.noOfProperties} properties.
                     </span>
                   </div>
                 ) : showPaypalPage && status == 1 ? (
                   <>
                     <CheckoutPage
+                      currentSubscription={currentSubscription}
                       planDetails={currentSelectedPlan}
                       setErrorOccurred={setErrorOccurred}
                       setOnSuccess={setOnSuccess}
@@ -220,15 +231,87 @@ const Modal = ({ modalOpen, closeModal, price }) => {
               ) : onSuccess ? (
                 <div className="text-center" style={{ fontSize: "19px" }}>
                   <span className="text-dark">
-                  Your payment was successfully completed. Thank you for your transaction.
+                    Your payment was successfully completed. Thank you for your
+                    transaction.
                   </span>
                 </div>
               ) : (
-                <button
-                  className="btn btn-color w-25"
-                  onClick={checkOutHandler}
+                <div className="text-center" style={{ fontSize: "19px" }}>
+                  <span className="text-dark">
+                    The payment window may have been closed unexpectedly, either
+                    due to cancellation or an abrupt closure. Please try again
+                    to complete your payment.
+                  </span>
+                </div>
+              )}
+
+              <div
+                className="mt-2 mb-3"
+                style={{ border: "2px solid #97d700" }}
+              ></div>
+              {status == 0 ? <div className="ml-6 custom-checkbox mb-3">
+                <input
+                  className="form-check-input "
+                  type="checkbox"
+                  value={termsPolicyAccepted}
+                  onClick={() => setTermsPolicyAccepted(!termsPolicyAccepted)}
+                  id="terms"
+                  style={{ border: "1px solid black" }}
+                />
+                <label
+                  className="form-check-label form-check-label"
+                  htmlFor="terms"
                 >
-                  Checkout
+                  {" "}
+                  I have read and accept the {" "}
+                  <Link
+                    href="assets/images/Terms & Conditions.pdf"
+                    target="_blank"
+                    className="form-check-label text-primary"
+                  >
+                    Terms and Conditions
+                  </Link>{" "}
+                  ?
+                </label>
+              </div>: ''}
+            </div>
+
+            <div className="col-lg-12 text-center">
+              {status == 1 && !errorOcurred ? (
+                <button
+                  className="btn btn-color w-25 m-1"
+                  onClick={resetFields}
+                >
+                  Cancel
+                </button>
+              ) : // <label
+              //   className="btn btn-color w-25"
+              //   style={{
+              //     display: "flex",
+              //     alignItems: "center",
+              //     justifyContent: "center",
+              //     marginLeft: "36%",
+              //   }}
+              // >
+              //   <ClipLoader color="#ffffff" loading={true} size={40} />
+              //   <span style={{ marginLeft: "10px" }}>Processing...</span>
+              // </label>
+              !errorOcurred ? (
+                <>
+                  <button className="btn w-25" onClick={resetFields}>
+                    Cancel
+                  </button>
+                  <button
+                    className="ml-4 btn btn-color w-25"
+                    onClick={openPaypalPage}
+                    disabled={!termsPolicyAccepted}
+                  >
+                    Checkout
+                  </button>
+                </>
+              ) : (
+                <button className="btn w-25" onClick={resetFields}>
+                  Close
                 </button>
               )}
             {status === 2 && (
@@ -246,4 +329,4 @@ const Modal = ({ modalOpen, closeModal, price }) => {
   );
 };
 
-export default Modal;
+export default OneTimePaymentModal;

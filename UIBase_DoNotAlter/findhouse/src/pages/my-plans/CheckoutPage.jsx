@@ -6,14 +6,14 @@ import {
 } from "@paypal/react-paypal-js";
 import toast from "react-hot-toast";
 
-const Checkout = ({ planDetails, setErrorOccurred, setOnSuccess }) => {
+const Checkout = ({ topUpDetails, setErrorOccurred, setOnSuccess, currentSubscription }) => {
   const [{ options, isPending }, dispatch] = usePayPalScriptReducer();
   const [currency, setCurrency] = useState(options.currency || "CAD");
   const [userData, setUserData] = useState({});
 
   useEffect(() => {
     setUserData(JSON.parse(localStorage.getItem("user")) || {});
-  }, [planDetails]);
+  }, [topUpDetails]);
 
   const generateCustomId = (brokerId, planId) => {
     if (!brokerId || !planId) {
@@ -54,15 +54,15 @@ const Checkout = ({ planDetails, setErrorOccurred, setOnSuccess }) => {
       intent: "CAPTURE",
       purchase_units: [
         {
-          description: `Broker ${planDetails?.title} Subscription Plan`,
-          custom_id: generateCustomId(userData?.userId, planDetails?.id),
+          description: `Broker ${topUpDetails?.title} Top Up Plan`,
+          custom_id: generateCustomId(userData?.userId, topUpDetails?.id),
           //   soft_descriptor: `RealEstateBrokerSub${planDetails?.title}Plan`,
           amount: {
-            value: planDetails?.price,
+            value: topUpDetails?.price,
             currency_code: currency,
             breakdown: {
               item_total: {
-                value: planDetails?.price,
+                value: topUpDetails?.price,
                 currency_code: currency,
               },
               tax_total: {
@@ -73,13 +73,13 @@ const Checkout = ({ planDetails, setErrorOccurred, setOnSuccess }) => {
           },
           items: [
             {
-              name: `Subscription ${planDetails?.title} Plan`,
+              name: `Top Up ${topUpDetails?.title} Plan`,
               quantity: "1",
               unit_amount: {
-                value: planDetails?.price,
+                value: topUpDetails?.price,
                 currency_code: currency,
               },
-              description: "Monthly subscription for listing properties",
+              description: "Monthly subscription top up add for listing properties",
               category: "DIGITAL_GOODS",
             },
           ],
@@ -94,28 +94,48 @@ const Checkout = ({ planDetails, setErrorOccurred, setOnSuccess }) => {
     });
   };
 
+  // const convertToTimezone = (timestamp, targetTimezone) => {
+  //   const date = new Date(timestamp); // Parse the input timestamp
+  //   const options = {
+  //     timeZone: targetTimezone,
+  //     year: 'numeric',
+  //     month: 'short',
+  //     day: 'numeric',
+  //     hour: '2-digit',
+  //     minute: '2-digit',
+  //     second: '2-digit',
+  //     hour12: false, // Use 24-hour format
+  //   };
+  //   return new Intl.DateTimeFormat('en-US', options).format(date);
+  // };
+
+  // const canadaTimezone = 'America/Toronto'; // Example timezone for Canada
+  // const formattedDate = convertToTimezone(response.timestamp, canadaTimezone);
+
   const generateTheTransactionPayload = (details) => {
     return {
       transactionDetails: {
         transaction_detail: details,
         user_id: userData?.userId,
         created_time: details?.create_time,
-        plan_amount: planDetails?.price,
-        plan_name: planDetails?.title,
+        plan_amount: currentSubscription?.planAmount,
+        plan_name: currentSubscription?.planName,
         Is_Active: true,
         start_date: new Date(),
         end_date: getNextMonthDateWithYearCheck(),
-        used_properties: 0,
-        no_of_properties: planDetails?.item?.noOfProperties,
-        total_properties: planDetails?.item?.noOfProperties,
+        used_properties: currentSubscription?.usedProperties,
+        no_of_properties: currentSubscription?.noOfProperties,
+        total_properties: currentSubscription?.noOfProperties,
       },
-      subscriptionDetails: {
+      topUpDetails: {
         start_date: new Date(),
         end_date: getNextMonthDateWithYearCheck(),
-        plan_id: planDetails?.id,
-        total_properties: planDetails?.item?.noOfProperties,
-        used_properties: 0,
+        plan_id: currentSubscription?.$id,
+        total_properties: currentSubscription?.noOfProperties,
+        used_properties: currentSubscription?.usedProperties,
         user_id: userData?.userId,
+        topUpId: planDetails?.id,
+        //top Up price: topUpDetails?.price
       },
     };
   };
@@ -167,7 +187,12 @@ const Checkout = ({ planDetails, setErrorOccurred, setOnSuccess }) => {
 };
 
 // Wrap the Checkout component with PayPalScriptProvider
-const CheckoutPage = ({ planDetails, setErrorOccurred, setOnSuccess }) => (
+const CheckoutPage = ({
+  currentSubscription,
+  planDetails,
+  setErrorOccurred,
+  setOnSuccess,
+}) => (
   <PayPalScriptProvider
     options={{
       "client-id":
@@ -176,7 +201,12 @@ const CheckoutPage = ({ planDetails, setErrorOccurred, setOnSuccess }) => (
       currency: "USD",
     }}
   >
-    <Checkout planDetails={planDetails} setErrorOccurred={setErrorOccurred} setOnSuccess={setOnSuccess}/>
+    <Checkout
+      topUpDetails={planDetails}
+      setErrorOccurred={setErrorOccurred}
+      setOnSuccess={setOnSuccess}
+      currentSubscription={currentSubscription}
+    />
   </PayPalScriptProvider>
 );
 
