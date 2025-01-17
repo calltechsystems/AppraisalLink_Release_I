@@ -461,8 +461,6 @@ export default function Exemple({
   useEffect(() => {
     let requiredAssign = [];
     allListedAssignAppraiser.map((assigned, idx) => {
-      
-      console.log({"within the loop":"", assigned})
       allAssignAppraiser.map((appraiser, index) => {
         const isPresent = checkIsAlreadyExisting(appraiser, requiredAssign);
         if (
