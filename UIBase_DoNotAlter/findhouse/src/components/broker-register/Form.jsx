@@ -52,6 +52,7 @@ const Form = ({
           } else {
             toast.error(err.message || "An error occurred.");
           }
+          location.reload();
         })
         .finally(() => setLoading(false));
     } catch (error) {
@@ -72,13 +73,8 @@ const Form = ({
               ref={emailRegisterRef}
               required
             />
-            <div className="input-group-prepend">
-              <div
-                className="input-group-text m-1"
-                style={{ border: "1px solid #2e008b" }}
-              >
-                <FaEnvelope />
-              </div>
+            <div className="input-group-text p-3">
+              <FaEnvelope />
             </div>
           </div>
 

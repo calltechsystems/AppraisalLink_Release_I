@@ -1458,6 +1458,7 @@ const ProfileInfo = ({
                             )
                           }
                           disabled={!edit}
+                          maxLength={50}
                         />
                         {emailError && (
                           <small className="text-danger">
