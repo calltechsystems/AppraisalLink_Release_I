@@ -37,7 +37,10 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
       console.warn("Email query parameter missing");
     }
 
-    if (userTypeParam && ["1", "2", "3", "4", "5", "6"].includes(userTypeParam)) {
+    if (
+      userTypeParam &&
+      ["1", "2", "3", "4", "5", "6"].includes(userTypeParam)
+    ) {
       setUserType(userTypeParam);
     } else {
       console.warn("Invalid or missing UserType query parameter");
@@ -107,7 +110,7 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
       </div>
       <div className="col-lg-6">
         <form onSubmit={registerHandler}>
-          <h3 className="text-center">Signup to your account</h3>
+          <h3 className="text-center">Set your password</h3>
 
           <div className="form-group input-group ui_kit_select_search mb-3">
             <select
@@ -122,7 +125,7 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
               <option value="3">Appraiser</option>
               <option value="4">Appraiser Company</option>
               <option value="5">Appraiser</option>
-              <option value="6">Broker</option>
+              <option value="6">Mortgage Broker</option>
             </select>
           </div>
 
@@ -156,12 +159,10 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
                 className="input-group-text m-1"
                 style={{
                   right: "px",
-                  // top: "50%",
-                  marginTop:"5px",
-                  // transform: "translateY(-50%)",
+                  marginTop: "5px",
                   cursor: "pointer",
                   border: "1px solid black",
-                  borderRadius:"5px"
+                  borderRadius: "5px",
                 }}
                 onClick={togglePasswordVisibility}
               >
@@ -194,12 +195,10 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
                 className="input-group-text m-1"
                 style={{
                   right: "px",
-                  // top: "50%",
-                  marginTop:"5px",
-                  // transform: "translateY(-50%)",
+                  marginTop: "5px",
                   cursor: "pointer",
                   border: "1px solid black",
-                  borderRadius:"5px"
+                  borderRadius: "5px",
                 }}
                 onClick={togglePasswordVisibility_01}
               >
@@ -210,7 +209,7 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
             {is2Focused && !checkRegisterConfrim && (
               <div>
                 <span style={{ color: "red" }}>
-                  Both passwords aren&apos;t the same &#10008;
+                  Both passwords aren&apos;t same &#10008;
                 </span>
               </div>
             )}
@@ -223,10 +222,13 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
           />
 
           <button type="submit" className="btn btn-log w-100 btn-thm">
-            Sign Up
+            Submit
           </button>
           <p className="text-center" style={{ fontSize: "16px" }}>
-            Already have an account? <Link href="/login" style={{color:"#2e008b"}}><strong>Log In!</strong> </Link>
+            Already have an account?{" "}
+            <Link href="/login" style={{ color: "#2e008b" }}>
+              <strong>Log In!</strong>{" "}
+            </Link>
           </p>
         </form>
       </div>

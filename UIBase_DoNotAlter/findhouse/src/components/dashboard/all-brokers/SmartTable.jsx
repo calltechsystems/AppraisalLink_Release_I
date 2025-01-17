@@ -295,7 +295,7 @@ function SmartTable(props) {
             </li>
             <li className="list-inline-item">
               <button
-                className="btn btn-color w-100 h-10 m-1"
+                className="btn btn-color w-100"
                 onClick={() => props.refreshHandler()}
                 title="Refresh"
               >

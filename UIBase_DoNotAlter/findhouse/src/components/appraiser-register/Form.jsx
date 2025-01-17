@@ -35,13 +35,19 @@ const Form = ({
         toast.loading("Registering user...");
         await axios.post("/api/registerByCompany", encryptedData);
         toast.dismiss();
-        toast.success("User registered successfully!");
+        toast.success("Successfully added!");
       } catch (err) {
         toast.dismiss();
-        toast.error(err.response?.data?.message || "An error occurred.");
+        const status = err.response?.request?.status;
+        if (status === 409) {
+          toast.error("Email is already registered!");
+        } else {
+          toast.error(err.message || "An error occurred.");
+        }
       } finally {
-        // setLoading(false);
+        setLoading(false);
       }
+      location.reload();
     }
     // setDisable(false);
   };
@@ -59,7 +65,7 @@ const Form = ({
               ref={emailRegisterRef}
               required
             />
-            <div className="input-group-text m-2" style={{}}>
+            <div className="input-group-text p-3">
               <FaEnvelope />
             </div>
           </div>

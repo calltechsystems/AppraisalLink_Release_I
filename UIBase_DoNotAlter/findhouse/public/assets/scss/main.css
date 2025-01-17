@@ -23205,7 +23205,7 @@ input:checked + .slider:before {
   max-width: 100%; /* Prevent overflow */
 }
 .already-bidded {
-  color: #97d700;
+  color: black;
   font-weight: bold;
 }
 
@@ -23256,3 +23256,48 @@ input:checked + .slider:before {
   transform: scale(1.25); /* Slight hover effect */
 }
 
+.modal-table-header{
+  background-color: #2e008b;
+  color: white;
+  border: 1px solid #2e008b;
+  text-align: center;
+  padding: 10px;
+}
+#table-broker-info {
+  width: 700px;
+  text-align: start;
+  border-radius: 5px;
+  font-size: 17px;
+  font-weight: bold;
+  border-collapse: collapse;
+}
+
+#table-broker-info th {
+  background-color: #2e008b;
+  color: white;
+  border-right: 2px solid white;
+  padding: 10px;
+  text-align: center;
+}
+
+#table-broker-info td {
+  /* border: 1px solid #2e008b; */
+  padding-left: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+#table-broker-info tbody tr:nth-child(odd) {
+  background-color: #f8f8f8;
+}
+
+#table-broker-info tbody tr:nth-child(even) {
+  background-color: #ffffff;
+}
+.table-value{
+  font-family: nunito;
+  font-size: 16px;
+  font-weight: 600;
+  color: black;
+  width: 350px;
+}

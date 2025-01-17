@@ -96,24 +96,34 @@ const Modal = ({
 
       const payload = encryptionData(formData);
 
-      toast.loading(alreadyBidded ? "Updating a bid!" : "Setting a bid");
+      toast.loading(
+        alreadyBidded ? "Updating the quote..." : "Setting the quote..."
+      );
       axios
         .post("/api/setBid", payload)
         .then((res) => {
           toast.dismiss();
           toast.success(
             alreadyBidded
-              ? "Successfully Updated a bid!"
-              : "Successfully set a bid"
+              ? "Successfully updated the quote!"
+              : "Successfully set the quote"
           );
           location.reload(true);
         })
         .catch((err) => {
           toast.dismiss();
-          toast.error("Try Again");
+          toast.error(
+            `Got error while ${
+              alreadyBidded ? "Updating the" : "Setting the"
+            } quote, Try Again!!`
+          );
         });
       setToggle(false);
     }
+    setValue(null);
+    setDescription("");
+    setDisable(false);
+    closeModal();
   };
 
   const formatLargeNumber = (number) => {
@@ -248,11 +258,11 @@ const Modal = ({
                           >
                             {alreadyBidded ? (
                               <>
-                                Your Earlier Quote was{" "}
+                                Your earlier quote was{" "}
                                 <span className="bid-amount">${bidAmount}</span>
                               </>
                             ) : (
-                              "Please Provide a Quote for this Property"
+                              "Please provide a quote for this property"
                             )}
                           </span>
                         </label>
@@ -320,15 +330,31 @@ const Modal = ({
                 </div>
               ) : (
                 <>
-                  <p className="m-3 text-center" style={{ fontSize: "18px" }}>
+                  <p
+                    className="m-3 text-center text-dark"
+                    style={{ fontSize: "19px" }}
+                  >
                     Are you confirming that you will quote this property for the
                     given amount : <br />
-                    <h3 className="mt-2 text-color"> $ {value}</h3>
+                    <h2 className="mt-2 text-color"> $ {value}</h2>
                   </p>
                   {alreadyBidded && (
-                    <p className="m-3 text-center" style={{ fontSize: "18px" }}>
+                    <p
+                      className="m-3 text-center text-dark"
+                      style={{ fontSize: "18px" }}
+                    >
                       {" "}
-                      from <span style={{ color: "red" }}>$ {bidAmount}</span>
+                      from{" "}
+                      <span
+                        className="m-2"
+                        style={{
+                          color: "red",
+                          fontWeight: "bold",
+                          fontSize: "22px",
+                        }}
+                      >
+                        $ {bidAmount}
+                      </span>
                     </p>
                   )}
                 </>

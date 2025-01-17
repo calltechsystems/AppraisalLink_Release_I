@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { encryptionData } from "../../../utils/dataEncryption";
 import { useRouter } from "next/router";
+import { FaUserEdit } from "react-icons/fa";
 // import "./SmartTable.css";
 
 const headCells = [
@@ -128,32 +129,31 @@ export default function Exemple({
     return formattedDate;
   };
 
-    // For EST date and time
+  // For EST date and time
 
-    const formatDateTimeEST = (date) => {
+  const formatDateTimeEST = (date) => {
+    return new Intl.DateTimeFormat("en-US", {
+      timeZone: "America/Toronto", // EST/Canada timezone
+      dateStyle: "medium",
+      timeStyle: "short",
+    }).format(new Date(date));
+  };
+
+  // Only for time
+
+  const formatDateToEST = (date) => {
+    try {
+      // Convert input date string to a Date object
+      const utcDate = new Date(`${date}T00:00:00Z`); // Treat input as UTC midnight
       return new Intl.DateTimeFormat("en-US", {
         timeZone: "America/Toronto", // EST/Canada timezone
-        dateStyle: "medium",
-        timeStyle: "short",
-      }).format(new Date(date));
-    };
-  
-    // Only for time
-  
-    const formatDateToEST = (date) => {
-      try {
-        // Convert input date string to a Date object
-        const utcDate = new Date(`${date}T00:00:00Z`); // Treat input as UTC midnight
-        return new Intl.DateTimeFormat("en-US", {
-          timeZone: "America/Toronto", // EST/Canada timezone
-          dateStyle: "medium",        // Format only the date
-        }).format(utcDate);
-      } catch (error) {
-        console.error("Error formatting date:", error);
-        return "Invalid date";
-      }
-    };
-  
+        dateStyle: "medium", // Format only the date
+      }).format(utcDate);
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return "Invalid date";
+    }
+  };
 
   const refreshHandler = () => {
     setRefresh(true);
@@ -190,7 +190,7 @@ export default function Exemple({
 
   //Re assign appraiser funciton
   const reAssign = (QuoteId) => {
-    toast.loading("Re Assigning the appraiser ");
+    toast.loading("Re-Assigning the appraiser....");
 
     const userData = JSON.parse(localStorage.getItem("user"));
     const payload = {
@@ -211,19 +211,19 @@ export default function Exemple({
         toast.error("Try Again!!");
       });
     // setRefresh(true);
+    // toast.success("Successfully Re assigned Appraiser");
     window.location.reload();
   };
 
-  const getUserName = (id)=>{
+  const getUserName = (id) => {
     let requiredUser = "";
-    appraiser.map((user,index)=>{
-      if(String(user?.userId) === String(id)){
-        requiredUser=`${user.firstName} ${user.lastName}`;
+    appraiser.map((user, index) => {
+      if (String(user?.userId) === String(id)) {
+        requiredUser = `${user.firstName} ${user.lastName}`;
       }
     });
     return requiredUser;
-  }
-
+  };
 
   function handleDownloadClick(event, url, fileName) {
     event.preventDefault(); // Prevent the default link behavior
@@ -270,7 +270,7 @@ export default function Exemple({
                   border: "0px",
                   color: "blue",
                   backgroundColor: "transparent",
-                  textDecoration:"underline"
+                  textDecoration: "underline",
                 }}
                 onClick={() => triggerAppraiserInfo(property.appraiserUserId)}
               >
@@ -285,7 +285,7 @@ export default function Exemple({
                   border: "0px",
                   color: "blue",
                   backgroundColor: "transparent",
-                  textDecoration:"underline"
+                  textDecoration: "underline",
                 }}
                 onClick={() => triggerAppraiserInfo(property.appraiserUserId)}
               >
@@ -311,7 +311,6 @@ export default function Exemple({
                   title="Approved Lender List"
                 >
                   <div className="btn btn-color fw-bold m-1">
-                    
                     <span className="flaticon-pdf text-light">
                       {" "}
                       <a
@@ -361,7 +360,6 @@ export default function Exemple({
                   title="Approved Lender List"
                 >
                   <div className="fp_pdate float-end btn btn-color fw-bold ">
-                    
                     <span className="flaticon-pdf text-light">
                       {" "}
                       <a
@@ -402,12 +400,8 @@ export default function Exemple({
                       data-placement="top"
                       title="Change Appraiser"
                     >
-                      <div className=" btn btn-color fw-bold ">
-                        <span className="flaticon-replace text-light">
-                          {" "}
-                          Change Apprasier
-                        </span>
-                        {/* </Link> */}
+                      <div className="btn btn-color">
+                        <FaUserEdit style={{ width: "20px" }} />
                       </div>
                     </li>
                   </div>
@@ -497,7 +491,6 @@ export default function Exemple({
       })
       .catch((err) => {
         toast.dismiss();
-       
       });
 
     setRefresh(false);

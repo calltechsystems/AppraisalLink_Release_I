@@ -256,7 +256,7 @@ const DetailedInfo = ({
                 onChange={(e) => setApplicantEmail(e.target.value)}
                 value={applicantEmail}
                 disabled={isDisable}
-                maxLength={30}
+                maxLength={50}
               />
             </div>
           </div>

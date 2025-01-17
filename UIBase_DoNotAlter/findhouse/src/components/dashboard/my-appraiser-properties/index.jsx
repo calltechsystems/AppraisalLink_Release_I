@@ -893,7 +893,7 @@ const Index = () => {
                                         style={{
                                           border: "1px solid #2e008b",
                                           color: "#2e008b",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -905,7 +905,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "415px",
                                           color: "black",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {" "}
@@ -939,7 +939,7 @@ const Index = () => {
                                         style={{
                                           border: "1px solid #2e008b",
                                           color: "#2e008b",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -952,7 +952,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {broker.typeOfBuilding}
@@ -963,7 +963,7 @@ const Index = () => {
                                         style={{
                                           border: "1px solid #2e008b",
                                           color: "#2e008b",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -976,7 +976,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {broker.typeOfAppraisal}
@@ -987,7 +987,7 @@ const Index = () => {
                                         style={{
                                           border: "1px solid #2e008b",
                                           color: "#2e008b",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -1000,7 +1000,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {broker.purpose}
@@ -1011,7 +1011,7 @@ const Index = () => {
                                         style={{
                                           border: "1px solid #2e008b",
                                           color: "#2e008b",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -1024,7 +1024,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {broker.lenderInformation
@@ -1060,7 +1060,7 @@ const Index = () => {
                                         style={{
                                           border: "1px solid #2e008b",
                                           color: "#2e008b",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -1072,7 +1072,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         ${broker.estimatedValue}
@@ -1083,7 +1083,7 @@ const Index = () => {
                                         style={{
                                           border: "1px solid #2e008b",
                                           color: "#2e008b",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -1095,7 +1095,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {" "}
@@ -1111,7 +1111,7 @@ const Index = () => {
                                         style={{
                                           border: "1px solid #2e008b",
                                           color: "#2e008b",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -1123,7 +1123,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {broker.quoteRequiredDate
@@ -1232,7 +1232,7 @@ const Index = () => {
                                         style={{
                                           border: "1px solid #2e008b",
                                           color: "#2e008b",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -1244,7 +1244,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {" "}
@@ -1256,7 +1256,7 @@ const Index = () => {
                                         style={{
                                           border: "1px solid #2e008b",
                                           color: "#2e008b",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -1268,7 +1268,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {" "}
@@ -1282,7 +1282,7 @@ const Index = () => {
                                         style={{
                                           border: "1px solid #2e008b",
                                           color: "#2e008b",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -1295,7 +1295,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {broker.applicantEmailAddress}
@@ -1306,7 +1306,7 @@ const Index = () => {
                                         style={{
                                           border: "1px solid #2e008b",
                                           color: "#2e008b",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -1318,7 +1318,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {" "}
@@ -1447,7 +1447,7 @@ const Index = () => {
                                         style={{
                                           border: "1px solid #2e008b",
                                           color: "#2e008b",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -1472,7 +1472,7 @@ const Index = () => {
                                         style={{
                                           border: "1px solid #2e008b",
                                           color: "#2e008b",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -1484,7 +1484,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {selectedBroker.companyName
@@ -1497,7 +1497,7 @@ const Index = () => {
                                         style={{
                                           border: "1px solid #2e008b",
                                           color: "#2e008b",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -1509,7 +1509,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {selectedBroker.emailId}
@@ -1520,7 +1520,7 @@ const Index = () => {
                                         style={{
                                           border: "1px solid #2e008b",
                                           color: "#2e008b",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -1532,7 +1532,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {selectedBroker.phoneNumber}
@@ -1543,7 +1543,7 @@ const Index = () => {
                                         style={{
                                           border: "1px solid #2e008b",
                                           color: "#2e008b",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -1555,7 +1555,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {selectedBroker.cellNumber}
@@ -1566,7 +1566,7 @@ const Index = () => {
                                         style={{
                                           border: "1px solid #2e008b",
                                           color: "#2e008b",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -1578,7 +1578,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {selectedBroker.mortageBrokerLicNo}
@@ -1589,7 +1589,7 @@ const Index = () => {
                                         style={{
                                           border: "1px solid #2e008b",
                                           color: "#2e008b",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -1601,7 +1601,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "250px",
                                           color: "black",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {selectedBroker.mortageBrokerageLicNo}
@@ -1612,7 +1612,7 @@ const Index = () => {
                                         style={{
                                           border: "1px solid #2e008b",
                                           color: "#2e008b",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         <span className="text-start">
@@ -1624,7 +1624,7 @@ const Index = () => {
                                           border: "1px solid #2e008b",
                                           width: "400px",
                                           color: "black",
-                                          paddingLeft:"10px"
+                                          paddingLeft: "10px",
                                         }}
                                       >
                                         {selectedBroker.streetNumber}{" "}
@@ -1859,7 +1859,7 @@ const Index = () => {
                             height={45}
                             className="logo1 img-fluid"
                             style={{ marginTop: "-20px" }}
-                            src="/assets/images/logo.png"
+                            src="/assets/images/Appraisal_Land_Logo.png"
                             alt="header-logo2.png"
                           />
                           <span
@@ -1867,7 +1867,6 @@ const Index = () => {
                               color: "#2e008b",
                               fontWeight: "bold",
                               fontSize: "24px",
-                              // marginTop: "20px",
                             }}
                           >
                             Appraisal
@@ -1877,7 +1876,6 @@ const Index = () => {
                               color: "#97d700",
                               fontWeight: "bold",
                               fontSize: "24px",
-                              // marginTop: "20px",
                             }}
                           >
                             {" "}
@@ -1903,30 +1901,27 @@ const Index = () => {
                       data-live-search="true"
                       data-width="100%"
                       onChange={(e) => handleStatusSelect(e.target.value)}
-                      // value={buildinRef}
-                      // onChange={(e) => setBuildinRef(e.target.value)}
-                      // onChange={(e) => setBuildinRef(e.target.value)}
-                      // disabled={isDisable}
                       style={{
                         paddingTop: "15px",
                         paddingBottom: "15px",
                         backgroundColor: "#E8F0FE",
                       }}
                     >
-                      {AppraiserStatusOptions.map((item, index) => {
-                        return (
-                          <option key={item.id} value={item.value}>
-                            {item.type}
-                          </option>
-                        );
-                      })}
+                      {AppraiserStatusOptions.map((item, index) => (
+                        <option key={item.id} value={item.value}>
+                          {item.type}
+                        </option>
+                      ))}
                     </select>
                     {openDate && (
-                      <div
-                        className="col-lg-12 pt-20"
-                        style={{ display: "flex", flexDirection: "row" }}
-                      >
-                        <label style={{ color: "black", fontWeight: "bold" }}>
+                      <div className="col-lg-12">
+                        <label
+                          style={{
+                            color: "#2e008b",
+                            fontWeight: "bold",
+                            fontSize: "18px",
+                          }}
+                        >
                           Date and Time <span style={{ color: "red" }}>*</span>
                         </label>
                         <input
@@ -1938,9 +1933,14 @@ const Index = () => {
                           value={statusDate}
                           min={getMinDateTime()}
                         />
+                        {/* {!statusDate && (
+                          <span style={{ color: "red", fontSize: "14px" }}>
+                            Date is required.
+                          </span>
+                        )} */}
                       </div>
                     )}
-                    <div>
+                    <div className="mt-3">
                       <h4 style={{ color: "#2e008b", fontWeight: "bold" }}>
                         Remark
                       </h4>
@@ -1951,27 +1951,30 @@ const Index = () => {
                         id="formGroupExampleInput3"
                         onChange={(e) => setRemark(e.target.value)}
                         value={remark}
-                        maxlength="50"
+                        maxLength="50"
                       />
                     </div>
                     <div
                       className="mb-3 mt-2"
                       style={{ border: "2px solid #97d700" }}
                     ></div>
-                    {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
-                    <div className="text-center" style={{}}>
+                    <div className="text-center">
                       <button
-                        disabled={disbale}
-                        className="btn w-35 btn-color"
+                        className="btn w-25 btn-color"
                         onClick={closeStatusUpdateHandler}
                       >
                         Cancel
                       </button>
                       <button
-                        disabled={disbale}
-                        className="btn btn-color w-10"
+                        className="btn btn-color w-25"
                         style={{ marginLeft: "12px" }}
-                        onClick={handleStatusUpdateHandler}
+                        onClick={() => {
+                          if (openDate && !statusDate) {
+                            toast.error("Date and time required.");
+                          } else {
+                            handleStatusUpdateHandler();
+                          }
+                        }}
                       >
                         Submit
                       </button>

@@ -574,7 +574,7 @@ function SmartTable(props) {
             <div className="row">
               <div
                 className="smartTable-noDataFound col-12"
-                style={{ marginTop: "100px", marginBottom: "400px" }}
+                style={{ marginTop: "100px", marginBottom: "40px" }}
               >
                 {props.dataFetched && props.properties.length === 0 ? (
                   showNoData ? (

@@ -79,6 +79,10 @@ const SidebarMenu = () => {
     // { id: 3, name: "Logout", route: "/login", icon: "flaticon-logout" },
   ];
 
+  const isMenuActive = (menuItems) => {
+    return menuItems.some((item) => item.route === route.pathname);
+  };
+
   return (
     <>
       <ul className="sidebar-menu">
@@ -119,7 +123,6 @@ const SidebarMenu = () => {
         {/* End header */}
 
         <li className="title">
-          {/* <span>Main</span> */}
           <ul>
             <li
               className={`treeview ${
@@ -131,7 +134,12 @@ const SidebarMenu = () => {
                 <span>Appraiser Land Dashboard</span>
                 <i className="fa fa-angle-down pull-right"></i>
               </a>
-              <ul className="treeview-menu collapse" id="my-property_1">
+              <ul
+                className={`treeview-menu collapse ${
+                  isMenuActive(dashboard) ? "show" : ""
+                }`}
+                id="my-property_1"
+              >
                 {dashboard.map((item) => (
                   <li key={item.id}>
                     <Link href={item.route}>
@@ -154,7 +162,12 @@ const SidebarMenu = () => {
                 <span>Appraisers Informations</span>
                 <i className="fa fa-angle-down pull-right"></i>
               </a>
-              <ul className="treeview-menu collapse" id="my-property_2">
+              <ul
+                className={`treeview-menu collapse ${
+                  isMenuActive(appraisersInformation) ? "show" : ""
+                }`}
+                id="my-property_2"
+              >
                 {appraisersInformation.map((item) => (
                   <li key={item.id}>
                     <Link href={item.route}>
@@ -176,7 +189,12 @@ const SidebarMenu = () => {
                 <span>Brokers Informations</span>
                 <i className="fa fa-angle-down pull-right"></i>
               </a>
-              <ul className="treeview-menu collapse" id="my-property_3">
+              <ul
+                className={`treeview-menu collapse ${
+                  isMenuActive(brokersInformation) ? "show" : ""
+                }`}
+                id="my-property_3"
+              >
                 {brokersInformation.map((item) => (
                   <li key={item.id}>
                     <Link href={item.route}>
@@ -200,7 +218,12 @@ const SidebarMenu = () => {
                 <span>Manage Subscription Plan</span>
                 <i className="fa fa-angle-down pull-right"></i>
               </a>
-              <ul className="treeview-menu collapse" id="my-property_4">
+              <ul
+                className={`treeview-menu collapse ${
+                  isMenuActive(manageSubscriptionPlan) ? "show" : ""
+                }`}
+                id="my-property_4"
+              >
                 {manageSubscriptionPlan.map((item) => (
                   <li key={item.id}>
                     <Link href={item.route}>
@@ -211,19 +234,6 @@ const SidebarMenu = () => {
               </ul>
             </li>
 
-            {/* <li
-              className={`treeview ${
-                isSinglePageActive("/manage-plans", route.pathname)
-                  ? "active"
-                  : ""
-              }`}
-            >
-              <Link href="/manage-plans">
-                <i className="fa fa-cogs"></i>
-                <span> Manage Plans</span>
-              </Link>
-            </li> */}
-
             <li
               className={`treeview ${
                 isParentPageActive(userManagement, route.pathname) ? "" : ""
@@ -233,7 +243,12 @@ const SidebarMenu = () => {
                 <i className="fa fa-users"></i> <span>User Management</span>
                 <i className="fa fa-angle-down pull-right"></i>
               </a>
-              <ul className="treeview-menu collapse" id="my-property">
+              <ul
+                className={`treeview-menu collapse ${
+                  isMenuActive(userManagement) ? "show" : ""
+                }`}
+                id="my-property"
+              >
                 {userManagement.map((item) => (
                   <li key={item.id}>
                     <Link href={item.route}>
@@ -244,17 +259,6 @@ const SidebarMenu = () => {
               </ul>
             </li>
             {/* end properties */}
-
-            {/* <li
-              className={`treeview ${
-                isSinglePageActive("#", route.pathname) ? "active" : ""
-              }`}
-            >
-              <Link href="#">
-                <i className="fa fa-cog"></i>
-                <span> Settings</span>
-              </Link>
-            </li> */}
           </ul>
         </li>
       </ul>

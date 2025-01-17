@@ -14,6 +14,7 @@ import Loader from "./Loader";
 import { AppraiserStatusOptions } from "../create-listing/data";
 import Link from "next/link";
 import Image from "next/image";
+import { FaDownload } from "react-icons/fa";
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -1408,7 +1409,7 @@ const Index = () => {
                           <div className="modal">
                             <div className="modal-content">
                               <div className="row">
-                                <div className="col-lg-12">
+                                <div className="col-lg-12 d-flex justify-content-between">
                                   <Link href="/" className="">
                                     <Image
                                       width={50}
@@ -1440,6 +1441,15 @@ const Index = () => {
                                       Land
                                     </span>
                                   </Link>
+                                  <button
+                                    className="btn btn-color"
+                                    onClick={() =>
+                                      brokerInfoHandler(broker.orderId)
+                                    }
+                                    title="Download Pdf"
+                                  >
+                                    <FaDownload />
+                                  </button>
                                 </div>
                               </div>
                               <div className="row">
@@ -1470,33 +1480,20 @@ const Index = () => {
                                   <thead>
                                     <tr>
                                       <th
+                                        className=""
                                         style={{
-                                          border: "1px solid #2e008b",
-                                          color: "#2e008b",
-                                          // padding: "5px",
-                                          textAlign: "center",
+                                          borderRight: "2px solid white",
                                         }}
                                       >
                                         Headers
                                       </th>
-                                      <th
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          // width: "470px",
-                                          color: "#2e008b",
-                                          // padding: "5px",
-                                          textAlign: "center",
-                                        }}
-                                      >
-                                        Value
-                                      </th>
+                                      <th className="">Value</th>
                                     </tr>
                                   </thead>
                                   <tbody>
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
                                           paddingLeft: "10px",
                                         }}
@@ -1506,12 +1503,14 @@ const Index = () => {
                                         </span>
                                       </td>
                                       <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          paddingLeft: "10px",
-                                        }}
+                                        className="table-value"
+                                        // style={{
+                                        //   fontWeight:"600",
+                                        //   width: "250px",
+                                        //   color: "black",
+                                        //   fontFamily:"nunito",
+                                        //   fontSize:"16px"
+                                        // }}
                                       >
                                         {selectedBroker.firstName}{" "}
                                         {selectedBroker.lastName}
@@ -1521,7 +1520,6 @@ const Index = () => {
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
                                           paddingLeft: "10px",
                                         }}
@@ -1530,14 +1528,7 @@ const Index = () => {
                                           Company Name
                                         </span>
                                       </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          paddingLeft: "10px",
-                                        }}
-                                      >
+                                      <td className="table-value">
                                         {selectedBroker.companyName
                                           ? selectedBroker.companyName
                                           : "N.A."}
@@ -1546,7 +1537,6 @@ const Index = () => {
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
                                           paddingLeft: "10px",
                                         }}
@@ -1555,21 +1545,13 @@ const Index = () => {
                                           Email Address
                                         </span>
                                       </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          paddingLeft: "10px",
-                                        }}
-                                      >
+                                      <td className="table-value">
                                         {selectedBroker.emailId}
                                       </td>
                                     </tr>
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
                                           paddingLeft: "10px",
                                         }}
@@ -1578,21 +1560,13 @@ const Index = () => {
                                           Phone Number
                                         </span>
                                       </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          paddingLeft: "10px",
-                                        }}
-                                      >
+                                      <td className="table-value">
                                         {selectedBroker.phoneNumber}
                                       </td>
                                     </tr>
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
                                           paddingLeft: "10px",
                                         }}
@@ -1601,21 +1575,13 @@ const Index = () => {
                                           Cell Number
                                         </span>
                                       </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          paddingLeft: "10px",
-                                        }}
-                                      >
+                                      <td className="table-value">
                                         {selectedBroker.cellNumber}
                                       </td>
                                     </tr>
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
                                           paddingLeft: "10px",
                                         }}
@@ -1624,21 +1590,13 @@ const Index = () => {
                                           Mortgage Broker Licence No
                                         </span>
                                       </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          paddingLeft: "10px",
-                                        }}
-                                      >
+                                      <td className="table-value">
                                         {selectedBroker.mortageBrokerLicNo}
                                       </td>
                                     </tr>
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
                                           paddingLeft: "10px",
                                         }}
@@ -1647,21 +1605,13 @@ const Index = () => {
                                           Mortgage Brokerage Licence No
                                         </span>
                                       </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          paddingLeft: "10px",
-                                        }}
-                                      >
+                                      <td className="table-value">
                                         {selectedBroker.mortageBrokerageLicNo}
                                       </td>
                                     </tr>
                                     <tr>
                                       <td
                                         style={{
-                                          border: "1px solid #2e008b",
                                           color: "#2e008b",
                                           paddingLeft: "10px",
                                         }}
@@ -1670,14 +1620,7 @@ const Index = () => {
                                           Address
                                         </span>
                                       </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "400px",
-                                          color: "black",
-                                          paddingLeft: "10px",
-                                        }}
-                                      >
+                                      <td className="table-value">
                                         {selectedBroker.streetNumber}{" "}
                                         {selectedBroker.streetName}{" "}
                                         {selectedBroker.area} ,{" "}
@@ -1699,7 +1642,7 @@ const Index = () => {
                                       </td>
                                       <td
                                         style={{
-                                          border: "1px solid #2e008b",
+                                          
                                           width: "250px",
                                           color: "black",
                                           paddingLeft:"10px"
@@ -1724,7 +1667,7 @@ const Index = () => {
                                       </td>
                                       <td
                                         style={{
-                                          border: "1px solid #2e008b",
+                                          
                                           width: "250px",
                                           color: "black",
                                           paddingLeft:"10px"
@@ -1785,9 +1728,25 @@ const Index = () => {
                                     </tr> */}
                                   </tbody>
                                 </table>
-                                `
                               </div>
-                              <div className="row text-center mt-3">
+                              <div className="d-flex justify-content-center mt-5">
+                                {/* <button
+                                  className="btn btn-color w-25"
+                                  onClick={() =>
+                                    brokerInfoHandler(broker.orderId)
+                                  }
+                                  title="Download Pdf"
+                                >
+                                  Download
+                                </button> */}
+                                <button
+                                  className="btn btn-color" style={{width:"100px"}}
+                                  onClick={closeBrokerModal}
+                                >
+                                  Ok
+                                </button>
+                              </div>
+                              {/* <div className="row text-center mt-3">
                                 <div className="col-lg-12">
                                   <div
                                     className="btn btn-color w-25 m-1"
@@ -1805,7 +1764,7 @@ const Index = () => {
                                     Ok
                                   </button>
                                 </div>
-                              </div>
+                              </div> */}
                             </div>
                           </div>
                         )}
@@ -1991,7 +1950,7 @@ const Index = () => {
                       }}
                     >
                       {/* <option>Select</option>; */}
-                      <option value="" >Select</option>
+                      <option value="">Select</option>
                       {assignAppraiser.map((item, index) => {
                         <option value={-1}>....</option>;
                         return item.item.isActive ? (
@@ -2043,7 +2002,6 @@ const Index = () => {
                               color: "#2e008b",
                               fontWeight: "bold",
                               fontSize: "24px",
-                              // marginTop: "20px",
                             }}
                           >
                             Appraisal
@@ -2053,7 +2011,6 @@ const Index = () => {
                               color: "#97d700",
                               fontWeight: "bold",
                               fontSize: "24px",
-                              // marginTop: "20px",
                             }}
                           >
                             {" "}
@@ -2079,29 +2036,20 @@ const Index = () => {
                       data-live-search="true"
                       data-width="100%"
                       onChange={(e) => handleStatusSelect(e.target.value)}
-                      // value={buildinRef}
-                      // onChange={(e) => setBuildinRef(e.target.value)}
-                      // onChange={(e) => setBuildinRef(e.target.value)}
-                      // disabled={isDisable}
                       style={{
                         paddingTop: "15px",
                         paddingBottom: "15px",
                         backgroundColor: "#E8F0FE",
                       }}
                     >
-                      {AppraiserStatusOptions.map((item, index) => {
-                        return (
-                          <option key={item.id} value={item.value}>
-                            {item.type}
-                          </option>
-                        );
-                      })}
+                      {AppraiserStatusOptions.map((item, index) => (
+                        <option key={item.id} value={item.value}>
+                          {item.type}
+                        </option>
+                      ))}
                     </select>
                     {openDate && (
-                      <div
-                        className="col-lg-12"
-                        // style={{ display: "flex", flexDirection: "row" }}
-                      >
+                      <div className="col-lg-12">
                         <label
                           style={{
                             color: "#2e008b",
@@ -2120,6 +2068,11 @@ const Index = () => {
                           value={statusDate}
                           min={getMinDateTime()}
                         />
+                        {/* {!statusDate && (
+                          <span style={{ color: "red", fontSize: "14px" }}>
+                            Date is required.
+                          </span>
+                        )} */}
                       </div>
                     )}
                     <div className="mt-3">
@@ -2133,27 +2086,30 @@ const Index = () => {
                         id="formGroupExampleInput3"
                         onChange={(e) => setRemark(e.target.value)}
                         value={remark}
-                        maxlength="50"
+                        maxLength="50"
                       />
                     </div>
                     <div
                       className="mb-3 mt-2"
                       style={{ border: "2px solid #97d700" }}
                     ></div>
-                    {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
-                    <div className="text-center" style={{}}>
+                    <div className="text-center">
                       <button
-                        disabled={disable}
                         className="btn w-25 btn-color"
                         onClick={closeStatusUpdateHandler}
                       >
                         Cancel
                       </button>
                       <button
-                        disabled={disable}
                         className="btn btn-color w-25"
                         style={{ marginLeft: "12px" }}
-                        onClick={handleStatusUpdateHandler}
+                        onClick={() => {
+                          if (openDate && !statusDate) {
+                            toast.error("Date and time required.");
+                          } else {
+                            handleStatusUpdateHandler();
+                          }
+                        }}
                       >
                         Submit
                       </button>
@@ -2161,6 +2117,7 @@ const Index = () => {
                   </div>
                 </div>
               )}
+
               <div className="row">
                 <Modal
                   modalOpen={modalOpen}

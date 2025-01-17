@@ -1026,7 +1026,7 @@ const Index = () => {
 
               {closeRegisterModal && (
                 <div className="modal">
-                  <div className="modal-content">
+                  <div className="modal-content" style={{ width: "30%" }}>
                     <div className="row">
                       <div className="col-lg-12">
                         <Link href="/" className="">
@@ -1064,7 +1064,7 @@ const Index = () => {
                     </div>
                     <div className="row">
                       <div className="col-lg-12 text-center">
-                        <h1 className=" text-color mt-1">Add Appraiser </h1>
+                        <h2 className=" text-color mt-1">Add Appraiser </h2>
                       </div>
                     </div>
                     <div
