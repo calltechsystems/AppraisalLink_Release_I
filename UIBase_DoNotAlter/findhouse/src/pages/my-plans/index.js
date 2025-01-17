@@ -2,13 +2,13 @@ import dynamic from "next/dynamic";
 import Seo from "../../components/common/seo";
 import MyPlans from "./plans";
 import { useEffect, useState } from "react";
-import Modal from "./Modal";
 import { useRouter } from "next/router";
 import axios from "axios";
 import toast from "react-hot-toast";
-import Checkout from "./CheckoutPage";
 import Link from "next/link";
 import Image from "next/image";
+import OneTimePaymentModal from "./OneTimePaymentModal";
+import SubscriptionModal from "./SubscriptionModal";
 
 const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -19,6 +19,7 @@ const Index = () => {
     title: "Basic",
     price: 0,
     type: "plan",
+    item: {},
   });
 
   const [checkout, setCheckOut] = useState(false);
@@ -38,7 +39,6 @@ const Index = () => {
         .includes("topup");
       return isBeforeOrEqualCurrentDate && isNotTopUp;
     });
-
     return selectedPlans;
   }
   useEffect(() => {
@@ -105,19 +105,28 @@ const Index = () => {
   return (
     <>
       <Seo pageTitle="My Plans" />
-       <MyPlans
+      <MyPlans
         currentSubscription={currentSubscription}
         setModalOpen={setModalOpen}
         setPrice={setPrice}
         userData={userData}
         modalOpen={modalOpen}
       />
-      <Modal
-        currentSubscription={currentSubscription}
-        modalOpen={modalOpen}
-        closeModal={closeModal}
-        price={price}
-      />
+      {price?.type == "plan" ? (
+        <SubscriptionModal
+          currentSubscription={currentSubscription}
+          modalOpen={modalOpen}
+          closeModal={closeModal}
+          price={price}
+        />
+      ) : (
+        <OneTimePaymentModal
+          currentSubscription={currentSubscription}
+          modalOpen={modalOpen}
+          closeModal={closeModal}
+          price={price}
+        />
+      )}
       {openRedirectionModal && (
         <div className="modal">
           <div className="modal-content">
@@ -179,13 +188,12 @@ const Index = () => {
             </div>
           </div>
         </div>
-      )} 
+      )}
     </>
   );
 };
 
 export default dynamic(() => Promise.resolve(Index), { ssr: false });
-
 
 // <div className="App">
 //       {checkout ? (

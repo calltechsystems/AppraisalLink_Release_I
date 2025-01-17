@@ -6,11 +6,12 @@ import { ClipLoader } from "react-spinners";
 import Link from "next/link";
 import Image from "next/image";
 
-const Modal = ({ modalOpen, closeModal, price }) => {
+const SubscriptionModal = ({ modalOpen, closeModal, price }) => {
   const [paypalUrl, setPaypalUrl] = useState("");
   const [status, setStatus] = useState(0);
   const [countdown, setCountdown] = useState(180);
   const [IsAgainLoginPopUp, setIsAgainLoginPopUp] = useState(false);
+  const [termsPolicyAccepted, setTermsPolicyAccepted] = useState(0);
 
   const checkOutHandler = () => {
     const data = JSON.parse(localStorage.getItem("user"));
@@ -75,6 +76,13 @@ const Modal = ({ modalOpen, closeModal, price }) => {
       clearInterval(countdownInterval);
     };
   }, [status, countdown]);
+
+  const capitalizeFirstLetter = (word) => {
+    if (!word || typeof word !== "string") {
+      return ""; // Return an empty string for invalid inputs
+    }
+    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+  };
 
   return (
     <div>
@@ -149,7 +157,9 @@ const Modal = ({ modalOpen, closeModal, price }) => {
                   textAlign: "center",
                 }}
               >
-                <h2>Get Subscription on {price.title} Plan</h2>
+                <h2>
+                  Get Subscription on {capitalizeFirstLetter(price.title)} Plan
+                </h2>
               </div>
             )}
             <div
@@ -180,7 +190,7 @@ const Modal = ({ modalOpen, closeModal, price }) => {
                       color: "#2e008b",
                     }}
                   >
-                    {price.title}
+                    {capitalizeFirstLetter(price.title)}
                   </label>{" "}
                   with value{" "}
                   <label
@@ -213,6 +223,31 @@ const Modal = ({ modalOpen, closeModal, price }) => {
               className="mt-2 mb-3"
               style={{ border: "2px solid #97d700" }}
             ></div>
+            {status == 0 ? <div className="ml-6 custom-checkbox mb-3">
+              <input
+                className="form-check-input "
+                type="checkbox"
+                value={termsPolicyAccepted}
+                onClick={() => setTermsPolicyAccepted(!termsPolicyAccepted)}
+                id="terms"
+                style={{ border: "1px solid black" }}
+              />
+              <label
+                className="form-check-label form-check-label"
+                htmlFor="terms"
+              >
+                {" "}
+                I have read and accept the {" "}
+                <Link
+                  href="assets/images/Terms & Conditions.pdf"
+                  target="_blank"
+                  className="form-check-label text-primary"
+                >
+                  Terms and Conditions
+                </Link>{" "}
+                ?
+              </label>
+            </div>:""}
             <div className="col-lg-12 text-center">
               {status !== 2 && (
                 <button className="btn btn-color w-25 m-1" onClick={closeModal}>
@@ -234,23 +269,18 @@ const Modal = ({ modalOpen, closeModal, price }) => {
                     />
                   </a>
                 ) : (
-                  <label
-                    className="btn btn-color w-25"
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      marginLeft: "36%",
-                    }}
+                  <button
+                    className="btn btn-color w-25 m-1"
+                    onClick={closeModal}
                   >
-                    <ClipLoader color="#ffffff" loading={true} size={40} />
-                    <span style={{ marginLeft: "10px" }}>Processing...</span>
-                  </label>
+                    Cancel
+                  </button>
                 )
               ) : (
                 <button
                   className="btn btn-color w-25"
                   onClick={checkOutHandler}
+                  disabled={!termsPolicyAccepted}
                 >
                   Checkout
                 </button>
@@ -271,4 +301,4 @@ const Modal = ({ modalOpen, closeModal, price }) => {
   );
 };
 
-export default Modal;
+export default SubscriptionModal;
