@@ -52,7 +52,7 @@ const Team = () => {
               </ul>
             </div>
           </div>
-          {/* End .thumb */}
+     
 
           <div className="details">
             <div className="tc_content">
