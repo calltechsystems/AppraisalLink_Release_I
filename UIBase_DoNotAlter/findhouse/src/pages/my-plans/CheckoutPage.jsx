@@ -6,14 +6,29 @@ import {
 } from "@paypal/react-paypal-js";
 import toast from "react-hot-toast";
 
-const Checkout = ({ topUpDetails, setErrorOccurred, setOnSuccess, currentSubscription }) => {
+const Checkout = ({
+  topUpDetails,
+  setErrorOccurred,
+  setOnSuccess,
+  currentSubscription,
+  paymentType,
+}) => {
   const [{ options, isPending }, dispatch] = usePayPalScriptReducer();
   const [currency, setCurrency] = useState(options.currency || "CAD");
   const [userData, setUserData] = useState({});
 
+  //Paypal Plan ID
+  const PaypalPlanId = {
+    ["lite"]: "P-4F259524XU6273733M6FY5QY",
+    ["pro"]: "P-3KE51330455345207M6FY7HI",
+    ["ultimate"]: "P-51425321W9368215BM6FZAMY",
+  };
+
   useEffect(() => {
     setUserData(JSON.parse(localStorage.getItem("user")) || {});
   }, [topUpDetails]);
+
+  console.log({ userData });
 
   const generateCustomId = (brokerId, planId) => {
     if (!brokerId || !planId) {
@@ -38,6 +53,117 @@ const Checkout = ({ topUpDetails, setErrorOccurred, setOnSuccess, currentSubscri
     return nextMonthDate;
   }
 
+  const generatePayload = (details, userData, currency) => {
+    const { title, id, price } = details;
+
+    if (paymentType === "oneTime") {
+      // Payload for one-time payment
+      return {
+        intent: "CAPTURE",
+        purchase_units: [
+          {
+            description: `Broker ${title} Top Up Plan`,
+            custom_id: generateCustomId(userData?.userId, id),
+            amount: {
+              value: price,
+              currency_code: currency,
+              breakdown: {
+                item_total: {
+                  value: price,
+                  currency_code: currency,
+                },
+                tax_total: {
+                  value: "0.00",
+                  currency_code: currency,
+                },
+              },
+            },
+            items: [
+              {
+                name: `Top Up ${title} Plan`,
+                quantity: "1",
+                unit_amount: {
+                  value: price,
+                  currency_code: currency,
+                },
+                description:
+                  "Monthly subscription top up add for listing properties",
+                category: "DIGITAL_GOODS",
+              },
+            ],
+          },
+        ],
+        application_context: {
+          brand_name: "Appraisal Land",
+          locale: "en-US",
+          user_action: "PAY_NOW",
+          shipping_preference: "NO_SHIPPING",
+        },
+      };
+    } else if (paymentType === "subscription") {
+      // Payload for subscription payment
+      return {
+        // custom_id: generateCustomId(userData?.userId, id),
+        plan_id: PaypalPlanId[String(title).toLowerCase()],
+        // start_time: new Date(),
+        quantity: "1",
+        subscriber: {
+          name: {
+            given_name: userData?.broker_Details?.firstName,
+            surname: userData?.broker_Details?.lastName,
+          },
+          email_address: userData?.userEmail,
+          shipping_address: {
+            name: {
+              full_name:
+                userData?.broker_Details?.firstName +
+                " " +
+                userData?.broker_Details?.lastName,
+            },
+            address: {
+              address_line_1:
+                userData?.broker_Details?.apartmentNo +
+                "," +
+                userData?.broker_Details?.streetNumber +
+                " " +
+                userData?.broker_Details?.streetName +
+                " " +
+                userData?.broker_Details?.area,
+              address_line_2:
+                userData?.broker_Details?.apartmentNo +
+                "," +
+                userData?.broker_Details?.streetNumber +
+                " " +
+                userData?.broker_Details?.streetName +
+                " " +
+                userData?.broker_Details?.area,
+              admin_area_2: userData?.broker_Details?.province,
+              admin_area_1: userData?.broker_Details?.city,
+              postal_code: userData?.broker_Details?.postalCode,
+              country_code: "US",
+            },
+          },
+        },
+        application_context: {
+          brand_name: "Appraisal Land",
+          locale: "en-US",
+          shipping_preference: "SET_PROVIDED_ADDRESS",
+          user_action: "SUBSCRIBE_NOW",
+          payment_method: {
+            payer_selected: "PAYPAL",
+            payee_preferred: "IMMEDIATE_PAYMENT_REQUIRED",
+          },
+          return_url: "https://appraisal-eta.vercel.app/my-plans",
+          cancel_url: "https://appraisal-eta.vercel.app/my-plans",
+        },
+      };
+    } else {
+      throw new Error(
+        "Invalid type provided. Use 'oneTime' or 'subscription'."
+      );
+    }
+  };
+
   const onCurrencyChange = ({ target: { value } }) => {
     setCurrency(value);
     dispatch({
@@ -50,48 +176,15 @@ const Checkout = ({ topUpDetails, setErrorOccurred, setOnSuccess, currentSubscri
   };
 
   const onCreateOrder = (data, actions) => {
-    return actions.order.create({
-      intent: "CAPTURE",
-      purchase_units: [
-        {
-          description: `Broker ${topUpDetails?.title} Top Up Plan`,
-          custom_id: generateCustomId(userData?.userId, topUpDetails?.id),
-          //   soft_descriptor: `RealEstateBrokerSub${planDetails?.title}Plan`,
-          amount: {
-            value: topUpDetails?.price,
-            currency_code: currency,
-            breakdown: {
-              item_total: {
-                value: topUpDetails?.price,
-                currency_code: currency,
-              },
-              tax_total: {
-                value: "0.00",
-                currency_code: currency,
-              },
-            },
-          },
-          items: [
-            {
-              name: `Top Up ${topUpDetails?.title} Plan`,
-              quantity: "1",
-              unit_amount: {
-                value: topUpDetails?.price,
-                currency_code: currency,
-              },
-              description: "Monthly subscription top up add for listing properties",
-              category: "DIGITAL_GOODS",
-            },
-          ],
-        },
-      ],
-      application_context: {
-        brand_name: userData?.broker_Details?.companyName || "My Business",
-        locale: "en-US",
-        user_action: "PAY_NOW",
-        shipping_preference: "NO_SHIPPING",
-      },
-    });
+    const payload = generatePayload(topUpDetails, userData, currency);
+    console.log({ paymentType, payload: JSON.stringify(payload) });
+    return actions.order.create(payload);
+  };
+
+  const createSubscription = (data, actions) => {
+    const payload = generatePayload(topUpDetails, userData, currency);
+    console.log({ paymentType, payload });
+    return actions.subscription.create(payload);
   };
 
   // const convertToTimezone = (timestamp, targetTimezone) => {
@@ -134,19 +227,24 @@ const Checkout = ({ topUpDetails, setErrorOccurred, setOnSuccess, currentSubscri
         total_properties: currentSubscription?.noOfProperties,
         used_properties: currentSubscription?.usedProperties,
         user_id: userData?.userId,
-        topUpId: planDetails?.id,
+        topUpId: topUpDetails?.id,
         //top Up price: topUpDetails?.price
       },
     };
   };
 
   const onApproveOrder = (data, actions) => {
-    return actions.order.capture().then((details) => {
-      const payload = generateTheTransactionPayload(details);
-      console.log({ payload });
-      //save this payload to the DB
+    if (paymentType == "oneTime") {
+      return actions.order.capture().then((details) => {
+        const payload = generateTheTransactionPayload(details);
+        setOnSuccess(true);
+        console.log({ approveDetails: details });
+        //save this payload to the DB
+      });
+    } else {
+      console.log("Subscription ID:", data.subscriptionID);
       setOnSuccess(true);
-    });
+    }
   };
 
   const onCancelOrder = (data) => {
@@ -174,11 +272,18 @@ const Checkout = ({ topUpDetails, setErrorOccurred, setOnSuccess, currentSubscri
             <option value="CAD">🇨🇦 CAD (Canadian Dollar)</option>
           </select>
           <PayPalButtons
-            style={{ layout: "vertical" }}
-            createOrder={onCreateOrder}
+            style={{
+              layout: "vertical",
+              color: "blue",
+              shape: "pill",
+              label: paymentType === "oneTime" ? "pay" : "subscribe",
+            }}
+            {...(paymentType === "oneTime"
+              ? { createOrder: onCreateOrder }
+              : { createSubscription: createSubscription })}
             onApprove={onApproveOrder}
-            onCancel={onCancelOrder} // Handle canceled transactions
-            onError={onError} // Handle errors
+            onCancel={onCancelOrder}
+            onError={onError}
           />
         </>
       )}
@@ -192,13 +297,14 @@ const CheckoutPage = ({
   planDetails,
   setErrorOccurred,
   setOnSuccess,
+  paymentType,
 }) => (
   <PayPalScriptProvider
     options={{
-      "client-id":
-        "AR1CYFbM_D9uUk9mRvFJSsJHTdny-Lddd_tKSVtFUeSK7r-M2dJeEIR6PA5TIkpIr8keinWycBpiikvh",
-      // "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
-      currency: "USD",
+      "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
+      currency: "CAD",
+      intent: paymentType === "subscription" ? "subscription" : "capture",
+      vault: paymentType === "subscription" ? true : false,
     }}
   >
     <Checkout
@@ -206,6 +312,7 @@ const CheckoutPage = ({
       setErrorOccurred={setErrorOccurred}
       setOnSuccess={setOnSuccess}
       currentSubscription={currentSubscription}
+      paymentType={paymentType}
     />
   </PayPalScriptProvider>
 );
