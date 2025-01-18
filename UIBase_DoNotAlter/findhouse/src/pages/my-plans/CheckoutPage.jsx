@@ -103,8 +103,8 @@ const Checkout = ({
     } else if (paymentType === "subscription") {
       // Payload for subscription payment
       return {
-        custom_id: generateCustomId(userData?.userId, id),
-        plan_id: 'P-4F259524XU6273733M6FY5QY',
+        // custom_id: generateCustomId(userData?.userId, id),
+        plan_id: PaypalPlanId[String(title).toLowerCase()],
         // start_time: new Date(),
         quantity: "1",
         subscriber: {
@@ -153,8 +153,8 @@ const Checkout = ({
             payer_selected: "PAYPAL",
             payee_preferred: "IMMEDIATE_PAYMENT_REQUIRED",
           },
-          "return_url": "https://appraisal-eta.vercel.app/my-plans",
-          "cancel_url": "https://appraisal-eta.vercel.app/my-plans",
+          return_url: "https://appraisal-eta.vercel.app/my-plans",
+          cancel_url: "https://appraisal-eta.vercel.app/my-plans",
         },
       };
     } else {
@@ -234,12 +234,17 @@ const Checkout = ({
   };
 
   const onApproveOrder = (data, actions) => {
-    return actions.order.capture().then((details) => {
-      const payload = generateTheTransactionPayload(details);
+    if (paymentType == "oneTime") {
+      return actions.order.capture().then((details) => {
+        const payload = generateTheTransactionPayload(details);
+        setOnSuccess(true);
+        console.log({ approveDetails: details });
+        //save this payload to the DB
+      });
+    } else {
+      console.log("Subscription ID:", data.subscriptionID);
       setOnSuccess(true);
-      console.log({ approveDetails: payload });
-      //save this payload to the DB
-    });
+    }
   };
 
   const onCancelOrder = (data) => {
