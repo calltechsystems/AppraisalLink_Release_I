@@ -422,7 +422,7 @@ function SmartTable(props) {
   }, [props.data]);
 
   return (
-    <div className="col-12 pt-3">
+    <div className="col-12 pt-5">
       <div className="smartTable-container row">
         <div className="candidate_revew_select style2 mb30-991">
           <ul className="mb0 mt-0">
