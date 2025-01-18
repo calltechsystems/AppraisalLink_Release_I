@@ -851,7 +851,7 @@ export default function Exemple({
             let assignedProps = [];
             temp.map((prop, index) => {
               propertyInfo.map((assProp, idx) => {
-                if (String(prop.propertyid) === String(assProp.$id)) {
+                if (String(prop.propertyid) === String(assProp.propertyId)) {
                   const newRow = {
                     ...assProp,
                     appraiserid: prop.appraiserid,
