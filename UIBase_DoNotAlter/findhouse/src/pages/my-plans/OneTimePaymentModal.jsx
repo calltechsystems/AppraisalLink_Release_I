@@ -20,54 +20,6 @@ const OneTimePaymentModal = ({
   const [onSuccess, setOnSuccess] = useState(false);
   const [termsPolicyAccepted, setTermsPolicyAccepted] = useState(0);
 
-  //checkout handler default setup
-  // const checkOutHandler = () => {
-  //   const data = JSON.parse(localStorage.getItem("user"));
-
-  //   if (String(price.type) === "plan") {
-  //     const payload = {
-  //       PlanName: price.title,
-  //       userId: data.userId,
-  //       token: data.token,
-  //     };
-
-  //     const encryptiondata = encryptionData(payload);
-
-  //     axios
-  //       .post("/api/paypalPayement", encryptiondata)
-  //       .then((res) => {
-  //         setPaypalUrl(res.data.data.response);
-  //         setStatus(1);
-  //       })
-  //       .catch((err) => {
-  //         toast.error(err.message);
-  //       });
-  //   } else {
-  //     const payload = {
-  //       TopUpId: price.id,
-  //       UserId: data.userId,
-  //       token: data.token,
-  //     };
-
-  //     const encryptiondata = encryptionData(payload);
-
-  //     axios
-  //       .post("/api/addTopUp", encryptiondata)
-  //       .then((res) => {
-  //         setPaypalUrl(res.data.userData.response);
-  //         setStatus(1);
-  //       })
-  //       .catch((err) => {
-  //         toast.error(err.message);
-  //       });
-  //   }
-  // };
-
-  // const openPaypalUrl = () => {
-  //   localStorage.setItem("isPaying", JSON.stringify("true"));
-  //   setStatus(2);
-  // };
-
   useEffect(() => {
     let countdownInterval;
 
@@ -88,13 +40,13 @@ const OneTimePaymentModal = ({
 
   useEffect(() => {
     if (onSuccess || errorOcurred) {
-      // resetFields();
+      setStatus(0);
     }
   }, [onSuccess, errorOcurred]);
 
   const capitalizeFirstLetter = (word) => {
     if (!word || typeof word !== "string") {
-      return ""; // Return an empty string for invalid inputs
+      return "";
     }
     return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
   };
@@ -105,6 +57,7 @@ const OneTimePaymentModal = ({
     setShowPaypalPage(true);
   };
 
+  console.log({ onSuccess });
   const closePaypalPage = () => {
     setShowPaypalPage(false);
     setCurrentSelectedPlan({});
@@ -117,6 +70,7 @@ const OneTimePaymentModal = ({
     setStatus(0);
     setShowPaypalPage(false);
     setCurrentSelectedPlan({});
+    setTermsPolicyAccepted(false);
     closeModal();
   };
 
@@ -178,6 +132,18 @@ const OneTimePaymentModal = ({
                 style={{ border: "2px solid #97d700" }}
               ></div>
 
+
+              {onSuccess ? (
+                <div className="text-center" style={{ fontSize: "19px" }}>
+                  <span className="text-dark">
+                    Your payment was successfully completed. Thank you for your
+                    transaction.
+                  </span>
+                </div>
+              ) : (
+                ""
+              )}
+
               {!errorOcurred ? (
                 !showPaypalPage ? (
                   <div className="text-center" style={{ fontSize: "19px" }}>
@@ -216,18 +182,12 @@ const OneTimePaymentModal = ({
                       planDetails={currentSelectedPlan}
                       setErrorOccurred={setErrorOccurred}
                       setOnSuccess={setOnSuccess}
+                      paymentType={"oneTime"}
                     />
                   </>
                 ) : (
                   ""
                 )
-              ) : onSuccess ? (
-                <div className="text-center" style={{ fontSize: "19px" }}>
-                  <span className="text-dark">
-                    Your payment was successfully completed. Thank you for your
-                    transaction.
-                  </span>
-                </div>
               ) : (
                 <div className="text-center" style={{ fontSize: "19px" }}>
                   <span className="text-dark">
@@ -242,38 +202,42 @@ const OneTimePaymentModal = ({
                 className="mt-2 mb-3"
                 style={{ border: "2px solid #97d700" }}
               ></div>
-              {status == 0 ? <div className="ml-6 custom-checkbox mb-3">
-                <input
-                  className="form-check-input "
-                  type="checkbox"
-                  value={termsPolicyAccepted}
-                  onClick={() => setTermsPolicyAccepted(!termsPolicyAccepted)}
-                  id="terms"
-                  style={{ border: "1px solid black" }}
-                />
-                <label
-                  className="form-check-label form-check-label"
-                  htmlFor="terms"
-                >
-                  {" "}
-                  I have read and accept the {" "}
-                  <Link
-                    href="assets/images/Terms & Conditions.pdf"
-                    target="_blank"
-                    className="form-check-label text-primary"
+              {status == 0 && !showPaypalPage ? (
+                <div className="ml-6 custom-checkbox mb-3">
+                  <input
+                    className="form-check-input "
+                    type="checkbox"
+                    checked={termsPolicyAccepted}
+                    onClick={() => setTermsPolicyAccepted(!termsPolicyAccepted)}
+                    id="terms"
+                    style={{ border: "1px solid black" }}
+                  />
+                  <label
+                    className="form-check-label form-check-label"
+                    htmlFor="terms"
                   >
-                    Terms and Conditions
-                  </Link>{" "}
-                  ?
-                </label>
-              </div>: ''}
+                    {" "}
+                    I have read and accept the{" "}
+                    <Link
+                      href="assets/images/Terms & Conditions.pdf"
+                      target="_blank"
+                      className="form-check-label text-primary"
+                    >
+                      Terms and Conditions
+                    </Link>{" "}
+                    ?
+                  </label>
+                </div>
+              ) : (
+                ""
+              )}
             </>
 
             <div className="col-lg-12 text-center">
-              {status == 1 && !errorOcurred ? (
+              {status == 1 && showPaypalPage ? (
                 <button
                   className="btn btn-color w-25 m-1"
-                  onClick={resetFields}
+                  onClick={() => window.location.reload()}
                 >
                   Cancel
                 </button>
@@ -289,7 +253,7 @@ const OneTimePaymentModal = ({
               //   <ClipLoader color="#ffffff" loading={true} size={40} />
               //   <span style={{ marginLeft: "10px" }}>Processing...</span>
               // </label>
-              !errorOcurred ? (
+              status == 0 && !showPaypalPage ? (
                 <>
                   <button className="btn w-25" onClick={resetFields}>
                     Cancel
