@@ -109,7 +109,6 @@ const SidebarMenu = ({ userData }) => {
         {/* End header */}
 
         <li className="title">
-          {/* <span>Main</span> */}
           <ul>
             <li
               className={`treeview ${

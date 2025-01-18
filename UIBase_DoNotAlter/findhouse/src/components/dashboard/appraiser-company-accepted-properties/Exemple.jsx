@@ -340,13 +340,15 @@ export default function Exemple({
 
     // For EST date and time
 
-    const formatDateTimeEST = (date) => {
-      return new Intl.DateTimeFormat("en-US", {
-        timeZone: "America/Toronto", // EST/Canada timezone
-        dateStyle: "medium",
-        timeStyle: "short",
-      }).format(new Date(date));
-    };
+      const formatDateTimeEST = (date) => {
+    const d = new Date(date);
+    const utcOffset = -5; // EST is UTC-5
+    d.setHours(d.getHours() + utcOffset);
+    return d.toLocaleString("en-US", {
+      dateStyle: "medium",
+      timeStyle: "short",
+    });
+  };
   
     // Only for time
   

@@ -16,6 +16,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import Modal from "./Modal";
 import { encryptionData } from "../../../utils/dataEncryption";
+import { FaDownload } from "react-icons/fa";
 // import Form from "../../broker-register/Form";
 
 const Index = () => {
@@ -1165,7 +1166,7 @@ const Index = () => {
                           <div className="modal">
                             <div className="modal-content">
                               <div className="row">
-                                <div className="col-lg-12">
+                                <div className="col-lg-12 d-flex justify-content-between">
                                   <Link href="/" className="">
                                     <Image
                                       width={50}
@@ -1197,13 +1198,22 @@ const Index = () => {
                                       Land
                                     </span>
                                   </Link>
+                                  <button
+                                    className="btn btn-color"
+                                    onClick={() =>
+                                      brokerInfoHandler(broker.orderId)
+                                    }
+                                    title="Download Pdf"
+                                  >
+                                    <FaDownload />
+                                  </button>
                                 </div>
                               </div>
                               <div className="row">
                                 <div className="col-lg-12 text-center">
-                                  <h1 className=" text-color mt-1">
-                                    Broker Details
-                                  </h1>
+                                  <h2 className=" text-color mt-1">
+                                    Mortgage Broker Details
+                                  </h2>
                                 </div>
                               </div>
                               <div
@@ -1214,229 +1224,112 @@ const Index = () => {
                                 className="d-flex justify-content-center"
                                 id="broker-info-container"
                               >
-                                <table
-                                  style={{
-                                    width: "700px",
-                                    textAlign: "start",
-                                    borderRadius: "5px",
-                                    fontSize: "17px",
-                                    fontWeight: "bold",
-                                  }}
-                                  id="table-broker-info"
-                                >
+                                <table id="table-broker-info">
                                   <thead>
                                     <tr>
                                       <th
                                         style={{
-                                          border: "1px solid #2e008b",
-                                          color: "#2e008b",
-                                          color: "#2e008b",
-                                          // padding: "5px",
-                                          textAlign: "center",
+                                          borderRight: "2px solid white",
                                         }}
                                       >
                                         Headers
                                       </th>
-                                      <th
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          // width: "470px",
-                                          color: "#2e008b",
-                                          // padding: "5px",
-                                          textAlign: "center",
-                                        }}
-                                      >
-                                        Value
-                                      </th>
+                                      <th>Value</th>
                                     </tr>
                                   </thead>
                                   <tbody>
                                     <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
-                                        <span className="text-start">Name</span>
+                                      <td className="table-header">
+                                        <span>Mortgage Broker Name</span>
                                       </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "400px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-value">
                                         {broker?.firstName} {broker?.lastName}
                                       </td>
                                     </tr>
                                     <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-header">
+                                        <span className="text-start">
+                                          Company Name
+                                        </span>
+                                      </td>
+                                      <td className="table-value">
+                                        {broker?.companyName
+                                          ? broker?.companyName
+                                          : "N.A."}
+                                      </td>
+                                    </tr>
+
+                                    <tr>
+                                      <td className="table-header">
+                                        <span className="text-start">
+                                          Email Address
+                                        </span>
+                                      </td>
+                                      <td className="table-value">
+                                        {broker?.emailId}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td className="table-header">
+                                        <span className="text-start">
+                                          Phone Number
+                                        </span>
+                                      </td>
+                                      <td className="table-value">
+                                        {broker?.phoneNumber}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td className="table-header">
+                                        <span className="text-start">
+                                          Cell Number
+                                        </span>
+                                      </td>
+                                      <td className="table-value">
+                                        {broker?.cellNumber ? broker?.cellNumber: "N.A."}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td className="table-header">
+                                        <span className="text-start">
+                                          Mortgage Broker Licence No.
+                                        </span>
+                                      </td>
+                                      <td className="table-value">
+                                        {broker?.mortageBrokerLicNo}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td className="table-header">
+                                        <span className="text-start">
+                                          Mortgage Brokerage Licence No.
+                                        </span>
+                                      </td>
+                                      <td className="table-value">
+                                        {broker?.mortageBrokerageLicNo}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td className="table-header">
                                         <span className="text-start">
                                           Address
                                         </span>
                                       </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          width: "250px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-value">
                                         {broker?.streetNumber}{" "}
                                         {broker?.streetName} {broker?.area} ,{" "}
                                         {broker?.city} {broker?.province}{" "}
                                         {broker?.postalCode}
                                       </td>
                                     </tr>
+
                                     <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
-                                        <span className="text-start">
-                                          Phone Number
-                                        </span>
-                                      </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          width: "250px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
-                                        {broker?.phoneNumber}
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
-                                        <span className="text-start">
-                                          Mortgage Broker Licence No
-                                        </span>
-                                      </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          width: "250px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
-                                        {broker?.mortageBrokerLicNo}
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
-                                        <span className="text-start">
-                                          Mortgage Brokerage Licence No
-                                        </span>
-                                      </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          width: "250px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
-                                        {broker?.mortageBrokerageLicNo}
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
-                                        <span className="text-start">
-                                          Brokerage Name
-                                        </span>
-                                      </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          width: "250px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
-                                        {broker?.brokerageName
-                                          ? broker?.brokerageName
-                                          : "N.A."}
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
-                                        <span className="text-start">
-                                          Company Name
-                                        </span>
-                                      </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          width: "250px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
-                                        {broker?.companyName
-                                          ? broker?.companyName
-                                          : "N.A."}
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-header">
                                         <span className="text-start">
                                           Applicant Name
                                         </span>
                                       </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          width: "250px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-value">
                                         {broker?.assistantFirstName
                                           ? broker?.assistantFirstName
                                           : "N.A."}{" "}
@@ -1446,53 +1339,27 @@ const Index = () => {
                                       </td>
                                     </tr>
                                     <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-header">
                                         <span className="text-start">
                                           Applicant Phone Number
                                         </span>
                                       </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          width: "250px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-value">
                                         {broker?.assistantPhoneNumber
                                           ? broker?.assistantPhoneNumber
                                           : "N.A."}
                                       </td>
                                     </tr>
                                     <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-header">
                                         <span className="text-start">
                                           Applicant Email Address
                                         </span>
                                       </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          width: "250px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-value">
                                         {broker?.assistantEmailAddress
                                           ? broker?.assistantEmailAddress
-                                          : "NA"}
+                                          : "N.A."}
                                       </td>
                                     </tr>
                                   </tbody>
@@ -1502,7 +1369,8 @@ const Index = () => {
                               <div className="row text-center mt-3">
                                 <div className="col-lg-12">
                                   <button
-                                    className="btn btn-color w-25 text-center"
+                                    className="btn btn-color "
+                                    style={{ width: "100px" }}
                                     onClick={() => setbrokerInfoModal(false)}
                                   >
                                     Ok

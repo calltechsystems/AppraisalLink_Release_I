@@ -431,13 +431,13 @@ function SmartTable(props) {
   }, [props.data]);
 
   return (
-    <div className="col-12 pt-3">
+    <div className="col-12 pt-4">
       <div className="smartTable-container row">
         <div
           className="candidate_revew_select style2 mb30-991"
           // style={{ marginLeft: "40%", marginTop: "2%" }}
         >
-          <ul className="mb0 mt-0">
+          <ul className="mb0 mt-2">
             <li className="list-inline-item">
               <Filtering
                 filterQuery={props.filterQuery}

@@ -64,7 +64,11 @@ const SidebarMenu = () => {
 
   const handleOpenHelpDesk = () => {
     // Open the link with a query parameter to ignore the session
-    const newTab = window.open('/contact?logout=true', '_blank', 'noopener,noreferrer');
+    const newTab = window.open(
+      "/contact?logout=true",
+      "_blank",
+      "noopener,noreferrer"
+    );
   };
 
   return (
@@ -110,7 +114,6 @@ const SidebarMenu = () => {
         {/* End header */}
 
         <li className="title">
-          <span>Property Information</span>
           <ul>
             <li
               className={`treeview ${
@@ -149,41 +152,6 @@ const SidebarMenu = () => {
               </Link>
             </li>
 
-            {/* <li
-              className={`treeview ${
-                isSinglePageActive("/create-listing-01", route.pathname)
-                  ? "active"
-                  : ""
-              }`}
-            >
-              <Link href="/create-listing-01">
-                <i className="flaticon-plus"></i>
-                <span> Add New Property - 1</span>
-              </Link>
-            </li> */}
-
-            {/* <li
-              className={`treeview ${
-                isParentPageActive(reviews, route.pathname) ? "active" : ""
-              }`}
-            >
-              <a data-bs-toggle="collapse" href="#review">
-                <i className="flaticon-chat"></i>
-                <span>Form Format</span>
-                <i className="fa fa-angle-down pull-right"></i>
-              </a>
-              <ul className="treeview-menu collapse" id="review">
-                {reviews.map((item) => (
-                  <li key={item.id}>
-                    <Link href={item.route}>
-                      <i className="fa fa-circle"></i> {item.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </li> */}
-            {/* End Review */}
-
             <li
               className={`treeview ${
                 isSinglePageActive("/archive-property", route.pathname)
@@ -196,22 +164,8 @@ const SidebarMenu = () => {
                 <span>Archived Properties</span>
               </Link>
             </li>
-            {/* <li
-              className={`treeview ${
-                    isParentPageActive("/my-properties", route.pathname) ? "active" : ""
-                  }`}
-                >
-                <Link href="/my-properties">
-                <i className="flaticon-home"></i>
-                <span>Properties</span>
-              </Link>
-                </li>*/}
           </ul>
         </li>
-
-        {/* End Main */}
-
-        {/* End manage listing */}
 
         <li className="title">
           <span>Manage Account</span>
