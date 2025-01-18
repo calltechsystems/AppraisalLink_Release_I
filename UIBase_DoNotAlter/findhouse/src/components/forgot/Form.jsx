@@ -213,11 +213,11 @@ const Form = ({ setModalIsOpen }) => {
             </div>
             {/* End .input-group */}
 
-            <div className="divide">
+            {/* <div className="divide">
               <span className="lf_divider fw-bold">OR</span>
               <hr />
             </div>
-            {/* devider */}
+            
 
             <div className="input-group mb-2 mr-sm-2">
               <input
@@ -238,7 +238,7 @@ const Form = ({ setModalIsOpen }) => {
                   </button>
                 </div>
               </div>
-            </div>
+            </div> */}
             {/* End .input-group */}
 
             {/* <div className="divide">

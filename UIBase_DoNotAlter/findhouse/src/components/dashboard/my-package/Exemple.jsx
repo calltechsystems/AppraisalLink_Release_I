@@ -157,6 +157,16 @@ export default function Exemple({
     return result;
   };
 
+  const formatDateTimeEST = (date) => {
+    const d = new Date(date);
+    const utcOffset = -5; // EST is UTC-5
+    d.setHours(d.getHours() + utcOffset);
+    return d.toLocaleString("en-US", {
+      dateStyle: "medium",
+      timeStyle: "short",
+    });
+  };
+
   const sortObjectsByOrderIdDescending = (data) => {
     return data.sort((a, b) => {
       const dateA = new Date(a.status);
@@ -247,14 +257,14 @@ export default function Exemple({
                 <span>Monthly</span>
               ),
             amount: property.planAmount ? `$ ${property.planAmount}` : "$ -",
-            st_date: formatDate(property.startDate),
-            end_date: formatDate(property.endDate),
+            st_date: formatDateTimeEST(property.startDate),
+            end_date: formatDateTimeEST(property.endDate),
             remained_prop: `${
               property.usedProperties === null ? 0 : property.usedProperties
             } of ${property.noOfProperties}`,
             status: !expired ? (
               <span className="btn btn-info  w-100">
-                Will Be Active on {formatDate(property.startDate)}
+                Will Be Active on {formatDateTimeEST(property.startDate)}
               </span>
             ) : (
               <span className="btn btn-success  w-100">Active</span>

@@ -210,6 +210,7 @@ const Modal = ({ modalOpen, closeModal, editPlan }) => {
                       <div className="col-lg-6">
                         <input
                           required
+                          disabled
                           type="number"
                           className="form-control"
                           id="formGroupExampleInput3"

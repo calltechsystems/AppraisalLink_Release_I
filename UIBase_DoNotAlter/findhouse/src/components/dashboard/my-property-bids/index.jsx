@@ -567,10 +567,10 @@ const Index = ({ propertyId }) => {
               <div className="modal">
                 <div className="modal-content">
                   <div className="row">
-                    <div className="col-lg-12">
+                    <div className="col-lg-12 d-flex justify-content-between">
                       <Link href="/" className="">
                         <Image
-                          width={60}
+                          width={50}
                           height={45}
                           className="logo1 img-fluid"
                           style={{ marginTop: "-20px" }}
@@ -599,6 +599,13 @@ const Index = ({ propertyId }) => {
                           Land
                         </span>
                       </Link>
+                      {/* <button
+                        className="btn btn-color"
+                        onClick={() => brokerInfoHandler(broker.orderId)}
+                        title="Download Pdf"
+                      >
+                        <FaDownload />
+                      </button> */}
                     </div>
                   </div>
                   <div className="row">
@@ -614,190 +621,84 @@ const Index = ({ propertyId }) => {
                     className="d-flex justify-content-center"
                     id="broker-info-container"
                   >
-                    <table
-                      style={{
-                        width: "700px",
-                        textAlign: "start",
-                        borderRadius: "5px",
-                        fontSize: "17px",
-                        fontWeight: "bold",
-                      }}
-                      id="table-broker-info"
-                    >
+                    <table id="table-broker-info">
                       <thead>
                         <tr>
                           <th
                             style={{
-                              border: "1px solid #2e008b",
-                              color: "#2e008b",
-                              // paddingLeft:"10px"
-                              textAlign: "center",
+                              borderRight: "2px solid white",
                             }}
                           >
                             Headers
                           </th>
-                          <th
-                            style={{
-                              border: "1px solid #2e008b",
-                              // width: "470px",
-                              color: "#2e008b",
-                              // paddingLeft:"10px"
-                              textAlign: "center",
-                            }}
-                          >
-                            Value
-                          </th>
+                          <th>Value</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
-                          <td
-                            style={{
-                              border: "1px solid #2e008b",
-                              color: "#2e008b",
-                              paddingLeft: "10px",
-                            }}
-                          >
+                          <td className="table-header">
                             <span className="text-start">Appraiser Name</span>
                           </td>
-                          <td
-                            style={{
-                              border: "1px solid #2e008b",
-                              width: "250px",
-                              color: "black",
-                              paddingLeft: "10px",
-                            }}
-                          >
+                          <td className="table-value">
                             {appInfo.firstName} {appInfo.lastName}
                           </td>
                         </tr>
                         <tr>
-                          <td
-                            style={{
-                              border: "1px solid #2e008b",
-                              color: "#2e008b",
-                              paddingLeft: "10px",
-                            }}
-                          >
+                          <td className="table-header">
                             <span className="text-start">Email Address</span>
                           </td>
-                          <td
-                            style={{
-                              border: "1px solid #2e008b",
-                              width: "250px",
-                              color: "black",
-                              paddingLeft: "10px",
-                            }}
-                          >
+                          <td className="table-value">
                             {appInfo.emailId ? appInfo.emailId : "N.A."}
                           </td>
                         </tr>
                         <tr>
-                          <td
-                            style={{
-                              border: "1px solid #2e008b",
-                              color: "#2e008b",
-                              paddingLeft: "10px",
-                            }}
-                          >
+                          <td className="table-header">
                             <span className="text-start">Phone Number</span>
                           </td>
-                          <td
-                            style={{
-                              border: "1px solid #2e008b",
-                              width: "250px",
-                              color: "black",
-                              paddingLeft: "10px",
-                            }}
-                          >
+                          <td className="table-value">
                             {appInfo.phoneNumber ? appInfo.phoneNumber : "N.A."}
                           </td>
                         </tr>
                         <tr>
-                          <td
-                            style={{
-                              border: "1px solid #2e008b",
-                              color: "#2e008b",
-                              paddingLeft: "10px",
-                            }}
-                          >
+                          <td className="table-header">
                             <span className="text-start">Cell Number</span>
                           </td>
-                          <td
-                            style={{
-                              border: "1px solid #2e008b",
-                              width: "250px",
-                              color: "black",
-                              paddingLeft: "10px",
-                            }}
-                          >
+                          <td className="table-value">
                             {appInfo.cellNumber ? appInfo.cellNumber : "N.A."}
                           </td>
                         </tr>
                         <tr>
-                          <td
-                            style={{
-                              border: "1px solid #2e008b",
-                              color: "#2e008b",
-                              paddingLeft: "10px",
-                            }}
-                          >
+                          <td className="table-header">
                             <span className="text-start">Company Name</span>
                           </td>
-                          <td
-                            style={{
-                              border: "1px solid #2e008b",
-                              width: "250px",
-                              color: "black",
-                              paddingLeft: "10px",
-                            }}
-                          >
+                          <td className="table-value">
                             {appInfo.companyName
                               ? appInfo.companyName
                               : appInfo.appraiserCompanyName}
                           </td>
                         </tr>
                         <tr>
-                          <td
-                            style={{
-                              border: "1px solid #2e008b",
-                              color: "#2e008b",
-                              paddingLeft: "10px",
-                            }}
-                          >
+                          <td className="table-header">
                             <span className="text-start">Designation</span>
                           </td>
-                          <td
-                            style={{
-                              border: "1px solid #2e008b",
-                              width: "250px",
-                              color: "black",
-                              paddingLeft: "10px",
-                            }}
-                          >
+                          <td className="table-value">
                             {appInfo.designation ? appInfo.designation : "N.A."}
                           </td>
                         </tr>
                         <tr>
-                          <td
-                            style={{
-                              border: "1px solid #2e008b",
-                              color: "#2e008b",
-                              paddingLeft: "10px",
-                            }}
-                          >
+                          <td className="table-header">
+                            <span className="text-start">Licence Number</span>
+                          </td>
+                          <td className="table-value">
+                            {appInfo.licenseNumber ? appInfo.licenseNumber : "N.A."}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="table-header">
                             <span className="text-start">Address</span>
                           </td>
-                          <td
-                            style={{
-                              border: "1px solid #2e008b",
-                              width: "400px",
-                              color: "black",
-                              paddingLeft: "10px",
-                            }}
-                          >
-                            {appInfo.addressLineOne}
-                            {appInfo.addressLineTwo} {appInfo.streetNumber}{" "}
+                          <td className="table-value">
+                            {appInfo.streetNumber}{" "}
                             {appInfo.streetName} ,{appInfo.unit}{" "}
                             {appInfo.apartmentNumber} {appInfo.city}{" "}
                             {appInfo.province} {appInfo.postalCode}
@@ -805,25 +706,12 @@ const Index = ({ propertyId }) => {
                         </tr>
 
                         <tr>
-                          <td
-                            style={{
-                              border: "1px solid #2e008b",
-                              color: "#2e008b",
-                              paddingLeft: "10px",
-                            }}
-                          >
+                          <td className="table-header">
                             <span className="text-start">
                               Office Contact Name
                             </span>
                           </td>
-                          <td
-                            style={{
-                              border: "1px solid #2e008b",
-                              width: "250px",
-                              color: "black",
-                              paddingLeft: "10px",
-                            }}
-                          >
+                          <td className="table-value">
                             {appInfo.officeContactFirstName
                               ? appInfo.officeContactFirstName
                               : "N.A."}{" "}
@@ -831,50 +719,24 @@ const Index = ({ propertyId }) => {
                           </td>
                         </tr>
                         <tr>
-                          <td
-                            style={{
-                              border: "1px solid #2e008b",
-                              color: "#2e008b",
-                              paddingLeft: "10px",
-                            }}
-                          >
+                          <td className="table-header">
                             <span className="text-start">
                               Office Contact Phone Number
                             </span>
                           </td>
-                          <td
-                            style={{
-                              border: "1px solid #2e008b",
-                              width: "250px",
-                              color: "black",
-                              paddingLeft: "10px",
-                            }}
-                          >
+                          <td className="table-value">
                             {appInfo.officeContactPhone
                               ? appInfo.officeContactPhone
                               : "N.A."}
                           </td>
                         </tr>
                         <tr>
-                          <td
-                            style={{
-                              border: "1px solid #2e008b",
-                              color: "#2e008b",
-                              paddingLeft: "10px",
-                            }}
-                          >
+                          <td className="table-header">
                             <span className="text-start">
                               Office Contact Email Address
                             </span>
                           </td>
-                          <td
-                            style={{
-                              border: "1px solid #2e008b",
-                              width: "250px",
-                              color: "black",
-                              paddingLeft: "10px",
-                            }}
-                          >
+                          <td className="table-value">
                             {appInfo.officeContactEmail
                               ? appInfo.officeContactEmail
                               : "N.A."}
@@ -883,13 +745,10 @@ const Index = ({ propertyId }) => {
                       </tbody>
                     </table>
                   </div>
-                  {/* <div
-                    className="mt-2 mb-3"
-                    style={{ border: "2px solid #97d700" }}
-                  ></div> */}
-                  <div className="text-center" style={{}}>
+                  <div className="d-flex justify-content-center mt-3">
                     <button
-                      className="btn btn-color w-50 mt-3"
+                      className="btn btn-color"
+                      style={{ width: "100px" }}
                       onClick={() => closeAppraiserHandler()}
                     >
                       Ok
