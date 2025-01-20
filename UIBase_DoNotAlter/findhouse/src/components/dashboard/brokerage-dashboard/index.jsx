@@ -8,7 +8,8 @@ import StatisticsPieChart from "./StatisticsPieChart";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { toast } from "react-toast";
-
+import { Link } from "react-scroll";
+import Image from "next/image";
 import axios from "axios";
 import Modal from "../../common/header/dashboard/NotificationModal";
 
@@ -28,6 +29,54 @@ const Index = () => {
   const [chartData, setChartData] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const router = useRouter();
+
+  const [modalIsPlanError, setModalIsPlaneError] = useState(false);
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    // Simulate an API call to check the user's plan status
+    const fetchUserPlan = async () => {
+      try {
+        // Replace this with your actual API call
+        const userData = JSON.parse(localStorage.getItem("user"));
+        console.log("user", userData);
+        if (!userData) {
+          throw new Error("User not logged in");
+        }
+        // if (userData?.userType !== 1) {
+        //   console.log("Not applicable for this user type.");
+        //   return;
+        // }
+
+        const userActivePlans = userData?.userSubscription?.$values;
+        //  console.log("plans", userActivePlans);
+
+        const haveSubscription =
+          userActivePlans?.length > 0
+            ? userActivePlans[0]?.$id
+              ? true
+              : false
+            : false;
+
+        if (haveSubscription) {
+          setMessage("");
+        } else {
+          // setMessage("You need an active plan to create a listing.");
+          setModalIsPlaneError(true);
+        }
+      } catch (error) {
+        setMessage("Error fetching plan information. Please try again.");
+      } finally {
+      }
+    };
+
+    fetchUserPlan();
+  }, []);
+
+  const closePlanErrorModal = () => {
+    // setModalIsPlaneError(false);
+    router.push("/brokerage-plans");
+  };
 
   const closeModal = () => {
     setShowNotification(false);
@@ -447,17 +496,90 @@ const Index = () => {
                 </div>
 
                 {/* End statistics chart */}
-
-                {/*<div className="col-xl-5">
-                  <div className="recent_job_activity">
-                    <h4 className="title mb-4">Recent Activities</h4>
-                    <Activities />
-                    <Modal modalOpen={true} closeModal={closeModal}/>
-                  </div>
-                </div>*/}
               </div>
 
               {/* End .row  */}
+
+              {modalIsPlanError && (
+                <div className="modal">
+                  <div
+                    className="modal-content"
+                    style={{ borderColor: "#97d700", width: "30%" }}
+                  >
+                    <div className="col-lg-12">
+                      <div className="row">
+                        <div className="col-lg-12">
+                          <Link href="/" className="">
+                            <Image
+                              width={60}
+                              height={45}
+                              className="logo1 img-fluid"
+                              style={{ marginTop: "-20px" }}
+                              src="/assets/images/Appraisal_Land_Logo.png"
+                              alt="header-logo2.png"
+                            />
+                            <span
+                              style={{
+                                color: "#2e008b",
+                                fontWeight: "bold",
+                                fontSize: "24px",
+                                // marginTop: "20px",
+                              }}
+                            >
+                              Appraisal
+                            </span>
+                            <span
+                              style={{
+                                color: "#97d700",
+                                fontWeight: "bold",
+                                fontSize: "24px",
+                                // marginTop: "20px",
+                              }}
+                            >
+                              {" "}
+                              Land
+                            </span>
+                          </Link>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-lg-12 text-center">
+                          <h3 className=" text-color mt-1">Error</h3>
+                        </div>
+                      </div>
+                      <div
+                        className="mt-2 mb-3"
+                        style={{ border: "2px solid #97d700" }}
+                      ></div>
+                    </div>
+                    <span
+                      className="text-center mb-2 text-dark fw-bold"
+                      style={{ fontSize: "18px" }}
+                    >
+                      You need an active plan to add properties.
+                    </span>
+                    <div
+                      className="mt-2 mb-3"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
+                    <div
+                      className="col-lg-12 text-center"
+                      style={{ display: "flex", justifyContent: "center" }}
+                    >
+                      <button
+                        className="btn btn-color"
+                        onClick={() => closePlanErrorModal()}
+                        style={{ width: "170px" }}
+                      >
+                        Subscribe Now
+                        {/* <Link href="/my-plans" className="text-white">
+                          Subscribe Now
+                        </Link> */}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               <div className="row mt50">
                 <div className="col-lg-12">

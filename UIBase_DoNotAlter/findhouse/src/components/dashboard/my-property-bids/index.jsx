@@ -597,13 +597,6 @@ const Index = ({ propertyId }) => {
                           Land
                         </span>
                       </Link>
-                      {/* <button
-                        className="btn btn-color"
-                        onClick={() => brokerInfoHandler(broker.orderId)}
-                        title="Download Pdf"
-                      >
-                        <FaDownload />
-                      </button> */}
                     </div>
                   </div>
                   <div className="row">
@@ -688,7 +681,9 @@ const Index = ({ propertyId }) => {
                             <span className="text-start">Licence Number</span>
                           </td>
                           <td className="table-value">
-                            {appInfo.licenseNumber ? appInfo.licenseNumber : "N.A."}
+                            {appInfo.licenseNumber
+                              ? appInfo.licenseNumber
+                              : "N.A."}
                           </td>
                         </tr>
                         <tr>
@@ -696,10 +691,10 @@ const Index = ({ propertyId }) => {
                             <span className="text-start">Address</span>
                           </td>
                           <td className="table-value">
-                            {appInfo.streetNumber}{" "}
-                            {appInfo.streetName} ,{appInfo.unit}{" "}
-                            {appInfo.apartmentNumber} {appInfo.city}{" "}
-                            {appInfo.province} {appInfo.postalCode}
+                            {appInfo.streetNumber} {appInfo.streetName} ,
+                            {appInfo.unit} {appInfo.apartmentNumber}{" "}
+                            {appInfo.city} {appInfo.province}{" "}
+                            {appInfo.postalCode}
                           </td>
                         </tr>
 

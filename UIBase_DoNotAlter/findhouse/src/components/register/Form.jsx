@@ -91,7 +91,10 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
       const statusText =
         error.response?.status === 409
           ? "Email is already registered."
+          : error.response?.status === 400
+          ? "The used link expired."
           : "Registration failed. Please try again.";
+
       setErrorMessage(statusText);
       setModalIsOpenError(true);
     }

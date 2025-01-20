@@ -245,7 +245,10 @@ const CreateList = ({
                 </select>
               </div>
             </div>
-            <div className="col-lg-4">
+          </div>
+          <div className="row" style={{ marginBottom: "10px" }}>
+            <div className="col-lg-3"></div>
+            <div className="col-lg-5" style={{ marginLeft: "-6px" }}>
               <div id="other-div">
                 {/* Content for the "Other" option */}
                 <input
@@ -255,6 +258,7 @@ const CreateList = ({
                   type="text"
                   className="form-control"
                   id="otherInput"
+                  placeholder="Please enter details here"
                   name="otherInput"
                   maxLength={30}
                 />
@@ -345,7 +349,10 @@ const CreateList = ({
                 </select>
               </div>
             </div>
-            <div className="col-lg-4">
+          </div>
+          <div className="row" style={{ marginBottom: "10px" }}>
+            <div className="col-lg-3"></div>
+            <div className="col-lg-5" style={{ marginLeft: "-5px" }}>
               <div id="other-div_02">
                 {/* Content for the "Other" option */}
                 <input
@@ -353,6 +360,7 @@ const CreateList = ({
                   type="text"
                   className="form-control"
                   id="otherInput"
+                  placeholder="Please enter details here"
                   name="otherInput"
                   style={otherPurpose ? viewStyle : hiddenStyle}
                   onChange={(e) => setOtherPurposeValue(e.target.value)}
@@ -426,7 +434,10 @@ const CreateList = ({
                 </select>
               </div>
             </div>
-            <div className="col-lg-4">
+          </div>
+          <div className="row" style={{ marginBottom: "10px" }}>
+            <div className="col-lg-3"></div>
+            <div className="col-lg-5" style={{ marginLeft: "-5px" }}>
               <div id="other-div_01">
                 {/* Content for the "Other" option */}
                 <input
@@ -435,6 +446,7 @@ const CreateList = ({
                   onChange={(e) => setOtherTypeOfAppraisalValue(e.target.value)}
                   type="text"
                   className="form-control"
+                  placeholder="Please enter details here"
                   id="otherInput"
                   name="otherInput"
                   maxLength={30}

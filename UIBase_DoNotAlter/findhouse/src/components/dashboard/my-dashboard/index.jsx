@@ -11,6 +11,8 @@ import { toast } from "react-toast";
 
 import axios from "axios";
 import Modal from "../../common/header/dashboard/NotificationModal";
+import { Link } from "react-scroll";
+import Image from "next/image";
 
 const Index = () => {
   const [userData, setUserData] = useState({});
@@ -28,6 +30,54 @@ const Index = () => {
   const [chartData, setChartData] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const router = useRouter();
+
+  const [modalIsPlanError, setModalIsPlaneError] = useState(false);
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    // Simulate an API call to check the user's plan status
+    const fetchUserPlan = async () => {
+      try {
+        // Replace this with your actual API call
+        const userData = JSON.parse(localStorage.getItem("user"));
+        console.log("user", userData);
+        if (!userData) {
+          throw new Error("User not logged in");
+        }
+        if (userData?.userType !== 1) {
+          console.log("Not applicable for this user type.");
+          return;
+        }
+
+        const userActivePlans = userData?.userSubscription?.$values;
+        //  console.log("plans", userActivePlans);
+
+        const haveSubscription =
+          userActivePlans?.length > 0
+            ? userActivePlans[0]?.$id
+              ? true
+              : false
+            : false;
+
+        if (haveSubscription) {
+          setMessage("");
+        } else {
+          // setMessage("You need an active plan to create a listing.");
+          setModalIsPlaneError(true);
+        }
+      } catch (error) {
+        setMessage("Error fetching plan information. Please try again.");
+      } finally {
+      }
+    };
+
+    fetchUserPlan();
+  }, []);
+
+  const closePlanErrorModal = () => {
+    // setModalIsPlaneError(false);
+    router.push("/my-plans")
+  };
 
   const closeModal = () => {
     setShowNotification(false);
@@ -412,17 +462,11 @@ const Index = () => {
                 </div>
 
                 {/* End statistics chart */}
-
-                {/*<div className="col-xl-5">
-                  <div className="recent_job_activity">
-                    <h4 className="title mb-4">Recent Activities</h4>
-                    <Activities />
-                    <Modal modalOpen={true} closeModal={closeModal}/>
-                  </div>
-                </div>*/}
               </div>
 
               {/* End .row  */}
+
+             add-subscription
 
               <div className="row mt50">
                 <div className="col-lg-12">

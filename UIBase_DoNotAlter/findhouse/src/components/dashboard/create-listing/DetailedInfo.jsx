@@ -32,6 +32,7 @@ const DetailedInfo = ({
   image,
   disable,
   setImage,
+  haveSubscription,
   setFilesUrl,
   setAttachment,
   setDisable,
@@ -256,7 +257,7 @@ const DetailedInfo = ({
                 onChange={(e) => setApplicantEmail(e.target.value)}
                 value={applicantEmail}
                 disabled={isDisable}
-                maxLength={50}
+                maxLength={100}
               />
             </div>
           </div>
@@ -374,6 +375,7 @@ const DetailedInfo = ({
                     disabled={disable}
                     className="btn btn5"
                     onClick={submitHandler}
+                    // disabled={!haveSubscription}
                   >
                     Submit
                   </button>

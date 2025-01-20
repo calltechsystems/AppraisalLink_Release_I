@@ -712,17 +712,6 @@ const Index = () => {
                                           Land
                                         </span>
                                       </Link>
-                                      <button
-                                        className="btn btn-color"
-                                        onClick={() =>
-                                          PropertyInfoHandler(
-                                            currentProperty.orderId
-                                          )
-                                        }
-                                        title="Download Pdf"
-                                      >
-                                        <FaDownload />
-                                      </button>
                                     </div>
                                   </div>
                                   <div className="row">
@@ -911,7 +900,19 @@ const Index = () => {
                                     </tbody>
                                   </table>
                                 </div>
-                                <div className="d-flex justify-content-center mt-3">
+                                <div className="d-flex justify-content-center gap-2 mt-3">
+                                  <button
+                                    className="btn btn-color"
+                                    style={{ width: "100px" }}
+                                    onClick={() =>
+                                      PropertyInfoHandler(
+                                        currentProperty.orderId
+                                      )
+                                    }
+                                    title="Download Pdf"
+                                  >
+                                    <FaDownload />
+                                  </button>
                                   <button
                                     className="btn btn-color"
                                     style={{ width: "100px" }}
@@ -1043,18 +1044,6 @@ const Index = () => {
               {/* End .row */}
             </div>
             {/* End .row */}
-
-            {/* <div className="row">
-              <div className="col-lg-12 mt20">
-                <div className="mbp_pagination">
-                  <Pagination
-                    setStart={setStart}
-                    setEnd={setEnd}
-                    properties={properties}
-                  />
-                </div>
-              </div>
-            </div> */}
 
             <div className="row mt50">
               <div className="col-lg-12">

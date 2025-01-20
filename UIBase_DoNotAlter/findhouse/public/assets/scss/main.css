@@ -23274,7 +23274,7 @@ input:checked + .slider:before {
 
 #table-broker-info th {
   background-color: #2e008b;
-  color: white;
+  color: #2e008b;
   /* border-right: 2px solid white; */
   padding: 10px;
   text-align: center;
@@ -23308,4 +23308,13 @@ input:checked + .slider:before {
   font-weight: 600;
   color: #2e008b;
   border-right: 2px solid white;
+}
+.sidebar-menu .treeview.disabled {
+  pointer-events: none;
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.sidebar-menu .treeview.disabled a {
+  color: #999;
 }

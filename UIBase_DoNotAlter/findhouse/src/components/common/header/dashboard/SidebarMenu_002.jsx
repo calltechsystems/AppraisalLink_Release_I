@@ -5,10 +5,24 @@ import {
   isSinglePageActive,
 } from "../../../../utils/daynamicNavigation";
 import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const SidebarMenu = ({ userData }) => {
   const route = useRouter();
+  const [hasActivePlans, setHasActivePlans] = useState(false);
+
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    // Check if the user has active plans
+    const userActivePlans = userData?.userSubscription?.$values || [];
+    // console.log("plans", userActivePlans);
+    // if (userData?.userType === 6) {
+    //   console.log("Not applicable for this user type.", userData);
+    //   setHasActivePlans(true);
+    //   return;
+    // }
+    setHasActivePlans(userActivePlans.length > 0);
+  }, []);
 
   const myProperties = [
     { id: 1, name: "General Elements", route: "/my-properties" },
@@ -18,13 +32,13 @@ const SidebarMenu = ({ userData }) => {
 
   const manageAccountTag = [
     {
-      id: 3,
+      id: 1,
       name: "Add / Modify Subscriptions",
       route: "/appraiser-company-add-subscription",
       icon: "flaticon-telephone",
     },
     {
-      id: 3,
+      id: 2,
       name: "Subscription History",
       route: "/appraiser-company-subscription-history",
       icon: "flaticon-telephone",
@@ -37,7 +51,7 @@ const SidebarMenu = ({ userData }) => {
       icon: "flaticon-telephone",
     },
     {
-      id: 3,
+      id: 4,
       name: "Contact Us",
       route: "mailto:patelshubhendra@gmail.com",
       icon: "flaticon-envelope",
@@ -139,63 +153,102 @@ const SidebarMenu = ({ userData }) => {
 
             <li
               className={`treeview ${
-                isSinglePageActive(
-                  "/appraise-company-properties",
-                  route.pathname
-                )
-                  ? "active"
-                  : ""
+                hasActivePlans
+                  ? isSinglePageActive(
+                      "/appraise-company-properties",
+                      route.pathname
+                    )
+                    ? "active"
+                    : ""
+                  : "disabled"
               }`}
             >
-              <Link href="/appraise-company-properties">
-                <i className="flaticon-home"></i>
-                <span>Appraise Properties</span>
-              </Link>
+              {hasActivePlans ? (
+                <Link href="/appraise-company-properties">
+                  <i className="flaticon-home"></i>
+                  <span>Appraise Properties</span>
+                </Link>
+              ) : (
+                <a>
+                  <i className="flaticon-home"></i>
+                  <span>Appraise Properties</span>
+                </a>
+              )}
             </li>
 
             <li
               className={`treeview ${
-                isSinglePageActive(
-                  "/appraiser-company-allocated-properties",
-                  route.pathname
-                )
-                  ? "active"
-                  : ""
+                hasActivePlans
+                  ? isSinglePageActive(
+                      "/appraiser-company-allocated-properties",
+                      route.pathname
+                    )
+                    ? "active"
+                    : ""
+                  : "disabled"
               }`}
             >
-              <Link href="/appraiser-company-allocated-properties">
-                <i className="flaticon-building"></i>
-                <span>Assigned Properties</span>
-              </Link>
+              {hasActivePlans ? (
+                <Link href="/appraiser-company-allocated-properties">
+                  <i className="flaticon-building"></i>
+                  <span>Assigned Properties</span>
+                </Link>
+              ) : (
+                <a>
+                  <i className="flaticon-building"></i>
+                  <span>Assigned Properties</span>
+                </a>
+              )}
             </li>
 
             <li
               className={`treeview ${
-                isSinglePageActive(
-                  "/appraiser-company-wishlisted",
-                  route.pathname
-                )
-                  ? "active"
-                  : ""
+                hasActivePlans
+                  ? isSinglePageActive(
+                      "/appraiser-company-wishlisted",
+                      route.pathname
+                    )
+                    ? "active"
+                    : ""
+                  : "disabled"
               }`}
             >
-              <Link href="/appraiser-company-wishlisted">
-                <i className="flaticon-box"></i>
-                <span>Wishlist Properties</span>
-              </Link>
+              {hasActivePlans ? (
+                <Link href="/appraiser-company-wishlisted">
+                  <i className="flaticon-box"></i>
+                  <span>Wishlist Properties</span>
+                </Link>
+              ) : (
+                <a>
+                  <i className="flaticon-box"></i>
+                  <span>Wishlist Properties</span>
+                </a>
+              )}
             </li>
 
             <li
               className={`treeview ${
-                isSinglePageActive("/company-biding-history", route.pathname)
-                  ? "active"
-                  : ""
+                hasActivePlans
+                  ? isSinglePageActive(
+                      "/company-biding-history",
+                      route.pathname
+                    )
+                    ? "active"
+                    : ""
+                  : "disabled"
               }`}
             >
-              <Link href="/company-biding-history">
-                <i className="flaticon-building"></i>
-                <span>Quote History</span>
-              </Link>
+              {hasActivePlans ? (
+                <Link href="/company-biding-history">
+                  <i className="flaticon-building"></i>
+                  <span>Quote History</span>
+                </Link>
+              ) : (
+                <a>
+                  <i className="flaticon-building"></i>
+                  <span>Quote History</span>
+                </a>
+              )}
             </li>
           </ul>
         </li>
@@ -205,48 +258,77 @@ const SidebarMenu = ({ userData }) => {
           <ul>
             <li
               className={`treeview ${
-                isSinglePageActive(
-                  "/appraiser-company-archive-property",
-                  route.pathname
-                )
-                  ? "active"
-                  : ""
+                hasActivePlans
+                  ? isSinglePageActive(
+                      "/appraiser-company-archive-property",
+                      route.pathname
+                    )
+                    ? "active"
+                    : ""
+                  : "disabled"
               }`}
             >
-              <Link href="/appraiser-company-archive-property">
-                <i className="flaticon-home"></i>
-                <span>Archive Properties</span>
-              </Link>
+              {hasActivePlans ? (
+                <Link href="/appraiser-company-archive-property">
+                  <i className="flaticon-home"></i>
+                  <span>Archive Properties</span>
+                </Link>
+              ) : (
+                <a>
+                  <i className="flaticon-home"></i>
+                  <span>Archive Properties</span>
+                </a>
+              )}
             </li>
+
             <li
               className={`treeview ${
-                isSinglePageActive(
-                  "/appraiser-company-accepted-properties",
-                  route.pathname
-                )
-                  ? "active"
-                  : ""
+                hasActivePlans
+                  ? isSinglePageActive(
+                      "/appraiser-company-accepted-properties",
+                      route.pathname
+                    )
+                    ? "active"
+                    : ""
+                  : "disabled"
               }`}
             >
-              <Link href="/appraiser-company-accepted-properties">
-                <i className="flaticon-building"></i>
-                <span>Accepted Orders</span>
-              </Link>
+              {hasActivePlans ? (
+                <Link href="/appraiser-company-accepted-properties">
+                  <i className="flaticon-building"></i>
+                  <span>Accepted Orders</span>
+                </Link>
+              ) : (
+                <a>
+                  <i className="flaticon-building"></i>
+                  <span>Accepted Orders</span>
+                </a>
+              )}
             </li>
+
             <li
               className={`treeview ${
-                isSinglePageActive(
-                  "/appraiser-company-completed-properties",
-                  route.pathname
-                )
-                  ? "active"
-                  : ""
+                hasActivePlans
+                  ? isSinglePageActive(
+                      "/appraiser-company-completed-properties",
+                      route.pathname
+                    )
+                    ? "active"
+                    : ""
+                  : "disabled"
               }`}
             >
-              <Link href="/appraiser-company-completed-properties">
-                <i className="flaticon-building"></i>
-                <span>Completed Orders</span>
-              </Link>
+              {hasActivePlans ? (
+                <Link href="/appraiser-company-completed-properties">
+                  <i className="flaticon-building"></i>
+                  <span>Completed Orders</span>
+                </Link>
+              ) : (
+                <a>
+                  <i className="flaticon-building"></i>
+                  <span>Completed Orders</span>
+                </a>
+              )}
             </li>
           </ul>
         </li>
@@ -255,15 +337,24 @@ const SidebarMenu = ({ userData }) => {
           <ul>
             <li
               className={`treeview ${
-                isSinglePageActive("/all-appraisers", route.pathname)
-                  ? "active"
-                  : ""
+                hasActivePlans
+                  ? isSinglePageActive("/all-appraisers", route.pathname)
+                    ? "active"
+                    : ""
+                  : "disabled"
               }`}
             >
-              <Link href="/all-appraisers">
-                <i className="flaticon-building"></i>
-                <span> Appraiser Add/View</span>
-              </Link>
+              {hasActivePlans ? (
+                <Link href="/all-appraisers">
+                  <i className="flaticon-building"></i>
+                  <span>Appraiser Add/View</span>
+                </Link>
+              ) : (
+                <a>
+                  <i className="flaticon-building"></i>
+                  <span>Appraiser Add/View</span>
+                </a>
+              )}
             </li>
           </ul>
         </li>
@@ -271,19 +362,35 @@ const SidebarMenu = ({ userData }) => {
         <li className="title">
           <span>Manage Account</span>
           <ul>
-            {manageAccountTag.map((item) => (
-              <li
-                className={
-                  isSinglePageActive(item.route, route.pathname) ? "active" : ""
-                }
-                key={item.id}
-              >
-                <Link href={item.route}>
-                  <i className={item.icon}></i> <span>{item.name}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
+              {manageAccountTag.map((item) => (
+                <li
+                  className={`${
+                    isSinglePageActive(item.route, route.pathname)
+                      ? "active"
+                      : !hasActivePlans && item.id === 2
+                      ? "disabled"
+                      : ""
+                  }`}
+                  key={item.id}
+                >
+                  {!hasActivePlans && item.id === 2 ? (
+                    <a
+                      style={{
+                        color: "#999",
+                        cursor: "not-allowed",
+                        opacity: "0.6",
+                      }}
+                    >
+                      <i className={item.icon}></i> <span>{item.name}</span>
+                    </a>
+                  ) : (
+                    <Link href={item.route}>
+                      <i className={item.icon}></i> <span>{item.name}</span>
+                    </Link>
+                  )}
+                </li>
+              ))}
+            </ul>
         </li>
       </ul>
     </>

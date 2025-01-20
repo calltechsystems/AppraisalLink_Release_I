@@ -279,7 +279,7 @@ const Pricing = ({
                   }
                 >
                   <a className={`btn btn-color_01 w-100`} href="#">
-                    {currentActivePlan?.$id ? "Modify Plan" : "Get Started"}
+                    {currentActivePlan?.$id ? "Upgrade Plan" : "Get Started"}
                   </a>
                 </div>
               )}
@@ -301,7 +301,7 @@ const Pricing = ({
                     }
                   >
                     <a className={`btn btn-color_01 w-100`} href="#">
-                      {currentActivePlan?.$id ? "Modify Plan" : "Select Plan"}
+                      {currentActivePlan?.$id ? "Upgrade Plan" : "Select Plan"}
                     </a>
                   </div>
                 )}

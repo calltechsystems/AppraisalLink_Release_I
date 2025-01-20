@@ -4,7 +4,7 @@ const SearchBox = ({ setSearchInput }) => {
       <input
         className="form-control mr-sm-2"
         type="search"
-        placeholder="Search By Order ID, City, State, Postal Code"
+        placeholder="Search by order id, city, state, postal code"
         aria-label="Search"
         onChange={(e) => setSearchInput(e.target.value)}
       />

@@ -143,6 +143,7 @@ const Index = ({ isView, propertyData }) => {
   const closeErrorModal = () => {
     setModalIsOpenError(false);
     setModalIsOpenError_01(false);
+    // setModalIsPlaneError(false);
     location.reload(true);
   };
 
@@ -623,7 +624,7 @@ const Index = ({ isView, propertyData }) => {
       (String(purpose) === "Purchase" || String(purpose) === "Refinance") &&
       lenderInformation === ""
     ) {
-      toast.error("Please fill the Lender Information for this Purpose option");
+      toast.error("Please fill in Lender Information for this order");
       return;
     }
 
@@ -1034,10 +1035,8 @@ const Index = ({ isView, propertyData }) => {
                           }}
                         >
                           Property Details
-                          {/* <hr style={{ color: "#2e008b" }} /> */}
                         </h4>
                       </div>
-                      {/* <hr style={{ color: "#2e008b" }} /> */}
 
                       <LocationField
                         isDisable={isDisable}
