@@ -72,6 +72,7 @@ const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen }) => {
           const tempPlans = res.data.data.$values;
           let requiredPlans = [];
           tempPlans.map((plan, index) => {
+            console.log({'plans_tempPlan': plan})
             if (String(plan?.userType) === String(userInfo?.userType)) {
               requiredPlans.push(plan);
             }
@@ -158,6 +159,7 @@ const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen }) => {
                 setData={setPlanData}
                 topupData={TopUpData}
                 userData={userData}
+                planData={planData}
               />
             )}
           </div>

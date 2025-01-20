@@ -187,6 +187,8 @@ const Index = () => {
       ),
     };
 
+    console.log({payload});
+
     const encryptedData = encryptionData(payload);
     toast.loading("Assigning the property!!....");
     axios
@@ -288,14 +290,11 @@ const Index = () => {
         // Check if any of the fields contain the search term
         else
           return (
+            //implment search over this only
             String(property.orderId).toLowerCase().includes(searchTerm) ||
             property.zipCode.toLowerCase().includes(searchTerm) ||
-            property.area.toLowerCase().includes(searchTerm) ||
             property.city.toLowerCase().includes(searchTerm) ||
-            property.province.toLowerCase().includes(searchTerm) ||
-            property.streetName.toLowerCase().includes(searchTerm) ||
-            property.streetNumber.toLowerCase().includes(searchTerm) ||
-            property.typeOfBuilding.toLowerCase().includes(searchTerm)
+            property.province.toLowerCase().includes(searchTerm)
           );
       });
 

@@ -15,6 +15,7 @@ const Pricing = ({
   setData,
   currentSubscription,
   setPrice,
+  planData,
 }) => {
   const pricingContentForMonthly = [
     {
@@ -79,13 +80,14 @@ const Pricing = ({
   const content =
     isPlan === 1 ? pricingContentForMonthly : pricingContentForYearly;
 
-  const selectPackageHandler = (id, title, price, type) => {
+  const selectPackageHandler = (id, title, price, type, item) => {
     setModalOpen(true);
     setPrice({
       id: id,
       title: title,
       price: price,
       type: type,
+      item,
     });
   };
 
@@ -93,11 +95,19 @@ const Pricing = ({
     setSelectedPlanId(planId);
     setType(type);
     if (String(type) === "2" || String(type) === "3" || String(type) === "4") {
-      setOpenCancelModal(true);
+      const selectedTopUp = type == 3 ? topupData[0] : topupData[1];
+      setModalOpen(true);
+      setPrice({
+        id: selectedTopUp?.id,
+        title: selectedTopUp?.topupDescription,
+        price: selectedTopUp.tupUpAmount,
+        type: "topup",
+        selectedTopUp,
+      });
       if (String(type) === "3") {
-        setSelectedTopUp(topupData[0]);
+        setSelectedTopUp(selectedTopUp);
       } else if (String(type) === "4") {
-        setSelectedTopUp(topupData[1]);
+        setSelectedTopUp(selectedTopUp);
       }
     }
   };
@@ -270,7 +280,8 @@ const Pricing = ({
                       isPlan === 1
                         ? item.monthlyAmount - item.discount
                         : item.yearlyAmount - item.discount,
-                      "plan"
+                      "plan",
+                      item
                     )
                   }
                 >
@@ -292,7 +303,8 @@ const Pricing = ({
                         isPlan === 1
                           ? item.monthlyAmount - item.discount
                           : item.yearlyAmount - item.discount,
-                        "plan"
+                        "plan",
+                        item
                       )
                     }
                   >
@@ -314,7 +326,7 @@ const Pricing = ({
                   >
                     <option value={1}>Add Top Up / Cancel Subscription </option>
                     <option value={3}>
-                      Add {topupData[0]?.noOfProperties} Properties
+                      Add {topupData[0]?.noOfProperties} Properties ($ {topupData[0]?.tupUpAmount})
                     </option>
                     <option value={2}>Cancel Subscription</option>
                   </select>
@@ -400,7 +412,8 @@ const Pricing = ({
                           selectedTopUp.id,
                           selectedTopUp.topupDescription,
                           selectedTopUp.tupUpAmount,
-                          "topup"
+                          "topup",
+                          selectedTopUp
                         )
                     : cancelPackageHandler
                 }
