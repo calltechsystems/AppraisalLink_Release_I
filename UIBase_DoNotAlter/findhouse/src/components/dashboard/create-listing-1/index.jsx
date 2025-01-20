@@ -680,7 +680,7 @@ const Index = ({ isView, propertyData }) => {
       (String(purpose) === "Purchase" || String(purpose) === "Refinance") &&
       lenderInformation === ""
     ) {
-      toast.error("Please fill the lender Information for this purpose option");
+      toast.error("Please fill in Lender Information for this order");
     } else {
       const payload = {
         userId: userInfo.userId,
@@ -1082,7 +1082,6 @@ const Index = ({ isView, propertyData }) => {
                       />
                     </div>
                   </div>
-                 
                 </div>
                 {/* End .col */}
               </div>

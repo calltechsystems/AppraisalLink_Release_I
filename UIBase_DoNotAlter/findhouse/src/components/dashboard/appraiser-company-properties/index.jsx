@@ -888,15 +888,6 @@ const Index = () => {
                                       Land
                                     </span>
                                   </Link>
-                                  <button
-                                    className="btn btn-color"
-                                    onClick={() =>
-                                      PropertyInfoHandler(broker.orderId)
-                                    }
-                                    title="Download Pdf"
-                                  >
-                                    <FaDownload />
-                                  </button>
                                 </div>
                               </div>
                               <div className="row">
@@ -1075,7 +1066,17 @@ const Index = () => {
                                   </tbody>
                                 </table>
                               </div>
-                              <div className="d-flex justify-content-center mt-3">
+                              <div className="d-flex justify-content-center gap-2 mt-3">
+                                <button
+                                  className="btn btn-color"
+                                  style={{ width: "100px" }}
+                                  onClick={() =>
+                                    PropertyInfoHandler(broker.orderId)
+                                  }
+                                  title="Download Pdf"
+                                >
+                                  <FaDownload />
+                                </button>
                                 <button
                                   className="btn btn-color"
                                   style={{ width: "100px" }}
@@ -1124,15 +1125,6 @@ const Index = () => {
                                       Land
                                     </span>
                                   </Link>
-                                  <button
-                                    className="btn btn-color"
-                                    onClick={() =>
-                                      brokerInfoHandler(broker.orderId)
-                                    }
-                                    title="Download Pdf"
-                                  >
-                                    <FaDownload />
-                                  </button>
                                 </div>
                               </div>
                               <div className="row">
@@ -1353,7 +1345,17 @@ const Index = () => {
                                   </tbody>
                                 </table>
                               </div>
-                              <div className="d-flex justify-content-center mt-5">
+                              <div className="d-flex justify-content-center gap-2 mt-3">
+                                <button
+                                  className="btn btn-color"
+                                  style={{ width: "100px" }}
+                                  onClick={() =>
+                                    brokerInfoHandler(broker.orderId)
+                                  }
+                                  title="Download Pdf"
+                                >
+                                  <FaDownload />
+                                </button>
                                 <button
                                   className="btn btn-color"
                                   style={{ width: "100px" }}

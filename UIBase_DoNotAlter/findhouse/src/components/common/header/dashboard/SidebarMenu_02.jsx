@@ -17,13 +17,13 @@ const SidebarMenu = () => {
 
   const manageAccountTag = [
     {
-      id: 3,
+      id: 1,
       name: "Add / Modify Subscription",
       route: "/add-subscription",
       icon: "flaticon-building",
     },
     {
-      id: 3,
+      id: 2,
       name: "Subscription History",
       route: "/subscription-hisotry",
       icon: "flaticon-building",

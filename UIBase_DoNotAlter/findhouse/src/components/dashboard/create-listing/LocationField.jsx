@@ -1,6 +1,7 @@
 import { current } from "@reduxjs/toolkit";
 import { province, typeOfBuilding } from "./data";
 import { Urgency } from "./data";
+import { useEffect, useState } from "react";
 
 const LocationField = ({
   isDisable,
@@ -38,7 +39,8 @@ const LocationField = ({
       }
     });
     return isError;
-  };
+  }
+
   return (
     <>
       {/* Old Form */}
@@ -75,9 +77,7 @@ const LocationField = ({
                 maxLength={30}
               />
               {errorLabel.streetNameRef && (
-                <span className="text-danger">
-                  {errorLabel.streetNameRef}
-                </span>
+                <span className="text-danger">{errorLabel.streetNameRef}</span>
               )}
             </div>
           </div>

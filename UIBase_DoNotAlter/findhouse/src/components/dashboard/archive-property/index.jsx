@@ -134,9 +134,9 @@ const Index = () => {
       return filteredProperties;
     };
     const filteredData = filterProperties(properties, searchInput);
-    console.log("searchInput",searchInput,filteredData)
+    console.log("searchInput", searchInput, filteredData);
     setFilterProperty(filteredData);
-  }, [properties,searchInput]);
+  }, [properties, searchInput]);
 
   const calculate = (searchDate, diff) => {
     const newDateObj = new Date(searchDate.property.addedDatetime);
@@ -149,11 +149,10 @@ const Index = () => {
     const estimatedDiff =
       gettingDiff + getMonthsFDiff * 30 + gettingYearDiff * 365;
 
-   return estimatedDiff <= diff;
+    return estimatedDiff <= diff;
   };
 
   const filterData = (tempData) => {
-   
     const currentDate = new Date();
     const oneYearAgo = new Date(currentDate);
     oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
@@ -247,8 +246,6 @@ const Index = () => {
     setPropValue(0);
     setPropertyId(-1);
   };
-
-
 
   const handleDelete = () => {
     const data = JSON.parse(localStorage.getItem("user"));
@@ -345,7 +342,7 @@ const Index = () => {
                     {/* <h3 className="breadcrumb_title">Archive Properties</h3>
                     <p>We are glad to see you again!</p>                                                              */}
                   </div>
-              </div>
+                </div>
 
                 {/* End .col */}
 
@@ -408,10 +405,10 @@ const Index = () => {
                             <div className="modal-content">
                               <div className="col-lg-12">
                                 <div className="row">
-                                  <div className="col-lg-12">
+                                  <div className="col-lg-12 d-flex justify-content-between">
                                     <Link href="/" className="">
                                       <Image
-                                        width={60}
+                                        width={50}
                                         height={45}
                                         className="logo1 img-fluid"
                                         style={{ marginTop: "-20px" }}
@@ -444,9 +441,9 @@ const Index = () => {
                                 </div>
                                 <div className="row">
                                   <div className="col-lg-12 text-center">
-                                    <h1 className=" text-color mt-1">
+                                    <h2 className=" text-color mt-1">
                                       Property Details
-                                    </h1>
+                                    </h2>
                                   </div>
                                 </div>
                                 <div
@@ -454,70 +451,32 @@ const Index = () => {
                                   style={{ border: "2px solid #97d700" }}
                                 ></div>
                               </div>
-                              {/* <p className="text-center mb-3">
-                                  All of the details on the assessed property
-                                  are here.
-                                </p> */}
+
                               <div
                                 className="d-flex justify-content-center"
                                 id="property-info-container"
                               >
-                                <table
-                                  style={{
-                                    width: "700px",
-                                    textAlign: "start",
-                                    borderRadius: "5px",
-                                    fontSize: "17px",
-                                    fontWeight: "bold",
-                                  }}
-                                >
+                                <table id="table-broker-info">
                                   <thead>
                                     <tr>
                                       <th
                                         style={{
-                                          border: "1px solid #2e008b",
-                                          color: "#2e008b",
-                                          color: "#2e008b",
-                                          // padding: "5px",
-                                          textAlign: "center",
+                                          borderRight: "2px solid white",
                                         }}
                                       >
                                         Headers
                                       </th>
-                                      <th
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          // width: "470px",
-                                          color: "#2e008b",
-                                          // padding: "5px",
-                                          textAlign: "center",
-                                        }}
-                                      >
-                                        Value
-                                      </th>
+                                      <th>Value</th>
                                     </tr>
                                   </thead>
                                   <tbody>
                                     <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-header">
                                         <span className="text-start">
                                           Property Address
                                         </span>
                                       </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "465px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-value">
                                         {" "}
                                         {currentProperty.streetNumber}{" "}
                                         {currentProperty.streetName}{" "}
@@ -526,195 +485,71 @@ const Index = () => {
                                         {currentProperty.zipCode}
                                       </td>
                                     </tr>
-                                    {/* <tr>
-                                      <td
-                                         style={{
-                                          border: "1px solid #2e008b",
-                                          color: "#2e008b",
-                                          padding:"5px"
-                                        }}
-                                      >
-                                        <span className="text-start">
-                                          Property Area
-                                        </span>
-                                      </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                        }}
-                                      >
-                                        {currentProperty.area} sqft
-                                      </td>
-                                    </tr> */}
+
                                     <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-header">
                                         <span className="text-start">
                                           {" "}
-                                          Type of Building{" "}
+                                          Property Type{" "}
                                         </span>
                                       </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-value">
                                         {currentProperty.typeOfBuilding}
                                       </td>
                                     </tr>
                                     <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-header">
                                         <span className="text-start">
                                           {" "}
                                           Type of Appraisal
                                         </span>
                                       </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-value">
                                         {currentProperty.typeOfAppraisal}
                                       </td>
                                     </tr>
                                     <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-header">
                                         <span className="text-start">
                                           {" "}
                                           Purpose
                                         </span>
                                       </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-value">
                                         {currentProperty.purpose}
                                       </td>
                                     </tr>
                                     <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-header">
                                         <span className="text-start">
                                           {" "}
                                           Lender Information
                                         </span>
                                       </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-value">
                                         {currentProperty.lenderInformation
                                           ? currentProperty.lenderInformation
                                           : "N.A."}
                                       </td>
                                     </tr>
-                                    {/* <tr>
-                                      <td
-                                         style={{
-                                          border: "1px solid #2e008b",
-                                          color: "#2e008b",
-                                          padding:"5px"
-                                        }}
-                                      >
-                                        <span className="text-start">
-                                          Community
-                                        </span>
-                                      </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                        }}
-                                      >
-                                        {" "}
-                                        {currentProperty.community
-                                          ? currentProperty.community
-                                          : "NA"}
-                                      </td>
-                                    </tr> */}
+
                                     <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-header">
                                         <span className="text-start">
-                                          Estimated Value
+                                          Estimated Value / Purchased Price
                                         </span>
                                       </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
-                                        ${" "}
-                                        {millify(
-                                          currentProperty.estimatedValue
-                                        )}
+                                      <td className="table-value">
+                                        ${currentProperty.estimatedValue}
                                       </td>
                                     </tr>
                                     <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-header">
                                         <span className="text-start">
                                           Urgency
                                         </span>
                                       </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-value">
                                         {" "}
                                         {currentProperty.urgency === 0
                                           ? "Rush"
@@ -724,48 +559,37 @@ const Index = () => {
                                       </td>
                                     </tr>
                                     <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-header">
                                         <span className="text-start">
-                                          Appraisal Report Req. By
+                                          Appraisal Report Required By
                                         </span>
                                       </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
-                                        {currentProperty.quoteRequiredDate}
+                                      <td className="table-value">
+                                        {currentProperty.quoteRequiredDate
+                                          ? currentProperty.quoteRequiredDate
+                                          : "N.A."}
                                       </td>
                                     </tr>
                                     <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-header">
+                                        <span className="text-start">
+                                          Remark / Summary
+                                        </span>
+                                      </td>
+                                      <td className="table-value">
+                                        {" "}
+                                        {currentProperty.remark
+                                          ? currentProperty.remark
+                                          : "N.A."}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td className="table-header">
                                         <span className="text-start">
                                           Applicant Name
                                         </span>
                                       </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-value">
                                         {" "}
                                         {
                                           currentProperty.applicantFirstName
@@ -773,154 +597,51 @@ const Index = () => {
                                         {currentProperty.applicantLastName}
                                       </td>
                                     </tr>
+
                                     <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-header">
                                         <span className="text-start">
-                                          Email Address
+                                          {" "}
+                                          Applicant Email Address{" "}
                                         </span>
                                       </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
-                                        {" "}
+                                      <td className="table-value">
                                         {currentProperty.applicantEmailAddress}
                                       </td>
                                     </tr>
                                     <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-header">
                                         <span className="text-start">
-                                          Phone Number
+                                          Applicant Phone Number
                                         </span>
                                       </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-value">
                                         {" "}
                                         {currentProperty.applicantPhoneNumber}
-                                      </td>
-                                    </tr>
-                                    {/* <tr>
-                                      <td
-                                         style={{
-                                          border: "1px solid #2e008b",
-                                          color: "#2e008b",
-                                          padding:"5px"
-                                        }}
-                                      >
-                                        <span className="text-start">
-                                          Address
-                                        </span>
-                                      </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                        }}
-                                      >
-                                        {" "}
-                                        {currentProperty.applicantAddress
-                                          ? currentProperty.applicantAddress
-                                          : "NA"}
-                                      </td>
-                                    </tr> */}
-                                    <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
-                                        <span className="text-start">
-                                          Remark / Summary
-                                        </span>
-                                      </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
-                                        {" "}
-                                        {currentProperty.remark
-                                          ? currentProperty.remark
-                                          : "N.A."}
                                       </td>
                                     </tr>
                                   </tbody>
                                 </table>
                               </div>
-                              <div className="row text-center mt-3">
-                                <div className="col-lg-12">
-                                  <div
-                                    className="btn btn-color w-25 m-1"
-                                    onClick={() =>
-                                      PropertyInfoHandler(
-                                        currentProperty.orderId
-                                      )
-                                    }
-                                    title="Download Pdf"
-                                  >
-                                    Download
-                                  </div>
-                                  <button
-                                    className="btn btn-color w-25 text-center"
-                                    onClick={() => setModalIsPopupOpen(false)}
-                                  >
-                                    Ok
-                                  </button>
-                                </div>
-                              </div>
-
-                              {/* <div
-                                className="text-center"
-                                style={{ display: "flex", flexDirection: "column" }}
-                              >
-                                <label>Property Value : ${bidLowerRangeRef}</label>
-                                <label>community Type : {communityRef}</label>
-                                <label>Property type : {buildinRef}</label>
-                                <label>
-                                  {streetNameRef} {streetNumberRef} {cityRef}
-                                </label>
-                                <label>zipCode : {zipCodeRef}</label>
-                                <label>
-                                  Property By : {applicantFirstName} {applicantLatsName}
-                                </label>
-                                <label>
-                                  {applicantEmail} - {applicantNumber}
-                                </label>
-        
+                              <div className="d-flex justify-content-center gap-2 mt-3">
                                 <button
-                                  className="btn w-35 btn-white"
-                                  onClick={() => finalSubmitHandler()}
+                                  className="btn btn-color"
+                                  style={{ width: "100px" }}
+                                  onClick={() =>
+                                    PropertyInfoHandler(currentProperty.orderId)
+                                  }
+                                  title="Download Pdf"
                                 >
-                                  OK
+                                  <FaDownload />
                                 </button>
-                              </div> */}
+                                <button
+                                  className="btn btn-color"
+                                  style={{ width: "100px" }}
+                                  onClick={() => setModalIsPopupOpen(false)}
+                                >
+                                  Ok
+                                </button>
+                              </div>
                             </div>
                           </div>
                         )}
@@ -1083,7 +804,7 @@ const Index = () => {
             </div>
 
             <div className="row">
-            {/* <div className="row">
+              {/* <div className="row">
                 <div className="col-lg-12 mt0">
                   <div className="mbp_pagination">
                     <Pagination
@@ -1093,7 +814,7 @@ const Index = () => {
                     />
                   </div>
                 </div>
-              </div>*/} 
+              </div>*/}
               {/* End paginaion .col */}
             </div>
             {/* End .row */}

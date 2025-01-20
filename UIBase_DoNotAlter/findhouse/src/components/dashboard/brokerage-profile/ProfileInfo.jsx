@@ -1304,7 +1304,7 @@ const ProfileInfo = ({
                               setEmailError
                             )
                           }
-                          maxLength={50}
+                          maxLength={100}
                         />
                         {emailError && (
                           <small className="text-danger">

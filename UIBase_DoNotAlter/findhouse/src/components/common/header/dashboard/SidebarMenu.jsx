@@ -12,16 +12,23 @@ const SidebarMenu = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   let userData = {};
   const [isBrokerByBrokerage, setIsBrokerByBrokerage] = useState(false);
+  const [hasActivePlans, setHasActivePlans] = useState(false);
   useEffect(() => {
-    userData = JSON.parse(localStorage.getItem("user"));
+    const userData = JSON.parse(localStorage.getItem("user"));
     if (userData?.broker_Details?.brokerageid !== null) {
       setIsBrokerByBrokerage(true);
     }
-  }, []);
 
-  const toggleCollapse = () => {
-    setIsCollapsed(!isCollapsed);
-  };
+    // Check if the user has active plans
+    const userActivePlans = userData?.userSubscription?.$values || [];
+    // console.log("plans", userActivePlans);
+    if (userData?.userType === 6) {
+      console.log("Not applicable for this user type.", userData);
+      setHasActivePlans(true);
+      return;
+    }
+    setHasActivePlans(userActivePlans.length > 0);
+  }, []);
 
   const myProperties = [
     { id: 1, name: "General Elements", route: "/my-properties" },
@@ -41,21 +48,15 @@ const SidebarMenu = () => {
       route: "/my-plans",
       icon: "flaticon-box",
     },
-    // {
-    //   id: 2,
-    //   name: "Top-up Plans",
-    //   route: "/top-up",
-    //   icon: "flaticon-box",
-    // },
     {
-      id: 3,
+      id: 2,
       name: "Subscription History",
       route: "/my-package",
       icon: "flaticon-box",
     },
-    { id: 4, name: "Help desk", route: "/contact", icon: "flaticon-telephone" },
+    { id: 3, name: "Help desk", route: "/broker-helpdesk", icon: "flaticon-telephone" },
     {
-      id: 3,
+      id: 4,
       name: "Contact Us",
       route: "mailto:patelshubhendra@gmail.com",
       icon: "flaticon-envelope",
@@ -73,9 +74,6 @@ const SidebarMenu = () => {
 
   return (
     <>
-      {/* <button className="collapse-btn flaticon-home" onClick={toggleCollapse}>
-        {isCollapsed ? "Expand" : "Collapse"}
-      </button> */}
       <ul className={`sidebar-menu ${isCollapsed ? "collapsed" : ""}`}>
         <li
           className="sidebar_header header"
@@ -128,68 +126,113 @@ const SidebarMenu = () => {
               </Link>
             </li>
             <li
+              // className={`treeview ${
+              //   isSinglePageActive("/my-properties", route.pathname)
+              //     ? "active"
+              //     : ""
+              // }`}
               className={`treeview ${
-                isSinglePageActive("/my-properties", route.pathname)
-                  ? "active"
-                  : ""
+                hasActivePlans
+                  ? isSinglePageActive("/my-properties", route.pathname)
+                    ? "active"
+                    : ""
+                  : "disabled"
               }`}
             >
-              <Link href="/my-properties">
-                <i className="flaticon-home"></i>
-                <span>My Properties</span>
-              </Link>
+              {hasActivePlans ? (
+                <Link href="/my-properties">
+                  <i className="flaticon-home"></i>
+                  <span>My Properties</span>
+                </Link>
+              ) : (
+                <a>
+                  <i className="flaticon-home"></i>
+                  <span>My Properties</span>
+                </a>
+              )}
             </li>
             <li
               className={`treeview ${
-                isSinglePageActive("/create-listing", route.pathname)
-                  ? "active"
-                  : ""
+                hasActivePlans
+                  ? isSinglePageActive("/create-listing", route.pathname)
+                    ? "active"
+                    : ""
+                  : "disabled"
               }`}
             >
-              <Link href="/create-listing">
-                <i className="flaticon-plus"></i>
-                <span> Add New Property</span>
-              </Link>
+              {hasActivePlans ? (
+                <Link href="/create-listing">
+                  <i className="flaticon-plus"></i>
+                  <span>Add New Property</span>
+                </Link>
+              ) : (
+                <a>
+                  <i className="flaticon-plus"></i>
+                  <span>Add New Property</span>
+                </a>
+              )}
             </li>
 
             <li
               className={`treeview ${
-                isSinglePageActive("/archive-property", route.pathname)
-                  ? "active"
-                  : ""
+                hasActivePlans
+                  ? isSinglePageActive("/archive-property", route.pathname)
+                    ? "active"
+                    : ""
+                  : "disabled"
               }`}
             >
-              <Link href="/archive-property">
-                <i className="flaticon-home"></i>
-                <span>Archived Properties</span>
-              </Link>
+              {hasActivePlans ? (
+                <Link href="/archive-property">
+                  <i className="flaticon-home"></i>
+                  <span>Archived Properties</span>
+                </Link>
+              ) : (
+                <a>
+                  <i className="flaticon-home"></i>
+                  <span>Archived Properties</span>
+                </a>
+              )}
             </li>
           </ul>
         </li>
 
         <li className="title">
           <span>Manage Account</span>
-          {isBrokerByBrokerage ? (
-            ""
-          ) : (
+          {!isBrokerByBrokerage && (
             <ul>
               {manageAccount.map((item) => (
                 <li
-                  className={
+                  className={`${
                     isSinglePageActive(item.route, route.pathname)
                       ? "active"
+                      : !hasActivePlans && item.id === 2
+                      ? "disabled"
                       : ""
-                  }
+                  }`}
                   key={item.id}
                 >
-                  <Link href={item.route}>
-                    <i className={item.icon}></i> <span>{item.name}</span>
-                  </Link>
+                  {!hasActivePlans && item.id === 2 ? (
+                    <a
+                      style={{
+                        color: "#999",
+                        cursor: "not-allowed",
+                        opacity: "0.6",
+                      }}
+                    >
+                      <i className={item.icon}></i> <span>{item.name}</span>
+                    </a>
+                  ) : (
+                    <Link href={item.route}>
+                      <i className={item.icon}></i> <span>{item.name}</span>
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>
           )}
         </li>
+
         {!isBrokerByBrokerage ? (
           ""
         ) : (

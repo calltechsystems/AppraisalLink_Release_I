@@ -138,7 +138,7 @@ const Index = ({
           <div className="col-lg-12 col-xl-12 text-center mt-1 mb-5">
             <div className="style2 mb30-991">
               <h3 className="heading-forms">
-                Add / Modify / Cancel Subscriptions
+                Add / Upgrade / Cancel Subscriptions
               </h3>
             </div>
           </div>
