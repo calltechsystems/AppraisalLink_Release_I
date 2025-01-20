@@ -16,6 +16,7 @@ import { encryptionData } from "../../../utils/dataEncryption";
 import Link from "next/link";
 import Image from "next/image";
 import millify from "millify";
+import { FaDownload } from "react-icons/fa";
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
