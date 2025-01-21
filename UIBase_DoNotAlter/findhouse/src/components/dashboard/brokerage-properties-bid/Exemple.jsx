@@ -94,6 +94,7 @@ export default function Exemple({
   setProperties,
   setAllAppraiser,
   deletePropertyHandler,
+  propertyId,
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [allProperties, setAllProperties] = useState([]);
@@ -207,14 +208,15 @@ export default function Exemple({
         console.log(res);
         toast.dismiss();
         toast.success("Successfully Re assigned Appraiser");
+        setTimeout(() => {
+          window.location.reload(); // Reload after the success message is shown
+        }, 1000); // Add a slight delay to allow the success message to show
       })
       .catch((err) => {
         toast.dismiss();
         toast.error("Try Again!!");
       });
-    // setRefresh(true);
-    // toast.success("Successfully Re assigned Appraiser");
-    window.location.reload();
+    
   };
 
   const getUserName = (id) => {
@@ -225,7 +227,7 @@ export default function Exemple({
       }
     });
     return requiredUser;
-  };
+  }; 
 
   function handleDownloadClick(event, url, fileName) {
     event.preventDefault(); // Prevent the default link behavior
@@ -502,6 +504,7 @@ export default function Exemple({
       {updatedData && (
         <SmartTable
           title=""
+          propertyId={propertyId}
           data={updatedData}
           headCells={headCells}
           refreshHandler={refreshHandler}

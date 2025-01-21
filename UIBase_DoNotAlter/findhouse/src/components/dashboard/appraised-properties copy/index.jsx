@@ -327,7 +327,7 @@ const Index = () => {
       token: data.token,
     };
 
-    toast.loading("Un-Archiving the desired property!!.");
+    toast.loading("Un-Archiving the property......");
 
     const encryptedBody = encryptionData(payload);
 
@@ -340,7 +340,7 @@ const Index = () => {
       })
       .then((res) => {
         toast.dismiss();
-        toast.success("Un-Archived property!");
+        toast.success("Successfully Un-Archived the Property!!");
         location.reload(true);
       })
       .catch((err) => {

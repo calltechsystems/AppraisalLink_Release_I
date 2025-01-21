@@ -27,6 +27,7 @@ function SmartTable(props) {
     window.print();
     toast.success("Data added");
   };
+  console.log("props", props)
 
   const refreshHandler = () => {
     const refresh = !props.refresh;
@@ -117,7 +118,6 @@ function SmartTable(props) {
     try {
       // Fetch data
       const allData = props.properties;
-
       // Open print window and set up basic structure
       const printWindow = window.open("", "_blank");
       printWindow.document.write(
@@ -255,7 +255,6 @@ function SmartTable(props) {
     setSortDesc({ [cell]: !sortDesc[cell] });
     setData(tempData);
   };
-
   return (
     <div className="col-12 p-1">
       <div className="smartTable-container row">
@@ -270,6 +269,8 @@ function SmartTable(props) {
           <div className="col-lg-1 mt-1">
             <div className="row">
               <div className="d-flex gap-1">
+                {/* <span>{console.log("orderid",props.propertyId)}</span>
+                <p>{propertyId}</p> */}
                 <button
                   className="btn btn-color"
                   onClick={() => handlePrint()}

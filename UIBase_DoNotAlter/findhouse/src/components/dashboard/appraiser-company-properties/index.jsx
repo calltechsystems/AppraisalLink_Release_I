@@ -187,7 +187,7 @@ const Index = () => {
       ),
     };
 
-    console.log({payload});
+    console.log({ payload });
 
     const encryptedData = encryptionData(payload);
     toast.loading("Assigning the property!!....");
@@ -200,7 +200,9 @@ const Index = () => {
       .then((res) => {
         toast.dismiss();
         toast.success("Successfully assigned the property!");
-        // location.reload(true);
+        setTimeout(() => {
+          location.reload(true); // Reload the page after a short delay
+        }, 2000); // Adjust the delay (in milliseconds) as needed
       })
       .catch((err) => {
         toast.dismiss();
@@ -892,7 +894,10 @@ const Index = () => {
                               <div className="row">
                                 <div className="col-lg-12 text-center">
                                   <h2 className=" text-color mt-1">
-                                    Property Details
+                                    Property Details{"  "}
+                                    <span style={{ color: "#97d700" }}>
+                                      #{broker.orderId}
+                                    </span>
                                   </h2>
                                 </div>
                               </div>
@@ -907,14 +912,8 @@ const Index = () => {
                                 <table id="table-broker-info">
                                   <thead>
                                     <tr>
-                                      <th
-                                        style={{
-                                          borderRight: "2px solid white",
-                                        }}
-                                      >
-                                        Headers
-                                      </th>
-                                      <th>Value</th>
+                                      <th></th>
+                                      <th></th>
                                     </tr>
                                   </thead>
                                   <tbody>
@@ -1129,7 +1128,10 @@ const Index = () => {
                               <div className="row">
                                 <div className="col-lg-12 text-center">
                                   <h2 className=" text-color mt-1">
-                                    Mortgage Broker Details
+                                    Mortgage Broker Details{"  "}
+                                    <span style={{ color: "#97d700" }}>
+                                      #{broker.orderId}
+                                    </span>
                                   </h2>
                                 </div>
                               </div>
@@ -1144,14 +1146,8 @@ const Index = () => {
                                 <table id="table-broker-info">
                                   <thead>
                                     <tr>
-                                      <th
-                                        style={{
-                                          borderRight: "2px solid white",
-                                        }}
-                                      >
-                                        Headers
-                                      </th>
-                                      <th>Value</th>
+                                      <th></th>
+                                      <th></th>
                                     </tr>
                                   </thead>
                                   <tbody>
@@ -1366,90 +1362,100 @@ const Index = () => {
                             </div>
                           </div>
                         )}
+
+                        {openQuoteView && (
+                          <div className="modal">
+                            <div
+                              className="modal-content"
+                              style={{ width: "30%" }}
+                            >
+                              <div className="row">
+                                <div className="col-lg-12">
+                                  <Link href="/" className="">
+                                    <Image
+                                      width={50}
+                                      height={45}
+                                      className="logo1 img-fluid"
+                                      style={{ marginTop: "-20px" }}
+                                      src="/assets/images/Appraisal_Land_Logo.png"
+                                      alt="header-logo2.png"
+                                    />
+                                    <span
+                                      style={{
+                                        color: "#2e008b",
+                                        fontWeight: "bold",
+                                        fontSize: "24px",
+                                        // marginTop: "20px",
+                                      }}
+                                    >
+                                      Appraisal
+                                    </span>
+                                    <span
+                                      style={{
+                                        color: "#97d700",
+                                        fontWeight: "bold",
+                                        fontSize: "24px",
+                                        // marginTop: "20px",
+                                      }}
+                                    >
+                                      {" "}
+                                      Land
+                                    </span>
+                                  </Link>
+                                </div>
+                              </div>
+                              <h3 className="text-center mt-2 text-color">
+                                Provided Quote
+                              </h3>
+                              <div>
+                                <div
+                                  className="mt-2 mb-3"
+                                  style={{ border: "2px solid #97d700" }}
+                                ></div>
+                              </div>
+                              <p className="text-center fs-5 text-dark">
+                                The Last Provided Quote was{" "}
+                                <span
+                                  style={{
+                                    color: "#97d700",
+                                    fontWeight: "bold",
+                                    fontSize: "22px",
+                                  }}
+                                >
+                                  $
+                                  {addCommasToNumber(
+                                    currentBiddedView?.bidAmount
+                                  )}
+                                </span>
+                              </p>
+                              <p className="text-center fs-6 text-dark">
+                                Updated At :{" "}
+                                {formatDate(currentBiddedView?.requestTime)}
+                              </p>
+
+                              <div className="text-center" style={{}}>
+                                <div>
+                                  <div
+                                    className="mt-2 mb-3"
+                                    style={{ border: "2px solid #97d700" }}
+                                  ></div>
+                                </div>
+                                <button
+                                  className="btn btn-color w-25"
+                                  onClick={closeQuoteViewModal}
+                                >
+                                  Ok
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
                 </div>
                 {/* End .col */}
               </div>
-              {openQuoteView && (
-                <div className="modal">
-                  <div className="modal-content">
-                    <div className="row">
-                      <div className="col-lg-12">
-                        <Link href="/" className="">
-                          <Image
-                            width={50}
-                            height={45}
-                            className="logo1 img-fluid"
-                            style={{ marginTop: "-20px" }}
-                            src="/assets/images/Appraisal_Land_Logo.png"
-                            alt="header-logo2.png"
-                          />
-                          <span
-                            style={{
-                              color: "#2e008b",
-                              fontWeight: "bold",
-                              fontSize: "24px",
-                              // marginTop: "20px",
-                            }}
-                          >
-                            Appraisal
-                          </span>
-                          <span
-                            style={{
-                              color: "#97d700",
-                              fontWeight: "bold",
-                              fontSize: "24px",
-                              // marginTop: "20px",
-                            }}
-                          >
-                            {" "}
-                            Land
-                          </span>
-                        </Link>
-                      </div>
-                    </div>
-                    <h3 className="text-center">Quote View</h3>
-                    <div>
-                      <div
-                        className="mt-2 mb-3"
-                        style={{ border: "2px solid #97d700" }}
-                      ></div>
-                    </div>
-                    <h5 className="text-center">
-                      The Last Provided Quote was for ${" "}
-                      <span
-                        style={{
-                          color: "green",
-                          fontWeight: "bold",
-                          fontSize: "22px",
-                        }}
-                      >
-                        {addCommasToNumber(currentBiddedView?.bidAmount)}
-                      </span>
-                    </h5>
-                    <h5 className="text-center">
-                      Updated At : {formatDate(currentBiddedView?.requestTime)}
-                    </h5>
-                    {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
-                    <div className="text-center" style={{}}>
-                      <div>
-                        <div
-                          className="mt-2 mb-3"
-                          style={{ border: "2px solid #97d700" }}
-                        ></div>
-                      </div>
-                      <button
-                        className="btn btn-color w-25 m-1"
-                        onClick={closeQuoteViewModal}
-                      >
-                        Ok
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
 
               {isQuoteModalOpen && (
                 <div className="modal">
@@ -1480,7 +1486,7 @@ const Index = () => {
 
               {assignModal && (
                 <div className="modal">
-                  <div className="modal-content">
+                  <div className="modal-content" style={{ width: "30%" }}>
                     <div className="row">
                       <div className="col-lg-12">
                         <Link href="/" className="">
@@ -1518,7 +1524,7 @@ const Index = () => {
                     </div>
                     <div className="row">
                       <div className="col-lg-12 text-center">
-                        <h1 className=" text-color mt-1">Asssign Appraiser</h1>
+                        <h2 className=" text-color mt-1">Asssign Appraiser</h2>
                       </div>
                     </div>
                     <div
@@ -1531,13 +1537,7 @@ const Index = () => {
                       data-live-search="true"
                       data-width="100%"
                       onChange={(e) => setSelectedAppraiser(e.target.value)}
-                      // value={buildinRef}
-                      // onChange={(e) => setBuildinRef(e.target.value)}
-                      // onChange={(e) => setBuildinRef(e.target.value)}
-                      // disabled={isDisable}
                       style={{
-                        // paddingTop: "15px",
-                        // paddingBottom: "15px",
                         padding: "15px",
                         backgroundColor: "#E8F0FE",
                       }}
@@ -1558,7 +1558,7 @@ const Index = () => {
                       className="mt-4 mb-3"
                       style={{ border: "2px solid #97d700" }}
                     ></div>
-                    {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
+
                     <div className="text-center" style={{}}>
                       <button
                         className="btn btn-color m-1 w-25"
@@ -1578,7 +1578,7 @@ const Index = () => {
               )}
               {isStatusModal && (
                 <div className="modal">
-                  <div className="modal-content">
+                  <div className="modal-content" style={{ width: "30%" }}>
                     <div className="row">
                       <div className="col-lg-12">
                         <Link href="/" className="">
@@ -1614,7 +1614,7 @@ const Index = () => {
                     </div>
                     <div className="row">
                       <div className="col-lg-12 text-center">
-                        <h2 className=" text-color mt-1">
+                        <h2 className=" text-color mt-2">
                           Appraisal Status Updation
                         </h2>
                       </div>
@@ -1679,6 +1679,7 @@ const Index = () => {
                         id="formGroupExampleInput3"
                         onChange={(e) => setRemark(e.target.value)}
                         value={remark}
+                        style={{ overflow: "scroll" }}
                         maxLength="50"
                       />
                     </div>
@@ -1730,32 +1731,10 @@ const Index = () => {
                   alreadyBidded={alreadyBidded}
                 />
               </div>
-              <div className="row">
-                {/* <div className="col-lg-12 mt20">
-                  <div className="mbp_pagination">
-                    <Pagination
-                      properties={properties}
-                      setProperties={setProperties}
-                    />
-                  </div>
-                </div> */}
-                {/* End paginaion .col */}
-              </div>
+              <div className="row">{/* End paginaion .col */}</div>
               {/* End .row */}
             </div>
             {/* End .row */}
-
-            {/* <div className="row">
-              <div className="col-lg-12 mt20">
-                <div className="mbp_pagination">
-                  <Pagination
-                    setStart={setStart}
-                    setEnd={setEnd}
-                    properties={properties}
-                  />
-                </div>
-              </div>
-            </div> */}
 
             <div className="row mt50">
               <div className="col-lg-12">

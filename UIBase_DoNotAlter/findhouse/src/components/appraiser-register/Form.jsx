@@ -36,6 +36,9 @@ const Form = ({
         await axios.post("/api/registerByCompany", encryptedData);
         toast.dismiss();
         toast.success("Successfully added!");
+        setTimeout(() => {
+          window.location.reload(); // Reload the page after a short delay
+        }, 2000); // Adjust the delay as needed (2 seconds here)
       } catch (err) {
         toast.dismiss();
         const status = err.response?.request?.status;

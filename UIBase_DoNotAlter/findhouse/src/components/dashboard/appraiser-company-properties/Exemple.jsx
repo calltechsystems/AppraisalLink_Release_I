@@ -9,6 +9,7 @@ import Loader from "./Loader";
 import { FaArchive } from "react-icons/fa";
 import { AppraiserStatusOptions } from "../create-listing/data";
 import millify from "millify";
+import Image from "next/image";
 
 const headCells = [
   {
@@ -160,7 +161,8 @@ export default function Exemple({
   const [hideAction, setHideAction] = useState(false);
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
-
+  const [archiveModal, setArchiveModal] = useState(false);
+  const [selectedProperty, setSelectedProperty] = useState(null);
   const [archivedProperties, setArchivedProperties] = useState([]);
 
   const [dataFetched, setDataFetched] = useState(false);
@@ -273,6 +275,16 @@ export default function Exemple({
   const openStatusUpdateHandler = (bid) => {
     setCurrentBid(bid);
     setIsStatusModal(true);
+  };
+
+  const openArchiveModal = (property) => {
+    setSelectedProperty(property); // Store the selected property
+    setArchiveModal(true);
+  };
+
+  const closeArchiveModal = () => {
+    setSelectedProperty(null); // Clear the selected property
+    setArchiveModal(false); // Close the modal
   };
 
   const removeWishlistHandler = (id) => {
@@ -439,7 +451,7 @@ export default function Exemple({
   }
 
   const openAssignModalHandler = (property) => {
-    console.log({Assignable_property: property});
+    console.log({ Assignable_property: property });
     setAssignPropertyId(property.propertyId);
     setAssignModal(true);
   };
@@ -460,7 +472,7 @@ export default function Exemple({
         assigned = prop;
       }
     });
-    
+
     return assigned;
   };
 
@@ -736,20 +748,11 @@ export default function Exemple({
                         className="list-inline-item"
                         data-toggle="tooltip"
                         data-placement="top"
-                      >
-                        {/* <span className="btn btn-danger  w-100">Declined </span> */}
-                      </li>
-                      <li
-                        className="list-inline-item"
-                        data-toggle="tooltip"
-                        data-placement="top"
                         title="Archive Property"
                       >
                         <div
                           className="w-100"
-                          onClick={() =>
-                            onArchivePropertyHandler(property.orderId)
-                          }
+                          onClick={() => openArchiveModal(property)}
                         >
                           <button href="#" className="btn btn-color">
                             <Link href="#">
@@ -765,11 +768,6 @@ export default function Exemple({
                   </>
                 ) : isWait && property.status !== 2 ? (
                   <>
-                    {/* <p className="btn btn-danger  w-100">
-                      {`No further actions can be taken on this property since it is ${
-                        property.isoncancel ? "Cancelled" : "On Hold"
-                      } .`}
-                    </p> */}
                     <li
                       className="list-inline-item"
                       data-toggle="tooltip"
@@ -778,9 +776,7 @@ export default function Exemple({
                     >
                       <div
                         className="w-100"
-                        onClick={() =>
-                          onArchivePropertyHandler(property.orderId)
-                        }
+                        onClick={() => openArchiveModal(property)}
                       >
                         <button href="#" className="btn btn-color m-1">
                           <Link href="#">
@@ -874,32 +870,30 @@ export default function Exemple({
                         </li>
                       )}
 
-                    <li
-                      className="list-inline-item"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Archive Property"
-                    >
-                      <div
+                    {isWishlist.id ? (
+                      ""
+                    ) : (
+                      <li
                         className="list-inline-item"
-                        onClick={() =>
-                          onArchivePropertyHandler(property.orderId)
-                        }
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="Archive Property"
                       >
-                        <button
-                          href="#"
-                          className="btn btn-color w-20"
-                          // style={{ marginLeft: "12px" }}
+                        <div
+                          className="w-100"
+                          onClick={() => openArchiveModal(property)}
                         >
-                          <Link href="#">
-                            <span className="text-light">
-                              {" "}
-                              <FaArchive />
-                            </span>
-                          </Link>
-                        </button>
-                      </div>
-                    </li>
+                          <button href="#" className="btn btn-color">
+                            <Link href="#">
+                              <span className="text-light">
+                                {" "}
+                                <FaArchive />
+                              </span>
+                            </Link>
+                          </button>
+                        </div>
+                      </li>
+                    )}
                   </ul>
                 ) : isBidded.status === 1 && isBidded.orderstatus !== 3 ? (
                   !isWait && (
@@ -948,9 +942,7 @@ export default function Exemple({
                       >
                         <div
                           className="w-100"
-                          onClick={() =>
-                            onArchivePropertyHandler(property.orderId)
-                          }
+                          onClick={() => openArchiveModal(property)}
                         >
                           <button href="#" className="btn btn-color">
                             <Link href="#">
@@ -974,9 +966,7 @@ export default function Exemple({
                     >
                       <div
                         className="list-inline-item"
-                        onClick={() =>
-                          onArchivePropertyHandler(property.orderId)
-                        }
+                        onClick={() => openArchiveModal(property)}
                       >
                         <button
                           href="#"
@@ -1119,7 +1109,7 @@ export default function Exemple({
                 // const endDate = new Date();\
                 let tempProperties = res.data.data.$values;
                 const temp = res.data.data.$values;
-                console.log({assginedProperty: res.data})
+                console.log({ assginedProperty: res.data });
 
                 setAssignedProperties(tempProperties);
               })
@@ -1212,6 +1202,81 @@ export default function Exemple({
           start={start}
           end={end}
         />
+      )}
+
+      {archiveModal && (
+        <div className="modal">
+          <div className="modal-content" style={{ width: "30%" }}>
+            <div className="row">
+              <div className="col-lg-12">
+                <Link href="/" className="">
+                  <Image
+                    width={50}
+                    height={45}
+                    className="logo1 img-fluid"
+                    style={{ marginTop: "-20px" }}
+                    src="/assets/images/logo.png"
+                    alt="header-logo2.png"
+                  />
+                  <span
+                    style={{
+                      color: "#2e008b",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    Appraisal
+                  </span>
+                  <span
+                    style={{
+                      color: "#97d700",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    {" "}
+                    Land
+                  </span>
+                </Link>
+              </div>
+            </div>
+            <h2 className="text-center mt-3" style={{ color: "#2e008b" }}>
+              Order Confirmation{" "}
+              <span style={{ color: "#97d700" }}>
+                #{selectedProperty?.orderId}
+              </span>
+            </h2>
+            <div className="mb-2" style={{ border: "2px solid #97d700" }}></div>
+            <p className="fs-5 text-center text-dark mt-4">
+              Are you sure for the order to be{" "}
+              <span className="text-danger fw-bold">Archived</span> ?
+            </p>
+            <div
+              className="mb-3 mt-4"
+              style={{ border: "2px solid #97d700" }}
+            ></div>
+            <div className="col-lg-12 d-flex justify-content-center gap-2">
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                onClick={closeArchiveModal}
+              >
+                Cancel
+              </button>
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                onClick={() =>
+                  onArchivePropertyHandler(selectedProperty?.orderId)
+                }
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );

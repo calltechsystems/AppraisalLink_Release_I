@@ -324,7 +324,10 @@ const Index = ({ propertyId }) => {
 
                 <div className="col-lg-12 col-xl-12 mt-3 mb-1 text-center">
                   <div className="style2 mb30-991">
-                    <h3 className="heading-forms">Provided Quotes</h3>
+                    <h3 className="heading-forms">
+                      Provided Quotes{" "}
+                      <span className="text-color">#{propertyId}</span>
+                    </h3>
                   </div>
                 </div>
                 {/* End .col */}
@@ -381,37 +384,22 @@ const Index = ({ propertyId }) => {
                           <div className="modal">
                             <div
                               className="modal-content"
-                              style={{ borderColor: "orangered", width: "20%" }}
+                              style={{ borderColor: "#97d700", width: "20%" }}
                             >
-                              <h3
-                                className="text-center"
-                                style={{ color: "orangered" }}
-                              >
-                                Error
-                              </h3>
+                              <h3 className="text-center text-color">Error</h3>
                               <div
-                                style={{
-                                  borderWidth: "2px",
-                                  borderColor: "orangered",
-                                }}
-                              >
-                                <br />
-                              </div>
+                                className="mt-2 mb-3"
+                                style={{ border: "2px solid #97d700" }}
+                              ></div>
                               <h5 className="text-center">{errorMessage}</h5>
                               <div
-                                className="text-center"
-                                style={{
-                                  display: "flex",
-                                  flexDirection: "column",
-                                }}
-                              >
+                                className="mt-2 mb-3"
+                                style={{ border: "2px solid #97d700" }}
+                              ></div>
+                              <div className="text-center">
                                 <button
-                                  className="btn w-35 btn-white"
+                                  className="btn w-25 btn-color"
                                   onClick={() => closeModal()}
-                                  style={{
-                                    borderColor: "orangered",
-                                    color: "orangered",
-                                  }}
                                 >
                                   Cancel
                                 </button>
@@ -424,14 +412,14 @@ const Index = ({ propertyId }) => {
                           <div className="modal">
                             <div
                               className="modal-content"
-                              style={{ borderColor: "red", width: "40%" }}
+                              style={{ borderColor: "red", width: "30%" }}
                             >
                               <div className="col-lg-12">
                                 <div className="row">
                                   <div className="col-lg-12">
                                     <Link href="/" className="">
                                       <Image
-                                        width={60}
+                                        width={50}
                                         height={45}
                                         className="logo1 img-fluid"
                                         style={{ marginTop: "-20px" }}
@@ -464,7 +452,7 @@ const Index = ({ propertyId }) => {
                                 </div>
                                 <div className="row">
                                   <div className="col-lg-12 text-center">
-                                    <h3 className=" text-danger mt-1">Error</h3>
+                                    <h3 className=" text-color mt-1">Error</h3>
                                   </div>
                                 </div>
                                 <div
@@ -475,7 +463,7 @@ const Index = ({ propertyId }) => {
                               <div
                                 style={{
                                   borderWidth: "2px",
-                                  borderColor: "orangered",
+                                  borderColor: "#97d700",
                                 }}
                               >
                                 <br />
@@ -500,7 +488,7 @@ const Index = ({ propertyId }) => {
                                 }}
                               >
                                 <button
-                                  className="btn btn-color w-50"
+                                  className="btn btn-color w-25"
                                   onClick={() => closeModal()}
                                   style={{}}
                                 >
@@ -615,14 +603,8 @@ const Index = ({ propertyId }) => {
                     <table id="table-broker-info">
                       <thead>
                         <tr>
-                          <th
-                            style={{
-                              borderRight: "2px solid white",
-                            }}
-                          >
-                            Headers
-                          </th>
-                          <th>Value</th>
+                          <th></th>
+                          <th></th>
                         </tr>
                       </thead>
                       <tbody>
@@ -663,9 +645,9 @@ const Index = ({ propertyId }) => {
                             <span className="text-start">Company Name</span>
                           </td>
                           <td className="table-value">
-                            {appInfo.companyName
-                              ? appInfo.companyName
-                              : appInfo.appraiserCompanyName}
+                            {appInfo.companyName ||
+                              appInfo.appraiserCompanyName ||
+                              "N.A."}
                           </td>
                         </tr>
                         <tr>
@@ -750,94 +732,15 @@ const Index = ({ propertyId }) => {
                 </div>
               </div>
             )}
+
             {isModalOpen && (
-              // <div className="modal">
-              //   <div className="modal-content">
-              //     <div className="row">
-              //       <div className="col-lg-12">
-              //         <Link href="/" className="">
-              //           <Image
-              //             width={60}
-              //             height={45}
-              //             className="logo1 img-fluid"
-              //             style={{ marginTop: "-20px" }}
-              //             src="/assets/images/Appraisal_Land_Logo.png"
-              //             alt="header-logo2.png"
-              //           />
-              //           <span
-              //             style={{
-              //               color: "#2e008b",
-              //               fontWeight: "bold",
-              //               fontSize: "24px",
-              //               // marginTop: "20px",
-              //             }}
-              //           >
-              //             Appraisal
-              //           </span>
-              //           <span
-              //             style={{
-              //               color: "#97d700",
-              //               fontWeight: "bold",
-              //               fontSize: "24px",
-              //               // marginTop: "20px",
-              //             }}
-              //           >
-              //             {" "}
-              //             Land
-              //           </span>
-              //         </Link>
-              //       </div>
-              //     </div>
-              //     <h3 className="text-center">Accept Bid Confirmation</h3>
-              //     <div
-              //       className="mt-2 mb-3"
-              //       style={{ border: "2px solid #97d700" }}
-              //     ></div>
-              //     <p className="text-center fs-6">
-              //       Are you sure you want to accept the quote with value?
-              //     </p>
-
-              //     <h4 className="text-center">
-              //       Quote Amount : $ {property.bidAmount}
-              //     </h4>
-              //     <p className="text-center mt-3 mb-0">
-              //       ( Note <span className="text-danger">*</span> : All Other
-              //       Quotes from other appriasers will be Rejected.)
-              //     </p>
-              //     <div
-              //       className="mt-2 mb-3"
-              //       style={{ border: "2px solid #97d700" }}
-              //     ></div>
-
-              //     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
-              //     <div className="col-lg-12">
-              //       <div className="row">
-              //         <div className="col-lg-12 text-center m-1">
-              //           <button
-              //             className="btn btn-color"
-              //             style={{ marginRight: "5px" }}
-              //             onClick={closeModal}
-              //           >
-              //             Cancel
-              //           </button>
-              //           <button
-              //             className="btn btn-color"
-              //             onClick={() => acceptRequestHandler(property.bidId)}
-              //           >
-              //             Submit
-              //           </button>
-              //         </div>
-              //       </div>
-              //     </div>
-              //   </div>
-              // </div>
               <div className="modal">
-                <div className="modal-content">
+                <div className="modal-content" style={{ width: "30%" }}>
                   <div className="row">
                     <div className="col-lg-12">
                       <Link href="/" className="">
                         <Image
-                          width={60}
+                          width={50}
                           height={45}
                           className="logo1 img-fluid"
                           style={{ marginTop: "-20px" }}
@@ -868,43 +771,37 @@ const Index = ({ propertyId }) => {
                       </Link>
                     </div>
                   </div>
-                  <span
-                    className="text-center"
-                    style={{
-                      fontWeight: "bold",
-                      fontSize: "29px",
-                      color: "#2e008b",
-                    }}
-                  >
+                  <h2 className="text-color text-center">
                     Accept Bid Confirmation
-                  </span>
+                  </h2>
                   <div
                     className="mt-2 mb-3"
                     style={{ border: "2px solid #97d700" }}
                   ></div>
-                  <p className="text-center fs-4">
+                  <p className="text-center fs-5 text-dark">
                     Are you sure you want to accept the quote with value?
                   </p>
 
-                  <h3 className="text-center">
-                    Quote Amount : $ {property.bidAmount}
+                  <h3 className="text-center text-color">
+                    Quote Amount :{" "}
+                    <span style={{ color: "#97d700" }}>
+                      $ {property.bidAmount}
+                    </span>
                   </h3>
-                  <p className="text-center mt-3 mb-0 fs-5">
+                  <p className="text-center mt-3 mb-0 fs-6">
                     ( Note <span className="text-danger">*</span> : All Other
                     Quotes from other appriasers will be Rejected.)
                   </p>
                   <div
-                    className="mt-2 mb-3"
+                    className="mt-3 mb-3"
                     style={{ border: "2px solid #97d700" }}
                   ></div>
 
-                  {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
                   <div className="col-lg-12">
                     <div className="row">
-                      <div className="col-lg-12 text-center m-1">
+                      <div className="col-lg-12 d-flex justify-content-center gap-2">
                         <button
                           className="btn btn-color w-25"
-                          style={{ marginRight: "5px" }}
                           onClick={closeModal}
                           // disabled={disable}
                         >

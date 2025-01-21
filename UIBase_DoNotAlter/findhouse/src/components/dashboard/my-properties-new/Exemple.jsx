@@ -6,6 +6,7 @@ import axios, { all } from "axios";
 import { AppraiserStatusOptions } from "../create-listing/data";
 import { FaArchive, FaPause } from "react-icons/fa";
 // import { Button } from "bootstrap";
+import Image from "next/image";
 
 const headCells = [
   {
@@ -125,6 +126,8 @@ export default function Exemple({
   const [allBids, setBids] = useState([]);
   const [show, setShow] = useState(false);
   const [dataFetched, setDataFetched] = useState(false);
+  const [archiveModal, setArchiveModal] = useState(false);
+  const [selectedProperty, setSelectedProperty] = useState(null);
   let tempData = [];
 
   useEffect(() => {
@@ -167,6 +170,16 @@ export default function Exemple({
       setPropValue(toggle);
     }
     setModalOpen(true);
+  };
+
+  const openArchiveModal = (property) => {
+    setSelectedProperty(property); // Store the selected property
+    setArchiveModal(true);
+  };
+
+  const closeArchiveModal = () => {
+    setSelectedProperty(null); // Clear the selected property
+    setArchiveModal(false); // Close the modal
   };
 
   const getStatusButtonClass = (orderStatus) => {
@@ -410,124 +423,6 @@ export default function Exemple({
               ? property.lenderInformation
               : "N.A.",
             urgency: property.urgency === 0 ? "Rush" : "Regular",
-            actions: (
-              // <ul className="view_edit_delete_list mb0">
-              <ul className="mb0">
-                {!isEditable && (
-                  <li>
-                    <Link href={"#"}>
-                      <span
-                        className="btn btn-color w-100 mb-1"
-                        onClick={() => openPopupModal(property)}
-                      >
-                        {" "}
-                        Property Details{" "}
-                      </span>
-                    </Link>{" "}
-                    {/* <span
-                      className="btn btn-color-table m-1"
-                      onClick={() => openPopupModal(property)}
-                    >
-                      <Link href={"#"}>
-                        <span className="text-light flaticon-view"></span>
-                      </Link>
-                    </span> */}
-                  </li>
-                )}
-
-                {!isEditable && isStatus === 1 && (
-                  <li>
-                    <Link href={`/my-property-bids/${property.orderId}`}>
-                      <span className="btn btn-color w-100 mb-1"> Quotes </span>
-                    </Link>{" "}
-                    {/* <Link
-                      className="btn btn-color-table"
-                      style={{ marginLeft: "4.3rem" }}
-                      href={`/my-property-bids/${property.propertyId}`}
-                    >
-                      <span className="flaticon-invoice"></span>
-                    </Link> */}
-                  </li>
-                )}
-                {/* <li
-                className="list-inline-item"
-                data-toggle="tooltip"
-                data-placement="top"
-                title="Property Details"
-              >
-                <span
-                  className="btn btn-color-table"
-                  onClick={() => openPopupModal(property)}
-                >
-                  <Link href={"#"}>
-                    <span className="flaticon-view"></span>
-                  </Link>
-                </span>
-              </li>
-
-              <li
-                className="list-inline-item"
-                data-toggle="tooltip"
-                data-placement="top"
-                title="Bids"
-              >
-                <Link
-                  className="btn btn-color-table"
-                  href={`/my-property-bids/${property.propertyId}`}
-                >
-                  <span className="flaticon-invoice"></span>
-                </Link>
-              </li> */}
-
-                {(isEditable || isStatus === 1) && !isCancel && (
-                  <li>
-                    <Link href={`/create-listing/${property.orderId}`}>
-                      <span className="btn btn-color w-100 mb-1"> Edit </span>
-                    </Link>{" "}
-                  </li>
-                )}
-
-                {isEditable && (
-                  <li>
-                    <Link href="#" onClick={() => open(property)}>
-                      <span className="btn btn-color w-100 mb-1">
-                        {" "}
-                        Order Cancel{" "}
-                      </span>
-                    </Link>{" "}
-                  </li>
-                )}
-
-                {isEditable && (
-                  <li>
-                    <button
-                      onClick={() => onHoldHandler(property.propertyId, true)}
-                    >
-                      <Link href="#">
-                        <span className="btn btn-color w-100 mb-1 text-light">
-                          {" "}
-                          On Hold{" "}
-                        </span>
-                      </Link>{" "}
-                    </button>
-                  </li>
-                )}
-
-                {!isEditable && (
-                  <li>
-                    <Link
-                      href="#"
-                      onClick={() => archievePropertyHandler(property.orderId)}
-                    >
-                      <span className="btn btn-color w-100">
-                        {" "}
-                        Archive Property{" "}
-                      </span>
-                    </Link>
-                  </li>
-                )}
-              </ul>
-            ),
             actions_01: (
               <ul className="mb0 d-flex justify-content-center gap-1">
                 <li title="Property Details" className="">
@@ -555,9 +450,6 @@ export default function Exemple({
 
                 {(isEditable || isStatus === 1) && !isCancel && (
                   <li title="Edit Property">
-                    {/* <Link href={`/create-listing/${property.propertyId}`}>
-                      <span className="btn btn-color w-100 mb-1"> Edit </span>
-                    </Link>{" "} */}
                     <Link
                       className="btn btn-color-table"
                       href={`/create-listing/${property.orderId}`}
@@ -663,7 +555,8 @@ export default function Exemple({
                 <li title="Archive Property">
                   <span
                     className="btn btn-color-table"
-                    onClick={() => archievePropertyHandler(property.orderId)}
+                    // onClick={() => archievePropertyHandler(property.orderId)}
+                    onClick={() => openArchiveModal(property)}
                   >
                     <Link className="color-light" href="#">
                       <span className="text-light">
@@ -761,6 +654,81 @@ export default function Exemple({
           properties={updatedData}
           end={end}
         />
+      )}
+
+      {archiveModal && (
+        <div className="modal">
+          <div className="modal-content" style={{ width: "30%" }}>
+            <div className="row">
+              <div className="col-lg-12">
+                <Link href="/" className="">
+                  <Image
+                    width={50}
+                    height={45}
+                    className="logo1 img-fluid"
+                    style={{ marginTop: "-20px" }}
+                    src="/assets/images/logo.png"
+                    alt="header-logo2.png"
+                  />
+                  <span
+                    style={{
+                      color: "#2e008b",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    Appraisal
+                  </span>
+                  <span
+                    style={{
+                      color: "#97d700",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    {" "}
+                    Land
+                  </span>
+                </Link>
+              </div>
+            </div>
+            <h2 className="text-center mt-3" style={{ color: "#2e008b" }}>
+              Order Confirmation{" "}
+              <span style={{ color: "#97d700" }}>
+                #{selectedProperty?.orderId}
+              </span>
+            </h2>
+            <div className="mb-2" style={{ border: "2px solid #97d700" }}></div>
+            <p className="fs-5 text-center text-dark mt-4">
+              Are you sure for the order to be{" "}
+              <span className="text-danger fw-bold">Archived</span> ?
+            </p>
+            <div
+              className="mb-3 mt-4"
+              style={{ border: "2px solid #97d700" }}
+            ></div>
+            <div className="col-lg-12 d-flex justify-content-center gap-2">
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                onClick={closeArchiveModal}
+              >
+                Cancel
+              </button>
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                onClick={() =>
+                  archievePropertyHandler(selectedProperty?.orderId)
+                }
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );

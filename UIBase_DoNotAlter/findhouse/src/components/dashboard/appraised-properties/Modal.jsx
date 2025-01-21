@@ -167,7 +167,7 @@ const Modal = ({
     <div>
       {modalOpen && (
         <div className="modal">
-          <div className="modal-content">
+          <div className="modal-content" style={{width:"40%"}}>
             <div className="row">
               <div className="col-lg-12">
                 <Link href="/" className="">
