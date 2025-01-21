@@ -14,6 +14,7 @@ import {
   FaRedo,
 } from "react-icons/fa";
 // import "./SmartTable.css";
+import Image from "next/image";
 
 const headCells = [
   {
@@ -154,6 +155,8 @@ export default function Exemple({
   const [allBids, setBids] = useState([]);
   const [show, setShow] = useState(false);
   const [dataFetched, setDataFetched] = useState(false);
+  const [archiveModal, setArchiveModal] = useState(false);
+  const [selectedProperty, setSelectedProperty] = useState(null);
   let tempData = [];
 
   useEffect(() => {
@@ -167,53 +170,6 @@ export default function Exemple({
   const sortObjectsByOrderIdDescending = (data) => {
     return data.sort((a, b) => b.order_id - a.order_id);
   };
-
-  // const AppraiserStatusOptions = [
-  //   {
-  //     id: -1,
-  //     type: "Select...",
-  //     value: "",
-  //   },
-  //   {
-  //     id: 0,
-  //     type: "Applicant Contacted by appraiser",
-  //     value: "Applicant Contacted by appraiser",
-  //   },
-  //   {
-  //     id: 1,
-  //     type: "Appraisal Visit Confirmed",
-  //     value: "Appraisal Visit Confirmed",
-  //   },
-  //   {
-  //     id: 2,
-  //     type: "Appraisal Report Writing in Progress",
-  //     value: "Appraisal Report Writing in Progress",
-  //   },
-  //   {
-  //     id: 3,
-  //     type: "Appraisal Report Writing Completed and Submitted",
-  //     value: "Appraisal Report Writing Completed and Submitted",
-  //   },
-
-  //   {
-  //     id: 4,
-  //     type: "Assignment on Hold",
-  //     value: "Assignment on Hold",
-  //   },
-
-  //   {
-  //     id: 5,
-  //     type: "Assignment Cancelled new status to be added",
-  //     value: "Assignment Cancelled new status to be added",
-  //   },
-
-  //   {
-  //     id: 6,
-  //     type: "Appraisal visit completed; report writing is pending until fee received",
-  //     value:
-  //       "Appraisal visit completed; report writing is pending until fee received",
-  //   },
-  // ];
 
   const getOrderValue = (val) => {
     let title = "Applicant Contacted by appraiser";
@@ -236,6 +192,16 @@ export default function Exemple({
       setPropValue(toggle);
     }
     setModalOpen(true);
+  };
+
+  const openArchiveModal = (property) => {
+    setSelectedProperty(property); // Store the selected property
+    setArchiveModal(true);
+  };
+
+  const closeArchiveModal = () => {
+    setSelectedProperty(null); // Clear the selected property
+    setArchiveModal(false); // Close the modal
   };
 
   const formatDate = (dateString) => {
@@ -268,9 +234,9 @@ export default function Exemple({
     return formattedDate;
   };
 
-    // For EST date and time
+  // For EST date and time
 
-      const formatDateTimeEST = (date) => {
+  const formatDateTimeEST = (date) => {
     const d = new Date(date);
     const utcOffset = -5; // EST is UTC-5
     d.setHours(d.getHours() + utcOffset);
@@ -279,23 +245,22 @@ export default function Exemple({
       timeStyle: "short",
     });
   };
-  
-    // Only for time
-  
-    const formatDateToEST = (date) => {
-      try {
-        // Convert input date string to a Date object
-        const utcDate = new Date(`${date}T00:00:00Z`); // Treat input as UTC midnight
-        return new Intl.DateTimeFormat("en-US", {
-          timeZone: "America/Toronto", // EST/Canada timezone
-          dateStyle: "medium",        // Format only the date
-        }).format(utcDate);
-      } catch (error) {
-        console.error("Error formatting date:", error);
-        return "Invalid date";
-      }
-    };
-  
+
+  // Only for time
+
+  const formatDateToEST = (date) => {
+    try {
+      // Convert input date string to a Date object
+      const utcDate = new Date(`${date}T00:00:00Z`); // Treat input as UTC midnight
+      return new Intl.DateTimeFormat("en-US", {
+        timeZone: "America/Toronto", // EST/Canada timezone
+        dateStyle: "medium", // Format only the date
+      }).format(utcDate);
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return "Invalid date";
+    }
+  };
 
   const getStatusButtonClass = (orderStatus) => {
     if (orderStatus === 4 || orderStatus === 5) {
@@ -425,7 +390,9 @@ export default function Exemple({
                       </li>
                     </ul>
                   </div>
-                  <button className={getStatusButtonClass(isBidded.orderstatus)}>
+                  <button
+                    className={getStatusButtonClass(isBidded.orderstatus)}
+                  >
                     Status
                     <span className="m-1">
                       <i class="fa fa-info-circle" aria-hidden="true"></i>
@@ -450,12 +417,14 @@ export default function Exemple({
                   >
                     <ul>
                       <li style={{ fontSize: "15px" }}>
-                        {getOrderValue(isBidded.orderstatus)} -{" "} {""}
+                        {getOrderValue(isBidded.orderstatus)} - {""}
                         {formatDateTimeEST(isBidded.statusdate)}
                       </li>
                     </ul>
                   </div>
-                  <button className={getStatusButtonClass(isBidded.orderstatus)}>
+                  <button
+                    className={getStatusButtonClass(isBidded.orderstatus)}
+                  >
                     Status
                     <span className="m-1">
                       <i class="fa fa-info-circle" aria-hidden="true"></i>
@@ -851,7 +820,7 @@ export default function Exemple({
                     </Link> */}
                   <span
                     className="btn btn-color-table"
-                    onClick={() => archievePropertyHandler(property.orderId)}
+                    onClick={() => openArchiveModal(property)}
                   >
                     <Link className="color-light" href="#">
                       <span className="text-light">
@@ -949,6 +918,81 @@ export default function Exemple({
           properties={updatedData}
           end={end}
         />
+      )}
+
+      {archiveModal && (
+        <div className="modal">
+          <div className="modal-content" style={{ width: "30%" }}>
+            <div className="row">
+              <div className="col-lg-12">
+                <Link href="/" className="">
+                  <Image
+                    width={50}
+                    height={45}
+                    className="logo1 img-fluid"
+                    style={{ marginTop: "-20px" }}
+                    src="/assets/images/logo.png"
+                    alt="header-logo2.png"
+                  />
+                  <span
+                    style={{
+                      color: "#2e008b",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    Appraisal
+                  </span>
+                  <span
+                    style={{
+                      color: "#97d700",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    {" "}
+                    Land
+                  </span>
+                </Link>
+              </div>
+            </div>
+            <h2 className="text-center mt-3" style={{ color: "#2e008b" }}>
+              Order Confirmation{" "}
+              <span style={{ color: "#97d700" }}>
+                #{selectedProperty?.orderId}
+              </span>
+            </h2>
+            <div className="mb-2" style={{ border: "2px solid #97d700" }}></div>
+            <p className="fs-5 text-center text-dark mt-4">
+              Are you sure for the order to be{" "}
+              <span className="text-danger fw-bold">Archived</span> ?
+            </p>
+            <div
+              className="mb-3 mt-4"
+              style={{ border: "2px solid #97d700" }}
+            ></div>
+            <div className="col-lg-12 d-flex justify-content-center gap-2">
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                onClick={closeArchiveModal}
+              >
+                Cancel
+              </button>
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                onClick={() =>
+                  archievePropertyHandler(selectedProperty?.orderId)
+                }
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );

@@ -178,7 +178,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                         >
                           {userData?.appraiser_Details?.companyName
                               ? userData?.appraiser_Details?.companyName
-                              : "Not Provided"}
+                              : "N.A."}
                         </td>
                       </tr>
                       <tr>
@@ -244,11 +244,11 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                           <span className="text-start text-dark fw-bold">
                             {userData?.appraiser_Details?.cellNumber
                               ? userData?.appraiser_Details?.cellNumber
-                              : "Not Provided"}
+                              : "N.A."}
                           </span>
                           {/* {userData?.appraiser_details?.cellNumber
                             ? userData?.appraiser_details?.cellNumber
-                            : "Not Provided"} */}
+                            : "N.A."} */}
                         </td>
                       </tr>
                       <tr>

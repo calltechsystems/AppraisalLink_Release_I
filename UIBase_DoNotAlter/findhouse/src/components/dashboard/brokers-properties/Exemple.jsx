@@ -13,6 +13,7 @@ import {
   FaRedo,
 } from "react-icons/fa";
 // import "./SmartTable.css";
+import Image from "next/image";
 
 const headCells = [
   {
@@ -137,11 +138,12 @@ export default function Exemple({
   const [updatedData, setUpdatedData] = useState([]);
   const [allBids, setBids] = useState([]);
   const [show, setShow] = useState(false);
-
   const [dataFetched, setDataFetched] = useState(false);
   const [allListedProperties, setAllListedProperties] = useState([]);
   let tempData = [];
   const [AllBrokers, setAllBrokers] = useState([]);
+  const [archiveModal, setArchiveModal] = useState(false);
+  const [selectedProperty, setSelectedProperty] = useState(null);
 
   useEffect(() => {
     if (searchInput === "") {
@@ -250,6 +252,16 @@ export default function Exemple({
       setPropValue(toggle);
     }
     setModalOpen(true);
+  };
+
+  const openArchiveModal = (property) => {
+    setSelectedProperty(property); // Store the selected property
+    setArchiveModal(true);
+  };
+
+  const closeArchiveModal = () => {
+    setSelectedProperty(null); // Clear the selected property
+    setArchiveModal(false); // Close the modal
   };
 
   const formatDate = (dateString) => {
@@ -604,7 +616,7 @@ export default function Exemple({
                       onClick={() => openModal(property.orderId, 2, property)}
                     >
                       <Link href="#">
-                        <span className="flaticon-garbage text-light"></span>
+                        <span className="fa fa-times text-light"></span>
                       </Link>
                     </span>
                   </li>
@@ -660,12 +672,9 @@ export default function Exemple({
                     </Link> */}
                   <span
                     className="btn btn-color-table"
-                    onClick={() => archievePropertyHandler(property.orderId)}
+                    onClick={() => openArchiveModal(property)}
                   >
-                    <Link
-                      className="color-light"
-                      href={`/brokerage-archive-properties`}
-                    >
+                    <Link className="color-light" href="#">
                       <span className="text-light">
                         <FaArchive />
                       </span>
@@ -787,6 +796,81 @@ export default function Exemple({
           properties={updatedData}
           end={end}
         />
+      )}
+
+      {archiveModal && (
+        <div className="modal">
+          <div className="modal-content" style={{ width: "30%" }}>
+            <div className="row">
+              <div className="col-lg-12">
+                <Link href="/" className="">
+                  <Image
+                    width={50}
+                    height={45}
+                    className="logo1 img-fluid"
+                    style={{ marginTop: "-20px" }}
+                    src="/assets/images/logo.png"
+                    alt="header-logo2.png"
+                  />
+                  <span
+                    style={{
+                      color: "#2e008b",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    Appraisal
+                  </span>
+                  <span
+                    style={{
+                      color: "#97d700",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    {" "}
+                    Land
+                  </span>
+                </Link>
+              </div>
+            </div>
+            <h2 className="text-center mt-3" style={{ color: "#2e008b" }}>
+              Order Confirmation{" "}
+              <span style={{ color: "#97d700" }}>
+                #{selectedProperty?.orderId}
+              </span>
+            </h2>
+            <div className="mb-2" style={{ border: "2px solid #97d700" }}></div>
+            <p className="fs-5 text-center text-dark mt-4">
+              Are you sure for the order to be{" "}
+              <span className="text-danger fw-bold">Archived</span> ?
+            </p>
+            <div
+              className="mb-3 mt-4"
+              style={{ border: "2px solid #97d700" }}
+            ></div>
+            <div className="col-lg-12 d-flex justify-content-center gap-2">
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                onClick={closeArchiveModal}
+              >
+                Cancel
+              </button>
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                onClick={() =>
+                  archievePropertyHandler(selectedProperty?.orderId)
+                }
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );

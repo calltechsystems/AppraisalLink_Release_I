@@ -249,7 +249,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       >
                         {userData?.appraiserCompany_Datails?.cellNumber
                           ? userData?.appraiserCompany_Datails?.cellNumber
-                          : "Not Provided"}
+                          : "N.A."}
                       </td>
                     </tr>
                     <tr>
@@ -392,7 +392,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                         {userData?.appraiserCompany_Datails?.officeContactEmail
                           ? userData?.appraiserCompany_Datails
                               ?.officeContactEmail
-                          : "Not Provided"}
+                          : "N.A."}
                       </td>
                     </tr>
                     <tr>
@@ -418,7 +418,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                         {userData?.appraiserCompany_Datails?.officeContactPhone
                           ? userData?.appraiserCompany_Datails
                               ?.officeContactPhone
-                          : "Not Provided"}
+                          : "N.A."}
                       </td>
                     </tr>
                   </tbody>

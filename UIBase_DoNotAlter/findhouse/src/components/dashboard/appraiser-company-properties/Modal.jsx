@@ -167,7 +167,7 @@ const Modal = ({
     <div>
       {modalOpen && (
         <div className="modal">
-          <div className="modal-content">
+          <div className="modal-content" style={{width:"40%"}}>
             <div className="row">
               <div className="col-lg-12">
                 <Link href="/" className="">
@@ -291,6 +291,7 @@ const Modal = ({
                         <div className="col-lg-7">
                           <input
                             type="number"
+                            required
                             value={value}
                             onChange={(e) => setValue(e.target.value)}
                             className="form-control"
@@ -320,6 +321,8 @@ const Modal = ({
                             onChange={(e) => setDescription(e.target.value)}
                             className="form-control"
                             id="formGroupExampleInput3"
+                            maxLength={50}
+                            // style={{overflow:"scroll"}}
                           />
                         </div>
                       </div>

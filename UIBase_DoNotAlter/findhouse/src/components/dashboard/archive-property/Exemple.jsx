@@ -3,6 +3,8 @@ import SmartTable from "./SmartTable";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import axios from "axios";
+import Image from "next/image";
+
 import {
   FaArchive,
   FaHandHoldingHeart,
@@ -12,8 +14,6 @@ import {
   FaRedo,
 } from "react-icons/fa";
 import { useRouter } from "next/router";
-// import { Button } from "bootstrap";
-// import "./SmartTable.css";
 
 const headCells = [
   {
@@ -166,7 +166,8 @@ export default function Exemple({
   const [updatedData, setUpdatedData] = useState([]);
   const [allBids, setBids] = useState([]);
   const [show, setShow] = useState(false);
-
+  const [archiveModal, setArchiveModal] = useState(false);
+  const [selectedProperty, setSelectedProperty] = useState(null);
   const [dataFetched, setDataFetched] = useState(false);
   let tempData = [];
 
@@ -188,6 +189,16 @@ export default function Exemple({
 
   const openStatusUpdateHandler = () => {
     setIsStatusModal(true);
+  };
+
+  const openArchiveModal = (property) => {
+    setSelectedProperty(property); // Store the selected property
+    setArchiveModal(true);
+  };
+
+  const closeArchiveModal = () => {
+    setSelectedProperty(null); // Clear the selected property
+    setArchiveModal(false); // Close the modal
   };
 
   const AppraiserStatusOptions = [
@@ -531,7 +542,7 @@ export default function Exemple({
                   <li title="Un-Archive Property">
                     <span
                       className="btn btn-color-table"
-                      onClick={() => onUnarchiveHandler(property.orderId)}
+                      onClick={() => openArchiveModal(property)}
                     >
                       <Link className="color-light" href="#">
                         <span className="text-light">
@@ -541,84 +552,6 @@ export default function Exemple({
                     </span>
                   </li>
                 </ul>
-                // <ul className="mb0 d-flex gap-1">
-                //   <li title="Property Details" className="">
-                //     <span
-                //       className="btn btn-color-table"
-                //       onClick={() => openPopupModal(property)}
-                //     >
-                //       <Link href={"#"}>
-                //         <span className="text-light flaticon-view"></span>
-                //       </Link>
-                //     </span>
-                //   </li>
-
-                //   {!isEditable && (
-                //     <li title="Quotes">
-                //       <Link
-                //         className="btn btn-color-table"
-                //         href={`/brokerage-properties-bid/${property.orderId}`}
-                //       >
-                //         <span className="flaticon-invoice"></span>
-                //       </Link>
-                //     </li>
-                //   )}
-
-                //   {(isEditable || isStatus === 1) && (
-                //     <li title="Edit Property">
-                //       <Link
-                //         className="btn btn-color-table"
-                //         href={`/create-listing-1/${property.orderId}`}
-                //       >
-                //         <span className="flaticon-edit"></span>
-                //       </Link>
-                //     </li>
-                //   )}
-
-                //   {!isCancel && isStatus !== 3 && (
-                //     <li title={!isHold ? "On Hold" : "Remove Hold"}>
-                //       <span
-                //         className="btn btn-color-table "
-                //         style={{ border: "1px solid grey" }}
-                //         onClick={() =>
-                //           openModal(property.orderId, 1, isHold ? 0 : property)
-                //         }
-                //       >
-                //         <Link href="#" className="text-light">
-                //           <FaPause />
-                //         </Link>
-                //       </span>
-                //     </li>
-                //   )}
-
-                //   {!isCancel && isStatus !== 3 && !isHold && (
-                //     <li title={"Order Cancel"}>
-                //       <span
-                //         className="btn btn-color-table"
-                //         style={{ border: "1px solid grey" }}
-                //         onClick={() => openModal(property.orderId, 2, property)}
-                //       >
-                //         <Link href="#">
-                //           <span className="flaticon-garbage text-light"></span>
-                //         </Link>
-                //       </span>
-                //     </li>
-                //   )}
-
-                //   <li title="Un-Archive Property">
-                //     <span
-                //       className="btn btn-color-table"
-                //       onClick={() => onUnarchiveHandler(property.orderId)}
-                //     >
-                //       <Link
-                //         className="color-light"
-                //         href={`/brokerage-archive-properties`}
-                //       >
-                //         <span className="text-light flaticon-close"></span>
-                //       </Link>
-                //     </span>
-                //   </li>
-                // </ul>
               ),
             };
             tempData.push(updatedRow);
@@ -706,6 +639,77 @@ export default function Exemple({
           properties={updatedData}
           end={end}
         />
+      )}
+      {archiveModal && (
+        <div className="modal">
+          <div className="modal-content" style={{ width: "30%" }}>
+            <div className="row">
+              <div className="col-lg-12">
+                <Link href="/" className="">
+                  <Image
+                    width={50}
+                    height={45}
+                    className="logo1 img-fluid"
+                    style={{ marginTop: "-20px" }}
+                    src="/assets/images/logo.png"
+                    alt="header-logo2.png"
+                  />
+                  <span
+                    style={{
+                      color: "#2e008b",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    Appraisal
+                  </span>
+                  <span
+                    style={{
+                      color: "#97d700",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    {" "}
+                    Land
+                  </span>
+                </Link>
+              </div>
+            </div>
+            <h2 className="text-center mt-3" style={{ color: "#2e008b" }}>
+              Order Confirmation{" "}
+              <span style={{ color: "#97d700" }}>
+                #{selectedProperty?.orderId}
+              </span>
+            </h2>
+            <div className="mb-2" style={{ border: "2px solid #97d700" }}></div>
+            <p className="fs-5 text-center text-dark mt-4">
+              Are you sure for the order to be <span className="text-danger fw-bold">Un-archived</span> ?
+            </p>
+            <div
+              className="mb-3 mt-4"
+              style={{ border: "2px solid #97d700" }}
+            ></div>
+            <div className="col-lg-12 d-flex justify-content-center gap-2">
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                onClick={closeArchiveModal}
+              >
+                Cancel
+              </button>
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                onClick={() => onUnarchiveHandler(selectedProperty?.orderId)}
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );

@@ -6,7 +6,7 @@ import Image from "next/image";
 // }
 
 const Form = ({ userData, chnageShowCardHandler }) => {
-  const userData_01 = userData.userType ; // Example data, replace with actual data
+  const userData_01 = userData.userType; // Example data, replace with actual data
 
   const renderUserType = (userData_01) => {
     if (userData_01 === 2) {
@@ -91,7 +91,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                     </tr>
                   </thead>
                   <tbody>
-                  <tr>
+                    <tr>
                       <td
                         style={{
                           border: "1px solid #2e008b",
@@ -241,7 +241,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       >
                         {userData?.brokerage_Details?.cellNumber
                           ? userData?.brokerage_Details?.cellNumber
-                          : "Not Provided"}
+                          : "N.A."}
                       </td>
                     </tr>
                     <tr>
@@ -336,8 +336,14 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                           padding: "5px",
                         }}
                       >
-                        {userData?.brokerage_Details?.assistantFirstName}{" "}
-                        {userData?.brokerage_Details?.assistantLastName}
+                         {userData?.brokerage_Details?.assistantFirstName ||
+                        userData?.brokerage_Details?.assistantLastName
+                          ? `${
+                              userData?.brokerage_Details?.assistantFirstName || ""
+                            } ${
+                              userData?.brokerage_Details?.assistantLastName || ""
+                            }`.trim()
+                          : "N.A."}
                       </td>
                     </tr>
                     <tr>
@@ -360,7 +366,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       >
                         {userData?.brokerage_Details?.assistantEmailAddress
                           ? userData?.brokerage_Details?.assistantEmailAddress
-                          : "Not Provided"}
+                          : "N.A."}
                       </td>
                     </tr>
                     <tr>
@@ -383,7 +389,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       >
                         {userData?.brokerage_Details?.assistantPhoneNumber
                           ? userData?.brokerage_Details?.assistantPhoneNumber
-                          : "Not Provided"}
+                          : "N.A."}
                       </td>
                     </tr>
                     <tr>
@@ -404,8 +410,16 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                           padding: "5px",
                         }}
                       >
-                        {userData?.brokerage_Details?.assistantTwoFirstName}{" "}
-                        {userData?.brokerage_Details?.assistantTwoLastName}
+                           {userData?.brokerage_Details?.assistantTwoFirstName ||
+                        userData?.brokerage_Details?.assistantTwoLastName
+                          ? `${
+                              userData?.brokerage_Details?.assistantTwoFirstName ||
+                              ""
+                            } ${
+                              userData?.brokerage_Details?.assistantTwoLastName ||
+                              ""
+                            }`.trim()
+                          : "N.A."}
                       </td>
                     </tr>
                     <tr>
@@ -429,7 +443,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                         {userData?.brokerage_Details?.assistantTwoEmailAddress
                           ? userData?.brokerage_Details
                               ?.assistantTwoEmailAddress
-                          : "Not Provided"}{" "}
+                          : "N.A."}{" "}
                       </td>
                     </tr>
                     <tr>
@@ -452,168 +466,12 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       >
                         {userData?.brokerage_Details?.assistantTwoPhoneNumber
                           ? userData?.brokerage_Details?.assistantTwoPhoneNumber
-                          : "Not Provided"}{" "}  
+                          : "N.A."}{" "}
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-              {/* <div className="">
-                <span style={{ fontWeight: "bold" }}>
-                  <h3 className="text-center"> Broker Details </h3>
-                </span>
-                <hr />
-                <div className=" col-lg-12">
-                  <div className="row">
-                    <div className="col-lg-12 mt-1 text-start">
-                      <span className="fs-18 fw-bold text-color">Name </span>
-                      {"   "}
-                      <span className="">:</span>
-                      {"   "}
-                      <span className="text-start text-dark fw-bold">
-                        {userData?.brokerage_Details?.firstName}{" "}
-                        {userData?.brokerage_Details?.middleName}{" "}
-                        {userData?.brokerage_Details?.lastName}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-lg-12 mt-1 text-start">
-                      <span className="fs-18 fw-bold text-color">
-                        Brokerage Name{" "}
-                      </span>
-                      {"   "}
-                      <span className="">:</span>
-                      {"   "}
-                      <span className="text-start text-dark fw-bold">
-                        {userData?.brokerage_Details?.brokerageName}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-lg-12 mt-1 text-start">
-                      <span className="fs-18 fw-bold text-color">
-                        Email Address{" "}
-                      </span>
-                      {"   "}
-                      <span className="">:</span>
-                      {"   "}
-                      <span className="text-start text-dark fw-bold">
-                        {userData?.userEmail}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-lg-12 mt-1 text-start">
-                      <span className="fs-18 fw-bold text-color">
-                        Phone Number(Primary)
-                      </span>
-                      {"   "}
-                      <span className="">:</span>
-                      {"   "}
-                      <span className="text-start text-dark fw-bold">
-                        {userData?.brokerage_Details?.phoneNumber}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-lg-12 mt-1 text-start">
-                      <span className="fs-18 fw-bold text-color">
-                        Cell Number{" "}
-                      </span>
-                      {"   "}
-                      <span className="">:</span>
-                      {"   "}
-                      <span className="text-start text-dark fw-bold">
-                        {userData?.brokerage_Details?.cellNumber}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-lg-12 mt-1 text-start">
-                      <span className="fs-18 fw-bold text-color">
-                        Mortgage Broker Licence No.{" "}
-                      </span>
-                      {"   "}
-                      <span className="">:</span>
-                      {"   "}
-                      <span className="text-start text-dark fw-bold">
-                        {userData?.brokerage_Details?.mortageBrokerLicNo}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-lg-12 mt-1 text-start">
-                      <span className="fs-18 fw-bold text-color">
-                        Mortgage Brokerage Licence No.{" "}
-                      </span>
-                      {"   "}
-                      <span className="">:</span>
-                      {"   "}
-                      <span className="text-start text-dark fw-bold">
-                        {userData?.brokerage_Details?.mortageBrokerageLicNo}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-lg-12 mt-1 text-start">
-                      <span className="fs-18 fw-bold text-color">Address </span>
-                      {"   "}
-                      <span className="">:</span>
-                      {"   "}
-                      <span className="text-start text-dark fw-bold">
-                        {userData?.brokerage_Details?.streetNumber}{" "}
-                        {userData?.brokerage_Details?.streetName}
-                        {userData?.brokerage_Details?.unit}{" "}
-                        {userData?.brokerage_Details?.city},{" "}
-                        {userData?.brokerage_Details?.province},{" "}
-                        {userData?.brokerage_Details?.postalCode}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-lg-12 mt-1 text-start">
-                      <span className="fs-18 fw-bold text-color">
-                        Assistant Name{" "}
-                      </span>
-                      {"   "}
-                      <span className="">:</span>
-                      {"   "}
-                      <span className="text-start text-dark fw-bold">
-                        {userData?.brokerage_Details?.assistantFirstName}{" "}
-                        {userData?.brokerage_Details?.assistantLastName}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-lg-12 mt-1 text-start">
-                      <span className="fs-18 fw-bold text-color">
-                        Assistant Email{" "}
-                      </span>
-                      {"   "}
-                      <span className="">:</span>
-                      {"   "}
-                      <span className="text-start text-dark fw-bold">
-                        {userData?.brokerage_Details?.assistantEmailAddress}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-lg-12 mt-1 text-start">
-                      <span className="fs-18 fw-bold text-color">
-                        Assistant Phone{" "}
-                      </span>
-                      {"   "}
-                      <span className="">:</span>
-                      {"   "}
-                      <span className="text-start text-dark fw-bold">
-                        {userData?.brokerage_Details?.assistantPhoneNumber}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <hr />
-              </div> */}
             </div>
             {/* End .col */}
           </div>

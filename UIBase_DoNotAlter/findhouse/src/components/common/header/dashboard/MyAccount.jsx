@@ -14,7 +14,7 @@ const MyAccount = ({ user, profileCount, setProfile, userData }) => {
   const profileMenuItems = [
     { id: 1, name: "Profile", ruterPath: "/my-profile" },
     { id: 4, name: "Change Password ", ruterPath: "/broker-change-password" },
-    { id: 5, name: "Log out", onClick: { logout }, ruterPath: "/login" },
+    { id: 5, name: "Log out", ruterPath: "/login", onClick: { logout } },
   ];
 
   const [profileValue, setProfileValue] = useState(0);

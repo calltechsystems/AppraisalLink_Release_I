@@ -12,6 +12,7 @@ import {
   FaRedo,
 } from "react-icons/fa";
 import { useRouter } from "next/router";
+import Image from "next/image";
 // import "./SmartTable.css";
 
 const headCells = [
@@ -179,7 +180,8 @@ export default function Exemple({
   const [updatedData, setUpdatedData] = useState([]);
   const [allBids, setBids] = useState([]);
   const [show, setShow] = useState(false);
-
+  const [archiveModal, setArchiveModal] = useState(false);
+  const [selectedProperty, setSelectedProperty] = useState(null);
   const [dataFetched, setDataFetched] = useState(false);
   let tempData = [];
 
@@ -265,6 +267,16 @@ export default function Exemple({
     setCurrentProperty(property);
   };
 
+  const openArchiveModal = (property) => {
+    setSelectedProperty(property); // Store the selected property
+    setArchiveModal(true);
+  };
+
+  const closeArchiveModal = () => {
+    setSelectedProperty(null); // Clear the selected property
+    setArchiveModal(false); // Close the modal
+  };
+
   function addCommasToNumber(number) {
     if (Number(number) <= 100 || number === undefined) return number;
     return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -342,9 +354,9 @@ export default function Exemple({
     return formattedDate;
   };
 
-    // For EST date and time
+  // For EST date and time
 
-      const formatDateTimeEST = (date) => {
+  const formatDateTimeEST = (date) => {
     const d = new Date(date);
     const utcOffset = -5; // EST is UTC-5
     d.setHours(d.getHours() + utcOffset);
@@ -353,23 +365,22 @@ export default function Exemple({
       timeStyle: "short",
     });
   };
-  
-    // Only for time
-  
-    const formatDateToEST = (date) => {
-      try {
-        // Convert input date string to a Date object
-        const utcDate = new Date(`${date}T00:00:00Z`); // Treat input as UTC midnight
-        return new Intl.DateTimeFormat("en-US", {
-          timeZone: "America/Toronto", // EST/Canada timezone
-          dateStyle: "medium",        // Format only the date
-        }).format(utcDate);
-      } catch (error) {
-        console.error("Error formatting date:", error);
-        return "Invalid date";
-      }
-    };
-  
+
+  // Only for time
+
+  const formatDateToEST = (date) => {
+    try {
+      // Convert input date string to a Date object
+      const utcDate = new Date(`${date}T00:00:00Z`); // Treat input as UTC midnight
+      return new Intl.DateTimeFormat("en-US", {
+        timeZone: "America/Toronto", // EST/Canada timezone
+        dateStyle: "medium", // Format only the date
+      }).format(utcDate);
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return "Invalid date";
+    }
+  };
 
   const getStatusButtonClass = (orderStatus) => {
     if (orderStatus === 4 || orderStatus === 5) {
@@ -484,7 +495,9 @@ export default function Exemple({
                         </li>
                       </ul>
                     </div>
-                    <button className={getStatusButtonClass(isBidded.orderstatus)}>
+                    <button
+                      className={getStatusButtonClass(isBidded.orderstatus)}
+                    >
                       Status
                       <span className="m-1">
                         <i class="fa fa-info-circle" aria-hidden="true"></i>
@@ -514,7 +527,9 @@ export default function Exemple({
                         </li>
                       </ul>
                     </div>
-                    <button className={getStatusButtonClass(isBidded.orderstatus)}>
+                    <button
+                      className={getStatusButtonClass(isBidded.orderstatus)}
+                    >
                       Status
                       <span className="m-1">
                         <i class="fa fa-info-circle" aria-hidden="true"></i>
@@ -542,12 +557,9 @@ export default function Exemple({
                   <li title="Un-Archive Property">
                     <span
                       className="btn btn-color-table"
-                      onClick={() => onUnarchiveHandler(property.orderId)}
+                      onClick={() => openArchiveModal(property)}
                     >
-                      <Link
-                        className="color-light"
-                        href="#"
-                      >
+                      <Link className="color-light" href="#">
                         <span className="text-light">
                           <FaArchive />
                         </span>
@@ -555,84 +567,6 @@ export default function Exemple({
                     </span>
                   </li>
                 </ul>
-                // <ul className="mb0 d-flex gap-1">
-                //   <li title="Property Details" className="">
-                //     <span
-                //       className="btn btn-color-table"
-                //       onClick={() => openPopupModal(property)}
-                //     >
-                //       <Link href={"#"}>
-                //         <span className="text-light flaticon-view"></span>
-                //       </Link>
-                //     </span>
-                //   </li>
-
-                //   {!isEditable && (
-                //     <li title="Quotes">
-                //       <Link
-                //         className="btn btn-color-table"
-                //         href={`/brokerage-properties-bid/${property.orderId}`}
-                //       >
-                //         <span className="flaticon-invoice"></span>
-                //       </Link>
-                //     </li>
-                //   )}
-
-                //   {(isEditable || isStatus === 1) && (
-                //     <li title="Edit Property">
-                //       <Link
-                //         className="btn btn-color-table"
-                //         href={`/create-listing-1/${property.orderId}`}
-                //       >
-                //         <span className="flaticon-edit"></span>
-                //       </Link>
-                //     </li>
-                //   )}
-
-                //   {!isCancel && isStatus !== 3 && (
-                //     <li title={!isHold ? "On Hold" : "Remove Hold"}>
-                //       <span
-                //         className="btn btn-color-table "
-                //         style={{ border: "1px solid grey" }}
-                //         onClick={() =>
-                //           openModal(property.orderId, 1, isHold ? 0 : property)
-                //         }
-                //       >
-                //         <Link href="#" className="text-light">
-                //           <FaPause />
-                //         </Link>
-                //       </span>
-                //     </li>
-                //   )}
-
-                //   {!isCancel && isStatus !== 3 && !isHold && (
-                //     <li title={"Order Cancel"}>
-                //       <span
-                //         className="btn btn-color-table"
-                //         style={{ border: "1px solid grey" }}
-                //         onClick={() => openModal(property.orderId, 2, property)}
-                //       >
-                //         <Link href="#">
-                //           <span className="flaticon-garbage text-light"></span>
-                //         </Link>
-                //       </span>
-                //     </li>
-                //   )}
-
-                //   <li title="Un-Archive Property">
-                //     <span
-                //       className="btn btn-color-table"
-                //       onClick={() => onUnarchiveHandler(property.orderId)}
-                //     >
-                //       <Link
-                //         className="color-light"
-                //         href={`/brokerage-archive-properties`}
-                //       >
-                //         <span className="text-light flaticon-close"></span>
-                //       </Link>
-                //     </span>
-                //   </li>
-                // </ul>
               ),
             };
             tempData.push(updatedRow);
@@ -720,6 +654,78 @@ export default function Exemple({
           properties={updatedData}
           end={end}
         />
+      )}
+      {archiveModal && (
+        <div className="modal">
+          <div className="modal-content" style={{ width: "30%" }}>
+            <div className="row">
+              <div className="col-lg-12">
+                <Link href="/" className="">
+                  <Image
+                    width={50}
+                    height={45}
+                    className="logo1 img-fluid"
+                    style={{ marginTop: "-20px" }}
+                    src="/assets/images/logo.png"
+                    alt="header-logo2.png"
+                  />
+                  <span
+                    style={{
+                      color: "#2e008b",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    Appraisal
+                  </span>
+                  <span
+                    style={{
+                      color: "#97d700",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    {" "}
+                    Land
+                  </span>
+                </Link>
+              </div>
+            </div>
+            <h2 className="text-center mt-3" style={{ color: "#2e008b" }}>
+              Order Confirmation{" "}
+              <span style={{ color: "#97d700" }}>
+                #{selectedProperty?.orderId}
+              </span>
+            </h2>
+            <div className="mb-2" style={{ border: "2px solid #97d700" }}></div>
+            <p className="fs-5 text-center text-dark mt-4">
+              Are you sure for the order to be{" "}
+              <span className="text-danger fw-bold">Un-archived</span> ?
+            </p>
+            <div
+              className="mb-3 mt-4"
+              style={{ border: "2px solid #97d700" }}
+            ></div>
+            <div className="col-lg-12 d-flex justify-content-center gap-2">
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                onClick={closeArchiveModal}
+              >
+                Cancel
+              </button>
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                onClick={() => onUnarchiveHandler(selectedProperty?.orderId)}
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );

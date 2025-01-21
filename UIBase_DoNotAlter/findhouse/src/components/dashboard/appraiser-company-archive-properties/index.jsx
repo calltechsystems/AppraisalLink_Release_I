@@ -154,7 +154,7 @@ const Index = () => {
   const unArchivePropertyHandler = (propertyId) => {
     const data = JSON.parse(localStorage.getItem("user"));
 
-    toast.loading("Un-Archiving the desired property!!.");
+    toast.loading("Un-Archiving the property.....");
 
     const encryptedBody = encryptionData({
       orderId: propertyId,
@@ -327,7 +327,7 @@ const Index = () => {
       token: data.token,
     };
 
-    toast.loading("Un-Archiving the desired property!!.");
+    toast.loading("Un-Archiving the property.....");
 
     const encryptedBody = encryptionData(payload);
 

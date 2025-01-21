@@ -346,7 +346,7 @@ const Index = () => {
       token: data.token,
     };
 
-    toast.loading("Archiving the desired property!!.");
+    toast.loading("Archiving the property.....");
 
     const encryptedBody = encryptionData(payload);
 
@@ -359,7 +359,7 @@ const Index = () => {
       })
       .then((res) => {
         toast.dismiss();
-        toast.success("Archived property!");
+        toast.success("Successfully Added to Archived Properties!!");
         location.reload(true);
         // router.push("/appraiser-archive-property");
       })
@@ -875,7 +875,10 @@ const Index = () => {
                               <div className="row">
                                 <div className="col-lg-12 text-center">
                                   <h2 className=" text-color mt-1">
-                                    Property Details
+                                    Property Details{"  "}
+                                    <span style={{ color: "#97d700" }}>
+                                      #{broker.orderId}
+                                    </span>
                                   </h2>
                                 </div>
                               </div>
@@ -890,14 +893,8 @@ const Index = () => {
                                 <table id="table-broker-info">
                                   <thead>
                                     <tr>
-                                      <th
-                                        style={{
-                                          borderRight: "2px solid white",
-                                        }}
-                                      >
-                                        Headers
-                                      </th>
-                                      <th>Value</th>
+                                      <th></th>
+                                      <th></th>
                                     </tr>
                                   </thead>
                                   <tbody>
@@ -1112,7 +1109,10 @@ const Index = () => {
                               <div className="row">
                                 <div className="col-lg-12 text-center">
                                   <h2 className=" text-color mt-1">
-                                    Mortgage Broker Details
+                                    Mortgage Broker Details{"  "}
+                                    <span style={{ color: "#97d700" }}>
+                                      #{broker.orderId}
+                                    </span>
                                   </h2>
                                 </div>
                               </div>
@@ -1127,14 +1127,8 @@ const Index = () => {
                                 <table id="table-broker-info">
                                   <thead>
                                     <tr>
-                                      <th
-                                        style={{
-                                          borderRight: "2px solid white",
-                                        }}
-                                      >
-                                        Headers
-                                      </th>
-                                      <th>Value</th>
+                                      <th></th>
+                                      <th></th>
                                     </tr>
                                   </thead>
                                   <tbody>
@@ -1424,7 +1418,7 @@ const Index = () => {
 
               {openQuoteView && (
                 <div className="modal">
-                  <div className="modal-content">
+                  <div className="modal-content" style={{ width: "30%" }}>
                     <div className="row">
                       <div className="col-lg-12">
                         <Link href="/" className="">
@@ -1460,29 +1454,31 @@ const Index = () => {
                         </Link>
                       </div>
                     </div>
-                    <h3 className="text-center">Quote View</h3>
+                    <h3 className="text-center mt-2 text-color">
+                      Provided Quote
+                    </h3>
                     <div>
                       <div
                         className="mt-2 mb-3"
                         style={{ border: "2px solid #97d700" }}
                       ></div>
                     </div>
-                    <h5 className="text-center">
-                      The Last Provided Quote was for ${" "}
+                    <p className="text-center fs-5 text-dark">
+                      The Last Provided Quote was{" "}
                       <span
                         style={{
-                          color: "green",
+                          color: "#97d700",
                           fontWeight: "bold",
                           fontSize: "22px",
                         }}
                       >
-                        {addCommasToNumber(currentBiddedView?.bidAmount)}
+                        ${addCommasToNumber(currentBiddedView?.bidAmount)}
                       </span>
-                    </h5>
-                    <h5 className="text-center">
+                    </p>
+                    <p className="text-center fs-6 text-dark">
                       Updated At : {formatDate(currentBiddedView?.requestTime)}
-                    </h5>
-                    {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
+                    </p>
+
                     <div className="text-center" style={{}}>
                       <div>
                         <div
@@ -1491,7 +1487,7 @@ const Index = () => {
                         ></div>
                       </div>
                       <button
-                        className="btn btn-color w-25 m-1"
+                        className="btn btn-color w-25"
                         onClick={closeQuoteViewModal}
                       >
                         Ok
@@ -1503,7 +1499,7 @@ const Index = () => {
 
               {assignModal && (
                 <div className="modal">
-                  <div className="modal-content">
+                  <div className="modal-content" style={{ width: "30%" }}>
                     <div className="row">
                       <div className="col-lg-12">
                         <Link href="/" className="">
@@ -1540,7 +1536,6 @@ const Index = () => {
                       </div>
                     </div>
                     <h3 className="text-center">Quote Status Updation</h3>
-
                     <select
                       required
                       className="form-select"
@@ -1590,7 +1585,7 @@ const Index = () => {
               )}
               {isStatusModal && (
                 <div className="modal">
-                  <div className="modal-content">
+                  <div className="modal-content" style={{ width: "30%" }}>
                     <div className="row">
                       <div className="col-lg-12">
                         <Link href="/" className="">
@@ -1626,7 +1621,7 @@ const Index = () => {
                     </div>
                     <div className="row">
                       <div className="col-lg-12 text-center">
-                        <h2 className=" text-color mt-1">
+                        <h2 className=" text-color mt-2">
                           Appraisal Status Updation
                         </h2>
                       </div>

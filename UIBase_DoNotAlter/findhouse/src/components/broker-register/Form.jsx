@@ -42,7 +42,9 @@ const Form = ({
         .then(() => {
           toast.dismiss();
           toast.success("Successfully added!");
-          window.location.reload();
+          setTimeout(() => {
+            window.location.reload(); // Reload the page after a short delay
+          }, 2000); // Adjust the delay as needed (2 seconds here)
         })
         .catch((err) => {
           toast.dismiss();

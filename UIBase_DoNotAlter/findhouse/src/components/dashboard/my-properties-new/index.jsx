@@ -35,6 +35,7 @@ const Index = () => {
   const [searchQuery, setSearchQuery] = useState("city");
   const [properties, setProperties] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
+  
   const [lowRangeBid, setLowRangeBid] = useState("");
   const [propertyId, setPropertyId] = useState(null);
 
@@ -150,12 +151,13 @@ const Index = () => {
   const closeModal = () => {
     setModalOpen(false);
     setShowPropDetails(false);
+    // setArchiveModal(false);
   };
 
   const archievePropertyHandler = (id) => {
     const data = JSON.parse(localStorage.getItem("user"));
 
-    toast.loading("Archiving this Property");
+    toast.loading("Archiving the property.....");
     axios
       .get("/api/propertyArcheive", {
         headers: {
@@ -717,7 +719,10 @@ const Index = () => {
                                   <div className="row">
                                     <div className="col-lg-12 text-center">
                                       <h2 className=" text-color mt-1">
-                                        Property Details
+                                        Property Details{"  "}
+                                        <span style={{ color: "#97d700" }}>
+                                          #{currentProperty.orderId}
+                                        </span>
                                       </h2>
                                     </div>
                                   </div>
@@ -734,14 +739,8 @@ const Index = () => {
                                   <table id="table-broker-info">
                                     <thead>
                                       <tr>
-                                        <th
-                                          style={{
-                                            borderRight: "2px solid white",
-                                          }}
-                                        >
-                                          Headers
-                                        </th>
-                                        <th>Value</th>
+                                        <th></th>
+                                        <th></th>
                                       </tr>
                                     </thead>
                                     <tbody>
@@ -927,7 +926,10 @@ const Index = () => {
                         </div>
                         {modalOpen && (
                           <div className="modal">
-                            <div className="modal-content">
+                            <div
+                              className="modal-content"
+                              style={{ width: "30%" }}
+                            >
                               <div className="row">
                                 <div className="col-lg-12">
                                   <Link href="/" className="">
@@ -977,7 +979,10 @@ const Index = () => {
                                       propValue
                                         ? "Order Confirmation"
                                         : "Order Confirmation"
-                                    }`}
+                                    }`}{" "}
+                                <span style={{ color: "#97d700" }}>
+                                  #{propertyId}
+                                </span>
                               </h2>
                               <div
                                 className="mb-2"
@@ -1006,17 +1011,17 @@ const Index = () => {
                                 className="mb-3 mt-4"
                                 style={{ border: "2px solid #97d700" }}
                               ></div>
-                              <div className="col-lg-12 text-center">
+                              <div className="col-lg-12 d-flex justify-content-center gap-2">
                                 <button
                                   disabled={disable}
-                                  className="btn w-25 btn-color m-1"
+                                  className="btn btn-color w-25"
                                   onClick={closeCancelHoldHandler}
                                 >
                                   Cancel
                                 </button>
                                 <button
                                   disabled={disable}
-                                  className="btn w-25 btn-color"
+                                  className="btn btn-color w-25"
                                   onClick={
                                     isHoldProperty
                                       ? onHoldHandler
@@ -1029,6 +1034,8 @@ const Index = () => {
                             </div>
                           </div>
                         )}
+
+                       
                       </div>
 
                       {/* End .table-responsive */}

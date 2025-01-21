@@ -137,7 +137,7 @@ const Index = () => {
   const archievePropertyHandler = (id) => {
     const data = JSON.parse(localStorage.getItem("user"));
 
-    toast.loading("archeiving this property");
+    toast.loading("Archiving this property.....");
     axios
       .get("/api/propertyArcheive", {
         headers: {
@@ -679,7 +679,10 @@ const Index = () => {
                                   <div className="row">
                                     <div className="col-lg-12 text-center">
                                       <h2 className=" text-color mt-1">
-                                        Property Details
+                                        Property Details{"  "}
+                                        <span style={{ color: "#97d700" }}>
+                                          #{currentProperty.orderId}
+                                        </span>
                                       </h2>
                                     </div>
                                   </div>
@@ -696,14 +699,8 @@ const Index = () => {
                                   <table id="table-broker-info">
                                     <thead>
                                       <tr>
-                                        <th
-                                          style={{
-                                            borderRight: "2px solid white",
-                                          }}
-                                        >
-                                          Headers
-                                        </th>
-                                        <th>Value</th>
+                                        <th></th>
+                                        <th></th>
                                       </tr>
                                     </thead>
                                     <tbody>
@@ -929,7 +926,10 @@ const Index = () => {
                               <div className="row">
                                 <div className="col-lg-12 text-center">
                                   <h2 className=" text-color mt-1">
-                                    Mortgage Broker Details
+                                    Mortgage Broker Details{"  "}
+                                    {/* <span style={{ color: "#97d700" }}>
+                                      #{propertyId}
+                                    </span> */}
                                   </h2>
                                 </div>
                               </div>
@@ -944,14 +944,8 @@ const Index = () => {
                                 <table id="table-broker-info">
                                   <thead>
                                     <tr>
-                                      <th
-                                        style={{
-                                          borderRight: "2px solid white",
-                                        }}
-                                      >
-                                        Headers
-                                      </th>
-                                      <th>Value</th>
+                                      <th></th>
+                                      <th></th>
                                     </tr>
                                   </thead>
                                   <tbody>
@@ -1087,7 +1081,7 @@ const Index = () => {
                               </div>
                               <div className="row text-center mt-3">
                                 <div className="col-lg-12">
-                                {/* <button
+                                  {/* <button
                                     className="btn btn-color"
                                     onClick={() =>
                                       brokerInfoHandler(broker.orderId)
@@ -1111,7 +1105,10 @@ const Index = () => {
 
                         {modalOpen && (
                           <div className="modal">
-                            <div className="modal-content">
+                            <div
+                              className="modal-content"
+                              style={{ width: "30%" }}
+                            >
                               <div className="row">
                                 <div className="col-lg-12">
                                   <Link href="/" className="">
@@ -1161,7 +1158,10 @@ const Index = () => {
                                       propValue
                                         ? "Order Confirmation"
                                         : "Order Confirmation"
-                                    }`}
+                                    }`}{" "}
+                                <span style={{ color: "#97d700" }}>
+                                  #{propertyId}
+                                </span>
                               </h2>
                               <div
                                 className="mb-2"
@@ -1190,17 +1190,17 @@ const Index = () => {
                                 className="mb-3 mt-4"
                                 style={{ border: "2px solid #97d700" }}
                               ></div>
-                              <div className="col-lg-12 text-center">
+                              <div className="col-lg-12 d-flex justify-content-center gap-2">
                                 <button
                                   disabled={disable}
-                                  className="btn w-25 btn-color m-1"
+                                  className="btn btn-color w-25"
                                   onClick={closeCancelHoldHandler}
                                 >
                                   Cancel
                                 </button>
                                 <button
                                   disabled={disable}
-                                  className="btn w-25 btn-color"
+                                  className="btn btn-color w-25"
                                   onClick={
                                     isHoldProperty
                                       ? onHoldHandler
@@ -1216,25 +1216,12 @@ const Index = () => {
                       </div>
 
                       {/* End .table-responsive */}
-
-                      {/* End .mbp_pagination */}
                     </div>
-                    {/* End .property_table */}
                   </div>
                 </div>
                 {/* End .col */}
               </div>
 
-              {/*<div className="row">
-                 <div className="col-lg-12 mt20">
-                  <div className="mbp_pagination">
-                    <Pagination
-                      properties={properties}
-                      setProperties={setProperties}
-                    />
-                  </div>
-                </div> 
-              </div>*/}
               {/* End .row */}
             </div>
             <div className="row">

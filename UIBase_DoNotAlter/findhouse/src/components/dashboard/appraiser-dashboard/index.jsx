@@ -703,7 +703,8 @@ const Index = () => {
                       className="text-center mb-2 text-dark fw-bold"
                       style={{ fontSize: "18px" }}
                     >
-                      You need an active plan to add properties.
+                      A valid subscription is required to access Appraisal Land.
+                      Subscribe now and enjoy our services!
                     </span>
                     <div
                       className="mt-2 mb-3"
@@ -716,12 +717,9 @@ const Index = () => {
                       <button
                         className="btn btn-color"
                         onClick={() => closePlanErrorModal()}
-                        style={{ width: "170px" }}
+                        style={{ width: "100px" }}
                       >
-                        Subscribe Now
-                        {/* <Link href="/my-plans" className="text-white">
-                          Subscribe Now
-                        </Link> */}
+                        Subscribe
                       </button>
                     </div>
                   </div>

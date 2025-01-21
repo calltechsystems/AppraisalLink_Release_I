@@ -9,6 +9,7 @@ import Loader from "./Loader";
 import { FaArchive } from "react-icons/fa";
 import { AppraiserStatusOptions } from "../create-listing/data";
 // import "./SmartTable.css";
+import Image from "next/image";
 
 const headCells = [
   {
@@ -150,7 +151,8 @@ export default function Exemple({
   const [hideAction, setHideAction] = useState(false);
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
-
+  const [archiveModal, setArchiveModal] = useState(false);
+  const [selectedProperty, setSelectedProperty] = useState(null);
   const [dataFetched, setDataFetched] = useState(false);
   let tempData = [];
 
@@ -242,6 +244,16 @@ export default function Exemple({
   const openStatusUpdateHandler = (bidId) => {
     setCurrentBid(bidId);
     setIsStatusModal(true);
+  };
+
+  const openArchiveModal = (property) => {
+    setSelectedProperty(property); // Store the selected property
+    setArchiveModal(true);
+  };
+
+  const closeArchiveModal = () => {
+    setSelectedProperty(null); // Clear the selected property
+    setArchiveModal(false); // Close the modal
   };
 
   function addCommasToNumber(number) {
@@ -626,7 +638,7 @@ export default function Exemple({
               >
                 <div
                   className="w-100"
-                  onClick={() => onArchivePropertyHandler(property.orderId)}
+                  onClick={() => openArchiveModal(property)}
                 >
                   <button href="#" className="btn btn-color">
                     <Link href="#">
@@ -829,6 +841,80 @@ export default function Exemple({
           dataFetched={dataFetched}
           end={end}
         />
+      )}
+        {archiveModal && (
+        <div className="modal">
+          <div className="modal-content" style={{ width: "30%" }}>
+            <div className="row">
+              <div className="col-lg-12">
+                <Link href="/" className="">
+                  <Image
+                    width={50}
+                    height={45}
+                    className="logo1 img-fluid"
+                    style={{ marginTop: "-20px" }}
+                    src="/assets/images/logo.png"
+                    alt="header-logo2.png"
+                  />
+                  <span
+                    style={{
+                      color: "#2e008b",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    Appraisal
+                  </span>
+                  <span
+                    style={{
+                      color: "#97d700",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    {" "}
+                    Land
+                  </span>
+                </Link>
+              </div>
+            </div>
+            <h2 className="text-center mt-3" style={{ color: "#2e008b" }}>
+              Order Confirmation{" "}
+              <span style={{ color: "#97d700" }}>
+                #{selectedProperty?.orderId}
+              </span>
+            </h2>
+            <div className="mb-2" style={{ border: "2px solid #97d700" }}></div>
+            <p className="fs-5 text-center text-dark mt-4">
+              Are you sure for the order to be{" "}
+              <span className="text-danger fw-bold">Un-Archived</span> ?
+            </p>
+            <div
+              className="mb-3 mt-4"
+              style={{ border: "2px solid #97d700" }}
+            ></div>
+            <div className="col-lg-12 d-flex justify-content-center gap-2">
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                onClick={closeArchiveModal}
+              >
+                Cancel
+              </button>
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                onClick={() =>
+                  onArchivePropertyHandler(selectedProperty?.orderId)
+                }
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );
