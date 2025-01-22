@@ -174,6 +174,7 @@ const MyAccount = ({ user, profileCount, setProfile, userData }) => {
           <span className="address">
             {userData?.userEmail ? userData.userEmail : "xyz@gmail.com"}
           </span>
+          {/* <span>Appraiser</span> */}
         </p>
       </div>
       {/* End user_set_header */}

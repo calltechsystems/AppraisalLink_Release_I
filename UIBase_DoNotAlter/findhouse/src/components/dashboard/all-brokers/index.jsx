@@ -1335,7 +1335,7 @@ const Index = () => {
 
               {isStatusModal && (
                 <div className="modal">
-                  <div className="modal-content">
+                  <div className="modal-content" style={{ width: "30%" }}>
                     <div className="row">
                       <div className="col-lg-12">
                         <Link href="/" className="">
@@ -1371,9 +1371,11 @@ const Index = () => {
                         </Link>
                       </div>
                     </div>
-                    <h3 className="text-center">Activity Status Updation</h3>
+                    <h3 className="text-center text-color mt-2">
+                      Activity Status Updation
+                    </h3>
                     <div
-                      className="mb-2"
+                      className="mb-3"
                       style={{ border: "2px solid #97d700" }}
                     ></div>
                     <div className="d-flex justify-content-center">
@@ -1381,10 +1383,6 @@ const Index = () => {
                         className="form-select"
                         data-live-search="true"
                         data-width="100%"
-                        // value={buildinRef}
-                        // onChange={(e) => setBuildinRef(e.target.value)}
-                        // onChange={(e) => setBuildinRef(e.target.value)}
-                        // disabled={isDisable}
                         style={{
                           paddingTop: "10px",
                           paddingBottom: "10px",
@@ -1392,12 +1390,6 @@ const Index = () => {
                           width: "300px",
                         }}
                       >
-                        {/* <option key={0} value={1}>
-                          Active
-                        </option>
-                        <option key={1} value={0}>
-                          In-Active
-                        </option> */}
                         <option
                           key={0}
                           value={0}
@@ -1419,7 +1411,7 @@ const Index = () => {
                       style={{ border: "2px solid #97d700" }}
                     ></div>
                     {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
-                    <div className="text-center" style={{}}>
+                    <div className="d-flex justify-content-center gap-2 mt-2">
                       <button
                         disabled={disable}
                         className="btn w-25 btn-color"
@@ -1430,7 +1422,6 @@ const Index = () => {
                       <button
                         disabled={disable}
                         className="btn btn-color w-25"
-                        style={{ marginLeft: "12px" }}
                         onClick={handleStatusUpdateHandler}
                       >
                         Submit

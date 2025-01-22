@@ -50,10 +50,9 @@ const index = () => {
               {/* End .row */}
 
               <div className="row align-items-center">
-                <div className="col-lg-8 col-xl-9 ">
-                  <div className="breadcrumb_content style2 mb30-991">
-                    {/* <h2 className="breadcrumb_title">My Reviews</h2>
-                    <p>We are glad to see you again!</p> */}
+                <div className="col-lg-12 col-xl-12 text-center mt-1">
+                  <div className="style2 mb30-991">
+                    <h2 className="heading-forms">Helpdesk</h2>
                   </div>
                 </div>
                 {/* End .col */}
@@ -62,7 +61,11 @@ const index = () => {
 
               <div className="row">
                 <div className="col-lg-12">
-                  <div id="myreview" className="my_dashboard_review">
+                  <div
+                    id="myreview"
+                    className="my_dashboard_review"
+                    style={{ border: "2px solid #2e008b" }}
+                  >
                     <div className="review_content">
                       <AddressSidebar />
                     </div>

@@ -9,6 +9,7 @@ import Loader from "./Loader";
 import { FaArchive } from "react-icons/fa";
 import { AppraiserStatusOptions } from "../create-listing/data";
 import millify from "millify";
+import Image from "next/image";
 
 const headCells = [
   {
@@ -95,13 +96,13 @@ const headCells = [
   {
     id: "broker",
     numeric: false,
-    label: "Broker",
+    label: "Broker Info",
     width: 200,
   },
   {
     id: "property",
     numeric: false,
-    label: "Property",
+    label: "Property Info",
     width: 200,
   },
 
@@ -152,11 +153,12 @@ export default function Exemple({
   const [hideAction, setHideAction] = useState(false);
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
-
   const [dataFetched, setDataFetched] = useState(false);
   let tempData = [];
-
   const [allArchive, setAllArchive] = useState([]);
+  const [isWishlistProperty, setIsWishlistProperty] = useState(0);
+  const [selectedWishlistId, setSelectedWishlistId] = useState(null);
+  const [selectedProperty, setSelectedProperty] = useState(null);
 
   useEffect(() => {
     if (searchInput === "") {
@@ -189,6 +191,25 @@ export default function Exemple({
       return "btn btn-status-na w-100"; // Orange color class
     }
     return "btn btn-status w-100"; // Default color
+  };
+
+  const openIsWishlistPropertyModal = (wishlistId) => {
+    setSelectedWishlistId(wishlistId);
+    setSelectedProperty(property);
+    setIsWishlistProperty(true);
+  };
+
+  const handleConfirmRemoveWishlist = () => {
+    if (selectedWishlistId) {
+      // Call your removeWishlistHandler or similar logic here
+      removeWishlistHandler(selectedWishlistId);
+    }
+    setIsWishlistProperty(false);
+  };
+
+  const closeArchiveModal = () => {
+    setSelectedProperty(null); // Clear the selected property
+    setIsWishlistProperty(false);
   };
 
   function addCommasToNumber(number) {
@@ -514,13 +535,13 @@ export default function Exemple({
                       }}
                       onClick={() => openModalBroker(property, 2)}
                     >
-                      Broker Info
+                      Broker
                     </button>
                   </a>
                 ) : isBidded.status === 2 ? (
                   <h5 style={{ color: "red" }}> Declined</h5>
                 ) : (
-                  <p>Information will be available post quote acceptance.</p>
+                  <p className="text-secondary">On quote approval</p>
                 )}
               </div>
             ),
@@ -539,13 +560,13 @@ export default function Exemple({
                       }}
                       onClick={() => openModalBroker(property, 1)}
                     >
-                      Property Info
+                      Property
                     </button>
                   </a>
                 ) : isBidded.status === 2 ? (
                   <h5 style={{ color: "red" }}> Declined</h5>
                 ) : (
-                  <p>Information will be available post quote acceptance.</p>
+                  <p className="text-secondary">On quote approval</p>
                 )}
               </div>
             ),
@@ -577,7 +598,9 @@ export default function Exemple({
                       <button
                         className="btn "
                         style={{ border: "1px solid grey" }}
-                        onClick={() => removeWishlistHandler(isWishlist.id)}
+                        onClick={() =>
+                          openIsWishlistPropertyModal(isWishlist.id)
+                        }
                         title="Remove Wishlist Property"
                       >
                         <img
@@ -965,6 +988,80 @@ export default function Exemple({
           start={start}
           end={end}
         />
+      )}
+
+{isWishlistProperty && (
+        <div className="modal">
+          <div className="modal-content" style={{ width: "30%" }}>
+            <div className="row">
+              <div className="col-lg-12">
+                <Link href="/" className="">
+                  <Image
+                    width={50}
+                    height={45}
+                    className="logo1 img-fluid"
+                    style={{ marginTop: "-20px" }}
+                    src="/assets/images/logo.png"
+                    alt="header-logo2.png"
+                  />
+                  <span
+                    style={{
+                      color: "#2e008b",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    Appraisal
+                  </span>
+                  <span
+                    style={{
+                      color: "#97d700",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    {" "}
+                    Land
+                  </span>
+                </Link>
+              </div>
+            </div>
+            <h2 className="text-center mt-3" style={{ color: "#2e008b" }}>
+              Order Confirmation{" "}
+              <span style={{ color: "#97d700" }}>
+                #{selectedProperty?.orderId}
+              </span>
+            </h2>
+            <div className="mb-2" style={{ border: "2px solid #97d700" }}></div>
+            <p className="fs-5 text-center text-dark mt-4">
+              Are you sure for the order to be{" "}
+              <span className="text-danger fw-bold">Remove Wishlist</span> ?
+            </p>
+            <div
+              className="mb-3 mt-4"
+              style={{ border: "2px solid #97d700" }}
+            ></div>
+            <div className="col-lg-12 d-flex justify-content-center gap-2">
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                onClick={closeArchiveModal}
+              >
+                Cancel
+              </button>
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                // onClick={() => onWishlistHandler(selectedProperty.propertyId)}
+                onClick={handleConfirmRemoveWishlist}
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );

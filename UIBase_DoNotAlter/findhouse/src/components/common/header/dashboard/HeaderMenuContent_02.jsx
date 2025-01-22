@@ -541,7 +541,8 @@ const HeaderMenuContent = ({
               <span className="dn-1199 ms-1 text-light">
                 {userData?.appraiser_Details?.firstName
                   ? `${userData.appraiser_Details?.firstName} ${userData?.appraiser_Details?.lastName}`
-                  : ""}
+                  : ""} <br />
+                  {/* <span style={{marginLeft:"40px", marginTop:"-20px"}}>Appraiser</span> */}
               </span>
             </a>
             <div className="dropdown-menu">
@@ -569,7 +570,7 @@ const HeaderMenuContent = ({
               <span className="dn-1199 ms-1 text-light">
                 {userData?.appraiserCompany_Datails?.firstName
                   ? `${userData.appraiserCompany_Datails?.firstName} ${userData?.appraiserCompany_Datails?.lastName}`
-                  : "xyz"}
+                  : ""}
               </span>
             </a>
             <div className="dropdown-menu">

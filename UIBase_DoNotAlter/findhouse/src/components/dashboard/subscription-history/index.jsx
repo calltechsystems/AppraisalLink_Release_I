@@ -147,15 +147,8 @@ const Index = () => {
                 <div className="col-lg-12 col-xl-12 text-center mt-1">
                   <div className="style2 mb30-991">
                     <h2 className="heading-forms">Subscription History</h2>
-                    {/* <p>You can see your transactions history here!</p> */}
                   </div>
                 </div>
-                {/* End .col */}
-                {/* <div className="col-md-4 col-lg-4 col-xl-3">
-                  <ul className="sasw_list mb0">
-                    <li className="search_area"><SearchBox /></li>
-                  </ul>
-                </div> */}
                 {/* End .col */}
               </div>
               {/* End .row */}

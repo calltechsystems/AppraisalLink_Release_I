@@ -317,7 +317,7 @@ function SmartTable(props) {
     if (props.dataFetched && props.properties.length === 0) {
       const timer = setTimeout(() => {
         setShowNoData(true);
-      }, 30000);
+      }, 15000);
 
       return () => clearTimeout(timer);
     }
@@ -342,7 +342,7 @@ function SmartTable(props) {
   }, props.searchDebounceTime ?? 800);
 
   const extractTextContent = (cellValue) => {
-    if (typeof cellValue === "string") {
+    if (typeof cellValue === "number") {
       return cellValue;
     } else if (typeof cellValue === "object" && cellValue.$$typeof) {
       return extractTextContent(cellValue.props.children);

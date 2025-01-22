@@ -94,13 +94,13 @@ const headCells = [
   {
     id: "broker",
     numeric: false,
-    label: "Broker",
+    label: "Broker Info",
     width: 200,
   },
   {
     id: "property",
     numeric: false,
-    label: "Property",
+    label: "Property Info",
     width: 200,
   },
 
@@ -553,13 +553,13 @@ export default function Exemple({
                       }}
                       onClick={() => openModalBroker(property, 2)}
                     >
-                      Broker Info
+                      Broker
                     </button>
                   </a>
                 ) : isBidded.status === 2 ? (
                   <h6 style={{ color: "red" }}> Declined</h6>
                 ) : (
-                  <p>Information will be available post quote acceptance.</p>
+                  <p className="text-secondary">On quote approval</p>
                 )}
               </div>
             ),
@@ -578,13 +578,13 @@ export default function Exemple({
                       }}
                       onClick={() => openModalBroker(property, 1)}
                     >
-                      Property Info
+                      Property
                     </button>
                   </a>
                 ) : isBidded.status === 2 ? (
                   <h6 style={{ color: "red" }}> Declined</h6>
                 ) : (
-                  <p>Information will be available post quote acceptance.</p>
+                  <p className="text-secondary">On quote approval</p>
                 )}
               </div>
             ),

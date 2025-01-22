@@ -704,7 +704,7 @@ const Index = () => {
                       style={{ fontSize: "18px" }}
                     >
                       A valid subscription is required to access Appraisal Land.
-                      Subscribe now and enjoy our services!
+                      Please subscribe now to enjoy our full range of services
                     </span>
                     <div
                       className="mt-2 mb-3"

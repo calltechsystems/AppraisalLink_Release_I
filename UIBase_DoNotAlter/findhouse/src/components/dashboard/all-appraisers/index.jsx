@@ -112,7 +112,7 @@ const Index = () => {
         ifPresent += 1;
       }
     });
-    return ifPresent > 0 ? true : false;
+    // return ifPresent > 0 ? true : false;
   };
 
   const handleStatusUpdateHandler = () => {
@@ -120,8 +120,8 @@ const Index = () => {
       getIfAssignedProperties(selectedAppraiser.id) &&
       selectedAppraiser.isActive
     ) {
-      setOpenEditModal(false);
       setModalIsOpenError_01(true);
+      setOpenEditModal(true);
       // toast.error(
       //   "This appraiser individual cannot be turned inactive as they currently have ongoing properties allotted to them. Please reassign those properties to another appraisal individual.",
       //   { autoClose: 10000 }
@@ -1190,7 +1190,7 @@ const Index = () => {
 
               {openEditModal && (
                 <div className="modal">
-                  <div className="modal-content">
+                  <div className="modal-content" style={{width:"30%"}}>
                     <div className="row">
                       <div className="col-lg-12">
                         <Link href="/" className="">
@@ -1226,9 +1226,9 @@ const Index = () => {
                         </Link>
                       </div>
                     </div>
-                    <h3 className="text-center">Activity Status Updation</h3>
+                    <h3 className="text-center text-color mt-2">Activity Status Updation</h3>
                     <div
-                      className="mb-2"
+                      className="mb-3"
                       style={{ border: "2px solid #97d700" }}
                     ></div>
                     <div className="d-flex justify-content-center">
@@ -1266,7 +1266,7 @@ const Index = () => {
                       className="mb-2 mt-3"
                       style={{ border: "2px solid #97d700" }}
                     ></div>
-                    <div className="text-center" style={{}}>
+                    <div className="d-flex justify-content-center gap-2 mt-2">
                       <button
                         disabled={disable}
                         className="btn btn-color w-25"
@@ -1277,7 +1277,6 @@ const Index = () => {
                       <button
                         disabled={disable}
                         className="btn btn-color w-25 "
-                        style={{ marginLeft: "12px" }}
                         onClick={handleStatusUpdateHandler}
                       >
                         Submit
