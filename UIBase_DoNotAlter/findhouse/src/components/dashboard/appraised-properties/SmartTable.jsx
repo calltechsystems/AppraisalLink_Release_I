@@ -341,7 +341,7 @@ function SmartTable(props) {
     if (props.dataFetched && props.properties.length === 0) {
       const timer = setTimeout(() => {
         setShowNoData(true);
-      }, 30000);
+      }, 15000);
 
       return () => clearTimeout(timer);
     }
@@ -377,7 +377,7 @@ function SmartTable(props) {
     return final;
   };
   const extractTextContent = (cellValue) => {
-    if (typeof cellValue === "string") {
+    if (typeof cellValue === "number") {
       return cellValue; // If it's a string, return it as is
     } else if (typeof cellValue === "object" && cellValue.$$typeof) {
       // If it's a React element, extract text content recursively from children

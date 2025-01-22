@@ -177,6 +177,34 @@ const CreateList = ({
     }
   };
 
+  // const handleInputChange = (e) => {
+  //   const inputValue = e.target.value;
+  
+  //   // Allow only numeric input by removing non-digit characters
+  //   const numericValue = inputValue.replace(/\D/g, "");
+  
+  //   // Restrict to 10 digits
+  //   const truncatedValue = numericValue.slice(0, 10);
+  
+  //   // Format the numeric value with commas
+  //   const formattedValue = new Intl.NumberFormat("en-US").format(truncatedValue);
+  
+  //   // Update the state with the formatted value
+  //   setEstimatedValue(formattedValue);
+  // };
+  
+
+  // const handleInputChange = (e) => {
+  //   const rawValue = e.target.value.replace(/,/g, ""); // Remove existing commas
+  //   if (!isNaN(rawValue) && rawValue.trim() !== "") {
+  //     // Format the number with commas
+  //     const formattedValue = new Intl.NumberFormat("en-US").format(rawValue);
+  //     setEstimatedValue(formattedValue);
+  //   } else {
+  //     setEstimatedValue(""); // Clear if input is invalid
+  //   }
+  // };
+
   const handleInputChange = (e) => {
     const inputValue = e.target.value;
 

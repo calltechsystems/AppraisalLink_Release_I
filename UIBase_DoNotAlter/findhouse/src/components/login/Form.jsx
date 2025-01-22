@@ -99,7 +99,7 @@ const Form = ({
 
   const loginHandler = (event) => {
     event.preventDefault();
-    const email = emailLoginRef.current.value;
+    const email = emailLoginRef.current?.value;
     const password = passwordLogin;
 
     if (!email || !password) {
@@ -409,9 +409,10 @@ const Form = ({
             </div>
             {/* login button */}
           </form>
+
           {openViewModal && (
             <div className="modal">
-              <div className="modal-content">
+              <div className="modal-content" style={{ width: "35%" }}>
                 <div className="row">
                   <div className="col-lg-12">
                     <Link href="/" className="">
@@ -447,7 +448,9 @@ const Form = ({
                     </Link>
                   </div>
                 </div>
-                <h3 className="text-center">Resend Activation Link</h3>
+                <h3 className="text-center text-color mt-2">
+                  Resend Activation Link
+                </h3>
                 <div
                   className="mb-2"
                   style={{ border: "2px solid #97d700" }}
@@ -455,8 +458,8 @@ const Form = ({
                 <div className="row">
                   <div className="col-lg-12">
                     <div className="row mb-2 mt-2 text-center">
-                      <div className="row mb-2 mt-2">
-                        <div className="col-lg-3 mb-2">
+                      <div className="row mt-2">
+                        <div className="col-lg-3">
                           <label
                             htmlFor=""
                             style={{
@@ -468,16 +471,11 @@ const Form = ({
                             Email / User ID :
                           </label>
                         </div>
-                        <div
-                          className="col-lg-7"
-                          style={{ display: "flex", flexDirection: "row" }}
-                        >
+                        <div className="col-lg-9">
                           <input
                             type="text"
                             ref={emailLoginRef}
-                            // value={currentViewAppraiser.userInfo}
-                            // // value={userInfo}
-                            // onChange={(e) => setUserInfo(e.target.value)}
+                            
                             className="form-control"
                             id="formGroupExampleInput3"
                           />
@@ -491,7 +489,7 @@ const Form = ({
                     {/* End .col */}
                   </div>
                 </div>
-                <div className="d-flex justify-content-center gap-2">
+                <div className="d-flex justify-content-center gap-2 mt-2">
                   <button
                     className="btn btn-color w-25"
                     onClick={closeModalLink}
@@ -513,14 +511,14 @@ const Form = ({
             <div className="modal">
               <div
                 className="modal-content"
-                style={{ border: "2px solid #97d700", width: "40%" }}
+                style={{ border: "2px solid #97d700", width: "26%" }}
               >
                 <div className="col-lg-12">
                   <div className="row">
                     <div className="col-lg-12">
                       <Link href="/" className="">
                         <Image
-                          width={60}
+                          width={50}
                           height={45}
                           className="logo1 img-fluid"
                           style={{ marginTop: "-20px" }}
@@ -553,7 +551,7 @@ const Form = ({
                   </div>
                   <div className="row">
                     <div className="col-lg-12 text-center">
-                      <h3 className=" text-color mt-1">Successful</h3>
+                      <h3 className=" text-color mt-2">Successful</h3>
                     </div>
                   </div>
                   <div
@@ -565,7 +563,8 @@ const Form = ({
                   className="text-center text-dark"
                   style={{ fontSize: "18px" }}
                 >
-                  Verification email sent successfully. <br />Please check your inbox.
+                  Verification email sent successfully. <br />
+                  Please check your inbox.
                 </h5>
                 <div
                   className="mt-2 mb-3"
@@ -576,7 +575,7 @@ const Form = ({
                   style={{ display: "flex", justifyContent: "center" }}
                 >
                   <button
-                    className="btn btn-color w-50"
+                    className="btn btn-color w-25"
                     onClick={() => closeModalLink()}
                     style={{}}
                   >

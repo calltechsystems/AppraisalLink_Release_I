@@ -7,6 +7,9 @@ import { encryptionData } from "../../../utils/dataEncryption";
 import { useRouter } from "next/router";
 import { FaUserEdit } from "react-icons/fa";
 // import "./SmartTable.css";
+import Modal from "react-modal"; // Install react-modal for a better popup
+import Image from "next/image";
+
 
 const headCells = [
   {
@@ -101,7 +104,8 @@ export default function Exemple({
   const [show, setShow] = useState(false);
   const [all, setAll] = useState([]);
   const [dataFetched, setDataFetched] = useState(false);
-
+  const [showConfirmation, setShowConfirmation] = useState(false); // For confirmation popup
+  const [selectedQuoteId, setSelectedQuoteId] = useState(null); // For storing the selected QuoteId
   const [appraiser, setAppraisers] = useState([]);
 
   const router = useRouter();
@@ -226,6 +230,22 @@ export default function Exemple({
         toast.dismiss();
         toast.error("Try Again!!");
       });
+  };
+
+  const confirmReassign = (quoteId) => {
+    setSelectedQuoteId(quoteId);
+    setShowConfirmation(true); // Open the confirmation modal
+  };
+
+  const handleConfirmation = (isConfirmed) => {
+    setShowConfirmation(false); // Close the modal
+    if (isConfirmed && selectedQuoteId) {
+      reAssign(selectedQuoteId); // Call reAssign if user confirms
+    }
+  };
+
+  const closeAssignModal = () => {
+    setShowConfirmation(false);
   };
 
   function handleDownloadClick(event, url, fileName) {
@@ -401,7 +421,8 @@ export default function Exemple({
                 {property?.appraiserAssign === false && (
                   <div
                     className="list-inline-item"
-                    onClick={() => reAssign(property.bidId)}
+                    // onClick={() => reAssign(property.bidId)}
+                    onClick={() => confirmReassign(property.bidId)}
                   >
                     <li
                       className="list-inline-item"
@@ -519,6 +540,79 @@ export default function Exemple({
           start={start}
           end={end}
         />
+      )}
+      {/* Confirmation Modal */}
+
+    
+      {showConfirmation && (
+        <div className="modal">
+          <div className="modal-content" style={{ width: "30%" }}>
+            <div className="row">
+              <div className="col-lg-12">
+                <Link href="/" className="">
+                  <Image
+                    width={50}
+                    height={45}
+                    className="logo1 img-fluid"
+                    style={{ marginTop: "-20px" }}
+                    src="/assets/images/logo.png"
+                    alt="header-logo2.png"
+                  />
+                  <span
+                    style={{
+                      color: "#2e008b",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    Appraisal
+                  </span>
+                  <span
+                    style={{
+                      color: "#97d700",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    {" "}
+                    Land
+                  </span>
+                </Link>
+              </div>
+            </div>
+            <h2 className="text-center mt-3" style={{ color: "#2e008b" }}>
+              Order Confirmation{" "}
+            </h2>
+            <div className="mb-2" style={{ border: "2px solid #97d700" }}></div>
+            <p className="fs-5 text-center text-dark mt-4">
+              Are you sure for the{" "}
+              <span className="text-danger fw-bold">Change Appraiser</span> ?
+            </p>
+            <div
+              className="mb-3 mt-4"
+              style={{ border: "2px solid #97d700" }}
+            ></div>
+            <div className="col-lg-12 d-flex justify-content-center gap-2">
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                // onClick={closeAssignModal}
+                onClick={() => handleConfirmation(false)}
+              >
+                Cancel
+              </button>
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                onClick={() => handleConfirmation(true)}
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );

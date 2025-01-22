@@ -96,13 +96,13 @@ const headCells = [
   {
     id: "broker",
     numeric: false,
-    label: "Broker",
+    label: "Broker Info",
     width: 200,
   },
   {
     id: "property",
     numeric: false,
-    label: "Property",
+    label: "Property Info",
     width: 200,
   },
 
@@ -373,9 +373,9 @@ export default function Exemple({
     return formattedDate;
   };
 
-    // For EST date and time
+  // For EST date and time
 
-      const formatDateTimeEST = (date) => {
+  const formatDateTimeEST = (date) => {
     const d = new Date(date);
     const utcOffset = -5; // EST is UTC-5
     d.setHours(d.getHours() + utcOffset);
@@ -384,23 +384,22 @@ export default function Exemple({
       timeStyle: "short",
     });
   };
-  
-    // Only for time
-  
-    const formatDateToEST = (date) => {
-      try {
-        // Convert input date string to a Date object
-        const utcDate = new Date(`${date}T00:00:00Z`); // Treat input as UTC midnight
-        return new Intl.DateTimeFormat("en-US", {
-          timeZone: "America/Toronto", // EST/Canada timezone
-          dateStyle: "medium",        // Format only the date
-        }).format(utcDate);
-      } catch (error) {
-        console.error("Error formatting date:", error);
-        return "Invalid date";
-      }
-    };
-  
+
+  // Only for time
+
+  const formatDateToEST = (date) => {
+    try {
+      // Convert input date string to a Date object
+      const utcDate = new Date(`${date}T00:00:00Z`); // Treat input as UTC midnight
+      return new Intl.DateTimeFormat("en-US", {
+        timeZone: "America/Toronto", // EST/Canada timezone
+        dateStyle: "medium", // Format only the date
+      }).format(utcDate);
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return "Invalid date";
+    }
+  };
 
   // const formatDate = (dateString) => {
   //   const options = {
@@ -470,7 +469,6 @@ export default function Exemple({
           purpose: property.purpose ? property.purpose : "N.A.",
           appraisal_status:
             isBidded.status === 1 && isBidded.orderstatus === 1 ? (
-           
               <div className="hover-text">
                 <div
                   className="tooltip-text"
@@ -519,14 +517,14 @@ export default function Exemple({
                 </button>
               </div>
             ) : (
-              <button className="btn btn-warning w-100"><span>N.A.</span></button>
+              <button className="btn btn-warning w-100">
+                <span>N.A.</span>
+              </button>
             ),
           remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
           status:
             anotherBid === true && isBidded.status !== 2 ? (
-              <span className="btn btn-danger  w-100">
-                Declined
-              </span>
+              <span className="btn btn-danger  w-100">Declined</span>
             ) : isBidded?.bidId && isBidded.status === 2 ? (
               <span className="btn btn-danger  w-100">Declined</span>
             ) : isWait ? (
@@ -541,7 +539,9 @@ export default function Exemple({
               isBidded.orderstatus === 3 ? (
                 <span className="btn btn-completed w-100">Completed</span>
               ) : isBidded.status === 0 ? (
-                <span className="btn bg-info text-light  w-100">Quote Provided</span>
+                <span className="btn bg-info text-light  w-100">
+                  Quote Provided
+                </span>
               ) : isBidded.status === 1 ? (
                 <span className="btn btn-success  w-100">Accepted</span>
               ) : (
@@ -565,13 +565,14 @@ export default function Exemple({
                     }}
                     onClick={() => openModalBroker(property, 2)}
                   >
-                    Broker Info
+                    Broker
                   </button>
                 </a>
-              ) : isBidded.status === 2 || (anotherBid === true && isBidded.status !== 2)? (
+              ) : isBidded.status === 2 ||
+                (anotherBid === true && isBidded.status !== 2) ? (
                 <h6 style={{ color: "red" }}> Declined</h6>
               ) : (
-                <p>Information will be available post quote acceptance.</p>
+                <p className="text-secondary">On quote approval</p>
               )}
             </div>
           ),
@@ -590,13 +591,14 @@ export default function Exemple({
                     }}
                     onClick={() => openModalBroker(property, 1)}
                   >
-                    Property Info
+                    Property
                   </button>
                 </a>
-              ) : isBidded.status === 2 || (anotherBid === true && isBidded.status !== 2)? (
+              ) : isBidded.status === 2 ||
+                (anotherBid === true && isBidded.status !== 2) ? (
                 <h6 style={{ color: "red" }}> Declined</h6>
               ) : (
-                <p>Information will be available post quote acceptance.</p>
+                <p className="text-secondary">On quote approval</p>
               )}
             </div>
           ),
@@ -842,7 +844,7 @@ export default function Exemple({
           end={end}
         />
       )}
-        {archiveModal && (
+      {archiveModal && (
         <div className="modal">
           <div className="modal-content" style={{ width: "30%" }}>
             <div className="row">

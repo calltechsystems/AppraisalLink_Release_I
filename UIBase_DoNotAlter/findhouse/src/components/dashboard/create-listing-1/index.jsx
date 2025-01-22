@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import { useRouter } from "next/router";
 import Header from "../../common/header/dashboard/HeaderBrokerage";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenuBrokerage";
@@ -530,132 +529,99 @@ const Index = ({ isView, propertyData }) => {
   const submitHandler = () => {
     const nameRegex = /^[A-Za-z]+$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    const userInfo = JSON.parse(localStorage.getItem("user"));
     const phoneNumberRegex = /^\d{10}$/;
+    const userInfo = JSON.parse(localStorage.getItem("user"));
 
+    const payload = {
+      streetName: streetNameRef,
+      streetNumber: streetNumberRef,
+      city: cityRef,
+      state: stateRef,
+      zipCode: zipCodeRef,
+      community: communityRef,
+      applicantFirstName: applicantFirstName,
+      applicantLastName: applicantLatsName,
+      applicantPhoneNumber: applicantNumber,
+      applicantEmailAddress: applicantEmail,
+      bidLowerRange: Number(bidLowerRangeRef),
+      bidUpperRange: Number(bidLowerRangeRef),
+      typeOfBuilding:
+        String(buildinRef) === "Other" ? otherTypeOfBuildingValue : buildinRef,
+      urgency: urgencyRef,
+      typeOfAppraisal:
+        String(typeOfAppraisal) === "Other"
+          ? otherTypeOfAppraisalValue
+          : typeOfAppraisal,
+      purpose: String(purpose) === "Other" ? otherPurposeValue : purpose,
+      propertyStatus: true,
+      estimatedValue: Number(estimatedValue),
+      lenderInformation: lenderInformation,
+      applicantAddress: "",
+      attachment: changeUrlToStringHandler(),
+      image: "",
+      quoteRequiredDate: appraisalQuoteDate,
+      remark: remark ? remark : "",
+    };
+
+    // Check for missing fields
+    const missingFields = [];
+    if (!payload.streetName) missingFields.push("Street Name");
+    if (!payload.streetNumber) missingFields.push("Street Number");
+    if (!payload.city) missingFields.push("City");
+    if (!payload.state) missingFields.push("province");
+    if (!payload.zipCode) missingFields.push("Postal Code");
+    if (!payload.typeOfBuilding) missingFields.push("Property Type");
+    if (!payload.typeOfAppraisal) missingFields.push("Type of Appraisal");
+    if (!payload.purpose) missingFields.push("Purpose");
+    if (!payload.estimatedValue) missingFields.push("Estimated Value");
+    if (!payload.quoteRequiredDate) missingFields.push("Quote Required Date");
+    if (!payload.urgency) missingFields.push("Urgency");
+    if (!payload.applicantFirstName) missingFields.push("Applicant First Name");
+    if (!payload.applicantLastName) missingFields.push("Applicant Last Name");
+    if (!payload.applicantPhoneNumber)
+      missingFields.push("Applicant Phone Number");
+    if (!payload.applicantEmailAddress)
+      missingFields.push("Applicant Email Address");
+
+    // Handle missing fields
+    if (missingFields.length === 1) {
+      toast.error(`${missingFields[0]} is required`);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    } else if (missingFields.length > 1) {
+      toast.error("Please fill all required fields");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
+    // Validate specific fields
+    if (!nameRegex.test(applicantFirstName)) {
+      toast.error("Please provide a valid Applicant First Name");
+      return;
+    }
+    if (!nameRegex.test(applicantLatsName)) {
+      toast.error("Please provide a valid Applicant Last Name");
+      return;
+    }
+    if (!emailRegex.test(applicantEmail)) {
+      toast.error("Please provide a valid Email Address");
+      return;
+    }
+    if (!phoneNumberRegex.test(applicantNumber)) {
+      toast.error("Please provide a valid Phone Number");
+      return;
+    }
     if (
-      (!nameRegex.test(applicantFirstName) && applicantFirstName) ||
-      (!nameRegex.test(applicantLatsName) && applicantLatsName)
-    ) {
-      toast.error("Please Provide a Valid Applicant Name");
-    } else if (!emailRegex.test(applicantEmail) && applicantEmail) {
-      toast.error("Please Provide a Valid Email Address");
-    } else if (!phoneNumberRegex.test(applicantNumber) && applicantNumber) {
-      toast.error("Please Provide a Valid Phone Number");
-    } else if (
       (String(purpose) === "Purchase" || String(purpose) === "Refinance") &&
       lenderInformation === ""
     ) {
-      toast.error("Please fill the Lender Information for this Purpose option");
-    } else {
-      const payload = {
-        streetName: streetNameRef,
-        streetNumber: streetNumberRef,
-        city: cityRef,
-        state: stateRef,
-        zipCode: zipCodeRef,
-        community: communityRef,
-        applicantFirstName: applicantFirstName,
-        applicantLastName: applicantLatsName,
-        applicantPhoneNumber: applicantNumber,
-        applicantEmailAddress: applicantEmail,
-        bidLowerRange: Number(bidLowerRangeRef),
-        bidUpperRange: Number(bidLowerRangeRef),
-        typeOfBuilding:
-          String(buildinRef) === "Other"
-            ? otherTypeOfBuildingValue
-            : buildinRef,
-        urgency: urgencyRef,
-        typeOfAppraisal:
-          String(typeOfAppraisal) === "Other"
-            ? otherTypeOfAppraisalValue
-            : typeOfAppraisal,
-        purpose: String(purpose) === "Other" ? otherPurposeValue : purpose,
-        propertyStatus: true,
-        estimatedValue: Number(estimatedValue),
-        lenderInformation: lenderInformation,
-        applicantAddress: "",
-        attachment: changeUrlToStringHandler(),
-        image: "",
-        quoteRequiredDate: appraisalQuoteDate,
-        remark: remark ? remark : "",
-      };
-      console.log(payload);
-      if (
-        !payload.streetName ||
-        !payload.streetNumber ||
-        !payload.city ||
-        !payload.state ||
-        !payload.zipCode ||
-        !payload.typeOfBuilding ||
-        !payload.typeOfAppraisal ||
-        !payload.purpose ||
-        !payload.estimatedValue ||
-        !payload.quoteRequiredDate ||
-        !payload.urgency ||
-        !payload.applicantEmailAddress ||
-        !payload.applicantFirstName ||
-        !payload.applicantPhoneNumber ||
-        !payload.applicantLastName
-      ) {
-        let tempError = [];
-
-        if (!payload.streetName) {
-          tempError.push("streetName");
-        }
-        if (!payload.streetNumber) {
-          tempError.push("streetNumber");
-        }
-        if (!payload.city) {
-          tempError.push("city");
-        }
-        if (!payload.state) {
-          tempError.push("state");
-        }
-        if (!payload.zipCode) {
-          tempError.push("zipCode");
-        }
-        if (!payload.typeOfBuilding) {
-          tempError.push("typeOfBuilding");
-        }
-        if (!payload.estimatedValue) {
-          tempError.push("estimatedValue");
-        }
-        if (!payload.purpose) {
-          tempError.push("purpose");
-        }
-        if (!payload.typeOfAppraisal) {
-          tempError.push("typeOfAppraisal");
-        }
-        if (!payload.applicantLastName) {
-          tempError.push("applicantLastName");
-        }
-        if (!payload.applicantFirstName) {
-          tempError.push("applicantFirstName");
-        }
-        if (!payload.applicantPhoneNumber) {
-          tempError.push("applicantPhoneNumber");
-        }
-        if (!payload.applicantEmailAddress) {
-          tempError.push("applicantEmailAddress");
-        }
-        if (!payload.urgency) {
-          tempError.push("urgency");
-        }
-        if (!payload.quoteRequiredDate) {
-          tempError.push("quoteRequiredDate");
-        }
-        setErrorLabel(tempError);
-        console.log(tempError);
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        });
-      } else {
-        setModalIsOpen(true);
-        setButtonDisabled(true);
-      }
+      toast.error("Please fill in Lender Information for this order");
+      return;
     }
+
+    // All validations passed, proceed with submission
+    setModalIsOpen(true);
+    setButtonDisabled(true);
   };
 
   const finalSubmitHandler = () => {

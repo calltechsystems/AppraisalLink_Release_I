@@ -781,7 +781,10 @@ const Index = () => {
                               <div className="row">
                                 <div className="col-lg-12 text-center">
                                   <h2 className=" text-color mt-1">
-                                    Property Details
+                                      Property Details – Property Id{"  "}
+                                    <span style={{ color: "#97d700" }}>
+                                      #{broker.orderId}
+                                    </span>
                                   </h2>
                                 </div>
                               </div>
@@ -796,14 +799,8 @@ const Index = () => {
                                 <table id="table-broker-info">
                                   <thead>
                                     <tr>
-                                      <th
-                                        style={{
-                                          borderRight: "2px solid white",
-                                        }}
-                                      >
-                                        Headers
-                                      </th>
-                                      <th>Value</th>
+                                      <th></th>
+                                      <th></th>
                                     </tr>
                                   </thead>
                                   <tbody>
@@ -1018,7 +1015,10 @@ const Index = () => {
                               <div className="row">
                                 <div className="col-lg-12 text-center">
                                   <h2 className=" text-color mt-1">
-                                    Mortgage Broker Details
+                                    Mortgage Broker Details{"  "}
+                                    <span style={{ color: "#97d700" }}>
+                                      #{broker.orderId}
+                                    </span>
                                   </h2>
                                 </div>
                               </div>
@@ -1033,14 +1033,8 @@ const Index = () => {
                                 <table id="table-broker-info">
                                   <thead>
                                     <tr>
-                                      <th
-                                        style={{
-                                          borderRight: "2px solid white",
-                                        }}
-                                      >
-                                        Headers
-                                      </th>
-                                      <th>Value</th>
+                                      <th></th>
+                                      <th></th>
                                     </tr>
                                   </thead>
                                   <tbody>

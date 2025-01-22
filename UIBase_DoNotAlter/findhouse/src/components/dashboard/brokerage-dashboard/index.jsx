@@ -556,7 +556,8 @@ const Index = () => {
                       className="text-center mb-2 text-dark fw-bold"
                       style={{ fontSize: "18px" }}
                     >
-                      You need an active plan to add properties.
+                      A valid subscription is required to access Appraisal Land.
+                      Please subscribe now to enjoy our full range of services
                     </span>
                     <div
                       className="mt-2 mb-3"
