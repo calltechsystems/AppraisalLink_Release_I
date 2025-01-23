@@ -4,14 +4,13 @@ import { useState, useRef, useEffect } from "react";
 import Captcha from "../common/Captcha";
 import { encryptionData } from "../../utils/dataEncryption";
 import { useRouter } from "next/router";
-import { FaEye } from "react-icons/fa";
+import { FaEnvelope, FaEye, FaUser } from "react-icons/fa";
 import axios from "axios";
 import toast from "react-hot-toast";
 
 const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
   const [email, setEmail] = useState("");
   const [userType, setUserType] = useState("");
-
   const [change, setChange] = useState(false);
   const [passwordRegister, setPasswordRegister] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -114,8 +113,7 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
       <div className="col-lg-6">
         <form onSubmit={registerHandler}>
           <h3 className="text-center">Set your password</h3>
-
-          <div className="form-group input-group ui_kit_select_search mb-3">
+          <div className="form-group input-group ui_kit_select_search mb-2">
             <select
               className="form-select"
               value={userType}
@@ -130,6 +128,17 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
               <option value="5">Appraiser</option>
               <option value="6">Mortgage Broker</option>
             </select>
+            <div
+              className="input-group-text p-3 m-1"
+              style={{
+                marginTop: "10px",
+                cursor: "pointer",
+                border: "1px solid black",
+                borderRadius: "5px",
+              }}
+            >
+              <FaUser />
+            </div>
           </div>
 
           <div className="form-group input-group">
@@ -139,10 +148,23 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
               value={email}
               disabled
               placeholder="Email"
+              style={{marginBottom:"10px"}}
+
             />
+            <div
+              className="input-group-text p-3 m-1"
+              style={{
+                marginTop: "5px",
+                cursor: "pointer",
+                border: "1px solid black",
+                borderRadius: "5px",
+              }}
+            >
+              <FaEnvelope />
+            </div>
           </div>
 
-          <div className="col-lg-12" style={{ marginTop: "10px" }}>
+          {/* <div className="col-lg-12" style={{ marginTop: "10px" }}>
             <div className="form-group input-group position-relative">
               <input
                 type={passwordVisible ? "text" : "password"} // Conditionally set the input type
@@ -172,12 +194,95 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
                 <FaEye />
               </div>
             </div>
-            {/* Show password strength */}
+           
             {isFocused &&
               (passwordRegisterVerified ? (
                 <span style={{ color: "green" }}>Strong Password &#10004;</span>
               ) : !firstClick ? (
                 <span style={{ color: "red" }}> Weak Password &#10008;</span>
+              ) : null)}
+          </div> */}
+          <div className="col-lg-12" style={{ marginTop: "" }}>
+            <div
+              className="form-group input-group position-relative"
+              
+            >
+              <input
+                type={passwordVisible ? "text" : "password"} // Conditionally set the input type
+                className="form-control"
+                placeholder="Password"
+                id="passwordInput"
+                required
+                value={passwordRegister}
+                onChange={checkPasswordRegisterHandler}
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
+                maxLength={15}
+                minLength={8}
+                style={{marginBottom:"0px"}}
+                // Add space for the eye icon
+              />
+              <div
+                className="input-group-text m-1"
+                style={{
+                  marginTop: "5px",
+                  cursor: "pointer",
+                  border: "1px solid black",
+                  borderRadius: "5px",
+                }}
+                onClick={togglePasswordVisibility}
+              >
+                <FaEye />
+              </div>
+            </div>
+            {/* Show password combination requirements */}
+            {isFocused && (
+              <div style={{ marginTop: "", fontSize: "14px" }}>
+                <p>Password must include:</p>
+                <ul style={{ paddingLeft: "20px", listStyleType: "disc" }}>
+                  <li
+                    style={{
+                      color: /(?=.*[A-Z])/.test(passwordRegister)
+                        ? "green"
+                        : "red",
+                    }}
+                  >
+                    At least one uppercase letter
+                  </li>
+                  <li
+                    style={{
+                      color: /(?=.*\d)/.test(passwordRegister)
+                        ? "green"
+                        : "red",
+                    }}
+                  >
+                    At least one number
+                  </li>
+                  <li
+                    style={{
+                      color: /(?=.*[!@#$%^&*])/.test(passwordRegister)
+                        ? "green"
+                        : "red",
+                    }}
+                  >
+                    At least one special character (!@#$%^&*)
+                  </li>
+                  <li
+                    style={{
+                      color: passwordRegister.length >= 8 ? "green" : "red",
+                    }}
+                  >
+                    At least 8 characters
+                  </li>
+                </ul>
+              </div>
+            )}
+            {/* Show password strength */}
+            {isFocused &&
+              (passwordRegisterVerified ? (
+                <span style={{ color: "green" }}>Strong Password &#10004;</span>
+              ) : !firstClick ? (
+                <span style={{ color: "red" }}>Weak Password &#10008;</span>
               ) : null)}
           </div>
 

@@ -583,7 +583,9 @@ export default function Exemple({
               ) : (
                 <span className="btn btn-warning w-100">N.A.</span>
               ),
-            remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
+            // remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
+            remark: property.isoncancel ? "N.A." : isBidded.remark ? isBidded.remark : "N.A.",
+
             status:
               anotherBid === true && isBidded.status !== 2 ? (
                 <span className="btn btn-danger  w-100">Declined</span>

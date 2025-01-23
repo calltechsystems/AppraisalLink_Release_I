@@ -10,7 +10,6 @@ import { FaUserEdit } from "react-icons/fa";
 import Modal from "react-modal"; // Install react-modal for a better popup
 import Image from "next/image";
 
-
 const headCells = [
   {
     id: "appraiser",
@@ -543,7 +542,6 @@ export default function Exemple({
       )}
       {/* Confirmation Modal */}
 
-    
       {showConfirmation && (
         <div className="modal">
           <div className="modal-content" style={{ width: "30%" }}>
@@ -587,8 +585,8 @@ export default function Exemple({
             </h2>
             <div className="mb-2" style={{ border: "2px solid #97d700" }}></div>
             <p className="fs-5 text-center text-dark mt-4">
-              Are you sure for the{" "}
-              <span className="text-danger fw-bold">Change Appraiser</span> ?
+              You have opted to change the property's appraiser.
+              {/* <span className="text-danger fw-bold">Change Appraiser</span> ? */}
             </p>
             <div
               className="mb-3 mt-4"

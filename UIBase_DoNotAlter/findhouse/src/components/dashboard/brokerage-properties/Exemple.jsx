@@ -459,9 +459,8 @@ export default function Exemple({
             //     <span className="btn bg-warning  w-100">N.A.</span>
             //   ),
             address: `${property.streetNumber} ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
-            remark: isBidded.remark ? isBidded.remark : "N.A.",
-            // remark: property.remark ? property.remark : "N.A.",
-            // user: property.applicantEmailAddress,
+            // remark: isBidded.remark ? isBidded.remark : "N.A.",
+            remark: isCancel ? "N.A." : isBidded.remark ? isBidded.remark : "N.A.",
             type_of_building: property.typeOfBuilding,
             amount: ` $ ${addCommasToNumber(property.estimatedValue)}`,
             purpose: property.purpose,

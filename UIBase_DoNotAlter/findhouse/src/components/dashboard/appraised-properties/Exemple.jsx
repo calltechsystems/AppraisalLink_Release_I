@@ -1012,6 +1012,7 @@ export default function Exemple({
               let requiredProperties = [];
               prop.map((assign, index) => {
                 let id = assign.propertyid;
+                console.log("assign id", id);
                 allProperties.map((tempProp, idx) => {
                   if (
                     String(tempProp.$id) === String(id) &&
