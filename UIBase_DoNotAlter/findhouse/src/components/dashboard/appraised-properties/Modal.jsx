@@ -115,7 +115,7 @@ const Modal = ({
           toast.error(
             `Got error while ${
               alreadyBidded ? "Updating the" : "Setting the"
-            } quote, Try Again!!`
+            } quote, Try Again!!`, err
           );
         });
       setToggle(false);

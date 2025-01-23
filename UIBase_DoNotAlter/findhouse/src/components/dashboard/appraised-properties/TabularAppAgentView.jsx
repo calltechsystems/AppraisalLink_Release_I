@@ -228,9 +228,7 @@ export default function Exemple({
     let bidValue = {};
     let tempBids = [];
     bids.filter((bid) => {
-      if (
-        bid.orderId === property.orderId 
-      ) {
+      if (bid.orderId === property.orderId) {
         tempBids.push(bid);
         bidValue = bid;
         tempBid = tempBid + 1;
@@ -242,7 +240,7 @@ export default function Exemple({
   };
 
   const alreadyAccepted = (property) => {
-    return false
+    return false;
   };
   const router = useRouter();
 
@@ -345,14 +343,11 @@ export default function Exemple({
     let temp = {};
     // console.log(wishlist, data);
     wishlist.map((prop, index) => {
-      if (
-        String(prop.propertyId) === String(data.propertyId) 
-      ) {
-        // console.log("wishlist",data,prop)
+      if (String(prop.propertyId) === String(data.propertyId)) {
         temp = prop;
       }
     });
-    return temp ? temp : {};
+    return temp;
   };
 
   const checkCanBidAgainHandler = (data) => {
@@ -384,7 +379,6 @@ export default function Exemple({
         const isBidded = filterBidsWithin24Hours(property);
         const anotherBid = alreadyAccepted(property);
 
-      
         const isWait = property.isOnHold || property.isOnCancel;
         const isArchive = false;
 
@@ -429,8 +423,7 @@ export default function Exemple({
                     </span>
                   </button>
                 </div>
-              ) :
-               isBidded.status === 1 && isBidded.orderStatus !== null ? (
+              ) : isBidded.status === 1 && isBidded.orderStatus !== null ? (
                 <div className="hover-text">
                   <div
                     className="tooltip-text"
@@ -462,10 +455,11 @@ export default function Exemple({
                   : isBidded.remark
                 : "N.A.",
             status:
-            (anotherBid === true && isBidded.status !== 2)    ? (
-              <span className="btn btn-danger  w-100">Broker has already selected the quote</span>
-            ) :
-              (isBidded?.bidId && isBidded.status === 2)   ? (
+              anotherBid === true && isBidded.status !== 2 ? (
+                <span className="btn btn-danger  w-100">
+                  Broker has already selected the quote
+                </span>
+              ) : isBidded?.bidId && isBidded.status === 2 ? (
                 <span className="btn btn-danger  w-100">Rejected</span>
               ) : isWait ? (
                 <span className="btn btn-danger  w-100">
@@ -567,7 +561,8 @@ export default function Exemple({
             action: (
               <div className="print-hidden-column" style={{ display: "flex" }}>
                 {isBidded.$id &&
-                  (isBidded.status === 2 || isBidded.status === 1) && !anotherBid?.bidId && (
+                  (isBidded.status === 2 || isBidded.status === 1) &&
+                  !anotherBid?.bidId && (
                     <li
                       className="list-inline-item"
                       data-toggle="tooltip"
@@ -585,15 +580,14 @@ export default function Exemple({
                     </li>
                   )}
 
-                {(isBidded.status === 2 || anotherBid)? (
+                {isBidded.status === 2 || anotherBid ? (
                   <>
                     <ul>
                       <li
                         className="list-inline-item"
                         data-toggle="tooltip"
                         data-placement="top"
-                      >
-                      </li>
+                      ></li>
                       <li
                         className="list-inline-item"
                         data-toggle="tooltip"
@@ -673,22 +667,24 @@ export default function Exemple({
                         />
                       </button>
                     ) : (
-                      !anotherBid && <li
-                        className="list-inline-item"
-                        title="Wishlist Property"
-                      >
-                        {
-                          <button
-                            className="btn"
-                            style={{ border: "1px solid grey" }}
-                            onClick={() =>
-                              onWishlistHandler(property.propertyId)
-                            }
-                          >
-                            <span className="flaticon-heart text-color"></span>
-                          </button>
-                        }
-                      </li>
+                      !anotherBid && (
+                        <li
+                          className="list-inline-item"
+                          title="Wishlist Property"
+                        >
+                          {
+                            <button
+                              className="btn"
+                              style={{ border: "1px solid grey" }}
+                              onClick={() =>
+                                onWishlistHandler(property.propertyId)
+                              }
+                            >
+                              <span className="flaticon-heart text-color"></span>
+                            </button>
+                          }
+                        </li>
+                      )
                     )}
 
                     {(!isBidded.$id || isBidded?.status < 1) && !anotherBid && (
@@ -804,7 +800,7 @@ export default function Exemple({
       setStatusData(tempStatusData);
     };
     getData();
-  }, [properties]);
+  }, [properties, wishlist, bids]);
 
   const refreshHandler = () => {
     setProperties([]);
@@ -824,65 +820,21 @@ export default function Exemple({
     const payload = {
       token: userData.token,
     };
+    if (data?.userType == 5) {
       axios
-        .get("/api/getAllAssignProperties", {
+        .get("/api/getAllAssignedPropertiesById", {
           headers: {
             Authorization: `Bearer ${data?.token}`,
             "Content-Type": "application/json",
           },
           params: {
-            userId: data.appraiser_Details?.companyId,
+            userId: data.appraiser_Details?.id,
           },
         })
         .then((res) => {
           toast.dismiss();
-          const prop = res.data.data.$values;
-
-          axios
-            .get("/api/getAllListedProperties", {
-              headers: {
-                Authorization: `Bearer ${data?.token}`,
-                "Content-Type": "application/json",
-              },
-              params: {
-                UserID: data?.userId,
-              },
-            })
-            .then((result) => {
-              toast.dismiss();
-
-              const allProperties = result.data.data.properties.$values;
-              
-              let requiredProperties = [];
-              prop.map((assign, index) => {
-                let id = assign.propertyid;
-                allProperties.map((tempProp, idx) => {
-                  if (
-                    String(tempProp.$id) === String(id) &&
-                    String(assign.appraiserid) ===
-                      String(data.appraiser_Details.id)
-                  ) {
-                    requiredProperties.push(tempProp);
-                    id = "";
-                  }
-                });
-              });
-
-              let finalProperties = [];
-              let id = "";
-              requiredProperties.map((prop, index) => {
-                if (String(prop.$id) !== String(id)) {
-                  finalProperties.push(prop);
-                  id = prop.$id;
-                }
-              });
-              setProperties(finalProperties);
-            })
-            .catch((err) => {})
-            .catch((err) => {
-              toast.dismiss();
-              toast.error(err);
-            });
+          const prop = res.data.data.properties.$values;
+          setProperties(prop);
 
           axios
             .get("/api/getAllBids", {
@@ -895,8 +847,14 @@ export default function Exemple({
             })
             .then((res) => {
               tempBids = res.data.data.$values;
-              
-              setBids(tempBids);
+              const updatedBids = tempBids.filter((prop, index) => {
+                if (String(prop.appraiserUserId) === String(data.userId)) {
+                  return true;
+                } else {
+                  return false;
+                }
+              });
+              setBids(updatedBids);
               axios
                 .get("/api/appraiserWishlistedProperties", {
                   headers: {
@@ -907,7 +865,16 @@ export default function Exemple({
                 .then((res) => {
                   const tempData = res.data.data.$values;
 
-                  setWishlist(tempData);
+                  // setAllWishlistedProperties(res.data.data.$values);
+                  const responseData = tempData.filter((prop, index) => {
+                    if (String(prop.userId) === String(data.userId)) {
+                      return true;
+                    } else {
+                      return false;
+                    }
+                  });
+                  const tempId = responseData;
+                  setWishlist(responseData);
                 })
                 .catch((err) => {
                   toast.error(err?.response);
@@ -927,11 +894,81 @@ export default function Exemple({
           // setErrorMessage(err?.response?.data?.error);
           // setModalIsOpenError(true);
         });
-    
+    } else {
+      axios
+        .get("/api/getAllListedProperties", {
+          headers: {
+            Authorization: `Bearer ${data?.token}`,
+            "Content-Type": "application/json",
+          },
+          params: {
+            userId: data?.userId,
+          },
+        })
+        .then((res) => {
+          toast.dismiss();
+          setDataFetched(true);
+          const prop = res.data.data.properties.$values;
+
+          axios
+            .get("/api/getAllBids", {
+              headers: {
+                Authorization: `Bearer ${data.token}`,
+              },
+              params: {
+                email: data.userEmail,
+              },
+            })
+            .then((res) => {
+              tempBids = res.data.data.$values;
+              const updatedBids = tempBids.filter((prop, index) => {
+                return true;
+              });
+              setBids(updatedBids);
+              axios
+                .get("/api/appraiserWishlistedProperties", {
+                  headers: {
+                    Authorization: `Bearer ${data?.token}`,
+                    "Content-Type": "application/json",
+                  },
+                })
+                .then((res) => {
+                  const tempData = res.data.data.$values;
+
+                  // setAllWishlistedProperties(res.data.data.$values);
+                  const responseData = tempData.filter((prop, index) => {
+                    if (String(prop.userId) === String(data.userId)) {
+                      return true;
+                    } else {
+                      return false;
+                    }
+                  });
+                  const tempId = responseData;
+                  setWishlist(responseData);
+                  setProperties(prop);
+                })
+                .catch((err) => {
+                  toast.error(err?.response);
+                  setErrorMessage(err?.response);
+                  setModalIsOpenError(true);
+                });
+            })
+            .catch((err) => {
+              setErrorMessage(err?.response?.data?.error);
+              setModalIsOpenError(true);
+            });
+          // setRerender(false);
+        })
+        .catch((err) => {
+          toast.dismiss();
+          toast.error(err);
+          setDataFetched(false);
+          // setErrorMessage(err?.response?.data?.error);
+          // setModalIsOpenError(true);
+        });
+    }
 
     let tempBids = [];
-
-  
     axios
       .get("/api/getAllBrokers", {
         headers: {
@@ -980,10 +1017,9 @@ export default function Exemple({
         setModalIsOpenError(true);
       });
 
-   
     setRefresh(false);
   }, [refresh]);
-  
+
   return (
     <>
       {refresh ? (

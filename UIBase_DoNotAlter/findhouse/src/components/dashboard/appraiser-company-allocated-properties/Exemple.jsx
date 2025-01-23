@@ -462,18 +462,15 @@ export default function Exemple({
 
   useEffect(() => {
     let requiredAssign = [];
-    allListedAssignAppraiser.map((assigned, idx) => {
       allAssignAppraiser.map((appraiser, index) => {
         const isPresent = checkIsAlreadyExisting(appraiser, requiredAssign);
         if (
-          String(appraiser.id) === String(assigned.appraiserid) &&
-          appraiser.isActive &&
+          appraiser.isActive == true &&
           !isPresent
         ) {
           requiredAssign.push(appraiser);
         }
       });
-    });
     setAssignAppraisers(requiredAssign);
   }, [allListedAssignAppraiser, allAssignAppraiser]);
 
@@ -755,7 +752,7 @@ export default function Exemple({
                     className="list-inline-item"
                     data-toggle="tooltip"
                     data-placement="top"
-                    title="Assign Appraiser"
+                    title="Re-Assign Appraiser"
                   >
                     <div
                       className="w-100"
@@ -799,7 +796,7 @@ export default function Exemple({
     };
 
     getData();
-  }, [properties]);
+  }, [properties, wishlist, bids, allListedAssignAppraiser]);
   console.log("updatedDATA", updatedData);
 
   useEffect(() => {
@@ -975,13 +972,21 @@ export default function Exemple({
       });
 
     axios
-      .get("/api/getAllAppraiser", {
+      .get("/api/getAllAppraiserByCompanyId", {
         headers: {
-          Authorization: `Bearer ${data.token}`,
+          Authorization: `Bearer ${data?.token}`,
+          "Content-Type": "application/json",
+        },
+        params: {
+          userId: data?.appraiserCompany_Datails?.appraiserCompanyId,
         },
       })
       .then((res) => {
-        setAllAssignAppraiser(res.data.data.result.$values);
+        const allData = res.data.data.$values;
+        const onlyAppraiserData = allData.map((appraiser) => {
+          return appraiser.item;
+        })
+        setAllAssignAppraiser(onlyAppraiserData);
       })
       .catch((err) => {
         setErrorMessage(err?.response?.data?.error);

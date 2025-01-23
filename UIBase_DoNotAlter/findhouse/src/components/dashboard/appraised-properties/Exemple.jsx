@@ -368,7 +368,6 @@ export default function Exemple({
     const formattedNumber = (number / Math.pow(10, integerLength - 1)).toFixed(
       2
     );
-    console.log(formatLargeNumber + ".." + unit);
     return `${formattedNumber}${unit}`;
   };
 
@@ -447,13 +446,11 @@ export default function Exemple({
   const checkWishlistedHandler = (data) => {
     const userInfo = JSON.parse(localStorage.getItem("user"));
     let temp = {};
-    // console.log(wishlist, data);
     wishlist.map((prop, index) => {
       if (
         String(prop.propertyId) === String(data.propertyId) &&
         String(prop.userId) === String(userInfo.userId)
       ) {
-        // console.log("wishlist",data,prop)
         temp = prop;
       }
     });
@@ -485,6 +482,7 @@ export default function Exemple({
       const userData = JSON.parse(localStorage.getItem("user"));
       const userActivePlans = userData?.userSubscription?.$values;
       properties.map((property, index) => {
+        console.log({property})
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
         const anotherBid = alreadyAccepted(property);
@@ -982,64 +980,19 @@ export default function Exemple({
 
     if (data?.userType === 5) {
       axios
-        .get("/api/getAllAssignProperties", {
+        .get("/api/getAllAssignedPropertiesById", {
           headers: {
             Authorization: `Bearer ${data?.token}`,
             "Content-Type": "application/json",
           },
           params: {
-            userId: data.appraiser_Details?.companyId,
+            userId: data.appraiser_Details?.id,
           },
         })
         .then((res) => {
           toast.dismiss();
-          const prop = res.data.data.$values;
-
-          axios
-            .get("/api/getAllListedProperties", {
-              headers: {
-                Authorization: `Bearer ${data?.token}`,
-                "Content-Type": "application/json",
-              },
-              params: {
-                UserID: data?.userId,
-              },
-            })
-            .then((result) => {
-              toast.dismiss();
-
-              const allProperties = result.data.data.properties.$values;
-              let requiredProperties = [];
-              prop.map((assign, index) => {
-                let id = assign.propertyid;
-                console.log("assign id", id);
-                allProperties.map((tempProp, idx) => {
-                  if (
-                    String(tempProp.$id) === String(id) &&
-                    String(assign.appraiserid) ===
-                      String(data.appraiser_Details.id)
-                  ) {
-                    requiredProperties.push(tempProp);
-                    id = "";
-                  }
-                });
-              });
-
-              let finalProperties = [];
-              let id = "";
-              requiredProperties.map((prop, index) => {
-                if (String(prop.$id) !== String(id)) {
-                  finalProperties.push(prop);
-                  id = prop.$id;
-                }
-              });
-              setProperties(finalProperties);
-            })
-            .catch((err) => {})
-            .catch((err) => {
-              toast.dismiss();
-              toast.error(err);
-            });
+          const prop = res.data.data.properties.$values;
+          setProperties(prop);
 
           axios
             .get("/api/getAllBids", {
@@ -1059,7 +1012,6 @@ export default function Exemple({
                   return false;
                 }
               });
-              console.log(updatedBids);
               setBids(updatedBids);
               axios
                 .get("/api/appraiserWishlistedProperties", {
@@ -1100,7 +1052,8 @@ export default function Exemple({
           // setErrorMessage(err?.response?.data?.error);
           // setModalIsOpenError(true);
         });
-    } else {
+    } else 
+    {
       axios
         .get("/api/getAllListedProperties", {
           headers: {
@@ -1113,8 +1066,6 @@ export default function Exemple({
         })
         .then((res) => {
           toast.dismiss();
-
-          console.log(res.data);
           setDataFetched(true);
           const prop = res.data.data.properties.$values;
 
@@ -1132,7 +1083,6 @@ export default function Exemple({
               const updatedBids = tempBids.filter((prop, index) => {
                 return true;
               });
-              console.log(updatedBids);
               setBids(updatedBids);
               axios
                 .get("/api/appraiserWishlistedProperties", {
@@ -1200,7 +1150,6 @@ export default function Exemple({
             allbrokerage.map((user, index) => {
               updated.push(user);
             });
-
             setAllBrokers(updated);
           })
           .catch((err) => {
@@ -1251,7 +1200,7 @@ export default function Exemple({
           filterQuery={filterQuery}
           dataFetched={dataFetched}
           statusData={statusData}
-          properties={updatedData}
+          properties={sortObjectsByOrderIdDescending(updatedData)}
           end={end}
         />
       )}

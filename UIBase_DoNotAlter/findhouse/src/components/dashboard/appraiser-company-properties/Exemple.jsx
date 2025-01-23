@@ -992,7 +992,7 @@ export default function Exemple({
       setUpdatedData(tempData);
     };
     getData();
-  }, [properties]);
+  }, [properties, wishlist,bids, assignedProperties]);
 
   useEffect(() => {
     setUpdatedCode(true);

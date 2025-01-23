@@ -689,20 +689,20 @@ export default function Exemple({
     let tempProperties = [],
       tempWishlist = [];
 
-    if (data?.userType === 5) {
+    if (data?.userType == 5) {
       axios
-        .get("/api/getAllAssignProperties", {
+        .get("/api/getAllAssignedPropertiesById", {
           headers: {
             Authorization: `Bearer ${data?.token}`,
             "Content-Type": "application/json",
           },
           params: {
-            userId: data.appraiser_Details?.companyId,
+            userId: data.appraiser_Details?.id,
           },
         })
         .then((res) => {
           toast.dismiss();
-          const prop = res.data.data.$values;
+          const prop = [];
 
           axios
             .get("/api/getAllListedProperties", {
