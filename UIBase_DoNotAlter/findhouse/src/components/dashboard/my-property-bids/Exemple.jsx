@@ -585,7 +585,7 @@ export default function Exemple({
             </h2>
             <div className="mb-2" style={{ border: "2px solid #97d700" }}></div>
             <p className="fs-5 text-center text-dark mt-4">
-              You have opted to change the property's appraiser.
+              You have opted to change the property&apos;s appraiser.
               {/* <span className="text-danger fw-bold">Change Appraiser</span> ? */}
             </p>
             <div
