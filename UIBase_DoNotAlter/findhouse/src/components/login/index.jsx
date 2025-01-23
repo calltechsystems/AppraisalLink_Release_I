@@ -125,14 +125,14 @@ const Index = ({ user }) => {
         <div className="modal">
           <div
             className="modal-content"
-            style={{ border: "2px solid #97d700", width: "40%" }}
+            style={{ border: "2px solid #97d700", width: "26%" }}
           >
             <div className="col-lg-12">
               <div className="row">
                 <div className="col-lg-12">
                   <Link href="/" className="">
                     <Image
-                      width={60}
+                      width={50}
                       height={45}
                       className="logo1 img-fluid"
                       style={{ marginTop: "-20px" }}
@@ -165,7 +165,7 @@ const Index = ({ user }) => {
               </div>
               <div className="row">
                 <div className="col-lg-12 text-center">
-                  <h3 className=" text-danger mt-1">Error</h3>
+                  <h3 className=" text-color mt-1">Error</h3>
                 </div>
               </div>
               <div
@@ -188,7 +188,7 @@ const Index = ({ user }) => {
               style={{ display: "flex", justifyContent: "center" }}
             >
               <button
-                className="btn btn-color w-50"
+                className="btn btn-color w-25"
                 onClick={() => closeErrorModal()}
                 style={{}}
               >

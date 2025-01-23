@@ -138,36 +138,10 @@ const Index = () => {
       )}
 
       {modalIsOpenError && (
-        // <div className="modal">
-        //   <div
-        //     className="modal-content"
-        //     style={{ borderColor: "orangered", width: "20%" }}
-        //   >
-        //     <h3 className="text-center" style={{ color: "orangered" }}>
-        //       Error
-        //     </h3>
-        //     <div style={{ borderWidth: "2px", borderColor: "orangered" }}>
-        //       <br />
-        //     </div>
-        //     <h5 className="text-center">{errorMessage}</h5>
-        //     <div
-        //       className="text-center"
-        //       style={{ display: "flex", flexDirection: "column" }}
-        //     >
-        //       <button
-        //         className="btn w-35 btn-white"
-        //         onClick={() => closeErrorModal()}
-        //         style={{ borderColor: "orangered", color: "orangered" }}
-        //       >
-        //         Cancel
-        //       </button>
-        //     </div>
-        //   </div>
-        // </div>
         <div className="modal">
           <div
             className="modal-content"
-            style={{ border: "2px solid #97d700", width: "40%" }}
+            style={{ border: "2px solid #97d700", width: "30%" }}
           >
             <div className="col-lg-12">
               <div className="row">

@@ -411,9 +411,8 @@ export default function Exemple({
                 </button>
               ),
             address: `${property.streetNumber} ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
-            remark: isBidded.remark ? isBidded.remark : "N.A.",
-            // remark: property.remark ? property.remark : "N.A.",
-            // user: property.applicantEmailAddress,
+            // remark: isBidded.remark ? isBidded.remark : "N.A.",
+            remark: isCancel ? "N.A." : isBidded.remark ? isBidded.remark : "N.A.",
             type_of_building: property.typeOfBuilding,
             // amount: ` $ ${millify(property.estimatedValue)}`,
             amount: `$ ${addCommasToNumber(property.estimatedValue)}`,

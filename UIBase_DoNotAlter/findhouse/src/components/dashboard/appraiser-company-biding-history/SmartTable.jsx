@@ -377,7 +377,7 @@ function SmartTable(props) {
   };
 
   const extractTextContent = (cellValue) => {
-    if (typeof cellValue === "string") {
+    if (typeof cellValue === "number") {
       return cellValue; // If it's a string, return it as is
     } else if (typeof cellValue === "object" && cellValue.$$typeof) {
       // If it's a React element, extract text content recursively from children

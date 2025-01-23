@@ -35,7 +35,7 @@ const Index = () => {
   const [searchQuery, setSearchQuery] = useState("city");
   const [properties, setProperties] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-  
+
   const [lowRangeBid, setLowRangeBid] = useState("");
   const [propertyId, setPropertyId] = useState(null);
 
@@ -65,6 +65,25 @@ const Index = () => {
   const closeStatusUpdateHandler = () => {
     setOpenDate(false);
     setIsStatusModal(false);
+  };
+
+  const formatPhoneNumber = (number) => {
+    if (!number) return ""; // Handle empty input
+
+    // Remove non-numeric characters
+    const digits = number.replace(/\D/g, "");
+
+    // Format the number as "416 123-4567"
+    if (digits.length <= 3) {
+      return digits; // e.g., "416"
+    } else if (digits.length <= 6) {
+      return `${digits.slice(0, 3)} ${digits.slice(3)}`; // e.g., "416 123"
+    } else {
+      return `${digits.slice(0, 3)} ${digits.slice(3, 6)}-${digits.slice(
+        6,
+        10
+      )}`; // e.g., "416 123-4567"
+    }
   };
 
   const [openBrokerModal, setOpenBrokerModal] = useState(false);
@@ -893,7 +912,8 @@ const Index = () => {
                                         </td>
                                         <td className="table-value">
                                           {" "}
-                                          {currentProperty.applicantPhoneNumber}
+                                          {/* {currentProperty.applicantPhoneNumber} */}
+                                          {formatPhoneNumber(currentProperty.applicantPhoneNumber)}
                                         </td>
                                       </tr>
                                     </tbody>
@@ -1034,8 +1054,6 @@ const Index = () => {
                             </div>
                           </div>
                         )}
-
-                       
                       </div>
 
                       {/* End .table-responsive */}
