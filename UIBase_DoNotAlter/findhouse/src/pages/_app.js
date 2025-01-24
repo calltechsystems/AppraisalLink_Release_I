@@ -5,6 +5,7 @@ import ScrollToTop from "../components/common/ScrollTop";
 import Seo from "../components/common/seo";
 import "../index.scss";
 import InactivityTimer from "../components/inactivity-timer"; // Adjust the path as needed
+import Head from "next/head";
 
 if (typeof window !== "undefined") {
   require("bootstrap/dist/js/bootstrap");
@@ -13,6 +14,23 @@ if (typeof window !== "undefined") {
 function MyApp({ Component, pageProps }) {
   return (
     <>
+      <Head>
+        {/* Google Analytics Script */}
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-GPVDNGXRP9"
+        ></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-GPVDNGXRP9');
+            `,
+          }}
+        />
+      </Head>
       {/* <InactivityTimer timeoutDuration={600000} warningDuration={30000} /> */}
       <InactivityTimer
         timeoutDuration={600000} // 10 minutes
