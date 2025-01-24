@@ -842,17 +842,13 @@ export default function Exemple({
                 Authorization: `Bearer ${data.token}`,
               },
               params: {
-                email: data.userEmail,
+                email:  data.userEmail // appraiser company email
               },
             })
             .then((res) => {
               tempBids = res.data.data.$values;
               const updatedBids = tempBids.filter((prop, index) => {
-                if (String(prop.appraiserUserId) === String(data.userId)) {
-                  return true;
-                } else {
-                  return false;
-                }
+                return true;
               });
               setBids(updatedBids);
               axios
