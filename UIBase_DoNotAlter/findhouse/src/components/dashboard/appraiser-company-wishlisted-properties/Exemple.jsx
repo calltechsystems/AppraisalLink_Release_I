@@ -9,6 +9,7 @@ import Loader from "./Loader";
 import { FaArchive } from "react-icons/fa";
 import { AppraiserStatusOptions } from "../create-listing/data";
 import millify from "millify";
+import Image from "next/image";
 
 const headCells = [
   {
@@ -153,12 +154,13 @@ export default function Exemple({
   const [hideAction, setHideAction] = useState(false);
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
-
+  const [selectedProperty, setSelectedProperty] = useState(null);
   const [dataFetched, setDataFetched] = useState(false);
   const [assignedProperties, setAssignedProperties] = useState([]);
   let tempData = [];
-
   const [allArchive, setAllArchive] = useState([]);
+  const [isWishlistProperty, setIsWishlistProperty] = useState(0);
+  const [selectedWishlistId, setSelectedWishlistId] = useState(null);
 
   useEffect(() => {
     if (searchInput === "") {
@@ -257,6 +259,25 @@ export default function Exemple({
     setIsStatusModal(true);
   };
 
+  const openIsWishlistPropertyModal = (wishlistId) => {
+    setSelectedWishlistId(wishlistId);
+    setSelectedProperty(property);
+    setIsWishlistProperty(true);
+  };
+
+  const handleConfirmRemoveWishlist = () => {
+    if (selectedWishlistId) {
+      // Call your removeWishlistHandler or similar logic here
+      removeWishlistHandler(selectedWishlistId);
+    }
+    setIsWishlistProperty(false);
+  };
+
+  const closeArchiveModal = () => {
+    setSelectedProperty(null); // Clear the selected property
+    setIsWishlistProperty(false);
+  };
+
   function addCommasToNumber(number) {
     if (Number(number) <= 100 || number === undefined) return number;
     return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -325,9 +346,9 @@ export default function Exemple({
     return formattedDate;
   };
 
-    // For EST date and time
+  // For EST date and time
 
-      const formatDateTimeEST = (date) => {
+  const formatDateTimeEST = (date) => {
     const d = new Date(date);
     const utcOffset = -5; // EST is UTC-5
     d.setHours(d.getHours() + utcOffset);
@@ -336,23 +357,22 @@ export default function Exemple({
       timeStyle: "short",
     });
   };
-  
-    // Only for time
-  
-    const formatDateToEST = (date) => {
-      try {
-        // Convert input date string to a Date object
-        const utcDate = new Date(`${date}T00:00:00Z`); // Treat input as UTC midnight
-        return new Intl.DateTimeFormat("en-US", {
-          timeZone: "America/Toronto", // EST/Canada timezone
-          dateStyle: "medium",        // Format only the date
-        }).format(utcDate);
-      } catch (error) {
-        console.error("Error formatting date:", error);
-        return "Invalid date";
-      }
-    };
-  
+
+  // Only for time
+
+  const formatDateToEST = (date) => {
+    try {
+      // Convert input date string to a Date object
+      const utcDate = new Date(`${date}T00:00:00Z`); // Treat input as UTC midnight
+      return new Intl.DateTimeFormat("en-US", {
+        timeZone: "America/Toronto", // EST/Canada timezone
+        dateStyle: "medium", // Format only the date
+      }).format(utcDate);
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return "Invalid date";
+    }
+  };
 
   // const formatDate = (dateString) => {
   //   const options = {
@@ -488,7 +508,9 @@ export default function Exemple({
                       </li>
                     </ul>
                   </div>
-                  <button className={getStatusButtonClass(isBidded.orderstatus)}>
+                  <button
+                    className={getStatusButtonClass(isBidded.orderstatus)}
+                  >
                     Status
                     <span className="m-1">
                       <i class="fa fa-info-circle" aria-hidden="true"></i>
@@ -513,7 +535,9 @@ export default function Exemple({
                       </li>
                     </ul>
                   </div>
-                  <button className={getStatusButtonClass(isBidded.orderstatus)}>
+                  <button
+                    className={getStatusButtonClass(isBidded.orderstatus)}
+                  >
                     Status
                     <span className="m-1">
                       <i class="fa fa-info-circle" aria-hidden="true"></i>
@@ -521,7 +545,9 @@ export default function Exemple({
                   </button>
                 </div>
               ) : (
-                <button className="btn btn-warning w-100"><span>N.A.</span></button>
+                <button className="btn btn-warning w-100">
+                  <span>N.A.</span>
+                </button>
               ),
             remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
             status:
@@ -539,7 +565,9 @@ export default function Exemple({
                 isBidded.orderstatus === 3 ? (
                   <span className="btn btn-completed w-100">Completed</span>
                 ) : isBidded.status === 0 ? (
-                  <span className="btn bg-info text-light  w-100">Quote Provided</span>
+                  <span className="btn bg-info text-light  w-100">
+                    Quote Provided
+                  </span>
                 ) : isBidded.status === 1 ? (
                   <span className="btn btn-success  w-100">Accepted</span>
                 ) : (
@@ -590,7 +618,7 @@ export default function Exemple({
                       Property
                     </button>
                   </a>
-                ) : isBidded.status === 2  ? (
+                ) : isBidded.status === 2 ? (
                   <h6 style={{ color: "red" }}> Declined</h6>
                 ) : (
                   <p className="text-secondary">On quote approval</p>
@@ -628,7 +656,9 @@ export default function Exemple({
                         style={{
                           border: "1px solid grey",
                         }}
-                        onClick={() => removeWishlistHandler(isWishlist.id)}
+                        onClick={() =>
+                          openIsWishlistPropertyModal(isWishlist.id)
+                        }
                       >
                         <img
                           width={26}
@@ -1057,6 +1087,80 @@ export default function Exemple({
           dataFetched={dataFetched}
           end={end}
         />
+      )}
+
+      {isWishlistProperty && (
+        <div className="modal">
+          <div className="modal-content" style={{ width: "35%" }}>
+            <div className="row">
+              <div className="col-lg-12">
+                <Link href="/" className="">
+                  <Image
+                    width={50}
+                    height={45}
+                    className="logo1 img-fluid"
+                    style={{ marginTop: "-20px" }}
+                    src="/assets/images/logo.png"
+                    alt="header-logo2.png"
+                  />
+                  <span
+                    style={{
+                      color: "#2e008b",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    Appraisal
+                  </span>
+                  <span
+                    style={{
+                      color: "#97d700",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    {" "}
+                    Land
+                  </span>
+                </Link>
+              </div>
+            </div>
+            <h3 className="text-center mt-3" style={{ color: "#2e008b" }}>
+              Order Confirmation - Property Id{" "}
+              <span style={{ color: "#97d700" }}>
+                #{selectedProperty?.orderId}
+              </span>
+            </h3>
+            <div className="mb-2" style={{ border: "2px solid #97d700" }}></div>
+            <p className="fs-5 text-center text-dark mt-4">
+              Are you sure for the order to be{" "}
+              <span className="text-danger fw-bold">Remove Wishlist</span> ?
+            </p>
+            <div
+              className="mb-3 mt-4"
+              style={{ border: "2px solid #97d700" }}
+            ></div>
+            <div className="col-lg-12 d-flex justify-content-center gap-2">
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                onClick={closeArchiveModal}
+              >
+                Cancel
+              </button>
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                // onClick={() => onWishlistHandler(selectedProperty.propertyId)}
+                onClick={handleConfirmRemoveWishlist}
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );

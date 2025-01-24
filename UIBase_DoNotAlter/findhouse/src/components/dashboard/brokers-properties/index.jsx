@@ -87,6 +87,7 @@ const Index = () => {
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
   );
+  console.log("property id", propertyId)
 
   console.log(closeRegisterModal);
 
@@ -679,7 +680,7 @@ const Index = () => {
                                   <div className="row">
                                     <div className="col-lg-12 text-center">
                                       <h2 className=" text-color mt-1">
-                                        Property Details – Property ID{"  "}
+                                        Property Details – Property Id{"  "}
                                         <span style={{ color: "#97d700" }}>
                                           #{currentProperty.orderId}
                                         </span>
@@ -926,10 +927,10 @@ const Index = () => {
                               <div className="row">
                                 <div className="col-lg-12 text-center">
                                   <h2 className=" text-color mt-1">
-                                    Mortgage Broker Details{"  "}
-                                    {/* <span style={{ color: "#97d700" }}>
-                                      #{propertyId}
-                                    </span> */}
+                                    Mortgage Broker Details – Property Id{"  "}
+                                    <span style={{ color: "#97d700" }}>
+                                      #{property.propertyId}
+                                    </span>
                                   </h2>
                                 </div>
                               </div>
@@ -1080,16 +1081,17 @@ const Index = () => {
                                 `
                               </div>
                               <div className="row text-center mt-3">
-                                <div className="col-lg-12">
-                                  {/* <button
+                                <div className="col-lg-12 d-flex justify-content-center gap-2">
+                                  <button
                                     className="btn btn-color"
-                                    onClick={() =>
-                                      brokerInfoHandler(broker.orderId)
-                                    }
+                                    style={{ width: "100px" }}
+                                    // onClick={() =>
+                                    //   brokerInfoHandler(broker.orderId)
+                                    // }
                                     title="Download Pdf"
                                   >
                                     <FaDownload />
-                                  </button> */}
+                                  </button>
                                   <button
                                     className="btn btn-color "
                                     style={{ width: "100px" }}
@@ -1144,7 +1146,7 @@ const Index = () => {
                                   </Link>
                                 </div>
                               </div>
-                              <h2
+                              <h3
                                 className="text-center mt-3"
                                 style={{ color: "#2e008b" }}
                               >
@@ -1158,11 +1160,11 @@ const Index = () => {
                                       propValue
                                         ? "Order Confirmation"
                                         : "Order Confirmation"
-                                    }`}{" "}
+                                    }`}– Property Id{" "}
                                 <span style={{ color: "#97d700" }}>
                                   #{propertyId}
                                 </span>
-                              </h2>
+                              </h3>
                               <div
                                 className="mb-2"
                                 style={{ border: "2px solid #97d700" }}

@@ -75,6 +75,25 @@ const Index = () => {
     setOpenBrokerModal(false);
   };
 
+  const formatPhoneNumber = (number) => {
+    if (!number) return ""; // Handle empty input
+
+    // Remove non-numeric characters
+    const digits = number.replace(/\D/g, "");
+
+    // Format the number as "416 123-4567"
+    if (digits.length <= 3) {
+      return digits; // e.g., "416"
+    } else if (digits.length <= 6) {
+      return `${digits.slice(0, 3)} ${digits.slice(3)}`; // e.g., "416 123"
+    } else {
+      return `${digits.slice(0, 3)} ${digits.slice(3, 6)}-${digits.slice(
+        6,
+        10
+      )}`; // e.g., "416 123-4567"
+    }
+  };
+
   const closeQuoteModal = () => {
     setIsQuoteModalOpen(false);
   };
@@ -715,7 +734,7 @@ const Index = () => {
                                   <div className="row">
                                     <div className="col-lg-12 text-center">
                                       <h2 className=" text-color mt-1">
-                                        Property Details – Property ID{"  "}
+                                        Property Details – Property Id{"  "}
                                         <span style={{ color: "#97d700" }}>
                                           #{currentProperty.orderId}
                                         </span>
@@ -889,7 +908,9 @@ const Index = () => {
                                         </td>
                                         <td className="table-value">
                                           {" "}
-                                          {currentProperty.applicantPhoneNumber}
+                                          {formatPhoneNumber(
+                                            currentProperty.applicantPhoneNumber
+                                          )}
                                         </td>
                                       </tr>
                                     </tbody>
@@ -922,7 +943,10 @@ const Index = () => {
                         </div>
                         {modalOpen && (
                           <div className="modal">
-                            <div className="modal-content"style={{width:"30%"}}>
+                            <div
+                              className="modal-content"
+                              style={{ width: "30%" }}
+                            >
                               <div className="row">
                                 <div className="col-lg-12">
                                   <Link href="/" className="">
@@ -958,7 +982,7 @@ const Index = () => {
                                   </Link>
                                 </div>
                               </div>
-                              <h2
+                              <h3
                                 className="text-center mt-3"
                                 style={{ color: "#2e008b" }}
                               >
@@ -972,11 +996,12 @@ const Index = () => {
                                       propValue
                                         ? "Order Confirmation"
                                         : "Order Confirmation"
-                                    }`}{" "}
+                                    }`}
+                                – Property Id{" "}
                                 <span style={{ color: "#97d700" }}>
                                   #{propertyId}
                                 </span>
-                              </h2>
+                              </h3>
 
                               <div
                                 className="mb-2"

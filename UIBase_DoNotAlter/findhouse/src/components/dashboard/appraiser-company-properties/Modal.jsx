@@ -226,7 +226,10 @@ const Modal = ({
                         alreadyBidded
                           ? "Confirmation of Quote Updation Form "
                           : "Confirmation of Quote Form"
-                      }`}
+                      }`} – Property Id{"  "}
+                      <span style={{ color: "#97d700" }}>
+                        #{propertyId}
+                      </span>
                 </span>
               </h2>
             </div>

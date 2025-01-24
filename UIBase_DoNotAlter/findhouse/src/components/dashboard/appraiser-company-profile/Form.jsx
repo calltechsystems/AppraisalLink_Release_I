@@ -7,7 +7,7 @@ import Image from "next/image";
 // }
 
 const Form = ({ userData, chnageShowCardHandler }) => {
-  const userData_01 = userData.userType ; // Example data, replace with actual data
+  const userData_01 = userData.userType; // Example data, replace with actual data
 
   const renderUserType = (userData_01) => {
     if (userData_01 === 4) {
@@ -18,23 +18,6 @@ const Form = ({ userData, chnageShowCardHandler }) => {
   };
   return (
     <form className="contact_form" action="#" style={{ borderRadius: "5px" }}>
-      <div className="d-flex justify-content-end mb-2">
-        <button
-          className="btn btn2 btn-color profile_edit_button_01"
-          onClick={() => chnageShowCardHandler(false)}
-        >
-          <span
-            // className="flaticon-edit"
-            data-toggle="tooltip"
-            data-placement="top"
-            title="Edit Profile"
-          >
-            {" "}
-            Edit Profile
-          </span>
-        </button>
-      </div>
-
       <div className="row">
         <div className="col-lg-3 text-center">
           <div className="wrap-custom-file mt-5 mb-5">
@@ -50,110 +33,43 @@ const Form = ({ userData, chnageShowCardHandler }) => {
           <div className="row mb-2">
             <div className="col-lg-9">
               <span style={{ fontWeight: "bold" }}>
-                <h3 className="text-center text-color"> User Details </h3>
+                <h3 className="text-center text-color">
+                  {" "}
+                  Appraisal Company Details{" "}
+                </h3>
               </span>
               {/* <hr /> */}
               <div
                 className="d-flex justify-content-center"
                 id="property-info-container"
               >
-                <table
-                  style={{
-                    width: "700px",
-                    textAlign: "start",
-                    borderRadius: "5px",
-                    fontSize: "17px",
-                    fontWeight: "bold",
-                  }}
-                >
+                <table id="table-broker-info">
                   <thead>
                     <tr>
-                      <th
-                        style={{
-                          border: "1px solid #2e008b",
-                          color: "#2e008b",
-                          color: "#2e008b",
-                          // padding: "5px",
-                          textAlign: "center",
-                        }}
-                      >
-                        Headers
-                      </th>
-                      <th
-                        style={{
-                          border: "1px solid #2e008b",
-                          // width: "470px",
-                          color: "#2e008b",
-                          // padding: "5px",
-                          textAlign: "center",
-                        }}
-                      >
-                        Value
-                      </th>
+                      <th></th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
-                  <tr>
-                      <td
-                        style={{
-                          border: "1px solid #2e008b",
-                          color: "#2e008b",
-                          padding: "5px",
-                        }}
-                      >
+                    <tr>
+                      <td className="table-header">
                         <span className="text-start">User ID</span>
                       </td>
-                      <td
-                        style={{
-                          border: "1px solid #2e008b",
-                          width: "420px",
-                          color: "black",
-                          padding: "5px",
-                        }}
-                      >
-                        {" "}
-                        {userData.userEmail}
-                      </td>
+                      <td className="table-value"> {userData.userEmail}</td>
                     </tr>
                     <tr>
-                      <td
-                        style={{
-                          border: "1px solid #2e008b",
-                          color: "#2e008b",
-                          padding: "5px",
-                        }}
-                      >
+                      <td className="table-header">
                         <span className="text-start"> User Type</span>
                       </td>
-                      <td
-                        style={{
-                          border: "1px solid #2e008b",
-                          width: "250px",
-                          color: "black",
-                          padding: "5px",
-                        }}
-                      >
+                      <td className="table-value">
                         {renderUserType(userData_01)}
                       </td>
                     </tr>
                     <tr>
-                      <td
-                        style={{
-                          border: "1px solid #2e008b",
-                          color: "#2e008b",
-                          padding: "5px",
-                        }}
-                      >
+                      <td className="table-header">
                         <span className="text-start">Primary Contact Name</span>
                       </td>
-                      <td
-                        style={{
-                          border: "1px solid #2e008b",
-                          width: "280px",
-                          color: "black",
-                          padding: "5px",
-                        }}
-                      >
+                      <td className="table-value">
                         {" "}
                         {userData?.appraiserCompany_Datails?.firstName}{" "}
                         {userData?.appraiserCompany_Datails?.middleName}{" "}
@@ -161,26 +77,13 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       </td>
                     </tr>
                     <tr>
-                      <td
-                        style={{
-                          border: "1px solid #2e008b",
-                          color: "#2e008b",
-                          padding: "5px",
-                        }}
-                      >
+                      <td className="table-header">
                         <span className="text-start">
                           {" "}
                           Appraiser Company Name{" "}
                         </span>
                       </td>
-                      <td
-                        style={{
-                          border: "1px solid #2e008b",
-                          width: "250px",
-                          color: "black",
-                          padding: "5px",
-                        }}
-                      >
+                      <td className="table-value">
                         {
                           userData?.appraiserCompany_Datails
                             ?.appraiserCompanyName
@@ -188,109 +91,44 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       </td>
                     </tr>
                     <tr>
-                      <td
-                        style={{
-                          border: "1px solid #2e008b",
-                          color: "#2e008b",
-                          padding: "5px",
-                        }}
-                      >
+                      <td className="table-header">
                         <span className="text-start"> Email Address</span>
                       </td>
-                      <td
-                        style={{
-                          border: "1px solid #2e008b",
-                          width: "250px",
-                          color: "black",
-                          padding: "5px",
-                        }}
-                      >
+                      <td className="table-value">
                         {userData?.appraiserCompany_Datails?.emailId}
                       </td>
                     </tr>
                     <tr>
-                      <td
-                        style={{
-                          border: "1px solid #2e008b",
-                          color: "#2e008b",
-                          padding: "5px",
-                        }}
-                      >
+                      <td className="table-header">
                         <span className="text-start"> Phone Number</span>
                       </td>
-                      <td
-                        style={{
-                          border: "1px solid #2e008b",
-                          width: "250px",
-                          color: "black",
-                          padding: "5px",
-                        }}
-                      >
+                      <td className="table-value">
                         {userData?.appraiserCompany_Datails?.phoneNumber}
                       </td>
                     </tr>
                     <tr>
-                      <td
-                        style={{
-                          border: "1px solid #2e008b",
-                          color: "#2e008b",
-                          padding: "5px",
-                        }}
-                      >
+                      <td className="table-header">
                         <span className="text-start"> Cell Number</span>
                       </td>
-                      <td
-                        style={{
-                          border: "1px solid #2e008b",
-                          width: "250px",
-                          color: "black",
-                          padding: "5px",
-                        }}
-                      >
+                      <td className="table-value">
                         {userData?.appraiserCompany_Datails?.cellNumber
                           ? userData?.appraiserCompany_Datails?.cellNumber
                           : "N.A."}
                       </td>
                     </tr>
                     <tr>
-                      <td
-                        style={{
-                          border: "1px solid #2e008b",
-                          color: "#2e008b",
-                          padding: "5px",
-                        }}
-                      >
+                      <td className="table-header">
                         <span className="text-start"> Licence Number</span>
                       </td>
-                      <td
-                        style={{
-                          border: "1px solid #2e008b",
-                          width: "250px",
-                          color: "black",
-                          padding: "5px",
-                        }}
-                      >
+                      <td className="table-value">
                         {userData?.appraiserCompany_Datails?.licenseNumber}
                       </td>
                     </tr>
                     <tr>
-                      <td
-                        style={{
-                          border: "1px solid #2e008b",
-                          color: "#2e008b",
-                          padding: "5px",
-                        }}
-                      >
+                      <td className="table-header">
                         <span className="text-start"> Lender List</span>
                       </td>
-                      <td
-                        style={{
-                          border: "1px solid #2e008b",
-                          width: "250px",
-                          color: "black",
-                          padding: "5px",
-                        }}
-                      >
+                      <td className="table-value">
                         <span className="text-start text-dark fw-bold">
                           <a
                             target="_blank"
@@ -302,10 +140,18 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                                     ?.lenderListFUrl
                                 : ""
                             }
-                            onClick={(event)=>handleDownloadClick(event,
-                              userData?.appraiserCompany_Datails?.lenderListUrl,
-                              `${userData?.appraiserCompany_Datails?.firstName}_lenderlist.pdf`)}
-                            style={{ cursor: "pointer",textDecoration:"underline" }}
+                            onClick={(event) =>
+                              handleDownloadClick(
+                                event,
+                                userData?.appraiserCompany_Datails
+                                  ?.lenderListUrl,
+                                `${userData?.appraiserCompany_Datails?.firstName}_lenderlist.pdf`
+                              )
+                            }
+                            style={{
+                              cursor: "pointer",
+                              textDecoration: "underline",
+                            }}
                           >
                             Lender List Pdf
                           </a>
@@ -313,23 +159,10 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       </td>
                     </tr>
                     <tr>
-                      <td
-                        style={{
-                          border: "1px solid #2e008b",
-                          color: "#2e008b",
-                          padding: "5px",
-                        }}
-                      >
+                      <td className="table-header">
                         <span className="text-start">Address</span>
                       </td>
-                      <td
-                        style={{
-                          border: "1px solid #2e008b",
-                          width: "250px",
-                          color: "black",
-                          padding: "5px",
-                        }}
-                      >
+                      <td className="table-value">
                         {" "}
                         {userData?.appraiserCompany_Datails?.streetNumber}{" "}
                         {userData?.appraiserCompany_Datails?.streetName}{" "}
@@ -340,55 +173,30 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       </td>
                     </tr>
                     <tr>
-                      <td
-                        style={{
-                          border: "1px solid #2e008b",
-                          color: "#2e008b",
-                          padding: "5px",
-                        }}
-                      >
+                      <td className="table-header">
                         <span className="text-start">Office Contact Name</span>
                       </td>
-                      <td
-                        style={{
-                          border: "1px solid #2e008b",
-                          width: "250px",
-                          color: "black",
-                          padding: "5px",
-                        }}
-                      >
-                        {
-                          userData?.appraiserCompany_Datails
-                            ?.officeContactFirstName
-                        }{" "}
-                        {
-                          userData?.appraiserCompany_Datails
-                            ?.officeContactLastName
-                        }
+                      <td className="table-value">
+                        {userData?.appraiserCompany_Datails
+                          ?.officeContactFirstName ||
+                        userData?.appraiserCompany_Datails
+                          ?.officeContactLastName
+                          ? `${
+                              userData?.appraiserCompany_Datails
+                                ?.officeContactFirstName || ""
+                            } ${
+                              userData?.appraiserCompany_Datails
+                                ?.officeContactLastName || ""
+                            }`.trim()
+                          : "N.A."}
                       </td>
                     </tr>
                     <tr>
-                      <td
-                        style={{
-                          border: "1px solid #2e008b",
-                          color: "#2e008b",
-                          padding: "5px",
-                        }}
-                      >
+                      <td className="table-header">
                         <span className="text-start">Office Contact Email</span>
                       </td>
-                      <td
-                        style={{
-                          border: "1px solid #2e008b",
-                          width: "250px",
-                          color: "black",
-                          padding: "5px",
-                        }}
-                      >
+                      <td className="table-value">
                         {" "}
-                        {/* {
-                          userData?.appraiserCompany_Datails?.officeContactEmail
-                        }{" "} */}
                         {userData?.appraiserCompany_Datails?.officeContactEmail
                           ? userData?.appraiserCompany_Datails
                               ?.officeContactEmail
@@ -396,23 +204,10 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       </td>
                     </tr>
                     <tr>
-                      <td
-                        style={{
-                          border: "1px solid #2e008b",
-                          color: "#2e008b",
-                          padding: "5px",
-                        }}
-                      >
+                      <td className="table-header">
                         <span className="text-start">Office Contact Phone</span>
                       </td>
-                      <td
-                        style={{
-                          border: "1px solid #2e008b",
-                          width: "250px",
-                          color: "black",
-                          padding: "5px",
-                        }}
-                      >
+                      <td className="table-value">
                         {" "}
                         {/* {userData?.appraiserCompany_Datails?.officeContactPhone} */}
                         {userData?.appraiserCompany_Datails?.officeContactPhone
@@ -423,6 +218,22 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                     </tr>
                   </tbody>
                 </table>
+              </div>
+              <div className="d-flex justify-content-center mt-2">
+                <button
+                  className="btn btn2 btn-color profile_edit_button_01"
+                  onClick={() => chnageShowCardHandler(false)}
+                >
+                  <span
+                    // className="flaticon-edit"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Edit Profile"
+                  >
+                    {" "}
+                    Edit Profile
+                  </span>
+                </button>
               </div>
             </div>
             {/* End .col */}

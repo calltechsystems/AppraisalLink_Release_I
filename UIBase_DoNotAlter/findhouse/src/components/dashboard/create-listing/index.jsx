@@ -140,6 +140,25 @@ const Index = ({ isView, propertyData }) => {
     }
   };
 
+  const formatPhoneNumber = (number) => {
+    if (!number) return ""; // Handle empty input
+
+    // Remove non-numeric characters
+    const digits = number.replace(/\D/g, "");
+
+    // Format the number as "416 123-4567"
+    if (digits.length <= 3) {
+      return digits; // e.g., "416"
+    } else if (digits.length <= 6) {
+      return `${digits.slice(0, 3)} ${digits.slice(3)}`; // e.g., "416 123"
+    } else {
+      return `${digits.slice(0, 3)} ${digits.slice(3, 6)}-${digits.slice(
+        6,
+        10
+      )}`; // e.g., "416 123-4567"
+    }
+  };
+
   const closeErrorModal = () => {
     setModalIsOpenError(false);
     setModalIsOpenError_01(false);
@@ -1211,7 +1230,7 @@ const Index = ({ isView, propertyData }) => {
                           <div className="col-lg-12">
                             <Link href="/" className="">
                               <Image
-                                width={60}
+                                width={50}
                                 height={45}
                                 className="logo1 img-fluid"
                                 style={{ marginTop: "-20px" }}
@@ -1255,384 +1274,197 @@ const Index = ({ isView, propertyData }) => {
                         ></div>
                       </div>
 
-                      <div className="d-flex justify-content-center mt-2">
-                        <table
-                          style={{
-                            width: "700px",
-                            textAlign: "start",
-                            borderRadius: "5px",
-                            fontSize: "17px",
-                            fontWeight: "bold",
-                          }}
-                        >
-                          <tr>
-                            <th
-                              style={{
-                                border: "1px solid #2e008b",
-                                color: "#2e008b",
-                                // padding: "5px",
-                                textAlign: "center",
-                              }}
-                            >
-                              Headers
-                            </th>
-                            <th
-                              style={{
-                                border: "1px solid #2e008b",
-                                // width: "470px",
-                                color: "#2e008b",
-                                // padding: "5px",
-                                textAlign: "center",
-                              }}
-                            >
-                              Value
-                            </th>
-                          </tr>
-                          <tr>
-                            <td
-                              style={{
-                                border: "1px solid #2e008b",
-                                color: "#2e008b",
-                                padding: "5px",
-                              }}
-                            >
-                              <span className="text-start">
-                                Property Address
-                              </span>
-                            </td>
-                            <td
-                              style={{
-                                border: "1px solid #2e008b",
-                                width: "465px",
-                                color: "black",
-                                padding: "5px",
-                              }}
-                            >
-                              {streetNumberRef} {streetNameRef} {cityRef}{" "}
-                              {stateRef} {zipCodeRef}
-                            </td>
-                          </tr>
-
-                          <tr>
-                            <td
-                              style={{
-                                border: "1px solid #2e008b",
-                                color: "#2e008b",
-                                padding: "5px",
-                              }}
-                            >
-                              <span className="text-start">
-                                {" "}
-                                Type of Building
-                              </span>
-                            </td>
-                            <td
-                              style={{
-                                border: "1px solid #2e008b",
-                                width: "465px",
-                                color: "black",
-                                padding: "5px",
-                              }}
-                            >
-                              {String(buildinRef) === "Other"
-                                ? otherTypeOfBuildingValue
-                                : buildinRef}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td
-                              style={{
-                                border: "1px solid #2e008b",
-                                color: "#2e008b",
-                                padding: "5px",
-                              }}
-                            >
-                              <span className="text-start">
-                                {" "}
-                                Type of Appraisal
-                              </span>
-                            </td>
-                            <td
-                              style={{
-                                border: "1px solid #2e008b",
-                                width: "465px",
-                                color: "black",
-                                padding: "5px",
-                              }}
-                            >
-                              {String(typeOfAppraisal) === "Other"
-                                ? otherTypeOfAppraisalValue
-                                : typeOfAppraisal}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td
-                              style={{
-                                border: "1px solid #2e008b",
-                                color: "#2e008b",
-                                padding: "5px",
-                              }}
-                            >
-                              <span className="text-start"> Purpose</span>
-                            </td>
-                            <td
-                              style={{
-                                border: "1px solid #2e008b",
-                                width: "465px",
-                                color: "black",
-                                padding: "5px",
-                              }}
-                            >
-                              {String(purpose) === "Other"
-                                ? otherPurposeValue
-                                : purpose}
-                            </td>
-                          </tr>
-                          {lenderInformation && (
+                      <div
+                        className="d-flex justify-content-center mt-2"
+                        id="property-info-container"
+                      >
+                        <table id="table-broker-info">
+                          <thead>
                             <tr>
-                              <td
-                                style={{
-                                  border: "1px solid grey",
-                                  color: "#2e008b",
-                                }}
-                              >
+                              <th></th>
+                              <th></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td className="table-header">
                                 <span className="text-start">
-                                  {" "}
-                                  Lender Information
+                                  Property Address
                                 </span>
                               </td>
-                              <td
-                                style={{
-                                  border: "1px solid #2e008b",
-                                  width: "465px",
-                                  color: "black",
-                                  padding: "5px",
-                                }}
-                              >
-                                {lenderInformation}
+                              <td className="table-value">
+                                {streetNumberRef} {streetNameRef} {cityRef}{" "}
+                                {stateRef} {zipCodeRef}
                               </td>
                             </tr>
-                          )}
 
-                          {communityRef && (
                             <tr>
-                              <td
-                                style={{
-                                  border: "1px solid grey",
-                                  color: "#2e008b",
-                                }}
-                              >
-                                <span className="text-start">Community</span>
+                              <td className="table-header">
+                                <span className="text-start">
+                                  {" "}
+                                  Property Type
+                                </span>
                               </td>
-                              <td
-                                style={{
-                                  border: "1px solid grey",
-                                  width: "250px",
-                                }}
-                              >
-                                {communityRef}
+                              <td className="table-value">
+                                {String(buildinRef) === "Other"
+                                  ? otherTypeOfBuildingValue
+                                  : buildinRef}
                               </td>
                             </tr>
-                          )}
-                          <tr>
-                            <td
-                              style={{
-                                border: "1px solid #2e008b",
-                                color: "#2e008b",
-                                padding: "5px",
-                              }}
-                            >
-                              <span className="text-start">
-                                Estimated Value / Purchased Price
-                              </span>
-                            </td>
-                            <td
-                              style={{
-                                border: "1px solid #2e008b",
-                                width: "465px",
-                                color: "black",
-                                padding: "5px",
-                              }}
-                            >
-                              {" "}
-                              $ {estimatedValue}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td
-                              style={{
-                                border: "1px solid #2e008b",
-                                color: "#2e008b",
-                                padding: "5px",
-                              }}
-                            >
-                              <span className="text-start">Urgency</span>
-                            </td>
-                            <td
-                              style={{
-                                border: "1px solid #2e008b",
-                                width: "465px",
-                                color: "black",
-                                padding: "5px",
-                              }}
-                            >
-                              {" "}
-                              {String(urgencyRef) === "Other"
-                                ? otherUrgencyValue
-                                : urgencyRef}
-                            </td>
-                          </tr>
+                            <tr>
+                              <td className="table-header">
+                                <span className="text-start">
+                                  {" "}
+                                  Type of Appraisal
+                                </span>
+                              </td>
+                              <td className="table-value">
+                                {String(typeOfAppraisal) === "Other"
+                                  ? otherTypeOfAppraisalValue
+                                  : typeOfAppraisal}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td className="table-header">
+                                <span className="text-start"> Purpose</span>
+                              </td>
+                              <td className="table-value">
+                                {String(purpose) === "Other"
+                                  ? otherPurposeValue
+                                  : purpose}
+                              </td>
+                            </tr>
+                            {lenderInformation && (
+                              <tr>
+                                <td className="table-header">
+                                  <span className="text-start">
+                                    {" "}
+                                    Lender Information
+                                  </span>
+                                </td>
+                                <td className="table-value">
+                                  {lenderInformation}
+                                </td>
+                              </tr>
+                            )}
 
-                          <tr>
-                            <td
-                              style={{
-                                border: "1px solid #2e008b",
-                                color: "#2e008b",
-                                padding: "5px",
-                              }}
-                            >
-                              <span className="text-start">
-                                Quote Required Date
-                              </span>
-                            </td>
-                            <td
-                              style={{
-                                border: "1px solid #2e008b",
-                                width: "465px",
-                                color: "black",
-                                padding: "5px",
-                              }}
-                            >
-                              {" "}
-                              {appraisalQuoteDate}
-                            </td>
-                          </tr>
+                            {communityRef && (
+                              <tr>
+                                <td className="table-header">
+                                  <span className="text-start">Community</span>
+                                </td>
+                                <td className="table-value">{communityRef}</td>
+                              </tr>
+                            )}
+                            <tr>
+                              <td className="table-header">
+                                <span className="text-start">
+                                  Estimated Value / Purchased Price
+                                </span>
+                              </td>
+                              <td className="table-value">
+                                {" "}
+                                $ {estimatedValue}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td className="table-header">
+                                <span className="text-start">Urgency</span>
+                              </td>
+                              <td className="table-value">
+                                {" "}
+                                {String(urgencyRef) === "Other"
+                                  ? otherUrgencyValue
+                                  : urgencyRef}
+                              </td>
+                            </tr>
 
-                          <tr>
-                            <td
-                              style={{
-                                border: "1px solid #2e008b",
-                                color: "#2e008b",
-                                padding: "5px",
-                              }}
-                            >
-                              <span className="text-start">Applicant Name</span>
-                            </td>
-                            <td
-                              style={{
-                                border: "1px solid #2e008b",
-                                width: "465px",
-                                color: "black",
-                                padding: "5px",
-                              }}
-                            >
-                              {" "}
-                              {applicantFirstName} {applicantLatsName}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td
-                              style={{
-                                border: "1px solid #2e008b",
-                                color: "#2e008b",
-                                padding: "5px",
-                              }}
-                            >
-                              <span className="text-start">Email Address</span>
-                            </td>
-                            <td
-                              style={{
-                                border: "1px solid #2e008b",
-                                width: "465px",
-                                color: "black",
-                                padding: "5px",
-                              }}
-                            >
-                              {" "}
-                              {applicantEmail}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td
-                              style={{
-                                border: "1px solid #2e008b",
-                                color: "#2e008b",
-                                padding: "5px",
-                              }}
-                            >
-                              <span className="text-start">Phone Number</span>
-                            </td>
-                            <td
-                              style={{
-                                border: "1px solid #2e008b",
-                                width: "465px",
-                                color: "black",
-                                padding: "5px",
-                              }}
-                            >
-                              {" "}
-                              {applicantNumber}
-                            </td>
-                          </tr>
-                          {/* {applicantAddress && (
+                            <tr>
+                              <td className="table-header">
+                                <span className="text-start">
+                                  Quote Required Date
+                                </span>
+                              </td>
+                              <td className="table-value">
+                                {" "}
+                                {appraisalQuoteDate}
+                              </td>
+                            </tr>
+
+                            <tr>
+                              <td className="table-header">
+                                <span className="text-start">
+                                  Applicant Name
+                                </span>
+                              </td>
+                              <td className="table-value">
+                                {" "}
+                                {applicantFirstName} {applicantLatsName}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td className="table-header">
+                                <span className="text-start">
+                                  Email Address
+                                </span>
+                              </td>
+                              <td className="table-value"> {applicantEmail}</td>
+                            </tr>
+                            <tr>
+                              <td className="table-header">
+                                <span className="text-start">Phone Number</span>
+                              </td>
+                              <td className="table-value">
+                                {" "}
+                                {formatPhoneNumber(applicantNumber)}
+                              </td>
+                            </tr>
+                            {/* {applicantAddress && (
                             <tr>
                               <td
-                                style={{
-                                  border: "1px solid grey",
-                                  color: "#2e008b",
-                                }}
+                                className="table-value"
                               >
                                 <span className="text-start">Address</span>
                               </td>
                               <td
-                                style={{
-                                  border: "1px solid grey",
-                                  width: "250px",
-                                }}
+                                className="table-value"
                               >
                                 {" "}
                                 {bidLowerRangeRef}
                               </td>
                             </tr>
                           )} */}
-                          {false && (
-                            <tr>
-                              <td
-                                style={{
-                                  border: "1px solid grey",
-                                  color: "#2e008b",
-                                }}
-                              >
-                                <span className="text-start">
-                                  Remark / Summary
-                                </span>
-                              </td>
-                              <td
-                                style={{
-                                  border: "1px solid grey",
-                                  width: "250px",
-                                }}
-                              >
-                                {" "}
-                                {bidLowerRangeRef}
-                              </td>
-                            </tr>
-                          )}
+                            {false && (
+                              <tr>
+                                <td className="table-value">
+                                  <span className="text-start">
+                                    Remark / Summary
+                                  </span>
+                                </td>
+                                <td className="table-value">
+                                  {" "}
+                                  {bidLowerRangeRef}
+                                </td>
+                              </tr>
+                            )}
+                          </tbody>
                         </table>
                       </div>
                       <div className="row text-center mt-3">
-                        <div className="col-lg-12">
+                        <div className="d-flex justify-content-center gap-2">
                           <button
-                            className="btn btn-color w-25 m-2"
+                            className="btn btn-color"
                             onClick={onCancelHandler}
+                            style={{ width: "130px" }}
                           >
                             Cancel
                           </button>
                           <button
-                            className="btn btn-color w-25"
+                            className="btn btn-color"
                             onClick={
                               updateView ? updateHandler : finalSubmitHandler
                             }
+                            style={{ width: "130px" }}
                           >
                             Submit
                           </button>

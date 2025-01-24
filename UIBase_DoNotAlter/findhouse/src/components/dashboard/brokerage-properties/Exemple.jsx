@@ -460,7 +460,11 @@ export default function Exemple({
             //   ),
             address: `${property.streetNumber} ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
             // remark: isBidded.remark ? isBidded.remark : "N.A.",
-            remark: isCancel ? "N.A." : isBidded.remark ? isBidded.remark : "N.A.",
+            remark: isCancel
+              ? "N.A."
+              : isBidded.remark
+              ? isBidded.remark
+              : "N.A.",
             type_of_building: property.typeOfBuilding,
             amount: ` $ ${addCommasToNumber(property.estimatedValue)}`,
             purpose: property.purpose,
@@ -957,12 +961,12 @@ export default function Exemple({
                 </Link>
               </div>
             </div>
-            <h2 className="text-center mt-3" style={{ color: "#2e008b" }}>
-              Order Confirmation{" "}
+            <h3 className="text-center mt-3" style={{ color: "#2e008b" }}>
+              Order Confirmation– Property Id{" "}
               <span style={{ color: "#97d700" }}>
                 #{selectedProperty?.orderId}
               </span>
-            </h2>
+            </h3>
             <div className="mb-2" style={{ border: "2px solid #97d700" }}></div>
             <p className="fs-5 text-center text-dark mt-4">
               Are you sure for the order to be{" "}

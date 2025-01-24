@@ -312,7 +312,7 @@ const CreateList = ({
                 onChange={handleInputChange}
                 value={formatNumberWithCommas(estimatedValue)}
                 disabled={isDisable}
-                maxLength={10}
+                maxLength={30}
               />
             </div>
           </div>
