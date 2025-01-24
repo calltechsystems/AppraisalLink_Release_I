@@ -167,7 +167,7 @@ const Modal = ({
     <div>
       {modalOpen && (
         <div className="modal">
-          <div className="modal-content">
+          <div className="modal-content" style={{ width: "40%" }}>
             <div className="row">
               <div className="col-lg-12">
                 <Link href="/" className="">
@@ -203,16 +203,14 @@ const Modal = ({
                 </Link>
               </div>
             </div>
-            {/* <span className="close" onClick={onCloseModalHandler}>
-              &times;
-            </span> */}
+
             <div style={{ display: "flex", flexDirection: "column" }}>
-              <h2 className="text-center">
+              <h3 className="text-center mt-2">
                 {" "}
                 <span
                   style={{
                     fontWeight: "bold",
-                    fontSize: "29px",
+                    fontSize: "25px",
                     color: "#2e008b",
                   }}
                 >
@@ -226,9 +224,11 @@ const Modal = ({
                         alreadyBidded
                           ? "Confirmation of Quote Updation Form "
                           : "Confirmation of Quote Form"
-                      }`}
+                      }`}{" "}
+                  – Property Id{" "}
+                  <span style={{ color: "#97d700" }}>#{propertyId}</span>
                 </span>
-              </h2>
+              </h3>
             </div>
             <div>
               <div

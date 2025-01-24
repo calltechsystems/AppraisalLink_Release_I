@@ -798,7 +798,7 @@ const Index = () => {
                           </div>
                         )}
 
-                          {openBrokerModal && typeView === 1 && (
+                        {openBrokerModal && typeView === 1 && (
                           <div className="modal">
                             <div className="modal-content">
                               <div className="row">
@@ -839,7 +839,7 @@ const Index = () => {
                               <div className="row">
                                 <div className="col-lg-12 text-center">
                                   <h2 className=" text-color mt-1">
-                                      Property Details – Property ID{"  "}
+                                    Property Details – Property Id{"  "}
                                     <span style={{ color: "#97d700" }}>
                                       #{broker.orderId}
                                     </span>
@@ -1073,7 +1073,7 @@ const Index = () => {
                               <div className="row">
                                 <div className="col-lg-12 text-center">
                                   <h2 className=" text-color mt-1">
-                                    Mortgage Broker Details{"  "}
+                                    Mortgage Broker Details – Property Id{"  "}
                                     <span style={{ color: "#97d700" }}>
                                       #{broker.orderId}
                                     </span>
@@ -1321,7 +1321,10 @@ const Index = () => {
               {isQuoteModalOpen && (
                 <div className="modal">
                   <div className="modal-content">
-                    <h3 className="text-center">Quote Confirmation</h3>
+                    <h3 className="text-center">
+                      Quote Confirmation – Property Id{" "}
+                      <span style={{ color: "#97d700" }}>#{propertyId}</span>
+                    </h3>
                     <h5 className="text-center">
                       Are you sure you want to quote this property over this
                       amount :{valueRef?.current?.value} ?
@@ -1348,8 +1351,10 @@ const Index = () => {
               {assignModal && (
                 <div className="modal">
                   <div className="modal-content">
-                    <h3 className="text-center">Quote Status Updation</h3>
-
+                    <h3 className="text-center">
+                      Quote Status Updation – Property Id{" "}
+                      <span style={{ color: "#97d700" }}>#{propertyId}</span>
+                    </h3>
                     <select
                       required
                       className="form-select"
@@ -1399,7 +1404,7 @@ const Index = () => {
               )}
               {isStatusModal && (
                 <div className="modal">
-                  <div className="modal-content">
+                  <div className="modal-content" style={{ width: "40%" }}>
                     <div className="row">
                       <div className="col-lg-12">
                         <Link href="/" className="">
@@ -1435,9 +1440,12 @@ const Index = () => {
                     </div>
                     <div className="row">
                       <div className="col-lg-12 text-center">
-                        <h2 className=" text-color mt-1">
-                          Appraisal Status Updation
-                        </h2>
+                        <h3 className=" text-color mt-1">
+                          Appraisal Status Updation – Property Id{" "}
+                          <span style={{ color: "#97d700" }}>
+                            #{propertyId}
+                          </span>
+                        </h3>
                       </div>
                     </div>
                     <div

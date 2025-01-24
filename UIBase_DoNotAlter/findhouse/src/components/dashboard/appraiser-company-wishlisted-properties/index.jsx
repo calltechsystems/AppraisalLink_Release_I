@@ -40,7 +40,7 @@ const Index = () => {
   const [propertyId, setPropertyId] = useState(null);
 
   const [assignAppraiserId, setassignAppraiserId] = useState(-1);
-
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const [wishlistedProperties, setWishlistedProperties] = useState([]);
   const [updatedCode, setUpdatedCode] = useState(false);
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
@@ -829,7 +829,7 @@ const Index = () => {
                               <div className="row">
                                 <div className="col-lg-12 text-center">
                                   <h2 className=" text-color mt-1">
-                                      Property Details – Property Id{"  "}
+                                    Property Details – Property Id{"  "}
                                     <span style={{ color: "#97d700" }}>
                                       #{broker.orderId}
                                     </span>
@@ -1058,21 +1058,12 @@ const Index = () => {
                                       Land
                                     </span>
                                   </Link>
-                                  <button
-                                    className="btn btn-color"
-                                    onClick={() =>
-                                      brokerInfoHandler(broker.orderId)
-                                    }
-                                    title="Download Pdf"
-                                  >
-                                    <FaDownload />
-                                  </button>
                                 </div>
                               </div>
                               <div className="row">
                                 <div className="col-lg-12 text-center">
                                   <h2 className=" text-color mt-1">
-                                    Mortgage Broker Details{"  "}
+                                    Mortgage Broker Details – Property Id{"  "}
                                     <span style={{ color: "#97d700" }}>
                                       #{broker.orderId}
                                     </span>
@@ -1320,7 +1311,10 @@ const Index = () => {
               {isQuoteModalOpen && (
                 <div className="modal">
                   <div className="modal-content">
-                    <h3 className="text-center">Quote Confirmation</h3>
+                    <h3 className="text-center">
+                      Quote Confirmation – Property Id{"  "}
+                      <span style={{ color: "#97d700" }}>#{propertyId}</span>
+                    </h3>
                     <h5 className="text-center">
                       Are you sure you want to quote this property over this
                       amount :{valueRef?.current?.value} ?
@@ -1438,137 +1432,215 @@ const Index = () => {
                   </div>
                 </div>
               )}
-              {isStatusModal && (
+               {isStatusModal && (
                 <div className="modal">
-                  <div className="modal-content">
-                    <div className="row">
-                      <div className="col-lg-12">
-                        <Link href="/" className="">
-                          <Image
-                            width={50}
-                            height={45}
-                            className="logo1 img-fluid"
-                            style={{ marginTop: "-20px" }}
-                            src="/assets/images/Appraisal_Land_Logo.png"
-                            alt="header-logo2.png"
-                          />
-                          <span
-                            style={{
-                              color: "#2e008b",
-                              fontWeight: "bold",
-                              fontSize: "24px",
+                  <div className="modal-content" style={{ width: "35%" }}>
+                    {showConfirmation ? (
+                      // Confirmation Message
+                      <div>
+                        <div className="col-lg-12">
+                          <Link href="/" className="">
+                            <Image
+                              width={50}
+                              height={45}
+                              className="logo1 img-fluid"
+                              style={{ marginTop: "-20px" }}
+                              src="/assets/images/Appraisal_Land_Logo.png"
+                              alt="header-logo2.png"
+                            />
+                            <span
+                              style={{
+                                color: "#2e008b",
+                                fontWeight: "bold",
+                                fontSize: "24px",
+                              }}
+                            >
+                              Appraisal
+                            </span>
+                            <span
+                              style={{
+                                color: "#97d700",
+                                fontWeight: "bold",
+                                fontSize: "24px",
+                              }}
+                            >
+                              {" "}
+                              Land
+                            </span>
+                          </Link>
+                        </div>
+                        <h3
+                          className="text-center mt-3"
+                          style={{ color: "#2e008b" }}
+                        >
+                          Confirm Submission – Property Id{" "}
+                          <span style={{ color: "#97d700" }}>
+                            #{propertyId}
+                          </span>
+                        </h3>
+                        <div
+                          className="mb-4"
+                          style={{ border: "2px solid #97d700" }}
+                        ></div>
+                        <p className="text-center" style={{ fontSize: "18px" }}>
+                        Are you sure you want to proceed with the changes?
+                        </p>
+                        <div
+                          className="mt-4 mb-4"
+                          style={{ border: "2px solid #97d700" }}
+                        ></div>
+                        <div className="text-center">
+                          <button
+                            className="btn w-25 btn-color"
+                            onClick={() => setShowConfirmation(false)} // Go back to the form
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            className="btn btn-color w-25"
+                            style={{ marginLeft: "12px" }}
+                            onClick={() => {
+                              handleStatusUpdateHandler();
+                              setShowConfirmation(false); // Close confirmation on submission
                             }}
                           >
-                            Appraisal
-                          </span>
-                          <span
-                            style={{
-                              color: "#97d700",
-                              fontWeight: "bold",
-                              fontSize: "24px",
-                            }}
-                          >
-                            {" "}
-                            Land
-                          </span>
-                        </Link>
+                            Confirm
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-lg-12 text-center">
-                        <h2 className=" text-color mt-1">
-                          Appraisal Status Updation
-                        </h2>
-                      </div>
-                    </div>
-                    <div
-                      className="mb-4"
-                      style={{ border: "2px solid #97d700" }}
-                    ></div>
-                    <select
-                      required
-                      className="form-select mb-3"
-                      data-live-search="true"
-                      data-width="100%"
-                      onChange={(e) => handleStatusSelect(e.target.value)}
-                      style={{
-                        paddingTop: "15px",
-                        paddingBottom: "15px",
-                        backgroundColor: "#E8F0FE",
-                      }}
-                    >
-                      {AppraiserStatusOptions.map((item, index) => (
-                        <option key={item.id} value={item.value}>
-                          {item.type}
-                        </option>
-                      ))}
-                    </select>
-                    {openDate && (
-                      <div className="col-lg-12">
-                        <label
+                    ) : (
+                      // Form Content
+                      <div>
+                        <div className="row">
+                          <div className="col-lg-12">
+                            <Link href="/" className="">
+                              <Image
+                                width={50}
+                                height={45}
+                                className="logo1 img-fluid"
+                                style={{ marginTop: "-20px" }}
+                                src="/assets/images/Appraisal_Land_Logo.png"
+                                alt="header-logo2.png"
+                              />
+                              <span
+                                style={{
+                                  color: "#2e008b",
+                                  fontWeight: "bold",
+                                  fontSize: "24px",
+                                }}
+                              >
+                                Appraisal
+                              </span>
+                              <span
+                                style={{
+                                  color: "#97d700",
+                                  fontWeight: "bold",
+                                  fontSize: "24px",
+                                }}
+                              >
+                                {" "}
+                                Land
+                              </span>
+                            </Link>
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="col-lg-12 text-center">
+                            <h3 className=" text-color mt-3">
+                              Appraisal Status Updation – Property Id{" "}
+                              <span style={{ color: "#97d700" }}>
+                                #{propertyId}
+                              </span>
+                            </h3>
+                          </div>
+                        </div>
+                        <div
+                          className="mb-4"
+                          style={{ border: "2px solid #97d700" }}
+                        ></div>
+                        <select
+                          required
+                          className="form-select mb-3"
+                          data-live-search="true"
+                          data-width="100%"
+                          onChange={(e) => handleStatusSelect(e.target.value)}
                           style={{
-                            color: "#2e008b",
-                            fontWeight: "bold",
-                            fontSize: "18px",
+                            paddingTop: "15px",
+                            paddingBottom: "15px",
+                            backgroundColor: "#E8F0FE",
                           }}
                         >
-                          Date and Time <span style={{ color: "red" }}>*</span>
-                        </label>
-                        <input
-                          required
-                          type="datetime-local"
-                          className="form-control"
-                          id="formGroupExampleInput3"
-                          onChange={(e) => setStatusDate(e.target.value)}
-                          value={statusDate}
-                          min={getMinDateTime()}
-                        />
-                        {/* {!statusDate && (
-                          <span style={{ color: "red", fontSize: "14px" }}>
-                            Date is required.
-                          </span>
-                        )} */}
+                          {AppraiserStatusOptions.map((item, index) => (
+                            <option key={item.id} value={item.value}>
+                              {item.type}
+                            </option>
+                          ))}
+                        </select>
+                        {openDate && (
+                          <div className="col-lg-12">
+                            <label
+                              style={{
+                                color: "#2e008b",
+                                fontWeight: "bold",
+                                fontSize: "18px",
+                              }}
+                            >
+                              Date and Time{" "}
+                              <span style={{ color: "red" }}>*</span>
+                            </label>
+                            <input
+                              required
+                              type="datetime-local"
+                              className="form-control"
+                              id="formGroupExampleInput3"
+                              onChange={(e) => setStatusDate(e.target.value)}
+                              value={statusDate}
+                              min={getMinDateTime()}
+                            />
+                          </div>
+                        )}
+                        <div className="mt-3">
+                          <h4 style={{ color: "#2e008b", fontWeight: "bold" }}>
+                            Remark
+                          </h4>
+                          <input
+                            required
+                            type="text"
+                            className="form-control mb-3"
+                            id="formGroupExampleInput3"
+                            onChange={(e) => setRemark(e.target.value)}
+                            value={remark}
+                            style={{ overflow: "scroll" }}
+                            maxLength="50"
+                          />
+                        </div>
+                        <div
+                          className="mb-3 mt-2"
+                          style={{ border: "2px solid #97d700" }}
+                        ></div>
+                        <div className="text-center">
+                          <button
+                            className="btn w-25 btn-color"
+                            onClick={closeStatusUpdateHandler}
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            className="btn btn-color w-25"
+                            style={{ marginLeft: "12px" }}
+                            onClick={() => {
+                              if (openDate && !statusDate) {
+                                toast.error("Date and time required.");
+                              } else {
+                                setShowConfirmation(true); // Toggle to show confirmation
+                              }
+                            }}
+                          >
+                            Submit
+                          </button>
+                        </div>
                       </div>
                     )}
-                    <div className="mt-3">
-                      <h4 style={{ color: "#2e008b", fontWeight: "bold" }}>
-                        Remark
-                      </h4>
-                      <input
-                        required
-                        type="text"
-                        className="form-control mb-3"
-                        id="formGroupExampleInput3"
-                        onChange={(e) => setRemark(e.target.value)}
-                        value={remark}
-                        maxLength="50"
-                      />
-                    </div>
-                    <div
-                      className="mb-3 mt-2"
-                      style={{ border: "2px solid #97d700" }}
-                    ></div>
-                    <div className="text-center">
-                      <button
-                        className="btn w-25 btn-color"
-                        onClick={closeStatusUpdateHandler}
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        className="btn btn-color w-25"
-                        style={{ marginLeft: "12px" }}
-                        onClick={() => {
-                          if (openDate && !statusDate) {
-                            toast.error("Date and time required.");
-                          } else {
-                            handleStatusUpdateHandler();
-                          }
-                        }}
-                      >
-                        Submit
-                      </button>
-                    </div>
                   </div>
                 </div>
               )}

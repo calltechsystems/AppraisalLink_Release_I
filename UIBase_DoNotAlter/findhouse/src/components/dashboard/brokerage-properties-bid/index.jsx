@@ -15,6 +15,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import Exemple from "./Exemple";
 import { encryptionData } from "../../../utils/dataEncryption";
+import { FaDownload } from "react-icons/fa";
 
 const Index = ({ propertyId }) => {
   const [disable, setDisable] = useState(false);
@@ -329,7 +330,7 @@ const Index = ({ propertyId }) => {
                 <div className="col-lg-12 col-xl-12 mt-3 mb-1 text-center">
                   <div className="style2 mb30-991">
                     <h2 className="heading-forms">
-                      Provided Quotes{" "}
+                      Provided Quotes– Property Id{" "}
                       <span className="text-color">#{propertyId}</span>
                     </h2>
                   </div>
@@ -694,7 +695,17 @@ const Index = ({ propertyId }) => {
                       </tbody>
                     </table>
                   </div>
-                  <div className="d-flex justify-content-center mt-3">
+                  <div className="d-flex justify-content-center mt-3 gap-2">
+                    <button
+                      className="btn btn-color"
+                      style={{ width: "100px" }}
+                      // onClick={() =>
+                      //   PropertyInfoHandler(currentProperty.orderId)
+                      // }
+                      title="Download Pdf"
+                    >
+                      <FaDownload />
+                    </button>
                     <button
                       className="btn btn-color"
                       style={{ width: "100px" }}

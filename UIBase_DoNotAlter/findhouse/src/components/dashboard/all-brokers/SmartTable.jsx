@@ -4,7 +4,7 @@ import SVGArrowDown from "./icons/SVGArrowDown";
 import SVGArrowUp from "./icons/SVGArrowUp";
 import SVGChevronLeft from "./icons/SVGChevronLeft";
 import SVGChevronRight from "./icons/SVGChevronRight";
-import { FaRedo } from "react-icons/fa";
+import { FaDownload, FaRedo } from "react-icons/fa";
 import * as XLSX from "xlsx";
 
 import { useReactToPrint } from "react-to-print";
@@ -294,13 +294,22 @@ function SmartTable(props) {
               </div>
             </li>
             <li className="list-inline-item">
-              <button
-                className="btn btn-color w-100"
-                onClick={() => props.refreshHandler()}
-                title="Refresh"
-              >
-                <FaRedo />
-              </button>
+              <div className="d-flex justify-content-center gap-1">
+                <button
+                  className="btn btn-color w-100"
+                  onClick={() => props.refreshHandler()}
+                  title="Refresh"
+                >
+                  <FaRedo />
+                </button>
+                <button
+                  className="btn btn-color w-100"
+                  // onClick={() => props.refreshHandler()}
+                  title="Refresh"
+                >
+                  <FaDownload />
+                </button>
+              </div>
             </li>
           </ul>
         </div>
@@ -399,7 +408,7 @@ function SmartTable(props) {
                 className="smartTable-noDataFound col-12"
                 style={{ marginTop: "150px", marginBottom: "40px" }}
               >
-              {props.dataFetched && props.properties.length === 0 ? (
+                {props.dataFetched && props.properties.length === 0 ? (
                   showNoData ? (
                     <h3>No Data Found</h3>
                   ) : (

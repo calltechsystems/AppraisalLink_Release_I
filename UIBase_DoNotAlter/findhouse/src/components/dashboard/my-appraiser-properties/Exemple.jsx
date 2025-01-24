@@ -990,7 +990,7 @@ export default function Exemple({
         />
       )}
 
-{isWishlistProperty && (
+      {isWishlistProperty && (
         <div className="modal">
           <div className="modal-content" style={{ width: "30%" }}>
             <div className="row">
@@ -1028,12 +1028,12 @@ export default function Exemple({
                 </Link>
               </div>
             </div>
-            <h2 className="text-center mt-3" style={{ color: "#2e008b" }}>
-              Order Confirmation{" "}
+            <h3 className="text-center mt-3" style={{ color: "#2e008b" }}>
+              Order Confirmation – Property Id{" "}
               <span style={{ color: "#97d700" }}>
                 #{selectedProperty?.orderId}
               </span>
-            </h2>
+            </h3>
             <div className="mb-2" style={{ border: "2px solid #97d700" }}></div>
             <p className="fs-5 text-center text-dark mt-4">
               Are you sure for the order to be{" "}

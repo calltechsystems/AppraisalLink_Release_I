@@ -1109,7 +1109,7 @@ const Index = () => {
                               <div className="row">
                                 <div className="col-lg-12 text-center">
                                   <h2 className=" text-color mt-1">
-                                    Mortgage Broker Details{"  "}
+                                    Mortgage Broker Details – Property Id{"  "}
                                     <span style={{ color: "#97d700" }}>
                                       #{broker.orderId}
                                     </span>
@@ -1392,7 +1392,10 @@ const Index = () => {
                         </Link>
                       </div>
                     </div>
-                    <h3 className="text-center">Quote Confirmation</h3>
+                    <h3 className="text-center">
+                      Quote Confirmation – Property Id{" "}
+                      <span style={{ color: "#97d700" }}>#{propertyId}</span>
+                    </h3>
                     <h5 className="text-center">
                       Are you sure you want to quote this property over this
                       amount :{valueRef?.current?.value} ?
@@ -1455,7 +1458,8 @@ const Index = () => {
                       </div>
                     </div>
                     <h3 className="text-center mt-2 text-color">
-                      Provided Quote
+                      Provided Quote – Property Id{" "}
+                      <span style={{ color: "#97d700" }}>#{propertyId}</span>
                     </h3>
                     <div>
                       <div
@@ -1535,7 +1539,10 @@ const Index = () => {
                         </Link>
                       </div>
                     </div>
-                    <h3 className="text-center">Quote Status Updation</h3>
+                    <h3 className="text-center">
+                      Quote Status Updation – Property Id{" "}
+                      <span style={{ color: "#97d700" }}>#{propertyId}</span>
+                    </h3>
                     <select
                       required
                       className="form-select"
@@ -1585,7 +1592,7 @@ const Index = () => {
               )}
               {isStatusModal && (
                 <div className="modal">
-                  <div className="modal-content" style={{ width: "30%" }}>
+                  <div className="modal-content" style={{ width: "36%" }}>
                     <div className="row">
                       <div className="col-lg-12">
                         <Link href="/" className="">
@@ -1621,9 +1628,12 @@ const Index = () => {
                     </div>
                     <div className="row">
                       <div className="col-lg-12 text-center">
-                        <h2 className=" text-color mt-2">
-                          Appraisal Status Updation
-                        </h2>
+                        <h3 className=" text-color mt-2">
+                          Appraisal Status Updation – Property Id{" "}
+                          <span style={{ color: "#97d700" }}>
+                            #{propertyId}
+                          </span>
+                        </h3>
                       </div>
                     </div>
                     <div

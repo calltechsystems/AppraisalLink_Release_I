@@ -164,12 +164,13 @@ export default function Exemple({
   const [archiveModal, setArchiveModal] = useState(false);
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [archivedProperties, setArchivedProperties] = useState([]);
-
   const [dataFetched, setDataFetched] = useState(false);
   const [assignedProperties, setAssignedProperties] = useState([]);
   let tempData = [];
-
   const [allArchive, setAllArchive] = useState([]);
+  const [wishlistModal, setWishlistModal] = useState(false);
+  const [isWishlistProperty, setIsWishlistProperty] = useState(0);
+  const [selectedWishlistId, setSelectedWishlistId] = useState(null);
 
   useEffect(() => {
     if (searchInput === "") {
@@ -285,6 +286,27 @@ export default function Exemple({
   const closeArchiveModal = () => {
     setSelectedProperty(null); // Clear the selected property
     setArchiveModal(false); // Close the modal
+    setWishlistModal(false); // Close the modal
+    setIsWishlistProperty(false);
+  };
+
+  const openWishlistModal = (property) => {
+    setSelectedProperty(property); // Store the selected property
+    setWishlistModal(true);
+  };
+
+  const openIsWishlistPropertyModal = (wishlistId) => {
+    setSelectedWishlistId(wishlistId);
+    setSelectedProperty(property);
+    setIsWishlistProperty(true);
+  };
+
+  const handleConfirmRemoveWishlist = () => {
+    if (selectedWishlistId) {
+      // Call your removeWishlistHandler or similar logic here
+      removeWishlistHandler(selectedWishlistId);
+    }
+    setIsWishlistProperty(false);
   };
 
   const removeWishlistHandler = (id) => {
@@ -584,7 +606,11 @@ export default function Exemple({
                 <span className="btn btn-warning w-100">N.A.</span>
               ),
             // remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
-            remark: property.isoncancel ? "N.A." : isBidded.remark ? isBidded.remark : "N.A.",
+            remark: property.isoncancel
+              ? "N.A."
+              : isBidded.remark
+              ? isBidded.remark
+              : "N.A.",
 
             status:
               anotherBid === true && isBidded.status !== 2 ? (
@@ -797,7 +823,9 @@ export default function Exemple({
                           style={{
                             border: "1px solid grey",
                           }}
-                          onClick={() => removeWishlistHandler(isWishlist.id)}
+                          onClick={() =>
+                            openIsWishlistPropertyModal(isWishlist.id)
+                          }
                         >
                           <img
                             width={26}
@@ -820,9 +848,7 @@ export default function Exemple({
                               style={{
                                 border: "1px solid grey",
                               }}
-                              onClick={() =>
-                                onWishlistHandler(property.propertyId)
-                              }
+                              onClick={() => openWishlistModal(property)}
                             >
                               <span className="flaticon-heart text-color"></span>
                             </button>
@@ -992,7 +1018,7 @@ export default function Exemple({
       setUpdatedData(tempData);
     };
     getData();
-  }, [properties, wishlist,bids, assignedProperties]);
+  }, [properties, wishlist, bids, assignedProperties]);
 
   useEffect(() => {
     setUpdatedCode(true);
@@ -1269,6 +1295,153 @@ export default function Exemple({
                 onClick={() =>
                   onArchivePropertyHandler(selectedProperty?.orderId)
                 }
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {wishlistModal && (
+        <div className="modal">
+          <div className="modal-content" style={{ width: "35%" }}>
+            <div className="row">
+              <div className="col-lg-12">
+                <Link href="/" className="">
+                  <Image
+                    width={50}
+                    height={45}
+                    className="logo1 img-fluid"
+                    style={{ marginTop: "-20px" }}
+                    src="/assets/images/logo.png"
+                    alt="header-logo2.png"
+                  />
+                  <span
+                    style={{
+                      color: "#2e008b",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    Appraisal
+                  </span>
+                  <span
+                    style={{
+                      color: "#97d700",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    {" "}
+                    Land
+                  </span>
+                </Link>
+              </div>
+            </div>
+            <h3 className="text-center mt-3" style={{ color: "#2e008b" }}>
+              Order Confirmation - Property Id{" "}
+              <span style={{ color: "#97d700" }}>
+                #{selectedProperty?.orderId}
+              </span>
+            </h3>
+            <div className="mb-2" style={{ border: "2px solid #97d700" }}></div>
+            <p className="fs-5 text-center text-dark mt-4">
+              Are you sure for the order to be{" "}
+              <span className="text-danger fw-bold">Wishlist</span> ?
+            </p>
+            <div
+              className="mb-3 mt-4"
+              style={{ border: "2px solid #97d700" }}
+            ></div>
+            <div className="col-lg-12 d-flex justify-content-center gap-2">
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                onClick={closeArchiveModal}
+              >
+                Cancel
+              </button>
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                onClick={() => onWishlistHandler(selectedProperty.propertyId)}
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isWishlistProperty && (
+        <div className="modal">
+          <div className="modal-content" style={{ width: "35%" }}>
+            <div className="row">
+              <div className="col-lg-12">
+                <Link href="/" className="">
+                  <Image
+                    width={50}
+                    height={45}
+                    className="logo1 img-fluid"
+                    style={{ marginTop: "-20px" }}
+                    src="/assets/images/logo.png"
+                    alt="header-logo2.png"
+                  />
+                  <span
+                    style={{
+                      color: "#2e008b",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    Appraisal
+                  </span>
+                  <span
+                    style={{
+                      color: "#97d700",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    {" "}
+                    Land
+                  </span>
+                </Link>
+              </div>
+            </div>
+            <h3 className="text-center mt-3" style={{ color: "#2e008b" }}>
+              Order Confirmation - Property Id{" "}
+              <span style={{ color: "#97d700" }}>
+                #{selectedProperty?.orderId}
+              </span>
+            </h3>
+            <div className="mb-2" style={{ border: "2px solid #97d700" }}></div>
+            <p className="fs-5 text-center text-dark mt-4">
+              Are you sure for the order to be{" "}
+              <span className="text-danger fw-bold">Remove Wishlist</span> ?
+            </p>
+            <div
+              className="mb-3 mt-4"
+              style={{ border: "2px solid #97d700" }}
+            ></div>
+            <div className="col-lg-12 d-flex justify-content-center gap-2">
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                onClick={closeArchiveModal}
+              >
+                Cancel
+              </button>
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                // onClick={() => onWishlistHandler(selectedProperty.propertyId)}
+                onClick={handleConfirmRemoveWishlist}
               >
                 Confirm
               </button>

@@ -179,45 +179,33 @@ const CreateList = ({
 
   // const handleInputChange = (e) => {
   //   const inputValue = e.target.value;
-  
-  //   // Allow only numeric input by removing non-digit characters
+
+  //   // Allow only numeric input
   //   const numericValue = inputValue.replace(/\D/g, "");
-  
+
   //   // Restrict to 10 digits
   //   const truncatedValue = numericValue.slice(0, 10);
-  
-  //   // Format the numeric value with commas
-  //   const formattedValue = new Intl.NumberFormat("en-US").format(truncatedValue);
-  
-  //   // Update the state with the formatted value
-  //   setEstimatedValue(formattedValue);
-  // };
-  
-
-  // const handleInputChange = (e) => {
-  //   const rawValue = e.target.value.replace(/,/g, ""); // Remove existing commas
-  //   if (!isNaN(rawValue) && rawValue.trim() !== "") {
-  //     // Format the number with commas
-  //     const formattedValue = new Intl.NumberFormat("en-US").format(rawValue);
-  //     setEstimatedValue(formattedValue);
-  //   } else {
-  //     setEstimatedValue(""); // Clear if input is invalid
+  //   if (truncatedValue.length === 10) {
+  //     setEstimatedValue(truncatedValue);
   //   }
+
+  //   setEstimatedValue(truncatedValue);
   // };
+
+  const formatNumberWithCommas = (number) => {
+    if (!number) return ""; // Handle empty input
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // Add commas
+  };
+
+  const parseNumberFromCommas = (formattedValue) => {
+    return formattedValue.replace(/,/g, ""); // Remove commas
+  };
 
   const handleInputChange = (e) => {
-    const inputValue = e.target.value;
-
-    // Allow only numeric input
-    const numericValue = inputValue.replace(/\D/g, "");
-
-    // Restrict to 10 digits
-    const truncatedValue = numericValue.slice(0, 10);
-    if (truncatedValue.length === 10) {
-      setEstimatedValue(truncatedValue);
+    const rawValue = parseNumberFromCommas(e.target.value); // Remove commas for raw value
+    if (!isNaN(rawValue)) {
+      setEstimatedValue(rawValue); // Update state with raw value
     }
-
-    setEstimatedValue(truncatedValue);
   };
 
   return (
@@ -312,7 +300,7 @@ const CreateList = ({
             <div className="col-lg-5">
               <input
                 required
-                type="number"
+                type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
                 style={
@@ -322,7 +310,7 @@ const CreateList = ({
                 }
                 // onChange={(e) => setEstimatedValue(e.target.value)}
                 onChange={handleInputChange}
-                value={estimatedValue}
+                value={formatNumberWithCommas(estimatedValue)}
                 disabled={isDisable}
                 maxLength={30}
               />

@@ -1,7 +1,7 @@
 import React, { Component, useState } from "react";
 import { useRouter } from "next/router";
 import { CldUploadWidget } from "next-cloudinary";
-
+import ReactInputMask from "react-input-mask";
 import CheckBoxFilter from "../../common/CheckBoxFilter";
 import toast from "react-hot-toast";
 import axios from "axios";
@@ -203,6 +203,33 @@ const DetailedInfo = ({
               </div>
             </div>
             <div className="col-lg-5">
+              <ReactInputMask
+                mask="999 999-9999" // Canadian phone format
+                value={applicantNumber}
+                onChange={handleInputChange}
+                className="form-control"
+                disabled={isDisable}
+                style={
+                  checkIsError("applicantPhoneNumber")
+                    ? errorLabelStyle
+                    : {
+                        backgroundColor: "#E8F0FE",
+                      }
+                }
+              >
+                {(inputProps) => (
+                  <input
+                    {...inputProps}
+                    type="text"
+                    id="phoneNumber"
+                    name="phoneNumber"
+                    title="Please enter a valid phone number"
+                    required
+                  />
+                )}
+              </ReactInputMask>
+            </div>
+            {/* <div className="col-lg-5">
               <input
                 style={
                   checkIsError("applicantPhoneNumber")
@@ -227,7 +254,7 @@ const DetailedInfo = ({
                 required
                 disabled={isDisable}
               />
-            </div>
+            </div> */}
           </div>
           <div className="row" style={{ marginBottom: "10px" }}>
             <div className="col-lg-3 my_profile_setting_input form-group">
