@@ -73,7 +73,7 @@ const Listings = () => {
                   ))}
                 </ul>
               </div>
-              {/* End .tc_content */}
+              
 
               <div className="fp_footer">
                 <ul className="fp_meta float-start mb0">

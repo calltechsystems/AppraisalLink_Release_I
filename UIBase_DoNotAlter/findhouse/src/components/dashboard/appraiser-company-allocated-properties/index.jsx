@@ -593,13 +593,19 @@ const Index = () => {
       const payload = {
         companyid: data.appraiserCompany_Datails?.appraiserCompanyId,
         propertyid: Number(assignPropertyId),
-        appraiserid: Number(
-          selectedAppraiser === -1 ? AssignAppraisers[0]?.id : selectedAppraiser
-        ),
+        appraiserid:
+          selectedAppraiser == "self"
+            ? 0
+            : Number(
+                selectedAppraiser === -1
+                  ? AssignAppraisers[0]?.id
+                  : selectedAppraiser
+              ),
+        isSelfAssigned: selectedAppraiser == "self",
       };
 
-      if (!payload.companyid || !payload.propertyid || !payload.appraiserid) {
-        toast.error("Invalid data. Please check the inputs and try again.");
+      if (!payload.companyid || !payload.propertyid || (!payload.appraiserid && selectedAppraiser != 'self')) {
+        toast.error("Invalid Fields. Please check the inputs and try again.");
         return;
       }
 
@@ -1817,7 +1823,9 @@ const Index = () => {
                     </div>
                     <div className="row">
                       <div className="col-lg-12 text-center">
-                        <h2 className=" text-color mt-1">Asssign Appraiser</h2>
+                        <h2 className=" text-color mt-1">
+                          Re-Asssign Appraiser
+                        </h2>
                       </div>
                     </div>
                     <div
@@ -1836,6 +1844,11 @@ const Index = () => {
                       }}
                     >
                       <option value={0}>Select</option>;
+                      <option key={"self"} value={"self"}>
+                        <span style={{ fontWeight: "bold", color: "purple" }}>
+                          Self
+                        </span>
+                      </option>
                       {AssignAppraisers.map((item, index) => {
                         return item.isActive &&
                           AssignedAppraiserInfo.userId !== item.userId ? (
