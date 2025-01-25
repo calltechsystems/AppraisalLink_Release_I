@@ -702,18 +702,13 @@ const Index = () => {
                           <div className="modal">
                             <div
                               className="modal-content"
-                              style={{ borderColor: "orangered", width: "20%" }}
+                              style={{ borderColor: "#97d700", width: "20%" }}
                             >
-                              <h3
-                                className="text-center"
-                                style={{ color: "orangered" }}
-                              >
-                                Error
-                              </h3>
+                              <h3 className="text-color">Error</h3>
                               <div
                                 style={{
                                   borderWidth: "2px",
-                                  borderColor: "orangered",
+                                  borderColor: "#97d700",
                                 }}
                               >
                                 <br />
@@ -727,12 +722,8 @@ const Index = () => {
                                 }}
                               >
                                 <button
-                                  className="btn w-35 btn-white"
+                                  className="btn btn-color w-25"
                                   onClick={() => closeErrorModal()}
-                                  style={{
-                                    borderColor: "orangered",
-                                    color: "orangered",
-                                  }}
                                 >
                                   Cancel
                                 </button>
@@ -741,7 +732,7 @@ const Index = () => {
                           </div>
                         )}
 
-                          {openBrokerModal && typeView === 1 && (
+                        {openBrokerModal && typeView === 1 && (
                           <div className="modal">
                             <div className="modal-content">
                               <div className="row">
@@ -781,8 +772,8 @@ const Index = () => {
                               </div>
                               <div className="row">
                                 <div className="col-lg-12 text-center">
-                                  <h2 className=" text-color mt-1">
-                                      Property Details – Property Id{"  "}
+                                  <h2 className=" text-color mt-2">
+                                    Property Details – Property Id{"  "}
                                     <span style={{ color: "#97d700" }}>
                                       #{broker.orderId}
                                     </span>
@@ -1015,8 +1006,8 @@ const Index = () => {
                               </div>
                               <div className="row">
                                 <div className="col-lg-12 text-center">
-                                  <h2 className=" text-color mt-1">
-                                    Mortgage Broker Details{"  "}
+                                  <h2 className=" text-color mt-2">
+                                    Mortgage Broker Details - Property Id{"  "}
                                     <span style={{ color: "#97d700" }}>
                                       #{broker.orderId}
                                     </span>
@@ -1387,32 +1378,9 @@ const Index = () => {
                   closeQuoteModal={closeQuoteModal}
                 />
               </div>
-              <div className="row">
-                {/* <div className="col-lg-12 mt20">
-                  <div className="mbp_pagination">
-                    <Pagination
-                      properties={properties}
-                      setProperties={setProperties}
-                    />
-                  </div>
-                </div> */}
-                {/* End paginaion .col */}
-              </div>
               {/* End .row */}
             </div>
             {/* End .row */}
-
-            {/* <div className="row">
-              <div className="col-lg-12 mt20">
-                <div className="mbp_pagination">
-                  <Pagination
-                    setStart={setStart}
-                    setEnd={setEnd}
-                    properties={requiredProp}
-                  />
-                </div>
-              </div>
-            </div> */}
 
             <div className="row mt50">
               <div className="col-lg-12">

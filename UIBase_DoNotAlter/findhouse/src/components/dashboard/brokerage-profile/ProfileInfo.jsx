@@ -9,6 +9,7 @@ import { CldUploadWidget } from "next-cloudinary";
 import toast from "react-hot-toast";
 import { province } from "../create-listing/data";
 import { designation } from "../create-listing/data";
+import ReactInputMask from "react-input-mask";
 
 const ProfileInfo = ({
   setProfileCount,
@@ -573,11 +574,11 @@ const ProfileInfo = ({
       setLastNameError
       // lastNameInputRef
     );
-    const isPhoneNumberValid = validateFieldNumber(
-      phoneNumberRef,
-      setPhoneNumberError
-      // phoneNumberInputRef
-    );
+    // const isPhoneNumberValid = validateFieldNumber(
+    //   phoneNumberRef,
+    //   setPhoneNumberError
+    //   // phoneNumberInputRef
+    // );
     const isEmailValid = validateEmailField(
       emailId,
       setEmailError
@@ -640,20 +641,34 @@ const ProfileInfo = ({
     return true;
   };
 
-  const handleInputChange = (value, setValue, setValid, setError) => {
-    if (value.length <= 10) {
-      setValue(value);
-
-      // Validate: Check if length is between 3 and 10
-      if (value.trim().length >= 10) {
-        setValid(true);
-        setError(false);
-      } else {
-        setValid(false);
-        setError(true);
-      }
+  const handleInputChange = (value, setRef, setValid, setError) => {
+    console.log("setError function:", setError); // Debug log
+    if (typeof setError !== "function") {
+      console.error("setError is not a function!");
+      return;
     }
+
+    // Your validation logic
+    const isValid = /^[2-9]\d{2} \d{3}-\d{4}$/.test(value);
+    setRef(value); // Update value
+    setValid(isValid); // Update validation state
+    setError(!isValid); // Update error state
   };
+
+  // const handleInputChange = (value, setValue, setValid, setError) => {
+  //   if (value.length <= 10) {
+  //     setValue(value);
+
+  //     // Validate: Check if length is between 3 and 10
+  //     if (value.trim().length >= 10) {
+  //       setValid(true);
+  //       setError(false);
+  //     } else {
+  //       setValid(false);
+  //       setError(true);
+  //     }
+  //   }
+  // };
 
   const handleInputChangeStreet = (value, setValue, setValid, setError) => {
     if (value.length <= 30) {
@@ -1203,17 +1218,52 @@ const ProfileInfo = ({
                               <li style={{ fontSize: "15px" }}>
                                 Please enter phone number without country code.
                               </li>
-                              {/* <li>
-                                  Regular Request : Timeline for the appraisal
-                                  report is 3 – 4 days.
-                                </li> */}
                             </ul>
                           </div>
                           <i class="fa fa-info-circle" aria-hidden="true"></i>
                         </div>
                       </div>
                       <div className="col-lg-7">
-                        <input
+                        <ReactInputMask
+                          mask="999 999-9999" // Canadian phone format
+                          value={phoneNumberRef}
+                          onChange={(e) =>
+                            handleInputChange(
+                              e.target.value,
+                              setPhoneNumberRef,
+                              setPhoneNumberValid,
+                              setPhoneNumberError
+                            )
+                          }
+                          className="form-control"
+                          disabled={edit}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: phoneNumberError
+                              ? "red"
+                              : phoneNumberValid
+                              ? ""
+                              : "",
+                          }}
+                        >
+                          {(inputProps) => (
+                            <input
+                              {...inputProps}
+                              type="text"
+                              id="phoneNumber"
+                              name="phoneNumber"
+                              title="Please enter a valid phone number"
+                              required
+                              // disabled={!edit}
+                            />
+                          )}
+                        </ReactInputMask>
+                        {phoneNumberError && (
+                          <small className="text-danger">
+                            Enter valid phone number.
+                          </small>
+                        )}
+                        {/* <input
                           type="text"
                           required
                           className="form-control"
@@ -1241,7 +1291,7 @@ const ProfileInfo = ({
                           <small className="text-danger">
                             Enter valid phone number.
                           </small>
-                        )}
+                        )} */}
                       </div>
                     </div>
                   </div>

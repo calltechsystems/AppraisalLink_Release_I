@@ -49,7 +49,7 @@ const SidebarMenu = () => {
       route: "/subscription-hisotry",
       icon: "flaticon-building",
     },
-    { id: 3, name: "Help desk", route: "/contact", icon: "flaticon-telephone" },
+    { id: 3, name: "Help desk", route: "/appraiser-helpdesk", icon: "flaticon-telephone" },
     {
       id: 4,
       name: "Contact Us",
@@ -196,27 +196,31 @@ const SidebarMenu = () => {
               )}
             </li>
 
-            <li
-              className={`treeview ${
-                hasActivePlans
-                  ? isSinglePageActive("/biding-history", route.pathname)
-                    ? "active"
-                    : ""
-                  : "disabled"
-              }`}
-            >
-              {hasActivePlans ? (
-                <Link href="/biding-history">
-                  <i className="flaticon-building"></i>
-                  <span>Quote History</span>
-                </Link>
-              ) : (
-                <a>
-                  <i className="flaticon-building"></i>
-                  <span>Quote History</span>
-                </a>
-              )}
-            </li>
+            {!isAppraiserByCompany ? (
+              <li
+                className={`treeview ${
+                  hasActivePlans
+                    ? isSinglePageActive("/biding-history", route.pathname)
+                      ? "active"
+                      : ""
+                    : "disabled"
+                }`}
+              >
+                {hasActivePlans ? (
+                  <Link href="/biding-history">
+                    <i className="flaticon-building"></i>
+                    <span>Quote History</span>
+                  </Link>
+                ) : (
+                  <a>
+                    <i className="flaticon-building"></i>
+                    <span>Quote History</span>
+                  </a>
+                )}
+              </li>
+            ) : (
+              ""
+            )}
           </ul>
         </li>
 
@@ -340,7 +344,7 @@ const SidebarMenu = () => {
           ""
         ) : (
           <li className="link-hover sidebar-menu">
-            <Link href="/contact">
+            <Link href="/appraiser-helpdesk">
               <i className="flaticon-envelope"></i>
               <span>Help Desk</span>
             </Link>

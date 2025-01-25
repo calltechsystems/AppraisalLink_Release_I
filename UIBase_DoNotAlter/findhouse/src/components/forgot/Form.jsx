@@ -162,17 +162,6 @@ const Form = ({ setModalIsOpen }) => {
   return (
     <>
       <div className="row">
-        {/* <Link
-          title="Close"
-          href={"/login"}
-          className="text-end text-light mt-2"
-          style={{ marginLeft: "34rem" }}
-        >
-          <span
-            className="flaticon-close bg-danger p-2"
-            style={{ borderRadius: "10%" }}
-          ></span>
-        </Link> */}
         <div className="col-lg-6">
           <Image
             width={157}
@@ -341,23 +330,6 @@ const Form = ({ setModalIsOpen }) => {
               </div>
             )}
 
-            {/* <div className="mt-0 d-flex justify-content-end mb-4">
-              <Link href="#">Resend OTP</Link>
-            </div> */}
-
-            {/* <div className="input-group mb-2 mr-sm-2">
-        <input
-          type="email"
-          className="form-control"
-          required
-          placeholder="Enter Your YYY"
-        />
-        <div className="input-group-prepend">
-          <div className="input-group-text">
-            <i className="flaticon-user"></i>
-          </div>
-        </div>
-      </div> */}
             {/* End .input-group */}
 
             {show && (
@@ -372,24 +344,10 @@ const Form = ({ setModalIsOpen }) => {
             {/* login button */}
 
             <div className="row mt25">
-              <div className="col-lg-6">
-                {/* <button
-            type="submit"
-            className="btn btn-block color-white bgc-fb mb0 w-100"
-          >
-            <i className="fa fa-facebook float-start mt5"></i> Facebook
-          </button> */}
-              </div>
+              <div className="col-lg-6"></div>
               {/* End .col */}
 
-              <div className="col-lg-6">
-                {/* <button
-            type="submit"
-            className="btn btn2 btn-block color-white bgc-gogle mb0 w-100"
-          >
-            <i className="fa fa-google float-start mt5"></i> Google
-          </button> */}
-              </div>
+              <div className="col-lg-6"></div>
               {/* End .col */}
             </div>
             {/* more signin options */}

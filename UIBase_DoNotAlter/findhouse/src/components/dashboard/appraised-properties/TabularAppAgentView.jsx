@@ -9,13 +9,14 @@ import Loader from "./Loader";
 import { FaArchive } from "react-icons/fa";
 import { AppraiserStatusOptions } from "../create-listing/data";
 import millify from "millify";
+import Image from "next/image";
 
 const headCells = [
   {
     id: "order_id",
     numeric: false,
     label: "Order ID",
-    width: 100,
+    width: 110,
   },
   {
     id: "address",
@@ -33,19 +34,19 @@ const headCells = [
     id: "appraisal_status",
     numeric: false,
     label: "Appraisal Status",
-    width: 190,
+    width: 160,
   },
   {
     id: "remark",
     numeric: false,
-    label: "Remark",
+    label: "Appraisal Remark",
     width: 160,
   },
   {
     id: "urgency",
     numeric: false,
-    label: "Urgency",
-    width: 200,
+    label: "Request Type",
+    width: 150,
   },
   {
     id: "date",
@@ -68,7 +69,7 @@ const headCells = [
   {
     id: "estimated_value",
     numeric: false,
-    label: "Estimated Property Value ($)",
+    label: "Estimated Value / Purchase Price($)",
     width: 200,
   },
   {
@@ -95,13 +96,13 @@ const headCells = [
   {
     id: "broker",
     numeric: false,
-    label: "Broker",
+    label: "Broker Info",
     width: 200,
   },
   {
     id: "property",
     numeric: false,
-    label: "Property",
+    label: "Property Info",
     width: 200,
   },
 
@@ -109,7 +110,7 @@ const headCells = [
     id: "action",
     numeric: false,
     label: "Action",
-    width: 280,
+    width: 210,
   },
 ];
 
@@ -153,11 +154,15 @@ export default function Exemple({
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
   const [dataFetched, setDataFetched] = useState(false);
-
+  const [archivedProperties, setArchivedProperties] = useState([]);
   const [statusData, setStatusData] = useState([]);
   let tempData = [];
-
+  const [archiveModal, setArchiveModal] = useState(false);
+  const [selectedProperty, setSelectedProperty] = useState(null);
   const [allArchive, setAllArchive] = useState([]);
+  const [wishlistModal, setWishlistModal] = useState(false);
+  const [isWishlistProperty, setIsWishlistProperty] = useState(0);
+  const [selectedWishlistId, setSelectedWishlistId] = useState(null);
 
   useEffect(() => {
     if (searchInput === "") {
@@ -243,6 +248,37 @@ export default function Exemple({
     return false;
   };
   const router = useRouter();
+
+  const openArchiveModal = (property) => {
+    setSelectedProperty(property); // Store the selected property
+    setArchiveModal(true);
+  };
+
+  const closeArchiveModal = () => {
+    setSelectedProperty(null); // Clear the selected property
+    setArchiveModal(false); // Close the modal
+    setWishlistModal(false); // Close the modal
+    setIsWishlistProperty(false);
+  };
+
+  const openWishlistModal = (property) => {
+    setSelectedProperty(property); // Store the selected property
+    setWishlistModal(true);
+  };
+
+  const openIsWishlistPropertyModal = (wishlistId) => {
+    setSelectedWishlistId(wishlistId);
+    setSelectedProperty(property);
+    setIsWishlistProperty(true);
+  };
+
+  const handleConfirmRemoveWishlist = () => {
+    if (selectedWishlistId) {
+      // Call your removeWishlistHandler or similar logic here
+      removeWishlistHandler(selectedWishlistId);
+    }
+    setIsWishlistProperty(false);
+  };
 
   function addCommasToNumber(number) {
     if (Number(number) <= 100 || number === undefined) return number;
@@ -338,6 +374,39 @@ export default function Exemple({
     return formattedDate;
   };
 
+  const formatDateTimeEST = (date) => {
+    const d = new Date(date);
+    const utcOffset = -5; // EST is UTC-5
+    d.setHours(d.getHours() + utcOffset);
+    return d.toLocaleString("en-US", {
+      dateStyle: "medium",
+      timeStyle: "short",
+    });
+  };
+
+  // Only for time
+
+  const formatDateToEST = (date) => {
+    try {
+      // Convert input date string to a Date object
+      const utcDate = new Date(`${date}T00:00:00Z`); // Treat input as UTC midnight
+      return new Intl.DateTimeFormat("en-US", {
+        timeZone: "America/Toronto", // EST/Canada timezone
+        dateStyle: "medium", // Format only the date
+      }).format(utcDate);
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return "Invalid date";
+    }
+  };
+
+  const getStatusButtonClass = (orderStatus) => {
+    if (orderStatus === 4 || orderStatus === 5) {
+      return "btn btn-status-na w-100"; // Orange color class
+    }
+    return "btn btn-status w-100"; // Default color
+  };
+
   const checkWishlistedHandler = (data) => {
     const userInfo = JSON.parse(localStorage.getItem("user"));
     let temp = {};
@@ -378,7 +447,7 @@ export default function Exemple({
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
         const anotherBid = alreadyAccepted(property);
-
+        // const isAlreadyArchived = getisAlreadyArchived(property.propertyId);
         const isWait = property.isOnHold || property.isOnCancel;
         const isArchive = false;
 
@@ -412,11 +481,13 @@ export default function Exemple({
                     <ul>
                       <li style={{ fontSize: "15px" }}>
                         {getOrderValue(isBidded.orderStatus)} -
-                        {formatDate(isBidded.statusDate)}
+                        {formatDateTimeEST(isBidded.statusDate)}
                       </li>
                     </ul>
                   </div>
-                  <button className="btn btn-status">
+                  <button
+                    className={getStatusButtonClass(isBidded.orderstatus)}
+                  >
                     Status
                     <span className="m-1">
                       <i class="fa fa-info-circle" aria-hidden="true"></i>
@@ -438,7 +509,9 @@ export default function Exemple({
                       </li>
                     </ul>
                   </div>
-                  <button className="btn btn-status">
+                  <button
+                    className={getStatusButtonClass(isBidded.orderstatus)}
+                  >
                     Status
                     <span className="m-1">
                       <i class="fa fa-info-circle" aria-hidden="true"></i>
@@ -446,21 +519,21 @@ export default function Exemple({
                   </button>
                 </div>
               ) : (
-                <span className="btn btn-warning  w-100">N.A.</span>
+                <button className="btn btn-warning w-100">
+                  <span>N.A.</span>
+                </button>
               ),
-            remark:
-              isBidded && isBidded.remark
-                ? isBidded.orderStatus === 1
-                  ? `${isBidded.remark} on ${formatDate(isBidded.modifiedDate)}`
-                  : isBidded.remark
-                : "N.A.",
+            remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
+            // isBidded && isBidded.remark
+            //   ? isBidded.orderStatus === 1
+            //     ? `${isBidded.remark} on ${formatDate(isBidded.modifiedDate)}`
+            //     : isBidded.remark
+            //   : "N.A.",
             status:
               anotherBid === true && isBidded.status !== 2 ? (
-                <span className="btn btn-danger  w-100">
-                  Broker has already selected the quote
-                </span>
+                <span className="btn btn-danger w-100">Declined</span>
               ) : isBidded?.bidId && isBidded.status === 2 ? (
-                <span className="btn btn-danger  w-100">Rejected</span>
+                <span className="btn btn-danger  w-100">Declined</span>
               ) : isWait ? (
                 <span className="btn btn-danger  w-100">
                   {property.isOnCancel
@@ -473,7 +546,9 @@ export default function Exemple({
                 isBidded.orderStatus === 3 ? (
                   <span className="btn btn-completed w-100">Completed</span>
                 ) : isBidded.status === 0 ? (
-                  <span className="btn btn-primary  w-100">Quote Provided</span>
+                  <span className="btn bg-info text-light w-100">
+                    Quote Provided
+                  </span>
                 ) : isBidded.status === 1 ? (
                   <span className="btn btn-success  w-100">Accepted</span>
                 ) : (
@@ -502,11 +577,9 @@ export default function Exemple({
                 ) : isBidded.status === 2 || anotherBid?.bidId ? (
                   <h6 style={{ color: "red" }}> Declined</h6>
                 ) : alreadyAccepted ? (
-                  <span>
-                    Information will be available post quote acceptance.
-                  </span>
+                  <span className="text-secondary">On quote approval</span>
                 ) : (
-                  <p>Information will be available post quote acceptance.</p>
+                  <p className="text-secondary">On quote approval.</p>
                 )}
               </div>
             ),
@@ -530,11 +603,9 @@ export default function Exemple({
                 ) : isBidded.status === 2 || anotherBid?.bidId ? (
                   <h6 style={{ color: "red" }}> Declined</h6>
                 ) : alreadyAccepted ? (
-                  <span>
-                    Information will be available post quote acceptance.
-                  </span>
+                  <span className="text-secondary">On quote approval</span>
                 ) : (
-                  <p>Information will be available post quote acceptance.</p>
+                  <p className="text-secondary ">On quote approval</p>
                 )}
               </div>
             ),
@@ -545,8 +616,8 @@ export default function Exemple({
               property.typeOfBuilding > 0
                 ? "Apartment"
                 : property.typeOfBuilding,
-            quote_required_by: formatDate(property.quoteRequiredDate),
-            date: formatDate(property.addedDatetime),
+            quote_required_by: formatDateToEST(property.quoteRequiredDate),
+            date: formatDateTimeEST(property.addedDatetime),
             bidAmount: millify(property.bidLowerRange),
             lender_information: property.lenderInformation
               ? property.lenderInformation
@@ -559,7 +630,10 @@ export default function Exemple({
                 : "N.A.",
 
             action: (
-              <div className="print-hidden-column" style={{ display: "flex" }}>
+              <div
+                className="print-hidden-column"
+                style={{ display: "flex", justifyContent: "center" }}
+              >
                 {isBidded.$id &&
                   (isBidded.status === 2 || isBidded.status === 1) &&
                   !anotherBid?.bidId && (
@@ -567,6 +641,7 @@ export default function Exemple({
                       className="list-inline-item"
                       data-toggle="tooltip"
                       data-placement="top"
+                      title="View Quote"
                     >
                       {" "}
                       <span
@@ -587,18 +662,14 @@ export default function Exemple({
                         className="list-inline-item"
                         data-toggle="tooltip"
                         data-placement="top"
-                      ></li>
-                      <li
-                        className="list-inline-item"
-                        data-toggle="tooltip"
-                        data-placement="top"
                         title="Archive Property"
                       >
                         <div
                           className="w-100"
-                          onClick={() =>
-                            onArchivePropertyHandler(property.orderId)
-                          }
+                          onClick={() => openArchiveModal(property)}
+                          // onClick={() =>
+                          //   onArchivePropertyHandler(property.orderId)
+                          // }
                         >
                           <button href="#" className="btn btn-color">
                             <Link href="#">
@@ -614,11 +685,11 @@ export default function Exemple({
                   </>
                 ) : isWait ? (
                   <>
-                    <p className="btn btn-danger  w-100">
+                    {/* <p className="btn btn-danger  w-100">
                       {`No further actions can be taken on this property since it is ${
                         property.isOnCancel ? "Cancelled" : "On Hold"
                       } .`}
-                    </p>
+                    </p> */}
                     <li
                       className="list-inline-item"
                       data-toggle="tooltip"
@@ -627,9 +698,7 @@ export default function Exemple({
                     >
                       <div
                         className="w-100"
-                        onClick={() =>
-                          onArchivePropertyHandler(property.orderId)
-                        }
+                        onClick={() => openArchiveModal(property)}
                       >
                         <button href="#" className="btn btn-color m-1">
                           <Link href="#">
@@ -644,13 +713,27 @@ export default function Exemple({
                   </>
                 ) : isBidded.$id && isBidded.orderStatus === 3 ? (
                   <>
-                    <p className="btn btn-success  w-100">Completed </p>
+                    {/* <p className="btn btn-success  w-100">Completed </p> */}
                     <li
                       className="list-inline-item"
                       data-toggle="tooltip"
                       data-placement="top"
                       title="Archive Property"
-                    ></li>
+                    >
+                      <div
+                        className="w-100"
+                        onClick={() => openArchiveModal(property)}
+                      >
+                        <button href="#" className="btn btn-color ">
+                          <Link href="#">
+                            <span className="text-light">
+                              {" "}
+                              <FaArchive />
+                            </span>
+                          </Link>
+                        </button>
+                      </div>
+                    </li>
                   </>
                 ) : (
                   <ul className="mb0 d-flex gap-1">
@@ -658,7 +741,10 @@ export default function Exemple({
                       <button
                         className="btn "
                         style={{ border: "1px solid grey" }}
-                        onClick={() => removeWishlistHandler(isWishlist.id)}
+                        onClick={() =>
+                          openIsWishlistPropertyModal(isWishlist.id)
+                        }
+                        title="Remove Wishlist Property"
                       >
                         <img
                           width={26}
@@ -676,9 +762,10 @@ export default function Exemple({
                             <button
                               className="btn"
                               style={{ border: "1px solid grey" }}
-                              onClick={() =>
-                                onWishlistHandler(property.propertyId)
-                              }
+                              onClick={() => openWishlistModal(property)}
+                              // onClick={() =>
+                              //   onWishlistHandler(property.propertyId)
+                              // }
                             >
                               <span className="flaticon-heart text-color"></span>
                             </button>
@@ -693,7 +780,7 @@ export default function Exemple({
                         data-toggle="tooltip"
                         data-placement="top"
                         title={`${
-                          isBidded.$id ? "View/Update Quote" : "Provide Quote"
+                          isBidded.$id ? "View / Update Quote" : "Provide Quote"
                         }`}
                       >
                         <div
@@ -740,28 +827,33 @@ export default function Exemple({
                     ) : (
                       ""
                     )}
-                    <li
-                      className="list-inline-item"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Archive Property"
-                    >
-                      <div
-                        className="w-100"
-                        onClick={() =>
-                          onArchivePropertyHandler(property.orderId)
-                        }
+                    {isWishlist.id ? (
+                      ""
+                    ) : (
+                      <li
+                        className="list-inline-item"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="Archive Property"
                       >
-                        <button href="#" className="btn btn-color">
-                          <Link href="#">
-                            <span className="text-light">
-                              {" "}
-                              <FaArchive />
-                            </span>
-                          </Link>
-                        </button>
-                      </div>
-                    </li>
+                        <div
+                          className="w-100"
+                          onClick={() => openArchiveModal(property)}
+                          // onClick={() =>
+                          //   onArchivePropertyHandler(property.orderId)
+                          // }
+                        >
+                          <button href="#" className="btn btn-color">
+                            <Link href="#">
+                              <span className="text-light">
+                                {" "}
+                                <FaArchive />
+                              </span>
+                            </Link>
+                          </button>
+                        </div>
+                      </li>
+                    )}
                   </ul>
                 )}
 
@@ -842,7 +934,7 @@ export default function Exemple({
                 Authorization: `Bearer ${data.token}`,
               },
               params: {
-                email:  data.userEmail // appraiser company email
+                email: data.userEmail, // appraiser company email
               },
             })
             .then((res) => {
@@ -1040,6 +1132,227 @@ export default function Exemple({
           properties={updatedData}
           end={end}
         />
+      )}
+      {archiveModal && (
+        <div className="modal">
+          <div className="modal-content" style={{ width: "35%" }}>
+            <div className="row">
+              <div className="col-lg-12">
+                <Link href="/" className="">
+                  <Image
+                    width={50}
+                    height={45}
+                    className="logo1 img-fluid"
+                    style={{ marginTop: "-20px" }}
+                    src="/assets/images/logo.png"
+                    alt="header-logo2.png"
+                  />
+                  <span
+                    style={{
+                      color: "#2e008b",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    Appraisal
+                  </span>
+                  <span
+                    style={{
+                      color: "#97d700",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    {" "}
+                    Land
+                  </span>
+                </Link>
+              </div>
+            </div>
+            <h3 className="text-center mt-3" style={{ color: "#2e008b" }}>
+              Order Confirmation - Property Id{" "}
+              <span style={{ color: "#97d700" }}>
+                #{selectedProperty?.orderId}
+              </span>
+            </h3>
+            <div className="mb-2" style={{ border: "2px solid #97d700" }}></div>
+            <p className="fs-5 text-center text-dark mt-4">
+              Are you sure for the order to be{" "}
+              <span className="text-danger fw-bold">Archived</span> ?
+            </p>
+            <div
+              className="mb-3 mt-4"
+              style={{ border: "2px solid #97d700" }}
+            ></div>
+            <div className="col-lg-12 d-flex justify-content-center gap-2">
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                onClick={closeArchiveModal}
+              >
+                Cancel
+              </button>
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                onClick={() =>
+                  onArchivePropertyHandler(selectedProperty?.orderId)
+                }
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {wishlistModal && (
+        <div className="modal">
+          <div className="modal-content" style={{ width: "35%" }}>
+            <div className="row">
+              <div className="col-lg-12">
+                <Link href="/" className="">
+                  <Image
+                    width={50}
+                    height={45}
+                    className="logo1 img-fluid"
+                    style={{ marginTop: "-20px" }}
+                    src="/assets/images/logo.png"
+                    alt="header-logo2.png"
+                  />
+                  <span
+                    style={{
+                      color: "#2e008b",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    Appraisal
+                  </span>
+                  <span
+                    style={{
+                      color: "#97d700",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    {" "}
+                    Land
+                  </span>
+                </Link>
+              </div>
+            </div>
+            <h3 className="text-center mt-3" style={{ color: "#2e008b" }}>
+              Order Confirmation - Property Id{" "}
+              <span style={{ color: "#97d700" }}>
+                #{selectedProperty?.orderId}
+              </span>
+            </h3>
+            <div className="mb-2" style={{ border: "2px solid #97d700" }}></div>
+            <p className="fs-5 text-center text-dark mt-4">
+              Are you sure for the order to be{" "}
+              <span className="text-danger fw-bold">Wishlist</span> ?
+            </p>
+            <div
+              className="mb-3 mt-4"
+              style={{ border: "2px solid #97d700" }}
+            ></div>
+            <div className="col-lg-12 d-flex justify-content-center gap-2">
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                onClick={closeArchiveModal}
+              >
+                Cancel
+              </button>
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                onClick={() => onWishlistHandler(selectedProperty.propertyId)}
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isWishlistProperty && (
+        <div className="modal">
+          <div className="modal-content" style={{ width: "35%" }}>
+            <div className="row">
+              <div className="col-lg-12">
+                <Link href="/" className="">
+                  <Image
+                    width={50}
+                    height={45}
+                    className="logo1 img-fluid"
+                    style={{ marginTop: "-20px" }}
+                    src="/assets/images/logo.png"
+                    alt="header-logo2.png"
+                  />
+                  <span
+                    style={{
+                      color: "#2e008b",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    Appraisal
+                  </span>
+                  <span
+                    style={{
+                      color: "#97d700",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    {" "}
+                    Land
+                  </span>
+                </Link>
+              </div>
+            </div>
+            <h3 className="text-center mt-3" style={{ color: "#2e008b" }}>
+              Order Confirmation - Property Id{" "}
+              <span style={{ color: "#97d700" }}>
+                #{selectedProperty?.orderId}
+              </span>
+            </h3>
+            <div className="mb-2" style={{ border: "2px solid #97d700" }}></div>
+            <p className="fs-5 text-center text-dark mt-4">
+              Are you sure for the order to be{" "}
+              <span className="text-danger fw-bold">Remove Wishlist</span> ?
+            </p>
+            <div
+              className="mb-3 mt-4"
+              style={{ border: "2px solid #97d700" }}
+            ></div>
+            <div className="col-lg-12 d-flex justify-content-center gap-2">
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                onClick={closeArchiveModal}
+              >
+                Cancel
+              </button>
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                // onClick={() => onWishlistHandler(selectedProperty.propertyId)}
+                onClick={handleConfirmRemoveWishlist}
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );

@@ -1104,7 +1104,7 @@ const Index = () => {
                               <h3 className="text-center mt-2 text-color">
                                 Provided Quote – Property Id{" "}
                                 <span style={{ color: "#97d700" }}>
-                                  #{propertyId}
+                                  #{currentBiddedView.orderId}
                                 </span>
                               </h3>
                               <div>
@@ -1192,7 +1192,7 @@ const Index = () => {
                               <div className="row">
                                 <div className="col-lg-12 text-center">
                                   <h2 className=" text-color mt-1">
-                                    Mortgage Broker Details{"  "}
+                                    Mortgage Broker Details – Property Id{"  "}
                                     <span style={{ color: "#97d700" }}>
                                       #{broker.orderId}
                                     </span>

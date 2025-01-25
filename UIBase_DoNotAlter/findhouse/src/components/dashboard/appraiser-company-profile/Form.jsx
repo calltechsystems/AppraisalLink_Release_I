@@ -35,7 +35,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
               <span style={{ fontWeight: "bold" }}>
                 <h3 className="text-center text-color">
                   {" "}
-                  Appraisal Company Details{" "}
+                  Appraiser Company Details{" "}
                 </h3>
               </span>
               {/* <hr /> */}

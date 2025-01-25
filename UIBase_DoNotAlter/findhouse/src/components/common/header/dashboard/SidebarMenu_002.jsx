@@ -47,7 +47,7 @@ const SidebarMenu = ({ userData }) => {
     {
       id: 3,
       name: "Help desk",
-      route: "/contact",
+      route: "/appraiser-company-help",
       icon: "flaticon-telephone",
     },
     {

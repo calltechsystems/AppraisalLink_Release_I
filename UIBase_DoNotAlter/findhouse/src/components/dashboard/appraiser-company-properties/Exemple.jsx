@@ -295,7 +295,7 @@ export default function Exemple({
     setWishlistModal(true);
   };
 
-  const openIsWishlistPropertyModal = (wishlistId) => {
+  const openIsWishlistPropertyModal = (wishlistId,property) => {
     setSelectedWishlistId(wishlistId);
     setSelectedProperty(property);
     setIsWishlistProperty(true);

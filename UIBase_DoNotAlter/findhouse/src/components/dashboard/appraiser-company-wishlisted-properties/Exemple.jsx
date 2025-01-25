@@ -127,7 +127,6 @@ export default function Exemple({
   setCurrentBid,
   setAllAppraiser,
   setAssignPropertyId,
-
   setAssignModal,
   setIsStatusModal,
   setProperties,
@@ -261,9 +260,10 @@ export default function Exemple({
 
   const openIsWishlistPropertyModal = (wishlistId) => {
     setSelectedWishlistId(wishlistId);
-    setSelectedProperty(property);
+    setSelectedProperty(wishlistId);
     setIsWishlistProperty(true);
   };
+
 
   const handleConfirmRemoveWishlist = () => {
     if (selectedWishlistId) {

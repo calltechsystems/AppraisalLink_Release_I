@@ -740,7 +740,7 @@ const Index = () => {
                           </div>
                         )}
 
-                          {openBrokerModal && typeView === 1 && (
+                        {openBrokerModal && typeView === 1 && (
                           <div className="modal">
                             <div className="modal-content">
                               <div className="row">
@@ -781,7 +781,7 @@ const Index = () => {
                               <div className="row">
                                 <div className="col-lg-12 text-center">
                                   <h2 className=" text-color mt-1">
-                                      Property Details – Property Id{"  "}
+                                    Property Details – Property Id{"  "}
                                     <span style={{ color: "#97d700" }}>
                                       #{broker.orderId}
                                     </span>
@@ -1015,7 +1015,7 @@ const Index = () => {
                               <div className="row">
                                 <div className="col-lg-12 text-center">
                                   <h2 className=" text-color mt-1">
-                                    Mortgage Broker Details{"  "}
+                                    Mortgage Broker Details – Property Id{"  "}
                                     <span style={{ color: "#97d700" }}>
                                       #{broker.orderId}
                                     </span>
