@@ -417,7 +417,7 @@ export default function Exemple({
                     </ul>
                   </div>
                   <button className="btn btn-status">
-                    Current Status
+                    Status
                     <span className="m-1">
                       <i class="fa fa-info-circle" aria-hidden="true"></i>
                     </span>
@@ -439,7 +439,7 @@ export default function Exemple({
                     </ul>
                   </div>
                   <button className="btn btn-status">
-                    Current Status
+                    Status
                     <span className="m-1">
                       <i class="fa fa-info-circle" aria-hidden="true"></i>
                     </span>
@@ -842,7 +842,7 @@ export default function Exemple({
                 Authorization: `Bearer ${data.token}`,
               },
               params: {
-                email:  data.appraiserCompanyEmail // appraiser company email
+                email:  data.userEmail // appraiser company email
               },
             })
             .then((res) => {
