@@ -842,7 +842,7 @@ export default function Exemple({
                 Authorization: `Bearer ${data.token}`,
               },
               params: {
-                email:  data.userEmail // appraiser company email
+                email:  data.appraiserCompanyEmail // appraiser company email
               },
             })
             .then((res) => {

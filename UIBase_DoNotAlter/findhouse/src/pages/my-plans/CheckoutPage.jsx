@@ -111,43 +111,47 @@ const Checkout = ({
           name: {
             given_name: userData?.broker_Details?.firstName,
             surname: userData?.broker_Details?.lastName,
+            phone:{
+              phone_type: 'MOBILE',
+              phone_number: userData?.broker_Details?.phoneNumber
+            }
           },
-          email_address: userData?.userEmail,
-          shipping_address: {
-            name: {
-              full_name:
-                userData?.broker_Details?.firstName +
-                " " +
-                userData?.broker_Details?.lastName,
-            },
-            address: {
-              address_line_1:
-                userData?.broker_Details?.apartmentNo +
-                "," +
-                userData?.broker_Details?.streetNumber +
-                " " +
-                userData?.broker_Details?.streetName +
-                " " +
-                userData?.broker_Details?.area,
-              address_line_2:
-                userData?.broker_Details?.apartmentNo +
-                "," +
-                userData?.broker_Details?.streetNumber +
-                " " +
-                userData?.broker_Details?.streetName +
-                " " +
-                userData?.broker_Details?.area,
-              admin_area_2: userData?.broker_Details?.province,
-              admin_area_1: userData?.broker_Details?.city,
-              postal_code: userData?.broker_Details?.postalCode,
-              country_code: "US",
-            },
-          },
+          email_address: userData?.broker_Details?.emailId,
+          // shipping_address: {
+          //   name: {
+          //     full_name:
+          //       userData?.broker_Details?.firstName +
+          //       " " +
+          //       userData?.broker_Details?.lastName,
+          //   },
+          //   address: {
+          //     address_line_1:
+          //       userData?.broker_Details?.apartmentNo +
+          //       "," +
+          //       userData?.broker_Details?.streetNumber +
+          //       " " +
+          //       userData?.broker_Details?.streetName +
+          //       " " +
+          //       userData?.broker_Details?.area,
+          //     address_line_2:
+          //       userData?.broker_Details?.apartmentNo +
+          //       "," +
+          //       userData?.broker_Details?.streetNumber +
+          //       " " +
+          //       userData?.broker_Details?.streetName +
+          //       " " +
+          //       userData?.broker_Details?.area,
+          //     admin_area_2: userData?.broker_Details?.province,
+          //     admin_area_1: userData?.broker_Details?.city,
+          //     postal_code: userData?.broker_Details?.postalCode,
+          //     country_code: "US",
+          //   },
+          // },
         },
         application_context: {
           brand_name: "Appraisal Land",
           locale: "en-US",
-          shipping_preference: "SET_PROVIDED_ADDRESS",
+          shipping_preference: "NO_SHIPPING",
           user_action: "SUBSCRIBE_NOW",
           payment_method: {
             payer_selected: "PAYPAL",
@@ -156,6 +160,12 @@ const Checkout = ({
           return_url: "https://appraisal-eta.vercel.app/my-plans",
           cancel_url: "https://appraisal-eta.vercel.app/my-plans",
         },
+        // plan:{
+        //   taxes: {
+        //     inclusive: false,
+        //     percentage: '13.16'
+        //   }
+        // }
       };
     } else {
       throw new Error(
@@ -242,6 +252,7 @@ const Checkout = ({
         //save this payload to the DB
       });
     } else {
+      console.log({data, actions: actions.subscription.get()})
       console.log("Subscription ID:", data.subscriptionID);
       setOnSuccess(true);
     }
