@@ -117,36 +117,36 @@ const Checkout = ({
             }
           },
           email_address: userData?.broker_Details?.emailId,
-          // shipping_address: {
-          //   name: {
-          //     full_name:
-          //       userData?.broker_Details?.firstName +
-          //       " " +
-          //       userData?.broker_Details?.lastName,
-          //   },
-          //   address: {
-          //     address_line_1:
-          //       userData?.broker_Details?.apartmentNo +
-          //       "," +
-          //       userData?.broker_Details?.streetNumber +
-          //       " " +
-          //       userData?.broker_Details?.streetName +
-          //       " " +
-          //       userData?.broker_Details?.area,
-          //     address_line_2:
-          //       userData?.broker_Details?.apartmentNo +
-          //       "," +
-          //       userData?.broker_Details?.streetNumber +
-          //       " " +
-          //       userData?.broker_Details?.streetName +
-          //       " " +
-          //       userData?.broker_Details?.area,
-          //     admin_area_2: userData?.broker_Details?.province,
-          //     admin_area_1: userData?.broker_Details?.city,
-          //     postal_code: userData?.broker_Details?.postalCode,
-          //     country_code: "US",
-          //   },
-          // },
+          shipping_address: {
+            name: {
+              full_name:
+                userData?.broker_Details?.firstName +
+                " " +
+                userData?.broker_Details?.lastName,
+            },
+            address: {
+              address_line_1:
+                userData?.broker_Details?.apartmentNo +
+                "," +
+                userData?.broker_Details?.streetNumber +
+                " " +
+                userData?.broker_Details?.streetName +
+                " " +
+                userData?.broker_Details?.area,
+              address_line_2:
+                userData?.broker_Details?.apartmentNo +
+                "," +
+                userData?.broker_Details?.streetNumber +
+                " " +
+                userData?.broker_Details?.streetName +
+                " " +
+                userData?.broker_Details?.area,
+              admin_area_2: userData?.broker_Details?.province,
+              admin_area_1: userData?.broker_Details?.city,
+              postal_code: userData?.broker_Details?.postalCode,
+              country_code: "US",
+            },
+          },
         },
         application_context: {
           brand_name: "Appraisal Land",
