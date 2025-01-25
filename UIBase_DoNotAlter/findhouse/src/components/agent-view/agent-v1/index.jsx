@@ -38,7 +38,7 @@ const index = () => {
             </div>
             {/* End .col filter grid list */}
           </div>
-          {/* End .row */}
+         
 
           <div className="row">
             <div className="col-lg-4 col-xl-4">
