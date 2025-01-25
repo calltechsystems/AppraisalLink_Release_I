@@ -1420,7 +1420,7 @@ const Index = () => {
                               <h3 className="text-center mt-2 text-color">
                                 Provided Quote – Property Id{" "}
                                 <span style={{ color: "#97d700" }}>
-                                  #{propertyId}
+                                  #{currentBiddedView.orderId}
                                 </span>
                               </h3>
                               <div>

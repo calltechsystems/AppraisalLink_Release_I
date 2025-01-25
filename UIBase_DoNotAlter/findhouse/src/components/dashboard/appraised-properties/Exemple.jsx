@@ -46,12 +46,12 @@ const headCells = [
     id: "urgency",
     numeric: false,
     label: "Request Type",
-    width: 200,
+    width: 150,
   },
   {
     id: "date",
     numeric: false,
-    label: "Quote Submitted Date",
+    label: "Order Submission Date",
     width: 200,
   },
   {
@@ -482,7 +482,7 @@ export default function Exemple({
       const userData = JSON.parse(localStorage.getItem("user"));
       const userActivePlans = userData?.userSubscription?.$values;
       properties.map((property, index) => {
-        console.log({property})
+        console.log({ property });
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
         const anotherBid = alreadyAccepted(property);
@@ -610,7 +610,7 @@ export default function Exemple({
                       }}
                       onClick={() => openModalBroker(property, 2)}
                     >
-                      Broker
+                      Broker Info
                     </button>
                   </a>
                 ) : isBidded.status === 2 ||
@@ -638,7 +638,7 @@ export default function Exemple({
                       }}
                       onClick={() => openModalBroker(property, 1)}
                     >
-                      Property
+                      Property Info
                     </button>
                   </a>
                 ) : isBidded.status === 2 ||
@@ -1052,8 +1052,7 @@ export default function Exemple({
           // setErrorMessage(err?.response?.data?.error);
           // setModalIsOpenError(true);
         });
-    } else 
-    {
+    } else {
       axios
         .get("/api/getAllListedProperties", {
           headers: {

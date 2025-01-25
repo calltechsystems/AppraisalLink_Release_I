@@ -212,7 +212,7 @@ const Modal = ({
                 <span
                   style={{
                     fontWeight: "bold",
-                    fontSize: "29px",
+                    fontSize: "25px",
                     color: "#2e008b",
                   }}
                 >
