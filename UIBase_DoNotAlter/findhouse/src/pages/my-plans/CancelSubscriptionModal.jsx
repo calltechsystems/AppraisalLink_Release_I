@@ -172,10 +172,14 @@ const CancelSubscriptionModal = ({
                           color: "#2e008b",
                         }}
                       >
-                        $ {currentSubscription.planAmount}
+                        ${currentSubscription.planAmount} {" "}
                       </label>
                       (monthly) ? 
                     </span>
+                    <br />
+                    <span style={{ fontSize: "15px" }}>
+                      PleasPlease click checkout to proceed with the Order
+                      </span>
                   </div>
                 ) : showPaypalPage && status == 1 ? (
                   <>
@@ -212,11 +216,12 @@ const CancelSubscriptionModal = ({
                     checked={termsPolicyAccepted}
                     onClick={() => setTermsPolicyAccepted(!termsPolicyAccepted)}
                     id="terms"
-                    style={{ border: "1px solid black" }}
+                    style={{ border: "1px solid black" , marginLeft:'20px'}}
                   />
                   <label
                     className="form-check-label form-check-label"
                     htmlFor="terms"
+                    style={{marginLeft:'10px'}}
                   >
                     {" "}
                     I have read and accept the{" "}
@@ -243,6 +248,7 @@ const CancelSubscriptionModal = ({
                 >
                   Cancel
                 </button>
+                
               ) : // <label
               //   className="btn btn-color w-25"
               //   style={{
@@ -257,12 +263,13 @@ const CancelSubscriptionModal = ({
               // </label>
               status == 0 && !showPaypalPage ? (
                 <>
-                  <button className="btn w-25" onClick={resetFields}>
+                  <button className="ml-4 btn btn-color w-25" onClick={resetFields}>
                     Cancel
                   </button>
                   <button
-                    className="ml-4 btn btn-color w-25"
+                    className="ml-4 btn btn-color w-30"
                     onClick={openPaypalPage}
+                    style={{marginLeft:'20px'}}
                     disabled={!termsPolicyAccepted}
                   >
                     Proceed to Cancellation

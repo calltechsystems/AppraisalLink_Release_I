@@ -132,12 +132,10 @@ const OneTimePaymentModal = ({
                 style={{ border: "2px solid #97d700" }}
               ></div>
 
-
               {onSuccess ? (
                 <div className="text-center" style={{ fontSize: "19px" }}>
                   <span className="text-dark">
-                    Your payment was successfully completed. Thank you for your
-                    transaction.
+                    Payment confirmed! We appreciate your business.
                   </span>
                 </div>
               ) : (
@@ -170,9 +168,13 @@ const OneTimePaymentModal = ({
                           color: "#2e008b",
                         }}
                       >
-                        $ {price.price}
+                        ${price.price}
                       </label>{" "}
                       for {price?.selectedTopUp?.noOfProperties} properties.
+                    </span>
+                    <br />
+                    <span style={{ fontSize: "15px" }}>
+                      Please click checkout to proceed with the Order
                     </span>
                   </div>
                 ) : showPaypalPage && status == 1 ? (
@@ -191,9 +193,9 @@ const OneTimePaymentModal = ({
               ) : (
                 <div className="text-center" style={{ fontSize: "19px" }}>
                   <span className="text-dark">
-                    The payment window may have been closed unexpectedly, either
-                    due to cancellation or an abrupt closure. Please try again
-                    to complete your payment.
+                    The payment window seems to have closed unexpectedly, either
+                    due to a cancellation or an abrupt interruption. Please
+                    retry to complete your payment.
                   </span>
                 </div>
               )}
@@ -210,11 +212,12 @@ const OneTimePaymentModal = ({
                     checked={termsPolicyAccepted}
                     onClick={() => setTermsPolicyAccepted(!termsPolicyAccepted)}
                     id="terms"
-                    style={{ border: "1px solid black" }}
+                    style={{ border: "1px solid black" , marginLeft:'20px'}}
                   />
                   <label
-                    className="form-check-label form-check-label"
+                    className="form-check-label form-check-label ml-2"
                     htmlFor="terms"
+                    style={{marginLeft:'10px'}}
                   >
                     {" "}
                     I have read and accept the{" "}
@@ -254,18 +257,19 @@ const OneTimePaymentModal = ({
               //   <span style={{ marginLeft: "10px" }}>Processing...</span>
               // </label>
               status == 0 && !showPaypalPage ? (
-                <>
-                  <button className="btn w-25" onClick={resetFields}>
+                <div className="">
+                  <button className="ml-4 btn btn-color w-20" onClick={resetFields}>
                     Cancel
                   </button>
                   <button
-                    className="ml-4 btn btn-color w-25"
+                    className="ml-4 btn btn-color w-20"
+                    style={{marginLeft:'20px'}}
                     onClick={openPaypalPage}
                     disabled={!termsPolicyAccepted}
                   >
                     Checkout
                   </button>
-                </>
+                </div>
               ) : (
                 <button className="btn w-25" onClick={resetFields}>
                   Close

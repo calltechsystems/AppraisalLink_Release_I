@@ -15,7 +15,11 @@ const CancelCheckout = ({
   const PayPalApi = {
     clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
     clientSecret: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_SECRET,
-    baseUrl: "https://api-m.paypal.com",
+    baseUrl:
+      // process.env.NODE_ENV === "production"
+      //   ? "https://api-m.paypal.com"
+      //   :
+      "https://api-m.sandbox.paypal.com", // Use sandbox in development
   };
 
   useEffect(() => {
@@ -53,7 +57,7 @@ const CancelCheckout = ({
 
       await axios.post(
         `${PayPalApi.baseUrl}/v1/billing/subscriptions/${subscriptionId}/cancel`,
-        { reason: "User-requested cancellation" },
+        { reason: "Customer requested cancellation" },
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -72,14 +76,18 @@ const CancelCheckout = ({
 
   const handleCancelSubscription = () => {
     if (currentSubscription) {
-      cancelSubscription('I-5U83WKLS0SDA');
+      cancelSubscription("I-VDJS9UL9CHBS");
     } else {
       console.error("No subscription ID found.");
     }
   };
   return (
-    <div className="checkout">
-      <button onClick={handleCancelSubscription}>Cancel Subscription</button>
+    <div className="checkout d-flex flex-column justify-center">
+      <span style={{ fontSize: "15px" }}>
+        Please click checkout to proceed with the Order
+      </span>
+      <button className="ml-4 btn btn-color w-30"
+                    style={{marginLeft:'20px'}} onClick={handleCancelSubscription}>Cancel Subscription</button>
     </div>
   );
 };

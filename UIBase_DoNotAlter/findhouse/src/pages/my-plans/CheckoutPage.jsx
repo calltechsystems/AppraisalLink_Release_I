@@ -5,7 +5,11 @@ import {
   usePayPalScriptReducer,
 } from "@paypal/react-paypal-js";
 import toast from "react-hot-toast";
-
+import {
+  generateRequestPayload,
+  generateResponsePayload,
+} from "./GeneratePayloads";
+import axios from "axios";
 const Checkout = ({
   topUpDetails,
   setErrorOccurred,
@@ -17,167 +21,9 @@ const Checkout = ({
   const [currency, setCurrency] = useState(options.currency || "CAD");
   const [userData, setUserData] = useState({});
 
-  //Paypal Plan ID
-  const PaypalPlanId = {
-    ["lite"]: "P-4F259524XU6273733M6FY5QY",
-    ["pro"]: "P-3KE51330455345207M6FY7HI",
-    ["ultimate"]: "P-51425321W9368215BM6FZAMY",
-  };
-
   useEffect(() => {
     setUserData(JSON.parse(localStorage.getItem("user")) || {});
   }, [topUpDetails]);
-
-  const generateCustomId = (brokerId, planId) => {
-    if (!brokerId || !planId) {
-      console.error("Missing brokerId or planId");
-      return "invalid-id";
-    }
-    const currentDate = new Date();
-    const formattedDate = currentDate
-      .toISOString()
-      .slice(0, 10)
-      .replace(/-/g, "");
-    const timestamp = currentDate.getTime();
-    return `${brokerId}-${planId}-${formattedDate}-${timestamp}`;
-  };
-
-  function getNextMonthDateWithYearCheck() {
-    const currentDate = new Date();
-
-    const nextMonthDate = new Date(currentDate);
-    nextMonthDate.setMonth(currentDate.getMonth() + 1);
-
-    return nextMonthDate;
-  }
-
-  const generatePayload = (details, userData, currency) => {
-    const { title, id, price } = details;
-
-    if (paymentType === "oneTime") {
-      // Payload for one-time payment
-      return {
-        intent: "CAPTURE",
-        purchase_units: [
-          {
-            description: `Broker ${title} Top Up Plan`,
-            custom_id: generateCustomId(userData?.userId, id),
-            amount: {
-              value: price,
-              currency_code: currency,
-              breakdown: {
-                item_total: {
-                  value: price,
-                  currency_code: currency,
-                },
-                tax_total: {
-                  value: "0.00",
-                  currency_code: currency,
-                },
-              },
-            },
-            items: [
-              {
-                name: `Top Up ${title} Plan`,
-                quantity: "1",
-                unit_amount: {
-                  value: price,
-                  currency_code: currency,
-                },
-                description:
-                  "Monthly subscription top up add for listing properties",
-                category: "DIGITAL_GOODS",
-              },
-            ],
-          },
-        ],
-        application_context: {
-          brand_name: "Appraisal Land",
-          locale: "en-US",
-          user_action: "PAY_NOW",
-          shipping_preference: "NO_SHIPPING",
-        },
-      };
-    } 
-    else if (paymentType === "subscription") {
-      // Payload for subscription payment
-      return {
-        // custom_id: generateCustomId(userData?.userId, id),
-        plan_id: PaypalPlanId[String(title).toLowerCase()],
-        // start_time: new Date(),
-        quantity: "1",
-        subscriber: {
-          name: {
-            given_name: userData?.broker_Details?.firstName,
-            surname: userData?.broker_Details?.lastName,
-            phone:{
-              phone_type: 'MOBILE',
-              phone_number: userData?.broker_Details?.phoneNumber
-            }
-          },
-          email_address: userData?.broker_Details?.emailId,
-          shipping_address: {
-            name: {
-              full_name:
-                userData?.broker_Details?.firstName +
-                " " +
-                userData?.broker_Details?.lastName,
-            },
-            address: {
-              address_line_1:
-                userData?.broker_Details?.apartmentNo +
-                "," +
-                userData?.broker_Details?.streetNumber +
-                " " +
-                userData?.broker_Details?.streetName +
-                " " +
-                userData?.broker_Details?.area,
-              address_line_2:
-                userData?.broker_Details?.apartmentNo +
-                "," +
-                userData?.broker_Details?.streetNumber +
-                " " +
-                userData?.broker_Details?.streetName +
-                " " +
-                userData?.broker_Details?.area,
-              admin_area_2: userData?.broker_Details?.province,
-              admin_area_1: userData?.broker_Details?.city,
-              postal_code: userData?.broker_Details?.postalCode,
-              country_code: "US",
-            },
-          },
-        },
-        application_context: {
-          brand_name: "Appraisal Land",
-          locale: "en-US",
-          shipping_preference: "NO_SHIPPING",
-          user_action: "SUBSCRIBE_NOW",
-          payment_method: {
-            payer_selected: "PAYPAL",
-            payee_preferred: "IMMEDIATE_PAYMENT_REQUIRED",
-          },
-          return_url: "https://appraisal-eta.vercel.app/my-plans",
-          cancel_url: "https://appraisal-eta.vercel.app/my-plans",
-        },
-        // plan:{
-        //   taxes: {
-        //     inclusive: false,
-        //     percentage: '13.16'
-        //   }
-        // }
-      };
-    } 
-    else if(paymentType === "cancel_subscription"){
-      return {
-        reason: ''
-      }
-    }
-    else {
-      throw new Error(
-        "Invalid type provided. Use 'oneTime' or 'subscription'."
-      );
-    }
-  };
 
   const onCurrencyChange = ({ target: { value } }) => {
     setCurrency(value);
@@ -191,86 +37,182 @@ const Checkout = ({
   };
 
   const onCreateOrder = (data, actions) => {
-    const payload = generatePayload(topUpDetails, userData, currency);
-    console.log({ paymentType, payload: JSON.stringify(payload) });
+    const payload = generateRequestPayload(paymentType, topUpDetails, userData, currency);
     return actions.order.create(payload);
   };
 
   const createSubscription = (data, actions) => {
-    const payload = generatePayload(topUpDetails, userData, currency);
+    const payload = generateRequestPayload(
+      paymentType,
+      topUpDetails,
+      userData,
+      currency
+    );
     console.log({ paymentType, payload });
     return actions.subscription.create(payload);
   };
 
-  // const convertToTimezone = (timestamp, targetTimezone) => {
-  //   const date = new Date(timestamp); // Parse the input timestamp
-  //   const options = {
-  //     timeZone: targetTimezone,
-  //     year: 'numeric',
-  //     month: 'short',
-  //     day: 'numeric',
-  //     hour: '2-digit',
-  //     minute: '2-digit',
-  //     second: '2-digit',
-  //     hour12: false, // Use 24-hour format
-  //   };
-  //   return new Intl.DateTimeFormat('en-US', options).format(date);
-  // };
+  const saveOneTimePaymentData = (payload) => {
+    toast.loading("Saving the data to DB for Top Up");
+    console.log({ payload });
+    // const encryptedData = encryptionData(payload);
+    axios
+      .post("/api/saveOneTimePaymentData", payload, {
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+        },
+      })
+      .then((res) => {
+        toast.success("Added TopUp successfully.");
+        console.log(res);
+        setOnSuccess(true);
+      })
+      .catch((err) => {
+        console.error("Got error while adding TpUp", err);
+        toast.error("Got error while adding the TopUp");
+        setErrorOccurred(true);
+      })
+      toast.dismiss();
 
-  // const canadaTimezone = 'America/Toronto'; // Example timezone for Canada
-  // const formattedDate = convertToTimezone(response.timestamp, canadaTimezone);
-
-  const generateTheTransactionPayload = (details) => {
-    return {
-      transactionDetails: {
-        transaction_detail: details,
-        user_id: userData?.userId,
-        created_time: details?.create_time,
-        plan_amount: currentSubscription?.planAmount,
-        plan_name: currentSubscription?.planName,
-        Is_Active: true,
-        start_date: new Date(),
-        end_date: getNextMonthDateWithYearCheck(),
-        used_properties: currentSubscription?.usedProperties,
-        no_of_properties: currentSubscription?.noOfProperties,
-        total_properties: currentSubscription?.noOfProperties,
-      },
-      topUpDetails: {
-        start_date: new Date(),
-        end_date: getNextMonthDateWithYearCheck(),
-        plan_id: currentSubscription?.$id,
-        total_properties: currentSubscription?.noOfProperties,
-        used_properties: currentSubscription?.usedProperties,
-        user_id: userData?.userId,
-        topUpId: topUpDetails?.id,
-        //top Up price: topUpDetails?.price
-      },
-    };
   };
 
   const onApproveOrder = (data, actions) => {
     if (paymentType == "oneTime") {
       return actions.order.capture().then((details) => {
-        const payload = generateTheTransactionPayload(details);
-        setOnSuccess(true);
-        console.log({ approveDetails: details });
-        //save this payload to the DB
+        const request = generateRequestPayload(
+          paymentType,
+          topUpDetails,
+          userData,
+          currency
+        );
+        const finalOneTimeData = generateResponsePayload(
+          paymentType,
+          topUpDetails,
+          userData,
+          request,
+          details,
+          currentSubscription,
+          topUpDetails
+        );
+        saveOneTimePaymentData(finalOneTimeData);
       });
     } else {
-      console.log({data, actions: actions.subscription.get()})
+      console.log({ data, actions: actions.subscription.get() });
       console.log("Subscription ID:", data.subscriptionID);
       setOnSuccess(true);
     }
   };
 
+    //------------------CANCEL WHILE TRANSACTION----------------------
   const onCancelOrder = (data) => {
     console.error("PayPal On Cancel data:", data);
-    setErrorOccurred(true);
+
+    if (data && data.reason) {
+      switch (data.reason) {
+        case "USER_CANCELED":
+          console.log("The user canceled the payment.");
+          toast.error("You have canceled the payment.");
+          break;
+        case "TIMEOUT":
+          console.log("Payment process timed out.");
+          toast.error("Payment process timed out. Please try again.");
+          break;
+        case "INCOMPLETE_PAYMENT":
+          console.log("Payment was incomplete.");
+          toast.error("Payment was incomplete. Please complete the payment.");
+          break;
+        case "PAYMENT_CANCELLED":
+          console.log("Payment was canceled by PayPal.");
+          toast.error("Payment was canceled unexpectedly.");
+          break;
+        default:
+          console.log("Unknown cancellation reason:", data.reason);
+          toast.error("Payment was canceled for an unknown reason.");
+          break;
+      }
+    } else {
+      
+      console.log("Payment was canceled without a specified reason.");
+      toast.error("Payment was canceled.");
+    }
+
+    setErrorOccurred(true); 
   };
 
+
+  //------------------ERROR WHILE TRANSACTION----------------------
   const onError = (err) => {
     console.error("PayPal On Error data:", err);
-    setErrorOccurred(true);
+
+    if (err && err.message) {
+      switch (err.message) {
+        case "PAYMENT_DECLINED":
+          console.log("The payment was declined.");
+          toast.error(
+            "Your payment was declined. Please check your payment details."
+          );
+          break;
+        case "PAYMENT_NETWORK_ERROR":
+          console.log("Network error occurred.");
+          toast.error(
+            "A network error occurred. Please check your connection and try again."
+          );
+          break;
+        case "INCOMPLETE_PAYMENT":
+          console.log("Payment was incomplete.");
+          toast.error("Payment was incomplete. Please try again.");
+          break;
+        case "PAYPAL_ACCOUNT_BLOCKED":
+          console.log("The PayPal account is blocked.");
+          toast.error(
+            "Your PayPal account is blocked. Please contact PayPal support."
+          );
+          break;
+        case "CARD_DECLINED":
+          console.log("The credit card was declined.");
+          toast.error(
+            "Your credit card was declined. Please try a different payment method."
+          );
+          break;
+        case "EXPIRED_SESSION":
+          console.log("The payment session has expired.");
+          toast.error(
+            "Your session has expired. Please start the payment process again."
+          );
+          break;
+        case "UNAUTHORIZED":
+          console.log("Unauthorized access to PayPal.");
+          toast.error("You are not authorized to complete this payment.");
+          break;
+        default:
+          console.error("Unknown error occurred:", err);
+          toast.error("An unexpected error occurred. Please try again.");
+          break;
+      }
+    } else if (err.code) {
+      switch (err.code) {
+        case "BAD_REQUEST":
+          toast.error("The request to PayPal was malformed.");
+          break;
+        case "INTERNAL_SERVER_ERROR":
+          toast.error(
+            "An internal server error occurred. Please contact support."
+          );
+          break;
+        case "NETWORK_ERROR":
+          toast.error(
+            "A network error occurred. Please check your connection."
+          );
+          break;
+        default:
+          toast.error("An error occurred: " + err.code);
+          break;
+      }
+    } else {
+      toast.error("An unknown error occurred. Please try again.");
+    }
+
+    setErrorOccurred(true); 
   };
 
   return (
