@@ -97,13 +97,22 @@ const Pricing = ({
     if (String(type) === "2" || String(type) === "3" || String(type) === "4") {
       const selectedTopUp = type == 3 ? topupData[0] : topupData[1];
       setModalOpen(true);
-      setPrice({
+      let data = {
         id: selectedTopUp?.id,
         title: selectedTopUp?.topupDescription,
-        price: selectedTopUp.tupUpAmount,
-        type: "topup",
-        selectedTopUp,
-      });
+        price: selectedTopUp?.tupUpAmount,
+        type: "",
+        selectedTopUp
+      }
+
+      if(String(type) === "2"){
+        data.type = "cancel_plan";
+      }
+      else{
+        data.type = "topup";
+      }
+
+      setPrice(data);
       if (String(type) === "3") {
         setSelectedTopUp(selectedTopUp);
       } else if (String(type) === "4") {
