@@ -1,6 +1,6 @@
-import axios from "axios";
 import { useRef, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import axios from "axios";
 import { encryptionData } from "../../../utils/dataEncryption";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
@@ -9,13 +9,11 @@ const ChangePassword = () => {
   const oldPasswordRef = useRef("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
   const [passwordVisibility, setPasswordVisibility] = useState({
     old: false,
     new: false,
     confirm: false,
   });
-
   const [passwordStrength, setPasswordStrength] = useState("");
   const [passwordCriteria, setPasswordCriteria] = useState({
     length: false,
@@ -24,8 +22,8 @@ const ChangePassword = () => {
     number: false,
     specialChar: false,
   });
+  const [showCriteria, setShowCriteria] = useState(false); // New state
   const [validationErrors, setValidationErrors] = useState({});
-
   const userData = JSON.parse(localStorage.getItem("user")) || {};
   const router = useRouter();
 
@@ -118,7 +116,13 @@ const ChangePassword = () => {
       }
     } catch (err) {
       toast.dismiss();
-      toast.error(err.response?.data?.error || "An unexpected error occurred.");
+      if (err.response?.status === 401) {
+        toast.error("Invalid old password. Please try again.");
+      } else {
+        toast.error(
+          err.response?.data?.error || "An unexpected error occurred."
+        );
+      }
     }
   };
 
@@ -126,18 +130,6 @@ const ChangePassword = () => {
     <div className="row">
       <div className="accordion" id="accordionExample">
         <div className="accordion-item">
-          <h2 className="accordion-header" id="headingThree">
-            <button
-              className="accordion-button collapsed"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#collapseThree"
-              aria-expanded="false"
-              aria-controls="collapseThree"
-            >
-              <h4>Manage Password</h4>
-            </button>
-          </h2>
           <div
             id="collapseThree"
             className="accordion-collapse collapse show"
@@ -150,7 +142,7 @@ const ChangePassword = () => {
                   <div className="my_profile_setting_input form-group">
                     <label
                       htmlFor="oldPassword"
-                      style={{ paddingBottom: "10px", color: "#1560bd" }}
+                      style={{ paddingBottom: "10px", color: "#2e008b" }}
                     >
                       Old Password
                     </label>
@@ -193,7 +185,7 @@ const ChangePassword = () => {
                   <div className="my_profile_setting_input form-group">
                     <label
                       htmlFor="newPassword"
-                      style={{ paddingBottom: "10px", color: "#1560bd" }}
+                      style={{ paddingBottom: "10px", color: "#2e008b" }}
                     >
                       New Password
                     </label>
@@ -203,63 +195,67 @@ const ChangePassword = () => {
                       id="newPassword"
                       value={newPassword}
                       onChange={handleNewPasswordChange}
+                      onFocus={() => setShowCriteria(true)} // Show criteria on focus
+                      onBlur={() => setShowCriteria(false)} // Hide criteria on blur
                     />
                     {passwordStrength && (
                       <small
-                        className={`text-${
+                        className={`fw-bold text-${
                           passwordStrength === "Weak" ? "danger" : "success"
                         }`}
                       >
                         Strength: {passwordStrength}
                       </small>
                     )}
-                    <ul className="password-suggestions">
-                      <li
-                        className={
-                          passwordCriteria.length
-                            ? "text-success"
-                            : "text-danger"
-                        }
-                      >
-                        At least 8 characters
-                      </li>
-                      <li
-                        className={
-                          passwordCriteria.uppercase
-                            ? "text-success"
-                            : "text-danger"
-                        }
-                      >
-                        At least 1 uppercase letter
-                      </li>
-                      <li
-                        className={
-                          passwordCriteria.lowercase
-                            ? "text-success"
-                            : "text-danger"
-                        }
-                      >
-                        At least 1 lowercase letter
-                      </li>
-                      <li
-                        className={
-                          passwordCriteria.number
-                            ? "text-success"
-                            : "text-danger"
-                        }
-                      >
-                        At least 1 number
-                      </li>
-                      <li
-                        className={
-                          passwordCriteria.specialChar
-                            ? "text-success"
-                            : "text-danger"
-                        }
-                      >
-                        At least 1 special character (!@#$%^&*)
-                      </li>
-                    </ul>
+                    {showCriteria && ( // Show criteria only when focused
+                      <ul className="password-suggestions">
+                        <li
+                          className={
+                            passwordCriteria.length
+                              ? "text-success"
+                              : "text-danger"
+                          }
+                        >
+                          At least 8 characters
+                        </li>
+                        <li
+                          className={
+                            passwordCriteria.uppercase
+                              ? "text-success"
+                              : "text-danger"
+                          }
+                        >
+                          At least 1 uppercase letter
+                        </li>
+                        <li
+                          className={
+                            passwordCriteria.lowercase
+                              ? "text-success"
+                              : "text-danger"
+                          }
+                        >
+                          At least 1 lowercase letter
+                        </li>
+                        <li
+                          className={
+                            passwordCriteria.number
+                              ? "text-success"
+                              : "text-danger"
+                          }
+                        >
+                          At least 1 number
+                        </li>
+                        <li
+                          className={
+                            passwordCriteria.specialChar
+                              ? "text-success"
+                              : "text-danger"
+                          }
+                        >
+                          At least 1 special character (!@#$%^&*)
+                        </li>
+                      </ul>
+                    )}
                     {validationErrors.newPassword && (
                       <small className="text-danger">
                         {validationErrors.newPassword}
@@ -267,6 +263,7 @@ const ChangePassword = () => {
                     )}
                   </div>
                 </div>
+
                 <div
                   className="col-lg-1"
                   style={{
@@ -293,7 +290,7 @@ const ChangePassword = () => {
                   <div className="my_profile_setting_input form-group">
                     <label
                       htmlFor="confirmPassword"
-                      style={{ paddingBottom: "10px", color: "#1560bd" }}
+                      style={{ paddingBottom: "10px", color: "#2e008b" }}
                     >
                       Confirm New Password
                     </label>
@@ -333,11 +330,12 @@ const ChangePassword = () => {
                   </div>
                 </div>
 
-                <div className="col-xl-12">
-                  <div className="float-end fn-520 mt-5">
+                <div className="d-flex justify-content-center">
+                  <div className="mt-5">
                     <button
-                      className="btn btn-color w-100"
+                      className="btn btn-color"
                       onClick={submitHandler}
+                      style={{ width: "120px" }}
                     >
                       Update
                     </button>

@@ -145,6 +145,7 @@ export default function Exemple({
   onArchivePropertyHandler,
   setRefresh,
   setStartLoading,
+  setSelectedPropertyNew,
   refresh,
 }) {
   const [updatedData, setUpdatedData] = useState([]);
@@ -266,7 +267,7 @@ export default function Exemple({
     setWishlistModal(true);
   };
 
-  const openIsWishlistPropertyModal = (wishlistId) => {
+  const openIsWishlistPropertyModal = (wishlistId, property) => {
     setSelectedWishlistId(wishlistId);
     setSelectedProperty(property);
     setIsWishlistProperty(true);
@@ -285,8 +286,9 @@ export default function Exemple({
     return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
-  const openStatusUpdateHandler = (bid) => {
+  const openStatusUpdateHandler = (bid, property) => {
     setCurrentBid(bid);
+    setSelectedPropertyNew(property)
     setIsStatusModal(true);
   };
 
@@ -347,57 +349,42 @@ export default function Exemple({
     return `${formattedNumber}${unit}`;
   };
 
-  const openQuoteViewModal = (bid) => {
+  const openQuoteViewModal = (bid, property) => {
     setCurrentBiddedView(bid);
+    setSelectedPropertyNew(property)
     setOpenQuoteView(true);
   };
 
   const onDeletePropertyHandler = () => {};
 
-  const formatDate = (dateString) => {
+  const formatDateTime = (dateString) => {
     const options = {
       year: "numeric",
       month: "short",
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
-      second: "numeric",
+      // second: "numeric",
+      hour12: true, // Set to false for 24-hour format
     };
 
-    const originalDate = new Date(dateString);
-
-    // Adjust for Eastern Standard Time (EST) by subtracting 5 hours
-    const estDate = new Date(originalDate.getTime() - 5 * 60 * 60 * 1000);
-
-    // Format the EST date
-    const formattedDate = estDate.toLocaleString("en-US", options);
+    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
     return formattedDate;
   };
 
-  const formatDateTimeEST = (date) => {
-    const d = new Date(date);
-    const utcOffset = -5; // EST is UTC-5
-    d.setHours(d.getHours() + utcOffset);
-    return d.toLocaleString("en-US", {
-      dateStyle: "medium",
-      timeStyle: "short",
-    });
-  };
+  const formatDate = (dateString) => {
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      // hour: "numeric",
+      // minute: "numeric",
+      // second: "numeric",
+      hour12: true, // Set to false for 24-hour format
+    };
 
-  // Only for time
-
-  const formatDateToEST = (date) => {
-    try {
-      // Convert input date string to a Date object
-      const utcDate = new Date(`${date}T00:00:00Z`); // Treat input as UTC midnight
-      return new Intl.DateTimeFormat("en-US", {
-        timeZone: "America/Toronto", // EST/Canada timezone
-        dateStyle: "medium", // Format only the date
-      }).format(utcDate);
-    } catch (error) {
-      console.error("Error formatting date:", error);
-      return "Invalid date";
-    }
+    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
+    return formattedDate;
   };
 
   const getStatusButtonClass = (orderStatus) => {
@@ -453,12 +440,12 @@ export default function Exemple({
 
         if (!isArchive) {
           if (isBidded.status === 1) {
-            console.log(getOrderValue(isBidded.orderStatus));
+            console.log(getOrderValue(isBidded.orderstatus));
           }
 
           const newStatus = {
             status: isBidded.status,
-            appraisal_status: isBidded.orderStatus,
+            appraisal_status: isBidded.orderstatus,
             order_id: property.orderId,
           };
           const updatedRow = {
@@ -469,7 +456,7 @@ export default function Exemple({
               : "$ 0",
             purpose: property.purpose ? property.purpose : "N.A.",
             appraisal_status:
-              isBidded.status === 1 && isBidded.orderStatus === 1 ? (
+              isBidded.status === 1 && isBidded.orderstatus === 1 ? (
                 <div className="hover-text">
                   <div
                     className="tooltip-text"
@@ -480,8 +467,8 @@ export default function Exemple({
                   >
                     <ul>
                       <li style={{ fontSize: "15px" }}>
-                        {getOrderValue(isBidded.orderStatus)} -
-                        {formatDateTimeEST(isBidded.statusDate)}
+                        {getOrderValue(isBidded.orderstatus)} -
+                        {formatDateTime(isBidded.statusdate)}
                       </li>
                     </ul>
                   </div>
@@ -494,7 +481,7 @@ export default function Exemple({
                     </span>
                   </button>
                 </div>
-              ) : isBidded.status === 1 && isBidded.orderStatus !== null ? (
+              ) : isBidded.status === 1 && isBidded.orderstatus !== null ? (
                 <div className="hover-text">
                   <div
                     className="tooltip-text"
@@ -505,7 +492,7 @@ export default function Exemple({
                   >
                     <ul>
                       <li style={{ fontSize: "15px" }}>
-                        {getOrderValue(isBidded.orderStatus)}
+                        {getOrderValue(isBidded.orderstatus)}
                       </li>
                     </ul>
                   </div>
@@ -525,7 +512,7 @@ export default function Exemple({
               ),
             remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
             // isBidded && isBidded.remark
-            //   ? isBidded.orderStatus === 1
+            //   ? isBidded.orderstatus === 1
             //     ? `${isBidded.remark} on ${formatDate(isBidded.modifiedDate)}`
             //     : isBidded.remark
             //   : "N.A.",
@@ -543,7 +530,7 @@ export default function Exemple({
                     : ""}
                 </span>
               ) : isBidded.bidId ? (
-                isBidded.orderStatus === 3 ? (
+                isBidded.orderstatus === 3 ? (
                   <span className="btn btn-completed w-100">Completed</span>
                 ) : isBidded.status === 0 ? (
                   <span className="btn bg-info text-light w-100">
@@ -616,8 +603,8 @@ export default function Exemple({
               property.typeOfBuilding > 0
                 ? "Apartment"
                 : property.typeOfBuilding,
-            quote_required_by: formatDateToEST(property.quoteRequiredDate),
-            date: formatDateTimeEST(property.addedDatetime),
+            quote_required_by: formatDate(property.quoteRequiredDate),
+            date: formatDateTime(property.addedDatetime),
             bidAmount: millify(property.bidLowerRange),
             lender_information: property.lenderInformation
               ? property.lenderInformation
@@ -634,7 +621,7 @@ export default function Exemple({
                 className="print-hidden-column"
                 style={{ display: "flex", justifyContent: "center" }}
               >
-                {isBidded.$id &&
+                {/* {isBidded.$id &&
                   (isBidded.status === 2 || isBidded.status === 1) &&
                   !anotherBid?.bidId && (
                     <li
@@ -646,14 +633,14 @@ export default function Exemple({
                       {" "}
                       <span
                         className="btn btn-color-table"
-                        onClick={() => openQuoteViewModal(isBidded)}
+                        onClick={() => openQuoteViewModal(isBidded, property)}
                       >
                         <Link href={"#"}>
                           <span className="text-light flaticon-view"></span>
                         </Link>
                       </span>
                     </li>
-                  )}
+                  )} */}
 
                 {isBidded.status === 2 || anotherBid ? (
                   <>
@@ -711,7 +698,7 @@ export default function Exemple({
                       </div>
                     </li>
                   </>
-                ) : isBidded.$id && isBidded.orderStatus === 3 ? (
+                ) : isBidded.$id && isBidded.orderstatus === 3 ? (
                   <>
                     {/* <p className="btn btn-success  w-100">Completed </p> */}
                     <li
@@ -742,7 +729,7 @@ export default function Exemple({
                         className="btn "
                         style={{ border: "1px solid grey" }}
                         onClick={() =>
-                          openIsWishlistPropertyModal(isWishlist.id)
+                          openIsWishlistPropertyModal(isWishlist.id, property)
                         }
                         title="Remove Wishlist Property"
                       >
@@ -774,7 +761,7 @@ export default function Exemple({
                       )
                     )}
 
-                    {(!isBidded.$id || isBidded?.status < 1) && !anotherBid && (
+                    {/* {(!isBidded.$id || isBidded?.status < 1) && !anotherBid && (
                       <li
                         className="list-inline-item"
                         data-toggle="tooltip"
@@ -802,8 +789,8 @@ export default function Exemple({
                           </button>
                         </div>
                       </li>
-                    )}
-                    {isBidded.status === 1 && isBidded.orderStatus !== 3 ? (
+                    )} */}
+                    {isBidded.status === 1 && isBidded.orderstatus !== 3 ? (
                       <>
                         <ul>
                           <li
@@ -815,7 +802,7 @@ export default function Exemple({
                             <button
                               href="#"
                               className="btn btn-color"
-                              onClick={() => openStatusUpdateHandler(isBidded)}
+                              onClick={() => openStatusUpdateHandler(isBidded, property)}
                             >
                               <Link href="#">
                                 <span className="flaticon-edit text-light"></span>
@@ -857,7 +844,7 @@ export default function Exemple({
                   </ul>
                 )}
 
-                {/* {isBidded.status === 1 && isBidded.orderStatus !== 3 ? (
+                {/* {isBidded.status === 1 && isBidded.orderstatus !== 3 ? (
                   <>
                     <ul>
                       <li

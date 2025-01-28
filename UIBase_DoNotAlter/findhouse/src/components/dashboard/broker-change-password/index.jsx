@@ -91,10 +91,15 @@ const Index = () => {
                 </div>
                 {/* End Dashboard Navigation */}
 
-                <div className="col-lg-12">
-                  <div className="breadcrumb_content style2"></div>
+                <div className="row align-items-center">
+                  <div className="col-lg-12 col-xl-12 text-center mt-1">
+                    <div className="style2 mb30-991">
+                      <h2 className="heading-forms">Manage Password</h2>
+                    </div>
+                  </div>
+                  {/* End .col */}
                 </div>
-                {/* End .col */}
+                {/* End .row */}
 
                 <div className="col-lg-12">
                   <div className="my_dashboard_review">

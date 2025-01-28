@@ -28,7 +28,7 @@ const SidebarMenu = () => {
       route: "/subscription-hisotry",
       icon: "flaticon-building",
     },
-    { id: 3, name: "Help desk", route: "/contact", icon: "flaticon-telephone" },
+    { id: 3, name: "Help desk", route: "/appraiser-helpdesk", icon: "flaticon-telephone" },
   ];
 
   const appraiserProperties = [

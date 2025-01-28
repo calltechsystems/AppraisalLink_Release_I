@@ -307,19 +307,32 @@ const ProfileInfo = ({
     }
   };
 
-  const handleInputChange = (value, setRef, setValid, setError) => {
-    console.log("setError function:", setError); // Debug log
-    if (typeof setError !== "function") {
-      console.error("setError is not a function!");
-      return;
-    }
+  const handleInputChange = (value, setValue, setValid, setError) => {
+    // Remove all non-numeric characters
+    const cleanedValue = value.replace(/\D/g, "");
 
-    // Your validation logic
-    const isValid = /^[2-9]\d{2} \d{3}-\d{4}$/.test(value);
-    setRef(value); // Update value
-    setValid(isValid); // Update validation state
-    setError(!isValid); // Update error state
+    // Validate phone number (example: length check for 10 digits)
+    const isValid = cleanedValue.length === 10;
+
+    // Update state
+    setValue(cleanedValue); // Store cleaned value
+    setValid(isValid);
+    setError(!isValid);
   };
+
+  // const handleInputChange = (value, setRef, setValid, setError) => {
+  //   console.log("setError function:", setError); // Debug log
+  //   if (typeof setError !== "function") {
+  //     console.error("setError is not a function!");
+  //     return;
+  //   }
+
+  //   // Your validation logic
+  //   const isValid = /^[2-9]\d{2} \d{3}-\d{4}$/.test(value);
+  //   setRef(value); // Update value
+  //   setValid(isValid); // Update validation state
+  //   setError(!isValid); // Update error state
+  // };
 
   // const handleInputChange = (value, setValue, setValid, setError) => {
   //   if (value.length <= 10) {

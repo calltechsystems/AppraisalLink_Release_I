@@ -236,24 +236,24 @@ const SidebarMenu = () => {
         {!isBrokerByBrokerage ? (
           ""
         ) : (
-          // <li className="link-hover sidebar-menu">
-          //   <Link href="/contact">
-          //     <i className="flaticon-envelope"></i>
-          //     <span>Help Desk</span>
-          //   </Link>
-          // </li>
           <li className="link-hover sidebar-menu">
-            <Link
-              href="#"
-              onClick={(e) => {
-                e.preventDefault(); // Prevent default link behavior
-                handleOpenHelpDesk(); // Handle manual opening
-              }}
-            >
+            <Link href="/broker-helpdesk">
               <i className="flaticon-envelope"></i>
               <span>Help Desk</span>
             </Link>
           </li>
+          // <li className="link-hover sidebar-menu">
+          //   <Link
+          //     href="#"
+          //     onClick={(e) => {
+          //       e.preventDefault(); // Prevent default link behavior
+          //       handleOpenHelpDesk(); // Handle manual opening
+          //     }}
+          //   >
+          //     <i className="flaticon-envelope"></i>
+          //     <span>Help Desk</span>
+          //   </Link>
+          // </li>
         )}
         {!isBrokerByBrokerage ? (
           ""

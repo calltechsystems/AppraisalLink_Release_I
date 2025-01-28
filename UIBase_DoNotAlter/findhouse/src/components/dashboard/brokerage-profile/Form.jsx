@@ -104,8 +104,8 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                         <span className="text-start"> Cell Number</span>
                       </td>
                       <td className="table-value">
-                        {userData?.brokerage_Details?.cellNumber
-                          ? userData?.brokerage_Details?.cellNumber
+                        {userData?.brokerage_Details?.cellnumber
+                          ? userData?.brokerage_Details?.cellnumber
                           : "N.A."}
                       </td>
                     </tr>

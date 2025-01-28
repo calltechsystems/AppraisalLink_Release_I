@@ -144,20 +144,31 @@ const ProfileInfo = ({
   //   setPhoneNumberRef(truncatedValue);
   // };
 
-  const handleInputCellChange = (e) => {
-    const inputValue = e.target.value;
+  const handleInputCellChange = (value) => {
+    // Remove all non-numeric characters
+    const numericValue = value.replace(/\D/g, "");
 
-    // Allow only numeric input
-    const numericValue = inputValue.replace(/\D/g, "");
-
-    // Restrict to 10 digits
+    // Ensure the value is truncated to a maximum of 10 digits
     const truncatedValue = numericValue.slice(0, 10);
-    if (truncatedValue.length === 10) {
-      setCellNumber(truncatedValue);
-    }
 
+    // Update state
     setCellNumber(truncatedValue);
   };
+
+  // const handleInputCellChange = (e) => {
+  //   const inputValue = e.target.value;
+
+  //   // Allow only numeric input
+  //   const numericValue = inputValue.replace(/\D/g, "");
+
+  //   // Restrict to 10 digits
+  //   const truncatedValue = numericValue.slice(0, 10);
+  //   if (truncatedValue.length === 10) {
+  //     setCellNumber(truncatedValue);
+  //   }
+
+  //   setCellNumber(truncatedValue);
+  // };
 
   // Validation for input fields
 
@@ -209,7 +220,7 @@ const ProfileInfo = ({
       setValue(value);
 
       // Validate: Check if length is between 3 and 10
-      if (value.trim().length >= 3) {
+      if (value.trim().length >= 1) {
         setValid(true);
         setError(false);
       } else {
@@ -358,7 +369,7 @@ const ProfileInfo = ({
     const alphanumericWithSpacesRegex = /^[a-zA-Z0-9 ]+$/;
 
     if (
-      firstName.trim().length < 3 ||
+      firstName.trim().length < 1 ||
       firstName.trim().length > 30 ||
       !nameRegex.test(firstName)
     ) {
@@ -370,7 +381,7 @@ const ProfileInfo = ({
       });
       return false;
     } else if (
-      lastName.trim().length < 3 ||
+      lastName.trim().length < 1 ||
       lastName.trim().length > 30 ||
       !nameRegex.test(lastName)
     ) {
@@ -382,7 +393,7 @@ const ProfileInfo = ({
       });
       return false;
     } else if (
-      companyName.trim().length < 3 ||
+      companyName.trim().length < 1 ||
       companyName.trim().length > 30 ||
       !nameCityRegex.test(companyName)
     ) {
@@ -415,7 +426,7 @@ const ProfileInfo = ({
       });
       return false;
     } else if (
-      streetNameRef.trim().length < 3 ||
+      streetNameRef.trim().length < 1 ||
       streetNameRef.trim().length > 30 ||
       !nameCityRegex.test(streetNameRef)
     ) {
@@ -427,7 +438,7 @@ const ProfileInfo = ({
       });
       return false;
     } else if (
-      city.trim().length < 3 ||
+      city.trim().length < 1 ||
       city.trim().length > 30 ||
       !nameCityRegex.test(city)
     ) {
@@ -448,7 +459,7 @@ const ProfileInfo = ({
       return false;
     } else if (
       officeContactFirstName.trim() !== "" &&
-      (officeContactFirstName.trim().length < 3 ||
+      (officeContactFirstName.trim().length < 1 ||
         officeContactFirstName.trim().length > 30 ||
         !nameRegex.test(officeContactFirstName))
     ) {
@@ -457,7 +468,7 @@ const ProfileInfo = ({
     } else if (
       // Assistant Last Name
       officeContactLastName.trim() !== "" &&
-      (officeContactLastName.trim().length < 3 ||
+      (officeContactLastName.trim().length < 1 ||
         officeContactLastName.trim().length > 30 ||
         !nameRegex.test(officeContactLastName))
     ) {
@@ -561,7 +572,7 @@ const ProfileInfo = ({
   };
 
   const validateField = (value, setError, inputRef) => {
-    if (value.trim().length < 3 || value.trim().length > 30) {
+    if (value.trim().length < 1 || value.trim().length > 30) {
       setError(true); // Set error if field length is invalid
       window.scrollTo({
         top: 0,
@@ -573,19 +584,32 @@ const ProfileInfo = ({
     return true;
   };
 
-  const handleInputChange = (value, setRef, setValid, setError) => {
-    console.log("setError function:", setError); // Debug log
-    if (typeof setError !== "function") {
-      console.error("setError is not a function!");
-      return;
-    }
+  const handleInputChange = (value, setValue, setValid, setError) => {
+    // Remove all non-numeric characters
+    const cleanedValue = value.replace(/\D/g, "");
 
-    // Your validation logic
-    const isValid = /^[2-9]\d{2} \d{3}-\d{4}$/.test(value);
-    setRef(value); // Update value
-    setValid(isValid); // Update validation state
-    setError(!isValid); // Update error state
+    // Validate phone number (example: length check for 10 digits)
+    const isValid = cleanedValue.length === 10;
+
+    // Update state
+    setValue(cleanedValue); // Store cleaned value
+    setValid(isValid);
+    setError(!isValid);
   };
+
+  // const handleInputChange = (value, setRef, setValid, setError) => {
+  //   console.log("setError function:", setError); // Debug log
+  //   if (typeof setError !== "function") {
+  //     console.error("setError is not a function!");
+  //     return;
+  //   }
+
+  //   // Your validation logic
+  //   const isValid = /^[2-9]\d{2} \d{3}-\d{4}$/.test(value);
+  //   setRef(value); // Update value
+  //   setValid(isValid); // Update validation state
+  //   setError(!isValid); // Update error state
+  // };
 
   // const handleInputChange = (value, setRef, setValue, setValid, setError) => {
   //   setRef(value); // Update the phoneNumberRef state
@@ -1106,7 +1130,29 @@ const ProfileInfo = ({
                         </label>
                       </div>
                       <div className="col-lg-7">
-                        <input
+                        <ReactInputMask
+                          mask="999 999-9999" // Canadian phone format
+                          value={cellNumber}
+                          onChange={(e) =>
+                            handleInputCellChange(e.target.value)
+                          }
+                          className="form-control"
+                          disabled={!edit}
+                          style={{ backgroundColor: "#E8F0FE" }}
+                        >
+                          {(inputProps) => (
+                            <input
+                              {...inputProps}
+                              type="text"
+                              id="cellNumber"
+                              name="cellNumber"
+                              title="Please enter a valid cell number"
+                              // required
+                              // disabled={!edit}
+                            />
+                          )}
+                        </ReactInputMask>
+                        {/* <input
                           type="text"
                           className="form-control"
                           id="formGroupExampleInput3"
@@ -1114,7 +1160,7 @@ const ProfileInfo = ({
                           value={cellNumber}
                           onChange={(e) => handleInputCellChange(e)}
                           disabled={!edit}
-                        />
+                        /> */}
                       </div>
                     </div>
                   </div>
@@ -1767,7 +1813,42 @@ const ProfileInfo = ({
                         </label>
                       </div>
                       <div className="col-lg-7">
-                        <input
+                        <ReactInputMask
+                          mask="999 999-9999" // Canadian phone format
+                          value={officeContactPhone}
+                          onChange={(e) =>
+                            handleInputChange(
+                              e.target.value,
+                              setOfficeContactPhone,
+                              setOfficeContactPhoneValid,
+                              setOfficeContactPhoneError
+                            )
+                          }
+                          className="form-control"
+                          disabled={!edit}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: officeContactPhoneError
+                              ? "red"
+                              : officeContactPhoneValid
+                              ? ""
+                              : "",
+                          }}
+                        >
+                          {(inputProps) => (
+                            <input
+                              {...inputProps}
+                              type="text"
+                              id="phoneNumber"
+                              name="phoneNumber"
+                              title="Please enter a valid office phone number"
+                              required
+                              // disabled={!edit}
+                            />
+                          )}
+                        </ReactInputMask>
+
+                        {/* <input
                           type="text"
                           className="form-control"
                           id="formGroupExampleInput3"
@@ -1781,9 +1862,6 @@ const ProfileInfo = ({
                           }}
                           required
                           value={officeContactPhone}
-                          // onChange={(e) =>
-                          //   setOfficeContactPhone(e.target.value)
-                          // }
                           onChange={(e) =>
                             handleInputChange(
                               e.target.value,
@@ -1793,169 +1871,10 @@ const ProfileInfo = ({
                             )
                           }
                           disabled={!edit}
-                        />
+                        /> */}
                       </div>
                     </div>
                   </div>
-                  {/* <h3 className="mt-4">Other Details</h3>
-                  <hr />
-
-                  <div className="col-lg-12 mb-3">
-                    <div className="row">
-                      <div className="col-lg-4">
-                        <label htmlFor="" style={{ paddingTop: "10px" }}>
-                          Commission Rate (Only Numbers)
-                        </label>
-                      </div>
-                      <div className="col-lg-7">
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="formGroupExampleInput3"
-                          style={{ backgroundColor: "#E8F0FE" }}
-                          value={commissionRate}
-                          onChange={(e) => setCommissionRate(e.target.value)}
-                          disabled={!edit}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-12 mb-3">
-                    <div className="row">
-                      <div className="col-lg-4">
-                        <label htmlFor="" style={{ paddingTop: "10px" }}>
-                          Max Number of Assigned Orders
-                        </label>
-                      </div>
-                      <div className="col-lg-7">
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="formGroupExampleInput3"
-                          style={{ backgroundColor: "#E8F0FE" }}
-                          value={maxNumberOfAssignedOrders}
-                          onChange={(e) => setMaxNumberOfAssignedOrders(e.target.value)}
-                          disabled={!edit}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-12 mb-3">
-                    <div className="row">
-                      <div className="col-lg-4">
-                        <label htmlFor="" style={{ paddingTop: "10px" }}>
-                          Review Appraiser Share (Only Numbers)
-                        </label>
-                      </div>
-                      <div className="col-lg-7">
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="formGroupExampleInput3"
-                          style={{ backgroundColor: "#E8F0FE" }}
-                          // value={assistantFirstName}
-                          // onChange={(e) =>
-                          //   setAssistantFirstName(e.target.value)
-                          // }
-                          // disabled={!edit}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-12 mb-3">
-                    <div className="row">
-                      <div className="col-lg-4">
-                        <label htmlFor="" style={{ paddingTop: "10px" }}>
-                          Designation
-                        </label>
-                      </div>
-                      <div className="col-lg-7">
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="formGroupExampleInput3"
-                          style={{ backgroundColor: "#E8F0FE" }}
-                          value={designation}
-                          onChange={(e) => setDesignation(e.target.value)}
-                          disabled={!edit}
-                        />
-                      </div>
-                    </div>
-                  </div> */}
-                  {/* <div className="row">
-                  <div className="col-lg-6">
-                    <div className="col-12 mb-2">
-                      <label htmlFor="" style={{ paddingTop: "10px" }}>
-                        Licence Number
-                      </label>
-                    </div>
-                    <div className="col-12 mb-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="formGroupExampleInput3"
-                        style={{ backgroundColor: "#E8F0FE" }}
-                        value={licenseNo}
-                        onChange={(e) => setLicenseNo(e.target.value)}
-                        disabled={!edit}
-                      />
-                    </div>
-                  </div>
-                  <div className="col-lg-6">
-                    <div className="col-12 mb-2">
-                      <label htmlFor="" style={{ paddingTop: "10px" }}>
-                        Brokerage Name
-                      </label>
-                    </div>
-                    <div className="col-12 mb-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="formGroupExampleInput3"
-                        style={{ backgroundColor: "#E8F0FE" }}
-                        value={brokerageName}
-                        onChange={(e) => setBrokerageName(e.target.value)}
-                        disabled={!edit}
-                      />
-                    </div>
-                  </div>
-                  <div className="col-lg-6">
-                    <div className="col-12 mb-2">
-                      <label htmlFor="" style={{ paddingTop: "10px" }}>
-                        Assistant First Name
-                      </label>
-                    </div>
-                    <div className="col-12 mb-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="formGroupExampleInput3"
-                        style={{ backgroundColor: "#E8F0FE" }}
-                        value={assistantFirstName}
-                        onChange={(e) => setAssistantFirstName(e.target.value)}
-                        disabled={!edit}
-                      />
-                    </div>
-                  </div>
-                  <div className="col-lg-6">
-                    <div className="col-12 mb-2">
-                      <label htmlFor="" style={{ paddingTop: "10px" }}>
-                        Assistant Last Name
-                      </label>
-                    </div>
-                    <div className="col-12 mb-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="formGroupExampleInput3"
-                        style={{ backgroundColor: "#E8F0FE" }}
-                        value={assistantLastName}
-                        onChange={(e) => setAssistantLastName(e.target.value)}
-                        disabled={!edit}
-                      />
-                    </div>
-                  </div>
-                </div> */}
                   {edit && (
                     <div className="row mt-4">
                       <div className="col-xl-12">

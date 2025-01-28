@@ -41,6 +41,7 @@ const TableData = ({
   setModalIsOpenError,
   setRefresh,
   refresh,
+  setSelectedPropertyNew
 }) => {
   let userInfo = {};
   const [Id, setId] = useState(-1);
@@ -305,6 +306,7 @@ const TableData = ({
           setAllAppraiser={setAllAppraiser}
           setAssignModal={setAssignModal}
           setOpenAssignModal={setOpenAssignModal}
+          setSelectedPropertyNew={setSelectedPropertyNew}
           end={end}
         />
       )}

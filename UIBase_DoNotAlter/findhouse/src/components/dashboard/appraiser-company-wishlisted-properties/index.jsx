@@ -19,7 +19,7 @@ import { FaDownload } from "react-icons/fa";
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
-
+  const [selectedPropertyNew, setSelectedPropertyNew] = useState(null);
   const [disable, setDisable] = useState(false);
 
   const [assignAppraiser, setAssignAppraiser] = useState([]);
@@ -400,6 +400,18 @@ const Index = () => {
     fetchData();
   }, []);
 
+  function getMinDateTime() {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
+    const day = currentDate.getDate().toString().padStart(2, "0");
+    const hours = currentDate.getHours().toString().padStart(2, "0");
+    const minutes = currentDate.getMinutes().toString().padStart(2, "0");
+
+    // Format the date as YYYY-MM-DDTHH:mm
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  }
+
   const brokerInfoHandler = (orderId) => {
     const printWindow = window.open("", "_blank");
     printWindow.document.write("<html><head><title></title></head><body>");
@@ -417,7 +429,7 @@ const Index = () => {
               <span style="color:#97d700; font-weight:bold; font-size:18px; margin-top:20px">
                 Land
               </span>
-            </a>
+            </a>  
           </div>
         </div>
         <hr style="width:27%; margin-left:200px; color:#2e008b" />
@@ -743,6 +755,7 @@ const Index = () => {
                           setWishlistedProperties={setWishlistedProperties}
                           setStartLoading={setStartLoading}
                           openModalBroker={openModalBroker}
+                          setSelectedPropertyNew={setSelectedPropertyNew}
                         />
 
                         {modalIsOpenError && (
@@ -1475,7 +1488,7 @@ const Index = () => {
                         >
                           Confirm Submission – Property Id{" "}
                           <span style={{ color: "#97d700" }}>
-                            #{propertyId}
+                          #{selectedPropertyNew.orderId}
                           </span>
                         </h3>
                         <div
@@ -1549,7 +1562,7 @@ const Index = () => {
                             <h3 className=" text-color mt-3">
                               Appraisal Status Updation – Property Id{" "}
                               <span style={{ color: "#97d700" }}>
-                                #{propertyId}
+                              #{selectedPropertyNew?.orderId}
                               </span>
                             </h3>
                           </div>
@@ -1596,6 +1609,7 @@ const Index = () => {
                               onChange={(e) => setStatusDate(e.target.value)}
                               value={statusDate}
                               min={getMinDateTime()}
+                              onKeyDown={(e) => e.preventDefault()} // Prevent keyboard interaction
                             />
                           </div>
                         )}

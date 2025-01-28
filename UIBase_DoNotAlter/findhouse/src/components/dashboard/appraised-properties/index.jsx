@@ -41,7 +41,7 @@ const Index = () => {
   const [wishlistedProperties, setWishlistedProperties] = useState([]);
   const [updatedCode, setUpdatedCode] = useState(false);
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
-
+  const [selectedPropertyNew, setSelectedPropertyNew] = useState(null);
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -787,6 +787,7 @@ const Index = () => {
                           setWishlistedProperties={setWishlistedProperties}
                           setStartLoading={setStartLoading}
                           openModalBroker={openModalBroker}
+                          setSelectedPropertyNew={setSelectedPropertyNew}
                         />
 
                         {modalIsOpenError && (
@@ -1457,7 +1458,9 @@ const Index = () => {
                     </div>
                     <h3 className="text-center mt-2 text-color">
                       Provided Quote – Property Id{" "}
-                      <span style={{ color: "#97d700" }}>#{propertyId}</span>
+                      <span style={{ color: "#97d700" }}>
+                        #{currentBiddedView.orderId}
+                      </span>
                     </h3>
                     <div>
                       <div
@@ -1590,7 +1593,7 @@ const Index = () => {
               )}
               {isStatusModal && (
                 <div className="modal">
-                  <div className="modal-content" style={{ width: "35%" }}>
+                  <div className="modal-content" style={{ width: "36%" }}>
                     {showConfirmation ? (
                       // Confirmation Message
                       <div>
@@ -1631,7 +1634,7 @@ const Index = () => {
                         >
                           Confirm Submission – Property Id{" "}
                           <span style={{ color: "#97d700" }}>
-                            #{propertyId}
+                            #{selectedPropertyNew?.orderId}
                           </span>
                         </h3>
                         <div
@@ -1705,7 +1708,7 @@ const Index = () => {
                             <h3 className=" text-color mt-3">
                               Appraisal Status Updation – Property Id{" "}
                               <span style={{ color: "#97d700" }}>
-                                #{propertyId}
+                                #{selectedPropertyNew?.orderId}
                               </span>
                             </h3>
                           </div>
@@ -1752,6 +1755,7 @@ const Index = () => {
                               onChange={(e) => setStatusDate(e.target.value)}
                               value={statusDate}
                               min={getMinDateTime()}
+                              onKeyDown={(e) => e.preventDefault()} // Prevent keyboard interaction
                             />
                           </div>
                         )}
