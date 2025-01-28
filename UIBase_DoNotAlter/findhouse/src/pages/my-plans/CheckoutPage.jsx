@@ -28,8 +28,6 @@ const Checkout = ({
     setUserData(JSON.parse(localStorage.getItem("user")) || {});
   }, [topUpDetails]);
 
-  console.log({ userData });
-
   const generateCustomId = (brokerId, planId) => {
     if (!brokerId || !planId) {
       console.error("Missing brokerId or planId");
@@ -100,7 +98,8 @@ const Checkout = ({
           shipping_preference: "NO_SHIPPING",
         },
       };
-    } else if (paymentType === "subscription") {
+    } 
+    else if (paymentType === "subscription") {
       // Payload for subscription payment
       return {
         // custom_id: generateCustomId(userData?.userId, id),
@@ -167,7 +166,13 @@ const Checkout = ({
         //   }
         // }
       };
-    } else {
+    } 
+    else if(paymentType === "cancel_subscription"){
+      return {
+        reason: ''
+      }
+    }
+    else {
       throw new Error(
         "Invalid type provided. Use 'oneTime' or 'subscription'."
       );
