@@ -157,7 +157,9 @@ export default function Exemple({
   setAssignedProp,
   setAllBrokers,
   setStartLoading,
-
+  setSelectedPropertyNew,
+  setCurrentBiddedView,
+  setOpenQuoteView,
   refresh,
 }) {
   const [updatedData, setUpdatedData] = useState([]);
@@ -298,8 +300,9 @@ export default function Exemple({
     }
   };
 
-  const openStatusUpdateHandler = (bidId) => {
+  const openStatusUpdateHandler = (bidId, property) => {
     setCurrentBid(bidId);
+    setSelectedPropertyNew(property);
     setIsStatusModal(true);
   };
 
@@ -401,6 +404,11 @@ export default function Exemple({
     return "btn btn-status w-100"; // Default color
   };
 
+  const openQuoteViewModal = (bid) => {
+    setCurrentBiddedView(bid);
+    setOpenQuoteView(true);
+  };
+
   // const formatDate = (dateString) => {
   //   const options = {
   //     year: "numeric",
@@ -445,6 +453,7 @@ export default function Exemple({
     });
     setAssignPropertyId(property.propertyId);
     setAssignedAppraiserInfo(requiredAppraiser);
+    setSelectedPropertyNew(property);
     setAssignModal(true);
   };
 
@@ -462,15 +471,12 @@ export default function Exemple({
 
   useEffect(() => {
     let requiredAssign = [];
-      allAssignAppraiser.map((appraiser, index) => {
-        const isPresent = checkIsAlreadyExisting(appraiser, requiredAssign);
-        if (
-          appraiser.isActive == true &&
-          !isPresent
-        ) {
-          requiredAssign.push(appraiser);
-        }
-      });
+    allAssignAppraiser.map((appraiser, index) => {
+      const isPresent = checkIsAlreadyExisting(appraiser, requiredAssign);
+      if (appraiser.isActive == true && !isPresent) {
+        requiredAssign.push(appraiser);
+      }
+    });
     setAssignAppraisers(requiredAssign);
   }, [allListedAssignAppraiser, allAssignAppraiser]);
 
@@ -748,6 +754,26 @@ export default function Exemple({
                 </>
               ) : (
                 <>
+                  {isBidded.$id &&
+                    (isBidded.status === 2 || isBidded.status === 1) && (
+                      <li
+                        className="list-inline-item"
+                        data-toggle="tooltip"
+                        // style={{ margin: "2%" }}
+                        data-placement="top"
+                        title="View Quote"
+                      >
+                        {" "}
+                        <span
+                          className="btn btn-color-table"
+                          onClick={() => openQuoteViewModal(isBidded)}
+                        >
+                          <Link href={"#"}>
+                            <span className="text-light flaticon-view"></span>
+                          </Link>
+                        </span>
+                      </li>
+                    )}
                   <li
                     className="list-inline-item"
                     data-toggle="tooltip"
@@ -776,7 +802,9 @@ export default function Exemple({
                         href="#"
                         title="Update Status"
                         className="btn btn-color m-1"
-                        onClick={() => openStatusUpdateHandler(isBidded)}
+                        onClick={() =>
+                          openStatusUpdateHandler(isBidded, property)
+                        }
                       >
                         <Link href="#">
                           <span className="flaticon-edit text-light"></span>
@@ -985,7 +1013,7 @@ export default function Exemple({
         const allData = res.data.data.$values;
         const onlyAppraiserData = allData.map((appraiser) => {
           return appraiser.item;
-        })
+        });
         setAllAssignAppraiser(onlyAppraiserData);
       })
       .catch((err) => {

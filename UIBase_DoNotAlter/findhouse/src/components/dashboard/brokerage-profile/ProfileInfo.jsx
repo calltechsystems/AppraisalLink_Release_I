@@ -196,7 +196,7 @@ const ProfileInfo = ({
       setValue(value);
 
       // Validate: Check if length is between 3 and 10
-      if (value.trim().length >= 3) {
+      if (value.trim().length >= 1) {
         setValid(true);
         setError(false);
       } else {
@@ -358,7 +358,7 @@ const ProfileInfo = ({
     const alphanumericWithSpacesRegex = /^[a-zA-Z0-9 ]+$/;
 
     if (
-      firstName.trim().length < 3 ||
+      firstName.trim().length < 1 ||
       firstName.trim().length > 30 ||
       !nameRegex.test(firstName)
     ) {
@@ -370,7 +370,7 @@ const ProfileInfo = ({
       });
       return false;
     } else if (
-      lastName.trim().length < 3 ||
+      lastName.trim().length < 1 ||
       lastName.trim().length > 30 ||
       !nameRegex.test(lastName)
     ) {
@@ -382,7 +382,7 @@ const ProfileInfo = ({
       });
       return false;
     } else if (
-      brokerageName.trim().length < 3 ||
+      brokerageName.trim().length < 1 ||
       brokerageName.trim().length > 30 ||
       !nameCityRegex.test(brokerageName)
     ) {
@@ -394,7 +394,7 @@ const ProfileInfo = ({
       });
       return false;
     } else if (
-      streetNameRef.trim().length < 3 ||
+      streetNameRef.trim().length < 1 ||
       streetNameRef.trim().length > 30 ||
       !nameCityRegex.test(streetNameRef)
     ) {
@@ -406,7 +406,7 @@ const ProfileInfo = ({
       });
       return false;
     } else if (
-      city.trim().length < 3 ||
+      city.trim().length < 1 ||
       city.trim().length > 30 ||
       !nameCityRegex.test(city)
     ) {
@@ -419,22 +419,22 @@ const ProfileInfo = ({
       return false;
     } else if (
       (assistantFirstName.trim() !== "" &&
-        (assistantFirstName.trim().length < 3 ||
+        (assistantFirstName.trim().length < 1 ||
           assistantFirstName.trim().length > 30 ||
           !nameRegex.test(assistantFirstName))) ||
       // Assistant Last Name
       (assistantLastName.trim() !== "" &&
-        (assistantLastName.trim().length < 3 ||
+        (assistantLastName.trim().length < 1 ||
           assistantLastName.trim().length > 30 ||
           !nameRegex.test(assistantLastName))) ||
       // Assistant Two First Name
       (assistantTwoFirstName.trim() !== "" &&
-        (assistantTwoFirstName.trim().length < 3 ||
+        (assistantTwoFirstName.trim().length < 1 ||
           assistantTwoFirstName.trim().length > 30 ||
           !nameRegex.test(assistantTwoFirstName))) ||
       // Assistant Two Last Name
       (assistantTwoLastName.trim() !== "" &&
-        (assistantTwoLastName.trim().length < 3 ||
+        (assistantTwoLastName.trim().length < 1 ||
           assistantTwoLastName.trim().length > 30 ||
           !nameRegex.test(assistantTwoLastName)))
     ) {
@@ -628,7 +628,7 @@ const ProfileInfo = ({
   };
 
   const validateField = (value, setError, inputRef) => {
-    if (value.trim().length < 3 || value.trim().length > 30) {
+    if (value.trim().length < 1 || value.trim().length > 30) {
       setError(true); // Set error if field length is invalid
       // Scroll to the top of the page
       window.scrollTo({
@@ -641,19 +641,32 @@ const ProfileInfo = ({
     return true;
   };
 
-  const handleInputChange = (value, setRef, setValid, setError) => {
-    console.log("setError function:", setError); // Debug log
-    if (typeof setError !== "function") {
-      console.error("setError is not a function!");
-      return;
-    }
+  const handleInputChange = (value, setValue, setValid, setError) => {
+    // Remove all non-numeric characters
+    const cleanedValue = value.replace(/\D/g, "");
 
-    // Your validation logic
-    const isValid = /^[2-9]\d{2} \d{3}-\d{4}$/.test(value);
-    setRef(value); // Update value
-    setValid(isValid); // Update validation state
-    setError(!isValid); // Update error state
+    // Validate phone number (example: length check for 10 digits)
+    const isValid = cleanedValue.length === 10;
+
+    // Update state
+    setValue(cleanedValue); // Store cleaned value
+    setValid(isValid);
+    setError(!isValid);
   };
+
+  // const handleInputChange = (value, setRef, setValid, setError) => {
+  //   console.log("setError function:", setError); // Debug log
+  //   if (typeof setError !== "function") {
+  //     console.error("setError is not a function!");
+  //     return;
+  //   }
+
+  //   // Your validation logic
+  //   const isValid = /^[2-9]\d{2} \d{3}-\d{4}$/.test(value);
+  //   setRef(value); // Update value
+  //   setValid(isValid); // Update validation state
+  //   setError(!isValid); // Update error state
+  // };
 
   // const handleInputChange = (value, setValue, setValid, setError) => {
   //   if (value.length <= 10) {
@@ -853,14 +866,26 @@ const ProfileInfo = ({
   // };
 
   const handleInputChange_01 = (e) => {
+    if (!e || !e.target) return; // Safeguard against undefined input
     const inputValue = e.target.value;
+  
+    // Remove all non-numeric characters
     const numericValue = inputValue.replace(/\D/g, "");
-    const truncatedValue = numericValue.slice(0, 10);
-    if (truncatedValue.length === 10) {
-      setCellNumberRef(truncatedValue);
-    }
-    setCellNumberRef(truncatedValue);
+  
+    // Truncate to 10 digits and update state
+    setCellNumberRef(numericValue.slice(0, 10));
   };
+  
+
+  // const handleInputChange_01 = (e) => {
+  //   const inputValue = e.target.value;
+  //   const numericValue = inputValue.replace(/\D/g, "");
+  //   const truncatedValue = numericValue.slice(0, 10);
+  //   if (truncatedValue.length === 10) {
+  //     setCellNumberRef(truncatedValue);
+  //   }
+  //   setCellNumberRef(truncatedValue);
+  // };
 
   const handleInputChange_02 = (e) => {
     const inputValue = e.target.value;
@@ -1307,7 +1332,7 @@ const ProfileInfo = ({
                         </label>
                       </div>
                       <div className="col-lg-7">
-                        <input
+                        {/* <input
                           type="text"
                           required
                           className="form-control"
@@ -1316,7 +1341,29 @@ const ProfileInfo = ({
                           value={cellNumberRef}
                           // onChange={(e) => setCellNumberRef(e.target.value)}
                           onChange={handleInputChange_01}
-                        />
+                        /> */}
+                        <ReactInputMask
+                          mask="999 999-9999" // Canadian phone format
+                          value={cellNumberRef}
+                          onChange={(e) =>
+                            handleInputChange_01(e)
+                          }
+                          className="form-control"
+                          // disabled={!edit}
+                          style={{ backgroundColor: "#E8F0FE" }}
+                        >
+                          {(inputProps) => (
+                            <input
+                              {...inputProps}
+                              type="text"
+                              id="cellNumber"
+                              name="cellNumber"
+                              title="Please enter a valid cell number"
+                              // required
+                              // disabled={!edit}
+                            />
+                          )}
+                        </ReactInputMask>
                       </div>
                     </div>
                   </div>

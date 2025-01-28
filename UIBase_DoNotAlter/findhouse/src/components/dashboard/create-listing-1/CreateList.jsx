@@ -624,9 +624,10 @@ const CreateList = ({
                 id="formGroupExampleInput3"
                 onChange={(e) => setAppraisalQuoteDate(e.target.value)}
                 value={appraisalQuoteDate}
-                placeholder="MM-DD-YYYY"
+                // placeholder="MM-DD-YYYY"
                 disabled={isDisable}
                 min={getMinDateTime()}
+                onKeyDown={(e) => e.preventDefault()} // Prevent keyboard interaction
               />
             </div>
           </div>

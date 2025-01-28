@@ -19,7 +19,7 @@ import { FaDownload } from "react-icons/fa";
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
-
+  const [selectedPropertyNew, setSelectedPropertyNew] = useState(null);
   const [assignAppraiser, setAssignAppraiser] = useState([]);
   const [isStatusModal, setIsStatusModal] = useState(false);
   const [toggleId, setToggleId] = useState(-1);
@@ -102,6 +102,7 @@ const Index = () => {
 
   const closeStatusUpdateHandler = () => {
     setOpenDate(false);
+    setSelectedPropertyNew(null)
     setIsStatusModal(false);
   };
 
@@ -821,6 +822,7 @@ const Index = () => {
                           setWishlistedProperties={setWishlistedProperties}
                           setStartLoading={setStartLoading}
                           openModalBroker={openModalBroker}
+                          setSelectedPropertyNew={setSelectedPropertyNew}
                         />
 
                         {modalIsOpenError && (
@@ -1546,7 +1548,7 @@ const Index = () => {
                         <h3 className=" text-color mt-1">
                           Asssign Appraiser – Property Id{" "}
                           <span style={{ color: "#97d700" }}>
-                            #{propertyId}
+                          #{selectedPropertyNew?.orderId}
                           </span>
                         </h3>
                       </div>
@@ -1644,7 +1646,7 @@ const Index = () => {
                         >
                           Confirm Submission – Property Id{" "}
                           <span style={{ color: "#97d700" }}>
-                            #{propertyId}
+                            #{selectedPropertyNew.orderId}
                           </span>
                         </h3>
                         <div
@@ -1718,7 +1720,7 @@ const Index = () => {
                             <h3 className=" text-color mt-3">
                               Appraisal Status Updation – Property Id{" "}
                               <span style={{ color: "#97d700" }}>
-                                #{propertyId}
+                                #{selectedPropertyNew.orderId}
                               </span>
                             </h3>
                           </div>
@@ -1765,6 +1767,7 @@ const Index = () => {
                               onChange={(e) => setStatusDate(e.target.value)}
                               value={statusDate}
                               min={getMinDateTime()}
+                              onKeyDown={(e) => e.preventDefault()} // Prevent keyboard interaction
                             />
                           </div>
                         )}

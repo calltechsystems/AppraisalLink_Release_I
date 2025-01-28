@@ -127,7 +127,7 @@ export default function Exemple({
   setCurrentBid,
   setAllAppraiser,
   setAssignPropertyId,
-
+  setSelectedPropertyNew,
   setAssignModal,
   setIsStatusModal,
   setProperties,
@@ -193,7 +193,7 @@ export default function Exemple({
     return "btn btn-status w-100"; // Default color
   };
 
-  const openIsWishlistPropertyModal = (wishlistId) => {
+  const openIsWishlistPropertyModal = (wishlistId, property) => {
     setSelectedWishlistId(wishlistId);
     setSelectedProperty(property);
     setIsWishlistProperty(true);
@@ -276,8 +276,9 @@ export default function Exemple({
 
   const router = useRouter();
 
-  const openStatusUpdateHandler = (bid) => {
+  const openStatusUpdateHandler = (bid, property) => {
     setCurrentBid(bid);
+    setSelectedPropertyNew(property);
     setIsStatusModal(true);
   };
 
@@ -599,7 +600,7 @@ export default function Exemple({
                         className="btn "
                         style={{ border: "1px solid grey" }}
                         onClick={() =>
-                          openIsWishlistPropertyModal(isWishlist.id)
+                          openIsWishlistPropertyModal(isWishlist.id, property)
                         }
                         title="Remove Wishlist Property"
                       >
@@ -731,7 +732,7 @@ export default function Exemple({
                         <button
                           href="#"
                           className="btn btn-color"
-                          onClick={() => openStatusUpdateHandler(isBidded)}
+                          onClick={() => openStatusUpdateHandler(isBidded, property)}
                         >
                           <Link href="#">
                             <span className="flaticon-edit text-light"></span>

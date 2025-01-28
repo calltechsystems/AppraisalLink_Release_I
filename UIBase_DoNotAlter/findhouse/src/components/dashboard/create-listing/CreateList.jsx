@@ -627,6 +627,7 @@ const CreateList = ({
                 placeholder="MM-DD-YYYY"
                 disabled={isDisable}
                 min={getMinDateTime()}
+                onKeyDown={(e) => e.preventDefault()} // Prevent keyboard interaction
               />
             </div>
           </div>

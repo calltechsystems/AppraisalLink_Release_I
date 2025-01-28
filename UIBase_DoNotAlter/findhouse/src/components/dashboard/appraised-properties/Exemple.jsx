@@ -146,6 +146,7 @@ export default function Exemple({
   setRefresh,
   setStartLoading,
   refresh,
+  setSelectedPropertyNew
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [wishlist, setWishlist] = useState([]);
@@ -291,7 +292,7 @@ export default function Exemple({
     setWishlistModal(true);
   };
 
-  const openIsWishlistPropertyModal = (wishlistId) => {
+  const openIsWishlistPropertyModal = (wishlistId, property) => {
     setSelectedWishlistId(wishlistId);
     setSelectedProperty(property);
     setIsWishlistProperty(true);
@@ -310,8 +311,9 @@ export default function Exemple({
     return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
-  const openStatusUpdateHandler = (bid) => {
+  const openStatusUpdateHandler = (bid, property) => {
     setCurrentBid(bid);
+    setSelectedPropertyNew(property);
     setIsStatusModal(true);
   };
 
@@ -786,7 +788,7 @@ export default function Exemple({
                         style={{ border: "1px solid grey" }}
                         // onClick={() => removeWishlistHandler(isWishlist.id)}
                         onClick={() =>
-                          openIsWishlistPropertyModal(isWishlist.id)
+                          openIsWishlistPropertyModal(isWishlist.id, property)
                         }
                         title="Remove Wishlist Property"
                       >
@@ -860,7 +862,7 @@ export default function Exemple({
                             <button
                               href="#"
                               className="btn btn-color"
-                              onClick={() => openStatusUpdateHandler(isBidded)}
+                              onClick={() => openStatusUpdateHandler(isBidded, property)}
                             >
                               <Link href="#">
                                 <span className="flaticon-edit text-light"></span>
@@ -935,7 +937,7 @@ export default function Exemple({
       setStatusData(tempStatusData);
     };
     getData();
-  }, [properties]);
+  }, [properties, wishlist, bids]);
 
   const refreshHandler = () => {
     setProperties([]);

@@ -49,7 +49,12 @@ const SidebarMenu = () => {
       route: "/subscription-hisotry",
       icon: "flaticon-building",
     },
-    { id: 3, name: "Help desk", route: "/appraiser-helpdesk", icon: "flaticon-telephone" },
+    {
+      id: 3,
+      name: "Help desk",
+      route: "/appraiser-helpdesk",
+      icon: "flaticon-telephone",
+    },
     {
       id: 4,
       name: "Contact Us",
@@ -252,30 +257,34 @@ const SidebarMenu = () => {
               )}
             </li>
 
-            <li
-              className={`treeview ${
-                hasActivePlans
-                  ? isSinglePageActive(
-                      "/appraiser-accepted-properties",
-                      route.pathname
-                    )
-                    ? "active"
-                    : ""
-                  : "disabled"
-              }`}
-            >
-              {hasActivePlans ? (
-                <Link href="/appraiser-accepted-properties">
-                  <i className="flaticon-building"></i>
-                  <span>Accepted Orders</span>
-                </Link>
-              ) : (
-                <a>
-                  <i className="flaticon-building"></i>
-                  <span>Accepted Orders</span>
-                </a>
-              )}
-            </li>
+            {!isAppraiserByCompany ? (
+              <li
+                className={`treeview ${
+                  hasActivePlans
+                    ? isSinglePageActive(
+                        "/appraiser-accepted-properties",
+                        route.pathname
+                      )
+                      ? "active"
+                      : ""
+                    : "disabled"
+                }`}
+              >
+                {hasActivePlans ? (
+                  <Link href="/appraiser-accepted-properties">
+                    <i className="flaticon-building"></i>
+                    <span>Accepted Orders</span>
+                  </Link>
+                ) : (
+                  <a>
+                    <i className="flaticon-building"></i>
+                    <span>Accepted Orders</span>
+                  </a>
+                )}
+              </li>
+            ) : (
+              ""
+            )}
 
             <li
               className={`treeview ${

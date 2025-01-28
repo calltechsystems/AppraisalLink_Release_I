@@ -41,6 +41,9 @@ const TableData = ({
   setModalIsOpenError,
   setRefresh,
   refresh,
+  setSelectedPropertyNew,
+  setCurrentBiddedView,
+  setOpenQuoteView,
 }) => {
   let userInfo = {};
   const [Id, setId] = useState(-1);
@@ -306,7 +309,7 @@ const TableData = ({
           setProperties={setProperties}
           properties={data}
           searchInput={searchInput}
-                          filterQuery={filterQuery}
+          filterQuery={filterQuery}
           openAppraiserInfoModal={openAppraiserInfoModal}
           setRefresh={setRefresh}
           refresh={refresh}
@@ -329,9 +332,12 @@ const TableData = ({
           setOpenAssignModal={setOpenAssignModal}
           end={end}
           setAssignAppraisers={setAssignAppraisers}
-          setAssignModal = {setAssignModal}
-          setAssignPropertyId = {setAssignPropertyId}
+          setAssignModal={setAssignModal}
+          setAssignPropertyId={setAssignPropertyId}
           setAssignedProp={setAssignedProp}
+          setSelectedPropertyNew={setSelectedPropertyNew}
+          setCurrentBiddedView={setCurrentBiddedView}
+          setOpenQuoteView={setOpenQuoteView}
         />
       )}
     </>

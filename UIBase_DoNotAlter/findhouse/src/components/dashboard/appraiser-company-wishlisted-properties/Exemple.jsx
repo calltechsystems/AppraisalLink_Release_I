@@ -146,6 +146,7 @@ export default function Exemple({
   setRefresh,
   setStartLoading,
   refresh,
+  setSelectedPropertyNew,
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [wishlist, setWishlist] = useState([]);
@@ -253,17 +254,17 @@ export default function Exemple({
 
   const router = useRouter();
 
-  const openStatusUpdateHandler = (bid) => {
+  const openStatusUpdateHandler = (bid, property) => {
     setCurrentBid(bid);
+    setSelectedPropertyNew(property);
     setIsStatusModal(true);
   };
 
-  const openIsWishlistPropertyModal = (wishlistId) => {
+  const openIsWishlistPropertyModal = (wishlistId, property) => {
     setSelectedWishlistId(wishlistId);
-    setSelectedProperty(wishlistId);
+    setSelectedProperty(property);
     setIsWishlistProperty(true);
   };
-
 
   const handleConfirmRemoveWishlist = () => {
     if (selectedWishlistId) {
@@ -657,7 +658,7 @@ export default function Exemple({
                           border: "1px solid grey",
                         }}
                         onClick={() =>
-                          openIsWishlistPropertyModal(isWishlist.id)
+                          openIsWishlistPropertyModal(isWishlist.id, property)
                         }
                       >
                         <img
@@ -824,7 +825,7 @@ export default function Exemple({
                       href="#"
                       className="list-inline-item btn btn-color w-20"
                       // style={{ marginLeft: "12px" }}
-                      onClick={() => openStatusUpdateHandler(isBidded)}
+                      onClick={() => openStatusUpdateHandler(isBidded, property)}
                     >
                       <Link href="#">
                         <span className="flaticon-edit text-light"></span>

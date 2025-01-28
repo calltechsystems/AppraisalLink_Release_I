@@ -929,7 +929,7 @@ const Index = () => {
                                   <h2 className=" text-color mt-1">
                                     Mortgage Broker Details – Property Id{"  "}
                                     <span style={{ color: "#97d700" }}>
-                                      #{property.propertyId}
+                                      #{broker?.orderId}
                                     </span>
                                   </h2>
                                 </div>

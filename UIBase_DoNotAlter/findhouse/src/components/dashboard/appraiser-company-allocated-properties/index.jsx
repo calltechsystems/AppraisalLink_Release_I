@@ -40,9 +40,10 @@ const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [lowRangeBid, setLowRangeBid] = useState("");
   const [propertyId, setPropertyId] = useState(null);
-
+  const [selectedPropertyNew, setSelectedPropertyNew] = useState(null);
   const [allAssignedprop, setAssignedProp] = useState([]);
-
+  const [openQuoteView, setOpenQuoteView] = useState(false);
+  const [currentBiddedView, setCurrentBiddedView] = useState({});
   const [openAppraiser, setOpenAppraiser] = useState(false);
 
   const [disable, setDisble] = useState(false);
@@ -108,6 +109,7 @@ const Index = () => {
 
   const closeStatusUpdateHandler = () => {
     setOpenDate(false);
+    setSelectedPropertyNew(null);
     setIsStatusModal(false);
   };
 
@@ -570,10 +572,54 @@ const Index = () => {
     };
   };
 
-  const participateHandler = (val, id) => {
-    setLowRangeBid(val);
-    setPropertyId(id);
-    setModalOpen(true);
+  const [isUpdateBid, setIsUpdateBid] = useState(false);
+  const [bidAmount, setbidAmount] = useState(0);
+  const [alreadyBidded, setAlreadyBidded] = useState(false);
+
+  const closeQuoteViewModal = () => {
+    setOpenQuoteView(false);
+    setCurrentBiddedView({});
+  };
+
+  function addCommasToNumber(number) {
+    if (Number(number) <= 100 || number === undefined) return number;
+    return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  const formatDate = (dateString) => {
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+    };
+
+    const originalDate = new Date(dateString);
+
+    // Adjust for Eastern Standard Time (EST) by subtracting 5 hours
+    const estDate = new Date(originalDate.getTime() - 5 * 60 * 60 * 1000);
+
+    // Format the EST date
+    const formattedDate = estDate.toLocaleString("en-US", options);
+    return formattedDate;
+  };
+
+  const participateHandler = (val, id, isUpdate, value, isBidded) => {
+    if (isUpdate) {
+      setLowRangeBid(val);
+      setIsUpdateBid(isUpdate);
+      setbidAmount(value);
+      setPropertyId(id);
+      setAlreadyBidded(isBidded);
+      setModalOpen(true);
+    } else {
+      setLowRangeBid(val);
+      setPropertyId(id);
+      setAlreadyBidded(isBidded);
+      setModalOpen(true);
+    }
   };
 
   const [selectedAppraiser, setSelectedAppraiser] = useState({});
@@ -630,7 +676,9 @@ const Index = () => {
       toast.dismiss();
       toast.success("Property successfully assigned!");
       setAssignPropertyId(-1);
-      location.reload(true); // Consider replacing this with a more user-friendly update mechanism
+      setTimeout(() => {
+        window.location.reload(); // Reload after the success message is shown
+      }, 1000);
     } catch (err) {
       toast.dismiss();
 
@@ -821,6 +869,9 @@ const Index = () => {
                           setAssignModal={setAssignModal}
                           setAssignPropertyId={setAssignPropertyId}
                           setAssignedAppraiser={openAppraisalModal}
+                          setSelectedPropertyNew={setSelectedPropertyNew}
+                          setCurrentBiddedView={setCurrentBiddedView}
+                          setOpenQuoteView={setOpenQuoteView}
                         />
 
                         {modalIsOpenError && (
@@ -1141,8 +1192,7 @@ const Index = () => {
                               <div className="row">
                                 <div className="col-lg-12 text-center">
                                   <h2 className=" text-color mt-2">
-                                    Mortgage Broker Details
-                                    – Property Id{"  "}
+                                    Mortgage Broker Details – Property Id{"  "}
                                     <span style={{ color: "#97d700" }}>
                                       #{broker.orderId}
                                     </span>
@@ -1329,7 +1379,7 @@ const Index = () => {
                                   <h1 className=" text-color mt-1">
                                     Appraiser Details – Property Id{"  "}
                                     <span style={{ color: "#97d700" }}>
-                                      #{broker.orderId}
+                                      #{propertyId}
                                     </span>
                                   </h1>
                                 </div>
@@ -1496,7 +1546,7 @@ const Index = () => {
                                       >
                                         {appraiser.cellNumber
                                           ? appraiser.cellNumber
-                                          : "Not Provided"}
+                                          : "N.A."}
                                       </td>
                                     </tr>
                                     <tr>
@@ -1547,7 +1597,7 @@ const Index = () => {
                                       >
                                         {appraiser.assistantFirstName
                                           ? appraiser.assistantFirstName
-                                          : "Not Provided"}
+                                          : "N.A."}
                                       </td>
                                     </tr>
                                     <tr>
@@ -1572,7 +1622,7 @@ const Index = () => {
                                       >
                                         {appraiser.assistantPhoneNumber
                                           ? appraiser.assistantPhoneNumber
-                                          : "Not Provided"}
+                                          : "N.A."}
                                       </td>
                                     </tr>
                                     <tr>
@@ -1597,7 +1647,7 @@ const Index = () => {
                                       >
                                         {appraiser.assistantEmailAddress
                                           ? appraiser.assistantEmailAddress
-                                          : "Not Provided"}
+                                          : "N.A."}
                                       </td>
                                     </tr>
                                   </tbody>
@@ -1668,7 +1718,7 @@ const Index = () => {
                   </div>
                 </div>
               )}
-            {isStatusModal && (
+              {isStatusModal && (
                 <div className="modal">
                   <div className="modal-content" style={{ width: "35%" }}>
                     {showConfirmation ? (
@@ -1711,7 +1761,7 @@ const Index = () => {
                         >
                           Confirm Submission – Property Id{" "}
                           <span style={{ color: "#97d700" }}>
-                            #{propertyId}
+                            #{selectedPropertyNew.orderId}
                           </span>
                         </h3>
                         <div
@@ -1719,7 +1769,7 @@ const Index = () => {
                           style={{ border: "2px solid #97d700" }}
                         ></div>
                         <p className="text-center" style={{ fontSize: "18px" }}>
-                        Are you sure you want to proceed with the changes?
+                          Are you sure you want to proceed with the changes?
                         </p>
                         <div
                           className="mt-4 mb-4"
@@ -1785,7 +1835,7 @@ const Index = () => {
                             <h3 className=" text-color mt-3">
                               Appraisal Status Updation – Property Id{" "}
                               <span style={{ color: "#97d700" }}>
-                                #{propertyId}
+                                #{selectedPropertyNew.orderId}
                               </span>
                             </h3>
                           </div>
@@ -1832,6 +1882,7 @@ const Index = () => {
                               onChange={(e) => setStatusDate(e.target.value)}
                               value={statusDate}
                               min={getMinDateTime()}
+                              onKeyDown={(e) => e.preventDefault()} // Prevent keyboard interaction
                             />
                           </div>
                         )}
@@ -1881,6 +1932,90 @@ const Index = () => {
                 </div>
               )}
 
+              {openQuoteView && (
+                <div className="modal">
+                  <div className="modal-content" style={{ width: "30%" }}>
+                    <div className="row">
+                      <div className="col-lg-12">
+                        <Link href="/" className="">
+                          <Image
+                            width={50}
+                            height={45}
+                            className="logo1 img-fluid"
+                            style={{ marginTop: "-20px" }}
+                            src="/assets/images/Appraisal_Land_Logo.png"
+                            alt="header-logo2.png"
+                          />
+                          <span
+                            style={{
+                              color: "#2e008b",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            Appraisal
+                          </span>
+                          <span
+                            style={{
+                              color: "#97d700",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            {" "}
+                            Land
+                          </span>
+                        </Link>
+                      </div>
+                    </div>
+                    <h3 className="text-center mt-2 text-color">
+                      Provided Quote – Property Id{" "}
+                      <span style={{ color: "#97d700" }}>
+                        #{currentBiddedView.orderId}
+                      </span>
+                    </h3>
+                    <div>
+                      <div
+                        className="mt-2 mb-3"
+                        style={{ border: "2px solid #97d700" }}
+                      ></div>
+                    </div>
+                    <p className="text-center fs-5 text-dark">
+                      The Last Provided Quote was{" "}
+                      <span
+                        style={{
+                          color: "#97d700",
+                          fontWeight: "bold",
+                          fontSize: "22px",
+                        }}
+                      >
+                        ${addCommasToNumber(currentBiddedView?.bidAmount)}
+                      </span>
+                    </p>
+                    <p className="text-center fs-6 text-dark">
+                      Updated At : {formatDate(currentBiddedView?.requestTime)}
+                    </p>
+
+                    <div className="text-center" style={{}}>
+                      <div>
+                        <div
+                          className="mt-2 mb-3"
+                          style={{ border: "2px solid #97d700" }}
+                        ></div>
+                      </div>
+                      <button
+                        className="btn btn-color w-25"
+                        onClick={closeQuoteViewModal}
+                      >
+                        Ok
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {assignModal && (
                 <div className="modal">
                   <div className="modal-content" style={{ width: "30%" }}>
@@ -1924,7 +2059,7 @@ const Index = () => {
                         <h3 className=" text-color mt-3">
                           Re-Asssign Appraiser – Property Id{"  "}
                           <span style={{ color: "#97d700" }}>
-                            #{propertyId}
+                            #{selectedPropertyNew?.orderId}
                           </span>
                         </h3>
                       </div>

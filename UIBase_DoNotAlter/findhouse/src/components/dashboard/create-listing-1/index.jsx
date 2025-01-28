@@ -23,7 +23,7 @@ const Index = ({ isView, propertyData }) => {
 
   const [updateView, setUpdateView] = useState(propertyData);
   const [isDisable, setDisable] = useState(updateView);
-
+  console.log("orderid", propertyData);
   const [appraisalQuoteDate, setAppraisalQuoteDate] = useState(
     propertyData ? propertyData.quoteRequiredDate : ""
   );
