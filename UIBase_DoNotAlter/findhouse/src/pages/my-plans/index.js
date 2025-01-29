@@ -9,6 +9,7 @@ import Link from "next/link";
 import Image from "next/image";
 import OneTimePaymentModal from "./OneTimePaymentModal";
 import SubscriptionModal from "./SubscriptionModal";
+import CancelSubscriptionModal from "./CancelSubscriptionModal";
 
 const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -114,6 +115,13 @@ const Index = () => {
       />
       {price?.type == "plan" ? (
         <SubscriptionModal
+          currentSubscription={currentSubscription}
+          modalOpen={modalOpen}
+          closeModal={closeModal}
+          price={price}
+        />
+      ) : price?.type == "cancel_plan" ? (
+        <CancelSubscriptionModal
           currentSubscription={currentSubscription}
           modalOpen={modalOpen}
           closeModal={closeModal}
