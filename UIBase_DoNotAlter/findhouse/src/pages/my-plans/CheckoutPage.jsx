@@ -5,10 +5,9 @@ import {
   usePayPalScriptReducer,
 } from "@paypal/react-paypal-js";
 import toast from "react-hot-toast";
-import {
-  generateRequestPayload,
-  generateResponsePayload,
-} from "./GeneratePayloads";
+
+import { generateRequestPayload, generateResponsePayload } from '../../utils/Paypal/GeneratePayloads';
+
 import axios from "axios";
 const Checkout = ({
   topUpDetails,
