@@ -435,7 +435,7 @@ export default function Exemple({
         const isBidded = filterBidsWithin24Hours(property);
         const anotherBid = alreadyAccepted(property);
         // const isAlreadyArchived = getisAlreadyArchived(property.propertyId);
-        const isWait = property.isOnHold || property.isOnCancel;
+        const isWait = property.isonhold || property.isoncancel;
         const isArchive = false;
 
         if (!isArchive) {
@@ -523,9 +523,9 @@ export default function Exemple({
                 <span className="btn btn-danger  w-100">Declined</span>
               ) : isWait ? (
                 <span className="btn btn-danger  w-100">
-                  {property.isOnCancel
+                  {property.isoncancel
                     ? "Cancelled"
-                    : property.isOnHold
+                    : property.isonhold
                     ? "On Hold"
                     : ""}
                 </span>

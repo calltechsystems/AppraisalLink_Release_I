@@ -417,7 +417,25 @@ export default function Exemple({
             ) : (
               <div>
                 <h5 className="btn btn-danger m-1">Declined</h5>
-                {property?.appraiserAssign === false && (
+                {property?.appraiserAssign === false &&
+                  property?.status !== 2 && (
+                    <div
+                      className="list-inline-item"
+                      onClick={() => confirmReassign(property.bidId)}
+                    >
+                      <li
+                        className="list-inline-item"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="Change Appraiser"
+                      >
+                        <div className="btn btn-color">
+                          <FaUserEdit style={{ width: "20px" }} />
+                        </div>
+                      </li>
+                    </div>
+                  )}
+                {/* {property?.appraiserAssign === false && (
                   <div
                     className="list-inline-item"
                     // onClick={() => reAssign(property.bidId)}
@@ -434,7 +452,7 @@ export default function Exemple({
                       </div>
                     </li>
                   </div>
-                )}
+                )} */}
               </div>
             ),
         };

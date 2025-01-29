@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Header from "../../common/header/dashboard/HeaderBrokerage";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenuBrokerage";
 import MobileMenu from "../../common/header/MobileMenu_02";
-import ChangePassword from "./ChangePassword";
+import ChangePassword from "../broker-change-password/ChangePassword";
 import { useRouter } from "next/router";
 
 const Index = () => {
