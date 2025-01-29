@@ -86,6 +86,26 @@ const Index = () => {
     }
   };
 
+  const formatDate = (dateString) => {
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      // hour: "numeric",
+      // minute: "numeric",
+      // second: "numeric",
+      hour12: true, // Set to false for 24-hour format
+    };
+
+    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
+    return formattedDate;
+  };
+
+  function addCommasToNumber(number) {
+    if (Number(number) <= 100 || number === undefined) return number;
+    return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   const [openBrokerModal, setOpenBrokerModal] = useState(false);
   const [modalIsPopupOpen, setModalIsPopupOpen] = useState(false);
 
@@ -772,8 +792,8 @@ const Index = () => {
                                         <td className="table-value">
                                           {" "}
                                           {currentProperty.streetNumber}{" "}
-                                          {currentProperty.streetName}{" "}
-                                          {currentProperty.city}{" "}
+                                          {currentProperty.streetName},{" "}
+                                          {currentProperty.city},{" "}
                                           {currentProperty.province}{" "}
                                           {currentProperty.zipCode}
                                         </td>
@@ -833,7 +853,10 @@ const Index = () => {
                                           </span>
                                         </td>
                                         <td className="table-value">
-                                          ${currentProperty.estimatedValue}
+                                          $
+                                          {addCommasToNumber(
+                                            currentProperty.estimatedValue
+                                          )}
                                         </td>
                                       </tr>
                                       <tr>
@@ -859,7 +882,9 @@ const Index = () => {
                                         </td>
                                         <td className="table-value">
                                           {currentProperty.quoteRequiredDate
-                                            ? currentProperty.quoteRequiredDate
+                                            ? formatDate(
+                                                currentProperty.quoteRequiredDate
+                                              )
                                             : "N.A."}
                                         </td>
                                       </tr>
@@ -913,7 +938,9 @@ const Index = () => {
                                         <td className="table-value">
                                           {" "}
                                           {/* {currentProperty.applicantPhoneNumber} */}
-                                          {formatPhoneNumber(currentProperty.applicantPhoneNumber)}
+                                          {formatPhoneNumber(
+                                            currentProperty.applicantPhoneNumber
+                                          )}
                                         </td>
                                       </tr>
                                     </tbody>
@@ -999,7 +1026,8 @@ const Index = () => {
                                       propValue
                                         ? "Order Confirmation"
                                         : "Order Confirmation"
-                                    }`}– Property Id{" "}
+                                    }`}
+                                – Property Id{" "}
                                 <span style={{ color: "#97d700" }}>
                                   #{propertyId}
                                 </span>

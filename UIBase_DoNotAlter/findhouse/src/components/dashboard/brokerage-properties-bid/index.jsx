@@ -281,6 +281,26 @@ const Index = ({ propertyId }) => {
   }, [property]);
 
   console.log(appInfo);
+
+  const formatPhoneNumber = (number) => {
+    if (!number) return ""; // Handle empty input
+
+    // Remove non-numeric characters
+    const digits = number.replace(/\D/g, "");
+
+    // Format the number as "416 123-4567"
+    if (digits.length <= 3) {
+      return digits; // e.g., "416"
+    } else if (digits.length <= 6) {
+      return `${digits.slice(0, 3)} ${digits.slice(3)}`; // e.g., "416 123"
+    } else {
+      return `${digits.slice(0, 3)} ${digits.slice(3, 6)}-${digits.slice(
+        6,
+        10
+      )}`; // e.g., "416 123-4567"
+    }
+  };
+
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -604,7 +624,9 @@ const Index = ({ propertyId }) => {
                             <span className="text-start">Phone Number</span>
                           </td>
                           <td className="table-value">
-                            {appInfo.phoneNumber ? appInfo.phoneNumber : "N.A."}
+                            {appInfo.phoneNumber
+                              ? formatPhoneNumber(appInfo.phoneNumber)
+                              : "N.A."}
                           </td>
                         </tr>
                         <tr>
@@ -612,7 +634,9 @@ const Index = ({ propertyId }) => {
                             <span className="text-start">Cell Number</span>
                           </td>
                           <td className="table-value">
-                            {appInfo.cellNumber ? appInfo.cellNumber : "N.A."}
+                            {appInfo.cellNumber
+                              ? formatPhoneNumber(appInfo.cellNumber)
+                              : "N.A."}
                           </td>
                         </tr>
                         <tr>
@@ -676,7 +700,7 @@ const Index = ({ propertyId }) => {
                           </td>
                           <td className="table-value">
                             {appInfo.officeContactPhone
-                              ? appInfo.officeContactPhone
+                              ? formatPhoneNumber(appInfo.officeContactPhone)
                               : "N.A."}
                           </td>
                         </tr>

@@ -52,7 +52,7 @@ const ProfileInfo = ({
     userData?.brokerage_Details?.brokerageName || ""
   );
   const [cellNumberRef, setCellNumberRef] = useState(
-    userData?.brokerage_Details?.cellNumber || ""
+    userData?.brokerage_Details?.cellnumber || ""
   );
 
   const [mortageBrokrageLicNoRef, setMortageBrokerageLicNoRef] = useState(
@@ -165,6 +165,7 @@ const ProfileInfo = ({
   const [brokerageError, setBrokerageError] = useState(false);
   const [lastNameError, setLastNameError] = useState(false);
   const [phoneNumberError, setPhoneNumberError] = useState(false);
+  const [cellNumberError, setCellNumberError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [mortgageLicenceError, setMortgageLicenceError] = useState(false);
   const [mortgageLicenceTwoError, setMortgageLicenceTwoError] = useState(false);
@@ -172,6 +173,20 @@ const ProfileInfo = ({
   const [streetNameError, setStreetNameError] = useState(false);
   const [cityError, setCityError] = useState(false);
   const [zipCodeError, setZipCodeError] = useState(false);
+  const [assistantFirstNameError, setAssistantFirstNameError] = useState(false);
+  const [assistantLastNameError, setAssistantLastNameError] = useState(false);
+  const [assistantTwotFirstNameError, setAssistantTwoFirstNameError] =
+    useState(false);
+  const [assistantTwoLastNameError, setAssistantTwoLastNameError] =
+    useState(false);
+  const [assistantPhoneNumberError, setAssistantPhoneNumberError] =
+    useState(false);
+  const [assistantTwoPhoneNumberError, setAssistantTwoPhoneNumberError] =
+    useState(false);
+  const [assistantEmailAddressError, setAssistantEmailAddressError] =
+    useState(false);
+  const [assistantTwoEmailAddressError, setAssistantTwoEmailAddressError] =
+    useState(false);
 
   // State for dropdown
   const [selectedOption, setSelectedOption] = useState("");
@@ -182,6 +197,7 @@ const ProfileInfo = ({
   const [brokerageValid, setBrokerageValid] = useState(false);
   const [lastNameValid, setLastNameValid] = useState(false);
   const [phoneNumberValid, setPhoneNumberValid] = useState(false);
+  const [cellNumberValid, setCellNumberValid] = useState(false);
   const [emailValid, setEmailValid] = useState(false);
   const [mortgageLicenceValid, setMortgageLicenceValid] = useState(false);
   const [mortgageLicenceTwoValid, setMortgageLicenceTwoValid] = useState(false);
@@ -190,6 +206,20 @@ const ProfileInfo = ({
   const [cityValid, setCityValid] = useState(false);
   const [zipCodeValid, setZipCodeValid] = useState(false);
   const [dropdownValid, setDropdownValid] = useState(false);
+  const [assistantFirstNameValid, setAssistantFirstNameValid] = useState(false);
+  const [assistantLastNameValid, setAssistantLastNameValid] = useState(false);
+  const [assistantTwoFirstNameValid, setAssistantTwoFirstNameValid] =
+    useState(false);
+  const [assistantTwoLastNameValid, setAssistantTwoLastNameValid] =
+    useState(false);
+  const [assistantPhoneNumberValid, setAssistantPhoneNumberValid] =
+    useState(false);
+  const [assistantTwoPhoneNumberValid, setAssistantTwoPhoneNumberValid] =
+    useState(false);
+  const [assistantEmailAddressValid, setAssistantEmailAddressValid] =
+    useState(false);
+  const [assistantTwoEmailAddressValid, setAssistantTwoEmailAddressValid] =
+    useState(false);
 
   const handleInputChangeName = (value, setValue, setValid, setError) => {
     if (value.length <= 30) {
@@ -453,6 +483,10 @@ const ProfileInfo = ({
       cellNumber.trim() !== ""
     ) {
       toast.error("Please enter a valid cell number");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
     } else if (
       cellNumberRegex.test(assistantPhoneNumber) === false &&
       assistantPhoneNumber.trim() !== ""
@@ -868,14 +902,13 @@ const ProfileInfo = ({
   const handleInputChange_01 = (e) => {
     if (!e || !e.target) return; // Safeguard against undefined input
     const inputValue = e.target.value;
-  
+
     // Remove all non-numeric characters
     const numericValue = inputValue.replace(/\D/g, "");
-  
+
     // Truncate to 10 digits and update state
     setCellNumberRef(numericValue.slice(0, 10));
   };
-  
 
   // const handleInputChange_01 = (e) => {
   //   const inputValue = e.target.value;
@@ -1346,11 +1379,23 @@ const ProfileInfo = ({
                           mask="999 999-9999" // Canadian phone format
                           value={cellNumberRef}
                           onChange={(e) =>
-                            handleInputChange_01(e)
+                            handleInputChange(
+                              e.target.value,
+                              setCellNumberRef,
+                              setCellNumberValid,
+                              setCellNumberError
+                            )
                           }
                           className="form-control"
                           // disabled={!edit}
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: cellNumberError
+                              ? "red"
+                              : cellNumberValid
+                              ? ""
+                              : "",
+                          }}
                         >
                           {(inputProps) => (
                             <input
@@ -1364,6 +1409,11 @@ const ProfileInfo = ({
                             />
                           )}
                         </ReactInputMask>
+                        {cellNumberError && (
+                          <small className="text-danger">
+                            Enter valid cell number.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -1766,10 +1816,6 @@ const ProfileInfo = ({
                   </div>
 
                   <div className="mt-5">
-                    {/* <p>
-                      If you have an Administrative Assistant, fill in the
-                      following:
-                    </p> */}
                     <h3 className="heading-forms">Assistant#1 Information</h3>
                     <hr />
                   </div>
@@ -1788,14 +1834,34 @@ const ProfileInfo = ({
                         <input
                           type="text"
                           className="form-control"
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: assistantFirstNameError
+                              ? "red"
+                              : assistantFirstNameValid
+                              ? ""
+                              : "",
+                          }}
                           id="formGroupExampleInput3"
                           value={assistantFirstName}
+                          // onChange={(e) =>
+                          //   setAssistantFirstName(e.target.value)
+                          // }
                           onChange={(e) =>
-                            setAssistantFirstName(e.target.value)
+                            handleInputChangeName(
+                              e.target.value,
+                              setAssistantFirstName,
+                              setAssistantFirstNameValid,
+                              setAssistantFirstNameError
+                            )
                           }
-                          //
+                          disabled={!edit}
                         />
+                        {assistantFirstNameError && (
+                          <small className="text-danger">
+                            Enter valid assistant first name.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -1814,11 +1880,32 @@ const ProfileInfo = ({
                         <input
                           type="text"
                           className="form-control"
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: assistantLastNameError
+                              ? "red"
+                              : assistantLastNameValid
+                              ? ""
+                              : "",
+                          }}
                           id="formGroupExampleInput3"
                           value={assistantLastName}
-                          onChange={(e) => setAssistantLastName(e.target.value)}
+                          // onChange={(e) => setAssistantLastName(e.target.value)}
+                          onChange={(e) =>
+                            handleInputChangeName(
+                              e.target.value,
+                              setAssistantLastName,
+                              setAssistantLastNameValid,
+                              setAssistantLastNameError
+                            )
+                          }
+                          disabled={!edit}
                         />
+                        {assistantLastNameError && (
+                          <small className="text-danger">
+                            Enter valid assistant last name.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -1834,19 +1921,45 @@ const ProfileInfo = ({
                         </label>
                       </div>
                       <div className="col-lg-7">
-                        <input
-                          type="text"
-                          required
-                          className="form-control"
-                          style={{ backgroundColor: "#E8F0FE" }}
-                          id="formGroupExampleInput3"
+                        <ReactInputMask
+                          mask="999 999-9999" // Canadian phone format
                           value={assistantPhoneNumber}
-                          onChange={handleInputChange_02}
-                          // onChange={(e) =>
-                          //   setAssistantPhoneNumber(e.target.value)
-                          // }
+                          onChange={(e) =>
+                            handleInputChange(
+                              e.target.value,
+                              setAssistantPhoneNumber,
+                              setAssistantPhoneNumberValid,
+                              setAssistantPhoneNumberError
+                            )
+                          }
+                          className="form-control"
                           // disabled={!edit}
-                        />
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: assistantPhoneNumberError
+                              ? "red"
+                              : assistantPhoneNumberValid
+                              ? ""
+                              : "",
+                          }}
+                        >
+                          {(inputProps) => (
+                            <input
+                              {...inputProps}
+                              type="text"
+                              id="phoneNumber"
+                              name="phoneNumber"
+                              title="Please enter a valid cell number"
+                              required
+                              // disabled={!edit}
+                            />
+                          )}
+                        </ReactInputMask>
+                        {assistantPhoneNumberError && (
+                          <small className="text-danger">
+                            Enter valid phone number.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -1865,23 +1978,37 @@ const ProfileInfo = ({
                         <input
                           type="email"
                           className="form-control"
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: assistantEmailAddressError
+                              ? "red"
+                              : assistantEmailAddressValid
+                              ? ""
+                              : "",
+                          }}
                           required
                           id="formGroupExampleInput3"
                           value={assistantEmailAddress}
                           onChange={(e) =>
-                            setAssistantEmailAddress(e.target.value)
+                            handleInputChangeName(
+                              e.target.value,
+                              setAssistantEmailAddress,
+                              setAssistantEmailAddressValid,
+                              setAssistantEmailAddressError
+                            )
                           }
+                          // disabled={!edit}
                         />
+                        {assistantEmailAddressError && (
+                          <small className="text-danger">
+                            Enter valid email address.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
 
                   <div className="mt-5">
-                    {/* <p>
-                      If you have an Administrative Assistant, fill in the
-                      following:
-                    </p> */}
                     <h3 className="heading-forms">Assistant#2 Information</h3>
                     <hr />
                   </div>
@@ -1900,13 +2027,31 @@ const ProfileInfo = ({
                         <input
                           type="text"
                           className="form-control"
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: assistantTwotFirstNameError
+                              ? "red"
+                              : assistantTwoFirstNameValid
+                              ? ""
+                              : "",
+                          }}
                           id="formGroupExampleInput3"
                           value={assistantTwoFirstName}
                           onChange={(e) =>
-                            setAssistantTwoFirstName(e.target.value)
+                            handleInputChangeName(
+                              e.target.value,
+                              setAssistantTwoFirstName,
+                              setAssistantTwoFirstNameValid,
+                              setAssistantTwoFirstNameError
+                            )
                           }
+                          disabled={!edit}
                         />
+                        {assistantTwotFirstNameError && (
+                          <small className="text-danger">
+                            Enter valid assistant first name.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -1925,13 +2070,31 @@ const ProfileInfo = ({
                         <input
                           type="text"
                           className="form-control"
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: assistantTwoLastNameError
+                              ? "red"
+                              : assistantTwoLastNameValid
+                              ? ""
+                              : "",
+                          }}
                           id="formGroupExampleInput3"
                           value={assistantTwoLastName}
                           onChange={(e) =>
-                            setAssistantTwoLastName(e.target.value)
+                            handleInputChangeName(
+                              e.target.value,
+                              setAssistantTwoLastName,
+                              setAssistantTwoLastNameValid,
+                              setAssistantTwoLastNameError
+                            )
                           }
+                          disabled={!edit}
                         />
+                        {assistantTwoLastNameError && (
+                          <small className="text-danger">
+                            Enter valid assistant last name.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -1947,19 +2110,45 @@ const ProfileInfo = ({
                         </label>
                       </div>
                       <div className="col-lg-7">
-                        <input
-                          type="text"
-                          required
-                          className="form-control"
-                          style={{ backgroundColor: "#E8F0FE" }}
-                          id="formGroupExampleInput3"
+                        <ReactInputMask
+                          mask="999 999-9999" // Canadian phone format
                           value={assistantTwoPhoneNumber}
-                          onChange={handleInputChange_03}
-                          // onChange={(e) =>
-                          //   setAssistantTwoPhoneNumber(e.target.value)
-                          // }
+                          onChange={(e) =>
+                            handleInputChange(
+                              e.target.value,
+                              setAssistantTwoPhoneNumber,
+                              setAssistantTwoPhoneNumberValid,
+                              setAssistantTwoPhoneNumberError
+                            )
+                          }
+                          className="form-control"
                           // disabled={!edit}
-                        />
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: assistantTwoPhoneNumberError
+                              ? "red"
+                              : assistantTwoPhoneNumberValid
+                              ? ""
+                              : "",
+                          }}
+                        >
+                          {(inputProps) => (
+                            <input
+                              {...inputProps}
+                              type="text"
+                              id="phoneNumber"
+                              name="phoneNumber"
+                              title="Please enter a valid cell number"
+                              required
+                              // disabled={!edit}
+                            />
+                          )}
+                        </ReactInputMask>
+                        {assistantTwoPhoneNumberError && (
+                          <small className="text-danger">
+                            Enter valid phone number.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -1978,14 +2167,31 @@ const ProfileInfo = ({
                         <input
                           type="email"
                           className="form-control"
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: assistantTwoEmailAddressError
+                              ? "red"
+                              : assistantTwoEmailAddressValid
+                              ? ""
+                              : "",
+                          }}
                           required
                           id="formGroupExampleInput3"
                           value={assistantTwoEmailAddress}
                           onChange={(e) =>
-                            setAssistantTwoEmailAddress(e.target.value)
+                            handleInputChangeName(
+                              e.target.value,
+                              setAssistantTwoEmailAddress,
+                              setAssistantTwoEmailAddressValid,
+                              setAssistantTwoEmailAddressError
+                            )
                           }
                         />
+                        {assistantTwoEmailAddressError && (
+                          <small className="text-danger">
+                            Enter valid email address.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>

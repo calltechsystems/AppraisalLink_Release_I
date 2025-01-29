@@ -318,7 +318,7 @@ export default function Exemple({
     return "btn btn-status w-100"; // Default color
   };
 
-  const formatDate = (dateString) => {
+  const formatDateTime = (dateString) => {
     const options = {
       year: "numeric",
       month: "short",
@@ -333,7 +333,7 @@ export default function Exemple({
     return formattedDate;
   };
 
-  const formatDateNew = (dateString) => {
+  const formatDate = (dateString) => {
     const options = {
       year: "numeric",
       month: "short",
@@ -346,34 +346,6 @@ export default function Exemple({
 
     const formattedDate = new Date(dateString).toLocaleString("en-US", options);
     return formattedDate;
-  };
-
-  // For EST date and time
-
-  const formatDateTimeEST = (date) => {
-    const d = new Date(date);
-    const utcOffset = -5; // EST is UTC-5
-    d.setHours(d.getHours() + utcOffset);
-    return d.toLocaleString("en-US", {
-      dateStyle: "medium",
-      timeStyle: "short",
-    });
-  };
-
-  // Only for time
-
-  const formatDateToEST = (date) => {
-    try {
-      // Convert input date string to a Date object
-      const utcDate = new Date(`${date}T00:00:00Z`); // Treat input as UTC midnight
-      return new Intl.DateTimeFormat("en-US", {
-        timeZone: "America/Toronto", // EST/Canada timezone
-        dateStyle: "medium", // Format only the date
-      }).format(utcDate);
-    } catch (error) {
-      console.error("Error formatting date:", error);
-      return "Invalid date";
-    }
   };
 
   const getBidOfProperty = (orderId) => {
@@ -425,10 +397,10 @@ export default function Exemple({
           if (true) {
             const updatedRow = {
               order_id: property.orderId,
-              sub_date: formatDateTimeEST(property.addedDatetime),
+              sub_date: formatDateTime(property.addedDatetime),
               quote_required_by: property.quoteRequiredDate
-                ? formatDateToEST(property.quoteRequiredDate)
-                : formatDateToEST(property.addedDate),
+                ? formatDate(property.quoteRequiredDate)
+                : formatDate(property.addedDate),
               status:
                 isHold || isCancel ? (
                   <span className="btn bg-danger text-light w-100">

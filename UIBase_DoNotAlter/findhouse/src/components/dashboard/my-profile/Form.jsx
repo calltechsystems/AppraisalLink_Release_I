@@ -17,6 +17,26 @@ const Form = ({ userData, chnageShowCardHandler }) => {
       return "Unknown User Type"; // Default value if userType is not 1 or 6
     }
   };
+
+  const formatPhoneNumber = (number) => {
+    if (!number) return ""; // Handle empty input
+
+    // Remove non-numeric characters
+    const digits = number.replace(/\D/g, "");
+
+    // Format the number as "416 123-4567"
+    if (digits.length <= 3) {
+      return digits; // e.g., "416"
+    } else if (digits.length <= 6) {
+      return `${digits.slice(0, 3)} ${digits.slice(3)}`; // e.g., "416 123"
+    } else {
+      return `${digits.slice(0, 3)} ${digits.slice(3, 6)}-${digits.slice(
+        6,
+        10
+      )}`; // e.g., "416 123-4567"
+    }
+  };
+
   return (
     <form className="contact_form" action="#" style={{ borderRadius: "5px" }}>
       <div className="row">
@@ -97,7 +117,9 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                         <span className="text-start"> Phone Number</span>
                       </td>
                       <td className="table-value">
-                        {userData?.broker_Details?.phoneNumber}
+                        {formatPhoneNumber(
+                          userData?.broker_Details?.phoneNumber
+                        )}
                       </td>
                     </tr>
                     <tr>
@@ -105,8 +127,10 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                         <span className="text-start"> Cell Number</span>
                       </td>
                       <td className="table-value">
-                        {userData?.broker_Details?.cellNumber
-                          ? userData?.broker_Details?.cellNumber
+                        {userData?.broker_Details?.cellnumber
+                          ? formatPhoneNumber(
+                              userData?.broker_Details?.cellnumber
+                            )
                           : "N.A."}
                       </td>
                     </tr>
@@ -178,7 +202,9 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       <td className="table-value">
                         {" "}
                         {userData?.broker_Details?.assistantPhoneNumber
-                          ? userData?.broker_Details?.assistantPhoneNumber
+                          ? formatPhoneNumber(
+                              userData?.broker_Details?.assistantPhoneNumber
+                            )
                           : "N.A."}
                       </td>
                     </tr>
@@ -217,7 +243,9 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       <td className="table-value">
                         {" "}
                         {userData?.broker_Details?.assistantTwoPhoneNumber
-                          ? userData?.broker_Details?.assistantTwoPhoneNumber
+                          ? formatPhoneNumber(
+                              userData?.broker_Details?.assistantTwoPhoneNumber
+                            )
                           : "N.A."}
                       </td>
                     </tr>

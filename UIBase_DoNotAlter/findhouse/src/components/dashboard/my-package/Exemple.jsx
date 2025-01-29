@@ -103,15 +103,18 @@ export default function Exemple({
   const [show, setShow] = useState(false);
   let tempData = [];
 
-  const formatDate = (dateString) => {
+  const formatDateTime = (dateString) => {
     const options = {
       year: "numeric",
-      month: "long",
+      month: "short",
       day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      // second: "numeric",
+      hour12: true, // Set to false for 24-hour format
     };
 
     const formattedDate = new Date(dateString).toLocaleString("en-US", options);
-
     return formattedDate;
   };
 
@@ -155,16 +158,6 @@ export default function Exemple({
     const result = nextYearDate.toISOString();
 
     return result;
-  };
-
-  const formatDateTimeEST = (date) => {
-    const d = new Date(date);
-    const utcOffset = -5; // EST is UTC-5
-    d.setHours(d.getHours() + utcOffset);
-    return d.toLocaleString("en-US", {
-      dateStyle: "medium",
-      timeStyle: "short",
-    });
   };
 
   const sortObjectsByOrderIdDescending = (data) => {
@@ -211,30 +204,30 @@ export default function Exemple({
     return { nextMonth: nextMonthDateStr, nextYear: nextYearDateStr };
   };
 
-  const sortFunction = (hisotries)=>{
+  const sortFunction = (hisotries) => {
     const data = hisotries;
     data?.sort((a, b) => {
       const startDateA = new Date(a.startDate);
       const startDateB = new Date(b.startDate);
-      
+
       if (startDateA < startDateB) return -1;
       if (startDateA > startDateB) return 1;
-      
+
       // If start dates are equal, compare by end date
       const endDateA = new Date(a.endDate);
       const endDateB = new Date(b.endDate);
-      
+
       if (endDateA < endDateB) return -1;
       if (endDateA > endDateB) return 1;
-      
+
       return 0;
-  });
-  return data;
-  }
+    });
+    return data;
+  };
 
   useEffect(() => {
     const getData = () => {
-      const date = formatDate(new Date());
+      const date = formatDateTime(new Date());
       const sortedData = sortFunction(data);
       sortedData?.map((property, index) => {
         const propertyCount = 26;
@@ -252,19 +245,16 @@ export default function Exemple({
           const updatedRow = {
             id: property.paymentid,
             planName: property.planName,
-            planType:
-              (
-                <span>Monthly</span>
-              ),
+            planType: <span>Monthly</span>,
             amount: property.planAmount ? `$ ${property.planAmount}` : "$ -",
-            st_date: formatDateTimeEST(property.startDate),
-            end_date: formatDateTimeEST(property.endDate),
+            st_date: formatDateTime(property.startDate),
+            end_date: formatDateTime(property.endDate),
             remained_prop: `${
               property.usedProperties === null ? 0 : property.usedProperties
             } of ${property.noOfProperties}`,
             status: !expired ? (
               <span className="btn btn-info  w-100">
-                Will Be Active on {formatDateTimeEST(property.startDate)}
+                Will Be Active on {formatDateTime(property.startDate)}
               </span>
             ) : (
               <span className="btn btn-success  w-100">Active</span>

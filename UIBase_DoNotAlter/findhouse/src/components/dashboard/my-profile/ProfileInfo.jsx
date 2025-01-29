@@ -85,7 +85,7 @@ const ProfileInfo = ({
     userData?.broker_Details?.streetNumber || ""
   );
   const [cellNumberRef, setCellNumberRef] = useState(
-    userData?.broker_Details?.cellNumber || " "
+    userData?.broker_Details?.cellnumber || " "
   );
 
   const [streetName, setStreetName] = useState(
@@ -188,6 +188,7 @@ const ProfileInfo = ({
   const [companyNameError, setCompanyNameError] = useState(false);
   const [lastNameError, setLastNameError] = useState(false);
   const [phoneNumberError, setPhoneNumberError] = useState(false);
+  const [cellNumberError, setCellNumberError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [mortgageLicenceError, setMortgageLicenceError] = useState(false);
   const [mortgageLicenceTwoError, setMortgageLicenceTwoError] = useState(false);
@@ -220,6 +221,7 @@ const ProfileInfo = ({
   const [companyNameValid, setCompanyNameValid] = useState(false);
   const [lastNameValid, setLastNameValid] = useState(false);
   const [phoneNumberValid, setPhoneNumberValid] = useState(false);
+  const [cellNumberValid, setCellNumberValid] = useState(false);
   const [emailValid, setEmailValid] = useState(false);
   const [mortgageLicenceValid, setMortgageLicenceValid] = useState(false);
   const [mortgageLicenceTwoValid, setMortgageLicenceTwoValid] = useState(false);
@@ -258,16 +260,12 @@ const ProfileInfo = ({
   const cityInputRef = useRef(null);
   const zipCodeInputRef = useRef(null);
 
-  // const [hasError, setHasError] = useState(false); // State to track the error
-  // const firstNameInputRef = useRef(null); // Reference for the input field
-  // const [isValid, setIsValid] = useState(false); // State to track if input is valid
-
   const handleInputChangeName = (value, setValue, setValid, setError) => {
     if (value.length <= 30) {
       setValue(value);
 
       // Validate: Check if length is between 3 and 10
-      if (value.trim().length >= 3) {
+      if (value.trim().length >= 1) {
         setValid(true);
         setError(false);
       } else {
@@ -620,10 +618,14 @@ const ProfileInfo = ({
       });
       return false;
     } else if (
-      cellNumberRegex.test(cellNumber) === false &&
-      cellNumber.trim() !== ""
+      cellNumberRegex.test(cellNumberRef) === false &&
+      cellNumberRef.trim() !== ""
     ) {
       toast.error("Please enter a valid cell number");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
     } else if (emailRegex.test(emailIdRef) === false) {
       setEmailError(true);
       toast.error("Please enter a valid email address");
@@ -666,7 +668,7 @@ const ProfileInfo = ({
       return false;
     } else if (
       assistantFirstName.trim() !== "" &&
-      (assistantFirstName.trim().length < 3 ||
+      (assistantFirstName.trim().length < 1 ||
         assistantFirstName.trim().length > 30 ||
         !nameRegex.test(assistantFirstName))
     ) {
@@ -674,7 +676,7 @@ const ProfileInfo = ({
       toast.error("Please enter a valid first name for assistant 1.");
     } else if (
       assistantLastName.trim() !== "" &&
-      (assistantLastName.trim().length < 3 ||
+      (assistantLastName.trim().length < 1 ||
         assistantLastName.trim().length > 30 ||
         !nameRegex.test(assistantLastName))
     ) {
@@ -682,7 +684,7 @@ const ProfileInfo = ({
       toast.error("Please enter a valid last name for assistant 1.");
     } else if (
       assistantTwoFirstName.trim() !== "" &&
-      (assistantTwoFirstName.trim().length < 3 ||
+      (assistantTwoFirstName.trim().length < 1 ||
         assistantTwoFirstName.trim().length > 30 ||
         !nameRegex.test(assistantTwoFirstName))
     ) {
@@ -690,7 +692,7 @@ const ProfileInfo = ({
       toast.error("Please enter a valid first name for assistant 2.");
     } else if (
       assistantTwoLastName.trim() !== "" &&
-      (assistantTwoLastName.trim().length < 3 ||
+      (assistantTwoLastName.trim().length < 1 ||
         assistantTwoLastName.trim().length > 30 ||
         !nameRegex.test(assistantTwoLastName))
     ) {
@@ -1050,19 +1052,19 @@ const ProfileInfo = ({
   //   setPhoneNumberRef(truncatedValue);
   // };
 
-  const handleInputChange_01 = (e) => {
-    const inputValue = e.target.value;
+  // const handleInputChange_01 = (e) => {
+  //   const inputValue = e.target.value;
 
-    // Allow only numeric input
-    const numericValue = inputValue.replace(/\D/g, "");
+  //   // Allow only numeric input
+  //   const numericValue = inputValue.replace(/\D/g, "");
 
-    // Restrict to 10 digits
-    const truncatedValue = numericValue.slice(0, 10);
-    if (truncatedValue.length === 10) {
-      setCellNumberRef(truncatedValue);
-    }
-    setCellNumberRef(truncatedValue);
-  };
+  //   // Restrict to 10 digits
+  //   const truncatedValue = numericValue.slice(0, 10);
+  //   if (truncatedValue.length === 10) {
+  //     setCellNumberRef(truncatedValue);
+  //   }
+  //   setCellNumberRef(truncatedValue);
+  // };
   const handleInputChange_02 = (e) => {
     const inputValue = e.target.value;
 
@@ -1476,7 +1478,46 @@ const ProfileInfo = ({
                         </label>
                       </div>
                       <div className="col-lg-7">
-                        <input
+                        <ReactInputMask
+                          mask="999 999-9999" // Canadian phone format
+                          value={cellNumberRef}
+                          onChange={(e) =>
+                            handleInputChange(
+                              e.target.value,
+                              setCellNumberRef,
+                              setCellNumberValid,
+                              setCellNumberError
+                            )
+                          }
+                          className="form-control"
+                          disabled={!edit}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: cellNumberError
+                              ? "red"
+                              : cellNumberValid
+                              ? ""
+                              : "",
+                          }}
+                        >
+                          {(inputProps) => (
+                            <input
+                              {...inputProps}
+                              type="text"
+                              id="phoneNumber"
+                              name="phoneNumber"
+                              title="Please enter a valid cell number"
+                              required
+                              // disabled={!edit}
+                            />
+                          )}
+                        </ReactInputMask>
+                        {cellNumberError && (
+                          <small className="text-danger">
+                            Enter valid cell number.
+                          </small>
+                        )}
+                        {/* <input
                           type="text"
                           className="form-control"
                           style={{ backgroundColor: "#E8F0FE" }}
@@ -1485,7 +1526,7 @@ const ProfileInfo = ({
                           // onChange={(e) => setCellNumberRef(e.target.value)}
                           onChange={handleInputChange_01}
                           disabled={!edit}
-                        />
+                        /> */}
                       </div>
                     </div>
                   </div>
@@ -2105,7 +2146,46 @@ const ProfileInfo = ({
                         </label>
                       </div>
                       <div className="col-lg-7">
-                        <input
+                        <ReactInputMask
+                          mask="999 999-9999" // Canadian phone format
+                          value={assistantPhoneNumber}
+                          onChange={(e) =>
+                            handleInputChange(
+                              e.target.value,
+                              setAssistantPhoneNumber,
+                              setAssistantPhoneNumberValid,
+                              setAssistantPhoneNumberError
+                            )
+                          }
+                          className="form-control"
+                          disabled={!edit}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: assistantPhoneNumberError
+                              ? "red"
+                              : assistantPhoneNumberValid
+                              ? ""
+                              : "",
+                          }}
+                        >
+                          {(inputProps) => (
+                            <input
+                              {...inputProps}
+                              type="text"
+                              id="phoneNumber"
+                              name="phoneNumber"
+                              title="Please enter a valid cell number"
+                              required
+                              // disabled={!edit}
+                            />
+                          )}
+                        </ReactInputMask>
+                        {assistantPhoneNumberError && (
+                          <small className="text-danger">
+                            Enter valid phone number.
+                          </small>
+                        )}
+                        {/* <input
                           type="text"
                           required
                           className="form-control"
@@ -2131,7 +2211,7 @@ const ProfileInfo = ({
                           //   setAssistantPhoneNumber(e.target.value)
                           // }
                           disabled={!edit}
-                        />
+                        /> */}
                         {assistantPhoneNumberError && (
                           <small className="text-danger">
                             Enter valid phone number.
@@ -2286,19 +2366,8 @@ const ProfileInfo = ({
                         </label>
                       </div>
                       <div className="col-lg-7">
-                        <input
-                          type="text"
-                          required
-                          className="form-control"
-                          style={{
-                            backgroundColor: "#E8F0FE",
-                            borderColor: assistantTwoPhoneNumberError
-                              ? "red"
-                              : assistantTwoPhoneNumberValid
-                              ? ""
-                              : "",
-                          }}
-                          id="formGroupExampleInput3"
+                        <ReactInputMask
+                          mask="999 999-9999" // Canadian phone format
                           value={assistantTwoPhoneNumber}
                           onChange={(e) =>
                             handleInputChange(
@@ -2308,11 +2377,29 @@ const ProfileInfo = ({
                               setAssistantTwoPhoneNumberError
                             )
                           }
-                          // onChange={(e) =>
-                          //   setAssistantTwoPhoneNumber(e.target.value)
-                          // }
+                          className="form-control"
                           disabled={!edit}
-                        />
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: assistantTwoPhoneNumberError
+                              ? "red"
+                              : assistantTwoPhoneNumberValid
+                              ? ""
+                              : "",
+                          }}
+                        >
+                          {(inputProps) => (
+                            <input
+                              {...inputProps}
+                              type="text"
+                              id="phoneNumber"
+                              name="phoneNumber"
+                              title="Please enter a valid cell number"
+                              required
+                              // disabled={!edit}
+                            />
+                          )}
+                        </ReactInputMask>
                         {assistantTwoPhoneNumberError && (
                           <small className="text-danger">
                             Enter valid phone number.
