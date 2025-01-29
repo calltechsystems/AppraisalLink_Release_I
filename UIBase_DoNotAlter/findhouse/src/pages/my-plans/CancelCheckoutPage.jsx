@@ -82,12 +82,18 @@ const CancelCheckout = ({
     }
   };
   return (
-    <div className="checkout d-flex flex-column justify-center">
-      <span style={{ fontSize: "15px" }}>
+    <div className="checkout text-center">
+      <span style={{ fontSize: "17px" }}>
         Please click checkout to proceed with the Order
       </span>
-      <button className="ml-4 btn btn-color w-30"
-                    style={{marginLeft:'20px'}} onClick={handleCancelSubscription}>Cancel Subscription</button>
+      <br />
+      <button
+        className="btn btn-color w-50 mt-2"
+        // style={{ marginLeft: "20px" }}
+        onClick={handleCancelSubscription}
+      >
+        Cancel Subscription
+      </button>
     </div>
   );
 };

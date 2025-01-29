@@ -78,14 +78,14 @@ const OneTimePaymentModal = ({
     <div>
       {modalOpen && (
         <div className="modal">
-          <div className="modal-content">
+          <div className="modal-content" style={{ width: "35%" }}>
             <div className="row">
               <div className="col-lg-12">
                 <div className="row">
                   <div className="col-lg-11">
                     <Link href="/" className="">
                       <Image
-                        width={60}
+                        width={50}
                         height={45}
                         className="logo1 img-fluid"
                         style={{ marginTop: "-20px" }}
@@ -125,7 +125,6 @@ const OneTimePaymentModal = ({
                 </div>
               </div>
             </div>
-
             <>
               <div
                 className="mt-2 mb-3"
@@ -150,7 +149,7 @@ const OneTimePaymentModal = ({
                     </span>
                     <br />
                     <span className="text-dark">
-                      Your selected TopUp plan{" "}
+                      You have selected to{" "}
                       <label
                         style={{
                           fontWeight: "bold",
@@ -158,9 +157,10 @@ const OneTimePaymentModal = ({
                           color: "#2e008b",
                         }}
                       >
-                        {capitalizeFirstLetter(price.title)}
+                        add {price.title} upto{" "}
+                        {price?.selectedTopUp?.noOfProperties}
                       </label>{" "}
-                      with value{" "}
+                      properties for{" "}
                       <label
                         style={{
                           fontWeight: "bold",
@@ -169,8 +169,9 @@ const OneTimePaymentModal = ({
                         }}
                       >
                         ${price.price}
-                      </label>{" "}
-                      for {price?.selectedTopUp?.noOfProperties} properties.
+                      </label>
+                      .{" "}
+                      {/* for {price?.selectedTopUp?.noOfProperties} properties. */}
                     </span>
                     <br />
                     <span style={{ fontSize: "15px" }}>
@@ -205,19 +206,19 @@ const OneTimePaymentModal = ({
                 style={{ border: "2px solid #97d700" }}
               ></div>
               {status == 0 && !showPaypalPage ? (
-                <div className="ml-6 custom-checkbox mb-3">
+                <div className="ml-6 custom-checkbox mb-3 text-center">
                   <input
                     className="form-check-input "
                     type="checkbox"
                     checked={termsPolicyAccepted}
                     onClick={() => setTermsPolicyAccepted(!termsPolicyAccepted)}
                     id="terms"
-                    style={{ border: "1px solid black" , marginLeft:'20px'}}
+                    style={{ border: "1px solid black" }}
                   />
                   <label
                     className="form-check-label form-check-label ml-2"
                     htmlFor="terms"
-                    style={{marginLeft:'10px'}}
+                    style={{ marginLeft: "10px" }}
                   >
                     {" "}
                     I have read and accept the{" "}
@@ -236,46 +237,49 @@ const OneTimePaymentModal = ({
               )}
             </>
 
-            <div className="col-lg-12 text-center">
-              {status == 1 && showPaypalPage ? (
+            {status == 1 && showPaypalPage ? (
+              <div className="text-center">
                 <button
-                  className="btn btn-color w-25 m-1"
+                  className="btn btn-color w-25 text-center"
                   onClick={() => window.location.reload()}
                 >
                   Cancel
                 </button>
-              ) : // <label
-              //   className="btn btn-color w-25"
-              //   style={{
-              //     display: "flex",
-              //     alignItems: "center",
-              //     justifyContent: "center",
-              //     marginLeft: "36%",
-              //   }}
-              // >
-              //   <ClipLoader color="#ffffff" loading={true} size={40} />
-              //   <span style={{ marginLeft: "10px" }}>Processing...</span>
-              // </label>
-              status == 0 && !showPaypalPage ? (
-                <div className="">
-                  <button className="ml-4 btn btn-color w-20" onClick={resetFields}>
-                    Cancel
-                  </button>
-                  <button
-                    className="ml-4 btn btn-color w-20"
-                    style={{marginLeft:'20px'}}
-                    onClick={openPaypalPage}
-                    disabled={!termsPolicyAccepted}
-                  >
-                    Checkout
-                  </button>
-                </div>
-              ) : (
-                <button className="btn w-25" onClick={resetFields}>
+              </div>
+            ) : // <label
+            //   className="btn btn-color w-25"
+            //   style={{
+            //     display: "flex",
+            //     alignItems: "center",
+            //     justifyContent: "center",
+            //     marginLeft: "36%",
+            //   }}
+            // >
+            //   <ClipLoader color="#ffffff" loading={true} size={40} />
+            //   <span style={{ marginLeft: "10px" }}>Processing...</span>
+            // </label>
+            status == 0 && !showPaypalPage ? (
+              <div className="d-flex justify-content-center gap-2">
+                <button className="btn btn-color w-25" onClick={resetFields}>
+                  Cancel
+                </button>
+                <button
+                  className="btn btn-color w-25"
+                  // style={{ marginLeft: "20px" }}
+                  onClick={openPaypalPage}
+                  disabled={!termsPolicyAccepted}
+                >
+                  Checkout
+                </button>
+              </div>
+            ) : (
+              <div className="text-center">
+                <button className="btn btn-color w-25" onClick={resetFields}>
                   Close
                 </button>
-              )}
-            </div>
+              </div>
+            )}
+
             {status === 1 && !errorOcurred && (
               <div className="text-center mt-3">
                 <h4>

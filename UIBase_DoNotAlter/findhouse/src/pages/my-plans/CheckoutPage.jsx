@@ -6,7 +6,10 @@ import {
 } from "@paypal/react-paypal-js";
 import toast from "react-hot-toast";
 
-import { generateRequestPayload, generateResponsePayload } from '../../utils/Paypal/GeneratePayloads';
+import {
+  generateRequestPayload,
+  generateResponsePayload,
+} from "../../utils/Paypal/GeneratePayloads";
 
 import axios from "axios";
 const Checkout = ({
@@ -36,7 +39,12 @@ const Checkout = ({
   };
 
   const onCreateOrder = (data, actions) => {
-    const payload = generateRequestPayload(paymentType, topUpDetails, userData, currency);
+    const payload = generateRequestPayload(
+      paymentType,
+      topUpDetails,
+      userData,
+      currency
+    );
     return actions.order.create(payload);
   };
 
@@ -70,9 +78,8 @@ const Checkout = ({
         console.error("Got error while adding TpUp", err);
         toast.error("Got error while adding the TopUp");
         setErrorOccurred(true);
-      })
-      toast.dismiss();
-
+      });
+    toast.dismiss();
   };
 
   const onApproveOrder = (data, actions) => {
@@ -102,7 +109,7 @@ const Checkout = ({
     }
   };
 
-    //------------------CANCEL WHILE TRANSACTION----------------------
+  //------------------CANCEL WHILE TRANSACTION----------------------
   const onCancelOrder = (data) => {
     console.error("PayPal On Cancel data:", data);
 
@@ -130,14 +137,12 @@ const Checkout = ({
           break;
       }
     } else {
-      
       console.log("Payment was canceled without a specified reason.");
       toast.error("Payment was canceled.");
     }
 
-    setErrorOccurred(true); 
+    setErrorOccurred(true);
   };
-
 
   //------------------ERROR WHILE TRANSACTION----------------------
   const onError = (err) => {
@@ -211,7 +216,7 @@ const Checkout = ({
       toast.error("An unknown error occurred. Please try again.");
     }
 
-    setErrorOccurred(true); 
+    setErrorOccurred(true);
   };
 
   return (
@@ -220,14 +225,17 @@ const Checkout = ({
         <p>LOADING...</p>
       ) : (
         <>
-          <label htmlFor="currency-selector">Select Currency:</label>
-          <select
-            id="currency-selector"
-            value={currency}
-            onChange={onCurrencyChange}
-          >
-            <option value="CAD">🇨🇦 CAD (Canadian Dollar)</option>
-          </select>
+          <div className="text-center mt-2 mb-2">
+            <label htmlFor="currency-selector">Select Currency :</label>
+            <select
+              id="currency-selector"
+              value={currency}
+              onChange={onCurrencyChange}
+            >
+              <option value="CAD">🇨🇦 CAD (Canadian Dollar)</option>
+            </select>
+          </div>
+
           <PayPalButtons
             style={{
               layout: "vertical",

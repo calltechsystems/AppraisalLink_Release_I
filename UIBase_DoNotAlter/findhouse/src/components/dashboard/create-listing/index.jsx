@@ -159,6 +159,26 @@ const Index = ({ isView, propertyData }) => {
     }
   };
 
+  const formatDate = (dateString) => {
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      // hour: "numeric",
+      // minute: "numeric",
+      // second: "numeric",
+      hour12: true, // Set to false for 24-hour format
+    };
+
+    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
+    return formattedDate;
+  };
+
+  function addCommasToNumber(number) {
+    if (Number(number) <= 100 || number === undefined) return number;
+    return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   const closeErrorModal = () => {
     setModalIsOpenError(false);
     setModalIsOpenError_01(false);
@@ -1364,7 +1384,7 @@ const Index = ({ isView, propertyData }) => {
                               </td>
                               <td className="table-value">
                                 {" "}
-                                $ {estimatedValue}
+                                ${addCommasToNumber(estimatedValue)}
                               </td>
                             </tr>
                             <tr>
@@ -1387,7 +1407,7 @@ const Index = ({ isView, propertyData }) => {
                               </td>
                               <td className="table-value">
                                 {" "}
-                                {appraisalQuoteDate}
+                                {formatDate(appraisalQuoteDate)}
                               </td>
                             </tr>
 
@@ -1512,7 +1532,7 @@ const Index = ({ isView, propertyData }) => {
                         <div className="col-lg-12">
                           <Link href="/" className="">
                             <Image
-                              width={60}
+                              width={50}
                               height={45}
                               className="logo1 img-fluid"
                               style={{ marginTop: "-20px" }}
@@ -1590,7 +1610,7 @@ const Index = ({ isView, propertyData }) => {
                         <div className="col-lg-12">
                           <Link href="/" className="">
                             <Image
-                              width={60}
+                              width={50}
                               height={45}
                               className="logo1 img-fluid"
                               style={{ marginTop: "-20px" }}
