@@ -154,7 +154,7 @@ export default function Exemple({
   setRefresh,
   setStartLoading,
   refresh,
-  setSelectedPropertyNew
+  setSelectedPropertyNew,
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [wishlist, setWishlist] = useState([]);
@@ -276,7 +276,7 @@ export default function Exemple({
 
   const openStatusUpdateHandler = (bid, property) => {
     setCurrentBid(bid);
-    setSelectedPropertyNew(property)
+    setSelectedPropertyNew(property);
     setIsStatusModal(true);
   };
 
@@ -297,7 +297,7 @@ export default function Exemple({
     setWishlistModal(true);
   };
 
-  const openIsWishlistPropertyModal = (wishlistId,property) => {
+  const openIsWishlistPropertyModal = (wishlistId, property) => {
     setSelectedWishlistId(wishlistId);
     setSelectedProperty(property);
     setIsWishlistProperty(true);
@@ -351,14 +351,14 @@ export default function Exemple({
     return "btn btn-status w-100"; // Default color
   };
 
-  const formatDate = (dateString) => {
+  const formatDateTime = (dateString) => {
     const options = {
       year: "numeric",
       month: "short",
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
-      second: "numeric",
+      // second: "numeric",
       hour12: true, // Set to false for 24-hour format
     };
 
@@ -366,7 +366,7 @@ export default function Exemple({
     return formattedDate;
   };
 
-  const formatDateNew = (dateString) => {
+  const formatDate = (dateString) => {
     const options = {
       year: "numeric",
       month: "short",
@@ -379,34 +379,6 @@ export default function Exemple({
 
     const formattedDate = new Date(dateString).toLocaleString("en-US", options);
     return formattedDate;
-  };
-
-  // For EST date and time
-
-  const formatDateTimeEST = (date) => {
-    const d = new Date(date);
-    const utcOffset = -5; // EST is UTC-5
-    d.setHours(d.getHours() + utcOffset);
-    return d.toLocaleString("en-US", {
-      dateStyle: "medium",
-      timeStyle: "short",
-    });
-  };
-
-  // Only for time
-
-  const formatDateToEST = (date) => {
-    try {
-      // Convert input date string to a Date object
-      const utcDate = new Date(`${date}T00:00:00Z`); // Treat input as UTC midnight
-      return new Intl.DateTimeFormat("en-US", {
-        timeZone: "America/Toronto", // EST/Canada timezone
-        dateStyle: "medium", // Format only the date
-      }).format(utcDate);
-    } catch (error) {
-      console.error("Error formatting date:", error);
-      return "Invalid date";
-    }
   };
 
   const formatLargeNumber = (number) => {
@@ -477,7 +449,7 @@ export default function Exemple({
   const openAssignModalHandler = (property) => {
     console.log({ Assignable_property: property });
     setAssignPropertyId(property.propertyId);
-    setSelectedPropertyNew(property)
+    setSelectedPropertyNew(property);
     setAssignModal(true);
   };
 
@@ -567,7 +539,7 @@ export default function Exemple({
                     <ul>
                       <li style={{ fontSize: "15px" }}>
                         {getOrderValue(isBidded.orderstatus)} -{" "}
-                        {formatDateTimeEST(isBidded.statusdate)}
+                        {formatDateTime(isBidded.statusdate)}
                         {console.log("statusDate:", isBidded.statusDate)}
                       </li>
                     </ul>
@@ -729,8 +701,8 @@ export default function Exemple({
               property.typeOfBuilding > 0
                 ? "Apartment"
                 : property.typeOfBuilding,
-            quote_required_by: formatDateToEST(property.quoteRequiredDate),
-            date: formatDateTimeEST(property.addedDatetime),
+            quote_required_by: formatDate(property.quoteRequiredDate),
+            date: formatDateTime(property.addedDatetime),
             bidAmount: millify(property.bidLowerRange),
             lender_information: property.lenderInformation
               ? property.lenderInformation
@@ -930,7 +902,9 @@ export default function Exemple({
                         title="Update Status"
                         className="list-inline-item btn btn-color w-20"
                         // style={{ marginLeft: "12px" }}
-                        onClick={() => openStatusUpdateHandler(isBidded, property)}
+                        onClick={() =>
+                          openStatusUpdateHandler(isBidded, property)
+                        }
                       >
                         <Link href="#">
                           <span className="flaticon-edit text-light"></span>

@@ -166,53 +166,6 @@ export default function Exemple({
     return isAccepted.$id ? isAccepted : bidValue;
   };
 
-  const AppraiserStatusOptions = [
-    {
-      id: -1,
-      type: "Select...",
-      value: "",
-    },
-    {
-      id: 0,
-      type: "Applicant Contacted by appraiser",
-      value: "Applicant Contacted by appraiser",
-    },
-    {
-      id: 1,
-      type: "Appraisal Visit Confirmed",
-      value: "Appraisal Visit Confirmed",
-    },
-    {
-      id: 2,
-      type: "Appraisal Report Writing in Progress",
-      value: "Appraisal Report Writing in Progress",
-    },
-    {
-      id: 3,
-      type: "Appraisal Report Writing Completed and Submitted",
-      value: "Appraisal Report Writing Completed and Submitted",
-    },
-
-    {
-      id: 4,
-      type: "Assignment on Hold",
-      value: "Assignment on Hold",
-    },
-
-    {
-      id: 5,
-      type: "Assignment Cancelled new status to be added",
-      value: "Assignment Cancelled new status to be added",
-    },
-
-    {
-      id: 6,
-      type: "Appraisal visit completed; report writing is pending until fee received",
-      value:
-        "Appraisal visit completed; report writing is pending until fee received",
-    },
-  ];
-
   const getBidOfProperty = (orderId) => {
     let Bid = {};
     const data = JSON.parse(localStorage.getItem("user"));
@@ -255,13 +208,28 @@ export default function Exemple({
     setModalOpen(true);
   };
 
-  const formatDate = (dateString) => {
+  const formatDateTime = (dateString) => {
     const options = {
       year: "numeric",
       month: "short",
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
+      // second: "numeric",
+      hour12: true, // Set to false for 24-hour format
+    };
+
+    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
+    return formattedDate;
+  };
+
+  const formatDate = (dateString) => {
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      // hour: "numeric",
+      // minute: "numeric",
       // second: "numeric",
       hour12: true, // Set to false for 24-hour format
     };
@@ -277,34 +245,7 @@ export default function Exemple({
     return "btn btn-status w-100"; // Default color
   };
 
-    // For EST date and time
-
-      const formatDateTimeEST = (date) => {
-    const d = new Date(date);
-    const utcOffset = -5; // EST is UTC-5
-    d.setHours(d.getHours() + utcOffset);
-    return d.toLocaleString("en-US", {
-      dateStyle: "medium",
-      timeStyle: "short",
-    });
-  };
-  
-    // Only for time
-  
-    const formatDateToEST = (date) => {
-      try {
-        // Convert input date string to a Date object
-        const utcDate = new Date(`${date}T00:00:00Z`); // Treat input as UTC midnight
-        return new Intl.DateTimeFormat("en-US", {
-          timeZone: "America/Toronto", // EST/Canada timezone
-          dateStyle: "medium",        // Format only the date
-        }).format(utcDate);
-      } catch (error) {
-        console.error("Error formatting date:", error);
-        return "Invalid date";
-      }
-    };
-  
+  // For EST date and time
 
   const refreshHandler = () => {
     setProperties([]);
@@ -351,10 +292,10 @@ export default function Exemple({
         if (isBidded.$id && isStatus === 3) {
           const updatedRow = {
             order_id: property.orderId,
-            sub_date: formatDateTimeEST(property.addedDatetime),
+            sub_date: formatDateTime(property.addedDatetime),
             quote_required_by: property.quoteRequiredDate
-              ? formatDateTimeEST(property.quoteRequiredDate)
-              : formatDateTimeEST(property.addedDatetime),
+              ? formatDateTime(property.quoteRequiredDate)
+              : formatDateTime(property.addedDatetime),
             status:
               isHold || isCancel ? (
                 <span className="btn bg-warning w-100">
@@ -401,7 +342,9 @@ export default function Exemple({
                       </li>
                     </ul>
                   </div>
-                  <button className={getStatusButtonClass(isBidded.orderstatus)}>
+                  <button
+                    className={getStatusButtonClass(isBidded.orderstatus)}
+                  >
                     Status
                     <span className="m-1">
                       <i class="fa fa-info-circle" aria-hidden="true"></i>
@@ -423,11 +366,13 @@ export default function Exemple({
                     <ul>
                       <li style={{ fontSize: "15px" }}>
                         {getOrderValue(isBidded.orderstatus)} -{" "}
-                        {formatDateTimeEST(isBidded.statusdate)}
+                        {formatDateTime(isBidded.statusdate)}
                       </li>
                     </ul>
                   </div>
-                  <button className={getStatusButtonClass(isBidded.orderstatus)}>
+                  <button
+                    className={getStatusButtonClass(isBidded.orderstatus)}
+                  >
                     Status
                     <span className="m-1">
                       <i class="fa fa-info-circle" aria-hidden="true"></i>
@@ -435,7 +380,9 @@ export default function Exemple({
                   </button>
                 </div>
               ) : (
-                <button className="btn btn-warning w-100"><span>N.A.</span></button>
+                <button className="btn btn-warning w-100">
+                  <span>N.A.</span>
+                </button>
               ),
             address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
             remark: isBidded.remark ? isBidded.remark : "N.A.",

@@ -305,7 +305,7 @@ export default function Exemple({
 
   const onDeletePropertyHandler = () => {};
 
-  const formatDate = (dateString) => {
+  const formatDateTime = (dateString) => {
     const options = {
       year: "numeric",
       month: "short",
@@ -320,7 +320,7 @@ export default function Exemple({
     return formattedDate;
   };
 
-  const formatDateNew = (dateString) => {
+  const formatDate = (dateString) => {
     const options = {
       year: "numeric",
       month: "short",
@@ -335,61 +335,12 @@ export default function Exemple({
     return formattedDate;
   };
 
-    // For EST date and time
-
-      const formatDateTimeEST = (date) => {
-    const d = new Date(date);
-    const utcOffset = -5; // EST is UTC-5
-    d.setHours(d.getHours() + utcOffset);
-    return d.toLocaleString("en-US", {
-      dateStyle: "medium",
-      timeStyle: "short",
-    });
-  };
-  
-    // Only for time
-  
-    const formatDateToEST = (date) => {
-      try {
-        // Convert input date string to a Date object
-        const utcDate = new Date(`${date}T00:00:00Z`); // Treat input as UTC midnight
-        return new Intl.DateTimeFormat("en-US", {
-          timeZone: "America/Toronto", // EST/Canada timezone
-          dateStyle: "medium",        // Format only the date
-        }).format(utcDate);
-      } catch (error) {
-        console.error("Error formatting date:", error);
-        return "Invalid date";
-      }
-    };
-  
-
   const getStatusButtonClass = (orderStatus) => {
     if (orderStatus === 4 || orderStatus === 5) {
       return "btn btn-status-na w-100"; // Orange color class
     }
     return "btn btn-status w-100"; // Default color
   };
-
-  // const formatDate = (dateString) => {
-  //   const options = {
-  //     year: "numeric",
-  //     month: "short",
-  //     day: "numeric",
-  //     hour: "numeric",
-  //     minute: "numeric",
-  //     second: "numeric",
-  //   };
-
-  //   const originalDate = new Date(dateString);
-
-  //   // Adjust for Eastern Standard Time (EST) by subtracting 5 hours
-  //   const estDate = new Date(originalDate.getTime() - 5 * 60 * 60 * 1000);
-
-  //   // Format the EST date
-  //   const formattedDate = estDate.toLocaleString("en-US", options);
-  //   return formattedDate;
-  // };
 
   const checkWishlistedHandler = (data) => {
     let temp = {};
@@ -459,11 +410,13 @@ export default function Exemple({
                     <ul>
                       <li style={{ fontSize: "15px" }}>
                         {getOrderValue(isBidded.orderstatus)} -{" "}
-                        {formatDateTimeEST(isBidded.statusdate)}
+                        {formatDateTime(isBidded.statusdate)}
                       </li>
                     </ul>
                   </div>
-                  <button className={getStatusButtonClass(isBidded.orderstatus)}>
+                  <button
+                    className={getStatusButtonClass(isBidded.orderstatus)}
+                  >
                     Status
                     <span className="m-1">
                       <i class="fa fa-info-circle" aria-hidden="true"></i>
@@ -488,7 +441,9 @@ export default function Exemple({
                       </li>
                     </ul>
                   </div>
-                  <button className={getStatusButtonClass(isBidded.orderstatus)}>
+                  <button
+                    className={getStatusButtonClass(isBidded.orderstatus)}
+                  >
                     Status
                     <span className="m-1">
                       <i class="fa fa-info-circle" aria-hidden="true"></i>
@@ -496,7 +451,9 @@ export default function Exemple({
                   </button>
                 </div>
               ) : (
-                <button className="btn btn-warning w-100"><span>N.A.</span></button>
+                <button className="btn btn-warning w-100">
+                  <span>N.A.</span>
+                </button>
               ),
             remark:
               isBidded && isBidded.remark ? <p>{isBidded.remark}</p> : "N.A.",
@@ -564,8 +521,8 @@ export default function Exemple({
               property.typeOfBuilding > 0
                 ? "Apartment"
                 : property.typeOfBuilding,
-            quote_required_by: formatDateToEST(property.quoteRequiredDate),
-            date: formatDateTimeEST(property.addedDatetime),
+            quote_required_by: formatDate(property.quoteRequiredDate),
+            date: formatDateTime(property.addedDatetime),
             bidAmount: formatLargeNumber(property.bidLowerRange),
             lender_information: property.lenderInformation
               ? property.lenderInformation

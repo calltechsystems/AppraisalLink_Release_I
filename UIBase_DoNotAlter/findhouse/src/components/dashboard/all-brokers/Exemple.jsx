@@ -19,19 +19,19 @@ const headCells = [
     id: "firstname",
     numeric: false,
     label: "First Name",
-    width: 150,
+    width: 120,
   },
   {
     id: "lastname",
     numeric: false,
     label: "Last Name",
-    width: 150,
+    width: 120,
   },
   {
     id: "phone",
     numeric: false,
     label: "Phone Number",
-    width: 200,
+    width: 150,
   },
   {
     id: "emailaddress",
@@ -55,7 +55,7 @@ const headCells = [
     id: "status",
     numeric: false,
     label: "Status",
-    width: 160,
+    width: 170,
   },
   {
     id: "action",
@@ -177,34 +177,20 @@ export default function Exemple({
     return formattedDate;
   };
 
-    // For EST date and time
-
-      const formatDateTimeEST = (date) => {
-    const d = new Date(date);
-    const utcOffset = -5; // EST is UTC-5
-    d.setHours(d.getHours() + utcOffset);
-    return d.toLocaleString("en-US", {
-      dateStyle: "medium",
-      timeStyle: "short",
-    });
-  };
-  
-    // Only for time
-  
-    const formatDateToEST = (date) => {
-      try {
-        // Convert input date string to a Date object
-        const utcDate = new Date(`${date}T00:00:00Z`); // Treat input as UTC midnight
-        return new Intl.DateTimeFormat("en-US", {
-          timeZone: "America/Toronto", // EST/Canada timezone
-          dateStyle: "medium",        // Format only the date
-        }).format(utcDate);
-      } catch (error) {
-        console.error("Error formatting date:", error);
-        return "Invalid date";
-      }
+  const formatDateTime = (dateString) => {
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      // second: "numeric",
+      hour12: true, // Set to false for 24-hour format
     };
-  
+
+    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
+    return formattedDate;
+  };
 
   const checkWishlistedHandler = (data) => {
     let temp = {};
@@ -256,8 +242,8 @@ export default function Exemple({
           emailaddress: data?.emailId ? data?.emailId : "NA",
           date:
             data?.isActive && data?.dateEstablished !== null
-              ? formatDateTimeEST(data?.dateEstablished)
-              : formatDateTimeEST(data?.dateEstablished),
+              ? formatDateTime(data?.dateEstablished)
+              : formatDateTime(data?.dateEstablished),
           enddate:
             // !data?.isActive &&
             // data?.status !== "not registered" &&
@@ -265,8 +251,8 @@ export default function Exemple({
             //   ? formatDate(data?.modifiedDateTime)
             //   : "-",
             !data?.isActive && data?.modifiedDateTime !== null
-            ? formatDateTimeEST(data?.modifiedDateTime)
-            : "-",          
+              ? formatDateTime(data?.modifiedDateTime)
+              : "-",
           action: (
             <div className="print-hidden-column">
               {data.firstName && (

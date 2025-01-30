@@ -17,19 +17,19 @@ const headCells = [
     id: "firstname",
     numeric: false,
     label: "First Name",
-    width: 200,
+    width: 120,
   },
   {
     id: "lastname",
     numeric: false,
     label: "Last Name",
-    width: 200,
+    width: 120,
   },
   {
     id: "phone",
     numeric: false,
     label: "Phone",
-    width: 200,
+    width: 150,
   },
 
   {
@@ -55,13 +55,13 @@ const headCells = [
     id: "status",
     numeric: false,
     label: "Status",
-    width: 200,
+    width: 180,
   },
   {
     id: "action",
     numeric: false,
     label: "Action",
-    width: 180,
+    width: 100,
   },
 ];
 
@@ -176,34 +176,20 @@ export default function Exemple({
     return formattedDate;
   };
 
-    // For EST date and time
-
-      const formatDateTimeEST = (date) => {
-    const d = new Date(date);
-    const utcOffset = -5; // EST is UTC-5
-    d.setHours(d.getHours() + utcOffset);
-    return d.toLocaleString("en-US", {
-      dateStyle: "medium",
-      timeStyle: "short",
-    });
-  };
-  
-    // Only for time
-  
-    const formatDateToEST = (date) => {
-      try {
-        // Convert input date string to a Date object
-        const utcDate = new Date(`${date}T00:00:00Z`); // Treat input as UTC midnight
-        return new Intl.DateTimeFormat("en-US", {
-          timeZone: "America/Toronto", // EST/Canada timezone
-          dateStyle: "medium",        // Format only the date
-        }).format(utcDate);
-      } catch (error) {
-        console.error("Error formatting date:", error);
-        return "Invalid date";
-      }
+  const formatDateTime = (dateString) => {
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      // second: "numeric",
+      hour12: true, // Set to false for 24-hour format
     };
-  
+
+    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
+    return formattedDate;
+  };
 
   const sortObjectsByOrderIdDescending = (data) => {
     return data.sort((a, b) => b.appraisal_id - a.appraisal_id);
@@ -250,8 +236,8 @@ export default function Exemple({
             : "N.A.",
           date:
             data?.item?.isActive && data?.item?.dateEstablished !== null
-              ? formatDateTimeEST(data?.item?.dateEstablished)
-              : formatDateTimeEST(data?.item?.dateEstablished),
+              ? formatDateTime(data?.item?.dateEstablished)
+              : formatDateTime(data?.item?.dateEstablished),
           enddate:
             // !data?.isActive &&
             // data?.status !== "not registered" &&
@@ -259,7 +245,7 @@ export default function Exemple({
             //   ? formatDate(data?.modifiedDateTime)
             //   : "-",
             !data?.item?.isActive && data?.item?.modifiedDateTime !== null
-              ? formatDateTimeEST(data?.item?.modifiedDateTime)
+              ? formatDateTime(data?.item?.modifiedDateTime)
               : "-",
           action: (
             <div className="print-hidden-column">

@@ -177,6 +177,7 @@ const ProfileInfo = ({
   const [companyNameError, setCompanyNameError] = useState(false);
   const [lastNameError, setLastNameError] = useState(false);
   const [phoneNumberError, setPhoneNumberError] = useState(false);
+  const [cellNumberError, setCellNumberError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [LicenceError, setLicenceError] = useState(false);
 
@@ -200,6 +201,7 @@ const ProfileInfo = ({
   const [companyNameValid, setCompanyNameValid] = useState(false);
   const [lastNameValid, setLastNameValid] = useState(false);
   const [phoneNumberValid, setPhoneNumberValid] = useState(false);
+  const [cellNumberValid, setCellNumberValid] = useState(false);
   const [emailValid, setEmailValid] = useState(false);
   const [LicenceValid, setLicenceValid] = useState(false);
 
@@ -1134,11 +1136,23 @@ const ProfileInfo = ({
                           mask="999 999-9999" // Canadian phone format
                           value={cellNumber}
                           onChange={(e) =>
-                            handleInputCellChange(e.target.value)
+                            handleInputChange(
+                              e.target.value,
+                              setCellNumber,
+                              setCellNumberValid,
+                              setCellNumberError
+                            )
                           }
                           className="form-control"
                           disabled={!edit}
-                          style={{ backgroundColor: "#E8F0FE" }}
+                          style={{
+                            backgroundColor: "#E8F0FE",
+                            borderColor: cellNumberError
+                              ? "red"
+                              : cellNumberValid
+                              ? ""
+                              : "",
+                          }}
                         >
                           {(inputProps) => (
                             <input
@@ -1152,6 +1166,11 @@ const ProfileInfo = ({
                             />
                           )}
                         </ReactInputMask>
+                        {cellNumberError && (
+                          <small className="text-danger">
+                            Enter valid cell number.
+                          </small>
+                        )}
                         {/* <input
                           type="text"
                           className="form-control"
@@ -1798,6 +1817,11 @@ const ProfileInfo = ({
                           }
                           disabled={!edit}
                         />
+                        {officeContactEmailError && (
+                          <small className="text-danger">
+                            Enter valid phone number.
+                          </small>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -1847,7 +1871,11 @@ const ProfileInfo = ({
                             />
                           )}
                         </ReactInputMask>
-
+                        {officeContactPhoneError && (
+                          <small className="text-danger">
+                            Enter valid phone number.
+                          </small>
+                        )}
                         {/* <input
                           type="text"
                           className="form-control"
