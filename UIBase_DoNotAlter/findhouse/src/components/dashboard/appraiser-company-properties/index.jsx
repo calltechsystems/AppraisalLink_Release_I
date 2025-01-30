@@ -63,6 +63,43 @@ const Index = () => {
 
   const [end, setEnd] = useState(4);
 
+  const formatPhoneNumber = (number) => {
+    if (!number) return ""; // Handle empty input
+
+    // Remove non-numeric characters
+    const digits = number.replace(/\D/g, "");
+
+    // Format the number as "416 123-4567"
+    if (digits.length <= 3) {
+      return digits; // e.g., "416"
+    } else if (digits.length <= 6) {
+      return `${digits.slice(0, 3)} ${digits.slice(3)}`; // e.g., "416 123"
+    } else {
+      return `${digits.slice(0, 3)} ${digits.slice(3, 6)}-${digits.slice(
+        6,
+        10
+      )}`; // e.g., "416 123-4567"
+    }
+  };
+
+  const formatDate = (dateString) => {
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+
+      hour12: true, // Set to false for 24-hour format
+    };
+
+    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
+    return formattedDate;
+  };
+
+  function addCommasToNumber(number) {
+    if (Number(number) <= 100 || number === undefined) return number;
+    return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   const closeErrorModal = () => {
     setModalIsOpenError(false);
   };
@@ -102,7 +139,7 @@ const Index = () => {
 
   const closeStatusUpdateHandler = () => {
     setOpenDate(false);
-    setSelectedPropertyNew(null)
+    setSelectedPropertyNew(null);
     setIsStatusModal(false);
   };
 
@@ -586,14 +623,14 @@ const Index = () => {
     return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
-  const formatDate = (dateString) => {
+  const formatDateTime = (dateString) => {
     const options = {
       year: "numeric",
       month: "short",
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
-      second: "numeric",
+      // second: "numeric",
     };
 
     const originalDate = new Date(dateString);
@@ -1000,7 +1037,10 @@ const Index = () => {
                                         </span>
                                       </td>
                                       <td className="table-value">
-                                        ${broker.estimatedValue}
+                                        $
+                                        {addCommasToNumber(
+                                          broker.estimatedValue
+                                        )}
                                       </td>
                                     </tr>
                                     <tr>
@@ -1026,7 +1066,7 @@ const Index = () => {
                                       </td>
                                       <td className="table-value">
                                         {broker.quoteRequiredDate
-                                          ? broker.quoteRequiredDate
+                                          ? formatDate(broker.quoteRequiredDate)
                                           : "N.A."}
                                       </td>
                                     </tr>
@@ -1073,7 +1113,9 @@ const Index = () => {
                                       </td>
                                       <td className="table-value">
                                         {" "}
-                                        {broker.applicantPhoneNumber}
+                                        {formatPhoneNumber(
+                                          broker.applicantPhoneNumber
+                                        )}
                                       </td>
                                     </tr>
                                   </tbody>
@@ -1205,7 +1247,9 @@ const Index = () => {
                                         </span>
                                       </td>
                                       <td className="table-value">
-                                        {selectedBroker.phoneNumber}
+                                        {formatPhoneNumber(
+                                          selectedBroker.phoneNumber
+                                        )}
                                       </td>
                                     </tr>
                                     <tr>
@@ -1216,7 +1260,9 @@ const Index = () => {
                                       </td>
                                       <td className="table-value">
                                         {selectedBroker.cellNumber
-                                          ? selectedBroker.cellNumber
+                                          ? formatPhoneNumber(
+                                              selectedBroker.cellNumber
+                                            )
                                           : "N.A."}
                                       </td>
                                     </tr>
@@ -1448,7 +1494,7 @@ const Index = () => {
                               </p>
                               <p className="text-center fs-6 text-dark">
                                 Updated At :{" "}
-                                {formatDate(currentBiddedView?.requestTime)}
+                                {formatDateTime(currentBiddedView?.requestTime)}
                               </p>
 
                               <div className="text-center" style={{}}>
@@ -1548,7 +1594,7 @@ const Index = () => {
                         <h3 className=" text-color mt-1">
                           Asssign Appraiser – Property Id{" "}
                           <span style={{ color: "#97d700" }}>
-                          #{selectedPropertyNew?.orderId}
+                            #{selectedPropertyNew?.orderId}
                           </span>
                         </h3>
                       </div>
@@ -1654,7 +1700,7 @@ const Index = () => {
                           style={{ border: "2px solid #97d700" }}
                         ></div>
                         <p className="text-center" style={{ fontSize: "18px" }}>
-                        Are you sure you want to proceed with the changes?
+                          Are you sure you want to proceed with the changes?
                         </p>
                         <div
                           className="mt-4 mb-4"

@@ -187,6 +187,43 @@ const Index = () => {
     setOpenBrokerModal(true);
   };
 
+  const formatPhoneNumber = (number) => {
+    if (!number) return ""; // Handle empty input
+
+    // Remove non-numeric characters
+    const digits = number.replace(/\D/g, "");
+
+    // Format the number as "416 123-4567"
+    if (digits.length <= 3) {
+      return digits; // e.g., "416"
+    } else if (digits.length <= 6) {
+      return `${digits.slice(0, 3)} ${digits.slice(3)}`; // e.g., "416 123"
+    } else {
+      return `${digits.slice(0, 3)} ${digits.slice(3, 6)}-${digits.slice(
+        6,
+        10
+      )}`; // e.g., "416 123-4567"
+    }
+  };
+
+  const formatDate = (dateString) => {
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+
+      hour12: true, // Set to false for 24-hour format
+    };
+
+    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
+    return formattedDate;
+  };
+
+  function addCommasToNumber(number) {
+    if (Number(number) <= 100 || number === undefined) return number;
+    return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   const [assignPropertyId, setAssignPropertyId] = useState(-1);
   const [assignAppraiserId, setAssignAppraiserId] = useState(-1);
   const openAppraisalModal = (val) => {
@@ -586,14 +623,14 @@ const Index = () => {
     return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
-  const formatDate = (dateString) => {
+  const formatDateTime = (dateString) => {
     const options = {
       year: "numeric",
       month: "short",
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
-      second: "numeric",
+      // second: "numeric",
     };
 
     const originalDate = new Date(dateString);
@@ -957,8 +994,8 @@ const Index = () => {
                               </div>
                               <div className="row">
                                 <div className="col-lg-12 text-center">
-                                  <h2 className=" text-color mt-2">
-                                    Property Details - Property Id{"  "}
+                                  <h2 className=" text-color mt-1">
+                                    Property Details – Property Id{"  "}
                                     <span style={{ color: "#97d700" }}>
                                       #{broker.orderId}
                                     </span>
@@ -1049,7 +1086,10 @@ const Index = () => {
                                         </span>
                                       </td>
                                       <td className="table-value">
-                                        ${broker.estimatedValue}
+                                        $
+                                        {addCommasToNumber(
+                                          broker.estimatedValue
+                                        )}
                                       </td>
                                     </tr>
                                     <tr>
@@ -1075,7 +1115,7 @@ const Index = () => {
                                       </td>
                                       <td className="table-value">
                                         {broker.quoteRequiredDate
-                                          ? broker.quoteRequiredDate
+                                          ? formatDate(broker.quoteRequiredDate)
                                           : "N.A."}
                                       </td>
                                     </tr>
@@ -1122,7 +1162,9 @@ const Index = () => {
                                       </td>
                                       <td className="table-value">
                                         {" "}
-                                        {broker.applicantPhoneNumber}
+                                        {formatPhoneNumber(
+                                          broker.applicantPhoneNumber
+                                        )}
                                       </td>
                                     </tr>
                                   </tbody>
@@ -1191,7 +1233,7 @@ const Index = () => {
                               </div>
                               <div className="row">
                                 <div className="col-lg-12 text-center">
-                                  <h2 className=" text-color mt-2">
+                                  <h2 className=" text-color mt-1">
                                     Mortgage Broker Details – Property Id{"  "}
                                     <span style={{ color: "#97d700" }}>
                                       #{broker.orderId}
@@ -1210,14 +1252,8 @@ const Index = () => {
                                 <table id="table-broker-info">
                                   <thead>
                                     <tr>
-                                      <th
-                                        style={{
-                                          borderRight: "2px solid white",
-                                        }}
-                                      >
-                                        Headers
-                                      </th>
-                                      <th>Value</th>
+                                      <th></th>
+                                      <th></th>
                                     </tr>
                                   </thead>
                                   <tbody>
@@ -1260,7 +1296,9 @@ const Index = () => {
                                         </span>
                                       </td>
                                       <td className="table-value">
-                                        {selectedBroker.phoneNumber}
+                                        {formatPhoneNumber(
+                                          selectedBroker.phoneNumber
+                                        )}
                                       </td>
                                     </tr>
                                     <tr>
@@ -1271,7 +1309,9 @@ const Index = () => {
                                       </td>
                                       <td className="table-value">
                                         {selectedBroker.cellNumber
-                                          ? selectedBroker.cellNumber
+                                          ? formatPhoneNumber(
+                                              selectedBroker.cellNumber
+                                            )
                                           : "N.A."}
                                       </td>
                                     </tr>
@@ -1310,6 +1350,103 @@ const Index = () => {
                                         {selectedBroker.postalCode}
                                       </td>
                                     </tr>
+                                    {/* <tr>
+                                      <td
+                                        style={{
+                                          border: "1px solid grey",
+                                          color: "#2e008b",
+                                        }}
+                                      >
+                                        <span className="text-start">
+                                          Brokerage Name
+                                        </span>
+                                      </td>
+                                      <td
+                                        style={{
+                                          
+                                          width: "250px",
+                                          color: "black",
+                                          paddingLeft:"10px"
+                                        }}
+                                      >
+                                        {selectedBroker.brokerageName
+                                          ? selectedBroker.brokerageName
+                                          : "N.A."}
+                                      </td>
+                                    </tr> */}
+
+                                    {/* <tr>
+                                      <td
+                                        style={{
+                                          border: "1px solid grey",
+                                          color: "#2e008b",
+                                        }}
+                                      >
+                                        <span className="text-start">
+                                          Applicant Name
+                                        </span>
+                                      </td>
+                                      <td
+                                        style={{
+                                          
+                                          width: "250px",
+                                          color: "black",
+                                          paddingLeft:"10px"
+                                        }}
+                                      >
+                                        {selectedBroker.assistantFirstName
+                                          ? selectedBroker.assistantFirstName
+                                          : "N.A."}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        style={{
+                                          border: "1px solid grey",
+                                          color: "#2e008b",
+                                        }}
+                                      >
+                                        <span className="text-start">
+                                          Applicant Phone Number
+                                        </span>
+                                      </td>
+                                      <td
+                                        style={{
+                                          border: "1px solid #2e008b",
+                                          width: "250px",
+                                          color: "black",
+                                          paddingLeft:"10px"
+                                        }}
+                                      >
+                                        {selectedBroker.assistantPhoneNumber
+                                          ? selectedBroker.assistantPhoneNumber
+                                          : "N.A."}
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td
+                                        style={{
+                                          border: "1px solid grey",
+                                          color: "#2e008b",
+                                        }}
+                                      >
+                                        <span className="text-start">
+                                          Applicant Email Address
+                                        </span>
+                                      </td>
+                                      <td
+                                        style={{
+                                          border: "1px solid #2e008b",
+                                          width: "250px",
+                                          color: "black",
+                                          paddingLeft:"10px"
+                                        }}
+                                      >
+                                        {selectedBroker.assistantEmailAddress
+                                          ? selectedBroker.assistantEmailAddress
+                                          : "N.A."}
+                                      </td>
+                                    </tr> */}
                                   </tbody>
                                 </table>
                               </div>
@@ -1393,182 +1530,80 @@ const Index = () => {
                                 className="d-flex justify-content-center"
                                 id="broker-info-container"
                               >
-                                <table
-                                  style={{
-                                    width: "700px",
-                                    textAlign: "start",
-                                    borderRadius: "5px",
-                                    fontSize: "17px",
-                                    fontWeight: "bold",
-                                  }}
-                                  id="table-broker-info"
-                                >
+                                <table id="table-broker-info">
                                   <thead>
                                     <tr>
-                                      <th
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          color: "#2e008b",
-                                          // padding: "5px",
-                                          textAlign: "center",
-                                        }}
-                                      >
-                                        Headers
-                                      </th>
-                                      <th
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          // width: "470px",
-                                          color: "#2e008b",
-                                          // padding: "5px",
-                                          textAlign: "center",
-                                        }}
-                                      >
-                                        Value
-                                      </th>
+                                      <th></th>
+                                      <th></th>
                                     </tr>
                                   </thead>
                                   <tbody>
                                     <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-header">
                                         <span className="text-start">
                                           Appraiser Name
                                         </span>
                                       </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "350px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-value">
                                         {appraiser.firstName}{" "}
                                         {appraiser.lastName}
                                       </td>
                                     </tr>
                                     <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-header">
                                         <span className="text-start">
                                           Company Name
                                         </span>
                                       </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-value">
                                         {appraiser.companyName
                                           ? appraiser.companyName
                                           : "N.A."}
                                       </td>
                                     </tr>
                                     <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-header">
                                         <span className="text-start">
                                           Phone Number
                                         </span>
                                       </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
-                                        {appraiser.phoneNumber}
+                                      <td className="table-value">
+                                        {formatPhoneNumber(
+                                          appraiser.phoneNumber
+                                        )}
                                       </td>
                                     </tr>
                                     <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-header">
                                         <span className="text-start">
                                           Email Address
                                         </span>
                                       </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-value">
                                         {appraiser.emailId}
                                       </td>
                                     </tr>
                                     <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-header">
                                         <span className="text-start">
                                           Cell Number
                                         </span>
                                       </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-value">
                                         {appraiser.cellNumber
-                                          ? appraiser.cellNumber
+                                          ? formatPhoneNumber(
+                                              appraiser.cellNumber
+                                            )
                                           : "N.A."}
                                       </td>
                                     </tr>
                                     <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-header">
                                         <span className="text-start">
                                           Address
                                         </span>
                                       </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-value">
                                         {appraiser.streetNumber}{" "}
                                         {appraiser.streetName},{" "}
                                         {appraiser.apartmentNo} {appraiser.city}{" "}
@@ -1576,75 +1611,38 @@ const Index = () => {
                                       </td>
                                     </tr>
                                     <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-header">
                                         <span className="text-start">
                                           Applicant Name
                                         </span>
                                       </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-value">
                                         {appraiser.assistantFirstName
                                           ? appraiser.assistantFirstName
                                           : "N.A."}
                                       </td>
                                     </tr>
                                     <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-header">
                                         <span className="text-start">
                                           Applicant Phone Number
                                         </span>
                                       </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-value">
                                         {appraiser.assistantPhoneNumber
-                                          ? appraiser.assistantPhoneNumber
+                                          ? formatPhoneNumber(
+                                              appraiser.assistantPhoneNumber
+                                            )
                                           : "N.A."}
                                       </td>
                                     </tr>
                                     <tr>
-                                      <td
-                                        style={{
-                                          border: "1px solid grey",
-                                          color: "#2e008b",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-header">
                                         <span className="text-start">
                                           Applicant Email Address
                                         </span>
                                       </td>
-                                      <td
-                                        style={{
-                                          border: "1px solid #2e008b",
-                                          width: "250px",
-                                          color: "black",
-                                          padding: "5px",
-                                        }}
-                                      >
+                                      <td className="table-value">
                                         {appraiser.assistantEmailAddress
                                           ? appraiser.assistantEmailAddress
                                           : "N.A."}
@@ -1995,7 +1993,8 @@ const Index = () => {
                       </span>
                     </p>
                     <p className="text-center fs-6 text-dark">
-                      Updated At : {formatDate(currentBiddedView?.requestTime)}
+                      Updated At :{" "}
+                      {formatDateTime(currentBiddedView?.requestTime)}
                     </p>
 
                     <div className="text-center" style={{}}>

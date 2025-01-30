@@ -215,7 +215,7 @@ const Index = () => {
 
                       <div className="col-lg-12 text-center pck_chng_btn mb100 mt-5">
                         <button className="btn btn-color" onClick={updatePlan}>
-                          Update Subscription
+                          Upgrade Subscription
                         </button>
                       </div>
                     </div>

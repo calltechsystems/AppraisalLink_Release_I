@@ -14,6 +14,7 @@ import {
 import { useRouter } from "next/router";
 import Image from "next/image";
 // import "./SmartTable.css";
+import { AppraiserStatusOptions } from "../create-listing/data";
 
 const headCells = [
   {
@@ -205,53 +206,6 @@ export default function Exemple({
     setIsStatusModal(true);
   };
 
-  const AppraiserStatusOptions = [
-    {
-      id: -1,
-      type: "Select...",
-      value: "",
-    },
-    {
-      id: 0,
-      type: "Applicant Contacted by appraiser",
-      value: "Applicant Contacted by appraiser",
-    },
-    {
-      id: 1,
-      type: "Appraisal Visit Confirmed",
-      value: "Appraisal Visit Confirmed",
-    },
-    {
-      id: 2,
-      type: "Appraisal Report Writing in Progress",
-      value: "Appraisal Report Writing in Progress",
-    },
-    {
-      id: 3,
-      type: "Appraisal Report Writing Completed and Submitted",
-      value: "Appraisal Report Writing Completed and Submitted",
-    },
-
-    {
-      id: 4,
-      type: "Assignment on Hold",
-      value: "Assignment on Hold",
-    },
-
-    {
-      id: 5,
-      type: "Assignment Cancelled new status to be added",
-      value: "Assignment Cancelled new status to be added",
-    },
-
-    {
-      id: 6,
-      type: "Appraisal visit completed; report writing is pending until fee received",
-      value:
-        "Appraisal visit completed; report writing is pending until fee received",
-    },
-  ];
-
   const getOrderValue = (val) => {
     let title = "";
     AppraiserStatusOptions?.map((status) => {
@@ -324,7 +278,7 @@ export default function Exemple({
     setModalOpen(true);
   };
 
-  const formatDate = (dateString) => {
+  const formatDateTime = (dateString) => {
     const options = {
       year: "numeric",
       month: "short",
@@ -339,7 +293,7 @@ export default function Exemple({
     return formattedDate;
   };
 
-  const formatDateNew = (dateString) => {
+  const formatDate = (dateString) => {
     const options = {
       year: "numeric",
       month: "short",
@@ -352,34 +306,6 @@ export default function Exemple({
 
     const formattedDate = new Date(dateString).toLocaleString("en-US", options);
     return formattedDate;
-  };
-
-  // For EST date and time
-
-  const formatDateTimeEST = (date) => {
-    const d = new Date(date);
-    const utcOffset = -5; // EST is UTC-5
-    d.setHours(d.getHours() + utcOffset);
-    return d.toLocaleString("en-US", {
-      dateStyle: "medium",
-      timeStyle: "short",
-    });
-  };
-
-  // Only for time
-
-  const formatDateToEST = (date) => {
-    try {
-      // Convert input date string to a Date object
-      const utcDate = new Date(`${date}T00:00:00Z`); // Treat input as UTC midnight
-      return new Intl.DateTimeFormat("en-US", {
-        timeZone: "America/Toronto", // EST/Canada timezone
-        dateStyle: "medium", // Format only the date
-      }).format(utcDate);
-    } catch (error) {
-      console.error("Error formatting date:", error);
-      return "Invalid date";
-    }
   };
 
   const getStatusButtonClass = (orderStatus) => {
@@ -440,10 +366,10 @@ export default function Exemple({
           if (true) {
             const updatedRow = {
               order_id: property.orderId,
-              sub_date: formatDateTimeEST(property.addedDatetime),
+              sub_date: formatDateTime(property.addedDatetime),
               quote_required_by: property.quoteRequiredDate
-                ? formatDateToEST(property.quoteRequiredDate)
-                : formatDateToEST(property.addedDate),
+                ? formatDate(property.quoteRequiredDate)
+                : formatDate(property.addedDate),
               status:
                 isHold || isCancel ? (
                   <span className="btn bg-danger text-light w-100">
@@ -523,7 +449,7 @@ export default function Exemple({
                       <ul>
                         <li style={{ fontSize: "15px" }}>
                           {getOrderValue(isBidded.orderstatus)} -{" "}
-                          {formatDateTimeEST(isBidded.statusdate)}
+                          {formatDateTime(isBidded.statusdate)}
                         </li>
                       </ul>
                     </div>
@@ -544,7 +470,11 @@ export default function Exemple({
               address: `${property.streetNumber}, ${property.streetName}, ${property.city}, ${property.province}, ${property.zipCode}`,
               // user: property.applicantEmailAddress,
               // remark: isBidded.remark ? isBidded.remark : "N.A.",
-              remark: isCancel ? "N.A." : isBidded.remark ? isBidded.remark : "N.A.",
+              remark: isCancel
+                ? "N.A."
+                : isBidded.remark
+                ? isBidded.remark
+                : "N.A.",
               type_of_building: property.typeOfBuilding,
               amount: ` $ ${addCommasToNumber(property.estimatedValue)}`,
               purpose: property.purpose,
