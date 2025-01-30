@@ -47,7 +47,6 @@ const Checkout = ({
       userData,
       currency
     );
-    console.log({ paymentType, payload });
     return actions.subscription.create(payload);
   };
 
@@ -75,6 +74,29 @@ const Checkout = ({
 
   };
 
+  const saveRecurringPaymentData = (payload) => {
+    toast.loading("Saving the data to DB for Subscription");
+    console.log({ payload });
+    axios
+      .post("/api/saveRecurringPaymentData", payload, {
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+        },
+      })
+      .then((res) => {
+        toast.success("Created Subscription Successfully.");
+        console.log(res);
+        setOnSuccess(true);
+      })
+      .catch((err) => {
+        console.error("Got error while cretaing subscription", err);
+        toast.error("Got error while creating the subcription");
+        setErrorOccurred(true);
+      })
+      toast.dismiss();
+
+  };
+
   const onApproveOrder = (data, actions) => {
     if (paymentType == "oneTime") {
       return actions.order.capture().then((details) => {
@@ -96,11 +118,76 @@ const Checkout = ({
         saveOneTimePaymentData(finalOneTimeData);
       });
     } else {
-      console.log({ data, actions: actions.subscription.get() });
-      console.log("Subscription ID:", data.subscriptionID);
-      setOnSuccess(true);
+      //Subscription 
+      const response = {
+        paymentDetails: {...data},
+        actionsData: {...actions.subscription.get()}
+      }
+
+      const request = generateRequestPayload(
+        paymentType,
+        topUpDetails,
+        userData,
+        currency
+      );
+
+      const finalRecurringData = generateResponsePayload(
+        paymentType,
+        topUpDetails,
+        userData,
+        request,
+        response,
+        currentSubscription,
+        topUpDetails
+      );
+      saveRecurringPaymentData(finalRecurringData);
+      
     }
   };
+
+  //as upgrade plan
+  // const onApproveOrder = async (data, actions) => {
+  //   if (paymentType === "subscription") {
+  //     try {
+  //       const response = {
+  //         paymentDetails: { ...data },
+  //         actionsData: { ...(await actions.subscription.get()) },
+  //       };
+  
+  //       const request = generateRequestPayload(
+  //         paymentType,
+  //         topUpDetails,
+  //         userData,
+  //         currency
+  //       );
+  
+  //       const finalRecurringData = generateResponsePayload(
+  //         paymentType,
+  //         topUpDetails,
+  //         userData,
+  //         request,
+  //         response,
+  //         currentSubscription,
+  //         topUpDetails
+  //       );
+  
+  //       await saveRecurringPaymentData(finalRecurringData);
+  
+  //       // Cancel previous subscription after successful new subscription creation
+  //       if (currentSubscription?.id) {
+  //         await axios.post(`/api/cancelSubscription/${currentSubscription.id}`, {}, {
+  //           headers: { Authorization: `Bearer ${userData.token}` },
+  //         });
+  
+  //         toast.success("Previous subscription canceled after upgrade.");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error handling subscription upgrade:", error);
+  //       toast.error("Failed to upgrade the subscription. Please try again.");
+  //     }
+  //   }
+  // };
+  
 
     //------------------CANCEL WHILE TRANSACTION----------------------
   const onCancelOrder = (data) => {

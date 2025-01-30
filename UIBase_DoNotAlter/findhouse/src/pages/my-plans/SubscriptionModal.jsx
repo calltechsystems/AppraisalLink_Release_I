@@ -57,7 +57,6 @@ const OneTimePaymentModal = ({
     setShowPaypalPage(true);
   };
 
-  console.log({ onSuccess });
   const closePaypalPage = () => {
     setShowPaypalPage(false);
     setCurrentSelectedPlan({});
@@ -72,6 +71,7 @@ const OneTimePaymentModal = ({
     setCurrentSelectedPlan({});
     setTermsPolicyAccepted(false);
     closeModal();
+    window.location.reload();
   };
 
   return (
@@ -170,7 +170,6 @@ const OneTimePaymentModal = ({
                       >
                         ${price.price} {" "}
                       </label>
-                      (monthly).
                     </span>
                     <br/>
                     <span style={{ fontSize: "15px" }}>
