@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace DBL.Models;
 
-namespace DBL.Models;
-
-public partial class AssignProperty
+public class AssignProperty
 {
     public int Id { get; set; }
 
@@ -14,5 +11,4 @@ public partial class AssignProperty
     public int Propertyid { get; set; }
     public Property Property { get; set; }
     public DateTime? CreatedDateTime { get; set; }
-    
 }

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace DBL.Models;
 
-namespace DBL.Models;
-
-public partial class Contactu
+public class Contactu
 {
     public int ContactusId { get; set; }
 

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace DBL.Models;
 
-namespace DBL.Models;
-
-public partial class RecurringProduct
+public class RecurringProduct
 {
     public string Id { get; set; } = null!;
 

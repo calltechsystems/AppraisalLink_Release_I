@@ -3,7 +3,7 @@
     public class Log
     {
 
-        public void writeLog(string strValue)
+        public void WriteLog(string strValue)
         {
             try
             {

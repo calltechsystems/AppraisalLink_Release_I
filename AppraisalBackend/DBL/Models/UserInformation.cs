@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace DBL.Models;
 
-namespace DBL.Models;
-
-public partial class UserInformation
+public class UserInformation
 {
     public long UserId { get; set; }
 

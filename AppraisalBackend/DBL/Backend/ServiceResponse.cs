@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace DBL.Backend;
 
-namespace DBL.Backend
+public class ServiceResponse<T>
 {
-    public class ServiceResponse<T>
-    {
-        public Boolean Success;
-        public String Message;
-        public T Response;
-        public Exception Error;
-    }
+    public Exception Error;
+    public string Message;
+    public T Response;
+    public bool Success;
 }

@@ -1,25 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace DAL.Classes;
 
-namespace DAL.Classes
+public class SubscriptionDto
 {
-    public class SubscriptionDto
-    {
-        public long SubscriptionId { get; set; }
+    public long SubscriptionId { get; set; }
 
-        public DateTime StartDate { get; set; }
+    public DateTime StartDate { get; set; }
 
-        public DateTime EndDate { get; set; }
+    public DateTime EndDate { get; set; }
 
-        public short PlanId { get; set; }
+    public short PlanId { get; set; }
 
-        public short TotalProperties { get; set; }
+    public short TotalProperties { get; set; }
 
-        public short? UsedProperties { get; set; }
+    public short? UsedProperties { get; set; }
 
-        public long? UserId { get; set; }
-    }
+    public long? UserId { get; set; }
 }

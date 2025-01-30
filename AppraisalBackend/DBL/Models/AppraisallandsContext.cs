@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace DBL.Models;
 
@@ -66,8 +64,9 @@ public partial class AppraisallandsContext : DbContext
     public virtual DbSet<Wishlist> Wishlists { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseNpgsql("Host=appraisalland.cpiwmskggd56.ca-central-1.rds.amazonaws.com;Port=5432;Database=appraisallands;Username=appraisalland;Password=calltech1234;");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https: //go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseNpgsql(
+            "Host=appraisalland.cpiwmskggd56.ca-central-1.rds.amazonaws.com;Port=5432;Database=appraisallands;Username=appraisalland;Password=calltech1234;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -619,7 +618,7 @@ public partial class AppraisallandsContext : DbContext
 
             entity.Property(e => e.PropertyId)
                 .UseIdentityAlwaysColumn()
-                .HasIdentityOptions(null, 3L, 10000L, null, null, null)
+                .HasIdentityOptions(null, 3L, 10000L)
                 .HasColumnName("property_id");
             entity.Property(e => e.AddedDatetime)
                 .HasColumnType("timestamp without time zone")
@@ -670,7 +669,7 @@ public partial class AppraisallandsContext : DbContext
                 .HasColumnName("modified_datetime");
             entity.Property(e => e.OrderId)
                 .ValueGeneratedOnAdd()
-                .HasIdentityOptions(null, null, 106L, null, null, null)
+                .HasIdentityOptions(null, null, 106L)
                 .HasColumnName("order_id");
             entity.Property(e => e.Orderstatus).HasColumnName("orderstatus");
             entity.Property(e => e.PropertyStatus).HasColumnName("property_status");

@@ -1,78 +1,69 @@
-﻿using Amazon.Runtime.Internal;
-using Amazon.SimpleNotificationService.Model;
+﻿using System.Net.Http.Headers;
+using System.Text;
 using DAL.Rpository;
 using DBL.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-//using Microsoft.Graph;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using PayPal.Api;
-using PayPalCheckoutSdk.Core;
-using PayPalCheckoutSdk.Orders;
-using PayPalCheckoutSdk.Subscriptions;
-using System.Net.Http.Headers;
-using System.Text;
+//using Microsoft.Graph;
 
-namespace CallTech.Controllers
+namespace CallTech.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class CreatePlanController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CreatePlanController : ControllerBase
+    private readonly IConfiguration _configuration;
+    private readonly AppraisallandsContext _context;
+    private readonly IEmailService _emailService;
+    private readonly HttpClient _httpClient;
+    private readonly IHttpClientFactory _httpClientFactory;
+
+    public CreatePlanController(IConfiguration configuration, HttpClient httpClient,
+        IHttpClientFactory httpClientFactory, IEmailService emailService)
     {
-        private readonly IConfiguration _configuration;
-        private readonly HttpClient _httpClient;
-        private readonly AppraisallandsContext _context;
-        private readonly IHttpClientFactory _httpClientFactory;
-        private readonly IEmailService _emailService;
-       
-        public CreatePlanController(IConfiguration configuration, HttpClient httpClient, IHttpClientFactory httpClientFactory,IEmailService emailService)
+        _configuration = configuration;
+        _httpClient = httpClient;
+        _context = new AppraisallandsContext();
+        _httpClientFactory = httpClientFactory;
+        _emailService = emailService;
+    }
+
+    [HttpPost("CreateProduct")]
+    public async Task<string> CreateProduct(string name, string description)
+    {
+        var accessToken = await GetAccessToken();
+
+        var client = new HttpClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+        var requestUrl = "https://api.sandbox.paypal.com/v1/catalogs/products";
+
+        var requestData = new
         {
-            _configuration = configuration;
-            _httpClient = httpClient;
-            _context = new AppraisallandsContext();
-            _httpClientFactory = httpClientFactory;
-            _emailService= emailService;
-        }
-        [HttpPost("CreateProduct")]
-        public async Task<string> CreateProduct(string name, string description)
+            name,
+            description
+        };
+
+        var requestDataJson = JsonConvert.SerializeObject(requestData);
+        var requestContent = new StringContent(requestDataJson, Encoding.UTF8, "application/json");
+
+        var response = await client.PostAsync(requestUrl, requestContent);
+        var responseContent = await response.Content.ReadAsStringAsync();
+
+        if (response.IsSuccessStatusCode)
         {
-            var accessToken = await GetAccessToken();
-
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
-
-            var requestUrl = "https://api.sandbox.paypal.com/v1/catalogs/products";
-
-            var requestData = new
-            {
-                name,
-                description
-            };
-
-            var requestDataJson = Newtonsoft.Json.JsonConvert.SerializeObject(requestData);
-            var requestContent = new StringContent(requestDataJson, Encoding.UTF8, "application/json");
-
-            var response = await client.PostAsync(requestUrl, requestContent);
-            var responseContent = await response.Content.ReadAsStringAsync();
-
-            if (response.IsSuccessStatusCode)
-            {
-               
-                var productId = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(responseContent).id;
-                RecurringProduct recurringProduct = new RecurringProduct();
-                recurringProduct.Name = name;
-                recurringProduct.Description = description;
-                recurringProduct.Id= productId;
-                _context.RecurringProducts.Add(recurringProduct);
-                _context.SaveChanges(); 
-                return productId;
-            }
-            else
-            {
-                throw new Exception($"Failed to create product. {responseContent}");
-            }
+            var productId = JsonConvert.DeserializeObject<dynamic>(responseContent).id;
+            var recurringProduct = new RecurringProduct();
+            recurringProduct.Name = name;
+            recurringProduct.Description = description;
+            recurringProduct.Id = productId;
+            _context.RecurringProducts.Add(recurringProduct);
+            _context.SaveChanges();
+            return productId;
         }
+
+        throw new Exception($"Failed to create product. {responseContent}");
+    }
 
     //    [HttpPost("createNewPlan")]
     //    public async Task<string> CreatePlan(string product_id, string name, string description, string billing_cycles_interval_unit, int billing_cycles_interval_count, string amount,int numberOfproperties)
@@ -173,228 +164,215 @@ namespace CallTech.Controllers
     //        return result;
     //    }
 
-        //[HttpPost("AddSubscription")]
-        //public async Task<ActionResult> AddSubscription(string planId, long UserId)
-        //{
-        //    var _httpClient = new HttpClient();
-        //    string url = "https://api.sandbox.paypal.com/v1/billing/subscriptions";
-        //    string accessToken = await GetAccessToken(); // Replace with your actual access token
-        //    var UserDetails = _context.UserInformations.Where(x => x.UserId == UserId).FirstOrDefault();
-        //    Broker Details=null;
-        //    Brokerage BrokerageDetails=null;
-        //    //switch (UserDetails.UserType)
-        //    //{
-        //    //    case 1:
-        //    //        Details=_context.Brokers.Where(x=>x.UserId== UserId).FirstOrDefault();
-        //    //        break;
-        //    //    case 2:
-        //    //         BrokerageDetails = _context.Brokerages.Where(x => x.UserId == UserId).FirstOrDefault();
-        //    //        break;
-        //    //    case 6:
-        //    //        Details = _context.Brokers.Where(x => x.UserId == UserId).FirstOrDefault();
-        //    //        break;
-        //    //    default:
-        //    //        // code block
-        //    //        break;
-        //    //}
-        //    var name="";
-        //    var surname = "";
-        //    var address_line_1 = "";
-        //    var address_line_2 = "";
-        //    var admin_area_2 = "";
-        //    var admin_area_1 = "";
-        //    var postal_code = "";
-        //    var country_code = "";
-        //    if (Details == null)
-        //    {
-        //        //name = BrokerageDetails?.FirstName + " " + BrokerageDetails?.LastName ;
-        //        //address_line_1 = BrokerageDetails?.StreetNumber + " " + BrokerageDetails?.StreetName;
-        //        //address_line_2 = BrokerageDetails?.ApartmentNo;
-        //        //admin_area_2 = BrokerageDetails?.City;
-        //        //admin_area_1 = "CA";
-        //        //postal_code = BrokerageDetails?.PostalCode;
-        //        //country_code = "US";
+    //[HttpPost("AddSubscription")]
+    //public async Task<ActionResult> AddSubscription(string planId, long UserId)
+    //{
+    //    var _httpClient = new HttpClient();
+    //    string url = "https://api.sandbox.paypal.com/v1/billing/subscriptions";
+    //    string accessToken = await GetAccessToken(); // Replace with your actual access token
+    //    var UserDetails = _context.UserInformations.Where(x => x.UserId == UserId).FirstOrDefault();
+    //    Broker Details=null;
+    //    Brokerage BrokerageDetails=null;
+    //    //switch (UserDetails.UserType)
+    //    //{
+    //    //    case 1:
+    //    //        Details=_context.Brokers.Where(x=>x.UserId== UserId).FirstOrDefault();
+    //    //        break;
+    //    //    case 2:
+    //    //         BrokerageDetails = _context.Brokerages.Where(x => x.UserId == UserId).FirstOrDefault();
+    //    //        break;
+    //    //    case 6:
+    //    //        Details = _context.Brokers.Where(x => x.UserId == UserId).FirstOrDefault();
+    //    //        break;
+    //    //    default:
+    //    //        // code block
+    //    //        break;
+    //    //}
+    //    var name="";
+    //    var surname = "";
+    //    var address_line_1 = "";
+    //    var address_line_2 = "";
+    //    var admin_area_2 = "";
+    //    var admin_area_1 = "";
+    //    var postal_code = "";
+    //    var country_code = "";
+    //    if (Details == null)
+    //    {
+    //        //name = BrokerageDetails?.FirstName + " " + BrokerageDetails?.LastName ;
+    //        //address_line_1 = BrokerageDetails?.StreetNumber + " " + BrokerageDetails?.StreetName;
+    //        //address_line_2 = BrokerageDetails?.ApartmentNo;
+    //        //admin_area_2 = BrokerageDetails?.City;
+    //        //admin_area_1 = "CA";
+    //        //postal_code = BrokerageDetails?.PostalCode;
+    //        //country_code = "US";
 
-        //        name = "Appraiserlland";
-        //        surname = "Company";
-        //        address_line_1 = "2211 N First Street";
-        //        address_line_2 = "Building 17";
-        //        admin_area_2 = "San Jose";
-        //        admin_area_1 = "CA";
-        //        postal_code = "466554";
-        //        country_code = "US";
-
-
-        //    }
-        //    else
-        //    {
+    //        name = "Appraiserlland";
+    //        surname = "Company";
+    //        address_line_1 = "2211 N First Street";
+    //        address_line_2 = "Building 17";
+    //        admin_area_2 = "San Jose";
+    //        admin_area_1 = "CA";
+    //        postal_code = "466554";
+    //        country_code = "US";
 
 
-        //        name = "Appraiserlland" ;
-        //        surname = "Company";
-        //        address_line_1 = "2211 N First Street";
-        //        address_line_2 = "Building 17";
-        //        admin_area_2 = "San Jose";
-        //        admin_area_1 = "CA";
-        //        postal_code = "466554";
-        //        country_code = "US";
-
-        //    }
-
-        //    var plan_details = _context.RecurringPlans.Where(x => x.Id == planId).FirstOrDefault();
-        //    var requestData = new
-        //    {
-        //        plan_id = planId,
-        //        start_time = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"),
-        //        shipping_amount = new
-        //        {
-        //            currency_code = "USD",
-        //            value = plan_details?.Ammount
-        //        },
-        //        subscriber = new
-        //        {
-        //            name = new
-        //            {
-        //                given_name = name,
-        //                surname = surname
-        //            },
-        //            email_address = UserDetails.Email,
-        //            shipping_address = new
-        //            {
-        //                name = new
-        //                {
-        //                    full_name = name + surname
-        //                },
-        //                address = new
-        //                {
-        //                    address_line_1 = address_line_1,
-        //                    address_line_2 = address_line_2,
-        //                    admin_area_2 = admin_area_2,
-        //                    admin_area_1 = admin_area_1,
-        //                    postal_code = postal_code,
-        //                    country_code = country_code
-        //                }
-        //            }
-        //        },
-        //        application_context = new
-        //        {
-        //            brand_name = "Appraiserlland",
-        //            locale = "en-US",
-        //            shipping_preference = "SET_PROVIDED_ADDRESS",
-        //            user_action = "SUBSCRIBE_NOW",
-        //            payment_method = new
-        //            {
-        //                payer_selected = "PAYPAL",
-        //                payee_preferred = "IMMEDIATE_PAYMENT_REQUIRED"
-        //            },
-        //            return_url = plan_details.Returnurl,
-        //            cancel_url = "https://localhost:44370/cancel"
-        //        }
-        //    };
+    //    }
+    //    else
+    //    {
 
 
-        //    var requestContent = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(requestData), Encoding.UTF8, "application/json");
-        //    _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
+    //        name = "Appraiserlland" ;
+    //        surname = "Company";
+    //        address_line_1 = "2211 N First Street";
+    //        address_line_2 = "Building 17";
+    //        admin_area_2 = "San Jose";
+    //        admin_area_1 = "CA";
+    //        postal_code = "466554";
+    //        country_code = "US";
 
-        //    var response = await _httpClient.PostAsync(url, requestContent);
-        //    var responseContent = await response.Content.ReadAsStringAsync();
+    //    }
 
-        //    if (response.IsSuccessStatusCode)
-        //    {
-        //        dynamic response1 = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(responseContent);
+    //    var plan_details = _context.RecurringPlans.Where(x => x.Id == planId).FirstOrDefault();
+    //    var requestData = new
+    //    {
+    //        plan_id = planId,
+    //        start_time = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"),
+    //        shipping_amount = new
+    //        {
+    //            currency_code = "USD",
+    //            value = plan_details?.Ammount
+    //        },
+    //        subscriber = new
+    //        {
+    //            name = new
+    //            {
+    //                given_name = name,
+    //                surname = surname
+    //            },
+    //            email_address = UserDetails.Email,
+    //            shipping_address = new
+    //            {
+    //                name = new
+    //                {
+    //                    full_name = name + surname
+    //                },
+    //                address = new
+    //                {
+    //                    address_line_1 = address_line_1,
+    //                    address_line_2 = address_line_2,
+    //                    admin_area_2 = admin_area_2,
+    //                    admin_area_1 = admin_area_1,
+    //                    postal_code = postal_code,
+    //                    country_code = country_code
+    //                }
+    //            }
+    //        },
+    //        application_context = new
+    //        {
+    //            brand_name = "Appraiserlland",
+    //            locale = "en-US",
+    //            shipping_preference = "SET_PROVIDED_ADDRESS",
+    //            user_action = "SUBSCRIBE_NOW",
+    //            payment_method = new
+    //            {
+    //                payer_selected = "PAYPAL",
+    //                payee_preferred = "IMMEDIATE_PAYMENT_REQUIRED"
+    //            },
+    //            return_url = plan_details.Returnurl,
+    //            cancel_url = "https://localhost:44370/cancel"
+    //        }
+    //    };
 
-        //        string approveUrl = response1.links[0].href;
-        //        return Ok(approveUrl);
-        //    }
-        //    else
-        //    {
-        //        throw new Exception($"Failed to create subscription: {responseContent}");
-        //    }
-        //}
 
-        private async Task<string> GetAccessToken()
+    //    var requestContent = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(requestData), Encoding.UTF8, "application/json");
+    //    _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
+
+    //    var response = await _httpClient.PostAsync(url, requestContent);
+    //    var responseContent = await response.Content.ReadAsStringAsync();
+
+    //    if (response.IsSuccessStatusCode)
+    //    {
+    //        dynamic response1 = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(responseContent);
+
+    //        string approveUrl = response1.links[0].href;
+    //        return Ok(approveUrl);
+    //    }
+    //    else
+    //    {
+    //        throw new Exception($"Failed to create subscription: {responseContent}");
+    //    }
+    //}
+
+    private async Task<string> GetAccessToken()
+    {
+        var clientId = _configuration["ApplicationSettings:ClientId"];
+        var clientSecret = _configuration["ApplicationSettings:ClientSecret"];
+        var mode = _configuration.GetValue<string>("ApplicationSettings:IsSandbox");
+        var client = new HttpClient();
+        var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{clientId}:{clientSecret}"));
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", credentials);
+
+        var requestUrl = "https://api.sandbox.paypal.com/v1/oauth2/token";
+        var requestData = new StringContent("grant_type=client_credentials", Encoding.UTF8,
+            "application/x-www-form-urlencoded");
+
+        var response = await client.PostAsync(requestUrl, requestData);
+        var responseContent = await response.Content.ReadAsStringAsync();
+
+        if (response.IsSuccessStatusCode)
         {
-            var clientId = _configuration["ApplicationSettings:ClientId"];
-            var clientSecret = _configuration["ApplicationSettings:ClientSecret"];
-            var mode = _configuration.GetValue<string>("ApplicationSettings:IsSandbox");
-            var client = new HttpClient();
-            var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{clientId}:{clientSecret}"));
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", credentials);
+            var accessToken = JsonConvert.DeserializeObject<dynamic>(responseContent).access_token;
+            return accessToken;
+        }
 
-            var requestUrl = "https://api.sandbox.paypal.com/v1/oauth2/token";
-            var requestData = new StringContent("grant_type=client_credentials", Encoding.UTF8, "application/x-www-form-urlencoded");
+        throw new Exception($"Failed to get access token. {responseContent}");
+    }
 
-            var response = await client.PostAsync(requestUrl, requestData);
-            var responseContent = await response.Content.ReadAsStringAsync();
+    [HttpGet("HandleReturnUrl")]
+    public async Task<IActionResult> HandleReturnUrl(string subscription_id, string ba_token, string token)
+    {
+        if (string.IsNullOrEmpty(subscription_id) || string.IsNullOrEmpty(ba_token) || string.IsNullOrEmpty(token))
+            return BadRequest("Missing parameters");
 
+        try
+        {
+            // Call PayPal APIs or database to check subscription and payment status
+            var subscriptionDone = await GetSubscriptionDetails(subscription_id);
+            var subscriptionDetails = JsonConvert.DeserializeObject<dynamic>(subscriptionDone);
+
+            if (subscriptionDetails.status = "Active")
+                return Ok("Your subscription has been successfully created.");
+            return BadRequest("Failed to create the subscription. Please try again later.");
+        }
+        catch (Exception ex)
+        {
+            // Log or handle exceptions
+            return StatusCode(500, "Internal server error");
+        }
+    }
+
+    [HttpGet("GetSubscriptionDetails")]
+    public async Task<string> GetSubscriptionDetails(string subscriptionId)
+    {
+        try
+        {
+            var _httpClient = new HttpClient();
+            var accessToken = await GetAccessToken(); // Assuming you have a method to retrieve access token
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            var url = $"https://api.sandbox.paypal.com/v1/billing/subscriptions/{subscriptionId}";
+            var response = await _httpClient.GetAsync(url);
             if (response.IsSuccessStatusCode)
             {
-                var accessToken = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(responseContent).access_token;
-                return accessToken;
+                var responseBody = await response.Content.ReadAsStringAsync();
+                return responseBody;
             }
-            else
-            {
-                throw new Exception($"Failed to get access token. {responseContent}");
-            }
+
+            return $"Failed to retrieve subscription details. Status code: {response.StatusCode}";
         }
-
-        [HttpGet("HandleReturnUrl")]
-        public async Task<IActionResult> HandleReturnUrl(string subscription_id, string ba_token, string token)
+        catch (Exception ex)
         {
-            if (string.IsNullOrEmpty(subscription_id) || string.IsNullOrEmpty(ba_token) || string.IsNullOrEmpty(token))
-            {
-                return BadRequest("Missing parameters");
-            }
-
-            try
-            {
-                // Call PayPal APIs or database to check subscription and payment status
-                string subscriptionDone = await GetSubscriptionDetails(subscription_id);
-                var subscriptionDetails = JsonConvert.DeserializeObject<dynamic>(subscriptionDone);
-
-                if (subscriptionDetails.status = "Active")
-                {
-                    return Ok("Your subscription has been successfully created.");
-                }
-                else
-                {
-                    return BadRequest("Failed to create the subscription. Please try again later.");
-                }
-
-            }
-            catch (Exception ex)
-            {
-                // Log or handle exceptions
-                return StatusCode(500, "Internal server error");
-            }
-        }
-
-        [HttpGet("GetSubscriptionDetails")]
-        public async Task<string> GetSubscriptionDetails(string subscriptionId)
-        {
-            try
-            {
-                var _httpClient = new HttpClient();
-                string accessToken = await GetAccessToken(); // Assuming you have a method to retrieve access token
-                _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
-
-                string url = $"https://api.sandbox.paypal.com/v1/billing/subscriptions/{subscriptionId}";
-                HttpResponseMessage response = await _httpClient.GetAsync(url);
-                if (response.IsSuccessStatusCode)
-                {
-                    string responseBody = await response.Content.ReadAsStringAsync();
-                    return responseBody;
-                }
-                else
-                {
-                    return $"Failed to retrieve subscription details. Status code: {response.StatusCode}";
-                }
-            }
-            catch (Exception ex)
-            {
-                return $"An error occurred while retrieving subscription details: {ex.Message}";
-            }
+            return $"An error occurred while retrieving subscription details: {ex.Message}";
         }
     }
 }
-
