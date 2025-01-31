@@ -112,6 +112,7 @@ const Index = () => {
         setPrice={setPrice}
         userData={userData}
         modalOpen={modalOpen}
+        setcurrentSubscription={setcurrentSubscription}
       />
       {price?.type == "plan" ? (
         <SubscriptionModal

@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 import Link from "next/link";
 import Image from "next/image";
 
-const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen }) => {
+const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen, setcurrentSubscription }) => {
   const [selectedPlan, setSelectedPlan] = useState("Monthly");
   const [planData, setPlanData] = useState([]);
   const [isChecked, setIsChecked] = useState(false);
@@ -159,6 +159,7 @@ const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen }) => {
                 topupData={TopUpData}
                 userData={userData}
                 planData={planData}
+                setcurrentSubscription={setcurrentSubscription}
               />
             )}
           </div>
