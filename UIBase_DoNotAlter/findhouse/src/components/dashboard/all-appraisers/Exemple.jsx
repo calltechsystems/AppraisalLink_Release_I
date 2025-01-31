@@ -165,6 +165,25 @@ export default function Exemple({
     setOpenEditModal(true);
   };
 
+  const formatPhoneNumber = (number) => {
+    if (!number) return ""; // Handle empty input
+
+    // Remove non-numeric characters
+    const digits = number.replace(/\D/g, "");
+
+    // Format the number as "416 123-4567"
+    if (digits.length <= 3) {
+      return digits; // e.g., "416"
+    } else if (digits.length <= 6) {
+      return `${digits.slice(0, 3)} ${digits.slice(3)}`; // e.g., "416 123"
+    } else {
+      return `${digits.slice(0, 3)} ${digits.slice(3, 6)}-${digits.slice(
+        6,
+        10
+      )}`; // e.g., "416 123-4567"
+    }
+  };
+
   const formatDate = (dateString) => {
     const options = {
       year: "numeric",
@@ -230,7 +249,9 @@ export default function Exemple({
             ) : (
               <span className="btn btn-warning  w-100">Not Registered</span>
             ),
-          phone: data.item.phoneNumber ? data.item.phoneNumber : "-",
+          phone: data.item.phoneNumber
+            ? formatPhoneNumber(data.item.phoneNumber)
+            : "-",
           address: data.item.streetName
             ? `${data.item.streetName} ${data.item.streetNumber},${data.item.province}-${data.item.postalCode}`
             : "N.A.",

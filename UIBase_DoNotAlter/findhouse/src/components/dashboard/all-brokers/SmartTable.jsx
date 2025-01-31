@@ -305,7 +305,7 @@ function SmartTable(props) {
                 <button
                   className="btn btn-color w-100"
                   // onClick={() => props.refreshHandler()}
-                  title="Refresh"
+                  title="Download Pdf"
                 >
                   <FaDownload />
                 </button>

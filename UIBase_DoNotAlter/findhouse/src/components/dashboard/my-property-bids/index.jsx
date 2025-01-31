@@ -39,6 +39,10 @@ const Index = ({ propertyId }) => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const router = useRouter();
+  function addCommasToNumber(number) {
+    if (Number(number) <= 100 || number === undefined) return number;
+    return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
 
   const len = properties.length > 5 ? properties.length : 5;
   console.log(len);
@@ -834,7 +838,7 @@ const Index = ({ propertyId }) => {
                   <h3 className="text-center text-color">
                     Quote Amount :{" "}
                     <span style={{ color: "#97d700" }}>
-                      $ {property.bidAmount}
+                      ${addCommasToNumber(property.bidAmount)}
                     </span>
                   </h3>
                   <p className="text-center mt-3 mb-0 fs-6">

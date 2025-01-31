@@ -83,42 +83,33 @@ function SmartTable(props) {
 
   const handlePrint = async () => {
     try {
-      // Fetch data
       const allData = props.properties;
 
-      // Open print window and set up basic structure
       const printWindow = window.open("", "_blank");
-      printWindow.document.write(
-        "<html><head><title>Appraiser Land</title></head><body>" +
-          // Add CSS styles within the <style> tag
-          "<style>" +
-          // Define your CSS styles here
-          "@media print {" +
-          "  footer { position: fixed; bottom: 0; width: 100%; text-align: center; }" +
-          "}" +
-          "table { width: 100%; border-collapse: collapse; font-size:12px; font-family:arial;}" +
-          "th, td { border: 1px solid black; padding: 8px; }" +
-          "th { background-color:; color:black;  }" +
-          "</style>" +
-          "</head><body>"
-      );
-      printWindow.document.write(
-        ' <img width="60" height="45" class="logo1 img-fluid" style="" src="/assets/images/Appraisal_Land_Logo.png" alt="header-logo2.png"/> <span style="color: #2e008b font-weight: bold; font-size: 24px;">Appraisal</span><span style="color: #97d700; font-weight: bold; font-size: 24px;">Land</span>'
-      );
-      printWindow.document.write(
-        "<h3>Properties Information</h3>" +
-          "<style>" +
-          "h3{text-align:center;}" +
-          "</style>"
-      );
-      printWindow.document.write(
-        '<button style="display:none;" onclick="window.print()">Print</button>'
-      );
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>Appraiser Land</title>
+            <style>
+              @media print {
+                footer { position: fixed; bottom: 0; width: 100%; text-align: center; }
+              }
+              table { width: 100%; border-collapse: collapse; font-size: 12px; font-family: Arial; }
+              th, td { border: 1px solid black; padding: 8px; }
+              th { background-color: #f0f0f0; color: black; }
+              h3 { text-align: center; }
+            </style>
+          </head>
+          <body>
+            <img width="60" height="45" class="logo1 img-fluid" src="/assets/images/Appraisal_Land_Logo.png" alt="header-logo2.png"/>
+            <span style="color: #2e008b; font-weight: bold; font-size: 24px;">Appraisal</span>
+            <span style="color: #97d700; font-weight: bold; font-size: 24px;">Land</span>
+            <h3>Properties Information</h3>
+      `);
 
-      // Create a new table element to hold all data
       const clonedTable = document.createElement("table");
 
-      // Create table headers
+      // Table Headers
       const tableHeaderRow = document.createElement("tr");
       const staticHeaders = [
         ["order_id", "Order Id"],
@@ -135,23 +126,24 @@ function SmartTable(props) {
         ["type_of_appraisal", "Type Of Appraisal"],
         ["lender_information", "Lender Information"],
       ];
-      staticHeaders.forEach((headerText) => {
+
+      staticHeaders.forEach((header) => {
         const th = document.createElement("th");
-        th.textContent = headerText[1];
+        th.textContent = header[1];
         tableHeaderRow.appendChild(th);
       });
+
       clonedTable.appendChild(tableHeaderRow);
 
-      // Iterate over all data and append rows to the table body
+      // Table Body
       const tableBody = document.createElement("tbody");
-      // Iterate over all data and append rows to the table body
       allData.forEach((item) => {
         const row = tableBody.insertRow();
         staticHeaders.forEach((header) => {
           const cell = row.insertCell();
+
           if (
-            header[0].toLowerCase() === "appraisal_status" ||
-            header[0].toLowerCase() === "status"
+            ["appraisal_status", "status"].includes(header[0].toLowerCase())
           ) {
             const value = item[header[0].toLowerCase()];
             const className = value.props.className;
@@ -165,39 +157,24 @@ function SmartTable(props) {
             const spanElement = document.createElement("span");
             spanElement.textContent = content;
 
-            if (className.includes("btn-warning")) {
-              spanElement.style.backgroundColor = "";
-              spanElement.style.color = "#E4A11B";
-              spanElement.style.height = "max-content";
-              spanElement.style.width = "120px";
-              spanElement.style.padding = "8px";
-              spanElement.style.fontWeight = "bold";
-            } else if (className.includes("btn-danger")) {
-              spanElement.style.backgroundColor = "";
-              spanElement.style.color = "#DC4C64";
-              spanElement.style.height = "max-content";
-              spanElement.style.width = "120px";
-              spanElement.style.padding = "8px";
-              spanElement.style.fontWeight = "bold";
-              // Add more styles as needed
-            } else if (className.includes("btn-success")) {
-              spanElement.style.backgroundColor = "";
-              spanElement.style.color = "#14A44D";
-              spanElement.style.height = "max-content";
-              spanElement.style.width = "120px";
-              spanElement.style.padding = "8px";
-              spanElement.style.fontWeight = "bold";
-              // Add more styles as needed
-            } else {
-              spanElement.style.backgroundColor = "";
-              spanElement.style.color = "#54B4D3";
-              spanElement.style.height = "max-content";
-              spanElement.style.width = "120px";
-              spanElement.style.padding = "8px";
-              spanElement.style.fontWeight = "bold";
-            }
+            const statusColors = {
+              "btn-warning": "#E4A11B",
+              "btn-danger": "#DC4C64",
+              "btn-success": "#14A44D",
+              default: "#54B4D3",
+            };
 
-            // Append the span element to the cell
+            const color =
+              Object.keys(statusColors).find((key) =>
+                className.includes(key)
+              ) || "default";
+
+            spanElement.style.color = statusColors[color];
+            spanElement.style.height = "max-content";
+            spanElement.style.width = "120px";
+            spanElement.style.padding = "8px";
+            spanElement.style.fontWeight = "bold";
+
             cell.appendChild(spanElement);
           } else {
             cell.textContent = item[header[0].toLowerCase()];
@@ -206,31 +183,184 @@ function SmartTable(props) {
       });
 
       clonedTable.appendChild(tableBody);
-      clonedTable.appendChild(tableBody);
 
-      // Write the table to the print window
-      printWindow.document.write(clonedTable.outerHTML);
-      printWindow.document.write("</body>");
-      // Add footer link
-      printWindow.document.write("<footer>");
-      printWindow.document.write(
-        '<p style="text-align:center;"><a href="https://appraisalland.vercel.app/">https://appraisalland.vercel.app/</a></p>'
-      );
-      printWindow.document.write("</footer>");
+      // Append the table to the document
+      printWindow.document.body.appendChild(clonedTable);
 
-      printWindow.document.write("</html>");
+      // Footer
+      printWindow.document.write(`
+        <footer>
+          <p style="text-align:center;">
+            <a href="https://appraisalland.vercel.app/">https://appraisalland.vercel.app/</a>
+          </p>
+        </footer>
+        </body>
+        </html>
+      `);
       printWindow.document.close();
 
-      // Print and handle post-print actions
-      printWindow.print();
-      printWindow.onafterprint = () => {
-        printWindow.close();
-        toast.success("Saved the data");
+      printWindow.onload = () => {
+        printWindow.print();
+        printWindow.onafterprint = () => {
+          printWindow.close();
+          toast.success("Saved the data");
+        };
       };
     } catch (error) {
       console.error("Error handling print:", error);
     }
   };
+
+  // const handlePrint = async () => {
+  //   try {
+  //     // Fetch data
+  //     const allData = props.properties;
+
+  //     // Open print window and set up basic structure
+  //     const printWindow = window.open("", "_blank");
+  //     printWindow.document.write(
+  //       "<html><head><title>Appraiser Land</title></head><body>" +
+  //         // Add CSS styles within the <style> tag
+  //         "<style>" +
+  //         // Define your CSS styles here
+  //         "@media print {" +
+  //         "  footer { position: fixed; bottom: 0; width: 100%; text-align: center; }" +
+  //         "}" +
+  //         "table { width: 100%; border-collapse: collapse; font-size:12px; font-family:arial;}" +
+  //         "th, td { border: 1px solid black; padding: 8px; }" +
+  //         "th { background-color:; color:black;  }" +
+  //         "</style>" +
+  //         "</head><body>"
+  //     );
+  //     printWindow.document.write(
+  //       ' <img width="60" height="45" class="logo1 img-fluid" style="" src="/assets/images/Appraisal_Land_Logo.png" alt="header-logo2.png"/> <span style="color: #2e008b font-weight: bold; font-size: 24px;">Appraisal</span><span style="color: #97d700; font-weight: bold; font-size: 24px;">Land</span>'
+  //     );
+  //     printWindow.document.write(
+  //       "<h3>Properties Information</h3>" +
+  //         "<style>" +
+  //         "h3{text-align:center;}" +
+  //         "</style>"
+  //     );
+  //     printWindow.document.write(
+  //       '<button style="display:none;" onclick="window.print()">Print</button>'
+  //     );
+
+  //     // Create a new table element to hold all data
+  //     const clonedTable = document.createElement("table");
+
+  //     // Create table headers
+  //     const tableHeaderRow = document.createElement("tr");
+  //     const staticHeaders = [
+  //       ["order_id", "Order Id"],
+  //       ["address", "Property Address"],
+  //       ["status", "Order Status"],
+  //       ["appraisal_status", "Appraisal Status"],
+  //       ["remark", "Remark"],
+  //       ["sub_date", "Submission Date"],
+  //       ["quote_required_by", "Appraisal Report Required By"],
+  //       ["urgency", "Request Type"],
+  //       ["type_of_building", "Property Type"],
+  //       ["amount", "Estimated Value ($)"],
+  //       ["purpose", "Purpose"],
+  //       ["type_of_appraisal", "Type Of Appraisal"],
+  //       ["lender_information", "Lender Information"],
+  //     ];
+  //     staticHeaders.forEach((headerText) => {
+  //       const th = document.createElement("th");
+  //       th.textContent = headerText[1];
+  //       tableHeaderRow.appendChild(th);
+  //     });
+  //     clonedTable.appendChild(tableHeaderRow);
+
+  //     // Iterate over all data and append rows to the table body
+  //     const tableBody = document.createElement("tbody");
+  //     // Iterate over all data and append rows to the table body
+  //     allData.forEach((item) => {
+  //       const row = tableBody.insertRow();
+  //       staticHeaders.forEach((header) => {
+  //         const cell = row.insertCell();
+  //         if (
+  //           header[0].toLowerCase() === "appraisal_status" ||
+  //           header[0].toLowerCase() === "status"
+  //         ) {
+  //           const value = item[header[0].toLowerCase()];
+  //           const className = value.props.className;
+  //           const content =
+  //             header[0].toLowerCase() === "appraisal_status"
+  //               ? extractTextFromReactElement(value.props.children).split(
+  //                   "Current Status"
+  //                 )[0]
+  //               : value.props.children;
+
+  //           const spanElement = document.createElement("span");
+  //           spanElement.textContent = content;
+
+  //           if (className.includes("btn-warning")) {
+  //             spanElement.style.backgroundColor = "";
+  //             spanElement.style.color = "#E4A11B";
+  //             spanElement.style.height = "max-content";
+  //             spanElement.style.width = "120px";
+  //             spanElement.style.padding = "8px";
+  //             spanElement.style.fontWeight = "bold";
+  //           } else if (className.includes("btn-danger")) {
+  //             spanElement.style.backgroundColor = "";
+  //             spanElement.style.color = "#DC4C64";
+  //             spanElement.style.height = "max-content";
+  //             spanElement.style.width = "120px";
+  //             spanElement.style.padding = "8px";
+  //             spanElement.style.fontWeight = "bold";
+  //             // Add more styles as needed
+  //           } else if (className.includes("btn-success")) {
+  //             spanElement.style.backgroundColor = "";
+  //             spanElement.style.color = "#14A44D";
+  //             spanElement.style.height = "max-content";
+  //             spanElement.style.width = "120px";
+  //             spanElement.style.padding = "8px";
+  //             spanElement.style.fontWeight = "bold";
+  //             // Add more styles as needed
+  //           } else {
+  //             spanElement.style.backgroundColor = "";
+  //             spanElement.style.color = "#54B4D3";
+  //             spanElement.style.height = "max-content";
+  //             spanElement.style.width = "120px";
+  //             spanElement.style.padding = "8px";
+  //             spanElement.style.fontWeight = "bold";
+  //           }
+
+  //           // Append the span element to the cell
+  //           cell.appendChild(spanElement);
+  //         } else {
+  //           cell.textContent = item[header[0].toLowerCase()];
+  //         }
+  //       });
+  //     });
+
+  //     clonedTable.appendChild(tableBody);
+  //     clonedTable.appendChild(tableBody);
+
+  //     // Write the table to the print window
+  //     printWindow.document.write(clonedTable.outerHTML);
+  //     printWindow.document.write("</body>");
+  //     // Add footer link
+  //     printWindow.document.write("<footer>");
+  //     printWindow.document.write(
+  //       '<p style="text-align:center;"><a href="https://appraisalland.vercel.app/">https://appraisalland.vercel.app/</a></p>'
+  //     );
+  //     printWindow.document.write("</footer>");
+
+  //     printWindow.document.write("</html>");
+  //     printWindow.document.close();
+
+  //     // Print and handle post-print actions
+  //     printWindow.print();
+  //     printWindow.onafterprint = () => {
+  //       printWindow.close();
+  //       toast.success("Saved the data");
+  //     };
+  //   } catch (error) {
+  //     console.error("Error handling print:", error);
+  //   }
+  // };
 
   const handleExcelPrint = () => {
     const twoDData = props.data.map((item, index) => {
@@ -416,7 +546,7 @@ function SmartTable(props) {
                 setFilterQuery={props.setFilterQuery}
               />
             </li>
-            <li className="list-inline-item" style={{ marginRight: "15px" }}>
+            <li className="list-inline-item" style={{ marginRight: "" }}>
               <div className="candidate_revew_search_box course fn-520">
                 <SearchBox
                   searchInput={props.searchInput}

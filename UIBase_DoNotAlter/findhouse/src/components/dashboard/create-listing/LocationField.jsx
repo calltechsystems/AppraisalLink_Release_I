@@ -9,6 +9,8 @@ const LocationField = ({
   setStreetNameRef,
   streetNumberRef,
   setStreetNumberRef,
+  apartmentNumberRef,
+  setApartmentNumberRef,
   cityRef,
   setCityRef,
   setZipCodeRef,
@@ -39,7 +41,7 @@ const LocationField = ({
       }
     });
     return isError;
-  }
+  };
 
   return (
     <>
@@ -133,9 +135,9 @@ const LocationField = ({
                 className="form-control"
                 id="formGroupExampleInput3"
                 maxLength={30}
-                // onChange={(e) => setStreetNumberRef(e.target.value)}
-                // value={streetNumberRef}
-                // disabled={isDisable}
+                onChange={(e) => setApartmentNumberRef(e.target.value)}
+                value={apartmentNumberRef}
+                disabled={isDisable}
               />
             </div>
           </div>

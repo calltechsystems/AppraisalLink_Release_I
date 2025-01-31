@@ -1070,7 +1070,7 @@ const ProfileInfo = ({
                         />
                         {brokerageError && (
                           <small className="text-danger">
-                            Brokerage name must be 3 characters minimum.
+                            Enter valid brokerage name.
                           </small>
                         )}
                       </div>
@@ -1114,7 +1114,7 @@ const ProfileInfo = ({
                         />
                         {firstNameError && (
                           <small className="text-danger">
-                            First name must be 3 characters minimum.
+                            Enter valid first name.
                           </small>
                         )}
                       </div>
@@ -1158,7 +1158,7 @@ const ProfileInfo = ({
                         />
                         {lastNameError && (
                           <small className="text-danger">
-                            Last name must be 3 characters minimum.
+                            Enter valid last name.
                           </small>
                         )}
                       </div>
