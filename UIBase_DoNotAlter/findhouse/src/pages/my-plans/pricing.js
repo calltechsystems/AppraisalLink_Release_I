@@ -14,6 +14,7 @@ const Pricing = ({
   topupData,
   setData,
   currentSubscription,
+  setcurrentSubscription,
   setPrice,
   planData,
 }) => {
@@ -196,6 +197,18 @@ const Pricing = ({
 
     setCurrentActivePlan(requiredPlan[requiredPlan.length - 1]);
   }, [currentSubscription, data]);
+
+  useEffect(() => {
+    setcurrentSubscription({
+      ...currentSubscription,
+      planId: currentActivePlan?.id,
+      amount: currentActivePlan?.amount,
+      monthlyAmount: currentActivePlan?.monthlyAmount,
+      noOfProperties: currentActivePlan?.noOfProperties,
+      payPalProductId: currentActivePlan?.payPalProductId,
+      description: currentActivePlan?.description
+    })
+  },[currentActivePlan])
 
   useEffect(() => {
     let Monthly = [],

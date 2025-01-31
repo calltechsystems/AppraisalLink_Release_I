@@ -182,12 +182,12 @@ const generateResponsePayload = (
     return {
       createTime: new Date(convertToCanadaTime(new Date())).toISOString(),
       updateTime: new Date(convertToCanadaTime(new Date())).toISOString(),
-      planId: currentSubscription?.$id,
+      planId: currentSubscription?.planId,
       planAmount: currentSubscription?.planAmount,
       planName: currentSubscription?.planName,
       userId: userData?.userId,
       paymentId: response?.id,
-      topUpId: topUpDetails?.selectedTopUp?.$id,
+      topUpId: topUpDetails?.selectedTopUp?.id,
       paymentRequestSent: JSON.stringify(request),
       paymentResponseReceived: JSON.stringify(response),
       status: "COMPLETED",
@@ -198,7 +198,8 @@ const generateResponsePayload = (
     return {
       customId: generateCustomId(userData?.userId, id),
       userId: userData?.userId,
-      planId: Number(topUpDetails?.item?.$id),
+      newPlanId: Number(topUpDetails?.item?.id),
+      // currentPlanId: currentSubscription?.planId,
       startTime: new Date(convertToCanadaTime(new Date())).toISOString(),
       subscriber: {
         profileName:
