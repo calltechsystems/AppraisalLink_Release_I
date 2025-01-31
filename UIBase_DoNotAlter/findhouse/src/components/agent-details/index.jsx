@@ -29,7 +29,7 @@ const index = () => {
                 <div className="col-lg-12">
                   <BreadCrumb2 />
                 </div>
-                {/* End .col-12 */}
+               
 
                 <div className="col-lg-12">
                   <div className="feat_property list style2 agent">

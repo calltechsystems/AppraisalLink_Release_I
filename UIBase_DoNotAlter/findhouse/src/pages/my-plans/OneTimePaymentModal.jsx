@@ -57,7 +57,6 @@ const OneTimePaymentModal = ({
     setShowPaypalPage(true);
   };
 
-  console.log({ onSuccess });
   const closePaypalPage = () => {
     setShowPaypalPage(false);
     setCurrentSelectedPlan({});
@@ -72,6 +71,7 @@ const OneTimePaymentModal = ({
     setCurrentSelectedPlan({});
     setTermsPolicyAccepted(false);
     closeModal();
+    window.location.reload();
   };
 
   return (
@@ -149,7 +149,7 @@ const OneTimePaymentModal = ({
                     </span>
                     <br />
                     <span className="text-dark">
-                      You have selected to{" "}
+                    You have selected to add upto{" "}
                       <label
                         style={{
                           fontWeight: "bold",
