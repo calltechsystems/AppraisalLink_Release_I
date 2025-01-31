@@ -2016,7 +2016,6 @@ const Index = () => {
                   alreadyBidded={alreadyBidded}
                 />
               </div>
-              <div className="row">{/* End paginaion .col */}</div>
               {/* End .row */}
             </div>
             {/* End .row */}

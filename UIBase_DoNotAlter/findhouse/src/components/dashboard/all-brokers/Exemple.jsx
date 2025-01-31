@@ -133,6 +133,25 @@ export default function Exemple({
     setIsStatusModal(true);
   };
 
+  const formatPhoneNumber = (number) => {
+    if (!number) return ""; // Handle empty input
+
+    // Remove non-numeric characters
+    const digits = number.replace(/\D/g, "");
+
+    // Format the number as "416 123-4567"
+    if (digits.length <= 3) {
+      return digits; // e.g., "416"
+    } else if (digits.length <= 6) {
+      return `${digits.slice(0, 3)} ${digits.slice(3)}`; // e.g., "416 123"
+    } else {
+      return `${digits.slice(0, 3)} ${digits.slice(3, 6)}-${digits.slice(
+        6,
+        10
+      )}`; // e.g., "416 123-4567"
+    }
+  };
+
   const removeWishlistHandler = (id) => {
     const userData = JSON.parse(localStorage.getItem("user"));
 
@@ -236,7 +255,9 @@ export default function Exemple({
             ) : (
               <span className="btn btn-warning  w-100">Not Registered</span>
             ),
-          phone: data?.phoneNumber ? data?.phoneNumber : "NA",
+          phone: data?.phoneNumber
+            ? formatPhoneNumber(data?.phoneNumber)
+            : "NA",
           address: `${data?.streetName} ${data?.streetNumber},${data?.city}-${data?.postalCode}`,
           // date: dateNow,
           emailaddress: data?.emailId ? data?.emailId : "NA",

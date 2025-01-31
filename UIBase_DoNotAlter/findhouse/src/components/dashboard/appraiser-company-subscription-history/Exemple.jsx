@@ -9,7 +9,7 @@ const headCells = [
     id: "id",
     numeric: false,
     label: "Unique Id",
-    width: 250,
+    width: 230,
   },
   {
     id: "planName",
@@ -28,13 +28,13 @@ const headCells = [
     id: "st_date",
     numeric: false,
     label: "Start Date",
-    width: 120,
+    width: 150,
   },
   {
     id: "end_date",
     numeric: false,
     label: "End Date",
-    width: 120,
+    width: 150,
   },
   {
     id: "amount",
@@ -52,7 +52,7 @@ const headCells = [
     id: "status",
     numeric: false,
     label: "Status",
-    width: 190,
+    width: 150,
   },
 ];
 

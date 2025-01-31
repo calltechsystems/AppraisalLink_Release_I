@@ -6,7 +6,6 @@ import SVGChevronLeft from "./icons/SVGChevronLeft";
 import SVGChevronRight from "./icons/SVGChevronRight";
 import { FaDownload, FaRedo } from "react-icons/fa";
 import * as XLSX from "xlsx";
-
 import { useReactToPrint } from "react-to-print";
 import toast from "react-hot-toast";
 import SearchBox from "./SearchBox";
@@ -80,58 +79,145 @@ function SmartTable(props) {
   };
 
   const handlePrint = () => {
-    const printWindow = window.open("", "_blank");
-    printWindow.document.write(
-      "<html><head><title>AllBrokerProperties</title></head><body>"
-    );
-    printWindow.document.write("<h1>" + props.title + "</h1>");
-    printWindow.document.write(
-      '<button style="display:none;" onclick="window.print()">Print</button>'
-    );
-
-    // Clone the table-container and remove the action column
-    const tableContainer = document.getElementById("table-container");
-    const table = tableContainer.querySelector("table");
-    const clonedTable = table.cloneNode(true);
-    const rows = clonedTable.querySelectorAll("tr");
-    rows.forEach((row) => {
-      const lastCell = row.querySelector("td:last-child");
-      if (lastCell) {
-        row.removeChild(lastCell);
+    try {
+      const tableContainer = document.getElementById("table-container");
+      if (!tableContainer) {
+        console.error("Table container not found!");
+        return;
       }
-    });
 
-    // Remove the action heading from the table
-    const tableHead = clonedTable.querySelector("thead");
-    const tableHeadRows = tableHead.querySelectorAll("tr");
-    tableHeadRows.forEach((row) => {
-      const lastCell = row.querySelector("th:last-child");
-      if (lastCell) {
-        row.removeChild(lastCell);
+      const table = tableContainer.querySelector("table");
+      if (!table) {
+        console.error("Table not found!");
+        return;
       }
-    });
 
-    // Make the table responsive for all fields
-    const tableRows = clonedTable.querySelectorAll("tr");
-    tableRows.forEach((row) => {
-      const firstCell = row.querySelector("td:first-child");
-      if (firstCell) {
-        const columnHeading = tableHeadRows[0].querySelector(
-          "th:nth-child(" + (firstCell.cellIndex + 1) + ")"
-        ).innerText;
-        firstCell.setAttribute("data-th", columnHeading);
+      // Open a new print window
+      const printWindow = window.open("", "_blank");
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>AllBrokerProperties</title>
+            <style>
+              @media print {
+                button { display: none; }
+                table { width: 100%; border-collapse: collapse; font-size: 12px; font-family: Arial; }
+                th, td { border: 1px solid black; padding: 8px; }
+                th { background-color: #f2f2f2; }
+              }
+            </style>
+          </head>
+          <body>
+            <h1>${props.title || "All Broker Properties"}</h1>
+            <button onclick="window.print()">Print</button>
+      `);
+
+      // Clone table and remove the last column (Action column)
+      const clonedTable = table.cloneNode(true);
+      clonedTable.querySelectorAll("tr").forEach((row) => {
+        const lastCell = row.lastElementChild;
+        if (lastCell) row.removeChild(lastCell);
+      });
+
+      // Remove the last column heading
+      const tableHead = clonedTable.querySelector("thead");
+      if (tableHead) {
+        tableHead.querySelectorAll("tr").forEach((row) => {
+          const lastCell = row.lastElementChild;
+          if (lastCell) row.removeChild(lastCell);
+        });
       }
-    });
 
-    printWindow.document.write(clonedTable.outerHTML);
-    printWindow.document.write("</body></html>");
-    printWindow.document.close();
-    printWindow.print();
-    printWindow.onafterprint = () => {
-      printWindow.close();
-      toast.success("Saved the data");
-    };
+      // Add responsive data attributes
+      const tableRows = clonedTable.querySelectorAll("tbody tr");
+      tableRows.forEach((row) => {
+        const firstCell = row.querySelector("td:first-child");
+        if (firstCell && tableHead) {
+          const columnHeading = tableHead.querySelector(
+            `th:nth-child(${firstCell.cellIndex + 1})`
+          )?.innerText;
+          if (columnHeading) {
+            firstCell.setAttribute("data-th", columnHeading);
+          }
+        }
+      });
+
+      // Write table and footer
+      printWindow.document.write(clonedTable.outerHTML);
+      printWindow.document.write(`
+            <footer style="text-align:center; margin-top:20px;">
+              <p><a href="https://appraisalland.vercel.app/">https://appraisalland.vercel.app/</a></p>
+            </footer>
+          </body>
+        </html>
+      `);
+
+      printWindow.document.close();
+      printWindow.print();
+
+      printWindow.onafterprint = () => {
+        printWindow.close();
+        toast.success("Saved the data");
+      };
+    } catch (error) {
+      console.error("Error handling print:", error);
+    }
   };
+
+  // const handlePrint = () => {
+  //   const printWindow = window.open("", "_blank");
+  //   printWindow.document.write(
+  //     "<html><head><title>AllBrokerProperties</title></head><body>"
+  //   );
+  //   printWindow.document.write("<h1>" + props.title + "</h1>");
+  //   printWindow.document.write(
+  //     '<button style="display:none;" onclick="window.print()">Print</button>'
+  //   );
+
+  //   // Clone the table-container and remove the action column
+  //   const tableContainer = document.getElementById("table-container");
+  //   const table = tableContainer.querySelector("table");
+  //   const clonedTable = table.cloneNode(true);
+  //   const rows = clonedTable.querySelectorAll("tr");
+  //   rows.forEach((row) => {
+  //     const lastCell = row.querySelector("td:last-child");
+  //     if (lastCell) {
+  //       row.removeChild(lastCell);
+  //     }
+  //   });
+
+  //   // Remove the action heading from the table
+  //   const tableHead = clonedTable.querySelector("thead");
+  //   const tableHeadRows = tableHead.querySelectorAll("tr");
+  //   tableHeadRows.forEach((row) => {
+  //     const lastCell = row.querySelector("th:last-child");
+  //     if (lastCell) {
+  //       row.removeChild(lastCell);
+  //     }
+  //   });
+
+  //   // Make the table responsive for all fields
+  //   const tableRows = clonedTable.querySelectorAll("tr");
+  //   tableRows.forEach((row) => {
+  //     const firstCell = row.querySelector("td:first-child");
+  //     if (firstCell) {
+  //       const columnHeading = tableHeadRows[0].querySelector(
+  //         "th:nth-child(" + (firstCell.cellIndex + 1) + ")"
+  //       ).innerText;
+  //       firstCell.setAttribute("data-th", columnHeading);
+  //     }
+  //   });
+
+  //   printWindow.document.write(clonedTable.outerHTML);
+  //   printWindow.document.write("</body></html>");
+  //   printWindow.document.close();
+  //   printWindow.print();
+  //   printWindow.onafterprint = () => {
+  //     printWindow.close();
+  //     toast.success("Saved the data");
+  //   };
+  // };
+
   const handleExcelPrint = () => {
     const twoDData = props.data.map((item, index) => {
       return [item.bid, item.date, item.title, item.urgency];
@@ -299,8 +385,8 @@ function SmartTable(props) {
                 </button>
                 <button
                   className="btn btn-color w-100"
-                  // onClick={() => props.refreshHandler()}
-                  title="Refresh"
+                  onClick={() => handlePrint()}
+                  title="Download Pdf"
                 >
                   <FaDownload />
                 </button>

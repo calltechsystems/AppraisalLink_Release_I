@@ -94,12 +94,12 @@ const headCells = [
     label: "Lender Information",
     width: 160,
   },
-  {
-    id: "actions_01",
-    numeric: false,
-    label: "Actions",
-    width: 170,
-  },
+  // {
+  //   id: "actions_01",
+  //   numeric: false,
+  //   label: "Actions",
+  //   width: 170,
+  // },
 ];
 
 export default function Exemple({

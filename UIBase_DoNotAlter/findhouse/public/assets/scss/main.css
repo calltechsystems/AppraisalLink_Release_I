@@ -14723,7 +14723,7 @@ legend span {
   border-radius: 8px 0px 0px 8px;
   height: 52px;
   margin-right: 0 !important;
-  padding-left: 20px;
+  /* padding-left: 20px; */
   padding-right: 0;
   width: 348px;
 }

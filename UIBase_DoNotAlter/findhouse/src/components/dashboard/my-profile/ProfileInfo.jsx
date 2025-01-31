@@ -85,7 +85,7 @@ const ProfileInfo = ({
     userData?.broker_Details?.streetNumber || ""
   );
   const [cellNumberRef, setCellNumberRef] = useState(
-    userData?.broker_Details?.cellnumber || " "
+    userData?.broker_Details?.cellnumber || ""
   );
 
   const [streetName, setStreetName] = useState(
@@ -1240,7 +1240,7 @@ const ProfileInfo = ({
                         />
                         {firstNameError && (
                           <small className="text-danger">
-                            First Name must be 3 characters minimum.
+                            Enter valid first name.
                           </small>
                         )}
                       </div>
@@ -1310,7 +1310,7 @@ const ProfileInfo = ({
                         />
                         {lastNameError && (
                           <small className="text-danger">
-                            Last Name must be 3 characters minimum.
+                            Enter valid last name.
                           </small>
                         )}
                       </div>
@@ -1355,7 +1355,7 @@ const ProfileInfo = ({
                         />
                         {companyNameError && (
                           <small className="text-danger">
-                            Company Name must be 3 characters minimum.
+                            Enter valid company name.
                           </small>
                         )}
                       </div>
