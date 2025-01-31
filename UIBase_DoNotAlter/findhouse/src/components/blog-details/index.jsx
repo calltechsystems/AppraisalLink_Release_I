@@ -33,7 +33,7 @@ const index = () => {
               <BreadCrumb2 />
             </div>
           </div>
-          {/* End .row */}
+          
 
           <div className="row">
             <div className="col-lg-8">
