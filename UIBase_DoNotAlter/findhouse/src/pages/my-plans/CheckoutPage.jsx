@@ -104,29 +104,6 @@ const Checkout = ({
 
   };
 
-  const saveRecurringPaymentData = (payload) => {
-    toast.loading("Saving the data to DB for Subscription");
-    console.log({ payload });
-    axios
-      .post("/api/saveRecurringPaymentData", payload, {
-        headers: {
-          Authorization: `Bearer ${userData.token}`,
-        },
-      })
-      .then((res) => {
-        toast.success("Created Subscription Successfully.");
-        console.log(res);
-        setOnSuccess(true);
-      })
-      .catch((err) => {
-        console.error("Got error while cretaing subscription", err);
-        toast.error("Got error while creating the subcription");
-        setErrorOccurred(true);
-      })
-      toast.dismiss();
-
-  };
-
   const onApproveOrder = (data, actions) => {
     if (paymentType == "oneTime") {
       return actions.order.capture().then((details) => {
