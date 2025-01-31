@@ -1,9 +1,9 @@
 //Paypal Plan ID
-const PaypalPlanId = {
-  ["lite"]: "P-4F259524XU6273733M6FY5QY",
-  ["pro"]: "P-3KE51330455345207M6FY7HI",
-  ["ultimate"]: "P-51425321W9368215BM6FZAMY",
-};
+// const PaypalPlanId = {
+//   ["lite"]: "P-4F259524XU6273733M6FY5QY",
+//   ["pro"]: "P-3KE51330455345207M6FY7HI",
+//   ["ultimate"]: "P-51425321W9368215BM6FZAMY",
+// };
 
 const generateCustomId = (brokerId, planId) => {
   if (!brokerId || !planId) {
@@ -71,7 +71,7 @@ const generateRequestPayload = (paymentType, details, userData, currency) => {
     // Payload for subscription payment
     return {
       //   custom_id: generateCustomId(userData?.userId, id),
-      plan_id: PaypalPlanId[String(title).toLowerCase()],
+      plan_id: details?.paypalPlanId,
       // start_time:new Date(convertToCanadaTime(new Date())).toISOString(),
       quantity: "1",
       subscriber: {
@@ -199,6 +199,7 @@ const generateResponsePayload = (
       customId: generateCustomId(userData?.userId, id),
       userId: userData?.userId,
       newPlanId: Number(topUpDetails?.item?.id),
+      paypalSubscriptionId: response?.paymentDetails?.subscriptionID,
       // currentPlanId: currentSubscription?.planId,
       startTime: new Date(convertToCanadaTime(new Date())).toISOString(),
       subscriber: {
