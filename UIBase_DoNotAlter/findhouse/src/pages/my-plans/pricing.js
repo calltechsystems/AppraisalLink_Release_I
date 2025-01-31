@@ -89,6 +89,7 @@ const Pricing = ({
       price: price,
       type: type,
       item,
+      paypalPlanId: type == "plan" ? item?.payPalProductId : ''
     });
   };
 
