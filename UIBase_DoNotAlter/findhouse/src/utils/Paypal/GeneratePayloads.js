@@ -199,6 +199,7 @@ const generateResponsePayload = (
       customId: generateCustomId(userData?.userId, id),
       userId: userData?.userId,
       newPlanId: Number(topUpDetails?.item?.id),
+      paypalSubscriptionId: response?.paymentDetails?.subscriptionID,
       // currentPlanId: currentSubscription?.planId,
       startTime: new Date(convertToCanadaTime(new Date())).toISOString(),
       subscriber: {
