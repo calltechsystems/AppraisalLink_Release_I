@@ -225,6 +225,8 @@ const generateResponsePayload = (
       currencycode: "CAD",
       paymentId: response?.paymentDetails?.orderID,
       paymentRequestSent: JSON.stringify(request),
+      // paymentRequestSent: "paymentRequestSent",
+      // paymentRequestReceived: "paymentRequestReceived",
       paymentRequestReceived: JSON.stringify(response),
     };
   } else if (paymentType === "cancel_subscription") {

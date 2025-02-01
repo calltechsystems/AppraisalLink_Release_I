@@ -100,7 +100,7 @@ const Index = ({ isView, propertyData }) => {
   const [applicantAddress, setApplicantAddress] = useState(
     propertyData?.applicantAddress || ""
   );
-  const [attachment, setAttachment] = useState(propertyData?.attachment || "");
+  const [attachment, setAttachment] = useState(propertyData?.attachment || {});
   const [filesUrl, setFilesUrl] = useState([]);
   const [purpose, setPurpose] = useState(propertyData?.purpose || "");
 
@@ -124,11 +124,12 @@ const Index = ({ isView, propertyData }) => {
   const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const changeUrlToStringHandler = () => {
-    const resultString = filesUrl.join(",");
-    if (updateView) {
-      return attachment + "," + resultString;
-    }
-    return resultString;
+    return ""
+    // const resultString = filesUrl.join(",");
+    // if (updateView) {
+    //   return attachment + "," + resultString;
+    // }
+    // return resultString;
   };
 
   const onChangeHandler = (value, field, otherField) => {
