@@ -728,9 +728,7 @@ const Index = ({ propertyId }) => {
                     <button
                       className="btn btn-color"
                       style={{ width: "100px" }}
-                      // onClick={() =>
-                      //   PropertyInfoHandler(currentProperty.orderId)
-                      // }
+                      onClick={() => handlePrint()}
                       title="Download Pdf"
                     >
                       <FaDownload />

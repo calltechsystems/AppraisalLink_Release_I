@@ -379,7 +379,7 @@ export default function Exemple({
               <div>
                 <h5 className="btn btn-danger m-1">Declined</h5>
                 {property?.appraiserAssign === false &&
-                  property?.status !== 2 && (
+                  prop?.orderstatus !== 3 && (
                     <div
                       className="list-inline-item"
                       onClick={() => confirmReassign(property.bidId)}
