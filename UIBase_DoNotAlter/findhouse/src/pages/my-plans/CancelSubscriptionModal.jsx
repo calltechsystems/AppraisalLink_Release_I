@@ -18,8 +18,16 @@ const CancelSubscriptionModal = ({
   const [showPaypalPage, setShowPaypalPage] = useState(false);
 
   const [errorOcurred, setErrorOccurred] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [onSuccess, setOnSuccess] = useState(false);
   const [termsPolicyAccepted, setTermsPolicyAccepted] = useState(0);
+
+  //set the default Error message
+  useEffect(() => {
+    setErrorMessage(
+      "The action window may have been closed unexpectedly, either due to cancellation or an abrupt closure. Please try again to complete your payment."
+    );
+  }, []);
 
   useEffect(() => {
     let countdownInterval;
@@ -189,6 +197,7 @@ const CancelSubscriptionModal = ({
                       planDetails={currentSelectedPlan}
                       setErrorOccurred={setErrorOccurred}
                       setOnSuccess={setOnSuccess}
+                      setErrorMessage={setErrorMessage}
                       paymentType={"cancel_subscription"}
                     />
                   </>
@@ -198,9 +207,7 @@ const CancelSubscriptionModal = ({
               ) : (
                 <div className="text-center" style={{ fontSize: "19px" }}>
                   <span className="text-dark">
-                    The action window may have been closed unexpectedly, either
-                    due to cancellation or an abrupt closure. Please try again
-                    to complete your payment.
+                    {errorMessage}
                   </span>
                 </div>
               )}

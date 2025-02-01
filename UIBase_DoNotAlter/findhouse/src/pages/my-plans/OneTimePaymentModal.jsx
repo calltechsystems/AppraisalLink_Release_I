@@ -17,8 +17,16 @@ const OneTimePaymentModal = ({
   const [showPaypalPage, setShowPaypalPage] = useState(false);
 
   const [errorOcurred, setErrorOccurred] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [onSuccess, setOnSuccess] = useState(false);
   const [termsPolicyAccepted, setTermsPolicyAccepted] = useState(0);
+
+  //set the default Error message
+  useEffect(() => {
+    setErrorMessage(
+      "The action window may have been closed unexpectedly, either due to cancellation or an abrupt closure. Please try again to complete your payment."
+    );
+  }, []);
 
   useEffect(() => {
     let countdownInterval;
@@ -185,6 +193,7 @@ const OneTimePaymentModal = ({
                       planDetails={currentSelectedPlan}
                       setErrorOccurred={setErrorOccurred}
                       setOnSuccess={setOnSuccess}
+                      setErrorMessage={setErrorMessage}
                       paymentType={"oneTime"}
                     />
                   </>
@@ -194,9 +203,7 @@ const OneTimePaymentModal = ({
               ) : (
                 <div className="text-center" style={{ fontSize: "19px" }}>
                   <span className="text-dark">
-                    The payment window seems to have closed unexpectedly, either
-                    due to a cancellation or an abrupt interruption. Please
-                    retry to complete your payment.
+                    {errorMessage}
                   </span>
                 </div>
               )}
