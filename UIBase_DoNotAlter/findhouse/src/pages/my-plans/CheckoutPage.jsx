@@ -18,6 +18,7 @@ const Checkout = ({
   setOnSuccess,
   currentSubscription,
   paymentType,
+  setErrorMessage,
 }) => {
   const [{ options, isPending }, dispatch] = usePayPalScriptReducer();
   const [currency, setCurrency] = useState(options.currency || "CAD");
@@ -69,13 +70,14 @@ const Checkout = ({
         },
       })
       .then((res) => {
-        toast.success("Added TopUp successfully.");
         console.log(res);
         setOnSuccess(true);
       })
       .catch((err) => {
         console.error("Got error while adding TpUp", err);
-        toast.error("Got error while adding the TopUp");
+        setErrorMessage(
+          "Your payment for the Top-Up plan has been successfully processed by PayPal. However, we encountered an issue while applying the Top-Up to your account. Please contact support with your transaction details for assistance."
+        );
         setErrorOccurred(true);
       });
     toast.dismiss();
@@ -83,7 +85,7 @@ const Checkout = ({
 
   const saveRecurringPaymentData = (payload) => {
     toast.loading("Saving the data to DB for Subscription");
-    console.log({ payload });
+    // console.log({ payload });
     axios
       .post("/api/saveRecurringPaymentData", payload, {
         headers: {
@@ -92,16 +94,17 @@ const Checkout = ({
       })
       .then((res) => {
         toast.success("Created Subscription Successfully.");
-        console.log(res);
+        // console.log(res);
         setOnSuccess(true);
       })
       .catch((err) => {
         console.error("Got error while cretaing subscription", err);
-        toast.error("Got error while creating the subcription");
+        setErrorMessage(
+          "Your payment for the subscription has been successfully processed by PayPal. However, we encountered an issue while activating your subscription. Please contact support with your transaction details for assistance."
+        );
         setErrorOccurred(true);
-      })
-      toast.dismiss();
-
+      });
+    toast.dismiss();
   };
 
   const onApproveOrder = (data, actions) => {
@@ -125,11 +128,11 @@ const Checkout = ({
         saveOneTimePaymentData(finalOneTimeData);
       });
     } else {
-      //Subscription 
+      //Subscription
       const response = {
-        paymentDetails: {...data},
-        actionsData: {...actions.subscription.get()}
-      }
+        paymentDetails: { ...data },
+        actionsData: { ...actions.subscription.get() },
+      };
 
       const request = generateRequestPayload(
         paymentType,
@@ -148,7 +151,6 @@ const Checkout = ({
         topUpDetails
       );
       saveRecurringPaymentData(finalRecurringData);
-      
     }
   };
 
@@ -160,14 +162,14 @@ const Checkout = ({
   //         paymentDetails: { ...data },
   //         actionsData: { ...(await actions.subscription.get()) },
   //       };
-  
+
   //       const request = generateRequestPayload(
   //         paymentType,
   //         topUpDetails,
   //         userData,
   //         currency
   //       );
-  
+
   //       const finalRecurringData = generateResponsePayload(
   //         paymentType,
   //         topUpDetails,
@@ -177,15 +179,15 @@ const Checkout = ({
   //         currentSubscription,
   //         topUpDetails
   //       );
-  
+
   //       await saveRecurringPaymentData(finalRecurringData);
-  
+
   //       // Cancel previous subscription after successful new subscription creation
   //       if (currentSubscription?.id) {
   //         await axios.post(`/api/cancelSubscription/${currentSubscription.id}`, {}, {
   //           headers: { Authorization: `Bearer ${userData.token}` },
   //         });
-  
+
   //         toast.success("Previous subscription canceled after upgrade.");
   //       }
   //     } catch (error) {
@@ -194,117 +196,109 @@ const Checkout = ({
   //     }
   //   }
   // };
-  
 
-    //------------------CANCEL WHILE TRANSACTION----------------------
+  //------------------CANCEL WHILE TRANSACTION----------------------
   const onCancelOrder = (data) => {
     console.error("PayPal On Cancel data:", data);
-
+  
+    let errorMessage = "The payment has been canceled.";
+  
     if (data && data.reason) {
       switch (data.reason) {
         case "USER_CANCELED":
-          console.log("The user canceled the payment.");
-          toast.error("You have canceled the payment.");
+          errorMessage = "You have canceled the payment process.";
           break;
         case "TIMEOUT":
-          console.log("Payment process timed out.");
-          toast.error("Payment process timed out. Please try again.");
+          errorMessage =
+            "The payment process timed out. Please try again.";
           break;
         case "INCOMPLETE_PAYMENT":
-          console.log("Payment was incomplete.");
-          toast.error("Payment was incomplete. Please complete the payment.");
+          errorMessage =
+            "The payment could not be completed. Please finalize the transaction.";
           break;
         case "PAYMENT_CANCELLED":
-          console.log("Payment was canceled by PayPal.");
-          toast.error("Payment was canceled unexpectedly.");
+          errorMessage =
+            "The payment was unexpectedly canceled. Please verify and try again.";
           break;
         default:
-          console.log("Unknown cancellation reason:", data.reason);
-          toast.error("Payment was canceled for an unknown reason.");
+          errorMessage =
+            "The payment was canceled due to an unknown reason. Please contact support if the issue persists.";
           break;
       }
-    } else {
-      console.log("Payment was canceled without a specified reason.");
-      toast.error("Payment was canceled.");
     }
-
+  
+    setErrorMessage(errorMessage);
+    // toast.error(errorMessage);
     setErrorOccurred(true);
   };
-
+  
   //------------------ERROR WHILE TRANSACTION----------------------
   const onError = (err) => {
     console.error("PayPal On Error data:", err);
-
+  
+    let errorMessage =
+      "An unexpected error occurred while processing your payment. Please try again.";
+  
     if (err && err.message) {
       switch (err.message) {
         case "PAYMENT_DECLINED":
-          console.log("The payment was declined.");
-          toast.error(
-            "Your payment was declined. Please check your payment details."
-          );
+          errorMessage =
+            "Your payment was declined. Please verify your payment details and try again.";
           break;
         case "PAYMENT_NETWORK_ERROR":
-          console.log("Network error occurred.");
-          toast.error(
-            "A network error occurred. Please check your connection and try again."
-          );
+          errorMessage =
+            "A network error occurred during the transaction. Please check your connection and try again.";
           break;
         case "INCOMPLETE_PAYMENT":
-          console.log("Payment was incomplete.");
-          toast.error("Payment was incomplete. Please try again.");
+          errorMessage =
+            "The payment could not be completed. Please ensure all steps are completed successfully.";
           break;
         case "PAYPAL_ACCOUNT_BLOCKED":
-          console.log("The PayPal account is blocked.");
-          toast.error(
-            "Your PayPal account is blocked. Please contact PayPal support."
-          );
+          errorMessage =
+            "Your PayPal account is restricted. Please contact PayPal support for assistance.";
           break;
         case "CARD_DECLINED":
-          console.log("The credit card was declined.");
-          toast.error(
-            "Your credit card was declined. Please try a different payment method."
-          );
+          errorMessage =
+            "Your payment method was declined. Please use an alternative payment option.";
           break;
         case "EXPIRED_SESSION":
-          console.log("The payment session has expired.");
-          toast.error(
-            "Your session has expired. Please start the payment process again."
-          );
+          errorMessage =
+            "Your payment session has expired. Please restart the payment process.";
           break;
         case "UNAUTHORIZED":
-          console.log("Unauthorized access to PayPal.");
-          toast.error("You are not authorized to complete this payment.");
+          errorMessage =
+            "You are not authorized to complete this transaction. Please verify your account credentials.";
           break;
         default:
-          console.error("Unknown error occurred:", err);
-          toast.error("An unexpected error occurred. Please try again.");
+          errorMessage =
+            "An error occurred during the payment process. Please try again later.";
           break;
       }
     } else if (err.code) {
       switch (err.code) {
         case "BAD_REQUEST":
-          toast.error("The request to PayPal was malformed.");
+          errorMessage =
+            "The payment request was invalid. Please try again.";
           break;
         case "INTERNAL_SERVER_ERROR":
-          toast.error(
-            "An internal server error occurred. Please contact support."
-          );
+          errorMessage =
+            "A system error occurred. Please contact support if the issue persists.";
           break;
         case "NETWORK_ERROR":
-          toast.error(
-            "A network error occurred. Please check your connection."
-          );
+          errorMessage =
+            "A connection error occurred. Please check your internet connection and try again.";
           break;
         default:
-          toast.error("An error occurred: " + err.code);
+          errorMessage = `An error occurred: ${err.code}. Please try again later.`;
           break;
       }
-    } else {
-      toast.error("An unknown error occurred. Please try again.");
     }
-
+  
+    setErrorMessage(errorMessage);
+    // toast.error(errorMessage);
     setErrorOccurred(true);
   };
+  
 
   return (
     <div className="checkout">

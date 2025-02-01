@@ -52,6 +52,9 @@ const Index = ({ isView, propertyData }) => {
   const [streetNumberRef, setStreetNumberRef] = useState(
     propertyData?.streetNumber || ""
   );
+  const [apartmentNumberRef, setApartmentNumberRef] = useState(
+    propertyData?.apartmentNumber || ""
+  );
   const [cityRef, setCityRef] = useState(propertyData?.city || "");
   const [stateRef, setStateRef] = useState(propertyData?.province || "");
   const [zipCodeRef, setZipCodeRef] = useState(propertyData?.zipCode || null);
@@ -100,7 +103,7 @@ const Index = ({ isView, propertyData }) => {
   const [applicantAddress, setApplicantAddress] = useState(
     propertyData?.applicantAddress || ""
   );
-  const [attachment, setAttachment] = useState(propertyData?.attachment || {});
+  const [attachment, setAttachment] = useState(propertyData?.attachment || "");
   const [filesUrl, setFilesUrl] = useState([]);
   const [purpose, setPurpose] = useState(propertyData?.purpose || "");
 
@@ -124,12 +127,11 @@ const Index = ({ isView, propertyData }) => {
   const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const changeUrlToStringHandler = () => {
-    return ""
-    // const resultString = filesUrl.join(",");
-    // if (updateView) {
-    //   return attachment + "," + resultString;
-    // }
-    // return resultString;
+    const resultString = filesUrl.join(",");
+    if (updateView) {
+      return attachment + "," + resultString;
+    }
+    return resultString;
   };
 
   const onChangeHandler = (value, field, otherField) => {
@@ -447,6 +449,7 @@ const Index = ({ isView, propertyData }) => {
         userId: userInfo.userId,
         streetName: streetNameRef,
         streetNumber: streetNumberRef,
+        apartmentNumber: apartmentNumberRef,
         city: cityRef,
         state: stateRef,
         zipCode: zipCodeRef,
@@ -584,6 +587,7 @@ const Index = ({ isView, propertyData }) => {
     const payload = {
       streetName: streetNameRef,
       streetNumber: streetNumberRef,
+      apartmentNumber: apartmentNumberRef,
       city: cityRef,
       state: stateRef,
       zipCode: zipCodeRef,
@@ -831,6 +835,7 @@ const Index = ({ isView, propertyData }) => {
         userId: userInfo.userId,
         streetName: streetNameRef,
         streetNumber: streetNumberRef,
+        apartmentNumber: apartmentNumberRef,
         city: cityRef,
         state: stateRef,
         zipCode: zipCodeRef,
@@ -1083,6 +1088,8 @@ const Index = ({ isView, propertyData }) => {
                         streetNameRef={streetNameRef}
                         setStreetNameRef={setStreetNameRef}
                         streetNumberRef={streetNumberRef}
+                        apartmentNumberRef={apartmentNumberRef}
+                        setApartmentNumberRef={setApartmentNumberRef}
                         setStreetNumberRef={setStreetNumberRef}
                         cityRef={cityRef}
                         setCityRef={setCityRef}

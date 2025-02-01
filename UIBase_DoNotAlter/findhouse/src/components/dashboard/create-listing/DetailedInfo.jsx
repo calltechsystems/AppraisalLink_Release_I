@@ -65,45 +65,19 @@ const DetailedInfo = ({
 
   const handleUpload = async (e, type) => {
     const file = e.target.files[0];
-
-    if (!file) return;
-
-    const fileType = file.type;
-    const fileName = file.name;
-    let previewUrl = "";
-
-    // Generate preview for images
-    if (fileType.startsWith("image/")) {
-      previewUrl = URL.createObjectURL(file);
-    } else if (fileType === "application/pdf") {
-      previewUrl = "/assets/Attachments/pdfIcon.png";
-    } else if (fileName.endsWith(".zip")) {
-      previewUrl = "/assets/Attachments/zipIcon.png";
-    } else {
-      previewUrl = "/assets/Attachments/fileIcon.png";
+    toast.loading("Uploading..");
+    try {
+      const generatedUrl = await uploadFile(file);
+      toast.dismiss();
+      toast.success("Uploaded Successfully");
+      let allUrl = [...filesUrl];
+      allUrl.push(generatedUrl);
+      setFilesUrl(allUrl);
+      setAttachment(generatedUrl);
+    } catch (err) {
+      toast.dismiss();
+      toast.error("Try Again!");
     }
-
-    setAttachment({
-      ...attachment,
-      [fileName]: {
-        file,
-        previewUrl,
-      },
-    });
-
-    // toast.loading("Uploading..");
-    // try {
-    //   const generatedUrl = await uploadFile(file);
-    //   toast.dismiss();
-    //   toast.success("Uploaded Successfully");
-    //   let allUrl = [...filesUrl];
-    //   allUrl.push(generatedUrl);
-    //   setFilesUrl(allUrl);
-    //   setAttachment(generatedUrl);
-    // } catch (err) {
-    //   toast.dismiss();
-    //   toast.error("Try Again!");
-    // }
   };
 
   const errorLabelStyle = { borderColor: "red" };
@@ -136,7 +110,6 @@ const DetailedInfo = ({
 
     setApplicantNumber(truncatedValue);
   };
-  console.log({})
   return (
     <>
       <div className="row">
@@ -362,60 +335,14 @@ const DetailedInfo = ({
               </div>
               <div className="col-lg-5 mb-2">
                 <label className="upload">
-                  <input
-                    type="file"
-                    accept=".zip, *"
-                    onChange={(e) => handleUpload(e)}
-                  />
+                  <input type="file" onChange={(e) => handleUpload(e)} />
                 </label>
               </div>
             </div>
           </div>
           <div className="col-xl-12">
             <div className="my_profile_setting_input overflow-hidden mt20 text-center">
-              <div className="d-flex flex-wrap gap-3">
-                 {Object.entries(attachment).map(([fileName, fileData]) => (
-                  <div key={fileName} className="position-relative text-center">
-                    
-                    {fileData.previewUrl.startsWith("blob") ||
-                    fileData.previewUrl.match(/\.(jpeg|jpg|png|gif)$/) ? (
-                      <img
-                        src={fileData.previewUrl}
-                        alt={fileName}
-                        className="rounded"
-                        style={{
-                          width: "40px",
-                          height: "40px",
-                          objectFit: "cover",
-                        }}
-                      />
-                    ) : (
-                      <div
-                        className="d-flex align-items-center justify-content-center bg-light rounded"
-                        style={{ width: "40px", height: "40px" }}
-                      >
-                        <i className="bi bi-file-earmark"></i>
-                      </div>
-                    )}
-
-                    <p
-                      className="small mt-1 text-truncate"
-                      style={{ width: "50px" }}
-                    >
-                      {fileName}
-                    </p>
-
-                    <button
-                      className="btn btn-sm btn-danger position-absolute top-0 end-0 p-1"
-                      onClick={() => handleRemove(fileName)}
-                    >
-                      <i className="bi bi-trash"></i>
-                    </button>
-                  </div>
-                ))} 
-              </div>
-
-              {/* {filesUrl.length > 0
+              {filesUrl.length > 0
                 ? filesUrl.map((url, index) => {
                     <div
                       className=""
@@ -439,7 +366,7 @@ const DetailedInfo = ({
                       <img key={index} src={url} width={120} height={120} />
                     );
                   })
-                : ""} */}
+                : ""}
             </div>
           </div>
           <div className="col-xl-12">

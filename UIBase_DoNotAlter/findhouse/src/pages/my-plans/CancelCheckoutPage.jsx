@@ -7,6 +7,7 @@ const CancelCheckout = ({
   setErrorOccurred,
   setOnSuccess,
   currentSubscription,
+  setErrorMessage,
   paymentType,
 }) => {
   const [currency, setCurrency] = useState("CAD");
@@ -65,20 +66,24 @@ const CancelCheckout = ({
           },
         }
       );
-
-      console.log("Subscription canceled successfully.");
       setOnSuccess(true);
     } catch (error) {
       console.error("Failed to cancel subscription:", error);
+      setErrorMessage(
+        "Your payment has been processed successfully by PayPal. However, we encountered an issue while updating your subscription. Please contact support with your transaction details for assistance."
+      );
       setErrorOccurred(true);
     }
   };
 
   const handleCancelSubscription = () => {
     if (currentSubscription) {
-      cancelSubscription("I-VDJS9UL9CHBS");
+      // cancelSubscription(currentSubscription?.cancelSubscription)
+      cancelSubscription("I-4X2VPH98M849");
     } else {
       console.error("No subscription ID found.");
+      setErrorMessage("No subscription ID found. Please try again");
+      setErrorOccurred(true);
     }
   };
   return (
