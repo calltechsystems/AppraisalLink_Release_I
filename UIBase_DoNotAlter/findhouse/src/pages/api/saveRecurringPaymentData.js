@@ -6,7 +6,7 @@ export default async function handler(request, response) {
   try {
     const {
       userId,
-      planId,
+      newPlanId,
       customId,
       paymentId,
       startTime,
@@ -17,7 +17,8 @@ export default async function handler(request, response) {
       paymentSource,
       applicationContext,
       paymentRequestSent,
-      paymentRequestReceived
+      paymentRequestReceived,
+      paypalSubscriptionId
     } = request.body;
 
     const token = request.headers.authorization;
@@ -26,7 +27,7 @@ export default async function handler(request, response) {
       `${domain}/com.appraisalland.Payments/postRecurringSubscriptionsDetails`,
       {
         userId,
-        planId,
+        newPlanId,
         customId,
         paymentId,
         startTime,
@@ -37,7 +38,8 @@ export default async function handler(request, response) {
         paymentSource,
         applicationContext,
         paymentRequestSent,
-        paymentRequestReceived
+        paymentRequestReceived,
+        paypalSubscriptionId
       },
       {
         headers: {
