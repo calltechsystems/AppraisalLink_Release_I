@@ -15,6 +15,7 @@ import { AppraiserStatusOptions } from "../create-listing/data";
 import Link from "next/link";
 import Image from "next/image";
 import { FaDownload } from "react-icons/fa";
+import Select from "react-select";
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -62,6 +63,13 @@ const Index = () => {
   const [start, setStart] = useState(0);
 
   const [end, setEnd] = useState(4);
+
+  const options = assignAppraiser
+    .filter((item) => item.item.isActive)
+    .map((item) => ({
+      value: item.item.id,
+      label: `${item.item.firstName} ${item.item.lastName}`,
+    }));
 
   const formatPhoneNumber = (number) => {
     if (!number) return ""; // Handle empty input
@@ -1603,7 +1611,22 @@ const Index = () => {
                       className="mt-2 mb-3"
                       style={{ border: "2px solid #97d700" }}
                     ></div>
-                    <select
+                    <Select
+                      options={options}
+                      onChange={(selectedOption) =>
+                        setSelectedAppraiser(selectedOption.value)
+                      }
+                      placeholder="Select Appraiser"
+                      styles={{
+                        control: (base) => ({
+                          ...base,
+                          padding: "5px",
+                          backgroundColor: "#E8F0FE",
+                        }),
+                      }}
+                      isSearchable
+                    />
+                    {/* <select
                       required
                       className="form-select"
                       data-live-search="true"
@@ -1614,18 +1637,16 @@ const Index = () => {
                         backgroundColor: "#E8F0FE",
                       }}
                     >
-                      {/* <option>Select</option>; */}
                       <option value="">Select</option>
                       {assignAppraiser.map((item, index) => {
                         <option value={-1}>....</option>;
                         return item.item.isActive ? (
-                          // <option>Select</option>
                           <option key={item.item.id} value={item.item.id}>
                             {item.item.firstName} {item.item.lastName}
                           </option>
                         ) : null;
                       })}
-                    </select>
+                    </select> */}
                     <div
                       className="mt-4 mb-3"
                       style={{ border: "2px solid #97d700" }}

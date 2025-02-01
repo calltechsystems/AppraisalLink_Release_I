@@ -15,6 +15,7 @@ import { AppraiserStatusOptions } from "../create-listing/data";
 import Link from "next/link";
 import Image from "next/image";
 import { FaDownload } from "react-icons/fa";
+import Select from "react-select";
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -66,6 +67,22 @@ const Index = () => {
   const [start, setStart] = useState(0);
 
   const [end, setEnd] = useState(4);
+
+  // Prepare options
+  const options = [
+    { value: 0, label: "Select" },
+    {
+      value: "self",
+      label: <span style={{ fontWeight: "bold", color: "purple" }}>Self</span>,
+    },
+    ...AssignAppraisers.filter(
+      (item) => item.isActive && AssignedAppraiserInfo.userId !== item.userId
+    ).map((item) => ({
+      value: item.id,
+      label: `${item.firstName} ${item.lastName}`,
+    })),
+  ];
+
   const [showConfirmation, setShowConfirmation] = useState(false);
 
   console.log("AssignAppraisers", AssignAppraisers);
@@ -2067,7 +2084,22 @@ const Index = () => {
                       className="mt-2 mb-3"
                       style={{ border: "2px solid #97d700" }}
                     ></div>
-                    <select
+                    <Select
+                      options={options}
+                      onChange={(selectedOption) =>
+                        setSelectedAppraiser(selectedOption.value)
+                      }
+                      placeholder="Select Appraiser"
+                      styles={{
+                        control: (base) => ({
+                          ...base,
+                          padding: "5px",
+                          backgroundColor: "#E8F0FE",
+                        }),
+                      }}
+                      isSearchable
+                    />
+                    {/* <select
                       required
                       className="form-select"
                       data-live-search="true"
@@ -2092,7 +2124,7 @@ const Index = () => {
                           </option>
                         ) : null;
                       })}
-                    </select>
+                    </select> */}
                     <div
                       className="mt-4 mb-3"
                       style={{ border: "2px solid #97d700" }}
