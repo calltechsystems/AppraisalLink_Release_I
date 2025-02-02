@@ -54,7 +54,7 @@ const OurMission = () => {
               </li>
             ))}
           </ul>
-          {/* End .ab_counting */}
+          
         </div>
       </div>
       
