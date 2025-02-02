@@ -50,7 +50,7 @@ const Form = ({
       } finally {
         setLoading(false);
       }
-      location.reload();
+      // location.reload();
     }
     // setDisable(false);
   };

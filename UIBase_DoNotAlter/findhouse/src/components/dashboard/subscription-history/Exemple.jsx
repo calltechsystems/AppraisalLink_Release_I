@@ -8,7 +8,7 @@ const headCells = [
   {
     id: "id",
     numeric: false,
-    label: "Unique Id",
+    label: "Payment ID",
     width: 230,
   },
   {
@@ -42,12 +42,12 @@ const headCells = [
     label: "Amount",
     width: 100,
   },
-  {
-    id: "remained_prop",
-    numeric: false,
-    label: "Used Properties",
-    width: 100,
-  },
+  // {
+  //   id: "remained_prop",
+  //   numeric: false,
+  //   label: "Used Properties",
+  //   width: 100,
+  // },
   {
     id: "status",
     numeric: false,
@@ -102,21 +102,6 @@ export default function Exemple({
   const [properties, setProperties] = useState([]);
   const [show, setShow] = useState(false);
   let tempData = [];
-
-  const formatDateTime = (dateString) => {
-    const options = {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "numeric",
-      minute: "numeric",
-      // second: "numeric",
-      hour12: true, // Set to false for 24-hour format
-    };
-
-    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
-    return formattedDate;
-  };
 
   const formatDate = (dateString) => {
     const options = {
@@ -262,12 +247,12 @@ export default function Exemple({
             planName: property.planName,
             planType: <span>Monthly</span>,
             amount: property.planAmount ? `$ ${property.planAmount}` : "$ -",
-            st_date: formatDateTime(property.startDate),
-            end_date: formatDateTime(property.endDate),
+            st_date: formatDate(property.startDate),
+            end_date: formatDate(property.endDate),
             remained_prop: `${property.usedProperties} of ${property.noOfProperties}`,
             status: !expired ? (
               <span className="btn btn-info  w-100">
-                Will Be Active on {formatDateTime(property.startDate)}
+                Will Be Active on {formatDate(property.startDate)}
               </span>
             ) : (
               <span className="btn btn-success  w-100">Active</span>

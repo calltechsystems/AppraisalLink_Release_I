@@ -8,7 +8,7 @@ const headCells = [
   {
     id: "id",
     numeric: false,
-    label: "Unique Id",
+    label: "Payment ID",
     width: 230,
   },
   {
@@ -42,12 +42,12 @@ const headCells = [
     label: "Amount",
     width: 100,
   },
-  {
-    id: "remained_prop",
-    numeric: false,
-    label: "Used Properties",
-    width: 100,
-  },
+  // {
+  //   id: "remained_prop",
+  //   numeric: false,
+  //   label: "Used Properties",
+  //   width: 100,
+  // },
   {
     id: "status",
     numeric: false,
@@ -114,35 +114,6 @@ export default function Exemple({
 
     return formattedDate;
   };
-
-    // For EST date and time
-
-      const formatDateTimeEST = (date) => {
-    const d = new Date(date);
-    const utcOffset = -5; // EST is UTC-5
-    d.setHours(d.getHours() + utcOffset);
-    return d.toLocaleString("en-US", {
-      dateStyle: "medium",
-      timeStyle: "short",
-    });
-  };
-  
-    // Only for time
-  
-    const formatDateToEST = (date) => {
-      try {
-        // Convert input date string to a Date object
-        const utcDate = new Date(`${date}T00:00:00Z`); // Treat input as UTC midnight
-        return new Intl.DateTimeFormat("en-US", {
-          timeZone: "America/Toronto", // EST/Canada timezone
-          dateStyle: "medium",        // Format only the date
-        }).format(utcDate);
-      } catch (error) {
-        console.error("Error formatting date:", error);
-        return "Invalid date";
-      }
-    };
-  
 
   const prices = [
     {
@@ -230,33 +201,32 @@ export default function Exemple({
     return { nextMonth: nextMonthDateStr, nextYear: nextYearDateStr };
   };
 
-  const sortFunction = (hisotries)=>{
+  const sortFunction = (hisotries) => {
     const data = hisotries;
     data?.sort((a, b) => {
       const startDateA = new Date(a.startDate);
       const startDateB = new Date(b.startDate);
-      
+
       if (startDateA < startDateB) return -1;
       if (startDateA > startDateB) return 1;
-      
+
       // If start dates are equal, compare by end date
       const endDateA = new Date(a.endDate);
       const endDateB = new Date(b.endDate);
-      
+
       if (endDateA < endDateB) return -1;
       if (endDateA > endDateB) return 1;
-      
-      return 0;
-  });
-  return data;
-  }
 
+      return 0;
+    });
+    return data;
+  };
 
   useEffect(() => {
     const getData = () => {
       const date = formatDate(new Date());
 
-      const sortedData = sortFunction(data); 
+      const sortedData = sortFunction(data);
       sortedData?.map((property, index) => {
         const propertyCount = 26;
         const { nextMonth, nextYear } = NextMonthAndYearCalculator(
@@ -273,12 +243,10 @@ export default function Exemple({
           const updatedRow = {
             id: property.paymentid,
             planName: property.planName,
-            planType:(
-                <span>Monthly</span>
-              ),
+            planType: <span>Monthly</span>,
             amount: property.planAmount ? `$ ${property.planAmount}` : "$ -",
-            st_date: formatDateTimeEST(property.startDate),
-            end_date: formatDateTimeEST(property.endDate),
+            st_date: formatDate(property.startDate),
+            end_date: formatDate(property.endDate),
             remained_prop: `${
               property.usedProperties === null ? 0 : property.usedProperties
             } of ${property.noOfProperties}`,

@@ -39,7 +39,7 @@ const SidebarMenu = ({ userData }) => {
     },
     {
       id: 2,
-      name: "Subscription History",
+      name: "Payment History",
       route: "/appraiser-company-subscription-history",
       icon: "flaticon-telephone",
     },
