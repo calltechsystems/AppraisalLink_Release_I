@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const CancelCheckout = ({
   topUpDetails,
@@ -54,9 +55,10 @@ const CancelCheckout = ({
   // Function to cancel subscription
   const cancelSubscription = async (subscriptionId) => {
     try {
+      toast.loading("Cancelling the Plan");
       const accessToken = await getPayPalAccessToken();
 
-      await axios.post(
+      const cancelSubscriptionResponse = await axios.post(
         `${PayPalApi.baseUrl}/v1/billing/subscriptions/${subscriptionId}/cancel`,
         { reason: "Customer requested cancellation" },
         {
@@ -66,6 +68,7 @@ const CancelCheckout = ({
           },
         }
       );
+      console.log({cancelSubscriptionResponse})
       setOnSuccess(true);
     } catch (error) {
       console.error("Failed to cancel subscription:", error);
@@ -73,6 +76,9 @@ const CancelCheckout = ({
         "Your payment has been processed successfully by PayPal. However, we encountered an issue while updating your subscription. Please contact support with your transaction details for assistance."
       );
       setErrorOccurred(true);
+    }
+    finally{
+      toast.dismiss();
     }
   };
 

@@ -10,6 +10,7 @@ import Image from "next/image";
 import OneTimePaymentModal from "./OneTimePaymentModal";
 import SubscriptionModal from "./SubscriptionModal";
 import CancelSubscriptionModal from "./CancelSubscriptionModal";
+import ReviseSubscriptionModal from "./ReviseSubscriptionModal";
 
 const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -123,6 +124,13 @@ const Index = () => {
         />
       ) : price?.type == "cancel_plan" ? (
         <CancelSubscriptionModal
+          currentSubscription={currentSubscription}
+          modalOpen={modalOpen}
+          closeModal={closeModal}
+          price={price}
+        />
+      ) : price?.type == "upgrade_plan" ? (
+        <ReviseSubscriptionModal
           currentSubscription={currentSubscription}
           modalOpen={modalOpen}
           closeModal={closeModal}
