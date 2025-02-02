@@ -50,7 +50,7 @@ const SidebarMenu = () => {
     },
     {
       id: 2,
-      name: "Subscription History",
+      name: "Payment History",
       route: "/my-package",
       icon: "flaticon-box",
     },

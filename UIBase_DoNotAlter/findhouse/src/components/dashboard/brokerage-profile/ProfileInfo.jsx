@@ -1855,7 +1855,7 @@ const ProfileInfo = ({
                               setAssistantFirstNameError
                             )
                           }
-                          disabled={!edit}
+                          // disabled={!edit}
                         />
                         {assistantFirstNameError && (
                           <small className="text-danger">
@@ -1899,7 +1899,7 @@ const ProfileInfo = ({
                               setAssistantLastNameError
                             )
                           }
-                          disabled={!edit}
+                          // disabled={!edit}
                         />
                         {assistantLastNameError && (
                           <small className="text-danger">
@@ -2045,7 +2045,7 @@ const ProfileInfo = ({
                               setAssistantTwoFirstNameError
                             )
                           }
-                          disabled={!edit}
+                          // disabled={!edit}
                         />
                         {assistantTwotFirstNameError && (
                           <small className="text-danger">
@@ -2088,7 +2088,7 @@ const ProfileInfo = ({
                               setAssistantTwoLastNameError
                             )
                           }
-                          disabled={!edit}
+                          // disabled={!edit}
                         />
                         {assistantTwoLastNameError && (
                           <small className="text-danger">

@@ -561,7 +561,7 @@ const ProfileInfo = ({
 
     if (
       // !firstName ||
-      firstName.trim().length < 3 ||
+      firstName.trim().length < 1 ||
       firstName.trim().length > 30 ||
       !nameRegex.test(firstName.trim())
     ) {
@@ -575,7 +575,7 @@ const ProfileInfo = ({
     } else if (
       middleName !== null &&
       middleName.trim() !== "" &&
-      (middleName.trim().length < 3 ||
+      (middleName.trim().length < 1 ||
         middleName.trim().length > 30 ||
         !nameRegex.test(middleName))
     ) {
@@ -586,7 +586,7 @@ const ProfileInfo = ({
       });
       return false;
     } else if (
-      lastName.trim().length < 3 ||
+      lastName.trim().length < 1 ||
       lastName.trim().length > 30 ||
       !nameRegex.test(lastName)
     ) {
@@ -598,7 +598,7 @@ const ProfileInfo = ({
       });
       return false;
     } else if (
-      companyName.trim().length < 3 ||
+      companyName.trim().length < 1 ||
       companyName.trim().length > 30 ||
       !nameCityRegex.test(companyName)
     ) {
@@ -635,7 +635,7 @@ const ProfileInfo = ({
       });
       return false;
     } else if (
-      streetNameRef.trim().length < 3 ||
+      streetNameRef.trim().length < 1 ||
       streetNameRef.trim().length > 30 ||
       !nameCityRegex.test(streetNameRef)
     ) {
@@ -647,7 +647,7 @@ const ProfileInfo = ({
       });
       return false;
     } else if (
-      city.trim().length < 3 ||
+      city.trim().length < 1 ||
       city.trim().length > 30 ||
       !nameCityRegex.test(city)
     ) {
@@ -869,7 +869,7 @@ const ProfileInfo = ({
     // }
   };
   const validateField = (value, setError) => {
-    if (value.trim().length < 3 || value.trim().length > 30) {
+    if (value.trim().length < 1 || value.trim().length > 30) {
       setError(true); // Set error if field length is invalid
 
       // Scroll to the top of the page

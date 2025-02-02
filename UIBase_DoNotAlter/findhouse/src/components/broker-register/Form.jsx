@@ -54,7 +54,7 @@ const Form = ({
           } else {
             toast.error(err.message || "An error occurred.");
           }
-          location.reload();
+          // location.reload();
         })
         .finally(() => setLoading(false));
     } catch (error) {

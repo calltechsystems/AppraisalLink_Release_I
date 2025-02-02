@@ -8,7 +8,7 @@ const headCells = [
   {
     id: "id",
     numeric: false,
-    label: "Unique Id",
+    label: "Payment ID",
     width: 220,
   },
   {
@@ -42,12 +42,12 @@ const headCells = [
     label: "Amount",
     width: 100,
   },
-  {
-    id: "remained_prop",
-    numeric: false,
-    label: "Used Properties",
-    width: 100,
-  },
+  // {
+  //   id: "remained_prop",
+  //   numeric: false,
+  //   label: "Used Properties",
+  //   width: 100,
+  // },
   {
     id: "status",
     numeric: false,
@@ -112,21 +112,6 @@ export default function Exemple({
 
     const formattedDate = new Date(dateString).toLocaleString("en-US", options);
 
-    return formattedDate;
-  };
-
-  const formatDateTime = (dateString) => {
-    const options = {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "numeric",
-      minute: "numeric",
-      // second: "numeric",
-      hour12: true, // Set to false for 24-hour format
-    };
-
-    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
     return formattedDate;
   };
 
@@ -247,8 +232,8 @@ export default function Exemple({
             planName: property.planName,
             planType: <span>Monthly</span>,
             amount: property.planAmount ? `$ ${property.planAmount}` : "$ -",
-            st_date: formatDateTime(property.createdTime),
-            end_date: formatDateTime(endDate),
+            st_date: formatDate(property.createdTime),
+            end_date: formatDate(endDate),
             remained_prop: `${property.usedProperties} of ${property.noOfProperties}`,
             status: expired ? (
               <span className="btn btn-danger  w-100">In-Active</span>
