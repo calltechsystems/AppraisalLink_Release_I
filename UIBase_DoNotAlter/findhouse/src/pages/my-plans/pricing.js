@@ -89,7 +89,7 @@ const Pricing = ({
       price: price,
       type: type,
       item,
-      paypalPlanId: type == "plan" ? item?.payPalProductId : ''
+      paypalPlanId: type == "plan" || type == "upgrade_plan" ? item?.payPalProductId : ''
     });
   };
 
@@ -317,6 +317,26 @@ const Pricing = ({
               {!hideButton &&
                 currentActivePlan &&
                 String(currentActivePlan.id) !== String(item.id) && (
+                  currentActivePlan?.$id ?
+                  <div
+                    className="pricing_footer"
+                    onClick={() =>
+                      selectPackageHandler(
+                        item.id,
+                        item.description,
+                        isPlan === 1
+                          ? item.monthlyAmount - item.discount
+                          : item.yearlyAmount - item.discount,
+                        "upgrade_plan",
+                        item
+                      )
+                    }
+                  >
+                    <a className={`btn btn-color_01 w-100`} href="#">
+                      Upgrade Plan
+                    </a>
+                  </div>
+                  :
                   <div
                     className="pricing_footer"
                     onClick={() =>
@@ -332,7 +352,7 @@ const Pricing = ({
                     }
                   >
                     <a className={`btn btn-color_01 w-100`} href="#">
-                      {currentActivePlan?.$id ? "Upgrade Plan" : "Select Plan"}
+                      Select Plan
                     </a>
                   </div>
                 )}

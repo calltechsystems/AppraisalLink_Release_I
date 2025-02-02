@@ -20,7 +20,8 @@ const generateCustomId = (brokerId, planId) => {
 };
 
 const generateRequestPayload = (paymentType, details, userData, currency) => {
-  const { title, id, price } = details;
+  // const { title, id, price } = details;
+  console.log({ paymentType, details, userData, currency });
 
   if (paymentType === "oneTime") {
     // Payload for one-time payment
@@ -134,9 +135,17 @@ const generateRequestPayload = (paymentType, details, userData, currency) => {
       //   }
       // }
     };
-  } else if (paymentType === "cancel_subscription") {
+  } else if (paymentType === "upgrade_plan") {
     return {
-      reason: "",
+      plan_id: details?.paypalPlanId,
+      application_context: {
+        brand_name: "Appraisal Land",
+        locale: "en-US",
+        user_action: "SUBSCRIBE_NOW",
+        return_url: "https://appraisal-eta.vercel.app/my-plans",
+        cancel_url: "https://appraisal-eta.vercel.app/my-plans",
+      },
+      proration_behavior: "DEFERRED",
     };
   } else {
     throw new Error("Invalid type provided. Use 'oneTime' or 'subscription'.");
@@ -175,7 +184,13 @@ const generateResponsePayload = (
   topUpDetails
 ) => {
   const { title, id, price } = details;
-  console.log({details, userData, response, currentSubscription, topUpDetails})
+  console.log({
+    details,
+    userData,
+    response,
+    currentSubscription,
+    topUpDetails,
+  });
 
   if (paymentType === "oneTime") {
     // Payload for one-time payment
@@ -218,7 +233,7 @@ const generateResponsePayload = (
         cancelUrl: "https://appraisal-eta.vercel.app/my-plans",
       },
       paymentSource: {
-        source: response?.paymentDetails?.paymentSource
+        source: response?.paymentDetails?.paymentSource,
       },
       paymentStatus: "COMPLETED",
       paymenttype: response?.paymentDetails?.paymentSource,
