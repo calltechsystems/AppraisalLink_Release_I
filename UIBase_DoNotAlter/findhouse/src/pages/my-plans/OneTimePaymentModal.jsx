@@ -11,14 +11,14 @@ const OneTimePaymentModal = ({
   price,
 }) => {
   const [paypalUrl, setPaypalUrl] = useState("");
-  const [status, setStatus] = useState(0);
+  const [status, setStatus] = useState(1);
   const [countdown, setCountdown] = useState(180);
   const [currentSelectedPlan, setCurrentSelectedPlan] = useState({});
   const [showPaypalPage, setShowPaypalPage] = useState(false);
 
   const [errorOcurred, setErrorOccurred] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [onSuccess, setOnSuccess] = useState(false);
+  const [onSuccess, setOnSuccess] = useState(true);
   const [termsPolicyAccepted, setTermsPolicyAccepted] = useState(0);
 
   //set the default Error message
@@ -63,6 +63,11 @@ const OneTimePaymentModal = ({
     setCurrentSelectedPlan(price);
     setStatus(1);
     setShowPaypalPage(true);
+  };
+
+  const logoutHandler = () => {
+    localStorage.removeItem("user");
+    route.push("/login");
   };
 
   const closePaypalPage = () => {
@@ -142,7 +147,7 @@ const OneTimePaymentModal = ({
               {onSuccess ? (
                 <div className="text-center" style={{ fontSize: "19px" }}>
                   <span className="text-dark">
-                    Payment confirmed! We appreciate your business.
+                    Payment confirmed! We appreciate your business. Please Login again to continue.
                   </span>
                 </div>
               ) : (
@@ -179,7 +184,6 @@ const OneTimePaymentModal = ({
                         ${price.price}
                       </label>
                       .{" "}
-                      {/* for {price?.selectedTopUp?.noOfProperties} properties. */}
                     </span>
                     <br />
                     <span style={{ fontSize: "15px" }}>
@@ -253,7 +257,8 @@ const OneTimePaymentModal = ({
                   Cancel
                 </button>
               </div>
-            ) : // <label
+            ) : 
+            // <label
             //   className="btn btn-color w-25"
             //   style={{
             //     display: "flex",
@@ -281,8 +286,8 @@ const OneTimePaymentModal = ({
               </div>
             ) : (
               <div className="text-center">
-                <button className="btn btn-color w-25" onClick={resetFields}>
-                  Close
+                <button className="btn btn-color w-25" onClick={logoutHandler}>
+                  Login
                 </button>
               </div>
             )}
