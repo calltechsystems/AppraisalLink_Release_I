@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import axios from "axios";
+import { generateRequestPayload } from "../../utils/Paypal/GeneratePayloads";
 import toast from "react-hot-toast";
 
-const CancelCheckout = ({
-  topUpDetails,
+const ReviseCheckout = ({
+  planDetails,
   setErrorOccurred,
   setOnSuccess,
   currentSubscription,
@@ -13,6 +14,34 @@ const CancelCheckout = ({
 }) => {
   const [currency, setCurrency] = useState("CAD");
   const [userData, setUserData] = useState({});
+
+  // const environment = new paypal.core.SandboxEnvironment(
+  //   process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
+  //   process.env.NEXT_PUBLIC_PAYPAL_CLIENT_SECRET
+  // );
+
+  // Function to revise the subscription
+  // const reviseSubscription = async (subscriptionId, payload) => {
+  //   toast.loading("Upgrading the Plan");
+  //   const request = new paypal.subscriptions.SubscriptionReviseRequest(
+  //     subscriptionId
+  //   );
+  //   console.log({payload})
+  //   request.requestBody(payload);
+
+  //   // Make the request to revise the subscription
+  //   try {
+  //     const response = await paypalClient.client().execute(request);
+  //     console.log("Subscription updated successfully:", response.result);
+  //     setOnSuccess(true);
+  //   } catch (error) {
+  //     console.error("Error updating subscription:", error);
+  //     setErrorMessage("Failed to upgrade your subscirption .Please try again ");
+  //     setErrorOccurred(true);
+  //   } finally {
+  //     toast.dismiss();
+  //   }
+  // };
 
   const PayPalApi = {
     clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
@@ -28,7 +57,7 @@ const CancelCheckout = ({
     setUserData(JSON.parse(localStorage.getItem("user")) || {});
   }, []);
 
-  // Function to get PayPal access token
+  // // Function to get PayPal access token
   const getPayPalAccessToken = async () => {
     const credentials = `${PayPalApi.clientId}:${PayPalApi.clientSecret}`;
     const encodedCredentials = btoa(credentials); // Base64 encode the credentials
@@ -52,15 +81,16 @@ const CancelCheckout = ({
     }
   };
 
-  // Function to cancel subscription
-  const cancelSubscription = async (subscriptionId) => {
+  // // Function to revise subscription
+  const revisePayPalSubscription = async (subscriptionId, payload) => {
     try {
-      toast.loading("Cancelling the Plan");
+      toast.loading("Upgrading the Plan");
       const accessToken = await getPayPalAccessToken();
+      console.log(payload);
 
-      const cancelSubscriptionResponse = await axios.post(
-        `${PayPalApi.baseUrl}/v1/billing/subscriptions/${subscriptionId}/cancel`,
-        { reason: "Customer requested cancellation" },
+      const reviseSubscriptionResponse = await axios.patch(
+        `${PayPalApi.baseUrl}/v1/billing/subscriptions/${subscriptionId}/revise`,
+        payload,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -68,12 +98,12 @@ const CancelCheckout = ({
           },
         }
       );
-      console.log({cancelSubscriptionResponse})
+      console.log({reviseSubscriptionResponse})
       setOnSuccess(true);
     } catch (error) {
-      console.error("Failed to cancel subscription:", error);
+      console.error("Failed to upgrade subscription:", error);
       setErrorMessage(
-        "Your payment has been processed successfully by PayPal. However, we encountered an issue while updating your subscription. Please contact support with your transaction details for assistance."
+        "Failed to upgrade your subscirption .Please try again "
       );
       setErrorOccurred(true);
     }
@@ -82,10 +112,18 @@ const CancelCheckout = ({
     }
   };
 
-  const handleCancelSubscription = () => {
+  const handleUpgradeSubscription = () => {
     if (currentSubscription) {
-      // cancelSubscription(currentSubscription?.cancelSubscription)
-      cancelSubscription("I-4X2VPH98M849");
+      const payload = generateRequestPayload(
+        paymentType,
+        planDetails,
+        userData,
+        "CAD"
+      );
+
+      //STATIC ONE SUBSCRIPTION ID
+      const currentSubscriptionId = "I-SA10TRTMHX7G";
+      revisePayPalSubscription(currentSubscriptionId, payload);
     } else {
       console.error("No subscription ID found.");
       setErrorMessage("No subscription ID found. Please try again");
@@ -100,13 +138,12 @@ const CancelCheckout = ({
       <br />
       <button
         className="btn btn-color w-50 mt-2"
-        // style={{ marginLeft: "20px" }}
-        onClick={handleCancelSubscription}
+        onClick={handleUpgradeSubscription}
       >
-        Cancel Subscription
+        Upgrade Subscription
       </button>
     </div>
   );
 };
 
-export default CancelCheckout;
+export default ReviseCheckout;

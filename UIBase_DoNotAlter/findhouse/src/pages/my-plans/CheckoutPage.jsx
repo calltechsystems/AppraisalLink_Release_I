@@ -127,7 +127,8 @@ const Checkout = ({
         );
         saveOneTimePaymentData(finalOneTimeData);
       });
-    } else {
+    } 
+    else if(paymentType == "subscription") {
       //Subscription
       const response = {
         paymentDetails: { ...data },
