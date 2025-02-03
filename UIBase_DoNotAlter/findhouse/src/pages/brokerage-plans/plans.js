@@ -1,27 +1,26 @@
 import React, { useEffect, useState } from "react";
-import Header from "../../components/common/header/dashboard/HeaderBrokerage";
+import Header from "../../components/common/header/dashboard/Header";
 import MobileMenu from "../../components/common/header/MobileMenu";
 import Pricing from "./pricing";
-import SidebarMenu from "../../components/common/header/dashboard/SidebarMenuBrokerage";
+import SidebarMenu from "../../components/common/header/dashboard/SidebarMenu";
 import axios from "axios";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import Image from "next/image";
 
-const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen }) => {
+const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen, setcurrentSubscription, setCanUpgrade,canUpgrade, userDetailField }) => {
   const [selectedPlan, setSelectedPlan] = useState("Monthly");
   const [planData, setPlanData] = useState([]);
   const [isChecked, setIsChecked] = useState(false);
   const [TopUpData, setTopUpData] = useState([]);
-  const [userData, setUserData] = useState({});
   const [IsAgainLoginPopUp, setIsAgainLoginPopUp] = useState(false);
 
   const router = useRouter();
+  let userData = {};
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("user"));
-    setUserData(data);
-  }, []);
+    userData = JSON.parse(localStorage.getItem("user"));
+  });
 
   useEffect(() => {
     const isPaying = JSON.parse(localStorage.getItem("isPaying"));
@@ -57,6 +56,10 @@ const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen }) => {
               userId: data?.userId,
             },
           });
+
+          setCanUpgrade(res3?.data?.data?.upgradeEligible)
+
+
 
           const currentSubscriptionPlan = currentSubscription;
 
@@ -113,7 +116,7 @@ const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen }) => {
 
   return (
     <>
-      <Header userData={userData} />
+      <Header />
 
       <MobileMenu />
 
@@ -159,6 +162,11 @@ const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen }) => {
                 setData={setPlanData}
                 topupData={TopUpData}
                 userData={userData}
+                planData={planData}
+                canUpgrade={canUpgrade}
+                setCanUpgrade={setCanUpgrade}
+                setcurrentSubscription={setcurrentSubscription}
+                userDetailField={userDetailField}
               />
             )}
           </div>
@@ -224,8 +232,6 @@ const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen }) => {
                 style={{ border: "2px solid #97d700" }}
               ></div>
               <span className="text-center mb-2 text-dark fw-bold">
-                {/* Can't appraise the property. All properties are being
-                      used!! */}
                 Due to a failed payment or page reload, you have been redirected
                 to the home page. Please click here to log in again.
               </span>

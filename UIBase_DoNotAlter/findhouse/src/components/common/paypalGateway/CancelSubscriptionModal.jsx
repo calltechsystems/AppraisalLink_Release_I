@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { ClipLoader } from "react-spinners";
 import Link from "next/link";
 import Image from "next/image";
-import CheckoutPage from "./CheckoutPage";
+import CancelCheckout from "./CancelCheckoutPage";
 
-const OneTimePaymentModal = ({
+const CancelSubscriptionModal = ({
   currentSubscription,
   modalOpen,
   closeModal,
   price,
+  userDetailField
 }) => {
   const [paypalUrl, setPaypalUrl] = useState("");
   const [status, setStatus] = useState(0);
@@ -17,8 +18,16 @@ const OneTimePaymentModal = ({
   const [showPaypalPage, setShowPaypalPage] = useState(false);
 
   const [errorOcurred, setErrorOccurred] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [onSuccess, setOnSuccess] = useState(false);
   const [termsPolicyAccepted, setTermsPolicyAccepted] = useState(0);
+
+  //set the default Error message
+  useEffect(() => {
+    setErrorMessage(
+      "The action window may have been closed unexpectedly, either due to cancellation or an abrupt closure. Please try again to complete your payment."
+    );
+  }, []);
 
   useEffect(() => {
     let countdownInterval;
@@ -57,6 +66,7 @@ const OneTimePaymentModal = ({
     setShowPaypalPage(true);
   };
 
+  console.log({ onSuccess });
   const closePaypalPage = () => {
     setShowPaypalPage(false);
     setCurrentSelectedPlan({});
@@ -71,14 +81,8 @@ const OneTimePaymentModal = ({
     setCurrentSelectedPlan({});
     setTermsPolicyAccepted(false);
     closeModal();
-    window.location.reload();
   };
 
-  
-  const logoutHandler = () => {
-    localStorage.removeItem("user");
-    window.location.href = "/login";
-  };
   return (
     <div>
       {modalOpen && (
@@ -140,7 +144,8 @@ const OneTimePaymentModal = ({
               {onSuccess ? (
                 <div className="text-center" style={{ fontSize: "19px" }}>
                   <span className="text-dark">
-                    Payment confirmed! We appreciate your business. Please Login again to continue.
+                    Your subscription has been cancelled successfully . Thank
+                    you for your time.
                   </span>
                 </div>
               ) : (
@@ -151,11 +156,12 @@ const OneTimePaymentModal = ({
                 !showPaypalPage ? (
                   <div className="text-center" style={{ fontSize: "19px" }}>
                     <span className="text-dark">
-                      Please checkout for further
+                      Are you sure you want to{" "}
+                      <span className="text-danger fw-bold">cancel</span> ?
                     </span>
                     <br />
                     <span className="text-dark">
-                      You have selected Subscription plan{" "}
+                      Over your selected subscription plan{""}
                       <label
                         style={{
                           fontWeight: "bold",
@@ -173,8 +179,9 @@ const OneTimePaymentModal = ({
                           color: "#2e008b",
                         }}
                       >
-                        ${price.price}{" "}
+                        ${currentSubscription.planAmount}{" "}
                       </label>
+                      (monthly) ?
                     </span>
                     <br />
                     <span style={{ fontSize: "15px" }}>
@@ -183,12 +190,14 @@ const OneTimePaymentModal = ({
                   </div>
                 ) : showPaypalPage && status == 1 ? (
                   <>
-                    <CheckoutPage
+                    <CancelCheckout
                       currentSubscription={currentSubscription}
                       planDetails={currentSelectedPlan}
                       setErrorOccurred={setErrorOccurred}
                       setOnSuccess={setOnSuccess}
-                      paymentType={"subscription"}
+                      setErrorMessage={setErrorMessage}
+                      paymentType={"cancel_subscription"}
+                      userDetailField={userDetailField}
                     />
                   </>
                 ) : (
@@ -197,9 +206,7 @@ const OneTimePaymentModal = ({
               ) : (
                 <div className="text-center" style={{ fontSize: "19px" }}>
                   <span className="text-dark">
-                    The payment window seems to have closed unexpectedly, either
-                    due to a cancellation or an abrupt interruption. Please
-                    retry to complete your payment.
+                    {errorMessage}
                   </span>
                 </div>
               )}
@@ -268,19 +275,19 @@ const OneTimePaymentModal = ({
                     Cancel
                   </button>
                   <button
-                    className="btn btn-color w-25"
-                    // style={{ marginLeft: "20px" }}
+                    className="btn btn-color"
                     onClick={openPaypalPage}
+                    // style={{ marginLeft: "20px" }}
                     disabled={!termsPolicyAccepted}
                   >
-                    Checkout
+                    Proceed to Cancellation
                   </button>
                 </div>
               </>
             ) : (
               <div className="text-center">
-                <button className="btn btn-color w-25" onClick={logoutHandler}>
-                  Ok
+                <button className="btn btn-color w-25" onClick={resetFields}>
+                  Close
                 </button>
               </div>
             )}
@@ -300,4 +307,4 @@ const OneTimePaymentModal = ({
   );
 };
 
-export default OneTimePaymentModal;
+export default CancelSubscriptionModal;

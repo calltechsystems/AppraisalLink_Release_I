@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import axios from "axios";
-import { generateRequestPayload } from "../../utils/Paypal/GeneratePayloads";
+import { generateRequestPayload } from "../../../utils/Paypal/GeneratePayloads.js";
+
 import toast from "react-hot-toast";
 
 const ReviseCheckout = ({
@@ -11,6 +12,7 @@ const ReviseCheckout = ({
   currentSubscription,
   setErrorMessage,
   paymentType,
+  userDetailField
 }) => {
   const [currency, setCurrency] = useState("CAD");
   const [userData, setUserData] = useState({});
@@ -98,16 +100,13 @@ const ReviseCheckout = ({
           },
         }
       );
-      console.log({reviseSubscriptionResponse})
+      console.log({ reviseSubscriptionResponse });
       setOnSuccess(true);
     } catch (error) {
       console.error("Failed to upgrade subscription:", error);
-      setErrorMessage(
-        "Failed to upgrade your subscirption .Please try again "
-      );
+      setErrorMessage("Failed to upgrade your subscirption .Please try again ");
       setErrorOccurred(true);
-    }
-    finally{
+    } finally {
       toast.dismiss();
     }
   };
@@ -118,7 +117,8 @@ const ReviseCheckout = ({
         paymentType,
         planDetails,
         userData,
-        "CAD"
+        "CAD",
+        userDetailField
       );
 
       //STATIC ONE SUBSCRIPTION ID
