@@ -102,13 +102,12 @@ const Pricing = ({
         title: selectedTopUp?.topupDescription,
         price: selectedTopUp?.tupUpAmount,
         type: "",
-        selectedTopUp
-      }
+        selectedTopUp,
+      };
 
-      if(String(type) === "2"){
+      if (String(type) === "2") {
         data.type = "cancel_plan";
-      }
-      else{
+      } else {
         data.type = "topup";
       }
 
@@ -196,7 +195,7 @@ const Pricing = ({
 
     setCurrentActivePlan(requiredPlan[requiredPlan.length - 1]);
   }, [currentSubscription, data]);
-
+  // console.log("plan is", currentSubscription);
   useEffect(() => {
     let Monthly = [],
       Yearly = [];
@@ -335,7 +334,8 @@ const Pricing = ({
                   >
                     <option value={1}>Add Top Up / Cancel Subscription </option>
                     <option value={3}>
-                      Add {topupData[0]?.noOfProperties} Properties ($ {topupData[0]?.tupUpAmount})
+                      Add {topupData[0]?.noOfProperties} Properties (${" "}
+                      {topupData[0]?.tupUpAmount})
                     </option>
                     <option value={2}>Cancel Subscription</option>
                   </select>

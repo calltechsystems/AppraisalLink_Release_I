@@ -20,7 +20,7 @@ const headCells = [
   {
     id: "planType",
     numeric: false,
-    label: "Selected Plan",
+    label: "Plan Type",
     width: 100,
   },
 
@@ -217,7 +217,6 @@ export default function Exemple({
     const getData = () => {
       const sortedData = sortFunction(data?.result?.$values);
       const date = formatDate(new Date());
-
       sortedData?.map((property, index) => {
         const propertyCount = 26;
         const { nextMonth, nextYear } = NextMonthAndYearCalculator(
@@ -225,15 +224,14 @@ export default function Exemple({
         );
         const endDate = property.planAmount < 500 ? nextMonth : nextYear;
         const expired = new Date(endDate) < new Date() ? true : false;
-
         if (property.isActive) {
           const updatedRow = {
             id: property.paymentid,
-            planName: property.planName,
+            planName: property?.planName || "N.A.",
             planType: <span>Monthly</span>,
-            amount: property.planAmount ? `$ ${property.planAmount}` : "$ -",
+            amount: property.planAmount ? `$${property.planAmount}` : "$ -",
             st_date: formatDate(property.createdTime),
-            end_date: formatDate(endDate),
+            end_date: formatDate(property.endDate),
             remained_prop: `${property.usedProperties} of ${property.noOfProperties}`,
             status: expired ? (
               <span className="btn btn-danger  w-100">In-Active</span>

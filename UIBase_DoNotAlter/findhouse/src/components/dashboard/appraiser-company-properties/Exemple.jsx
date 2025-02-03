@@ -6,7 +6,7 @@ import axios from "axios";
 import { encryptionData } from "../../../utils/dataEncryption";
 import { useRouter } from "next/router";
 import Loader from "./Loader";
-import { FaArchive } from "react-icons/fa";
+import { FaArchive, FaDownload } from "react-icons/fa";
 import { AppraiserStatusOptions } from "../create-listing/data";
 import millify from "millify";
 import Image from "next/image";
@@ -722,23 +722,25 @@ export default function Exemple({
               >
                 {isBidded.$id &&
                   (isBidded.status === 2 || isBidded.status === 1) && (
-                    <li
-                      className="list-inline-item"
-                      data-toggle="tooltip"
-                      // style={{ margin: "2%" }}
-                      data-placement="top"
-                      title="View Quote"
-                    >
-                      {" "}
-                      <span
-                        className="btn btn-color-table"
-                        onClick={() => openQuoteViewModal(isBidded)}
+                    <>
+                      <li
+                        className="list-inline-item"
+                        data-toggle="tooltip"
+                        // style={{ margin: "2%" }}
+                        data-placement="top"
+                        title="View Quote"
                       >
-                        <Link href={"#"}>
-                          <span className="text-light flaticon-view"></span>
-                        </Link>
-                      </span>
-                    </li>
+                        {" "}
+                        <span
+                          className="btn btn-color-table"
+                          onClick={() => openQuoteViewModal(isBidded)}
+                        >
+                          <Link href={"#"}>
+                            <span className="text-light flaticon-view"></span>
+                          </Link>
+                        </span>
+                      </li>
+                    </>
                   )}
                 {isBidded.status === 2 || anotherBid?.bidId ? (
                   <>
@@ -985,6 +987,33 @@ export default function Exemple({
                     </li>
                     {/* <p className="btn btn-completed  w-100">Completed </p> */}
                   </>
+                )}
+                {isBidded.status === 1 ? (
+                  <>
+                    <ul className="d-flex">
+                      <li
+                        className="list-inline-item"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="Download Attachment"
+                      >
+                        {" "}
+                        <span
+                          className="btn btn-color-table"
+                          // onClick={() => openQuoteViewModal(isBidded)}
+                        >
+                          <Link href={"#"}>
+                            <span className="text-light">
+                              {" "}
+                              <FaDownload />
+                            </span>
+                          </Link>
+                        </span>
+                      </li>
+                    </ul>
+                  </>
+                ) : (
+                  ""
                 )}
               </div>
             ),

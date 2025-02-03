@@ -20,7 +20,7 @@ const headCells = [
   {
     id: "planType",
     numeric: false,
-    label: "Selected Plan",
+    label: "Plan Type",
     width: 100,
   },
 
@@ -244,9 +244,9 @@ export default function Exemple({
         if (true) {
           const updatedRow = {
             id: property.paymentid,
-            planName: property.planName,
+            planName: property?.planName || "N.A.",
             planType: <span>Monthly</span>,
-            amount: property.planAmount ? `$ ${property.planAmount}` : "$ -",
+            amount: property.planAmount ? `$${property.planAmount}` : "$ -",
             st_date: formatDate(property.startDate),
             end_date: formatDate(property.endDate),
             remained_prop: `${property.usedProperties} of ${property.noOfProperties}`,

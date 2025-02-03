@@ -1294,7 +1294,7 @@ const ProfileInfo = ({
                             )
                           }
                           className="form-control"
-                          disabled={edit}
+                          // disabled={!edit}
                           style={{
                             backgroundColor: "#E8F0FE",
                             borderColor: phoneNumberError
