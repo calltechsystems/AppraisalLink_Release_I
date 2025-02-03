@@ -236,7 +236,7 @@ const generateResponsePayload = (
         source: response?.paymentDetails?.paymentSource,
       },
       paymentStatus: "COMPLETED",
-      paymenttype: response?.paymentDetails?.paymentSource,
+      paymenttype: "RECURRING",
       currencycode: "CAD",
       paymentId: response?.paymentDetails?.orderID,
       paymentRequestSent: JSON.stringify(request),
