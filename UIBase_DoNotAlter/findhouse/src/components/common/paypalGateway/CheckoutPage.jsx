@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 import {
   generateRequestPayload,
   generateResponsePayload,
-} from "../../utils/Paypal/GeneratePayloads";
+} from "../../../utils/Paypal/GeneratePayloads.js";
 
 import axios from "axios";
 const Checkout = ({
@@ -19,6 +19,7 @@ const Checkout = ({
   currentSubscription,
   paymentType,
   setErrorMessage,
+  userDetailField
 }) => {
   const [{ options, isPending }, dispatch] = usePayPalScriptReducer();
   const [currency, setCurrency] = useState(options.currency || "CAD");
@@ -44,7 +45,8 @@ const Checkout = ({
       paymentType,
       topUpDetails,
       userData,
-      currency
+      currency,
+      userDetailField
     );
     return actions.order.create(payload);
   };
@@ -54,7 +56,8 @@ const Checkout = ({
       paymentType,
       topUpDetails,
       userData,
-      currency
+      currency,
+      userDetailField
     );
     return actions.subscription.create(payload);
   };
@@ -62,7 +65,6 @@ const Checkout = ({
   const saveOneTimePaymentData = (payload) => {
     toast.loading("Saving the data to DB for Top Up");
     console.log({ payload });
-    // const encryptedData = encryptionData(payload);
     axios
       .post("/api/saveOneTimePaymentData", payload, {
         headers: {
@@ -85,7 +87,7 @@ const Checkout = ({
 
   const saveRecurringPaymentData = (payload) => {
     toast.loading("Saving the data to DB for Subscription");
-    // console.log({ payload });
+    console.log({ payload });
     axios
       .post("/api/saveRecurringPaymentData", payload, {
         headers: {
@@ -114,7 +116,8 @@ const Checkout = ({
           paymentType,
           topUpDetails,
           userData,
-          currency
+          currency,
+          userDetailField
         );
         const finalOneTimeData = generateResponsePayload(
           paymentType,
@@ -123,12 +126,12 @@ const Checkout = ({
           request,
           details,
           currentSubscription,
-          topUpDetails
+          topUpDetails,
+          userDetailField
         );
         saveOneTimePaymentData(finalOneTimeData);
       });
-    } 
-    else if(paymentType == "subscription") {
+    } else if (paymentType == "subscription") {
       //Subscription
       const response = {
         paymentDetails: { ...data },
@@ -139,7 +142,8 @@ const Checkout = ({
         paymentType,
         topUpDetails,
         userData,
-        currency
+        currency,
+        userDetailField
       );
 
       const finalRecurringData = generateResponsePayload(
@@ -149,69 +153,26 @@ const Checkout = ({
         request,
         response,
         currentSubscription,
-        topUpDetails
+        topUpDetails,
+        userDetailField
       );
       saveRecurringPaymentData(finalRecurringData);
     }
   };
 
-  //as upgrade plan
-  // const onApproveOrder = async (data, actions) => {
-  //   if (paymentType === "subscription") {
-  //     try {
-  //       const response = {
-  //         paymentDetails: { ...data },
-  //         actionsData: { ...(await actions.subscription.get()) },
-  //       };
-
-  //       const request = generateRequestPayload(
-  //         paymentType,
-  //         topUpDetails,
-  //         userData,
-  //         currency
-  //       );
-
-  //       const finalRecurringData = generateResponsePayload(
-  //         paymentType,
-  //         topUpDetails,
-  //         userData,
-  //         request,
-  //         response,
-  //         currentSubscription,
-  //         topUpDetails
-  //       );
-
-  //       await saveRecurringPaymentData(finalRecurringData);
-
-  //       // Cancel previous subscription after successful new subscription creation
-  //       if (currentSubscription?.id) {
-  //         await axios.post(`/api/cancelSubscription/${currentSubscription.id}`, {}, {
-  //           headers: { Authorization: `Bearer ${userData.token}` },
-  //         });
-
-  //         toast.success("Previous subscription canceled after upgrade.");
-  //       }
-  //     } catch (error) {
-  //       console.error("Error handling subscription upgrade:", error);
-  //       toast.error("Failed to upgrade the subscription. Please try again.");
-  //     }
-  //   }
-  // };
-
   //------------------CANCEL WHILE TRANSACTION----------------------
   const onCancelOrder = (data) => {
     console.error("PayPal On Cancel data:", data);
-  
+
     let errorMessage = "The payment has been canceled.";
-  
+
     if (data && data.reason) {
       switch (data.reason) {
         case "USER_CANCELED":
           errorMessage = "You have canceled the payment process.";
           break;
         case "TIMEOUT":
-          errorMessage =
-            "The payment process timed out. Please try again.";
+          errorMessage = "The payment process timed out. Please try again.";
           break;
         case "INCOMPLETE_PAYMENT":
           errorMessage =
@@ -227,19 +188,19 @@ const Checkout = ({
           break;
       }
     }
-  
+
     setErrorMessage(errorMessage);
     // toast.error(errorMessage);
     setErrorOccurred(true);
   };
-  
+
   //------------------ERROR WHILE TRANSACTION----------------------
   const onError = (err) => {
     console.error("PayPal On Error data:", err);
-  
+
     let errorMessage =
       "An unexpected error occurred while processing your payment. Please try again.";
-  
+
     if (err && err.message) {
       switch (err.message) {
         case "PAYMENT_DECLINED":
@@ -278,8 +239,7 @@ const Checkout = ({
     } else if (err.code) {
       switch (err.code) {
         case "BAD_REQUEST":
-          errorMessage =
-            "The payment request was invalid. Please try again.";
+          errorMessage = "The payment request was invalid. Please try again.";
           break;
         case "INTERNAL_SERVER_ERROR":
           errorMessage =
@@ -294,12 +254,11 @@ const Checkout = ({
           break;
       }
     }
-  
+
     setErrorMessage(errorMessage);
     // toast.error(errorMessage);
     setErrorOccurred(true);
   };
-  
 
   return (
     <div className="checkout">
@@ -345,6 +304,7 @@ const CheckoutPage = ({
   setErrorOccurred,
   setOnSuccess,
   paymentType,
+  userDetailField
 }) => (
   <PayPalScriptProvider
     options={{
@@ -360,6 +320,7 @@ const CheckoutPage = ({
       setOnSuccess={setOnSuccess}
       currentSubscription={currentSubscription}
       paymentType={paymentType}
+      userDetailField={userDetailField}
     />
   </PayPalScriptProvider>
 );

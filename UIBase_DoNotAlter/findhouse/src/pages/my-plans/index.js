@@ -5,18 +5,15 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import toast from "react-hot-toast";
-import Link from "next/link";
-import Image from "next/image";
-import OneTimePaymentModal from "./OneTimePaymentModal";
-import SubscriptionModal from "./SubscriptionModal";
-import CancelSubscriptionModal from "./CancelSubscriptionModal";
-import ReviseSubscriptionModal from "./ReviseSubscriptionModal";
+import OneTimePaymentModal from "../../components/common/paypalGateway/OneTimePaymentModal";
+import SubscriptionModal from "../../components/common/paypalGateway/SubscriptionModal";
+import CancelSubscriptionModal from "../../components/common/paypalGateway/CancelSubscriptionModal";
+import ReviseSubscriptionModal from "../../components/common/paypalGateway/ReviseSubscriptionModal";
 
 const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const router = useRouter();
   const [currentSubscription, setcurrentSubscription] = useState({});
-  const [openRedirectionModal, setopenRedirectionModal] = useState(false);
   const [price, setPrice] = useState({
     title: "Basic",
     price: 0,
@@ -24,25 +21,10 @@ const Index = () => {
     item: {},
   });
 
-  const [checkout, setCheckOut] = useState(false);
-
+  const [canUpgrade, setCanUpgrade] = useState(false);
+  const [userDetailField, setUserDetailsField] = useState("broker_Details");
   const [userData, setUserData] = useState({});
 
-  function getSelectedPlans(plans) {
-    // Get the current date
-    const currentDate = new Date();
-
-    // Filter plans based on startDate and transactionDetail
-    const selectedPlans = plans.filter((plan) => {
-      const startDate = new Date(plan.startDate);
-      const isBeforeOrEqualCurrentDate = startDate <= currentDate;
-      const isNotTopUp = !plan.transactionDetail
-        .toLowerCase()
-        .includes("topup");
-      return isBeforeOrEqualCurrentDate && isNotTopUp;
-    });
-    return selectedPlans;
-  }
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
     axios
@@ -79,22 +61,6 @@ const Index = () => {
       .catch((err) => {
         toast.dismiss();
       });
-
-    const fetchData = () => {
-      const isPaying = JSON.parse(localStorage.getItem("isPaying"));
-      const data = JSON.parse(localStorage.getItem("user"));
-
-      if (data) {
-        setUserData(data);
-        if (isPaying) {
-          setopenRedirectionModal(true);
-        }
-      } else {
-        router.push("/login");
-      }
-    };
-
-    fetchData();
   }, []);
 
   const openModal = () => {
@@ -114,6 +80,9 @@ const Index = () => {
         userData={userData}
         modalOpen={modalOpen}
         setcurrentSubscription={setcurrentSubscription}
+        setCanUpgrade={setCanUpgrade}
+        canUpgrade={canUpgrade}
+        userDetailField={userDetailField}
       />
       {price?.type == "plan" ? (
         <SubscriptionModal
@@ -121,6 +90,7 @@ const Index = () => {
           modalOpen={modalOpen}
           closeModal={closeModal}
           price={price}
+          userDetailField={userDetailField}
         />
       ) : price?.type == "cancel_plan" ? (
         <CancelSubscriptionModal
@@ -128,6 +98,7 @@ const Index = () => {
           modalOpen={modalOpen}
           closeModal={closeModal}
           price={price}
+          userDetailField={userDetailField}
         />
       ) : price?.type == "upgrade_plan" ? (
         <ReviseSubscriptionModal
@@ -135,6 +106,7 @@ const Index = () => {
           modalOpen={modalOpen}
           closeModal={closeModal}
           price={price}
+          userDetailField={userDetailField}
         />
       ) : (
         <OneTimePaymentModal
@@ -142,86 +114,11 @@ const Index = () => {
           modalOpen={modalOpen}
           closeModal={closeModal}
           price={price}
+          userDetailField={userDetailField}
         />
-      )}
-      {openRedirectionModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <div className="row">
-              <div className="col-lg-12">
-                <Link href="/" className="">
-                  <Image
-                    width={50}
-                    height={45}
-                    className="logo1 img-fluid"
-                    style={{ marginTop: "-20px" }}
-                    src="/assets/images/Appraisal_Land_Logo.png"
-                    alt="header-logo2.png"
-                  />
-                  <span
-                    style={{
-                      color: "#2e008b",
-                      fontWeight: "bold",
-                      fontSize: "24px",
-                      // marginTop: "20px",
-                    }}
-                  >
-                    Appraisal
-                  </span>
-                  <span
-                    style={{
-                      color: "#97d700",
-                      fontWeight: "bold",
-                      fontSize: "24px",
-                      // marginTop: "20px",
-                    }}
-                  >
-                    {" "}
-                    Land
-                  </span>
-                </Link>
-              </div>
-            </div>
-            <h2 className="text-center mt-3" style={{ color: "#2e008b" }}>
-              Transaction has took Place !
-            </h2>
-            <div className="mb-2" style={{ border: "2px solid #97d700" }}></div>
-            <p className="fs-5 text-center text-dark mt-4">
-              The Transaction of subscribing to a plan is done !{" "}
-            </p>
-
-            <div
-              className="mb-3 mt-4"
-              style={{ border: "2px solid #97d700" }}
-            ></div>
-            <div className="col-lg-12 text-center">
-              <button
-                disabled={disable}
-                className="btn w-25 btn-color"
-                onClick={() => setopenRedirectionModal(false)}
-              >
-                Confirm
-              </button>
-            </div>
-          </div>
-        </div>
       )}
     </>
   );
 };
 
 export default dynamic(() => Promise.resolve(Index), { ssr: false });
-
-// <div className="App">
-//       {checkout ? (
-//         <Paypal />
-//       ) : (
-//         <button
-//           onClick={() => {
-//             setCheckOut(true);
-//           }}
-//         >
-//           Checkout
-//         </button>
-//       )}
-//     </div>

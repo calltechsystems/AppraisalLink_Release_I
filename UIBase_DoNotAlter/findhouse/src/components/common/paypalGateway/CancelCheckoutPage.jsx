@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -10,6 +9,7 @@ const CancelCheckout = ({
   currentSubscription,
   setErrorMessage,
   paymentType,
+  userDetailField
 }) => {
   const [currency, setCurrency] = useState("CAD");
   const [userData, setUserData] = useState({});
@@ -72,13 +72,15 @@ const CancelCheckout = ({
       setOnSuccess(true);
     } catch (error) {
       console.error("Failed to cancel subscription:", error);
-      setErrorMessage(
-        "Your payment has been processed successfully by PayPal. However, we encountered an issue while updating your subscription. Please contact support with your transaction details for assistance."
-      );
+      toast.error("Failed to cancel subscription:", error);
+      // setErrorMessage(
+      //   "Your payment has been processed successfully by PayPal. However, we encountered an issue while updating your subscription. Please contact support with your transaction details for assistance."
+      // );
       setErrorOccurred(true);
     }
     finally{
       toast.dismiss();
+      window.location.reload();
     }
   };
 

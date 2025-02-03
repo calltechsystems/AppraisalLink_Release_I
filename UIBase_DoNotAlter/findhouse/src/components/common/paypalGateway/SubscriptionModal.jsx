@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { ClipLoader } from "react-spinners";
 import Link from "next/link";
 import Image from "next/image";
 import CheckoutPage from "./CheckoutPage";
@@ -9,6 +8,7 @@ const OneTimePaymentModal = ({
   modalOpen,
   closeModal,
   price,
+  userDetailField
 }) => {
   const [paypalUrl, setPaypalUrl] = useState("");
   const [status, setStatus] = useState(0);
@@ -17,16 +17,8 @@ const OneTimePaymentModal = ({
   const [showPaypalPage, setShowPaypalPage] = useState(false);
 
   const [errorOcurred, setErrorOccurred] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
   const [onSuccess, setOnSuccess] = useState(false);
   const [termsPolicyAccepted, setTermsPolicyAccepted] = useState(0);
-
-  //set the default Error message
-  useEffect(() => {
-    setErrorMessage(
-      "The action window may have been closed unexpectedly, either due to cancellation or an abrupt closure. Please try again to complete your payment."
-    );
-  }, []);
 
   useEffect(() => {
     let countdownInterval;
@@ -65,7 +57,6 @@ const OneTimePaymentModal = ({
     setShowPaypalPage(true);
   };
 
-
   const closePaypalPage = () => {
     setShowPaypalPage(false);
     setCurrentSelectedPlan({});
@@ -83,6 +74,11 @@ const OneTimePaymentModal = ({
     window.location.reload();
   };
 
+  
+  const logoutHandler = () => {
+    localStorage.removeItem("user");
+    window.location.href = "/login";
+  };
   return (
     <div>
       {modalOpen && (
@@ -134,6 +130,7 @@ const OneTimePaymentModal = ({
                 </div>
               </div>
             </div>
+
             <>
               <div
                 className="mt-2 mb-3"
@@ -143,7 +140,7 @@ const OneTimePaymentModal = ({
               {onSuccess ? (
                 <div className="text-center" style={{ fontSize: "19px" }}>
                   <span className="text-dark">
-                    Payment confirmed! We appreciate your business
+                    Payment confirmed! We appreciate your business. Please Login again to continue.
                   </span>
                 </div>
               ) : (
@@ -158,7 +155,7 @@ const OneTimePaymentModal = ({
                     </span>
                     <br />
                     <span className="text-dark">
-                    You have selected to add upto{" "}
+                      You have selected Subscription plan{" "}
                       <label
                         style={{
                           fontWeight: "bold",
@@ -166,10 +163,9 @@ const OneTimePaymentModal = ({
                           color: "#2e008b",
                         }}
                       >
-                        add {price.title} upto{" "}
-                        {price?.selectedTopUp?.noOfProperties}
+                        {capitalizeFirstLetter(price.title)}
                       </label>{" "}
-                      properties for{" "}
+                      with value{" "}
                       <label
                         style={{
                           fontWeight: "bold",
@@ -177,13 +173,12 @@ const OneTimePaymentModal = ({
                           color: "#2e008b",
                         }}
                       >
-                        ${price.price}
+                        ${price.price}{" "}
                       </label>
-                      .{" "}
                     </span>
                     <br />
                     <span style={{ fontSize: "15px" }}>
-                      Please click checkout to proceed with the Order.
+                      Please click checkout to proceed with the Order
                     </span>
                   </div>
                 ) : showPaypalPage && status == 1 ? (
@@ -193,8 +188,8 @@ const OneTimePaymentModal = ({
                       planDetails={currentSelectedPlan}
                       setErrorOccurred={setErrorOccurred}
                       setOnSuccess={setOnSuccess}
-                      setErrorMessage={setErrorMessage}
-                      paymentType={"oneTime"}
+                      paymentType={"subscription"}
+                      userDetailField={userDetailField}
                     />
                   </>
                 ) : (
@@ -203,7 +198,9 @@ const OneTimePaymentModal = ({
               ) : (
                 <div className="text-center" style={{ fontSize: "19px" }}>
                   <span className="text-dark">
-                    {errorMessage}
+                    The payment window seems to have closed unexpectedly, either
+                    due to a cancellation or an abrupt interruption. Please
+                    retry to complete your payment.
                   </span>
                 </div>
               )}
@@ -223,7 +220,7 @@ const OneTimePaymentModal = ({
                     style={{ border: "1px solid black" }}
                   />
                   <label
-                    className="form-check-label form-check-label ml-2"
+                    className="form-check-label form-check-label"
                     htmlFor="terms"
                     style={{ marginLeft: "10px" }}
                   >
@@ -253,8 +250,7 @@ const OneTimePaymentModal = ({
                   Cancel
                 </button>
               </div>
-            ) : 
-            // <label
+            ) : // <label
             //   className="btn btn-color w-25"
             //   style={{
             //     display: "flex",
@@ -267,23 +263,25 @@ const OneTimePaymentModal = ({
             //   <span style={{ marginLeft: "10px" }}>Processing...</span>
             // </label>
             status == 0 && !showPaypalPage ? (
-              <div className="d-flex justify-content-center gap-2">
-                <button className="btn btn-color w-25" onClick={resetFields}>
-                  Cancel
-                </button>
-                <button
-                  className="btn btn-color w-25"
-                  // style={{ marginLeft: "20px" }}
-                  onClick={openPaypalPage}
-                  disabled={!termsPolicyAccepted}
-                >
-                  Checkout
-                </button>
-              </div>
+              <>
+                <div className="d-flex justify-content-center gap-2">
+                  <button className="btn btn-color w-25" onClick={resetFields}>
+                    Cancel
+                  </button>
+                  <button
+                    className="btn btn-color w-25"
+                    // style={{ marginLeft: "20px" }}
+                    onClick={openPaypalPage}
+                    disabled={!termsPolicyAccepted}
+                  >
+                    Checkout
+                  </button>
+                </div>
+              </>
             ) : (
               <div className="text-center">
-                <button className="btn btn-color w-25" onClick={resetFields}>
-                  Close
+                <button className="btn btn-color w-25" onClick={logoutHandler}>
+                  Ok
                 </button>
               </div>
             )}
