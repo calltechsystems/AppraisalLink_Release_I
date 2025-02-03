@@ -938,11 +938,11 @@ const Index = ({ isView, propertyData }) => {
           })
           .then((res) => {
             toast.dismiss();
-            // const propertyId = res.data.useData?.propertyId;
-            // setGeneratedPropertyId(propertyId);
-            // setSuccessModal(true);
-            toast.success("Property Added Successfully");
-            router.push("/my-properties");
+            const propertyId = res.data.userData?.propertyId;
+            setGeneratedPropertyId(propertyId);
+            setSuccessModal(true);
+            // toast.success("Property Added Successfully");
+            // router.push("/my-properties");
           })
           .catch((err) => {
             const status = err.response?.request.status;
