@@ -81,6 +81,7 @@ const Modal = ({
 
     if (bidAmount <= 0 || bidAmount === "") {
       toast.error("Quoted amount should be filled !");
+      setDisable(false);
       return;
     } else {
       const user = JSON.parse(localStorage.getItem("user"));
@@ -126,6 +127,11 @@ const Modal = ({
     closeModal();
   };
 
+  function addCommasToNumber(number) {
+    if (Number(number) <= 100 || number === undefined) return number;
+    return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   const formatLargeNumber = (number) => {
     // Convert the number to a string
     const numberString = number.toString();
@@ -152,6 +158,22 @@ const Modal = ({
     return `${formattedNumber}${unit}`;
   };
 
+  const formatNumberWithCommas = (number) => {
+    if (!number) return ""; // Handle empty input
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // Add commas
+  };
+
+  const parseNumberFromCommas = (formattedValue) => {
+    return formattedValue.replace(/,/g, ""); // Remove commas
+  };
+
+  const handleInputChange = (e) => {
+    const rawValue = parseNumberFromCommas(e.target.value); // Remove commas for raw value
+    if (!isNaN(rawValue)) {
+      setValue(rawValue); // Update state with raw value
+    }
+  };
+
   const openConfirmModal = () => {
     if (!value) {
       toast.error("Quoted amount should be filled !");
@@ -167,7 +189,7 @@ const Modal = ({
     <div>
       {modalOpen && (
         <div className="modal">
-          <div className="modal-content">
+          <div className="modal-content" style={{ width: "40%" }}>
             <div className="row">
               <div className="col-lg-12">
                 <Link href="/" className="">
@@ -212,7 +234,7 @@ const Modal = ({
                 <span
                   style={{
                     fontWeight: "bold",
-                    fontSize: "29px",
+                    fontSize: "25px",
                     color: "#2e008b",
                   }}
                 >
@@ -226,7 +248,9 @@ const Modal = ({
                         alreadyBidded
                           ? "Confirmation of Quote Updation Form "
                           : "Confirmation of Quote Form"
-                      }`}
+                      }`}{" "}
+                  – Property Id{"  "}
+                  <span style={{ color: "#97d700" }}>#{propertyId}</span>
                 </span>
               </h2>
             </div>
@@ -259,7 +283,9 @@ const Modal = ({
                             {alreadyBidded ? (
                               <>
                                 Your earlier quote was{" "}
-                                <span className="bid-amount">${bidAmount}</span>
+                                <span className="bid-amount">
+                                  ${addCommasToNumber(bidAmount)}
+                                </span>
                               </>
                             ) : (
                               "Please provide a quote for this property"
@@ -290,11 +316,13 @@ const Modal = ({
 
                         <div className="col-lg-7">
                           <input
-                            type="number"
-                            value={value}
-                            onChange={(e) => setValue(e.target.value)}
+                            type="text"
+                            value={formatNumberWithCommas(value)}
+                            onChange={handleInputChange}
+                            // onChange={(e) => setValue(e.target.value)}
                             className="form-control"
                             id="formGroupExampleInput3"
+                            maxLength={30}
                           />
                         </div>
                       </div>
@@ -320,6 +348,8 @@ const Modal = ({
                             onChange={(e) => setDescription(e.target.value)}
                             className="form-control"
                             id="formGroupExampleInput3"
+                            maxLength={50}
+                            // style={{overflow:"scroll"}}
                           />
                         </div>
                       </div>
@@ -336,7 +366,10 @@ const Modal = ({
                   >
                     Are you confirming that you will quote this property for the
                     given amount : <br />
-                    <h2 className="mt-2 text-color"> $ {value}</h2>
+                    <h2 className="mt-2 text-color">
+                      {" "}
+                      ${addCommasToNumber(value)}
+                    </h2>
                   </p>
                   {alreadyBidded && (
                     <p
@@ -353,7 +386,7 @@ const Modal = ({
                           fontSize: "22px",
                         }}
                       >
-                        $ {bidAmount}
+                        ${addCommasToNumber(bidAmount)}
                       </span>
                     </p>
                   )}

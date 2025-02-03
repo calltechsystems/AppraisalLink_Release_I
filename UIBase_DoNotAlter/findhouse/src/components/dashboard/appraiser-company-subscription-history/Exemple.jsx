@@ -20,7 +20,7 @@ const headCells = [
   {
     id: "planType",
     numeric: false,
-    label: "Selected Plan",
+    label: "Plan Type",
     width: 120,
   },
 
@@ -225,7 +225,6 @@ export default function Exemple({
   useEffect(() => {
     const getData = () => {
       const date = formatDate(new Date());
-
       const sortedData = sortFunction(data);
       sortedData?.map((property, index) => {
         const propertyCount = 26;
@@ -242,9 +241,9 @@ export default function Exemple({
         if (true) {
           const updatedRow = {
             id: property.paymentid,
-            planName: property.planName,
+            planName: property?.planName || "N.A.",
             planType: <span>Monthly</span>,
-            amount: property.planAmount ? `$ ${property.planAmount}` : "$ -",
+            amount: property.planAmount ? `$${property.planAmount}` : "$ -",
             st_date: formatDate(property.startDate),
             end_date: formatDate(property.endDate),
             remained_prop: `${

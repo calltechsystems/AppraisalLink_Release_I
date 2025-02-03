@@ -1111,7 +1111,7 @@ const ProfileInfo = ({
                             )
                           }
                           className="form-control"
-                          disabled={!edit}
+                          // disabled={!edit}
                           style={{
                             backgroundColor: "#E8F0FE",
                             borderColor: phoneNumberError
@@ -1188,7 +1188,7 @@ const ProfileInfo = ({
                             handleInputCellChange(e.target.value)
                           }
                           className="form-control"
-                          disabled={!edit}
+                          // disabled={!edit}
                           style={{ backgroundColor: "#E8F0FE" }}
                         >
                           {(inputProps) => (

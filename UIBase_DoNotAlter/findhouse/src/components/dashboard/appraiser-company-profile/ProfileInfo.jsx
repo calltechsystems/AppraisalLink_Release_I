@@ -1061,7 +1061,7 @@ const ProfileInfo = ({
                             )
                           }
                           className="form-control"
-                          disabled={!edit}
+                          // disabled={!edit}
                           style={{
                             backgroundColor: "#E8F0FE",
                             borderColor: phoneNumberError
@@ -1144,7 +1144,7 @@ const ProfileInfo = ({
                             )
                           }
                           className="form-control"
-                          disabled={!edit}
+                          // disabled={!edit}
                           style={{
                             backgroundColor: "#E8F0FE",
                             borderColor: cellNumberError
@@ -1849,7 +1849,7 @@ const ProfileInfo = ({
                             )
                           }
                           className="form-control"
-                          disabled={!edit}
+                          // disabled={!edit}
                           style={{
                             backgroundColor: "#E8F0FE",
                             borderColor: officeContactPhoneError

@@ -1405,7 +1405,7 @@ const ProfileInfo = ({
                             )
                           }
                           className="form-control"
-                          disabled={!edit}
+                          // disabled={!edit}
                           style={{
                             backgroundColor: "#E8F0FE",
                             borderColor: phoneNumberError
@@ -1490,7 +1490,7 @@ const ProfileInfo = ({
                             )
                           }
                           className="form-control"
-                          disabled={!edit}
+                          // disabled={!edit}
                           style={{
                             backgroundColor: "#E8F0FE",
                             borderColor: cellNumberError
@@ -2158,7 +2158,7 @@ const ProfileInfo = ({
                             )
                           }
                           className="form-control"
-                          disabled={!edit}
+                          // disabled={!edit}
                           style={{
                             backgroundColor: "#E8F0FE",
                             borderColor: assistantPhoneNumberError
@@ -2212,11 +2212,6 @@ const ProfileInfo = ({
                           // }
                           disabled={!edit}
                         /> */}
-                        {assistantPhoneNumberError && (
-                          <small className="text-danger">
-                            Enter valid phone number.
-                          </small>
-                        )}
                       </div>
                     </div>
                   </div>
@@ -2378,7 +2373,7 @@ const ProfileInfo = ({
                             )
                           }
                           className="form-control"
-                          disabled={!edit}
+                          // disabled={!edit}
                           style={{
                             backgroundColor: "#E8F0FE",
                             borderColor: assistantTwoPhoneNumberError

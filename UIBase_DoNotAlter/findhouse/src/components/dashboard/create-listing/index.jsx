@@ -27,8 +27,9 @@ const Index = ({ isView, propertyData }) => {
   const [appraisalQuoteDate, setAppraisalQuoteDate] = useState(
     propertyData ? propertyData.quoteRequiredDate : ""
   );
-  const [modalOpen, setModalOpen] = useState(false);
-
+  const [successModal, setSuccessModal] = useState(false);
+  // const [propertyId, setPropertyId] = useState(null);
+  const [generatedPropertyId, setGeneratedPropertyId] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
   const [modalIsOpenError_01, setModalIsOpenError_01] = useState(false);
@@ -937,35 +938,28 @@ const Index = ({ isView, propertyData }) => {
           })
           .then((res) => {
             toast.dismiss();
-            toast.success("Property Added Successfully");
-            // setModalIsOpen(true);
-            router.push("/my-properties");
+            const propertyId = res.data.userData?.propertyId;
+            setGeneratedPropertyId(propertyId);
+            setSuccessModal(true);
+            // toast.success("Property Added Successfully");
+            // router.push("/my-properties");
           })
           .catch((err) => {
-            const status = err.response.request.status;
+            const status = err.response?.request.status;
             if (String(status) === String(403)) {
               toast.dismiss();
               setModalIsOpenError(true);
-              // toast.error(
-              //   "Can't appraise the property all properties are being used!!"
-              // );
-              // setRefresh(true);
-              // window.location.reload();
             } else if (String(status) === String(404)) {
               toast.dismiss();
-              setErrorMessage(err.response.data.error);
+              setErrorMessage(err.response?.data.error);
               setModalIsOpenError_01(true);
-              // toast.error(
-              //   "You do not have any subscription. Please get a subscription to access the full features."
-              // );
-              // window.location.reload();
             } else if (/^5\d{2}$/.test(String(status))) {
               toast.dismiss();
               toast.error("Server error occurred Try Again !! ");
               window.location.reload();
             } else {
               toast.dismiss();
-              setErrorMessage(err.response.data.error);
+              setErrorMessage(err.response?.data.error);
               setModalIsOpenError_01(true);
               // toast.error(err.message);
             }
@@ -976,7 +970,6 @@ const Index = ({ isView, propertyData }) => {
 
   const handleZipCodeChange = async (e) => {
     setZipCodeRef(e.target.value);
-
     try {
       const response = await axios.get(
         `https://api.zippopotam.us/us/${zipCodeRef}`
@@ -989,6 +982,12 @@ const Index = ({ isView, propertyData }) => {
       // Handle API error or invalid zip code
       console.error("Error fetching location data:", error);
     }
+  };
+
+  const handleOkClick = () => {
+    setSuccessModal(false);
+    // navigate('/my-properties');
+    router.push("/my-properties");
   };
 
   useEffect(() => {
@@ -1598,6 +1597,92 @@ const Index = ({ isView, propertyData }) => {
                       <button
                         className="btn btn-color w-50"
                         onClick={() => closeErrorModal()}
+                        style={{}}
+                      >
+                        Ok
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {successModal && (
+                <div className="modal">
+                  <div
+                    className="modal-content"
+                    style={{ borderColor: "#2e008b", width: "35%" }}
+                  >
+                    <div className="col-lg-12">
+                      <div className="row">
+                        <div className="col-lg-12">
+                          <Link href="/" className="">
+                            <Image
+                              width={50}
+                              height={45}
+                              className="logo1 img-fluid"
+                              style={{ marginTop: "-20px" }}
+                              src="/assets/images/Appraisal_Land_Logo.png"
+                              alt="header-logo2.png"
+                            />
+                            <span
+                              style={{
+                                color: "#2e008b",
+                                fontWeight: "bold",
+                                fontSize: "24px",
+                                // marginTop: "20px",
+                              }}
+                            >
+                              Appraisal
+                            </span>
+                            <span
+                              style={{
+                                color: "#97d700",
+                                fontWeight: "bold",
+                                fontSize: "24px",
+                                // marginTop: "20px",
+                              }}
+                            >
+                              {" "}
+                              Land
+                            </span>
+                          </Link>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-lg-12 text-center">
+                          <h3 className=" text-color mt-1">Success</h3>
+                        </div>
+                      </div>
+                      <div
+                        className="mt-2 mb-3"
+                        style={{ border: "2px solid #97d700" }}
+                      ></div>
+                    </div>
+                    <span
+                      className="text-center mb-2 text-dark fw-bold"
+                      style={{ fontSize: "18px" }}
+                    >
+                      <h3 className="text-dark mb-2">
+                        Property Added Successfully!
+                      </h3>
+                      <p className="text-dark fs-5">
+                        Your Property ID is :{" "}
+                        <span className="text-color fw-bold fs-4 mt-2">
+                          {generatedPropertyId}
+                        </span>
+                      </p>
+                    </span>
+                    <div
+                      className="mt-2 mb-3"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
+                    <div
+                      className="col-lg-12 text-center"
+                      style={{ display: "flex", justifyContent: "center" }}
+                    >
+                      <button
+                        className="btn btn-color w-25"
+                        onClick={() => handleOkClick()}
                         style={{}}
                       >
                         Ok
