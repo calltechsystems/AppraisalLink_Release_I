@@ -20,8 +20,7 @@ const generateCustomId = (brokerId, planId) => {
 };
 
 const generateRequestPayload = (paymentType, details, userData, currency) => {
-  // const { title, id, price } = details;
-  console.log({ paymentType, details, userData, currency });
+  const { title, id, price } = details;
 
   if (paymentType === "oneTime") {
     // Payload for one-time payment

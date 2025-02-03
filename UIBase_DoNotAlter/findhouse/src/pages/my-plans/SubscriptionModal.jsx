@@ -74,6 +74,11 @@ const OneTimePaymentModal = ({
     window.location.reload();
   };
 
+  
+  const logoutHandler = () => {
+    localStorage.removeItem("user");
+    window.location.href = "/login";
+  };
   return (
     <div>
       {modalOpen && (
@@ -135,7 +140,7 @@ const OneTimePaymentModal = ({
               {onSuccess ? (
                 <div className="text-center" style={{ fontSize: "19px" }}>
                   <span className="text-dark">
-                    Payment confirmed! We appreciate your business.
+                    Payment confirmed! We appreciate your business. Please Login again to continue.
                   </span>
                 </div>
               ) : (
@@ -274,8 +279,8 @@ const OneTimePaymentModal = ({
               </>
             ) : (
               <div className="text-center">
-                <button className="btn btn-color w-25" onClick={resetFields}>
-                  Close
+                <button className="btn btn-color w-25" onClick={logoutHandler}>
+                  Ok
                 </button>
               </div>
             )}

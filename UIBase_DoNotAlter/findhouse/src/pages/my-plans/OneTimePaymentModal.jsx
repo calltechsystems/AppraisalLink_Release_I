@@ -11,14 +11,14 @@ const OneTimePaymentModal = ({
   price,
 }) => {
   const [paypalUrl, setPaypalUrl] = useState("");
-  const [status, setStatus] = useState(1);
+  const [status, setStatus] = useState(0);
   const [countdown, setCountdown] = useState(180);
   const [currentSelectedPlan, setCurrentSelectedPlan] = useState({});
   const [showPaypalPage, setShowPaypalPage] = useState(false);
 
   const [errorOcurred, setErrorOccurred] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [onSuccess, setOnSuccess] = useState(true);
+  const [onSuccess, setOnSuccess] = useState(false);
   const [termsPolicyAccepted, setTermsPolicyAccepted] = useState(0);
 
   //set the default Error message
@@ -65,10 +65,6 @@ const OneTimePaymentModal = ({
     setShowPaypalPage(true);
   };
 
-  const logoutHandler = () => {
-    localStorage.removeItem("user");
-    route.push("/login");
-  };
 
   const closePaypalPage = () => {
     setShowPaypalPage(false);
@@ -147,7 +143,7 @@ const OneTimePaymentModal = ({
               {onSuccess ? (
                 <div className="text-center" style={{ fontSize: "19px" }}>
                   <span className="text-dark">
-                    Payment confirmed! We appreciate your business. Please Login again to continue.
+                    Payment confirmed! We appreciate your business
                   </span>
                 </div>
               ) : (
@@ -187,7 +183,7 @@ const OneTimePaymentModal = ({
                     </span>
                     <br />
                     <span style={{ fontSize: "15px" }}>
-                      Please click checkout to proceed with the Order
+                      Please click checkout to proceed with the Order.
                     </span>
                   </div>
                 ) : showPaypalPage && status == 1 ? (
@@ -286,8 +282,8 @@ const OneTimePaymentModal = ({
               </div>
             ) : (
               <div className="text-center">
-                <button className="btn btn-color w-25" onClick={logoutHandler}>
-                  Login
+                <button className="btn btn-color w-25" onClick={resetFields}>
+                  Close
                 </button>
               </div>
             )}
