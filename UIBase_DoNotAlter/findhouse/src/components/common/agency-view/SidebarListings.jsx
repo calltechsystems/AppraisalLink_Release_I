@@ -13,7 +13,7 @@ const SidebarListings = () => {
           </ul>
         </div>
       </div>
-      {/* End Categories Property widget */}
+
 
       <div className="terms_condition_widget style_two-pro">
         <h4 className="title">Featured Properties</h4>
