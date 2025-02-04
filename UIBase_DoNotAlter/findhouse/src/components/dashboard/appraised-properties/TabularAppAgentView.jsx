@@ -288,7 +288,7 @@ export default function Exemple({
 
   const openStatusUpdateHandler = (bid, property) => {
     setCurrentBid(bid);
-    setSelectedPropertyNew(property)
+    setSelectedPropertyNew(property);
     setIsStatusModal(true);
   };
 
@@ -351,7 +351,7 @@ export default function Exemple({
 
   const openQuoteViewModal = (bid, property) => {
     setCurrentBiddedView(bid);
-    setSelectedPropertyNew(property)
+    setSelectedPropertyNew(property);
     setOpenQuoteView(true);
   };
 
@@ -429,7 +429,7 @@ export default function Exemple({
     let tempStatusData = [];
     const getData = () => {
       const userData = JSON.parse(localStorage.getItem("user"));
-
+      let tempData = [];
       properties.map((property, index) => {
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
@@ -437,6 +437,9 @@ export default function Exemple({
         // const isAlreadyArchived = getisAlreadyArchived(property.propertyId);
         const isWait = property.isonhold || property.isoncancel;
         const isArchive = false;
+
+        // Skip Completed Orders
+        if (isBidded.orderstatus === 3) return;
 
         if (!isArchive) {
           if (isBidded.status === 1) {
@@ -802,7 +805,9 @@ export default function Exemple({
                             <button
                               href="#"
                               className="btn btn-color"
-                              onClick={() => openStatusUpdateHandler(isBidded, property)}
+                              onClick={() =>
+                                openStatusUpdateHandler(isBidded, property)
+                              }
                             >
                               <Link href="#">
                                 <span className="flaticon-edit text-light"></span>

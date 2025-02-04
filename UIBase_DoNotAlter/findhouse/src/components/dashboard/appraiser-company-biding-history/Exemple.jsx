@@ -6,11 +6,11 @@ import axios from "axios";
 import { encryptionData } from "../../../utils/dataEncryption";
 import { useRouter } from "next/router";
 import Loader from "./Loader";
-import { FaArchive } from "react-icons/fa";
+import { FaArchive, FaEye } from "react-icons/fa";
 import { AppraiserStatusOptions } from "../create-listing/data";
 import millify from "millify";
 // import "./SmartTable.css";
-
+import Image from "next/image";
 const headCells = [
   {
     id: "order_id",
@@ -37,7 +37,7 @@ const headCells = [
     width: 160,
   },
   {
-    id: "remark",
+    id: "remarkButton",
     numeric: false,
     label: "Appraisal Remark",
     width: 160,
@@ -154,16 +154,30 @@ export default function Exemple({
   const [hideAction, setHideAction] = useState(false);
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
-
+  const [selectedProperty, setSelectedProperty] = useState(null);
+  const [remarkModal, setRemarkModal] = useState(false);
+  const [remark, setRemark] = useState("N.A.");
   const [dataFetched, setDataFetched] = useState(false);
   let tempData = [];
-
   const [allArchive, setAllArchive] = useState([]);
   useEffect(() => {
     if (searchInput === "") {
       setRefresh(true);
     }
   }, [searchInput]);
+
+  const openRemarkModal = (property) => {
+    const isBidded = filterBidsWithin24Hours(property); // Get the isBidded data
+    setRemark(isBidded && isBidded.remark ? isBidded.remark : "N.A.");
+    setSelectedProperty(property);
+    setRemarkModal(true);
+  };
+
+  const closeRemarkModal = () => {
+    setRemarkModal(false);
+    setRemark("N.A.");
+    setSelectedProperty(null);
+  };
 
   const getOrderValue = (val) => {
     let title = "Applicant Contacted by appraiser";
@@ -460,7 +474,29 @@ export default function Exemple({
                   <span>N.A.</span>
                 </button>
               ),
-            remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
+            remarkButton: (
+              <li
+                className="list-inline-item"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="View Remark"
+              >
+                <div
+                  className="w-100"
+                  onClick={() => openRemarkModal(property)}
+                >
+                  <button href="#" className="btn btn-color">
+                    <Link href="#">
+                      <span className="text-light">
+                        {" "}
+                        <FaEye />
+                      </span>
+                    </Link>
+                  </button>
+                </div>
+              </li>
+            ),
+            // remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
             status:
               isBidded?.bidId && isBidded.status === 2 ? (
                 <span className="btn btn-danger  w-100">Declined</span>
@@ -769,6 +805,69 @@ export default function Exemple({
           start={start}
           end={end}
         />
+      )}
+
+      {remarkModal && (
+        <div className="modal">
+          <div className="modal-content" style={{ width: "35%" }}>
+            <div className="row">
+              <div className="col-lg-12">
+                <Link href="/" className="">
+                  <Image
+                    width={50}
+                    height={45}
+                    className="logo1 img-fluid"
+                    style={{ marginTop: "-20px" }}
+                    src="/assets/images/logo.png"
+                    alt="header-logo2.png"
+                  />
+                  <span
+                    style={{
+                      color: "#2e008b",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    Appraisal
+                  </span>
+                  <span
+                    style={{
+                      color: "#97d700",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    {" "}
+                    Land
+                  </span>
+                </Link>
+              </div>
+            </div>
+            <h3 className="text-center mt-3" style={{ color: "#2e008b" }}>
+              Appraisal Remark - Property Id{" "}
+              <span style={{ color: "#97d700" }}>
+                #{selectedProperty?.orderId}
+              </span>
+            </h3>
+            <div className="mb-2" style={{ border: "2px solid #97d700" }}></div>
+            <p className="fs-5 text-center text-dark mt-4">{remark}</p>
+            <div
+              className="mb-3 mt-4"
+              style={{ border: "2px solid #97d700" }}
+            ></div>
+            <div className="col-lg-12 d-flex justify-content-center gap-2">
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                onClick={closeRemarkModal}
+              >
+                Ok
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );

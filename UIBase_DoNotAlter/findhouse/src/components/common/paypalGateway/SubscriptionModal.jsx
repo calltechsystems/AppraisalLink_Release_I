@@ -8,7 +8,7 @@ const OneTimePaymentModal = ({
   modalOpen,
   closeModal,
   price,
-  userDetailField
+  userDetailField,
 }) => {
   const [paypalUrl, setPaypalUrl] = useState("");
   const [status, setStatus] = useState(0);
@@ -74,7 +74,6 @@ const OneTimePaymentModal = ({
     window.location.reload();
   };
 
-  
   const logoutHandler = () => {
     localStorage.removeItem("user");
     window.location.href = "/login";
@@ -140,7 +139,9 @@ const OneTimePaymentModal = ({
               {onSuccess ? (
                 <div className="text-center" style={{ fontSize: "19px" }}>
                   <span className="text-dark">
-                    Payment confirmed! We appreciate your business. Please Login again to continue.
+                    <span className="text-color fw-bold">Payment confirmed!</span>
+                    <br /> We appreciate your business. Please Login again to
+                    continue.
                   </span>
                 </div>
               ) : (

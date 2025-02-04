@@ -54,7 +54,12 @@ const SidebarMenu = () => {
       route: "/my-package",
       icon: "flaticon-box",
     },
-    { id: 3, name: "Help desk", route: "/broker-helpdesk", icon: "flaticon-telephone" },
+    {
+      id: 3,
+      name: "Help desk",
+      route: "/broker-helpdesk",
+      icon: "flaticon-telephone",
+    },
     {
       id: 4,
       name: "Contact Us",
@@ -126,11 +131,6 @@ const SidebarMenu = () => {
               </Link>
             </li>
             <li
-              // className={`treeview ${
-              //   isSinglePageActive("/my-properties", route.pathname)
-              //     ? "active"
-              //     : ""
-              // }`}
               className={`treeview ${
                 hasActivePlans
                   ? isSinglePageActive("/my-properties", route.pathname)
@@ -151,6 +151,7 @@ const SidebarMenu = () => {
                 </a>
               )}
             </li>
+
             <li
               className={`treeview ${
                 hasActivePlans
@@ -191,6 +192,31 @@ const SidebarMenu = () => {
                 <a>
                   <i className="flaticon-home"></i>
                   <span>Archived Properties</span>
+                </a>
+              )}
+            </li>
+
+            <li
+              className={`treeview ${
+                hasActivePlans
+                  ? isSinglePageActive(
+                      "/my-completed-properties",
+                      route.pathname
+                    )
+                    ? "active"
+                    : ""
+                  : "disabled"
+              }`}
+            >
+              {hasActivePlans ? (
+                <Link href="/my-completed-properties">
+                  <i className="flaticon-home"></i>
+                  <span>Completed Properties</span>
+                </Link>
+              ) : (
+                <a>
+                  <i className="flaticon-home"></i>
+                  <span>Completed Properties</span>
                 </a>
               )}
             </li>

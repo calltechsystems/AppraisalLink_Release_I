@@ -1034,7 +1034,7 @@ const Index = () => {
                                 style={{ border: "2px solid #97d700" }}
                               ></div>
                               <p className="fs-5 text-center text-dark mt-4">
-                                Are you sure for the order to be{" "}
+                                Are you sure you wish to{" "}
                                 <span
                                   style={{ color: "red", fontWeight: "bold" }}
                                 >
@@ -1045,11 +1045,11 @@ const Index = () => {
                                       }`
                                     : `${
                                         propValue
-                                          ? "On Cancel"
-                                          : "Remove On Hold"
+                                          ? "Cancel"
+                                          : "Remove On Cancel"
                                       }`}{" "}
                                 </span>
-                                ?{" "}
+                                the order ?{" "}
                               </p>
 
                               <div

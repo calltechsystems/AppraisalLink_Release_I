@@ -45,7 +45,12 @@ const SidebarMenu = ({ userData }) => {
       icon: "flaticon-telephone",
     },
 
-    { id: 3, name: "Help desk", route: "/brokerage-helpdesk", icon: "flaticon-telephone" },
+    {
+      id: 3,
+      name: "Help desk",
+      route: "/brokerage-helpdesk",
+      icon: "flaticon-telephone",
+    },
     {
       id: 4,
       name: "Contact Us",
@@ -255,12 +260,37 @@ const SidebarMenu = ({ userData }) => {
               {hasActivePlans ? (
                 <Link href="/brokerage-completed-properties">
                   <i className="flaticon-building"></i>
-                  <span>Completed Orders</span>
+                  <span>My Completed Orders</span>
                 </Link>
               ) : (
                 <a>
                   <i className="flaticon-building"></i>
-                  <span>Completed Orders</span>
+                  <span>My Completed Orders</span>
+                </a>
+              )}
+            </li>
+
+            <li
+              className={`treeview ${
+                hasActivePlans
+                  ? isSinglePageActive(
+                      "/brokers-completed-properties",
+                      route.pathname
+                    )
+                    ? "active"
+                    : ""
+                  : "disabled"
+              }`}
+            >
+              {hasActivePlans ? (
+                <Link href="/brokers-completed-properties">
+                  <i className="flaticon-building"></i>
+                  <span>Brokers Completed Orders</span>
+                </Link>
+              ) : (
+                <a>
+                  <i className="flaticon-building"></i>
+                  <span>Brokers Completed Orders</span>
                 </a>
               )}
             </li>

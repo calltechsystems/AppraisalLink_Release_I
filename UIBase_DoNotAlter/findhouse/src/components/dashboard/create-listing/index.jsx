@@ -939,6 +939,7 @@ const Index = ({ isView, propertyData }) => {
           .then((res) => {
             toast.dismiss();
             const propertyId = res.data.userData?.propertyId;
+            console.log("propert id is :", propertyId);
             setGeneratedPropertyId(propertyId);
             setSuccessModal(true);
             // toast.success("Property Added Successfully");
@@ -1610,7 +1611,7 @@ const Index = ({ isView, propertyData }) => {
                 <div className="modal">
                   <div
                     className="modal-content"
-                    style={{ borderColor: "#2e008b", width: "35%" }}
+                    style={{ borderColor: "#97d700", width: "35%" }}
                   >
                     <div className="col-lg-12">
                       <div className="row">

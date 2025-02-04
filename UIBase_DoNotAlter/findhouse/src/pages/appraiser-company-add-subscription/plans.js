@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import Header from "../../components/common/header/dashboard/Header";
-import MobileMenu from "../../components/common/header/MobileMenu";
+import Header from "../../components/common/header/dashboard/HeaderAppraiserCompany";
+import MobileMenu from "../../components/common/header/MobileMenu_01";
 import Pricing from "./pricing";
-import SidebarMenu from "../../components/common/header/dashboard/SidebarMenu";
+import SidebarMenu from "../../components/common/header/dashboard/SidebarMenu_002";
 import axios from "axios";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
