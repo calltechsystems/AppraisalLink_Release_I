@@ -19,7 +19,7 @@ const generateCustomId = (brokerId, planId) => {
   return `${brokerId}-${planId}-${formattedDate}-${timestamp}`;
 };
 
-const generateRequestPayload = (paymentType, details, userData, currency) => {
+const generateRequestPayload = (paymentType, details, userData, currency, userDetailField) => {
   const { title, id, price } = details;
 
   if (paymentType === "oneTime") {
@@ -76,41 +76,41 @@ const generateRequestPayload = (paymentType, details, userData, currency) => {
       quantity: "1",
       subscriber: {
         name: {
-          given_name: userData?.broker_Details?.firstName,
-          surname: userData?.broker_Details?.lastName,
+          given_name: userData?.[userDetailField]?.firstName,
+          surname: userData?.[userDetailField]?.lastName,
           phone: {
             phone_type: "MOBILE",
-            phone_number: userData?.broker_Details?.phoneNumber,
+            phone_number: userData?.[userDetailField]?.phoneNumber,
           },
         },
-        email_address: userData?.broker_Details?.emailId,
+        email_address: userData?.[userDetailField]?.emailId,
         shipping_address: {
           name: {
             full_name:
-              userData?.broker_Details?.firstName +
+              userData?.[userDetailField]?.firstName +
               " " +
-              userData?.broker_Details?.lastName,
+              userData?.[userDetailField]?.lastName,
           },
           address: {
             address_line_1:
-              userData?.broker_Details?.apartmentNo +
+              userData?.[userDetailField]?.apartmentNo +
               "," +
-              userData?.broker_Details?.streetNumber +
+              userData?.[userDetailField]?.streetNumber +
               " " +
-              userData?.broker_Details?.streetName +
+              userData?.[userDetailField]?.streetName +
               " " +
-              userData?.broker_Details?.area,
+              userData?.[userDetailField]?.area,
             address_line_2:
-              userData?.broker_Details?.apartmentNo +
+              userData?.[userDetailField]?.apartmentNo +
               "," +
-              userData?.broker_Details?.streetNumber +
+              userData?.[userDetailField]?.streetNumber +
               " " +
-              userData?.broker_Details?.streetName +
+              userData?.[userDetailField]?.streetName +
               " " +
-              userData?.broker_Details?.area,
-            admin_area_2: userData?.broker_Details?.province,
-            admin_area_1: userData?.broker_Details?.city,
-            postal_code: userData?.broker_Details?.postalCode,
+              userData?.[userDetailField]?.area,
+            admin_area_2: userData?.[userDetailField]?.province,
+            admin_area_1: userData?.[userDetailField]?.city,
+            postal_code: userData?.[userDetailField]?.postalCode,
             country_code: "US",
           },
         },
@@ -180,7 +180,8 @@ const generateResponsePayload = (
   request,
   response,
   currentSubscription,
-  topUpDetails
+  topUpDetails,
+  userDetailField
 ) => {
   const { title, id, price } = details;
   console.log({
@@ -201,7 +202,7 @@ const generateResponsePayload = (
       planName: currentSubscription?.planName,
       userId: userData?.userId,
       paymentId: response?.id,
-      topUpId: topUpDetails?.selectedTopUp?.id,
+      topUpId: topUpDetails?.id,
       paymentRequestSent: JSON.stringify(request),
       paymentResponseReceived: JSON.stringify(response),
       status: "COMPLETED",
@@ -218,11 +219,11 @@ const generateResponsePayload = (
       startTime: new Date(convertToCanadaTime(new Date())).toISOString(),
       subscriber: {
         profileName:
-          userData?.broker_Details?.firstName +
+          userData?.[userDetailField]?.firstName +
           " " +
-          userData?.broker_Details?.lastName,
-        phoneId: userData?.broker_Details?.phoneNumber,
-        emailId: userData?.broker_Details?.emailId,
+          userData?.[userDetailField]?.lastName,
+        phoneId: userData?.[userDetailField]?.phoneNumber,
+        emailId: userData?.[userDetailField]?.emailId,
       },
       applicationContext: {
         brandName: "Appraisal Land",
@@ -235,7 +236,7 @@ const generateResponsePayload = (
         source: response?.paymentDetails?.paymentSource,
       },
       paymentStatus: "COMPLETED",
-      paymenttype: response?.paymentDetails?.paymentSource,
+      paymenttype: "RECURRING",
       currencycode: "CAD",
       paymentId: response?.paymentDetails?.orderID,
       paymentRequestSent: JSON.stringify(request),

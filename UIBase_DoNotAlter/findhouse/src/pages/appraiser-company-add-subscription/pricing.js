@@ -14,49 +14,12 @@ const Pricing = ({
   topupData,
   setData,
   currentSubscription,
+  setcurrentSubscription,
   setPrice,
+  planData,
+  canUpgrade,
+  userDetailField
 }) => {
-  const pricingContentForMonthly = [
-    {
-      id: 1,
-      price: "11",
-      title: "Lite",
-      features: ["30 Days Validity"],
-    },
-    {
-      id: 2,
-      price: "19",
-      title: "Pro",
-      features: ["30 Days Validity"],
-    },
-    {
-      id: 3,
-      price: "35",
-      title: "Ultimate",
-      features: ["30 Days Validity"],
-    },
-  ];
-
-  const pricingContentForYearly = [
-    {
-      id: 1,
-      price: "132",
-      title: "Lite",
-      features: ["365 Days Validity"],
-    },
-    {
-      id: 2,
-      price: "228",
-      title: "Pro",
-      features: ["365 Days Validity"],
-    },
-    {
-      id: 3,
-      price: "420",
-      title: "Ultimate",
-      features: ["365 Days Validity"],
-    },
-  ];
   let userData = {};
   const [selectedPackage, setSelectedPackage] = useState({});
 
@@ -76,28 +39,61 @@ const Pricing = ({
   }, []);
 
   const selectedIdStyle = selectedId ? selectedId : "2";
-  const content =
-    isPlan === 1 ? pricingContentForMonthly : pricingContentForYearly;
 
-  const selectPackageHandler = (id, title, price, type) => {
+  const selectPackageHandler = (id, title, price, type, item) => {
     setModalOpen(true);
     setPrice({
       id: id,
       title: title,
       price: price,
       type: type,
+      item,
+      paypalPlanId:
+        type == "plan" || type == "upgrade_plan" ? item?.payPalProductId : "",
     });
+  };
+
+  const topUpHandler = (id, data) => {
+    setSelectedPlanId(id);
+    setModalOpen(true);
+    let updatedData = {
+      id: data?.id,
+      title: data?.topupDescription,
+      price: data?.tupUpAmount,
+      type: "topup",
+      data,
+    };
+
+    setPrice(updatedData);
+    setSelectedTopUp(updatedData);
+
   };
 
   const setPlan = (planId, type) => {
     setSelectedPlanId(planId);
     setType(type);
     if (String(type) === "2" || String(type) === "3" || String(type) === "4") {
-      setOpenCancelModal(true);
+      const selectedTopUp = type == 3 ? topupData[0] : topupData[1];
+      setModalOpen(true);
+      let data = {
+        id: selectedTopUp?.id,
+        title: selectedTopUp?.topupDescription,
+        price: selectedTopUp?.tupUpAmount,
+        type: "",
+        selectedTopUp,
+      };
+
+      if (String(type) === "2") {
+        data.type = "cancel_plan";
+      } else {
+        data.type = "topup";
+      }
+
+      setPrice(data);
       if (String(type) === "3") {
-        setSelectedTopUp(topupData[0]);
+        setSelectedTopUp(selectedTopUp);
       } else if (String(type) === "4") {
-        setSelectedTopUp(topupData[1]);
+        setSelectedTopUp(selectedTopUp);
       }
     }
   };
@@ -115,25 +111,8 @@ const Pricing = ({
     const userData = JSON.parse(localStorage.getItem("user"));
 
     if (String(type) === "2") {
-      const payload = {
-        UserId: userData.userId,
-        token: userData.token,
-      };
-
-      toast.loading("Cancelling the subscription !!");
-      const encryptedBody = encryptionData(payload);
-      axios
-        .post("/api/cancelSubscription", encryptedBody)
-        .then((res) => {
-          toast.success("Successfully cancelled the subscription!");
-        })
-        .catch((err) => {
-          toast.error("Try Again !!");
-        });
-
       window.location.reload();
     } else if (String(type) === "3" || String(type) === "4") {
-      //low add on topup
 
       const payload = {
         TopUpId: selectedTopUp.id,
@@ -179,6 +158,18 @@ const Pricing = ({
   }, [currentSubscription, data]);
 
   useEffect(() => {
+    setcurrentSubscription({
+      ...currentSubscription,
+      planId: currentActivePlan?.id,
+      amount: currentActivePlan?.amount,
+      monthlyAmount: currentActivePlan?.monthlyAmount,
+      noOfProperties: currentActivePlan?.noOfProperties,
+      payPalProductId: currentActivePlan?.payPalProductId,
+      description: currentActivePlan?.description,
+    });
+  }, [currentActivePlan]);
+
+  useEffect(() => {
     let Monthly = [],
       Yearly = [];
     data?.map((row, index) => {
@@ -204,8 +195,8 @@ const Pricing = ({
             className={`pricing_table  ${
               String(selectedIdStyle) === String(item.id) ? "pricing_table" : ""
             }
-          ${true ? "active-selected-plan" : ""}
-          `}
+            ${true ? "active-selected-plan" : ""}
+            `}
           >
             <div
               className={`${
@@ -247,9 +238,11 @@ const Pricing = ({
               <div className="pricing_content">
                 <ul className="mb0">
                   <li key={idx}>{item.noOfProperties} Properties Quotes</li>
-                  {content[idx]?.features?.map((val, i) => (
-                    <li key={i}>{val}</li>
-                  ))}
+                  {item?.monthlyAmount > 0 ? (
+                    <li>30 Days Validity</li>
+                  ) : (
+                    <li>365 Days Validity</li>
+                  )}
                 </ul>
                 <div className="pricing_header">
                   <h2 className="text-dark">
@@ -270,7 +263,8 @@ const Pricing = ({
                       isPlan === 1
                         ? item.monthlyAmount - item.discount
                         : item.yearlyAmount - item.discount,
-                      "plan"
+                      "plan",
+                      item
                     )
                   }
                 >
@@ -282,7 +276,31 @@ const Pricing = ({
 
               {!hideButton &&
                 currentActivePlan &&
-                String(currentActivePlan.id) !== String(item.id) && (
+                String(currentActivePlan.id) !== String(item.id) &&
+                (currentActivePlan?.$id ? (
+                  !canUpgrade ? (
+                    <div
+                      className="pricing_footer"
+                      onClick={() =>
+                        selectPackageHandler(
+                          item.id,
+                          item.description,
+                          isPlan === 1
+                            ? item.monthlyAmount - item.discount
+                            : item.yearlyAmount - item.discount,
+                          "upgrade_plan",
+                          item
+                        )
+                      }
+                    >
+                      <a className={`btn btn-color_01 w-100`} href="#">
+                        Upgrade Plan
+                      </a>
+                    </div>
+                  ) : (
+                    ""
+                  )
+                ) : (
                   <div
                     className="pricing_footer"
                     onClick={() =>
@@ -292,15 +310,16 @@ const Pricing = ({
                         isPlan === 1
                           ? item.monthlyAmount - item.discount
                           : item.yearlyAmount - item.discount,
-                        "plan"
+                        "plan",
+                        item
                       )
                     }
                   >
                     <a className={`btn btn-color_01 w-100`} href="#">
-                      {currentActivePlan?.$id ? "Upgrade Plan" : "Select Plan"}
+                      Select Plan
                     </a>
                   </div>
-                )}
+                ))}
               {!hideButton &&
                 String(currentActivePlan?.id) === String(item.id) && (
                   <select
@@ -309,14 +328,33 @@ const Pricing = ({
                       borderColor: "black",
                       borderWidth: "2px",
                     }}
-                    onClick={(e) => setPlan(item.id, e.target.value)}
                     className="pricing_footer btn btn-color_01 form-select"
+                    onChange={(e) => {
+                      const selectedValue = e.target.value;
+                      if (selectedValue === "cancel") {
+                        setPlan(item.id, 2);
+                      } else {
+                        const selectedTopUp = topupData?.find(
+                          (topUp) =>
+                            topUp.$id == (selectedValue)
+                        );
+                        if (selectedTopUp) {
+                          topUpHandler(item.id,selectedTopUp);
+                        }
+                      }
+                    }}
                   >
-                    <option value={1}>Add Top Up / Cancel Subscription </option>
-                    <option value={3}>
-                      Add {topupData[0]?.noOfProperties} Properties
-                    </option>
-                    <option value={2}>Cancel Subscription</option>
+                    <option value="">Add Top Up / Cancel Subscription</option>
+                    {topupData?.map((topUp) => (
+                      <option
+                        key={topUp.$id}
+                        value={topUp.$id}
+                      >
+                        Add {topUp.noOfProperties} Properties (${" "}
+                        {topUp.tupUpAmount})
+                      </option>
+                    ))}
+                    <option value="cancel">Cancel Subscription</option>
                   </select>
                 )}
             </div>
@@ -400,7 +438,8 @@ const Pricing = ({
                           selectedTopUp.id,
                           selectedTopUp.topupDescription,
                           selectedTopUp.tupUpAmount,
-                          "topup"
+                          "topup",
+                          selectedTopUp
                         )
                     : cancelPackageHandler
                 }

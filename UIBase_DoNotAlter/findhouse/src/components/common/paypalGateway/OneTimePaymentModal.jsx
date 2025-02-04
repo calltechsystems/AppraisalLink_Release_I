@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { ClipLoader } from "react-spinners";
 import Link from "next/link";
 import Image from "next/image";
-import ReviseCheckout from "./UpgradeCheckoutPage";
+import CheckoutPage from "./CheckoutPage";
 
-const ReviseSubscriptionModal = ({
+const OneTimePaymentModal = ({
   currentSubscription,
   modalOpen,
   closeModal,
   price,
+  userDetailField
 }) => {
   const [paypalUrl, setPaypalUrl] = useState("");
   const [status, setStatus] = useState(0);
@@ -24,7 +25,7 @@ const ReviseSubscriptionModal = ({
   //set the default Error message
   useEffect(() => {
     setErrorMessage(
-      "The action window may have been closed unexpectedly, either due to upgradation or an abrupt closure. Please try again to complete your payment."
+      "The action window may have been closed unexpectedly, either due to cancellation or an abrupt closure. Please try again to complete your payment."
     );
   }, []);
 
@@ -65,7 +66,7 @@ const ReviseSubscriptionModal = ({
     setShowPaypalPage(true);
   };
 
-  console.log({ onSuccess });
+
   const closePaypalPage = () => {
     setShowPaypalPage(false);
     setCurrentSelectedPlan({});
@@ -80,6 +81,7 @@ const ReviseSubscriptionModal = ({
     setCurrentSelectedPlan({});
     setTermsPolicyAccepted(false);
     closeModal();
+    window.location.reload();
   };
 
   return (
@@ -133,7 +135,6 @@ const ReviseSubscriptionModal = ({
                 </div>
               </div>
             </div>
-
             <>
               <div
                 className="mt-2 mb-3"
@@ -143,8 +144,7 @@ const ReviseSubscriptionModal = ({
               {onSuccess ? (
                 <div className="text-center" style={{ fontSize: "19px" }}>
                   <span className="text-dark">
-                    Your subscription has been upgraded successfully . Thank
-                    you for your time and it would reflect from your next cycle.
+                    Payment confirmed! We appreciate your business
                   </span>
                 </div>
               ) : (
@@ -155,12 +155,11 @@ const ReviseSubscriptionModal = ({
                 !showPaypalPage ? (
                   <div className="text-center" style={{ fontSize: "19px" }}>
                     <span className="text-dark">
-                      Are you sure you want to{" "}
-                      <span className="text-success fw-bold">Upgrade</span> ?
+                      Please checkout for further
                     </span>
                     <br />
                     <span className="text-dark">
-                      Over your selected subscription plan{""}
+                    You have selected to add upto{" "}
                       <label
                         style={{
                           fontWeight: "bold",
@@ -168,9 +167,10 @@ const ReviseSubscriptionModal = ({
                           color: "#2e008b",
                         }}
                       >
-                        {capitalizeFirstLetter(price.title)}
+                        add {price.title} upto{" "}
+                        {price?.selectedTopUp?.noOfProperties}
                       </label>{" "}
-                      with value{" "}
+                      properties for{" "}
                       <label
                         style={{
                           fontWeight: "bold",
@@ -178,24 +178,25 @@ const ReviseSubscriptionModal = ({
                           color: "#2e008b",
                         }}
                       >
-                        ${price.price}{" "}
+                        ${price.price}
                       </label>
-                      (monthly) ?
+                      .{" "}
                     </span>
                     <br />
                     <span style={{ fontSize: "15px" }}>
-                      Please click checkout to proceed with the Order
+                      Please click checkout to proceed with the Order.
                     </span>
                   </div>
                 ) : showPaypalPage && status == 1 ? (
                   <>
-                    <ReviseCheckout
+                    <CheckoutPage
                       currentSubscription={currentSubscription}
                       planDetails={currentSelectedPlan}
                       setErrorOccurred={setErrorOccurred}
                       setOnSuccess={setOnSuccess}
                       setErrorMessage={setErrorMessage}
-                      paymentType={"upgrade_plan"}
+                      paymentType={"oneTime"}
+                      userDetailField={userDetailField}
                     />
                   </>
                 ) : (
@@ -224,7 +225,7 @@ const ReviseSubscriptionModal = ({
                     style={{ border: "1px solid black" }}
                   />
                   <label
-                    className="form-check-label form-check-label"
+                    className="form-check-label form-check-label ml-2"
                     htmlFor="terms"
                     style={{ marginLeft: "10px" }}
                   >
@@ -254,7 +255,8 @@ const ReviseSubscriptionModal = ({
                   Cancel
                 </button>
               </div>
-            ) : // <label
+            ) : 
+            // <label
             //   className="btn btn-color w-25"
             //   style={{
             //     display: "flex",
@@ -267,21 +269,19 @@ const ReviseSubscriptionModal = ({
             //   <span style={{ marginLeft: "10px" }}>Processing...</span>
             // </label>
             status == 0 && !showPaypalPage ? (
-              <>
-                <div className="d-flex justify-content-center gap-2">
-                  <button className="btn btn-color w-25" onClick={resetFields}>
-                    Cancel
-                  </button>
-                  <button
-                    className="btn btn-color"
-                    onClick={openPaypalPage}
-                    // style={{ marginLeft: "20px" }}
-                    disabled={!termsPolicyAccepted}
-                  >
-                    Proceed to Upgradation
-                  </button>
-                </div>
-              </>
+              <div className="d-flex justify-content-center gap-2">
+                <button className="btn btn-color w-25" onClick={resetFields}>
+                  Cancel
+                </button>
+                <button
+                  className="btn btn-color w-25"
+                  // style={{ marginLeft: "20px" }}
+                  onClick={openPaypalPage}
+                  disabled={!termsPolicyAccepted}
+                >
+                  Checkout
+                </button>
+              </div>
             ) : (
               <div className="text-center">
                 <button className="btn btn-color w-25" onClick={resetFields}>
@@ -305,4 +305,4 @@ const ReviseSubscriptionModal = ({
   );
 };
 
-export default ReviseSubscriptionModal;
+export default OneTimePaymentModal;

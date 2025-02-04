@@ -1,21 +1,15 @@
 import React, { useEffect, useState } from "react";
-import Header from "../../components/common/header/dashboard/Header_02";
+import Header from "../../components/common/header/dashboard/Header";
 import MobileMenu from "../../components/common/header/MobileMenu";
 import Pricing from "./pricing";
-import SidebarMenu from "../../components/common/header/dashboard/SidebarMenu_01";
+import SidebarMenu from "../../components/common/header/dashboard/SidebarMenu";
 import axios from "axios";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import Image from "next/image";
 
-const Index = ({
-  setModalOpen,
-  userInfo,
-  currentSubscription,
-  setPrice,
-  modalOpen,
-}) => {
+const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen, setcurrentSubscription, setCanUpgrade,canUpgrade, userDetailField }) => {
   const [selectedPlan, setSelectedPlan] = useState("Monthly");
   const [planData, setPlanData] = useState([]);
   const [isChecked, setIsChecked] = useState(false);
@@ -26,7 +20,7 @@ const Index = ({
   let userData = {};
   useEffect(() => {
     userData = JSON.parse(localStorage.getItem("user"));
-  }, []);
+  });
 
   useEffect(() => {
     const isPaying = JSON.parse(localStorage.getItem("isPaying"));
@@ -62,6 +56,10 @@ const Index = ({
               userId: data?.userId,
             },
           });
+
+          setCanUpgrade(res3?.data?.data?.upgradeEligible)
+
+
 
           const currentSubscriptionPlan = currentSubscription;
 
@@ -118,7 +116,7 @@ const Index = ({
 
   return (
     <>
-      <Header userData={userInfo} />
+      <Header />
 
       <MobileMenu />
 
@@ -164,6 +162,11 @@ const Index = ({
                 setData={setPlanData}
                 topupData={TopUpData}
                 userData={userData}
+                planData={planData}
+                canUpgrade={canUpgrade}
+                setCanUpgrade={setCanUpgrade}
+                setcurrentSubscription={setcurrentSubscription}
+                userDetailField={userDetailField}
               />
             )}
           </div>
@@ -229,8 +232,6 @@ const Index = ({
                 style={{ border: "2px solid #97d700" }}
               ></div>
               <span className="text-center mb-2 text-dark fw-bold">
-                {/* Can't appraise the property. All properties are being
-                      used!! */}
                 Due to a failed payment or page reload, you have been redirected
                 to the home page. Please click here to log in again.
               </span>
