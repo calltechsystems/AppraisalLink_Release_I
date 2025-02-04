@@ -1,15 +1,24 @@
 import React, { useEffect, useState } from "react";
-import Header from "../../components/common/header/dashboard/Header";
-import MobileMenu from "../../components/common/header/MobileMenu";
+import Header from "../../components/common/header/dashboard/HeaderBrokerage";
+import MobileMenu from "../../components/common/header/MobileMenu_02";
 import Pricing from "./pricing";
-import SidebarMenu from "../../components/common/header/dashboard/SidebarMenu";
+import SidebarMenu from "../../components/common/header/dashboard/SidebarMenuBrokerage";
 import axios from "axios";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import Image from "next/image";
 
-const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen, setcurrentSubscription, setCanUpgrade,canUpgrade, userDetailField }) => {
+const Index = ({
+  setModalOpen,
+  currentSubscription,
+  setPrice,
+  modalOpen,
+  setcurrentSubscription,
+  setCanUpgrade,
+  canUpgrade,
+  userDetailField,
+}) => {
   const [selectedPlan, setSelectedPlan] = useState("Monthly");
   const [planData, setPlanData] = useState([]);
   const [isChecked, setIsChecked] = useState(false);
@@ -57,9 +66,7 @@ const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen, setcurr
             },
           });
 
-          setCanUpgrade(res3?.data?.data?.upgradeEligible)
-
-
+          setCanUpgrade(res3?.data?.data?.upgradeEligible);
 
           const currentSubscriptionPlan = currentSubscription;
 
@@ -131,17 +138,17 @@ const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen, setcurr
         </div>
       </div>
 
-      <section className="our-dashbord dashbord bgc-f7 pb50" style={{}}>
-        <div className="container-fluid ovh">
-          <div className="col-lg-12 col-xl-12 text-center mt-1 mb-5">
+      <section
+        className="our-dashbord dashbord bgc-f7 pb50"
+        
+      >
+        <div className="container-fluid ovh table-padding">
+          <div className="col-lg-12 col-xl-12 text-center mb-5">
             <div className="style2 mb30-991">
               <h3 className="heading-forms">
                 Add / Upgrade / Cancel Subscriptions
               </h3>
             </div>
-          </div>
-          <div className="row">
-            <div className="col-lg-12 col-lg-6 maxw100flex-992"></div>
           </div>
           <div className="row">
             {planData.length === 0 ? (

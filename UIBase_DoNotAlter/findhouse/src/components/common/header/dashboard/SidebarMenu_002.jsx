@@ -330,6 +330,32 @@ const SidebarMenu = ({ userData }) => {
                 </a>
               )}
             </li>
+
+            <li
+              className={`treeview ${
+                hasActivePlans
+                  ? isSinglePageActive(
+                      "/assigned-completed-properties",
+                      route.pathname
+                    )
+                    ? "active"
+                    : ""
+                  : "disabled"
+              }`}
+            >
+              {hasActivePlans ? (
+                <Link href="/assigned-completed-properties">
+                  <i className="flaticon-building"></i>
+                  <span>Assigned Completed Orders</span>
+                </Link>
+              ) : (
+                <a>
+                  <i className="flaticon-building"></i>
+                  <span>Assigned Completed Orders</span>
+                </a>
+              )}
+            </li>
+
           </ul>
         </li>
         <li className="title">
@@ -362,35 +388,35 @@ const SidebarMenu = ({ userData }) => {
         <li className="title">
           <span>Manage Account</span>
           <ul>
-              {manageAccountTag.map((item) => (
-                <li
-                  className={`${
-                    isSinglePageActive(item.route, route.pathname)
-                      ? "active"
-                      : !hasActivePlans && item.id === 2
-                      ? "disabled"
-                      : ""
-                  }`}
-                  key={item.id}
-                >
-                  {!hasActivePlans && item.id === 2 ? (
-                    <a
-                      style={{
-                        color: "#999",
-                        cursor: "not-allowed",
-                        opacity: "0.6",
-                      }}
-                    >
-                      <i className={item.icon}></i> <span>{item.name}</span>
-                    </a>
-                  ) : (
-                    <Link href={item.route}>
-                      <i className={item.icon}></i> <span>{item.name}</span>
-                    </Link>
-                  )}
-                </li>
-              ))}
-            </ul>
+            {manageAccountTag.map((item) => (
+              <li
+                className={`${
+                  isSinglePageActive(item.route, route.pathname)
+                    ? "active"
+                    : !hasActivePlans && item.id === 2
+                    ? "disabled"
+                    : ""
+                }`}
+                key={item.id}
+              >
+                {!hasActivePlans && item.id === 2 ? (
+                  <a
+                    style={{
+                      color: "#999",
+                      cursor: "not-allowed",
+                      opacity: "0.6",
+                    }}
+                  >
+                    <i className={item.icon}></i> <span>{item.name}</span>
+                  </a>
+                ) : (
+                  <Link href={item.route}>
+                    <i className={item.icon}></i> <span>{item.name}</span>
+                  </Link>
+                )}
+              </li>
+            ))}
+          </ul>
         </li>
       </ul>
     </>

@@ -7,7 +7,9 @@ import { encryptionData } from "../../../utils/dataEncryption";
 import { useRouter } from "next/router";
 import Loader from "./Loader";
 import { AppraiserStatusOptions } from "../create-listing/data";
-import { FaArchive } from "react-icons/fa";
+import { FaArchive, FaEye } from "react-icons/fa";
+import Image from "next/image";
+
 const headCells = [
   {
     id: "order_id",
@@ -40,7 +42,7 @@ const headCells = [
     width: 160,
   },
   {
-    id: "remark",
+    id: "remarkButton",
     numeric: false,
     label: "Appraisal Remark",
     width: 160,
@@ -169,9 +171,10 @@ export default function Exemple({
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
   const [Appraiser, setAppraiser] = useState({});
-
+  const [selectedProperty, setSelectedProperty] = useState(null);
+  const [remarkModal, setRemarkModal] = useState(false);
+  const [remark, setRemark] = useState("N.A.");
   const [allListedAssignAppraiser, setallListedAssignAppraiser] = useState([]);
-
   const [dataFetched, setDataFetched] = useState(false);
   const [allProperties, setAllProperties] = useState([]);
   const [allAssignAppraiser, setAllAssignAppraiser] = useState([]);
@@ -182,6 +185,19 @@ export default function Exemple({
       setRefresh(true);
     }
   }, [searchInput]);
+
+  const openRemarkModal = (property) => {
+    const isBidded = filterBidsWithin24Hours(property); // Get the isBidded data
+    setRemark(isBidded && isBidded.remark ? isBidded.remark : "N.A.");
+    setSelectedProperty(property);
+    setRemarkModal(true);
+  };
+
+  const closeRemarkModal = () => {
+    setRemarkModal(false);
+    setRemark("N.A.");
+    setSelectedProperty(null);
+  };
 
   const calculateDate = (oldBid, newBid) => {
     if (!oldBid.requestTime) {
@@ -468,15 +484,20 @@ export default function Exemple({
   useEffect(() => {
     let tempGeneratedProp = [];
     const getData = () => {
+      let tempData = [];
+
       properties.map((property, index) => {
         // const currentProperty = propertyDetail?.propertyDetails;
-
         // const property = getPropertyInfo(propertyDetail?.propertyid);
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
         tempGeneratedProp.push(property);
         console.log("isBidded", property.orderId, isBidded, property);
         const isWait = property?.isonhold || property?.isoncancel;
+
+        // Skip Completed Orders
+        if (isBidded.orderstatus === 3) return;
+
         const updatedRow = {
           order_id: property?.orderId,
           address: property?.city
@@ -487,7 +508,26 @@ export default function Exemple({
             : "$ 0",
           purpose: property?.purpose ? property?.purpose : "N.A.",
           // remark: isBidded?.remark ? <p>{isBidded.remark}</p> : "N.A.",
-          remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
+          // remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
+          remarkButton: (
+            <li
+              className="list-inline-item"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="View Remark"
+            >
+              <div className="w-100" onClick={() => openRemarkModal(property)}>
+                <button href="#" className="btn btn-color">
+                  <Link href="#">
+                    <span className="text-light">
+                      {" "}
+                      <FaEye />
+                    </span>
+                  </Link>
+                </button>
+              </div>
+            </li>
+          ),
           appraiser_assign_date: property?.createdDateTime
             ? formatDateTime(property?.createdDateTime)
             : "-",
@@ -997,6 +1037,69 @@ export default function Exemple({
           dataFetched={dataFetched}
           end={end}
         />
+      )}
+
+      {remarkModal && (
+        <div className="modal">
+          <div className="modal-content" style={{ width: "35%" }}>
+            <div className="row">
+              <div className="col-lg-12">
+                <Link href="/" className="">
+                  <Image
+                    width={50}
+                    height={45}
+                    className="logo1 img-fluid"
+                    style={{ marginTop: "-20px" }}
+                    src="/assets/images/logo.png"
+                    alt="header-logo2.png"
+                  />
+                  <span
+                    style={{
+                      color: "#2e008b",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    Appraisal
+                  </span>
+                  <span
+                    style={{
+                      color: "#97d700",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    {" "}
+                    Land
+                  </span>
+                </Link>
+              </div>
+            </div>
+            <h3 className="text-center mt-3" style={{ color: "#2e008b" }}>
+              Appraisal Remark - Property Id{" "}
+              <span style={{ color: "#97d700" }}>
+                #{selectedProperty?.orderId}
+              </span>
+            </h3>
+            <div className="mb-2" style={{ border: "2px solid #97d700" }}></div>
+            <p className="fs-5 text-center text-dark mt-4">{remark}</p>
+            <div
+              className="mb-3 mt-4"
+              style={{ border: "2px solid #97d700" }}
+            ></div>
+            <div className="col-lg-12 d-flex justify-content-center gap-2">
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                onClick={closeRemarkModal}
+              >
+                Ok
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );

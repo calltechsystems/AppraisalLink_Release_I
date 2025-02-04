@@ -1785,7 +1785,7 @@ const Index = () => {
                         <div className="row">
                           <div className="col-lg-12 text-center">
                             <h3 className=" text-color mt-3">
-                              Appraisal Status Updation – Property Id{" "}
+                              Appraisal Status – Property Id{" "}
                               <span style={{ color: "#97d700" }}>
                                 #{selectedPropertyNew.orderId}
                               </span>
@@ -1842,16 +1842,16 @@ const Index = () => {
                           <h4 style={{ color: "#2e008b", fontWeight: "bold" }}>
                             Remark
                           </h4>
-                          <input
-                            required
-                            type="text"
+                          <textarea
                             className="form-control mb-3"
                             id="formGroupExampleInput3"
                             onChange={(e) => setRemark(e.target.value)}
                             value={remark}
-                            style={{ overflow: "scroll" }}
-                            maxLength="50"
-                          />
+                            style={{ overflow: "auto", resize: "vertical" }}
+                            maxLength="300"
+                            rows="4"
+                            placeholder="Enter your remark here..."
+                          ></textarea>
                         </div>
                         <div
                           className="mb-3 mt-2"
@@ -1923,7 +1923,7 @@ const Index = () => {
                     <div className="row">
                       <div className="col-lg-12 text-center">
                         <h3 className=" text-color mt-3">
-                          Appraisal Status Updation – Property Id{" "}
+                          Appraisal Status – Property Id{" "}
                           <span style={{ color: "#97d700" }}>
                             #{propertyId}
                           </span>
