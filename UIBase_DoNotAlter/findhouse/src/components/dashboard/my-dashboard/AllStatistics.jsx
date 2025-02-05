@@ -122,7 +122,7 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
             <div className="timer">{item.name}</div>
             <p>{item.timer}</p>
           </div>
-          <div className="icon_new">
+          <div className="icon">
             <span className={item.icon}></span>
           </div>
         </div>
