@@ -1,7 +1,5 @@
-﻿namespace DAL
-{
-    public class Class1
-    {
+﻿namespace DAL;
 
-    }
+public class Class1
+{
 }

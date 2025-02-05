@@ -1,9 +1,8 @@
-﻿namespace CallTech
+﻿namespace CallTech;
+
+public class CorsConfiguration
 {
-    public class CorsConfiguration
-    {
-        public string[] AllowedOrigins { get; set; }
-        public string[] AllowedHeaders { get; set; }
-        public string[] AllowedMethods { get; set; }
-    }
+    public string[] AllowedOrigins { get; set; }
+    public string[] AllowedHeaders { get; set; }
+    public string[] AllowedMethods { get; set; }
 }

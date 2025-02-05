@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace DBL.Models;
 
-namespace DBL.Models;
-
-public partial class Subscription
+public class Subscription
 {
     public long SubscriptionId { get; set; }
 

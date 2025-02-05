@@ -1,330 +1,302 @@
-﻿using Amazon.SimpleNotificationService.Util;
-using Azure.Core;
-using CallTech.Classes;
+﻿using CallTech.Classes;
 using DAL.Classes;
+using DAL.Repository;
 using DAL.Rpository;
-using DBL.Models;
-//using DBL.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Serilog;
-using System.Linq.Expressions;
 using System.Security.Cryptography;
+using System.Text;
+//using DBL.Models;
 
-namespace CallTech.Controllers
+namespace CallTech.Controllers;
+
+[Route("api/com.appraisalland.Registration")]
+[ApiController]
+public class RegistrationController : ControllerBase
 {
-    [Route("api/com.appraisalland.Registration")]
-    [ApiController]
-    public class RegistrationController : ControllerBase
+    private readonly IAuthService _authService;
+    private readonly IEmailService _emailService;
+    private IPropertyService _propertyService;
+    private readonly Log Log = new();
+    private readonly IRegistrationService registrationService;
+
+    public RegistrationController(IRegistrationService _registrationService, IPropertyService propertyService,
+        IEmailService emailService, IAuthService authService)
     {
-        private readonly IAuthService _authService;
-        private IRegistrationService registrationService;
-        private IPropertyService _propertyService;
-        private IEmailService _emailService;
-        Log Log = new Log();
-        public RegistrationController(IRegistrationService _registrationService, IPropertyService propertyService, IEmailService emailService, IAuthService authService)
-        {
-            registrationService = _registrationService;
-            _propertyService = propertyService;
-            _emailService = emailService;
-            _authService = authService;
-        }
+        registrationService = _registrationService;
+        _propertyService = propertyService;
+        _emailService = emailService;
+        _authService = authService;
+    }
 
-        // [Route("Registration")]
-        [AllowAnonymous]
-        [HttpPost("userRegistration")]
-        public async Task<IActionResult> userRegistration([FromBody] ClsUserInformation model)
+    // [Route("Registration")]
+    [AllowAnonymous]
+    [HttpPost("userRegistration")]
+    public async Task<IActionResult> userRegistration([FromBody] ClsUserInformation model)
+    {
+        Log.writeLog("Register Function started");
+        try
         {
-            Log.writeLog("Register Function started");
-            try
+            if (model.UserType > 0 && model.UserType < 8)
             {
-                if (model.UserType > 0 && model.UserType < 8)
+                // CreatePasswordHash(model.Password, out byte[] passwordHash, out byte[] passwordSalt);
+                //bool valid;
+
+
+                //var PasswordHash = passwordHash;
+                //var PasswordSalt = passwordSalt;
+
+                if (registrationService.EmailExists(model.Email)) return Conflict("Email is already registered.");
+                //else
+                //{
+                //    string apiKey = "xtayxnjtfxy0z3vcjxi4b4k0zrrrfmau";
+                // valid = await _emailService.SendEmail(model.Email, apiKey);
+                //}
+
+                //if (valid)
+                //{
+                var username = model.Email;
+                var token = registrationService.GenerateJwtToken(model);
+                var valid = _emailService.SendEmail(username, token);
+                if (valid)
                 {
-                    // CreatePasswordHash(model.Password, out byte[] passwordHash, out byte[] passwordSalt);
-                    //bool valid;
-
-
-                    //var PasswordHash = passwordHash;
-                    //var PasswordSalt = passwordSalt;
-
-                    if (registrationService.EmailExists(model.Email))
-                    {
-                        return Conflict("Email is already registered.");
-                    }
-                    //else
-                    //{
-                    //    string apiKey = "xtayxnjtfxy0z3vcjxi4b4k0zrrrfmau";
-                    // valid = await _emailService.SendEmail(model.Email, apiKey);
-                    //}
-
-                    //if (valid)
-                    //{
-                    var username = model.Email;
-                    string token = registrationService.GenerateJwtToken(model);
-                    var valid = _emailService.SendEmail(username, token);
-                    if (valid)
-                    {
-                        var success = await registrationService.RegisterUser(model, token);
-                    }
-                    //    if (success == true)
-                    //    {
-                    //        var user = registrationService.UserId(username);
-                    //        switch (user.UserType)
-                    //        {
-                    //            case 1:
-                    //                registrationService.BrokerRegister(user.UserId);
-                    //                break;
-                    //            case 2:
-                    //                registrationService.BrokerageRegister(user.UserId);
-                    //                break;
-                    //            case 3:
-                    //                registrationService.AppraiserIndividualRegister(user.UserId);
-                    //                break;
-                    //            case 4:
-                    //                registrationService.AppraiserCompRegister(user.UserId);
-                    //                break;
-                    //            default:
-                    //                // code block
-                    //                break;
-                    //        }
-                    //        //_emailService.SendEmail(user.Email, user.VerifyEmailToken);
-
-                    //        return Ok(new { Message = "Registration successful!", UserId = user.UserId, UserEmail = user.Email, UserType = user.UserType });
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    return BadRequest("The provided email address is not associated with an account. Please double-check your email address or sign up if you don't have an account");
-                    //}
-
+                    var success = await registrationService.RegisterUserAsync(model, token);
                 }
-                return BadRequest(new { Message = "Please provide correct Usertype ,Registration failed ." });
-            }
-            catch (Exception ex)
-            {
+                //    if (success == true)
+                //    {
+                //        var user = registrationService.UserId(username);
+                //        switch (user.UserType)
+                //        {
+                //            case 1:
+                //                registrationService.BrokerRegister(user.UserId);
+                //                break;
+                //            case 2:
+                //                registrationService.BrokerageRegister(user.UserId);
+                //                break;
+                //            case 3:
+                //                registrationService.AppraiserIndividualRegister(user.UserId);
+                //                break;
+                //            case 4:
+                //                registrationService.AppraiserCompRegister(user.UserId);
+                //                break;
+                //            default:
+                //                // code block
+                //                break;
+                //        }
+                //        //_emailService.SendEmail(user.Email, user.VerifyEmailToken);
 
-                Log.writeLog("An error occurred during Registration" + ex);
-                return StatusCode(500, new { Message = "An error occurred during Registration" });
+                //        return Ok(new { Message = "Registration successful!", UserId = user.UserId, UserEmail = user.Email, UserType = user.UserType });
+                //    }
+                //}
+                //else
+                //{
+                //    return BadRequest("The provided email address is not associated with an account. Please double-check your email address or sign up if you don't have an account");
+                //}
             }
 
+            return BadRequest(new { Message = "Please provide correct Usertype ,Registration failed ." });
         }
-
-
-        [AllowAnonymous]
-        [HttpPost("signUpUser")]
-        public async Task<IActionResult> signUpUser([FromBody] ClsSignUpUser model)
+        catch (Exception ex)
         {
-            try
+            Log.writeLog("An error occurred during Registration" + ex);
+            return StatusCode(500, new { Message = "An error occurred during Registration" });
+        }
+    }
+
+
+    [AllowAnonymous]
+    [HttpPost("signUpUser")]
+    public async Task<IActionResult> signUpUser([FromBody] ClsSignUpUser model)
+    {
+        try
+        {
+            if (model.UserType > 0 && model.UserType < 8)
             {
-                if (model.UserType > 0 && model.UserType < 8)
+                CreatePasswordHash(model.Password, out var passwordHash, out var passwordSalt);
+                bool valid;
+
+
+                var PasswordHash = passwordHash;
+                var PasswordSalt = passwordSalt;
+
+                if (registrationService.EmailExists(model.Email)) return Conflict("Email is already registered.");
+                //else
+                //{
+                //    string apiKey = "xtayxnjtfxy0z3vcjxi4b4k0zrrrfmau";
+                // valid = await _emailService.SendEmail(model.Email, apiKey);
+                //}
+
+                //if (valid)
+                //{
+                var emailId = model.Email;
+                //string token = registrationService.GenerateJwtToken(model);
+                var UserDetails = _emailService.getUser(emailId);
+                if (UserDetails.IsActive)
                 {
-                    CreatePasswordHash(model.Password, out byte[] passwordHash, out byte[] passwordSalt);
-                    bool valid;
+                    var success = await registrationService.RegisterUserAsync(model, PasswordHash, PasswordSalt);
 
-
-                    var PasswordHash = passwordHash;
-                    var PasswordSalt = passwordSalt;
-
-                    if (registrationService.EmailExists(model.Email))
+                    if (success)
                     {
-                        return Conflict("Email is already registered.");
-                    }
-                    //else
-                    //{
-                    //    string apiKey = "xtayxnjtfxy0z3vcjxi4b4k0zrrrfmau";
-                    // valid = await _emailService.SendEmail(model.Email, apiKey);
-                    //}
-
-                    //if (valid)
-                    //{
-                    var emailId = model.Email;
-                    //string token = registrationService.GenerateJwtToken(model);
-                    var UserDetails = _emailService.getUser(emailId);
-                    if (UserDetails.IsActive)
-                    {
-                        var success = await registrationService.RegisterUserAsync(model, PasswordHash, PasswordSalt);
-
-                        if (success == true)
+                        var user = registrationService.UserId(emailId);
+                        switch (user.UserType)
                         {
-                            var user = registrationService.UserId(emailId);
-                            switch (user.UserType)
-                            {
-                                case 1:
-                                    registrationService.BrokerRegister(user.UserId);
-                                    break;
-                                case 2:
-                                    registrationService.BrokerageRegister(user.UserId);
-                                    break;
-                                case 3:
-                                    registrationService.AppraiserIndividualRegister(user.UserId);
-                                    break;
-                                case 4:
-                                    registrationService.AppraiserCompRegister(user.UserId);
-                                    break;
-                                default:
-                                    // code block
-                                    break;
-                            }
-                            //_emailService.SendEmail(user.Email, user.VerifyEmailToken);
-
-                            return Ok(new { Message = "Registration successful!", UserId = user.UserId, UserEmail = user.Email, UserType = user.UserType });
+                            case 1:
+                                registrationService.BrokerRegister(user.UserId);
+                                break;
+                            case 2:
+                                registrationService.BrokerageRegister(user.UserId);
+                                break;
+                            case 3:
+                                registrationService.AppraiserIndividualRegister(user.UserId);
+                                break;
+                            case 4:
+                                registrationService.AppraiserCompRegister(user.UserId);
+                                break;
                         }
-                    }
-                    else
-                    {
-                        return BadRequest("Your email is not verified. Please verify your email to proceed.");
-                    }
+                        //_emailService.SendEmail(user.Email, user.VerifyEmailToken);
 
-                }
-                return BadRequest(new { Message = "Please provide correct Usertype ,Registration failed ." });
-            }
-            catch (Exception ex)
-            {
-
-                Log.writeLog("An error occurred during Registration" + ex);
-                return StatusCode(500, new { Message = "An error occurred during Registration" });
-            }
-        }
-
-
-        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
-        {
-            using (var hmac = new HMACSHA512())
-            {
-                passwordSalt = hmac.Key;
-                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-            }
-        }
-        [AllowAnonymous]
-        [HttpGet("VerifyEmailToken")]
-        public IActionResult VerifyEmailToken(string token)
-        {
-            Log.writeLog("VerifyEmailToken Function started");
-            try
-            {
-                bool isValid = _emailService.VerifyEmailToken(token);
-                if (!isValid)
-                {
-                    return BadRequest("Invalid Token.");
-                }
-                var User= _emailService.getdata(token);
-                string redirectUrl = $"https://appraisalland.vercel.app/register?emailId={Uri.EscapeDataString(User.Email)}&UserType={Uri.EscapeDataString(Convert.ToString(User.UserType))}";
-                return Redirect(redirectUrl);
-            }
-            catch (Exception ex)
-            {
-
-                Log.writeLog("An error occurred during VerifyEmailToken" + ex);
-                return StatusCode(500, new { Message = "An error occurred during VerifyEmailToken" });
-            }
-
-        }
-
-
-        [HttpPost("RegisterAppraiserByCompany")]
-        public async Task<IActionResult> RegisterAppraiserByCompany(AppraiserCompanyClass appraiserCompanyClass)
-        {
-            Log.writeLog("RegisterAppraiserByCompany Function started");
-            try
-            {
-                CreatePasswordHash(appraiserCompanyClass.Password, out byte[] passwordHash, out byte[] passwordSalt);
-                var hashedPassword = passwordHash;
-                var salt = passwordSalt;
-
-                if (registrationService.EmailExists(appraiserCompanyClass.Email))
-                {
-                    return Conflict("Email is already registered.");
-                }
-
-                if (!registrationService.CompanyExist(appraiserCompanyClass.CompanyId))
-                {
-                    return NotFound($"AppraiserCompany Not Found with {appraiserCompanyClass.CompanyId} Id");
-                }
-
-                var username = appraiserCompanyClass.Email;
-                string token = registrationService.GenerateJwtToken();
-                var valid = _emailService.SendEmail(username, token);
-                if (valid)
-                {
-                    var success = await registrationService.RegisterUser(appraiserCompanyClass, hashedPassword, salt, token);
-
-                    if (success)
-                    {
-                        var user = registrationService.GetUserId(appraiserCompanyClass.Email);
-                        await registrationService.AppraiserRegisterByCompany(appraiserCompanyClass, user.Result.UserId);
-
-                        return Ok(new { Message = "Registration successful!", UserId = user.Result.UserId, UserEmail = appraiserCompanyClass.Email });
-                    }
-                    else
-                    {
-                        return BadRequest(new { Message = "Registration failed" });
+                        return Ok(new
+                        { Message = "Registration successful!", user.UserId, UserEmail = user.Email, user.UserType });
                     }
                 }
                 else
                 {
-                    return BadRequest("The provided email address is not associated with an account. Please double-check your email address or sign up if you don't have an account");
+                    return BadRequest("Your email is not verified. Please verify your email to proceed.");
                 }
             }
-            catch (Exception ex)
-            {
-                Log.writeLog("An error occurred during Register Appraiser By Company: " + ex.Message);
-                return StatusCode(500, new { Message = "An error occurred during Registration" });
-            }
+
+            return BadRequest(new { Message = "Please provide correct Usertype ,Registration failed ." });
         }
-
-        [HttpPost("RegisterBrokerByBrokerage")]
-        public async Task<IActionResult> RegisterBrokerByBrokerage(BrokerageCls brokerageCls)
+        catch (Exception ex)
         {
-            Log.writeLog("RegisterBrokerByBrokerage Function started");
-            try
+            Log.writeLog("An error occurred during Registration" + ex);
+            return StatusCode(500, new { Message = "An error occurred during Registration" });
+        }
+    }
+
+
+    private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+    {
+        using (var hmac = new HMACSHA512())
+        {
+            passwordSalt = hmac.Key;
+            passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+        }
+    }
+
+    [AllowAnonymous]
+    [HttpGet("VerifyEmailToken")]
+    public IActionResult VerifyEmailToken(string token)
+    {
+        Log.writeLog("VerifyEmailToken Function started");
+        try
+        {
+            var isValid = _emailService.VerifyEmailToken(token);
+            if (!isValid) return BadRequest("Invalid Token.");
+            var User = _emailService.getdata(token);
+            var redirectUrl =
+                $"https://appraisalland.vercel.app/register?emailId={Uri.EscapeDataString(User.Email)}&UserType={Uri.EscapeDataString(Convert.ToString(User.UserType))}";
+            return Redirect(redirectUrl);
+        }
+        catch (Exception ex)
+        {
+            Log.writeLog("An error occurred during VerifyEmailToken" + ex);
+            return StatusCode(500, new { Message = "An error occurred during VerifyEmailToken" });
+        }
+    }
+
+
+    [HttpPost("RegisterAppraiserByCompany")]
+    public async Task<IActionResult> RegisterAppraiserByCompany(AppraiserCompanyDto appraiserCompanyClass)
+    {
+        Log.writeLog("RegisterAppraiserByCompany Function started");
+        try
+        {
+            CreatePasswordHash(appraiserCompanyClass.Password, out var passwordHash, out var passwordSalt);
+            var hashedPassword = passwordHash;
+            var salt = passwordSalt;
+
+            if (registrationService.EmailExists(appraiserCompanyClass.Email))
+                return Conflict("Email is already registered.");
+
+            if (!registrationService.CompanyExist(appraiserCompanyClass.CompanyId))
+                return NotFound($"AppraiserCompany Not Found with {appraiserCompanyClass.CompanyId} Id");
+
+            var username = appraiserCompanyClass.Email;
+            var token = registrationService.GenerateJwtToken();
+            var valid = _emailService.SendEmail(username, token);
+            if (valid)
             {
-                CreatePasswordHash(brokerageCls.Password, out byte[] passwordHash, out byte[] passwordSalt);
-                var hashedPassword = passwordHash;
-                var salt = passwordSalt;
+                var success =
+                    await registrationService.RegisterUserAsync(appraiserCompanyClass, hashedPassword, salt, token);
 
-                if (registrationService.EmailExists(brokerageCls.Email))
+                if (success)
                 {
-                    return Conflict("Email is already registered.");
-                }
+                    var user = registrationService.GetUserIdAsync(appraiserCompanyClass.Email);
+                    await registrationService.AppraiserRegisterByCompanyAsync(appraiserCompanyClass, user.Result.UserId);
 
-                if (!registrationService.BrokerageExist(brokerageCls.BrokerageId))
-                {
-                    return NotFound($"Brokerage Not Found with {brokerageCls.BrokerageId} Id");
-                }
-
-                var username = brokerageCls.Email;
-                string token = registrationService.GenerateJwtToken();
-
-                var valid = _emailService.SendEmail(username, token);
-                if (valid)
-                {
-                    var success = await registrationService.RegisterBroker(brokerageCls, hashedPassword, salt, token);
-                    if (success)
+                    return Ok(new
                     {
-                        var user = registrationService.GetUserId(brokerageCls.Email);
-                        await registrationService.BrokerRegisterByBrokerage(brokerageCls, user.Result.UserId);
+                        Message = "Registration successful!",
+                        user.Result.UserId,
+                        UserEmail = appraiserCompanyClass.Email
+                    });
+                }
 
-                        return Ok(new { Message = "Registration successful!", UserId = user.Result.UserId, UserEmail = brokerageCls.Email });
-                    }
-                    else
-                    {
-                        return BadRequest(new { Message = "Registration failed" });
-                    }
-                }
-                else
-                {
-                    return BadRequest("The provided email address is not associated with an account. Please double-check your email address or sign up if you don't have an account");
-                }
+                return BadRequest(new { Message = "Registration failed" });
             }
-            catch (Exception ex)
+
+            return BadRequest(
+                "The provided email address is not associated with an account. Please double-check your email address or sign up if you don't have an account");
+        }
+        catch (Exception ex)
+        {
+            Log.writeLog("An error occurred during Register Appraiser By Company: " + ex.Message);
+            return StatusCode(500, new { Message = "An error occurred during Registration" });
+        }
+    }
+
+    [HttpPost("RegisterBrokerByBrokerage")]
+    public async Task<IActionResult> RegisterBrokerByBrokerage(BrokerageCls brokerageCls)
+    {
+        Log.writeLog("RegisterBrokerByBrokerage Function started");
+        try
+        {
+            CreatePasswordHash(brokerageCls.Password, out var passwordHash, out var passwordSalt);
+            var hashedPassword = passwordHash;
+            var salt = passwordSalt;
+
+            if (registrationService.EmailExists(brokerageCls.Email)) return Conflict("Email is already registered.");
+
+            if (!registrationService.BrokerageExist(brokerageCls.BrokerageId))
+                return NotFound($"Brokerage Not Found with {brokerageCls.BrokerageId} Id");
+
+            var username = brokerageCls.Email;
+            var token = registrationService.GenerateJwtToken();
+
+            var valid = _emailService.SendEmail(username, token);
+            if (valid)
             {
-                Log.writeLog("An error occurred during Register Broker By Brokerage: " + ex.Message);
-                return StatusCode(500, new { Message = "An error occurred during Registration" });
+                var success = await registrationService.RegisterBrokerAsync(brokerageCls, hashedPassword, salt, token);
+                if (success)
+                {
+                    var user = registrationService.GetUserIdAsync(brokerageCls.Email);
+                    await registrationService.BrokerRegisterByBrokerageAsync(brokerageCls, user.Result.UserId);
+
+                    return Ok(new
+                    { Message = "Registration successful!", user.Result.UserId, UserEmail = brokerageCls.Email });
+                }
+
+                return BadRequest(new { Message = "Registration failed" });
             }
+
+            return BadRequest(
+                "The provided email address is not associated with an account. Please double-check your email address or sign up if you don't have an account");
+        }
+        catch (Exception ex)
+        {
+            Log.writeLog("An error occurred during Register Broker By Brokerage: " + ex.Message);
+            return StatusCode(500, new { Message = "An error occurred during Registration" });
         }
     }
 }

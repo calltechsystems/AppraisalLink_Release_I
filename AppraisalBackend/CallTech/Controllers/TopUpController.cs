@@ -1,39 +1,35 @@
 ﻿using DBL.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Serilog;
 
-namespace CallTech.Controllers
+namespace CallTech.Controllers;
+
+[Route("api/com.appraisalland.TopUp")]
+[ApiController]
+public class TopUpController : ControllerBase
 {
-    [Route("api/com.appraisalland.TopUp")]
-    [ApiController]
-    public class TopUpController : ControllerBase
+    private readonly AppraisalLandsContext _AppraisallandContext;
+    private readonly Log log = new();
+
+    public TopUpController(AppraisalLandsContext AppraisallandContext)
     {
-        private readonly AppraisallandsContext _AppraisallandContext;
-        Log log = new Log();
+        _AppraisallandContext = AppraisallandContext;
+    }
 
-        public TopUpController(AppraisallandsContext AppraisallandContext)
+    [Authorize]
+    [HttpGet("getTopUp")]
+    public IActionResult getTopUp()
+    {
+        log.writeLog("getTopUp Function started");
+        try
         {
-            _AppraisallandContext= AppraisallandContext;
+            var topUpDetails = _AppraisallandContext.Topups.ToList();
+            return Ok(topUpDetails);
         }
-        [Authorize]
-        [HttpGet("getTopUp")]
-        public IActionResult getTopUp() 
+        catch (Exception ex)
         {
-            log.writeLog("getTopUp Function started");
-            try
-            {
-
-                var topUpDetails = _AppraisallandContext.Topups.ToList();
-                return Ok(topUpDetails);
-            }
-            catch (Exception ex)
-            {
-                log.writeLog("getTopUp function" + ex.Message);
-                return BadRequest(ex.Message);
-            }
-          
+            log.writeLog("getTopUp function" + ex.Message);
+            return BadRequest(ex.Message);
         }
     }
 }

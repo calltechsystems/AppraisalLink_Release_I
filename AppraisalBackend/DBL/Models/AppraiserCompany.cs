@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace DBL.Models;
 
-namespace DBL.Models;
-
-public partial class AppraiserCompany
+public class AppraiserCompany
 {
     public long AppraiserCompanyId { get; set; }
 

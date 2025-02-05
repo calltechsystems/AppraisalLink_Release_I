@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace DBL.Models;
 
-namespace DBL.Models;
-
-public partial class AdminArchiveProperty
+public class AdminArchiveProperty
 {
     public int Id { get; set; }
 

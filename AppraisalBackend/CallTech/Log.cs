@@ -1,53 +1,47 @@
-﻿namespace CallTech
+﻿namespace CallTech;
+
+public class Log
 {
-    public class Log
+    public void writeLog(string strValue)
     {
-
-        public void writeLog(string strValue)
+        try
         {
-            try
-            {
-                var configuration = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-            .Build();
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", true, true)
+                .Build();
 
-                var logFilePath = FindConfigurationValue(configuration.Providers, "Logging:FilePath");
+            var logFilePath = FindConfigurationValue(configuration.Providers, "Logging:FilePath");
 
-                //Logfile
-                string path = logFilePath;
-                StreamWriter sw;
-                if (!File.Exists(path))
-                { sw = File.CreateText(path); }
-                else
-                { sw = File.AppendText(path); }
+            //Logfile
+            var path = logFilePath;
+            StreamWriter sw;
+            if (!File.Exists(path))
+                sw = File.CreateText(path);
+            else
+                sw = File.AppendText(path);
 
-                LogWrite(strValue, sw);
+            LogWrite(strValue, sw);
 
-                sw.Flush();
-                sw.Close();
-            }
-            catch (Exception ex)
-            {
-
-            }
+            sw.Flush();
+            sw.Close();
         }
-        private static void LogWrite(string logMessage, StreamWriter w)
+        catch (Exception ex)
         {
-            w.WriteLine("{0}", logMessage);
-            w.WriteLine("----------------------------------------");
         }
+    }
 
-        static string FindConfigurationValue(IEnumerable<IConfigurationProvider> providers, string key)
-        {
-            foreach (var provider in providers)
-            {
-                if (provider.TryGet(key, out string value))
-                {
-                    return value;
-                }
-            }
-            return null;
-        }
+    private static void LogWrite(string logMessage, StreamWriter w)
+    {
+        w.WriteLine("{0}", logMessage);
+        w.WriteLine("----------------------------------------");
+    }
+
+    private static string FindConfigurationValue(IEnumerable<IConfigurationProvider> providers, string key)
+    {
+        foreach (var provider in providers)
+            if (provider.TryGet(key, out var value))
+                return value;
+        return null;
     }
 }
