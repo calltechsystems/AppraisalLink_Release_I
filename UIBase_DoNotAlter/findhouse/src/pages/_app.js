@@ -16,7 +16,7 @@ function MyApp({ Component, pageProps }) {
     <>
       <Head>
         {/* Google Analytics Script */}
-        <script
+        {/* <script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-GPVDNGXRP9"
         ></script>
@@ -29,7 +29,7 @@ function MyApp({ Component, pageProps }) {
               gtag('config', 'G-GPVDNGXRP9');
             `,
           }}
-        />
+        /> */}
       </Head>
       {/* <InactivityTimer timeoutDuration={600000} warningDuration={30000} /> */}
       <InactivityTimer

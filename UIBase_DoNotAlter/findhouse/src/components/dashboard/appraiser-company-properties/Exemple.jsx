@@ -1554,7 +1554,9 @@ export default function Exemple({
               </span>
             </h3>
             <div className="mb-2" style={{ border: "2px solid #97d700" }}></div>
-            <p className="fs-5 text-center text-dark mt-4">{remark}</p>
+            <div>
+              <span className="fs-5 text-dark mt-4 remark-text">{remark}</span>
+            </div>
             <div
               className="mb-3 mt-4"
               style={{ border: "2px solid #97d700" }}

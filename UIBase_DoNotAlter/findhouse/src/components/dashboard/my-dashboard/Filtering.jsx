@@ -7,7 +7,7 @@ const Filtering = ({ setRefresh, FilterQuery, setFilterQuery }) => {
   };
   return (
     <>
-      <div className="col=lg-12">
+      <div className="col=lg-12 pb-1 pt-1">
         <div className="row">
           <div className="col-lg-9">
             <select

@@ -401,15 +401,25 @@ const Index = () => {
             <div className="col-lg-12 maxw100flex-992">
               <div className="row">
                 <div
-                  className="col-lg-12 mb10"
+                  className="col-lg-12 mb-2"
                   style={{
                     display: "flex",
                     flexDirection: "row",
+                    alignItems: "center",
                     justifyContent: "space-between",
+                    borderRadius: "5px",
+                    backgroundColor: "#97d700",
                   }}
                 >
-                  <div className="breadcrumb_content style2">
-                    <h2 className="breadcrumb_title">
+                  <div className="">
+                    <h2
+                      style={{
+                        paddingTop: "10px",
+                        color: "#2e008b",
+                        backgroundColor: "#97d700",
+                        fontSize: "25px",
+                      }}
+                    >
                       {userData?.broker_Details?.firstName
                         ? userData?.broker_Details?.firstName
                         : "firstName"}{" "}

@@ -4,7 +4,7 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 import axios, { all } from "axios";
 import { AppraiserStatusOptions } from "../create-listing/data";
-import { FaArchive, FaPause, FaEye } from "react-icons/fa";
+import { FaArchive, FaPause, FaEye, FaFacebookMessenger, FaSms } from "react-icons/fa";
 // import { Button } from "bootstrap";
 import Image from "next/image";
 
@@ -432,11 +432,12 @@ export default function Exemple({
                   className="w-100"
                   onClick={() => openRemarkModal(property)}
                 >
-                  <button href="#" className="btn btn-color">
+                  <button href="#" className="btn btn-color" style={{width:"120px"}}>
                     <Link href="#">
                       <span className="text-light">
                         {" "}
-                        <FaEye />
+                        {/* <FaSms/> */}
+                        View
                       </span>
                     </Link>
                   </button>
