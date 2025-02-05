@@ -1911,7 +1911,7 @@ const Index = () => {
                             onChange={(e) => setRemark(e.target.value)}
                             value={remark}
                             style={{ overflow: "auto", resize: "vertical" }}
-                            maxLength="300"
+                            maxLength="500"
                             rows="4"
                             placeholder="Enter your remark here..."
                           ></textarea>

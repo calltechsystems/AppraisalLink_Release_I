@@ -942,9 +942,9 @@ const Index = ({ isView, propertyData }) => {
             // const propertyId = res.data.userData?.propertyId;
             // console.log("propert id is :", propertyId);
             // setGeneratedPropertyId(propertyId);
-            setSuccessModal(true);
-            // toast.success("Property Added Successfully");
-            // router.push("/my-properties");
+            // setSuccessModal(true);
+            toast.success("Property Added Successfully");
+            router.push("/my-properties");
           })
           .catch((err) => {
             const status = err.response?.request.status;
@@ -958,7 +958,7 @@ const Index = ({ isView, propertyData }) => {
             } else if (/^5\d{2}$/.test(String(status))) {
               toast.dismiss();
               toast.error("Server error occurred Try Again !! ");
-              // window.location.reload();
+              window.location.reload();
             } else {
               toast.dismiss();
               setErrorMessage(err.response?.data.error);

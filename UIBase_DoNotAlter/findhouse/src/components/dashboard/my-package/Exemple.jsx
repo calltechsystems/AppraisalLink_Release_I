@@ -51,7 +51,7 @@ const headCells = [
     id: "status",
     numeric: false,
     label: "Status",
-    width: 150,
+    width: 100,
   },
 ];
 

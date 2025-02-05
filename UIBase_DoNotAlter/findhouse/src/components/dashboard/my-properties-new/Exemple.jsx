@@ -805,13 +805,15 @@ export default function Exemple({
               </div>
             </div>
             <h3 className="text-center mt-3" style={{ color: "#2e008b" }}>
-              Appraisal Remark - Property Id{" "}
+              Appraiser Remarks - Property Id{" "}
               <span style={{ color: "#97d700" }}>
                 #{selectedProperty?.orderId}
               </span>
             </h3>
             <div className="mb-2" style={{ border: "2px solid #97d700" }}></div>
-            <p className="fs-5 text-center text-dark mt-4">{remark}</p>
+            <div className="text-center">
+              <span className="fs-5 text-dark mt-4 remark-text">{remark}</span>
+            </div>
             <div
               className="mb-3 mt-4"
               style={{ border: "2px solid #97d700" }}

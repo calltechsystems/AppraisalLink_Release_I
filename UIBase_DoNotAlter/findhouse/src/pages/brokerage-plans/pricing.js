@@ -238,11 +238,7 @@ const Pricing = ({
               <div className="pricing_content">
                 <ul className="mb0">
                   <li key={idx}>{item.noOfProperties} Properties Quotes</li>
-                  {item?.monthlyAmount > 0 ? (
-                    <li>30 Days Validity</li>
-                  ) : (
-                    <li>365 Days Validity</li>
-                  )}
+                   <li>{item.planValidity} Days Validity</li>
                 </ul>
                 <div className="pricing_header">
                   <h2 className="text-dark">
@@ -269,7 +265,7 @@ const Pricing = ({
                   }
                 >
                   <a className={`btn btn-color_01 w-100`} href="#">
-                    {currentActivePlan?.$id ? "Upgrade Plan" : "Get Started"}
+                    {currentActivePlan?.$id ? "Change Plan" : "Get Started"}
                   </a>
                 </div>
               )}
@@ -294,7 +290,7 @@ const Pricing = ({
                       }
                     >
                       <a className={`btn btn-color_01 w-100`} href="#">
-                        Upgrade Plan
+                        Change Plan
                       </a>
                     </div>
                   ) : (
@@ -350,8 +346,7 @@ const Pricing = ({
                         key={topUp.$id}
                         value={topUp.$id}
                       >
-                        Add {topUp.noOfProperties} Properties (${" "}
-                        {topUp.tupUpAmount})
+                        Add {topUp.noOfProperties} Properties (${topUp.tupUpAmount})
                       </option>
                     ))}
                     <option value="cancel">Cancel Subscription</option>

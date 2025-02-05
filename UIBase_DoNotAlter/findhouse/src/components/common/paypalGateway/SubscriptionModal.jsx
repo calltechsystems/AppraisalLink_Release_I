@@ -139,7 +139,9 @@ const OneTimePaymentModal = ({
               {onSuccess ? (
                 <div className="text-center" style={{ fontSize: "19px" }}>
                   <span className="text-dark">
-                    <span className="text-color fw-bold">Payment confirmed!</span>
+                    <span className="text-color fw-bold">
+                      Payment confirmed!
+                    </span>
                     <br /> We appreciate your business. Please Login again to
                     continue.
                   </span>
@@ -151,10 +153,6 @@ const OneTimePaymentModal = ({
               {!errorOcurred ? (
                 !showPaypalPage ? (
                   <div className="text-center" style={{ fontSize: "19px" }}>
-                    <span className="text-dark">
-                      Please checkout for further
-                    </span>
-                    <br />
                     <span className="text-dark">
                       You have selected Subscription plan{" "}
                       <label

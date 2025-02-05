@@ -23400,7 +23400,8 @@ input:checked + .slider:before {
 
 .icon span {
   font-size: 40px;
-  color: grey;
+  color: #2e008b;
+  /* color: grey; */
 }
 
 /* Background Colors for Each Block */

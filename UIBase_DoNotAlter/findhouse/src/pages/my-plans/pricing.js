@@ -18,7 +18,7 @@ const Pricing = ({
   setPrice,
   planData,
   canUpgrade,
-  userDetailField
+  userDetailField,
 }) => {
   let userData = {};
   const [selectedPackage, setSelectedPackage] = useState({});
@@ -66,7 +66,6 @@ const Pricing = ({
 
     setPrice(updatedData);
     setSelectedTopUp(updatedData);
-
   };
 
   const setPlan = (planId, type) => {
@@ -113,7 +112,6 @@ const Pricing = ({
     if (String(type) === "2") {
       window.location.reload();
     } else if (String(type) === "3" || String(type) === "4") {
-
       const payload = {
         TopUpId: selectedTopUp.id,
         UserId: userData.userId,
@@ -238,11 +236,12 @@ const Pricing = ({
               <div className="pricing_content">
                 <ul className="mb0">
                   <li key={idx}>{item.noOfProperties} Properties Quotes</li>
-                  {item?.monthlyAmount > 0 ? (
+                  <li>{item.planValidity} Days Validity</li>
+                  {/* {item?.monthlyAmount > 0 ? (
                     <li>30 Days Validity</li>
                   ) : (
                     <li>365 Days Validity</li>
-                  )}
+                  )} */}
                 </ul>
                 <div className="pricing_header">
                   <h2 className="text-dark">
@@ -269,7 +268,7 @@ const Pricing = ({
                   }
                 >
                   <a className={`btn btn-color_01 w-100`} href="#">
-                    {currentActivePlan?.$id ? "Upgrade Plan" : "Get Started"}
+                    {currentActivePlan?.$id ? "Change Plan" : "Get Started"}
                   </a>
                 </div>
               )}
@@ -294,7 +293,7 @@ const Pricing = ({
                       }
                     >
                       <a className={`btn btn-color_01 w-100`} href="#">
-                        Upgrade Plan
+                        Change Plan
                       </a>
                     </div>
                   ) : (
@@ -335,23 +334,18 @@ const Pricing = ({
                         setPlan(item.id, 2);
                       } else {
                         const selectedTopUp = topupData?.find(
-                          (topUp) =>
-                            topUp.$id == (selectedValue)
+                          (topUp) => topUp.$id == selectedValue
                         );
                         if (selectedTopUp) {
-                          topUpHandler(item.id,selectedTopUp);
+                          topUpHandler(item.id, selectedTopUp);
                         }
                       }
                     }}
                   >
                     <option value="">Add Top Up / Cancel Subscription</option>
                     {topupData?.map((topUp) => (
-                      <option
-                        key={topUp.$id}
-                        value={topUp.$id}
-                      >
-                        Add {topUp.noOfProperties} Properties (${" "}
-                        {topUp.tupUpAmount})
+                      <option key={topUp.$id} value={topUp.$id}>
+                        Add {topUp.noOfProperties} Properties (${topUp.tupUpAmount})
                       </option>
                     ))}
                     <option value="cancel">Cancel Subscription</option>
