@@ -1,30 +1,24 @@
 ﻿using PayPal.Api;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace DAL.Repository
+namespace DAL.Repository;
+
+public class ServicesMiddlewareHelpers
 {
-    public class ServicesMiddlewareHelpers
+    public Dictionary<string, string> GetConfig()
     {
+        return ConfigManager.Instance.GetProperties();
+    }
 
-        public Dictionary<string, string> GetConfig()
-        {
+    private string GetAccessToken(string clientId, string clientSecret)
+    {
+        var accessToken = new OAuthTokenCredential(clientId, clientSecret, GetConfig()).GetAccessToken();
+        return accessToken;
+    }
 
-            return ConfigManager.Instance.GetProperties();
-        }
-
-        private string GetAccessToken(string clientId, string clientSecret)
-        {
-            string accessToken = new OAuthTokenCredential(clientId, clientSecret, GetConfig()).GetAccessToken();
-            return accessToken;
-        }
-
-        public APIContext GetAPIContext(string clientId, string clientSecret)
-        {
-            APIContext apiContext = new APIContext(GetAccessToken(clientId, clientSecret));
-            apiContext.Config = GetConfig();
-            return apiContext;
-        }
+    public APIContext GetAPIContext(string clientId, string clientSecret)
+    {
+        var apiContext = new APIContext(GetAccessToken(clientId, clientSecret));
+        apiContext.Config = GetConfig();
+        return apiContext;
     }
 }

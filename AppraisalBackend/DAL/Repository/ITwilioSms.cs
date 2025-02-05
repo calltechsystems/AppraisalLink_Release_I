@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace DAL.Repository;
 
-namespace DAL.Repository
+public interface ITwilioSms
 {
-    public interface ITwilioSms
-    {
-        string SendSms(string toPhoneNumber, string message);
-    }
+    string SendSms(string toPhoneNumber, string message);
 }

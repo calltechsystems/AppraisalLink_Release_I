@@ -1,339 +1,239 @@
 ﻿using DAL.Classes;
+using DAL.Rpository;
 using DBL.Models;
-////using DBL.NewModels;
-//using DBL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DAL.Rpository
+namespace DAL.Repository;
+
+public class PropertyService : IPropertyService
 {
-    public class PropertyService : IPropertyService
+    private readonly AppraisalLandsContext _context;
+
+    public PropertyService(AppraisalLandsContext context, IConfiguration configuration)
     {
-        private readonly AppraisallandsContext _context;
-        public PropertyService(AppraisallandsContext context, IConfiguration configuration)
-        {
-            _context = context;
+        _context = context;
+    }
 
+    public async Task<bool> DeletePropertyAsync(long propertyId)
+    {
+        var property = await _context.Properties.Where(x => x.PropertyId == propertyId).FirstOrDefaultAsync();
+        if (property != null)
+        {
+            _context.Properties.Remove(property);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
-        public async Task<bool> DeletePropertyAsync(long PropertyID)
-        {
-            var Property = await _context.Properties.Where(x => x.PropertyId == PropertyID).FirstOrDefaultAsync();
-            if (Property != null)
-            {
+        return false;
+    }
 
-                _context.Properties.Remove(Property);
-                await _context.SaveChangesAsync();
+    public List<Property> GetAllPropertyAsync()
+    {
+        var result = from p in _context.Properties
+                     where !_context.ArchivedAppraisers.Select(a => a.Orderid).Contains(p.OrderId)
+                     select p;
+        return result.ToList();
+    }
+
+
+    public List<Property> GetPropertyByUserIdAsync(long UserID)
+    {
+        var properties = new List<Property>();
+        var property = _context.Properties.Where(x => x.UserId == UserID).ToList();
+        if (property != null)
+        {
+            foreach (var item in property)
+                if (item.IsArchive == false)
+                    properties.Add(item);
+            return properties;
+        }
+
+        return null;
+    }
+
+    public async Task<Property> UpdatePropertyAsync(long PropertyID, ClsProperty pro)
+    {
+        var property = _context.Properties.Where(x => x.OrderId == PropertyID).FirstOrDefault();
+        if (property != null)
+        {
+            property.StreetName = pro.StreetName;
+            property.StreetNumber = pro.StreetNumber;
+            property.City = pro.City;
+            property.Province = pro.Province;
+            property.ZipCode = pro.ZipCode;
+            property.Area = pro.Area;
+            property.Community = pro.Community;
+            property.TypeOfBuilding = pro.TypeOfBuilding;
+            property.ApplicantFirstName = pro.ApplicantFirstName;
+            property.ApplicantLastName = pro.ApplicantLastName;
+            property.ApplicantPhoneNumber = pro.ApplicantPhoneNumber;
+            property.ApplicantEmailAddress = pro.ApplicantEmailAddress;
+            property.ModifiedDatetime = DateTime.Now;
+            property.BidLowerRange = property.BidLowerRange;
+            property.BidUpperRange = property.BidUpperRange;
+            property.Urgency = pro.Urgency;
+            property.PropertyStatus = pro.PropertyStatus;
+            // property.UserId = pro.UserId;
+            property.QuoteRequiredDate = pro.QuoteRequiredDate;
+            property.Remark = pro.Remark;
+            property.IsArchive = property.IsArchive;
+            property.EstimatedValue = pro.EstimatedValue;
+            property.Purpose = pro.Purpose;
+            property.TypeOfAppraisal = pro.TypeOfAppraisal;
+            property.LenderInformation = pro.LenderInformation;
+            property.ApplicantAddress = pro.ApplicantAddress;
+            property.Attachment = pro.Attachment;
+            property.Sqft = pro.Sqft;
+            property.Image = pro.Image;
+
+            _context.Properties.Update(property);
+            _context.SaveChanges();
+            return property;
+        }
+
+        return null;
+    }
+
+    public async Task<Property> GetPropertyByPropertyIDAsync(long PropertyID)
+    {
+        var pro = await _context.Properties.FirstOrDefaultAsync(p => p.PropertyId == PropertyID);
+        if (pro != null) return pro;
+        return null;
+    }
+
+    public Property GetPropertyByOrderID(long OrderId)
+    {
+        var propertyDetails = _context.Properties.Where(x => x.OrderId == OrderId).FirstOrDefault();
+        if (propertyDetails != null) return propertyDetails;
+        return null;
+    }
+
+
+    public bool IsOnHoldStatus(ClsOrderStatus clsOrderStatus)
+    {
+        var Property = _context.Properties.Where(x => x.OrderId == clsOrderStatus.OrderId).FirstOrDefault();
+        if (clsOrderStatus.status == "HOLD" || clsOrderStatus.status == "hold")
+        {
+            Property.Isonhold = clsOrderStatus.value;
+            _context.Properties.Update(Property);
+            _context.SaveChanges();
+            return true;
+        }
+
+        if (clsOrderStatus.status == "CANCEL" || clsOrderStatus.status == "cancel")
+        {
+            Property.Isoncancel = clsOrderStatus.value;
+            _context.Properties.Update(Property);
+            _context.SaveChanges();
+            return true;
+        }
+
+        return false;
+    }
+
+
+    public bool IsOnCancelStatus(long propertyId, bool value)
+    {
+        var Property = _context.Properties.Where(x => x.PropertyId == propertyId).FirstOrDefault();
+        if (Property != null)
+        {
+            Property.Isoncancel = value;
+            _context.Properties.Update(Property);
+            _context.SaveChanges();
+            return true;
+        }
+
+        return false;
+    }
+
+    public bool ArchiveProperty(long propertyId, long userId)
+    {
+        var Property = _context.Properties.Where(x => x.PropertyId == propertyId).FirstOrDefault();
+        if (Property != null)
+        {
+            var archivedAppraiser = new ArchivedAppraiser();
+            archivedAppraiser.Orderid = Property.PropertyId;
+            archivedAppraiser.Userid = userId;
+            _context.ArchivedAppraisers.Add(archivedAppraiser);
+            _context.SaveChanges();
+            return true;
+        }
+
+        return false;
+    }
+
+    public bool DeleteArchiveProperty(long propertyId, long userId)
+    {
+        var ArchiveProperty = _context.ArchivedAppraisers.Where(x => x.Orderid == propertyId && x.Userid == userId)
+            .FirstOrDefault();
+        if (ArchiveProperty != null)
+        {
+            _context.ArchivedAppraisers.Remove(ArchiveProperty);
+            _context.SaveChanges();
+            return true;
+        }
+
+        return false;
+    }
+
+    public async Task<bool> archivePropertyByBroker(Clsarchive1 clsarchive)
+    {
+        if (clsarchive.status)
+        {
+            var details = _context.ArchivedProperties
+                .Where(x => x.OrderId == clsarchive.orderId && x.UserId == clsarchive.userId).FirstOrDefault();
+            if (details == null)
+            {
+                var archivedProperty = new ArchivedProperty();
+                archivedProperty.OrderId = clsarchive.orderId;
+                archivedProperty.UserId = clsarchive.userId;
+                _context.ArchivedProperties.Add(archivedProperty);
+                _context.SaveChanges();
                 return true;
             }
+
             return false;
         }
 
-        public List<Property> GetAllPropertyAsync()
         {
-            
-            var result = from p in _context.Properties
-                         where !_context.ArchivedAppraisers.Select(a => a.Orderid).Contains(p.OrderId)
-                         select p;
-            return result.ToList();
-        }
-
-
-        public List<Property> GetPropertyByUserIdAsync(long UserID)
-        {
-            List<Property> properties = new List<Property>();
-            var property = _context.Properties.Where(x => x.UserId == UserID).ToList();
-            if (property != null)
+            var archivedProperty = new ArchivedProperty();
+            var ArchivedProperty = _context.ArchivedProperties.Where(x => x.OrderId == clsarchive.orderId)
+                .FirstOrDefault();
+            if (ArchivedProperty != null)
             {
-                foreach (var item in property)
-                {
-                    if (item.IsArchive == false)
-                    {
-                        properties.Add(item);
-                    }
-                }
-                return properties;
-            }
-            return null;
-        }
-
-        public async Task<Property> UpdatePropertyAsync(long PropertyID, ClsProperty pro)
-        {
-            var property = _context.Properties.Where(x => x.OrderId == PropertyID).FirstOrDefault();
-            if (property != null)
-            {
-                property.StreetName = pro.StreetName;
-                property.StreetNumber = pro.StreetNumber;
-                property.City = pro.City;
-                property.Province = pro.Province;
-                property.ZipCode = pro.ZipCode;
-                property.Area = pro.Area;
-                property.Community = pro.Community;
-                property.TypeOfBuilding = pro.TypeOfBuilding;
-                property.ApplicantFirstName = pro.ApplicantFirstName;
-                property.ApplicantLastName = pro.ApplicantLastName;
-                property.ApplicantPhoneNumber = pro.ApplicantPhoneNumber;
-                property.ApplicantEmailAddress = pro.ApplicantEmailAddress;
-                property.ModifiedDatetime = DateTime.Now;
-                property.BidLowerRange = property.BidLowerRange;
-                property.BidUpperRange = property.BidUpperRange;
-                property.Urgency = pro.Urgency;
-                property.PropertyStatus = pro.PropertyStatus;
-                // property.UserId = pro.UserId;
-                property.QuoteRequiredDate = pro.QuoteRequiredDate;
-                property.Remark = pro.Remark;
-                property.IsArchive = property.IsArchive;
-                property.EstimatedValue = pro.EstimatedValue;
-                property.Purpose = pro.Purpose;
-                property.TypeOfAppraisal = pro.TypeOfAppraisal;
-                property.LenderInformation = pro.LenderInformation;
-                property.ApplicantAddress = pro.ApplicantAddress;
-                property.Attachment = pro.Attachment;
-                property.Sqft = pro.Sqft;
-                property.Image = pro.Image;
-
-                _context.Properties.Update(property);
-                _context.SaveChanges();
-                return property;
-            }
-            return null;
-        }
-
-        public async Task<Property> GetPropertyByPropertyIDAsync(long PropertyID)
-        {
-            var pro = await _context.Properties.FirstOrDefaultAsync(p => p.PropertyId == PropertyID);
-            if (pro != null)
-            {
-                return pro;
-            }
-            return null;
-        }
-
-        public  Property GetPropertyByOrderID(long OrderId)
-        {
-            var propertyDetails = _context.Properties.Where(x => x.OrderId == OrderId).FirstOrDefault();
-            if (propertyDetails != null)
-            {
-                return propertyDetails;
-            }
-            return null;
-        }
-
-
-        public bool IsOnHoldStatus(ClsOrderStatus clsOrderStatus)
-        {
-            var Property = _context.Properties.Where(x => x.OrderId == clsOrderStatus.OrderId).FirstOrDefault();
-            if (clsOrderStatus.status == "HOLD" || clsOrderStatus.status == "hold")
-            {
-                Property.Isonhold = clsOrderStatus.value;
-                _context.Properties.Update(Property);
+                _context.ArchivedProperties.Remove(ArchivedProperty);
                 _context.SaveChanges();
                 return true;
             }
-            else if (clsOrderStatus.status == "CANCEL" || clsOrderStatus.status == "cancel")
+        }
+        return false;
+    }
+
+    public async Task<bool> archievePropertyByApprasier(Clsarchive1 clsarchive)
+    {
+        if (clsarchive.status)
+        {
+            var archivedAppraiser = new ArchivedAppraiser();
+            archivedAppraiser.Orderid = clsarchive.orderId;
+            archivedAppraiser.Userid = clsarchive.userId;
+            _context.ArchivedAppraisers.Add(archivedAppraiser);
+            _context.SaveChanges();
+            return true;
+        }
+        else
+        {
+            var archivedAppraiser = new ArchivedAppraiser();
+            var ArchivedAppraiser = _context.ArchivedAppraisers.Where(x => x.Orderid == clsarchive.orderId)
+                .FirstOrDefault();
+            if (ArchivedAppraiser != null)
             {
-                Property.Isoncancel = clsOrderStatus.value;
-                _context.Properties.Update(Property);
+                _context.ArchivedAppraisers.Remove(ArchivedAppraiser);
                 _context.SaveChanges();
                 return true;
             }
-            else
-            {
-                return false;
-            }
-           
-           
         }
 
-
-        public bool IsOnCancelStatus(long propertyId, bool value)
-        {
-            var Property = _context.Properties.Where(x => x.PropertyId == propertyId).FirstOrDefault();
-            if (Property != null)
-            {
-                Property.Isoncancel = value;
-                _context.Properties.Update(Property);
-                _context.SaveChanges();
-                return true;
-            }
-            return false;
-        }
-
-        public bool ArchiveProperty(long propertyId, long userId)
-        {
-            var Property = _context.Properties.Where(x => x.PropertyId == propertyId).FirstOrDefault();
-            if (Property != null)
-            {
-                ArchivedAppraiser archivedAppraiser = new ArchivedAppraiser();
-                archivedAppraiser.Orderid = Property.PropertyId;
-                archivedAppraiser.Userid = userId;
-                _context.ArchivedAppraisers.Add(archivedAppraiser);
-                _context.SaveChanges();
-                return true;
-            }
-
-            return false;
-        }
-
-        public bool DeleteArchiveProperty(long propertyId, long userId)
-        {
-            var ArchiveProperty = _context.ArchivedAppraisers.Where(x => x.Orderid == propertyId && x.Userid == userId).FirstOrDefault();
-            if (ArchiveProperty != null)
-            {
-                _context.ArchivedAppraisers.Remove(ArchiveProperty);
-                _context.SaveChanges();
-                return true;
-            }
-            return false;
-        }
-
-        public async Task<bool> archivePropertyByBroker(Clsarchive1 clsarchive)
-        {
-            if (clsarchive.status)
-            {
-               var details=_context.ArchivedProperties.Where(x=>x.OrderId==clsarchive.orderId && x.UserId==clsarchive.userId).FirstOrDefault();
-                if (details == null)
-                {
-                    ArchivedProperty archivedProperty = new ArchivedProperty();
-                    archivedProperty.OrderId = clsarchive.orderId;
-                    archivedProperty.UserId = clsarchive.userId;
-                    _context.ArchivedProperties.Add(archivedProperty);
-                    _context.SaveChanges();
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                ArchivedProperty archivedProperty = new ArchivedProperty();
-              var ArchivedProperty=  _context.ArchivedProperties.Where(x => x.OrderId == clsarchive.orderId).FirstOrDefault();
-                if (ArchivedProperty != null)
-                {
-                    _context.ArchivedProperties.Remove(ArchivedProperty);
-                    _context.SaveChanges();
-                    return true;
-                }
-            }
-            return false;
-            
-        }
-
-        public async Task<bool> archievePropertyByApprasier(Clsarchive1 clsarchive)
-        {
-            if (clsarchive.status)
-            {
-                ArchivedAppraiser archivedAppraiser = new ArchivedAppraiser();
-                archivedAppraiser.Orderid = clsarchive.orderId;
-                archivedAppraiser.Userid = clsarchive. userId;
-                _context.ArchivedAppraisers.Add(archivedAppraiser);
-                _context.SaveChanges();
-                return true;
-            }
-            else
-            {
-                ArchivedAppraiser archivedAppraiser = new ArchivedAppraiser();
-                var ArchivedAppraiser = _context.ArchivedAppraisers.Where(x => x.Orderid == clsarchive. orderId).FirstOrDefault();
-                if (ArchivedAppraiser != null)
-                {
-                    _context.ArchivedAppraisers.Remove(ArchivedAppraiser);
-                    _context.SaveChanges();
-                    return true;
-                }
-            }
-            return false;
-        }
-
-     
-
-        //public async Task<bool> UpdatePropertyIsArchiveProperty(int usertype, long propertyId, bool value)
-        //{
-        //    try
-        //    {
-        //        var Property = context.Properties.Where(x => x.PropertyId == propertyId).FirstOrDefault();
-        //        if(Property != null)
-        //        {
-        //            if (usertype == 1) {
-        //                if (value)
-        //                {
-        //                    Property.IsArchive = true;
-        //                    context.Properties.Update(Property);
-        //                    context.SaveChanges();
-        //                    return true;
-        //                }
-        //                else
-        //                {
-        //                    Property.IsArchive = false;
-        //                    context.Properties.Update(Property);
-        //                    context.SaveChanges();
-        //                    return true;
-        //                }
-        //            }
-        //            else if(usertype == 2)
-        //            {
-        //                if (value)
-        //                {
-        //                    Property.IsArchiveAppraiser = true;
-        //                    context.Properties.Update(Property);
-        //                    context.SaveChanges();
-        //                    return true;
-        //                }
-        //                else
-        //                {
-        //                    Property.IsArchiveAppraiser = false;
-        //                    context.Properties.Update(Property);
-        //                    context.SaveChanges();
-        //                    return true;
-        //                }
-        //            }
-        //            else { return false; }
-
-
-        //        }
-        //        else
-        //        {
-        //            return true;
-        //        }
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return false;
-        //    }
-
-        //}
-
-        //public async Task<Property> UpdatePropertyAsync(int PropertyID, ClsProperty pro)
-        //{
-        //    var Property = await context.Properties.Where(x => x.PropertyId == PropertyID).FirstOrDefaultAsync();
-        //    if (Property != null)
-        //    {
-        //        Property.BrokerId=pro.BrokerId;
-        //        Property.Address = pro.Address;
-        //        Property.City = pro.City;
-        //        Property.State = pro.State;
-        //        Property.ZipCode = pro.ZipCode;
-        //        Property.PropertyType = pro.PropertyType;
-        //        Property.SizeSqFt = pro.SizeSqFt;
-        //        Property.PropertyOwner = pro.PropertyOwner;
-        //        Property.FirstNameOwner = pro.FirstNameOwner;
-        //        Property.LastName = pro.LastName;
-        //        Property.PropertyOwnerPhoneNumber = pro.PropertyOwnerPhoneNumber;
-        //        Property.DateTime = pro.DateTime;
-        //        Property.QuoteLimit = pro.QuoteLimit;
-        //        Property.Urgency = pro.Urgency;
-        //        context.Properties.Update(Property);
-        //        await context.SaveChangesAsync();
-        //        return Property;
-        //    }
-        //    return null;
-        //}
+        return false;
     }
 }

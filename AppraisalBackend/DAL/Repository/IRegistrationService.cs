@@ -1,42 +1,35 @@
 ﻿using Amazon.SimpleNotificationService.Model;
-using CallTech;
 using CallTech.Classes;
 using DAL.Classes;
 using DBL.Models;
-////using DBL.NewModels;
-//using DBL.Models;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DAL.Rpository
+namespace DAL.Repository;
+
+public interface IRegistrationService
 {
-    public interface IRegistrationService
-    {
-        Task<bool> RegisterUserAsync(ClsSignUpUser userInformation, byte[] PasswordHash, byte[] PasswordSalt);
-        Task<bool> RegisterUser(ClsUserInformation userInformation,string token);
-        Task<bool> RegisterUser(AppraiserCompanyClass userInformation, byte[] PasswordHash, byte[] PasswordSalt,string token);
-        Task<bool> RegisterBroker(BrokerageCls brokerageCls, byte[] PasswordHash, byte[] PasswordSalt,string token);
-        bool EmailExists(string email);
-        bool CompanyExist(long CompanyId);
-        bool BrokerageExist(long BrokerageId);
-        void BrokerRegister(long UserId);
-        void BrokerageRegister(long UserId);
-        void AppraiserIndividualRegister(long UserId);
-        void AppraiserCompRegister(long UserId);
-        UserInformation UserId(string email);
+    Task<bool> RegisterUserAsync(ClsSignUpUser userInformation, byte[] passwordHash, byte[] passwordSalt);
+    Task<bool> RegisterUserAsync(ClsUserInformation userInformation, string token);
 
-        Task<UserInformation> GetUserId(string email);
-        long GetUserIdByCompanyId(long companyId);
-        Task<bool> RegisterPropertyAsync(ClsProperty property);
-        Task AppraiserRegisterByCompany(AppraiserCompanyClass appraiserCompany,long userid);
-        Task BrokerRegisterByBrokerage(BrokerageCls brokerageCls, long userid);
-        bool SendPropertyRegistrationEmail(ClsProperty propertyDetails);
-        string GenerateJwtToken(ClsUserInformation user);
-        string GenerateJwtToken();
-        Task<PublishResponse> SendSms();
-    }
+    Task<bool> RegisterUserAsync(AppraiserCompanyDto userInformation, byte[] passwordHash, byte[] passwordSalt,
+        string token);
+
+    Task<bool> RegisterBrokerAsync(BrokerageCls brokerageCls, byte[] passwordHash, byte[] passwordSalt, string token);
+    bool EmailExists(string email);
+    bool CompanyExist(long companyId);
+    bool BrokerageExist(long brokerageId);
+    void BrokerRegister(long userId);
+    void BrokerageRegister(long userId);
+    void AppraiserIndividualRegister(long userId);
+    void AppraiserCompRegister(long userId);
+    UserInformation UserId(string email);
+
+    Task<UserInformation> GetUserIdAsync(string email);
+    long GetUserIdByCompanyId(long companyId);
+    Task<bool> RegisterPropertyAsync(ClsProperty property);
+    Task AppraiserRegisterByCompanyAsync(AppraiserCompanyDto appraiserCompany, long userid);
+    Task BrokerRegisterByBrokerageAsync(BrokerageCls brokerageCls, long userid);
+    bool SendPropertyRegistrationEmail(ClsProperty propertyDetails);
+    string GenerateJwtToken(ClsUserInformation user);
+    string GenerateJwtToken();
+    Task<PublishResponse> SendSmsAsync();
 }

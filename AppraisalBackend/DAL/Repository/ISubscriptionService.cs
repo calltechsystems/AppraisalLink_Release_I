@@ -1,17 +1,12 @@
 ﻿//using DBL.NewModels;
 //using DBL.Models;
-using DBL.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DAL.Rpository
+using DBL.Models;
+
+namespace DAL.Rpository;
+
+public interface ISubscriptionService
 {
-    public interface ISubscriptionService
-    {
-        Task<List<Subscription>> GetAllSubscriptions();
-        Task<Subscription> GetSubscriptionById(int id);
-    }
+    Task<List<Subscription>> GetAllSubscriptions();
+    Task<Subscription> GetSubscriptionById(int id);
 }

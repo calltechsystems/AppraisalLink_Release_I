@@ -1,15 +1,10 @@
 ﻿//using DBL.NewModels;
-using DBL.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DAL.Repository
+using DBL.Models;
+
+namespace DAL.Repository;
+
+public interface ITransactionService
 {
-    public interface ITransactionService
-    {
-        Task<List<TransactionLog>> GetTransactionsByUserId(int userId);
-    }
+    Task<List<TransactionLog>> GetTransactionsByUserId(int userId);
 }

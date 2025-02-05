@@ -1,27 +1,17 @@
 ﻿using DAL.Classes;
-using DBL.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Bid = DBL.Models.Bid;
 
-namespace DAL.Repository
+namespace DAL.Repository;
+
+public interface Ibid
 {
-    public interface Ibid
-    {
-        Task<DBL.Models.Bid> AppraiserBidAsync(ClsBid clsBid);
-        Task<List<DBL.Models.Bid>> getAllAppraiserBidAsync(int OrderId);
-        Task<List<DBL.Models.Bid>> getAllQuotesByAppraiser();
-        Task<List<DBL.Models.Bid>> getAppraiserBidbyId(long PropertyID);
-        Task<List<DBL.Models.Bid>> getAppraiserBidbyUserID(long Userid);
-        Task<DBL.Models.Bid> AcceptBidAsync(int bidId);
-        Task<DBL.Models.Bid> DeclineBidAsync(int bidId);
-        Task<DBL.Models.Bid> UpdateBid(long bidiD, Classes.Bid bid);
-         DBL.Models.Bid UpdateStatus(QuoteClass quoteClass);
-     
-
-
-
-    }
+    Task<Bid> AppraiserBidAsync(ClsBid clsBid);
+    Task<List<Bid>> getAllAppraiserBidAsync(int OrderId);
+    Task<List<Bid>> getAllQuotesByAppraiser();
+    Task<List<Bid>> getAppraiserBidbyId(long PropertyID);
+    Task<List<Bid>> getAppraiserBidbyUserID(long Userid);
+    Task<Bid> AcceptBidAsync(int bidId);
+    Task<Bid> DeclineBidAsync(int bidId);
+    Task<Bid> UpdateBid(long bidiD, Classes.Bid bid);
+    Bid UpdateStatus(QuoteClass quoteClass);
 }
