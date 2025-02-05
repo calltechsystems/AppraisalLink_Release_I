@@ -9,7 +9,7 @@ const ReviseSubscriptionModal = ({
   modalOpen,
   closeModal,
   price,
-  userDetailField
+  userDetailField,
 }) => {
   const [paypalUrl, setPaypalUrl] = useState("");
   const [status, setStatus] = useState(0);
@@ -124,8 +124,7 @@ const ReviseSubscriptionModal = ({
                       </span>
                     </Link>
                   </div>
-                  <div className="col-lg-1">
-                  </div>
+                  <div className="col-lg-1"></div>
                 </div>
               </div>
             </div>
@@ -139,8 +138,8 @@ const ReviseSubscriptionModal = ({
               {onSuccess ? (
                 <div className="text-center" style={{ fontSize: "19px" }}>
                   <span className="text-dark">
-                    Your subscription has been upgraded successfully . Thank
-                    you for your time and it would reflect from your next cycle.
+                    Your subscription has been upgraded successfully . Thank you
+                    for your time and it would reflect from your next cycle.
                   </span>
                 </div>
               ) : (
@@ -156,7 +155,7 @@ const ReviseSubscriptionModal = ({
                     </span>
                     <br />
                     <span className="text-dark">
-                      Over your selected subscription plan{""}
+                      You have selected the {""}
                       <label
                         style={{
                           fontWeight: "bold",
@@ -166,7 +165,7 @@ const ReviseSubscriptionModal = ({
                       >
                         {capitalizeFirstLetter(price.title)}
                       </label>{" "}
-                      with value{" "}
+                      for{" "}
                       <label
                         style={{
                           fontWeight: "bold",
@@ -176,7 +175,7 @@ const ReviseSubscriptionModal = ({
                       >
                         ${price.price}{" "}
                       </label>
-                      (monthly) ?
+                      {" "}per month?
                     </span>
                     <br />
                     <span style={{ fontSize: "15px" }}>
@@ -200,9 +199,7 @@ const ReviseSubscriptionModal = ({
                 )
               ) : (
                 <div className="text-center" style={{ fontSize: "19px" }}>
-                  <span className="text-dark">
-                    {errorMessage}
-                  </span>
+                  <span className="text-dark">{errorMessage}</span>
                 </div>
               )}
 

@@ -146,19 +146,11 @@ const Index = () => {
               {/* End .row */}
 
               <div className="row align-items-center">
-                <div className="col-lg-12 col-xl-12 text-center mt-1">
+                <div className="col-lg-12 col-xl-12 text-center mt-4">
                   <div className="style2 mb30-991">
                     <h2 className="heading-forms">Payment History</h2>
-                    {/* <p>You can see your transactions history here!</p> */}
                   </div>
                 </div>
-                {/* End .col */}
-                {/* <div className="col-md-4 col-lg-4 col-xl-3">
-                  <ul className="sasw_list mb0">
-                    <li className="search_area"><SearchBox /></li>
-                  </ul>
-                </div> */}
-                {/* End .col */}
               </div>
               {/* End .row */}
 
@@ -167,7 +159,7 @@ const Index = () => {
                   <div className="">
                     <div className="col-lg-12">
                       <div className="packages_table">
-                        <div className="mt0">
+                        <div className="mt-3">
                           <Exemple
                             dataFetched={dataFetched}
                             data={data}

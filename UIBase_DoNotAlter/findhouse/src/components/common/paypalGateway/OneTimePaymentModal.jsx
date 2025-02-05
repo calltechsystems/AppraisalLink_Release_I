@@ -158,10 +158,6 @@ const OneTimePaymentModal = ({
                 !showPaypalPage ? (
                   <div className="text-center" style={{ fontSize: "19px" }}>
                     <span className="text-dark">
-                      Please checkout for further
-                    </span>
-                    <br />
-                    <span className="text-dark">
                       You have selected to add upto{" "}
                       <label
                         style={{

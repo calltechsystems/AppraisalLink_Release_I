@@ -10,6 +10,8 @@ import { FaArchive, FaDownload, FaEye } from "react-icons/fa";
 import { AppraiserStatusOptions } from "../create-listing/data";
 import millify from "millify";
 import Image from "next/image";
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
 
 const headCells = [
   {
@@ -192,19 +194,73 @@ export default function Exemple({
     return title;
   };
 
-  const handleDownload = (url) => {
+  // const handleDownloadAll = async () => {
+  //   if (!attachments || attachments.length === 0) {
+  //     alert("No attachments available.");
+  //     return;
+  //   }
+
+  //   const zip = new JSZip();
+  //   const folder = zip.folder("Property_Files"); // Folder inside the ZIP
+
+  //   // Fetch and add each file to the ZIP
+  //   await Promise.all(
+  //     attachments.map(async (file) => {
+  //       try {
+  //         const response = await fetch(file.url);
+  //         const blob = await response.blob();
+  //         folder.file(file.fileName, blob);
+  //       } catch (error) {
+  //         console.error(`Failed to download ${file.fileName}:`, error);
+  //       }
+  //     })
+  //   );
+
+  //   // Generate the ZIP file and trigger download
+  //   zip.generateAsync({ type: "blob" }).then((content) => {
+  //     saveAs(content, "Property_Attachments.zip");
+  //   });
+  // };
+
+  const handleDownload = async (url) => {
     if (url) {
-      const link = document.createElement("a");
-      link.href = url;
-      link.target = "_blank"; // Opens in a new tab
-      link.download = url.split("/").pop(); // Extracts file name from URL
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      try {
+        const response = await fetch(url); // Fetch the file from S3
+        if (!response.ok) throw new Error("Network response was not ok.");
+
+        const blob = await response.blob(); // Convert the response to a Blob
+        const downloadUrl = window.URL.createObjectURL(blob); // Create a temporary URL
+
+        const link = document.createElement("a");
+        link.href = downloadUrl;
+        link.download = url.split("/").pop(); // Extracts the file name from the URL
+        document.body.appendChild(link);
+        link.click(); // Trigger the download
+        document.body.removeChild(link);
+
+        window.URL.revokeObjectURL(downloadUrl); // Clean up the temporary URL
+      } catch (error) {
+        console.error("Download failed:", error);
+        toast.error("Failed to download the attachment.");
+      }
     } else {
-      alert("No attachment available.");
+      toast.error("No attachment available.");
     }
   };
+
+  // const handleDownload = (url) => {
+  //   if (url) {
+  //     const link = document.createElement("a");
+  //     link.href = url;
+  //     link.target = "_blank"; // Opens in a new tab
+  //     link.download = url.split("/").pop(); // Extracts file name from URL
+  //     document.body.appendChild(link);
+  //     link.click();
+  //     document.body.removeChild(link);
+  //   } else {
+  //     alert("No attachment available.");
+  //   }
+  // };
 
   const openRemarkModal = (property) => {
     const isBidded = filterBidsWithin24Hours(property); // Get the isBidded data
@@ -624,11 +680,16 @@ export default function Exemple({
                   className="w-100"
                   onClick={() => openRemarkModal(property)}
                 >
-                  <button href="#" className="btn btn-color">
+                  <button
+                    href="#"
+                    className="btn btn-color"
+                    style={{ width: "120px" }}
+                  >
                     <Link href="#">
                       <span className="text-light">
                         {" "}
-                        <FaEye />
+                        {/* <FaSms/> */}
+                        View
                       </span>
                     </Link>
                   </button>
@@ -1051,6 +1112,17 @@ export default function Exemple({
                         title="Download Attachment"
                       >
                         {" "}
+                        {/* <button
+                          className="btn btn-primary mb-3"
+                          onClick={handleDownloadAll}
+                          style={{
+                            backgroundColor: "#007bff",
+                            color: "#fff",
+                            padding: "10px 20px",
+                          }}
+                        >
+                          <FaDownload className="inline-block mr-2" />
+                        </button> */}
                         <span
                           className="btn btn-color-table"
                           onClick={() => handleDownload(property.attachment)}
@@ -1548,13 +1620,13 @@ export default function Exemple({
               </div>
             </div>
             <h3 className="text-center mt-3" style={{ color: "#2e008b" }}>
-              Appraisal Remark - Property Id{" "}
+              Appraiser Remarks - Property Id{" "}
               <span style={{ color: "#97d700" }}>
                 #{selectedProperty?.orderId}
               </span>
             </h3>
             <div className="mb-2" style={{ border: "2px solid #97d700" }}></div>
-            <div>
+            <div className="text-center">
               <span className="fs-5 text-dark mt-4 remark-text">{remark}</span>
             </div>
             <div

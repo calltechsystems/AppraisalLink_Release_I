@@ -23379,7 +23379,7 @@ input:checked + .slider:before {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-.icon {
+.icon_new {
   margin-top: 10px;
   font-size: 24px;
   color: #333;
@@ -23398,9 +23398,10 @@ input:checked + .slider:before {
   /* color: #000; */
 }
 
-.icon span {
+.icon_new span {
   font-size: 40px;
-  color: grey;
+  color: #2e008b;
+  /* color: grey; */
 }
 
 /* Background Colors for Each Block */
