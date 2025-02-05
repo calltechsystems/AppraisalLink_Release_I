@@ -9,7 +9,7 @@ const OneTimePaymentModal = ({
   modalOpen,
   closeModal,
   price,
-  userDetailField
+  userDetailField,
 }) => {
   const [paypalUrl, setPaypalUrl] = useState("");
   const [status, setStatus] = useState(0);
@@ -65,7 +65,6 @@ const OneTimePaymentModal = ({
     setStatus(1);
     setShowPaypalPage(true);
   };
-
 
   const closePaypalPage = () => {
     setShowPaypalPage(false);
@@ -144,7 +143,11 @@ const OneTimePaymentModal = ({
               {onSuccess ? (
                 <div className="text-center" style={{ fontSize: "19px" }}>
                   <span className="text-dark">
-                    Payment confirmed! We appreciate your business
+                    <span className="text-color fw-bold">
+                      Payment confirmed!
+                    </span>
+                    <br /> We appreciate your business. Please Login again to
+                    continue.
                   </span>
                 </div>
               ) : (
@@ -159,7 +162,7 @@ const OneTimePaymentModal = ({
                     </span>
                     <br />
                     <span className="text-dark">
-                    You have selected to add upto{" "}
+                      You have selected to add upto{" "}
                       <label
                         style={{
                           fontWeight: "bold",
@@ -204,9 +207,7 @@ const OneTimePaymentModal = ({
                 )
               ) : (
                 <div className="text-center" style={{ fontSize: "19px" }}>
-                  <span className="text-dark">
-                    {errorMessage}
-                  </span>
+                  <span className="text-dark">{errorMessage}</span>
                 </div>
               )}
 
@@ -255,8 +256,7 @@ const OneTimePaymentModal = ({
                   Cancel
                 </button>
               </div>
-            ) : 
-            // <label
+            ) : // <label
             //   className="btn btn-color w-25"
             //   style={{
             //     display: "flex",
