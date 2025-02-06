@@ -48,8 +48,7 @@ const Pricing = ({
       price: price,
       type: type,
       item,
-      paypalPlanId:
-        type == "plan" || type == "upgrade_plan" ? item?.payPalProductId : "",
+      paypalPlanId: item?.payPalProductId || "",
     });
   };
 
@@ -348,7 +347,8 @@ const Pricing = ({
                         key={topUp.$id}
                         value={topUp.$id}
                       >
-                        Add {topUp.noOfProperties} Properties (${topUp.topUpAmount})
+                        Add {topUp.noOfProperties} Properties (${" "}
+                        {topUp.topUpAmount})
                       </option>
                     ))}
                     <option value="cancel">Cancel Subscription</option>

@@ -48,8 +48,7 @@ const Pricing = ({
       price: price,
       type: type,
       item,
-      paypalPlanId:
-        type == "plan" || type == "upgrade_plan" ? item?.payPalProductId : "",
+      paypalPlanId: item?.payPalProductId || "",
     });
   };
 
@@ -201,8 +200,7 @@ const Pricing = ({
             <div
               className={`${
                 currentActivePlan?.id === item.id ? "active-selected-plan" : ""
-              }
-`}
+              }`}
             >
               <div className="pricing_header">
                 <div className="price">{item.planName}</div>

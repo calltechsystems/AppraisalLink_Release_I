@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { getPayPalAccessToken, PayPalApi } from "./utilFunctions";
 
 const CancelCheckout = ({
   topUpDetails,
@@ -14,43 +15,10 @@ const CancelCheckout = ({
   const [currency, setCurrency] = useState("CAD");
   const [userData, setUserData] = useState({});
 
-  const PayPalApi = {
-    clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
-    clientSecret: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_SECRET,
-    baseUrl:
-      // process.env.NODE_ENV === "production"
-      //   ? "https://api-m.paypal.com"
-      //   :
-      "https://api-m.sandbox.paypal.com", // Use sandbox in development
-  };
 
   useEffect(() => {
     setUserData(JSON.parse(localStorage.getItem("user")) || {});
   }, []);
-
-  // Function to get PayPal access token
-  const getPayPalAccessToken = async () => {
-    const credentials = `${PayPalApi.clientId}:${PayPalApi.clientSecret}`;
-    const encodedCredentials = btoa(credentials); // Base64 encode the credentials
-
-    try {
-      const response = await axios.post(
-        `${PayPalApi.baseUrl}/v1/oauth2/token`,
-        new URLSearchParams({ grant_type: "client_credentials" }),
-        {
-          headers: {
-            Authorization: `Basic ${encodedCredentials}`,
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }
-      );
-
-      return response.data.access_token;
-    } catch (error) {
-      console.error("Failed to fetch PayPal access token:", error);
-      throw new Error("Unable to fetch PayPal access token.");
-    }
-  };
 
   // Function to cancel subscription
   const cancelSubscription = async (subscriptionId) => {

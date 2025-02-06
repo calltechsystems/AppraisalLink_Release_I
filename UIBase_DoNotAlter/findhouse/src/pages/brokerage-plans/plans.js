@@ -91,7 +91,7 @@ const Index = ({
 
           const allTopUp = res2.data.data.$values;
           let getUserTopUpData = [];
-          allTopUp.map((top, index) => {
+          allTopUp?.map((top, index) => {
             if (String(top.userType) === String(userInfo.userType)) {
               getUserTopUpData.push(top);
             }
