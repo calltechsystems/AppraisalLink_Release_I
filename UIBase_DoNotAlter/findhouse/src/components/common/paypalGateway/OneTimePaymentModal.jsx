@@ -166,8 +166,8 @@ const OneTimePaymentModal = ({
                           color: "#2e008b",
                         }}
                       >
-                        add {price.title} upto{" "}
-                        {price?.selectedTopUp?.noOfProperties}
+                        {/* add {price.title} upto{" "} */}
+                        {price.properties}
                       </label>{" "}
                       properties for{" "}
                       <label

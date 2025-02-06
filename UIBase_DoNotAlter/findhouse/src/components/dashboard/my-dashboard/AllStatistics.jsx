@@ -44,7 +44,6 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
       timer: favourites,
       name: "Quotes on HOLD",
     },
-
     {
       id: 7,
       blockStyle: "stylecard7",
@@ -87,14 +86,13 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
       timer: favourites,
       name: "Used Properties",
     },
-
-    {
-      id: 13,
-      blockStyle: "stylecard13",
-      icon: "flaticon-house",
-      timer: favourites,
-      name: "Archived Properties",
-    },
+    // {
+    //   id: 13,
+    //   blockStyle: "stylecard13",
+    //   icon: "flaticon-house",
+    //   timer: favourites,
+    //   name: "Archived Properties",
+    // },
   ];
 
   return (

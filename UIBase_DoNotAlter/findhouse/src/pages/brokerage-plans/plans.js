@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import Image from "next/image";
+import LoadingSpinner from "../../components/common/LoadingSpinner";
 
 const Index = ({
   setModalOpen,
@@ -152,13 +153,7 @@ const Index = ({
           </div>
           <div className="row">
             {planData.length === 0 ? (
-              <div
-                className="ring"
-                style={{ marginTop: "6%", marginLeft: "6%" }}
-              >
-                Loading
-                <span className="load"></span>
-              </div>
+              <LoadingSpinner />
             ) : (
               <Pricing
                 isPlan={selectedPlan === "Monthly" ? 1 : 2}

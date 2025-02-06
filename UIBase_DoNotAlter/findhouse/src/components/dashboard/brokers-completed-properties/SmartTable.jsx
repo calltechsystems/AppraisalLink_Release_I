@@ -6,12 +6,14 @@ import SVGChevronLeft from "./icons/SVGChevronLeft";
 import SVGChevronRight from "./icons/SVGChevronRight";
 import { FaDownload, FaRedo } from "react-icons/fa";
 import * as XLSX from "xlsx";
-
 import { useReactToPrint } from "react-to-print";
 import toast from "react-hot-toast";
 import SearchBox from "./SearchBox";
 import FilteringBy from "./FilteringBy";
 import Filtering from "./Filtering";
+import Image from "next/image";
+import LoadingSpinner from "../../common/LoadingSpinner";
+import NoDataFound from "../../common/NoDataFound";
 
 function SmartTable(props) {
   const [loading, setLoading] = useState(false);
@@ -537,18 +539,12 @@ function SmartTable(props) {
               >
                 {props.dataFetched && props.properties.length === 0 ? (
                   showNoData ? (
-                    <h3>No Data Found</h3>
+                    <NoDataFound />
                   ) : (
-                    <div className="ring">
-                      Loading
-                      <span className="load"></span>
-                    </div>
+                    <LoadingSpinner />
                   )
                 ) : (
-                  <div className="ring">
-                    Loading
-                    <span className="load"></span>
-                  </div>
+                  <LoadingSpinner />
                 )}
               </div>
             </div>

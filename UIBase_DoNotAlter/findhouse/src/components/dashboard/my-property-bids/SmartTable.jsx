@@ -7,6 +7,9 @@ import SVGChevronRight from "./icons/SVGChevronRight";
 import { FaDownload, FaRedo } from "react-icons/fa";
 import Filtering from "./Filtering";
 import SearchBox from "./SearchBox";
+import Image from "next/image";
+import LoadingSpinner from "../../common/LoadingSpinner";
+import NoDataFound from "../../common/NoDataFound";
 
 function SmartTable(props) {
   const [loading, setLoading] = useState(false);
@@ -390,13 +393,27 @@ function SmartTable(props) {
                     <h3>No Data Found</h3>
                   ) : (
                     <div className="ring">
-                      Loading
+                      <Image
+                      width={60}
+                      height={45}
+                      className="logo1 img-fluid"
+                      style={{ marginTop: "-20px" }}
+                      src="/assets/images/Appraisal_Land_Logo.png"
+                      alt="header-logo2.png"
+                    />
                       <span className="load"></span>
                     </div>
                   )
                 ) : (
                   <div className="ring">
-                    Loading
+                    <Image
+                      width={60}
+                      height={45}
+                      className="logo1 img-fluid"
+                      style={{ marginTop: "-20px" }}
+                      src="/assets/images/Appraisal_Land_Logo.png"
+                      alt="header-logo2.png"
+                    />
                     <span className="load"></span>
                   </div>
                 )}

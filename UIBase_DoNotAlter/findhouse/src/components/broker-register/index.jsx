@@ -16,7 +16,7 @@ const Index = () => {
 
   const closeModal = () => {
     setModalIsOpen(false);
-    router.push("/login");
+    window.location.reload();
   };
 
   const closeErrorModal = () => {
@@ -27,7 +27,7 @@ const Index = () => {
   return (
     <>
       {/* <!-- Main Header Nav --> */}
-     {/* <Header />*/ }
+      {/* <Header />*/}
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
@@ -59,23 +59,74 @@ const Index = () => {
         <div className="modal">
           <div
             className="modal-content"
-            style={{ borderColor: "green", width: "20%" }}
+            style={{ border: "2px solid #97d700", width: "40%" }}
           >
-            <h3 className="text-center" style={{ color: "green" }}>
-              Success
-            </h3>
-            <div style={{ borderWidth: "2px", borderColor: "green" }}>
-              <br />
+            <div className="col-lg-12">
+              <div className="row">
+                <div className="col-lg-12">
+                  <Link href="/" className="">
+                    <Image
+                      width={60}
+                      height={45}
+                      className="logo1 img-fluid"
+                      style={{ marginTop: "-20px" }}
+                      src="/assets/images/Appraisal_Land_Logo.png"
+                      alt="header-logo2.png"
+                    />
+                    <span
+                      style={{
+                        color: "#2e008b",
+                        fontWeight: "bold",
+                        fontSize: "24px",
+                        // marginTop: "20px",
+                      }}
+                    >
+                      Appraisal
+                    </span>
+                    <span
+                      style={{
+                        color: "#97d700",
+                        fontWeight: "bold",
+                        fontSize: "24px",
+                        // marginTop: "20px",
+                      }}
+                    >
+                      {" "}
+                      Land
+                    </span>
+                  </Link>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-lg-12 text-center">
+                  <h3 className=" text-color mt-1">Success</h3>
+                </div>
+              </div>
+              <div
+                className="mt-2 mb-3"
+                style={{ border: "2px solid #97d700" }}
+              ></div>
             </div>
-            <h5 className="text-center">You are Successfully registered !!</h5>
+            <span
+              className="text-center mb-2 text-dark fw-bold"
+              style={{ fontSize: "18px" }}
+            >
+              The broker has been successfully added to Appraisal Land. Please
+              verify the account within 72 hours by clicking the registration
+              link sent to the provided email.
+            </span>
             <div
-              className="text-center"
-              style={{ display: "flex", flexDirection: "column" }}
+              className="mt-2 mb-3"
+              style={{ border: "2px solid #97d700" }}
+            ></div>
+            <div
+              className="col-lg-12 text-center"
+              style={{ display: "flex", justifyContent: "center" }}
             >
               <button
-                className="btn w-35 btn-white"
+                className="btn btn-color w-25"
                 onClick={() => closeModal()}
-                style={{ borderColor: "green", color: "green" }}
+                style={{}}
               >
                 Ok
               </button>

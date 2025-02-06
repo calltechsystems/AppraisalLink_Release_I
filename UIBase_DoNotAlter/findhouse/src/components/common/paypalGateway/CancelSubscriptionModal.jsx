@@ -9,7 +9,7 @@ const CancelSubscriptionModal = ({
   modalOpen,
   closeModal,
   price,
-  userDetailField
+  userDetailField,
 }) => {
   const [paypalUrl, setPaypalUrl] = useState("");
   const [status, setStatus] = useState(0);
@@ -161,7 +161,7 @@ const CancelSubscriptionModal = ({
                     </span>
                     <br />
                     <span className="text-dark">
-                      Over your selected subscription plan{""}
+                      Your selected plan{" "}
                       <label
                         style={{
                           fontWeight: "bold",
@@ -169,7 +169,7 @@ const CancelSubscriptionModal = ({
                           color: "#2e008b",
                         }}
                       >
-                        {capitalizeFirstLetter(price.title)}
+                        {capitalizeFirstLetter(currentSubscription.planName)}
                       </label>{" "}
                       with value{" "}
                       <label
@@ -180,8 +180,8 @@ const CancelSubscriptionModal = ({
                         }}
                       >
                         ${currentSubscription.planAmount}{" "}
-                      </label>
-                      (monthly) ?
+                      </label>{" "}
+                      per month ?
                     </span>
                     <br />
                     <span style={{ fontSize: "15px" }}>
@@ -205,9 +205,7 @@ const CancelSubscriptionModal = ({
                 )
               ) : (
                 <div className="text-center" style={{ fontSize: "19px" }}>
-                  <span className="text-dark">
-                    {errorMessage}
-                  </span>
+                  <span className="text-dark">{errorMessage}</span>
                 </div>
               )}
 

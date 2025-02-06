@@ -18,7 +18,7 @@ const Pricing = ({
   setPrice,
   planData,
   canUpgrade,
-  userDetailField
+  userDetailField,
 }) => {
   let userData = {};
   const [selectedPackage, setSelectedPackage] = useState({});
@@ -59,14 +59,14 @@ const Pricing = ({
     let updatedData = {
       id: data?.id,
       title: data?.topupDescription,
-      price: data?.tupUpAmount,
+      price: data?.topUpAmount,
+      properties: data?.noOfProperties,
       type: "topup",
       data,
     };
 
     setPrice(updatedData);
     setSelectedTopUp(updatedData);
-
   };
 
   const setPlan = (planId, type) => {
@@ -78,7 +78,8 @@ const Pricing = ({
       let data = {
         id: selectedTopUp?.id,
         title: selectedTopUp?.topupDescription,
-        price: selectedTopUp?.tupUpAmount,
+        price: selectedTopUp?.topUpAmount,
+        properties: selectedTopUp?.noOfProperties,
         type: "",
         selectedTopUp,
       };
@@ -113,7 +114,6 @@ const Pricing = ({
     if (String(type) === "2") {
       window.location.reload();
     } else if (String(type) === "3" || String(type) === "4") {
-
       const payload = {
         TopUpId: selectedTopUp.id,
         UserId: userData.userId,
@@ -238,7 +238,7 @@ const Pricing = ({
               <div className="pricing_content">
                 <ul className="mb0">
                   <li key={idx}>{item.noOfProperties} Properties Quotes</li>
-                   <li>{item.planValidity} Days Validity</li>
+                  <li>{item.planValidity} Days Validity</li>
                 </ul>
                 <div className="pricing_header">
                   <h2 className="text-dark">
@@ -331,22 +331,19 @@ const Pricing = ({
                         setPlan(item.id, 2);
                       } else {
                         const selectedTopUp = topupData?.find(
-                          (topUp) =>
-                            topUp.$id == (selectedValue)
+                          (topUp) => topUp.$id == selectedValue
                         );
                         if (selectedTopUp) {
-                          topUpHandler(item.id,selectedTopUp);
+                          topUpHandler(item.id, selectedTopUp);
                         }
                       }
                     }}
                   >
                     <option value="">Add Top Up / Cancel Subscription</option>
                     {topupData?.map((topUp) => (
-                      <option
-                        key={topUp.$id}
-                        value={topUp.$id}
-                      >
-                        Add {topUp.noOfProperties} Properties (${topUp.tupUpAmount})
+                      <option key={topUp.$id} value={topUp.$id}>
+                        Add {topUp.noOfProperties} Properties ($
+                        {topUp.topUpAmount})
                       </option>
                     ))}
                     <option value="cancel">Cancel Subscription</option>
@@ -432,7 +429,7 @@ const Pricing = ({
                         selectPackageHandler(
                           selectedTopUp.id,
                           selectedTopUp.topupDescription,
-                          selectedTopUp.tupUpAmount,
+                          selectedTopUp.topUpAmount,
                           "topup",
                           selectedTopUp
                         )
