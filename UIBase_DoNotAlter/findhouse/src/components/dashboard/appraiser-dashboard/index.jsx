@@ -546,16 +546,26 @@ const Index = () => {
                 {/* End Dashboard Navigation */}
 
                 <div
-                  className="mb10"
+                  className="col-lg-12 mb-2 pb-1 pt-1"
                   style={{
                     display: "flex",
                     flexDirection: "row",
-                    justifyContent: "space-between",
                     alignItems: "center",
+                    justifyContent: "space-between",
+                    borderRadius: "5px",
+                    border: "1px solid #2e008b",
+                    // backgroundColor: "#97d700",
                   }}
                 >
-                  <div className="style2">
-                    <h2 className="breadcrumb_title">
+                  <div>
+                    <h2
+                      style={{
+                        paddingTop: "10px",
+                        color: "#2e008b",
+                        // backgroundColor: "#97d700",
+                        fontSize: "25px",
+                      }}
+                    >
                       {userData?.appraiser_Details
                         ? `${userData?.appraiser_Details?.firstName} ${userData?.appraiser_Details?.lastName}`
                         : "Name"}
@@ -582,14 +592,14 @@ const Index = () => {
               </div>
               {/* End .row Dashboard top statistics */}
 
-              <div className="row">
+              {/* <div className="row">
                 <div className="col-xl-6">
                   <div className="application_statics">
                     <h4 className="mb-4">View Statistics</h4>
                     {chartData.length > 0 ? (
                       <StatisticsChart data={chartData} />
                     ) : (
-                      <StatisticsChart data={chartData} /> // You can replace this with a loading indicator
+                      <StatisticsChart data={chartData} />
                     )}
                   </div>
                 </div>
@@ -599,54 +609,49 @@ const Index = () => {
                     {chartData.length > 0 ? (
                       <StatisticsPieChart data={chartData} />
                     ) : (
-                      <StatisticsPieChart data={chartData} /> // You can replace this with a loading indicator
-                    )}
-                    {modalIsOpenError && (
-                      <div className="modal">
-                        <div
-                          className="modal-content"
-                          style={{ borderColor: "orangered", width: "20%" }}
-                        >
-                          <h3
-                            className="text-center"
-                            style={{ color: "orangered" }}
-                          >
-                            Error
-                          </h3>
-                          <div
-                            style={{
-                              borderWidth: "2px",
-                              borderColor: "orangered",
-                            }}
-                          >
-                            <br />
-                          </div>
-                          <h5 className="text-center">{errorMessage}</h5>
-                          <div
-                            className="text-center"
-                            style={{ display: "flex", flexDirection: "column" }}
-                          >
-                            <button
-                              className="btn w-35 btn-white"
-                              onClick={() => closeErrorModal()}
-                              style={{
-                                borderColor: "orangered",
-                                color: "orangered",
-                              }}
-                            >
-                              Cancel
-                            </button>
-                          </div>
-                        </div>
-                      </div>
+                      <StatisticsPieChart data={chartData} />
                     )}
                   </div>
                 </div>
+              </div> */}
 
-                {/* End statistics chart */}
-              </div>
               {/* End .row  */}
-
+              {modalIsOpenError && (
+                <div className="modal">
+                  <div
+                    className="modal-content"
+                    style={{ borderColor: "orangered", width: "20%" }}
+                  >
+                    <h3 className="text-center" style={{ color: "orangered" }}>
+                      Error
+                    </h3>
+                    <div
+                      style={{
+                        borderWidth: "2px",
+                        borderColor: "orangered",
+                      }}
+                    >
+                      <br />
+                    </div>
+                    <h5 className="text-center">{errorMessage}</h5>
+                    <div
+                      className="text-center"
+                      style={{ display: "flex", flexDirection: "column" }}
+                    >
+                      <button
+                        className="btn w-35 btn-white"
+                        onClick={() => closeErrorModal()}
+                        style={{
+                          borderColor: "orangered",
+                          color: "orangered",
+                        }}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
               {modalIsPlanError && (
                 <div className="modal">
                   <div

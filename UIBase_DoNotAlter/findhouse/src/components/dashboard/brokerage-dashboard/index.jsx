@@ -434,15 +434,26 @@ const Index = () => {
                 {/* End Dashboard Navigation */}
 
                 <div
-                  className="col-lg-12 mb10"
+                  className="col-lg-12 mb-2 pt-1 pb-1"
                   style={{
                     display: "flex",
                     flexDirection: "row",
+                    alignItems: "center",
                     justifyContent: "space-between",
+                    borderRadius: "5px",
+                    border: "1px solid #2e008b",
+                    // backgroundColor: "#97d700",
                   }}
                 >
-                  <div className="breadcrumb_content style2">
-                    <h2 className="breadcrumb_title">
+                  <div>
+                    <h2
+                      style={{
+                        paddingTop: "10px",
+                        color: "#2e008b",
+                        // backgroundColor: "#97d700",
+                        fontSize: "25px",
+                      }}
+                    >
                       {userData?.brokerage_Details?.firstName
                         ? userData?.brokerage_Details?.firstName
                         : "firstName"}{" "}
@@ -473,14 +484,14 @@ const Index = () => {
               </div>
               {/* End .row Dashboard top statistics */}
 
-              <div className="row">
+              {/* <div className="row">
                 <div className="col-xl-6">
                   <div className="application_statics">
                     <h4 className="mb-4">Property Statistics</h4>
                     {data.length > 0 && showLineGraph ? (
                       <StatisticsChart data={lineData} />
                     ) : (
-                      <p>Loading...</p> // You can replace this with a loading indicator
+                      <p>Loading...</p>
                     )}
                   </div>
                 </div>
@@ -490,13 +501,11 @@ const Index = () => {
                     {data.length > 0 && showLineGraph ? (
                       <StatisticsPieChart data={lineData} />
                     ) : (
-                      <p>Loading...</p> // You can replace this with a loading indicator
+                      <p>Loading...</p>
                     )}
                   </div>
                 </div>
-
-                {/* End statistics chart */}
-              </div>
+              </div> */}
 
               {/* End .row  */}
 

@@ -8,8 +8,18 @@ import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import Image from "next/image";
+import LoadingSpinner from "../../components/common/LoadingSpinner";
 
-const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen, setcurrentSubscription, setCanUpgrade,canUpgrade, userDetailField }) => {
+const Index = ({
+  setModalOpen,
+  currentSubscription,
+  setPrice,
+  modalOpen,
+  setcurrentSubscription,
+  setCanUpgrade,
+  canUpgrade,
+  userDetailField,
+}) => {
   const [selectedPlan, setSelectedPlan] = useState("Monthly");
   const [planData, setPlanData] = useState([]);
   const [isChecked, setIsChecked] = useState(false);
@@ -57,9 +67,7 @@ const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen, setcurr
             },
           });
 
-          setCanUpgrade(res3?.data?.data?.upgradeEligible)
-
-
+          setCanUpgrade(res3?.data?.data?.upgradeEligible);
 
           const currentSubscriptionPlan = currentSubscription;
 
@@ -145,13 +153,7 @@ const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen, setcurr
           </div>
           <div className="row">
             {planData.length === 0 ? (
-              <div
-                className="ring"
-                style={{ marginTop: "6%", marginLeft: "6%" }}
-              >
-                Loading
-                <span className="load"></span>
-              </div>
+              <LoadingSpinner />
             ) : (
               <Pricing
                 isPlan={selectedPlan === "Monthly" ? 1 : 2}

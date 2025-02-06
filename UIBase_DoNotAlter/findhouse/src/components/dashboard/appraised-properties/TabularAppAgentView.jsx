@@ -37,7 +37,7 @@ const headCells = [
     width: 160,
   },
   {
-    id: "remark",
+    id: "remarkButton",
     numeric: false,
     label: "Appraisal Remark",
     width: 160,
@@ -161,6 +161,8 @@ export default function Exemple({
   const [archiveModal, setArchiveModal] = useState(false);
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [allArchive, setAllArchive] = useState([]);
+  const [remarkModal, setRemarkModal] = useState(false);
+  const [remark, setRemark] = useState("N.A.");
   const [wishlistModal, setWishlistModal] = useState(false);
   const [isWishlistProperty, setIsWishlistProperty] = useState(0);
   const [selectedWishlistId, setSelectedWishlistId] = useState(null);
@@ -249,6 +251,19 @@ export default function Exemple({
     return false;
   };
   const router = useRouter();
+
+  const openRemarkModal = (property) => {
+    const isBidded = filterBidsWithin24Hours(property); // Get the isBidded data
+    setRemark(isBidded && isBidded.remark ? isBidded.remark : "N.A.");
+    setSelectedProperty(property);
+    setRemarkModal(true);
+  };
+
+  const closeRemarkModal = () => {
+    setRemarkModal(false);
+    setRemark("N.A.");
+    setSelectedProperty(null);
+  };
 
   const openArchiveModal = (property) => {
     setSelectedProperty(property); // Store the selected property
@@ -513,12 +528,34 @@ export default function Exemple({
                   <span>N.A.</span>
                 </button>
               ),
-            remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
-            // isBidded && isBidded.remark
-            //   ? isBidded.orderstatus === 1
-            //     ? `${isBidded.remark} on ${formatDate(isBidded.modifiedDate)}`
-            //     : isBidded.remark
-            //   : "N.A.",
+            // remark: isBidded && isBidded.remark ? isBidded.remark : "N.A.",
+            remarkButton: (
+              <li
+                className="list-inline-item"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="View Remark"
+              >
+                <div
+                  className="w-100"
+                  onClick={() => openRemarkModal(property)}
+                >
+                  <button
+                    href="#"
+                    className="btn btn-color"
+                    style={{ width: "120px" }}
+                  >
+                    <Link href="#">
+                      <span className="text-light">
+                        {" "}
+                        {/* <FaSms/> */}
+                        View
+                      </span>
+                    </Link>
+                  </button>
+                </div>
+              </li>
+            ),
             status:
               anotherBid === true && isBidded.status !== 2 ? (
                 <span className="btn btn-danger w-100">Declined</span>
@@ -919,7 +956,6 @@ export default function Exemple({
           toast.dismiss();
           const prop = res.data.data.properties.$values;
           setProperties(prop);
-
           axios
             .get("/api/getAllBids", {
               headers: {
@@ -1341,6 +1377,71 @@ export default function Exemple({
                 onClick={handleConfirmRemoveWishlist}
               >
                 Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {remarkModal && (
+        <div className="modal">
+          <div className="modal-content" style={{ width: "35%" }}>
+            <div className="row">
+              <div className="col-lg-12">
+                <Link href="/" className="">
+                  <Image
+                    width={50}
+                    height={45}
+                    className="logo1 img-fluid"
+                    style={{ marginTop: "-20px" }}
+                    src="/assets/images/logo.png"
+                    alt="header-logo2.png"
+                  />
+                  <span
+                    style={{
+                      color: "#2e008b",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    Appraisal
+                  </span>
+                  <span
+                    style={{
+                      color: "#97d700",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    {" "}
+                    Land
+                  </span>
+                </Link>
+              </div>
+            </div>
+            <h3 className="text-center mt-3" style={{ color: "#2e008b" }}>
+              Appraiser Remarks - Property Id{" "}
+              <span style={{ color: "#97d700" }}>
+                #{selectedProperty?.orderId}
+              </span>
+            </h3>
+            <div className="mb-2" style={{ border: "2px solid #97d700" }}></div>
+            <div className="text-center">
+              <span className="fs-5 text-dark mt-4 remark-text">{remark}</span>
+            </div>
+            <div
+              className="mb-3 mt-4"
+              style={{ border: "2px solid #97d700" }}
+            ></div>
+            <div className="col-lg-12 d-flex justify-content-center gap-2">
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                onClick={closeRemarkModal}
+              >
+                Ok
               </button>
             </div>
           </div>

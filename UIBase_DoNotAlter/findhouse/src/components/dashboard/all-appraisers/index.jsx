@@ -541,39 +541,69 @@ const Index = () => {
                           <div className="modal">
                             <div
                               className="modal-content"
-                              style={{ borderColor: "orangered", width: "20%" }}
+                              style={{ borderColor: "#2e008b", width: "20%" }}
                             >
+                              <div className="row">
+                                <div className="col-lg-12">
+                                  <Link href="/" className="">
+                                    <Image
+                                      width={50}
+                                      height={45}
+                                      className="logo1 img-fluid"
+                                      style={{ marginTop: "-20px" }}
+                                      src="/assets/images/Appraisal_Land_Logo.png"
+                                      alt="header-logo2.png"
+                                    />
+                                    <span
+                                      style={{
+                                        color: "#2e008b",
+                                        fontWeight: "bold",
+                                        fontSize: "24px",
+                                        // marginTop: "20px",
+                                      }}
+                                    >
+                                      Appraisal
+                                    </span>
+                                    <span
+                                      style={{
+                                        color: "#97d700",
+                                        fontWeight: "bold",
+                                        fontSize: "24px",
+                                        // marginTop: "20px",
+                                      }}
+                                    >
+                                      {" "}
+                                      Land
+                                    </span>
+                                  </Link>
+                                </div>
+                              </div>
                               <h3
                                 className="text-center"
-                                style={{ color: "orangered" }}
+                                style={{ color: "#2e008b" }}
                               >
                                 Error
                               </h3>
                               <div
-                                style={{
-                                  borderWidth: "2px",
-                                  borderColor: "orangered",
-                                }}
-                              >
-                                <br />
-                              </div>
-                              <h5 className="text-center">{errorMessage}</h5>
+                                className="mb-2"
+                                style={{ border: "2px solid #97d700" }}
+                              ></div>
+                              <p className="text-center fs-5 fw-bold">
+                                {errorMessage}
+                              </p>
                               <div
-                                className="text-center"
-                                style={{
-                                  display: "flex",
-                                  flexDirection: "column",
-                                }}
+                                className="mb-2"
+                                style={{ border: "2px solid #97d700" }}
+                              ></div>
+                              <div
+                                className="col-lg-12 text-center"
+                                style={{ marginRight: "4%" }}
                               >
                                 <button
-                                  className="btn w-35 btn-white"
+                                  className="btn btn-color w-25"
                                   onClick={() => closeErrorModal()}
-                                  style={{
-                                    borderColor: "orangered",
-                                    color: "orangered",
-                                  }}
                                 >
-                                  Cancel
+                                  Ok
                                 </button>
                               </div>
                             </div>
@@ -1174,9 +1204,6 @@ const Index = () => {
                       className="col-lg-12 text-center"
                       style={{ marginRight: "4%" }}
                     >
-                      {/* <button className="cancel-button" onClick={closeModal}>
-                  Cancel
-                </button> */}
                       <button
                         className="btn btn-color w-25"
                         onClick={() => closeViewModal()}
@@ -1190,7 +1217,7 @@ const Index = () => {
 
               {openEditModal && (
                 <div className="modal">
-                  <div className="modal-content" style={{width:"30%"}}>
+                  <div className="modal-content" style={{ width: "30%" }}>
                     <div className="row">
                       <div className="col-lg-12">
                         <Link href="/" className="">
@@ -1226,7 +1253,9 @@ const Index = () => {
                         </Link>
                       </div>
                     </div>
-                    <h3 className="text-center text-color mt-2">Activity Status Updation</h3>
+                    <h3 className="text-center text-color mt-2">
+                      Activity Status Updation
+                    </h3>
                     <div
                       className="mb-3"
                       style={{ border: "2px solid #97d700" }}

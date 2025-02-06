@@ -7,7 +7,7 @@ const Filtering = ({ setRefresh, FilterQuery, setFilterQuery }) => {
   };
   return (
     <>
-      <div className="col=lg-12 pb-1 pt-1">
+      <div className="col=lg-12">
         <div className="row">
           <div className="col-lg-9">
             <select
@@ -23,7 +23,7 @@ const Filtering = ({ setRefresh, FilterQuery, setFilterQuery }) => {
           </div>
           <div className="col-lg-3">
             <button
-              className="btn btn-color w-100 mt-2"
+              className="btn btn-color w-100 mt-1"
               onClick={refreshHandler}
               title="Refresh"
             >
