@@ -48,8 +48,7 @@ const Pricing = ({
       price: price,
       type: type,
       item,
-      paypalPlanId:
-        type == "plan" || type == "upgrade_plan" ? item?.payPalProductId : "",
+      paypalPlanId: item?.payPalProductId || "",
     });
   };
 
@@ -59,7 +58,7 @@ const Pricing = ({
     let updatedData = {
       id: data?.id,
       title: data?.topupDescription,
-      price: data?.tupUpAmount,
+      price: data?.topUpAmount,
       type: "topup",
       data,
     };
@@ -78,7 +77,7 @@ const Pricing = ({
       let data = {
         id: selectedTopUp?.id,
         title: selectedTopUp?.topupDescription,
-        price: selectedTopUp?.tupUpAmount,
+        price: selectedTopUp?.topUpAmount,
         type: "",
         selectedTopUp,
       };
@@ -351,7 +350,7 @@ const Pricing = ({
                         value={topUp.$id}
                       >
                         Add {topUp.noOfProperties} Properties (${" "}
-                        {topUp.tupUpAmount})
+                        {topUp.topUpAmount})
                       </option>
                     ))}
                     <option value="cancel">Cancel Subscription</option>
@@ -437,7 +436,7 @@ const Pricing = ({
                         selectPackageHandler(
                           selectedTopUp.id,
                           selectedTopUp.topupDescription,
-                          selectedTopUp.tupUpAmount,
+                          selectedTopUp.topUpAmount,
                           "topup",
                           selectedTopUp
                         )

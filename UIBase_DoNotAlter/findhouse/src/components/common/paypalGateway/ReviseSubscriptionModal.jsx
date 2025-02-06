@@ -9,7 +9,7 @@ const ReviseSubscriptionModal = ({
   modalOpen,
   closeModal,
   price,
-  userDetailField
+  userDetailField,
 }) => {
   const [paypalUrl, setPaypalUrl] = useState("");
   const [status, setStatus] = useState(0);
@@ -187,7 +187,7 @@ const ReviseSubscriptionModal = ({
                   <>
                     <ReviseCheckout
                       currentSubscription={currentSubscription}
-                      planDetails={currentSelectedPlan}
+                      price={currentSelectedPlan}
                       setErrorOccurred={setErrorOccurred}
                       setOnSuccess={setOnSuccess}
                       setErrorMessage={setErrorMessage}
