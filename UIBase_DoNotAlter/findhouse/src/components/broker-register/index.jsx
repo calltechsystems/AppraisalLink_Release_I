@@ -7,6 +7,8 @@ import PopupSignInUp from "../common/PopupSignInUp";
 import BreadCrumbBanner from "./BreadCrumbBanner";
 import Form from "./Form";
 import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
 
 const Index = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
