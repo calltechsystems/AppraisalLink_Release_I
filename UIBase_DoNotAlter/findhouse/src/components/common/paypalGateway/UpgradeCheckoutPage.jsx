@@ -10,6 +10,7 @@ import axios from "axios";
 import {
   generateRequestPayload,
   generateResponsePayload,
+  getNextDate,
 } from "../../../utils/Paypal/GeneratePayloads.js";
 import { getPayPalAccessToken, PayPalApi } from "./utilFunctions.js";
 
@@ -52,14 +53,49 @@ const Checkout = ({
     return actions.subscription.create(payload);
   };
 
+  const saveCancellationPlanData = async (payload) => {
+    try {
+      console.log("cancel plan data", payload);
+      const cancellationResponse = await axios.post(
+        "/api/savePaypalSubscriptionCancellationData",
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${userData.token}`,
+          },
+        }
+      );
+      if (cancellationResponse) {
+        setOnSuccess(true);
+      } else {
+        setErrorMessage(
+          "Your subscription payment was processed by PayPal. However, we encountered an issue while updating your account. Please contact support with your transaction details."
+        );
+        setErrorOccurred(true);
+      }
+    } catch (err) {
+      console.error("Got error while saving the cancellation data", err);
+      setErrorMessage(
+        "Your subscription payment was processed by PayPal. However, we encountered an issue while updating your account. Please contact support with your transaction details."
+      );
+      setErrorOccurred(true);
+    } finally {
+      toast.dismiss();
+    }
+  };
+
   const saveAndCancelSubscription = async (payload, subscriptionId) => {
     toast.loading("Processing subscription data...");
 
-    const saveDataPromise = axios.post("/api/saveOneTimePaymentData", payload, {
-      headers: {
-        Authorization: `Bearer ${userData.token}`,
-      },
-    });
+    const saveDataPromise = axios.post(
+      "/api/saveRecurringPaymentData",
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${userData.token}`,
+        },
+      }
+    );
 
     const accessToken = await getPayPalAccessToken();
     const cancelSubscriptionPromise = axios.post(
@@ -74,9 +110,27 @@ const Checkout = ({
     );
 
     try {
-      await Promise.all([saveDataPromise, cancelSubscriptionPromise]);
-      toast.success("Subscription processed and canceled successfully.");
-      setOnSuccess(true);
+      const [savingRecurringResponse, planCancellationResponse] =
+        await Promise.all([saveDataPromise, cancelSubscriptionPromise]);
+
+      //cancellation payload
+      const planCancellationRequest = { subscriptionId };
+      const planCancellationDataResponse = planCancellationResponse?.data;
+
+      //------------ FORMED USING RECURRING DATA
+      let cancellationPayload = { ...payload };
+      delete cancellationPayload["startTime"];
+      cancellationPayload["cancellationDateTime"] = new Date().toISOString();
+      cancellationPayload["subscriptionStatus"] = "CANCELLED";
+      cancellationPayload["paymentRequestSent"] = JSON.stringify({
+        ...planCancellationDataResponse,
+      });
+      cancellationPayload["paymentRequestReceived"] = JSON.stringify({
+        ...planCancellationRequest,
+      });
+
+      //calling the api to save the plan cancellation data
+      saveCancellationPlanData(cancellationPayload);
     } catch (err) {
       console.error("Error during subscription processing:", err);
       setErrorMessage(
@@ -88,34 +142,36 @@ const Checkout = ({
   };
 
   const onApproveOrder = async (data, actions) => {
-      const subscriptionId = data.subscriptionID;
-      const requestPayload = generateRequestPayload(
-        paymentType,
-        currentSubscription,
-        userData,
-        currency,
-        userDetailField
-      );
+    const subscriptionId = data.subscriptionID;
+    const requestPayload = generateRequestPayload(
+      paymentType,
+      currentSubscription,
+      userData,
+      currency,
+      userDetailField
+    );
 
-      const response = {
-        paymentDetails: { ...data },
-        actionsData: { ...actions.subscription.get() },
-      };
+    const response = {
+      paymentDetails: { ...data },
+      actionsData: { ...actions.subscription.get() },
+    };
 
-      const responsePayload = generateResponsePayload(
-        paymentType,
-        topUpDetails,
-        userData,
-        requestPayload,
-        response,
-        currentSubscription,
-        topUpDetails,
-        userDetailField
-      );
+    const responsePayload = generateResponsePayload(
+      paymentType,
+      topUpDetails,
+      userData,
+      requestPayload,
+      response,
+      currentSubscription,
+      topUpDetails,
+      userDetailField
+    );
 
-      console.log({responsePayload, subscriptionId})
+    responsePayload["startTime"] = new Date(
+      getNextDate(new Date(currentSubscription?.endDate))
+    ).toISOString();
 
-      await saveAndCancelSubscription(responsePayload, subscriptionId);
+    await saveAndCancelSubscription(responsePayload, subscriptionId);
   };
 
   const onCancelOrder = (data) => {
@@ -126,7 +182,9 @@ const Checkout = ({
 
   const onError = (err) => {
     console.error("PayPal On Error data:", err);
-    setErrorMessage("An unexpected error occurred while processing your payment. Please try again.");
+    setErrorMessage(
+      "An unexpected error occurred while processing your payment. Please try again."
+    );
     setErrorOccurred(true);
   };
 
@@ -138,13 +196,22 @@ const Checkout = ({
         <>
           <div className="text-center mt-2 mb-2">
             <label htmlFor="currency-selector">Select Currency :</label>
-            <select id="currency-selector" value={currency} onChange={onCurrencyChange}>
+            <select
+              id="currency-selector"
+              value={currency}
+              onChange={onCurrencyChange}
+            >
               <option value="CAD">🇨🇦 CAD (Canadian Dollar)</option>
             </select>
           </div>
 
           <PayPalButtons
-            style={{ layout: "vertical", color: "blue", shape: "pill", label: "subscribe" }}
+            style={{
+              layout: "vertical",
+              color: "blue",
+              shape: "pill",
+              label: "subscribe",
+            }}
             createSubscription={createSubscription}
             onApprove={onApproveOrder}
             onCancel={onCancelOrder}
@@ -163,7 +230,7 @@ const CheckoutPage = ({
   setOnSuccess,
   paymentType,
   userDetailField,
-  setErrorMessage
+  setErrorMessage,
 }) => (
   <PayPalScriptProvider
     options={{
@@ -185,4 +252,4 @@ const CheckoutPage = ({
   </PayPalScriptProvider>
 );
 
-export default CheckoutPage; 
+export default CheckoutPage;

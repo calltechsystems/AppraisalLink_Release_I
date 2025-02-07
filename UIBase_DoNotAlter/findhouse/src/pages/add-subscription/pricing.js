@@ -272,7 +272,7 @@ const Pricing = ({
                 currentActivePlan &&
                 String(currentActivePlan.id) !== String(item.id) &&
                 (currentActivePlan?.$id ? (
-                  !canUpgrade ? (
+                  canUpgrade ? (
                     <div
                       className="pricing_footer"
                       onClick={() =>

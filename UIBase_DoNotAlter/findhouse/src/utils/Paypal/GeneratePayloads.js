@@ -319,7 +319,7 @@ const generateResponsePayload = (
       userId: userData?.userId,
       planId: Number(topUpDetails?.item?.id),
       paypalSubscriptionId: response?.paymentDetails?.subscriptionID,
-      startTime: new Date(convertToCanadaTime(new Date())).toISOString(),
+      cancellationDateTime: new Date(convertToCanadaTime(new Date())).toISOString(),
       subscriber: {
         profileName:
           userData?.[userDetailField]?.firstName +
@@ -354,6 +354,7 @@ const generateResponsePayload = (
 };
 
 module.exports = {
+  getNextDate,
   generateRequestPayload,
   generateResponsePayload,
 };
