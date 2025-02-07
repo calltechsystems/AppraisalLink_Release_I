@@ -1,11 +1,12 @@
 // import './AllStatistics.css';
+// import "font-awesome/css/font-awesome.min.css";
 
 const AllStatistics = ({ properties, views, bids, favourites }) => {
   const allStatistics = [
     {
       id: 1,
       blockStyle: "stylecard1",
-      icon: "flaticon-house",
+      icon: "fa fa-home",
       timer: properties,
       name: "All Properties",
     },
@@ -19,70 +20,70 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
     {
       id: 3,
       blockStyle: "stylecard3",
-      icon: "flaticon-tick",
+      icon: "fa fa-check",
       timer: bids,
       name: "Quotes Accepted",
     },
     {
       id: 4,
       blockStyle: "stylecard4",
-      icon: "flaticon-heart",
+      icon: "fa fa-edit",
       timer: favourites,
       name: "Quotes in Progress",
     },
     {
       id: 5,
       blockStyle: "stylecard5",
-      icon: "flaticon-invoice",
+      icon: "fa fa-check-circle",
       timer: favourites,
       name: "Quotes Completed",
     },
     {
       id: 6,
       blockStyle: "stylecard6",
-      icon: "flaticon-house",
+      icon: "fa fa-pause",
       timer: favourites,
-      name: "Quotes on HOLD",
+      name: "Quotes On Hold by Appraiser",
     },
     {
       id: 7,
       blockStyle: "stylecard7",
-      icon: "flaticon-tick",
+      icon: "fa fa-times-circle",
       timer: favourites,
       name: "Cancelled Properties",
     },
     {
       id: 8,
       blockStyle: "stylecard8",
-      icon: "flaticon-heart",
+      icon: "fa fa-pause",
       timer: favourites,
-      name: "On Hold Properties",
+      name: "On Hold Properties by Broker",
     },
     {
       id: 9,
       blockStyle: "stylecard9",
-      icon: "flaticon-heart",
+      icon: "fa fa-credit-card",
       timer: favourites,
       name: "Plan",
     },
     {
       id: 10,
       blockStyle: "stylecard10",
-      icon: "flaticon-house",
+      icon: "fa fa-hourglass-half",
       timer: favourites,
       name: "Plan validity",
     },
     {
       id: 11,
       blockStyle: "stylecard11",
-      icon: "flaticon-invoice",
+      icon: "fa fa-building",
       timer: favourites,
       name: "No. of Properties",
     },
     {
       id: 12,
       blockStyle: "stylecard12",
-      icon: "flaticon-tick",
+      icon: "fa fa-home",
       timer: favourites,
       name: "Used Properties",
     },
@@ -121,7 +122,7 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
             <p>{item.timer}</p>
           </div>
           <div className="icon">
-            <span className={item.icon}></span>
+            <i className={item.icon}></i>
           </div>
         </div>
       ))}

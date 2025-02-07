@@ -36,13 +36,13 @@ const SidebarMenu = ({ userData }) => {
       id: 1,
       name: "Add / Modify Subscriptions",
       route: "/brokerage-plans",
-      icon: "flaticon-telephone",
+      icon: "flaticon-money-bag",
     },
     {
       id: 2,
       name: "Payment History",
       route: "/brokerage-subscription-history",
-      icon: "flaticon-telephone",
+      icon: "flaticon-invoice",
     },
 
     {

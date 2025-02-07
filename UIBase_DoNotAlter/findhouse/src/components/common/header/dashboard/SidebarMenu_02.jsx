@@ -20,13 +20,13 @@ const SidebarMenu = () => {
       id: 1,
       name: "Add / Modify Subscription",
       route: "/add-subscription",
-      icon: "flaticon-building",
+      icon: "flaticon-money-bag",
     },
     {
       id: 2,
       name: "Payment History",
       route: "/subscription-hisotry",
-      icon: "flaticon-building",
+      icon: "flaticon-invoice",
     },
     { id: 3, name: "Help desk", route: "/appraiser-helpdesk", icon: "flaticon-telephone" },
   ];

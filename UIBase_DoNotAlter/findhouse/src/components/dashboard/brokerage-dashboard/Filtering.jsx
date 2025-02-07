@@ -21,9 +21,10 @@ const Filtering = ({ setRefresh , FilterQuery , setFilterQuery }) => {
           </div>
           <div className="col-lg-3">
             <button
-              className="btn btn-color w-100 mt-2"
+              className="btn btn-color w-100"
               onClick={refreshHandler}
               title="Refresh"
+              style={{padding:"10px", marginTop:"2px"}}
             >
               <FaRedo />
             </button>
