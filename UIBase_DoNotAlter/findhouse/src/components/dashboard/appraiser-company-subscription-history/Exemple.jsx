@@ -165,42 +165,6 @@ export default function Exemple({
     });
   };
 
-  const NextMonthAndYearCalculator = (inputDate) => {
-    const inputDateTime = new Date(inputDate);
-
-    // Calculate the next month and next year
-    let nextMonth = inputDateTime.getMonth() + 1;
-    let nextYear = inputDateTime.getFullYear();
-
-    if (nextMonth > 11) {
-      nextMonth = 0;
-      nextYear += 1;
-    }
-
-    // Calculate the last day of the next month
-    const lastDayOfNextMonth = new Date(nextYear, nextMonth + 1, 0).getDate();
-
-    // Set the day to the minimum of the current day and the last day of the next month
-    const nextMonthDate = new Date(
-      nextYear,
-      nextMonth,
-      Math.min(inputDateTime.getDate(), lastDayOfNextMonth)
-    );
-
-    // Calculate the next year date
-    const nextYearDate = new Date(
-      nextYear + 1,
-      inputDateTime.getMonth(),
-      inputDateTime.getDate()
-    );
-
-    // Format the results as strings
-    const nextMonthDateStr = nextMonthDate.toISOString().split("T")[0];
-    const nextYearDateStr = nextYearDate.toISOString().split("T")[0];
-
-    return { nextMonth: nextMonthDateStr, nextYear: nextYearDateStr };
-  };
-
   const sortFunction = (hisotries) => {
     const data = hisotries;
     data?.sort((a, b) => {
@@ -228,10 +192,6 @@ export default function Exemple({
       const sortedData = sortFunction(data);
       sortedData?.map((property, index) => {
         const propertyCount = 26;
-        const { nextMonth, nextYear } = NextMonthAndYearCalculator(
-          property.createdTime
-        );
-        const endDate = property.planAmount < 500 ? nextMonth : nextYear;
         const expired =
           new Date(property.endDate) >= new Date() &&
           new Date() >= new Date(property.startDate)
@@ -242,7 +202,7 @@ export default function Exemple({
           const updatedRow = {
             id: property.paymentid,
             planName: property?.planName || "N.A.",
-            planType: <span>Monthly</span>,
+            planType: <span>{property?.planType}</span>,
             amount: property.planAmount ? `$${property.planAmount}` : "$ -",
             st_date: formatDate(property.startDate),
             end_date: formatDate(property.endDate),

@@ -67,9 +67,9 @@ const Index = ({
             },
           });
 
-          setCanUpgrade(res3?.data?.data?.upgradeEligible);
+          setCanUpgrade(res3?.data?.data?.upgradeEligible || true);
 
-          const currentSubscriptionPlan = currentSubscription;
+          const currentSubscriptionPlan = currentSubscription || {};
 
           let userInfo = JSON.parse(localStorage.getItem("user"));
           let newInfo = {
@@ -91,7 +91,7 @@ const Index = ({
 
           const allTopUp = res2.data.data.$values;
           let getUserTopUpData = [];
-          allTopUp.map((top, index) => {
+          allTopUp?.map((top, index) => {
             if (String(top.userType) === String(userInfo.userType)) {
               getUserTopUpData.push(top);
             }

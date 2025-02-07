@@ -48,8 +48,7 @@ const Pricing = ({
       price: price,
       type: type,
       item,
-      paypalPlanId:
-        type == "plan" || type == "upgrade_plan" ? item?.payPalProductId : "",
+      paypalPlanId: item?.payPalProductId || "",
     });
   };
 
@@ -201,8 +200,7 @@ const Pricing = ({
             <div
               className={`${
                 currentActivePlan?.id === item.id ? "active-selected-plan" : ""
-              }
-`}
+              }`}
             >
               <div className="pricing_header">
                 <div className="price">{item.planName}</div>
@@ -274,7 +272,7 @@ const Pricing = ({
                 currentActivePlan &&
                 String(currentActivePlan.id) !== String(item.id) &&
                 (currentActivePlan?.$id ? (
-                  !canUpgrade ? (
+                  canUpgrade ? (
                     <div
                       className="pricing_footer"
                       onClick={() =>
@@ -341,8 +339,11 @@ const Pricing = ({
                   >
                     <option value="">Add Top Up / Cancel Subscription</option>
                     {topupData?.map((topUp) => (
-                      <option key={topUp.$id} value={topUp.$id}>
-                        Add {topUp.noOfProperties} Properties ($
+                      <option
+                        key={topUp.$id}
+                        value={topUp.$id}
+                      >
+                        Add {topUp.noOfProperties} Properties (${" "}
                         {topUp.topUpAmount})
                       </option>
                     ))}
