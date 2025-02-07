@@ -312,7 +312,43 @@ const generateResponsePayload = (
       paymentRequestSent: JSON.stringify(request),
       paymentRequestReceived: JSON.stringify(response),
     };
-  } else {
+  } 
+  else if(paymentType === "cancel_subscription"){
+    return {
+      customId: generateCustomId(userData?.userId, id),
+      userId: userData?.userId,
+      planId: Number(topUpDetails?.item?.id),
+      paypalSubscriptionId: response?.paymentDetails?.subscriptionID,
+      startTime: new Date(convertToCanadaTime(new Date())).toISOString(),
+      subscriber: {
+        profileName:
+          userData?.[userDetailField]?.firstName +
+          " " +
+          userData?.[userDetailField]?.lastName,
+        phoneId: userData?.[userDetailField]?.phoneNumber,
+        emailId: userData?.[userDetailField]?.emailId,
+      },
+      applicationContext: {
+        brandName: "Appraisal Land",
+        locale: "en-US",
+        userAction: "SUBSCRIBE_NOW",
+        returnUrl: "https://appraisal-eta.vercel.app/my-plans",
+        cancelUrl: "https://appraisal-eta.vercel.app/my-plans",
+      },
+      paymentSource: {
+        source: response?.paymentDetails?.paymentSource,
+      },
+      paymentStatus: "COMPLETED",
+      paymenttype: "RECURRING",
+      currencycode: "CAD",
+      paymentId: response?.paymentDetails?.orderID,
+      paymentRequestSent: JSON.stringify(request),
+      paymentRequestReceived: JSON.stringify(response),
+      subscriptionStatus: "CANCELLED",
+
+    }
+  }
+  else {
     throw new Error("Invalid type provided. Use 'oneTime' or 'subscription'.");
   }
 };

@@ -67,9 +67,9 @@ const Index = ({
             },
           });
 
-          setCanUpgrade(res3?.data?.data?.upgradeEligible);
+          setCanUpgrade(res3?.data?.data?.upgradeEligible || true);
 
-          const currentSubscriptionPlan = currentSubscription;
+          const currentSubscriptionPlan = currentSubscription || {};
 
           let userInfo = JSON.parse(localStorage.getItem("user"));
           let newInfo = {

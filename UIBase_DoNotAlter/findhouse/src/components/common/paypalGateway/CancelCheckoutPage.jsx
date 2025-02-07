@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { getPayPalAccessToken, PayPalApi } from "./utilFunctions";
+import { generateResponsePayload } from "../../../utils/Paypal/GeneratePayloads";
 
 const CancelCheckout = ({
   topUpDetails,
@@ -10,15 +11,30 @@ const CancelCheckout = ({
   currentSubscription,
   setErrorMessage,
   paymentType,
-  userDetailField
+  userDetailField,
 }) => {
   const [currency, setCurrency] = useState("CAD");
   const [userData, setUserData] = useState({});
 
-
   useEffect(() => {
     setUserData(JSON.parse(localStorage.getItem("user")) || {});
   }, []);
+
+  const saveCancellationData = async (payload) => {
+    try {
+      const response = await axios.post(
+        "/api/savePaypalSubscriptionCancellationData",
+        payload
+      );
+      if (response) {
+        setOnSuccess(true);
+      }
+    } catch (err) {
+      console.error("got error while saving the cancellation plan:", err);
+      setErrorMessage("Got error while saving the cancellation info to DB");
+      setErrorOccurred(true);
+    }
+  };
 
   // Function to cancel subscription
   const cancelSubscription = async (subscriptionId) => {
@@ -36,7 +52,22 @@ const CancelCheckout = ({
           },
         }
       );
-      console.log({cancelSubscriptionResponse})
+
+      const request = { subscriptionId };
+      const response = { ...cancelSubscriptionResponse };
+
+      const payload = generateResponsePayload(
+        paymentType,
+        topUpDetails,
+        userData,
+        request,
+        response,
+        currentSubscription,
+        topUpDetails,
+        userDetailField
+      );
+      saveCancellationData(payload);
+
       setOnSuccess(true);
     } catch (error) {
       console.error("Failed to cancel subscription:", error);
@@ -45,8 +76,7 @@ const CancelCheckout = ({
       //   "Your payment has been processed successfully by PayPal. However, we encountered an issue while updating your subscription. Please contact support with your transaction details for assistance."
       // );
       setErrorOccurred(true);
-    }
-    finally{
+    } finally {
       toast.dismiss();
       window.location.reload();
     }
