@@ -35,13 +35,13 @@ const SidebarMenu = ({ userData }) => {
       id: 1,
       name: "Add / Modify Subscriptions",
       route: "/appraiser-company-add-subscription",
-      icon: "flaticon-telephone",
+      icon: "flaticon-money-bag",
     },
     {
       id: 2,
       name: "Payment History",
       route: "/appraiser-company-subscription-history",
-      icon: "flaticon-telephone",
+      icon: "flaticon-invoice",
     },
 
     {

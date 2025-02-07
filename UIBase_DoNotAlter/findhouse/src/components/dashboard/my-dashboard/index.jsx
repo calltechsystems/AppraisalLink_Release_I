@@ -399,43 +399,33 @@ const Index = () => {
         <div className="container-fluid ovh">
           <div className="row">
             <div className="col-lg-12 maxw100flex-992">
-              <div className="row">
+              <div className="row mb-5">
                 <div
-                  className="col-lg-12 mb-2 pb-1 pt-1"
+                  className="dashboard-header col-lg-12 mb-2 pb-2 pt-2"
                   style={{
                     display: "flex",
-                    flexDirection: "row",
                     alignItems: "center",
                     justifyContent: "space-between",
                     borderRadius: "5px",
-                    border:"1px solid #2e008b"
-                    // backgroundColor: "#97d700",
                   }}
                 >
-                  <div className="">
-                    <h2
-                      style={{
-                        paddingTop: "10px",
-                        color: "#2e008b",
-                        // backgroundColor: "#97d700",
-                        fontSize: "25px",
-                      }}
-                    >
-                      {userData?.broker_Details?.firstName
-                        ? userData?.broker_Details?.firstName
-                        : "firstName"}{" "}
-                      {userData?.broker_Details?.lastName
-                        ? userData?.broker_Details?.lastName
-                        : "lastName"}
-                    </h2>
-                  </div>
-                  <div>
-                    <Filtering
-                      setRefresh={setRefresh}
-                      FilterQuery={filterQuery}
-                      setFilterQuery={setFilterQuery}
-                    />
-                  </div>
+                  <h2
+                    style={{
+                      color: "#97d700",
+                      fontSize: "25px",
+                    }}
+                  >
+                    <span style={{ color: "#2e008b" }}>Welcome</span>{" "}
+                    {`${userData?.broker_Details?.firstName || "First Name"} ${
+                      userData?.broker_Details?.lastName || "Last Name"
+                    }`}
+                  </h2>
+
+                  <Filtering
+                    setRefresh={setRefresh}
+                    FilterQuery={filterQuery}
+                    setFilterQuery={setFilterQuery}
+                  />
                 </div>
               </div>
               {/* End .row */}

@@ -4,7 +4,14 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 import axios, { all } from "axios";
 import { AppraiserStatusOptions } from "../create-listing/data";
-import { FaArchive, FaPause, FaEye, FaFacebookMessenger, FaSms } from "react-icons/fa";
+import {
+  FaArchive,
+  FaPause,
+  FaEye,
+  FaFacebookMessenger,
+  FaSms,
+  FaPlay,
+} from "react-icons/fa";
 // import { Button } from "bootstrap";
 import Image from "next/image";
 
@@ -259,7 +266,8 @@ export default function Exemple({
 
   const openRemarkModal = (property) => {
     const isBidded = getBidOfProperty(property.orderId); // Get the isBidded data
-    setRemark(isBidded && isBidded.remark ? isBidded.remark : "N.A.");
+    const isCancel = property.isoncancel;
+    setRemark(isCancel ? "N.A." : isBidded.remark ? isBidded.remark : "N.A.");
     setSelectedProperty(property);
     setRemarkModal(true);
   };
@@ -432,7 +440,11 @@ export default function Exemple({
                   className="w-100"
                   onClick={() => openRemarkModal(property)}
                 >
-                  <button href="#" className="btn btn-color" style={{width:"120px"}}>
+                  <button
+                    href="#"
+                    className="btn btn-color"
+                    style={{ width: "120px" }}
+                  >
                     <Link href="#">
                       <span className="text-light">
                         {" "}
@@ -496,96 +508,40 @@ export default function Exemple({
 
                 {/* End li */}
 
-                {/* {isEditable && ( */}
                 {!isCancel && isStatus !== 3 && (
                   <li title={!isHold ? "On Hold" : "Remove Hold"}>
-                    {/* <span
-                      className="btn btn-color-table "
-                      style={{ border: "1px solid grey" }}
-                      // onClick={() => onHoldHandler(property.propertyId, !isHold)}
-                      onClick={() =>
-                        openModal(property.orderId, 1, isHold ? 0 : property)
-                      }
-                    >
-                      <Link href="#" className="text-light">
-                        <FaPause />
-                      </Link>
-                    </span> */}
                     <button
                       className="btn btn-color-table"
                       style={{ border: "1px solid grey" }}
                       onClick={() =>
                         openModal(property.orderId, 1, isHold ? 0 : property)
                       }
-                      aria-label="Pause Property"
+                      aria-label={isHold ? "Resume Property" : "Pause Property"}
                     >
-                      <FaPause className="text-light" />
+                      {isHold ? (
+                        <FaPlay className="text-light" />
+                      ) : (
+                        <FaPause className="text-light" />
+                      )}
                     </button>
                   </li>
                 )}
-                {/* )} */}
 
-                {/* {isEditable && ( */}
                 {!isCancel && isStatus !== 3 && !isHold && (
                   <li title={"Order Cancel"}>
                     <span
                       className="btn btn-color-table"
                       style={{ border: "1px solid grey" }}
-                      // onClick={() =>
-                      //   onCancelHandler(property.propertyId, !isCancel)
-                      // }
                       onClick={() => openModal(property.orderId, 2, property)}
                     >
                       <Link href="#">
                         <span className="text-light">
                           <i className="fa fa-times"></i>
-                          {/* <img
-                            width="25px"
-                            style={{ backgroundColor: "white" }}
-                            src="/assets/images/order-cancel.png"
-                            alt=""
-                          /> */}
                         </span>
                       </Link>
                     </span>
                   </li>
                 )}
-                {/* )} */}
-
-                {/* {isEditable && (
-                  <li title="Edit Property">
-                    <Link href="#">
-                      <span className="btn btn-color w-100 mb-1">
-                        {" "}
-                        On Hold{" "}
-                      </span>
-                    </Link>{" "}
-                    <Link
-                      className="btn btn-color-table"
-                      href={`/create-listing/${property.propertyId}`}
-                    >
-                      <span className="flaticon-edit"></span>
-                    </Link>
-                  </li>
-                )} */}
-
-                {/* {!isEditable && (
-                <li
-                  className="list-inline-item"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Archive Property"
-                >
-                  <span
-                    className="btn btn-color-table"
-                    onClick={() => archievePropertyHandler(property.propertyId)}
-                  >
-                    <Link className="color-light" href={`/archive-property`}>
-                      <span className="flaticon-box"></span>
-                    </Link>
-                  </span>
-                </li>
-              )} */}
 
                 <li title="Archive Property">
                   <span

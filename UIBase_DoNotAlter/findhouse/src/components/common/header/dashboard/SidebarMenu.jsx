@@ -8,13 +8,17 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 const SidebarMenu = () => {
+  const [openModal, setOpenModal] = useState(false);
   const route = useRouter();
   const [isCollapsed, setIsCollapsed] = useState(false);
-  let userData = {};
+  const [userData, setUserData] = useState(null);
   const [isBrokerByBrokerage, setIsBrokerByBrokerage] = useState(false);
   const [hasActivePlans, setHasActivePlans] = useState(false);
+  const planLimit = userData?.planLimitExceed;
+  console.log("plan limit", planLimit);
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
+    setUserData(userData);
     if (userData?.broker_Details?.brokerageid !== null) {
       setIsBrokerByBrokerage(true);
     }
@@ -29,6 +33,14 @@ const SidebarMenu = () => {
     }
     setHasActivePlans(userActivePlans.length > 0);
   }, []);
+
+  const modalOpen = () => {
+    setOpenModal(true);
+  };
+
+  const closeModal = () => {
+    setOpenModal(false);
+  };
 
   const myProperties = [
     { id: 1, name: "General Elements", route: "/my-properties" },
@@ -46,13 +58,13 @@ const SidebarMenu = () => {
       id: 1,
       name: "Add / Modify Subscriptions",
       route: "/my-plans",
-      icon: "flaticon-box",
+      icon: "flaticon-money-bag",
     },
     {
       id: 2,
       name: "Payment History",
       route: "/my-package",
-      icon: "flaticon-box",
+      icon: "flaticon-invoice",
     },
     {
       id: 3,
@@ -152,27 +164,41 @@ const SidebarMenu = () => {
               )}
             </li>
 
-            <li
-              className={`treeview ${
-                hasActivePlans
-                  ? isSinglePageActive("/create-listing", route.pathname)
-                    ? "active"
-                    : ""
-                  : "disabled"
-              }`}
-            >
-              {hasActivePlans ? (
-                <Link href="/create-listing">
-                  <i className="flaticon-plus"></i>
-                  <span>Add New Property</span>
-                </Link>
-              ) : (
-                <a>
-                  <i className="flaticon-plus"></i>
-                  <span>Add New Property</span>
-                </a>
-              )}
-            </li>
+            {userData?.planLimitExceed === 1 ? (
+              <a
+                href="#"
+                className="disabled-link" // Add a class to style it as disabled
+                onClick={() => {
+                  modalOpen(true); // Open the modal
+                }}
+                style={{ cursor: "not-allowed", opacity: 0.6 }} // Make the link look disabled
+              >
+                <i className="flaticon-plus"></i>
+                <span>Add New Property</span>
+              </a>
+            ) : (
+              <li
+                className={`treeview ${
+                  hasActivePlans
+                    ? isSinglePageActive("/create-listing", route.pathname)
+                      ? "active"
+                      : ""
+                    : "disabled"
+                }`}
+              >
+                {hasActivePlans ? (
+                  <Link href="/create-listing">
+                    <i className="flaticon-plus"></i>
+                    <span>Add New Property</span>
+                  </Link>
+                ) : (
+                  <a>
+                    <i className="flaticon-plus"></i>
+                    <span>Add New Property</span>
+                  </a>
+                )}
+              </li>
+            )}
 
             <li
               className={`treeview ${
@@ -195,7 +221,6 @@ const SidebarMenu = () => {
                 </a>
               )}
             </li>
-
             <li
               className={`treeview ${
                 hasActivePlans
@@ -292,6 +317,72 @@ const SidebarMenu = () => {
           </li>
         )}
       </ul>
+
+      {/* {openModal && (
+        <div className="modal">
+          <div className="modal-content" style={{ width: "100%" }}>
+            <div className="row">
+              <div className="col-lg-12">
+                <Link href="/" className="">
+                  <Image
+                    width={50}
+                    height={45}
+                    className="logo1 img-fluid"
+                    style={{ marginTop: "-20px" }}
+                    src="/assets/images/logo.png"
+                    alt="header-logo2.png"
+                  />
+                  <span
+                    style={{
+                      color: "#2e008b",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    Appraisal
+                  </span>
+                  <span
+                    style={{
+                      color: "#97d700",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    {" "}
+                    Land
+                  </span>
+                </Link>
+              </div>
+            </div>
+            <h3 className="text-center mt-3" style={{ color: "#2e008b" }}>
+              Warning <span style={{ color: "#97d700" }}></span>
+            </h3>
+            <div className="mb-2" style={{ border: "2px solid #97d700" }}></div>
+            <p className="fs-5 text-center text-dark mt-4">
+              your limit exceeds{" "}
+              <span className="text-danger fw-bold">
+                Get Supscription or topup
+              </span>{" "}
+              ?
+            </p>
+            <div
+              className="mb-3 mt-4"
+              style={{ border: "2px solid #97d700" }}
+            ></div>
+            <div className="col-lg-12 d-flex justify-content-center gap-2">
+              <button
+                // disabled={disable}
+                className="btn btn-color w-50"
+                onClick={closeModal}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )} */}
     </>
   );
 };

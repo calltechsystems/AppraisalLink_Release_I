@@ -415,7 +415,7 @@ const Index = () => {
         <div className="container-fluid ovh">
           <div className="row">
             <div className="col-lg-12 maxw100flex-992">
-              <div className="row">
+              <div className="row mb-5">
                 {/* Start Dashboard Navigation */}
                 {/* <div className="col-lg-12">
                   <div className="dashboard_navigationbar dn db-1024">
@@ -434,26 +434,22 @@ const Index = () => {
                 {/* End Dashboard Navigation */}
 
                 <div
-                  className="col-lg-12 mb-2 pt-1 pb-1"
+                  className="dashboard-header col-lg-12 mb-2 pb-2 pt-2"
                   style={{
                     display: "flex",
-                    flexDirection: "row",
                     alignItems: "center",
                     justifyContent: "space-between",
                     borderRadius: "5px",
-                    border: "1px solid #2e008b",
-                    // backgroundColor: "#97d700",
                   }}
                 >
                   <div>
                     <h2
                       style={{
-                        paddingTop: "10px",
-                        color: "#2e008b",
-                        // backgroundColor: "#97d700",
+                        color: "#97d700",
                         fontSize: "25px",
                       }}
                     >
+                      <span style={{ color: "#2e008b" }}>Welcome</span>{" "}
                       {userData?.brokerage_Details?.firstName
                         ? userData?.brokerage_Details?.firstName
                         : "firstName"}{" "}
