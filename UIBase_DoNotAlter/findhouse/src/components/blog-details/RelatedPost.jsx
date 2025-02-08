@@ -36,7 +36,6 @@ const RelatedPost = () => {
                 </ul>
                 <p>{item.postDescriptions.slice(0, 65)}</p>
               </div>
-              
 
               <div className="fp_footer">
                 <ul className="fp_meta float-start mb0">
