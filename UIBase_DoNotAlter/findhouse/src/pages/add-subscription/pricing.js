@@ -157,20 +157,27 @@ const Pricing = ({
   // }, [currentSubscription, data]);
   // console.log("plan is", currentSubscription);
   useEffect(() => {
-
-    const seelctivePlanDetails = data?.filter((plan) => plan.id == currentSubscription?.planId)
-    if(seelctivePlanDetails.length > 0){
+    const seelctivePlanDetails = data?.filter(
+      (plan) => plan.id == currentSubscription?.planId
+    );
+    if (seelctivePlanDetails.length > 0) {
       const tempDetails = seelctivePlanDetails[0];
-    setcurrentSubscription({
-      ...currentSubscription,
-      amount: tempDetails?.planValidity == 30 ? tempDetails?.monthlyAmount : tempDetails?.yearlyAmount,
-      monthlyAmount: tempDetails?.monthlyAmount,
-      yearlyAmount: tempDetails?.yearlyAmount,
-      noOfProperties: tempDetails?.noOfProperties,
-      payPalProductId: tempDetails?.payPalProductId,
-      description: tempDetails?.description,
-    });
-  }
+      const amount =
+        tempDetails?.planValidity == 30
+          ? tempDetails?.monthlyAmount
+          : tempDetails?.yearlyAmount;
+      setcurrentSubscription({
+        ...currentSubscription,
+        amount: amount,
+        planAmount: amount,
+        planName: tempDetails?.planName,
+        monthlyAmount: tempDetails?.monthlyAmount,
+        yearlyAmount: tempDetails?.yearlyAmount,
+        noOfProperties: tempDetails?.noOfProperties,
+        payPalProductId: tempDetails?.payPalProductId,
+        description: tempDetails?.description,
+      });
+    }
   }, [data]);
 
   useEffect(() => {
@@ -204,7 +211,9 @@ const Pricing = ({
           >
             <div
               className={`${
-                currentSubscription?.planId === item.id ? "active-selected-plan" : ""
+                currentSubscription?.planId === item.id
+                  ? "active-selected-plan"
+                  : ""
               }
 `}
             >
@@ -283,7 +292,7 @@ const Pricing = ({
                 currentSubscription &&
                 String(currentSubscription.planId) !== String(item.id) &&
                 (currentSubscription?.$id ? (
-                  canUpgrade ? (
+                  canUpgrade == true ? (
                     <div
                       className="pricing_footer"
                       onClick={() =>
@@ -350,10 +359,7 @@ const Pricing = ({
                   >
                     <option value="">Add Top Up / Cancel Subscription</option>
                     {topupData?.map((topUp) => (
-                      <option
-                        key={topUp.$id}
-                        value={topUp.$id}
-                      >
+                      <option key={topUp.$id} value={topUp.$id}>
                         Add {topUp.noOfProperties} Properties (${" "}
                         {topUp.topUpAmount})
                       </option>

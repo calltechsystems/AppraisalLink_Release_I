@@ -162,12 +162,15 @@ const Pricing = ({
     );
     if (seelctivePlanDetails.length > 0) {
       const tempDetails = seelctivePlanDetails[0];
+      const amount =
+        tempDetails?.planValidity == 30
+          ? tempDetails?.monthlyAmount
+          : tempDetails?.yearlyAmount;
       setcurrentSubscription({
         ...currentSubscription,
-        amount:
-          tempDetails?.planValidity == 30
-            ? tempDetails?.monthlyAmount
-            : tempDetails?.yearlyAmount,
+        amount: amount,
+        planAmount: amount,
+        planName: tempDetails?.planName,
         monthlyAmount: tempDetails?.monthlyAmount,
         yearlyAmount: tempDetails?.yearlyAmount,
         noOfProperties: tempDetails?.noOfProperties,
@@ -289,7 +292,7 @@ const Pricing = ({
                 currentSubscription &&
                 String(currentSubscription.planId) !== String(item.id) &&
                 (currentSubscription?.$id ? (
-                  canUpgrade ? (
+                  canUpgrade == true ? (
                     <div
                       className="pricing_footer"
                       onClick={() =>

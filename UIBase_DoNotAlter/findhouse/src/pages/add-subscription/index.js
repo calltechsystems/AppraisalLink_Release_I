@@ -9,6 +9,7 @@ import OneTimePaymentModal from "../../components/common/paypalGateway/OneTimePa
 import SubscriptionModal from "../../components/common/paypalGateway/SubscriptionModal";
 import CancelSubscriptionModal from "../../components/common/paypalGateway/CancelSubscriptionModal";
 import ReviseSubscriptionModal from "../../components/common/paypalGateway/ReviseSubscriptionModal";
+import NoPlanModal from "../../components/common/NoPlanModal/page";
 
 const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -21,9 +22,12 @@ const Index = () => {
     item: {},
   });
 
-  const [canUpgrade, setCanUpgrade] = useState(false);
+  const [canUpgrade, setCanUpgrade] = useState(true);
   const [userDetailField, setUserDetailsField] = useState("appraiser_Details");
   const [userData, setUserData] = useState({});
+
+  const [isSubscriptionDetailsEmpty, setIsSubscriptionDetailsEmpty] =
+    useState(false);
 
   // useEffect(() => {
   //   const userData = JSON.parse(localStorage.getItem("user"));
@@ -70,52 +74,65 @@ const Index = () => {
   const closeModal = () => {
     setModalOpen(false);
   };
+
+  const onCloseHandler = () => {
+    localStorage.removeItem("user");
+    window.location.href = "/login";
+  };
+
   return (
     <>
       <Seo pageTitle="My Plans" />
-      <MyPlans
-        currentSubscription={currentSubscription}
-        setModalOpen={setModalOpen}
-        setPrice={setPrice}
-        userData={userData}
-        modalOpen={modalOpen}
-        setcurrentSubscription={setcurrentSubscription}
-        setCanUpgrade={setCanUpgrade}
-        canUpgrade={canUpgrade}
-        userDetailField={userDetailField}
-      />
-      {price?.type == "plan" ? (
-        <SubscriptionModal
-          currentSubscription={currentSubscription}
-          modalOpen={modalOpen}
-          closeModal={closeModal}
-          price={price}
-          userDetailField={userDetailField}
-        />
-      ) : price?.type == "cancel_plan" ? (
-        <CancelSubscriptionModal
-          currentSubscription={currentSubscription}
-          modalOpen={modalOpen}
-          closeModal={closeModal}
-          price={price}
-          userDetailField={userDetailField}
-        />
-      ) : price?.type == "upgrade_plan" ? (
-        <ReviseSubscriptionModal
-          currentSubscription={currentSubscription}
-          modalOpen={modalOpen}
-          closeModal={closeModal}
-          price={price}
-          userDetailField={userDetailField}
-        />
+      {isSubscriptionDetailsEmpty ? (
+        <NoPlanModal onCloseHandler={onCloseHandler} />
       ) : (
-        <OneTimePaymentModal
-          currentSubscription={currentSubscription}
-          modalOpen={modalOpen}
-          closeModal={closeModal}
-          price={price}
-          userDetailField={userDetailField}
-        />
+        <>
+          <MyPlans
+            currentSubscription={currentSubscription}
+            setModalOpen={setModalOpen}
+            setPrice={setPrice}
+            userData={userData}
+            modalOpen={modalOpen}
+            setcurrentSubscription={setcurrentSubscription}
+            setCanUpgrade={setCanUpgrade}
+            canUpgrade={canUpgrade}
+            userDetailField={userDetailField}
+            setIsSubscriptionDetailsEmpty={setIsSubscriptionDetailsEmpty}
+          />
+          {price?.type == "plan" ? (
+            <SubscriptionModal
+              currentSubscription={currentSubscription}
+              modalOpen={modalOpen}
+              closeModal={closeModal}
+              price={price}
+              userDetailField={userDetailField}
+            />
+          ) : price?.type == "cancel_plan" ? (
+            <CancelSubscriptionModal
+              currentSubscription={currentSubscription}
+              modalOpen={modalOpen}
+              closeModal={closeModal}
+              price={price}
+              userDetailField={userDetailField}
+            />
+          ) : price?.type == "upgrade_plan" ? (
+            <ReviseSubscriptionModal
+              currentSubscription={currentSubscription}
+              modalOpen={modalOpen}
+              closeModal={closeModal}
+              price={price}
+              userDetailField={userDetailField}
+            />
+          ) : (
+            <OneTimePaymentModal
+              currentSubscription={currentSubscription}
+              modalOpen={modalOpen}
+              closeModal={closeModal}
+              price={price}
+              userDetailField={userDetailField}
+            />
+          )}
+        </>
       )}
     </>
   );

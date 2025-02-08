@@ -120,11 +120,13 @@ const Checkout = ({
       //------------ FORMED USING RECURRING DATA
       let cancellationPayload = { ...payload };
       delete cancellationPayload["startTime"];
+      delete cancellationPayload["newPlanId"];
       cancellationPayload["cancellationDateTime"] = new Date().toISOString();
       cancellationPayload["subscriptionStatus"] = "CANCELLED";
       cancellationPayload["paymentRequestSent"] = JSON.stringify({
         ...planCancellationDataResponse,
       });
+      cancellationPayload["planId"] = currentSubscription?.planId
       cancellationPayload["paymentRequestReceived"] = JSON.stringify({
         ...planCancellationRequest,
       });

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../../components/common/header/dashboard/Header";
 import MobileMenu from "../../components/common/header/MobileMenu";
 import Pricing from "./pricing";
-import SidebarMenu from "../../components/common/header/dashboard/SidebarMenu";
+import SidebarMenu from "../../components/common/header/dashboard/SidebarMenu_002";
 import axios from "axios";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
@@ -19,6 +19,7 @@ const Index = ({
   setCanUpgrade,
   canUpgrade,
   userDetailField,
+  setIsSubscriptionDetailsEmpty,
 }) => {
   const [selectedPlan, setSelectedPlan] = useState("Monthly");
   const [planData, setPlanData] = useState([]);
@@ -67,9 +68,14 @@ const Index = ({
             },
           });
 
-          setcurrentSubscription(res3?.data?.data?.subcription_Dtails);
+          if (res3?.data?.data?.subcription_Dtails) {
+            setcurrentSubscription(res3?.data?.data?.subcription_Dtails);
+          } else {
+            setIsSubscriptionDetailsEmpty(true);
+          }
 
-          setCanUpgrade(res3?.data?.data?.upgradeEligible || true);
+          const value = res3?.data?.data?.upgradeEligible == 1;
+          setCanUpgrade(value);
 
           const currentSubscriptionPlan = currentSubscription || {};
 

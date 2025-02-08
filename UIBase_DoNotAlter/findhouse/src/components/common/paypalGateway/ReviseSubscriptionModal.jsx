@@ -81,6 +81,7 @@ const ReviseSubscriptionModal = ({
     setCurrentSelectedPlan({});
     setTermsPolicyAccepted(false);
     closeModal();
+    window.location.reload();
   };
 
   return (
