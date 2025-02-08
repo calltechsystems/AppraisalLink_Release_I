@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import Header from "../../components/common/header/dashboard/HeaderAppraiserCompany";
-import MobileMenu from "../../components/common/header/MobileMenu_01";
+import Header from "../../components/common/header/dashboard/Header";
+import MobileMenu from "../../components/common/header/MobileMenu";
 import Pricing from "./pricing";
-import SidebarMenu from "../../components/common/header/dashboard/SidebarMenu_002";
+import SidebarMenu from "../../components/common/header/dashboard/SidebarMenu";
 import axios from "axios";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
@@ -10,7 +10,16 @@ import Link from "next/link";
 import Image from "next/image";
 import LoadingSpinner from "../../components/common/LoadingSpinner";
 
-const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen, setcurrentSubscription, setCanUpgrade,canUpgrade, userDetailField }) => {
+const Index = ({
+  setModalOpen,
+  currentSubscription,
+  setPrice,
+  modalOpen,
+  setcurrentSubscription,
+  setCanUpgrade,
+  canUpgrade,
+  userDetailField,
+}) => {
   const [selectedPlan, setSelectedPlan] = useState("Monthly");
   const [planData, setPlanData] = useState([]);
   const [isChecked, setIsChecked] = useState(false);
@@ -58,9 +67,9 @@ const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen, setcurr
             },
           });
 
-          setCanUpgrade(res3?.data?.data?.upgradeEligible || true)
+          setcurrentSubscription(res3?.data?.data?.subcription_Dtails);
 
-
+          setCanUpgrade(res3?.data?.data?.upgradeEligible || true);
 
           const currentSubscriptionPlan = currentSubscription || {};
 

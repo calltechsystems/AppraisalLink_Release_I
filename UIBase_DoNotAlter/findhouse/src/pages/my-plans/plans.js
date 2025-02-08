@@ -67,6 +67,8 @@ const Index = ({
             },
           });
 
+          setcurrentSubscription(res3?.data?.data?.subcription_Dtails);
+
           setCanUpgrade(res3?.data?.data?.upgradeEligible || true);
 
           const currentSubscriptionPlan = currentSubscription || {};

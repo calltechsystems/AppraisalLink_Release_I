@@ -25,43 +25,43 @@ const Index = () => {
   const [userDetailField, setUserDetailsField] = useState("brokerage_Details");
   const [userData, setUserData] = useState({});
 
-  useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("user"));
-    axios
-      .get("/api/getBrokerTransactions", {
-        headers: {
-          Authorization: `Bearer ${userData?.token}`,
-          "Content-Type": "application/json",
-        },
-        params: {
-          userId: userData?.userId,
-        },
-      })
-      .then((res) => {
-        toast.dismiss();
+  // useEffect(() => {
+  //   const userData = JSON.parse(localStorage.getItem("user"));
+  //   axios
+  //     .get("/api/getBrokerTransactions", {
+  //       headers: {
+  //         Authorization: `Bearer ${userData?.token}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //       params: {
+  //         userId: userData?.userId,
+  //       },
+  //     })
+  //     .then((res) => {
+  //       toast.dismiss();
 
-        let tempSub = res.data.data.result.$values;
+  //       let tempSub = res.data.data.result.$values;
 
-        let newPlan = {};
-        tempSub?.map((plan, index) => {
-          const isAccordingToDate =
-            new Date(plan.startDate) <= new Date() &&
-            new Date(plan?.endDate) >= new Date();
-          const isNormalPlan =
-            String(plan.planName).toLowerCase().includes("lite") ||
-            String(plan.planName).toLowerCase().includes("pro") ||
-            String(plan.planName).toLowerCase().includes("ultimate");
-          if (isAccordingToDate && isNormalPlan) {
-            newPlan = plan;
-          }
-        });
-        setcurrentSubscription(newPlan);
-        setRerender(false);
-      })
-      .catch((err) => {
-        toast.dismiss();
-      });
-  }, []);
+  //       let newPlan = {};
+  //       tempSub?.map((plan, index) => {
+  //         const isAccordingToDate =
+  //           new Date(plan.startDate) <= new Date() &&
+  //           new Date(plan?.endDate) >= new Date();
+  //         const isNormalPlan =
+  //           String(plan.planName).toLowerCase().includes("lite") ||
+  //           String(plan.planName).toLowerCase().includes("pro") ||
+  //           String(plan.planName).toLowerCase().includes("ultimate");
+  //         if (isAccordingToDate && isNormalPlan) {
+  //           newPlan = plan;
+  //         }
+  //       });
+  //       setcurrentSubscription(newPlan);
+  //       setRerender(false);
+  //     })
+  //     .catch((err) => {
+  //       toast.dismiss();
+  //     });
+  // }, []);
 
   const openModal = () => {
     setModalOpen(true);
