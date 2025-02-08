@@ -39,7 +39,7 @@ const Blog = () => {
                 </ul>
                 <p>{item.postDescriptions.slice(0, 65)}</p>
               </div>
-              {/* End .tc_content */}
+              
 
               <div className="fp_footer">
                 <ul className="fp_meta float-start mb0">

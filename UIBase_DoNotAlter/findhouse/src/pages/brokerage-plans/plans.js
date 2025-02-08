@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import Header from "../../components/common/header/dashboard/HeaderBrokerage";
-import MobileMenu from "../../components/common/header/MobileMenu_02";
+import Header from "../../components/common/header/dashboard/Header";
+import MobileMenu from "../../components/common/header/MobileMenu";
 import Pricing from "./pricing";
-import SidebarMenu from "../../components/common/header/dashboard/SidebarMenuBrokerage";
+import SidebarMenu from "../../components/common/header/dashboard/SidebarMenu";
 import axios from "axios";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
@@ -66,6 +66,8 @@ const Index = ({
               userId: data?.userId,
             },
           });
+
+          setcurrentSubscription(res3?.data?.data?.subcription_Dtails);
 
           setCanUpgrade(res3?.data?.data?.upgradeEligible || true);
 
@@ -139,17 +141,17 @@ const Index = ({
         </div>
       </div>
 
-      <section
-        className="our-dashbord dashbord bgc-f7 pb50"
-        
-      >
-        <div className="container-fluid ovh table-padding">
-          <div className="col-lg-12 col-xl-12 text-center mb-5">
+      <section className="our-dashbord dashbord bgc-f7 pb50" style={{}}>
+        <div className="container-fluid ovh">
+          <div className="col-lg-12 col-xl-12 text-center mt-1 mb-5">
             <div className="style2 mb30-991">
               <h3 className="heading-forms">
                 Add / Upgrade / Cancel Subscriptions
               </h3>
             </div>
+          </div>
+          <div className="row">
+            <div className="col-lg-12 col-lg-6 maxw100flex-992"></div>
           </div>
           <div className="row">
             {planData.length === 0 ? (

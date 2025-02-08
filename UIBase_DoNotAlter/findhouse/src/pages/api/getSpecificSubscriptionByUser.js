@@ -9,7 +9,7 @@ import CryptoJS from "crypto-js";
 
   try {
     const token = request.headers.authorization;
-    const userId = request.query.Id;
+    const userId = request.query.userId;
 
     const userResponse = await axios.get(`${domain}/com.appraisalland.Payments/getSubcription`,
     {
@@ -21,6 +21,8 @@ import CryptoJS from "crypto-js";
             userId:userId
         }
       });
+
+      console.log({userResponse});
     const users = userResponse.data;
 
 
