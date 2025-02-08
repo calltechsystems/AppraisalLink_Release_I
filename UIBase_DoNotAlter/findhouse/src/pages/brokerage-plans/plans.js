@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../../components/common/header/dashboard/Header";
 import MobileMenu from "../../components/common/header/MobileMenu";
 import Pricing from "./pricing";
-import SidebarMenu from "../../components/common/header/dashboard/SidebarMenu";
+import SidebarMenu from "../../components/common/header/dashboard/SidebarMenuBrokerage";
 import axios from "axios";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
@@ -74,7 +74,8 @@ const Index = ({
             setIsSubscriptionDetailsEmpty(true);
           }
 
-          setCanUpgrade(res3?.data?.data?.upgradeEligible || true);
+          const value = res3?.data?.data?.upgradeEligible == 1;
+          setCanUpgrade(value);
 
           const currentSubscriptionPlan = currentSubscription || {};
 

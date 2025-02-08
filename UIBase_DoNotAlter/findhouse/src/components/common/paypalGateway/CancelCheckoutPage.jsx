@@ -68,7 +68,6 @@ const CancelCheckout = ({
       );
       saveCancellationData(payload);
 
-      setOnSuccess(true);
     } catch (error) {
       console.error("Failed to cancel subscription:", error);
       toast.error("Failed to cancel subscription:", error);
@@ -78,7 +77,6 @@ const CancelCheckout = ({
       setErrorOccurred(true);
     } finally {
       toast.dismiss();
-      window.location.reload();
     }
   };
 

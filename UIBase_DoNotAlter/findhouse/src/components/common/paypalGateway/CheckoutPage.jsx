@@ -304,7 +304,8 @@ const CheckoutPage = ({
   setErrorOccurred,
   setOnSuccess,
   paymentType,
-  userDetailField
+  userDetailField,
+  setErrorMessage
 }) => (
   <PayPalScriptProvider
     options={{
@@ -321,6 +322,7 @@ const CheckoutPage = ({
       currentSubscription={currentSubscription}
       paymentType={paymentType}
       userDetailField={userDetailField}
+      setErrorMessage={setErrorMessage}
     />
   </PayPalScriptProvider>
 );
