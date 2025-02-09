@@ -4,6 +4,15 @@ const getNextDate = (dateStr) => {
   return date.toISOString();
 };
 
+const getCurrentIdToBeCancelled = (currentSubscription) => {
+  if(currentSubscription?.upgradeEligible){
+    //IF NO UPGRADE/DOWNGRADE DONE TO THE PLAN
+    return currentSubscription?.activePaypalSubscriptionId
+  }
+  //AS ITS ALREADY CANCELLED WHILE UPGRADING / CHANGING THE PLAN
+  return currentSubscription?.futurePaypalSubscriptionId
+}
+
 const generateCustomId = (brokerId, planId) => {
   if (!brokerId || !planId) {
     console.error("Missing brokerId or planId");
@@ -318,7 +327,7 @@ const generateResponsePayload = (
       customId: generateCustomId(userData?.userId, id),
       userId: userData?.userId,
       planId: Number(currentSubscription?.planId),
-      paypalSubscriptionId: response?.paymentDetails?.subscriptionID,
+      paypalSubscriptionId: getCurrentIdToBeCancelled(currentSubscription),
       cancellationDateTime: new Date(convertToCanadaTime(new Date())).toISOString(),
       subscriber: {
         profileName:
@@ -357,4 +366,5 @@ module.exports = {
   getNextDate,
   generateRequestPayload,
   generateResponsePayload,
+  getCurrentIdToBeCancelled
 };
