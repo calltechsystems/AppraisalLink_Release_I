@@ -52,8 +52,7 @@ const Team = () => {
               </ul>
             </div>
           </div>
-     
-
+  
           <div className="details">
             <div className="tc_content">
               <h4>

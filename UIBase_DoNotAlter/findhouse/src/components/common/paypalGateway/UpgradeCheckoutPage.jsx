@@ -10,6 +10,7 @@ import axios from "axios";
 import {
   generateRequestPayload,
   generateResponsePayload,
+  getCurrentIdToBeCancelled,
   getNextDate,
 } from "../../../utils/Paypal/GeneratePayloads.js";
 import { getPayPalAccessToken, PayPalApi } from "./utilFunctions.js";
@@ -126,6 +127,7 @@ const Checkout = ({
       cancellationPayload["paymentRequestSent"] = JSON.stringify({
         ...planCancellationDataResponse,
       });
+      cancellationPayload["paypalSubscriptionId"] = getCurrentIdToBeCancelled(currentSubscription),
       cancellationPayload["planId"] = currentSubscription?.planId
       cancellationPayload["paymentRequestReceived"] = JSON.stringify({
         ...planCancellationRequest,

@@ -1,125 +1,212 @@
 // import './AllStatistics.css';
 // import "font-awesome/css/font-awesome.min.css";
+import { useMemo } from "react";
 
 const AllStatistics = ({ properties, views, bids, favourites }) => {
-  const allStatistics = [
+  const {
+    allPropertiesCount,
+    quotesProvidedCount,
+    QuotesInProgressCount,
+    QuotesCompletedCount,
+    QuotesOnHoldCount,
+    CancelledPropertiesCount,
+    OnHoldPropertiesCount,
+    PlanCount,
+    PlanValidityCount,
+    NoOfPropertiesCount,
+    UsedPropertiesCount,
+    quoteAccepted
+  } = useMemo(() => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    let allPropertiesCount = 0;
+    let quotesProvidedCount = 0;
+    let QuotesInProgressCount = 0;
+    let QuotesCompletedCount = 0;
+    let QuotesOnHoldCount = 0;
+    let CancelledPropertiesCount = 0;
+    let OnHoldPropertiesCount = 0;
+    let PlanCount = 0;
+    let PlanValidityCount = 0;
+    let NoOfPropertiesCount = 0;
+    let UsedPropertiesCount = 0;
+    let quoteAccepted = 0;
+
+    properties.forEach((property) => {
+      if (property.userId == userData?.userId) {
+        allPropertiesCount += 1;
+        CancelledPropertiesCount += property?.isonhold ? 1 : 0;
+        OnHoldPropertiesCount += property?.isoncancel ? 1 : 0;
+
+        bids.forEach((bid) => {
+          if (bid.orderId == property?.orderId) {
+            quotesProvidedCount += 1;
+            QuotesInProgressCount += bid?.status == 0 ? 1 : 0;
+            quoteAccepted += bid.status == 1 ? 1: 0;
+            QuotesCompletedCount += bid?.status === 2 ? 1 : 0;
+            QuotesOnHoldCount += bid?.status === 3 ? 1 : 0;
+          }
+        });
+      }
+    });
+
+
+    //Plan Data
+    const currentPlanInfo = userData?.plans?.$values ? userData?.plans?.$values[0] : {};
+    if(currentPlanInfo){
+      PlanValidityCount = currentPlanInfo?.planValidity;
+      PlanCount = currentPlanInfo?.planName;
+      NoOfPropertiesCount = currentPlanInfo?.noOfProperties;
+      UsedPropertiesCount = userData?.usedproperty || 0;
+    }
+
+    return {
+      allPropertiesCount,
+      quotesProvidedCount,
+      QuotesInProgressCount,
+      QuotesCompletedCount,
+      QuotesOnHoldCount,
+      CancelledPropertiesCount,
+      OnHoldPropertiesCount,
+      PlanCount,
+      PlanValidityCount,
+      NoOfPropertiesCount,
+      UsedPropertiesCount,
+      quoteAccepted
+    };
+  }, [properties, bids]);
+
+  const allStatistics = useMemo(() => [
     {
-      id: 1,
+      id: "allPropertiesCount",
       blockStyle: "stylecard1",
       icon: "fa fa-home",
       timer: properties,
+      // icon: "flaticon-house",
+      value: allPropertiesCount,
       name: "All Properties",
     },
     {
-      id: 2,
+      id: "quotesProvidedCount",
       blockStyle: "stylecard2",
       icon: "flaticon-invoice",
-      timer: views,
+      value: quotesProvidedCount,
       name: "Quotes Provided",
     },
     {
-      id: 3,
+      id: "quoteAccepted",
       blockStyle: "stylecard3",
       icon: "fa fa-check",
+      value: quoteAccepted,
       timer: bids,
       name: "Quotes Accepted",
     },
     {
-      id: 4,
+      // id: 4,
       blockStyle: "stylecard4",
       icon: "fa fa-edit",
       timer: favourites,
+      id: "QuotesInProgressCount",
+      blockStyle: "stylecard4",
+      // icon: "flaticon-heart",
+      value: QuotesInProgressCount,
       name: "Quotes in Progress",
     },
     {
-      id: 5,
+      id: "QuotesCompletedCount",
       blockStyle: "stylecard5",
       icon: "fa fa-check-circle",
       timer: favourites,
+      // icon: "flaticon-invoice",
+      value: QuotesCompletedCount,
       name: "Quotes Completed",
     },
     {
-      id: 6,
+      id: "QuotesOnHoldCount",
       blockStyle: "stylecard6",
       icon: "fa fa-pause",
       timer: favourites,
       name: "Quotes On Hold by Appraiser",
+      // icon: "flaticon-house",
+      value: QuotesOnHoldCount,
+      // name: "Quotes on HOLD",
     },
     {
-      id: 7,
+      id: "CancelledPropertiesCount",
       blockStyle: "stylecard7",
       icon: "fa fa-times-circle",
       timer: favourites,
+      // icon: "flaticon-tick",
+      value: CancelledPropertiesCount,
       name: "Cancelled Properties",
     },
     {
-      id: 8,
+      id: "OnHoldPropertiesCount",
       blockStyle: "stylecard8",
       icon: "fa fa-pause",
       timer: favourites,
       name: "On Hold Properties by Broker",
+      // icon: "flaticon-heart",
+      value: OnHoldPropertiesCount,
+      // name: "On Hold Properties",
     },
     {
-      id: 9,
+      id: "PlanCount",
       blockStyle: "stylecard9",
       icon: "fa fa-credit-card",
       timer: favourites,
+      // icon: "flaticon-heart",
+      value: PlanCount,
       name: "Plan",
     },
     {
-      id: 10,
+      id: "PlanValidityCount",
       blockStyle: "stylecard10",
       icon: "fa fa-hourglass-half",
       timer: favourites,
       name: "Plan validity",
+      // icon: "flaticon-house",
+      value: PlanValidityCount,
+      // name: "Plan Validity",
     },
     {
-      id: 11,
+      id: "NoOfPropertiesCount",
       blockStyle: "stylecard11",
       icon: "fa fa-building",
       timer: favourites,
+      // icon: "flaticon-invoice",
+      value: NoOfPropertiesCount,
       name: "No. of Properties",
     },
     {
-      id: 12,
+      id: "UsedPropertiesCount",
       blockStyle: "stylecard12",
       icon: "fa fa-home",
       timer: favourites,
+      // icon: "flaticon-tick",
+      value: UsedPropertiesCount,
       name: "Used Properties",
     },
-    // {
-    //   id: 13,
-    //   blockStyle: "stylecard13",
-    //   icon: "flaticon-house",
-    //   timer: favourites,
-    //   name: "Archived Properties",
-    // },
-  ];
+  ], [
+    allPropertiesCount,
+    quotesProvidedCount,
+    QuotesInProgressCount,
+    QuotesCompletedCount,
+    QuotesOnHoldCount,
+    CancelledPropertiesCount,
+    OnHoldPropertiesCount,
+    PlanCount,
+    PlanValidityCount,
+    NoOfPropertiesCount,
+    UsedPropertiesCount,
+  ]);
 
   return (
-    // <div className="statistics-container">
-    //   {allStatistics.map((item) => (
-    //     <div className="col-sm-6 col-md-6 col-lg-6 col-xl-3" key={item.id}>
-    //       <div className={`ff_one ${item.blockStyle}`}>
-    //         <div className="details">
-    //           <div className="timer">{item.name}</div>
-    //           <p>{item.timer}</p>
-    //           {/* <div className="timer">{item.timer}</div>
-    //           <p>{item.name}</p> */}
-    //         </div>
-    //         <div className="icon">
-    //           <span className={item.icon}></span>
-    //         </div>
-    //       </div>
-    //     </div>
-    //   ))}
-    // </div>
     <div className="statistics-container">
       {allStatistics.map((item) => (
-        <div key={item.id} className={`ff_one ${item.blockStyle}`}>
+        <div key={item.id}  className={`ff_one ${item.blockStyle}`}>
           <div className="details">
-            <div className="timer">{item.name}</div>
-            <p>{item.timer}</p>
+            <div className="timer">{item.value}</div>
+            <p>{item.name}</p>
           </div>
           <div className="icon">
             <i className={item.icon}></i>

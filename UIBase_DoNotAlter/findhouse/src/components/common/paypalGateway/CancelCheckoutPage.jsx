@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { getPayPalAccessToken, PayPalApi } from "./utilFunctions";
-import { generateResponsePayload } from "../../../utils/Paypal/GeneratePayloads";
+import { generateResponsePayload, getCurrentIdToBeCancelled } from "../../../utils/Paypal/GeneratePayloads";
 
 const CancelCheckout = ({
   topUpDetails,
@@ -41,6 +41,18 @@ const CancelCheckout = ({
     try {
       toast.loading("Cancelling the Plan");
       const accessToken = await getPayPalAccessToken();
+
+      const cancelSubscriptionStatus = await axios.get(
+        `${PayPalApi.baseUrl}/v1/billing/subscriptions/${subscriptionId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log({cancelSubscriptionStatus})
 
       const cancelSubscriptionResponse = await axios.post(
         `${PayPalApi.baseUrl}/v1/billing/subscriptions/${subscriptionId}/cancel`,
@@ -82,8 +94,8 @@ const CancelCheckout = ({
 
   const handleCancelSubscription = () => {
     if (currentSubscription) {
-      // cancelSubscription(currentSubscription?.cancelSubscription)
-      cancelSubscription("I-4X2VPH98M849");
+      const paypalSubscriptionId = getCurrentIdToBeCancelled(currentSubscription);
+      cancelSubscription(paypalSubscriptionId)
     } else {
       console.error("No subscription ID found.");
       setErrorMessage("No subscription ID found. Please try again");

@@ -74,7 +74,12 @@ const Index = ({
             setCanUpgrade(value);
             //if subscription Details are coming properly
             if (res3?.data?.data?.subcription_Dtails) {
-              setcurrentSubscription(res3?.data?.data?.subcription_Dtails);
+              setcurrentSubscription({
+                ...res3?.data?.data?.subcription_Dtails,
+                upgradeEligible: res3?.data?.data?.upgradeEligible,
+                activePaypalSubscriptionId: res3?.data?.data?.activePaypalSubscriptionId,
+                futurePaypalSubscriptionId: res3?.data?.data?.futurePaypalSubscriptionId,
+              }); 
             }
             //when the subscirption_Details is == 'NULL'
             else {
