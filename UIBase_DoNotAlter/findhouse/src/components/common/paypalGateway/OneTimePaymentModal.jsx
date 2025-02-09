@@ -146,8 +146,7 @@ const OneTimePaymentModal = ({
                     <span className="text-color fw-bold">
                       Payment confirmed!
                     </span>
-                    <br /> We appreciate your business. Please Login again to
-                    continue.
+                    <br /> We appreciate your business. 
                   </span>
                 </div>
               ) : (

@@ -68,14 +68,19 @@ const Index = ({
             },
           });
 
-          if (res3?.data?.data?.subcription_Dtails) {
-            setcurrentSubscription(res3?.data?.data?.subcription_Dtails);
-          } else {
-            // setIsSubscriptionDetailsEmpty(true);
+          //TO VERIFY ALL EXISTING USERS
+          if (!res3?.data?.data?.messageCD) {
+            const value = res3?.data?.data?.upgradeEligible == 1;
+            setCanUpgrade(value);
+            //if subscription Details are coming properly
+            if (res3?.data?.data?.subcription_Dtails) {
+              setcurrentSubscription(res3?.data?.data?.subcription_Dtails);
+            }
+            //when the subscirption_Details is == 'NULL'
+            else {
+              setIsSubscriptionDetailsEmpty(true);
+            }
           }
-
-          const value = res3?.data?.data?.upgradeEligible == 1;
-          setCanUpgrade(value);
 
           const currentSubscriptionPlan = currentSubscription || {};
 
