@@ -20,7 +20,7 @@ const Blog = () => {
               </Link>
               <div className="blog_tag">{item.postMeta}</div>
             </div>
-            {/* End .thumb */}
+        
 
             <div className="details">
               <div className="tc_content">

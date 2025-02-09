@@ -71,7 +71,7 @@ const Index = ({
           if (res3?.data?.data?.subcription_Dtails) {
             setcurrentSubscription(res3?.data?.data?.subcription_Dtails);
           } else {
-            setIsSubscriptionDetailsEmpty(true);
+            // setIsSubscriptionDetailsEmpty(true);
           }
 
           const value = res3?.data?.data?.upgradeEligible == 1;
