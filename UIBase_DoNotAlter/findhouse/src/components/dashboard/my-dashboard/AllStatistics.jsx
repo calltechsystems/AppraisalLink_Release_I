@@ -15,6 +15,7 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
     PlanValidityCount,
     NoOfPropertiesCount,
     UsedPropertiesCount,
+    quoteAccepted
   } = useMemo(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
     let allPropertiesCount = 0;
@@ -28,6 +29,7 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
     let PlanValidityCount = 0;
     let NoOfPropertiesCount = 0;
     let UsedPropertiesCount = 0;
+    let quoteAccepted = 0;
 
     properties.forEach((property) => {
       if (property.userId == userData?.userId) {
@@ -38,7 +40,8 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
         bids.forEach((bid) => {
           if (bid.orderId == property?.orderId) {
             quotesProvidedCount += 1;
-            QuotesInProgressCount += bid?.status === 1 ? 1 : 0;
+            QuotesInProgressCount += bid?.status == 0 ? 1 : 0;
+            quoteAccepted += bid.status == 1 ? 1: 0;
             QuotesCompletedCount += bid?.status === 2 ? 1 : 0;
             QuotesOnHoldCount += bid?.status === 3 ? 1 : 0;
           }
@@ -68,6 +71,7 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
       PlanValidityCount,
       NoOfPropertiesCount,
       UsedPropertiesCount,
+      quoteAccepted
     };
   }, [properties, bids]);
 
@@ -89,9 +93,10 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
       name: "Quotes Provided",
     },
     {
-      id: 3,
+      id: "quoteAccepted",
       blockStyle: "stylecard3",
       icon: "fa fa-check",
+      value: quoteAccepted,
       timer: bids,
       name: "Quotes Accepted",
     },
