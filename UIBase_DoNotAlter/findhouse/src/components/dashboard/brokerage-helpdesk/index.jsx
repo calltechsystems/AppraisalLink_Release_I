@@ -6,7 +6,7 @@ import { useModal } from "../../../context/ModalContext";
 import Image from "next/image";
 import Link from "next/link";
 
-const index = () => {
+const Index = () => {
   const { isModalOpen, setIsModalOpen } = useModal();
 
   return (
@@ -171,4 +171,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;
