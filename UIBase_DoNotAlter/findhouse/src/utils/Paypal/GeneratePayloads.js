@@ -1,9 +1,17 @@
-//Paypal Plan ID
-// const PaypalPlanId = {
-//   ["lite"]: "P-4F259524XU6273733M6FY5QY",
-//   ["pro"]: "P-3KE51330455345207M6FY7HI",
-//   ["ultimate"]: "P-51425321W9368215BM6FZAMY",
-// };
+const getNextDate = (dateStr) => {
+  const date = new Date(dateStr);
+  date.setDate(date.getDate() + 1);
+  return date.toISOString();
+};
+
+const getCurrentIdToBeCancelled = (currentSubscription) => {
+  if(currentSubscription?.upgradeEligible){
+    //IF NO UPGRADE/DOWNGRADE DONE TO THE PLAN
+    return currentSubscription?.activePaypalSubscriptionId
+  }
+  //AS ITS ALREADY CANCELLED WHILE UPGRADING / CHANGING THE PLAN
+  return currentSubscription?.futurePaypalSubscriptionId
+}
 
 const generateCustomId = (brokerId, planId) => {
   if (!brokerId || !planId) {
@@ -20,10 +28,10 @@ const generateCustomId = (brokerId, planId) => {
 };
 
 const generateRequestPayload = (paymentType, details, userData, currency, userDetailField) => {
-  const { title, id, price } = details;
 
   if (paymentType === "oneTime") {
     // Payload for one-time payment
+    const { title, id, price } = details;
     return {
       intent: "CAPTURE",
       purchase_units: [
@@ -68,9 +76,7 @@ const generateRequestPayload = (paymentType, details, userData, currency, userDe
       },
     };
   } else if (paymentType === "subscription") {
-    // Payload for subscription payment
     return {
-      //   custom_id: generateCustomId(userData?.userId, id),
       plan_id: details?.paypalPlanId,
       // start_time:new Date(convertToCanadaTime(new Date())).toISOString(),
       quantity: "1",
@@ -136,15 +142,62 @@ const generateRequestPayload = (paymentType, details, userData, currency, userDe
     };
   } else if (paymentType === "upgrade_plan") {
     return {
-      plan_id: details?.paypalPlanId,
+      plan_id: details?.payPalProductId,
+      start_time:getNextDate(new Date(convertToCanadaTime(details?.endDate)).toISOString()),
+      quantity: "1",
+      subscriber: {
+        name: {
+          given_name: userData?.[userDetailField]?.firstName,
+          surname: userData?.[userDetailField]?.lastName,
+          phone: {
+            phone_type: "MOBILE",
+            phone_number: userData?.[userDetailField]?.phoneNumber,
+          },
+        },
+        email_address: userData?.[userDetailField]?.emailId,
+        shipping_address: {
+          name: {
+            full_name:
+              userData?.[userDetailField]?.firstName +
+              " " +
+              userData?.[userDetailField]?.lastName,
+          },
+          address: {
+            address_line_1:
+              userData?.[userDetailField]?.apartmentNo +
+              "," +
+              userData?.[userDetailField]?.streetNumber +
+              " " +
+              userData?.[userDetailField]?.streetName +
+              " " +
+              userData?.[userDetailField]?.area,
+            address_line_2:
+              userData?.[userDetailField]?.apartmentNo +
+              "," +
+              userData?.[userDetailField]?.streetNumber +
+              " " +
+              userData?.[userDetailField]?.streetName +
+              " " +
+              userData?.[userDetailField]?.area,
+            admin_area_2: userData?.[userDetailField]?.province,
+            admin_area_1: userData?.[userDetailField]?.city,
+            postal_code: userData?.[userDetailField]?.postalCode,
+            country_code: "US",
+          },
+        },
+      },
       application_context: {
         brand_name: "Appraisal Land",
         locale: "en-US",
+        shipping_preference: "NO_SHIPPING",
         user_action: "SUBSCRIBE_NOW",
+        payment_method: {
+          payer_selected: "PAYPAL",
+          payee_preferred: "IMMEDIATE_PAYMENT_REQUIRED",
+        },
         return_url: "https://appraisal-eta.vercel.app/my-plans",
         cancel_url: "https://appraisal-eta.vercel.app/my-plans",
       },
-      proration_behavior: "DEFERRED",
     };
   } else {
     throw new Error("Invalid type provided. Use 'oneTime' or 'subscription'.");
@@ -183,14 +236,6 @@ const generateResponsePayload = (
   topUpDetails,
   userDetailField
 ) => {
-  const { title, id, price } = details;
-  console.log({
-    details,
-    userData,
-    response,
-    currentSubscription,
-    topUpDetails,
-  });
 
   if (paymentType === "oneTime") {
     // Payload for one-time payment
@@ -209,6 +254,7 @@ const generateResponsePayload = (
       currencyCode: "CAD",
     };
   } else if (paymentType === "subscription") {
+  const { title, id, price } = details;
     // Payload for subscription payment
     return {
       customId: generateCustomId(userData?.userId, id),
@@ -240,20 +286,85 @@ const generateResponsePayload = (
       currencycode: "CAD",
       paymentId: response?.paymentDetails?.orderID,
       paymentRequestSent: JSON.stringify(request),
-      // paymentRequestSent: "paymentRequestSent",
-      // paymentRequestReceived: "paymentRequestReceived",
       paymentRequestReceived: JSON.stringify(response),
     };
-  } else if (paymentType === "cancel_subscription") {
+  } else if (paymentType === "upgrade_plan") {
     return {
-      reason: "",
+      customId: generateCustomId(userData?.userId, currentSubscription?.planId),
+      userId: userData?.userId,
+      newPlanId: Number(topUpDetails?.item?.id),
+      paypalSubscriptionId: response?.paymentDetails?.subscriptionID,
+      // currentPlanId: currentSubscription?.planId,
+      startTime: new Date(convertToCanadaTime(new Date())).toISOString(),
+      subscriber: {
+        profileName:
+          userData?.[userDetailField]?.firstName +
+          " " +
+          userData?.[userDetailField]?.lastName,
+        phoneId: userData?.[userDetailField]?.phoneNumber,
+        emailId: userData?.[userDetailField]?.emailId,
+      },
+      applicationContext: {
+        brandName: "Appraisal Land",
+        locale: "en-US",
+        userAction: "SUBSCRIBE_NOW",
+        returnUrl: "https://appraisal-eta.vercel.app/my-plans",
+        cancelUrl: "https://appraisal-eta.vercel.app/my-plans",
+      },
+      paymentSource: {
+        source: response?.paymentDetails?.paymentSource,
+      },
+      paymentStatus: "COMPLETED",
+      paymenttype: "RECURRING",
+      currencycode: "CAD",
+      paymentId: response?.paymentDetails?.orderID,
+      paymentRequestSent: JSON.stringify(request),
+      paymentRequestReceived: JSON.stringify(response),
     };
-  } else {
+  } 
+  else if(paymentType === "cancel_subscription"){
+    return {
+      customId: generateCustomId(userData?.userId, id),
+      userId: userData?.userId,
+      planId: Number(currentSubscription?.planId),
+      paypalSubscriptionId: getCurrentIdToBeCancelled(currentSubscription),
+      cancellationDateTime: new Date(convertToCanadaTime(new Date())).toISOString(),
+      subscriber: {
+        profileName:
+          userData?.[userDetailField]?.firstName +
+          " " +
+          userData?.[userDetailField]?.lastName,
+        phoneId: userData?.[userDetailField]?.phoneNumber,
+        emailId: userData?.[userDetailField]?.emailId,
+      },
+      applicationContext: {
+        brandName: "Appraisal Land",
+        locale: "en-US",
+        userAction: "SUBSCRIBE_NOW",
+        returnUrl: "https://appraisal-eta.vercel.app/my-plans",
+        cancelUrl: "https://appraisal-eta.vercel.app/my-plans",
+      },
+      paymentSource: {
+        source: response?.paymentDetails?.paymentSource,
+      },
+      paymentStatus: "COMPLETED",
+      paymenttype: "RECURRING",
+      currencycode: "CAD",
+      paymentId: response?.paymentDetails?.orderID,
+      paymentRequestSent: JSON.stringify(request),
+      paymentRequestReceived: JSON.stringify(response),
+      subscriptionStatus: "CANCELLED",
+
+    }
+  }
+  else {
     throw new Error("Invalid type provided. Use 'oneTime' or 'subscription'.");
   }
 };
 
 module.exports = {
+  getNextDate,
   generateRequestPayload,
   generateResponsePayload,
+  getCurrentIdToBeCancelled
 };

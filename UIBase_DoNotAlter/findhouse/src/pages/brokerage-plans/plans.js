@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Header from "../../components/common/header/dashboard/HeaderBrokerage";
-import MobileMenu from "../../components/common/header/MobileMenu_02";
+import Header from "../../components/common/header/dashboard/Header";
+import MobileMenu from "../../components/common/header/MobileMenu";
 import Pricing from "./pricing";
 import SidebarMenu from "../../components/common/header/dashboard/SidebarMenuBrokerage";
 import axios from "axios";
@@ -20,6 +20,7 @@ const Index = ({
   setCanUpgrade,
   canUpgrade,
   userDetailField,
+  setIsSubscriptionDetailsEmpty,
 }) => {
   const [selectedPlan, setSelectedPlan] = useState("Monthly");
   const [planData, setPlanData] = useState([]);
@@ -69,9 +70,26 @@ const Index = ({
             },
           });
 
-          setCanUpgrade(res3?.data?.data?.upgradeEligible);
+          //TO VERIFY ALL EXISTING USERS
+          if (!res3?.data?.data?.messageCD) {
+            const value = res3?.data?.data?.upgradeEligible == 1;
+            setCanUpgrade(value);
+            //if subscription Details are coming properly
+            if (res3?.data?.data?.subcription_Dtails) {
+              setcurrentSubscription({
+                ...res3?.data?.data?.subcription_Dtails,
+                upgradeEligible: res3?.data?.data?.upgradeEligible,
+                activePaypalSubscriptionId: res3?.data?.data?.activePaypalSubscriptionId,
+                futurePaypalSubscriptionId: res3?.data?.data?.futurePaypalSubscriptionId,
+              }); 
+            }
+            //when the subscirption_Details is == 'NULL'
+            else {
+              setIsSubscriptionDetailsEmpty(true);
+            }
+          }
 
-          const currentSubscriptionPlan = currentSubscription;
+          const currentSubscriptionPlan = currentSubscription || {};
 
           let userInfo = JSON.parse(localStorage.getItem("user"));
           let newInfo = {
@@ -93,7 +111,7 @@ const Index = ({
 
           const allTopUp = res2.data.data.$values;
           let getUserTopUpData = [];
-          allTopUp.map((top, index) => {
+          allTopUp?.map((top, index) => {
             if (String(top.userType) === String(userInfo.userType)) {
               getUserTopUpData.push(top);
             }
@@ -141,14 +159,17 @@ const Index = ({
         </div>
       </div>
 
-      <section className="our-dashbord dashbord bgc-f7 pb50">
-        <div className="container-fluid ovh table-padding">
-          <div className="col-lg-12 col-xl-12 text-center mb-5">
+      <section className="our-dashbord dashbord bgc-f7 pb50" style={{}}>
+        <div className="container-fluid ovh">
+          <div className="col-lg-12 col-xl-12 text-center mt-1 mb-5">
             <div className="style2 mb30-991">
               <h3 className="heading-forms">
                 Add / Upgrade / Cancel Subscriptions
               </h3>
             </div>
+          </div>
+          <div className="row">
+            <div className="col-lg-12 col-lg-6 maxw100flex-992"></div>
           </div>
           <div className="row">
             {planData.length === 0 ? (

@@ -11,7 +11,7 @@ const BreadCrumbBanner = () => {
               <h4 className="breadcrumb_title">Gallery</h4>
             </div>
           </div>
-          {/* End .col */}
+      
         </div>
       </div>
     </section>

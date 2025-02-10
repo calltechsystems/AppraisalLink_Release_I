@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Header from "../../components/common/header/dashboard/Header_02";
-import MobileMenu from "../../components/common/header/MobileMenu_01";
+import Header from "../../components/common/header/dashboard/Header";
+import MobileMenu from "../../components/common/header/MobileMenu";
 import Pricing from "./pricing";
 import SidebarMenu from "../../components/common/header/dashboard/SidebarMenu_01";
 import axios from "axios";
@@ -10,7 +10,17 @@ import Link from "next/link";
 import Image from "next/image";
 import LoadingSpinner from "../../components/common/LoadingSpinner";
 
-const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen, setcurrentSubscription, setCanUpgrade,canUpgrade, userDetailField }) => {
+const Index = ({
+  setModalOpen,
+  currentSubscription,
+  setPrice,
+  modalOpen,
+  setcurrentSubscription,
+  setCanUpgrade,
+  canUpgrade,
+  userDetailField,
+  setIsSubscriptionDetailsEmpty,
+}) => {
   const [selectedPlan, setSelectedPlan] = useState("Monthly");
   const [planData, setPlanData] = useState([]);
   const [isChecked, setIsChecked] = useState(false);
@@ -58,11 +68,26 @@ const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen, setcurr
             },
           });
 
-          setCanUpgrade(res3?.data?.data?.upgradeEligible)
+          //TO VERIFY ALL EXISTING USERS
+          if (!res3?.data?.data?.messageCD) {
+            const value = res3?.data?.data?.upgradeEligible == 1;
+            setCanUpgrade(value);
+            //if subscription Details are coming properly
+            if (res3?.data?.data?.subcription_Dtails) {
+              setcurrentSubscription({
+                ...res3?.data?.data?.subcription_Dtails,
+                upgradeEligible: res3?.data?.data?.upgradeEligible,
+                activePaypalSubscriptionId: res3?.data?.data?.activePaypalSubscriptionId,
+                futurePaypalSubscriptionId: res3?.data?.data?.futurePaypalSubscriptionId,
+              }); 
+            }
+            //when the subscirption_Details is == 'NULL'
+            else {
+              setIsSubscriptionDetailsEmpty(true);
+            }
+          }
 
-
-
-          const currentSubscriptionPlan = currentSubscription;
+          const currentSubscriptionPlan = currentSubscription || {};
 
           let userInfo = JSON.parse(localStorage.getItem("user"));
           let newInfo = {
@@ -84,7 +109,7 @@ const Index = ({ setModalOpen, currentSubscription, setPrice, modalOpen, setcurr
 
           const allTopUp = res2.data.data.$values;
           let getUserTopUpData = [];
-          allTopUp.map((top, index) => {
+          allTopUp?.map((top, index) => {
             if (String(top.userType) === String(userInfo.userType)) {
               getUserTopUpData.push(top);
             }

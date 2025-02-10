@@ -18,7 +18,7 @@ const Pricing = ({
   setPrice,
   planData,
   canUpgrade,
-  userDetailField
+  userDetailField,
 }) => {
   let userData = {};
   const [selectedPackage, setSelectedPackage] = useState({});
@@ -26,7 +26,7 @@ const Pricing = ({
   const [openCancelModal, setOpenCancelModal] = useState(false);
   const [disable, setDisable] = useState(false);
 
-  const [currentActivePlan, setCurrentActivePlan] = useState({});
+  // const [currentActivePlan, setCurrentActivePlan] = useState({});
   const [selectedPlanId, setSelectedPlanId] = useState(-1);
   const [selectedTopUp, setSelectedTopUp] = useState(-1);
   const [filteredData, setFilteredData] = useState([]);
@@ -48,8 +48,7 @@ const Pricing = ({
       price: price,
       type: type,
       item,
-      paypalPlanId:
-        type == "plan" || type == "upgrade_plan" ? item?.payPalProductId : "",
+      paypalPlanId: item?.payPalProductId || "",
     });
   };
 
@@ -67,7 +66,6 @@ const Pricing = ({
 
     setPrice(updatedData);
     setSelectedTopUp(updatedData);
-
   };
 
   const setPlan = (planId, type) => {
@@ -115,7 +113,6 @@ const Pricing = ({
     if (String(type) === "2") {
       window.location.reload();
     } else if (String(type) === "3" || String(type) === "4") {
-
       const payload = {
         TopUpId: selectedTopUp.id,
         UserId: userData.userId,
@@ -137,39 +134,51 @@ const Pricing = ({
     window.location.reload();
   };
 
+  // useEffect(() => {
+  //   let requiredPlan = [];
+  //   data.map((plan, index) => {
+  //     const planName = String(plan.planName)
+  //       .toLowerCase()
+  //       .includes(String(currentSubscription?.planName).toLowerCase());
+  //     const amount =
+  //       String(
+  //         plan?.monthlyAmount === null ? plan.yearlyAmount : plan.monthlyAmount
+  //       ) === String(currentSubscription?.planAmount);
+  //     const totalPropeerties =
+  //       String(plan.noOfProperties) ===
+  //       String(currentSubscription?.noOfProperties);
+
+  //     if (planName) {
+  //       requiredPlan.push(plan);
+  //     }
+  //   });
+
+  //   setCurrentActivePlan(requiredPlan[requiredPlan.length - 1]);
+  // }, [currentSubscription, data]);
+  // console.log("plan is", currentSubscription);
   useEffect(() => {
-    let requiredPlan = [];
-    data.map((plan, index) => {
-      const planName = String(plan.planName)
-        .toLowerCase()
-        .includes(String(currentSubscription?.planName).toLowerCase());
+    const seelctivePlanDetails = data?.filter(
+      (plan) => plan.id == currentSubscription?.planId
+    );
+    if (seelctivePlanDetails.length > 0) {
+      const tempDetails = seelctivePlanDetails[0];
       const amount =
-        String(
-          plan?.monthlyAmount === null ? plan.yearlyAmount : plan.monthlyAmount
-        ) === String(currentSubscription?.planAmount);
-      const totalPropeerties =
-        String(plan.noOfProperties) ===
-        String(currentSubscription?.noOfProperties);
-
-      if (planName) {
-        requiredPlan.push(plan);
-      }
-    });
-
-    setCurrentActivePlan(requiredPlan[requiredPlan.length - 1]);
-  }, [currentSubscription, data]);
-
-  useEffect(() => {
-    setcurrentSubscription({
-      ...currentSubscription,
-      planId: currentActivePlan?.id,
-      amount: currentActivePlan?.amount,
-      monthlyAmount: currentActivePlan?.monthlyAmount,
-      noOfProperties: currentActivePlan?.noOfProperties,
-      payPalProductId: currentActivePlan?.payPalProductId,
-      description: currentActivePlan?.description,
-    });
-  }, [currentActivePlan]);
+        tempDetails?.planValidity == 30
+          ? tempDetails?.monthlyAmount
+          : tempDetails?.yearlyAmount;
+      setcurrentSubscription({
+        ...currentSubscription,
+        amount: amount,
+        planAmount: amount,
+        planName: tempDetails?.planName,
+        monthlyAmount: tempDetails?.monthlyAmount,
+        yearlyAmount: tempDetails?.yearlyAmount,
+        noOfProperties: tempDetails?.noOfProperties,
+        payPalProductId: tempDetails?.payPalProductId,
+        description: tempDetails?.description,
+      });
+    }
+  }, [data]);
 
   useEffect(() => {
     let Monthly = [],
@@ -202,7 +211,9 @@ const Pricing = ({
           >
             <div
               className={`${
-                currentActivePlan?.id === item.id ? "active-selected-plan" : ""
+                currentSubscription?.planId === item.id
+                  ? "active-selected-plan"
+                  : ""
               }
 `}
             >
@@ -240,7 +251,12 @@ const Pricing = ({
               <div className="pricing_content">
                 <ul className="mb0">
                   <li key={idx}>{item.noOfProperties} Properties Quotes</li>
-                   <li>{item.planValidity} Days Validity</li>
+                  <li>{item.planValidity} Days Validity</li>
+                  {/* {item?.monthlyAmount > 0 ? (
+                    <li>30 Days Validity</li>
+                  ) : (
+                    <li>365 Days Validity</li>
+                  )} */}
                 </ul>
                 <div className="pricing_header">
                   <h2 className="text-dark">
@@ -251,7 +267,7 @@ const Pricing = ({
                   </h2>
                 </div>
               </div>
-              {!hideButton && !currentActivePlan?.$id && (
+              {!hideButton && !currentSubscription?.$id && (
                 <div
                   className="pricing_footer"
                   onClick={() =>
@@ -267,16 +283,16 @@ const Pricing = ({
                   }
                 >
                   <a className={`btn btn-color_01 w-100`} href="#">
-                    {currentActivePlan?.$id ? "Change Plan" : "Get Started"}
+                    {currentSubscription?.$id ? "Change Plan" : "Get Started"}
                   </a>
                 </div>
               )}
 
               {!hideButton &&
-                currentActivePlan &&
-                String(currentActivePlan.id) !== String(item.id) &&
-                (currentActivePlan?.$id ? (
-                  !canUpgrade ? (
+                currentSubscription &&
+                String(currentSubscription.planId) !== String(item.id) &&
+                (currentSubscription?.$id ? (
+                  canUpgrade == true ? (
                     <div
                       className="pricing_footer"
                       onClick={() =>
@@ -299,27 +315,28 @@ const Pricing = ({
                     ""
                   )
                 ) : (
-                  <div
-                    className="pricing_footer"
-                    onClick={() =>
-                      selectPackageHandler(
-                        item.id,
-                        item.description,
-                        isPlan === 1
-                          ? item.monthlyAmount - item.discount
-                          : item.yearlyAmount - item.discount,
-                        "plan",
-                        item
-                      )
-                    }
-                  >
-                    <a className={`btn btn-color_01 w-100`} href="#">
-                      Select Plan
-                    </a>
-                  </div>
+                  ""
+                  // <div
+                  //   className="pricing_footer"
+                  //   onClick={() =>
+                  //     selectPackageHandler(
+                  //       item.id,
+                  //       item.description,
+                  //       isPlan === 1
+                  //         ? item.monthlyAmount - item.discount
+                  //         : item.yearlyAmount - item.discount,
+                  //       "plan",
+                  //       item
+                  //     )
+                  //   }
+                  // >
+                  //   <a className={`btn btn-color_01 w-100`} href="#">
+                  //     Select Plan
+                  //   </a>
+                  // </div>
                 ))}
               {!hideButton &&
-                String(currentActivePlan?.id) === String(item.id) && (
+                String(currentSubscription?.planId) === String(item.id) && (
                   <select
                     style={{
                       padding: "",
@@ -333,22 +350,19 @@ const Pricing = ({
                         setPlan(item.id, 2);
                       } else {
                         const selectedTopUp = topupData?.find(
-                          (topUp) =>
-                            topUp.$id == (selectedValue)
+                          (topUp) => topUp.$id == selectedValue
                         );
                         if (selectedTopUp) {
-                          topUpHandler(item.id,selectedTopUp);
+                          topUpHandler(item.id, selectedTopUp);
                         }
                       }
                     }}
                   >
                     <option value="">Add Top Up / Cancel Subscription</option>
                     {topupData?.map((topUp) => (
-                      <option
-                        key={topUp.$id}
-                        value={topUp.$id}
-                      >
-                        Add {topUp.noOfProperties} Properties (${topUp.topUpAmount})
+                      <option key={topUp.$id} value={topUp.$id}>
+                        Add {topUp.noOfProperties} Properties (${" "}
+                        {topUp.topUpAmount})
                       </option>
                     ))}
                     <option value="cancel">Cancel Subscription</option>

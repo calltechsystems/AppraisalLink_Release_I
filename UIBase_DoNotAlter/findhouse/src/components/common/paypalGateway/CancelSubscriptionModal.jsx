@@ -66,7 +66,6 @@ const CancelSubscriptionModal = ({
     setShowPaypalPage(true);
   };
 
-  console.log({ onSuccess });
   const closePaypalPage = () => {
     setShowPaypalPage(false);
     setCurrentSelectedPlan({});
@@ -81,6 +80,7 @@ const CancelSubscriptionModal = ({
     setCurrentSelectedPlan({});
     setTermsPolicyAccepted(false);
     closeModal();
+    window.location.reload();
   };
 
   return (

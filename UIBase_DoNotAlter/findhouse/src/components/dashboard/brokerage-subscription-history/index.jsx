@@ -94,7 +94,7 @@ const Index = () => {
       .then((res) => {
         toast.dismiss();
         console.log(res.data.data);
-        setData(res.data.data);
+        setData(res?.data.data?.transactions?.$values);
         setRerender(false);
       })
       .catch((err) => {

@@ -81,6 +81,7 @@ const ReviseSubscriptionModal = ({
     setCurrentSelectedPlan({});
     setTermsPolicyAccepted(false);
     closeModal();
+    window.location.reload();
   };
 
   return (
@@ -186,7 +187,7 @@ const ReviseSubscriptionModal = ({
                   <>
                     <ReviseCheckout
                       currentSubscription={currentSubscription}
-                      planDetails={currentSelectedPlan}
+                      price={currentSelectedPlan}
                       setErrorOccurred={setErrorOccurred}
                       setOnSuccess={setOnSuccess}
                       setErrorMessage={setErrorMessage}

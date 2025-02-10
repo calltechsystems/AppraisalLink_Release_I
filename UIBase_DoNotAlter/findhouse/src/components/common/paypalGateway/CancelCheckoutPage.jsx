@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { getPayPalAccessToken, PayPalApi } from "./utilFunctions";
+import { generateResponsePayload, getCurrentIdToBeCancelled } from "../../../utils/Paypal/GeneratePayloads";
 
 const CancelCheckout = ({
   topUpDetails,
@@ -9,46 +11,28 @@ const CancelCheckout = ({
   currentSubscription,
   setErrorMessage,
   paymentType,
-  userDetailField
+  userDetailField,
 }) => {
   const [currency, setCurrency] = useState("CAD");
   const [userData, setUserData] = useState({});
-
-  const PayPalApi = {
-    clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
-    clientSecret: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_SECRET,
-    baseUrl:
-      // process.env.NODE_ENV === "production"
-      //   ? "https://api-m.paypal.com"
-      //   :
-      "https://api-m.sandbox.paypal.com", // Use sandbox in development
-  };
 
   useEffect(() => {
     setUserData(JSON.parse(localStorage.getItem("user")) || {});
   }, []);
 
-  // Function to get PayPal access token
-  const getPayPalAccessToken = async () => {
-    const credentials = `${PayPalApi.clientId}:${PayPalApi.clientSecret}`;
-    const encodedCredentials = btoa(credentials); // Base64 encode the credentials
-
+  const saveCancellationData = async (payload) => {
     try {
       const response = await axios.post(
-        `${PayPalApi.baseUrl}/v1/oauth2/token`,
-        new URLSearchParams({ grant_type: "client_credentials" }),
-        {
-          headers: {
-            Authorization: `Basic ${encodedCredentials}`,
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }
+        "/api/savePaypalSubscriptionCancellationData",
+        payload
       );
-
-      return response.data.access_token;
-    } catch (error) {
-      console.error("Failed to fetch PayPal access token:", error);
-      throw new Error("Unable to fetch PayPal access token.");
+      if (response) {
+        setOnSuccess(true);
+      }
+    } catch (err) {
+      console.error("got error while saving the cancellation plan:", err);
+      setErrorMessage("Got error while saving the cancellation info to DB");
+      setErrorOccurred(true);
     }
   };
 
@@ -57,6 +41,18 @@ const CancelCheckout = ({
     try {
       toast.loading("Cancelling the Plan");
       const accessToken = await getPayPalAccessToken();
+
+      const cancelSubscriptionStatus = await axios.get(
+        `${PayPalApi.baseUrl}/v1/billing/subscriptions/${subscriptionId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log({cancelSubscriptionStatus})
 
       const cancelSubscriptionResponse = await axios.post(
         `${PayPalApi.baseUrl}/v1/billing/subscriptions/${subscriptionId}/cancel`,
@@ -68,8 +64,22 @@ const CancelCheckout = ({
           },
         }
       );
-      console.log({cancelSubscriptionResponse})
-      setOnSuccess(true);
+
+      const request = { subscriptionId };
+      const response = { ...cancelSubscriptionResponse };
+
+      const payload = generateResponsePayload(
+        paymentType,
+        topUpDetails,
+        userData,
+        request,
+        response,
+        currentSubscription,
+        topUpDetails,
+        userDetailField
+      );
+      saveCancellationData(payload);
+
     } catch (error) {
       console.error("Failed to cancel subscription:", error);
       toast.error("Failed to cancel subscription:", error);
@@ -77,17 +87,15 @@ const CancelCheckout = ({
       //   "Your payment has been processed successfully by PayPal. However, we encountered an issue while updating your subscription. Please contact support with your transaction details for assistance."
       // );
       setErrorOccurred(true);
-    }
-    finally{
+    } finally {
       toast.dismiss();
-      window.location.reload();
     }
   };
 
   const handleCancelSubscription = () => {
     if (currentSubscription) {
-      // cancelSubscription(currentSubscription?.cancelSubscription)
-      cancelSubscription("I-4X2VPH98M849");
+      const paypalSubscriptionId = getCurrentIdToBeCancelled(currentSubscription);
+      cancelSubscription(paypalSubscriptionId)
     } else {
       console.error("No subscription ID found.");
       setErrorMessage("No subscription ID found. Please try again");

@@ -54,7 +54,6 @@ const OurMission = () => {
               </li>
             ))}
           </ul>
-          
         </div>
       </div>
       

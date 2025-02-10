@@ -20,6 +20,7 @@ const Index = ({
   setCanUpgrade,
   canUpgrade,
   userDetailField,
+  setIsSubscriptionDetailsEmpty,
 }) => {
   const [selectedPlan, setSelectedPlan] = useState("Monthly");
   const [planData, setPlanData] = useState([]);
@@ -59,7 +60,7 @@ const Index = ({
             },
           });
 
-          const res3 = await axios.get("/api/getSpecificSubscriptionByUser", {
+          let res3 = await axios.get("/api/getSpecificSubscriptionByUser", {
             headers: {
               Authorization: `Bearer ${data?.token}`,
               "Content-Type": "application/json",
@@ -69,9 +70,27 @@ const Index = ({
             },
           });
 
-          setCanUpgrade(res3?.data?.data?.upgradeEligible);
 
-          const currentSubscriptionPlan = currentSubscription;
+          //TO VERIFY ALL EXISTING USERS
+          if(!res3?.data?.data?.messageCD){
+            const value = res3?.data?.data?.upgradeEligible == 1;
+            setCanUpgrade(value);
+          //if subscription Details are coming properly
+            if(res3?.data?.data?.subcription_Dtails){
+              setcurrentSubscription({
+                ...res3?.data?.data?.subcription_Dtails,
+                upgradeEligible: res3?.data?.data?.upgradeEligible,
+                activePaypalSubscriptionId: res3?.data?.data?.activePaypalSubscriptionId,
+                futurePaypalSubscriptionId: res3?.data?.data?.futurePaypalSubscriptionId,
+              }); 
+            }
+          //when the subscirption_Details is == 'NULL'
+            else{
+              setIsSubscriptionDetailsEmpty(true);
+            }
+          }
+
+          const currentSubscriptionPlan = currentSubscription || {};
 
           let userInfo = JSON.parse(localStorage.getItem("user"));
           let newInfo = {
@@ -93,7 +112,7 @@ const Index = ({
 
           const allTopUp = res2.data.data.$values;
           let getUserTopUpData = [];
-          allTopUp.map((top, index) => {
+          allTopUp?.map((top, index) => {
             if (String(top.userType) === String(userInfo.userType)) {
               getUserTopUpData.push(top);
             }
