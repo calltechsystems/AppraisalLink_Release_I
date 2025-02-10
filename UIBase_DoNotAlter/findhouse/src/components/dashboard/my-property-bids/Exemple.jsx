@@ -91,7 +91,7 @@ export default function Exemple({
   setRefresh,
   refresh,
   setOpenBrokerModal,
-  setIsModalOpen,
+  setIsModalOpenBid,
   orderId,
   properties,
   setProperties,
@@ -115,7 +115,7 @@ export default function Exemple({
     setProperty(prop);
     setId(id);
 
-    setIsModalOpen(true);
+    setIsModalOpenBid(true);
   };
 
   const formatDateTime = (dateString) => {

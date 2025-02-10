@@ -12,6 +12,7 @@ import { Link } from "react-scroll";
 import Image from "next/image";
 import axios from "axios";
 import Modal from "../../common/header/dashboard/NotificationModal";
+import { useModal } from "../../../context/ModalContext";
 
 const Index = () => {
   const [userData, setUserData] = useState({});
@@ -29,9 +30,9 @@ const Index = () => {
   const [chartData, setChartData] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const router = useRouter();
-
   const [modalIsPlanError, setModalIsPlaneError] = useState(false);
   const [message, setMessage] = useState("");
+  const { isModalOpen, setIsModalOpen } = useModal();
 
   useEffect(() => {
     // Simulate an API call to check the user's plan status
@@ -72,6 +73,30 @@ const Index = () => {
 
     fetchUserPlan();
   }, []);
+
+  const planDetails = Array.isArray(userData?.plans?.$values)
+    ? userData.plans.$values
+    : [];
+  const planData_01 = planDetails.map((plan) => ({
+    id: plan.$id, // Replace with actual key names
+    planName: plan.planName,
+    noOfProperties: plan.noOfProperties,
+    price: plan.price,
+    status: plan.status,
+  }));
+
+  console.log("plan data", planData_01);
+
+  const usedProp = userData?.usedproperty;
+  const userPlans = Array.isArray(userData?.userSubscription?.$values)
+    ? userData.userSubscription.$values
+    : [];
+  const planData_02 = userPlans.map((plan) => ({
+    id: plan.$id, // Replace with actual key names
+    planEndDate: plan.endDate,
+  }));
+
+  console.log("plans", planData_02);
 
   const closePlanErrorModal = () => {
     // setModalIsPlaneError(false);
@@ -476,6 +501,9 @@ const Index = () => {
                   views={allQuotesBids}
                   bids={acceptedBids}
                   favourites={wishlist.length}
+                  plans={planData_01}
+                  plansNew={planData_02}
+                  usedProp={usedProp}
                 />
               </div>
               {/* End .row Dashboard top statistics */}
@@ -581,6 +609,77 @@ const Index = () => {
                         {/* <Link href="/my-plans" className="text-white">
                           Subscribe Now
                         </Link> */}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {isModalOpen && (
+                <div className="modal">
+                  <div className="modal-content" style={{ width: "25%" }}>
+                    <div className="row">
+                      <div className="col-lg-12">
+                        <Link href="/" className="">
+                          <Image
+                            width={50}
+                            height={45}
+                            className="logo1 img-fluid"
+                            style={{ marginTop: "-20px" }}
+                            src="/assets/images/logo.png"
+                            alt="header-logo2.png"
+                          />
+                          <span
+                            style={{
+                              color: "#2e008b",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            Appraisal
+                          </span>
+                          <span
+                            style={{
+                              color: "#97d700",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            {" "}
+                            Land
+                          </span>
+                        </Link>
+                      </div>
+                    </div>
+                    <h3
+                      className="text-center mt-3"
+                      style={{ color: "#2e008b" }}
+                    >
+                      Warning <span style={{ color: "#97d700" }}></span>
+                    </h3>
+                    <div
+                      className="mb-2"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
+                    <p className="fs-5 text-center text-dark mt-4">
+                      Your add property limit exceeds. <br />
+                      <span className="text-danger fw-bold">
+                        Get topup to add more propperties.
+                      </span>{" "}
+                    </p>
+                    <div
+                      className="mb-3 mt-4"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
+                    <div className="col-lg-12 d-flex justify-content-center gap-2">
+                      <button
+                        // disabled={disable}
+                        className="btn btn-color w-25"
+                        onClick={() => setIsModalOpen(false)}
+                      >
+                        Cancel
                       </button>
                     </div>
                   </div>

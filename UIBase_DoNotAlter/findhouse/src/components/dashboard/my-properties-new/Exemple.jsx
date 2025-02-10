@@ -508,7 +508,7 @@ export default function Exemple({
 
                 {/* End li */}
 
-                {!isCancel && isStatus !== 3 && (
+                {!isCancel && isStatus !== 3 && isBidded.orderstatus !== 4 && (
                   <li title={!isHold ? "On Hold" : "Remove Hold"}>
                     <button
                       className="btn btn-color-table"
@@ -516,7 +516,9 @@ export default function Exemple({
                       onClick={() =>
                         openModal(property.orderId, 1, isHold ? 0 : property)
                       }
-                      aria-label={isHold ? "Resume Property" : "Pause Property"}
+                      title={
+                        isHold ? "Remove On Hold Property" : "On Hold Property"
+                      }
                     >
                       {isHold ? (
                         <FaPlay className="text-light" />

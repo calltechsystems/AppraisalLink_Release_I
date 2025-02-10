@@ -18,20 +18,15 @@ const Index = () => {
   const [properties, setProperties] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [FilteringType, setFilteringType] = useState("Monthly");
-
   const [allProperties, setAllProperties] = useState([]);
-
   const [AllPropertiesCard, setAllPropertiesCard] = useState(0);
   const [AllWishlistedCards, setAllWishlistedCards] = useState(0);
   const [AllBiddedCards, setAllBiddedCards] = useState(0);
   const [bids, setBids] = useState([]);
   const [wishlist, setWishlist] = useState([]);
-
   const [chartData, setChartData] = useState([]);
-
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-
   const [modalIsPlanError, setModalIsPlaneError] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -74,6 +69,30 @@ const Index = () => {
 
     fetchUserPlan();
   }, []);
+
+  const planDetails = Array.isArray(userData?.plans?.$values)
+    ? userData.plans.$values
+    : [];
+  const planData_01 = planDetails.map((plan) => ({
+    id: plan.$id, // Replace with actual key names
+    planName: plan.planName,
+    noOfProperties: plan.noOfProperties,
+    price: plan.price,
+    status: plan.status,
+  }));
+
+  console.log("plan data", planData_01);
+
+  const usedProp = userData?.usedproperty;
+  const userPlans = Array.isArray(userData?.userSubscription?.$values)
+    ? userData.userSubscription.$values
+    : [];
+  const planData_02 = userPlans.map((plan) => ({
+    id: plan.$id, // Replace with actual key names
+    planEndDate: plan.endDate,
+  }));
+
+  console.log("plans", planData_02);
 
   const closePlanErrorModal = () => {
     // setModalIsPlaneError(false);
@@ -601,6 +620,9 @@ const Index = () => {
                   views={AllBiddedCards + AllWishlistedCards}
                   bids={AllBiddedCards}
                   wishlist={AllWishlistedCards}
+                  plans={planData_01}
+                  plansNew={planData_02}
+                  usedProp={usedProp}
                 />
               </div>
               {/* End .row Dashboard top statistics */}

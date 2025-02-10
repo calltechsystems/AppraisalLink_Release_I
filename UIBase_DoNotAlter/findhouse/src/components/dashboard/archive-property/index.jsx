@@ -17,9 +17,10 @@ import Link from "next/link";
 import Image from "next/image";
 import millify from "millify";
 import { FaDownload } from "react-icons/fa";
+import { useModal } from "../../../context/ModalContext";
 
 const Index = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { isModalOpen, setIsModalOpen } = useModal();
   const [searchInput, setSearchInput] = useState("");
   const [refresh, setRefresh] = useState(false);
   const [property, setProperty] = useState("");
@@ -838,23 +839,68 @@ const Index = () => {
             </div>
           </div>
           {/* End .col */}
+
           {isModalOpen && (
             <div className="modal">
-              <div className="modal-content">
-                <h3 className="text-center">Delete Confirmation</h3>
-                <h5 className="text-center">
-                  Are you sure you want to delete the property : {property.area}{" "}
-                  ?
-                </h5>
-                {/* <p>Are you sure you want to delete the property: {property.area}?</p> */}
-                <div className="text-center" style={{}}>
+              <div className="modal-content" style={{ width: "25%" }}>
+                <div className="row">
+                  <div className="col-lg-12">
+                    <Link href="/" className="">
+                      <Image
+                        width={50}
+                        height={45}
+                        className="logo1 img-fluid"
+                        style={{ marginTop: "-20px" }}
+                        src="/assets/images/logo.png"
+                        alt="header-logo2.png"
+                      />
+                      <span
+                        style={{
+                          color: "#2e008b",
+                          fontWeight: "bold",
+                          fontSize: "24px",
+                          // marginTop: "20px",
+                        }}
+                      >
+                        Appraisal
+                      </span>
+                      <span
+                        style={{
+                          color: "#97d700",
+                          fontWeight: "bold",
+                          fontSize: "24px",
+                          // marginTop: "20px",
+                        }}
+                      >
+                        {" "}
+                        Land
+                      </span>
+                    </Link>
+                  </div>
+                </div>
+                <h3 className="text-center mt-3" style={{ color: "#2e008b" }}>
+                  Warning <span style={{ color: "#97d700" }}></span>
+                </h3>
+                <div
+                  className="mb-2"
+                  style={{ border: "2px solid #97d700" }}
+                ></div>
+                <p className="fs-5 text-center text-dark mt-4">
+                  Your add property limit exceeds. <br />
+                  <span className="text-danger fw-bold">
+                    Get topup to add more propperties.
+                  </span>{" "}
+                </p>
+                <div
+                  className="mb-3 mt-4"
+                  style={{ border: "2px solid #97d700" }}
+                ></div>
+                <div className="col-lg-12 d-flex justify-content-center gap-2">
                   <button
-                    className="btn w-35 btn-thm3 m-2"
-                    onClick={handleDelete}
+                    // disabled={disable}
+                    className="btn btn-color w-25"
+                    onClick={() => setIsModalOpen(false)}
                   >
-                    Delete
-                  </button>
-                  <button className="btn w-35 btn-white" onClick={closeModal}>
                     Cancel
                   </button>
                 </div>

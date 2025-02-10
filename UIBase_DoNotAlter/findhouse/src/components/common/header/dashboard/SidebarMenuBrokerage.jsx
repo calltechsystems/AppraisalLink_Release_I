@@ -6,14 +6,19 @@ import {
 } from "../../../../utils/daynamicNavigation";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useModal } from "../../../../context/ModalContext";
 
-const SidebarMenu = ({ userData }) => {
+const SidebarMenu = ({}) => {
+  const { setIsModalOpen } = useModal();
   const route = useRouter();
   const [hasActivePlans, setHasActivePlans] = useState(false);
+  const [userData, setUserData] = useState(null);
+  const planLimit = userData?.planLimitExceed;
+  console.log("plan limit", planLimit);
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
-
+    setUserData(userData);
     // Check if the user has active plans
     const userActivePlans = userData?.userSubscription?.$values || [];
     // // console.log("plans", userActivePlans);
@@ -193,27 +198,42 @@ const SidebarMenu = ({ userData }) => {
               )}
             </li>
 
-            <li
-              className={`treeview ${
-                hasActivePlans
-                  ? isSinglePageActive("/create-listing-1", route.pathname)
-                    ? "active"
-                    : ""
-                  : "disabled"
-              }`}
-            >
-              {hasActivePlans ? (
-                <Link href="/create-listing-1">
-                  <i className="flaticon-plus"></i>
-                  <span>Add New Property</span>
-                </Link>
-              ) : (
-                <a>
-                  <i className="flaticon-plus"></i>
-                  <span>Add New Property</span>
-                </a>
-              )}
-            </li>
+            {userData?.planLimitExceed === 1 ? (
+              <a
+                href="#"
+                className="disabled-link" // Add a class to style it as disabled
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIsModalOpen(true); // Open modal globally
+                }}
+                style={{ cursor: "not-allowed", opacity: 0.6 }} // Make the link look disabled
+              >
+                <i className="flaticon-plus"></i>
+                <span>Add New Property</span>
+              </a>
+            ) : (
+              <li
+                className={`treeview ${
+                  hasActivePlans
+                    ? isSinglePageActive("/create-listing-1", route.pathname)
+                      ? "active"
+                      : ""
+                    : "disabled"
+                }`}
+              >
+                {hasActivePlans ? (
+                  <Link href="/create-listing-1">
+                    <i className="flaticon-plus"></i>
+                    <span>Add New Property</span>
+                  </Link>
+                ) : (
+                  <a>
+                    <i className="flaticon-plus"></i>
+                    <span>Add New Property</span>
+                  </a>
+                )}
+              </li>
+            )}
           </ul>
         </li>
 
@@ -260,12 +280,12 @@ const SidebarMenu = ({ userData }) => {
               {hasActivePlans ? (
                 <Link href="/brokerage-completed-properties">
                   <i className="flaticon-building"></i>
-                  <span>My Completed Orders</span>
+                  <span>My Completed Properties</span>
                 </Link>
               ) : (
                 <a>
                   <i className="flaticon-building"></i>
-                  <span>My Completed Orders</span>
+                  <span>My Completed Properties</span>
                 </a>
               )}
             </li>
@@ -285,12 +305,12 @@ const SidebarMenu = ({ userData }) => {
               {hasActivePlans ? (
                 <Link href="/brokers-completed-properties">
                   <i className="flaticon-building"></i>
-                  <span>Brokers Completed Orders</span>
+                  <span>Brokers Completed Properties</span>
                 </Link>
               ) : (
                 <a>
                   <i className="flaticon-building"></i>
-                  <span>Brokers Completed Orders</span>
+                  <span>Brokers Completed Properties</span>
                 </a>
               )}
             </li>
