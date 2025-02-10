@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.S3" Version="3.7.305.28" />
+    <PackageReference Include="AWSSDK.SimpleNotificationService" Version="3.7.300.14" />
+    <PackageReference Include="AWSSDK.SimpleNotificationService.NetCore.Support" Version="1.0.2" />
+    <PackageReference Include="ElCamino.PayPalCheckoutSdk" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="PayPal.SDK.NETCore" Version="1.9.1.2" />
+    <PackageReference Include="Twilio" Version="6.16.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DBL\DBL.csproj" />
+  </ItemGroup>
+
+</Project>
