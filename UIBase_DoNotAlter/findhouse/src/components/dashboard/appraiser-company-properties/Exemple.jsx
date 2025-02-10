@@ -589,12 +589,12 @@ export default function Exemple({
         const anotherBid = alreadyAccepted(property);
         const isAlreadyArchived = getisAlreadyArchived(property.propertyId);
 
-        const haveSubscription =
-          userActivePlans?.length > 0
-            ? userActivePlans[0]?.$id
-              ? true
-              : false
-            : false;
+        const haveSubscription = userData?.planLimitExceed;
+        // userActivePlans?.length > 0
+        //   ? userActivePlans[0]?.$id
+        //     ? true
+        //     : false
+        //   : false;
 
         const isAssigned = checkIfPropertyAlreadyAssigned(property.propertyId);
 
@@ -951,7 +951,7 @@ export default function Exemple({
                     {(!isBidded.$id || isBidded?.status < 1) &&
                       !isWait &&
                       !anotherBid &&
-                      haveSubscription && (
+                      haveSubscription === 0 && (
                         <li
                           className="list-inline-item"
                           data-toggle="tooltip"

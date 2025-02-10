@@ -76,6 +76,7 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
   }, [properties, bids]);
 
   const allStatistics = useMemo(() => [
+
     {
       id: "allPropertiesCount",
       blockStyle: "stylecard1",
@@ -162,7 +163,7 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
       id: "PlanValidityCount",
       blockStyle: "stylecard10",
       icon: "fa fa-hourglass-half",
-      timer: favourites,
+      timer: formatDate(planEndDate),
       name: "Plan validity",
       // icon: "flaticon-house",
       value: PlanValidityCount,

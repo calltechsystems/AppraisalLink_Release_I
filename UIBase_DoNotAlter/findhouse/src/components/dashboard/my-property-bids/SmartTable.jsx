@@ -390,32 +390,12 @@ function SmartTable(props) {
               >
                 {props.dataFetched && props.properties.length === 0 ? (
                   showNoData ? (
-                    <h3>No Data Found</h3>
+                    <NoDataFound />
                   ) : (
-                    <div className="ring">
-                      <Image
-                      width={60}
-                      height={45}
-                      className="logo1 img-fluid"
-                      style={{ marginTop: "-20px" }}
-                      src="/assets/images/Appraisal_Land_Logo.png"
-                      alt="header-logo2.png"
-                    />
-                      <span className="load"></span>
-                    </div>
+                    <LoadingSpinner />
                   )
                 ) : (
-                  <div className="ring">
-                    <Image
-                      width={60}
-                      height={45}
-                      className="logo1 img-fluid"
-                      style={{ marginTop: "-20px" }}
-                      src="/assets/images/Appraisal_Land_Logo.png"
-                      alt="header-logo2.png"
-                    />
-                    <span className="load"></span>
-                  </div>
+                  <LoadingSpinner />
                 )}
               </div>
             </div>

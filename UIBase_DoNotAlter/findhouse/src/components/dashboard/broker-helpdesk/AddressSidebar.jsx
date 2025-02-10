@@ -5,7 +5,7 @@ const AddressSidebar = () => {
     <>
       <div
         className="row mt-5 mb-5 justify-content-center"
-        style={{ position: "relative", zIndex: "10" }}
+        style={{ position: "relative" }}
       >
         <div
           className="col-lg-3 contact_localtion m-3"

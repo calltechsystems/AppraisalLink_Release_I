@@ -6,6 +6,7 @@ import Seo from "../components/common/seo";
 import "../index.scss";
 import InactivityTimer from "../components/inactivity-timer"; // Adjust the path as needed
 import Head from "next/head";
+import { ModalProvider } from "../context/ModalContext"; // Adjust path if needed
 
 if (typeof window !== "undefined") {
   require("bootstrap/dist/js/bootstrap");
@@ -63,7 +64,9 @@ function MyApp({ Component, pageProps }) {
       />
       <Provider store={store}>
         <Toaster />
-        <Component {...pageProps} />
+        <ModalProvider>
+          <Component {...pageProps} />
+        </ModalProvider>
       </Provider>
 
       <ScrollToTop />

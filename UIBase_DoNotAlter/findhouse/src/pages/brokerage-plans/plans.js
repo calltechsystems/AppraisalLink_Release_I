@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import Link from "next/link";
 import Image from "next/image";
 import LoadingSpinner from "../../components/common/LoadingSpinner";
+import { useModal } from "../../context/ModalContext";
 
 const Index = ({
   setModalOpen,
@@ -26,6 +27,7 @@ const Index = ({
   const [isChecked, setIsChecked] = useState(false);
   const [TopUpData, setTopUpData] = useState([]);
   const [IsAgainLoginPopUp, setIsAgainLoginPopUp] = useState(false);
+  const { isModalOpen, setIsModalOpen } = useModal();
 
   const router = useRouter();
   let userData = {};
@@ -269,6 +271,74 @@ const Index = ({
                   style={{}}
                 >
                   Ok
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {isModalOpen && (
+          <div className="modal">
+            <div className="modal-content" style={{ width: "25%" }}>
+              <div className="row">
+                <div className="col-lg-12">
+                  <Link href="/" className="">
+                    <Image
+                      width={50}
+                      height={45}
+                      className="logo1 img-fluid"
+                      style={{ marginTop: "-20px" }}
+                      src="/assets/images/logo.png"
+                      alt="header-logo2.png"
+                    />
+                    <span
+                      style={{
+                        color: "#2e008b",
+                        fontWeight: "bold",
+                        fontSize: "24px",
+                        // marginTop: "20px",
+                      }}
+                    >
+                      Appraisal
+                    </span>
+                    <span
+                      style={{
+                        color: "#97d700",
+                        fontWeight: "bold",
+                        fontSize: "24px",
+                        // marginTop: "20px",
+                      }}
+                    >
+                      {" "}
+                      Land
+                    </span>
+                  </Link>
+                </div>
+              </div>
+              <h3 className="text-center mt-3" style={{ color: "#2e008b" }}>
+                Warning <span style={{ color: "#97d700" }}></span>
+              </h3>
+              <div
+                className="mb-2"
+                style={{ border: "2px solid #97d700" }}
+              ></div>
+              <p className="fs-5 text-center text-dark mt-4">
+                Your add property limit exceeds. <br />
+                <span className="text-danger fw-bold">
+                  Get topup to add more propperties.
+                </span>{" "}
+              </p>
+              <div
+                className="mb-3 mt-4"
+                style={{ border: "2px solid #97d700" }}
+              ></div>
+              <div className="col-lg-12 d-flex justify-content-center gap-2">
+                <button
+                  // disabled={disable}
+                  className="btn btn-color w-25"
+                  onClick={() => setIsModalOpen(false)}
+                >
+                  Cancel
                 </button>
               </div>
             </div>

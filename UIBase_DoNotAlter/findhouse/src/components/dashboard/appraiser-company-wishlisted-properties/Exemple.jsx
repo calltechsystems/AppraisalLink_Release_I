@@ -436,11 +436,10 @@ export default function Exemple({
       properties.map((property, index) => {
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
-
         console.log(isWishlist);
-
         const isAssigned = checkInAssignedProperty(property.propertyId);
         const isArchive = foundArchiveHandler(property.propertyId);
+        const haveSubscription = userData?.planLimitExceed;
 
         if (!isArchive && !isAssigned && isWishlist.id) {
           if (isBidded.status === 1) {
@@ -528,7 +527,11 @@ export default function Exemple({
                   className="w-100"
                   onClick={() => openRemarkModal(property)}
                 >
-                  <button href="#" className="btn btn-color" style={{width:"120px"}}>
+                  <button
+                    href="#"
+                    className="btn btn-color"
+                    style={{ width: "120px" }}
+                  >
                     <Link href="#">
                       <span className="text-light">
                         {" "}
@@ -658,39 +661,40 @@ export default function Exemple({
                       </button>
                     </li>
 
-                    {(!isBidded.$id || isBidded?.status < 1) && (
-                      <li
-                        className="list-inline-item"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title={`${
-                          isBidded.$id ? "View/Update Quote" : "Provide Quote"
-                        }`}
-                      >
-                        <div
-                          className="w-100"
-                          onClick={() =>
-                            participateHandler(
-                              property.bidLowerRange,
-                              property.orderId,
-                              isBidded.status < 1,
-                              isBidded.bidAmount,
-                              isBidded.$id ? true : false
-                            )
-                          }
+                    {(!isBidded.$id || isBidded?.status < 1) &&
+                      haveSubscription === 0 && (
+                        <li
+                          className="list-inline-item"
+                          data-toggle="tooltip"
+                          data-placement="top"
+                          title={`${
+                            isBidded.$id ? "View/Update Quote" : "Provide Quote"
+                          }`}
                         >
-                          <button
-                            href="#"
-                            className="btn btn-color"
-                            // style={{ marginLeft: "12px" }}
+                          <div
+                            className="w-100"
+                            onClick={() =>
+                              participateHandler(
+                                property.bidLowerRange,
+                                property.orderId,
+                                isBidded.status < 1,
+                                isBidded.bidAmount,
+                                isBidded.$id ? true : false
+                              )
+                            }
                           >
-                            <Link href="#">
-                              <span className="flaticon-invoice text-light"></span>
-                            </Link>
-                          </button>
-                        </div>
-                      </li>
-                    )}
+                            <button
+                              href="#"
+                              className="btn btn-color"
+                              // style={{ marginLeft: "12px" }}
+                            >
+                              <Link href="#">
+                                <span className="flaticon-invoice text-light"></span>
+                              </Link>
+                            </button>
+                          </div>
+                        </li>
+                      )}
 
                     {/* <li
                       className="list-inline-item"
@@ -1155,7 +1159,7 @@ export default function Exemple({
         </div>
       )}
 
-   {remarkModal && (
+      {remarkModal && (
         <div className="modal">
           <div className="modal-content" style={{ width: "35%" }}>
             <div className="row">

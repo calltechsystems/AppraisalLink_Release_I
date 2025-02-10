@@ -13,7 +13,7 @@ const TableData = ({
   close,
   properties,
   setProperties,
-  setIsModalOpen,
+  setIsModalOpenBid,
   propertyId,
   setModalIsOpenError,
   setErrorMessage,
@@ -220,7 +220,7 @@ const TableData = ({
           setModalIsOpenError={setModalIsOpenError}
           setErrorMessage={setErrorMessage}
           deletePropertyHandler={deletePropertyHandler}
-          setIsModalOpen={setIsModalOpen}
+          setIsModalOpenBid={setIsModalOpenBid}
           property={property}
           setOpenBrokerModal={setOpenBrokerModal}
           setProperty={setProperty}

@@ -1,4 +1,33 @@
-const AllStatistics = ({ properties, views, bids, wishlist, favourites }) => {
+const AllStatistics = ({
+  properties,
+  views,
+  bids,
+  wishlist,
+  favourites,
+  plans,
+  plansNew,
+  usedProp
+}) => {
+  // Extract plan details (assuming plans is an array)
+  const planName = plans?.[0]?.planName || "N/A"; // Get first plan name or default "N/A"
+  const numberOfProperties = plans?.[0]?.noOfProperties || "N/A"; // Assuming propertyCount is a field
+  const planEndDate = plansNew?.[0]?.planEndDate || "N/A";
+  // console.log("plan valididty",planValidity)
+  const formatDate = (dateString) => {
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      // hour: "numeric",
+      // minute: "numeric",
+      // second: "numeric",
+      hour12: true, // Set to false for 24-hour format
+    };
+
+    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
+    return formattedDate;
+  };
+
   const allStatistics = [
     {
       id: 1,
@@ -60,28 +89,28 @@ const AllStatistics = ({ properties, views, bids, wishlist, favourites }) => {
       id: 9,
       blockStyle: "stylecard9",
       icon: "fa fa-credit-card",
-      timer: favourites,
+      timer: planName,
       name: "Plan",
     },
     {
       id: 10,
       blockStyle: "stylecard10",
       icon: "fa fa-hourglass-half",
-      timer: favourites,
+      timer: formatDate(planEndDate),
       name: "Plan validity",
     },
     {
       id: 11,
       blockStyle: "stylecard11",
       icon: "fa fa-building",
-      timer: favourites,
+      timer: numberOfProperties,
       name: "No. of Properties",
     },
     {
       id: 12,
       blockStyle: "stylecard12",
       icon: "fa fa-home",
-      timer: favourites,
+      timer: usedProp,
       name: "Used Properties",
     },
   ];

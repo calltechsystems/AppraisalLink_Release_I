@@ -8,11 +8,11 @@ import StatisticsPieChart from "./StatisticsPieChart";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { toast } from "react-toast";
-
 import axios from "axios";
 import Modal from "../../common/header/dashboard/NotificationModal";
 import { Link } from "react-scroll";
 import Image from "next/image";
+import { useModal } from "../../../context/ModalContext";
 
 const Index = () => {
   const [userData, setUserData] = useState({});
@@ -30,9 +30,10 @@ const Index = () => {
   const [chartData, setChartData] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const router = useRouter();
-
   const [modalIsPlanError, setModalIsPlaneError] = useState(false);
   const [message, setMessage] = useState("");
+  const [planData, setPlanData] = useState("");
+  const { isModalOpen, setIsModalOpen } = useModal();
 
   useEffect(() => {
     // Simulate an API call to check the user's plan status
@@ -40,6 +41,8 @@ const Index = () => {
       try {
         // Replace this with your actual API call
         const userData = JSON.parse(localStorage.getItem("user"));
+        const planDetails = userData?.plans?.$values;
+        setPlanData(planDetails);
         console.log("user", userData);
         if (!userData) {
           throw new Error("User not logged in");
@@ -50,7 +53,6 @@ const Index = () => {
         }
 
         const userActivePlans = userData?.userSubscription?.$values;
-        //  console.log("plans", userActivePlans);
 
         const haveSubscription =
           userActivePlans?.length > 0
@@ -73,6 +75,30 @@ const Index = () => {
 
     fetchUserPlan();
   }, []);
+
+  // const planDetails = userData?.plans?.$values || [];
+  const planDetails = Array.isArray(userData?.plans?.$values)
+    ? userData.plans.$values
+    : [];
+  const planData_01 = planDetails?.map((plan) => ({
+    id: plan.$id, // Replace with actual key names
+    planName: plan.planName,
+    noOfProperties: plan.noOfProperties,
+    price: plan.price,
+    status: plan.status,
+  }));
+  console.log("plan data", planData_01);
+
+  const usedProp = userData?.usedproperty;
+  const userPlans = Array.isArray(userData?.userSubscription?.$values)
+    ? userData.userSubscription.$values
+    : [];
+  const planData_02 = userPlans.map((plan) => ({
+    id: plan.$id, // Replace with actual key names
+    planEndDate: plan.endDate,
+  }));
+
+  console.log("plans", planData_02);
 
   const closePlanErrorModal = () => {
     // setModalIsPlaneError(false);
@@ -435,6 +461,9 @@ const Index = () => {
                   views={allQuotesBids}
                   bids={bids}
                   favourites={wishlist.length}
+                  plans={planData_01}
+                  plansNew={planData_02}
+                  usedProp={usedProp}
                 />
               </div>
               {/* End .row Dashboard top statistics */}
@@ -541,6 +570,77 @@ const Index = () => {
                 </div>
               )}
 
+              {isModalOpen && (
+                <div className="modal">
+                  <div className="modal-content" style={{ width: "25%" }}>
+                    <div className="row">
+                      <div className="col-lg-12">
+                        <Link href="/" className="">
+                          <Image
+                            width={50}
+                            height={45}
+                            className="logo1 img-fluid"
+                            style={{ marginTop: "-20px" }}
+                            src="/assets/images/logo.png"
+                            alt="header-logo2.png"
+                          />
+                          <span
+                            style={{
+                              color: "#2e008b",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            Appraisal
+                          </span>
+                          <span
+                            style={{
+                              color: "#97d700",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            {" "}
+                            Land
+                          </span>
+                        </Link>
+                      </div>
+                    </div>
+                    <h3
+                      className="text-center mt-3"
+                      style={{ color: "#2e008b" }}
+                    >
+                      Warning <span style={{ color: "#97d700" }}></span>
+                    </h3>
+                    <div
+                      className="mb-2"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
+                    <p className="fs-5 text-center text-dark mt-4">
+                      Your add property limit exceeds. <br />
+                      <span className="text-danger fw-bold">
+                        Get topup to add more propperties.
+                      </span>{" "}
+                    </p>
+                    <div
+                      className="mb-3 mt-4"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
+                    <div className="col-lg-12 d-flex justify-content-center gap-2">
+                      <button
+                        // disabled={disable}
+                        className="btn btn-color w-25"
+                        onClick={() => setIsModalOpen(false)}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
               <div className="row mt50">
                 <div className="col-lg-12">
                   <div className="copyright-widget-dashboard text-center">

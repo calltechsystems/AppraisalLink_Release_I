@@ -477,18 +477,19 @@ export default function Exemple({
         const isBidded = filterBidsWithin24Hours(property);
         const anotherBid = alreadyAccepted(property);
         const isAlreadyArchived = getisAlreadyArchived(property.propertyId);
-        const haveSubscription =
-          userActivePlans?.length > 0
-            ? userActivePlans[0]?.$id
-              ? true
-              : false
-            : false;
+        const haveSubscription = userData?.planLimitExceed;
+        // userActivePlans?.length > 0
+        //   ? userActivePlans[0]?.$id
+        //     ? true
+        //     : false
+        //   : false;
 
         const isWait = property.isonhold || property.isoncancel;
         const isArchive = false;
 
         // Skip Completed Orders
         if (isBidded.orderstatus === 3) return;
+
 
         if (!isAlreadyArchived) {
           if (isBidded.status === 1) {
@@ -837,7 +838,7 @@ export default function Exemple({
 
                     {(!isBidded.$id || isBidded?.status < 1) &&
                       !anotherBid &&
-                      haveSubscription && (
+                      haveSubscription === 0 && (
                         <li
                           className="list-inline-item"
                           data-toggle="tooltip"
@@ -868,6 +869,7 @@ export default function Exemple({
                           </div>
                         </li>
                       )}
+
                     {isBidded.status === 1 && isBidded.orderstatus !== 3 ? (
                       <>
                         <ul>

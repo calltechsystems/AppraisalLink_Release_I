@@ -411,8 +411,8 @@ export default function Exemple({
       properties.map((property, index) => {
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
-
         const isArchive = foundArchiveHandler(property.propertyId);
+        const haveSubscription = userData?.planLimitExceed;
 
         if (!isArchive && isWishlist.$id) {
           if (isBidded.status === 1) {
@@ -493,7 +493,11 @@ export default function Exemple({
                   className="w-100"
                   onClick={() => openRemarkModal(property)}
                 >
-                  <button href="#" className="btn btn-color" style={{width:"120px"}}>
+                  <button
+                    href="#"
+                    className="btn btn-color"
+                    style={{ width: "120px" }}
+                  >
                     <Link href="#">
                       <span className="text-light">
                         {" "}
@@ -639,35 +643,38 @@ export default function Exemple({
                       </li>
                     )}
 
-                    {(!isBidded.$id || isBidded?.status < 1) && (
-                      <li
-                        className="list-inline-item"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title={`${
-                          isBidded.$id ? "View / Update Quote" : "Provide Quote"
-                        }`}
-                      >
-                        <div
-                          className=""
-                          onClick={() =>
-                            participateHandler(
-                              property.bidLowerRange,
-                              property.orderId,
-                              isBidded.status < 1,
-                              isBidded.bidAmount,
-                              isBidded.$id ? true : false
-                            )
-                          }
+                    {(!isBidded.$id || isBidded?.status < 1) &&
+                      haveSubscription === 0 && (
+                        <li
+                          className="list-inline-item"
+                          data-toggle="tooltip"
+                          data-placement="top"
+                          title={`${
+                            isBidded.$id
+                              ? "View / Update Quote"
+                              : "Provide Quote"
+                          }`}
                         >
-                          <button href="#" className="btn btn-color">
-                            <Link href="#">
-                              <span className="flaticon-invoice text-light"></span>
-                            </Link>
-                          </button>
-                        </div>
-                      </li>
-                    )}
+                          <div
+                            className=""
+                            onClick={() =>
+                              participateHandler(
+                                property.bidLowerRange,
+                                property.orderId,
+                                isBidded.status < 1,
+                                isBidded.bidAmount,
+                                isBidded.$id ? true : false
+                              )
+                            }
+                          >
+                            <button href="#" className="btn btn-color">
+                              <Link href="#">
+                                <span className="flaticon-invoice text-light"></span>
+                              </Link>
+                            </button>
+                          </div>
+                        </li>
+                      )}
                   </ul>
                 }
                 {isBidded.status === 2 ? (
@@ -1077,7 +1084,7 @@ export default function Exemple({
         </div>
       )}
 
-   {remarkModal && (
+      {remarkModal && (
         <div className="modal">
           <div className="modal-content" style={{ width: "35%" }}>
             <div className="row">

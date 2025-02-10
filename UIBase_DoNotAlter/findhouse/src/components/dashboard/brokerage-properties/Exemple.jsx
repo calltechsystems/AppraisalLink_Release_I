@@ -13,6 +13,7 @@ import {
   FaPause,
   FaRedo,
   FaEye,
+  FaPlay,
 } from "react-icons/fa";
 // import "./SmartTable.css";
 import Image from "next/image";
@@ -676,41 +677,9 @@ export default function Exemple({
                     </Link>
                   </li>
                 )}
-                {/* <li
-                className="list-inline-item"
-                data-toggle="tooltip"
-                data-placement="top"
-                title="Property Details"
-              >
-                <span
-                  className="btn btn-color-table"
-                  onClick={() => openPopupModal(property)}
-                >
-                  <Link href={"#"}>
-                    <span className="flaticon-view"></span>
-                  </Link>
-                </span>
-              </li>
-
-              <li
-                className="list-inline-item"
-                data-toggle="tooltip"
-                data-placement="top"
-                title="Bids"
-              >
-                <Link
-                  className="btn btn-color-table"
-                  href={`/my-property-bids/${property.propertyId}`}
-                >
-                  <span className="flaticon-invoice"></span>
-                </Link>
-              </li> */}
 
                 {(isEditable || isStatus === 1) && !isCancel && (
                   <li title="Edit Property">
-                    {/* <Link href={`/create-listing/${property.propertyId}`}>
-                      <span className="btn btn-color w-100 mb-1"> Edit </span>
-                    </Link>{" "} */}
                     <Link
                       className="btn btn-color-table"
                       href={`/create-listing-1/${property.orderId}`}
@@ -722,21 +691,26 @@ export default function Exemple({
 
                 {/* End li */}
 
-                {/* {isEditable && ( */}
-                {!isCancel && isStatus !== 3 && (
+                {!isCancel && isStatus !== 3 && isBidded.orderstatus !== 4 && (
                   <li title={!isHold ? "On Hold" : "Remove Hold"}>
-                    <span
+                    <button
                       className="btn btn-color-table "
                       style={{ border: "1px solid grey" }}
-                      // onClick={() => onHoldHandler(property.propertyId, !isHold)}
                       onClick={() =>
                         openModal(property.orderId, 1, isHold ? 0 : property)
                       }
+                      title={
+                        isHold ? "Remove On Hold Property" : "On Hold Property"
+                      }
                     >
                       <Link href="#" className="text-light">
-                        <FaPause />
+                        {isHold ? (
+                          <FaPlay className="text-light" />
+                        ) : (
+                          <FaPause className="text-light" />
+                        )}
                       </Link>
-                    </span>
+                    </button>
                   </li>
                 )}
                 {/* )} */}
