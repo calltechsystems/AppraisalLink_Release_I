@@ -199,18 +199,19 @@ const SidebarMenu = ({}) => {
             </li>
 
             {userData?.planLimitExceed === 1 ? (
-              <a
-                href="#"
-                className="disabled-link" // Add a class to style it as disabled
-                onClick={(e) => {
-                  e.preventDefault();
-                  setIsModalOpen(true); // Open modal globally
-                }}
-                style={{ cursor: "not-allowed", opacity: 0.6 }} // Make the link look disabled
-              >
-                <i className="flaticon-plus"></i>
-                <span>Add New Property</span>
-              </a>
+              <li>
+                <Link
+                  href="#"
+                  className=""
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setIsModalOpen(true); // Open modal globally
+                  }}
+                >
+                  <i className="flaticon-plus"></i>
+                  <span>Add New Property</span>
+                </Link>
+              </li>
             ) : (
               <li
                 className={`treeview ${

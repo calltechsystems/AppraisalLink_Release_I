@@ -1136,9 +1136,11 @@ const Index = () => {
                                 style={{ border: "2px solid #97d700" }}
                               ></div>
                               <p className="fs-5 text-center text-dark mt-4">
-                                Your add property limit exceeds. <br />
+                                You&apos;ve hit your subscription limit.
+                                <br />
+                                Kindly
                                 <span className="text-danger fw-bold">
-                                  Get topup to add more propperties.
+                                  Top Up.
                                 </span>{" "}
                               </p>
                               <div

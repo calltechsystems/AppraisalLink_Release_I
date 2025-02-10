@@ -29,11 +29,8 @@ const Modal = ({
   const router = useRouter();
   const [value, setValue] = useState(null);
   const [description, setDescription] = useState("");
-
   const [toggle, setToggle] = useState(false);
-
   const [disable, setDisable] = useState(false);
-
   const [selectedImage, setSelectedImage] = useState({});
 
   const handleUpload = (result) => {

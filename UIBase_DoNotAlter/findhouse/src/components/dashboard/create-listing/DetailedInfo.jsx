@@ -371,7 +371,7 @@ const DetailedInfo = ({
           </div>
           <div className="col-xl-12">
             <div className="my_profile_setting_input overflow-hidden mt20 text-center">
-              {isDisable && (
+              {!isDisable && (
                 <button
                   disabled={disable}
                   className="btn btn5 m-1"

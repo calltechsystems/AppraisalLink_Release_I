@@ -34,8 +34,8 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
     properties.forEach((property) => {
       if (property.userId == userData?.userId) {
         allPropertiesCount += 1;
-        CancelledPropertiesCount += property?.isonhold ? 1 : 0;
-        OnHoldPropertiesCount += property?.isoncancel ? 1 : 0;
+        CancelledPropertiesCount += property?.isoncancel ? 1 : 0;
+        OnHoldPropertiesCount += property?.isonhold ? 1 : 0;
 
         bids.forEach((bid) => {
           if (bid.orderId == property?.orderId) {
@@ -181,14 +181,14 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
         timer: favourites,
         // icon: "flaticon-heart",
         value: PlanCount,
-        name: "Plan",
+        name: "Plan Name",
       },
       {
         id: "PlanValidityCount",
         blockStyle: "stylecard10",
         icon: "fa fa-hourglass-half",
         // timer: formatDate(planEndDate),
-        name: "Plan validity",
+        name: "Plan Validity",
         // icon: "flaticon-house",
         value: formatDate(PlanValidityCount),
         // name: "Plan Validity",

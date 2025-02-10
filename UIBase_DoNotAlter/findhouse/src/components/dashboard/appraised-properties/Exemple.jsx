@@ -166,12 +166,28 @@ export default function Exemple({
   const [wishlistModal, setWishlistModal] = useState(false);
   const [isWishlistProperty, setIsWishlistProperty] = useState(0);
   const [selectedWishlistId, setSelectedWishlistId] = useState(null);
+  const [isLimitModalOpen, setIsLimitModalOpen] = useState(false);
 
   useEffect(() => {
     if (searchInput === "") {
       setRefresh(true);
     }
   }, [searchInput]);
+
+  // const haveSubscription = userData?.planLimitExceed;
+  // const openLimitModal = () => {
+  //   if (haveSubscription === 1) {
+  //     setIsLimitModalOpen(true); // Open modal
+  //   } else {
+  //     participateHandler(
+  //       property.bidLowerRange,
+  //       property.orderId,
+  //       isBidded.status < 1,
+  //       isBidded.bidAmount,
+  //       isBidded.$id ? true : false
+  //     );
+  //   }
+  // };
 
   const getOrderValue = (val) => {
     let title = "Applicant Contacted by appraiser";
@@ -489,7 +505,6 @@ export default function Exemple({
 
         // Skip Completed Orders
         if (isBidded.orderstatus === 3) return;
-
 
         if (!isAlreadyArchived) {
           if (isBidded.status === 1) {
@@ -836,39 +851,64 @@ export default function Exemple({
                       )
                     )}
 
-                    {(!isBidded.$id || isBidded?.status < 1) &&
-                      !anotherBid &&
-                      haveSubscription === 0 && (
-                        <li
-                          className="list-inline-item"
-                          data-toggle="tooltip"
-                          data-placement="top"
-                          title={`${
-                            isBidded.$id
-                              ? "View / Update Quote"
-                              : "Provide Quote"
-                          }`}
-                        >
-                          <div
-                            className="w-100"
-                            onClick={() =>
-                              participateHandler(
-                                property.bidLowerRange,
-                                property.orderId,
-                                isBidded.status < 1,
-                                isBidded.bidAmount,
-                                isBidded.$id ? true : false
-                              )
-                            }
+                    {(!isBidded.$id || isBidded?.status < 1) && !anotherBid && (
+                      <li
+                        className="list-inline-item"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title={`${
+                          isBidded.$id ? "View / Update Quote" : "Provide Quote"
+                        }`}
+                      >
+                        <div className="w-100">
+                          <button
+                            className="btn btn-color"
+                            onClick={() => {
+                              haveSubscription === 1
+                                ? setIsLimitModalOpen(true) // Open modal if no subscription
+                                : participateHandler(
+                                    property.bidLowerRange,
+                                    property.orderId,
+                                    isBidded?.status < 1,
+                                    isBidded?.bidAmount,
+                                    isBidded?.$id ? true : false
+                                  );
+                            }}
                           >
-                            <button href="#" className="btn btn-color">
-                              <Link href="#">
-                                <span className="flaticon-invoice text-light"></span>
-                              </Link>
-                            </button>
-                          </div>
-                        </li>
-                      )}
+                            <Link href="#">
+                              <span className="flaticon-invoice text-light"></span>
+                            </Link>
+                          </button>
+                        </div>
+                      </li>
+                      // <li
+                      //   className="list-inline-item"
+                      //   data-toggle="tooltip"
+                      //   data-placement="top"
+                      //   title={`${
+                      //     isBidded.$id ? "View / Update Quote" : "Provide Quote"
+                      //   }`}
+                      // >
+                      //   <div
+                      //     className="w-100"
+                      //     onClick={() =>
+                      //       participateHandler(
+                      //         property.bidLowerRange,
+                      //         property.orderId,
+                      //         isBidded.status < 1,
+                      //         isBidded.bidAmount,
+                      //         isBidded.$id ? true : false
+                      //       )
+                      //     }
+                      //   >
+                      //     <button href="#" className="btn btn-color">
+                      //       <Link href="#">
+                      //         <span className="flaticon-invoice text-light"></span>
+                      //       </Link>
+                      //     </button>
+                      //   </div>
+                      // </li>
+                    )}
 
                     {isBidded.status === 1 && isBidded.orderstatus !== 3 ? (
                       <>
@@ -1506,6 +1546,72 @@ export default function Exemple({
                 // disabled={disable}
                 className="btn btn-color w-25"
                 onClick={closeRemarkModal}
+              >
+                Ok
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal */}
+      {isLimitModalOpen && (
+        <div className="modal">
+          <div className="modal-content" style={{ width: "25%" }}>
+            <div className="row">
+              <div className="col-lg-12">
+                <Link href="/" className="">
+                  <Image
+                    width={50}
+                    height={45}
+                    className="logo1 img-fluid"
+                    style={{ marginTop: "-20px" }}
+                    src="/assets/images/logo.png"
+                    alt="header-logo2.png"
+                  />
+                  <span
+                    style={{
+                      color: "#2e008b",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    Appraisal
+                  </span>
+                  <span
+                    style={{
+                      color: "#97d700",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    {" "}
+                    Land
+                  </span>
+                </Link>
+              </div>
+            </div>
+            <h3 className="text-center mt-3" style={{ color: "#2e008b" }}>
+              Information <span style={{ color: "#97d700" }}></span>
+            </h3>
+            <div className="mb-2" style={{ border: "2px solid #97d700" }}></div>
+            <p className="fs-5 text-center text-dark mt-4">
+              You&apos;ve hit your subscription limit.
+              <br />
+              Kindly Top Up.{" "}
+              {/* <span className="text-danger fw-bold">Top Up</span>{" "} */}
+            </p>
+            <div
+              className="mb-3 mt-4"
+              style={{ border: "2px solid #97d700" }}
+            ></div>
+            <div className="col-lg-12 d-flex justify-content-center gap-2">
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                onClick={() => setIsLimitModalOpen(false)}
               >
                 Ok
               </button>
