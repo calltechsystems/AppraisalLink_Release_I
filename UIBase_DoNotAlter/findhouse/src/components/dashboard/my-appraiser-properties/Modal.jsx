@@ -29,11 +29,8 @@ const Modal = ({
   const router = useRouter();
   const [value, setValue] = useState(null);
   const [description, setDescription] = useState("");
-
   const [toggle, setToggle] = useState(false);
-
   const [disable, setDisable] = useState(false);
-
   const [selectedImage, setSelectedImage] = useState({});
 
   const handleUpload = (result) => {
@@ -126,6 +123,11 @@ const Modal = ({
     closeModal();
   };
 
+  function addCommasToNumber(number) {
+    if (Number(number) <= 100 || number === undefined) return number;
+    return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   const formatLargeNumber = (number) => {
     // Convert the number to a string
     const numberString = number.toString();
@@ -150,6 +152,22 @@ const Modal = ({
     );
     console.log(formatLargeNumber + ".." + unit);
     return `${formattedNumber}${unit}`;
+  };
+
+  const formatNumberWithCommas = (number) => {
+    if (!number) return ""; // Handle empty input
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // Add commas
+  };
+
+  const parseNumberFromCommas = (formattedValue) => {
+    return formattedValue.replace(/,/g, ""); // Remove commas
+  };
+
+  const handleInputChange = (e) => {
+    const rawValue = parseNumberFromCommas(e.target.value); // Remove commas for raw value
+    if (!isNaN(rawValue)) {
+      setValue(rawValue); // Update state with raw value
+    }
   };
 
   const openConfirmModal = () => {
@@ -259,7 +277,9 @@ const Modal = ({
                             {alreadyBidded ? (
                               <>
                                 Your earlier quote was{" "}
-                                <span className="bid-amount">${bidAmount}</span>
+                                <span className="bid-amount">
+                                  ${addCommasToNumber(bidAmount)}
+                                </span>
                               </>
                             ) : (
                               "Please provide a quote for this property"
@@ -290,11 +310,12 @@ const Modal = ({
 
                         <div className="col-lg-7">
                           <input
-                            type="number"
-                            value={value}
-                            onChange={(e) => setValue(e.target.value)}
+                            type="text"
+                            value={formatNumberWithCommas(value)}
+                            onChange={handleInputChange}
                             className="form-control"
                             id="formGroupExampleInput3"
+                            maxLength={30}
                           />
                         </div>
                       </div>
@@ -336,7 +357,10 @@ const Modal = ({
                   >
                     Are you confirming that you will quote this property for the
                     given amount : <br />
-                    <h2 className="mt-2 text-color"> $ {value}</h2>
+                    <h2 className="mt-2 text-color">
+                      {" "}
+                      ${addCommasToNumber(value)}
+                    </h2>
                   </p>
                   {alreadyBidded && (
                     <p
@@ -353,7 +377,7 @@ const Modal = ({
                           fontSize: "22px",
                         }}
                       >
-                        $ {bidAmount}
+                        ${addCommasToNumber(bidAmount)}
                       </span>
                     </p>
                   )}
@@ -372,14 +396,14 @@ const Modal = ({
                   Cancel
                 </button> */}
               <button
-                disabled={disable}
+                // disabled={disable}
                 className="btn btn-color w-25"
                 onClick={onCloseModalHandler}
               >
                 Cancel
               </button>
               <button
-                disabled={disable}
+                // disabled={disable}
                 className="btn btn-color w-25 m-1"
                 onClick={toggle ? onSubmitHnadler : openConfirmModal}
               >

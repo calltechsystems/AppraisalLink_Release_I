@@ -287,7 +287,7 @@ export default function Exemple({
       }
     });
 
-    return `${selectedAppraiser.firstName} ${selectedAppraiser.lastName}`;
+    return `${selectedAppraiser.firstName} ${selectedAppraiser.middleName} ${selectedAppraiser.lastName}`;
   };
 
   function addCommasToNumber(number) {

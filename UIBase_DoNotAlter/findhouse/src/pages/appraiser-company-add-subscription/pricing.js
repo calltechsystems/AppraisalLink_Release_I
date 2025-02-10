@@ -361,7 +361,7 @@ const Pricing = ({
                     <option value="">Add Top Up / Cancel Subscription</option>
                     {topupData?.map((topUp) => (
                       <option key={topUp.$id} value={topUp.$id}>
-                        Add {topUp.noOfProperties} Properties (${" "}
+                        Add {topUp.noOfProperties} Properties ($
                         {topUp.topUpAmount})
                       </option>
                     ))}

@@ -218,8 +218,8 @@ const Index = () => {
     // Format the date as YYYY-MM-DDTHH:mm
     return `${year}-${month}-${day}T${hours}:${minutes}`;
   }
-
-  const [selectedAppraiser, setSelectedAppraiser] = useState(-1);
+  const [selectedAppraiser, setSelectedAppraiser] = useState({});
+  // const [selectedAppraiser, setSelectedAppraiser] = useState(-1);
   const [assignPropertyId, setAssignPropertyId] = useState(-1);
 
   const assignAppraiserUpdateHandler = () => {
@@ -235,6 +235,11 @@ const Index = () => {
     };
 
     console.log({ payload });
+
+    if (!payload.companyid || !payload.propertyid || !payload.appraiserid) {
+      toast.error("Invalid Fields. Please check the inputs and try again.");
+      return;
+    }
 
     const encryptedData = encryptionData(payload);
     toast.loading("Assigning the property!!....");

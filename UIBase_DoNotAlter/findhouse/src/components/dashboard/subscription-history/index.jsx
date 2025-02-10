@@ -157,7 +157,7 @@ const Index = () => {
                 <div className="col-lg-12">
                   <div className="">
                     <div className="col-lg-12">
-                      <div className="packages_table">
+                      <div className="property_table">
                         <div className="mt0">
                           <Exemple
                             dataFetched={dataFetched}

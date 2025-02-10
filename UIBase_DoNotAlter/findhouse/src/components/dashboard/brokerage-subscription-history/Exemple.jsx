@@ -26,7 +26,7 @@ const headCells = [
   {
     id: "st_date",
     numeric: false,
-    label: "Start Date",
+    label: "Start / Purchase Date",
     width: 140,
   },
   {
@@ -177,7 +177,8 @@ export default function Exemple({
             planName: property?.planName || "N.A.",
             planType: <span>{property?.planType}</span>,
             amount: property.planAmount ? `$${property.planAmount}` : "N.A.",
-            st_date: formatDate(property.startDate),
+            // st_date: formatDate(property.startDate),
+            st_date: property?.planName === "Top Up" ? "N.A." : formatDate(property.startDate),
             end_date: formatDate(property.endDate),
             remained_prop: `${
               property.usedProperties === null ? 0 : property.usedProperties

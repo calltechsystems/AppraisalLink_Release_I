@@ -1820,17 +1820,17 @@ const Index = ({ isView, propertyData }) => {
                       className="text-center mt-3"
                       style={{ color: "#2e008b" }}
                     >
-                      Warning <span style={{ color: "#97d700" }}></span>
+                      Information <span style={{ color: "#97d700" }}></span>
                     </h3>
                     <div
                       className="mb-2"
                       style={{ border: "2px solid #97d700" }}
                     ></div>
                     <p className="fs-5 text-center text-dark mt-4">
-                      Your add property limit exceeds. <br />
-                      <span className="text-danger fw-bold">
-                        Get topup to add more propperties.
-                      </span>{" "}
+                      You&apos;ve hit your subscription limit.
+                      <br />
+                      Kindly Top Up.{" "}
+                      {/* <span className="text-danger fw-bold">Top Up</span>{" "} */}
                     </p>
                     <div
                       className="mb-3 mt-4"
@@ -1842,7 +1842,7 @@ const Index = ({ isView, propertyData }) => {
                         className="btn btn-color w-25"
                         onClick={() => setIsModalOpen(false)}
                       >
-                        Cancel
+                        Ok
                       </button>
                     </div>
                   </div>
