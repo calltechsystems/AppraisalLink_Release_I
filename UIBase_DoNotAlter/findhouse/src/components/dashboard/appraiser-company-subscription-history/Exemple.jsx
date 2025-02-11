@@ -8,7 +8,7 @@ const headCells = [
   {
     id: "id",
     numeric: false,
-    label: "Payment ID",
+    label: "Transaction ID / Payment ID",
     width: 230,
   },
   {

@@ -110,7 +110,7 @@ const headCells = [
     id: "action",
     numeric: false,
     label: "Action",
-    width: 210,
+    width: 110,
   },
 ];
 
@@ -685,7 +685,7 @@ export default function Exemple({
                 {isBidded.status === 2 || anotherBid ? (
                   <>
                     <ul>
-                      <li
+                      {/* <li
                         className="list-inline-item"
                         data-toggle="tooltip"
                         data-placement="top"
@@ -707,17 +707,12 @@ export default function Exemple({
                             </Link>
                           </button>
                         </div>
-                      </li>
+                      </li> */}
                     </ul>
                   </>
                 ) : isWait ? (
                   <>
-                    {/* <p className="btn btn-danger  w-100">
-                      {`No further actions can be taken on this property since it is ${
-                        property.isOnCancel ? "Cancelled" : "On Hold"
-                      } .`}
-                    </p> */}
-                    <li
+                    {/* <li
                       className="list-inline-item"
                       data-toggle="tooltip"
                       data-placement="top"
@@ -736,12 +731,11 @@ export default function Exemple({
                           </Link>
                         </button>
                       </div>
-                    </li>
+                    </li> */}
                   </>
                 ) : isBidded.$id && isBidded.orderstatus === 3 ? (
                   <>
-                    {/* <p className="btn btn-success  w-100">Completed </p> */}
-                    <li
+                    {/* <li
                       className="list-inline-item"
                       data-toggle="tooltip"
                       data-placement="top"
@@ -760,11 +754,11 @@ export default function Exemple({
                           </Link>
                         </button>
                       </div>
-                    </li>
+                    </li> */}
                   </>
                 ) : (
                   <ul className="mb0 d-flex gap-1">
-                    {isWishlist.id ? (
+                    {/* {isWishlist.id ? (
                       <button
                         className="btn "
                         style={{ border: "1px solid grey" }}
@@ -799,7 +793,7 @@ export default function Exemple({
                           }
                         </li>
                       )
-                    )}
+                    )} */}
 
                     {/* {(!isBidded.$id || isBidded?.status < 1) && !anotherBid && (
                       <li
@@ -856,7 +850,8 @@ export default function Exemple({
                     ) : (
                       ""
                     )}
-                    {isWishlist.id ? (
+                    
+                    {/* {isWishlist.id ? (
                       ""
                     ) : (
                       <li
@@ -868,9 +863,6 @@ export default function Exemple({
                         <div
                           className="w-100"
                           onClick={() => openArchiveModal(property)}
-                          // onClick={() =>
-                          //   onArchivePropertyHandler(property.orderId)
-                          // }
                         >
                           <button href="#" className="btn btn-color">
                             <Link href="#">
@@ -882,7 +874,7 @@ export default function Exemple({
                           </button>
                         </div>
                       </li>
-                    )}
+                    )} */}
                   </ul>
                 )}
 

@@ -931,6 +931,43 @@ const Index = ({ isView, propertyData }) => {
         // console.log(updateView,propertyData);
 
         toast.loading("Adding the property for appraisal ..");
+        // axios
+        //   .post("/api/addBrokerProperty", encryptedData, {
+        //     headers: {
+        //       Authorization: `Bearer ${userData.token}`,
+        //       "Content-Type": "application/json",
+        //     },
+        //   })
+        //   .then((res) => {
+        //     console.log("API Response:", res);
+        //     toast.dismiss();
+        //     const propertyId = res.data.userData?.propertyId;
+        //     console.log("propert id is :", propertyId);
+        //     setGeneratedPropertyId(propertyId);
+        //     setSuccessModal(true);
+        //     // toast.success("Property Added Successfully");
+        //     // router.push("/my-properties");
+        //   })
+        //   .catch((err) => {
+        //     const status = err.response?.request.status;
+        //     if (String(status) === String(403)) {
+        //       toast.dismiss();
+        //       setModalIsOpenError(true);
+        //     } else if (String(status) === String(404)) {
+        //       toast.dismiss();
+        //       setErrorMessage(err.response?.data.error);
+        //       setModalIsOpenError_01(true);
+        //     } else if (/^5\d{2}$/.test(String(status))) {
+        //       toast.dismiss();
+        //       toast.error("Server error occurred Try Again !! ");
+        //       // window.location.reload();
+        //     } else {
+        //       toast.dismiss();
+        //       setErrorMessage(err.response?.data.error);
+        //       setModalIsOpenError_01(true);
+        //       // toast.error(err.message);
+        //     }
+        //   });
         axios
           .post("/api/addBrokerProperty", encryptedData, {
             headers: {
@@ -941,31 +978,28 @@ const Index = ({ isView, propertyData }) => {
           .then((res) => {
             console.log("API Response:", res);
             toast.dismiss();
-            // const propertyId = res.data.userData?.propertyId;
-            // console.log("propert id is :", propertyId);
-            // setGeneratedPropertyId(propertyId);
-            // setSuccessModal(true);
-            toast.success("Property Added Successfully");
-            router.push("/my-properties");
+
+            const propertyId = res.data?.userData?.propertyId; // Ensure correct extraction
+            console.log("Property ID is:", propertyId);
+
+            setGeneratedPropertyId(propertyId);
+            setSuccessModal(true);
           })
           .catch((err) => {
-            const status = err.response?.request.status;
-            if (String(status) === String(403)) {
-              toast.dismiss();
+            const status = err.response?.status; // Corrected status extraction
+            toast.dismiss();
+            if (status === 403) {
               setModalIsOpenError(true);
-            } else if (String(status) === String(404)) {
-              toast.dismiss();
-              setErrorMessage(err.response?.data.error);
+            } else if (status === 404) {
+              setErrorMessage(err.response?.data?.error || "Not Found");
               setModalIsOpenError_01(true);
             } else if (/^5\d{2}$/.test(String(status))) {
-              toast.dismiss();
-              toast.error("Server error occurred Try Again !! ");
-              window.location.reload();
+              toast.error("Server error occurred. Try Again!");
             } else {
-              toast.dismiss();
-              setErrorMessage(err.response?.data.error);
+              setErrorMessage(
+                err.response?.data?.error || "An unexpected error occurred"
+              );
               setModalIsOpenError_01(true);
-              // toast.error(err.message);
             }
           });
       }
