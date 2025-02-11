@@ -387,7 +387,6 @@ export default function Exemple({
       properties.map((property, index) => {
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
-
         const isArchive = foundArchiveHandler(property.propertyId);
 
         if (!isArchive && isBidded.status === 1 && isBidded.orderstatus === 3) {

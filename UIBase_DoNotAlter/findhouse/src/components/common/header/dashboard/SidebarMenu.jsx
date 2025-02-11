@@ -63,7 +63,7 @@ const SidebarMenu = () => {
     },
     {
       id: 2,
-      name: "Payment History",
+      name: "Transaction History",
       route: "/my-package",
       icon: "flaticon-invoice",
     },

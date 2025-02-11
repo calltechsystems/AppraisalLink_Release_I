@@ -45,7 +45,7 @@ const SidebarMenu = () => {
     },
     {
       id: 2,
-      name: "Payment History",
+      name: "Transaction History",
       route: "/subscription-hisotry",
       icon: "flaticon-invoice",
     },
@@ -176,30 +176,34 @@ const SidebarMenu = () => {
               )}
             </li>
 
-            <li
-              className={`treeview ${
-                hasActivePlans
-                  ? isSinglePageActive(
-                      "/my-appraiser-properties",
-                      route.pathname
-                    )
-                    ? "active"
-                    : ""
-                  : "disabled"
-              }`}
-            >
-              {hasActivePlans ? (
-                <Link href="/my-appraiser-properties">
-                  <i className="flaticon-box"></i>
-                  <span>Wishlist</span>
-                </Link>
-              ) : (
-                <a>
-                  <i className="flaticon-box"></i>
-                  <span>Wishlist</span>
-                </a>
-              )}
-            </li>
+            {!isAppraiserByCompany ? (
+              <li
+                className={`treeview ${
+                  hasActivePlans
+                    ? isSinglePageActive(
+                        "/my-appraiser-properties",
+                        route.pathname
+                      )
+                      ? "active"
+                      : ""
+                    : "disabled"
+                }`}
+              >
+                {hasActivePlans ? (
+                  <Link href="/my-appraiser-properties">
+                    <i className="flaticon-box"></i>
+                    <span>Wishlist</span>
+                  </Link>
+                ) : (
+                  <a>
+                    <i className="flaticon-box"></i>
+                    <span>Wishlist</span>
+                  </a>
+                )}
+              </li>
+            ) : (
+              ""
+            )}
 
             {!isAppraiserByCompany ? (
               <li
@@ -232,30 +236,34 @@ const SidebarMenu = () => {
         <li className="title">
           <span>Manage Orders</span>
           <ul>
-            <li
-              className={`treeview ${
-                hasActivePlans
-                  ? isSinglePageActive(
-                      "/appraiser-archive-property",
-                      route.pathname
-                    )
-                    ? "active"
-                    : ""
-                  : "disabled"
-              }`}
-            >
-              {hasActivePlans ? (
-                <Link href="/appraiser-archive-property">
-                  <i className="flaticon-home"></i>
-                  <span>Archive Properties</span>
-                </Link>
-              ) : (
-                <a>
-                  <i className="flaticon-home"></i>
-                  <span>Archive Properties</span>
-                </a>
-              )}
-            </li>
+            {!isAppraiserByCompany ? (
+              <li
+                className={`treeview ${
+                  hasActivePlans
+                    ? isSinglePageActive(
+                        "/appraiser-archive-property",
+                        route.pathname
+                      )
+                      ? "active"
+                      : ""
+                    : "disabled"
+                }`}
+              >
+                {hasActivePlans ? (
+                  <Link href="/appraiser-archive-property">
+                    <i className="flaticon-home"></i>
+                    <span>Archive Properties</span>
+                  </Link>
+                ) : (
+                  <a>
+                    <i className="flaticon-home"></i>
+                    <span>Archive Properties</span>
+                  </a>
+                )}
+              </li>
+            ) : (
+              ""
+            )}
 
             {!isAppraiserByCompany ? (
               <li
