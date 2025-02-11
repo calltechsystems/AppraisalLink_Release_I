@@ -27,7 +27,7 @@ public partial class TransactionLog
 
     public short? UsedProperties { get; set; }
 
-    public short TotalProperties { get; set; }
+    public int TotalProperties { get; set; }
 
     public string? PaypalSubscriptionStatus { get; set; }
 }

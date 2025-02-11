@@ -7,7 +7,7 @@ public partial class Brokerage
 {
     public int Id { get; set; }
 
-    public long? UserId { get; set; }
+    public long UserId { get; set; }
 
     public string? FirstName { get; set; }
 

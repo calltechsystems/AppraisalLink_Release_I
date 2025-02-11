@@ -264,6 +264,7 @@ namespace Backend.Api.Controllers
             int upgradeEligible = 0;
             var activePaypalSubscriptionId = "";
             var futurePaypalSubscriptionId = "";
+            var PayPalSubscriptionStatus ="Cancel";
 
             var transactions = _AppraisallandContext.TransactionLogs
                             .Where(t => t.UserId == userId)
@@ -289,7 +290,10 @@ namespace Backend.Api.Controllers
                                                     .FirstOrDefault();
             foreach (var transaction in transactions)
             {
-
+                if (transaction.PaypalSubscriptionStatus=="Active")
+                {
+                    PayPalSubscriptionStatus = "Active";
+                }
                 if (transaction.IsActive == true)
                 {
                     if (transaction.IsActive == true && transaction.PaypalSubscriptionStatus == "Cancel")
@@ -367,7 +371,7 @@ namespace Backend.Api.Controllers
             
         }
 
-        [Authorize]
+       // [Authorize]
         [HttpPost("postRecurringSubscriptionsDetails")]
         public async Task<IActionResult> postRecurringSubscriptionsDetails(dynamic recurringPayPalSubscription)
         {

@@ -168,7 +168,11 @@ namespace CallTech.Controllers
                 var Property = _context.Properties.Where(x => x.OrderId == OrderId).FirstOrDefault();
                 if(Property.Isonhold==true)
                 {
-                    return Ok(new { message = "Property Status is Hold" });
+                    return Ok(new { message = "The appraisal status cannot be updated as the order is On Hold" });
+                }
+                if (Property.Isoncancel == true)
+                {
+                    return Ok(new { message = "The appraisal status cannot be updated as the order is Cancelled" });
                 }
                 var bidDetails = _bid.UpdateStatus(quoteClass);
                 if (bidDetails != null)

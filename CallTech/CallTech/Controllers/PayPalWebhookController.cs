@@ -79,7 +79,7 @@ namespace CallTech.Controllers
             }
             catch (Exception ex)
             {
-                _appraisallandsContext.Notifications.Add(new Notification { Message = ex.Message });
+               // _appraisallandsContext.EmailNotifications.Add(new Notification { Message = ex.Message });
                 await _appraisallandsContext.SaveChangesAsync();
                 Console.WriteLine("Error handling PayPal webhook: " + ex);
                 return StatusCode(500, new { error = "Internal Server Error" });

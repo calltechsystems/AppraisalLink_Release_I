@@ -334,178 +334,272 @@ namespace DAL.Rpository
                         appraiserMail.Subject = "Your Expert Opinion Needed: New Property Listing on Appraisal Land";
                         appraiserMail.To.Add(new MailAddress(UserDetails.Email));
                         appraiserMail.IsBodyHtml = true;
-                        //string appraiserMessage = $"Dear Appraiser's,\n\n";
-                        //appraiserMessage += "We have a new property listing on our platform, and we need your expert appraisal.\n";
-                        //appraiserMessage += $"1. Property Name :{clsProperty.StreetName},{clsProperty.StreetNumber},Address:{clsProperty.City},{clsProperty.ZipCode}\n";
-                        ////appraiserMessage += $"2. Property OrderID:{clsProperty.ord}\n";
-                        ////appraiserMessage += $"3. Description:\n";
-                        //appraiserMessage += $"4. Other relevant details:\n\n";
-                        //appraiserMessage += "Your appraisal insights hold great importance for us. We invite you to explore the listing on our website and share your insights.\n";
-                        //appraiserMessage += "<a href='http://appraisal-eta.vercel.app'>Login || Appraisal Link</a>\n\n";
-                        //appraiserMessage += "Thank you for being part of our community! If you have any queries, feel free to reach out.\n\n";
-                        //appraiserMessage += "Best regards,\nSupport Team\nAppraisal Land";
 
                         string emailBody = @"
-                                      <!DOCTYPE html>
-                                      <html lang='en'>
-                                        <head>
-                                          <meta charset='UTF-8' />
-                                          <meta name='viewport' content='width=device-width, initial-scale=1.0' />
-                                          <title>Email Content</title>
-                                          <style>
-                                            body {
-                                              font-family: Arial, sans-serif;
-                                              margin: 20px;
-                                              background: #f4f4f9;
-                                            }
-                                            .container {
-                                              max-width: 900px;
-                                              margin: auto;
-                                              background: #fff;
-                                              border: 2px solid #2e008b;
-                                              padding: 20px;
-                                              box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                                            }
-                                            header {
-                                              text-align: center;
-                                              padding-bottom: 10px;
-                                            }
-                                            .right-corner {
-                                              display: flex;
-                                              justify-content: end;
-                                              align-items: center;
-                                              margin-bottom: 20px;
-                                            }
-                                            .right-corner img {
-                                              margin-right: 5px;
-                                            }
-                                            .button-container {
-                                              display: flex;
-                                              justify-content: center;
-                                              align-items: center;
-                                              height: 10vh;
-                                              margin-bottom: 50px;
-                                            }
-                                            .styled-button {
-                                              background-color: #97d700;
-                                              color: #2e008b;
-                                              border: 1px solid #2e008b;
-                                              padding: 10px 40px;
-                                              font-size: 16px;
-                                              font-weight: bold;
-                                              border-radius: 5px;
-                                              cursor: pointer;
-                                              transition: background-color 0.3s ease;
-                                            }
-                                            .styled-button:hover {
-                                              background-color: rgb(243, 245, 243);
-                                              border: 2px solid #2e008b;
-                                              color: #2e008b;
-                                            }
-                                            .details,
-                                            .items {
-                                              margin: 20px 0;
-                                            }
-                                            footer {
-                                              text-align: start;
-                                              font-size: 0.9em;
-                                              font-weight: bold;
-                                            }
-                                            .footer-section.contact-inline ul {
-                                              list-style: none;
-                                              padding: 0;
-                                              margin: 0;
-                                            }
-                                            .footer-section.contact-inline li {
-                                              display: flex;
-                                              align-items: center;
-                                              margin-bottom: 10px;
-                                            }
-                                            .footer-section.contact-inline img {
-                                              margin-right: 10px;
-                                            }
-                                          </style>
-                                        </head>
-                                        <body>
-                                          <div class='container'>
-                                            <header>
-                                              <div class='right-corner'>
-                                                <img width='60' height='60' src='appraisal_land.png' alt='Appraisal Land Logo' />
-                                                <span style='color: #2e008b; font-weight: bold;'>Appraisal</span>
-                                                <span style='color: #97d700; font-weight: bold;'>Land</span>
-                                              </div>
-                                            </header>
-                                            <section class='details'>
-                                              <h4>Dear XYZ,</h4>
-                                              <p>
-                                                Thank you for choosing
-                                                <span style='color: #2e008b; font-weight: bold;'>Appraisal</span>
-                                                <span style='color: #97d700; font-weight: bold;'>Land</span>.
-                                              </p>
-                                              <p>
-                                                A <strong>new property</strong> has been added to Appraisal Land. We’d value your expert opinion. Property <strong>Id - 1212</strong>.
-                                              </p>
-                                              <div style='text-align: center; margin-top: 40px;'>
-                                                <p>Please take a moment to view the listing using this link.</p>
-                                              </div>
-                                            </section>
-                                            <section class='items'>
-                                              <div class='button-container'>
-                                                <a href='https://appraisal-eta.vercel.app' style='text-decoration: none;'>
-                                                  <button class='styled-button'>Click Here</button>
-                                                </a>
-                                              </div>
-                                              <p>
-                                                For any further assistance, feel free to contact us at
-                                                <a href='mailto:info@appraisalland.ca'>info@appraisalland.ca</a> or call us at
-                                                <a href='tel:+13020001111'>+1302-000-1111</a>.
-                                              </p>
-                                              <p>Thanks so much for your time and insights!</p>
-                                              <p>
-                                                Best Regards,<br />
-                                                <span style='color: #2e008b; font-weight: bold;'>Appraisal</span>
-                                                <span style='color: #97d700; font-weight: bold;'>Land</span><br />
-                                                Customer Support Team
-                                              </p>
-                                            </section>
-                                            <footer>
-                                              <div class='social-media-icons'>
-                                                <a href='#'><img width='30' src='fb.png' alt='Facebook' /></a>
-                                                <a href='#'><img width='30' src='insta.png' alt='Instagram' /></a>
-                                                <a href='#'><img width='30' src='youtube.png' alt='YouTube' /></a>
-                                              </div>
-                                              <div class='footer-section contact-inline'>
-                                                <ul>
-                                                  <li>
-                                                    <img width='15' src='email.png' alt='Email' />
-                                                    <a href='mailto:info@appraisalland.ca'>info@appraisalland.ca</a>
-                                                  </li>
-                                                  <li>
-                                                    <img width='15' src='phone.png' alt='Phone' />
-                                                    <a href='tel:+13020001111'>+1302-000-1111</a>
-                                                  </li>
-                                                </ul>
-                                                <ul>
-                                                  <li>
-                                                    <img width='15' src='location.png' alt='Location' />
-                                                    123 Main Street, Brampton, LX23Y2, Ontario.
-                                                  </li>
-                                                  <li>
-                                                    <img width='15' src='website.webp' alt='Website' />
-                                                    <a href='https://appraisal-eta.vercel.app'>appraisalland.ca</a>
-                                                  </li>
-                                                </ul>
-                                              </div>
-                                            </footer>
-                                            <div style='font-size: 12px; text-align: center;'>
-                                              <p>
-                                                Please note that this email address is not monitored. For any inquiries, kindly direct your emails to
-                                                <a href='mailto:info@appraisalland.ca'>info@appraisalland.ca</a>.
-                                              </p>
-                                            </div>
-                                          </div>
-                                        </body>
-                                      </html>";
+                         <!DOCTYPE html>
+                         <html lang='en'>
+                           <head>
+                             <meta charset='UTF-8' />
+                             <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+                             <title>Email Content</title>
+                             <style>
+                               body {
+                                 font-family: Arial, sans-serif;
+                                 margin: 20px;
+                                 background: #f4f4f9;
+                               }
+                               .container {
+                                 max-width: 900px;
+                                 margin: auto;
+                                 background: #fff;
+                                 border: 2px solid #2e008b;
+                                 padding: 20px;
+                                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                               }
+                               header {
+                                 text-align: center;
+                                 padding-bottom: 10px;
+                               }
+                               .right-corner {
+                                 display: flex;
+                                 justify-content: end;
+                                 align-items: center;
+                                 margin-bottom: 20px;
+                               }
+                               .right-corner img {
+                                 margin-right: 5px;
+                               }
+                               .button-container {
+                                 display: flex;
+                                 justify-content: center;
+                                 align-items: center;
+                                 height: 10vh;
+                                 margin-bottom: 50px;
+                               }
+                               .styled-button {
+                                 background-color: #97d700;
+                                 color: #2e008b;
+                                 border: 1px solid #2e008b;
+                                 padding: 10px 40px;
+                                 font-size: 16px;
+                                 font-weight: bold;
+                                 border-radius: 5px;
+                                 cursor: pointer;
+                                 transition: background-color 0.3s ease;
+                               }
+                               .styled-button:hover {
+                                 background-color: rgb(243, 245, 243);
+                                 border: 2px solid #2e008b;
+                                 color: #2e008b;
+                               }
+                               .details,
+                               .items {
+                                 margin: 20px 0;
+                               }
+                               footer {
+                                 text-align: start;
+                                 font-size: 0.9em;
+                                 font-weight: bold;
+                               }
+                               .footer-section.contact-inline ul {
+                                 list-style: none;
+                                 padding: 0;
+                                 margin: 0;
+                               }
+                               .footer-section.contact-inline li {
+                                 display: flex;
+                                 align-items: center;
+                                 margin-bottom: 10px;
+                               }
+                               .footer-section.contact-inline img {
+                                 margin-right: 10px;
+                               }
+                             </style>
+                           </head>
+                           <body>
+                             <div class='container'>
+                               <header>
+                                 <div class='right-corner'>
+                                   <img width='60' height='60' src='./images/appraisal_land.png' alt='Appraisal Land Logo' />
+                                   <span style='color: #2e008b; font-weight: bold;'>Appraisal</span>
+                                   <span style='color: #97d700; font-weight: bold;'>Land</span>
+                                 </div>
+                               </header>
+                               <section>
+                                 <!-- Your content goes here -->
+                               </section>
+                               <footer>
+                                 <div class='social-media-icons'>
+                                   <!-- Online links to social media icons -->
+                                   <a href='https://facebook.com'><img width='30' src='https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg' alt='Facebook' /></a>
+                                   <a href='https://instagram.com'><img width='30' src='https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png' alt='Instagram' /></a>
+                                   <a href='https://youtube.com'><img width='30' src='https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png' alt='YouTube' /></a>
+                                 </div>
+                                 <div class='footer-section contact-inline'>
+                                   <ul>
+                                     <li>
+                                       <img width='15' src='https://appraisalfile.s3.amazonaws.com/image/email.png?X-Amz-Expires=900&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAYS2NR75VZTQQ5O4I%2F20250211%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250211T145625Z&X-Amz-SignedHeaders=host&X-Amz-Signature=8510c47ed6fe5133173f51b6ae9d3d80a3d0528e380e08e598ffe7e68d68dc55' alt='Email' />
+                                       <a href='mailto:info@appraisalland.ca'>info@appraisalland.ca</a>
+                                     </li>
+                                     <li>
+                                       <img width='15' src='https://appraisalfile.s3.amazonaws.com/image/icons8-phone-50.png?X-Amz-Expires=900&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAYS2NR75VZTQQ5O4I%2F20250211%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250211T145629Z&X-Amz-SignedHeaders=host&X-Amz-Signature=1e4e51a1145e1c2ea8c20cfad023da75432aae4323df345382de39307bd2b4d6' alt='Phone' />
+                                       <a href='tel:+13020001111'>+1302-000-1111</a>
+                                     </li>
+                                   </ul>
+                                   <ul>
+                                     <li>
+                                       <img width='15' src='https://yourdomain.com/location.png' alt='Location' />
+                                       123 Main Street, Brampton, LX23Y2, Ontario.
+                                     </li>
+                                     <li>
+                                       <img width='15' src='https://yourdomain.com/website.webp' alt='Website' />
+                                       <a href='https://appraisal-eta.vercel.app'>appraisalland.ca</a>
+                                     </li>
+                                   </ul>
+                                 </div>
+                               </footer>
+                               <div style='font-size: 12px; text-align: center;'>
+                                 <p>
+                                   Please note that this email address is not monitored. For any inquiries, kindly direct your emails to
+                                   <a href='mailto:info@appraisalland.ca'>info@appraisalland.ca</a>.
+                                 </p>
+                               </div>
+                             </div>
+                           </body>
+                         </html>";
+
+
+                        //string emailBody = @"
+                        //              <!DOCTYPE html>
+                        //              <html lang='en'>
+                        //                <head>
+                        //                  <meta charset='UTF-8' />
+                        //                  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+                        //                  <title>Email Content</title>
+                        //                  <style>
+                        //                    body {
+                        //                      font-family: Arial, sans-serif;
+                        //                      margin: 20px;
+                        //                      background: #f4f4f9;
+                        //                    }
+                        //                    .container {
+                        //                      max-width: 900px;
+                        //                      margin: auto;
+                        //                      background: #fff;
+                        //                      border: 2px solid #2e008b;
+                        //                      padding: 20px;
+                        //                      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                        //                    }
+                        //                    header {
+                        //                      text-align: center;
+                        //                      padding-bottom: 10px;
+                        //                    }
+                        //                    .right-corner {
+                        //                      display: flex;
+                        //                      justify-content: end;
+                        //                      align-items: center;
+                        //                      margin-bottom: 20px;
+                        //                    }
+                        //                    .right-corner img {
+                        //                      margin-right: 5px;
+                        //                    }
+                        //                    .button-container {
+                        //                      display: flex;
+                        //                      justify-content: center;
+                        //                      align-items: center;
+                        //                      height: 10vh;
+                        //                      margin-bottom: 50px;
+                        //                    }
+                        //                    .styled-button {
+                        //                      background-color: #97d700;
+                        //                      color: #2e008b;
+                        //                      border: 1px solid #2e008b;
+                        //                      padding: 10px 40px;
+                        //                      font-size: 16px;
+                        //                      font-weight: bold;
+                        //                      border-radius: 5px;
+                        //                      cursor: pointer;
+                        //                      transition: background-color 0.3s ease;
+                        //                    }
+                        //                    .styled-button:hover {
+                        //                      background-color: rgb(243, 245, 243);
+                        //                      border: 2px solid #2e008b;
+                        //                      color: #2e008b;
+                        //                    }
+                        //                    .details,
+                        //                    .items {
+                        //                      margin: 20px 0;
+                        //                    }
+                        //                    footer {
+                        //                      text-align: start;
+                        //                      font-size: 0.9em;
+                        //                      font-weight: bold;
+                        //                    }
+                        //                    .footer-section.contact-inline ul {
+                        //                      list-style: none;
+                        //                      padding: 0;
+                        //                      margin: 0;
+                        //                    }
+                        //                    .footer-section.contact-inline li {
+                        //                      display: flex;
+                        //                      align-items: center;
+                        //                      margin-bottom: 10px;
+                        //                    }
+                        //                    .footer-section.contact-inline img {
+                        //                      margin-right: 10px;
+                        //                    }
+                        //                  </style>
+                        //                </head>
+                        //                <body>
+                        //                  <div class='container'>
+                        //                    <header>
+                        //                      <div class='right-corner'>
+                        //                        <img width='60' height='60' src='appraisal_land.png' alt='Appraisal Land Logo' />
+                        //                        <span style='color: #2e008b; font-weight: bold;'>Appraisal</span>
+                        //                        <span style='color: #97d700; font-weight: bold;'>Land</span>
+                        //                      </div>
+                        //                    </header>
+                        //                     <section>
+
+                        //                     </section>
+                        //                    <footer>
+                        //                      <div class='social-media-icons'>
+                        //                        <a href='#'><img width='30' src='fb.png' alt='Facebook' /></a>
+                        //                        <a href='#'><img width='30' src='insta.png' alt='Instagram' /></a>
+                        //                        <a href='#'><img width='30' src='youtube.png' alt='YouTube' /></a>
+                        //                      </div>
+                        //                      <div class='footer-section contact-inline'>
+                        //                        <ul>
+                        //                          <li>
+                        //                            <img width='15' src='email.png' alt='Email' />
+                        //                            <a href='mailto:info@appraisalland.ca'>info@appraisalland.ca</a>
+                        //                          </li>
+                        //                          <li>
+                        //                            <img width='15' src='phone.png' alt='Phone' />
+                        //                            <a href='tel:+13020001111'>+1302-000-1111</a>
+                        //                          </li>
+                        //                        </ul>
+                        //                        <ul>
+                        //                          <li>
+                        //                            <img width='15' src='location.png' alt='Location' />
+                        //                            123 Main Street, Brampton, LX23Y2, Ontario.
+                        //                          </li>
+                        //                          <li>
+                        //                            <img width='15' src='website.webp' alt='Website' />
+                        //                            <a href='https://appraisal-eta.vercel.app'>appraisalland.ca</a>
+                        //                          </li>
+                        //                        </ul>
+                        //                      </div>
+                        //                    </footer>
+                        //                    <div style='font-size: 12px; text-align: center;'>
+                        //                      <p>
+                        //                        Please note that this email address is not monitored. For any inquiries, kindly direct your emails to
+                        //                        <a href='mailto:info@appraisalland.ca'>info@appraisalland.ca</a>.
+                        //                      </p>
+                        //                    </div>
+                        //                  </div>
+                        //                </body>
+                        //              </html>";
 
 
                         //appraiserMail.Body = @"<!DOCTYPE html>       

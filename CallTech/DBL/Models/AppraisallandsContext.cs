@@ -39,7 +39,7 @@ public partial class AppraisallandsContext : DbContext
 
     public virtual DbSet<Contactu> Contactus { get; set; }
 
-    public virtual DbSet<Notification> Notifications { get; set; }
+    public virtual DbSet<EmailNotification> EmailNotifications { get; set; }
 
     public virtual DbSet<PaymentToken> PaymentTokens { get; set; }
 
@@ -54,6 +54,8 @@ public partial class AppraisallandsContext : DbContext
     public virtual DbSet<RecurringProduct> RecurringProducts { get; set; }
 
     public virtual DbSet<RecurringSubscription> RecurringSubscriptions { get; set; }
+
+    public virtual DbSet<Smsnotification> Smsnotifications { get; set; }
 
     public virtual DbSet<Subscription> Subscriptions { get; set; }
 
@@ -557,13 +559,13 @@ public partial class AppraisallandsContext : DbContext
             entity.Property(e => e.UserLoggedIn).HasColumnName("user_logged_in");
         });
 
-        modelBuilder.Entity<Notification>(entity =>
+        modelBuilder.Entity<EmailNotification>(entity =>
         {
-            entity.HasKey(e => e.NotificationId).HasName("notifications_pkey");
+            entity.HasKey(e => e.EmailNotificationId).HasName("notifications_pkey");
 
-            entity.ToTable("notifications");
+            entity.ToTable("emailNotifications");
 
-            entity.Property(e => e.NotificationId).HasColumnName("notification_id");
+            entity.Property(e => e.EmailNotificationId).HasColumnName("email_notification_id");
             entity.Property(e => e.IsSeen).HasColumnName("is_seen");
             entity.Property(e => e.Message)
                 .HasMaxLength(250)
@@ -668,7 +670,6 @@ public partial class AppraisallandsContext : DbContext
                 .HasColumnName("payPalProductId");
             entity.Property(e => e.PlanName)
                 .HasMaxLength(100)
-                .IsFixedLength()
                 .HasColumnName("plan_name");
             entity.Property(e => e.PlanValidity).HasColumnName("planValidity");
             entity.Property(e => e.Returnurl).HasColumnName("returnurl");
@@ -803,6 +804,13 @@ public partial class AppraisallandsContext : DbContext
             entity.Property(e => e.TotalProperties).HasColumnName("total_properties");
             entity.Property(e => e.UsedProperties).HasColumnName("used_properties");
             entity.Property(e => e.UserId).HasColumnName("user_id");
+        });
+
+        modelBuilder.Entity<Smsnotification>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("SMSNotifications");
         });
 
         modelBuilder.Entity<Subscription>(entity =>

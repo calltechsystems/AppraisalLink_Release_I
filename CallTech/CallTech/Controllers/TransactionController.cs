@@ -44,7 +44,8 @@ namespace CallTech.Controllers
                 };
                 if (transaction.PlanName=="Top Up")
                 {
-                    objpaymentHistory.planType = "N.A";
+                    objpaymentHistory.planType = "N.A.";
+
                 }
 
                 transactions.Add(objpaymentHistory);

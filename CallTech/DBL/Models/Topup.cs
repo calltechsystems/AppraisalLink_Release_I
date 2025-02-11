@@ -7,7 +7,7 @@ public partial class Topup
 {
     public int Id { get; set; }
 
-    public decimal? TopUpAmount { get; set; }
+    public decimal TopUpAmount { get; set; }
 
     public int? NoOfProperties { get; set; }
 

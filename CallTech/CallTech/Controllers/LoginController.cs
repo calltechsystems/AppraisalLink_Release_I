@@ -112,6 +112,23 @@ namespace CallTech.Controllers
                         Broker_Details = null;
                     }
                     List<Plan> plans = new List<Plan>();
+
+                    if (UserType == 6)
+                    {
+                        var broker_details = _context.Brokers.Where(x => x.UserId == User_Id).FirstOrDefault();
+                        var BrokerageUserId = _context.Brokerages.Where(x => x.Id == broker_details.Brokerageid).FirstOrDefault();
+                        User_Id = BrokerageUserId.UserId;
+
+                    }
+                    if (UserType == 5)
+                    {
+                        var Appraiser_details = _context.Appraisers.Where(x => x.UserId == User_Id).FirstOrDefault();
+                        var AppraiserCompanyUserId = _context.Brokerages.Where(x => x.Id == Appraiser_details.CompanyId).FirstOrDefault();
+                        User_Id = AppraiserCompanyUserId.UserId;
+
+                    }
+
+
                     List<Subscription> subscriptionDTOs = new List<Subscription>();
                     var objsub = _authService.GetSubscriptiondetails(User_Id);
                     var transtion_log = _context.TransactionLogs

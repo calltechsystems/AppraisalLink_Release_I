@@ -440,7 +440,7 @@ namespace DAL.Repository
                 transaction_Log.EndDate = endDateEst;
                 transaction_Log.UsedProperties = 0;
                 transaction_Log.PaypalSubscriptionStatus = "Active";
-                transaction_Log.TotalProperties = (short)PlanDetails.NoOfProperties;
+                transaction_Log.TotalProperties =PlanDetails.NoOfProperties;
                 _AppraisallandContext.TransactionLogs.Add(transaction_Log);
                 _AppraisallandContext.SaveChanges();
                 }
