@@ -2,41 +2,58 @@
 using Twilio.Rest.Api.V2010.Account;
 using Twilio.Types;
 
-namespace DAL.Repository;
-
-public class TwilioSmsService : ITwilioSms
+namespace DAL.Repository
 {
-    private readonly string _accountSid;
-    private readonly string _authToken;
-    private readonly string _twilioPhoneNumber;
-
-    public TwilioSmsService(string accountSid, string authToken, string twilioPhoneNumber)
+    /// <summary>
+    /// 
+    /// </summary>
+    public class TwilioSmsService : ITwilioSms
     {
-        _accountSid = accountSid;
-        _authToken = authToken;
-        _twilioPhoneNumber = twilioPhoneNumber;
+        private readonly string _accountSid;
+        private readonly string _authToken;
+        private readonly string _twilioPhoneNumber;
 
-        TwilioClient.Init(_accountSid, _authToken);
-    }
-
-    public string SendSms(string toPhoneNumber, string message)
-    {
-        try
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="accountSid"></param>
+        /// <param name="authToken"></param>
+        /// <param name="twilioPhoneNumber"></param>
+        public TwilioSmsService(string accountSid, string authToken, string twilioPhoneNumber)
         {
-            var messageOptions = new CreateMessageOptions(
-                new PhoneNumber(toPhoneNumber))
-            {
-                From = new PhoneNumber(_twilioPhoneNumber),
-                Body = message
-            };
+            _accountSid = accountSid;
+            _authToken = authToken;
+            _twilioPhoneNumber = twilioPhoneNumber;
 
-            var messageResponse = MessageResource.Create(messageOptions);
-            Console.WriteLine(messageResponse.Sid);
-            return messageResponse.Sid;
+            TwilioClient.Init(_accountSid, _authToken);
         }
-        catch (Exception ex)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="toPhoneNumber"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public string SendSms(string toPhoneNumber, string message)
         {
-            return null;
+            try
+            {
+                var messageOptions = new CreateMessageOptions(
+                        new PhoneNumber(toPhoneNumber))
+                {
+                    From = new PhoneNumber(_twilioPhoneNumber),
+                    Body = message
+                };
+
+                var messageResponse = MessageResource.Create(messageOptions);
+                Console.WriteLine(messageResponse.Sid);
+                return messageResponse.Sid;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+
         }
     }
 }

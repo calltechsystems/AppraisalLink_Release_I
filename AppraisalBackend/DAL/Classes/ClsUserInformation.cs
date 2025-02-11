@@ -1,24 +1,26 @@
-﻿namespace CallTech.Classes;
-
-public class ClsUserInformation
+﻿namespace DAL.Classes
 {
-    //public long UserId { get; set; }
+    public class ClsUserInformation
+    {
 
-    public string Email { get; set; } = null!;
+        //public long UserId { get; set; }
 
-    //public string Password { get; set; } = null!;
+        public string Email { get; set; } = null!;
 
-    //public bool IsActive { get; set; }
+        //public string Password { get; set; } = null!;
 
-    //public DateTime? CreatedDateTime { get; set; }
+        //public bool IsActive { get; set; }
 
-    //public byte[] PasswordSalt { get; set; } = null!;
+        //public DateTime? CreatedDateTime { get; set; }
 
-    //public byte[] PasswordHash { get; set; } = null!;
+        //public byte[] PasswordSalt { get; set; } = null!;
 
-    public short UserType { get; set; }
+        //public byte[] PasswordHash { get; set; } = null!;
 
-    //public string? ForgotPasswordToken { get; set; }
+        public short UserType { get; set; }
 
-    //public string VerifyEmailToken { get; set; } = null!;
+        //public string? ForgotPasswordToken { get; set; }
+
+        //public string VerifyEmailToken { get; set; } = null!;
+    }
 }

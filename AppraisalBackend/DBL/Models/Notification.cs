@@ -1,14 +1,18 @@
-﻿namespace DBL.Models;
-
-public class Notification
+﻿namespace DBL.Models
 {
-    public long NotificationId { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    public partial class Notification
+    {
+        public long NotificationId { get; set; }
 
-    public long? SenderId { get; set; }
+        public long? SenderId { get; set; }
 
-    public long? ReceiverId { get; set; }
+        public long? ReceiverId { get; set; }
 
-    public string Message { get; set; } = null!;
+        public string Message { get; set; } = null!;
 
-    public bool IsSeen { get; set; }
+        public bool IsSeen { get; set; }
+    }
 }

@@ -1,8 +1,9 @@
-﻿namespace DAL.Classes;
-
-public class EmailClass
+﻿namespace DAL.Classes
 {
-    public string toEmail { get; set; }
-    public string subject { get; set; }
-    public string body { get; set; }
+    public class EmailClass
+    {
+        public string toEmail { get; set; } = String.Empty;
+        public string subject { get; set; } = String.Empty;
+        public string body { get; set; } = String.Empty;
+    }
 }

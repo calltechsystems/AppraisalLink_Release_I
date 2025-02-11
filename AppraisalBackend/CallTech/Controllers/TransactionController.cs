@@ -3,27 +3,41 @@ using DBL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CallTech.Controllers;
-
-[Route("api/com.appraisalland.Transaction")]
-[ApiController]
-public class TransactionController : ControllerBase
+namespace CallTech.Controllers
 {
-    private readonly AppraisalLandsContext _AppraisallandContext;
-    private readonly ITransactionService _transactionService;
-
-    public TransactionController(ITransactionService transactionService, AppraisalLandsContext AppraisallandContext)
+    /// <summary>
+    /// 
+    /// </summary>
+    [Route("api/com.appraisalland.Transaction")]
+    [ApiController]
+    public class TransactionController : ControllerBase
     {
-        _transactionService = transactionService;
-        _AppraisallandContext = AppraisallandContext;
-    }
+        private readonly ITransactionService _transactionService;
+        private readonly AppraisallandsContext _AppraisallandContext;
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="transactionService"></param>
+        /// <param name="AppraisallandContext"></param>
+        public TransactionController(ITransactionService transactionService, AppraisallandsContext AppraisallandContext)
+        {
+            _transactionService = transactionService;
+            _AppraisallandContext = AppraisallandContext;
+        }
 
-    [Authorize]
-    [HttpGet("GetTransactionsByUserId")]
-    public IActionResult GetTransactionsByUserId(int userId)
-    {
-        var transactions = _transactionService.GetTransactionsByUserId(userId);
-        var property = _AppraisallandContext.Properties.Where(x => x.UserId == userId).ToList();
-        return Ok(new { transactions.Result, NoUsedProperties = property.Count() });
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet("GetTransactionsByUserId")]
+        public IActionResult GetTransactionsByUserId(int userId)
+        {
+            var transactions = _transactionService.GetTransactionsByUserId(userId);
+            var property = _AppraisallandContext.Properties.Where(x => x.UserId == userId).ToList();
+            return Ok(new { transactions.Result, NoUsedProperties = property.Count() });
+        }
     }
 }

@@ -1,19 +1,31 @@
-﻿//using DBL.NewModels;
-//using DBL.Models;
+﻿using DBL.Models;
 
-using DBL.Models;
-
-namespace DAL.Rpository;
-
-public class SubscriptionService : ISubscriptionService
+namespace DAL.Repository
 {
-    public Task<List<Subscription>> GetAllSubscriptions()
+    /// <summary>
+    /// 
+    /// </summary>
+    public class SubscriptionService : ISubscriptionService
     {
-        throw new NotImplementedException();
-    }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public Task<List<Subscription>> GetAllSubscriptions()
+        {
+            throw new NotImplementedException();
+        }
 
-    public Task<Subscription> GetSubscriptionById(int id)
-    {
-        throw new NotImplementedException();
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public Task<Subscription> GetSubscriptionById(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

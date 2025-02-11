@@ -1,24 +1,45 @@
 ﻿using PayPal.Api;
 
-namespace DAL.Repository;
-
-public class ServicesMiddlewareHelpers
+namespace DAL.Repository
 {
-    public Dictionary<string, string> GetConfig()
+    /// <summary>
+    /// 
+    /// </summary>
+    public class ServicesMiddlewareHelpers
     {
-        return ConfigManager.Instance.GetProperties();
-    }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<string, string> GetConfig()
+        {
 
-    private string GetAccessToken(string clientId, string clientSecret)
-    {
-        var accessToken = new OAuthTokenCredential(clientId, clientSecret, GetConfig()).GetAccessToken();
-        return accessToken;
-    }
+            return ConfigManager.Instance.GetProperties();
+        }
 
-    public APIContext GetAPIContext(string clientId, string clientSecret)
-    {
-        var apiContext = new APIContext(GetAccessToken(clientId, clientSecret));
-        apiContext.Config = GetConfig();
-        return apiContext;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="clientId"></param>
+        /// <param name="clientSecret"></param>
+        /// <returns></returns>
+        private string GetAccessToken(string clientId, string clientSecret)
+        {
+            string accessToken = new OAuthTokenCredential(clientId, clientSecret, GetConfig()).GetAccessToken();
+            return accessToken;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="clientId"></param>
+        /// <param name="clientSecret"></param>
+        /// <returns></returns>
+        public APIContext GetAPIContext(string clientId, string clientSecret)
+        {
+            APIContext apiContext = new APIContext(GetAccessToken(clientId, clientSecret));
+            apiContext.Config = GetConfig();
+            return apiContext;
+        }
     }
 }

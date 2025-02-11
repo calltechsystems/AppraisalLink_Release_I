@@ -4,193 +4,230 @@ using DBL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CallTech.Controllers;
-
-[Route("api/com.appraisalland.Brokerage")]
-[ApiController]
-public class BrokerageController : ControllerBase
+namespace CallTech.Controllers
 {
-    private readonly IBrokerage _brokerage;
-    private readonly AppraisalLandsContext _context;
-    private readonly Log log = new();
-
-    public BrokerageController(IBrokerage brokerage, AppraisalLandsContext context)
+    /// <summary>
+    /// 
+    /// </summary>
+    [Route("api/com.appraisalland.Brokerage")]
+    [ApiController]
+    public class BrokerageController : ControllerBase
     {
-        _brokerage = brokerage;
-        _context = context;
-    }
+        private readonly AppraisallandsContext _context;
+        private readonly IBrokerage _brokerage;
+        Log log = new Log();
 
-    [Authorize]
-    [HttpPut("updateMortgageBrokerageProfile")]
-    public async Task<IActionResult> updateMortgageBrokerageProfile(int BrokerageId,
-        [FromBody] ClsBrokerage updateRequest)
-    {
-        log.writeLog("updateMortgageBrokerageProfile Function started");
-        try
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="brokerage"></param>
+        /// <param name="context"></param>
+        public BrokerageController(IBrokerage brokerage, AppraisallandsContext context)
         {
-            var updatedBroker = await _brokerage.UpdateBrokerAsync(BrokerageId, updateRequest);
-
-            if (updatedBroker == null) return NotFound($"Brokerage not found with ID {BrokerageId} or update failed");
-            var get_SMS = updateRequest.GetSms;
-            var get_Email = updateRequest.GetEmail;
-
-            var user = _context.UserInformations.Where(x => x.UserId == BrokerageId).FirstOrDefault();
-            if (user != null)
-            {
-                user.GetEmail = get_Email;
-                user.GetSms = get_SMS;
-                _context.UserInformations.Update(user);
-                _context.SaveChanges();
-            }
-
-            var Broker_Details = _context.UserInformations.Where(x => x.UserId == BrokerageId).FirstOrDefault();
-            return Ok(new
-            {
-                Message = $"Brokerage with ID {BrokerageId} updated successfully",
-                Broker = updatedBroker,
-                IsEmail = Broker_Details.GetEmail,
-                IsSms = Broker_Details.GetSms
-            });
+            _brokerage = brokerage;
+            _context = context;
         }
-        catch (Exception ex)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="BrokerageId"></param>
+        /// <param name="updateRequest"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpPut("updateMortgageBrokerageProfile")]
+        public async Task<IActionResult> updateMortgageBrokerageProfile(int BrokerageId, [FromBody] ClsBrokerage updateRequest)
         {
-            log.writeLog("An error occurred during updateMortgageBrokerageProfile" + ex);
-            return StatusCode(500, new
+            log.WriteLog($"ApprisalLandAppError: BrokerageController->updateMortgageBrokerageProfile Method: Started");
+            try
             {
-                Error = "Server Error",
-                Message =
-                    "An error occurred during the update process. Please check the following fields for uniqueness and try again:",
-                Fields = new List<string>
+                var updatedBroker = await _brokerage.UpdateBrokerAsync(BrokerageId, updateRequest);
+
+                if (updatedBroker == null)
                 {
-                    "PhoneNumber",
-                    "Mortgage_Brokerage_Lic_No",
-                    "Mortgage_Broker_Lic_No",
-                    "Assistant_Phone_Number"
+                    return NotFound($"Brokerage not found with ID {BrokerageId} or update failed");
                 }
-            });
-        }
-    }
 
-    [Authorize]
-    [HttpGet]
-    public async Task<IActionResult> getBrokerByBrokerage(int brokerageId)
-    {
-        log.writeLog("getBrokerByBrokerage Function started");
-        try
-        {
-            var Brokerage = _brokerage.GetBrokerageById(brokerageId);
-            if (Brokerage != null)
-            {
-                var query = from b in _context.Brokerages
-                            join p in _context.Brokers on b.Id equals p.Brokerageid
-                            join u in _context.UserInformations on p.UserId equals u.UserId
-                            where b.Id == brokerageId
-                            select new
-                            {
-                                Broker = p,
-                                UserInformation = u.Email
-                            };
-                var BrokerageWithBroker = query.ToList();
-                return Ok(new { Brokerage, Brokers = BrokerageWithBroker });
-            }
+                var get_SMS = updateRequest.GetSms;
+                var get_Email = updateRequest.GetEmail;
 
-            return NotFound($"No brokerage found with the ID: {brokerageId}");
-        }
-        catch (Exception ex)
-        {
-            log.writeLog($"Error in getBrokerByBrokerage Function: {ex.Message}");
-            return StatusCode(500, "An error occurred while processing your request.");
-        }
-    }
+                var user = _context.UserInformations.Where(x => x.UserId == BrokerageId).FirstOrDefault();
 
-    [Authorize]
-    [HttpGet("getPropertiesByBrokerage")]
-    public IActionResult getPropertiesByBrokerage(int brokerageId)
-    {
-        log.writeLog("getPropertiesByBrokerage Function started");
-        try
-        {
-            var Brokers = _brokerage.GetBrokerByBrokerage(brokerageId);
-            var itemsWithUserInfoAndProperties = Brokers
-                .Join(_context.UserInformations,
-                    broker => broker.UserId,
-                    userInfo => userInfo.UserId,
-                    (broker, userInfo) => new
-                    {
-                        Broker = broker,
-                        UserInfo = userInfo.Email
-                    })
-                .Select(combined => new
+                if (user != null)
                 {
-                    combined.Broker,
-                    combined.UserInfo,
-                    Properties = _context.Properties
-                        .Where(property => property.UserId == combined.Broker.UserId)
-                        .ToList()
-                })
-                .ToList();
+                    user.GetEmail = get_Email;
+                    user.GetSms = get_SMS;
+                    _context.UserInformations.Update(user);
+                    _context.SaveChanges();
+                }
 
-
-            if (itemsWithUserInfoAndProperties != null)
-                return Ok(itemsWithUserInfoAndProperties);
-            return NotFound();
-        }
-        catch (Exception ex)
-        {
-            log.writeLog($"Error in getPropertiesByBrokerage Function: {ex.Message}");
-            return StatusCode(500, "An error occurred while processing your request.");
-        }
-    }
-
-
-    [Authorize]
-    [HttpPut("updateBrokerIsActive")]
-    public IActionResult updateBrokerIsActive(brokerIsActiveCls brokerIsActiveCls)
-    {
-        log.writeLog("updateIsActive Function started");
-        try
-        {
-            var userDetails = _context.Brokers
-                .Where(x => x.Brokerageid == brokerIsActiveCls.BrokerageId && x.Id == brokerIsActiveCls.BrokerId)
-                .FirstOrDefault();
-            if (userDetails != null)
-            {
-                userDetails.IsActive = brokerIsActiveCls.value;
-                userDetails.ModifiedDateTime = DateTime.UtcNow;
-                _context.Update(userDetails);
-                _context.SaveChanges();
-                return Ok(new { Status = "Success" });
+                var Broker_Details = _context.UserInformations.Where(x => x.UserId == BrokerageId).FirstOrDefault();
+                log.WriteLog($"ApprisalLandAppError: BrokerageController->updateMortgageBrokerageProfile Method: End");
+                return Ok(new { Message = $"Brokerage with ID {BrokerageId} updated successfully", Broker = updatedBroker, IsEmail = Broker_Details.GetEmail, IsSms = Broker_Details.GetSms });
             }
-
-            return NotFound(new { Status = "Error", Message = "No valid user found." });
+            catch (Exception ex)
+            {
+                log.WriteLog($"ApprisalLandAppError: BrokerageController->updateMortgageBrokerageProfile Method: {ex.Message}");
+                return StatusCode(500, new
+                {
+                    Error = "Server Error",
+                    Message = "An error occurred during the update process. Please check the following fields for uniqueness and try again:",
+                    Fields = new List<string>
+                    {
+                     "PhoneNumber",
+                     "Mortgage_Brokerage_Lic_No",
+                     "Mortgage_Broker_Lic_No",
+                     "Assistant_Phone_Number"
+                    }
+                });
+            }
         }
-        catch (Exception ex)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="brokerageId"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> getBrokerByBrokerage(int brokerageId)
         {
-            return BadRequest(ex);
+            log.WriteLog($"ApprisalLandAppError: BrokerageController->getBrokerByBrokerage Method: Started");
+            try
+            {
+                var Brokerage = _brokerage.GetBrokerageById(brokerageId);
+                if (Brokerage != null)
+                {
+                    var query = from b in _context.Brokerages
+                                join p in _context.Brokers on b.Id equals p.Brokerageid
+                                join u in _context.UserInformations on p.UserId equals u.UserId
+                                where b.Id == brokerageId
+                                select new
+                                {
+                                    Broker = p,
+                                    UserInformation = u.Email,
+                                };
+
+                    var BrokerageWithBroker = query.ToList();
+                    log.WriteLog($"ApprisalLandAppError: BrokerageController->getBrokerByBrokerage Method: End");
+                    return Ok(new { Brokerage = Brokerage, Brokers = BrokerageWithBroker });
+                }
+
+                return NotFound($"No brokerage found with the ID: {brokerageId}");
+            }
+            catch (Exception ex)
+            {
+                log.WriteLog($"ApprisalLandAppError: BrokerageController->getBrokerByBrokerage Method: {ex.Message}");
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="brokerageId"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet("getPropertiesByBrokerage")]
+        public IActionResult getPropertiesByBrokerage(int brokerageId)
+        {
+            log.WriteLog($"ApprisalLandAppError: BrokerageController->getPropertiesByBrokerage Method: Started");
+            try
+            {
+                var Brokers = _brokerage.GetBrokerByBrokerage(brokerageId);
+                var itemsWithUserInfoAndProperties = Brokers
+                                                    .Join(_context.UserInformations,
+                                                          broker => broker.UserId,
+                                                          userInfo => userInfo.UserId,
+                                                          (broker, userInfo) => new
+                                                          {
+                                                              Broker = broker,
+                                                              UserInfo = userInfo.Email
+                                                          })
+                                                    .Select(combined => new
+                                                    {
+                                                        Broker = combined.Broker,
+                                                        UserInfo = combined.UserInfo,
+                                                        Properties = _context.Properties
+                                                            .Where(property => property.UserId == combined.Broker.UserId)
+                                                            .ToList()
+                                                    })
+                                                    .ToList();
+
+                log.WriteLog($"ApprisalLandAppError: BrokerageController->getPropertiesByBrokerage Method: End");
+
+                if (itemsWithUserInfoAndProperties != null)
+                {
+                    return Ok(itemsWithUserInfoAndProperties);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteLog($"ApprisalLandAppError: BrokerageController->getPropertiesByBrokerage Method: {ex.Message}");
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="brokerIsActiveCls"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpPut("updateBrokerIsActive")]
+        public IActionResult updateBrokerIsActive(brokerIsActiveCls brokerIsActiveCls)
+        {
+            log.WriteLog($"ApprisalLandAppError: BrokerageController->updateBrokerIsActive Method: Started");
+            try
+            {
+                var userDetails = _context.Brokers.Where(x => x.Brokerageid == brokerIsActiveCls.BrokerageId && x.Id == brokerIsActiveCls.BrokerId).FirstOrDefault();
+                if (userDetails != null)
+                {
+                    userDetails.IsActive = brokerIsActiveCls.value;
+                    userDetails.ModifiedDateTime = DateTime.UtcNow;
+                    _context.Update(userDetails);
+                    _context.SaveChanges();
+                    log.WriteLog($"ApprisalLandAppError: BrokerageController->updateBrokerIsActive Method: End");
+                    return Ok(new { Status = "Success" });
+                }
+                else
+                {
+                    return NotFound(new { Status = "Error", Message = "No valid user found." });
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteLog($"ApprisalLandAppError: BrokerageController->updateBrokerIsActive Method: {ex.Message}");
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
+        }
+
+
+        //[Authorize]
+        //[HttpGet("GetBrokerage/BrokerageId")]
+        //public IActionResult GetBrokerageById(int BrokerageId)
+        //{
+        //    try
+        //    {
+        //        var Brokerage = _brokerage.GetBrokerageById(BrokerageId);
+        //        if (Brokerage != null)
+        //        {
+        //            return Ok(Brokerage);
+        //        }
+        //        else
+        //        {
+        //            return NotFound($"Brokerage not found with ID {BrokerageId}");
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        log.writeLog("GetBrokerById Function " + ex);
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
     }
-
-
-    //[Authorize]
-    //[HttpGet("GetBrokerage/BrokerageId")]
-    //public IActionResult GetBrokerageById(int BrokerageId)
-    //{
-    //    try
-    //    {
-    //        var Brokerage = _brokerage.GetBrokerageById(BrokerageId);
-    //        if (Brokerage != null)
-    //        {
-    //            return Ok(Brokerage);
-    //        }
-    //        else
-    //        {
-    //            return NotFound($"Brokerage not found with ID {BrokerageId}");
-    //        }
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        log.writeLog("GetBrokerById Function " + ex);
-    //        return BadRequest(ex.Message);
-    //    }
-    //}
 }

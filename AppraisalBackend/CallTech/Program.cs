@@ -1,6 +1,6 @@
 using Amazon.S3;
+using CallTech.Class;
 using DAL.Repository;
-using DAL.Rpository;
 using DBL.Backend;
 using DBL.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -9,20 +9,21 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Text;
 using System.Text.Json.Serialization;
-//using DBL.NewModels;
-//using DBL.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-
+//builder.WebHost.UseUrls("http://0.0.0.0:5000", "https://0.0.0.0:44370");
 // Add services to the container.
 
 builder.Services.AddControllers()
-    .AddJsonOptions(options => { options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve; });
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+    });
 builder.Services.AddAWSService<IAmazonS3>();
 builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
 var configuration = new ConfigurationBuilder()
-    .AddJsonFile("appsettings.json") // Use appsettings.app.json
-    .Build();
+            .AddJsonFile("appsettings.json") // Use appsettings.app.json
+            .Build();
 builder.Services.AddSingleton(configuration);
 
 builder.Services.AddHttpClient();
@@ -32,7 +33,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
-builder.Services.AddDbContext<AppraisalLandsContext>();
+builder.Services.AddDbContext<AppraisallandsContext>();
 builder.Services.AddTransient<IRegistrationService, RegistrationService>();
 builder.Services.AddScoped<IPropertyService, PropertyService>();
 builder.Services.AddScoped<IEmailService, SmtpEmailService>();
@@ -46,8 +47,10 @@ builder.Services.AddScoped<IAppraiserIndividual, AppraiserIndividualService>();
 builder.Services.AddScoped<IAppraiserCompany, AppraiserCompanyService>();
 builder.Services.AddScoped<IWishlistService, WishlistService>();
 builder.Services.AddScoped<Ibid, IbidService>();
-builder.Services.AddScoped<IContactUsRepository, ContactUsRepository>();
+builder.Services.AddScoped<IContactusRepository, ContactusRepository>();
 builder.Services.AddScoped<IAdmin, AdminService>();
+builder.Services.Configure<EncryptionSettings>(builder.Configuration.GetSection("EncryptionSettings"));
+builder.Services.AddScoped<EncryptionHelper>();
 //builder.Services.AddScoped<IServicesMiddlewareTopUp, ServicesMiddlewareTopUp>();
 builder.Services.AddScoped<ITwilioSms>(provider =>
     new TwilioSmsService(
@@ -78,7 +81,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 {
     options.RequireHttpsMetadata = false;
     options.SaveToken = true;
-    options.TokenValidationParameters = new TokenValidationParameters
+    options.TokenValidationParameters = new TokenValidationParameters()
     {
         ValidateIssuer = true,
         ValidateAudience = true,
@@ -91,19 +94,21 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("Jwt:Audience", policy =>
-            policy.RequireAuthenticatedUser()
-                .RequireRole("admin") // Optional: Specify required role(s)
+        policy.RequireAuthenticatedUser()
+              .RequireRole("admin") // Optional: Specify required role(s)
     );
 });
-builder.Services.AddCors(P => P.AddPolicy("CORSPOLICY",
-    build => { build.WithOrigins("http://localhost:3008").AllowAnyMethod().AllowAnyHeader(); }));
+builder.Services.AddCors(P => P.AddPolicy("CORSPOLICY", build =>
+{
+    build.WithOrigins("http://localhost:3008").AllowAnyMethod().AllowAnyHeader();
+}));
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("CORSPOLICY", builder =>
     {
         builder.AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader();
+               .AllowAnyMethod()
+               .AllowAnyHeader();
     });
 });
 builder.Services.AddSwaggerGen(c =>
@@ -127,9 +132,9 @@ builder.Services.AddSwaggerGen(c =>
     c.AddSecurityDefinition("Bearer", securitySchema);
 
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {securitySchema, new[] {"Bearer"}}
-    });
+        {
+            { securitySchema, new[] { "Bearer" } }
+        });
 });
 
 var app = builder.Build();

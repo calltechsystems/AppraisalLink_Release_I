@@ -1,8 +1,9 @@
-﻿namespace DAL.Classes;
-
-public class brokerIsActiveCls
+﻿namespace DAL.Classes
 {
-    public long BrokerageId { get; set; }
-    public int BrokerId { get; set; }
-    public bool value { get; set; }
+    public class brokerIsActiveCls
+    {
+        public long BrokerageId { get; set; }
+        public int BrokerId { get; set; }
+        public bool value { get; set; }
+    }
 }

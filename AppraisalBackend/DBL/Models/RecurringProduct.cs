@@ -1,10 +1,14 @@
-﻿namespace DBL.Models;
-
-public class RecurringProduct
+﻿namespace DBL.Models
 {
-    public string Id { get; set; } = null!;
+    /// <summary>
+    /// 
+    /// </summary>
+    public partial class RecurringProduct
+    {
+        public string Id { get; set; } = null!;
 
-    public string? Name { get; set; }
+        public string? Name { get; set; }
 
-    public string? Description { get; set; }
+        public string? Description { get; set; }
+    }
 }

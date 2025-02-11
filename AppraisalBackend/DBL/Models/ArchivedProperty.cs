@@ -1,10 +1,14 @@
-﻿namespace DBL.Models;
-
-public class ArchivedProperty
+﻿namespace DBL.Models
 {
-    public long Id { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    public partial class ArchivedProperty
+    {
+        public long Id { get; set; }
 
-    public long OrderId { get; set; }
+        public long OrderId { get; set; }
 
-    public long UserId { get; set; }
+        public long UserId { get; set; }
+    }
 }

@@ -1,8 +1,9 @@
-﻿namespace DAL.Classes;
-
-public class Clsarchive1
+﻿namespace DAL.Classes
 {
-    public int orderId { get; set; }
-    public int userId { get; set; }
-    public bool status { get; set; }
+    public class Clsarchive1
+    {
+        public int orderId { get; set; }
+        public int userId { get; set; }
+        public bool status { get; set; }
+    }
 }

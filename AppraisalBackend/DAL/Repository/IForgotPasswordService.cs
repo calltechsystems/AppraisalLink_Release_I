@@ -1,7 +1,8 @@
-﻿namespace DAL.Repository;
-
-public interface IForgotPasswordService
+﻿namespace DAL.Repository
 {
-    Task<bool> SendResetTokenAsync(string email);
-    Task<bool> VerifyResetTokenAsync(string email, string token, string NewPassword);
+    public interface IForgotPasswordService
+    {
+        Task<bool> SendResetTokenAsync(string email);
+        Task<bool> VerifyResetTokenAsync(string email, string token, string NewPassword);
+    }
 }

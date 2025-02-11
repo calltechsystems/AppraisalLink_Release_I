@@ -1,72 +1,105 @@
 ﻿using DAL.Classes;
 using DBL.Models;
 using Microsoft.EntityFrameworkCore;
-//using DBL.NewModels;
-//using DBL.Models;
 
-namespace DAL.Rpository;
-
-public class PlansService : IPlans
+namespace DAL.Repository
 {
-    private readonly AppraisalLandsContext _context;
-
-    public PlansService(AppraisalLandsContext context)
+    /// <summary>
+    /// 
+    /// </summary>
+    public class PlansService : IPlans
     {
-        _context = context;
-    }
-
-    public async Task<List<Plan>> GetAllPlans()
-    {
-        return await _context.Plans.OrderBy(x => x.Id).ToListAsync();
-    }
-
-    public async Task<Plan> GetPlanById(int id)
-    {
-        var Plan = _context.Plans.Where(x => x.Id == id).FirstOrDefault();
-        if (Plan != null) return Plan;
-        return null;
-    }
-
-    public async Task<PlanClass> UpdatePlan(int PlanID, PlanClass plan)
-    {
-        try
+        private readonly AppraisallandsContext _context;
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        public PlansService(AppraisallandsContext context)
         {
-            var Plan = _context.Plans.Where(x => x.Id == PlanID).FirstOrDefault();
-            if (Plan != null)
+            _context = context;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<Plan>> GetAllPlans()
+        {
+            try
             {
-                Plan.PlanName = plan.PlanName;
-                Plan.Amount = plan.Amount;
-                Plan.NoOfProperties = plan.NoOfProperties;
-                Plan.Description = plan.Description;
-                Plan.Returnurl = "http://calltech-prod.us-east-1.elasticbeanstalk.com/api/payments/payment";
-                Plan.Currencycode = plan.Currencycode;
-                Plan.MonthlyAmount = plan.MonthlyAmount;
-                Plan.YearlyAmount = plan.YearlyAmount;
-                Plan.Discount = plan.Discount;
-                _context.Plans.Update(Plan);
-                _context.SaveChanges();
-                return plan;
+                return await _context.Plans.OrderBy(x => x.Id).ToListAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
-        catch (Exception ex)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<Plan> GetPlanById(int id)
         {
+            var Plan = _context.Plans.Where(x => x.Id == id).FirstOrDefault();
+            if (Plan != null)
+            {
+                return Plan;
+            }
             return null;
         }
 
-        return null;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="PlanID"></param>
+        /// <param name="plan"></param>
+        /// <returns></returns>
+        public async Task<PlanClass> UpdatePlan(int PlanID, PlanClass plan)
+        {
+            try
+            {
+                var Plan = _context.Plans.Where(x => x.Id == PlanID).FirstOrDefault();
+                if (Plan != null)
+                {
+                    Plan.PlanName = plan.PlanName;
+                    Plan.PlanValidity = plan.Amount;
+                    Plan.NoOfProperties = plan.NoOfProperties;
+                    Plan.Description = plan.Description;
+                    Plan.Returnurl = "http://calltech-prod.us-east-1.elasticbeanstalk.com/api/payments/payment"; ///need change 
+                    Plan.Currencycode = plan.Currencycode;
+                    Plan.MonthlyAmount = plan.MonthlyAmount;
+                    Plan.YearlyAmount = plan.YearlyAmount;
+                    Plan.Discount = plan.Discount;
+                    _context.Plans.Update(Plan);
+                    _context.SaveChanges();
+                    return plan;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return null;
+            }
+
+            return null;
+        }
+
+        //public async Task<Plan> GetPlanById(int id)
+        //{
+        //    try
+        //    {
+        //        return await _context.Plans.FirstOrDefaultAsync(x => x.PlanId == id);
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+
+        //}
     }
-
-    //public async Task<Plan> GetPlanById(int id)
-    //{
-    //    try
-    //    {
-    //        return await _context.Plans.FirstOrDefaultAsync(x => x.PlanId == id);
-    //    }
-    //    catch (Exception)
-    //    {
-
-    //        throw;
-    //    }
-
-    //}
 }

@@ -1,20 +1,26 @@
-﻿namespace DBL.Models;
-
-public class Subscription
+﻿namespace DBL.Models
 {
-    public long SubscriptionId { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    public partial class Subscription
+    {
+        public long SubscriptionId { get; set; }
 
-    public DateTime StartDate { get; set; }
+        public DateTime StartDate { get; set; }
 
-    public DateTime EndDate { get; set; }
+        public DateTime EndDate { get; set; }
 
-    public short PlanId { get; set; }
+        public short PlanId { get; set; }
 
-    public short TotalProperties { get; set; }
+        public long? UserId { get; set; }
 
-    public short? UsedProperties { get; set; }
+        public int? TopUpId { get; set; }
 
-    public long? UserId { get; set; }
+        public string? Status { get; set; }
 
-    public int? TopUpId { get; set; }
+        public string? CurrencyCode { get; set; }
+
+        public string? PaymentId { get; set; }
+    }
 }

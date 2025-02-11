@@ -1,6 +1,7 @@
-﻿namespace DAL.Repository;
-
-public interface ITwilioSms
+﻿namespace DAL.Repository
 {
-    string SendSms(string toPhoneNumber, string message);
+    public interface ITwilioSms
+    {
+        string SendSms(string toPhoneNumber, string message);
+    }
 }

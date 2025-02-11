@@ -1,8 +1,9 @@
-﻿namespace DAL.Classes;
-
-public class ClsLogin
+﻿namespace DAL.Classes
 {
-    public string Email { get; set; } = null!;
+    public class ClsLogin
+    {
+        public string Email { get; set; } = null!;
 
-    public string Password { get; set; } = null!;
+        public string? Password { get; set; } = String.Empty;
+    }
 }

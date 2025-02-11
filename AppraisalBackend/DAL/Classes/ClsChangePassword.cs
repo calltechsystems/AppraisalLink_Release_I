@@ -1,12 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DAL.Classes;
-
-public class ClsChangePassword
+namespace DAL.Classes
 {
-    [Required] public string Email { get; set; }
+    public class ClsChangePassword
+    {
+        [Required]
+        public string Email { get; set; } = String.Empty;
 
-    [Required] public string OldPassword { get; set; }
+        [Required]
+        public string OldPassword { get; set; } = String.Empty;
 
-    [Required] public string NewPassword { get; set; }
+        [Required]
+        public string NewPassword { get; set; } = String.Empty;
+    }
 }

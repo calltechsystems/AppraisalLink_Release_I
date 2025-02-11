@@ -2,34 +2,46 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CallTech.Controllers;
-
-[Route("api/com.appraisalland.TopUp")]
-[ApiController]
-public class TopUpController : ControllerBase
+namespace CallTech.Controllers
 {
-    private readonly AppraisalLandsContext _AppraisallandContext;
-    private readonly Log log = new();
-
-    public TopUpController(AppraisalLandsContext AppraisallandContext)
+    /// <summary>
+    /// 
+    /// </summary>
+    [Route("api/com.appraisalland.TopUp")]
+    [ApiController]
+    public class TopUpController : ControllerBase
     {
-        _AppraisallandContext = AppraisallandContext;
-    }
+        private readonly AppraisallandsContext _AppraisallandContext;
+        Log log = new Log();
 
-    [Authorize]
-    [HttpGet("getTopUp")]
-    public IActionResult getTopUp()
-    {
-        log.writeLog("getTopUp Function started");
-        try
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="AppraisallandContext"></param>
+        public TopUpController(AppraisallandsContext AppraisallandContext)
         {
-            var topUpDetails = _AppraisallandContext.Topups.ToList();
-            return Ok(topUpDetails);
+            _AppraisallandContext = AppraisallandContext;
         }
-        catch (Exception ex)
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet("getTopUp")]
+        public IActionResult getTopUp()
         {
-            log.writeLog("getTopUp function" + ex.Message);
-            return BadRequest(ex.Message);
+            log.WriteLog("getTopUp Function started");
+            try
+            {
+                var topUpDetails = _AppraisallandContext.Topups.ToList();
+                return Ok(topUpDetails);
+            }
+            catch (Exception ex)
+            {
+                log.WriteLog("getTopUp function" + ex.Message);
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

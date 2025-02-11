@@ -1,8 +1,9 @@
-﻿namespace DAL.Classes;
-
-public class ClsWishlist
+﻿namespace DAL.Classes
 {
-    public long PropertyId { get; set; }
+    public class ClsWishlist
+    {
+        public long PropertyId { get; set; }
 
-    public long UserId { get; set; }
+        public long UserId { get; set; }
+    }
 }

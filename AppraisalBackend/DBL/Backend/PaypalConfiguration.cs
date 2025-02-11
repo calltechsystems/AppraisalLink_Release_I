@@ -1,7 +1,8 @@
-﻿namespace DBL.Backend;
-
-public class PaypalConfiguration
+﻿namespace DBL.Backend
 {
-    public string ClientId { get; set; }
-    public string ClientSecret { get; set; }
+    public class PaypalConfiguration
+    {
+        public string ClientId { get; set; }
+        public string ClientSecret { get; set; }
+    }
 }

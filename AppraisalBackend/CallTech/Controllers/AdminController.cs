@@ -1,200 +1,354 @@
 ﻿using DAL.Repository;
-using DAL.Rpository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CallTech.Controllers;
-
-[Route("api/com.appraisalland.Admin")]
-[ApiController]
-public class AdminController : ControllerBase
+namespace CallTech.Controllers
 {
-    private readonly IAppraiserIndividual _appraiserIndividual;
-    private readonly IBroker _BrokerService;
-    private readonly IAdmin admin;
-    private readonly Log Log = new();
-
-    public AdminController(IBroker BrokerService, IAppraiserIndividual appraiserIndividual, IAdmin admin)
+    /// <summary>
+    /// 
+    /// </summary>
+    [Route("api/com.appraisalland.Admin")]
+    [ApiController]
+    public class AdminController : ControllerBase
     {
-        _BrokerService = BrokerService;
-        _appraiserIndividual = appraiserIndividual;
-        this.admin = admin;
-    }
+        private readonly IAdmin admin;
+        private readonly IBroker _BrokerService;
+        private readonly IAppraiserIndividual _appraiserIndividual;
+        Log Log = new Log();
 
-    [Authorize]
-    [HttpGet]
-    [Route("Broker/All")]
-    public ActionResult GetAllBroker()
-    {
-        Log.writeLog("GetAllBroker Function started");
-        try
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="BrokerService"></param>
+        /// <param name="appraiserIndividual"></param>
+        /// <param name="admin"></param>
+        public AdminController(IBroker BrokerService, IAppraiserIndividual appraiserIndividual, IAdmin admin)
         {
-            var Brokers = _BrokerService.AllBroker();
-            if (Brokers != null)
-                return Ok(Brokers);
-            return NotFound();
-        }
-        catch (Exception ex)
-        {
-            Log.writeLog("An error occurred get All Brokers" + ex);
-            return StatusCode(500, new { Message = "An error occurred while Get Brokers" });
-        }
-    }
-
-    [Authorize]
-    [HttpGet]
-    [Route("Apraiser/All")]
-    public ActionResult GetAllApraiser()
-    {
-        Log.writeLog("GetAllApraiser Function started");
-        try
-        {
-            var Apraisers = _appraiserIndividual.GetAllApps();
-            if (Apraisers != null)
-                return Ok(Apraisers);
-            return NotFound();
-        }
-        catch (Exception ex)
-        {
-            Log.writeLog("An error occurred get All Apraisers" + ex);
-            return StatusCode(500, new { Message = "An error occurred while Get Apraisers" });
-        }
-    }
-
-    [Authorize]
-    [HttpGet]
-    [Route("Brokerage/All")]
-    public ActionResult getAllBrokerage()
-    {
-        Log.writeLog("getAllBrokerage Function started");
-        try
-        {
-            var Brokerages = _appraiserIndividual.GetAllBrokerage();
-            if (Brokerages != null)
-                return Ok(Brokerages);
-            return NotFound();
-        }
-        catch (Exception ex)
-        {
-            Log.writeLog("An error occurred get All Brokerages" + ex);
-            return StatusCode(500, new { Message = "An error occurred while Get Brokerages" });
-        }
-    }
-
-
-    [Authorize]
-    [HttpGet]
-    [Route("appraiserCompany/All")]
-    public ActionResult getAllappraiserCompany()
-    {
-        Log.writeLog("getAllappraiserCompany Function started");
-        try
-        {
-            var AppraiserCompany = _appraiserIndividual.GetAllAppraiserCompany();
-            if (AppraiserCompany != null)
-                return Ok(AppraiserCompany);
-            return NotFound();
-        }
-        catch (Exception ex)
-        {
-            Log.writeLog("An error occurred get All AppraiserCompany" + ex);
-            return StatusCode(500, new { Message = "An error occurred while Get AppraiserCompany" });
-        }
-    }
-
-    [Authorize]
-    [HttpPut]
-    [Route("updatePlan")]
-    public ActionResult updatePlan(int planID, int numberOfProperty, double amount)
-    {
-        if (numberOfProperty != 0 || amount != 0)
-        {
-            var plan = _appraiserIndividual.UpdatePlan(planID, numberOfProperty, amount);
-            if (plan.Result != null)
-                return Ok("Plan Update successfully");
-            return NotFound();
+            _BrokerService = BrokerService;
+            _appraiserIndividual = appraiserIndividual;
+            this.admin = admin;
         }
 
-        return BadRequest("Both numberOfProperty and amount cannot be 0.");
-    }
-
-    [Authorize]
-    [Route("getAllBrokerpropeties")]
-    [HttpGet]
-    public ActionResult getAllBrokerpropeties()
-    {
-        var properties = _appraiserIndividual.GetAllProperties();
-        return Ok(properties);
-    }
-
-    //GetAllbrokerageProperies
-    [Authorize]
-    [HttpGet]
-    [Route("getAllbrokerageProperies")]
-    public ActionResult getAllbrokerageProperies()
-    {
-        var properties = _appraiserIndividual.GetAllbrokerageProperies();
-        return Ok(properties);
-    }
-
-    [Authorize]
-    [HttpGet]
-    [Route("getAllAppraiserCompany")]
-    public ActionResult getAllAppraiserCompany()
-    {
-        var appraiser_Company = _appraiserIndividual.GetAllAppraiserCompany();
-        return Ok(appraiser_Company);
-    }
-
-    [Authorize]
-    [HttpPost]
-    [Route("archiveUser")]
-    public ActionResult archiveUser(int userId)
-    {
-        try
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet]
+        [Route("Broker/All")]
+        public ActionResult GetAllBroker()
         {
-            var user = admin.PostArchiveUser(userId);
-            if (user != null) return Ok("User archived successfully.");
-            return NotFound("User not found according to this user ID.");
-        }
-        catch (Exception ex)
-        {
-            return BadRequest($"An error occurred: {ex.Message}");
-        }
-    }
+            Log.WriteLog("GetAllBroker Function started");
+            try
+            {
+                var Brokers = _BrokerService.AllBroker();
+                if (Brokers != null)
+                {
+                    return Ok(Brokers);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
 
-    [Authorize]
-    [HttpPost]
-    [Route("archiveProperty")]
-    public ActionResult archiveProperty(int orderId)
-    {
-        try
-        {
-            var user = admin.PostArchiveProperty(orderId);
-            if (user != null) return Ok("Property archived successfully.");
-            return NotFound("Property not found according to this user ID.");
+                Log.WriteLog($"ApprisalLandAppError: AdminController->GetAllBroker Method: {ex.Message}");
+                return StatusCode(500, new { Message = "An error occurred while Get Brokers" });
+            }
         }
-        catch (Exception ex)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet]
+        [Route("Apraiser/All")]
+        public ActionResult GetAllApraiser()
         {
-            return BadRequest($"An error occurred: {ex.Message}");
+            Log.WriteLog($"ApprisalLandAppError: AdminController->GetAllApraiser Method: Function Started");
+            try
+            {
+                var Apraisers = _appraiserIndividual.GetAllApps();
+                if (Apraisers != null)
+                {
+                    return Ok(Apraisers);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.WriteLog($"ApprisalLandAppError: AdminController->GetAllApraiser Method: {ex.Message}");
+                return StatusCode(500, new { Message = "An error occurred while Get Apraisers" });
+            }
         }
-    }
 
-    [Authorize]
-    [HttpGet]
-    [Route("getArchiveProperty")]
-    public ActionResult getArchiveProperty()
-    {
-        var properties = admin.GetAllArchivedProperty();
-        return Ok(properties);
-    }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet]
+        [Route("Brokerage/All")]
+        public ActionResult getAllBrokerage()
+        {
+            Log.WriteLog($"ApprisalLandAppError: AdminController->getAllBrokerage Method: Started");
+            try
+            {
+                var Brokerages = _appraiserIndividual.GetAllBrokerage();
+                if (Brokerages != null)
+                {
+                    Log.WriteLog($"ApprisalLandAppError: AdminController->getAllBrokerage Method: END");
+                    return Ok(Brokerages);
+                }
+                else
+                {
+                    Log.WriteLog($"ApprisalLandAppError: AdminController->getAllBrokerage Method: END");
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.WriteLog($"ApprisalLandAppError: AdminController->getAllBrokerage Method: {ex.Message}");
+                return StatusCode(500, new { Message = "An error occurred while Get Brokerages" });
+            }
+        }
 
-    [Authorize]
-    [HttpGet]
-    [Route("getArchiveUser")]
-    public ActionResult getArchiveUser()
-    {
-        var Users = admin.GetAllArchiveUser();
-        return Ok(Users);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet]
+        [Route("appraiserCompany/All")]
+        public ActionResult getAllappraiserCompany()
+        {
+            Log.WriteLog($"ApprisalLandAppError: AdminController->getAllappraiserCompany Method: Start");
+            try
+            {
+                var AppraiserCompany = _appraiserIndividual.GetAllAppraiserCompany();
+                if (AppraiserCompany != null)
+                {
+                    Log.WriteLog($"ApprisalLandAppError: AdminController->getAllappraiserCompany Method: End");
+                    return Ok(AppraiserCompany);
+                }
+                else
+                {
+                    Log.WriteLog($"ApprisalLandAppError: AdminController->getAllappraiserCompany Method: End");
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.WriteLog($"ApprisalLandAppError: AdminController->getAllappraiserCompany Method: {ex.Message}");
+                return StatusCode(500, new { Message = "An error occurred while Get AppraiserCompany" });
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="planID"></param>
+        /// <param name="numberOfProperty"></param>
+        /// <param name="amount"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpPut]
+        [Route("updatePlan")]
+        public ActionResult updatePlan(int planID, int numberOfProperty, double amount)
+        {
+            Log.WriteLog($"ApprisalLandAppError: AdminController->updatePlan Method: Start");
+            try
+            {
+                if (numberOfProperty != 0 || amount != 0)
+                {
+                    var plan = _appraiserIndividual.UpdatePlan(planID, numberOfProperty, amount);
+                    if (plan.Result != null)
+                    {
+                        Log.WriteLog($"ApprisalLandAppError: AdminController->updatePlan Method: End");
+                        return Ok("Plan Update successfully");
+                    }
+                    else
+                    {
+                        Log.WriteLog($"ApprisalLandAppError: AdminController->updatePlan Method: End");
+                        return NotFound();
+                    }
+                }
+                else
+                {
+                    Log.WriteLog($"ApprisalLandAppError: AdminController->updatePlan Method: End");
+                    return BadRequest("Both numberOfProperty and amount cannot be 0.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.WriteLog($"ApprisalLandAppError: AdminController->updatePlan Method: {ex.Message}");
+                return StatusCode(500, new { Message = "An error occurred while update Plan" });
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
+        [Route("getAllBrokerpropeties")]
+        [HttpGet]
+        public ActionResult getAllBrokerpropeties()
+        {
+            try
+            {
+                var properties = _appraiserIndividual.GetAllProperties();
+                return Ok(properties);
+            }
+            catch (Exception ex)
+            {
+                Log.WriteLog($"ApprisalLandAppError: AdminController->getAllBrokerpropeties Method: {ex.Message}");
+                return StatusCode(500, new { Message = "An error occurred while get All Broker propeties" });
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet]
+        [Route("getAllbrokerageProperies")]
+        public ActionResult getAllbrokerageProperies()
+        {
+            try
+            {
+                var properties = _appraiserIndividual.GetAllbrokerageProperies();
+                return Ok(properties);
+            }
+            catch (Exception ex)
+            {
+                Log.WriteLog($"ApprisalLandAppError: AdminController->getAllbrokerageProperies Method: {ex.Message}");
+                return StatusCode(500, new { Message = "An error occurred while get All Brokerage propeties" });
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet]
+        [Route("getAllAppraiserCompany")]
+        public ActionResult getAllAppraiserCompany()
+        {
+            try
+            {
+                var appraiser_Company = _appraiserIndividual.GetAllAppraiserCompany();
+                return Ok(appraiser_Company);
+            }
+            catch (Exception ex)
+            {
+                Log.WriteLog($"ApprisalLandAppError: AdminController->getAllAppraiserCompany Method: {ex.Message}");
+                return StatusCode(500, new { Message = "An error occurred while get All Appraiser Company" });
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpPost]
+        [Route("archiveUser")]
+        public ActionResult archiveUser(int userId)
+        {
+            try
+            {
+                var user = admin.PostArchiveUser(userId);
+                if (user != null)
+                {
+                    return Ok("User archived successfully.");
+                }
+
+                return NotFound("User not found according to this user ID.");
+            }
+            catch (Exception ex)
+            {
+                Log.WriteLog($"ApprisalLandAppError: AdminController->archiveUser Method: {ex.Message}");
+                return StatusCode(500, new { Message = "An error occurred while archive User" });
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpPost]
+        [Route("archiveProperty")]
+        public ActionResult archiveProperty(int orderId)
+        {
+            try
+            {
+                var user = admin.PostArchiveProperty(orderId);
+                if (user != null)
+                {
+                    return Ok("Property archived successfully.");
+                }
+
+                return NotFound("Property not found according to this user ID.");
+            }
+            catch (Exception ex)
+            {
+                Log.WriteLog($"ApprisalLandAppError: AdminController->archiveProperty Method: {ex.Message}");
+                return StatusCode(500, new { Message = "An error occurred while archive Property" });
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet]
+        [Route("getArchiveProperty")]
+        public ActionResult getArchiveProperty()
+        {
+            try
+            {
+                var properties = admin.GetAllArchivedProperty();
+                return Ok(properties);
+            }
+            catch (Exception ex)
+            {
+                Log.WriteLog($"ApprisalLandAppError: AdminController->GetAllArchivedProperty Method: {ex.Message}");
+                return StatusCode(500, new { Message = "An error occurred while Get All archive Property" });
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet]
+        [Route("getArchiveUser")]
+        public ActionResult getArchiveUser()
+        {
+            try
+            {
+                var Users = admin.GetAllArchiveUser();
+                return Ok(Users);
+            }
+            catch (Exception ex)
+            {
+                Log.WriteLog($"ApprisalLandAppError: AdminController->getArchiveUser Method: {ex.Message}");
+                return StatusCode(500, new { Message = "An error occurred while Get Archive User" });
+            }
+        }
     }
 }

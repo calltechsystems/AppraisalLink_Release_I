@@ -1,46 +1,56 @@
-﻿
-namespace DAL.Classes;
-
-public class ClsAppraiserCompany
+﻿//using DBL.Models;
+namespace DAL.Classes
 {
-    public string LicenseNumber { get; set; } = null!;
+    /// <summary>
+    /// 
+    /// </summary>
+    public class ClsAppraiserCompany
+    {
+        public long? AppraiserCompanyId { get; set; } = null;
 
-    public string AppraiserCompanyName { get; set; } = null!;
+        public long? UserId { get; set; } = null;
 
-    public string AddressLineOne { get; set; } = null!;
+        public string LicenseNumber { get; set; } = null!;
 
-    public string? AddressLineTwo { get; set; }
+        public string AppraiserCompanyName { get; set; } = null!;
 
-    public string City { get; set; } = null!;
+        public string AddressLineOne { get; set; } = null!;
 
-    public string State { get; set; } = null!;
+        public string? AddressLineTwo { get; set; }
 
-    public string PostalCode { get; set; } = null!;
+        public string City { get; set; } = null!;
 
-    public string? PhoneNumber { get; set; }
+        public string State { get; set; } = null!;
 
-    public string FirstName { get; set; } = null!;
+        public string PostalCode { get; set; } = null!;
 
-    public string LastName { get; set; } = null!;
+        public string? PhoneNumber { get; set; }
 
-    public string? OfficeContactFirstName { get; set; }
+        public string FirstName { get; set; } = null!;
 
-    public string? OfficeContactLastName { get; set; }
+        public string LastName { get; set; } = null!;
 
-    public string? OfficeContactEmail { get; set; }
+        public string? OfficeContactFirstName { get; set; }
 
-    public string? OfficeContactPhone { get; set; }
-    public string? LenderListUrl { get; set; }
-    public string? CellNumber { get; set; }
-    public string? EmailId { get; set; }
-    public string? StreetNumber { get; set; }
+        public string? OfficeContactLastName { get; set; }
 
-    public string? StreetName { get; set; }
+        public string? OfficeContactEmail { get; set; }
 
-    public string? ApartmentNumber { get; set; }
-    public string? ProfileImage { get; set; }
+        public string? OfficeContactPhone { get; set; }
+        public string? LenderListUrl { get; set; }
+        public string? CellNumber { get; set; }
+        public string? EmailId { get; set; }
+        public string? StreetNumber { get; set; }
 
-    public int? GetSms { get; set; }
+        public string? StreetName { get; set; }
 
-    public int? GetEmail { get; set; }
+        public string? ApartmentNumber { get; set; }
+        public string? ProfileImage { get; set; }
+
+        public int? GetSms { get; set; }
+
+        public int? GetEmail { get; set; }
+
+        public DateTime? ModifiedDateTime { get; set; }
+    }
 }

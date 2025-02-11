@@ -1,9 +1,10 @@
-﻿namespace DBL.Backend;
-
-public class ServiceResponse<T>
+﻿namespace DBL.Backend
 {
-    public Exception Error;
-    public string Message;
-    public T Response;
-    public bool Success;
+    public class ServiceResponse<T>
+    {
+        public Boolean Success;
+        public String Message;
+        public T Response;
+        public Exception Error;
+    }
 }

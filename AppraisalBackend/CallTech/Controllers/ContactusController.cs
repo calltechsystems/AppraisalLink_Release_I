@@ -2,35 +2,51 @@
 using DAL.Repository;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CallTech.Controllers;
-
-[Route("api/com.appraisalland.Contactus")]
-[ApiController]
-public class ContactUsController : ControllerBase
+namespace CallTech.Controllers
 {
-    private readonly IContactUsRepository _contactUsRepository;
-    private readonly Log _log = new();
-
-    public ContactUsController(IContactUsRepository contactUsRepository)
+    /// <summary>
+    /// 
+    /// </summary>
+    [Route("api/com.appraisalland.Contactus")]
+    [ApiController]
+    public class ContactusController : ControllerBase
     {
-        _contactUsRepository = contactUsRepository;
-    }
+        private readonly IContactusRepository _contactusRepository;
+        Log log = new Log();
 
-    // [Authorize]
-    [HttpPost("createcontactus")]
-    public async Task<IActionResult> CreateContactUs([FromBody] ContactUsDto contactUs)
-    {
-        _log.writeLog("CreateContactUs Function started");
-        try
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="contactusRepository"></param>
+        public ContactusController(IContactusRepository contactusRepository)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-            await _contactUsRepository.CreateContactUsAsync(contactUs);
-
-            return Ok("ContactUs created successfully");
+            _contactusRepository = contactusRepository;
         }
-        catch (Exception ex)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="contactu"></param>
+        /// <returns></returns>
+       // [Authorize]
+        [HttpPost("createContactus")]
+        public async Task<IActionResult> createContactus([FromBody] ClsContactUs contactu)
         {
-            return StatusCode(500, $"Error creating ContactUs: {ex.Message}");
+            log.WriteLog("CreateContactus Function started");
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                await _contactusRepository.CreateContactusAsync(contactu);
+
+                return Ok("Contactus created successfully");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error creating Contactus: {ex.Message}");
+            }
         }
     }
 }

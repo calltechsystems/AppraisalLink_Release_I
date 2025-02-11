@@ -1,8 +1,9 @@
-﻿namespace DAL.Classes;
-
-public class AppraiserIsActiveCls
+﻿namespace DAL.Classes
 {
-    public long CompanyId { get; set; }
-    public long AppraiserId { get; set; }
-    public bool Value { get; set; }
+    public class AppraiserIsActiveCls
+    {
+        public long CompanyId { get; set; }
+        public long AppraiserId { get; set; }
+        public bool Value { get; set; }
+    }
 }

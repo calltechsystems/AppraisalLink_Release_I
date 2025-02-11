@@ -1,10 +1,12 @@
-﻿namespace DAL.Classes;
-
-public class ClsAssignProperty
+﻿namespace DAL.Classes
 {
-    public int Companyid { get; set; }
+    public class ClsAssignProperty
+    {
+        public int Companyid { get; set; }
 
-    public int Appraiserid { get; set; }
+        public int Appraiserid { get; set; }
 
-    public int Propertyid { get; set; }
+        public int Propertyid { get; set; }
+        public bool IsSelfAssigned { get; set; }
+    }
 }

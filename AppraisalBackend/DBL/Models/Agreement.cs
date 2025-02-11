@@ -1,16 +1,20 @@
-﻿namespace DBL.Models;
-
-public class Agreement
+﻿namespace DBL.Models
 {
-    public int Id { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    public partial class Agreement
+    {
+        public int Id { get; set; }
 
-    public string? Name { get; set; }
+        public string? Name { get; set; }
 
-    public string? Description { get; set; }
+        public string? Description { get; set; }
 
-    public DateTime? Startdate { get; set; }
+        public DateTime? Startdate { get; set; }
 
-    public string? Paypalagreementid { get; set; }
+        public string? Paypalagreementid { get; set; }
 
-    public int? Subscriptionid { get; set; }
+        public int? Subscriptionid { get; set; }
+    }
 }

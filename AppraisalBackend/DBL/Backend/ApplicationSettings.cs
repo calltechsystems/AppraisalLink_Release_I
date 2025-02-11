@@ -1,7 +1,8 @@
-﻿namespace DBL.Backend;
-
-public class ApplicationSettings
+﻿namespace DBL.Backend
 {
-    public string ClientId { get; set; }
-    public string ClientSecret { get; set; }
+    public class ApplicationSettings
+    {
+        public string ClientId { get; set; }
+        public string ClientSecret { get; set; }
+    }
 }

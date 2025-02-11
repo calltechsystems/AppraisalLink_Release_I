@@ -1,8 +1,9 @@
-﻿namespace DAL.Classes;
-
-public class ClsOrderStatus
+﻿namespace DAL.Classes
 {
-    public int OrderId { get; set; }
-    public string status { get; set; }
-    public bool value { get; set; }
+    public class ClsOrderStatus
+    {
+        public int OrderId { get; set; }
+        public string status { get; set; } = String.Empty;
+        public bool value { get; set; }
+    }
 }

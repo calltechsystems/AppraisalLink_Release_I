@@ -1,8 +1,12 @@
-﻿namespace DBL.Models;
-
-public class AdminArchiveUser
+﻿namespace DBL.Models
 {
-    public int Id { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    public partial class AdminArchiveUser
+    {
+        public int Id { get; set; }
 
-    public int? Userid { get; set; }
+        public int? Userid { get; set; }
+    }
 }
