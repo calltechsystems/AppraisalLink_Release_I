@@ -66,6 +66,8 @@ namespace DBL.Models
 
         public virtual DbSet<UserInformation> UserInformations { get; set; }
 
+        public virtual DbSet<Usertype> Usertypes { get; set; }
+
         public virtual DbSet<Wishlist> Wishlists { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -893,6 +895,9 @@ namespace DBL.Models
                 entity.Property(e => e.Paymentid)
                     .HasMaxLength(100)
                     .HasColumnName("paymentid");
+                entity.Property(e => e.PaypalSubscriptionStatus)
+                    .HasColumnType("character varying")
+                    .HasColumnName("paypalSubscriptionStatus");
                 entity.Property(e => e.PlanAmount).HasColumnName("plan_amount");
                 entity.Property(e => e.PlanName)
                     .HasColumnType("character varying")
@@ -938,6 +943,19 @@ namespace DBL.Models
                     .HasColumnName("resettokenexpiry");
                 entity.Property(e => e.UserType).HasColumnName("user_type");
                 entity.Property(e => e.VerifyEmailToken).HasColumnName("verify_email_token");
+            });
+
+            modelBuilder.Entity<Usertype>(entity =>
+            {
+                entity.HasKey(e => e.Id).HasName("usertype_pkey");
+
+                entity.ToTable("usertype");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Usertype1)
+                    .HasMaxLength(255)
+                    .HasColumnName("usertype");
+                entity.Property(e => e.Usertypeid).HasColumnName("usertypeid");
             });
 
             modelBuilder.Entity<Wishlist>(entity =>

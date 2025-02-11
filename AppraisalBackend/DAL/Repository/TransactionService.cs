@@ -23,7 +23,7 @@ namespace DAL.Repository
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task<List<TransactionLog>> GetTransactionsByUserId(int userId)
+        public List<TransactionLog> GetTransactionsByUserId(int userId)
         {
             bool Is_Active = false;
             List<TransactionLog> transactionLogs = new List<TransactionLog>();

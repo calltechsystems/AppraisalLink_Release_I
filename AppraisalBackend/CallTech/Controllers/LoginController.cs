@@ -129,6 +129,7 @@ namespace CallTech.Controllers
                     var transtion_log = _context.TransactionLogs
                                  .Where(x => x.UserId == User_Id && x.IsActive == true)
                                  .FirstOrDefault();
+                    short? Usedproperty = 0;
                     if (objsub != null)
                     {
 
@@ -138,6 +139,7 @@ namespace CallTech.Controllers
                             if (transtion_log.Paymentid == item.PaymentId)
                             {
                                 subscriptionDTOs.Add(item);
+                                Usedproperty = transtion_log.UsedProperties;
                             }
                         }
                     }
@@ -205,6 +207,7 @@ namespace CallTech.Controllers
                         UserType = user.UserType,
                         message = "Login successful",
                         UserSubscription = UserSubscription,
+                        Usedproperty = Usedproperty,
                         plans = plans,
                         Broker_Details = Broker_Details != null ? await Broker_Details : null,
                         Brokerage_Details = Brokerage_Details != null ? await Brokerage_Details : null,

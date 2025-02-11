@@ -275,21 +275,64 @@ namespace CallTech.Controllers
         public async Task<IActionResult> getSubcription(long userId)
         {
             int upgradeEligible = 0;
+            var activePaypalSubscriptionId = "";
+            var futurePaypalSubscriptionId = "";
 
-            int planCount = _AppraisallandContext.TransactionLogs
+            var transactions = _AppraisallandContext.TransactionLogs
                             .Where(t => t.UserId == userId)
-                            .Count();
+                            .ToList();
+          
 
-            if (planCount >= 2) { upgradeEligible = 0; }
-            else { upgradeEligible = 1; }
+            if (transactions.Count()==0)
+            {
+                return Ok(new
+                {
+                    messageCD = "001",
+                    description = "Subscription Details not found for the user"
+                   
+                });
+            }
+
+            if (transactions.Count() >= 2) 
+            { 
+                upgradeEligible = 0; 
+            }
+            else 
+            { 
+                upgradeEligible = 1; 
+            }
+
             var subcription_Dtails = _AppraisallandContext.Subscriptions
                                                     .Where(x => x.UserId == userId && x.EndDate >= DateTime.Today && x.PlanId != 0)
                                                     .OrderBy(x => x.EndDate)
                                                     .FirstOrDefault();
+            foreach (var transaction in transactions)
+            {
+                if (transaction.IsActive == true)
+                {
+                    if (transaction.IsActive == true && transaction.PaypalSubscriptionStatus == "Cancel")
+                    {
+                        upgradeEligible = 0;
+                    }
+
+                    var transactionDetails = _AppraisallandContext.PaypalTransactionLogs.Where(x => x.Userid == userId && x.Paymentid == transaction.Paymentid).FirstOrDefault();
+
+                    activePaypalSubscriptionId = transactionDetails.SubscriptionId;
+                }
+                else
+                {
+                    var transactionDetails = _AppraisallandContext.PaypalTransactionLogs.Where(x => x.Userid == userId && x.Paymentid == transaction.Paymentid).FirstOrDefault();
+
+                    futurePaypalSubscriptionId = transactionDetails.SubscriptionId;
+                }
+            }
+
             return Ok(new
             {
-                subcription_Dtails = subcription_Dtails,
-                upgradeEligible = upgradeEligible
+                subcription_Dtails,
+                upgradeEligible,
+                activePaypalSubscriptionId,
+                futurePaypalSubscriptionId
             });
         }
 
@@ -314,7 +357,7 @@ namespace CallTech.Controllers
         /// <returns></returns>
         [Authorize]
         [HttpGet("getAllSubscriptionHistory")]
-        public async Task<ActionResult> getAllSubscriptionHistory()
+       public async Task<ActionResult> getAllSubscriptionHistory()
         {
             var subcription_history = _AppraisallandContext.TransactionLogs.ToList();
             return Ok(subcription_history);
@@ -398,17 +441,22 @@ namespace CallTech.Controllers
         /// <returns></returns>
         [Authorize]
         [HttpPost("cancelRecurringSubscription")]
-        public async Task<IActionResult> cancelRecurringSubscription(CancelSubscriptionDetails cancelSubscriptionDetails)
+        public async Task<IActionResult> cancelRecurringSubscription(dynamic cancelSubscriptionDetails)
         {
             try
             {
+
+                string json = cancelSubscriptionDetails.ToString();
+                CancelSubscriptionDetails subscription = JsonConvert.DeserializeObject<CancelSubscriptionDetails>(json);
+
+
                 Log.WriteLog("start CancelRecurringSubscription function " + cancelSubscriptionDetails);
-                // WriteLogAndUploadToS3("start postRecurringSubscriptionsDetails function " + recurringPayPalSubscription);
-                if (cancelSubscriptionDetails == null)
+               // WriteLogAndUploadToS3("start postRecurringSubscriptionsDetails function " + recurringPayPalSubscription);
+                if (subscription == null)
                 {
                     return BadRequest("Cancel Subscription cannot be null.");
                 }
-                var status = await _servicesMiddlware.cancelRecurringSubscription(cancelSubscriptionDetails);
+                var status =await _servicesMiddlware.cancelRecurringSubscription(subscription);
                 if (status)
                 {
                     return Ok();

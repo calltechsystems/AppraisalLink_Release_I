@@ -319,6 +319,8 @@ namespace CallTech.Controllers
                         foreach (var bid in Bids_Details)
                         {
                             bid.AppraiserAssign = true;
+                            bid.Orderstatus=null;
+                            bid.Remark = null;
                             _AppraisallandContext.Bids.Update(bid);
                             _AppraisallandContext.SaveChanges();
                         }

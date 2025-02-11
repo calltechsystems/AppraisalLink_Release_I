@@ -40,9 +40,9 @@ namespace CallTech.Controllers
             log.WriteLog("AppraiserBid processing");
             try
             {
-                long? user_id = clsBid.AppraiserUserId;
-                var user_type = _context.UserInformations.Where(x => x.UserId == clsBid.AppraiserUserId).Select(x => x.UserType).FirstOrDefault();
-                if (user_type == 5)
+                long? user_id = clsBid.appraiserId;
+                var user_type=_context.UserInformations.Where(x=>x.UserId==clsBid.appraiserId).Select(x=>x.UserType).FirstOrDefault();
+                if (user_type==5)
                 {
                     var details = _context.Appraisers.Where(x => x.UserId == clsBid.AppraiserUserId).FirstOrDefault();
                     if (details == null)
@@ -199,12 +199,18 @@ namespace CallTech.Controllers
             log.WriteLog("updateApprasialStatus Function started");
             try
             {
+                var Bid_Details = _context.Bids.Where(x => x.BidId == quoteClass.Quoteid).FirstOrDefault();
+                var OrderId = Bid_Details.OrderId;
+                var Property = _context.Properties.Where(x => x.OrderId == OrderId).FirstOrDefault();
+                if(Property.Isonhold==true)
+                {
+                    return Ok(new { message = "Property Status is Hold" });
+                }
                 var bidDetails = _bid.UpdateStatus(quoteClass);
                 if (bidDetails != null)
                 {
-                    var Bid_Details = _context.Bids.Where(x => x.BidId == quoteClass.Quoteid).FirstOrDefault();
-                    var OrderId = Bid_Details.OrderId;
-                    var Property = _context.Properties.Where(x => x.OrderId == OrderId).FirstOrDefault();
+                   
+                   
                     if (Property != null)
                     {
                         Property.Orderstatus = quoteClass.OrderStatus;

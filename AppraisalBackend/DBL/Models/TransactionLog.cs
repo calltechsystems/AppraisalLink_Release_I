@@ -28,5 +28,7 @@
         public short? UsedProperties { get; set; }
 
         public short TotalProperties { get; set; }
+
+        public string? PaypalSubscriptionStatus { get; set; }
     }
 }

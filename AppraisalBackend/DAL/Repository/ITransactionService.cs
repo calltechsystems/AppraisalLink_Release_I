@@ -4,6 +4,6 @@ namespace DAL.Repository
 {
     public interface ITransactionService
     {
-        Task<List<TransactionLog>> GetTransactionsByUserId(int userId);
+        List<TransactionLog> GetTransactionsByUserId(int userId);
     }
 }

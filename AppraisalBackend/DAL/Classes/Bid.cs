@@ -10,6 +10,8 @@
 
         public long? UserId { get; set; }
 
+        public long? appraiserId { get; set; }
+
         public long? AppraiserUserId { get; set; }
 
         public int? Status { get; set; }
