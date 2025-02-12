@@ -28,7 +28,7 @@ const index = () => {
               <BreadCrumbBlog />
             </div>
           </div>
-          {/* End .row */}
+          
 
           <div className="row">
             <div className="col-lg-8">

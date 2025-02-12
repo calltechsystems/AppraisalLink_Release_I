@@ -133,7 +133,11 @@ const Index = ({ isView, propertyData }) => {
   const [isSubmitInProgress, setIsSubmitInProgress] = useState(false);
 
   useEffect(() => {
-    if (TimesTrigerredSubmission < 2 && isSubmitInProgress) {
+    if (
+      TimesTrigerredSubmission <= 2 &&
+      TimesTrigerredSubmission >= 1 &&
+      isSubmitInProgress
+    ) {
       submissionHandler();
     }
   }, [TimesTrigerredSubmission, isSubmitInProgress]);
@@ -185,8 +189,6 @@ const Index = ({ isView, propertyData }) => {
   const closeErrorModal = () => {
     setModalIsOpenError(false);
     setModalIsOpenError_01(false);
-    // setModalIsPlaneError(false);
-    location.reload(true);
   };
 
   useEffect(() => {
@@ -555,13 +557,18 @@ const Index = ({ isView, propertyData }) => {
             setModalIsOpen(false);
             router.push("/my-properties");
             setIsSubmitInProgress(false);
-            setTimesTrigerredSubmission(2);
+            setTimesTrigerredSubmission(0);
           })
           .catch((err) => {
-            if (TimesTrigerredSubmission >= 2) {
+            if (TimesTrigerredSubmission > 2) {
               setIsSubmitInProgress(false);
+              setTimesTrigerredSubmission(0);
               toast.dismiss();
-              toast.error(err.response.data.error);
+              toast.error(
+                err.response.data.error ||
+                  "Got error while updating the Property details."
+              );
+              setdisable(false);
             } else {
               setTimesTrigerredSubmission(TimesTrigerredSubmission + 1);
             }
@@ -677,13 +684,13 @@ const Index = ({ isView, propertyData }) => {
   };
 
   const initiateTheSubmit = () => {
+    setTimesTrigerredSubmission(TimesTrigerredSubmission + 1);
     setIsSubmitInProgress(true);
   };
 
   const submissionHandler = async () => {
     try {
       let uploadedUrlList = "";
-      setTimesTrigerredSubmission(TimesTrigerredSubmission + 1);
       toast.loading(`${updateView ? "Updating the data" : "Saving the data"}`);
 
       // Create an array of promises only for files that need uploading
@@ -710,11 +717,15 @@ const Index = ({ isView, propertyData }) => {
         finalSubmitHandler(uploadedUrlList);
       }
     } catch (err) {
-      if (TimesTrigerredSubmission >= 2) {
+      if (TimesTrigerredSubmission > 2) {
         setIsSubmitInProgress(false);
+        setTimesTrigerredSubmission(0);
+        setDisable(false);
+        toast.error("Got error while saving, trying again.");
+        console.error(err);
+      } else {
+        setTimesTrigerredSubmission(TimesTrigerredSubmission + 1);
       }
-      toast.error("Got error while saving, trying again.");
-      console.error(err);
     } finally {
       toast.dismiss();
     }
@@ -895,24 +906,26 @@ const Index = ({ isView, propertyData }) => {
             setSuccessModal(true);
           })
           .catch((err) => {
-            if (TimesTrigerredSubmission >= 2) {
+            if (TimesTrigerredSubmission > 2) {
+              const status = err.response?.status;
+              toast.dismiss();
+              if (status == 403) {
+                setModalIsOpenError(true);
+              } else if (status == 404) {
+                setErrorMessage(err.response?.data?.error || "Not Found");
+                setModalIsOpenError_01(true);
+              } else if (/^5\d{2}$/.test(String(status))) {
+                toast.error("Server error occurred. Try Again!");
+              } else {
+                setErrorMessage(
+                  err.response?.data?.error || "An unexpected error occurred"
+                );
+                setModalIsOpenError_01(true);
+              }
+
               setIsSubmitInProgress(false);
-              setTimesTrigerredSubmission(2);
-              const status = err.response?.status; // Corrected status extraction
-            toast.dismiss();
-            if (status === 403) {
-              setModalIsOpenError(true);
-            } else if (status === 404) {
-              setErrorMessage(err.response?.data?.error || "Not Found");
-              setModalIsOpenError_01(true);
-            } else if (/^5\d{2}$/.test(String(status))) {
-              toast.error("Server error occurred. Try Again!");
-            } else {
-              setErrorMessage(
-                err.response?.data?.error || "An unexpected error occurred"
-              );
-              setModalIsOpenError_01(true);
-            }
+              setTimesTrigerredSubmission(0);
+              setdisable(false);
             } else {
               setTimesTrigerredSubmission(TimesTrigerredSubmission + 1);
             }
