@@ -24,25 +24,27 @@ export default async function handler(request, response) {
 
     const token = request.headers.authorization;
 
+    const payload = {
+      userId,
+      planId,
+      customId,
+      paymentId,
+      cancellationDateTime,
+      paymentStatus,
+      paymenttype,
+      currencycode,
+      subscriber,
+      paymentSource,
+      applicationContext,
+      paymentRequestSent,
+      paymentRequestReceived,
+      paypalSubscriptionId,
+      subscriptionStatus
+    };
+
     const userResponse = await axios.post(
       `${domain}/com.appraisalland.Payments/cancelRecurringSubscription`,
-      {
-        userId,
-        planId,
-        customId,
-        paymentId,
-        cancellationDateTime,
-        paymentStatus,
-        paymenttype,
-        currencycode,
-        subscriber,
-        paymentSource,
-        applicationContext,
-        paymentRequestSent,
-        paymentRequestReceived,
-        paypalSubscriptionId,
-        subscriptionStatus
-      },
+      payload,
       {
         headers: {
           Authorization: token,
