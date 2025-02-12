@@ -4,8 +4,9 @@ import { CldUploadWidget } from "next-cloudinary";
 import ReactInputMask from "react-input-mask";
 import CheckBoxFilter from "../../common/CheckBoxFilter";
 import toast from "react-hot-toast";
-import axios from "axios";
-import { uploadFile } from "./functions";
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
+
 const DetailedInfo = ({
   onCancelHandler,
   isDisable,
@@ -76,38 +77,45 @@ const DetailedInfo = ({
     }
   };
 
-  const downloadFile = (item) => {
-    if (item.uploadedUrl && item.uploadedUrl.includes('s3.amazonaws.com')) {
-      // Download from S3
-      const link = document.createElement('a');
-      link.href = item.uploadedUrl;
-      link.download = item.file?.name || 'downloaded_file';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } else if (item.file) {
-      // Handle local file download
-      if (item.file instanceof File || item.file instanceof Blob) {
-        const fileURL = URL.createObjectURL(item.file);
-        const link = document.createElement('a');
-        link.href = fileURL;
-        link.download = item.file.name || 'downloaded_file';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(fileURL);
-      } else {
-        console.error("Invalid file type or structure:", item.file);
+  const downloadAllAttachments = async () => {
+    const zip = new JSZip();
+    const folder = zip.folder("Attachments"); // Create a folder named 'Attachments'
+  
+    for (const fileItem of attachment) {
+      if (fileItem.uploadedUrl) {
+        // Fetch file from uploaded URL (e.g., S3)
+        const response = await fetch(fileItem.uploadedUrl);
+        const blob = await response.blob();
+        const fileName = fileItem.file?.name || "downloaded_file";
+        folder.file(fileName, blob); // Add to 'Attachments' folder in ZIP
+      } else if (fileItem.file) {
+        // Add local files directly
+        folder.file(fileItem.file.name, fileItem.file);
       }
-    } else {
-      console.error("No valid file source found!");
     }
+  
+    // Generate the zip file with attachments inside the 'Attachments' folder
+    zip.generateAsync({ type: "blob" }).then((content) => {
+      saveAs(content, "attachments.zip"); // Final zip file name
+    });
   };
-  
-  
 
   const handleUpload = async (e) => {
     const file = e.target.files[0];
+    const maxTotalSize = 25 * 1024 * 1024; // 25 MB in bytes
+
+    // Calculate current total size of attachments
+    const currentTotalSize = attachment.reduce(
+      (total, item) => total + item.file.size,
+      0
+    );
+    // Check if adding the new file exceeds the limit
+    if (currentTotalSize + file.size > maxTotalSize) {
+      toast.error(
+        "Total attachments size exceeds 25 MB. Please remove some files or upload smaller ones."
+      );
+      return;
+    }
 
     const updatedAttachment = [
       ...attachment,
@@ -115,26 +123,11 @@ const DetailedInfo = ({
         file,
         type: file.type,
         previewUrl: getPreviewUrl(file),
-        uploadedUrl: ''
+        uploadedUrl: "",
       },
     ];
 
     setAttachment(updatedAttachment);
-
-    //Upload Image S3
-    // toast.loading("Uploading..");
-    // try {
-    //   const generatedUrl = await uploadFile(file);
-    //   toast.dismiss();
-    //   toast.success("Uploaded Successfully");
-    //   let allUrl = [...filesUrl];
-    //   allUrl.push(generatedUrl);
-    //   setFilesUrl(allUrl);
-    //   setAttachment(generatedUrl);
-    // } catch (err) {
-    //   toast.dismiss();
-    //   toast.error("Try Again!");
-    // }
   };
 
   // Handle delete file
@@ -173,6 +166,7 @@ const DetailedInfo = ({
 
     setApplicantNumber(truncatedValue);
   };
+
   return (
     <>
       <div className="row">
@@ -401,8 +395,10 @@ const DetailedInfo = ({
                   Upload File
                   <input
                     type="file"
+                    accept=".doc, .docx, .pdf, .xls, .xlsx, .ppt, .pptx, .jpg, .jpeg, .png, .gif, .mp3, .mp4, .zip, .txt, .csv"
                     onChange={(e) => handleUpload(e)}
                     style={{ display: "none" }}
+                    multiple // Allows multiple files if needed
                   />
                 </label>
               </div>
@@ -411,7 +407,13 @@ const DetailedInfo = ({
           <div className="col-xl-12">
             <div className="my_profile_setting_input overflow-hidden mt20 text-center">
               <div className="d-flex flex-wrap">
-                
+                {attachment.length > 0 && <button
+                  className="btn btn-success m-2"
+                  onClick={downloadAllAttachments}
+                >
+                  Download All Attachments
+                </button>}
+
                 {attachment?.map((file, index) => {
                   return (
                     <div key={index} className="position-relative m-2">
@@ -443,14 +445,6 @@ const DetailedInfo = ({
                       >
                         {file.file.name}
                       </small>
-
-                      <button
-                        type="button"
-                        className="btn btn-success btn-sm m-1"
-                        onClick={() => downloadFile(file)}
-                      >
-                        download
-                      </button>
                     </div>
                   );
                 })}
