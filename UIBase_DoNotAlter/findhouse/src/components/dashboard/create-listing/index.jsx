@@ -134,13 +134,11 @@ const Index = ({ isView, propertyData }) => {
 
   useEffect(() => {
     if (TimesTrigerredSubmission < 2 && isSubmitInProgress) {
-      console.log({ TimesTrigerredSubmission });
       submissionHandler();
     }
   }, [TimesTrigerredSubmission, isSubmitInProgress]);
 
   const onChangeHandler = (value, field, otherField) => {
-    console.log(value, field, otherField);
     if (String(value) === "Other") {
       otherField(true);
     } else {

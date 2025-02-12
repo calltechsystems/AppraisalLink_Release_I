@@ -23,14 +23,40 @@ const ProfileInfo = ({
   const [profilePhoto, setProfilePhoto] = useState(null);
   let userData = JSON.parse(localStorage.getItem("user")) || {};
   const router = useRouter();
+  
+  useEffect(() => {
+    let updatedList = {};
+    if (userData?.profileImage) {
+        const name = userData?.profileImage.split("/").pop().split("?")[0] || '';
+        updatedList['profileImage'] = {
+          file: {name},
+          previewUrl: name ? name.includes('zip') ?
+          "/assets/Attachments/zipIcon.png" : 
+          name.includes('pdf') ?
+          "/assets/Attachments/pdfIcon.png" :
+          url : '',
+          uploadedUrl: url,
+          fieldType: 'profileImage'
+        };
+      }
 
-  // useEffect(() => {
-  //   setUploadingFiles({
-  //     "profileImage": {
-  //       file:{name: }
-  //     }
-  //   })
-  // },[userData])
+      if (userData?.lenderListUrl) {
+        const name = userData?.lenderListUrl.split("/").pop().split("?")[0];
+        updatedList['LenderList'] = {
+          file: {name},
+          previewUrl: name.includes('zip') ?
+          "/assets/Attachments/zipIcon.png" : 
+          name.includes('pdf') ?
+          "/assets/Attachments/pdfIcon.png" :
+          url,
+          uploadedUrl: url,
+          fieldType: 'LenderList'
+        };
+      }
+
+      setUploadingFiles({...updatedList});
+    
+  }, [userData]);
 
   const [selectedImage2, setSelectedImage2] = useState({
     name:
