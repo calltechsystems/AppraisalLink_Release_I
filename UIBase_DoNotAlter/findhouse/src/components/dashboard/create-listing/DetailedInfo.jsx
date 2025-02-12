@@ -9,7 +9,6 @@ import { uploadFile } from "./functions";
 const DetailedInfo = ({
   onCancelHandler,
   isDisable,
-  changeUrlToStringHandler,
   updateHandler,
   remark,
   setRemark,
@@ -38,7 +37,6 @@ const DetailedInfo = ({
   setDisable,
 }) => {
   const router = useRouter();
-  console.log(filesUrl, attachment);
   const [isButtonDisabled, setButtonDisabled] = useState(false);
 
   const [uploadedFiles, setUploadedFiles] = useState([]);
@@ -63,21 +61,86 @@ const DetailedInfo = ({
     console.log("Number of selected images:", images.length);
   };
 
-  const handleUpload = async (e, type) => {
-    const file = e.target.files[0];
-    toast.loading("Uploading..");
-    try {
-      const generatedUrl = await uploadFile(file);
-      toast.dismiss();
-      toast.success("Uploaded Successfully");
-      let allUrl = [...filesUrl];
-      allUrl.push(generatedUrl);
-      setFilesUrl(allUrl);
-      setAttachment(generatedUrl);
-    } catch (err) {
-      toast.dismiss();
-      toast.error("Try Again!");
+  const getPreviewUrl = (file) => {
+    if (file.type.startsWith("image/")) {
+      return URL.createObjectURL(file);
+    } else if (file.type === "application/pdf") {
+      return "/assets/Attachments/pdfIcon.png";
+    } else if (
+      file.type === "application/zip" ||
+      file.type === "application/x-zip-compressed"
+    ) {
+      return "/assets/Attachments/zipIcon.png";
+    } else {
+      return "/assets/Attachments/fileIcon.png";
     }
+  };
+
+  const downloadFile = (item) => {
+    if (item.uploadedUrl && item.uploadedUrl.includes('s3.amazonaws.com')) {
+      // Download from S3
+      const link = document.createElement('a');
+      link.href = item.uploadedUrl;
+      link.download = item.file?.name || 'downloaded_file';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else if (item.file) {
+      // Handle local file download
+      if (item.file instanceof File || item.file instanceof Blob) {
+        const fileURL = URL.createObjectURL(item.file);
+        const link = document.createElement('a');
+        link.href = fileURL;
+        link.download = item.file.name || 'downloaded_file';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(fileURL);
+      } else {
+        console.error("Invalid file type or structure:", item.file);
+      }
+    } else {
+      console.error("No valid file source found!");
+    }
+  };
+  
+  
+
+  const handleUpload = async (e) => {
+    const file = e.target.files[0];
+
+    const updatedAttachment = [
+      ...attachment,
+      {
+        file,
+        type: file.type,
+        previewUrl: getPreviewUrl(file),
+        uploadedUrl: ''
+      },
+    ];
+
+    setAttachment(updatedAttachment);
+
+    //Upload Image S3
+    // toast.loading("Uploading..");
+    // try {
+    //   const generatedUrl = await uploadFile(file);
+    //   toast.dismiss();
+    //   toast.success("Uploaded Successfully");
+    //   let allUrl = [...filesUrl];
+    //   allUrl.push(generatedUrl);
+    //   setFilesUrl(allUrl);
+    //   setAttachment(generatedUrl);
+    // } catch (err) {
+    //   toast.dismiss();
+    //   toast.error("Try Again!");
+    // }
+  };
+
+  // Handle delete file
+  const handleDelete = (index) => {
+    const updatedAttachments = attachment.filter((_, i) => i !== index);
+    setAttachment(updatedAttachments);
   };
 
   const errorLabelStyle = { borderColor: "red" };
@@ -334,39 +397,64 @@ const DetailedInfo = ({
                 </label>
               </div>
               <div className="col-lg-5 mb-2">
-                <label className="upload">
-                  <input type="file" onChange={(e) => handleUpload(e)} />
+                <label className="btn btn-primary">
+                  Upload File
+                  <input
+                    type="file"
+                    onChange={(e) => handleUpload(e)}
+                    style={{ display: "none" }}
+                  />
                 </label>
               </div>
             </div>
           </div>
           <div className="col-xl-12">
             <div className="my_profile_setting_input overflow-hidden mt20 text-center">
-              {filesUrl.length > 0
-                ? filesUrl.map((url, index) => {
-                    <div
-                      className=""
-                      style={{
-                        width: "20px",
-                        height: "20px",
-                        cursor: "pointer",
-                      }}
-                    >
-                      <span className="flaticon-garbage text-danger"></span>
-                    </div>;
-                    return (
-                      <>
-                        <img key={index} src={url} width={120} height={120} />
-                      </>
-                    );
-                  })
-                : attachment[0] !== ""
-                ? attachment.map((url, index) => {
-                    return (
-                      <img key={index} src={url} width={120} height={120} />
-                    );
-                  })
-                : ""}
+              <div className="d-flex flex-wrap">
+                
+                {attachment?.map((file, index) => {
+                  return (
+                    <div key={index} className="position-relative m-2">
+                      <img
+                        src={file.previewUrl}
+                        alt="preview"
+                        className="img-thumbnail"
+                        style={{
+                          width: "120px",
+                          height: "120px",
+                          objectFit: "cover",
+                        }}
+                      />
+                      <button
+                        type="button"
+                        className="btn btn-danger btn-sm position-absolute top-0 end-0 m-1"
+                        onClick={() => handleDelete(index)}
+                      >
+                        &times;
+                      </button>
+                      <small
+                        className="d-block text-muted mt-1"
+                        style={{
+                          maxWidth: "120px",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {file.file.name}
+                      </small>
+
+                      <button
+                        type="button"
+                        className="btn btn-success btn-sm m-1"
+                        onClick={() => downloadFile(file)}
+                      >
+                        download
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
           <div className="col-xl-12">
@@ -382,9 +470,6 @@ const DetailedInfo = ({
               )}
               {!isDisable &&
                 (propertyData ? (
-                  // <button className="btn btn5" onClick={submitHandler}>
-                  //   Update
-                  // </button>
                   <button
                     disabled={disable}
                     className={`btn btn5 ${isButtonDisabled ? "disabled" : ""}`}
@@ -397,7 +482,6 @@ const DetailedInfo = ({
                     disabled={disable}
                     className="btn btn5"
                     onClick={submitHandler}
-                    // disabled={!haveSubscription}
                   >
                     Submit
                   </button>

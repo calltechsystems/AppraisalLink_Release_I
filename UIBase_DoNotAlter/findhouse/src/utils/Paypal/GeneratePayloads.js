@@ -324,7 +324,7 @@ const generateResponsePayload = (
   } 
   else if(paymentType === "cancel_subscription"){
     return {
-      customId: generateCustomId(userData?.userId, id),
+      customId: generateCustomId(userData?.userId, currentSubscription?.planId),
       userId: userData?.userId,
       planId: Number(currentSubscription?.planId),
       paypalSubscriptionId: getCurrentIdToBeCancelled(currentSubscription),
@@ -345,14 +345,14 @@ const generateResponsePayload = (
         cancelUrl: "https://appraisal-eta.vercel.app/my-plans",
       },
       paymentSource: {
-        source: response?.paymentDetails?.paymentSource,
+        source: "N.A.",
       },
       paymentStatus: "COMPLETED",
       paymenttype: "RECURRING",
       currencycode: "CAD",
-      paymentId: response?.paymentDetails?.orderID,
+      paymentId: "N.A.",
       paymentRequestSent: JSON.stringify(request),
-      paymentRequestReceived: JSON.stringify(response),
+      paymentRequestReceived: "N.A.",
       subscriptionStatus: "CANCELLED",
 
     }

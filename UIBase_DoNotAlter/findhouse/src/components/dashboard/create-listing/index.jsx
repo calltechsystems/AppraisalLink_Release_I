@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Header from "../../common/header/dashboard/Header";
@@ -8,13 +7,13 @@ import MobileMenu from "../../common/header/MobileMenu_02";
 import CreateList from "./CreateList";
 import DetailedInfo from "./DetailedInfo";
 import LocationField from "./LocationField";
-import { encryptionData } from "../../../utils/dataEncryption";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { typeOfBuilding } from "./data";
 import Link from "next/link";
 import Image from "next/image";
 import { useModal } from "../../../context/ModalContext";
+import { uploadFile } from "./functions";
 
 const Index = ({ isView, propertyData }) => {
   const router = useRouter();
@@ -37,8 +36,9 @@ const Index = ({ isView, propertyData }) => {
   const [modalIsOpenError_01, setModalIsOpenError_01] = useState(false);
 
   const changeStringUrlHandler = (inputString) => {
-    const resultArray = inputString?.split(",");
-    return resultArray;
+    // const resultArray = inputString?.split(",");
+    // return resultArray;
+    return [];
   };
   const [errorMessage, setErrorMessage] = useState("");
   const [refresh, setRefresh] = useState(false);
@@ -106,7 +106,7 @@ const Index = ({ isView, propertyData }) => {
   const [applicantAddress, setApplicantAddress] = useState(
     propertyData?.applicantAddress || ""
   );
-  const [attachment, setAttachment] = useState(propertyData?.attachment || "");
+  const [attachment, setAttachment] = useState([]);
   const [filesUrl, setFilesUrl] = useState([]);
   const [purpose, setPurpose] = useState(propertyData?.purpose || "");
 
@@ -126,16 +126,18 @@ const Index = ({ isView, propertyData }) => {
 
   const [otherUrgency, setOtherUrgency] = useState(false);
 
-  const [image, setImage] = useState(propertyData?.image || "");
+  const [image, setImage] = useState(propertyData?.image || []);
   const [buttonDisabled, setButtonDisabled] = useState(false);
 
-  const changeUrlToStringHandler = () => {
-    const resultString = filesUrl.join(",");
-    if (updateView) {
-      return attachment + "," + resultString;
+  const [TimesTrigerredSubmission, setTimesTrigerredSubmission] = useState(0);
+  const [isSubmitInProgress, setIsSubmitInProgress] = useState(false);
+
+  useEffect(() => {
+    if (TimesTrigerredSubmission < 2 && isSubmitInProgress) {
+      console.log({TimesTrigerredSubmission})
+      submissionHandler();
     }
-    return resultString;
-  };
+  }, [TimesTrigerredSubmission, isSubmitInProgress]);
 
   const onChangeHandler = (value, field, otherField) => {
     console.log(value, field, otherField);
@@ -170,9 +172,6 @@ const Index = ({ isView, propertyData }) => {
       year: "numeric",
       month: "short",
       day: "numeric",
-      // hour: "numeric",
-      // minute: "numeric",
-      // second: "numeric",
       hour12: true, // Set to false for 24-hour format
     };
 
@@ -191,6 +190,27 @@ const Index = ({ isView, propertyData }) => {
     // setModalIsPlaneError(false);
     location.reload(true);
   };
+
+  useEffect(() => {
+    if (propertyData?.attachment) {
+      const array = propertyData?.attachment?.split(",").filter((item) => item.trim() !== "");
+      let updatedList = [];
+      array.forEach((url) => {
+        const name = url.split("/").pop().split("?")[0];
+        updatedList.push({
+          file: {name},
+          previewUrl: name.includes('zip') ?
+          "/assets/Attachments/zipIcon.png" : 
+          name.includes('pdf') ?
+          "/assets/Attachments/pdfIcon.png" :
+          url,
+          uploadedUrl: url,
+        });
+      });
+
+      setAttachment(updatedList);
+    }
+  }, [propertyData]);
 
   useEffect(() => {
     if (streetNameRef !== "") {
@@ -254,14 +274,6 @@ const Index = ({ isView, propertyData }) => {
     }
   }, [buildinRef]);
 
-  // useEffect(() => {
-  //   if (buildinRef !== "") {
-  //     const updatedError = errorLabel.filter((err) => err !== "typeOfBuilding");
-  //     console.log("building", buildinRef, updatedError);
-  //     setErrorLabel(updatedError);
-  //   }
-  // }, [buildinRef]);
-
   useEffect(() => {
     if (purpose !== "") {
       let updatedError = errorLabel.filter((err) => {
@@ -301,10 +313,6 @@ const Index = ({ isView, propertyData }) => {
       setErrorLabel(updatedError);
     }
   }, [typeOfAppraisal]);
-
-  useEffect(() => {
-    console.log(filesUrl);
-  }, [filesUrl]);
 
   useEffect(() => {
     if (applicantFirstName !== "") {
@@ -402,31 +410,10 @@ const Index = ({ isView, propertyData }) => {
     }
   }, [purpose]);
 
-  // useEffect(() => {
-  //   userData = JSON.parse(localStorage.getItem("user"));
-  //   console.log(userData.userSubscription.$values);
-
-  //   if (!userData) {
-  //     router.push("/login");
-  //   }
-  //   // else if( userData.userSubscription.$values !== null ){
-  //   //   router.push("/my-plans");
-  //   // }
-  //   else if (userData?.broker_Details?.firstName === "") {
-  //     router.push("/my-profile");
-  //   }
-  // }, []);
-
-  const calculateDateHandler = () => {
-    const type = urgencyRef;
-  };
-
-  const onCancelModalHandler = () => {
-    window.location.reload();
-  };
-  const updateHandler = () => {
+  const updateHandler = (attachmentList) => {
     setdisable(true);
     setModalIsOpen(false);
+    toast.loading("Updating the data");
     const nameRegex = /^[A-Za-z]+$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     const userInfo = JSON.parse(localStorage.getItem("user"));
@@ -480,7 +467,7 @@ const Index = ({ isView, propertyData }) => {
             : typeOfAppraisal,
         purpose: String(purpose) === "Other" ? otherPurposeValue : purpose,
 
-        attachment: changeUrlToStringHandler(),
+        attachment: attachmentList,
         image: "",
         quoteRequiredDate: appraisalQuoteDate,
         remark: remark ? remark : "",
@@ -545,7 +532,7 @@ const Index = ({ isView, propertyData }) => {
         }
         setErrorLabel(tempError);
       } else {
-        const encryptedData = encryptionData(payload);
+        // const encryptedData = encryptionData(payload);
 
         const url = window.location.pathname;
 
@@ -553,7 +540,7 @@ const Index = ({ isView, propertyData }) => {
 
         toast.loading("Updating the property..");
         axios
-          .put("/api/addPropertyByBroker", encryptedData, {
+          .put("/api/addPropertyByBroker", payload, {
             headers: {
               Authorization: `Bearer ${userData.token}`,
               "Content-Type": "application/json",
@@ -567,13 +554,23 @@ const Index = ({ isView, propertyData }) => {
             toast.success("Successfully submitted !!");
             setModalIsOpen(false);
             router.push("/my-properties");
+            setIsSubmitInProgress(false);
+            setTimesTrigerredSubmission(2);
           })
           .catch((err) => {
+            if(TimesTrigerredSubmission >= 2){
+              setIsSubmitInProgress(false);
             toast.dismiss();
             toast.error(err.response.data.error);
+            }
+            else{
+              setTimesTrigerredSubmission(TimesTrigerredSubmission + 1)
+            }
           });
       }
     }
+
+    toast.dismiss()
   };
 
   const onCancelHandler = () => {
@@ -613,7 +610,7 @@ const Index = ({ isView, propertyData }) => {
       estimatedValue: Number(estimatedValue),
       lenderInformation: lenderInformation,
       applicantAddress: "",
-      attachment: changeUrlToStringHandler(),
+      attachment,
       image: "",
       quoteRequiredDate: appraisalQuoteDate,
       remark: remark ? remark : "",
@@ -680,138 +677,52 @@ const Index = ({ isView, propertyData }) => {
     setButtonDisabled(true);
   };
 
-  // const submitHandler = () => {
-  //   const nameRegex = /^[A-Za-z]+$/;
-  //   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-  //   const userInfo = JSON.parse(localStorage.getItem("user"));
-  //   const phoneNumberRegex = /^\d{10}$/;
+  const initiateTheSubmit = () => {
+    setIsSubmitInProgress(true);
+  };
 
-  //   if (
-  //     (!nameRegex.test(applicantFirstName) && applicantFirstName) ||
-  //     (!nameRegex.test(applicantLatsName) && applicantLatsName)
-  //   ) {
-  //     toast.error("Please Provide a Valid Applicant Name");
-  //   } else if (!emailRegex.test(applicantEmail) && applicantEmail) {
-  //     toast.error("Please Provide a Valid Email Address");
-  //   } else if (!phoneNumberRegex.test(applicantNumber) && applicantNumber) {
-  //     toast.error("Please Provide a Valid Phone Number");
-  //   } else if (
-  //     (String(purpose) === "Purchase" || String(purpose) === "Refinance") &&
-  //     lenderInformation === ""
-  //   ) {
-  //     toast.error("Please fill the Lender Information for this Purpose option");
-  //   } else {
-  //     const payload = {
-  //       streetName: streetNameRef,
-  //       streetNumber: streetNumberRef,
-  //       city: cityRef,
-  //       state: stateRef,
-  //       zipCode: zipCodeRef,
-  //       community: communityRef,
-  //       applicantFirstName: applicantFirstName,
-  //       applicantLastName: applicantLatsName,
-  //       applicantPhoneNumber: applicantNumber,
-  //       applicantEmailAddress: applicantEmail,
-  //       bidLowerRange: Number(bidLowerRangeRef),
-  //       bidUpperRange: Number(bidLowerRangeRef),
-  //       typeOfBuilding:
-  //         String(buildinRef) === "Other"
-  //           ? otherTypeOfBuildingValue
-  //           : buildinRef,
-  //       urgency: urgencyRef,
-  //       typeOfAppraisal:
-  //         String(typeOfAppraisal) === "Other"
-  //           ? otherTypeOfAppraisalValue
-  //           : typeOfAppraisal,
-  //       purpose: String(purpose) === "Other" ? otherPurposeValue : purpose,
-  //       propertyStatus: true,
-  //       estimatedValue: Number(estimatedValue),
-  //       lenderInformation: lenderInformation,
-  //       applicantAddress: "",
-  //       attachment: changeUrlToStringHandler(),
-  //       image: "",
-  //       quoteRequiredDate: appraisalQuoteDate,
-  //       remark: remark ? remark : "",
-  //     };
-  //     console.log(payload);
-  //     if (
-  //       !payload.streetName ||
-  //       !payload.streetNumber ||
-  //       !payload.city ||
-  //       !payload.state ||
-  //       !payload.zipCode ||
-  //       !payload.typeOfBuilding ||
-  //       !payload.typeOfAppraisal ||
-  //       !payload.purpose ||
-  //       !payload.estimatedValue ||
-  //       !payload.quoteRequiredDate ||
-  //       !payload.urgency ||
-  //       !payload.applicantEmailAddress ||
-  //       !payload.applicantFirstName ||
-  //       !payload.applicantPhoneNumber ||
-  //       !payload.applicantLastName
-  //     ) {
-  //       let tempError = [];
+  const submissionHandler = async () => {
+    try {
+      let uploadedUrlList = "";
+      setTimesTrigerredSubmission(TimesTrigerredSubmission + 1);
+      toast.loading(`${updateView ? "Updating the data" : "Saving the data"}`);
 
-  //       if (!payload.streetName) {
-  //         tempError.push("streetName");
-  //       }
-  //       if (!payload.streetNumber) {
-  //         tempError.push("streetNumber");
-  //       }
-  //       if (!payload.city) {
-  //         tempError.push("city");
-  //       }
-  //       if (!payload.state) {
-  //         tempError.push("state");
-  //       }
-  //       if (!payload.zipCode) {
-  //         tempError.push("zipCode");
-  //       }
-  //       if (!payload.typeOfBuilding) {
-  //         tempError.push("typeOfBuilding");
-  //       }
-  //       if (!payload.estimatedValue) {
-  //         tempError.push("estimatedValue");
-  //       }
-  //       if (!payload.purpose) {
-  //         tempError.push("purpose");
-  //       }
-  //       if (!payload.typeOfAppraisal) {
-  //         tempError.push("typeOfAppraisal");
-  //       }
-  //       if (!payload.applicantLastName) {
-  //         tempError.push("applicantLastName");
-  //       }
-  //       if (!payload.applicantFirstName) {
-  //         tempError.push("applicantFirstName");
-  //       }
-  //       if (!payload.applicantPhoneNumber) {
-  //         tempError.push("applicantPhoneNumber");
-  //       }
-  //       if (!payload.applicantEmailAddress) {
-  //         tempError.push("applicantEmailAddress");
-  //       }
-  //       if (!payload.urgency) {
-  //         tempError.push("urgency");
-  //       }
-  //       if (!payload.quoteRequiredDate) {
-  //         tempError.push("quoteRequiredDate");
-  //       }
-  //       setErrorLabel(tempError);
-  //       console.log(tempError);
-  //       window.scrollTo({
-  //         top: 0,
-  //         behavior: "smooth",
-  //       });
-  //     } else {
-  //       setModalIsOpen(true);
-  //       setButtonDisabled(true);
-  //     }
-  //   }
-  // };
+      // Create an array of promises only for files that need uploading
+      const uploadPromises = attachment.map(async (file) => {
+        if (file.uploadedUrl === "") {
+          const generatedURL = await uploadFile(file.file);
+          uploadedUrlList += generatedURL + ",";
+          return {
+            ...file,
+            uploadedUrl: generatedURL,
+          };
+        } else {
+          uploadedUrlList += file.uploadedUrl + ",";
+          return file;
+        }
+      });
 
-  const finalSubmitHandler = () => {
+      // Wait for all the necessary uploads to complete
+      const updatedAttachments = await Promise.all(uploadPromises);
+      // Finally call the main function
+      if (updateView) {
+        updateHandler(uploadedUrlList);
+      } else {
+        finalSubmitHandler(uploadedUrlList);
+      }
+    } catch (err) {
+      if (TimesTrigerredSubmission >= 2) {
+        setIsSubmitInProgress(false);
+      }
+      toast.error("Got error while saving, trying again.");
+      console.error(err);
+    } finally {
+      toast.dismiss();
+    }
+  };
+
+  const finalSubmitHandler = (attachmentList) => {
+    toast.loading("Saving the data");
     setdisable(true);
     setModalIsOpen(false);
     const nameRegex = /^[A-Za-z]+$/;
@@ -864,8 +775,7 @@ const Index = ({ isView, propertyData }) => {
             ? otherTypeOfAppraisalValue
             : typeOfAppraisal,
         purpose: String(purpose) === "Other" ? otherPurposeValue : purpose,
-
-        attachment: changeUrlToStringHandler(),
+        attachment: attachmentList,
         image: "",
         token: userInfo.token,
         quoteRequiredDate: appraisalQuoteDate,
@@ -926,13 +836,11 @@ const Index = ({ isView, propertyData }) => {
         }
         setErrorLabel(tempError);
       } else {
-        const encryptedData = encryptionData(payload);
-
-        // console.log(updateView,propertyData);
+        // const encryptedData = encryptionData(payload);
 
         toast.loading("Adding the property for appraisal ..");
         axios
-          .post("/api/addBrokerProperty", encryptedData, {
+          .post("/api/addBrokerProperty", payload, {
             headers: {
               Authorization: `Bearer ${userData.token}`,
               "Content-Type": "application/json",
@@ -941,35 +849,43 @@ const Index = ({ isView, propertyData }) => {
           .then((res) => {
             console.log("API Response:", res);
             toast.dismiss();
-            // const propertyId = res.data.userData?.propertyId;
-            // console.log("propert id is :", propertyId);
-            // setGeneratedPropertyId(propertyId);
-            // setSuccessModal(true);
             toast.success("Property Added Successfully");
-            router.push("/my-properties");
+            setIsSubmitInProgress(false);
+            setTimesTrigerredSubmission(2);
+
+            //open the Successful Modal
+            setSuccessModal(true);
+            setGeneratedPropertyId(res?.data?.userData?.propertyId)
           })
           .catch((err) => {
-            const status = err.response?.request.status;
-            if (String(status) === String(403)) {
-              toast.dismiss();
-              setModalIsOpenError(true);
-            } else if (String(status) === String(404)) {
-              toast.dismiss();
-              setErrorMessage(err.response?.data.error);
-              setModalIsOpenError_01(true);
-            } else if (/^5\d{2}$/.test(String(status))) {
-              toast.dismiss();
-              toast.error("Server error occurred Try Again !! ");
-              window.location.reload();
-            } else {
-              toast.dismiss();
-              setErrorMessage(err.response?.data.error);
-              setModalIsOpenError_01(true);
-              // toast.error(err.message);
+            if (TimesTrigerredSubmission >= 2) {
+              setIsSubmitInProgress(false);
+              const status = err.response?.request.status;
+              if (String(status) === String(403)) {
+                toast.dismiss();
+                setModalIsOpenError(true);
+              } else if (String(status) === String(404)) {
+                toast.dismiss();
+                setErrorMessage(err.response?.data.error);
+                setModalIsOpenError_01(true);
+              } else if (/^5\d{2}$/.test(String(status))) {
+                toast.dismiss();
+                toast.error("Server error occurred Try Again !! ");
+                window.location.reload();
+              } else {
+                toast.dismiss();
+                setErrorMessage(err.response?.data.error);
+                setModalIsOpenError_01(true);
+                // toast.error(err.message);
+              }
+            }
+            else{
+              setTimesTrigerredSubmission(TimesTrigerredSubmission+1);
             }
           });
       }
     }
+    toast.dismiss()
   };
 
   const handleZipCodeChange = async (e) => {
@@ -1210,7 +1126,6 @@ const Index = ({ isView, propertyData }) => {
                         setApplicantAddress={setApplicantAddress}
                         applicantAddress={applicantAddress}
                         setFilesUrl={setFilesUrl}
-                        changeUrlToStringHandler={changeUrlToStringHandler}
                         changeStringUrlHandler={changeStringUrlHandler}
                         filesUrl={filesUrl}
                         image={image}
@@ -1220,7 +1135,7 @@ const Index = ({ isView, propertyData }) => {
                         errorLabel={errorLabel}
                         setRemark={setRemark}
                         remark={remark}
-                        attachment={changeStringUrlHandler(attachment)}
+                        attachment={attachment}
                         applicantLatsName={applicantLatsName}
                         setApplicantLastName={setApplicantLastName}
                         applicantNumber={applicantNumber}
@@ -1487,14 +1402,14 @@ const Index = ({ isView, propertyData }) => {
                             className="btn btn-color"
                             onClick={onCancelHandler}
                             style={{ width: "130px" }}
+                            disabled={disable}
                           >
                             Cancel
                           </button>
                           <button
                             className="btn btn-color"
-                            onClick={
-                              updateView ? updateHandler : finalSubmitHandler
-                            }
+                            onClick={initiateTheSubmit}
+                            disabled={disable}
                             style={{ width: "130px" }}
                           >
                             Submit

@@ -24,7 +24,12 @@ const CancelCheckout = ({
     try {
       const response = await axios.post(
         "/api/savePaypalSubscriptionCancellationData",
-        payload
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${userData.token}`,
+          },
+        }
       );
       if (response) {
         setOnSuccess(true);
@@ -51,8 +56,6 @@ const CancelCheckout = ({
           },
         }
       );
-
-      console.log({cancelSubscriptionStatus})
 
       const cancelSubscriptionResponse = await axios.post(
         `${PayPalApi.baseUrl}/v1/billing/subscriptions/${subscriptionId}/cancel`,
