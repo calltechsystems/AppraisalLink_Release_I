@@ -11,6 +11,8 @@ import { designation } from "../create-listing/data";
 import Link from "next/link";
 import { uploadFile } from "./functions";
 import ReactInputMask from "react-input-mask";
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
 
 const ProfileInfo = ({
   setProfileCount,
@@ -25,39 +27,52 @@ const ProfileInfo = ({
   const router = useRouter();
 
   useEffect(() => {
-    let updatedList = {};
-    if (userData?.profileImage) {
-      const name = userData?.profileImage.split("/").pop().split("?")[0] || "";
-      updatedList["profileImage"] = {
+    let updatedList = { ...uploadingFiles };
+    if (userData?.appraiserCompany_Datails?.profileImage) {
+      const name =
+        userData?.appraiserCompany_Datails?.profileImage
+          .split("/")
+          .pop()
+          .split("?")[0] || "";
+      const updatedDoc = {
         file: { name },
-        previewUrl: name
-          ? name.includes("zip")
-            ? "/assets/Attachments/zipIcon.png"
-            : name.includes("pdf")
-            ? "/assets/Attachments/pdfIcon.png"
-            : url
-          : "",
-        uploadedUrl: url,
+        previewUrl:
+          name == ""
+            ? "/assets/images/home/placeholder_01.jpg"
+            : userData?.appraiserCompany_Datails?.profileImage,
+        uploadedUrl: userData?.appraiserCompany_Datails?.profileImage || "",
         fieldType: "profileImage",
       };
-    }
 
-    if (userData?.lenderListUrl) {
-      const name = userData?.lenderListUrl.split("/").pop().split("?")[0];
-      updatedList["LenderList"] = {
+      updatedList = {
+        ...updatedList,
+        ["profileImage"]: updatedDoc,
+      };
+    }
+    if (userData?.appraiserCompany_Datails?.lenderListUrl) {
+      const name = userData?.appraiserCompany_Datails?.lenderListUrl
+        .split("/")
+        .pop()
+        .split("?")[0];
+      const updatedDoc = {
         file: { name },
         previewUrl: name.includes("zip")
           ? "/assets/Attachments/zipIcon.png"
           : name.includes("pdf")
           ? "/assets/Attachments/pdfIcon.png"
-          : url,
-        uploadedUrl: url,
+          : userData?.appraiserCompany_Datails?.lenderListUrl,
+        uploadedUrl: userData?.appraiserCompany_Datails?.lenderListUrl,
         fieldType: "LenderList",
       };
+      updatedList = {
+        ...updatedList,
+        ["LenderList"]: updatedDoc,
+      };
     }
-
     setUploadingFiles({ ...updatedList });
   }, [userData]);
+
+  useEffect(() => {}, []);
 
   const [selectedImage2, setSelectedImage2] = useState({
     name:
@@ -243,7 +258,11 @@ const ProfileInfo = ({
   const [isSubmitInProgress, setIsSubmitInProgress] = useState(false);
 
   useEffect(() => {
-    if (TimesTrigerredSubmission < 2 && isSubmitInProgress) {
+    if (
+      TimesTrigerredSubmission <= 2 &&
+      TimesTrigerredSubmission >= 1 &&
+      isSubmitInProgress
+    ) {
       submissionHandler();
     }
   }, [TimesTrigerredSubmission, isSubmitInProgress]);
@@ -315,7 +334,6 @@ const ProfileInfo = ({
 
   const submissionHandler = async () => {
     try {
-      setTimesTrigerredSubmission(TimesTrigerredSubmission + 1);
       toast.loading("Updating the profile");
 
       // Create an array of promises only for files that need uploading
@@ -341,25 +359,22 @@ const ProfileInfo = ({
         };
       });
 
-      setUploadingFiles({ ...updatedList });
+      // setUploadingFiles({ ...updatedList });
       // Finally call the main function
       onUpdatHandler(updatedList);
     } catch (err) {
-      if (TimesTrigerredSubmission >= 2) {
+      if (TimesTrigerredSubmission > 2) {
         setIsSubmitInProgress(false);
+        setTimesTrigerredSubmission(0);
+        toast.error("Got error while saving, trying again.");
+        console.error(err);
+      } else {
+        setTimesTrigerredSubmission(TimesTrigerredSubmission + 1);
       }
-      toast.error("Got error while saving, trying again.");
-      console.error(err);
     }
   };
 
   const onUpdatHandler = (updatedList) => {
-    const list = { ...updatedList };
-    console.log({
-      updatedList,
-      LenderList: updatedList["LenderList"]?.uploadedUrl,
-      profileImage: updatedList["profileImage"]?.uploadedUrl,
-    });
     const firstName =
       firstNameRef !== ""
         ? firstNameRef
@@ -622,7 +637,6 @@ const ProfileInfo = ({
             localStorage.removeItem("user");
             localStorage.setItem("user", JSON.stringify(data));
             setShowCard(true);
-            console.log({ res });
             // router.push("/appraiser-company-dashboard");
             setIsSubmitInProgress(false);
           })
@@ -632,6 +646,7 @@ const ProfileInfo = ({
             } else {
               toast.error(err.message);
               setIsSubmitInProgress(false);
+              setTimesTrigerredSubmission(0);
             }
           })
           .finally(() => {});
@@ -663,17 +678,6 @@ const ProfileInfo = ({
     const isStreetNameValid = validateField(streetName, setStreetNameError);
     const isCityValid = validateField(cityRef, setCityError);
     const isZipCodeValid = validateField(zipcodeRef, setZipCodeError);
-
-    // Validate dropdown
-
-    // if (selectedOption === "") {
-    //   setDropdownError(true);
-    //   dropdownRef.current.scrollIntoView({
-    //     behavior: "smooth",
-    //     block: "center",
-    //   });
-    //   dropdownRef.current.focus();
-    // }
   };
 
   const validateField = (value, setError, inputRef) => {
@@ -717,34 +721,6 @@ const ProfileInfo = ({
     }
   };
 
-  const validateFieldNumber = (value, setError, inputRef) => {
-    // Check if value contains only digits
-    const isNumeric = /^[0-9]*$/.test(value.trim());
-    if (!isNumeric) {
-      setError(true); // Set error for non-numeric input
-      // Scroll to the top of the page
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-      return false;
-    }
-
-    // Check if length is exactly 10
-    if (value.trim().length !== 10) {
-      setError(true); // Set error if field length is invalid
-      // Scroll to the top of the page
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-      return false;
-    }
-
-    setError(false); // Clear error if valid
-    return true;
-  };
-
   const validateEmailField = (value, setError, inputRef) => {
     // Define a basic email regex pattern for validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -776,76 +752,33 @@ const ProfileInfo = ({
     return true;
   };
 
-  const handleDropdownChange = (e) => {
-    const value = e.target.value;
-    setSelectedOption(value);
+  const downloadAllAttachments = async (fileItem) => {
+    const zip = new JSZip();
+    const folder = zip.folder("LenderList"); // Create a folder named 'Attachments'
 
-    // Validate: Ensure a valid option is selected
-    if (value === "") {
-      setDropdownError(true);
-    } else {
-      setDropdownError(false);
+    if (fileItem?.uploadedUrl) {
+      // Fetch file from uploaded URL (e.g., S3)
+      const response = await fetch(fileItem?.uploadedUrl);
+      const blob = await response.blob();
+      const fileName = fileItem?.file?.name || "LenderList";
+      folder.file(fileName, blob); // Add to 'Attachments' folder in ZIP
+    } else if (fileItem?.file) {
+      // Add local files directly
+      folder.file(fileItem?.file?.name, fileItem?.file);
     }
-  };
 
-  const handleFileChange = async (e, type) => {
-    const file = e.target.files[0];
-    const allowedImageTypes = ["image/jpeg", "image/png", "image/gif"];
-    const allowedPdfTypes = ["application/pdf"];
-
-    if (String(type) === "1" && !allowedImageTypes.includes(file?.type)) {
-      toast.error("Please select a valid image file (JPEG, PNG, GIF).");
-      return;
-    } else if (String(type) === "2" && !allowedPdfTypes.includes(file?.type)) {
-      toast.error("Please select a valid PDF file.");
-      return;
-    } else {
-      const file = e.target.files[0];
-      toast.loading("Uploading..");
-      try {
-        const generatedUrl = await uploadFile(file);
-        toast.dismiss();
-        toast.success("Uploaded Successfully");
-        console.log("generatedUrl", generatedUrl);
-        if (String(type) === "1") {
-          setSelectedImage(generatedUrl);
-        } else {
-          setSelectedImage2({
-            name: file.name,
-            url: generatedUrl,
-          });
-        }
-      } catch (err) {
-        toast.dismiss();
-        toast.error("Try Again!");
-      }
-    }
-  };
-
-  const handleZipCodeChange = async (val) => {
-    setZipcodeRef(val);
-
-    try {
-      const response = await axios.get(
-        `https://api.zippopotam.us/us/${zipcodeRef}`
-      );
-      const data = response.data;
-
-      console.log(response);
-
-      setStateRef(data.places[0]["state"]);
-      setCityRef(data.places[0]["place name"]);
-    } catch (error) {
-      console.error("Error fetching location data:", error);
-    }
-  };
-
-  const deleteFile = (type) => {
-    setUploadingFiles({
-      ...uploadingFiles,
-      [type]: {},
+    zip.generateAsync({ type: "blob" }).then((content) => {
+      saveAs(content, "LenderList.zip");
     });
   };
+
+  // const deleteFile = (type) => {
+  //   setUploadingFiles({
+  //     ...uploadingFiles,
+  //     [type]: {},
+  //   });
+  // };
+  console.log({ uploadingFiles });
 
   return (
     <>
@@ -1369,13 +1302,13 @@ const ProfileInfo = ({
                           Browse
                         </button>
                         <p className="mt-2" style={{ marginLeft: "10px" }}>
-                          {uploadingFiles["LenderList"]?.file.name !== "" &&
+                          {uploadingFiles["LenderList"]?.file?.name !== "" &&
                             "Upload pdf only"}
                         </p>
                       </div>
                     </div>
                     <div className="col-lg-5 mt-1">
-                      {uploadingFiles["LenderList"] ? (
+                      {uploadingFiles["LenderList"]?.file ? (
                         <div key={1} className="position-relative m-2">
                           <img
                             src={uploadingFiles["LenderList"]?.previewUrl}
@@ -1387,13 +1320,13 @@ const ProfileInfo = ({
                               objectFit: "cover",
                             }}
                           />
-                          <button
+                          {/* <button
                             type="button"
                             className="btn btn-danger btn-sm position-absolute top-0 end-0 m-1"
                             onClick={() => deleteFile("LenderList")}
                           >
                             &times;
-                          </button>
+                          </button> */}
                           <small
                             className="d-block text-muted mt-1"
                             style={{
@@ -1403,14 +1336,16 @@ const ProfileInfo = ({
                               whiteSpace: "nowrap",
                             }}
                           >
-                            {uploadingFiles["LenderList"]?.file.name}
+                            {uploadingFiles["LenderList"]?.file?.name}
                           </small>
 
                           <button
                             type="button"
                             className="btn btn-success btn-sm m-1"
                             onClick={() =>
-                              downloadFile(uploadingFiles["LenderList"]?.file)
+                              downloadAllAttachments(
+                                uploadingFiles["LenderList"]
+                              )
                             }
                           >
                             download

@@ -292,47 +292,43 @@ const Pricing = ({
                 currentSubscription &&
                 String(currentSubscription.planId) !== String(item.id) &&
                 (currentSubscription?.$id ? (
-                    <button
+                  <button
                     disabled={!canUpgrade ? true : false}
                     className="btn btn-color_01 w-100"
-                      onClick={() =>
-                        selectPackageHandler(
-                          item.id,
-                          item.description,
-                          isPlan === 1
-                            ? item.monthlyAmount - item.discount
-                            : item.yearlyAmount - item.discount,
-                          "upgrade_plan",
-                          item
-                        )
-                      }
-                    >
-                      <a href="#">
-                        Change Plan
-                      </a>
-                    </button>
-                  
-                ) : 
-                (
+                    onClick={() =>
+                      selectPackageHandler(
+                        item.id,
+                        item.description,
+                        isPlan === 1
+                          ? item.monthlyAmount - item.discount
+                          : item.yearlyAmount - item.discount,
+                        "upgrade_plan",
+                        item
+                      )
+                    }
+                  >
+                    <a href="#">Change Plan</a>
+                  </button>
+                ) : (
                   ""
-                //   <div
-                //     className="pricing_footer"
-                //     onClick={() =>
-                //       selectPackageHandler(
-                //         item.id,
-                //         item.description,
-                //         isPlan === 1
-                //           ? item.monthlyAmount - item.discount
-                //           : item.yearlyAmount - item.discount,
-                //         "plan",
-                //         item
-                //       )
-                //     }
-                //   >
-                //     <a className={`btn btn-color_01 w-100`} href="#">
-                //       Select Plan
-                //     </a>
-                //   </div>
+                  //   <div
+                  //     className="pricing_footer"
+                  //     onClick={() =>
+                  //       selectPackageHandler(
+                  //         item.id,
+                  //         item.description,
+                  //         isPlan === 1
+                  //           ? item.monthlyAmount - item.discount
+                  //           : item.yearlyAmount - item.discount,
+                  //         "plan",
+                  //         item
+                  //       )
+                  //     }
+                  //   >
+                  //     <a className={`btn btn-color_01 w-100`} href="#">
+                  //       Select Plan
+                  //     </a>
+                  //   </div>
                 ))}
               {!hideButton &&
                 String(currentSubscription?.planId) === String(item.id) && (
@@ -364,7 +360,12 @@ const Pricing = ({
                         {topUp.topUpAmount})
                       </option>
                     ))}
-                    <option value="cancel">Cancel Subscription</option>
+                    {currentSubscription?.payPalSubscriptionStatus ==
+                    "Cancel" ? (
+                      ""
+                    ) : (
+                      <option value="cancel">Cancel Subscription</option>
+                    )}
                   </select>
                 )}
             </div>
