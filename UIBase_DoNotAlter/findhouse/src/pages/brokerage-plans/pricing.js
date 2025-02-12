@@ -348,7 +348,7 @@ const Pricing = ({
                         {topUp.topUpAmount})
                       </option>
                     ))}
-                    <option value="cancel">Cancel Subscription</option>
+                    {currentSubscription?.payPalSubscriptionStatus & <option value="cancel">Cancel Subscription</option>}
                   </select>
                 )}
             </div>

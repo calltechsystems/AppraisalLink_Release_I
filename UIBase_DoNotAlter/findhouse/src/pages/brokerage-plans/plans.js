@@ -83,6 +83,8 @@ const Index = ({
                   res3?.data?.data?.activePaypalSubscriptionId,
                 futurePaypalSubscriptionId:
                   res3?.data?.data?.futurePaypalSubscriptionId,
+                payPalSubscriptionStatus: 
+                  res3?.data?.data?.payPalSubscriptionStatus
               });
             }
             //when the subscirption_Details is == 'NULL'

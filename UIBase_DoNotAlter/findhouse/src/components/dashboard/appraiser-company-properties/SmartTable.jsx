@@ -93,11 +93,15 @@ function SmartTable(props) {
     }
   }
 
+  const getCurrentYear = () => {
+    return new Date().getFullYear();
+  };
+
   const handlePrint = async () => {
     try {
       // Fetch data
       const allData = props.properties;
-  
+
       // Define static headers
       const staticHeaders = [
         ["order_id", "Order Id"],
@@ -114,7 +118,7 @@ function SmartTable(props) {
         ["purpose", "Purpose"],
         ["lender_information", "Lender Information"],
       ];
-  
+
       // Create the content to be printed
       const printContent = `
         <html>
@@ -175,53 +179,76 @@ function SmartTable(props) {
                 <span style="color: #97d700;">Land</span>
               </div>
             </div>
-            <div class="footer">© 2025 Appraiser Company. All Rights Reserved.</div>
+            <div class="footer" style="margin-top:10%">
+              
+  <a href="https://appraisalland.ca/" target="_blank" style="color: #2e008b; text-decoration: underline;">Appraisal Land</a>
+  <br/>
+  <span>© ${getCurrentYear()} All Rights Reserved.</span>
+
+            </div>
             <div class="table-container">
-              <h3>Appraiser Company Properties</h3>
+              <h3 style="margin-left: 38%">Appraiser Company Properties</h3>
               <table>
                 <thead>
                   <tr>
-                    ${staticHeaders.map(header => `<th>${header[1]}</th>`).join("")}
+                    ${staticHeaders
+                      .map((header) => `<th>${header[1]}</th>`)
+                      .join("")}
                   </tr>
                 </thead>
                 <tbody>
-                  ${allData.map(item => `
+                  ${allData
+                    .map(
+                      (item) => `
                     <tr>
-                      ${staticHeaders.map(header => {
-                        if (header[0].toLowerCase() === "appraisal_status" || header[0].toLowerCase() === "status") {
-                          const value = item[header[0].toLowerCase()];
-                          const className = value.props.className;
-                          const content = header[0].toLowerCase() === "appraisal_status"
-                            ? extractTextFromReactElement(value.props.children).split("Current Status")[0]
-                            : value.props.children;
-  
-                          const color = className.includes("btn-warning") ? "#E4A11B" :
-                            className.includes("btn-danger") ? "#DC4C64" :
-                            className.includes("btn-success") ? "#14A44D" :
-                            "#54B4D3";
-  
-                          return `<td style="color: ${color};">${content}</td>`;
-                        } else {
-                          return `<td>${item[header[0].toLowerCase()]}</td>`;
-                        }
-                      }).join("")}
+                      ${staticHeaders
+                        .map((header) => {
+                          if (
+                            header[0].toLowerCase() === "appraisal_status" ||
+                            header[0].toLowerCase() === "status"
+                          ) {
+                            const value = item[header[0].toLowerCase()];
+                            const className = value.props.className;
+                            const content =
+                              header[0].toLowerCase() === "appraisal_status"
+                                ? extractTextFromReactElement(
+                                    value.props.children
+                                  ).split("Current Status")[0]
+                                : value.props.children;
+
+                            const color = className.includes("btn-warning")
+                              ? "#E4A11B"
+                              : className.includes("btn-danger")
+                              ? "#DC4C64"
+                              : className.includes("btn-success")
+                              ? "#14A44D"
+                              : "#54B4D3";
+
+                            return `<td style="color: ${color};">${content}</td>`;
+                          } else {
+                            return `<td>${item[header[0].toLowerCase()]}</td>`;
+                          }
+                        })
+                        .join("")}
                     </tr>
-                  `).join("")}
+                  `
+                    )
+                    .join("")}
                 </tbody>
               </table>
             </div>
           </body>
         </html>
       `;
-  
+
       const printWindow = window.open("", "_blank");
-  
+
       // Write content to the new window and handle the load event
       printWindow.document.open();
       printWindow.document.write(printContent);
       printWindow.document.close();
-  
-      printWindow.onload = function() {
+
+      printWindow.onload = function () {
         printWindow.print();
         printWindow.onafterprint = () => {
           printWindow.close();
