@@ -23,39 +23,40 @@ const ProfileInfo = ({
   const [profilePhoto, setProfilePhoto] = useState(null);
   let userData = JSON.parse(localStorage.getItem("user")) || {};
   const router = useRouter();
-  
+
   useEffect(() => {
     let updatedList = {};
     if (userData?.profileImage) {
-        const name = userData?.profileImage.split("/").pop().split("?")[0] || '';
-        updatedList['profileImage'] = {
-          file: {name},
-          previewUrl: name ? name.includes('zip') ?
-          "/assets/Attachments/zipIcon.png" : 
-          name.includes('pdf') ?
-          "/assets/Attachments/pdfIcon.png" :
-          url : '',
-          uploadedUrl: url,
-          fieldType: 'profileImage'
-        };
-      }
+      const name = userData?.profileImage.split("/").pop().split("?")[0] || "";
+      updatedList["profileImage"] = {
+        file: { name },
+        previewUrl: name
+          ? name.includes("zip")
+            ? "/assets/Attachments/zipIcon.png"
+            : name.includes("pdf")
+            ? "/assets/Attachments/pdfIcon.png"
+            : url
+          : "",
+        uploadedUrl: url,
+        fieldType: "profileImage",
+      };
+    }
 
-      if (userData?.lenderListUrl) {
-        const name = userData?.lenderListUrl.split("/").pop().split("?")[0];
-        updatedList['LenderList'] = {
-          file: {name},
-          previewUrl: name.includes('zip') ?
-          "/assets/Attachments/zipIcon.png" : 
-          name.includes('pdf') ?
-          "/assets/Attachments/pdfIcon.png" :
-          url,
-          uploadedUrl: url,
-          fieldType: 'LenderList'
-        };
-      }
+    if (userData?.lenderListUrl) {
+      const name = userData?.lenderListUrl.split("/").pop().split("?")[0];
+      updatedList["LenderList"] = {
+        file: { name },
+        previewUrl: name.includes("zip")
+          ? "/assets/Attachments/zipIcon.png"
+          : name.includes("pdf")
+          ? "/assets/Attachments/pdfIcon.png"
+          : url,
+        uploadedUrl: url,
+        fieldType: "LenderList",
+      };
+    }
 
-      setUploadingFiles({...updatedList});
-    
+    setUploadingFiles({ ...updatedList });
   }, [userData]);
 
   const [selectedImage2, setSelectedImage2] = useState({
@@ -336,11 +337,11 @@ const ProfileInfo = ({
       const updatedList = {};
       updatedAttachments.map((file) => {
         updatedList[file.fieldType] = {
-          ...file
-        }
-      })
+          ...file,
+        };
+      });
 
-      setUploadingFiles({...updatedList});
+      setUploadingFiles({ ...updatedList });
       // Finally call the main function
       onUpdatHandler(updatedList);
     } catch (err) {
@@ -353,9 +354,12 @@ const ProfileInfo = ({
   };
 
   const onUpdatHandler = (updatedList) => {
-
-    const list = {...updatedList};
-    console.log({updatedList, 'LenderList' : updatedList['LenderList']?.uploadedUrl , 'profileImage' : updatedList['profileImage']?.uploadedUrl})
+    const list = { ...updatedList };
+    console.log({
+      updatedList,
+      LenderList: updatedList["LenderList"]?.uploadedUrl,
+      profileImage: updatedList["profileImage"]?.uploadedUrl,
+    });
     const firstName =
       firstNameRef !== ""
         ? firstNameRef
@@ -605,7 +609,7 @@ const ProfileInfo = ({
         );
       } else {
         toast.loading("Updating ...");
-        
+
         axios
           .put("/api/updateAppraiserCompanyProfile", payload)
           .then((res) => {
@@ -618,7 +622,7 @@ const ProfileInfo = ({
             localStorage.removeItem("user");
             localStorage.setItem("user", JSON.stringify(data));
             setShowCard(true);
-            console.log({res})
+            console.log({ res });
             // router.push("/appraiser-company-dashboard");
             setIsSubmitInProgress(false);
           })
