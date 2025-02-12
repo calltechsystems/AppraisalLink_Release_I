@@ -6,7 +6,7 @@ import axios from "axios";
 import { encryptionData } from "../../../utils/dataEncryption";
 import { useRouter } from "next/router";
 import Loader from "./Loader";
-import { FaArchive, FaEye } from "react-icons/fa";
+import { FaArchive } from "react-icons/fa";
 import { AppraiserStatusOptions } from "../create-listing/data";
 import millify from "millify";
 import Image from "next/image";
@@ -15,7 +15,7 @@ const headCells = [
   {
     id: "order_id",
     numeric: false,
-    label: "Property ID",
+    label: "Order ID",
     width: 110,
   },
   {
@@ -46,12 +46,12 @@ const headCells = [
     id: "urgency",
     numeric: false,
     label: "Request Type",
-    width: 200,
+    width: 150,
   },
   {
     id: "date",
     numeric: false,
-    label: "Quote Submitted Date",
+    label: "Order Submission Date",
     width: 200,
   },
   {
@@ -106,12 +106,12 @@ const headCells = [
     width: 200,
   },
 
-  {
-    id: "action",
-    numeric: false,
-    label: "Action",
-    width: 180,
-  },
+  // {
+  //   id: "action",
+  //   numeric: false,
+  //   label: "Action",
+  //   width: 110,
+  // },
 ];
 
 let count = 0;
@@ -122,12 +122,13 @@ export default function Exemple({
   close,
   start,
   end,
+  setCurrentBiddedView,
   setUpdatedCode,
   properties,
   setCurrentBid,
   setAllAppraiser,
   setAssignPropertyId,
-  setSelectedPropertyNew,
+  setOpenQuoteView,
   setAssignModal,
   setIsStatusModal,
   setProperties,
@@ -136,51 +137,41 @@ export default function Exemple({
   participateHandler,
   setFilterQuery,
   setSearchInput,
+  openModalBroker,
   searchInput,
   filterQuery,
-  openModalBroker,
   setErrorMessage,
   setModalIsOpenError,
   onArchivePropertyHandler,
   setRefresh,
   setStartLoading,
-  wishlist,
-  setWishlist,
+  setSelectedPropertyNew,
   refresh,
 }) {
   const [updatedData, setUpdatedData] = useState([]);
+  const [wishlist, setWishlist] = useState([]);
   const [bids, setBids] = useState([]);
   const [hideAction, setHideAction] = useState(false);
   const [hideClass, setHideClass] = useState("");
   const [show, setShow] = useState(false);
   const [dataFetched, setDataFetched] = useState(false);
+  const [archivedProperties, setArchivedProperties] = useState([]);
+  const [statusData, setStatusData] = useState([]);
   let tempData = [];
-  const [allArchive, setAllArchive] = useState([]);
-  const [isWishlistProperty, setIsWishlistProperty] = useState(0);
-  const [selectedWishlistId, setSelectedWishlistId] = useState(null);
+  const [archiveModal, setArchiveModal] = useState(false);
   const [selectedProperty, setSelectedProperty] = useState(null);
+  const [allArchive, setAllArchive] = useState([]);
   const [remarkModal, setRemarkModal] = useState(false);
   const [remark, setRemark] = useState("N.A.");
-  const [isLimitModalOpen, setIsLimitModalOpen] = useState(false);
+  const [wishlistModal, setWishlistModal] = useState(false);
+  const [isWishlistProperty, setIsWishlistProperty] = useState(0);
+  const [selectedWishlistId, setSelectedWishlistId] = useState(null);
 
   useEffect(() => {
     if (searchInput === "") {
       setRefresh(true);
     }
   }, [searchInput]);
-
-  const openRemarkModal = (property) => {
-    const isBidded = filterBidsWithin24Hours(property); // Get the isBidded data
-    setRemark(isBidded && isBidded.remark ? isBidded.remark : "N.A.");
-    setSelectedProperty(property);
-    setRemarkModal(true);
-  };
-
-  const closeRemarkModal = () => {
-    setRemarkModal(false);
-    setRemark("N.A.");
-    setSelectedProperty(null);
-  };
 
   const getOrderValue = (val) => {
     let title = "Applicant Contacted by appraiser";
@@ -201,37 +192,6 @@ export default function Exemple({
     });
     return isArchive;
   };
-
-  const getStatusButtonClass = (orderStatus) => {
-    if (orderStatus === 4 || orderStatus === 5) {
-      return "btn btn-status-na w-100"; // Orange color class
-    }
-    return "btn btn-status w-100"; // Default color
-  };
-
-  const openIsWishlistPropertyModal = (wishlistId, property) => {
-    setSelectedWishlistId(wishlistId);
-    setSelectedProperty(property);
-    setIsWishlistProperty(true);
-  };
-
-  const handleConfirmRemoveWishlist = () => {
-    if (selectedWishlistId) {
-      // Call your removeWishlistHandler or similar logic here
-      removeWishlistHandler(selectedWishlistId);
-    }
-    setIsWishlistProperty(false);
-  };
-
-  const closeArchiveModal = () => {
-    setSelectedProperty(null); // Clear the selected property
-    setIsWishlistProperty(false);
-  };
-
-  function addCommasToNumber(number) {
-    if (Number(number) <= 100 || number === undefined) return number;
-    return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }
 
   const calculateDate = (oldBid, newBid) => {
     if (!oldBid.requestTime) {
@@ -276,10 +236,7 @@ export default function Exemple({
     let bidValue = {};
     let tempBids = [];
     bids.filter((bid) => {
-      if (
-        bid.orderId === property.orderId &&
-        bid.appraiserUserId === data.userId
-      ) {
+      if (bid.orderId === property.orderId) {
         tempBids.push(bid);
         bidValue = bid;
         tempBid = tempBid + 1;
@@ -290,7 +247,59 @@ export default function Exemple({
     return customBid;
   };
 
+  const alreadyAccepted = (property) => {
+    return false;
+  };
   const router = useRouter();
+
+  const openRemarkModal = (property) => {
+    const isBidded = filterBidsWithin24Hours(property); // Get the isBidded data
+    setRemark(isBidded && isBidded.remark ? isBidded.remark : "N.A.");
+    setSelectedProperty(property);
+    setRemarkModal(true);
+  };
+
+  const closeRemarkModal = () => {
+    setRemarkModal(false);
+    setRemark("N.A.");
+    setSelectedProperty(null);
+  };
+
+  const openArchiveModal = (property) => {
+    setSelectedProperty(property); // Store the selected property
+    setArchiveModal(true);
+  };
+
+  const closeArchiveModal = () => {
+    setSelectedProperty(null); // Clear the selected property
+    setArchiveModal(false); // Close the modal
+    setWishlistModal(false); // Close the modal
+    setIsWishlistProperty(false);
+  };
+
+  const openWishlistModal = (property) => {
+    setSelectedProperty(property); // Store the selected property
+    setWishlistModal(true);
+  };
+
+  const openIsWishlistPropertyModal = (wishlistId, property) => {
+    setSelectedWishlistId(wishlistId);
+    setSelectedProperty(property);
+    setIsWishlistProperty(true);
+  };
+
+  const handleConfirmRemoveWishlist = () => {
+    if (selectedWishlistId) {
+      // Call your removeWishlistHandler or similar logic here
+      removeWishlistHandler(selectedWishlistId);
+    }
+    setIsWishlistProperty(false);
+  };
+
+  function addCommasToNumber(number) {
+    if (Number(number) <= 100 || number === undefined) return number;
+    return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
 
   const openStatusUpdateHandler = (bid, property) => {
     setCurrentBid(bid);
@@ -330,23 +339,38 @@ export default function Exemple({
   };
 
   const formatLargeNumber = (number) => {
+    // Convert the number to a string
     const numberString = number.toString();
+
+    // Determine the length of the integer part
     const integerLength = Math.floor(Math.log10(Math.abs(number))) + 1;
+
+    // Choose the appropriate unit based on the length of the integer part
     let unit = "";
 
     if (integerLength >= 10) {
-      unit = "B";
+      unit = "B"; // Billion
     } else if (integerLength >= 7) {
-      unit = "M";
+      unit = "M"; // Million
     } else if (integerLength >= 4) {
-      unit = "K";
+      unit = "K"; // Thousand
     }
+
+    // Divide the number by the appropriate factor
     const formattedNumber = (number / Math.pow(10, integerLength - 1)).toFixed(
       2
     );
-
+    console.log(formatLargeNumber + ".." + unit);
     return `${formattedNumber}${unit}`;
   };
+
+  const openQuoteViewModal = (bid, property) => {
+    setCurrentBiddedView(bid);
+    setSelectedPropertyNew(property);
+    setOpenQuoteView(true);
+  };
+
+  const onDeletePropertyHandler = () => {};
 
   const formatDateTime = (dateString) => {
     const options = {
@@ -355,7 +379,8 @@ export default function Exemple({
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
-      hour12: true,
+      // second: "numeric",
+      hour12: true, // Set to false for 24-hour format
     };
 
     const formattedDate = new Date(dateString).toLocaleString("en-US", options);
@@ -367,25 +392,33 @@ export default function Exemple({
       year: "numeric",
       month: "short",
       day: "numeric",
-      hour12: true,
+      // hour: "numeric",
+      // minute: "numeric",
+      // second: "numeric",
+      hour12: true, // Set to false for 24-hour format
     };
 
     const formattedDate = new Date(dateString).toLocaleString("en-US", options);
     return formattedDate;
   };
 
+  const getStatusButtonClass = (orderStatus) => {
+    if (orderStatus === 4 || orderStatus === 5) {
+      return "btn btn-status-na w-100"; // Orange color class
+    }
+    return "btn btn-status w-100"; // Default color
+  };
+
   const checkWishlistedHandler = (data) => {
+    const userInfo = JSON.parse(localStorage.getItem("user"));
     let temp = {};
     // console.log(wishlist, data);
     wishlist.map((prop, index) => {
-      if (
-        String(prop.propertyId) === String(data.propertyId) &&
-        String(prop.userId) === String(userData.userId)
-      ) {
+      if (String(prop.propertyId) === String(data.propertyId)) {
         temp = prop;
       }
     });
-    return temp ? temp : {};
+    return temp;
   };
 
   const checkCanBidAgainHandler = (data) => {
@@ -408,18 +441,31 @@ export default function Exemple({
   }, [checkData]);
 
   useEffect(() => {
+    let tempStatusData = [];
     const getData = () => {
+      const userData = JSON.parse(localStorage.getItem("user"));
+      let tempData = [];
       properties.map((property, index) => {
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
-        const isArchive = foundArchiveHandler(property.propertyId);
-        const haveSubscription = userData?.planLimitExceed;
+        const anotherBid = alreadyAccepted(property);
+        // const isAlreadyArchived = getisAlreadyArchived(property.propertyId);
+        const isWait = property.isonhold || property.isoncancel;
+        const isArchive = false;
 
-        if (!isArchive && isWishlist.$id) {
+        // Skip Completed Orders
+        if (isBidded.orderstatus !== 3) return;
+
+        if (!isArchive) {
           if (isBidded.status === 1) {
             console.log(getOrderValue(isBidded.orderstatus));
           }
-          const isWait = property.isonhold || property.isoncancel;
+
+          const newStatus = {
+            status: isBidded.status,
+            appraisal_status: isBidded.orderstatus,
+            order_id: property.orderId,
+          };
           const updatedRow = {
             order_id: property.orderId,
             address: `${property.city}-${property.province},${property.zipCode}`,
@@ -439,7 +485,7 @@ export default function Exemple({
                   >
                     <ul>
                       <li style={{ fontSize: "15px" }}>
-                        {getOrderValue(isBidded.orderstatus)} -{" "}
+                        {getOrderValue(isBidded.orderstatus)} -
                         {formatDateTime(isBidded.statusdate)}
                       </li>
                     </ul>
@@ -511,8 +557,10 @@ export default function Exemple({
               </li>
             ),
             status:
-              isBidded?.bidId && isBidded.status === 2 ? (
-                <span className="btn btn-danger  w-100">Cancelled</span>
+              anotherBid === true && isBidded.status !== 2 ? (
+                <span className="btn btn-danger w-100">Declined</span>
+              ) : isBidded?.bidId && isBidded.status === 2 ? (
+                <span className="btn btn-danger  w-100">Declined</span>
               ) : isWait ? (
                 <span className="btn btn-danger  w-100">
                   {property.isoncancel
@@ -525,7 +573,7 @@ export default function Exemple({
                 isBidded.orderstatus === 3 ? (
                   <span className="btn btn-completed w-100">Completed</span>
                 ) : isBidded.status === 0 ? (
-                  <span className="btn bg-info text-light  w-100">
+                  <span className="btn bg-info text-light w-100">
                     Quote Provided
                   </span>
                 ) : isBidded.status === 1 ? (
@@ -546,18 +594,19 @@ export default function Exemple({
                         border: "0px",
                         color: "#2e008b",
                         textDecoration: "underline",
-                        // fontWeight: "bold",
                         backgroundColor: "transparent",
                       }}
                       onClick={() => openModalBroker(property, 2)}
                     >
-                      Broker
+                      Broker Info
                     </button>
                   </a>
-                ) : isBidded.status === 2 ? (
-                  <h5 style={{ color: "red" }}> Declined</h5>
+                ) : isBidded.status === 2 || anotherBid?.bidId ? (
+                  <h6 style={{ color: "red" }}> Declined</h6>
+                ) : alreadyAccepted ? (
+                  <span className="text-secondary">On quote approval</span>
                 ) : (
-                  <p className="text-secondary">On quote approval</p>
+                  <p className="text-secondary">On quote approval.</p>
                 )}
               </div>
             ),
@@ -571,18 +620,19 @@ export default function Exemple({
                         border: "0px",
                         color: "#2e008b",
                         textDecoration: "underline",
-                        // fontWeight: "bold",
                         backgroundColor: "transparent",
                       }}
                       onClick={() => openModalBroker(property, 1)}
                     >
-                      Property
+                      Property Info
                     </button>
                   </a>
-                ) : isBidded.status === 2 ? (
-                  <h5 style={{ color: "red" }}> Declined</h5>
+                ) : isBidded.status === 2 || anotherBid?.bidId ? (
+                  <h6 style={{ color: "red" }}> Declined</h6>
+                ) : alreadyAccepted ? (
+                  <span className="text-secondary">On quote approval</span>
                 ) : (
-                  <p className="text-secondary">On quote approval</p>
+                  <p className="text-secondary ">On quote approval</p>
                 )}
               </div>
             ),
@@ -607,10 +657,108 @@ export default function Exemple({
                 : "N.A.",
 
             action: (
-              <div className="print-hidden-column d-flex justify-content-center gap-1">
-                {
+              <div
+                className="print-hidden-column"
+                style={{ display: "flex", justifyContent: "center" }}
+              >
+                {/* {isBidded.$id &&
+                  (isBidded.status === 2 || isBidded.status === 1) &&
+                  !anotherBid?.bidId && (
+                    <li
+                      className="list-inline-item"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="View Quote"
+                    >
+                      {" "}
+                      <span
+                        className="btn btn-color-table"
+                        onClick={() => openQuoteViewModal(isBidded, property)}
+                      >
+                        <Link href={"#"}>
+                          <span className="text-light flaticon-view"></span>
+                        </Link>
+                      </span>
+                    </li>
+                  )} */}
+
+                {isBidded.status === 2 || anotherBid ? (
+                  <>
+                    <ul>
+                      {/* <li
+                        className="list-inline-item"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="Archive Property"
+                      >
+                        <div
+                          className="w-100"
+                          onClick={() => openArchiveModal(property)}
+                          // onClick={() =>
+                          //   onArchivePropertyHandler(property.orderId)
+                          // }
+                        >
+                          <button href="#" className="btn btn-color">
+                            <Link href="#">
+                              <span className="text-light">
+                                {" "}
+                                <FaArchive />
+                              </span>
+                            </Link>
+                          </button>
+                        </div>
+                      </li> */}
+                    </ul>
+                  </>
+                ) : isWait ? (
+                  <>
+                    {/* <li
+                      className="list-inline-item"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Archive Property"
+                    >
+                      <div
+                        className="w-100"
+                        onClick={() => openArchiveModal(property)}
+                      >
+                        <button href="#" className="btn btn-color m-1">
+                          <Link href="#">
+                            <span className="text-light">
+                              {" "}
+                              <FaArchive />
+                            </span>
+                          </Link>
+                        </button>
+                      </div>
+                    </li> */}
+                  </>
+                ) : isBidded.$id && isBidded.orderstatus === 3 ? (
+                  <>
+                    {/* <li
+                      className="list-inline-item"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Archive Property"
+                    >
+                      <div
+                        className="w-100"
+                        onClick={() => openArchiveModal(property)}
+                      >
+                        <button href="#" className="btn btn-color ">
+                          <Link href="#">
+                            <span className="text-light">
+                              {" "}
+                              <FaArchive />
+                            </span>
+                          </Link>
+                        </button>
+                      </div>
+                    </li> */}
+                  </>
+                ) : (
                   <ul className="mb0 d-flex gap-1">
-                    {isWishlist.id ? (
+                    {/* {isWishlist.id ? (
                       <button
                         className="btn "
                         style={{ border: "1px solid grey" }}
@@ -626,25 +774,28 @@ export default function Exemple({
                         />
                       </button>
                     ) : (
-                      <li
-                        className="list-inline-item"
-                        title="Wishlist Property"
-                      >
-                        {
-                          <button
-                            className="btn"
-                            style={{ border: "1px solid grey" }}
-                            onClick={() =>
-                              onWishlistHandler(property.propertyId)
-                            }
-                          >
-                            <span className="flaticon-heart text-color"></span>
-                          </button>
-                        }
-                      </li>
-                    )}
+                      !anotherBid && (
+                        <li
+                          className="list-inline-item"
+                          title="Wishlist Property"
+                        >
+                          {
+                            <button
+                              className="btn"
+                              style={{ border: "1px solid grey" }}
+                              onClick={() => openWishlistModal(property)}
+                              // onClick={() =>
+                              //   onWishlistHandler(property.propertyId)
+                              // }
+                            >
+                              <span className="flaticon-heart text-color"></span>
+                            </button>
+                          }
+                        </li>
+                      )
+                    )} */}
 
-                    {(!isBidded.$id || isBidded?.status < 1) && (
+                    {/* {(!isBidded.$id || isBidded?.status < 1) && !anotherBid && (
                       <li
                         className="list-inline-item"
                         data-toggle="tooltip"
@@ -653,34 +804,57 @@ export default function Exemple({
                           isBidded.$id ? "View / Update Quote" : "Provide Quote"
                         }`}
                       >
-                        <div className="w-100">
-                          <button
-                            className="btn btn-color"
-                            onClick={() => {
-                              haveSubscription === 1
-                                ? setIsLimitModalOpen(true) // Open modal if no subscription
-                                : participateHandler(
-                                    property.bidLowerRange,
-                                    property.orderId,
-                                    isBidded?.status < 1,
-                                    isBidded?.bidAmount,
-                                    isBidded?.$id ? true : false
-                                  );
-                            }}
-                          >
+                        <div
+                          className="w-100"
+                          onClick={() =>
+                            participateHandler(
+                              property.bidLowerRange,
+                              property.orderId,
+                              isBidded.status < 1,
+                              isBidded.bidAmount,
+                              isBidded.$id ? true : false
+                            )
+                          }
+                        >
+                          <button href="#" className="btn btn-color">
                             <Link href="#">
                               <span className="flaticon-invoice text-light"></span>
                             </Link>
                           </button>
                         </div>
                       </li>
+                    )} */}
+                    {isBidded.status === 1 && isBidded.orderstatus !== 3 ? (
+                      <>
+                        <ul>
+                          <li
+                            className="list-inline-item"
+                            data-toggle="tooltip"
+                            data-placement="top"
+                            title="Status Update"
+                          >
+                            <button
+                              href="#"
+                              className="btn btn-color"
+                              onClick={() =>
+                                openStatusUpdateHandler(isBidded, property)
+                              }
+                            >
+                              <Link href="#">
+                                <span className="flaticon-edit text-light"></span>
+                              </Link>
+                            </button>
+                          </li>
+                        </ul>
+                      </>
+                    ) : (
+                      ""
                     )}
-                  </ul>
-                }
-                {isBidded.status === 2 ? (
-                  <>
-                    <ul>
-                      {/* <li
+                    
+                    {/* {isWishlist.id ? (
+                      ""
+                    ) : (
+                      <li
                         className="list-inline-item"
                         data-toggle="tooltip"
                         data-placement="top"
@@ -688,9 +862,7 @@ export default function Exemple({
                       >
                         <div
                           className="w-100"
-                          onClick={() =>
-                            onArchivePropertyHandler(property.orderId)
-                          }
+                          onClick={() => openArchiveModal(property)}
                         >
                           <button href="#" className="btn btn-color">
                             <Link href="#">
@@ -701,45 +873,14 @@ export default function Exemple({
                             </Link>
                           </button>
                         </div>
-                      </li> */}
-                    </ul>
-                  </>
-                ) : isBidded.orderstatus === 6 ? (
-                  <span className="btn btn-success  w-100">Completed</span>
-                ) : isWait && property.status !== 2 ? (
+                      </li>
+                    )} */}
+                  </ul>
+                )}
+
+                {/* {isBidded.status === 1 && isBidded.orderstatus !== 3 ? (
                   <>
-                    {/* <p className="btn btn-danger  w-100">
-                      {`No further actions can be taken on this property since it is ${
-                        property.isoncancel ? "Cancelled" : "On Hold"
-                      } !.`}
-                    </p> */}
-                    {/* <li
-                      className="list-inline-item"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Archive Property"
-                    >
-                      <div
-                        className="w-100"
-                        onClick={() =>
-                          onArchivePropertyHandler(property.orderId)
-                        }
-                      >
-                        <button href="#" className="btn btn-color">
-                          <Link href="#">
-                            <span className="text-light">
-                              {" "}
-                              <FaArchive />
-                            </span>
-                          </Link>
-                        </button>
-                      </div>
-                    </li> */}
-                  </>
-                ) : (
-                  isBidded.orderstatus <= 6 &&
-                  isBidded.status === 1 && (
-                    <>
+                    <ul>
                       <li
                         className="list-inline-item"
                         data-toggle="tooltip"
@@ -748,180 +889,201 @@ export default function Exemple({
                       >
                         <button
                           href="#"
-                          className="btn btn-color"
-                          onClick={() =>
-                            openStatusUpdateHandler(isBidded, property)
-                          }
+                          className="btn btn-color m-1"
+                          onClick={() => openStatusUpdateHandler(isBidded)}
                         >
                           <Link href="#">
                             <span className="flaticon-edit text-light"></span>
                           </Link>
                         </button>
                       </li>
-                      {/* <li
-                        className="list-inline-item"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title="Archive Property"
-                      >
-                        <div
-                          className=""
-                          onClick={() =>
-                            onArchivePropertyHandler(property.orderId)
-                          }
-                        >
-                          <button href="#" className="btn btn-color">
-                            <Link href="#">
-                              <span className="text-light">
-                                {" "}
-                                <FaArchive />
-                              </span>
-                            </Link>
-                          </button>
-                        </div>
-                      </li> */}
-                    </>
-                  )
-                )}
-
-                {/* {!isBidded.$id && (
-                  // <li
-                  //   className="list-inline-item"
-                  //   data-toggle="tooltip"
-                  //   data-placement="top"
-                  //   title="Archive Property"
-                  // >
-                  //   <div
-                  //     className="w-100"
-                  //     onClick={() => onArchivePropertyHandler(property.orderId)}
-                  //   >
-                  //     <button href="#" className="btn btn-color">
-                  //       <Link href="#">
-                  //         <span className="text-light">
-                  //           {" "}
-                  //           <FaArchive />
-                  //         </span>
-                  //       </Link>
-                  //     </button>
-                  //   </div>
-                  // </li>
+                    </ul>
+                  </>
+                ) : (
+                  ""
                 )} */}
               </div>
             ),
           };
           tempData.push(updatedRow);
+          tempStatusData.push(newStatus);
         }
       });
       setUpdatedData(tempData);
+      setStatusData(tempStatusData);
     };
     getData();
-  }, [properties]);
-
-  useEffect(() => {
-    setUpdatedCode(true);
-  }, [updatedData]);
+  }, [properties, wishlist, bids]);
 
   const refreshHandler = () => {
+    setProperties([]);
+    setWishlist([]);
+    setBids([]);
     setRefresh(true);
     setStartLoading(true);
   };
   useEffect(() => {
     setProperties([]);
-    setBids([]);
     setWishlist([]);
-    setFilterQuery("All");
+    setBids([]);
     setSearchInput("");
+    setFilterQuery("All");
     const data = JSON.parse(localStorage.getItem("user"));
 
     const payload = {
       token: userData.token,
     };
-    let tempProperties = [],
-      tempWishlist = [];
-    axios
-      .get("/api/getAllListedProperties", {
-        headers: {
-          Authorization: `Bearer ${data?.token}`,
-          "Content-Type": "application/json",
-        },
-        params: {
-          userId: data?.userId,
-        },
-      })
-      .then((res) => {
-        setDataFetched(true);
-        const temp = res.data.data.properties.$values;
-
-        axios
-          .get("/api/appraiserWishlistedProperties", {
-            headers: {
-              Authorization: `Bearer ${data?.token}`,
-              "Content-Type": "application/json",
-            },
-          })
-          .then((res) => {
-            const tempData = res.data.data.$values;
-
-            // setAllWishlistedProperties(res.data.data.$values);
-            const responseData = tempData.filter((prop, index) => {
-              if (String(prop.userId) === String(data.userId)) {
+    if (data?.userType == 5) {
+      axios
+        .get("/api/getAllAssignedPropertiesById", {
+          headers: {
+            Authorization: `Bearer ${data?.token}`,
+            "Content-Type": "application/json",
+          },
+          params: {
+            userId: data.appraiser_Details?.id,
+          },
+        })
+        .then((res) => {
+          toast.dismiss();
+          const prop = res.data.data.properties.$values;
+          setProperties(prop);
+          axios
+            .get("/api/getAllBids", {
+              headers: {
+                Authorization: `Bearer ${data.token}`,
+              },
+              params: {
+                email: data.userEmail, // appraiser company email
+              },
+            })
+            .then((res) => {
+              tempBids = res.data.data.$values;
+              const updatedBids = tempBids.filter((prop, index) => {
                 return true;
-              } else {
-                return false;
-              }
-            });
-            const tempId = responseData;
-            setWishlist(responseData);
-            axios
-              .get("/api/getAllBids", {
-                headers: {
-                  Authorization: `Bearer ${data.token}`,
-                },
-
-                params: {
-                  email: data.userEmail,
-                },
-              })
-              .then((res) => {
-                tempBids = res.data.data.$values;
-                const updatedBids = tempBids.filter((prop, index) => {
-                  if (String(prop.appraiserUserId) === String(data.userId)) {
-                    return true;
-                  } else {
-                    return false;
-                  }
-                });
-                console.log(updatedBids);
-                setBids(updatedBids);
-                setProperties(temp);
-              })
-
-              .catch((err) => {
-                setDataFetched(true);
-                setErrorMessage(err?.response?.data?.error);
-                setModalIsOpenError(true);
               });
-          })
-          .catch((err) => {
-            setDataFetched(false);
-            toast.error(err?.response);
-            setErrorMessage(err?.response);
-            setModalIsOpenError(true);
-          });
-      })
-      .catch((err) => {
-        setErrorMessage(err?.response?.data?.error);
-        setModalIsOpenError(true);
-      });
+              setBids(updatedBids);
+              axios
+                .get("/api/appraiserWishlistedProperties", {
+                  headers: {
+                    Authorization: `Bearer ${data?.token}`,
+                    "Content-Type": "application/json",
+                  },
+                })
+                .then((res) => {
+                  const tempData = res.data.data.$values;
+
+                  // setAllWishlistedProperties(res.data.data.$values);
+                  const responseData = tempData.filter((prop, index) => {
+                    if (String(prop.userId) === String(data.userId)) {
+                      return true;
+                    } else {
+                      return false;
+                    }
+                  });
+                  const tempId = responseData;
+                  setWishlist(responseData);
+                })
+                .catch((err) => {
+                  toast.error(err?.response);
+                  setErrorMessage(err?.response);
+                  setModalIsOpenError(true);
+                });
+            })
+            .catch((err) => {
+              setErrorMessage(err?.response?.data?.error);
+              setModalIsOpenError(true);
+            });
+          // setRerender(false);
+        })
+        .catch((err) => {
+          toast.dismiss();
+          toast.error(err);
+          // setErrorMessage(err?.response?.data?.error);
+          // setModalIsOpenError(true);
+        });
+    } else {
+      axios
+        .get("/api/getAllListedProperties", {
+          headers: {
+            Authorization: `Bearer ${data?.token}`,
+            "Content-Type": "application/json",
+          },
+          params: {
+            userId: data?.userId,
+          },
+        })
+        .then((res) => {
+          toast.dismiss();
+          setDataFetched(true);
+          const prop = res.data.data.properties.$values;
+
+          axios
+            .get("/api/getAllBids", {
+              headers: {
+                Authorization: `Bearer ${data.token}`,
+              },
+              params: {
+                email: data.userEmail,
+              },
+            })
+            .then((res) => {
+              tempBids = res.data.data.$values;
+              const updatedBids = tempBids.filter((prop, index) => {
+                return true;
+              });
+              setBids(updatedBids);
+              axios
+                .get("/api/appraiserWishlistedProperties", {
+                  headers: {
+                    Authorization: `Bearer ${data?.token}`,
+                    "Content-Type": "application/json",
+                  },
+                })
+                .then((res) => {
+                  const tempData = res.data.data.$values;
+
+                  // setAllWishlistedProperties(res.data.data.$values);
+                  const responseData = tempData.filter((prop, index) => {
+                    if (String(prop.userId) === String(data.userId)) {
+                      return true;
+                    } else {
+                      return false;
+                    }
+                  });
+                  const tempId = responseData;
+                  setWishlist(responseData);
+                  setProperties(prop);
+                })
+                .catch((err) => {
+                  toast.error(err?.response);
+                  setErrorMessage(err?.response);
+                  setModalIsOpenError(true);
+                });
+            })
+            .catch((err) => {
+              setErrorMessage(err?.response?.data?.error);
+              setModalIsOpenError(true);
+            });
+          // setRerender(false);
+        })
+        .catch((err) => {
+          toast.dismiss();
+          toast.error(err);
+          setDataFetched(false);
+          // setErrorMessage(err?.response?.data?.error);
+          // setModalIsOpenError(true);
+        });
+    }
 
     let tempBids = [];
-
     axios
       .get("/api/getAllBrokers", {
         headers: {
           Authorization: `Bearer ${data.token}`,
         },
       })
+
       .then((res) => {
         let allbroker = res.data.data.$values;
         axios
@@ -963,28 +1125,9 @@ export default function Exemple({
         setModalIsOpenError(true);
       });
 
-    axios
-      .get("/api/getArchiveAppraiserProperty", {
-        headers: {
-          Authorization: `Bearer ${data.token}`,
-        },
-        params: {
-          userId: data.userId,
-        },
-      })
-      .then((res) => {
-        setAllArchive(res.data.data.$values);
-      })
-      .catch((err) => {
-        setDataFetched(false);
-        setErrorMessage(err?.response?.data?.error);
-        setModalIsOpenError(true);
-      });
-
-    console.log("end", bids, properties, wishlist);
     setRefresh(false);
   }, [refresh]);
-  // console.log(sortObjectsByOrderIdDescending(updatedData));
+
   return (
     <>
       {refresh ? (
@@ -999,20 +1142,20 @@ export default function Exemple({
           setRefresh={setRefresh}
           setProperties={setProperties}
           refresh={refresh}
-          searchInput={searchInput}
-          filterQuery={filterQuery}
           refreshHandler={refreshHandler}
           setStartLoading={setStartLoading}
-          properties={updatedData}
-          dataFetched={dataFetched}
           start={start}
+          searchInput={searchInput}
+          filterQuery={filterQuery}
+          dataFetched={dataFetched}
+          statusData={statusData}
+          properties={updatedData}
           end={end}
         />
       )}
-
-      {isWishlistProperty && (
+      {archiveModal && (
         <div className="modal">
-          <div className="modal-content" style={{ width: "30%" }}>
+          <div className="modal-content" style={{ width: "35%" }}>
             <div className="row">
               <div className="col-lg-12">
                 <Link href="/" className="">
@@ -1049,7 +1192,155 @@ export default function Exemple({
               </div>
             </div>
             <h3 className="text-center mt-3" style={{ color: "#2e008b" }}>
-              Order Confirmation – Property Id{" "}
+              Order Confirmation - Property Id{" "}
+              <span style={{ color: "#97d700" }}>
+                #{selectedProperty?.orderId}
+              </span>
+            </h3>
+            <div className="mb-2" style={{ border: "2px solid #97d700" }}></div>
+            <p className="fs-5 text-center text-dark mt-4">
+              Are you sure for the order to be{" "}
+              <span className="text-danger fw-bold">Archived</span> ?
+            </p>
+            <div
+              className="mb-3 mt-4"
+              style={{ border: "2px solid #97d700" }}
+            ></div>
+            <div className="col-lg-12 d-flex justify-content-center gap-2">
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                onClick={closeArchiveModal}
+              >
+                Cancel
+              </button>
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                onClick={() =>
+                  onArchivePropertyHandler(selectedProperty?.orderId)
+                }
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {wishlistModal && (
+        <div className="modal">
+          <div className="modal-content" style={{ width: "35%" }}>
+            <div className="row">
+              <div className="col-lg-12">
+                <Link href="/" className="">
+                  <Image
+                    width={50}
+                    height={45}
+                    className="logo1 img-fluid"
+                    style={{ marginTop: "-20px" }}
+                    src="/assets/images/logo.png"
+                    alt="header-logo2.png"
+                  />
+                  <span
+                    style={{
+                      color: "#2e008b",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    Appraisal
+                  </span>
+                  <span
+                    style={{
+                      color: "#97d700",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    {" "}
+                    Land
+                  </span>
+                </Link>
+              </div>
+            </div>
+            <h3 className="text-center mt-3" style={{ color: "#2e008b" }}>
+              Order Confirmation - Property Id{" "}
+              <span style={{ color: "#97d700" }}>
+                #{selectedProperty?.orderId}
+              </span>
+            </h3>
+            <div className="mb-2" style={{ border: "2px solid #97d700" }}></div>
+            <p className="fs-5 text-center text-dark mt-4">
+              Are you sure for the order to be{" "}
+              <span className="text-danger fw-bold">Wishlist</span> ?
+            </p>
+            <div
+              className="mb-3 mt-4"
+              style={{ border: "2px solid #97d700" }}
+            ></div>
+            <div className="col-lg-12 d-flex justify-content-center gap-2">
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                onClick={closeArchiveModal}
+              >
+                Cancel
+              </button>
+              <button
+                // disabled={disable}
+                className="btn btn-color w-25"
+                onClick={() => onWishlistHandler(selectedProperty.propertyId)}
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isWishlistProperty && (
+        <div className="modal">
+          <div className="modal-content" style={{ width: "35%" }}>
+            <div className="row">
+              <div className="col-lg-12">
+                <Link href="/" className="">
+                  <Image
+                    width={50}
+                    height={45}
+                    className="logo1 img-fluid"
+                    style={{ marginTop: "-20px" }}
+                    src="/assets/images/logo.png"
+                    alt="header-logo2.png"
+                  />
+                  <span
+                    style={{
+                      color: "#2e008b",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    Appraisal
+                  </span>
+                  <span
+                    style={{
+                      color: "#97d700",
+                      fontWeight: "bold",
+                      fontSize: "24px",
+                      // marginTop: "20px",
+                    }}
+                  >
+                    {" "}
+                    Land
+                  </span>
+                </Link>
+              </div>
+            </div>
+            <h3 className="text-center mt-3" style={{ color: "#2e008b" }}>
+              Order Confirmation - Property Id{" "}
               <span style={{ color: "#97d700" }}>
                 #{selectedProperty?.orderId}
               </span>
@@ -1141,72 +1432,6 @@ export default function Exemple({
                 // disabled={disable}
                 className="btn btn-color w-25"
                 onClick={closeRemarkModal}
-              >
-                Ok
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Modal */}
-      {isLimitModalOpen && (
-        <div className="modal">
-          <div className="modal-content" style={{ width: "25%" }}>
-            <div className="row">
-              <div className="col-lg-12">
-                <Link href="/" className="">
-                  <Image
-                    width={50}
-                    height={45}
-                    className="logo1 img-fluid"
-                    style={{ marginTop: "-20px" }}
-                    src="/assets/images/logo.png"
-                    alt="header-logo2.png"
-                  />
-                  <span
-                    style={{
-                      color: "#2e008b",
-                      fontWeight: "bold",
-                      fontSize: "24px",
-                      // marginTop: "20px",
-                    }}
-                  >
-                    Appraisal
-                  </span>
-                  <span
-                    style={{
-                      color: "#97d700",
-                      fontWeight: "bold",
-                      fontSize: "24px",
-                      // marginTop: "20px",
-                    }}
-                  >
-                    {" "}
-                    Land
-                  </span>
-                </Link>
-              </div>
-            </div>
-            <h3 className="text-center mt-3" style={{ color: "#2e008b" }}>
-              Information <span style={{ color: "#97d700" }}></span>
-            </h3>
-            <div className="mb-2" style={{ border: "2px solid #97d700" }}></div>
-            <p className="fs-5 text-center text-dark mt-4">
-              You&apos;ve hit your subscription limit.
-              <br />
-              Kindly Top Up.{" "}
-              {/* <span className="text-danger fw-bold">Top Up</span>{" "} */}
-            </p>
-            <div
-              className="mb-3 mt-4"
-              style={{ border: "2px solid #97d700" }}
-            ></div>
-            <div className="col-lg-12 d-flex justify-content-center gap-2">
-              <button
-                // disabled={disable}
-                className="btn btn-color w-25"
-                onClick={() => setIsLimitModalOpen(false)}
               >
                 Ok
               </button>

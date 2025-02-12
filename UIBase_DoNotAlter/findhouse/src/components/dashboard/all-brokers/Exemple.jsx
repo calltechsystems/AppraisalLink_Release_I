@@ -10,6 +10,12 @@ import Loader from "./Loader";
 
 const headCells = [
   {
+    id: "sno",
+    numeric: false,
+    label: "S. No",
+    width: 60,
+  },
+  {
     id: "username",
     numeric: false,
     label: "User ID",
@@ -244,6 +250,7 @@ export default function Exemple({
         console.log(temp);
         const data = temp.broker;
         const updatedRow = {
+          sno: index + 1,
           username: temp.userInformation,
           firstname: data?.firstName ? data?.firstName : "NA",
           lastname: data?.lastName ? data?.lastName : "NA",

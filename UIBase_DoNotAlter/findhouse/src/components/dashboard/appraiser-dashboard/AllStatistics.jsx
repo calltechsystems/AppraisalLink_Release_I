@@ -6,7 +6,7 @@ const AllStatistics = ({
   favourites,
   plans,
   plansNew,
-  usedProp
+  usedProp,
 }) => {
   // Extract plan details (assuming plans is an array)
   const planName = plans?.[0]?.planName || "N/A"; // Get first plan name or default "N/A"

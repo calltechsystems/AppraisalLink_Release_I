@@ -6,6 +6,12 @@ import axios from "axios";
 
 const headCells = [
   {
+    id: "sno",
+    numeric: false,
+    label: "S. No",
+    width: 60,
+  },
+  {
     id: "id",
     numeric: false,
     label: "Transaction ID / Payment ID",
@@ -200,6 +206,7 @@ export default function Exemple({
 
         if (true) {
           const updatedRow = {
+            sno: index + 1,
             id: property.paymentid,
             planName: property?.planName || "N.A.",
             planType: <span>{property?.planType}</span>,
@@ -217,7 +224,9 @@ export default function Exemple({
                 Will Be Active on {formatDate(property.startDate)}
               </span>
             ) : (
-              <span className="btn btn-success  w-100">Active</span>
+              <button className="btn btn-success" style={{ width: "55%" }}>
+                Active
+              </button>
             ),
           };
           tempData.push(updatedRow);

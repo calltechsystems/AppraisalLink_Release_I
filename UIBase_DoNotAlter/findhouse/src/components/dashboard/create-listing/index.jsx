@@ -835,7 +835,8 @@ const Index = ({ isView, propertyData }) => {
         }
         setErrorLabel(tempError);
       } else {
-        const encryptedData = encryptionData(payload);
+        // const encryptedData = encryptionData(payload);
+        // console.log(updateView,propertyData);
         toast.loading("Adding the property for appraisal ..");
         // axios
         //   .post("/api/addBrokerProperty", encryptedData, {

@@ -294,30 +294,63 @@ const SidebarMenu = () => {
               ""
             )}
 
-            <li
-              className={`treeview ${
-                hasActivePlans
-                  ? isSinglePageActive(
-                      "/appraiser-completed-properties",
-                      route.pathname
-                    )
-                    ? "active"
-                    : ""
-                  : "disabled"
-              }`}
-            >
-              {hasActivePlans ? (
-                <Link href="/appraiser-completed-properties">
-                  <i className="flaticon-building"></i>
-                  <span>Completed Orders</span>
-                </Link>
-              ) : (
-                <a>
-                  <i className="flaticon-building"></i>
-                  <span>Completed Orders</span>
-                </a>
-              )}
-            </li>
+            {isAppraiserByCompany ? (
+              <li
+                className={`treeview ${
+                  hasActivePlans
+                    ? isSinglePageActive(
+                        "/sub-appraiser-completed-properties",
+                        route.pathname
+                      )
+                      ? "active"
+                      : ""
+                    : "disabled"
+                }`}
+              >
+                {hasActivePlans ? (
+                  <Link href="/sub-appraiser-completed-properties">
+                    <i className="flaticon-building"></i>
+                    <span>Completed Properties</span>
+                  </Link>
+                ) : (
+                  <a>
+                    <i className="flaticon-building"></i>
+                    <span>Completed Properties</span>
+                  </a>
+                )}
+              </li>
+            ) : (
+              ""
+            )}
+
+            {!isAppraiserByCompany ? (
+              <li
+                className={`treeview ${
+                  hasActivePlans
+                    ? isSinglePageActive(
+                        "/appraiser-completed-properties",
+                        route.pathname
+                      )
+                      ? "active"
+                      : ""
+                    : "disabled"
+                }`}
+              >
+                {hasActivePlans ? (
+                  <Link href="/appraiser-completed-properties">
+                    <i className="flaticon-building"></i>
+                    <span>Completed Orders</span>
+                  </Link>
+                ) : (
+                  <a>
+                    <i className="flaticon-building"></i>
+                    <span>Completed Orders</span>
+                  </a>
+                )}
+              </li>
+            ) : (
+              ""
+            )}
           </ul>
         </li>
         <li className="title">

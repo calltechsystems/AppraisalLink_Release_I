@@ -106,7 +106,7 @@ const headCells = [
     id: "actions_01",
     numeric: false,
     label: "Actions",
-    width: 100,
+    width: 110,
   },
 ];
 
@@ -459,7 +459,11 @@ export default function Exemple({
                   className="w-100"
                   onClick={() => openRemarkModal(property)}
                 >
-                  <button href="#" className="btn btn-color" style={{width:"120px"}}>
+                  <button
+                    href="#"
+                    className="btn btn-color"
+                    style={{ width: "120px" }}
+                  >
                     <Link href="#">
                       <span className="text-light">
                         {" "}
@@ -631,18 +635,7 @@ export default function Exemple({
                 </li>
               )} */}
 
-                <li title="Archive Property">
-                  {/* <Link
-                      href="#"
-                      onClick={() =>
-                        archievePropertyHandler(property.propertyId)
-                      }
-                    >
-                      <span className="btn btn-color w-100">
-                        {" "}
-                        Archive Property{" "}
-                      </span>
-                    </Link> */}
+                {/* <li title="Archive Property">
                   <span
                     className="btn btn-color-table"
                     onClick={() => openArchiveModal(property)}
@@ -653,7 +646,7 @@ export default function Exemple({
                       </span>
                     </Link>
                   </span>
-                </li>
+                </li> */}
 
                 {/* End li */}
               </ul>
@@ -845,7 +838,7 @@ export default function Exemple({
           </div>
         </div>
       )}
-   {remarkModal && (
+      {remarkModal && (
         <div className="modal">
           <div className="modal-content" style={{ width: "35%" }}>
             <div className="row">
