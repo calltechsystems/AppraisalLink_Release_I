@@ -885,12 +885,13 @@ const Index = ({ isView, propertyData }) => {
           .then((res) => {
             console.log("API Response:", res);
             toast.dismiss();
+            toast.success("Property Added Successfully");
+            setIsSubmitInProgress(false);
+            setTimesTrigerredSubmission(2);
 
-            const propertyId = res.data?.userData?.propertyId; // Ensure correct extraction
-            console.log("Property ID is:", propertyId);
-
-            setGeneratedPropertyId(propertyId);
+            //open the Successful Modal
             setSuccessModal(true);
+            setGeneratedPropertyId(res?.data?.userData?.propertyId)
           })
           .catch((err) => {
             if (TimesTrigerredSubmission >= 2) {
