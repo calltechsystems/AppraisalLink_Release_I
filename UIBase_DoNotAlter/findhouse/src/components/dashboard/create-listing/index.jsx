@@ -885,32 +885,35 @@ const Index = ({ isView, propertyData }) => {
           .then((res) => {
             console.log("API Response:", res);
             toast.dismiss();
-            toast.success("Property Added Successfully");
+            // toast.success("Property Added Successfully");
             setIsSubmitInProgress(false);
             setTimesTrigerredSubmission(2);
 
             //open the Successful Modal
+            const propertyId = res.data?.userData?.propertyId; // Ensure correct extraction
+            console.log("Property ID is:", propertyId);
+            setGeneratedPropertyId(propertyId);
             setSuccessModal(true);
-            setGeneratedPropertyId(res?.data?.userData?.propertyId)
           })
           .catch((err) => {
             if (TimesTrigerredSubmission >= 2) {
               setIsSubmitInProgress(false);
               setTimesTrigerredSubmission(2);
-              const status = err.response?.request.status;
-              if (status === 403) {
-                setModalIsOpenError(true);
-              } else if (status === 404) {
-                setErrorMessage(err.response?.data?.error || "Not Found");
-                setModalIsOpenError_01(true);
-              } else if (/^5\d{2}$/.test(String(status))) {
-                toast.error("Server error occurred. Try Again!");
-              } else {
-                setErrorMessage(
-                  err.response?.data?.error || "An unexpected error occurred"
-                );
-                setModalIsOpenError_01(true);
-              }
+              const status = err.response?.status; // Corrected status extraction
+            toast.dismiss();
+            if (status === 403) {
+              setModalIsOpenError(true);
+            } else if (status === 404) {
+              setErrorMessage(err.response?.data?.error || "Not Found");
+              setModalIsOpenError_01(true);
+            } else if (/^5\d{2}$/.test(String(status))) {
+              toast.error("Server error occurred. Try Again!");
+            } else {
+              setErrorMessage(
+                err.response?.data?.error || "An unexpected error occurred"
+              );
+              setModalIsOpenError_01(true);
+            }
             } else {
               setTimesTrigerredSubmission(TimesTrigerredSubmission + 1);
             }
