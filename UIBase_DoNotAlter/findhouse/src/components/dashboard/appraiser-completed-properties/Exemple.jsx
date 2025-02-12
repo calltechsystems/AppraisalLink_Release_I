@@ -110,7 +110,7 @@ const headCells = [
   //   id: "action",
   //   numeric: false,
   //   label: "Action",
-  //   width: 180,
+  //   width: 100,
   // },
 ];
 let count = 0;
@@ -483,7 +483,11 @@ export default function Exemple({
                   className="w-100"
                   onClick={() => openRemarkModal(property)}
                 >
-                  <button href="#" className="btn btn-color" style={{width:"120px"}}>
+                  <button
+                    href="#"
+                    className="btn btn-color"
+                    style={{ width: "120px" }}
+                  >
                     <Link href="#">
                       <span className="text-light">
                         {" "}
@@ -571,70 +575,89 @@ export default function Exemple({
                 : property.urgency === 1
                 ? "Regular"
                 : "N.A.",
-
             action: (
               <div className="print-hidden-column">
-                {isBidded.status === 2 ? (
-                  <>
-                    <p className="btn btn-danger  w-100">Declined </p>
-                    <li
-                      className=""
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Archive Property"
-                    >
-                      <div
-                        className="w-100"
-                        onClick={() =>
-                          onArchivePropertyHandler(property.orderId)
-                        }
-                      >
-                        <button href="#" className="btn btn-color">
-                          <Link href="#">
-                            <span className="text-light">
-                              {" "}
-                              <FaArchive />
-                            </span>
-                          </Link>
-                        </button>
-                      </div>
-                    </li>
-                  </>
-                ) : isWait ? (
-                  <>
-                    <p className="btn btn-danger  w-100">
-                      {`No further actions can be taken on this property since it is ${
-                        property.isoncancel ? "Cancelled" : "On Hold"
-                      } !.`}
-                    </p>
-                    <li
-                      className=""
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Archive Property"
-                    >
-                      <div
-                        className="w-100"
-                        onClick={() =>
-                          onArchivePropertyHandler(property.orderId)
-                        }
-                      >
-                        <button href="#" className="btn btn-color">
-                          <Link href="#">
-                            <span className="text-light">
-                              {" "}
-                              <FaArchive />
-                            </span>
-                          </Link>
-                        </button>
-                      </div>
-                    </li>
-                  </>
-                ) : (
-                  <span className="btn btn-completed  w-100">Completed</span>
-                )}
+                <li
+                  className="list-inline-item"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="View Quote"
+                >
+                  {" "}
+                  <span
+                    className="btn btn-color-table"
+                    onClick={() => openQuoteViewModal(isBidded)}
+                  >
+                    <Link href={"#"}>
+                      <span className="text-light flaticon-view"></span>
+                    </Link>
+                  </span>
+                </li>
               </div>
             ),
+            // action: (
+            //   <div className="print-hidden-column">
+            //     {isBidded.status === 2 ? (
+            //       <>
+            //         <p className="btn btn-danger  w-100">Declined </p>
+            //         <li
+            //           className=""
+            //           data-toggle="tooltip"
+            //           data-placement="top"
+            //           title="Archive Property"
+            //         >
+            //           <div
+            //             className="w-100"
+            //             onClick={() =>
+            //               onArchivePropertyHandler(property.orderId)
+            //             }
+            //           >
+            //             <button href="#" className="btn btn-color">
+            //               <Link href="#">
+            //                 <span className="text-light">
+            //                   {" "}
+            //                   <FaArchive />
+            //                 </span>
+            //               </Link>
+            //             </button>
+            //           </div>
+            //         </li>
+            //       </>
+            //     ) : isWait ? (
+            //       <>
+            //         <p className="btn btn-danger  w-100">
+            //           {`No further actions can be taken on this property since it is ${
+            //             property.isoncancel ? "Cancelled" : "On Hold"
+            //           } !.`}
+            //         </p>
+            //         <li
+            //           className=""
+            //           data-toggle="tooltip"
+            //           data-placement="top"
+            //           title="Archive Property"
+            //         >
+            //           <div
+            //             className="w-100"
+            //             onClick={() =>
+            //               onArchivePropertyHandler(property.orderId)
+            //             }
+            //           >
+            //             <button href="#" className="btn btn-color">
+            //               <Link href="#">
+            //                 <span className="text-light">
+            //                   {" "}
+            //                   <FaArchive />
+            //                 </span>
+            //               </Link>
+            //             </button>
+            //           </div>
+            //         </li>
+            //       </>
+            //     ) : (
+            //       <span className="btn btn-completed  w-100">Completed</span>
+            //     )}
+            //   </div>
+            // ),
           };
           tempData.push(updatedRow);
         }
@@ -826,7 +849,7 @@ export default function Exemple({
         />
       )}
 
-   {remarkModal && (
+      {remarkModal && (
         <div className="modal">
           <div className="modal-content" style={{ width: "35%" }}>
             <div className="row">
