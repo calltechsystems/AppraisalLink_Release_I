@@ -2,7 +2,7 @@
 import { handleDownloadClick } from "./downloadFunction";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
-import { encryptionData } from "../../../utils/dataEncryption";
+// import { encryptionData } from "../../../utils/dataEncryption";
 import axios from "axios";
 import { CldUploadWidget } from "next-cloudinary";
 import toast from "react-hot-toast";
@@ -17,10 +17,47 @@ const ProfileInfo = ({
   setShowCard,
   setModalIsOpenError,
   setModalIsOpenError_01,
+  setUploadingFiles,
+  uploadingFiles,
 }) => {
   const [profilePhoto, setProfilePhoto] = useState(null);
   let userData = JSON.parse(localStorage.getItem("user")) || {};
   const router = useRouter();
+
+  useEffect(() => {
+    let updatedList = {};
+    if (userData?.profileImage) {
+      const name = userData?.profileImage.split("/").pop().split("?")[0] || "";
+      updatedList["profileImage"] = {
+        file: { name },
+        previewUrl: name
+          ? name.includes("zip")
+            ? "/assets/Attachments/zipIcon.png"
+            : name.includes("pdf")
+            ? "/assets/Attachments/pdfIcon.png"
+            : url
+          : "",
+        uploadedUrl: url,
+        fieldType: "profileImage",
+      };
+    }
+
+    if (userData?.lenderListUrl) {
+      const name = userData?.lenderListUrl.split("/").pop().split("?")[0];
+      updatedList["LenderList"] = {
+        file: { name },
+        previewUrl: name.includes("zip")
+          ? "/assets/Attachments/zipIcon.png"
+          : name.includes("pdf")
+          ? "/assets/Attachments/pdfIcon.png"
+          : url,
+        uploadedUrl: url,
+        fieldType: "LenderList",
+      };
+    }
+
+    setUploadingFiles({ ...updatedList });
+  }, [userData]);
 
   const [selectedImage2, setSelectedImage2] = useState({
     name:
@@ -155,21 +192,6 @@ const ProfileInfo = ({
     setCellNumber(truncatedValue);
   };
 
-  // const handleInputCellChange = (e) => {
-  //   const inputValue = e.target.value;
-
-  //   // Allow only numeric input
-  //   const numericValue = inputValue.replace(/\D/g, "");
-
-  //   // Restrict to 10 digits
-  //   const truncatedValue = numericValue.slice(0, 10);
-  //   if (truncatedValue.length === 10) {
-  //     setCellNumber(truncatedValue);
-  //   }
-
-  //   setCellNumber(truncatedValue);
-  // };
-
   // Validation for input fields
 
   // State for errors and validation
@@ -217,6 +239,15 @@ const ProfileInfo = ({
   const [officeContactPhoneValid, setOfficeContactPhoneValid] = useState(false);
   const [officeContactEmailValid, setOfficeContactEmailValid] = useState(false);
 
+  const [TimesTrigerredSubmission, setTimesTrigerredSubmission] = useState(0);
+  const [isSubmitInProgress, setIsSubmitInProgress] = useState(false);
+
+  useEffect(() => {
+    if (TimesTrigerredSubmission < 2 && isSubmitInProgress) {
+      submissionHandler();
+    }
+  }, [TimesTrigerredSubmission, isSubmitInProgress]);
+
   const handleInputChangeName = (value, setValue, setValid, setError) => {
     if (value.length <= 30) {
       setValue(value);
@@ -247,7 +278,88 @@ const ProfileInfo = ({
     }
   };
 
-  const onUpdatHandler = () => {
+  const getPreviewUrl = (file) => {
+    if (file.type.startsWith("image/")) {
+      return URL.createObjectURL(file);
+    } else if (file.type === "application/pdf") {
+      return "/assets/Attachments/pdfIcon.png";
+    } else if (
+      file.type === "application/zip" ||
+      file.type === "application/x-zip-compressed"
+    ) {
+      return "/assets/Attachments/zipIcon.png";
+    } else {
+      return "/assets/Attachments/fileIcon.png";
+    }
+  };
+
+  const handleUpload = async (e, type) => {
+    const file = e.target.files[0];
+
+    const updatedFiles = {
+      ...uploadingFiles,
+      [type]: {
+        file,
+        type: file.type,
+        fieldType: type,
+        previewUrl: getPreviewUrl(file),
+        uploadedUrl: "",
+      },
+    };
+    setUploadingFiles(updatedFiles);
+  };
+
+  const initiateTheSubmit = () => {
+    setIsSubmitInProgress(true);
+  };
+
+  const submissionHandler = async () => {
+    try {
+      setTimesTrigerredSubmission(TimesTrigerredSubmission + 1);
+      toast.loading("Updating the profile");
+
+      // Create an array of promises only for files that need uploading
+      const uploadPromises = Object.values(uploadingFiles).map(async (file) => {
+        if (file.uploadedUrl === "") {
+          const generatedURL = await uploadFile(file.file);
+          return {
+            ...file,
+            uploadedUrl: generatedURL,
+          };
+        } else {
+          return file;
+        }
+      });
+
+      // Wait for all the necessary uploads to complete
+      const updatedAttachments = await Promise.all(uploadPromises);
+
+      const updatedList = {};
+      updatedAttachments.map((file) => {
+        updatedList[file.fieldType] = {
+          ...file,
+        };
+      });
+
+      setUploadingFiles({ ...updatedList });
+      // Finally call the main function
+      onUpdatHandler(updatedList);
+    } catch (err) {
+      if (TimesTrigerredSubmission >= 2) {
+        setIsSubmitInProgress(false);
+      }
+      toast.error("Got error while saving, trying again.");
+      console.error(err);
+    }
+  };
+
+  const onUpdatHandler = (updatedList) => {
+    const list = { ...updatedList };
+    console.log({
+      updatedList,
+      LenderList: updatedList["LenderList"]?.uploadedUrl,
+      profileImage: updatedList["profileImage"]?.uploadedUrl,
+    });
     const firstName =
       firstNameRef !== ""
         ? firstNameRef
@@ -299,7 +411,7 @@ const ProfileInfo = ({
       officeContactEmail: officeContactEmail,
       city: cityRef,
       state: stateRef,
-      lenderListUrl: selectedImage2.url,
+      lenderListUrl: updatedList["LenderList"]?.uploadedUrl,
       postalCode: zipcodeRef,
       phoneNumber: phoneNumberRef,
       officeContactPhone: officeContactPhone,
@@ -308,26 +420,11 @@ const ProfileInfo = ({
       streetNumber: streetNumber,
       streetName: streetName,
       apartmentNumber: apartmentNumber,
-      profileImage: SelectedImage,
+      profileImage: updatedList["profileImage"]?.uploadedUrl,
       emailNotification: emailNotification,
       smsNotification: smsNotification,
     };
 
-    // if (
-    //   !payload.lastName ||
-    //   !payload.firstName ||
-    //   !payload.appraiserCompanyName ||
-    //   !payload.phoneNumber ||
-    //   !payload.emailId ||
-    //   !payload.licenseNumber ||
-    //   !payload.streetName ||
-    //   !payload.streetNumber ||
-    //   !payload.city ||
-    //   !payload.state ||
-    //   !payload.postalCode
-    // ) {
-    //   toast.error("Please fill all the required fields!");
-    // }
     const fields = [
       { key: "lastName", message: "Last Name is required!" },
       { key: "firstName", message: "First Name is required!" },
@@ -512,10 +609,9 @@ const ProfileInfo = ({
         );
       } else {
         toast.loading("Updating ...");
-        console.log(payload);
-        const encryptedData = encryptionData(payload);
+
         axios
-          .put("/api/updateAppraiserCompanyProfile", encryptedData)
+          .put("/api/updateAppraiserCompanyProfile", payload)
           .then((res) => {
             toast.success("Successfully Updated Profile!");
 
@@ -526,10 +622,17 @@ const ProfileInfo = ({
             localStorage.removeItem("user");
             localStorage.setItem("user", JSON.stringify(data));
             setShowCard(true);
-            router.push("/appraiser-company-dashboard");
+            console.log({ res });
+            // router.push("/appraiser-company-dashboard");
+            setIsSubmitInProgress(false);
           })
           .catch((err) => {
-            toast.error(err.message);
+            if (TimesTrigerredSubmission < 2) {
+              setTimesTrigerredSubmission(TimesTrigerredSubmission + 1);
+            } else {
+              toast.error(err.message);
+              setIsSubmitInProgress(false);
+            }
           })
           .finally(() => {});
         toast.dismiss();
@@ -599,36 +702,6 @@ const ProfileInfo = ({
     setError(!isValid);
   };
 
-  // const handleInputChange = (value, setRef, setValid, setError) => {
-  //   console.log("setError function:", setError); // Debug log
-  //   if (typeof setError !== "function") {
-  //     console.error("setError is not a function!");
-  //     return;
-  //   }
-
-  //   // Your validation logic
-  //   const isValid = /^[2-9]\d{2} \d{3}-\d{4}$/.test(value);
-  //   setRef(value); // Update value
-  //   setValid(isValid); // Update validation state
-  //   setError(!isValid); // Update error state
-  // };
-
-  // const handleInputChange = (value, setRef, setValue, setValid, setError) => {
-  //   setRef(value); // Update the phoneNumberRef state
-  //   if (value.length <= 13) {
-  //     setValue(value);
-
-  //     // Validate: Check if length is between 3 and 10
-  //     if (value.trim().length >= 11) {
-  //       setValid(true);
-  //       setError(false);
-  //     } else {
-  //       setValid(false);
-  //       setError(true);
-  //     }
-  //   }
-  // };
-
   const handleInputChangeStreet = (value, setValue, setValid, setError) => {
     if (value.length <= 30) {
       setValue(value);
@@ -643,23 +716,6 @@ const ProfileInfo = ({
       }
     }
   };
-
-  // const validateFieldNumber = (value, setError, inputRef) => {
-  //   if (value.trim().length < 10 || value.trim().length > 10) {
-  //     setError(true); // Set error if field length is invalid
-  //     // Ensure inputRef exists before calling scrollIntoView
-  //     if (inputRef && inputRef.current) {
-  //       inputRef.current.scrollIntoView({
-  //         behavior: "smooth", // Smooth scroll to the field
-  //         block: "center", // Align the field to the center
-  //       });
-  //       inputRef.current.focus(); // Focus on the field for the user
-  //     }
-  //     return false;
-  //   }
-  //   setError(false);
-  //   return true;
-  // };
 
   const validateFieldNumber = (value, setError, inputRef) => {
     // Check if value contains only digits
@@ -784,6 +840,13 @@ const ProfileInfo = ({
     }
   };
 
+  const deleteFile = (type) => {
+    setUploadingFiles({
+      ...uploadingFiles,
+      [type]: {},
+    });
+  };
+
   return (
     <>
       <div className="row">
@@ -797,7 +860,7 @@ const ProfileInfo = ({
                 <div className="wrap-custom-file">
                   <img
                     style={{ borderRadius: "50%" }}
-                    src={SelectedImage}
+                    src={uploadingFiles["profileImage"]?.previewUrl}
                     alt="Uploaded Image"
                   />
                   {edit && (
@@ -806,7 +869,7 @@ const ProfileInfo = ({
                         <input
                           type="file"
                           id="fileInput"
-                          onChange={(e) => handleFileChange(e, 1)}
+                          onChange={(e) => handleUpload(e, "profileImage")}
                           style={{ display: "none" }} // Hide the actual input element
                         />
                         {/* You can add a button or any other element to trigger file selection */}
@@ -1292,7 +1355,7 @@ const ProfileInfo = ({
                         <input
                           type="file"
                           id="fileInput_01"
-                          onChange={(e) => handleFileChange(e, 2)}
+                          onChange={(e) => handleUpload(e, "LenderList")}
                           style={{ display: "none" }} // Hide the actual input element
                         />
                         {/* You can add a button or any other element to trigger file selection */}
@@ -1306,12 +1369,57 @@ const ProfileInfo = ({
                           Browse
                         </button>
                         <p className="mt-2" style={{ marginLeft: "10px" }}>
-                          {selectedImage2.name !== "" && "Upload pdf only"}
+                          {uploadingFiles["LenderList"]?.file.name !== "" &&
+                            "Upload pdf only"}
                         </p>
                       </div>
                     </div>
                     <div className="col-lg-5 mt-1">
-                      <Link
+                      {uploadingFiles["LenderList"] ? (
+                        <div key={1} className="position-relative m-2">
+                          <img
+                            src={uploadingFiles["LenderList"]?.previewUrl}
+                            alt="preview"
+                            className="img-thumbnail"
+                            style={{
+                              width: "120px",
+                              height: "120px",
+                              objectFit: "cover",
+                            }}
+                          />
+                          <button
+                            type="button"
+                            className="btn btn-danger btn-sm position-absolute top-0 end-0 m-1"
+                            onClick={() => deleteFile("LenderList")}
+                          >
+                            &times;
+                          </button>
+                          <small
+                            className="d-block text-muted mt-1"
+                            style={{
+                              maxWidth: "120px",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                            }}
+                          >
+                            {uploadingFiles["LenderList"]?.file.name}
+                          </small>
+
+                          <button
+                            type="button"
+                            className="btn btn-success btn-sm m-1"
+                            onClick={() =>
+                              downloadFile(uploadingFiles["LenderList"]?.file)
+                            }
+                          >
+                            download
+                          </button>
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                      {/* <Link
                         target="_blank"
                         rel="noopener noreferrer"
                         href={
@@ -1330,7 +1438,7 @@ const ProfileInfo = ({
                         style={{ cursor: "pointer" }}
                       >
                         {selectedImage2.name}
-                      </Link>
+                      </Link> */}
                     </div>{" "}
                   </div>
 
@@ -1918,7 +2026,7 @@ const ProfileInfo = ({
                           </button>
                           <button
                             className="btn btn2 btn-dark"
-                            onClick={onUpdatHandler}
+                            onClick={initiateTheSubmit}
                           >
                             {userData?.appraiserCompany_Datails
                               ? "Update Profile"

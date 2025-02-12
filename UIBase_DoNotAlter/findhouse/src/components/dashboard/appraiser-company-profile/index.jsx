@@ -16,6 +16,16 @@ const Index = ({ profileCount, setProfileCount }) => {
   const [modalIsOpenError_01, setModalIsOpenError_01] = useState(false);
 
   // const user = JSON.parse(localStorage.getItem("user"));
+  const [uploadingFiles, setUploadingFiles] = useState({
+    "profileImage" : {
+      file : {},
+      previewUrl: '/assets/images/home/placeholder_01.jpg',
+      type: 'image',
+      fieldType: 'profileImage',
+      uploadedUrl: '',
+    }
+  });
+
 
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
@@ -129,6 +139,8 @@ const Index = ({ profileCount, setProfileCount }) => {
                                 setShowCard={setShowCard}
                                 setModalIsOpenError={setModalIsOpenError}
                                 setModalIsOpenError_01={setModalIsOpenError_01}
+                                setUploadingFiles={setUploadingFiles}
+                                uploadingFiles={uploadingFiles}
                               />
                             )}
                           </div>
