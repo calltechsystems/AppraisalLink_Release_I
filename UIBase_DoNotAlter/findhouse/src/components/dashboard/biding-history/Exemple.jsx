@@ -129,7 +129,6 @@ export default function Exemple({
   setCurrentBid,
   setAllAppraiser,
   setAssignPropertyId,
-
   setAssignModal,
   setIsStatusModal,
   setProperties,

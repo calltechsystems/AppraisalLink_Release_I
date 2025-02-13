@@ -7,6 +7,8 @@ import Exemple from "./Exemple";
 import { useDispatch, useSelector } from "react-redux";
 const TableData = ({
   userData,
+  setOpenQuoteView,
+  setCurrentBiddedView,
   searchInput,
   filterQuery,
   setRequiredProp,
@@ -310,6 +312,8 @@ const TableData = ({
           setShowMore={setShowMore}
           setIsStatusModal={setIsStatusModal}
           start={start}
+          setCurrentBiddedView={setCurrentBiddedView}
+          setOpenQuoteView={setOpenQuoteView}
           setRequiredProp={setRequiredProp}
           onArchivePropertyHandler={onArchivePropertyHandler}
           setAssignedAppraiser={setAssignedAppraiser}

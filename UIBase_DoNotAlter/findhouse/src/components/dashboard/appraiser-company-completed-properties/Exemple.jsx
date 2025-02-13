@@ -105,13 +105,12 @@ const headCells = [
     label: "Property Info",
     width: 200,
   },
-
-  // {
-  //   id: "action",
-  //   numeric: false,
-  //   label: "Action",
-  //   width: 180,
-  // },
+  {
+    id: "action",
+    numeric: false,
+    label: "Action",
+    width: 100,
+  },
 ];
 
 let count = 0;
@@ -122,6 +121,8 @@ export default function Exemple({
   close,
   start,
   end,
+  setOpenQuoteView,
+  setCurrentBiddedView,
   setUpdatedCode,
   setRequiredProp,
   filterQuery,
@@ -177,6 +178,11 @@ export default function Exemple({
     setRemarkModal(false);
     setRemark("N.A.");
     setSelectedProperty(null);
+  };
+
+  const openQuoteViewModal = (bid) => {
+    setCurrentBiddedView(bid);
+    setOpenQuoteView(true);
   };
 
   const foundArchiveHandler = (propertyId) => {
@@ -477,7 +483,11 @@ export default function Exemple({
                   className="w-100"
                   onClick={() => openRemarkModal(property)}
                 >
-                  <button href="#" className="btn btn-color" style={{width:"120px"}}>
+                  <button
+                    href="#"
+                    className="btn btn-color"
+                    style={{ width: "120px" }}
+                  >
                     <Link href="#">
                       <span className="text-light">
                         {" "}
@@ -644,7 +654,22 @@ export default function Exemple({
                     </li>
                   </ul>
                 ) : isBidded.orderstatus === 3 ? (
-                  <span className="btn btn-completed  w-100">Completed</span>
+                  <li
+                    className="list-inline-item"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="View Quote"
+                  >
+                    {" "}
+                    <span
+                      className="btn btn-color-table"
+                      onClick={() => openQuoteViewModal(isBidded)}
+                    >
+                      <Link href={"#"}>
+                        <span className="text-light flaticon-view"></span>
+                      </Link>
+                    </span>
+                  </li>
                 ) : isBidded && isBidded.status !== 1 ? (
                   <ul className="mb0 d-flex gap-1">
                     {isWishlist.id ? (
@@ -730,7 +755,22 @@ export default function Exemple({
                   </ul>
                 ) : (
                   isBidded.orderstatus === 3 && (
-                    <span className="btn btn-completed  w-100">Completed</span>
+                    <li
+                      className="list-inline-item"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="View Quote"
+                    >
+                      {" "}
+                      <span
+                        className="btn btn-color-table"
+                        onClick={() => openQuoteViewModal(isBidded)}
+                      >
+                        <Link href={"#"}>
+                          <span className="text-light flaticon-view"></span>
+                        </Link>
+                      </span>
+                    </li>
                   )
                 )}
               </div>
@@ -918,7 +958,7 @@ export default function Exemple({
         />
       )}
 
-   {remarkModal && (
+      {remarkModal && (
         <div className="modal">
           <div className="modal-content" style={{ width: "35%" }}>
             <div className="row">

@@ -316,7 +316,11 @@ export default function Exemple({
 
   const openRemarkModal = (property) => {
     const isBidded = getBidOfProperty(property.orderId); // Get the isBidded data
-    setRemark(isBidded && isBidded.remark ? isBidded.remark : "N.A.");
+    const isCancel = property.isoncancel;
+    const isHold = property.isonhold;
+    setRemark(
+      isHold || isCancel ? "N.A." : isBidded.remark ? isBidded.remark : "N.A."
+    );
     setSelectedProperty(property);
     setRemarkModal(true);
   };
@@ -537,60 +541,108 @@ export default function Exemple({
   }, [properties]);
 
   useEffect(() => {
+    // Reset states for fresh data
     setFilterQuery("All");
     setSearchInput("");
     setProperties([]);
     setBids([]);
 
     const data = JSON.parse(localStorage.getItem("user"));
+    if (!data) {
+      toast.error("User data not found");
+      return;
+    }
 
-    const payload = {
-      token: userData.token,
-    };
+    const fetchPropertiesAndBids = async () => {
+      try {
+        // toast.loading("Getting properties...");
 
-    toast.loading("Getting properties...");
+        // Fetch properties and bids in parallel
+        const [propertiesRes, bidsRes] = await Promise.all([
+          axios.get("/api/getAllArchivePropertiesByBroker", {
+            headers: { Authorization: `Bearer ${data.token}` },
+            params: { userId: data.userId },
+          }),
+          axios.get("/api/getAllBids", {
+            headers: { Authorization: `Bearer ${data.token}` },
+          }),
+        ]);
 
-    axios
-      .get("/api/getAllArchivePropertiesByBroker", {
-        headers: {
-          Authorization: `Bearer ${data.token}`,
-        },
-        params: {
-          userId: data.userId,
-        },
-      })
-      .then((res) => {
+        // Update states after both API calls are successful
         setDataFetched(true);
-        const temp = res.data.data.$values;
-        setProperties(temp);
-      })
-      .catch((err) => {
+        setProperties(propertiesRes.data.data.$values);
+        setBids(bidsRes.data.data.$values);
+
+        toast.dismiss();
+      } catch (err) {
+        // Handle errors
         setDataFetched(false);
-        toast.error(err);
+        toast.error(err?.response?.data?.error || "An error occurred");
         setModalIsOpenError(true);
-      });
+        toast.dismiss();
+      }
+    };
     toast.dismiss();
 
-    let tempBids = [];
-    axios
-      .get("/api/getAllBids", {
-        headers: {
-          Authorization: `Bearer ${data.token}`,
-        },
-      })
-      .then((res) => {
-        console.log("res", res);
-        tempBids = res.data.data.$values;
-        setBids(tempBids);
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error(err);
-        setModalIsOpenError(true);
-      });
-    toast.dismiss();
-    setRefresh(false);
+    // Call the async function to fetch data
+    fetchPropertiesAndBids();
   }, [refresh]);
+
+  // useEffect(() => {
+  //   setFilterQuery("All");
+  //   setSearchInput("");
+  //   setProperties([]);
+  //   setBids([]);
+
+  //   const data = JSON.parse(localStorage.getItem("user"));
+
+  //   const payload = {
+  //     token: userData.token,
+  //   };
+
+  //   toast.loading("Getting properties...");
+
+  //   axios
+  //     .get("/api/getAllArchivePropertiesByBroker", {
+  //       headers: {
+  //         Authorization: `Bearer ${data.token}`,
+  //       },
+  //       params: {
+  //         userId: data.userId,
+  //       },
+  //     })
+  //     .then((res) => {
+  //       setDataFetched(true);
+  //       const temp = res.data.data.$values;
+  //       setProperties(temp);
+  //     })
+  //     .catch((err) => {
+  //       setDataFetched(false);
+  //       toast.error(err);
+  //       setModalIsOpenError(true);
+  //     });
+  //   toast.dismiss();
+
+  //   let tempBids = [];
+  //   axios
+  //     .get("/api/getAllBids", {
+  //       headers: {
+  //         Authorization: `Bearer ${data.token}`,
+  //       },
+  //     })
+  //     .then((res) => {
+  //       console.log("res", res);
+  //       tempBids = res.data.data.$values;
+  //       setBids(tempBids);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       toast.error(err);
+  //       setModalIsOpenError(true);
+  //     });
+  //   toast.dismiss();
+  //   setRefresh(false);
+  // }, [refresh]);
 
   console.log(updatedData);
 

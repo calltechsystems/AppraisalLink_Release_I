@@ -119,12 +119,12 @@ const headCells = [
     label: "Appraiser Assign Completed Date",
     width: 200,
   },
-  // {
-  //   id: "action",
-  //   numeric: false,
-  //   label: "Action",
-  //   width: 180,
-  // },
+  {
+    id: "action",
+    numeric: false,
+    label: "Action",
+    width: 100,
+  },
 ];
 
 let count = 0;
@@ -738,7 +738,23 @@ export default function Exemple({
                   }.`}</p>
                 </ul>
               ) : isBidded.$id && isBidded.orderstatus === 3 ? (
-                <span className="btn btn-completed  w-100">Completed</span>
+                <li
+                  className="list-inline-item"
+                  data-toggle="tooltip"
+                  // style={{ margin: "2%" }}
+                  data-placement="top"
+                  title="View Quote"
+                >
+                  {" "}
+                  <span
+                    className="btn btn-color-table"
+                    onClick={() => openQuoteViewModal(isBidded)}
+                  >
+                    <Link href={"#"}>
+                      <span className="text-light flaticon-view"></span>
+                    </Link>
+                  </span>
+                </li>
               ) : isWait ? (
                 <>
                   <p className="btn btn-danger  w-100">

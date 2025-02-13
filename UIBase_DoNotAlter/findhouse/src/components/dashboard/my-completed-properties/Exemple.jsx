@@ -92,7 +92,7 @@ const headCells = [
     id: "actions_01",
     numeric: false,
     label: "Actions",
-    width: 190,
+    width: 110,
   },
 ];
 
@@ -591,10 +591,9 @@ export default function Exemple({
                 </li>
               )} */}
 
-                <li title="Archive Property">
+                {/* <li title="Archive Property">
                   <span
                     className="btn btn-color-table"
-                    // onClick={() => archievePropertyHandler(property.orderId)}
                     onClick={() => openArchiveModal(property)}
                   >
                     <Link className="color-light" href="#">
@@ -603,7 +602,7 @@ export default function Exemple({
                       </span>
                     </Link>
                   </span>
-                </li>
+                </li> */}
 
                 {/* End li */}
               </ul>

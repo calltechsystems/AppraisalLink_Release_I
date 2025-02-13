@@ -258,7 +258,10 @@ export default function Exemple({
   const openRemarkModal = (property) => {
     const isBidded = getBidOfProperty(property.orderId); // Get the isBidded data
     const isCancel = property.isoncancel;
-    setRemark(isCancel ? "N.A." : isBidded.remark ? isBidded.remark : "N.A.");
+    const isHold = property.isonhold;
+    setRemark(
+      isHold || isCancel ? "N.A." : isBidded.remark ? isBidded.remark : "N.A."
+    );
     setSelectedProperty(property);
     setRemarkModal(true);
   };
@@ -339,27 +342,21 @@ export default function Exemple({
               : formatDate(property.addedDatetime),
             status:
               isHold || isCancel ? (
-                <span className="btn bg-danger text-light w-100">
+                <span className="btn btn-danger w-100">
                   {isHold ? "On Hold" : "Cancelled"}
                 </span>
               ) : isStatus === 3 ? (
-                <span className="btn btn-completed w-100 text-light">
-                  Completed
-                </span>
+                <span className="btn btn-completed w-100">Completed</span>
               ) : isStatus === 2 ? (
-                <span className="btn bg-success w-100 text-light">
-                  Accepted
-                </span>
+                <span className="btn btn-success w-100">Accepted</span>
               ) : isStatus === 0 ? (
-                <span className="btn bg-primary w-100 text-light">
-                  In Progress
-                </span>
+                <span className="btn btn-primary w-100">In Progress</span>
               ) : isStatus === 1 ? (
-                <span className="btn bg-info w-100 text-light">
+                <span className="btn bg-info w-100 text-white">
                   Quote Provided
                 </span>
               ) : (
-                <span className="btn bg-info w-100 text-light">Cancelled</span>
+                <span className="btn btn-info w-100">Cancelled</span>
               ),
             appraisal_status:
               isHold || isCancel ? (

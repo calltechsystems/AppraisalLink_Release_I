@@ -452,7 +452,6 @@ export default function Exemple({
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("user"));
-
     axios
       .get("/api/getAllAppraiser", {
         headers: {

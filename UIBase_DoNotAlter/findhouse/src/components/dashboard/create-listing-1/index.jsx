@@ -783,7 +783,7 @@ const Index = ({ isView, propertyData }) => {
         }
         setErrorLabel(tempError);
       } else {
-        const encryptedData = encryptionData(payload);
+        // const encryptedData = encryptionData(payload);
 
         // console.log(updateView,propertyData);
 
@@ -833,7 +833,7 @@ const Index = ({ isView, propertyData }) => {
         //     }
         //   });
         axios
-          .post("/api/addBrokerProperty", encryptedData, {
+          .post("/api/addBrokerProperty", payload, {
             headers: {
               Authorization: `Bearer ${userData.token}`,
               "Content-Type": "application/json",

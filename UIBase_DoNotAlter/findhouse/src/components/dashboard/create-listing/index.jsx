@@ -894,7 +894,6 @@ const Index = ({ isView, propertyData }) => {
           })
           .then((res) => {
             console.log("API Response:", res);
-            toast.dismiss();
             // toast.success("Property Added Successfully");
             setIsSubmitInProgress(false);
             setTimesTrigerredSubmission(2);
@@ -903,6 +902,7 @@ const Index = ({ isView, propertyData }) => {
             const propertyId = res.data?.userData?.propertyId; // Ensure correct extraction
             console.log("Property ID is:", propertyId);
             setGeneratedPropertyId(propertyId);
+            toast.dismiss();
             setSuccessModal(true);
           })
           .catch((err) => {

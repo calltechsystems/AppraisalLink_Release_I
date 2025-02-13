@@ -38,8 +38,8 @@ function SmartTable(props) {
   };
 
   const refreshHandler = () => {
-    const refresh = !props.refresh;
-    props.setRefresh(refresh);
+    // Only update refresh state if you want to trigger a new fetch
+    window.location.reload();
   };
 
   const fetchData = useCallback(
@@ -458,7 +458,7 @@ function SmartTable(props) {
                     </button>
                     <button
                       className="btn btn-color"
-                      onClick={() => props.refreshHandler()}
+                      onClick={() => refreshHandler()}
                       title="Refresh"
                     >
                       <FaRedo />
