@@ -292,28 +292,23 @@ const Pricing = ({
                 currentSubscription &&
                 String(currentSubscription.planId) !== String(item.id) &&
                 (currentSubscription?.$id ? (
-                  canUpgrade == true ? (
-                    <div
-                      className="pricing_footer"
-                      onClick={() =>
-                        selectPackageHandler(
-                          item.id,
-                          item.description,
-                          isPlan === 1
-                            ? item.monthlyAmount - item.discount
-                            : item.yearlyAmount - item.discount,
-                          "upgrade_plan",
-                          item
-                        )
-                      }
-                    >
-                      <a className={`btn btn-color_01 w-100`} href="#">
-                        Change Plan
-                      </a>
-                    </div>
-                  ) : (
-                    ""
-                  )
+                  <button
+                    disabled={!canUpgrade ? true : false}
+                    className="btn btn-color_01 w-100"
+                    onClick={() =>
+                      selectPackageHandler(
+                        item.id,
+                        item.description,
+                        isPlan === 1
+                          ? item.monthlyAmount - item.discount
+                          : item.yearlyAmount - item.discount,
+                        "upgrade_plan",
+                        item
+                      )
+                    }
+                  >
+                    <a href="#">Change Plan</a>
+                  </button>
                 ) : (
                   ""
                 ))}

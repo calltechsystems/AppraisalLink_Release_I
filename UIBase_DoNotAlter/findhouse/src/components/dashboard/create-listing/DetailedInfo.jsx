@@ -390,7 +390,7 @@ const DetailedInfo = ({
                   Attachment
                 </label>
               </div>
-              <div className="col-lg-5 mb-2">
+              {attachment.length == 0 && <div className="col-lg-5 mb-2">
                 <label className="btn btn-primary">
                   Upload File
                   <input
@@ -398,25 +398,24 @@ const DetailedInfo = ({
                     accept=".doc, .docx, .pdf, .xls, .xlsx, .ppt, .pptx, .jpg, .jpeg, .png, .gif, .mp3, .mp4, .zip, .txt, .csv"
                     onChange={(e) => handleUpload(e)}
                     style={{ display: "none" }}
-                    multiple // Allows multiple files if needed
+                    single
                   />
                 </label>
-              </div>
+              </div>}
             </div>
           </div>
           <div className="col-xl-12">
             <div className="my_profile_setting_input overflow-hidden mt20 text-center">
               <div className="d-flex flex-wrap">
-                {attachment.length > 0 && <button
-                  className="btn btn-success m-2"
-                  onClick={downloadAllAttachments}
-                >
-                  Download All Attachments
-                </button>}
-
                 {attachment?.map((file, index) => {
                   return (
-                    <div key={index} className="position-relative m-2">
+                    <div key={index} className="position-relative m-2 d-flex flex-column">
+                      <div>{attachment.length > 0 && <button
+                  className="btn btn-success mb-2"
+                  onClick={downloadAllAttachments}
+                >
+                  Download
+                </button>}</div>
                       <img
                         src={file.previewUrl}
                         alt="preview"
