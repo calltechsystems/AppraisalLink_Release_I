@@ -8,7 +8,7 @@ import MobileMenu from "../../common/header/MobileMenu_02";
 import CreateList from "./CreateList";
 import DetailedInfo from "./DetailedInfo";
 import LocationField from "./LocationField";
-import { encryptionData } from "../../../utils/dataEncryption";
+// import { encryptionData } from "../../../utils/dataEncryption";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { typeOfBuilding } from "./data";
