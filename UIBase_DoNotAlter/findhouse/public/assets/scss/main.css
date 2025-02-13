@@ -22908,6 +22908,44 @@ input:checked + .slider:before {
 
 /* new loading css end */
 
+/* add property loader start */
+
+/* Full-screen overlay with fade-in effect */
+.overlayLoader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  /* animation: fadeIn 0.5s ease-in-out; */
+}
+
+/* Spinner container */
+.spinnerContainer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Background fade-in */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+
+/* add property loader start */
+
 /* no data found css start */
 
 .no-data-container {
