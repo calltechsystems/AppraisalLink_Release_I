@@ -13,6 +13,7 @@ import { uploadFile } from "./functions";
 import ReactInputMask from "react-input-mask";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
+import CommonLoader from "../../common/CommonLoader/page";
 
 const ProfileInfo = ({
   setProfileCount,
@@ -70,9 +71,7 @@ const ProfileInfo = ({
       };
     }
     setUploadingFiles({ ...updatedList });
-  }, [userData]);
-
-  useEffect(() => {}, []);
+  }, []);
 
   const [selectedImage2, setSelectedImage2] = useState({
     name:
@@ -181,20 +180,9 @@ const ProfileInfo = ({
     }
   }, [smsNotification, emailNotification]);
 
-  // const handleInputChange = (e) => {
-  //   const inputValue = e.target.value;
+  const [isLoading, setIsLoading] = useState(false);
 
-  //   // Allow only numeric input
-  //   const numericValue = inputValue.replace(/\D/g, "");
 
-  //   // Restrict to 10 digits
-  //   const truncatedValue = numericValue.slice(0, 10);
-  //   if (truncatedValue.length === 10) {
-  //     setPhoneNumberRef(truncatedValue);
-  //   }
-
-  //   setPhoneNumberRef(truncatedValue);
-  // };
 
   const handleInputCellChange = (value) => {
     // Remove all non-numeric characters
@@ -259,9 +247,9 @@ const ProfileInfo = ({
 
   useEffect(() => {
     if (
-      TimesTrigerredSubmission <= 2 &&
-      TimesTrigerredSubmission >= 1 &&
-      isSubmitInProgress
+      (TimesTrigerredSubmission <= 2 &&
+      TimesTrigerredSubmission >= 1) &&
+      isSubmitInProgress == true
     ) {
       submissionHandler();
     }
@@ -335,6 +323,7 @@ const ProfileInfo = ({
   const submissionHandler = async () => {
     try {
       toast.loading("Updating the profile");
+      setIsLoading(true);
 
       // Create an array of promises only for files that need uploading
       const uploadPromises = Object.values(uploadingFiles).map(async (file) => {
@@ -366,6 +355,7 @@ const ProfileInfo = ({
       if (TimesTrigerredSubmission > 2) {
         setIsSubmitInProgress(false);
         setTimesTrigerredSubmission(0);
+        setIsLoading(false);
         toast.error("Got error while saving, trying again.");
         console.error(err);
       } else {
@@ -637,8 +627,8 @@ const ProfileInfo = ({
             localStorage.removeItem("user");
             localStorage.setItem("user", JSON.stringify(data));
             setShowCard(true);
-            // router.push("/appraiser-company-dashboard");
             setIsSubmitInProgress(false);
+            window.location.reload();
           })
           .catch((err) => {
             if (TimesTrigerredSubmission < 2) {
@@ -647,6 +637,7 @@ const ProfileInfo = ({
               toast.error(err.message);
               setIsSubmitInProgress(false);
               setTimesTrigerredSubmission(0);
+              setIsLoading(false);
             }
           })
           .finally(() => {});
@@ -783,9 +774,9 @@ const ProfileInfo = ({
   return (
     <>
       <div className="row">
-        {/* <h4 className="mb-3">Personal Information</h4> */}
         <div className="col-lg-12"></div>
 
+       {isLoading && <CommonLoader/>}
         <div className="col-lg-12 col-xl-12 mt-2">
           <div className="my_profile_setting_input form-group">
             <div className="row">
@@ -1961,7 +1952,10 @@ const ProfileInfo = ({
                           </button>
                           <button
                             className="btn btn2 btn-dark"
-                            onClick={initiateTheSubmit}
+                            onClick={() => {
+                              setTimesTrigerredSubmission(1);
+                              setIsSubmitInProgress(true)
+                            }}
                           >
                             {userData?.appraiserCompany_Datails
                               ? "Update Profile"
