@@ -34,7 +34,6 @@ const index = () => {
             </div>
           </div>
           
-
           <div className="row">
             <div className="col-lg-8">
               <div className="main_blog_post_content">

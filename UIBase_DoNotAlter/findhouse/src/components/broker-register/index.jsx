@@ -28,17 +28,8 @@ const Index = () => {
 
   return (
     <>
-      {/* <!-- Main Header Nav --> */}
-      {/* <Header />*/}
-
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
-
-      {/* <!-- Modal --> */}
-      {/* <PopupSignInUp /> */}
-
-      {/* <!-- Inner Page Breadcrumb --> */}
-      {/* <BreadCrumbBanner /> */}
 
       {/* <!-- Our LogIn Register --> */}
       <section className="our-log bgc-fa pt100">
