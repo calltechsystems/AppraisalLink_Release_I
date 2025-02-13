@@ -39,11 +39,13 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
 
         bids.forEach((bid) => {
           if (bid.orderId == property?.orderId) {
-            quotesProvidedCount +=  bid.status <= 1 ? 1 : 0;
+            quotesProvidedCount += bid.status <= 1 ? 1 : 0;
             QuotesInProgressCount += bid?.status == 0 ? 1 : 0;
-            quoteAccepted += bid.status == 1 && bid?.orderStatus == null ? 1 : 0;
-            QuotesCompletedCount += bid?.status == 1 && bid?.orderstatus == 3 ? 1 : 0;
-            QuotesOnHoldCount += property.isonhold ? 1 : 0;
+            quoteAccepted +=
+              bid.status == 1 && bid?.orderStatus == null ? 1 : 0;
+            QuotesCompletedCount +=
+              bid?.status == 1 && bid?.orderstatus == 3 ? 1 : 0;
+            QuotesOnHoldCount += bid?.orderstatus == 4 ? 1 : 0;
           }
         });
       }
