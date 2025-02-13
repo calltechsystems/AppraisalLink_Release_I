@@ -154,13 +154,14 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       <td className="table-value">
                         <span className="text-start text-dark fw-bold">
                           <a
+                            className="text-decoration-underline"
                             target="_blank"
                             rel="noopener noreferrer"
                             href={
                               userData?.appraiserCompany_Datails
                                 ?.lenderListUrl !== ""
                                 ? userData?.appraiserCompany_Datails
-                                    ?.lenderListFUrl
+                                    ?.lenderListUrl
                                 : ""
                             }
                             onClick={(event) =>

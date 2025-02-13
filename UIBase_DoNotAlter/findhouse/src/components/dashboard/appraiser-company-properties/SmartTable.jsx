@@ -119,87 +119,101 @@ function SmartTable(props) {
         ["lender_information", "Lender Information"],
       ];
 
-      // Create the content to be printed
       const printContent = `
-        <html>
-          <head>
-            <style>
-              @media print {
-                @page {
-                  margin: 20mm;
-                }
-                body {
-                  margin: 0;
-                  padding: 10mm;
-                }
-                .header, .footer {
-                  width: 100%;
-                  position: fixed;
-                  text-align: center;
-                  background: white;
-                }
-                .header {
-                  top: 0;
-                }
-                .footer {
-                  bottom: 0;
-                }
-                .logo img {
-                  width: 60px;
-                  height: 45px;
-                }
-                .title {
-                  font-size: 24px;
-                  font-weight: bold;
-                }
-                .table-container {
-                  margin-top: 60px; /* Space for header */
-                  margin-bottom: 60px; /* Space for footer */
-                  page-break-inside: avoid;
-                }
-                table {
-                  width: 100%;
-                  border-collapse: collapse;
-                }
-                th, td {
-                  border: 1px solid #000;
-                  padding: 8px;
-                  text-align: left;
-                }
+      <html>
+        <head>
+          <style>
+            @media print {
+              @page {
+                margin: 20mm;
               }
-            </style>
-          </head>
-          <body>
-            <div class="header">
-              <div class="logo">
-                <img src="/assets/images/Appraisal_Land_Logo.png" alt="header-logo2.png"/>
-              </div>
-              <div class="title">
-                <span style="color: #2e008b;">Appraisal</span>
-                <span style="color: #97d700;">Land</span>
-              </div>
+              body {
+                margin: 0;
+                padding: 10mm;
+              }
+              /* Header & Footer */
+              .header, .footer {
+                width: 100%;
+                position: fixed;
+                text-align: center;
+                background: white;
+              }
+              .header {
+                top: 0;
+                padding-bottom: 10px;
+                border-bottom: 1px solid #ddd;
+              }
+              .footer {
+                bottom: 0;
+                padding-top: 10px;
+                border-top: 1px solid #ddd;
+              }
+              /* Logo */
+              .logo img {
+                width: 60px;
+                height: 45px;
+              }
+              /* Title */
+              .title {
+                font-size: 24px;
+                font-weight: bold;
+              }
+              /* Table styling */
+              .table-container {
+                margin-top: 80px; /* Space for header */
+                margin-bottom: 80px; /* Space for footer */
+                page-break-before: always;
+              }
+              table {
+                width: 100%;
+                border-collapse: collapse;
+              }
+              th, td {
+                border: 1px solid #000;
+                padding: 8px;
+                text-align: left;
+              }
+              /* Ensure the heading appears on every page */
+              h3 {
+                page-break-before: always;
+                text-align: center;
+                font-size: 20px;
+              }
+            }
+          </style>
+        </head>
+        <body>
+          <!-- Header -->
+          <div class="header">
+            <div class="logo">
+              <img src="/assets/images/Appraisal_Land_Logo.png" alt="header-logo2.png"/>
             </div>
-            <div class="footer" style="margin-top:10%">
-              
-  <a href="https://appraisalland.ca/" target="_blank" style="color: #2e008b; text-decoration: underline;">Appraisal Land</a>
-  <br/>
-  <span>© ${getCurrentYear()} All Rights Reserved.</span>
+            <div class="title">
+              <span style="color: #2e008b;">Appraisal</span>
+              <span style="color: #97d700;">Land</span>
+            </div>
+          </div>
 
-            </div>
-            <div class="table-container">
-              <h3 style="margin-left: 38%">Appraiser Company Properties</h3>
-              <table>
-                <thead>
-                  <tr>
-                    ${staticHeaders
-                      .map((header) => `<th>${header[1]}</th>`)
-                      .join("")}
-                  </tr>
-                </thead>
-                <tbody>
-                  ${allData
-                    .map(
-                      (item) => `
+          <!-- Footer -->
+          <div class="footer">
+            <a href="https://appraisalland.ca/" target="_blank" style="color: #2e008b; text-decoration: underline;">Appraisal Land</a>
+            <br/>
+            <span>© ${getCurrentYear()} All Rights Reserved.</span>
+          </div>
+
+          <!-- Table Container -->
+          <div class="table-container">
+            <h3>Appraiser Company Properties</h3>
+            <table>
+              <thead>
+                <tr>
+                  ${staticHeaders.map((header) => `<th>${header[1]}</th>`).join("")}
+                </tr>
+              </thead>
+              <tbody>
+                ${allData
+                  .map(
+                    (item) => `
                     <tr>
                       ${staticHeaders
                         .map((header) => {
@@ -232,14 +246,13 @@ function SmartTable(props) {
                         .join("")}
                     </tr>
                   `
-                    )
-                    .join("")}
-                </tbody>
-              </table>
-            </div>
-          </body>
-        </html>
-      `;
+                  )
+                  .join("")}
+              </tbody>
+            </table>
+          </div>
+        </body>
+      </html>`;
 
       const printWindow = window.open("", "_blank");
 

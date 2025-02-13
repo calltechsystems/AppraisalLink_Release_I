@@ -14,6 +14,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { useModal } from "../../../context/ModalContext";
 import { uploadFile } from "./functions";
+import LoadingSpinner from "../../common/LoadingSpinner";
+import CommonLoader from "../../common/CommonLoader/page";
 
 const Index = ({ isView, propertyData }) => {
   const router = useRouter();
@@ -131,6 +133,8 @@ const Index = ({ isView, propertyData }) => {
 
   const [TimesTrigerredSubmission, setTimesTrigerredSubmission] = useState(0);
   const [isSubmitInProgress, setIsSubmitInProgress] = useState(false);
+
+  const [isLoading, setisLoading] = useState(false);
 
   useEffect(() => {
     if (
@@ -558,6 +562,7 @@ const Index = ({ isView, propertyData }) => {
             router.push("/my-properties");
             setIsSubmitInProgress(false);
             setTimesTrigerredSubmission(0);
+            setisLoading(false);
           })
           .catch((err) => {
             if (TimesTrigerredSubmission > 2) {
@@ -569,6 +574,7 @@ const Index = ({ isView, propertyData }) => {
                   "Got error while updating the Property details."
               );
               setdisable(false);
+              setisLoading(false);
             } else {
               setTimesTrigerredSubmission(TimesTrigerredSubmission + 1);
             }
@@ -690,6 +696,7 @@ const Index = ({ isView, propertyData }) => {
 
   const submissionHandler = async () => {
     try {
+      setisLoading(true);
       let uploadedUrlList = "";
       toast.loading(`${updateView ? "Updating the data" : "Saving the data"}`);
 
@@ -721,6 +728,7 @@ const Index = ({ isView, propertyData }) => {
         setIsSubmitInProgress(false);
         setTimesTrigerredSubmission(0);
         setDisable(false);
+        setisLoading(false);
         toast.error("Got error while saving, trying again.");
         console.error(err);
       } else {
@@ -846,45 +854,7 @@ const Index = ({ isView, propertyData }) => {
         }
         setErrorLabel(tempError);
       } else {
-        // const encryptedData = encryptionData(payload);
-        toast.loading("Adding the property for appraisal ..");
-        // axios
-        //   .post("/api/addBrokerProperty", encryptedData, {
-        //     headers: {
-        //       Authorization: `Bearer ${userData.token}`,
-        //       "Content-Type": "application/json",
-        //     },
-        //   })
-        //   .then((res) => {
-        //     console.log("API Response:", res);
-        //     toast.dismiss();
-        //     const propertyId = res.data.userData?.propertyId;
-        //     console.log("propert id is :", propertyId);
-        //     setGeneratedPropertyId(propertyId);
-        //     setSuccessModal(true);
-        //     // toast.success("Property Added Successfully");
-        //     // router.push("/my-properties");
-        //   })
-        //   .catch((err) => {
-        //     const status = err.response?.request.status;
-        //     if (String(status) === String(403)) {
-        //       toast.dismiss();
-        //       setModalIsOpenError(true);
-        //     } else if (String(status) === String(404)) {
-        //       toast.dismiss();
-        //       setErrorMessage(err.response?.data.error);
-        //       setModalIsOpenError_01(true);
-        //     } else if (/^5\d{2}$/.test(String(status))) {
-        //       toast.dismiss();
-        //       toast.error("Server error occurred Try Again !! ");
-        //       // window.location.reload();
-        //     } else {
-        //       toast.dismiss();
-        //       setErrorMessage(err.response?.data.error);
-        //       setModalIsOpenError_01(true);
-        //       // toast.error(err.message);
-        //     }
-        //   });
+        toast.loading("Adding the property for appraisal ..")
         axios
           .post("/api/addBrokerProperty", payload, {
             headers: {
@@ -895,15 +865,15 @@ const Index = ({ isView, propertyData }) => {
           .then((res) => {
             console.log("API Response:", res);
             toast.dismiss();
-            // toast.success("Property Added Successfully");
             setIsSubmitInProgress(false);
             setTimesTrigerredSubmission(2);
 
             //open the Successful Modal
-            const propertyId = res.data?.userData?.propertyId; // Ensure correct extraction
+            const propertyId = res.data?.userData?.propertyId; 
             console.log("Property ID is:", propertyId);
             setGeneratedPropertyId(propertyId);
             setSuccessModal(true);
+            setisLoading(false);
           })
           .catch((err) => {
             if (TimesTrigerredSubmission > 2) {
@@ -926,6 +896,7 @@ const Index = ({ isView, propertyData }) => {
               setIsSubmitInProgress(false);
               setTimesTrigerredSubmission(0);
               setdisable(false);
+              setisLoading(false);
             } else {
               setTimesTrigerredSubmission(TimesTrigerredSubmission + 1);
             }
@@ -967,6 +938,8 @@ const Index = ({ isView, propertyData }) => {
     <>
       {/* <!-- Main Header Nav --> */}
       <Header userData={data} />
+      
+      {isLoading && <CommonLoader/>}
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
