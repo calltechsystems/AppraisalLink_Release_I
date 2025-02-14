@@ -6,6 +6,7 @@ const AllStatistics = ({
   favourites,
   plans,
   plansNew,
+  totalNoOfProperties,
   usedProp,
 }) => {
   // Extract plan details (assuming plans is an array)
@@ -104,7 +105,7 @@ const AllStatistics = ({
       id: 11,
       blockStyle: "stylecard11",
       icon: "fa fa-building",
-      timer: numberOfProperties,
+      timer: totalNoOfProperties,
       name: "No. of Properties",
     },
     {

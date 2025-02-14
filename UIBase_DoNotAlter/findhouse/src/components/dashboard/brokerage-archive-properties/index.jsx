@@ -785,22 +785,6 @@ const Index = () => {
 
               {/* End .col */}
             </div>
-
-            <div className="row">
-              <div className="row">
-                <div className="col-lg-12 mt0">
-                  <div className="mbp_pagination">
-                    <Pagination
-                      setStart={setStart}
-                      setEnd={setEnd}
-                      properties={allArchive}
-                    />
-                  </div>
-                </div>
-              </div>
-              {/* End paginaion .col */}
-            </div>
-            {/* End .row */}
           </div>
           {/* End .row */}
           {/*<div className="row">

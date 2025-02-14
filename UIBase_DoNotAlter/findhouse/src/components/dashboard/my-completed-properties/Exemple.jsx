@@ -591,7 +591,7 @@ export default function Exemple({
                 </li>
               )} */}
 
-                <li title="Archive Property">
+                {/* <li title="Archive Property">
                   <span
                     className="btn btn-color-table"
                     // onClick={() => archievePropertyHandler(property.orderId)}
@@ -603,7 +603,7 @@ export default function Exemple({
                       </span>
                     </Link>
                   </span>
-                </li>
+                </li> */}
 
                 {/* End li */}
               </ul>

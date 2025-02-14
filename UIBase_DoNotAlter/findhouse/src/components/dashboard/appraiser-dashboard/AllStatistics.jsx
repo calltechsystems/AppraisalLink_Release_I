@@ -6,7 +6,8 @@ const AllStatistics = ({
   favourites,
   plans,
   plansNew,
-  usedProp
+  usedProp,
+  totalNoOfProperties
 }) => {
   // Extract plan details (assuming plans is an array)
   const planName = plans?.[0]?.planName || "N/A"; // Get first plan name or default "N/A"
@@ -103,7 +104,7 @@ const AllStatistics = ({
       id: 11,
       blockStyle: "stylecard11",
       icon: "fa fa-building",
-      timer: numberOfProperties,
+      timer: totalNoOfProperties,
       name: "No. of Properties",
     },
     {

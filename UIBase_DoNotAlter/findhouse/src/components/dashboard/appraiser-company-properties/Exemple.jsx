@@ -223,29 +223,34 @@ export default function Exemple({
   //   });
   // };
 
-  const handleDownload = async (url) => {
-    if (url) {
-      try {
-        const response = await fetch(url); // Fetch the file from S3
-        if (!response.ok) throw new Error("Network response was not ok.");
-
-        const blob = await response.blob(); // Convert the response to a Blob
-        const downloadUrl = window.URL.createObjectURL(blob); // Create a temporary URL
-
-        const link = document.createElement("a");
-        link.href = downloadUrl;
-        link.download = url.split("/").pop(); // Extracts the file name from the URL
-        document.body.appendChild(link);
-        link.click(); // Trigger the download
-        document.body.removeChild(link);
-
-        window.URL.revokeObjectURL(downloadUrl); // Clean up the temporary URL
-      } catch (error) {
-        console.error("Download failed:", error);
-        toast.error("Failed to download the attachment.");
-      }
-    } else {
+  const handleDownload = async (filePath) => {
+    if (!filePath) {
       toast.error("No attachment available.");
+      return;
+    }
+
+    try {
+      const baseUrl = "https://appraisalfile.s3.us-east-1.amazonaws.com/";
+      const fileUrl = `${baseUrl}${filePath}`; // Construct full URL
+
+      const response = await fetch(fileUrl);
+      if (!response.ok)
+        throw new Error(`HTTP error! Status: ${response.status}`);
+
+      const blob = await response.blob();
+      const downloadUrl = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+      link.download = filePath.split("/").pop(); // Extract file name
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      window.URL.revokeObjectURL(downloadUrl);
+    } catch (error) {
+      console.error("Download failed:", error);
+      toast.error("Failed to download the ZIP file.");
     }
   };
 

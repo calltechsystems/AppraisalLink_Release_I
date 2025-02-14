@@ -267,7 +267,10 @@ export default function Exemple({
   const openRemarkModal = (property) => {
     const isBidded = getBidOfProperty(property.orderId); // Get the isBidded data
     const isCancel = property.isoncancel;
-    setRemark(isCancel ? "N.A." : isBidded.remark ? isBidded.remark : "N.A.");
+    const isHold = property.isonhold;
+    setRemark(
+      isCancel || isHold ? "N.A." : isBidded.remark ? isBidded.remark : "N.A."
+    );
     setSelectedProperty(property);
     setRemarkModal(true);
   };

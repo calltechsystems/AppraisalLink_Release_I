@@ -12,7 +12,7 @@ import {
   FaHandPointer,
   FaPause,
   FaRedo,
-  FaEye
+  FaEye,
 } from "react-icons/fa";
 import Image from "next/image";
 
@@ -96,12 +96,12 @@ const headCells = [
     label: "Lender Information",
     width: 160,
   },
-  // {
-  //   id: "actions_01",
-  //   numeric: false,
-  //   label: "Actions",
-  //   width: 170,
-  // },
+  {
+    id: "actions_01",
+    numeric: false,
+    label: "Actions",
+    width: 110,
+  },
 ];
 
 export default function Exemple({
@@ -414,7 +414,11 @@ export default function Exemple({
                   className="w-100"
                   onClick={() => openRemarkModal(property)}
                 >
-                  <button href="#" className="btn btn-color" style={{width:"120px"}}>
+                  <button
+                    href="#"
+                    className="btn btn-color"
+                    style={{ width: "120px" }}
+                  >
                     <Link href="#">
                       <span className="text-light">
                         {" "}
@@ -436,7 +440,144 @@ export default function Exemple({
             urgency: property.urgency === 0 ? "Rush" : "Regular",
 
             actions_01: (
-              <button className="btn btn-completed w-100">Completed</button>
+              // <ul className="view_edit_delete_list mb0">
+              <ul className="mb0 d-flex gap-1">
+                {/* {!isEditable && ( */}
+                <li title="Property Details" className="">
+                  {/* <Link href={"#"}>
+                      <span
+                        className="btn btn-color w-100 mb-1"
+                        onClick={() => openPopupModal(property)}
+                      >
+                        {" "}
+                        Property Details{" "}
+                      </span>
+                    </Link>{" "} */}
+                  <span
+                    className="btn btn-color-table"
+                    onClick={() => openPopupModal(property)}
+                  >
+                    <Link href={"#"}>
+                      <span className="text-light flaticon-view"></span>
+                    </Link>
+                  </span>
+                </li>
+                {/* )} */}
+
+                {!isEditable && !isCancel && (
+                  <li title="Quotes">
+                    {/* <Link href={`/my-property-bids/${property.propertyId}`}>
+                      <span className="btn btn-color w-100 mb-1"> Quotes </span>
+                    </Link>{" "} */}
+                    <Link
+                      className="btn btn-color-table"
+                      // style={{ marginLeft: "4.3rem" }}
+                      href={`/brokerage-properties-bid/${property.orderId}`}
+                    >
+                      <span className="flaticon-invoice">
+                        {/* <FaHandHoldingUsd /> */}
+                      </span>
+                    </Link>
+                  </li>
+                )}
+
+                {(isEditable || isStatus === 1) && !isCancel && (
+                  <li title="Edit Property">
+                    <Link
+                      className="btn btn-color-table"
+                      href={`/create-listing-1/${property.orderId}`}
+                    >
+                      <span className="flaticon-edit"></span>
+                    </Link>
+                  </li>
+                )}
+
+                {/* End li */}
+
+                {!isCancel && isStatus !== 3 && isBidded.orderstatus !== 4 && (
+                  <li title={!isHold ? "On Hold" : "Remove Hold"}>
+                    <button
+                      className="btn btn-color-table "
+                      style={{ border: "1px solid grey" }}
+                      onClick={() =>
+                        openModal(property.orderId, 1, isHold ? 0 : property)
+                      }
+                      title={
+                        isHold ? "Remove On Hold Property" : "On Hold Property"
+                      }
+                    >
+                      <Link href="#" className="text-light">
+                        {isHold ? (
+                          <FaPlay className="text-light" />
+                        ) : (
+                          <FaPause className="text-light" />
+                        )}
+                      </Link>
+                    </button>
+                  </li>
+                )}
+                {/* )} */}
+
+                {/* {isEditable && ( */}
+                {!isCancel && isStatus !== 3 && !isHold && (
+                  <li title={"Order Cancel"}>
+                    <span
+                      className="btn btn-color-table"
+                      style={{ border: "1px solid grey" }}
+                      // onClick={() =>
+                      //   onCancelHandler(property.propertyId, !isCancel)
+                      // }
+                      onClick={() => openModal(property.orderId, 2, property)}
+                    >
+                      <Link href="#">
+                        {/* <img
+                          width="25px"
+                          style={{ backgroundColor: "white" }}
+                          src="https://static.thenounproject.com/png/225895-200.png"
+                          alt=""
+                        /> */}
+                        <i className="fa fa-times text-light"></i>
+                      </Link>
+                    </span>
+                  </li>
+                )}
+                {/* )} */}
+
+                {/* {isEditable && (
+                  <li title="Edit Property">
+                    <Link href="#">
+                      <span className="btn btn-color w-100 mb-1">
+                        {" "}
+                        On Hold{" "}
+                      </span>
+                    </Link>{" "}
+                    <Link
+                      className="btn btn-color-table"
+                      href={`/create-listing/${property.propertyId}`}
+                    >
+                      <span className="flaticon-edit"></span>
+                    </Link>
+                  </li>
+                )} */}
+
+                {/* {!isEditable && (
+                <li
+                  className="list-inline-item"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Archive Property"
+                >
+                  <span
+                    className="btn btn-color-table"
+                    onClick={() => archievePropertyHandler(property.propertyId)}
+                  >
+                    <Link className="color-light" href={`/archive-property`}>
+                      <span className="flaticon-box"></span>
+                    </Link>
+                  </span>
+                </li>
+              )} */}
+              </ul>
             ),
           };
           tempData.push(updatedRow);
@@ -521,7 +662,7 @@ export default function Exemple({
         />
       )}
 
-   {remarkModal && (
+      {remarkModal && (
         <div className="modal">
           <div className="modal-content" style={{ width: "35%" }}>
             <div className="row">

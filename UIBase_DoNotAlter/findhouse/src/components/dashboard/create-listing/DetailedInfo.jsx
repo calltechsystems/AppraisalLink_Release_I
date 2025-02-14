@@ -80,7 +80,7 @@ const DetailedInfo = ({
   const downloadAllAttachments = async () => {
     const zip = new JSZip();
     const folder = zip.folder("Attachments"); // Create a folder named 'Attachments'
-  
+
     for (const fileItem of attachment) {
       if (fileItem.uploadedUrl) {
         // Fetch file from uploaded URL (e.g., S3)
@@ -93,7 +93,7 @@ const DetailedInfo = ({
         folder.file(fileItem.file.name, fileItem.file);
       }
     }
-  
+
     // Generate the zip file with attachments inside the 'Attachments' folder
     zip.generateAsync({ type: "blob" }).then((content) => {
       saveAs(content, "attachments.zip"); // Final zip file name
@@ -456,52 +456,6 @@ const DetailedInfo = ({
                     })}
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-          <div className="col-xl-12">
-            <div className="my_profile_setting_input overflow-hidden mt20 text-center">
-              <div className="d-flex flex-wrap">
-                {attachment?.map((file, index) => {
-                  return (
-                    <div key={index} className="position-relative m-2 d-flex flex-column">
-                      <div>{attachment.length > 0 && <button
-                  className="btn btn-success mb-2"
-                  onClick={downloadAllAttachments}
-                >
-                  Download
-                </button>}</div>
-                      <img
-                        src={file.previewUrl}
-                        alt="preview"
-                        className="img-thumbnail"
-                        style={{
-                          width: "120px",
-                          height: "120px",
-                          objectFit: "cover",
-                        }}
-                      />
-                      <button
-                        type="button"
-                        className="btn btn-danger btn-sm position-absolute top-0 end-0 m-1"
-                        onClick={() => handleDelete(index)}
-                      >
-                        &times;
-                      </button>
-                      <small
-                        className="d-block text-muted mt-1"
-                        style={{
-                          maxWidth: "120px",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          whiteSpace: "nowrap",
-                        }}
-                      >
-                        {file.file.name}
-                      </small>
-                    </div>
-                  );
-                })}
               </div>
             </div>
           </div>

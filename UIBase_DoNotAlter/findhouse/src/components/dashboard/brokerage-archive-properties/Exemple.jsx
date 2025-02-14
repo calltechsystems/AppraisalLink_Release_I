@@ -330,7 +330,11 @@ export default function Exemple({
 
   const openRemarkModal = (property) => {
     const isBidded = getBidOfProperty(property.orderId); // Get the isBidded data
-    setRemark(isBidded && isBidded.remark ? isBidded.remark : "N.A.");
+    const isCancel = property.isoncancel;
+    const isHold = property.isonhold;
+    setRemark(
+      isCancel || isHold ? "N.A." : isBidded.remark ? isBidded.remark : "N.A."
+    );
     setSelectedProperty(property);
     setRemarkModal(true);
   };
@@ -700,7 +704,7 @@ export default function Exemple({
         </div>
       )}
 
-   {remarkModal && (
+      {remarkModal && (
         <div className="modal">
           <div className="modal-content" style={{ width: "35%" }}>
             <div className="row">

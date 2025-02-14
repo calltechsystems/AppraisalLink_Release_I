@@ -83,7 +83,8 @@ const Index = () => {
 
   console.log("plan data", planData_01);
 
-  const usedProp = userData?.usedproperty;
+  const usedProp = userData?.usedProperties;
+  const totalNoOfProperties = userData?.totalNoOfProperties;
   const userPlans = Array.isArray(userData?.userSubscription?.$values)
     ? userData.userSubscription.$values
     : [];
@@ -623,6 +624,7 @@ const Index = () => {
                   plans={planData_01}
                   plansNew={planData_02}
                   usedProp={usedProp}
+                  totalNoOfProperties={totalNoOfProperties}
                 />
               </div>
               {/* End .row Dashboard top statistics */}
