@@ -35,6 +35,16 @@ const Form = ({ userData, chnageShowCardHandler }) => {
       )}`; // e.g., "416 123-4567"
     }
   };
+
+  const getFileNameFromS3Url = (url) => {
+    if (!url) return null;
+
+    const urlParts = url.split("/");
+    const fileName = urlParts[urlParts.length - 1].split("?")[0];
+
+    return fileName;
+  };
+  
   return (
     <form className="contact_form" action="#" style={{ borderRadius: "5px" }}>
       <div className="row">
@@ -153,32 +163,46 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                       </td>
                       <td className="table-value">
                         <span className="text-start text-dark fw-bold">
-                          <a
+                          <span
                             className="text-decoration-underline"
                             target="_blank"
                             rel="noopener noreferrer"
-                            href={
-                              userData?.appraiserCompany_Datails
-                                ?.lenderListUrl !== ""
-                                ? userData?.appraiserCompany_Datails
-                                    ?.lenderListUrl
-                                : ""
-                            }
                             onClick={(event) =>
+                              userData?.appraiserCompany_Datails
+                                ?.lenderListUrl &&
                               handleDownloadClick(
                                 event,
                                 userData?.appraiserCompany_Datails
-                                  ?.lenderListUrl,
-                                `${userData?.appraiserCompany_Datails?.firstName}_lenderlist.pdf`
+                                  .lenderListUrl,
+                                getFileNameFromS3Url(
+                                  userData?.appraiserCompany_Datails
+                                    .lenderListUrl
+                                )
                               )
                             }
                             style={{
-                              cursor: "pointer",
+                              cursor: userData?.appraiserCompany_Datails
+                                ?.lenderListUrl
+                                ? "pointer"
+                                : "default",
                               textDecoration: "underline",
+                              color: userData?.appraiserCompany_Datails
+                                ?.lenderListUrl
+                                ? "blue"
+                                : "black",
+                              pointerEvents: userData?.appraiserCompany_Datails
+                                ?.lenderListUrl
+                                ? "auto"
+                                : "none",
                             }}
                           >
-                            Lender List Pdf
-                          </a>
+                            {userData?.appraiserCompany_Datails?.lenderListUrl
+                              ? getFileNameFromS3Url(
+                                  userData?.appraiserCompany_Datails
+                                    .lenderListUrl
+                                )
+                              : "N.A."}
+                          </span>
                         </span>
                       </td>
                     </tr>

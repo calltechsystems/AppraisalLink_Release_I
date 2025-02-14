@@ -102,14 +102,40 @@ const DetailedInfo = ({
 
   const handleUpload = async (e) => {
     const file = e.target.files[0];
-    const maxTotalSize = 25 * 1024 * 1024; // 25 MB in bytes
+    const maxTotalSize = 25 * 1024 * 1024;
 
-    // Calculate current total size of attachments
+    // List of allowed file types
+    const allowedFileTypes = [
+      "application/zip",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "application/msword",
+      "application/pdf",
+      "application/vnd.ms-excel",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "application/vnd.ms-powerpoint",
+      "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+      "image/jpeg",
+      "image/png",
+      "image/gif",
+      "text/plain",
+      "text/csv",
+      "audio/mpeg",
+      "video/mp4",
+    ];
+
+    if (!allowedFileTypes.includes(file.type)) {
+      toast.error(
+        `Invalid file type. Allowed types: .doc, .docx, .pdf, .xls, .xlsx, .ppt, .pptx, .jpg
+         ,.jpeg, .png, .gif, .mp3, .mp4, .zip, .txt, .csv`
+      );
+      return;
+    }
+
     const currentTotalSize = attachment.reduce(
       (total, item) => total + item.file.size,
       0
     );
-    // Check if adding the new file exceeds the limit
+
     if (currentTotalSize + file.size > maxTotalSize) {
       toast.error(
         "Total attachments size exceeds 25 MB. Please remove some files or upload smaller ones."
@@ -396,7 +422,7 @@ const DetailedInfo = ({
                     Upload File
                     <input
                       type="file"
-                      accept=".doc, .docx, .pdf, .xls, .xlsx, .ppt, .pptx, .jpg, .jpeg, .png, .gif, .mp3, .mp4, .zip, .txt, .csv"
+                      accept=".zip"
                       onChange={(e) => handleUpload(e)}
                       style={{ display: "none" }}
                       single
