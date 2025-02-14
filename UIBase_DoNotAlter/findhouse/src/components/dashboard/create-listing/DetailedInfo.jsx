@@ -390,18 +390,73 @@ const DetailedInfo = ({
                   Attachment
                 </label>
               </div>
-              {attachment.length == 0 && <div className="col-lg-5 mb-2">
-                <label className="btn btn-primary">
-                  Upload File
-                  <input
-                    type="file"
-                    accept=".doc, .docx, .pdf, .xls, .xlsx, .ppt, .pptx, .jpg, .jpeg, .png, .gif, .mp3, .mp4, .zip, .txt, .csv"
-                    onChange={(e) => handleUpload(e)}
-                    style={{ display: "none" }}
-                    single
-                  />
-                </label>
-              </div>}
+              {attachment.length == 0 && (
+                <div className="col-lg-5">
+                  <label className="btn btn-color text-white mt-3">
+                    Upload File
+                    <input
+                      type="file"
+                      accept=".doc, .docx, .pdf, .xls, .xlsx, .ppt, .pptx, .jpg, .jpeg, .png, .gif, .mp3, .mp4, .zip, .txt, .csv"
+                      onChange={(e) => handleUpload(e)}
+                      style={{ display: "none" }}
+                      single
+                    />
+                  </label>
+                </div>
+              )}
+              <div className="col-lg-4">
+                <div className="my_profile_setting_input overflow-hidden mt20 text-center">
+                  <div className="d-flex flex-wrap">
+                    {attachment?.map((file, index) => {
+                      return (
+                        <div
+                          key={index}
+                          className="position-relative m-2 d-flex flex-column"
+                        >
+                          <div>
+                            {attachment.length > 0 && (
+                              <button
+                                className="btn btn-success mb-2"
+                                onClick={downloadAllAttachments}
+                              >
+                                Download
+                              </button>
+                            )}
+                          </div>
+                          <img
+                            src={file.previewUrl}
+                            alt="preview"
+                            className="img-thumbnail"
+                            style={{
+                              width: "120px",
+                              height: "120px",
+                              objectFit: "cover",
+                            }}
+                          />
+                          <button
+                            type="button"
+                            className="btn btn-danger btn-sm m-1"
+                            onClick={() => handleDelete(index)}
+                          >
+                            Remove
+                          </button>
+                          <small
+                            className="d-block text-muted mt-1"
+                            style={{
+                              maxWidth: "120px",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                            }}
+                          >
+                            {file.file.name}
+                          </small>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div className="col-xl-12">

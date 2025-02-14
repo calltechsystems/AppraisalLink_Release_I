@@ -15,6 +15,7 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
     PlanValidityCount,
     NoOfPropertiesCount,
     UsedPropertiesCount,
+    totalNoOfProperties,
     quoteAccepted,
   } = useMemo(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -29,6 +30,7 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
     let PlanValidityCount = 0;
     let NoOfPropertiesCount = 0;
     let UsedPropertiesCount = 0;
+    let totalNoOfProperties = 0;
     let quoteAccepted = 0;
 
     properties?.forEach((property) => {
@@ -39,10 +41,12 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
 
         bids.forEach((bid) => {
           if (bid.orderId == property?.orderId) {
-            quotesProvidedCount +=  bid.status <= 1 ? 1 : 0;
+            quotesProvidedCount += bid.status <= 1 ? 1 : 0;
             QuotesInProgressCount += bid?.status == 0 ? 1 : 0;
-            quoteAccepted += bid.status == 1 && bid?.orderStatus == null ? 1 : 0;
-            QuotesCompletedCount += bid?.status == 1 && bid?.orderstatus == 3 ? 1 : 0;
+            quoteAccepted +=
+              bid.status == 1 && bid?.orderStatus == null ? 1 : 0;
+            QuotesCompletedCount +=
+              bid?.status == 1 && bid?.orderstatus == 3 ? 1 : 0;
             QuotesOnHoldCount += property.isonhold ? 1 : 0;
           }
         });
@@ -57,7 +61,8 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
       // PlanValidityCount = currentPlanInfo?.planValidity;
       PlanCount = currentPlanInfo?.planName;
       NoOfPropertiesCount = currentPlanInfo?.noOfProperties;
-      UsedPropertiesCount = userData?.usedproperty || 0;
+      UsedPropertiesCount = userData?.usedProperties || 0;
+      totalNoOfProperties = userData?.totalNoOfProperties || 0;
     }
 
     // End Date
@@ -80,6 +85,7 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
       PlanValidityCount,
       NoOfPropertiesCount,
       UsedPropertiesCount,
+      totalNoOfProperties,
       quoteAccepted,
     };
   }, [properties, bids]);
@@ -199,7 +205,7 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
         icon: "fa fa-building",
         timer: favourites,
         // icon: "flaticon-invoice",
-        value: NoOfPropertiesCount,
+        value: totalNoOfProperties,
         name: "No. of Properties",
       },
       {

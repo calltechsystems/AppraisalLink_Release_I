@@ -806,7 +806,7 @@ const ProfileInfo = ({
                           Browse
                         </button>
                         <p className="mt-2">
-                          {SelectedImage !== "" && "Image Only"}
+                          {SelectedImage !== "" && "Note - Image Only"}
                         </p>
                       </div>
                     </div>
@@ -1290,11 +1290,11 @@ const ProfileInfo = ({
                             document.getElementById("fileInput_01").click()
                           }
                         >
-                          Browse
+                          Upload File
                         </button>
                         <p className="mt-2" style={{ marginLeft: "10px" }}>
                           {uploadingFiles["LenderList"]?.file?.name !== "" &&
-                            "Upload pdf only"}
+                            "Note - Upload pdf only."}
                         </p>
                       </div>
                     </div>

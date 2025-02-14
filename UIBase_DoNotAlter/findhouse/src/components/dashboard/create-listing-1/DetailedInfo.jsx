@@ -4,12 +4,12 @@ import { CldUploadWidget } from "next-cloudinary";
 import ReactInputMask from "react-input-mask";
 import CheckBoxFilter from "../../common/CheckBoxFilter";
 import toast from "react-hot-toast";
-import axios from "axios";
-import { uploadFile } from "./functions";
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
+
 const DetailedInfo = ({
   onCancelHandler,
   isDisable,
-  changeUrlToStringHandler,
   updateHandler,
   remark,
   setRemark,
@@ -32,12 +32,12 @@ const DetailedInfo = ({
   image,
   disable,
   setImage,
+  haveSubscription,
   setFilesUrl,
   setAttachment,
   setDisable,
 }) => {
   const router = useRouter();
-  console.log(filesUrl, attachment);
   const [isButtonDisabled, setButtonDisabled] = useState(false);
 
   const [uploadedFiles, setUploadedFiles] = useState([]);
@@ -62,21 +62,78 @@ const DetailedInfo = ({
     console.log("Number of selected images:", images.length);
   };
 
-  const handleUpload = async (e, type) => {
-    const file = e.target.files[0];
-    toast.loading("Uploading..");
-    try {
-      const generatedUrl = await uploadFile(file);
-      toast.dismiss();
-      toast.success("Uploaded Successfully");
-      let allUrl = [...filesUrl];
-      allUrl.push(generatedUrl);
-      setFilesUrl(allUrl);
-      setAttachment(generatedUrl);
-    } catch (err) {
-      toast.dismiss();
-      toast.error("Try Again!");
+  const getPreviewUrl = (file) => {
+    if (file.type.startsWith("image/")) {
+      return URL.createObjectURL(file);
+    } else if (file.type === "application/pdf") {
+      return "/assets/Attachments/pdfIcon.png";
+    } else if (
+      file.type === "application/zip" ||
+      file.type === "application/x-zip-compressed"
+    ) {
+      return "/assets/Attachments/zipIcon.png";
+    } else {
+      return "/assets/Attachments/fileIcon.png";
     }
+  };
+
+  const downloadAllAttachments = async () => {
+    const zip = new JSZip();
+    const folder = zip.folder("Attachments"); // Create a folder named 'Attachments'
+
+    for (const fileItem of attachment) {
+      if (fileItem.uploadedUrl) {
+        // Fetch file from uploaded URL (e.g., S3)
+        const response = await fetch(fileItem.uploadedUrl);
+        const blob = await response.blob();
+        const fileName = fileItem.file?.name || "downloaded_file";
+        folder.file(fileName, blob); // Add to 'Attachments' folder in ZIP
+      } else if (fileItem.file) {
+        // Add local files directly
+        folder.file(fileItem.file.name, fileItem.file);
+      }
+    }
+
+    // Generate the zip file with attachments inside the 'Attachments' folder
+    zip.generateAsync({ type: "blob" }).then((content) => {
+      saveAs(content, "attachments.zip"); // Final zip file name
+    });
+  };
+
+  const handleUpload = async (e) => {
+    const file = e.target.files[0];
+    const maxTotalSize = 25 * 1024 * 1024; // 25 MB in bytes
+
+    // Calculate current total size of attachments
+    const currentTotalSize = attachment.reduce(
+      (total, item) => total + item.file.size,
+      0
+    );
+    // Check if adding the new file exceeds the limit
+    if (currentTotalSize + file.size > maxTotalSize) {
+      toast.error(
+        "Total attachments size exceeds 25 MB. Please remove some files or upload smaller ones."
+      );
+      return;
+    }
+
+    const updatedAttachment = [
+      ...attachment,
+      {
+        file,
+        type: file.type,
+        previewUrl: getPreviewUrl(file),
+        uploadedUrl: "",
+      },
+    ];
+
+    setAttachment(updatedAttachment);
+  };
+
+  // Handle delete file
+  const handleDelete = (index) => {
+    const updatedAttachments = attachment.filter((_, i) => i !== index);
+    setAttachment(updatedAttachments);
   };
 
   const errorLabelStyle = { borderColor: "red" };
@@ -109,6 +166,7 @@ const DetailedInfo = ({
 
     setApplicantNumber(truncatedValue);
   };
+
   return (
     <>
       <div className="row">
@@ -193,10 +251,6 @@ const DetailedInfo = ({
                     <li style={{ fontSize: "15px" }}>
                       Please enter phone number without country code.
                     </li>
-                    {/* <li>
-                                  Regular Request : Timeline for the appraisal
-                                  report is 3 – 4 days.
-                                </li> */}
                   </ul>
                 </div>
                 <i class="fa fa-info-circle" aria-hidden="true"></i>
@@ -249,7 +303,6 @@ const DetailedInfo = ({
                 onChange={handleInputChange}
                 pattern="[0-9]*"
                 maxLength="10"
-                // placeholder="Enter 10 digits"
                 title="Please enter only 10 digits"
                 required
                 disabled={isDisable}
@@ -337,42 +390,76 @@ const DetailedInfo = ({
                   Attachment
                 </label>
               </div>
-              <div className="col-lg-7 mb-2">
-                <label className="upload">
-                  <input type="file" onChange={(e) => handleUpload(e)} />
-                </label>
+              {attachment.length == 0 && (
+                <div className="col-lg-5">
+                  <label className="btn btn-color text-white mt-3">
+                    Upload File
+                    <input
+                      type="file"
+                      accept=".doc, .docx, .pdf, .xls, .xlsx, .ppt, .pptx, .jpg, .jpeg, .png, .gif, .mp3, .mp4, .zip, .txt, .csv"
+                      onChange={(e) => handleUpload(e)}
+                      style={{ display: "none" }}
+                      single
+                    />
+                  </label>
+                </div>
+              )}
+              <div className="col-lg-4">
+                <div className="my_profile_setting_input overflow-hidden mt20 text-center">
+                  <div className="d-flex flex-wrap">
+                    {attachment?.map((file, index) => {
+                      return (
+                        <div
+                          key={index}
+                          className="position-relative m-2 d-flex flex-column"
+                        >
+                          <div>
+                            {attachment.length > 0 && (
+                              <button
+                                className="btn btn-success mb-2"
+                                onClick={downloadAllAttachments}
+                              >
+                                Download
+                              </button>
+                            )}
+                          </div>
+                          <img
+                            src={file.previewUrl}
+                            alt="preview"
+                            className="img-thumbnail"
+                            style={{
+                              width: "120px",
+                              height: "120px",
+                              objectFit: "cover",
+                            }}
+                          />
+                          <button
+                            type="button"
+                            className="btn btn-danger btn-sm m-1"
+                            onClick={() => handleDelete(index)}
+                          >
+                            Remove
+                          </button>
+                          <small
+                            className="d-block text-muted mt-1"
+                            style={{
+                              maxWidth: "120px",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                            }}
+                          >
+                            {file.file.name}
+                          </small>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <div className="col-xl-12">
-            <div className="my_profile_setting_input overflow-hidden mt20 text-center">
-              {filesUrl.length > 0
-                ? filesUrl.map((url, index) => {
-                    <div
-                      className=""
-                      style={{
-                        width: "20px",
-                        height: "20px",
-                        cursor: "pointer",
-                      }}
-                    >
-                      <span className="flaticon-garbage text-danger"></span>
-                    </div>;
-                    return (
-                      <>
-                        <img key={index} src={url} width={120} height={120} />
-                      </>
-                    );
-                  })
-                : attachment[0] !== ""
-                ? attachment.map((url, index) => {
-                    return (
-                      <img key={index} src={url} width={120} height={120} />
-                    );
-                  })
-                : ""}
-            </div>
-          </div>
+
           <div className="col-xl-12">
             <div className="my_profile_setting_input overflow-hidden mt20 text-center">
               {!isDisable && (
@@ -386,9 +473,6 @@ const DetailedInfo = ({
               )}
               {!isDisable &&
                 (propertyData ? (
-                  // <button className="btn btn5" onClick={submitHandler}>
-                  //   Update
-                  // </button>
                   <button
                     disabled={disable}
                     className={`btn btn5 ${isButtonDisabled ? "disabled" : ""}`}

@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Header from "../../common/header/dashboard/HeaderBrokerage";
@@ -8,38 +7,40 @@ import MobileMenu from "../../common/header/MobileMenu_02";
 import CreateList from "./CreateList";
 import DetailedInfo from "./DetailedInfo";
 import LocationField from "./LocationField";
-// import { encryptionData } from "../../../utils/dataEncryption";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { typeOfBuilding } from "./data";
 import Link from "next/link";
 import Image from "next/image";
 import { useModal } from "../../../context/ModalContext";
+import { uploadFile } from "./functions";
+import LoadingSpinner from "../../common/LoadingSpinner";
+import CommonLoader from "../../common/CommonLoader/page";
 
 const Index = ({ isView, propertyData }) => {
   const router = useRouter();
+  const { isModalOpen, setIsModalOpen } = useModal();
   const [userData, setUserData] = useState({});
   // const userData = JSON.parse(localStorage.getItem("user"));
   const data = JSON.parse(localStorage.getItem("user"));
-  const { isModalOpen, setIsModalOpen } = useModal();
+
   const [updateView, setUpdateView] = useState(propertyData);
   const [isDisable, setDisable] = useState(updateView);
-  console.log("orderid", propertyData);
+
   const [appraisalQuoteDate, setAppraisalQuoteDate] = useState(
     propertyData ? propertyData.quoteRequiredDate : ""
   );
-
   const [successModal, setSuccessModal] = useState(false);
   // const [propertyId, setPropertyId] = useState(null);
   const [generatedPropertyId, setGeneratedPropertyId] = useState(null);
-  const [modalOpen, setModalOpen] = useState(false);
-
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
+  const [modalIsOpenError_01, setModalIsOpenError_01] = useState(false);
 
   const changeStringUrlHandler = (inputString) => {
-    const resultArray = inputString?.split(",");
-    return resultArray;
+    // const resultArray = inputString?.split(",");
+    // return resultArray;
+    return [];
   };
   const [errorMessage, setErrorMessage] = useState("");
   const [refresh, setRefresh] = useState(false);
@@ -55,6 +56,9 @@ const Index = ({ isView, propertyData }) => {
   );
   const [streetNumberRef, setStreetNumberRef] = useState(
     propertyData?.streetNumber || ""
+  );
+  const [apartmentNumberRef, setApartmentNumberRef] = useState(
+    propertyData?.apartmentNumber || ""
   );
   const [cityRef, setCityRef] = useState(propertyData?.city || "");
   const [stateRef, setStateRef] = useState(propertyData?.province || "");
@@ -104,7 +108,7 @@ const Index = ({ isView, propertyData }) => {
   const [applicantAddress, setApplicantAddress] = useState(
     propertyData?.applicantAddress || ""
   );
-  const [attachment, setAttachment] = useState(propertyData?.attachment || "");
+  const [attachment, setAttachment] = useState([]);
   const [filesUrl, setFilesUrl] = useState([]);
   const [purpose, setPurpose] = useState(propertyData?.purpose || "");
 
@@ -116,8 +120,6 @@ const Index = ({ isView, propertyData }) => {
 
   const [otherUrgencyValue, setOtherUrgencyValue] = useState(false);
 
-  const [modalIsOpenError_01, setModalIsOpenError_01] = useState(false);
-
   const [otherTypeOfBuildingValue, setOtherTypeOfBuildingValue] =
     useState(false);
   const [otherPurposeValue, setOtherPurposeValue] = useState(false);
@@ -126,15 +128,30 @@ const Index = ({ isView, propertyData }) => {
 
   const [otherUrgency, setOtherUrgency] = useState(false);
 
-  const [image, setImage] = useState(propertyData?.image || "");
+  const [image, setImage] = useState(propertyData?.image || []);
   const [buttonDisabled, setButtonDisabled] = useState(false);
 
-  const changeUrlToStringHandler = () => {
-    const resultString = filesUrl.join(",");
-    if (updateView) {
-      return attachment + "," + resultString;
+  const [TimesTrigerredSubmission, setTimesTrigerredSubmission] = useState(0);
+  const [isSubmitInProgress, setIsSubmitInProgress] = useState(false);
+
+  const [isLoading, setisLoading] = useState(false);
+
+  useEffect(() => {
+    if (
+      TimesTrigerredSubmission <= 2 &&
+      TimesTrigerredSubmission >= 1 &&
+      isSubmitInProgress
+    ) {
+      submissionHandler();
     }
-    return resultString;
+  }, [TimesTrigerredSubmission, isSubmitInProgress]);
+
+  const onChangeHandler = (value, field, otherField) => {
+    if (String(value) === "Other") {
+      otherField(true);
+    } else {
+      field(value);
+    }
   };
 
   const formatPhoneNumber = (number) => {
@@ -161,9 +178,6 @@ const Index = ({ isView, propertyData }) => {
       year: "numeric",
       month: "short",
       day: "numeric",
-      // hour: "numeric",
-      // minute: "numeric",
-      // second: "numeric",
       hour12: true, // Set to false for 24-hour format
     };
 
@@ -176,20 +190,33 @@ const Index = ({ isView, propertyData }) => {
     return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
-  const onChangeHandler = (value, field, otherField) => {
-    console.log(value, field, otherField);
-    if (String(value) === "Other") {
-      otherField(true);
-    } else {
-      field(value);
-    }
-  };
-
   const closeErrorModal = () => {
     setModalIsOpenError(false);
     setModalIsOpenError_01(false);
-    location.reload(true);
   };
+
+  useEffect(() => {
+    if (propertyData?.attachment) {
+      const array = propertyData?.attachment
+        ?.split(",")
+        .filter((item) => item.trim() !== "");
+      let updatedList = [];
+      array.forEach((url) => {
+        const name = url.split("/").pop().split("?")[0];
+        updatedList.push({
+          file: { name },
+          previewUrl: name.includes("zip")
+            ? "/assets/Attachments/zipIcon.png"
+            : name.includes("pdf")
+            ? "/assets/Attachments/pdfIcon.png"
+            : url,
+          uploadedUrl: url,
+        });
+      });
+
+      setAttachment(updatedList);
+    }
+  }, [propertyData]);
 
   useEffect(() => {
     if (streetNameRef !== "") {
@@ -294,10 +321,6 @@ const Index = ({ isView, propertyData }) => {
   }, [typeOfAppraisal]);
 
   useEffect(() => {
-    console.log(filesUrl);
-  }, [filesUrl]);
-
-  useEffect(() => {
     if (applicantFirstName !== "") {
       let updatedError = errorLabel.filter((err) => {
         if (String(err) === "applicantFirstName") return false;
@@ -393,34 +416,14 @@ const Index = ({ isView, propertyData }) => {
     }
   }, [purpose]);
 
-  // useEffect(() => {
-  //   userData = JSON.parse(localStorage.getItem("user"));
-  //   console.log(userData.userSubscription.$values);
-
-  //   if (!userData) {
-  //     router.push("/login");
-  //   }
-  //   // else if( userData.userSubscription.$values !== null ){
-  //   //   router.push("/my-plans");
-  //   // }
-  //   else if (userData?.broker_Details?.firstName === "") {
-  //     router.push("/my-profile");
-  //   }
-  // }, []);
-
-  const calculateDateHandler = () => {
-    const type = urgencyRef;
-  };
-
-  const onCancelModalHandler = () => {
-    window.location.reload();
-  };
-  const updateHandler = () => {
+  const updateHandler = (attachmentList) => {
     setdisable(true);
     setModalIsOpen(false);
+    toast.loading("Updating the data");
     const nameRegex = /^[A-Za-z]+$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     const userInfo = JSON.parse(localStorage.getItem("user"));
+
     const phoneNumberRegex = /^\d{10}$/;
 
     if (
@@ -442,6 +445,7 @@ const Index = ({ isView, propertyData }) => {
         userId: userInfo.userId,
         streetName: streetNameRef,
         streetNumber: streetNumberRef,
+        apartmentNumber: apartmentNumberRef,
         city: cityRef,
         state: stateRef,
         zipCode: zipCodeRef,
@@ -469,7 +473,7 @@ const Index = ({ isView, propertyData }) => {
             : typeOfAppraisal,
         purpose: String(purpose) === "Other" ? otherPurposeValue : purpose,
 
-        attachment: changeUrlToStringHandler(),
+        attachment: attachmentList,
         image: "",
         quoteRequiredDate: appraisalQuoteDate,
         remark: remark ? remark : "",
@@ -534,15 +538,15 @@ const Index = ({ isView, propertyData }) => {
         }
         setErrorLabel(tempError);
       } else {
-        const encryptedData = encryptionData(payload);
+        // const encryptedData = encryptionData(payload);
 
         const url = window.location.pathname;
 
-        const propertyOrderId = url.split("/create-listing-1/")[1];
+        const propertyOrderId = url.split("/create-listing/")[1];
 
         toast.loading("Updating the property..");
         axios
-          .put("/api/addPropertyByBroker", encryptedData, {
+          .put("/api/addPropertyByBroker", payload, {
             headers: {
               Authorization: `Bearer ${userData.token}`,
               "Content-Type": "application/json",
@@ -556,13 +560,29 @@ const Index = ({ isView, propertyData }) => {
             toast.success("Successfully submitted !!");
             setModalIsOpen(false);
             router.push("/brokerage-properties");
+            setIsSubmitInProgress(false);
+            setTimesTrigerredSubmission(0);
+            setisLoading(false);
           })
           .catch((err) => {
-            toast.dismiss();
-            toast.error(err.response.data.error);
+            if (TimesTrigerredSubmission > 2) {
+              setIsSubmitInProgress(false);
+              setTimesTrigerredSubmission(0);
+              toast.dismiss();
+              toast.error(
+                err.response.data.error ||
+                  "Got error while updating the Property details."
+              );
+              setdisable(false);
+              setisLoading(false);
+            } else {
+              setTimesTrigerredSubmission(TimesTrigerredSubmission + 1);
+            }
           });
       }
     }
+
+    toast.dismiss();
   };
 
   const onCancelHandler = () => {
@@ -579,6 +599,7 @@ const Index = ({ isView, propertyData }) => {
     const payload = {
       streetName: streetNameRef,
       streetNumber: streetNumberRef,
+      apartmentNumber: apartmentNumberRef,
       city: cityRef,
       state: stateRef,
       zipCode: zipCodeRef,
@@ -601,7 +622,7 @@ const Index = ({ isView, propertyData }) => {
       estimatedValue: Number(estimatedValue),
       lenderInformation: lenderInformation,
       applicantAddress: "",
-      attachment: changeUrlToStringHandler(),
+      attachment,
       image: "",
       quoteRequiredDate: appraisalQuoteDate,
       remark: remark ? remark : "",
@@ -612,9 +633,9 @@ const Index = ({ isView, propertyData }) => {
     if (!payload.streetName) missingFields.push("Street Name");
     if (!payload.streetNumber) missingFields.push("Street Number");
     if (!payload.city) missingFields.push("City");
-    if (!payload.state) missingFields.push("province");
-    if (!payload.zipCode) missingFields.push("Postal Code");
-    if (!payload.typeOfBuilding) missingFields.push("Property Type");
+    if (!payload.state) missingFields.push("State");
+    if (!payload.zipCode) missingFields.push("Zip Code");
+    if (!payload.typeOfBuilding) missingFields.push("Type of Building");
     if (!payload.typeOfAppraisal) missingFields.push("Type of Appraisal");
     if (!payload.purpose) missingFields.push("Purpose");
     if (!payload.estimatedValue) missingFields.push("Estimated Value");
@@ -668,13 +689,63 @@ const Index = ({ isView, propertyData }) => {
     setButtonDisabled(true);
   };
 
-  const finalSubmitHandler = () => {
+  const initiateTheSubmit = () => {
+    setTimesTrigerredSubmission(TimesTrigerredSubmission + 1);
+    setIsSubmitInProgress(true);
+  };
+
+  const submissionHandler = async () => {
+    try {
+      setisLoading(true);
+      let uploadedUrlList = "";
+      toast.loading(`${updateView ? "Updating the data" : "Saving the data"}`);
+
+      // Create an array of promises only for files that need uploading
+      const uploadPromises = attachment.map(async (file) => {
+        if (file.uploadedUrl === "") {
+          const generatedURL = await uploadFile(file.file);
+          uploadedUrlList += generatedURL + ",";
+          return {
+            ...file,
+            uploadedUrl: generatedURL,
+          };
+        } else {
+          uploadedUrlList += file.uploadedUrl + ",";
+          return file;
+        }
+      });
+
+      // Wait for all the necessary uploads to complete
+      const updatedAttachments = await Promise.all(uploadPromises);
+      // Finally call the main function
+      if (updateView) {
+        updateHandler(uploadedUrlList);
+      } else {
+        finalSubmitHandler(uploadedUrlList);
+      }
+    } catch (err) {
+      if (TimesTrigerredSubmission > 2) {
+        setIsSubmitInProgress(false);
+        setTimesTrigerredSubmission(0);
+        setDisable(false);
+        setisLoading(false);
+        toast.error("Got error while saving, trying again.");
+        console.error(err);
+      } else {
+        setTimesTrigerredSubmission(TimesTrigerredSubmission + 1);
+      }
+    } finally {
+      toast.dismiss();
+    }
+  };
+
+  const finalSubmitHandler = (attachmentList) => {
+    toast.loading("Saving the data");
     setdisable(true);
     setModalIsOpen(false);
     const nameRegex = /^[A-Za-z]+$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     const userInfo = JSON.parse(localStorage.getItem("user"));
-
     const phoneNumberRegex = /^\d{10}$/;
 
     if (
@@ -696,6 +767,7 @@ const Index = ({ isView, propertyData }) => {
         userId: userInfo.userId,
         streetName: streetNameRef,
         streetNumber: streetNumberRef,
+        apartmentNumber: apartmentNumberRef,
         city: cityRef,
         state: stateRef,
         zipCode: zipCodeRef,
@@ -721,8 +793,7 @@ const Index = ({ isView, propertyData }) => {
             ? otherTypeOfAppraisalValue
             : typeOfAppraisal,
         purpose: String(purpose) === "Other" ? otherPurposeValue : purpose,
-
-        attachment: changeUrlToStringHandler(),
+        attachment: attachmentList,
         image: "",
         token: userInfo.token,
         quoteRequiredDate: appraisalQuoteDate,
@@ -783,55 +854,7 @@ const Index = ({ isView, propertyData }) => {
         }
         setErrorLabel(tempError);
       } else {
-        // const encryptedData = encryptionData(payload);
-
-        // console.log(updateView,propertyData);
-
         toast.loading("Adding the property for appraisal ..");
-        // axios
-        //   .post("/api/addBrokerProperty", encryptedData, {
-        //     headers: {
-        //       Authorization: `Bearer ${userData.token}`,
-        //       "Content-Type": "application/json",
-        //     },
-        //   })
-        //   .then((res) => {
-        //     toast.dismiss();
-        //     // const propertyId = res.data.userData?.propertyId;
-        //     // setGeneratedPropertyId(propertyId);
-        //     // setSuccessModal(true);
-        //     toast.success("Property Added Successfully");
-        //     router.push("/brokerage-properties");
-        //   })
-        //   .catch((err) => {
-        //     const status = err.response.request.status;
-        //     if (String(status) === String(403)) {
-        //       toast.dismiss();
-        //       setModalIsOpenError(true);
-        //       // toast.error(
-        //       //   "Can't appraise the property all properties are being used!!"
-        //       // );
-        //       // setRefresh(true);
-        //       // window.location.reload();
-        //     } else if (String(status) === String(404)) {
-        //       toast.dismiss();
-        //       setErrorMessage(err.response.data.error);
-        //       setModalIsOpenError_01(true);
-        //       // toast.error(
-        //       //   "You do not have any subscription. Please get a subscription to access the full features."
-        //       // );
-        //       // window.location.reload();
-        //     } else if (/^5\d{2}$/.test(String(status))) {
-        //       toast.dismiss();
-        //       toast.error("Server error occurred Try Again !! ");
-        //       window.location.reload();
-        //     } else {
-        //       toast.dismiss();
-        //       setErrorMessage(err.response.data.error);
-        //       setModalIsOpenError_01(true);
-        //       // toast.error(err.message);
-        //     }
-        //   });
         axios
           .post("/api/addBrokerProperty", payload, {
             headers: {
@@ -842,37 +865,49 @@ const Index = ({ isView, propertyData }) => {
           .then((res) => {
             console.log("API Response:", res);
             toast.dismiss();
+            setIsSubmitInProgress(false);
+            setTimesTrigerredSubmission(2);
 
-            const propertyId = res.data?.userData?.propertyId; // Ensure correct extraction
+            //open the Successful Modal
+            const propertyId = res.data?.userData?.propertyId;
             console.log("Property ID is:", propertyId);
-
             setGeneratedPropertyId(propertyId);
             setSuccessModal(true);
+            setisLoading(false);
           })
           .catch((err) => {
-            const status = err.response?.status; // Corrected status extraction
-            toast.dismiss();
-            if (status === 403) {
-              setModalIsOpenError(true);
-            } else if (status === 404) {
-              setErrorMessage(err.response?.data?.error || "Not Found");
-              setModalIsOpenError_01(true);
-            } else if (/^5\d{2}$/.test(String(status))) {
-              toast.error("Server error occurred. Try Again!");
+            if (TimesTrigerredSubmission > 2) {
+              const status = err.response?.status;
+              toast.dismiss();
+              if (status == 403) {
+                setModalIsOpenError(true);
+              } else if (status == 404) {
+                setErrorMessage(err.response?.data?.error || "Not Found");
+                setModalIsOpenError_01(true);
+              } else if (/^5\d{2}$/.test(String(status))) {
+                toast.error("Server error occurred. Try Again!");
+              } else {
+                setErrorMessage(
+                  err.response?.data?.error || "An unexpected error occurred"
+                );
+                setModalIsOpenError_01(true);
+              }
+
+              setIsSubmitInProgress(false);
+              setTimesTrigerredSubmission(0);
+              setdisable(false);
+              setisLoading(false);
             } else {
-              setErrorMessage(
-                err.response?.data?.error || "An unexpected error occurred"
-              );
-              setModalIsOpenError_01(true);
+              setTimesTrigerredSubmission(TimesTrigerredSubmission + 1);
             }
           });
       }
     }
+    toast.dismiss();
   };
 
   const handleZipCodeChange = async (e) => {
     setZipCodeRef(e.target.value);
-
     try {
       const response = await axios.get(
         `https://api.zippopotam.us/us/${zipCodeRef}`
@@ -889,7 +924,7 @@ const Index = ({ isView, propertyData }) => {
 
   const handleOkClick = () => {
     setSuccessModal(false);
-    // navigate('/my-properties');
+    // navigate('/brokerage-properties');
     router.push("/brokerage-properties");
   };
 
@@ -903,6 +938,8 @@ const Index = ({ isView, propertyData }) => {
     <>
       {/* <!-- Main Header Nav --> */}
       <Header userData={data} />
+
+      {isLoading && <CommonLoader />}
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
@@ -982,16 +1019,16 @@ const Index = ({ isView, propertyData }) => {
                           }}
                         >
                           Property Details
-                          {/* <hr style={{ color: "#2e008b" }} /> */}
                         </h4>
                       </div>
-                      {/* <hr style={{ color: "#2e008b" }} /> */}
 
                       <LocationField
                         isDisable={isDisable}
                         streetNameRef={streetNameRef}
                         setStreetNameRef={setStreetNameRef}
                         streetNumberRef={streetNumberRef}
+                        apartmentNumberRef={apartmentNumberRef}
+                        setApartmentNumberRef={setApartmentNumberRef}
                         setStreetNumberRef={setStreetNumberRef}
                         cityRef={cityRef}
                         setCityRef={setCityRef}
@@ -1109,7 +1146,6 @@ const Index = ({ isView, propertyData }) => {
                         setApplicantAddress={setApplicantAddress}
                         applicantAddress={applicantAddress}
                         setFilesUrl={setFilesUrl}
-                        changeUrlToStringHandler={changeUrlToStringHandler}
                         changeStringUrlHandler={changeStringUrlHandler}
                         filesUrl={filesUrl}
                         image={image}
@@ -1119,7 +1155,7 @@ const Index = ({ isView, propertyData }) => {
                         errorLabel={errorLabel}
                         setRemark={setRemark}
                         remark={remark}
-                        attachment={changeStringUrlHandler(attachment)}
+                        attachment={attachment}
                         applicantLatsName={applicantLatsName}
                         setApplicantLastName={setApplicantLastName}
                         applicantNumber={applicantNumber}
@@ -1134,6 +1170,19 @@ const Index = ({ isView, propertyData }) => {
                       />
                     </div>
                   </div>
+                  {/* <div className="my_dashboard_review mt30">
+                    <div className="col-lg-12">
+                      <h3 className="mb30">Property media</h3>
+                    </div>
+                    <PropertyMediaUploader />
+                  </div> */}
+                  {/* <div className="my_dashboard_review mt30">
+                    <div className="col-lg-12">
+                      <h3 className="mb30">Property Information</h3>
+                    
+                    </div>
+                    <FloorPlans />
+                </div>*/}
                 </div>
                 {/* End .col */}
               </div>
@@ -1373,14 +1422,14 @@ const Index = ({ isView, propertyData }) => {
                             className="btn btn-color"
                             onClick={onCancelHandler}
                             style={{ width: "130px" }}
+                            disabled={disable}
                           >
                             Cancel
                           </button>
                           <button
                             className="btn btn-color"
-                            onClick={
-                              updateView ? updateHandler : finalSubmitHandler
-                            }
+                            onClick={initiateTheSubmit}
+                            disabled={disable}
                             style={{ width: "130px" }}
                           >
                             Submit
@@ -1462,7 +1511,7 @@ const Index = ({ isView, propertyData }) => {
                       </div>
                       <div className="row">
                         <div className="col-lg-12 text-center">
-                          <h3 className=" text-color mt-1">Error</h3>
+                          <h3 className=" text-danger mt-1">Error</h3>
                         </div>
                       </div>
                       <div
@@ -1485,7 +1534,7 @@ const Index = ({ isView, propertyData }) => {
                       style={{ display: "flex", justifyContent: "center" }}
                     >
                       <button
-                        className="btn btn-color w-25"
+                        className="btn btn-color w-50"
                         onClick={() => closeErrorModal()}
                         style={{}}
                       >
@@ -1500,7 +1549,7 @@ const Index = ({ isView, propertyData }) => {
                 <div className="modal">
                   <div
                     className="modal-content"
-                    style={{ borderColor: "#2e008b", width: "35%" }}
+                    style={{ borderColor: "#97d700", width: "35%" }}
                   >
                     <div className="col-lg-12">
                       <div className="row">
@@ -1586,31 +1635,74 @@ const Index = ({ isView, propertyData }) => {
                 <div className="modal">
                   <div
                     className="modal-content"
-                    style={{ borderColor: "#2e008b", width: "20%" }}
+                    style={{ borderColor: "red", width: "40%" }}
                   >
-                    <h4 className="text-center mb-1" style={{ color: "red" }}>
-                      Error
-                    </h4>
-                    <div
-                      className="mt-2 mb-3"
-                      style={{ border: "2px solid #97d700" }}
-                    ></div>
-                    <span className="text-center mb-2 text-dark fw-bold">
+                    <div className="col-lg-12">
+                      <div className="row">
+                        <div className="col-lg-12">
+                          <Link href="/" className="">
+                            <Image
+                              width={50}
+                              height={45}
+                              className="logo1 img-fluid"
+                              style={{ marginTop: "-20px" }}
+                              src="/assets/images/Appraisal_Land_Logo.png"
+                              alt="header-logo2.png"
+                            />
+                            <span
+                              style={{
+                                color: "#2e008b",
+                                fontWeight: "bold",
+                                fontSize: "24px",
+                                // marginTop: "20px",
+                              }}
+                            >
+                              Appraisal
+                            </span>
+                            <span
+                              style={{
+                                color: "#97d700",
+                                fontWeight: "bold",
+                                fontSize: "24px",
+                                // marginTop: "20px",
+                              }}
+                            >
+                              {" "}
+                              Land
+                            </span>
+                          </Link>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-lg-12 text-center">
+                          <h3 className=" text-danger mt-1">Error</h3>
+                        </div>
+                      </div>
+                      <div
+                        className="mt-2 mb-3"
+                        style={{ border: "2px solid #97d700" }}
+                      ></div>
+                    </div>
+                    <span
+                      className="text-center mb-2 text-dark fw-bold"
+                      style={{ fontSize: "18px" }}
+                    >
                       {/* Can't appraise the property. All properties are being
                       used!! */}
-                      Your all properties have been used, so you cannot add more
-                      properties.
+                      Your All Properties have been Used, so you cannot add more
+                      properties.If you want to add more properties, you will
+                      have to add Top-up.
                     </span>
                     <div
                       className="mt-2 mb-3"
                       style={{ border: "2px solid #97d700" }}
                     ></div>
                     <div
-                      className="text-center"
-                      style={{ display: "flex", flexDirection: "column" }}
+                      className="col-lg-12 text-center"
+                      style={{ display: "flex", justifyContent: "center" }}
                     >
                       <button
-                        className="btn btn-color"
+                        className="btn btn-color w-50"
                         onClick={() => closeErrorModal()}
                         style={{}}
                       >
