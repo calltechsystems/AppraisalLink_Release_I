@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Header from "../../components/common/header/dashboard/Header";
+import Header from "../../components/common/header/dashboard/HeaderAppraiserCompany";
 import MobileMenu from "../../components/common/header/MobileMenu";
 import Pricing from "./pricing";
 import SidebarMenu from "../../components/common/header/dashboard/SidebarMenu_002";
@@ -28,9 +28,11 @@ const Index = ({
   const [IsAgainLoginPopUp, setIsAgainLoginPopUp] = useState(false);
 
   const router = useRouter();
+  const [userData_01, setUserData_01] = useState({});
   let userData = {};
   useEffect(() => {
     userData = JSON.parse(localStorage.getItem("user"));
+    setUserData_01(userData);
   });
 
   useEffect(() => {
@@ -146,7 +148,7 @@ const Index = ({
 
   return (
     <>
-      <Header />
+      <Header userData={userData_01} />
 
       <MobileMenu />
 

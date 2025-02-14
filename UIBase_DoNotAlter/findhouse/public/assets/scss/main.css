@@ -22198,7 +22198,7 @@ input[type=text] {
   height: 100%;
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 9;
+  z-index: 9999;
 }
 
 /* Modal Content/Box */
@@ -22921,7 +22921,7 @@ input:checked + .slider:before {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
+  z-index: 99999;
   /* animation: fadeIn 0.5s ease-in-out; */
 }
 
@@ -22942,7 +22942,6 @@ input:checked + .slider:before {
     opacity: 1;
   }
 }
-
 
 /* add property loader start */
 
@@ -23016,9 +23015,8 @@ input:checked + .slider:before {
     color: #38ef7d;
   }
 }
- 
-/* end no data found css */
 
+/* end no data found css */
 
 /* tooltip css */
 
@@ -23558,7 +23556,7 @@ input:checked + .slider:before {
   transform: scale(1.1);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
   /* box-shadow: 0 0 15px rgba(151, 215, 0, 0.7); */
-  background: #97d700 ;
+  background: #97d700;
   z-index: 1;
   cursor: pointer;
   color: #2e008b;
@@ -23592,99 +23590,131 @@ input:checked + .slider:before {
 
 /* Background Colors for Each Block */
 .stylecard1 {
-  background: linear-gradient(
+  /* background: linear-gradient(
     135deg,
     #ffafbd,
     #ffc3a0
-  ); /* Soft Pink to Peach */
-  color: white;
+  ); */
+  background: linear-gradient(
+    135deg,
+    #b29f94,
+    #8c7b75
+  ); /* Soft Taupe to Muted Brown */
+  color: #2f2f2f;
 }
 
-/* .stylecard1:hover {
-  background: #97d700;
-  color: #2e008b;
-} */
-
 .stylecard2 {
-  background: linear-gradient(135deg, #11998e, #38ef7d);
-  color: white;
+  /* background: linear-gradient(135deg, #11998e, #38ef7d); */
+  background: linear-gradient(
+    135deg,
+    #b8c6d1,
+    #a1b9c1
+  ); /* Light Grayish Blue to Soft Blue */
+  color: #2f2f2f;
 }
 
 .stylecard3 {
-  background: linear-gradient(
+  /* background: linear-gradient(
     135deg,
     #4568dc,
     #b06ab3
-  ); /* Indigo to Lavender */
-  color: white;
+  );  */
+  background: linear-gradient(
+    135deg,
+    #b6c5b0,
+    #a1b09e
+  ); /* Light Gray to Muted Sage Green */
+  color: #2f2f2f;
 }
 
 .stylecard4 {
-  background: linear-gradient(
+  /* background: linear-gradient(
     135deg,
     #ff7e5f,
     #feb47b
-  ); /* Coral to Light Orange */
-  color: white;
+  );  */
+  background: linear-gradient(
+    135deg,
+    #d3d6d8,
+    #e8b9b8
+  ); /* Soft Gray to Gentle Blush Pink */
+  color: #2f2f2f;
 }
 .stylecard5 {
   background: linear-gradient(
     135deg,
+    #d6d1e4,
+    #b2b0d7
+  ); /* Soft Gray to Muted Lavender */
+  /* background: linear-gradient(
+    135deg,
     #00c6ff,
     #0072ff
-  ); /* Light Blue to Deep Blue */
-  color: white;
+  );  */
+  color: #2f2f2f;
 }
 
 .stylecard6 {
-  background: linear-gradient(135deg, #f7971e, #ffd200); /* Orange to Yellow */
-  color: white;
+  background: linear-gradient(
+    135deg,
+    #d1d5d9,
+    #f1d0b2
+  ); /* Soft Gray to Warm Peach */
+  color: #2f2f2f;
 }
 
 .stylecard7 {
   background: linear-gradient(
     135deg,
-    #2980b9,
-    #6dd5fa
-  ); /* Ocean Blue to Light Sky Blue */
-  color: white;
+    #b6c6c3,
+    #a0c9b8
+  ); /* Soft Gray to Light Mint Green */
+  color: #2f2f2f;
 }
 
 .stylecard8 {
-  background: linear-gradient(135deg, #fc5c7d, #6a82fb); /* Pink to Blue */
-  color: white;
+  background: linear-gradient(
+    135deg,
+    #c1c6cc,
+    #f4b0a3
+  ); /* Light Gray to Soft Coral */
+  color: #2f2f2f;
 }
 
 .stylecard9 {
   background: linear-gradient(
     135deg,
-    #e96443,
-    #fad0c4
-  ); /* Soft Pink to Peach */
-  color: white;
+    #d1d3d8,
+    #d6bb8c
+  ); /* Light Gray to Muted Gold */
+  color: #2f2f2f;
 }
 
 .stylecard10 {
   background: linear-gradient(
     135deg,
-    #00b09b,
-    #96c93d
-  ); /* Teal to Lime Green */
-  color: white;
+    #d2c7d3,
+    #b79bb1
+  ); /* Soft Gray to Muted Mauve */
+  color: #2f2f2f;
 }
 
 .stylecard11 {
-  background: linear-gradient(135deg, #43cea2, #185a9d); /* Aqua to Deep Blue */
-  color: white;
+  background: linear-gradient(
+    135deg,
+    #b0b8be,
+    #a0b4d0
+  ); /* Light Gray to Dusty Blue */
+  color: #2f2f2f;
 }
 
 .stylecard12 {
   background: linear-gradient(
     135deg,
-    #e96443,
-    #904e95
-  ); /* Orange-Red to Purple */
-  color: white;
+    #c7c9d2,
+    #f4c7a1
+  ); /* Soft Gray to Subtle Apricot */
+  color: #2f2f2f;
 }
 
 .stylecard13 {
@@ -23693,7 +23723,124 @@ input:checked + .slider:before {
     #c94b4b,
     #4b134f
   ); /* Crimson to Deep Purple */
-  color: white;
+  color: #2f2f2f;
+}
+
+.stylecardnew1 {
+  background: linear-gradient(
+    135deg,
+    #d3d6d8,
+    #e8b9b8
+  ); /* Soft Gray to Gentle Blush Pink */
+  color: #2f2f2f;
+}
+
+.stylecardnew2 {
+  background: linear-gradient(
+    135deg,
+    #b6c5b0,
+    #a1b09e
+  ); /* Light Gray to Muted Sage Green */
+  color: #2f2f2f;
+}
+
+.stylecardnew3 {
+  background: linear-gradient(
+    135deg,
+    #d6d1e4,
+    #b2b0d7
+  ); /* Soft Gray to Muted Lavender */
+  color: #2f2f2f;
+}
+
+.stylecardnew4 {
+  background: linear-gradient(
+    135deg,
+    #d1d5d9,
+    #f1d0b2
+  ); /* Soft Gray to Warm Peach */
+  color: #2f2f2f;
+}
+
+.stylecardnew5 {
+  background: linear-gradient(
+    135deg,
+    #d1d2d5,
+    #b8a59d
+  ); /* Light Gray to Warm Taupe */
+  color: #2f2f2f;
+}
+
+.stylecardnew6 {
+  background: linear-gradient(
+    135deg,
+    #b6c6c3,
+    #a0c9b8
+  ); /* Soft Gray to Light Mint Green */
+  color: #2f2f2f;
+}
+
+.stylecardnew7 {
+  background: linear-gradient(
+    135deg,
+    #d0d7d2,
+    #f3e0a4
+  ); /* Light Gray to Soft Lemon Yellow */
+  color: #2f2f2f;
+}
+
+.stylecardnew8 {
+  background: linear-gradient(
+    135deg,
+    #c9c9d1,
+    #d4a8b8
+  ); /* Soft Gray to Dusty Rose */
+  color: #2f2f2f;
+}
+
+.stylecardnew9 {
+  background: linear-gradient(
+    135deg,
+    #b4b9c0,
+    #a1c5c5
+  ); /* Light Gray to Soft Teal */
+  color: #2f2f2f;
+}
+
+.stylecardnew10 {
+  background: linear-gradient(
+    135deg,
+    #d1d5d9,
+    #f1b98e
+  ); /* Light Gray to Soft Amber */
+  color: #2f2f2f;
+}
+
+.stylecardnew11 {
+  background: linear-gradient(
+    135deg,
+    #d1d9d5,
+    #b4d6d1
+  ); /* Soft Gray to Cool Mint Green */
+  color: #2f2f2f;
+}
+
+.stylecardnew12 {
+  background: linear-gradient(
+    135deg,
+    #c1c7cc,
+    #f5a6a0
+  ); /* Light Gray to Peachy Coral */
+  color: #2f2f2f;
+}
+
+.stylecardnew13 {
+  background: linear-gradient(
+    135deg,
+    #b4b9c0,
+    #a1c5c5
+  ); /* Light Gray to Soft Teal */
+  color: #2f2f2f;
 }
 
 @media (max-width: 1200px) {
