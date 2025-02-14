@@ -56,7 +56,6 @@ const Checkout = ({
 
   const saveCancellationPlanData = async (payload) => {
     try {
-      console.log("cancel plan data", payload);
       const cancellationResponse = await axios.post(
         "/api/savePaypalSubscriptionCancellationData",
         payload,
@@ -100,7 +99,7 @@ const Checkout = ({
 
     const accessToken = await getPayPalAccessToken();
     const cancelSubscriptionPromise = axios.post(
-      `${PayPalApi.baseUrl}/v1/billing/subscriptions/${subscriptionId}/cancel`,
+      `${PayPalApi.baseUrl}/v1/billing/subscriptions/${getCurrentIdToBeCancelled(currentSubscription)}/cancel`,
       { reason: "Customer requested cancellation" },
       {
         headers: {

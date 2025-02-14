@@ -83,7 +83,6 @@ const Index = () => {
             </div>
           </div>
         </div>
-        {/* End .row */}
 
         <div className="container">
           <div className="row">

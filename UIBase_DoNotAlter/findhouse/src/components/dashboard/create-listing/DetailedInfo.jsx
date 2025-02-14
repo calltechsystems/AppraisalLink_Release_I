@@ -79,7 +79,7 @@ const DetailedInfo = ({
 
   const downloadAllAttachments = async () => {
     const zip = new JSZip();
-    const folder = zip.folder("Attachments"); // Create a folder named 'Attachments'
+    const folder = zip.folder("Attachments"); 
 
     for (const fileItem of attachment) {
       if (fileItem.uploadedUrl) {
@@ -102,32 +102,121 @@ const DetailedInfo = ({
 
   const handleUpload = async (e) => {
     const file = e.target.files[0];
-    const maxTotalSize = 25 * 1024 * 1024; // 25 MB in bytes
-
-    // Calculate current total size of attachments
-    const currentTotalSize = attachment.reduce(
-      (total, item) => total + item.file.size,
-      0
-    );
-    // Check if adding the new file exceeds the limit
-    if (currentTotalSize + file.size > maxTotalSize) {
-      toast.error(
-        "Total attachments size exceeds 25 MB. Please remove some files or upload smaller ones."
+    const maxTotalSize = 25 * 1024 * 1024;
+  
+    const allowedFileTypes = [
+      "application/zip",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "application/msword",
+      "application/pdf",
+      "application/vnd.ms-excel",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "application/vnd.ms-powerpoint",
+      "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+      "image/jpeg",
+      "image/png",
+      "image/gif",
+      "text/plain",
+      "text/csv",
+      "audio/mpeg",
+      "video/mp4",
+    ];
+  
+    // If not a ZIP file, check directly
+    if (file.type !== "application/zip" && file.type !== "application/x-zip-compressed") {
+      if (!allowedFileTypes.includes(file?.type)) {
+        toast.error(
+          `Invalid file type. Allowed types: .zip`
+        );
+        return;
+      }
+  
+      const currentTotalSize = attachment.reduce(
+        (total, item) => total + item.file.size,
+        0
       );
+  
+      if (currentTotalSize + file.size > maxTotalSize) {
+        toast.error(
+          "Total attachments size exceeds 25 MB. Please remove some files or upload smaller ones."
+        );
+        return;
+      }
+  
+      setAttachment([
+        ...attachment,
+        {
+          file,
+          type: file.type,
+          previewUrl: getPreviewUrl(file),
+          uploadedUrl: "",
+        },
+      ]);
       return;
     }
-
-    const updatedAttachment = [
-      ...attachment,
-      {
-        file,
-        type: file.type,
-        previewUrl: getPreviewUrl(file),
-        uploadedUrl: "",
-      },
-    ];
-
-    setAttachment(updatedAttachment);
+  
+    const zip = new JSZip();
+    try {
+      const zipContents = await zip.loadAsync(file);
+      const invalidFiles = [];
+  
+      // Loop through files in ZIP
+      for (const fileName in zipContents.files) {
+        const zipFile = zipContents.files[fileName];
+  
+        // Skip folders
+        if (zipFile.dir) continue;
+  
+        // Get file extension
+        const ext = fileName.split(".").pop().toLowerCase();
+        const mimeType = getMimeType(ext);
+  
+        if (!allowedFileTypes.includes(mimeType)) {
+          invalidFiles.push(fileName);
+        }
+      }
+  
+      if (invalidFiles.length > 0) {
+        toast.error(`Invalid files in ZIP: ${invalidFiles.join(", ")}`);
+        return;
+      }
+  
+      setAttachment([
+        ...attachment,
+        {
+          file,
+          type: file.type,
+          previewUrl: getPreviewUrl(file),
+          uploadedUrl: "",
+        },
+      ]);
+    } catch (error) {
+      toast.error("Error processing ZIP file.");
+      console.error("ZIP Processing Error:", error);
+    }
+  };
+  
+  // Utility function to get MIME type from file extension
+  const getMimeType = (ext) => {
+    const mimeTypes = {
+      zip: "application/zip",
+      doc: "application/msword",
+      docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      pdf: "application/pdf",
+      xls: "application/vnd.ms-excel",
+      xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      ppt: "application/vnd.ms-powerpoint",
+      pptx: "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+      jpg: "image/jpeg",
+      jpeg: "image/jpeg",
+      png: "image/png",
+      gif: "image/gif",
+      txt: "text/plain",
+      csv: "text/csv",
+      mp3: "audio/mpeg",
+      mp4: "video/mp4",
+    };
+    return mimeTypes[ext] || "unknown";
   };
 
   // Handle delete file
@@ -396,7 +485,7 @@ const DetailedInfo = ({
                     Upload File
                     <input
                       type="file"
-                      accept=".doc, .docx, .pdf, .xls, .xlsx, .ppt, .pptx, .jpg, .jpeg, .png, .gif, .mp3, .mp4, .zip, .txt, .csv"
+                      accept=".zip"
                       onChange={(e) => handleUpload(e)}
                       style={{ display: "none" }}
                       single
