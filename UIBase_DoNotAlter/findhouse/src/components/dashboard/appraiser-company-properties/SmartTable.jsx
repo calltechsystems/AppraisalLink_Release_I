@@ -14,6 +14,8 @@ import Filtering from "./Filtering";
 import Image from "next/image";
 import LoadingSpinner from "../../common/LoadingSpinner";
 import NoDataFound from "../../common/NoDataFound";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 function SmartTable(props) {
   const [loading, setLoading] = useState(false);
@@ -32,15 +34,6 @@ function SmartTable(props) {
   const [total, setTotal] = useState(props.total ?? 0);
   const [changes, setChanges] = useState(false);
 
-  const generatePDF = () => {
-    window.print();
-    toast.success("Data added");
-  };
-
-  const refreshHandler = () => {
-    const refresh = !props.refresh;
-    props.setRefresh(refresh);
-  };
   const fetchData = useCallback(
     async (queryString) => {
       setLoading(true);
@@ -97,6 +90,15 @@ function SmartTable(props) {
     return new Date().getFullYear();
   };
 
+  function getFormattedDate() {
+    const date = new Date();
+    return date.toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  }
+
   const handlePrint = async () => {
     try {
       // Fetch data
@@ -147,6 +149,24 @@ function SmartTable(props) {
                 bottom: 0;
                 padding-top: 10px;
                 border-top: 1px solid #ddd;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 5px;
+              }
+              .footer-main {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+              }
+              .footer-content {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                width: 100%;
+                padding-right: 20px;
+                font-size: 12px;
+                color: #333;
               }
               /* Logo */
               .logo img {
@@ -193,14 +213,23 @@ function SmartTable(props) {
               <span style="color: #97d700;">Land</span>
             </div>
           </div>
-
+      
           <!-- Footer -->
           <div class="footer">
-            <a href="https://appraisalland.ca/" target="_blank" style="color: #2e008b; text-decoration: underline;">Appraisal Land</a>
-            <br/>
-            <span>© ${getCurrentYear()} All Rights Reserved.</span>
+            <div class="footer-main">
+              <a href="https://appraisalland.ca/" target="_blank" style="color: #2e008b; text-decoration: underline;">
+                Appraisal Land
+              </a>
+              <span>© ${getCurrentYear()} All Rights Reserved.</span>
+            </div>
+      
+            <!-- Created By and Created At Section -->
+            <div class="footer-content" style="margin-left: -10%">
+              <span>Created By: John Doe</span>
+              <span>Created At: ${getFormattedDate()}</span>
+            </div>
           </div>
-
+      
           <!-- Table Container -->
           <div class="table-container">
             <h3>Appraiser Company Properties</h3>
@@ -219,7 +248,8 @@ function SmartTable(props) {
                         .map((header) => {
                           if (
                             header[0].toLowerCase() === "appraisal_status" ||
-                            header[0].toLowerCase() === "status"
+                            header[0].toLowerCase() === "status" ||
+                            header[0]?.toLowerCase() === "assigned_appraiser"
                           ) {
                             const value = item[header[0].toLowerCase()];
                             const className = value.props.className;
@@ -273,50 +303,7 @@ function SmartTable(props) {
       toast.error("Error handling print");
     }
   };
-
-  const handleExcelPrint = () => {
-    const twoDData = props.data.map((item, index) => {
-      return [item.bid, item.date, item.title, item.urgency];
-    });
-
-    // Remove empty arrays from twoDData
-    const filteredTwoDData = twoDData.filter((row) => row.length > 0);
-
-    // Create a workbook and add a worksheet
-    const wb = XLSX.utils.book_new();
-    const ws = XLSX.utils.aoa_to_sheet(filteredTwoDData);
-    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
-
-    // Create a blob from the workbook
-    const blob = XLSX.write(wb, {
-      bookType: "xlsx",
-      bookSST: false,
-      type: "blob",
-    });
-
-    // Create a new window for downloading Excel
-    const excelWindow = window.open("", "_blank");
-
-    // Write the Excel blob to the new window
-    excelWindow.document.write(
-      "<html><head><title>AllBrokerProperties</title></head><body>"
-    );
-    excelWindow.document.write("<h1>" + props.title + "</h1>");
-    excelWindow.document.write(
-      '<a id="download-link" download="your_excel_file.xlsx" href="#">Download Excel</a>'
-    );
-
-    // Create a download link and trigger a click event to download the file
-    const url = URL.createObjectURL(blob);
-    const downloadLink = excelWindow.document.getElementById("download-link");
-    downloadLink.href = url;
-    downloadLink.click();
-
-    // Close the new window after the file is downloaded
-    excelWindow.document.write("</body></html>");
-    excelWindow.document.close();
-  };
-
+  
   const tableWidthFunc = useCallback(() => {
     let tempTableWidth = 0;
     props.headCells.map((cell) => (tempTableWidth += cell.width));

@@ -182,8 +182,6 @@ const ProfileInfo = ({
 
   const [isLoading, setIsLoading] = useState(false);
 
-
-
   const handleInputCellChange = (value) => {
     // Remove all non-numeric characters
     const numericValue = value.replace(/\D/g, "");
@@ -247,8 +245,8 @@ const ProfileInfo = ({
 
   useEffect(() => {
     if (
-      (TimesTrigerredSubmission <= 2 &&
-      TimesTrigerredSubmission >= 1) &&
+      TimesTrigerredSubmission <= 2 &&
+      TimesTrigerredSubmission >= 1 &&
       isSubmitInProgress == true
     ) {
       submissionHandler();
@@ -302,6 +300,12 @@ const ProfileInfo = ({
 
   const handleUpload = async (e, type) => {
     const file = e.target.files[0];
+
+    // Check file size if type is "LenderList"
+    if (type === "LenderList" && file.size > 10 * 1024 * 1024) {
+      toast.error("File size should be less than 10MB");
+      return;
+    }
 
     const updatedFiles = {
       ...uploadingFiles,
@@ -744,39 +748,31 @@ const ProfileInfo = ({
   };
 
   const downloadAllAttachments = async (fileItem) => {
-    const zip = new JSZip();
-    const folder = zip.folder("LenderList"); // Create a folder named 'Attachments'
-
     if (fileItem?.uploadedUrl) {
-      // Fetch file from uploaded URL (e.g., S3)
-      const response = await fetch(fileItem?.uploadedUrl);
+      const response = await fetch(fileItem.uploadedUrl);
       const blob = await response.blob();
-      const fileName = fileItem?.file?.name || "LenderList";
-      folder.file(fileName, blob); // Add to 'Attachments' folder in ZIP
-    } else if (fileItem?.file) {
-      // Add local files directly
-      folder.file(fileItem?.file?.name, fileItem?.file);
-    }
+      const fileName = fileItem?.file?.name || "LenderList.pdf";
 
-    zip.generateAsync({ type: "blob" }).then((content) => {
-      saveAs(content, "LenderList.zip");
-    });
+      saveAs(blob, fileName);
+    } else if (fileItem?.file) {
+      const fileName = fileItem?.file?.name || "LenderList.pdf";
+      saveAs(fileItem.file, fileName);
+    }
   };
 
-  // const deleteFile = (type) => {
-  //   setUploadingFiles({
-  //     ...uploadingFiles,
-  //     [type]: {},
-  //   });
-  // };
-  console.log({ uploadingFiles });
+  const deleteFile = (type) => {
+    setUploadingFiles({
+      ...uploadingFiles,
+      [type]: {},
+    });
+  };
 
   return (
     <>
       <div className="row">
         <div className="col-lg-12"></div>
 
-       {isLoading && <CommonLoader/>}
+        {isLoading && <CommonLoader />}
         <div className="col-lg-12 col-xl-12 mt-2">
           <div className="my_profile_setting_input form-group">
             <div className="row">
@@ -792,11 +788,11 @@ const ProfileInfo = ({
                       <div>
                         <input
                           type="file"
+                          accept=".jpeg, .png, .jpg"
                           id="fileInput"
                           onChange={(e) => handleUpload(e, "profileImage")}
-                          style={{ display: "none" }} // Hide the actual input element
+                          style={{ display: "none" }} 
                         />
-                        {/* You can add a button or any other element to trigger file selection */}
                         <button
                           className="btn btn-color mt-2"
                           onClick={() =>
@@ -1158,15 +1154,6 @@ const ProfileInfo = ({
                             Enter valid cell number.
                           </small>
                         )}
-                        {/* <input
-                          type="text"
-                          className="form-control"
-                          id="formGroupExampleInput3"
-                          style={{ backgroundColor: "#E8F0FE" }}
-                          value={cellNumber}
-                          onChange={(e) => handleInputCellChange(e)}
-                          disabled={!edit}
-                        /> */}
                       </div>
                     </div>
                   </div>
@@ -1278,11 +1265,11 @@ const ProfileInfo = ({
                       <div>
                         <input
                           type="file"
+                          accept=".pdf"
                           id="fileInput_01"
                           onChange={(e) => handleUpload(e, "LenderList")}
                           style={{ display: "none" }} // Hide the actual input element
                         />
-                        {/* You can add a button or any other element to trigger file selection */}
                         <button
                           className="btn btn-color"
                           style={{ marginLeft: "10px" }}
@@ -1290,7 +1277,7 @@ const ProfileInfo = ({
                             document.getElementById("fileInput_01").click()
                           }
                         >
-                          Browse
+                          Upload
                         </button>
                         <p className="mt-2" style={{ marginLeft: "10px" }}>
                           {uploadingFiles["LenderList"]?.file?.name !== "" &&
@@ -1311,13 +1298,13 @@ const ProfileInfo = ({
                               objectFit: "cover",
                             }}
                           />
-                          {/* <button
+                          <button
                             type="button"
                             className="btn btn-danger btn-sm position-absolute top-0 end-0 m-1"
                             onClick={() => deleteFile("LenderList")}
                           >
                             &times;
-                          </button> */}
+                          </button>
                           <small
                             className="d-block text-muted mt-1"
                             style={{
@@ -1330,17 +1317,19 @@ const ProfileInfo = ({
                             {uploadingFiles["LenderList"]?.file?.name}
                           </small>
 
-                          <button
-                            type="button"
-                            className="btn btn-success btn-sm m-1"
-                            onClick={() =>
-                              downloadAllAttachments(
-                                uploadingFiles["LenderList"]
-                              )
-                            }
-                          >
-                            download
-                          </button>
+                          {uploadingFiles["LenderList"] && (
+                            <button
+                              type="button"
+                              className="btn btn-success btn-sm m-1"
+                              onClick={() =>
+                                downloadAllAttachments(
+                                  uploadingFiles["LenderList"]
+                                )
+                              }
+                            >
+                              download
+                            </button>
+                          )}
                         </div>
                       ) : (
                         ""
@@ -1954,7 +1943,7 @@ const ProfileInfo = ({
                             className="btn btn2 btn-dark"
                             onClick={() => {
                               setTimesTrigerredSubmission(1);
-                              setIsSubmitInProgress(true)
+                              setIsSubmitInProgress(true);
                             }}
                           >
                             {userData?.appraiserCompany_Datails
