@@ -106,12 +106,12 @@ const headCells = [
     width: 200,
   },
 
-  // {
-  //   id: "action",
-  //   numeric: false,
-  //   label: "Action",
-  //   width: 180,
-  // },
+  {
+    id: "action",
+    numeric: false,
+    label: "Action",
+    width: 100,
+  },
 ];
 let count = 0;
 
@@ -121,6 +121,8 @@ export default function Exemple({
   close,
   start,
   end,
+  setCurrentBiddedView,
+  setOpenQuoteView,
   setUpdatedCode,
   setRequiredProp,
   properties,
@@ -172,6 +174,11 @@ export default function Exemple({
     setRemarkModal(false);
     setRemark("N.A.");
     setSelectedProperty(null);
+  };
+
+  const openQuoteViewModal = (bid) => {
+    setCurrentBiddedView(bid);
+    setOpenQuoteView(true);
   };
 
   const getOrderValue = (val) => {
@@ -391,7 +398,6 @@ export default function Exemple({
       properties.map((property, index) => {
         const isWishlist = checkWishlistedHandler(property);
         const isBidded = filterBidsWithin24Hours(property);
-
         const isArchive = foundArchiveHandler(property.propertyId);
 
         if (!isArchive && isBidded.status === 1 && isBidded.orderstatus === 3) {
@@ -483,7 +489,11 @@ export default function Exemple({
                   className="w-100"
                   onClick={() => openRemarkModal(property)}
                 >
-                  <button href="#" className="btn btn-color" style={{width:"120px"}}>
+                  <button
+                    href="#"
+                    className="btn btn-color"
+                    style={{ width: "120px" }}
+                  >
                     <Link href="#">
                       <span className="text-light">
                         {" "}
@@ -631,7 +641,22 @@ export default function Exemple({
                     </li>
                   </>
                 ) : (
-                  <span className="btn btn-completed  w-100">Completed</span>
+                  <li
+                    className="list-inline-item"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="View Quote"
+                  >
+                    {" "}
+                    <span
+                      className="btn btn-color-table"
+                      onClick={() => openQuoteViewModal(isBidded)}
+                    >
+                      <Link href={"#"}>
+                        <span className="text-light flaticon-view"></span>
+                      </Link>
+                    </span>
+                  </li>
                 )}
               </div>
             ),
@@ -826,7 +851,7 @@ export default function Exemple({
         />
       )}
 
-   {remarkModal && (
+      {remarkModal && (
         <div className="modal">
           <div className="modal-content" style={{ width: "35%" }}>
             <div className="row">

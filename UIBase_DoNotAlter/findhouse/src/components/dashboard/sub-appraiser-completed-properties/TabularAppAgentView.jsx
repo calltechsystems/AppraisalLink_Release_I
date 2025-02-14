@@ -15,7 +15,7 @@ const headCells = [
   {
     id: "order_id",
     numeric: false,
-    label: "Order ID",
+    label: "Property ID",
     width: 110,
   },
   {
@@ -106,12 +106,12 @@ const headCells = [
     width: 200,
   },
 
-  // {
-  //   id: "action",
-  //   numeric: false,
-  //   label: "Action",
-  //   width: 110,
-  // },
+  {
+    id: "action",
+    numeric: false,
+    label: "Action",
+    width: 110,
+  },
 ];
 
 let count = 0;
@@ -657,252 +657,22 @@ export default function Exemple({
                 : "N.A.",
 
             action: (
-              <div
-                className="print-hidden-column"
-                style={{ display: "flex", justifyContent: "center" }}
+              <li
+                className="list-inline-item"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="View Quote"
               >
-                {/* {isBidded.$id &&
-                  (isBidded.status === 2 || isBidded.status === 1) &&
-                  !anotherBid?.bidId && (
-                    <li
-                      className="list-inline-item"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="View Quote"
-                    >
-                      {" "}
-                      <span
-                        className="btn btn-color-table"
-                        onClick={() => openQuoteViewModal(isBidded, property)}
-                      >
-                        <Link href={"#"}>
-                          <span className="text-light flaticon-view"></span>
-                        </Link>
-                      </span>
-                    </li>
-                  )} */}
-
-                {isBidded.status === 2 || anotherBid ? (
-                  <>
-                    <ul>
-                      {/* <li
-                        className="list-inline-item"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title="Archive Property"
-                      >
-                        <div
-                          className="w-100"
-                          onClick={() => openArchiveModal(property)}
-                          // onClick={() =>
-                          //   onArchivePropertyHandler(property.orderId)
-                          // }
-                        >
-                          <button href="#" className="btn btn-color">
-                            <Link href="#">
-                              <span className="text-light">
-                                {" "}
-                                <FaArchive />
-                              </span>
-                            </Link>
-                          </button>
-                        </div>
-                      </li> */}
-                    </ul>
-                  </>
-                ) : isWait ? (
-                  <>
-                    {/* <li
-                      className="list-inline-item"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Archive Property"
-                    >
-                      <div
-                        className="w-100"
-                        onClick={() => openArchiveModal(property)}
-                      >
-                        <button href="#" className="btn btn-color m-1">
-                          <Link href="#">
-                            <span className="text-light">
-                              {" "}
-                              <FaArchive />
-                            </span>
-                          </Link>
-                        </button>
-                      </div>
-                    </li> */}
-                  </>
-                ) : isBidded.$id && isBidded.orderstatus === 3 ? (
-                  <>
-                    {/* <li
-                      className="list-inline-item"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Archive Property"
-                    >
-                      <div
-                        className="w-100"
-                        onClick={() => openArchiveModal(property)}
-                      >
-                        <button href="#" className="btn btn-color ">
-                          <Link href="#">
-                            <span className="text-light">
-                              {" "}
-                              <FaArchive />
-                            </span>
-                          </Link>
-                        </button>
-                      </div>
-                    </li> */}
-                  </>
-                ) : (
-                  <ul className="mb0 d-flex gap-1">
-                    {/* {isWishlist.id ? (
-                      <button
-                        className="btn "
-                        style={{ border: "1px solid grey" }}
-                        onClick={() =>
-                          openIsWishlistPropertyModal(isWishlist.id, property)
-                        }
-                        title="Remove Wishlist Property"
-                      >
-                        <img
-                          width={26}
-                          height={26}
-                          src="https://png.pngtree.com/png-clipart/20200226/original/pngtree-3d-red-heart-cute-valentine-romantic-glossy-shine-heart-shape-png-image_5315044.jpg"
-                        />
-                      </button>
-                    ) : (
-                      !anotherBid && (
-                        <li
-                          className="list-inline-item"
-                          title="Wishlist Property"
-                        >
-                          {
-                            <button
-                              className="btn"
-                              style={{ border: "1px solid grey" }}
-                              onClick={() => openWishlistModal(property)}
-                              // onClick={() =>
-                              //   onWishlistHandler(property.propertyId)
-                              // }
-                            >
-                              <span className="flaticon-heart text-color"></span>
-                            </button>
-                          }
-                        </li>
-                      )
-                    )} */}
-
-                    {/* {(!isBidded.$id || isBidded?.status < 1) && !anotherBid && (
-                      <li
-                        className="list-inline-item"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title={`${
-                          isBidded.$id ? "View / Update Quote" : "Provide Quote"
-                        }`}
-                      >
-                        <div
-                          className="w-100"
-                          onClick={() =>
-                            participateHandler(
-                              property.bidLowerRange,
-                              property.orderId,
-                              isBidded.status < 1,
-                              isBidded.bidAmount,
-                              isBidded.$id ? true : false
-                            )
-                          }
-                        >
-                          <button href="#" className="btn btn-color">
-                            <Link href="#">
-                              <span className="flaticon-invoice text-light"></span>
-                            </Link>
-                          </button>
-                        </div>
-                      </li>
-                    )} */}
-                    {isBidded.status === 1 && isBidded.orderstatus !== 3 ? (
-                      <>
-                        <ul>
-                          <li
-                            className="list-inline-item"
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Status Update"
-                          >
-                            <button
-                              href="#"
-                              className="btn btn-color"
-                              onClick={() =>
-                                openStatusUpdateHandler(isBidded, property)
-                              }
-                            >
-                              <Link href="#">
-                                <span className="flaticon-edit text-light"></span>
-                              </Link>
-                            </button>
-                          </li>
-                        </ul>
-                      </>
-                    ) : (
-                      ""
-                    )}
-                    
-                    {/* {isWishlist.id ? (
-                      ""
-                    ) : (
-                      <li
-                        className="list-inline-item"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title="Archive Property"
-                      >
-                        <div
-                          className="w-100"
-                          onClick={() => openArchiveModal(property)}
-                        >
-                          <button href="#" className="btn btn-color">
-                            <Link href="#">
-                              <span className="text-light">
-                                {" "}
-                                <FaArchive />
-                              </span>
-                            </Link>
-                          </button>
-                        </div>
-                      </li>
-                    )} */}
-                  </ul>
-                )}
-
-                {/* {isBidded.status === 1 && isBidded.orderstatus !== 3 ? (
-                  <>
-                    <ul>
-                      <li
-                        className="list-inline-item"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title="Status Update"
-                      >
-                        <button
-                          href="#"
-                          className="btn btn-color m-1"
-                          onClick={() => openStatusUpdateHandler(isBidded)}
-                        >
-                          <Link href="#">
-                            <span className="flaticon-edit text-light"></span>
-                          </Link>
-                        </button>
-                      </li>
-                    </ul>
-                  </>
-                ) : (
-                  ""
-                )} */}
-              </div>
+                {" "}
+                <span
+                  className="btn btn-color-table"
+                  onClick={() => openQuoteViewModal(isBidded, property)}
+                >
+                  <Link href={"#"}>
+                    <span className="text-light flaticon-view"></span>
+                  </Link>
+                </span>
+              </li>
             ),
           };
           tempData.push(updatedRow);

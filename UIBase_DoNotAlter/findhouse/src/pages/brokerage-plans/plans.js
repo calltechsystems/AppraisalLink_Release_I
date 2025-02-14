@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Header from "../../components/common/header/dashboard/Header";
+import Header from "../../components/common/header/dashboard/HeaderBrokerage";
 import MobileMenu from "../../components/common/header/MobileMenu";
 import Pricing from "./pricing";
 import SidebarMenu from "../../components/common/header/dashboard/SidebarMenuBrokerage";
@@ -30,9 +30,11 @@ const Index = ({
   const { isModalOpen, setIsModalOpen } = useModal();
 
   const router = useRouter();
+  const [userData_01, setUserData_01] = useState({});
   let userData = {};
   useEffect(() => {
     userData = JSON.parse(localStorage.getItem("user"));
+    setUserData_01(userData);
   });
 
   useEffect(() => {
@@ -148,7 +150,7 @@ const Index = ({
 
   return (
     <>
-      <Header />
+      <Header userData={userData_01}/>
 
       <MobileMenu />
 

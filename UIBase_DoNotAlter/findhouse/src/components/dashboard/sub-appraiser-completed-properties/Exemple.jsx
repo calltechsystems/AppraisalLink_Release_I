@@ -110,7 +110,7 @@ const headCells = [
     id: "action",
     numeric: false,
     label: "Action",
-    width: 210,
+    width: 110,
   },
 ];
 
