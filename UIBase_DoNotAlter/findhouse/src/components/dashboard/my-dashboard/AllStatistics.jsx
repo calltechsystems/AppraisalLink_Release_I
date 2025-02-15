@@ -1,8 +1,11 @@
-// import './AllStatistics.css';
-// import "font-awesome/css/font-awesome.min.css";
 import { useMemo } from "react";
 
 const AllStatistics = ({ properties, views, bids, favourites }) => {
+  const userData = JSON.parse(localStorage.getItem("user"));
+  const userTypes = Array.isArray(userData?.userType)
+    ? userData.userType
+    : [userData?.userType]; // Handle multiple user types
+
   const {
     allPropertiesCount,
     quotesProvidedCount,
@@ -18,7 +21,6 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
     totalNoOfProperties,
     quoteAccepted,
   } = useMemo(() => {
-    const userData = JSON.parse(localStorage.getItem("user"));
     let allPropertiesCount = 0;
     let quotesProvidedCount = 0;
     let QuotesInProgressCount = 0;
@@ -53,19 +55,18 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
       }
     });
 
-    //Plan Data
+    // Plan Data
     const currentPlanInfo = userData?.plans?.$values
       ? userData?.plans?.$values[0]
       : {};
     if (currentPlanInfo) {
-      // PlanValidityCount = currentPlanInfo?.planValidity;
       PlanCount = currentPlanInfo?.planName;
       NoOfPropertiesCount = currentPlanInfo?.noOfProperties;
       UsedPropertiesCount = userData?.usedproperty || 0;
       totalNoOfProperties = userData?.totalNoOfProperties || 0;
     }
 
-    // End Date
+    // Subscription End Date
     const userPlans = userData?.userSubscription?.$values
       ? userData?.userSubscription?.$values[0]
       : {};
@@ -95,143 +96,130 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
       year: "numeric",
       month: "short",
       day: "numeric",
-      // hour: "numeric",
-      // minute: "numeric",
-      // second: "numeric",
-      hour12: true, // Set to false for 24-hour format
+      hour12: true,
     };
-
-    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
-    return formattedDate;
+    return new Date(dateString).toLocaleString("en-US", options);
   };
 
-  const allStatistics = useMemo(
-    () => [
+  // Define statistics data
+  const allStatistics = useMemo(() => {
+    const stats = [
       {
         id: "allPropertiesCount",
         blockStyle: "stylecardnew1",
         icon: "fa fa-home",
-        timer: properties,
-        // icon: "flaticon-house",
         value: allPropertiesCount,
         name: "All Properties",
+        visibleFor: [1, 6], // User type 1 & 6
       },
       {
         id: "quotesProvidedCount",
         blockStyle: "stylecardnew2",
-        icon: "flaticon-invoice",
+        icon: "fa fa-file",
         value: quotesProvidedCount,
         name: "Quotes Provided",
+        visibleFor: [1, 6], // Only user type 1
       },
       {
         id: "quoteAccepted",
         blockStyle: "stylecardnew3",
         icon: "fa fa-check",
         value: quoteAccepted,
-        timer: bids,
         name: "Quotes Accepted",
+        visibleFor: [1, 6],
       },
       {
-        // id: 4,
-        blockStyle: "stylecardnew4",
-        icon: "fa fa-edit",
-        timer: favourites,
         id: "QuotesInProgressCount",
         blockStyle: "stylecardnew4",
-        // icon: "flaticon-heart",
+        icon: "fa fa-edit",
         value: QuotesInProgressCount,
         name: "Quotes in Progress",
+        visibleFor: [1],
       },
       {
         id: "QuotesCompletedCount",
         blockStyle: "stylecardnew5",
         icon: "fa fa-check-circle",
-        timer: favourites,
-        // icon: "flaticon-invoice",
         value: QuotesCompletedCount,
         name: "Quotes Completed",
+        visibleFor: [1, 6],
       },
       {
         id: "QuotesOnHoldCount",
         blockStyle: "stylecardnew6",
         icon: "fa fa-pause",
-        timer: favourites,
-        name: "Quotes On Hold by Appraiser",
-        // icon: "flaticon-house",
         value: QuotesOnHoldCount,
-        // name: "Quotes on HOLD",
+        name: "Quotes On Hold",
+        visibleFor: [1, 6],
       },
       {
         id: "CancelledPropertiesCount",
         blockStyle: "stylecardnew7",
         icon: "fa fa-times-circle",
-        timer: favourites,
-        // icon: "flaticon-tick",
         value: CancelledPropertiesCount,
         name: "Cancelled Properties",
+        visibleFor: [1, 6],
       },
       {
         id: "OnHoldPropertiesCount",
         blockStyle: "stylecardnew8",
         icon: "fa fa-pause",
-        timer: favourites,
-        name: "On Hold Properties by Broker",
-        // icon: "flaticon-heart",
         value: OnHoldPropertiesCount,
-        // name: "On Hold Properties",
+        name: "On Hold Properties",
+        visibleFor: [1, 6],
       },
       {
         id: "PlanCount",
         blockStyle: "stylecardnew9",
         icon: "fa fa-credit-card",
-        timer: favourites,
-        // icon: "flaticon-heart",
         value: PlanCount,
         name: "Plan",
+        visibleFor: [1],
       },
       {
         id: "PlanValidityCount",
         blockStyle: "stylecardnew10",
         icon: "fa fa-hourglass-half",
-        // timer: formatDate(planEndDate),
-        name: "Plan validity",
-        // icon: "flaticon-house",
         value: formatDate(PlanValidityCount),
-        // name: "Plan Validity",
+        name: "Plan Validity",
+        visibleFor: [1],
       },
       {
         id: "NoOfPropertiesCount",
         blockStyle: "stylecardnew11",
         icon: "fa fa-building",
-        timer: favourites,
-        // icon: "flaticon-invoice",
         value: totalNoOfProperties,
         name: "No. of Properties",
+        visibleFor: [1],
       },
       {
         id: "UsedPropertiesCount",
         blockStyle: "stylecardnew12",
         icon: "fa fa-home",
-        timer: favourites,
-        // icon: "flaticon-tick",
         value: UsedPropertiesCount,
         name: "Used Properties",
+        visibleFor: [1],
       },
-    ],
-    [
-      allPropertiesCount,
-      quotesProvidedCount,
-      QuotesInProgressCount,
-      QuotesCompletedCount,
-      QuotesOnHoldCount,
-      CancelledPropertiesCount,
-      OnHoldPropertiesCount,
-      PlanCount,
-      PlanValidityCount,
-      NoOfPropertiesCount,
-      UsedPropertiesCount,
-    ]
-  );
+    ];
+
+    // Filter statistics based on userType
+    return stats.filter((stat) =>
+      userTypes.some((type) => stat.visibleFor.includes(type))
+    );
+  }, [
+    allPropertiesCount,
+    quotesProvidedCount,
+    QuotesInProgressCount,
+    QuotesCompletedCount,
+    QuotesOnHoldCount,
+    CancelledPropertiesCount,
+    OnHoldPropertiesCount,
+    PlanCount,
+    PlanValidityCount,
+    NoOfPropertiesCount,
+    UsedPropertiesCount,
+    userTypes,
+  ]);
 
   return (
     <div className="statistics-container">

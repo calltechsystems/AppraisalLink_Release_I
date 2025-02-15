@@ -312,7 +312,7 @@ const Pricing = ({
                 ) : (
                   ""
                 ))}
-                
+
               {!hideButton &&
                 String(currentSubscription?.planId) === String(item.id) && (
                   <select
@@ -343,7 +343,8 @@ const Pricing = ({
                         {topUp.topUpAmount})
                       </option>
                     ))}
-                    {currentSubscription?.payPalSubscriptionStatus & <option value="cancel">Cancel Subscription</option>}
+                    {currentSubscription?.payPalSubscriptionStatus &
+                    <option value="cancel">Cancel Subscription</option>}
                   </select>
                 )}
             </div>

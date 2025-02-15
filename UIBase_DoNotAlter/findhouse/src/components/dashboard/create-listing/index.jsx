@@ -557,7 +557,7 @@ const Index = ({ isView, propertyData }) => {
           })
           .then((res) => {
             toast.dismiss();
-            toast.success("Successfully submitted !!");
+            toast.success("Successfully updated the property!");
             setModalIsOpen(false);
             router.push("/my-properties");
             setIsSubmitInProgress(false);
@@ -854,7 +854,7 @@ const Index = ({ isView, propertyData }) => {
         }
         setErrorLabel(tempError);
       } else {
-        toast.loading("Adding the property for appraisal ..")
+        toast.loading("Adding the property for appraisal ..");
         axios
           .post("/api/addBrokerProperty", payload, {
             headers: {
@@ -869,7 +869,7 @@ const Index = ({ isView, propertyData }) => {
             setTimesTrigerredSubmission(2);
 
             //open the Successful Modal
-            const propertyId = res.data?.userData?.propertyId; 
+            const propertyId = res.data?.userData?.propertyId;
             console.log("Property ID is:", propertyId);
             setGeneratedPropertyId(propertyId);
             setSuccessModal(true);
@@ -938,8 +938,8 @@ const Index = ({ isView, propertyData }) => {
     <>
       {/* <!-- Main Header Nav --> */}
       <Header userData={data} />
-      
-      {isLoading && <CommonLoader/>}
+
+      {isLoading && <CommonLoader />}
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />

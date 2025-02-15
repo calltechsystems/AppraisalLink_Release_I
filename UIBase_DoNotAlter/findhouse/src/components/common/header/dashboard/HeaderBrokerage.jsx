@@ -47,7 +47,7 @@ const Header = ({ userData }) => {
         {/* site logo brand */}
 
         <nav>
-          <HeaderMenuContent hide={false} userInfo={userInfo} />
+          <HeaderMenuContent hide={false} userData={userData} />
         </nav>
         {/* End .navbar */}
       </div>

@@ -109,7 +109,7 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
     () => [
       {
         id: "allPropertiesCount",
-        blockStyle: "stylecard1",
+        blockStyle: "stylecardnew1",
         icon: "fa fa-home",
         timer: properties,
         // icon: "flaticon-house",
@@ -118,14 +118,14 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
       },
       {
         id: "quotesProvidedCount",
-        blockStyle: "stylecard2",
-        icon: "flaticon-invoice",
+        blockStyle: "stylecardnew2",
+        icon: "fa fa-file",
         value: quotesProvidedCount,
         name: "Quotes Provided",
       },
       {
         id: "quoteAccepted",
-        blockStyle: "stylecard3",
+        blockStyle: "stylecardnew3",
         icon: "fa fa-check",
         value: quoteAccepted,
         timer: bids,
@@ -133,18 +133,18 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
       },
       {
         // id: 4,
-        blockStyle: "stylecard4",
+        blockStyle: "stylecardnew4",
         icon: "fa fa-edit",
         timer: favourites,
         id: "QuotesInProgressCount",
-        blockStyle: "stylecard4",
+        blockStyle: "stylecardnew4",
         // icon: "flaticon-heart",
         value: QuotesInProgressCount,
         name: "Quotes in Progress",
       },
       {
         id: "QuotesCompletedCount",
-        blockStyle: "stylecard5",
+        blockStyle: "stylecardnew5",
         icon: "fa fa-check-circle",
         timer: favourites,
         // icon: "flaticon-invoice",
@@ -153,7 +153,7 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
       },
       {
         id: "QuotesOnHoldCount",
-        blockStyle: "stylecard6",
+        blockStyle: "stylecardnew6",
         icon: "fa fa-pause",
         timer: favourites,
         name: "Quotes On Hold by Appraiser",
@@ -163,7 +163,7 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
       },
       {
         id: "CancelledPropertiesCount",
-        blockStyle: "stylecard7",
+        blockStyle: "stylecardnew7",
         icon: "fa fa-times-circle",
         timer: favourites,
         // icon: "flaticon-tick",
@@ -172,7 +172,7 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
       },
       {
         id: "OnHoldPropertiesCount",
-        blockStyle: "stylecard8",
+        blockStyle: "stylecardnew8",
         icon: "fa fa-pause",
         timer: favourites,
         name: "On Hold Properties by Broker",
@@ -182,7 +182,7 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
       },
       {
         id: "PlanCount",
-        blockStyle: "stylecard9",
+        blockStyle: "stylecardnew9",
         icon: "fa fa-credit-card",
         timer: favourites,
         // icon: "flaticon-heart",
@@ -191,7 +191,7 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
       },
       {
         id: "PlanValidityCount",
-        blockStyle: "stylecard10",
+        blockStyle: "stylecardnew10",
         icon: "fa fa-hourglass-half",
         // timer: formatDate(planEndDate),
         name: "Plan validity",
@@ -201,7 +201,7 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
       },
       {
         id: "NoOfPropertiesCount",
-        blockStyle: "stylecard11",
+        blockStyle: "stylecardnew11",
         icon: "fa fa-building",
         timer: favourites,
         // icon: "flaticon-invoice",
@@ -210,7 +210,7 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
       },
       {
         id: "UsedPropertiesCount",
-        blockStyle: "stylecard12",
+        blockStyle: "stylecardnew12",
         icon: "fa fa-home",
         timer: favourites,
         // icon: "flaticon-tick",
