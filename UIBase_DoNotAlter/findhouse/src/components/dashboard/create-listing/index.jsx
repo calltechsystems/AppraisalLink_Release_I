@@ -865,15 +865,31 @@ const Index = ({ isView, propertyData }) => {
           .then((res) => {
             console.log("API Response:", res);
             toast.dismiss();
-            setIsSubmitInProgress(false);
-            setTimesTrigerredSubmission(2);
 
+            let defaultUserData = JSON.parse(localStorage.getItem("user")) || {};
+            //set the planLimit , totalNoOfProperties
+            // usedProperties count updted
+
+            defaultUserData = {
+              ...defaultUserData,
+              ["planLimitExceed"]:
+              res?.data?.userData?.planLimitExceed,
+              ["usedProperties"]:
+              res?.data?.userData?.usedProperties,
+              ["totalNoOfProperties"]:
+              res?.data?.userData?.totalNoOfProperties
+            }
             //open the Successful Modal
             const propertyId = res.data?.userData?.propertyId;
             console.log("Property ID is:", propertyId);
+
+            localStorage.setItem("user", JSON.stringify(defaultUserData));
             setGeneratedPropertyId(propertyId);
             setSuccessModal(true);
             setisLoading(false);
+            
+            setIsSubmitInProgress(false);
+            setTimesTrigerredSubmission(2);
           })
           .catch((err) => {
             if (TimesTrigerredSubmission > 2) {
