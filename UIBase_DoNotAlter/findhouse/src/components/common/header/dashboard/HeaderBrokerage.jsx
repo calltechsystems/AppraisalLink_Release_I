@@ -13,6 +13,7 @@ const Header = ({ userData }) => {
       setNavbar(false);
     }
   };
+  const [userInfo, setUserInfo] = useState(userData || {});
 
   useEffect(() => {
     window.addEventListener("scroll", changeBackground);
@@ -46,7 +47,7 @@ const Header = ({ userData }) => {
         {/* site logo brand */}
 
         <nav>
-          <HeaderMenuContent hide={false} userData={userData} />
+          <HeaderMenuContent hide={false} userInfo={userInfo} />
         </nav>
         {/* End .navbar */}
       </div>
