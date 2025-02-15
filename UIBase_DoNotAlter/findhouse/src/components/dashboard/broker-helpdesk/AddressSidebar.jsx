@@ -1,99 +1,54 @@
+import { motion } from "framer-motion";
 import Social from "../../common/footer/Social";
 
 const AddressSidebar = () => {
   return (
-    <>
-      <div
-        className="row mt-5 mb-5 justify-content-center"
-        style={{ position: "relative" }}
-      >
-        <div
-          className="col-lg-3 contact_localtion m-3"
-          style={{
-            boxShadow: "0px 0px 50px 0px rgba(19, 19, 28, 0.12)",
-            width: "270px",
-          }}
-        >
-          <h4 className="text-center">Office</h4>
-          <div className="d-flex">
-            <span className="btn text-color flaticon-house-2"></span>
-            <p className="mt-1 fs-6">
-              XYZ street Model <br /> Town British Columbia Canada <br /> Pin
-              Code 123456
-            </p>
-          </div>
-        </div>
-        <div
-          className="col-lg-3 contact_localtion m-3"
-          style={{
-            boxShadow: "0px 0px 50px 0px rgba(19, 19, 28, 0.12)",
-            width: "270px",
-          }}
-        >
-          <h4 className="text-center">Hours</h4>
-          <div className="d-flex">
-            <div>
-              <span className="btn text-color flaticon-house-1"></span>
+    <div className="container mt-5 mb-5">
+      <div className="row justify-content-center gap-4">
+        {/** CARD DATA */}
+        {[
+          {
+            title: "Office",
+            icon: "flaticon-house-2",
+            content: "XYZ street, Model Town, British Columbia, Canada",
+          },
+          {
+            title: "Hours",
+            icon: "flaticon-house-1",
+            content: "Monday - Friday: 8 AM - 5 PM ET",
+          },
+          {
+            title: "Contact",
+            icon: "flaticon-telephone",
+            content: "+1 302-000-1111",
+          },
+          {
+            title: "Chat",
+            icon: "flaticon-envelope",
+            content: "Chat with us online!",
+          },
+        ].map((card, index) => (
+          <motion.div
+            key={index}
+            className="col-lg-3 card-box"
+            whileHover={{ scale: 1.1 }}
+            transition={{ duration: 0.1 }}
+          >
+            <h3 className="text-center">{card.title}</h3>
+            <div className="d-flex align-items-center justify-content-center">
+              <span className={`btn text-color fs-4 ${card.icon}`}></span>
             </div>
-            <div className="mt-2">
-              <h5>Office Hours</h5>
-              <p className="fs-6">
-                Monday - Friday :<br /> 8 AM - 5 PM ET
-              </p>
-            </div>
-          </div>
-          <div className="d-flex">
-            <div>
-              <span className="btn text-color flaticon-house"></span>
-            </div>
-            <div className="mt-2">
-              <h5>Support Hours</h5>
-              <p className="fs-6">
-                Monday - Friday :<br /> 7 AM - 6 PM ET
-              </p>
-            </div>
-          </div>
-        </div>
-        <div
-          className="col-lg-3 contact_localtion m-3"
-          style={{
-            boxShadow: "0px 0px 50px 0px rgba(19, 19, 28, 0.12)",
-            width: "270px",
-          }}
-        >
-          <h4 className="text-center">Contact</h4>
-          <div className="d-flex">
-            <span className="btn text-color flaticon-telephone"></span>
-            <p className="mt-2 fs-6">+1 302-000-1111</p>
-          </div>
-
-          <div className="d-flex">
-            <span className="btn text-color flaticon-telephone"></span>
-            <p className="mt-2 fs-6">+1 302-000-1111</p>
-          </div>
-          <div className="d-flex">
-            <span className="btn text-color flaticon-envelope"></span>
-            <p className="mt-1 fs-6">
-              <a href="mailto:info@appraisallink.com">info@appraisallink.com</a>
-            </p>
-          </div>
-        </div>
-        <div
-          className="col-lg-3 contact_localtion m-3"
-          style={{
-            boxShadow: "0px 0px 50px 0px rgba(19, 19, 28, 0.12)",
-            width: "270px",
-          }}
-        >
-          <h4 className="text-center">Chat</h4>
-          <p className="mt-2 fs-6">Chat with us online !</p>
-          <h5>Follow Us on !</h5>
-          <ul className="contact_form_social_area mt-4">
-            <Social />
-          </ul>
-        </div>
+            <p className="text-center">{card.content}</p>
+            {card.title === "Chat" && (
+              <div className="text-center">
+                <h5>Follow Us!</h5>
+                <Social />
+              </div>
+            )}
+          </motion.div>
+        ))}
       </div>
-    </>
+    </div>
   );
 };
 

@@ -234,7 +234,7 @@ const SidebarMenu = () => {
         </li>
 
         <li className="title">
-          <span>Manage Orders</span>
+          <span>Manage Properties</span>
           <ul>
             {!isAppraiserByCompany ? (
               <li
@@ -281,12 +281,12 @@ const SidebarMenu = () => {
                 {hasActivePlans ? (
                   <Link href="/appraiser-accepted-properties">
                     <i className="flaticon-building"></i>
-                    <span>Accepted Orders</span>
+                    <span>Accepted Properties</span>
                   </Link>
                 ) : (
                   <a>
                     <i className="flaticon-building"></i>
-                    <span>Accepted Orders</span>
+                    <span>Accepted Properties</span>
                   </a>
                 )}
               </li>
@@ -339,12 +339,12 @@ const SidebarMenu = () => {
                 {hasActivePlans ? (
                   <Link href="/appraiser-completed-properties">
                     <i className="flaticon-building"></i>
-                    <span>Completed Orders</span>
+                    <span>Completed Properties</span>
                   </Link>
                 ) : (
                   <a>
                     <i className="flaticon-building"></i>
-                    <span>Completed Orders</span>
+                    <span>Completed Properties</span>
                   </a>
                 )}
               </li>

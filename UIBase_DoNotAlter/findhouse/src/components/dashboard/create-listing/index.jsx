@@ -557,7 +557,7 @@ const Index = ({ isView, propertyData }) => {
           })
           .then((res) => {
             toast.dismiss();
-            toast.success("Successfully submitted !!");
+            toast.success("Successfully updated the property!");
             setModalIsOpen(false);
             router.push("/my-properties");
             setIsSubmitInProgress(false);
@@ -881,6 +881,7 @@ const Index = ({ isView, propertyData }) => {
             }
             //open the Successful Modal
             const propertyId = res.data?.userData?.propertyId;
+            console.log("Property ID is:", propertyId);
 
             localStorage.setItem("user", JSON.stringify(defaultUserData));
             setGeneratedPropertyId(propertyId);

@@ -8,6 +8,12 @@ import Loader from "./Loader";
 
 const headCells = [
   {
+    id: "sno",
+    numeric: false,
+    label: "S. No",
+    width: 60,
+  },
+  {
     id: "username",
     numeric: false,
     label: "User ID",
@@ -236,6 +242,7 @@ export default function Exemple({
         const getCurrentdate = getCurrentDate(data?.item?.id);
 
         const updatedRow = {
+          sno: index + 1,
           username: data.userInfo,
           appraiser_id: data.item.id,
           firstname: data.item.firstName ? data.item.firstName : "-",

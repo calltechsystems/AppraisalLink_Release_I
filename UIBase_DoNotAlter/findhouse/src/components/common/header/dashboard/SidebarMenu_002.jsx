@@ -254,7 +254,7 @@ const SidebarMenu = ({ userData }) => {
         </li>
 
         <li className="title">
-          <span>Manage Orders</span>
+          <span>Manage Properties</span>
           <ul>
             <li
               className={`treeview ${
@@ -296,12 +296,12 @@ const SidebarMenu = ({ userData }) => {
               {hasActivePlans ? (
                 <Link href="/appraiser-company-accepted-properties">
                   <i className="flaticon-building"></i>
-                  <span>Accepted Orders</span>
+                  <span>Accepted Properties</span>
                 </Link>
               ) : (
                 <a>
                   <i className="flaticon-building"></i>
-                  <span>Accepted Orders</span>
+                  <span>Accepted Properties</span>
                 </a>
               )}
             </li>
@@ -321,12 +321,12 @@ const SidebarMenu = ({ userData }) => {
               {hasActivePlans ? (
                 <Link href="/appraiser-company-completed-properties">
                   <i className="flaticon-building"></i>
-                  <span>Completed Orders</span>
+                  <span>Completed Properties</span>
                 </Link>
               ) : (
                 <a>
                   <i className="flaticon-building"></i>
-                  <span>Completed Orders</span>
+                  <span>Completed Properties</span>
                 </a>
               )}
             </li>
@@ -346,12 +346,12 @@ const SidebarMenu = ({ userData }) => {
               {hasActivePlans ? (
                 <Link href="/assigned-completed-properties">
                   <i className="flaticon-building"></i>
-                  <span>Assigned Completed Orders</span>
+                  <span>Assigned Completed Properties</span>
                 </Link>
               ) : (
                 <a>
                   <i className="flaticon-building"></i>
-                  <span>Assigned Completed Orders</span>
+                  <span>Assigned Completed Properties</span>
                 </a>
               )}
             </li>

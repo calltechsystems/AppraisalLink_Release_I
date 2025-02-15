@@ -6,6 +6,12 @@ import axios from "axios";
 
 const headCells = [
   {
+    id: "sno",
+    numeric: false,
+    label: "S. No",
+    width: 60,
+  },
+  {
     id: "id",
     numeric: false,
     label: "Transaction ID / Payment ID",
@@ -200,6 +206,7 @@ export default function Exemple({
 
         if (true) {
           const updatedRow = {
+            sno: index + 1,
             id: property.paymentid,
             planName: property?.planName || "N.A.",
             planType: <span>{property?.planType}</span>,

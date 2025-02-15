@@ -239,7 +239,7 @@ const SidebarMenu = ({}) => {
         </li>
 
         <li className="title">
-          <span>Manage Orders</span>
+          <span>Manage Properties</span>
           <ul>
             <li
               className={`treeview ${

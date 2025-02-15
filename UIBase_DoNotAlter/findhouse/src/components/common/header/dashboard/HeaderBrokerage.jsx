@@ -13,6 +13,7 @@ const Header = ({ userData }) => {
       setNavbar(false);
     }
   };
+  const [userInfo, setUserInfo] = useState(userData || {});
 
   useEffect(() => {
     window.addEventListener("scroll", changeBackground);

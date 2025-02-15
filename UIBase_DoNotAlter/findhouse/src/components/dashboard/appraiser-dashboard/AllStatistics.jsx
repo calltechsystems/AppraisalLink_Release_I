@@ -7,125 +7,138 @@ const AllStatistics = ({
   plans,
   plansNew,
   usedProp,
-  totalNoOfProperties
+  totalNoOfProperties,
 }) => {
+  // Get user data from localStorage
+  const userData = JSON.parse(localStorage.getItem("user"));
+  const userTypes = Array.isArray(userData?.userType)
+    ? userData.userType
+    : [userData?.userType];
+
   // Extract plan details (assuming plans is an array)
   const planName = plans?.[0]?.planName || "N/A"; // Get first plan name or default "N/A"
   const numberOfProperties = plans?.[0]?.noOfProperties || "N/A"; // Assuming propertyCount is a field
   const planEndDate = plansNew?.[0]?.planEndDate || "N/A";
-  // console.log("plan valididty",planValidity)
+
   const formatDate = (dateString) => {
     const options = {
       year: "numeric",
       month: "short",
       day: "numeric",
-      // hour: "numeric",
-      // minute: "numeric",
-      // second: "numeric",
-      hour12: true, // Set to false for 24-hour format
+      hour12: true,
     };
 
-    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
-    return formattedDate;
+    return new Date(dateString).toLocaleString("en-US", options);
   };
 
+  // Define statistics
   const allStatistics = [
     {
       id: 1,
-      blockStyle: "stylecard1",
+      blockStyle: "stylecardnew1",
       icon: "fa fa-home",
       timer: properties,
       name: "All Properties",
+      visibleFor: [3, 5],
     },
     {
       id: 2,
-      blockStyle: "stylecard2",
-      icon: "flaticon-invoice",
+      blockStyle: "stylecardnew2",
+      icon: "fa fa-file",
       timer: bids,
       name: "Quotes Provided",
+      visibleFor: [3],
     },
     {
       id: 3,
-      blockStyle: "stylecard3",
+      blockStyle: "stylecardnew3",
       icon: "fa fa-check",
       timer: bids,
       name: "Quotes Accepted",
+      visibleFor: [3],
     },
     {
       id: 4,
-      blockStyle: "stylecard4",
+      blockStyle: "stylecardnew4",
       icon: "fa fa-edit",
       timer: favourites,
       name: "Quotes in Progress",
+      visibleFor: [3],
     },
     {
       id: 5,
-      blockStyle: "stylecard5",
+      blockStyle: "stylecardnew5",
       icon: "fa fa-check-circle",
       timer: favourites,
       name: "Quotes Completed",
+      visibleFor: [3, 5],
     },
     {
       id: 6,
-      blockStyle: "stylecard6",
+      blockStyle: "stylecardnew6",
       icon: "fa fa-pause",
       timer: favourites,
       name: "Quotes On Hold by Appraiser",
+      visibleFor: [3, 5],
     },
     {
       id: 7,
-      blockStyle: "stylecard7",
+      blockStyle: "stylecardnew7",
       icon: "fa fa-times-circle",
       timer: favourites,
       name: "Cancelled Properties",
+      visibleFor: [3, 5],
     },
     {
       id: 8,
-      blockStyle: "stylecard8",
+      blockStyle: "stylecardnew8",
       icon: "fa fa-pause",
       timer: favourites,
       name: "On Hold Properties by Broker",
+      visibleFor: [3, 5],
     },
     {
       id: 9,
-      blockStyle: "stylecard9",
+      blockStyle: "stylecardnew9",
       icon: "fa fa-credit-card",
       timer: planName,
       name: "Plan",
+      visibleFor: [3],
     },
     {
       id: 10,
-      blockStyle: "stylecard10",
+      blockStyle: "stylecardnew10",
       icon: "fa fa-hourglass-half",
       timer: formatDate(planEndDate),
-      name: "Plan validity",
+      name: "Plan Validity",
+      visibleFor: [3],
     },
     {
       id: 11,
-      blockStyle: "stylecard11",
+      blockStyle: "stylecardnew11",
       icon: "fa fa-building",
       timer: totalNoOfProperties,
       name: "No. of Properties",
+      visibleFor: [3],
     },
     {
       id: 12,
-      blockStyle: "stylecard12",
+      blockStyle: "stylecardnew12",
       icon: "fa fa-home",
       timer: usedProp,
       name: "Used Properties",
+      visibleFor: [3],
     },
-    //    {
-    //   id: 13,
-    //   blockStyle: "stylecard13",
-    //   icon: "flaticon-heart",
-    //   timer: wishlist,
-    //   name: "Wishlist Properties",
-    // },
   ];
+
+  // Filter statistics based on user type
+  const filteredStatistics = allStatistics.filter((stat) =>
+    userTypes.some((type) => stat.visibleFor.includes(type))
+  );
 
   return (
     <div className="statistics-container">
-      {allStatistics.map((item) => (
+      {filteredStatistics.map((item) => (
         <div key={item.id} className={`ff_one ${item.blockStyle}`}>
           <div className="details">
             <div className="timer">{item.name}</div>

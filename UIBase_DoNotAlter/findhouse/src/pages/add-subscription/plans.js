@@ -28,11 +28,11 @@ const Index = ({
   const [IsAgainLoginPopUp, setIsAgainLoginPopUp] = useState(false);
 
   const router = useRouter();
-  const [userData_01, setUserData_01] = useState({});
+  // const [userData_01, setUserData_01] = useState({});
   let userData = {};
   useEffect(() => {
     userData = JSON.parse(localStorage.getItem("user"));
-    setUserData_01(userData);
+    // setUserData_01(userData);
   });
 
   useEffect(() => {
@@ -148,7 +148,7 @@ const Index = ({
 
   return (
     <>
-      <Header userData={userData_01}/>
+      <Header />
 
       <MobileMenu />
 
