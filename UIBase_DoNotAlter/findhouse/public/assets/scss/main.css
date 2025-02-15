@@ -23917,3 +23917,31 @@ input:checked + .slider:before {
 .sidebar-menu::-webkit-scrollbar-thumb:hover {
   background: #555; /* Darker scrollbar on hover */
 }
+
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+
+  .tooltip-text {
+    visibility: hidden;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px;
+    border-radius: 4px;
+    position: absolute;
+    top: 120%;  // Change from `bottom` to `top`
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  &:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+

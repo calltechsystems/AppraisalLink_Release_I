@@ -884,7 +884,7 @@ const Index = ({ isView, propertyData }) => {
               } else if (status == 404) {
                 setErrorMessage(err.response?.data?.error || "Not Found");
                 setModalIsOpenError_01(true);
-              } else if (/^5\d{2}$/.test(String(status))) {
+              } else if (status >= 500) {
                 toast.error("Server error occurred. Try Again!");
               } else {
                 setErrorMessage(
