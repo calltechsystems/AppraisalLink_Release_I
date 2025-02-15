@@ -195,34 +195,6 @@ export default function Exemple({
     return title;
   };
 
-  // const handleDownloadAll = async () => {
-  //   if (!attachments || attachments.length === 0) {
-  //     alert("No attachments available.");
-  //     return;
-  //   }
-
-  //   const zip = new JSZip();
-  //   const folder = zip.folder("Property_Files"); // Folder inside the ZIP
-
-  //   // Fetch and add each file to the ZIP
-  //   await Promise.all(
-  //     attachments.map(async (file) => {
-  //       try {
-  //         const response = await fetch(file.url);
-  //         const blob = await response.blob();
-  //         folder.file(file.fileName, blob);
-  //       } catch (error) {
-  //         console.error(`Failed to download ${file.fileName}:`, error);
-  //       }
-  //     })
-  //   );
-
-  //   // Generate the ZIP file and trigger download
-  //   zip.generateAsync({ type: "blob" }).then((content) => {
-  //     saveAs(content, "Property_Attachments.zip");
-  //   });
-  // };
-
   const handleDownload = async (filePath) => {
     if (!filePath) {
       toast.error("No attachment available.");
@@ -253,20 +225,6 @@ export default function Exemple({
       toast.error("Failed to download the ZIP file.");
     }
   };
-
-  // const handleDownload = (url) => {
-  //   if (url) {
-  //     const link = document.createElement("a");
-  //     link.href = url;
-  //     link.target = "_blank"; // Opens in a new tab
-  //     link.download = url.split("/").pop(); // Extracts file name from URL
-  //     document.body.appendChild(link);
-  //     link.click();
-  //     document.body.removeChild(link);
-  //   } else {
-  //     alert("No attachment available.");
-  //   }
-  // };
 
   const openRemarkModal = (property) => {
     const isBidded = filterBidsWithin24Hours(property); // Get the isBidded data
@@ -564,17 +522,6 @@ export default function Exemple({
     return assigned;
   };
 
-  // const checkIfPropertyAlreadyAssigned = (propertyId) => {
-  //   let assigned = {};
-  //   console.log("assignedProp", propertyId, assignedProperties);
-  //   assignedProperties.map((prop, index) => {
-  //     if (String(prop.propertyid) === propertyId) {
-  //       assigned = prop;
-  //     }
-  //   });
-  //   return assigned;
-  // };
-
   const getisAlreadyArchived = (propertyId) => {
     let isPresent = false;
     archivedProperties.map((prop, index) => {
@@ -596,11 +543,6 @@ export default function Exemple({
         const isAlreadyArchived = getisAlreadyArchived(property.propertyId);
 
         const haveSubscription = userData?.planLimitExceed;
-        // userActivePlans?.length > 0
-        //   ? userActivePlans[0]?.$id
-        //     ? true
-        //     : false
-        //   : false;
 
         const isAssigned = checkIfPropertyAlreadyAssigned(property.propertyId);
 
