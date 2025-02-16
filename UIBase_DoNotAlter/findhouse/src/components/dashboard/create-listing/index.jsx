@@ -863,7 +863,6 @@ const Index = ({ isView, propertyData }) => {
             },
           })
           .then((res) => {
-            console.log("API Response:", res);
             toast.dismiss();
 
             let defaultUserData = JSON.parse(localStorage.getItem("user")) || {};
@@ -881,7 +880,6 @@ const Index = ({ isView, propertyData }) => {
             }
             //open the Successful Modal
             const propertyId = res.data?.userData?.propertyId;
-            console.log("Property ID is:", propertyId);
 
             localStorage.setItem("user", JSON.stringify(defaultUserData));
             setGeneratedPropertyId(propertyId);

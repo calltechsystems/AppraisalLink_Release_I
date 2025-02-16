@@ -3,8 +3,13 @@ import { useEffect, useState } from "react";
 import HeaderMenuContent from "./HeaderMenuContentBrokerage";
 import Image from "next/image";
 
-const Header = ({ userData }) => {
+const Header = ({}) => {
   const [navbar, setNavbar] = useState(false);
+  const [userData, setUserData] = useState({});
+
+  useEffect(() => {
+    setUserData(JSON.parse(localStorage.getItem("user") ) || {})
+  },[]);
 
   const changeBackground = ({ hide }) => {
     if (window.scrollY >= 95) {
@@ -13,7 +18,6 @@ const Header = ({ userData }) => {
       setNavbar(false);
     }
   };
-  const [userInfo, setUserInfo] = useState(userData || {});
 
   useEffect(() => {
     window.addEventListener("scroll", changeBackground);

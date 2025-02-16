@@ -195,34 +195,31 @@ export default function Exemple({
     return title;
   };
 
-  const handleDownload = async (filePath) => {
-    if (!filePath) {
-      toast.error("No attachment available.");
-      return;
-    }
+  const cleanUrl = (zipUrl) => zipUrl.replace(/,$/, "");
+
+  const downloadZip = async (url, propertyId) => {
+    const zipUrl = cleanUrl(url);
 
     try {
-      const baseUrl = "https://appraisalfile.s3.us-east-1.amazonaws.com/";
-      const fileUrl = `${baseUrl}${filePath}`; // Construct full URL
+      if (!zipUrl) {
+        toast.error("No attachments available.");
+        return;
+      }
 
-      const response = await fetch(fileUrl);
-      if (!response.ok)
-        throw new Error(`HTTP error! Status: ${response.status}`);
+      toast.loading("Downloading...");
 
-      const blob = await response.blob();
-      const downloadUrl = window.URL.createObjectURL(blob);
+      const response = await axios.get(zipUrl, { responseType: "blob" });
 
-      const link = document.createElement("a");
-      link.href = downloadUrl;
-      link.download = filePath.split("/").pop(); // Extract file name
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      const fileName =
+        `${propertyId}_attachments.zip` || "Downloaded_Files.zip";
+      saveAs(response.data, fileName); // Directly download the zip file
 
-      window.URL.revokeObjectURL(downloadUrl);
+      toast.success("ZIP file downloaded successfully!");
+      toast.dismiss();
     } catch (error) {
-      console.error("Download failed:", error);
-      toast.error("Failed to download the ZIP file.");
+      console.log({ error });
+      toast.error("Failed to download ZIP file.");
+      console.error("Error:", error);
     }
   };
 
@@ -1057,20 +1054,14 @@ export default function Exemple({
                         title="Download Attachment"
                       >
                         {" "}
-                        {/* <button
-                          className="btn btn-primary mb-3"
-                          onClick={handleDownloadAll}
-                          style={{
-                            backgroundColor: "#007bff",
-                            color: "#fff",
-                            padding: "10px 20px",
-                          }}
-                        >
-                          <FaDownload className="inline-block mr-2" />
-                        </button> */}
                         <span
                           className="btn btn-color-table"
-                          onClick={() => handleDownload(property.attachment)}
+                          onClick={() =>
+                            downloadZip(
+                              property.attachment,
+                              property?.propertyId
+                            )
+                          }
                         >
                           <Link href={"#"} onClick={(e) => e.preventDefault()}>
                             <span className="text-light">
