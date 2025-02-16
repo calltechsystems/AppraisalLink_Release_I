@@ -99,211 +99,206 @@ function SmartTable(props) {
     });
   }
 
-  const handlePrint = async () => {
-    try {
-      // Fetch data
-      const allData = props.properties;
+const handlePrint = async () => {
+  try {
+    // Fetch data
+    const allData = props.properties;
 
-      // Define static headers
-      const staticHeaders = [
-        ["order_id", "Order Id"],
-        ["address", "Address"],
-        ["assigned_appraiser", "Assigned Appraiser"],
-        ["status", "Status"],
-        ["appraisal_status", "Appraisal Status"],
-        ["remark", "Remark"],
-        ["urgency", "Urgency"],
-        ["date", "Submission Date"],
-        ["type_of_building", "Type Of Building"],
-        ["estimated_value", "Estimated Property Value ($)"],
-        ["type_of_appraisal", "Type Of Appraisal"],
-        ["purpose", "Purpose"],
-        ["lender_information", "Lender Information"],
-      ];
+    // Define static headers
+    const staticHeaders = [
+      ["order_id", "Order Id"],
+      ["address", "Address"],
+      ["assigned_appraiser", "Assigned Appraiser"],
+      ["status", "Status"],
+      ["appraisal_status", "Appraisal Status"],
+      ["remark", "Remark"],
+      ["urgency", "Urgency"],
+      ["date", "Submission Date"],
+      ["type_of_building", "Type Of Building"],
+      ["estimated_value", "Estimated Property Value ($)"],
+      ["type_of_appraisal", "Type Of Appraisal"],
+      ["purpose", "Purpose"],
+      ["lender_information", "Lender Information"],
+    ];
 
-      const printContent = `
-      <html>
-        <head>
-          <style>
-            @media print {
-              @page {
-                margin: 20mm;
-              }
-              body {
-                margin: 0;
-                padding: 10mm;
-              }
-              /* Header & Footer */
-              .header, .footer {
-                width: 100%;
-                position: fixed;
-                text-align: center;
-                background: white;
-              }
-              .header {
-                top: 0;
-                padding-bottom: 10px;
-                border-bottom: 1px solid #ddd;
-              }
-              .footer {
-                bottom: 0;
-                padding-top: 10px;
-                border-top: 1px solid #ddd;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 5px;
-              }
-              .footer-main {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-              }
-              .footer-content {
-                display: flex;
-                flex-direction: column;
-                align-items: flex-end;
-                width: 100%;
-                padding-right: 20px;
-                font-size: 12px;
-                color: #333;
-              }
-              /* Logo */
-              .logo img {
-                width: 60px;
-                height: 45px;
-              }
-              /* Title */
-              .title {
-                font-size: 24px;
-                font-weight: bold;
-              }
-              /* Table styling */
-              .table-container {
-                margin-top: 80px; /* Space for header */
-                margin-bottom: 80px; /* Space for footer */
-                page-break-before: always;
-              }
-              table {
-                width: 100%;
-                border-collapse: collapse;
-              }
-              th, td {
-                border: 1px solid #000;
-                padding: 8px;
-                text-align: left;
-              }
-              /* Ensure the heading appears on every page */
-              h3 {
-                page-break-before: always;
-                text-align: center;
-                font-size: 20px;
-              }
+    const printContent = `
+    <html>
+      <head>
+        <script>document.title = 'kjshak';</script>
+        <style>
+          @media print {
+            @page {
+              size: landscape;
+              margin: 0;
             }
-          </style>
-        </head>
-        <body>
-          <!-- Header -->
-          <div class="header">
-            <div class="logo">
-              <img src="/assets/images/Appraisal_Land_Logo.png" alt="header-logo2.png"/>
-            </div>
-            <div class="title">
-              <span style="color: #2e008b;">Appraisal</span>
-              <span style="color: #97d700;">Land</span>
-            </div>
+            body {
+              margin: 10mm;
+              padding: 10mm;
+            }
+            .header, .footer {
+              width: 100%;
+              position: fixed;
+              text-align: center;
+              background: white;
+            }
+            .header {
+              top: 0;
+              padding-bottom: 10px;
+              border-bottom: 1px solid #ddd;
+            }
+            .footer {
+              bottom: 0;
+              padding-top: 10px;
+              border-top: 1px solid #ddd;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              gap: 5px;
+            }
+            .footer-main {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+            }
+            .footer-content {
+              display: flex;
+              flex-direction: column;
+              align-items: flex-end;
+              width: 100%;
+              padding-right: 20px;
+              font-size: 12px;
+              color: #333;
+            }
+            .logo img {
+              width: 60px;
+              height: 45px;
+            }
+            .title {
+              font-size: 24px;
+              font-weight: bold;
+            }
+            .table-container {
+              margin-top: 80px;
+              margin-bottom: 80px;
+              page-break-before: always;
+            }
+            table {
+              width: 100%;
+              border-collapse: collapse;
+            }
+            th, td {
+              border: 1px solid #000;
+              padding: 8px;
+              text-align: left;
+            }
+            h3 {
+              page-break-before: always;
+              text-align: center;
+              font-size: 20px;
+            }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <div class="logo">
+            <img src="/assets/images/Appraisal_Land_Logo.png" alt="header-logo2.png"/>
           </div>
-      
-          <!-- Footer -->
-          <div class="footer">
-            <div class="footer-main">
-              <a href="https://appraisalland.ca/" target="_blank" style="color: #2e008b; text-decoration: underline;">
-                Appraisal Land
-              </a>
-              <span>© ${getCurrentYear()} All Rights Reserved.</span>
-            </div>
-      
-            <!-- Created By and Created At Section -->
-            <div class="footer-content" style="margin-left: -10%">
-              <span>Created By: John Doe</span>
-              <span>Created At: ${getFormattedDate()}</span>
-            </div>
+          <div class="title">
+            <span style="color: #2e008b;">Appraisal</span>
+            <span style="color: #97d700;">Land</span>
           </div>
-      
-          <!-- Table Container -->
-          <div class="table-container">
-            <h3>Appraiser Company Properties</h3>
-            <table>
-              <thead>
-                <tr>
-                  ${staticHeaders.map((header) => `<th>${header[1]}</th>`).join("")}
-                </tr>
-              </thead>
-              <tbody>
-                ${allData
-                  .map(
-                    (item) => `
-                    <tr>
-                      ${staticHeaders
-                        .map((header) => {
-                          if (
-                            header[0].toLowerCase() === "appraisal_status" ||
-                            header[0].toLowerCase() === "status" ||
-                            header[0]?.toLowerCase() === "assigned_appraiser"
-                          ) {
-                            const value = item[header[0].toLowerCase()];
-                            const className = value.props.className;
-                            const content =
-                              header[0].toLowerCase() === "appraisal_status"
-                                ? extractTextFromReactElement(
-                                    value.props.children
-                                  ).split("Current Status")[0]
-                                : value.props.children;
+        </div>
 
-                            const color = className.includes("btn-warning")
-                              ? "#E4A11B"
-                              : className.includes("btn-danger")
-                              ? "#DC4C64"
-                              : className.includes("btn-success")
-                              ? "#14A44D"
-                              : "#54B4D3";
+        <div class="footer">
+          <div class="footer-main">
+            <a href="https://appraisalland.ca/" target="_blank" style="color: #2e008b; text-decoration: underline;">
+              Appraisal Land
+            </a>
+            <span>© ${getCurrentYear()} All Rights Reserved.</span>
+          </div>
+          <div class="footer-content" style="margin-left: -10%">
+            <span>Created By: John Doe</span>
+            <span>Created At: ${getFormattedDate()}</span>
+          </div>
+        </div>
 
-                            return `<td style="color: ${color};">${content}</td>`;
-                          } else {
-                            return `<td>${item[header[0].toLowerCase()]}</td>`;
-                          }
-                        })
-                        .join("")}
-                    </tr>
-                  `
-                  )
+        <div class="table-container">
+          <h3>Appraiser Company Properties</h3>
+          <table>
+            <thead>
+              <tr>
+                ${staticHeaders
+                  .map((header) => `<th>${header[1]}</th>`)
                   .join("")}
-              </tbody>
-            </table>
-          </div>
-        </body>
-      </html>`;
+              </tr>
+            </thead>
+            <tbody>
+              ${allData
+                .map(
+                  (item) => `
+                  <tr>
+                    ${staticHeaders
+                      .map((header) => {
+                        if (
+                          header[0].toLowerCase() === "appraisal_status" ||
+                          header[0].toLowerCase() === "status" ||
+                          header[0]?.toLowerCase() === "assigned_appraiser"
+                        ) {
+                          const value = item[header[0].toLowerCase()];
+                          const className = value.props.className;
+                          const content =
+                            header[0].toLowerCase() === "appraisal_status"
+                              ? extractTextFromReactElement(
+                                  value.props.children
+                                ).split("Current Status")[0]
+                              : value.props.children;
 
-      const printWindow = window.open("", "_blank");
+                          const color = className.includes("btn-warning")
+                            ? "#E4A11B"
+                            : className.includes("btn-danger")
+                            ? "#DC4C64"
+                            : className.includes("btn-success")
+                            ? "#14A44D"
+                            : "#54B4D3";
 
-      // Write content to the new window and handle the load event
-      printWindow.document.open();
-      printWindow.document.write(printContent);
-      printWindow.document.close();
+                          return `<td style="color: ${color};">${content}</td>`;
+                        } else {
+                          const updatedValue = item[header[0].toLowerCase()];
+                          return `<td>${updatedValue == undefined ? "N.A." : updatedValue}</td>`;
+                        }
+                      })
+                      .join("")}
+                  </tr>
+                `
+                )
+                .join("")}
+            </tbody>
+          </table>
+        </div>
+      </body>
+    </html>`;
 
-      printWindow.onload = function () {
-        printWindow.print();
-        printWindow.onafterprint = () => {
-          printWindow.close();
-          toast.success("Printed successfully");
-        };
+    const printWindow = window.open("", "", "width=1200,height=800");
+
+    printWindow.document.open();
+    printWindow.document.write(printContent);
+    printWindow.document.close();
+
+    printWindow.onload = function () {
+      printWindow.print();
+      printWindow.onafterprint = () => {
+        printWindow.close();
+        toast.success("Printed successfully");
       };
-    } catch (error) {
-      console.error("Error handling print:", error);
-      toast.error("Error handling print");
-    }
-  };
-  
+    };
+  } catch (error) {
+    console.error("Error handling print:", error);
+    toast.error("Error handling print");
+  }
+};
+
+
   const tableWidthFunc = useCallback(() => {
     let tempTableWidth = 0;
     props.headCells.map((cell) => (tempTableWidth += cell.width));
@@ -465,13 +460,15 @@ function SmartTable(props) {
               <div className="col-lg-12">
                 <div className="row">
                   <div className="d-flex gap-1">
-                    <button
-                      className="btn btn-color"
-                      onClick={() => handlePrint()}
-                      title="Download Pdf"
-                    >
-                      <FaDownload />
-                    </button>
+                    <div className="tooltip-container">
+                      <button
+                        className="btn btn-color"
+                        onClick={() => handlePrint()}
+                      >
+                        <FaDownload />
+                      </button>
+                      <span className="tooltip-text">**Landscape** is the preferrable type for downloading as a pdf</span>
+                    </div>
                     <button
                       className="btn btn-color"
                       onClick={() => props.refreshHandler()}

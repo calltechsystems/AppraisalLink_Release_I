@@ -29,7 +29,6 @@ const index = () => {
                         <div className="col-lg-6">
                             <BreadCrumb2 />
                         </div>
-                        {/* End .col */}
 
                         <div className="col-lg-6 position-relative">
                             <div className="listing_list_style tal-991">
