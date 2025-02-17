@@ -25,6 +25,7 @@ const Modal = ({
   propertyId,
   closeQuoteModal,
   openQuoteModal,
+  setIsLoading,
 }) => {
   const router = useRouter();
   const [value, setValue] = useState(null);
@@ -76,12 +77,13 @@ const Modal = ({
 
   const onSubmitHnadler = () => {
     setDisable(true);
+    setIsLoading(true);
     const bidAmount = value;
     const desp = description;
 
     if (bidAmount <= 0 || bidAmount === "") {
       toast.error("Quoted amount should be filled !");
-      setDisable(false)
+      setDisable(false);
       return;
     } else {
       const user = JSON.parse(localStorage.getItem("user"));
@@ -109,6 +111,7 @@ const Modal = ({
               ? "Successfully updated the quote!"
               : "Successfully set the quote"
           );
+          setIsLoading(false);
           location.reload(true);
         })
         .catch((err) => {
@@ -118,6 +121,7 @@ const Modal = ({
               alreadyBidded ? "Updating the" : "Setting the"
             } quote, Try Again!!`
           );
+          setIsLoading(false);
         });
       setToggle(false);
     }

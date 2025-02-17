@@ -89,7 +89,7 @@ const Index = () => {
   }));
   console.log("plan data", planData_01);
 
-  const usedProp = userData?.usedproperty;
+  const usedProp = userData?.usedProperties;
   const userPlans = Array.isArray(userData?.userSubscription?.$values)
     ? userData.userSubscription.$values
     : [];

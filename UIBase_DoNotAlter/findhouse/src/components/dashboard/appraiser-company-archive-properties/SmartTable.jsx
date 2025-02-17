@@ -253,7 +253,7 @@ function SmartTable(props) {
     if (props.dataFetched && props.properties.length === 0) {
       const timer = setTimeout(() => {
         setShowNoData(true);
-      }, 15000);
+      }, 8000);
 
       return () => clearTimeout(timer);
     }

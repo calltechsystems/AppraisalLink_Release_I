@@ -36,6 +36,8 @@ const DetailedInfo = ({
   setFilesUrl,
   setAttachment,
   setDisable,
+  handleInputChangeNew,
+  setIsFormDirty,
 }) => {
   const router = useRouter();
   const [isButtonDisabled, setButtonDisabled] = useState(false);
@@ -254,6 +256,7 @@ const DetailedInfo = ({
     }
 
     setApplicantNumber(truncatedValue);
+    setIsFormDirty(true);
   };
 
   return (
@@ -282,7 +285,8 @@ const DetailedInfo = ({
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                onChange={(e) => setApplicantFirstName(e.target.value)}
+                // onChange={(e) => setApplicantFirstName(e.target.value)}
+                onChange={(e) => handleInputChangeNew(e, setApplicantFirstName)}
                 value={applicantFirstName}
                 disabled={isDisable}
                 maxLength={30}
@@ -313,7 +317,8 @@ const DetailedInfo = ({
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                onChange={(e) => setApplicantLastName(e.target.value)}
+                // onChange={(e) => setApplicantLastName(e.target.value)}
+                onChange={(e) => handleInputChangeNew(e, setApplicantLastName)}
                 value={applicantLatsName}
                 disabled={isDisable}
                 maxLength={30}
@@ -422,7 +427,8 @@ const DetailedInfo = ({
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                onChange={(e) => setApplicantEmail(e.target.value)}
+                // onChange={(e) => setApplicantEmail(e.target.value)}
+                onChange={(e) => handleInputChangeNew(e, setApplicantEmail)}
                 value={applicantEmail}
                 disabled={isDisable}
                 maxLength={100}
@@ -454,7 +460,8 @@ const DetailedInfo = ({
                     backgroundColor: "#E8F0FE",
                     //color: "white",
                   }}
-                  onChange={(e) => setRemark(e.target.value)}
+                  // onChange={(e) => setRemark(e.target.value)}
+                  onChange={(e) => handleInputChangeNew(e, setRemark)}
                   value={remark}
                   className="form-control"
                   id="propertyDescription"

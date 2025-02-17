@@ -62,7 +62,7 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
     if (currentPlanInfo) {
       PlanCount = currentPlanInfo?.planName;
       NoOfPropertiesCount = currentPlanInfo?.noOfProperties;
-      UsedPropertiesCount = userData?.usedproperty || 0;
+      UsedPropertiesCount = userData?.usedProperties || 0;
       totalNoOfProperties = userData?.totalNoOfProperties || 0;
     }
 

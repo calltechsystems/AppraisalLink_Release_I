@@ -9,13 +9,13 @@ const CreateList = ({
   urgencyRef,
   areaRef,
   setAreaRef,
+  buildinRef,
   setBuildinRef,
   appraisalQuoteDate,
   setAppraisalQuoteDate,
   propertyData,
   otherUrgencyValue,
   setDisable,
-  buildinRef,
   bidLowerRangeRef,
   setBidLowerRangeRef,
   communityRef,
@@ -42,6 +42,8 @@ const CreateList = ({
   setOtherUrgencyValue,
   setUrgencyType,
   onChangeHandler,
+  handleInputChangeNew,
+  setIsFormDirty,
 }) => {
   const [selectedOption, setSelectedOption] = useState("");
 
@@ -206,6 +208,7 @@ const CreateList = ({
     if (!isNaN(rawValue)) {
       setEstimatedValue(rawValue); // Update state with raw value
     }
+    setIsFormDirty(true);
   };
 
   return (
@@ -237,7 +240,8 @@ const CreateList = ({
                   data-live-search="true"
                   data-width="100%"
                   value={buildinRef}
-                  onChange={(e) => setBuildinRef(e.target.value)}
+                  // onChange={(e) => setBuildinRef(e.target.value)}
+                  onChange={(e) => handleInputChangeNew(e, setBuildinRef)}
                   // onChange={(e) => setBuildinRef(e.target.value)}
                   disabled={isDisable}
                   style={
@@ -341,8 +345,8 @@ const CreateList = ({
                   data-live-search="true"
                   data-width="100%"
                   value={purpose}
-                  onChange={(e) => setPurpose(e.target.value)}
-                  // onChange={(e) => setBuildinRef(e.target.value)}
+                  // onChange={(e) => setPurpose(e.target.value)}
+                  onChange={(e) => handleInputChangeNew(e, setPurpose)}
                   disabled={isDisable}
                   style={
                     checkIsError("purpose")
@@ -426,9 +430,8 @@ const CreateList = ({
                   data-live-search="true"
                   data-width="100%"
                   value={typeOffAppraisal}
-                  onChange={(e) => setTypeOfAppraisal(e.target.value)}
-                  // onChange={(e) => setBuildinRef(e.target.value)}
-                  // disabled={isDisable}
+                  // onChange={(e) => setTypeOfAppraisal(e.target.value)}
+                  onChange={(e) => handleInputChangeNew(e, setTypeOfAppraisal)}
                   style={
                     checkIsError("typeOfAppraisal")
                       ? errorLabelStyle
@@ -522,7 +525,8 @@ const CreateList = ({
                 id="formGroupExampleInput3"
                 style={{ backgroundColor: "#E8F0FE", marginLeft: "-5px" }}
                 maxLength={30}
-                onChange={(e) => setLenderInformation(e.target.value)}
+                // onChange={(e) => setLenderInformation(e.target.value)}
+                onChange={(e) => handleInputChangeNew(e, setLenderInformation)}
                 value={lenderInformation}
                 disabled={isDisable}
               />
@@ -570,8 +574,8 @@ const CreateList = ({
                   className="form-select"
                   data-live-search="true"
                   data-width="100%"
-                  onChange={(e) => setUrgencyRef(e.target.value)}
-                  // onChange={check_03}
+                  // onChange={(e) => setUrgencyRef(e.target.value)}
+                  onChange={(e) => handleInputChangeNew(e, setUrgencyRef)}
                   value={urgencyRef}
                   disabled={isDisable}
                   style={
@@ -622,7 +626,8 @@ const CreateList = ({
                 type="date"
                 className="form-control"
                 id="formGroupExampleInput3"
-                onChange={(e) => setAppraisalQuoteDate(e.target.value)}
+                // onChange={(e) => setAppraisalQuoteDate(e.target.value)}
+                onChange={(e) => handleInputChangeNew(e, setAppraisalQuoteDate)}
                 value={appraisalQuoteDate}
                 placeholder="MM-DD-YYYY"
                 disabled={isDisable}

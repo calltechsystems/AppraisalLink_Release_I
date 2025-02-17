@@ -30,6 +30,7 @@ const LocationField = ({
   communityRef,
   setCommunityRef,
   setUrgencyRef,
+  handleInputChangeNew,
 }) => {
   const errorLabelStyle = { borderColor: "red" };
 
@@ -73,7 +74,8 @@ const LocationField = ({
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                onChange={(e) => setStreetNumberRef(e.target.value)}
+                // onChange={(e) => setStreetNumberRef(e.target.value)}
+                onChange={(e) => handleInputChangeNew(e, setStreetNumberRef)}
                 value={streetNumberRef}
                 disabled={isDisable}
                 maxLength={30}
@@ -107,7 +109,8 @@ const LocationField = ({
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                onChange={(e) => setStreetNameRef(e.target.value)}
+                // onChange={(e) => setStreetNameRef(e.target.value)}
+                onChange={(e) => handleInputChangeNew(e, setStreetNameRef)}
                 value={streetNameRef}
                 disabled={isDisable}
                 maxLength={30}
@@ -135,7 +138,8 @@ const LocationField = ({
                 className="form-control"
                 id="formGroupExampleInput3"
                 maxLength={30}
-                onChange={(e) => setApartmentNumberRef(e.target.value)}
+                // onChange={(e) => setApartmentNumberRef(e.target.value)}
+                onChange={(e) => handleInputChangeNew(e, setApartmentNumberRef)}
                 value={apartmentNumberRef}
                 disabled={isDisable}
               />
@@ -165,7 +169,8 @@ const LocationField = ({
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput3"
-                onChange={(e) => setCityRef(e.target.value)}
+                // onChange={(e) => setCityRef(e.target.value)}
+                onChange={(e) => handleInputChangeNew(e, setCityRef)}
                 value={cityRef}
                 disabled={isDisable}
                 maxLength={30}
@@ -205,7 +210,8 @@ const LocationField = ({
                   className="form-select"
                   data-live-search="true"
                   data-width="100%"
-                  onChange={(e) => setStateRef(e.target.value)}
+                  // onChange={(e) => setStateRef(e.target.value)}
+                  onChange={(e) => handleInputChangeNew(e, setStateRef)}
                   value={stateRef}
                   // onChange={check_03}
                   disabled={isDisable}

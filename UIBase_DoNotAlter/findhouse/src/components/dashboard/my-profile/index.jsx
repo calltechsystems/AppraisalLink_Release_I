@@ -9,6 +9,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import Form from "./Form";
 import { useModal } from "../../../context/ModalContext";
+import CommonLoader from "../../common/CommonLoader/page";
 
 const Index = () => {
   const [profileCount, setProfileCount] = useState(7);
@@ -17,6 +18,7 @@ const Index = () => {
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
   const [modalIsOpenError_01, setModalIsOpenError_01] = useState(false);
   const { isModalOpen, setIsModalOpen } = useModal();
+  const [isLoading, setIsLoading] = useState(false);
 
   let userData = {};
   const router = useRouter();
@@ -93,6 +95,8 @@ const Index = () => {
         userData={userData}
       />
 
+      {isLoading && <CommonLoader />}
+
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
 
@@ -164,6 +168,7 @@ const Index = () => {
                             setShowCard={setShowCard}
                             setModalIsOpenError={setModalIsOpenError}
                             setModalIsOpenError_01={setModalIsOpenError_01}
+                            setIsLoading={setIsLoading}
                           />
                         )}
                       </div>

@@ -163,6 +163,7 @@ export default function Exemple({
   setIsHoldProperty,
   setCurrentProperty,
   setPropertyId,
+  setIsLoading
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [allBids, setBids] = useState([]);
@@ -225,6 +226,7 @@ export default function Exemple({
   }
 
   const onUnarchiveHandler = (id) => {
+    setIsLoading(true);
     const data = JSON.parse(localStorage.getItem("user"));
 
     toast.loading("Un-archiving the property!!...");
@@ -244,6 +246,7 @@ export default function Exemple({
       .then((res) => {
         toast.dismiss();
         toast.success("Successfully unarchived the property!");
+        setIsLoading(false);
         location.reload();
         // router.push("/archive-property");
         // setRefresh(true);
@@ -251,6 +254,7 @@ export default function Exemple({
       .catch((err) => {
         toast.dismiss();
         toast.error("Try again!");
+        setIsLoading(false);
       });
   };
 

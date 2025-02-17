@@ -7,7 +7,9 @@ import toast from "react-hot-toast";
 import Exemple from "./Exemple";
 const TableData = ({
   userData,
-  open,start,end,
+  open,
+  start,
+  end,
   close,
   properties,
   refresh,
@@ -29,6 +31,7 @@ const TableData = ({
   setCurrentProperty,
   onHoldHandler,
   onCancelHandler,
+  setIsLoading,
 }) => {
   console.log(properties);
 
@@ -237,10 +240,11 @@ const TableData = ({
           onCancelHandler={onCancelHandler}
           setModalOpen={setModalOpen}
           filterQuery={filterQuery}
-                          searchInput={searchInput}
+          searchInput={searchInput}
           setIsCancelProperty={setIsCancelProperty}
           setIsHoldProperty={setIsHoldProperty}
           setCurrentProperty={setCurrentProperty}
+          setIsLoading={setIsLoading}
         />
       )}
     </>

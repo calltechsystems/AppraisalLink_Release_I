@@ -25,6 +25,7 @@ const Modal = ({
   propertyId,
   closeQuoteModal,
   openQuoteModal,
+  setIsLoading,
 }) => {
   const router = useRouter();
   const [value, setValue] = useState(null);
@@ -73,6 +74,7 @@ const Modal = ({
 
   const onSubmitHnadler = () => {
     setDisable(true);
+    setIsLoading(true);
     const bidAmount = value;
     const desp = description;
 
@@ -106,6 +108,7 @@ const Modal = ({
               ? "Successfully updated the quote!"
               : "Successfully set the quote"
           );
+          setIsLoading(false);
           location.reload(true);
         })
         .catch((err) => {
@@ -116,6 +119,7 @@ const Modal = ({
             } quote, Try Again!!`,
             err
           );
+          setIsLoading(false);
         });
       setToggle(false);
     }

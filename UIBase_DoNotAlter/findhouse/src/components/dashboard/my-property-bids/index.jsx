@@ -17,6 +17,7 @@ import Exemple from "./Exemple";
 import { encryptionData } from "../../../utils/dataEncryption";
 import { FaDownload } from "react-icons/fa";
 import { useModal } from "../../../context/ModalContext";
+import CommonLoader from "../../common/CommonLoader/page";
 
 const Index = ({ propertyId }) => {
   const [isModalOpenBid, setIsModalOpenBid] = useState(false);
@@ -36,6 +37,7 @@ const Index = ({ propertyId }) => {
 
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
   function addCommasToNumber(number) {
@@ -58,6 +60,7 @@ const Index = ({ propertyId }) => {
   };
 
   const acceptRequestHandler = () => {
+    setIsLoading(true);
     setIsModalOpenBid(false);
     const data = JSON.parse(localStorage.getItem("user"));
     toast.loading("Accepting the Quote ...");
@@ -78,8 +81,8 @@ const Index = ({ propertyId }) => {
       })
       .then((res) => {
         toast.dismiss();
-
         toast.success("Successfully accepted the Quote");
+        setIsLoading(false);
         router.push("/my-properties");
       })
       .catch((err) => {
@@ -91,6 +94,7 @@ const Index = ({ propertyId }) => {
           toast.dismiss();
           toast.error(err.message);
         }
+        setIsLoading(false);
         // toast.dismiss();
         // console.log(err);
         // toast.error(err?.response?.data?.error);
@@ -319,6 +323,8 @@ const Index = ({ propertyId }) => {
       {/* <!-- Main Header Nav --> */}
       <Header userData={userData} />
 
+      {isLoading && <CommonLoader />}
+
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
 
@@ -416,6 +422,7 @@ const Index = ({ propertyId }) => {
                           setAppInfo={setAppInfo}
                           refresh={refresh}
                           setRefresh={setRefresh}
+                          setIsLoading={setIsLoading}
                         />
 
                         {modalIsOpenError && (
