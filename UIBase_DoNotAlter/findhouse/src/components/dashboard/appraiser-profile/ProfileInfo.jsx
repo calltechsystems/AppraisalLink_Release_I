@@ -359,7 +359,7 @@ const ProfileInfo = ({
 
     const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const cellNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
-    const nameRegex = /^[A-Za-z]+$/;
+    const nameRegex = /^[A-Za-z ]+$/;
     const nameCityRegex = /^[A-Za-z ]+$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const alphanumericRegex = /^[a-zA-Z0-9]+$/;

@@ -9,13 +9,13 @@ const headCells = [
     id: "sno",
     numeric: false,
     label: "S. No",
-    width: 60,
+    width: 50,
   },
   {
     id: "id",
     numeric: false,
     label: "Transaction ID / Payment ID",
-    width: 230,
+    width: 150,
   },
   {
     id: "planName",
@@ -58,7 +58,7 @@ const headCells = [
     id: "status",
     numeric: false,
     label: "Status",
-    width: 150,
+    width: 200,
   },
 ];
 
@@ -220,11 +220,13 @@ export default function Exemple({
               property.usedProperties === null ? 0 : property.usedProperties
             } of ${property.noOfProperties}`,
             status: !expired ? (
-              <span className="btn btn-info  w-100">
+              <span className="btn btn-info">
                 Will Be Active on {formatDate(property.startDate)}
               </span>
             ) : (
-              <span className="btn btn-success  w-100">Active</span>
+              <span className="btn btn-success" style={{ width: "50%" }}>
+                Active
+              </span>
             ),
           };
           tempData.push(updatedRow);

@@ -15,6 +15,7 @@ const ProfileInfo = ({
   setShowCard,
   setModalIsOpenError,
   setModalIsOpenError_01,
+  setIsLoading,
 }) => {
   const [profilePhoto, setProfilePhoto] = useState(null);
   let userData = JSON.parse(localStorage.getItem("user")) || {};
@@ -382,7 +383,7 @@ const ProfileInfo = ({
     //   toast.error("Please fill all required fields!");
     //   return; // Stop further validation
     // }
-
+    setIsLoading(true);
     const firstName =
       firstNameRef !== "" ? firstNameRef : userData.broker_Details.firstName;
     const lastName =
@@ -553,7 +554,7 @@ const ProfileInfo = ({
 
     const phoneNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
     const cellNumberRegex = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
-    const nameRegex = /^[A-Za-z]+$/;
+    const nameRegex = /^[A-Za-z ]+$/;
     const nameCityRegex = /^[A-Za-z ]+$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const alphanumericRegex = /^[a-zA-Z0-9]+$/;
@@ -792,11 +793,13 @@ const ProfileInfo = ({
             data.broker_Details = res.data.userData.brokerage;
             localStorage.removeItem("user");
             localStorage.setItem("user", JSON.stringify(data));
+            setIsLoading(false);
             router.push("/my-dashboard");
             setShowCard(true);
           })
           .catch((err) => {
             toast.error(err.message);
+            setIsLoading(false);
           })
           .finally(() => {});
         toast.dismiss();

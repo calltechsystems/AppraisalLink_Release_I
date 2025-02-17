@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { useModal } from "../../../context/ModalContext";
 import Link from "next/link";
 import Image from "next/image";
+import CommonLoader from "../../common/CommonLoader/page";
 
 const Index = () => {
   // const userData = JSON.parse(localStorage.getItem("user"));
@@ -14,6 +15,7 @@ const Index = () => {
   const data = JSON.parse(localStorage.getItem("user"));
   const router = useRouter();
   const { isModalOpen, setIsModalOpen } = useModal();
+  const [isLoading, setIsLoading] = useState(false);
 
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
@@ -57,6 +59,8 @@ const Index = () => {
     <>
       {/* <!-- Main Header Nav --> */}
       <Header userData={data} />
+
+      {isLoading && <CommonLoader />}
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
@@ -113,7 +117,7 @@ const Index = () => {
                         <h4>Personal Information</h4>
                       </div> */}
                       <div className="col-xl-12">
-                        <ChangePassword />
+                        <ChangePassword setIsLoading={setIsLoading} />
                       </div>
                     </div>
                   </div>

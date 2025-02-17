@@ -31,6 +31,8 @@ const Form = ({ setModalIsOpen }) => {
     console.log("in");
   };
 
+  const [isOtpSent, setIsOtpSent] = useState(false); // New state to disable button
+
   const onClickHandler = () => {
     const email = emailRef.current.value;
     if (email === "") {
@@ -47,6 +49,7 @@ const Form = ({ setModalIsOpen }) => {
         .then((res) => {
           toast.dismiss();
           setShow(true);
+          setIsOtpSent(true); // Disable button after OTP is sent
           // toast.success("Sent Successfully");
           setModalIsOpen(true);
         })
@@ -194,6 +197,7 @@ const Form = ({ setModalIsOpen }) => {
                     onClick={onClickHandler}
                     className="btn btn-log w-100 btn-thm mb-0"
                     style={{ marginLeft: "5px" }}
+                    disabled={isOtpSent} // Disable button after OTP is sent
                   >
                     Send OTP
                   </button>

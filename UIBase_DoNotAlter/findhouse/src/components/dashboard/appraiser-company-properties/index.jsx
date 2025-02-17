@@ -16,6 +16,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { FaDownload } from "react-icons/fa";
 import Select from "react-select";
+import CommonLoader from "../../common/CommonLoader/page";
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -751,6 +752,8 @@ const Index = () => {
     <>
       {/* <!-- Main Header Nav --> */}
       <Header userData={userData} />
+
+      {isLoading && <CommonLoader />}
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
@@ -2040,6 +2043,7 @@ const Index = () => {
                   setCurrentBid={setCurrentBid}
                   setBidAmount={setbidAmount}
                   alreadyBidded={alreadyBidded}
+                  setIsLoading={setIsLoading}
                 />
               </div>
               {/* End .row */}

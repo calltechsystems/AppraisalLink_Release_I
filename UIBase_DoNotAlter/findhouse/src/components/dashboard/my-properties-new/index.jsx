@@ -17,6 +17,7 @@ import Loader from "./Loader";
 import { AppraiserStatusOptions } from "../create-listing/data";
 import { FaDownload } from "react-icons/fa";
 import { useModal } from "../../../context/ModalContext";
+import CommonLoader from "../../common/CommonLoader/page";
 
 const Index = () => {
   const [disable, setDisable] = useState(false);
@@ -195,6 +196,7 @@ const Index = () => {
   };
 
   const archievePropertyHandler = (id) => {
+    setIsLoading(true);
     const data = JSON.parse(localStorage.getItem("user"));
 
     toast.loading("Archiving the property.....");
@@ -213,12 +215,14 @@ const Index = () => {
       .then((res) => {
         toast.dismiss();
         toast.success("Successfully Added to Archived Properties!!");
+        setIsLoading(false);
         location.reload();
         // router.push("/my-properties");
         // setRefresh(true);
       })
       .catch((err) => {
         toast.error(err);
+        setIsLoading(false);
       });
     // closeModal();
   };
@@ -228,6 +232,7 @@ const Index = () => {
 
   const onHoldHandler = () => {
     setDisable(true);
+    setIsLoading(true);
     setModalOpen(false);
     const data = JSON.parse(localStorage.getItem("user"));
 
@@ -247,10 +252,12 @@ const Index = () => {
         toast.dismiss();
         setIsHoldProperty(false);
         toast.success("Successfully Changed the Order Status !");
+        setIsLoading(false);
         window.location.reload();
       })
       .catch((err) => {
         toast.error(err);
+        setIsLoading(false);
       });
     // closeModal();
     setPropValue({});
@@ -260,6 +267,7 @@ const Index = () => {
 
   const onCancelHandler = () => {
     setDisable(true);
+    setIsLoading(true);
     setModalOpen(false);
     const data = JSON.parse(localStorage.getItem("user"));
 
@@ -278,11 +286,13 @@ const Index = () => {
       .then((res) => {
         toast.dismiss();
         toast.success("Successfully Changed the Order Status !");
+        setIsLoading(false);
         setIsCancelProperty(false);
         window.location.reload();
       })
       .catch((err) => {
         toast.error(err);
+        setIsLoading(false);
       });
     // closeModal();
     setPropValue(0);
@@ -597,6 +607,8 @@ const Index = () => {
     <>
       {/* <!-- Main Header Nav --> */}
       <Header userData={userData} />
+
+      {isLoading && <CommonLoader />}
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />

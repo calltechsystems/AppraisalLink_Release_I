@@ -420,7 +420,7 @@ const Index = ({ isView, propertyData }) => {
     setdisable(true);
     setModalIsOpen(false);
     toast.loading("Updating the data");
-    const nameRegex = /^[A-Za-z]+$/;
+    const nameRegex = /^[A-Za-z ]+$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     const userInfo = JSON.parse(localStorage.getItem("user"));
 
@@ -591,7 +591,7 @@ const Index = ({ isView, propertyData }) => {
   };
 
   const submitHandler = () => {
-    const nameRegex = /^[A-Za-z]+$/;
+    const nameRegex = /^[A-Za-z ]+$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     const phoneNumberRegex = /^\d{10}$/;
     const userInfo = JSON.parse(localStorage.getItem("user"));
@@ -743,7 +743,7 @@ const Index = ({ isView, propertyData }) => {
     toast.loading("Saving the data");
     setdisable(true);
     setModalIsOpen(false);
-    const nameRegex = /^[A-Za-z]+$/;
+    const nameRegex = /^[A-Za-z ]+$/;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     const userInfo = JSON.parse(localStorage.getItem("user"));
     const phoneNumberRegex = /^\d{10}$/;

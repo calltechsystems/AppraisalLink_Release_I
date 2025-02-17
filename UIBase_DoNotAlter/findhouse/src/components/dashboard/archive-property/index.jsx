@@ -18,6 +18,7 @@ import Image from "next/image";
 import millify from "millify";
 import { FaDownload } from "react-icons/fa";
 import { useModal } from "../../../context/ModalContext";
+import CommonLoader from "../../common/CommonLoader/page";
 
 const Index = () => {
   const { isModalOpen, setIsModalOpen } = useModal();
@@ -44,7 +45,7 @@ const Index = () => {
   );
 
   const [start, setStart] = useState(0);
-
+  const [isLoading, setIsLoading] = useState(false);
   const [end, setEnd] = useState(4);
 
   useEffect(() => {
@@ -186,6 +187,7 @@ const Index = () => {
 
   const onHoldHandler = () => {
     setdisable(true);
+    setIsLoading(true);
     setModalOpen(false);
 
     const data = JSON.parse(localStorage.getItem("user"));
@@ -206,10 +208,12 @@ const Index = () => {
         toast.dismiss();
         setIsHoldProperty(false);
         toast.success("Successfully Changed the Order Status !");
+        setIsLoading(false);
         window.location.reload();
       })
       .catch((err) => {
         toast.error(err);
+        setIsLoading(false);
       });
     // closeModal();
     setPropValue({});
@@ -297,6 +301,8 @@ const Index = () => {
     <>
       {/* <!-- Main Header Nav --> */}
       <Header userData={userData} />
+
+      {isLoading && <CommonLoader />}
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
@@ -400,6 +406,7 @@ const Index = () => {
                           setIsCancelProperty={setIsCancelProperty}
                           setIsHoldProperty={setIsHoldProperty}
                           setModalOpen={setModalOpen}
+                          setIsLoading={setIsLoading}
                         />
 
                         {modalIsPopupOpen && (

@@ -5,7 +5,7 @@ import { encryptionData } from "../../../utils/dataEncryption";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 
-const ChangePassword = () => {
+const ChangePassword = ({ setIsLoading }) => {
   const oldPasswordRef = useRef("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -83,6 +83,7 @@ const ChangePassword = () => {
 
   const submitHandler = async () => {
     setValidationErrors({});
+    setIsLoading(true);
     const errors = validateFields();
     if (Object.keys(errors).length > 0) {
       setValidationErrors(errors);
@@ -112,6 +113,7 @@ const ChangePassword = () => {
       } else {
         toast.success("Password updated successfully.");
         localStorage.removeItem("user");
+        setIsLoading(false);
         router.push("/login");
       }
     } catch (err) {
@@ -123,6 +125,7 @@ const ChangePassword = () => {
           err.response?.data?.error || "An unexpected error occurred."
         );
       }
+      setIsLoading(false);
     }
   };
 
