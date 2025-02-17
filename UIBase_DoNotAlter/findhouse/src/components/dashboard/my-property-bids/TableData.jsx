@@ -25,6 +25,7 @@ const TableData = ({
   refresh,
   setRefresh,
   setProperty,
+  setIsLoading,
 }) => {
   console.log(properties);
 
@@ -230,6 +231,7 @@ const TableData = ({
           start={start}
           end={end}
           setRefresh={setRefresh}
+          setIsLoading={setIsLoading}
         />
       )}
     </>

@@ -97,6 +97,7 @@ export default function Exemple({
   setProperties,
   setAllAppraiser,
   deletePropertyHandler,
+  setIsLoading,
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [allProperties, setAllProperties] = useState([]);
@@ -193,6 +194,7 @@ export default function Exemple({
 
   //Re assign appraiser funciton
   const reAssign = (QuoteId) => {
+    setIsLoading(true);
     toast.loading("Re-Assigning the appraiser....");
 
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -208,6 +210,7 @@ export default function Exemple({
         // console.log(res);
         // toast.dismiss();
         toast.success("Successfully Re assigned Appraiser");
+        setIsLoading(false);
         setTimeout(() => {
           window.location.reload(); // Reload after the success message is shown
         }, 1000); // Add a slight delay to allow the success message to show
@@ -215,6 +218,7 @@ export default function Exemple({
       .catch((err) => {
         toast.dismiss();
         toast.error("Try Again!!");
+        setIsLoading(false);
       });
   };
 

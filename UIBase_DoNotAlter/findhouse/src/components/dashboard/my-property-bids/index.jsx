@@ -422,6 +422,7 @@ const Index = ({ propertyId }) => {
                           setAppInfo={setAppInfo}
                           refresh={refresh}
                           setRefresh={setRefresh}
+                          setIsLoading={setIsLoading}
                         />
 
                         {modalIsOpenError && (
