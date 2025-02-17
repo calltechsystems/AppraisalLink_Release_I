@@ -455,86 +455,144 @@ export default function Exemple({
   }, [properties]);
 
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("user"));
+    const userData = JSON.parse(localStorage.getItem("user")) || {};
+    if (!userData?.token) return;
 
-    axios
-      .get("/api/getAllAppraiser", {
-        headers: {
-          Authorization: `Bearer ${data.token}`,
-        },
-      })
-      .then((res) => {
-        let allbroker = res.data.data.result.$values;
-        axios
-          .get("/api/getAllAppraiserCompany", {
-            headers: {
-              Authorization: `Bearer ${data.token}`,
-            },
-          })
-          .then((res2) => {
-            const allbrokerage = res2.data.data.result.$values;
-            let updated = allbroker;
-            allbrokerage.map((user, index) => {
-              updated.push(user);
-            });
+    // Step 1: Fetch Appraisers & Appraiser Companies in Parallel
+    Promise.all([
+      axios.get("/api/getAllAppraiser", {
+        headers: { Authorization: `Bearer ${userData.token}` },
+      }),
+      axios.get("/api/getAllAppraiserCompany", {
+        headers: { Authorization: `Bearer ${userData.token}` },
+      }),
+    ])
+      .then(([res1, res2]) => {
+        const allBrokers = res1.data.data.result?.$values || [];
+        const allBrokerages = res2.data.data.result?.$values || [];
+        setAppraisers([...allBrokers, ...allBrokerages]);
 
-            console.log(updated);
-            setAppraisers(updated);
-          })
-          .catch((err) => {
-            toast.error(err);
-          });
+        // Step 2: Fetch Properties after Appraisers & Companies are Set
+        return axios.get("/api/getAllListedProperties", {
+          headers: {
+            Authorization: `Bearer ${userData.token}`,
+            "Content-Type": "application/json",
+          },
+        });
       })
-      .catch((err) => {
-        toast.error(err?.response?.data?.error);
-        // (true);
-      });
-
-    //
-    axios
-      .get("/api/getAllListedProperties", {
-        headers: {
-          Authorization: `Bearer ${data?.token}`,
-          "Content-Type": "application/json",
-        },
-      })
-      .then((result) => {
-        // console.log(result);
+      .then((res3) => {
+        const propertiesList = res3.data.data.properties?.$values || [];
+        setAllProperties(propertiesList);
         setDataFetched(true);
-        // setAllProperties(result.data.data.properties.$values);
-        const url = window.location.pathname;
-        const propertyOrderId = url.split("/my-property-bids/")[1];
-        axios
-          .get("/api/getAllQuotesForProperty", {
-            headers: {
-              Authorization: `Bearer ${data?.token}`,
-              "Content-Type": "application/json",
-            },
-            params: {
-              OrderId: propertyOrderId,
-            },
-          })
-          .then((res) => {
-            toast.dismiss();
-            const tempBids = res.data.data.$values;
 
-            setAllProperties(result.data.data.properties.$values);
-            setProperties(tempBids);
-          })
-          .catch((err) => {
-            toast.dismiss();
-            setDataFetched(false);
-            toast.error(err?.response?.data?.error);
-          });
+        // Step 3: Fetch Quotes if propertyOrderId exists
+        const propertyOrderId =
+          window.location.pathname.split("/my-property-bids/")[1];
+        if (!propertyOrderId) return null;
+
+        return axios.get("/api/getAllQuotesForProperty", {
+          headers: {
+            Authorization: `Bearer ${userData.token}`,
+            "Content-Type": "application/json",
+          },
+          params: { OrderId: propertyOrderId },
+        });
+      })
+      .then((res4) => {
+        if (res4) {
+          setProperties(res4.data.data?.$values || []);
+        }
       })
       .catch((err) => {
         toast.dismiss();
-        // setErrorMessage(err?.response?.data?.error);
-        // setModalIsOpenError(true);
+        toast.error(err?.response?.data?.error || "Something went wrong");
+        setDataFetched(false);
       });
 
     setRefresh(false);
   }, [refresh]);
+
+  // useEffect(() => {
+  //   const data = JSON.parse(localStorage.getItem("user"));
+
+  //   axios
+  //     .get("/api/getAllAppraiser", {
+  //       headers: {
+  //         Authorization: `Bearer ${data.token}`,
+  //       },
+  //     })
+  //     .then((res) => {
+  //       let allbroker = res.data.data.result.$values;
+  //       axios
+  //         .get("/api/getAllAppraiserCompany", {
+  //           headers: {
+  //             Authorization: `Bearer ${data.token}`,
+  //           },
+  //         })
+  //         .then((res2) => {
+  //           const allbrokerage = res2.data.data.result.$values;
+  //           let updated = allbroker;
+  //           allbrokerage.map((user, index) => {
+  //             updated.push(user);
+  //           });
+
+  //           console.log(updated);
+  //           setAppraisers(updated);
+  //         })
+  //         .catch((err) => {
+  //           toast.error(err);
+  //         });
+  //     })
+  //     .catch((err) => {
+  //       toast.error(err?.response?.data?.error);
+  //       // (true);
+  //     });
+
+  //   //
+  //   axios
+  //     .get("/api/getAllListedProperties", {
+  //       headers: {
+  //         Authorization: `Bearer ${data?.token}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //     })
+  //     .then((result) => {
+  //       // console.log(result);
+  //       setDataFetched(true);
+  //       // setAllProperties(result.data.data.properties.$values);
+  //       const url = window.location.pathname;
+  //       const propertyOrderId = url.split("/my-property-bids/")[1];
+  //       axios
+  //         .get("/api/getAllQuotesForProperty", {
+  //           headers: {
+  //             Authorization: `Bearer ${data?.token}`,
+  //             "Content-Type": "application/json",
+  //           },
+  //           params: {
+  //             OrderId: propertyOrderId,
+  //           },
+  //         })
+  //         .then((res) => {
+  //           toast.dismiss();
+  //           const tempBids = res.data.data.$values;
+
+  //           setAllProperties(result.data.data.properties.$values);
+  //           setProperties(tempBids);
+  //         })
+  //         .catch((err) => {
+  //           toast.dismiss();
+  //           setDataFetched(false);
+  //           toast.error(err?.response?.data?.error);
+  //         });
+  //     })
+  //     .catch((err) => {
+  //       toast.dismiss();
+  //       // setErrorMessage(err?.response?.data?.error);
+  //       // setModalIsOpenError(true);
+  //     });
+
+  //   setRefresh(false);
+  // }, [refresh]);
   return (
     <>
       {updatedData && (
