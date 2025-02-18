@@ -182,17 +182,6 @@ const ProfileInfo = ({
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleInputCellChange = (value) => {
-    // Remove all non-numeric characters
-    const numericValue = value.replace(/\D/g, "");
-
-    // Ensure the value is truncated to a maximum of 10 digits
-    const truncatedValue = numericValue.slice(0, 10);
-
-    // Update state
-    setCellNumber(truncatedValue);
-  };
-
   // Validation for input fields
 
   // State for errors and validation
@@ -331,7 +320,11 @@ const ProfileInfo = ({
 
       // Create an array of promises only for files that need uploading
       const uploadPromises = Object.values(uploadingFiles).map(async (file) => {
-        if (file.uploadedUrl === "") {
+
+        if (file.uploadedUrl === "" && file.file) {
+
+          console.log({"uploading_file": file.file, "uploadingUrl": file.uploadedUrl})
+          return
           const generatedURL = await uploadFile(file.file);
           return {
             ...file,
@@ -361,7 +354,7 @@ const ProfileInfo = ({
         setTimesTrigerredSubmission(0);
         setIsLoading(false);
         toast.error("Got error while saving, trying again.");
-        console.error(err);
+        console.error({"profileError": err});
       } else {
         setTimesTrigerredSubmission(TimesTrigerredSubmission + 1);
       }
