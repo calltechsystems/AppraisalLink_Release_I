@@ -1,10 +1,4 @@
-import ReCAPTCHA from "react-google-recaptcha";
 import { handleDownloadClick } from "./downloadFunction";
-import Image from "next/image";
-
-// function onChange(value) {
-//   console.log("Captcha value:", value);
-// }
 
 const Form = ({ userData, chnageShowCardHandler }) => {
   const userData_01 = userData.userType; // Example data, replace with actual data
@@ -52,7 +46,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
           <div className="wrap-custom-file mt-5 mb-5">
             <img
               style={{ borderRadius: "50%" }}
-              src={userData?.appraiserCompany_Datails?.profileImage}
+              src={userData?.appraiserCompany_Datails?.profileImage || '/assets/images/home/placeholder_01.jpg'}
               alt="Uploaded Image"
             />
           </div>
