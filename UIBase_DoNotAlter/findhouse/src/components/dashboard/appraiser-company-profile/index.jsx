@@ -9,8 +9,8 @@ import Form from "./Form";
 import { useRouter } from "next/router";
 
 const Index = ({ profileCount, setProfileCount }) => {
-  const [showCard, setShowCard] = useState(false); // Set to false by default
-  const [userData, setUserData] = useState({}); // State to hold user data
+  const [showCard, setShowCard] = useState(false);
+  const [userData, setUserData] = useState({}); 
   const router = useRouter();
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
   const [modalIsOpenError_01, setModalIsOpenError_01] = useState(false);
