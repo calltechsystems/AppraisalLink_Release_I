@@ -74,10 +74,8 @@ const Index = () => {
   const formatPhoneNumber = (number) => {
     if (!number) return ""; // Handle empty input
 
-    // Remove non-numeric characters
     const digits = number.replace(/\D/g, "");
 
-    // Format the number as "416 123-4567"
     if (digits.length <= 3) {
       return digits; // e.g., "416"
     } else if (digits.length <= 6) {
@@ -86,7 +84,7 @@ const Index = () => {
       return `${digits.slice(0, 3)} ${digits.slice(3, 6)}-${digits.slice(
         6,
         10
-      )}`; // e.g., "416 123-4567"
+      )}`; 
     }
   };
 

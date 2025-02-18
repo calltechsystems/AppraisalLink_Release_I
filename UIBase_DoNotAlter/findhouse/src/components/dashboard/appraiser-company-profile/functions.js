@@ -19,8 +19,6 @@ const REGION = AWS_Cred.Region;
 const myBucket = new AWS.S3({ params: { Bucket: S3_BUCKET }, region: REGION });
 
 export async function uploadFile(file) {
-    console.log("AWS_Cred", file);
-    return 
 
     const params = {
         ACL: 'public-read',

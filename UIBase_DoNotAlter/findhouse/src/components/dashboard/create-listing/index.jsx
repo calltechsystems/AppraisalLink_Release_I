@@ -566,15 +566,16 @@ const Index = ({ isView, propertyData }) => {
           })
           .catch((err) => {
             if (TimesTrigerredSubmission > 2) {
-              setIsSubmitInProgress(false);
-              setTimesTrigerredSubmission(0);
+              setdisable(false);
+              setisLoading(false);
+              
               toast.dismiss();
               toast.error(
                 err.response.data.error ||
                   "Got error while updating the Property details."
               );
-              setdisable(false);
-              setisLoading(false);
+              setIsSubmitInProgress(false);
+              setTimesTrigerredSubmission(0);
             } else {
               setTimesTrigerredSubmission(TimesTrigerredSubmission + 1);
             }
@@ -725,12 +726,13 @@ const Index = ({ isView, propertyData }) => {
       }
     } catch (err) {
       if (TimesTrigerredSubmission > 2) {
-        setIsSubmitInProgress(false);
-        setTimesTrigerredSubmission(0);
         setDisable(false);
         setisLoading(false);
         toast.error("Got error while saving, trying again.");
         console.error(err);
+
+        setIsSubmitInProgress(false);
+        setTimesTrigerredSubmission(0);
       } else {
         setTimesTrigerredSubmission(TimesTrigerredSubmission + 1);
       }
@@ -893,6 +895,9 @@ const Index = ({ isView, propertyData }) => {
             if (TimesTrigerredSubmission > 2) {
               const status = err.response?.status;
               toast.dismiss();
+              setdisable(false);
+              setisLoading(false);
+
               if (status == 403) {
                 setModalIsOpenError(true);
               } else if (status == 404) {
@@ -906,11 +911,10 @@ const Index = ({ isView, propertyData }) => {
                 );
                 setModalIsOpenError_01(true);
               }
-
+              
               setIsSubmitInProgress(false);
               setTimesTrigerredSubmission(0);
-              setdisable(false);
-              setisLoading(false);
+              
             } else {
               setTimesTrigerredSubmission(TimesTrigerredSubmission + 1);
             }

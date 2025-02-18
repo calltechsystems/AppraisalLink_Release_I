@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import SmartTable from "./SmartTable";
 import Link from "next/link";
 import toast from "react-hot-toast";
@@ -177,6 +177,7 @@ export default function Exemple({
   const [isWishlistProperty, setIsWishlistProperty] = useState(0);
   const [selectedWishlistId, setSelectedWishlistId] = useState(null);
   const [isLimitModalOpen, setIsLimitModalOpen] = useState(false);
+  const intervalRef = useRef(null);
 
   useEffect(() => {
     if (searchInput === "") {
@@ -388,8 +389,6 @@ export default function Exemple({
       });
   };
 
-  const onDeletePropertyHandler = () => {};
-
   const getStatusButtonClass = (orderStatus) => {
     if (orderStatus === 4 || orderStatus === 5) {
       return "btn btn-status-na w-100"; // Orange color class
@@ -417,40 +416,11 @@ export default function Exemple({
       year: "numeric",
       month: "short",
       day: "numeric",
-      // hour: "numeric",
-      // minute: "numeric",
-      // second: "numeric",
-      hour12: true, // Set to false for 24-hour format
+      hour12: true, 
     };
 
     const formattedDate = new Date(dateString).toLocaleString("en-US", options);
     return formattedDate;
-  };
-
-  const formatLargeNumber = (number) => {
-    // Convert the number to a string
-    const numberString = number.toString();
-
-    // Determine the length of the integer part
-    const integerLength = Math.floor(Math.log10(Math.abs(number))) + 1;
-
-    // Choose the appropriate unit based on the length of the integer part
-    let unit = "";
-
-    if (integerLength >= 10) {
-      unit = "B"; // Billion
-    } else if (integerLength >= 7) {
-      unit = "M"; // Million
-    } else if (integerLength >= 4) {
-      unit = "K"; // Thousand
-    }
-
-    // Divide the number by the appropriate factor
-    const formattedNumber = (number / Math.pow(10, integerLength - 1)).toFixed(
-      2
-    );
-
-    return `${formattedNumber}${unit}`;
   };
 
   const openQuoteViewModal = (bid) => {
@@ -460,7 +430,6 @@ export default function Exemple({
 
   const checkWishlistedHandler = (data) => {
     let temp = {};
-    // console.log(wishlist, data);
     wishlist.map((prop, index) => {
       if (
         String(prop.propertyId) === String(data.propertyId) &&
@@ -470,21 +439,6 @@ export default function Exemple({
       }
     });
     return temp ? temp : {};
-  };
-
-  const checkCanBidAgainHandler = (data) => {
-    let temp = true;
-    return temp;
-  };
-
-  const checkInAssignedProperty = (id) => {
-    let isAssigned = false;
-    assignedProperties.map((prop, index) => {
-      if (String(prop?.property?.propertyId) === String(id)) {
-        isAssigned = true;
-      }
-    });
-    return isAssigned;
   };
 
   function addCommasToNumber(number) {
@@ -528,9 +482,9 @@ export default function Exemple({
     });
     return isPresent;
   };
+
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
-    const userActivePlans = userData?.userSubscription?.$values;
     const getData = () => {
       let tempData = [];
       properties.map((property, index) => {
@@ -1095,7 +1049,8 @@ export default function Exemple({
     setRefresh(true);
     setStartLoading(true);
   };
-  useEffect(() => {
+
+  const fetchData = () => {
     setProperties([]);
     setBids([]);
     setFilterQuery("All");
@@ -1103,9 +1058,6 @@ export default function Exemple({
     setWishlist([]);
     const data = JSON.parse(localStorage.getItem("user"));
 
-    const payload = {
-      token: userData.token,
-    };
     axios
       .get("/api/getArchiveAppraiserProperty", {
         headers: {
@@ -1268,8 +1220,18 @@ export default function Exemple({
       });
 
     setRefresh(false);
+  };
+
+  useEffect(() => {
+    fetchData(); 
+
+    intervalRef.current = setInterval(() => {
+      fetchData();
+    }, 600000); 
+
+    return () => clearInterval(intervalRef.current); 
   }, [refresh]);
-  // console.log(sortObjectsByOrderIdDescending(updatedData));
+
   return (
     <>
       {refresh ? (

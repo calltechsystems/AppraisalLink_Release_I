@@ -1,10 +1,10 @@
 import axios from "axios";
 import CryptoJS from "crypto-js";
+import { getPRODUCTIONUrl } from "../../utils/productionVarFile";
 
 async function handler(request, response) {
   const decryptionKey = process.env.CRYPTO_SECRET_KEY;
-  const domain = process.env.BACKEND_DOMAIN2;
-
+  const domain = getPRODUCTIONUrl(); //common function to use for domain
   try {
     const token = request.headers.authorization;
     const userId = request.query.userId;
