@@ -182,17 +182,6 @@ const ProfileInfo = ({
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleInputCellChange = (value) => {
-    // Remove all non-numeric characters
-    const numericValue = value.replace(/\D/g, "");
-
-    // Ensure the value is truncated to a maximum of 10 digits
-    const truncatedValue = numericValue.slice(0, 10);
-
-    // Update state
-    setCellNumber(truncatedValue);
-  };
-
   // Validation for input fields
 
   // State for errors and validation
@@ -322,6 +311,7 @@ const ProfileInfo = ({
 
   const initiateTheSubmit = () => {
     setIsSubmitInProgress(true);
+    setTimesTrigerredSubmission(1);
   };
 
   const submissionHandler = async () => {
@@ -331,7 +321,8 @@ const ProfileInfo = ({
 
       // Create an array of promises only for files that need uploading
       const uploadPromises = Object.values(uploadingFiles).map(async (file) => {
-        if (file.uploadedUrl === "") {
+
+        if (file.uploadedUrl === "" && file.file instanceof File) {
           const generatedURL = await uploadFile(file.file);
           return {
             ...file,
@@ -352,8 +343,10 @@ const ProfileInfo = ({
         };
       });
 
-      // setUploadingFiles({ ...updatedList });
+      setUploadingFiles({ ...updatedList });
       // Finally call the main function
+      setIsLoading(false);
+      toast.dismiss();
       onUpdatHandler(updatedList);
     } catch (err) {
       if (TimesTrigerredSubmission > 2) {
@@ -361,12 +354,20 @@ const ProfileInfo = ({
         setTimesTrigerredSubmission(0);
         setIsLoading(false);
         toast.error("Got error while saving, trying again.");
-        console.error(err);
+        console.error({"profileError": err});
       } else {
         setTimesTrigerredSubmission(TimesTrigerredSubmission + 1);
       }
     }
   };
+
+  //resetting the feilds
+  const resetTriggeredValues = () => {
+    setIsSubmitInProgress(false);
+    setTimesTrigerredSubmission(0);
+    setdisable(false);
+    setIsLoading(false);
+  }
 
   const onUpdatHandler = (updatedList) => {
     const firstName =
@@ -453,6 +454,7 @@ const ProfileInfo = ({
     if (missingFields.length === 1) {
       // Show specific error for a single missing field
       toast.error(missingFields[0].message);
+      resetTriggeredValues()
       window.scrollTo({
         top: 0,
         behavior: "smooth",
@@ -461,6 +463,7 @@ const ProfileInfo = ({
     } else if (missingFields.length > 1) {
       // Show generic error for multiple missing fields
       toast.error("Please fill all required fields!");
+      resetTriggeredValues()
       window.scrollTo({
         top: 0,
         behavior: "smooth",
@@ -483,6 +486,7 @@ const ProfileInfo = ({
     ) {
       setFirstNameError(true);
       toast.error("Please enter a valid first name");
+      resetTriggeredValues()
       window.scrollTo({
         top: 0,
         behavior: "smooth",
@@ -495,6 +499,7 @@ const ProfileInfo = ({
     ) {
       setLastNameError(true);
       toast.error("Please enter a valid last name");
+      resetTriggeredValues()
       window.scrollTo({
         top: 0,
         behavior: "smooth",
@@ -507,6 +512,7 @@ const ProfileInfo = ({
     ) {
       setCompanyNameError(true);
       toast.error("Please enter a valid appraiser company name");
+      resetTriggeredValues()
       window.scrollTo({
         top: 0,
         behavior: "smooth",
@@ -515,6 +521,7 @@ const ProfileInfo = ({
     } else if (cellNumberRegex.test(phoneNumber) === false || !phoneNumber) {
       setPhoneNumberError(true);
       toast.error("Please enter a valid phone number");
+      resetTriggeredValues()
       window.scrollTo({
         top: 0,
         behavior: "smooth",
@@ -525,9 +532,11 @@ const ProfileInfo = ({
       cellNumber.trim() !== ""
     ) {
       toast.error("Please enter a valid cell number");
+      resetTriggeredValues()
     } else if (emailRegex.test(emailIdRef) === false) {
       setEmailError(true);
       toast.error("Please enter a valid email address");
+      resetTriggeredValues()
       window.scrollTo({
         top: 0,
         behavior: "smooth",
@@ -540,6 +549,7 @@ const ProfileInfo = ({
     ) {
       setStreetNameError(true); // Set error state to true
       toast.error("Please enter a valid street name");
+      resetTriggeredValues()
       window.scrollTo({
         top: 0,
         behavior: "smooth",
@@ -552,6 +562,7 @@ const ProfileInfo = ({
     ) {
       setCityError(true); // Set error state to true
       toast.error("Please enter a valid city name");
+      resetTriggeredValues()
       window.scrollTo({
         top: 0,
         behavior: "smooth",
@@ -560,6 +571,7 @@ const ProfileInfo = ({
     } else if (alphanumericWithSpacesRegex.test(zipCode) === false) {
       setZipCodeError(true);
       toast.error("Please enter a valid postal code");
+      resetTriggeredValues()
       window.scrollTo({
         top: 0,
         behavior: "smooth",
@@ -573,6 +585,7 @@ const ProfileInfo = ({
     ) {
       setOfficeContactFirstNameError(true);
       toast.error("Please enter a valid office first name");
+      resetTriggeredValues()
     } else if (
       // Assistant Last Name
       officeContactLastName.trim() !== "" &&
@@ -582,18 +595,21 @@ const ProfileInfo = ({
     ) {
       setOfficeContactLastNameError(true);
       toast.error("Please enter a valid office last name");
+      resetTriggeredValues()
     } else if (
       emailRegex.test(officeContactEmail) === false &&
       officeContactEmail.trim() !== ""
     ) {
       setOfficeContactEmailError(true);
       toast.error("Please enter a valid office email address");
+      resetTriggeredValues()
     } else if (
       cellNumberRegex.test(officeContactPhone) === false &&
       officeContactPhone.trim() !== ""
     ) {
       setOfficeContactPhoneError(true);
       toast.error("Please enter a valid office phone number");
+      resetTriggeredValues()
     } else if (
       (!firstNameRef ||
         !lastNameRef ||
@@ -609,6 +625,7 @@ const ProfileInfo = ({
       !userData
     ) {
       toast.error("All marked field's are not filled !!");
+      resetTriggeredValues()
     } else {
       let count = 9;
 
@@ -616,8 +633,10 @@ const ProfileInfo = ({
         toast.error(
           "As SMS Alert is selected but phone number is not provided so SMS Alert will not work properly!"
         );
+        resetTriggeredValues()
       } else {
-        toast.loading("Updating ...");
+        toast.loading("Updating Profile");
+        setIsLoading(true);
 
         axios
           .put("/api/updateAppraiserCompanyProfile", payload)
@@ -1941,10 +1960,7 @@ const ProfileInfo = ({
                           </button>
                           <button
                             className="btn btn2 btn-dark"
-                            onClick={() => {
-                              setTimesTrigerredSubmission(1);
-                              setIsSubmitInProgress(true);
-                            }}
+                            onClick={initiateTheSubmit}
                           >
                             {userData?.appraiserCompany_Datails
                               ? "Update Profile"
