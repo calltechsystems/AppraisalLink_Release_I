@@ -631,6 +631,7 @@ const ProfileInfo = ({
             localStorage.removeItem("user");
             localStorage.setItem("user", JSON.stringify(data));
             setShowCard(true);
+            router.push("/appraiser-company-dashboard");
             setIsSubmitInProgress(false);
             window.location.reload();
           })
