@@ -162,7 +162,7 @@ const Form = ({ userData, chnageShowCardHandler }) => {
                         <span className="text-start"> Lender List</span>
                       </td>
                       <td className="table-value">
-                        <span className="text-start text-dark fw-bold">
+                        <span className="text-start">
                           <span
                             className="text-decoration-underline"
                             target="_blank"

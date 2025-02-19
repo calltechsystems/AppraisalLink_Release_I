@@ -791,7 +791,7 @@ const ProfileInfo = ({
                           accept=".jpeg, .png, .jpg"
                           id="fileInput"
                           onChange={(e) => handleUpload(e, "profileImage")}
-                          style={{ display: "none" }} 
+                          style={{ display: "none" }}
                         />
                         <button
                           className="btn btn-color mt-2"
@@ -1261,7 +1261,7 @@ const ProfileInfo = ({
                         Add Lender List
                       </label>
                     </div>
-                    <div className="col-lg-3">
+                    <div className="col-lg-2">
                       <div>
                         <input
                           type="file"
@@ -1281,14 +1281,14 @@ const ProfileInfo = ({
                         </button>
                         <p className="mt-2" style={{ marginLeft: "10px" }}>
                           {uploadingFiles["LenderList"]?.file?.name !== "" &&
-                            "Note - Upload pdf only."}
+                            "Note:Upload pdf only."}
                         </p>
                       </div>
                     </div>
-                    <div className="col-lg-5 mt-1">
+                    <div className="col-lg-6">
                       {uploadingFiles["LenderList"]?.file ? (
-                        <div key={1} className="position-relative m-2">
-                          <img
+                        <div key={1} className="position-relative">
+                          {/* <img
                             src={uploadingFiles["LenderList"]?.previewUrl}
                             alt="preview"
                             className="img-thumbnail"
@@ -1297,25 +1297,7 @@ const ProfileInfo = ({
                               height: "120px",
                               objectFit: "cover",
                             }}
-                          />
-                          <button
-                            type="button"
-                            className="btn btn-danger btn-sm position-absolute top-0 end-0 m-1"
-                            onClick={() => deleteFile("LenderList")}
-                          >
-                            &times;
-                          </button>
-                          <small
-                            className="d-block text-muted mt-1"
-                            style={{
-                              maxWidth: "120px",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              whiteSpace: "nowrap",
-                            }}
-                          >
-                            {uploadingFiles["LenderList"]?.file?.name}
-                          </small>
+                          /> */}
 
                           {uploadingFiles["LenderList"] && (
                             <button
@@ -1327,9 +1309,16 @@ const ProfileInfo = ({
                                 )
                               }
                             >
-                              download
+                              {uploadingFiles["LenderList"]?.file?.name}
                             </button>
                           )}
+                          <button
+                            type="button"
+                            className="btn btn-danger btn-sm"
+                            onClick={() => deleteFile("LenderList")}
+                          >
+                            &times;
+                          </button>
                         </div>
                       ) : (
                         ""

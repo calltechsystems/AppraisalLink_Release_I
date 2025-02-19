@@ -23945,6 +23945,7 @@ input:checked + .slider:before {
   display: inline-block;
 
   .tooltip-text {
+    width: 500px;
     visibility: hidden;
     background-color: black;
     color: #fff;
@@ -23952,11 +23953,11 @@ input:checked + .slider:before {
     padding: 5px;
     border-radius: 4px;
     position: absolute;
-    top: 120%;  // Change from `bottom` to `top`
+    top: -50%;  
     left: 50%;
     transform: translateX(-50%);
     white-space: nowrap;
-    font-size: 12px;
+    font-size: 14px;
     opacity: 0;
     transition: opacity 0.3s;
   }

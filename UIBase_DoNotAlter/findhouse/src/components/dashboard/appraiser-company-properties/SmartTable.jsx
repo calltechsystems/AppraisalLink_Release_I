@@ -99,32 +99,32 @@ function SmartTable(props) {
     });
   }
 
-const handlePrint = async () => {
-  try {
-    // Fetch data
-    const allData = props.properties;
+  const handlePrint = async () => {
+    try {
+      // Fetch data
+      const allData = props.properties;
 
-    // Define static headers
-    const staticHeaders = [
-      ["order_id", "Order Id"],
-      ["address", "Address"],
-      ["assigned_appraiser", "Assigned Appraiser"],
-      ["status", "Status"],
-      ["appraisal_status", "Appraisal Status"],
-      ["remark", "Remark"],
-      ["urgency", "Urgency"],
-      ["date", "Submission Date"],
-      ["type_of_building", "Type Of Building"],
-      ["estimated_value", "Estimated Property Value ($)"],
-      ["type_of_appraisal", "Type Of Appraisal"],
-      ["purpose", "Purpose"],
-      ["lender_information", "Lender Information"],
-    ];
+      // Define static headers
+      const staticHeaders = [
+        ["order_id", "Property ID"],
+        ["address", "Property Address"],
+        ["assigned_appraiser", "Assigned Appraiser"],
+        ["status", "Status"],
+        ["appraisal_status", "Appraisal Status"],
+        ["remark", "Remark"],
+        ["urgency", "Request Type"],
+        ["date", "Order Submission Date"],
+        ["type_of_building", "Type Of Property"],
+        ["estimated_value", "Estimated Property Value ($)"],
+        ["type_of_appraisal", "Type Of Appraisal"],
+        ["purpose", "Purpose"],
+        ["lender_information", "Lender Information"],
+      ];
 
-    const printContent = `
+      const printContent = `
     <html>
       <head>
-        <script>document.title = 'kjshak';</script>
+        <script>document.title = 'PDF';</script>
         <style>
           @media print {
             @page {
@@ -142,12 +142,13 @@ const handlePrint = async () => {
               background: white;
             }
             .header {
-              top: 0;
-              padding-bottom: 10px;
+              top: 2;
+              left:8;
               border-bottom: 1px solid #ddd;
             }
             .footer {
               bottom: 0;
+              left:8;
               padding-top: 10px;
               border-top: 1px solid #ddd;
               display: flex;
@@ -171,14 +172,14 @@ const handlePrint = async () => {
             }
             .logo img {
               width: 60px;
-              height: 45px;
+              height: 55px;
             }
             .title {
               font-size: 24px;
               font-weight: bold;
             }
             .table-container {
-              margin-top: 80px;
+              margin-top: 20px;
               margin-bottom: 80px;
               page-break-before: always;
             }
@@ -188,8 +189,8 @@ const handlePrint = async () => {
             }
             th, td {
               border: 1px solid #000;
-              padding: 8px;
-              text-align: left;
+              padding: 5px;
+              text-align: center;
             }
             h3 {
               page-break-before: always;
@@ -201,12 +202,12 @@ const handlePrint = async () => {
       </head>
       <body>
         <div class="header">
-          <div class="logo">
-            <img src="/assets/images/Appraisal_Land_Logo.png" alt="header-logo2.png"/>
-          </div>
-          <div class="title">
-            <span style="color: #2e008b;">Appraisal</span>
-            <span style="color: #97d700;">Land</span>
+          <div class="title mt-1">
+            <div class="logo">
+              <img src="/assets/images/Appraisal_Land_Logo.png" alt="header-logo2.png"/>
+              <span style="color: #2e008b; margin-left:-15px;">Appraisal</span>
+              <span style="color: #97d700;">Land</span>
+            </div>
           </div>
         </div>
 
@@ -265,7 +266,9 @@ const handlePrint = async () => {
                           return `<td style="color: ${color};">${content}</td>`;
                         } else {
                           const updatedValue = item[header[0].toLowerCase()];
-                          return `<td>${updatedValue == undefined ? "N.A." : updatedValue}</td>`;
+                          return `<td>${
+                            updatedValue == undefined ? "N.A." : updatedValue
+                          }</td>`;
                         }
                       })
                       .join("")}
@@ -279,25 +282,24 @@ const handlePrint = async () => {
       </body>
     </html>`;
 
-    const printWindow = window.open("", "", "width=1200,height=800");
+      const printWindow = window.open("", "", "width=1200,height=800");
 
-    printWindow.document.open();
-    printWindow.document.write(printContent);
-    printWindow.document.close();
+      printWindow.document.open();
+      printWindow.document.write(printContent);
+      printWindow.document.close();
 
-    printWindow.onload = function () {
-      printWindow.print();
-      printWindow.onafterprint = () => {
-        printWindow.close();
-        toast.success("Printed successfully");
+      printWindow.onload = function () {
+        printWindow.print();
+        printWindow.onafterprint = () => {
+          printWindow.close();
+          toast.success("Printed successfully");
+        };
       };
-    };
-  } catch (error) {
-    console.error("Error handling print:", error);
-    toast.error("Error handling print");
-  }
-};
-
+    } catch (error) {
+      console.error("Error handling print:", error);
+      toast.error("Error handling print");
+    }
+  };
 
   const tableWidthFunc = useCallback(() => {
     let tempTableWidth = 0;
@@ -461,13 +463,16 @@ const handlePrint = async () => {
                 <div className="row">
                   <div className="d-flex gap-1">
                     <div className="tooltip-container">
+                      <span className="tooltip-text">
+                        **Landscape** is the preferrable type for downloading as
+                        a pdf
+                      </span>
                       <button
                         className="btn btn-color"
                         onClick={() => handlePrint()}
                       >
                         <FaDownload />
                       </button>
-                      <span className="tooltip-text">**Landscape** is the preferrable type for downloading as a pdf</span>
                     </div>
                     <button
                       className="btn btn-color"

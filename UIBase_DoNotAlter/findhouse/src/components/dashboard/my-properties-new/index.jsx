@@ -214,8 +214,8 @@ const Index = () => {
       })
       .then((res) => {
         toast.dismiss();
-        toast.success("Successfully Added to Archived Properties!!");
         setIsLoading(false);
+        toast.success("Successfully Added to Archived Properties!!");
         location.reload();
         // router.push("/my-properties");
         // setRefresh(true);
@@ -251,8 +251,8 @@ const Index = () => {
       .then((res) => {
         toast.dismiss();
         setIsHoldProperty(false);
-        toast.success("Successfully Changed the Order Status !");
         setIsLoading(false);
+        toast.success("Successfully Changed the Order Status !");
         window.location.reload();
       })
       .catch((err) => {
@@ -285,8 +285,8 @@ const Index = () => {
       .put("/api/setPropertyOnHold", encryptedBody)
       .then((res) => {
         toast.dismiss();
-        toast.success("Successfully Changed the Order Status !");
         setIsLoading(false);
+        toast.success("Successfully Changed the Order Status !");
         setIsCancelProperty(false);
         window.location.reload();
       })

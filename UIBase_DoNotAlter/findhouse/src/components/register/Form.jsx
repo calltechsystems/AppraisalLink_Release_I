@@ -8,7 +8,12 @@ import { FaEnvelope, FaEye, FaUser } from "react-icons/fa";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
+const Form = ({
+  setModalIsOpen,
+  setModalIsOpenError,
+  setErrorMessage,
+  setLoading,
+}) => {
   const [email, setEmail] = useState("");
   const [userType, setUserType] = useState("");
   const [change, setChange] = useState(false);
@@ -65,6 +70,7 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
   };
 
   const registerHandler = async (event) => {
+    setLoading(true);
     event.preventDefault();
 
     if (!captchaVerified) {
@@ -84,9 +90,11 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
       toast.loading("Registering...");
       await axios.post("/api/signUpUser", encryptedData);
       toast.dismiss();
+      setLoading(false);
       setModalIsOpen(true);
     } catch (error) {
       toast.dismiss();
+      setLoading(false);
       const statusText =
         error.response?.status === 409
           ? "Email is already registered."
@@ -148,8 +156,7 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
               value={email}
               disabled
               placeholder="Email"
-              style={{marginBottom:"10px"}}
-
+              style={{ marginBottom: "10px" }}
             />
             <div
               className="input-group-text p-3 m-1"
@@ -203,10 +210,7 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
               ) : null)}
           </div> */}
           <div className="col-lg-12" style={{ marginTop: "" }}>
-            <div
-              className="form-group input-group position-relative"
-              
-            >
+            <div className="form-group input-group position-relative">
               <input
                 type={passwordVisible ? "text" : "password"} // Conditionally set the input type
                 className="form-control"
@@ -219,7 +223,7 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
                 onBlur={() => setIsFocused(false)}
                 maxLength={15}
                 minLength={8}
-                style={{marginBottom:"0px"}}
+                style={{ marginBottom: "0px" }}
                 // Add space for the eye icon
               />
               <div

@@ -81,7 +81,7 @@ const DetailedInfo = ({
 
   const downloadAllAttachments = async () => {
     const zip = new JSZip();
-    const folder = zip.folder("Attachments"); 
+    const folder = zip.folder("Attachments");
 
     for (const fileItem of attachment) {
       if (fileItem.uploadedUrl) {
@@ -105,7 +105,7 @@ const DetailedInfo = ({
   const handleUpload = async (e) => {
     const file = e.target.files[0];
     const maxTotalSize = 25 * 1024 * 1024;
-  
+
     const allowedFileTypes = [
       "application/zip",
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
@@ -123,28 +123,29 @@ const DetailedInfo = ({
       "audio/mpeg",
       "video/mp4",
     ];
-  
+
     // If not a ZIP file, check directly
-    if (file.type !== "application/zip" && file.type !== "application/x-zip-compressed") {
+    if (
+      file.type !== "application/zip" &&
+      file.type !== "application/x-zip-compressed"
+    ) {
       if (!allowedFileTypes.includes(file?.type)) {
-        toast.error(
-          `Invalid file type. Allowed types: .zip`
-        );
+        toast.error(`Invalid file type. Allowed types: .zip`);
         return;
       }
-  
+
       const currentTotalSize = attachment.reduce(
         (total, item) => total + item.file.size,
         0
       );
-  
+
       if (currentTotalSize + file.size > maxTotalSize) {
         toast.error(
           "Total attachments size exceeds 25 MB. Please remove some files or upload smaller ones."
         );
         return;
       }
-  
+
       setAttachment([
         ...attachment,
         {
@@ -156,33 +157,33 @@ const DetailedInfo = ({
       ]);
       return;
     }
-  
+
     const zip = new JSZip();
     try {
       const zipContents = await zip.loadAsync(file);
       const invalidFiles = [];
-  
+
       // Loop through files in ZIP
       for (const fileName in zipContents.files) {
         const zipFile = zipContents.files[fileName];
-  
+
         // Skip folders
         if (zipFile.dir) continue;
-  
+
         // Get file extension
         const ext = fileName.split(".").pop().toLowerCase();
         const mimeType = getMimeType(ext);
-  
+
         if (!allowedFileTypes.includes(mimeType)) {
           invalidFiles.push(fileName);
         }
       }
-  
+
       if (invalidFiles.length > 0) {
         toast.error(`Invalid files in ZIP: ${invalidFiles.join(", ")}`);
         return;
       }
-  
+
       setAttachment([
         ...attachment,
         {
@@ -197,7 +198,7 @@ const DetailedInfo = ({
       console.error("ZIP Processing Error:", error);
     }
   };
-  
+
   // Utility function to get MIME type from file extension
   const getMimeType = (ext) => {
     const mimeTypes = {
@@ -478,7 +479,7 @@ const DetailedInfo = ({
                   className="text-color"
                   htmlFor=""
                   style={{
-                    paddingTop: "25px",
+                    paddingTop: "20px",
                     color: "#1560bd",
                     fontWeight: "",
                   }}
@@ -487,8 +488,8 @@ const DetailedInfo = ({
                 </label>
               </div>
               {attachment.length == 0 && (
-                <div className="col-lg-5">
-                  <label className="btn btn-color text-white mt-3">
+                <div className="col-lg-2">
+                  <label className="btn btn-color text-white mt-2">
                     Upload File
                     <input
                       type="file"
@@ -500,26 +501,33 @@ const DetailedInfo = ({
                   </label>
                 </div>
               )}
-              <div className="col-lg-4">
-                <div className="my_profile_setting_input overflow-hidden mt20 text-center">
+              <div className="col-lg-7">
+                <div className="my_profile_setting_input mt10 overflow-hidden text-center">
                   <div className="d-flex flex-wrap">
                     {attachment?.map((file, index) => {
                       return (
                         <div
                           key={index}
-                          className="position-relative m-2 d-flex flex-column"
+                          className="position-relative d-flex flex-column"
                         >
-                          <div>
+                          <div className="d-flex gap-1">
                             {attachment.length > 0 && (
                               <button
-                                className="btn btn-success mb-2"
+                                className="btn btn-success"
                                 onClick={downloadAllAttachments}
                               >
-                                Download
+                                {file.file.name}
                               </button>
                             )}
+                            <button
+                              type="button"
+                              className="btn btn-danger"
+                              onClick={() => handleDelete(index)}
+                            >
+                              x
+                            </button>
                           </div>
-                          <img
+                          {/* <img
                             src={file.previewUrl}
                             alt="preview"
                             className="img-thumbnail"
@@ -528,25 +536,7 @@ const DetailedInfo = ({
                               height: "120px",
                               objectFit: "cover",
                             }}
-                          />
-                          <button
-                            type="button"
-                            className="btn btn-danger btn-sm m-1"
-                            onClick={() => handleDelete(index)}
-                          >
-                            Remove
-                          </button>
-                          <small
-                            className="d-block text-muted mt-1"
-                            style={{
-                              maxWidth: "120px",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              whiteSpace: "nowrap",
-                            }}
-                          >
-                            {file.file.name}
-                          </small>
+                          /> */}
                         </div>
                       );
                     })}

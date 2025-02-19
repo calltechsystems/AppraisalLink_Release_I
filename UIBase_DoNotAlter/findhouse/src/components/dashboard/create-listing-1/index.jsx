@@ -1241,8 +1241,17 @@ const Index = ({ isView, propertyData }) => {
                         </div>
                         <div className="row">
                           <div className="col-lg-12 text-center">
-                            <h1 className=" text-color mt-1">
+                            <h1 className="text-color mt-1">
                               Property Details
+                              {propertyData?.orderId && (
+                                <>
+                                  {" "}
+                                  - Property Id -{" "}
+                                  <span style={{ color: "#97d700" }}>
+                                    #{propertyData.orderId}
+                                  </span>
+                                </>
+                              )}
                             </h1>
                           </div>
                         </div>

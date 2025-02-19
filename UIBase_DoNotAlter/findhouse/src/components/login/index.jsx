@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import ErrorModal from "../common/popUpModal/errorModal/index";
+import CommonLoader from "../common/CommonLoader/page";
 
 const Index = ({ user }) => {
   const [show, setShow] = useState(false);
@@ -17,7 +18,7 @@ const Index = ({ user }) => {
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   // const [change, setChange] = useState(false);
-
+  const [isLoading, setLoading] = useState(false);
 
   const router = useRouter();
 
@@ -61,6 +62,8 @@ const Index = ({ user }) => {
       {/* <!-- Main Header Nav --> */}
       <Header />
 
+      {isLoading && <CommonLoader />}
+
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
 
@@ -84,6 +87,7 @@ const Index = ({ user }) => {
                   setModalIsOpen={setModalIsOpen}
                   setModalIsOpenError={setModalIsOpenError}
                   setErrorMessage={setErrorMessage}
+                  setLoading={setLoading}
                   // setOpenViewModal={setOpenViewModal}
                 />
               </div>

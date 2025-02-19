@@ -163,7 +163,7 @@ export default function Exemple({
   setIsHoldProperty,
   setCurrentProperty,
   setPropertyId,
-  setIsLoading
+  setIsLoading,
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [allBids, setBids] = useState([]);
@@ -518,7 +518,17 @@ export default function Exemple({
                 : "N.A.",
               urgency: property.urgency === 0 ? "Rush" : "Regular",
               actions_01: (
-                <ul>
+                <ul className="d-flex justify-content-center gap-1">
+                  <li title="Property Details" className="">
+                    <span
+                      className="btn btn-color-table"
+                      onClick={() => openPopupModal(property)}
+                    >
+                      <Link href={"#"}>
+                        <span className="text-light flaticon-view"></span>
+                      </Link>
+                    </span>
+                  </li>
                   <li title="Un-Archive Property">
                     <span
                       className="btn btn-color-table"

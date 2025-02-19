@@ -37,7 +37,8 @@ const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [lowRangeBid, setLowRangeBid] = useState("");
   const [propertyId, setPropertyId] = useState(null);
-
+  const [openQuoteView, setOpenQuoteView] = useState(false);
+  const [currentBiddedView, setCurrentBiddedView] = useState({});
   const [wishlistedProperties, setWishlistedProperties] = useState([]);
   const [updatedCode, setUpdatedCode] = useState(false);
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
@@ -149,6 +150,11 @@ const Index = () => {
   const openQuoteModal = () => {
     setIsModalOpen(false);
     setIsQuoteModalOpen(true);
+  };
+
+  const closeQuoteViewModal = () => {
+    setOpenQuoteView(false);
+    setCurrentBiddedView({});
   };
 
   const [openDate, setOpenDate] = useState(false);
@@ -639,6 +645,26 @@ const Index = () => {
     }
   }, [searchInput]);
 
+  const formatDateTime = (dateString) => {
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+    };
+
+    const originalDate = new Date(dateString);
+
+    // Adjust for Eastern Standard Time (EST) by subtracting 5 hours
+    const estDate = new Date(originalDate.getTime() - 5 * 60 * 60 * 1000);
+
+    // Format the EST date
+    const formattedDate = estDate.toLocaleString("en-US", options);
+    return formattedDate;
+  };
+
   return (
     <>
       {/* <!-- Main Header Nav --> */}
@@ -765,18 +791,52 @@ const Index = () => {
                           setWishlistedProperties={setWishlistedProperties}
                           setStartLoading={setStartLoading}
                           openModalBroker={openModalBroker}
+                          setCurrentBiddedView={setCurrentBiddedView}
+                          setOpenQuoteView={setOpenQuoteView}
                         />
 
                         {modalIsOpenError && (
                           <div className="modal">
                             <div
                               className="modal-content"
-                              style={{ borderColor: "orangered", width: "20%" }}
+                              style={{ width: "20%" }}
                             >
-                              <h3
-                                className="text-center"
-                                style={{ color: "orangered" }}
-                              >
+                              <div className="row">
+                                <div className="col-lg-12">
+                                  <Link href="/" className="">
+                                    <Image
+                                      width={50}
+                                      height={45}
+                                      className="logo1 img-fluid"
+                                      style={{ marginTop: "-25px" }}
+                                      src="/assets/images/Appraisal_Land_Logo.png"
+                                      alt="header-logo2.png"
+                                    />
+                                    <span
+                                      style={{
+                                        color: "#2e008b",
+                                        fontWeight: "bold",
+                                        fontSize: "22px",
+                                        // marginTop: "20px",
+                                      }}
+                                    >
+                                      Appraisal
+                                    </span>
+                                    <span
+                                      style={{
+                                        color: "#97d700",
+                                        fontWeight: "bold",
+                                        fontSize: "22px",
+                                        // marginTop: "20px",
+                                      }}
+                                    >
+                                      {" "}
+                                      Land
+                                    </span>
+                                  </Link>
+                                </div>
+                              </div>
+                              <h3 className="text-center mt-2 text-color">
                                 Error
                               </h3>
                               <div
@@ -785,25 +845,24 @@ const Index = () => {
                                   borderColor: "orangered",
                                 }}
                               >
-                                <br />
+                                <div
+                                  className="mt-1 mb-3"
+                                  style={{ border: "2px solid #97d700" }}
+                                ></div>
                               </div>
-                              <h5 className="text-center">{errorMessage}</h5>
+                              <h5 className="text-center text-dark">
+                                {errorMessage}
+                              </h5>
                               <div
-                                className="text-center"
-                                style={{
-                                  display: "flex",
-                                  flexDirection: "column",
-                                }}
-                              >
+                                className="mt-2 mb-3"
+                                style={{ border: "2px solid #97d700" }}
+                              ></div>
+                              <div className="text-center">
                                 <button
-                                  className="btn w-35 btn-white"
-                                  onClick={() => closeErrorModal()}
-                                  style={{
-                                    borderColor: "orangered",
-                                    color: "orangered",
-                                  }}
+                                  className="btn btn-color w-25"
+                                  onClick={closeErrorModal}
                                 >
-                                  Cancel
+                                  Ok
                                 </button>
                               </div>
                             </div>
@@ -1330,9 +1389,96 @@ const Index = () => {
                         )}
                       </div>
 
-                      {/* End .table-responsive */}
+                      {openQuoteView && (
+                        <div className="modal">
+                          <div
+                            className="modal-content"
+                            style={{ width: "30%" }}
+                          >
+                            <div className="row">
+                              <div className="col-lg-12">
+                                <Link href="/" className="">
+                                  <Image
+                                    width={50}
+                                    height={45}
+                                    className="logo1 img-fluid"
+                                    style={{ marginTop: "-20px" }}
+                                    src="/assets/images/Appraisal_Land_Logo.png"
+                                    alt="header-logo2.png"
+                                  />
+                                  <span
+                                    style={{
+                                      color: "#2e008b",
+                                      fontWeight: "bold",
+                                      fontSize: "24px",
+                                      // marginTop: "20px",
+                                    }}
+                                  >
+                                    Appraisal
+                                  </span>
+                                  <span
+                                    style={{
+                                      color: "#97d700",
+                                      fontWeight: "bold",
+                                      fontSize: "24px",
+                                      // marginTop: "20px",
+                                    }}
+                                  >
+                                    {" "}
+                                    Land
+                                  </span>
+                                </Link>
+                              </div>
+                            </div>
+                            <h3 className="text-center mt-2 text-color">
+                              Provided Quote – Property Id{" "}
+                              <span style={{ color: "#97d700" }}>
+                                #{currentBiddedView.orderId}
+                              </span>
+                            </h3>
+                            <div>
+                              <div
+                                className="mt-2 mb-3"
+                                style={{ border: "2px solid #97d700" }}
+                              ></div>
+                            </div>
+                            <p className="text-center fs-5 text-dark">
+                              The Last Provided Quote was{" "}
+                              <span
+                                style={{
+                                  color: "#97d700",
+                                  fontWeight: "bold",
+                                  fontSize: "22px",
+                                }}
+                              >
+                                $
+                                {addCommasToNumber(
+                                  currentBiddedView?.bidAmount
+                                )}
+                              </span>
+                            </p>
+                            <p className="text-center fs-6 text-dark">
+                              Updated At :{" "}
+                              {formatDateTime(currentBiddedView?.requestTime)}
+                            </p>
 
-                      {/* End .mbp_pagination */}
+                            <div className="text-center" style={{}}>
+                              <div>
+                                <div
+                                  className="mt-2 mb-3"
+                                  style={{ border: "2px solid #97d700" }}
+                                ></div>
+                              </div>
+                              <button
+                                className="btn btn-color w-25"
+                                onClick={closeQuoteViewModal}
+                              >
+                                Ok
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
                     {/* End .property_table */}
                   </div>

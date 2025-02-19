@@ -15,6 +15,7 @@ const Form = ({
   // setOpenViewModal,
   setModalIsOpenError,
   setErrorMessage,
+  setLoading
 }) => {
   const [showhide, setShowhide] = useState("");
   const [change, setChange] = useState(false);
@@ -39,7 +40,6 @@ const Form = ({
 
   //defining the variables
   const emailLoginRef = useRef();
-  const [isLoading, setLoading] = useState(false);
 
   const handleshowhide = (event) => {
     const getuser = event.target.value;
