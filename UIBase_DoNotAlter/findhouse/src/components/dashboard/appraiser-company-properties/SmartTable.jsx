@@ -16,6 +16,7 @@ import LoadingSpinner from "../../common/LoadingSpinner";
 import NoDataFound from "../../common/NoDataFound";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import { getTheDownloadView } from "../../common/UserViewPDFDownload/page";
 
 function SmartTable(props) {
   const [loading, setLoading] = useState(false);
@@ -70,235 +71,19 @@ function SmartTable(props) {
     }
   }, [props.dataFetched, props.properties]);
 
-  function extractTextFromReactElement(element) {
-    if (typeof element === "string") {
-      return element; // If it's a string, return it directly
-    } else if (Array.isArray(element)) {
-      // If it's an array of elements, recursively call this function for each element
-      return element
-        .map((child) => extractTextFromReactElement(child))
-        .join("");
-    } else if (typeof element === "object" && element !== null) {
-      // If it's an object (React element), recursively call this function on its children
-      return extractTextFromReactElement(element.props.children);
-    } else {
-      return ""; // Return an empty string if the element is not recognized
-    }
-  }
-
-  const getCurrentYear = () => {
-    return new Date().getFullYear();
-  };
-
-  function getFormattedDate() {
-    const date = new Date();
-    return date.toLocaleDateString("en-GB", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    });
-  }
-
+  //this function to download the function  
   const handlePrint = async () => {
-    try {
-      // Fetch data
-      const allData = props.properties;
-
-      // Define static headers
-      const staticHeaders = [
-        ["order_id", "Property ID"],
-        ["address", "Property Address"],
-        ["assigned_appraiser", "Assigned Appraiser"],
-        ["status", "Status"],
-        ["appraisal_status", "Appraisal Status"],
-        ["remark", "Remark"],
-        ["urgency", "Request Type"],
-        ["date", "Order Submission Date"],
-        ["type_of_building", "Type Of Property"],
-        ["estimated_value", "Estimated Property Value ($)"],
-        ["type_of_appraisal", "Type Of Appraisal"],
-        ["purpose", "Purpose"],
-        ["lender_information", "Lender Information"],
-      ];
-
-      const printContent = `
-    <html>
-      <head>
-        <script>document.title = 'PDF';</script>
-        <style>
-          @media print {
-            @page {
-              size: landscape;
-              margin: 0;
-            }
-            body {
-              margin: 10mm;
-              padding: 10mm;
-            }
-            .header, .footer {
-              width: 100%;
-              position: fixed;
-              text-align: center;
-              background: white;
-            }
-            .header {
-              top: 2;
-              left:8;
-              border-bottom: 1px solid #ddd;
-            }
-            .footer {
-              bottom: 0;
-              left:8;
-              padding-top: 10px;
-              border-top: 1px solid #ddd;
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-              gap: 5px;
-            }
-            .footer-main {
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-            }
-            .footer-content {
-              display: flex;
-              flex-direction: column;
-              align-items: flex-end;
-              width: 100%;
-              padding-right: 20px;
-              font-size: 12px;
-              color: #333;
-            }
-            .logo img {
-              width: 60px;
-              height: 55px;
-            }
-            .title {
-              font-size: 24px;
-              font-weight: bold;
-            }
-            .table-container {
-              margin-top: 20px;
-              margin-bottom: 80px;
-              page-break-before: always;
-            }
-            table {
-              width: 100%;
-              border-collapse: collapse;
-            }
-            th, td {
-              border: 1px solid #000;
-              padding: 5px;
-              text-align: center;
-            }
-            h3 {
-              page-break-before: always;
-              text-align: center;
-              font-size: 20px;
-            }
-          }
-        </style>
-      </head>
-      <body>
-        <div class="header">
-          <div class="title mt-1">
-            <div class="logo">
-              <img src="/assets/images/Appraisal_Land_Logo.png" alt="header-logo2.png"/>
-              <span style="color: #2e008b; margin-left:-15px;">Appraisal</span>
-              <span style="color: #97d700;">Land</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="footer">
-          <div class="footer-main">
-            <a href="https://appraisalland.ca/" target="_blank" style="color: #2e008b; text-decoration: underline;">
-              Appraisal Land
-            </a>
-            <span>© ${getCurrentYear()} All Rights Reserved.</span>
-          </div>
-          <div class="footer-content" style="margin-left: -10%">
-            <span>Created By: John Doe</span>
-            <span>Created At: ${getFormattedDate()}</span>
-          </div>
-        </div>
-
-        <div class="table-container">
-          <h3>Appraiser Company Properties</h3>
-          <table>
-            <thead>
-              <tr>
-                ${staticHeaders
-                  .map((header) => `<th>${header[1]}</th>`)
-                  .join("")}
-              </tr>
-            </thead>
-            <tbody>
-              ${allData
-                .map(
-                  (item) => `
-                  <tr>
-                    ${staticHeaders
-                      .map((header) => {
-                        if (
-                          header[0].toLowerCase() === "appraisal_status" ||
-                          header[0].toLowerCase() === "status" ||
-                          header[0]?.toLowerCase() === "assigned_appraiser"
-                        ) {
-                          const value = item[header[0].toLowerCase()];
-                          const className = value.props.className;
-                          const content =
-                            header[0].toLowerCase() === "appraisal_status"
-                              ? extractTextFromReactElement(
-                                  value.props.children
-                                ).split("Current Status")[0]
-                              : value.props.children;
-
-                          const color = className.includes("btn-warning")
-                            ? "#E4A11B"
-                            : className.includes("btn-danger")
-                            ? "#DC4C64"
-                            : className.includes("btn-success")
-                            ? "#14A44D"
-                            : "#54B4D3";
-
-                          return `<td style="color: ${color};">${content}</td>`;
-                        } else {
-                          const updatedValue = item[header[0].toLowerCase()];
-                          return `<td>${
-                            updatedValue == undefined ? "N.A." : updatedValue
-                          }</td>`;
-                        }
-                      })
-                      .join("")}
-                  </tr>
-                `
-                )
-                .join("")}
-            </tbody>
-          </table>
-        </div>
-      </body>
-    </html>`;
-
-      const printWindow = window.open("", "", "width=1200,height=800");
-
-      printWindow.document.open();
-      printWindow.document.write(printContent);
-      printWindow.document.close();
-
-      printWindow.onload = function () {
-        printWindow.print();
-        printWindow.onafterprint = () => {
-          printWindow.close();
-          toast.success("Printed successfully");
-        };
-      };
-    } catch (error) {
-      console.error("Error handling print:", error);
-      toast.error("Error handling print");
-    }
+    getTheDownloadView(
+      "appraiserCompany_Datails",
+      props.properties,
+      "Appraiser Company Properties"
+    )
+      .then((message) => {
+        toast.success(message);
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
   };
 
   const tableWidthFunc = useCallback(() => {

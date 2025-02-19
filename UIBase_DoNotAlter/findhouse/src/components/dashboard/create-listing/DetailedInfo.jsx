@@ -125,10 +125,8 @@ const DetailedInfo = ({
     ];
 
     // If not a ZIP file, check directly
-    if (
-      file.type !== "application/zip" &&
-      file.type !== "application/x-zip-compressed"
-    ) {
+
+    if (file?.type !== "application/zip" && file?.type !== "application/x-zip-compressed") {
       if (!allowedFileTypes.includes(file?.type)) {
         toast.error(`Invalid file type. Allowed types: .zip`);
         return;
