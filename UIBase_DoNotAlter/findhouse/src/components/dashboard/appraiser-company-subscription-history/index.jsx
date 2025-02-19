@@ -151,7 +151,7 @@ const Index = () => {
               {/* End .row */}
 
               <div className="row align-items-center">
-                <div className="col-lg-12 col-xl-12 text-center mt-1">
+                <div className="col-lg-12 col-xl-12 text-center mt-3">
                   <div className="style2 mb30-991">
                     <h2 className="heading-forms">Transaction History</h2>
                     {/* <p>You can see your transactions history here!</p> */}

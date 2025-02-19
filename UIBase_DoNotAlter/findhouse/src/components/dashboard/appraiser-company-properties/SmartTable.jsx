@@ -248,13 +248,16 @@ function SmartTable(props) {
                 <div className="row">
                   <div className="d-flex gap-1">
                     <div className="tooltip-container">
+                      <span className="tooltip-text">
+                        **Landscape** is the preferrable type for downloading as
+                        a pdf
+                      </span>
                       <button
                         className="btn btn-color"
                         onClick={() => handlePrint()}
                       >
                         <FaDownload />
                       </button>
-                      <span className="tooltip-text">**Landscape** is the preferrable type for downloading as a pdf</span>
                     </div>
                     <button
                       className="btn btn-color"

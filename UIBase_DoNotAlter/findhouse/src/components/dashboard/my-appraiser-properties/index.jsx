@@ -126,7 +126,9 @@ const Index = () => {
       })
       .catch((err) => {
         toast.dismiss();
-        toast.error(err?.response?.data?.error);
+        const error = err?.response?.data?.error || "Something went wrong!";
+        setErrorMessage(error);
+        setModalIsOpenError(true);
       });
 
     setRemark("");

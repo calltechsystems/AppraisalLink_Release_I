@@ -916,19 +916,17 @@ const Index = ({ isView, propertyData }) => {
           .then((res) => {
             toast.dismiss();
 
-            let defaultUserData = JSON.parse(localStorage.getItem("user")) || {};
+            let defaultUserData =
+              JSON.parse(localStorage.getItem("user")) || {};
             //set the planLimit , totalNoOfProperties
             // usedProperties count updted
 
             defaultUserData = {
               ...defaultUserData,
-              ["planLimitExceed"]:
-              res?.data?.userData?.planLimitExceed,
-              ["usedProperties"]:
-              res?.data?.userData?.usedProperties,
-              ["totalNoOfProperties"]:
-              res?.data?.userData?.totalNoOfProperties
-            }
+              ["planLimitExceed"]: res?.data?.userData?.planLimitExceed,
+              ["usedProperties"]: res?.data?.userData?.usedProperties,
+              ["totalNoOfProperties"]: res?.data?.userData?.totalNoOfProperties,
+            };
             //open the Successful Modal
             const propertyId = res.data?.userData?.propertyId;
 
@@ -936,7 +934,7 @@ const Index = ({ isView, propertyData }) => {
             setGeneratedPropertyId(propertyId);
             setSuccessModal(true);
             setisLoading(false);
-            
+
             setIsSubmitInProgress(false);
             setTimesTrigerredSubmission(2);
             setIsFormDirty(false);
@@ -988,7 +986,7 @@ const Index = ({ isView, propertyData }) => {
       // Handle API error or invalid zip code
       console.error("Error fetching location data:", error);
     }
-    setIsFormDirty(true)
+    setIsFormDirty(true);
   };
 
   const handleOkClick = () => {
@@ -1088,6 +1086,14 @@ const Index = ({ isView, propertyData }) => {
                           }}
                         >
                           Property Details
+                          {propertyData?.orderId && (
+                            <>
+                              {" "}
+                              - Property Id <span style={{ color: "#000" }}>
+                                #{propertyData.orderId}
+                              </span>
+                            </>
+                          )}
                         </h4>
                       </div>
 
@@ -1304,8 +1310,17 @@ const Index = ({ isView, propertyData }) => {
                         </div>
                         <div className="row">
                           <div className="col-lg-12 text-center">
-                            <h1 className=" text-color mt-1">
+                            <h1 className="text-color mt-1">
                               Property Details
+                              {propertyData?.orderId && (
+                                <>
+                                  {" "}
+                                  - Property Id{" "}
+                                  <span style={{ color: "#97d700" }}>
+                                    #{propertyData.orderId}
+                                  </span>
+                                </>
+                              )}
                             </h1>
                           </div>
                         </div>

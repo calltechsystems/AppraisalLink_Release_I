@@ -136,7 +136,10 @@ const Index = () => {
       })
       .catch((err) => {
         toast.dismiss();
-        toast.error(err?.response?.data?.error);
+        // toast.error(err?.response?.data?.error);
+        const error = err?.response?.data?.error || "Something went wrong!";
+        setErrorMessage(error);
+        setModalIsOpenError(true);
       });
 
     setRemark("");
@@ -880,12 +883,44 @@ const Index = () => {
                           <div className="modal">
                             <div
                               className="modal-content"
-                              style={{ borderColor: "orangered", width: "20%" }}
+                              style={{ width: "20%" }}
                             >
-                              <h3
-                                className="text-center"
-                                style={{ color: "orangered" }}
-                              >
+                              <div className="row">
+                                <div className="col-lg-12">
+                                  <Link href="/" className="">
+                                    <Image
+                                      width={50}
+                                      height={45}
+                                      className="logo1 img-fluid"
+                                      style={{ marginTop: "-25px" }}
+                                      src="/assets/images/Appraisal_Land_Logo.png"
+                                      alt="header-logo2.png"
+                                    />
+                                    <span
+                                      style={{
+                                        color: "#2e008b",
+                                        fontWeight: "bold",
+                                        fontSize: "22px",
+                                        // marginTop: "20px",
+                                      }}
+                                    >
+                                      Appraisal
+                                    </span>
+                                    <span
+                                      style={{
+                                        color: "#97d700",
+                                        fontWeight: "bold",
+                                        fontSize: "22px",
+                                        // marginTop: "20px",
+                                      }}
+                                    >
+                                      {" "}
+                                      Land
+                                    </span>
+                                  </Link>
+                                </div>
+                              </div>
+                              <h3 className="text-center mt-2 text-color">
                                 Error
                               </h3>
                               <div
@@ -894,25 +929,24 @@ const Index = () => {
                                   borderColor: "orangered",
                                 }}
                               >
-                                <br />
+                                <div
+                                  className="mt-1 mb-3"
+                                  style={{ border: "2px solid #97d700" }}
+                                ></div>
                               </div>
-                              <h5 className="text-center">{errorMessage}</h5>
+                              <h5 className="text-center text-dark">
+                                {errorMessage}
+                              </h5>
                               <div
-                                className="text-center"
-                                style={{
-                                  display: "flex",
-                                  flexDirection: "column",
-                                }}
-                              >
+                                className="mt-2 mb-3"
+                                style={{ border: "2px solid #97d700" }}
+                              ></div>
+                              <div className="text-center">
                                 <button
-                                  className="btn w-35 btn-white"
-                                  onClick={() => closeErrorModal()}
-                                  style={{
-                                    borderColor: "orangered",
-                                    color: "orangered",
-                                  }}
+                                  className="btn btn-color w-25"
+                                  onClick={closeErrorModal}
                                 >
-                                  Cancel
+                                  Ok
                                 </button>
                               </div>
                             </div>

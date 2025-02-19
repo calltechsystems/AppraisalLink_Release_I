@@ -99,6 +99,45 @@ const Index = () => {
     setIsModalOpen(false);
   };
 
+  const formatPhoneNumber = (number) => {
+    if (!number) return ""; // Handle empty input
+
+    // Remove non-numeric characters
+    const digits = number.replace(/\D/g, "");
+
+    // Format the number as "416 123-4567"
+    if (digits.length <= 3) {
+      return digits; // e.g., "416"
+    } else if (digits.length <= 6) {
+      return `${digits.slice(0, 3)} ${digits.slice(3)}`; // e.g., "416 123"
+    } else {
+      return `${digits.slice(0, 3)} ${digits.slice(3, 6)}-${digits.slice(
+        6,
+        10
+      )}`; // e.g., "416 123-4567"
+    }
+  };
+
+  const formatDate = (dateString) => {
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      // hour: "numeric",
+      // minute: "numeric",
+      // second: "numeric",
+      hour12: true, // Set to false for 24-hour format
+    };
+
+    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
+    return formattedDate;
+  };
+
+  function addCommasToNumber(number) {
+    if (Number(number) <= 100 || number === undefined) return number;
+    return number.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   const closeCancelHoldHandler = () => {
     setIsCancelProperty(false);
     setIsHoldProperty(false);
@@ -431,7 +470,10 @@ const Index = () => {
                                 <div className="row">
                                   <div className="col-lg-12 text-center">
                                     <h2 className=" text-color mt-1">
-                                      Property Details
+                                      Property Details – Property Id{"  "}
+                                      <span style={{ color: "#97d700" }}>
+                                        #{currentProperty.orderId}
+                                      </span>
                                     </h2>
                                   </div>
                                 </div>
@@ -462,8 +504,8 @@ const Index = () => {
                                       <td className="table-value">
                                         {" "}
                                         {currentProperty.streetNumber}{" "}
-                                        {currentProperty.streetName}{" "}
-                                        {currentProperty.city}{" "}
+                                        {currentProperty.streetName},{" "}
+                                        {currentProperty.city},{" "}
                                         {currentProperty.province}{" "}
                                         {currentProperty.zipCode}
                                       </td>
@@ -523,7 +565,10 @@ const Index = () => {
                                         </span>
                                       </td>
                                       <td className="table-value">
-                                        ${currentProperty.estimatedValue}
+                                        $
+                                        {addCommasToNumber(
+                                          currentProperty.estimatedValue
+                                        )}
                                       </td>
                                     </tr>
                                     <tr>
@@ -549,7 +594,9 @@ const Index = () => {
                                       </td>
                                       <td className="table-value">
                                         {currentProperty.quoteRequiredDate
-                                          ? currentProperty.quoteRequiredDate
+                                          ? formatDate(
+                                              currentProperty.quoteRequiredDate
+                                            )
                                           : "N.A."}
                                       </td>
                                     </tr>
@@ -600,7 +647,10 @@ const Index = () => {
                                       </td>
                                       <td className="table-value">
                                         {" "}
-                                        {currentProperty.applicantPhoneNumber}
+                                        {/* {currentProperty.applicantPhoneNumber} */}
+                                        {formatPhoneNumber(
+                                          currentProperty.applicantPhoneNumber
+                                        )}
                                       </td>
                                     </tr>
                                   </tbody>

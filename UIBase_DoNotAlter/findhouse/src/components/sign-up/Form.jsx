@@ -8,7 +8,12 @@ import { FaEnvelope, FaEye } from "react-icons/fa";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
+const Form = ({
+  setModalIsOpen,
+  setModalIsOpenError,
+  setErrorMessage,
+  setLoading,
+}) => {
   const [showhide, setShowhide] = useState("");
 
   const [change, setChange] = useState(false);
@@ -43,9 +48,6 @@ const Form = ({ setModalIsOpen, setModalIsOpenError, setErrorMessage }) => {
   // const passwordRegisterRef = useRef("");
   const userTypeRef = useRef(1);
   const checkRef = useRef("");
-
-  const [isLoading, setLoading] = useState(false);
-
   const [isFocused, setIsFocused] = useState(false);
   const [is2Focused, setIs2Focused] = useState(false);
 

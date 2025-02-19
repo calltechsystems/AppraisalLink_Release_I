@@ -9,10 +9,12 @@ import BreadCrumbBanner from "./BreadCrumbBanner";
 import Image from "next/image";
 import Form from "./Form";
 import { useEffect, useState } from "react";
+import CommonLoader from "../common/CommonLoader/page";
 
 const Index = () => {
   const router = useRouter();
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [isLoading, setisLoading] = useState(false);
 
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
@@ -61,6 +63,7 @@ const Index = () => {
     <>
       {/* <!-- Main Header Nav --> */}
       <Header />
+      {isLoading && <CommonLoader />}
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
@@ -83,7 +86,10 @@ const Index = () => {
                   marginTop: "5px",
                 }}
               >
-                <Form setModalIsOpen={setModalIsOpen} />
+                <Form
+                  setModalIsOpen={setModalIsOpen}
+                  setisLoading={setisLoading}
+                />
               </div>
             </div>
           </div>

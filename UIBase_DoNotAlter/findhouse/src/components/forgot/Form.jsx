@@ -7,7 +7,7 @@ import axios from "axios";
 import { encryptionData } from "../../utils/dataEncryption";
 import Captcha from "../common/Captcha";
 
-const Form = ({ setModalIsOpen }) => {
+const Form = ({ setModalIsOpen, setisLoading }) => {
   const [captchaVerfied, setCaptchaVerified] = useState(false);
   const [reloadOption, setReloadOption] = useState(false);
   const [change, setChange] = useState(false);
@@ -36,12 +36,12 @@ const Form = ({ setModalIsOpen }) => {
   const onClickHandler = () => {
     const email = emailRef.current.value;
     if (email === "") {
-      toast.error("Registered email should be filled !");
+      toast.error("Registered email is required !");
     } else {
       const formData = {
         email: email,
       };
-
+      setisLoading(true);
       const payload = encryptionData(formData);
       toast.loading("Sending the otp to this email");
       axios
@@ -49,6 +49,7 @@ const Form = ({ setModalIsOpen }) => {
         .then((res) => {
           toast.dismiss();
           setShow(true);
+          setisLoading(false);
           setIsOtpSent(true); // Disable button after OTP is sent
           // toast.success("Sent Successfully");
           setModalIsOpen(true);
@@ -56,6 +57,7 @@ const Form = ({ setModalIsOpen }) => {
         .catch((err) => {
           toast.dismiss();
           // toast.success("Sent Successfully");
+          setisLoading(false);
           setModalIsOpen(true);
           // toast.error("Try again");
         });
@@ -74,46 +76,108 @@ const Form = ({ setModalIsOpen }) => {
     color: isFocused ? "green" : "inherit",
   };
 
-  const onSubmitHnadler = () => {
+  const onSubmitHandler = () => {
+    setisLoading(true);
+
     const email = emailRef.current.value;
-    const newPasswordRef = newPassword.current.value;
-    const newPasswordConfirmRef = newPasswordConfirm.current.value;
+    const newPasswordValue = newPassword.current.value;
+    const newPasswordConfirmValue = newPasswordConfirm.current.value;
     const token = tokenRef.current.value;
-    if (email === "") {
-      toast.error("Registered email should be filled !");
+
+    // Form validation with return statements to stop execution on failure
+    if (!email) {
+      toast.error("Registered email should be filled!");
+      setisLoading(false);
+      return;
+    }
+    if (!token) {
+      toast.error("Please provide the OTP!");
+      setisLoading(false);
+      return;
+    }
+    if (!newPasswordValue) {
+      toast.error("Password cannot be empty!");
+      setisLoading(false);
+      return;
+    }
+    if (!newPasswordConfirmValue) {
+      toast.error("Confirm password cannot be empty!");
+      setisLoading(false);
+      return;
+    }
+    if (newPasswordValue !== newPasswordConfirmValue) {
+      toast.error("Passwords do not match!");
+      setisLoading(false);
+      return;
     }
 
-    if (token === "") {
-      toast.error("Please provide the otp !");
-    }
+    const formData = {
+      email,
+      newPassword: newPasswordValue,
+      token,
+    };
 
-    if (newPasswordRef !== newPasswordConfirmRef) {
-      toast.error("provide the same password");
-    } else {
-      const formData = {
-        email: email,
-        newPassword: newPasswordRef,
-        token: token,
-      };
+    console.log("Submitting Form Data:", formData);
 
-      console.log(formData);
+    const payload = encryptionData(formData);
+    toast.loading("Resetting password...");
 
-      const payload = encryptionData(formData);
-      toast.loading("Reseting password ....");
-      axios
-        .post("/api/resetForgotPassword", payload)
-        .then((res) => {
-          toast.dismiss();
-          setShow(true);
-          toast.success("Password set Successfully");
-          router.push("/login");
-        })
-        .catch((err) => {
-          toast.dismiss();
-          toast.error("Try again");
-        });
-    }
+    axios
+      .post("/api/resetForgotPassword", payload)
+      .then((res) => {
+        toast.dismiss();
+        setShow(true);
+        toast.success("Password set successfully!");
+        router.push("/login");
+      })
+      .catch((err) => {
+        toast.dismiss();
+        setisLoading(false);
+        const errorMessage =
+          err?.response?.data?.error || "Something went wrong. Try again!";
+        toast.error(errorMessage);
+      });
   };
+
+  // const onSubmitHnadler = () => {
+  //   setisLoading(true);
+  //   const email = emailRef.current.value;
+  //   const newPasswordRef = newPassword.current.value;
+  //   const newPasswordConfirmRef = newPasswordConfirm.current.value;
+  //   const token = tokenRef.current.value;
+  //   if (email === "") {
+  //     toast.error("Registered email should be filled !");
+  //   }
+  //   if (token === "") {
+  //     toast.error("Please provide the otp !");
+  //   }
+  //   if (newPasswordRef !== newPasswordConfirmRef) {
+  //     toast.error("provide the same password");
+  //   } else {
+  //     const formData = {
+  //       email: email,
+  //       newPassword: newPasswordRef,
+  //       token: token,
+  //     };
+
+  //     console.log(formData);
+
+  //     const payload = encryptionData(formData);
+  //     toast.loading("Reseting password ....");
+  //     axios
+  //       .post("/api/resetForgotPassword", payload)
+  //       .then((res) => {
+  //         toast.dismiss();
+  //         setShow(true);
+  //         toast.success("Password set Successfully");
+  //         router.push("/login");
+  //       })
+  //       .catch((err) => {
+  //         toast.dismiss();
+  //         toast.error("Try again");
+  //       });
+  //   }
+  // };
 
   const resentOTPHnadler = () => {
     const email = emailRef.current.value;
@@ -324,12 +388,12 @@ const Form = ({ setModalIsOpen }) => {
                     Captcha doesnt match
                   </label>
                 )} */}
-                  <Captcha
+                  {/* <Captcha
                     verified={setCaptchaVerified}
                     reload={reloadOption}
                     change={change}
                     setChange={setChange}
-                  />
+                  /> */}
                 </div>
               </div>
             )}
@@ -339,7 +403,7 @@ const Form = ({ setModalIsOpen }) => {
             {show && (
               <button
                 type="submit"
-                onClick={onSubmitHnadler}
+                onClick={onSubmitHandler}
                 className="btn btn-log w-100 btn-thm"
               >
                 Submit

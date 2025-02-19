@@ -144,6 +144,8 @@ export default function Exemple({
   allArchive,
   setStartLoading,
   refresh,
+  setCurrentBiddedView,
+  setOpenQuoteView,
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [wishlist, setWishlist] = useState([]);
@@ -276,6 +278,11 @@ export default function Exemple({
   const closeArchiveModal = () => {
     setSelectedProperty(null); // Clear the selected property
     setArchiveModal(false); // Close the modal
+  };
+
+  const openQuoteViewModal = (bid) => {
+    setCurrentBiddedView(bid);
+    setOpenQuoteView(true);
   };
 
   function addCommasToNumber(number) {
@@ -616,17 +623,30 @@ export default function Exemple({
               : "N.A.",
 
           action: (
-            <div className="print-hidden-column">
-              {/* {isWait ? (
-                <p className="btn btn-danger  w-100">
-                  {`No further actions can be taken on this property since it is ${
-                    property.isoncancel ? "Cancelled" : "On Hold"
-                  } !.`}
-                </p>
-              ) : (
-                ""
-              )} */}
-
+            <div
+              className="print-hidden-column"
+              style={{ display: "flex", justifyContent: "center" }}
+            >
+              {isBidded.$id &&
+                (isBidded.status === 2 || isBidded.status === 1) &&
+                !anotherBid?.bidId && (
+                  <li
+                    className="list-inline-item"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="View Quote"
+                  >
+                    {" "}
+                    <span
+                      className="btn btn-color-table"
+                      onClick={() => openQuoteViewModal(isBidded)}
+                    >
+                      <Link href={"#"}>
+                        <span className="text-light flaticon-view"></span>
+                      </Link>
+                    </span>
+                  </li>
+                )}
               <li
                 className="list-inline-item"
                 data-toggle="tooltip"
@@ -914,7 +934,7 @@ export default function Exemple({
         </div>
       )}
 
-   {remarkModal && (
+      {remarkModal && (
         <div className="modal">
           <div className="modal-content" style={{ width: "35%" }}>
             <div className="row">
