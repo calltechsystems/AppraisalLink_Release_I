@@ -487,7 +487,7 @@ export default function Exemple({
                 </li>
                 {/* )} */}
 
-                {!isEditable && !isCancel && (
+                {!isEditable && !isCancel && !isHold && (
                   <li title="Quotes">
                     <Link
                       className="btn btn-color-table"

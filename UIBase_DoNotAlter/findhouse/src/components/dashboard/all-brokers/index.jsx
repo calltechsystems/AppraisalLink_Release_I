@@ -21,6 +21,7 @@ import { BrokerStatus } from "../create-listing/data";
 // import Form from "../../broker-register/Form";
 import Image from "next/image";
 import { useModal } from "../../../context/ModalContext";
+import CommonLoader from "../../common/CommonLoader/page";
 
 const Index = () => {
   const { isModalOpen, setIsModalOpen } = useModal();
@@ -65,6 +66,7 @@ const Index = () => {
   // change by gpt
 
   const handleStatusUpdateHandler = async () => {
+    setIsLoading(true);
     const userData = JSON.parse(localStorage.getItem("user"));
     if (!userData || !selectedBroker.id) {
       toast.error("Invalid user or broker information.");
@@ -95,6 +97,7 @@ const Index = () => {
       );
 
       toast.dismiss();
+      setIsLoading(false);
       toast.success("Successfully Updated!");
       window.location.reload(true);
       // Update UI dynamically instead of reloading
@@ -113,7 +116,7 @@ const Index = () => {
       } else {
         toast.error(err.message || "An unexpected error occurred.");
       }
-
+      setIsLoading(false);
       setDisable(false);
     }
   };
@@ -429,6 +432,8 @@ const Index = () => {
     <>
       {/* <!-- Main Header Nav --> */}
       <Header userData={userData} />
+
+      {isLoading && <CommonLoader />}
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
@@ -1476,75 +1481,72 @@ const Index = () => {
             </div>
 
             {isModalOpen && (
-                <div className="modal">
-                  <div className="modal-content" style={{ width: "25%" }}>
-                    <div className="row">
-                      <div className="col-lg-12">
-                        <Link href="/" className="">
-                          <Image
-                            width={50}
-                            height={45}
-                            className="logo1 img-fluid"
-                            style={{ marginTop: "-20px" }}
-                            src="/assets/images/logo.png"
-                            alt="header-logo2.png"
-                          />
-                          <span
-                            style={{
-                              color: "#2e008b",
-                              fontWeight: "bold",
-                              fontSize: "24px",
-                              // marginTop: "20px",
-                            }}
-                          >
-                            Appraisal
-                          </span>
-                          <span
-                            style={{
-                              color: "#97d700",
-                              fontWeight: "bold",
-                              fontSize: "24px",
-                              // marginTop: "20px",
-                            }}
-                          >
-                            {" "}
-                            Land
-                          </span>
-                        </Link>
-                      </div>
-                    </div>
-                    <h3
-                      className="text-center mt-3"
-                      style={{ color: "#2e008b" }}
-                    >
-                      Information <span style={{ color: "#97d700" }}></span>
-                    </h3>
-                    <div
-                      className="mb-2"
-                      style={{ border: "2px solid #97d700" }}
-                    ></div>
-                    <p className="fs-5 text-center text-dark mt-4">
-                      You&apos;ve hit your subscription limit.
-                      <br />
-                      Kindly Top Up.{" "}
-                      {/* <span className="text-danger fw-bold">Top Up</span>{" "} */}
-                    </p>
-                    <div
-                      className="mb-3 mt-4"
-                      style={{ border: "2px solid #97d700" }}
-                    ></div>
-                    <div className="col-lg-12 d-flex justify-content-center gap-2">
-                      <button
-                        // disabled={disable}
-                        className="btn btn-color w-25"
-                        onClick={() => setIsModalOpen(false)}
-                      >
-                        Ok
-                      </button>
+              <div className="modal">
+                <div className="modal-content" style={{ width: "25%" }}>
+                  <div className="row">
+                    <div className="col-lg-12">
+                      <Link href="/" className="">
+                        <Image
+                          width={50}
+                          height={45}
+                          className="logo1 img-fluid"
+                          style={{ marginTop: "-20px" }}
+                          src="/assets/images/logo.png"
+                          alt="header-logo2.png"
+                        />
+                        <span
+                          style={{
+                            color: "#2e008b",
+                            fontWeight: "bold",
+                            fontSize: "24px",
+                            // marginTop: "20px",
+                          }}
+                        >
+                          Appraisal
+                        </span>
+                        <span
+                          style={{
+                            color: "#97d700",
+                            fontWeight: "bold",
+                            fontSize: "24px",
+                            // marginTop: "20px",
+                          }}
+                        >
+                          {" "}
+                          Land
+                        </span>
+                      </Link>
                     </div>
                   </div>
+                  <h3 className="text-center mt-3" style={{ color: "#2e008b" }}>
+                    Information <span style={{ color: "#97d700" }}></span>
+                  </h3>
+                  <div
+                    className="mb-2"
+                    style={{ border: "2px solid #97d700" }}
+                  ></div>
+                  <p className="fs-5 text-center text-dark mt-4">
+                    You&apos;ve hit your subscription limit.
+                    <br />
+                    Kindly Top Up.{" "}
+                    {/* <span className="text-danger fw-bold">Top Up</span>{" "} */}
+                  </p>
+                  <div
+                    className="mb-3 mt-4"
+                    style={{ border: "2px solid #97d700" }}
+                  ></div>
+                  <div className="col-lg-12 d-flex justify-content-center gap-2">
+                    <button
+                      // disabled={disable}
+                      className="btn btn-color w-25"
+                      onClick={() => setIsModalOpen(false)}
+                    >
+                      Ok
+                    </button>
+                  </div>
                 </div>
-              )}
+              </div>
+            )}
 
             <div className="row mt50">
               <div className="col-lg-12">

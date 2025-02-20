@@ -74,6 +74,7 @@ const Form = ({
     event.preventDefault();
 
     if (!captchaVerified) {
+      setLoading(false);
       setErrorMessage("Please complete the captcha!");
       setModalIsOpenError(true);
       return;

@@ -11,6 +11,7 @@ const Form = ({
   setModalIsOpenError,
   setErrorMessage,
   setCloseRegisterModal,
+  setIsLoading
 }) => {
   const [isLoading, setLoading] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);

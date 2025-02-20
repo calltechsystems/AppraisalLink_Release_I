@@ -16,6 +16,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { FaDownload } from "react-icons/fa";
 import Select from "react-select";
+import CommonLoader from "../../common/CommonLoader/page";
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -60,7 +61,7 @@ const Index = () => {
 
   const [errorMessage, setErrorMessage] = useState("");
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [refresh, setRefresh] = useState(false);
 
@@ -104,16 +105,19 @@ const Index = () => {
     };
 
     const encryptedBody = encryptionData(payload);
+    setIsLoading(true);
     toast.loading("Updating order status!!");
     axios
       .put("/api/updateOrderStatus", encryptedBody)
       .then((res) => {
         toast.dismiss();
+        setIsLoading(false);
         toast.success("Successfully updated!!");
         location.reload(true);
       })
       .catch((err) => {
         toast.dismiss();
+        setIsLoading(false);
         const error = err?.response?.data?.error || "Something went wrong!";
         setErrorMessage(error);
         setModalIsOpenError(true);
@@ -266,7 +270,7 @@ const Index = () => {
     };
 
     const encryptionPayload = encryptionData(payload);
-
+    setIsLoading(true);
     toast.loading("Assigning the property");
     axios
       .post("/api/assignPropertyToAppraiser", encryptionPayload, {
@@ -277,10 +281,12 @@ const Index = () => {
       })
       .then((res) => {
         toast.dismiss();
+        setIsLoading(false);
         toast.success("Successfully assigned");
       })
       .catch((err) => {
         toast.dismiss();
+        setIsLoading(false);
         if (err.response) {
           // Server responded with a status code outside the 2xx range
           const status = err.response.status;
@@ -717,7 +723,7 @@ const Index = () => {
       }
 
       const encryptedData = encryptionData(payload);
-
+      setIsLoading(true);
       toast.loading("Assigning the property...");
       const response = await axios.post(
         "/api/assignPropertyToAppraiser",
@@ -730,6 +736,7 @@ const Index = () => {
       );
 
       toast.dismiss();
+      setIsLoading(false);
       toast.success("Property successfully assigned!");
       setAssignPropertyId(-1);
       setTimeout(() => {
@@ -737,7 +744,7 @@ const Index = () => {
       }, 1000);
     } catch (err) {
       toast.dismiss();
-
+      setIsLoading(false);
       // if (error.response) {
       //   // Server responded with a status code outside the 2xx range
       //   toast.error(
@@ -837,6 +844,8 @@ const Index = () => {
     <>
       {/* <!-- Main Header Nav --> */}
       <Header userData={userData} />
+
+      {isLoading && <CommonLoader />}
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />

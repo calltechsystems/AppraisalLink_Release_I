@@ -15,18 +15,14 @@ const Form = ({
   setLoading,
 }) => {
   const [showhide, setShowhide] = useState("");
-
   const [change, setChange] = useState(false);
   const [showRegister, setRegister] = useState(true);
   const [showLabel, setShowLabel] = useState(false);
   const [captchaVerfied, setCaptchaVerified] = useState(false);
-
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
   const [errorContent, setErrorContent] = useState("");
-
   const [successContent, setSuccessContent] = useState("");
-
   const [firstClick, setFirstClick] = useState(true);
 
   const handleErrorModalCancel = () => {
@@ -94,6 +90,7 @@ const Form = ({
       setModalIsOpenError(true);
     } else if (!captchaVerfied) {
       setErrorMessage("Please fill the captcha.");
+      setLoading(false);
       setModalIsOpenError(true);
       setChange(true);
       return;

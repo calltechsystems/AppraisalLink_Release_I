@@ -41,12 +41,11 @@ const TableData = ({
   setRefresh,
   setSelectedPropertyNew,
   refresh,
+  setIsLoading
 }) => {
   let userInfo = {};
   const [Id, setId] = useState(-1);
-
   const [rerender, setRerender] = useState(false);
-
   const [data, setData] = useState([]);
 
   const {
@@ -306,6 +305,7 @@ const TableData = ({
           wishlist={wishlist}
           setWishlist={setWishlist}
           setSelectedPropertyNew={setSelectedPropertyNew}
+          setIsLoading={setIsLoading}
         />
       )}
     </>

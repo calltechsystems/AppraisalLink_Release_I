@@ -8,6 +8,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useModal } from "../../../context/ModalContext";
+import CommonLoader from "../../common/CommonLoader/page";
 
 const Index = ({ profileCount, setProfileCount }) => {
   // const user = JSON.parse(localStorage.getItem("user"));
@@ -17,6 +18,7 @@ const Index = ({ profileCount, setProfileCount }) => {
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
   const [modalIsOpenError_01, setModalIsOpenError_01] = useState(false);
   const { isModalOpen, setIsModalOpen } = useModal();
+  const [isLoading, setIsLoading] = useState(false);
 
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
@@ -85,6 +87,8 @@ const Index = ({ profileCount, setProfileCount }) => {
         setProfileCount={setProfileCount}
         userData={userData}
       />
+      {isLoading && <CommonLoader />}
+
       <MobileMenu />
 
       <div className="dashboard_sidebar_menu">
@@ -129,6 +133,7 @@ const Index = ({ profileCount, setProfileCount }) => {
                                 setShowCard={setShowCard}
                                 setModalIsOpenError={setModalIsOpenError}
                                 setModalIsOpenError_01={setModalIsOpenError_01}
+                                setIsLoading={setIsLoading}
                               />
                             )}
                           </div>

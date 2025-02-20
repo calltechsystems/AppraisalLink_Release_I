@@ -2,15 +2,15 @@
 const getStaticHeaders = (userFieldType) => {
   if (userFieldType == "appraiserCompany_Datails") {
     return [
-      ["order_id", "Order Id"],
-      ["address", "Address"],
+      ["order_id", "Property ID"],
+      ["address", "Property Address"],
       ["assigned_appraiser", "Assigned Appraiser"],
       ["status", "Status"],
       ["appraisal_status", "Appraisal Status"],
       ["remark", "Remark"],
-      ["urgency", "Urgency"],
-      ["date", "Submission Date"],
-      ["type_of_building", "Type Of Building"],
+      ["urgency", "Request Type"],
+      ["date", "Order Submission Date"],
+      ["type_of_building", "Type Of Property"],
       ["estimated_value", "Estimated Property Value ($)"],
       ["type_of_appraisal", "Type Of Appraisal"],
       ["purpose", "Purpose"],
@@ -58,11 +58,10 @@ export const getTheDownloadView = (userFieldType, allData, pdfTitle) => {
   return new Promise((resolve, reject) => {
     try {
       const staticHeaders = getStaticHeaders(userFieldType);
-
       const printContent = `
           <html>
             <head>
-              <script>document.title = 'kjshak';</script>
+              <script>document.title = 'PDF';</script>
               <style>
                 @media print {
                   @page {
@@ -80,12 +79,13 @@ export const getTheDownloadView = (userFieldType, allData, pdfTitle) => {
                     background: white;
                   }
                   .header {
-                    top: 0;
-                    padding-bottom: 10px;
+                    top: 2;
+                    left:8;
                     border-bottom: 1px solid #ddd;
                   }
                   .footer {
                     bottom: 0;
+                    left:8;
                     padding-top: 10px;
                     border-top: 1px solid #ddd;
                     display: flex;
@@ -93,16 +93,31 @@ export const getTheDownloadView = (userFieldType, allData, pdfTitle) => {
                     align-items: center;
                     gap: 5px;
                   }
+                  .footer-main {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                  }
+            .footer-content {
+              display: flex;
+              flex-direction: column;
+              align-items: flex-end;
+              width: 100%;
+              padding-right: 20px;
+              font-size: 12px;
+              color: #333;
+            }
+
                   .logo img {
-                    width: 60px;
-                    height: 45px;
+                    width: 70px;
+                    height: 65px;
                   }
                   .title {
                     font-size: 24px;
                     font-weight: bold;
                   }
                   .table-container {
-                    margin-top: 80px;
+                    margin-top: 20px;
                     margin-bottom: 80px;
                     page-break-before: always;
                   }
@@ -112,8 +127,8 @@ export const getTheDownloadView = (userFieldType, allData, pdfTitle) => {
                   }
                   th, td {
                     border: 1px solid #000;
-                    padding: 8px;
-                    text-align: left;
+                    padding: 5px;
+                    text-align: center;
                   }
                   h3 {
                     page-break-before: always;
@@ -124,27 +139,27 @@ export const getTheDownloadView = (userFieldType, allData, pdfTitle) => {
               </style>
             </head>
             <body>
-              <div class="header">
-                <div class="logo">
-                  <img src="/assets/images/Appraisal_Land_Logo.png" alt="header-logo2.png"/>
-                </div>
-                <div class="title">
-                  <span style="color: #2e008b;">Appraisal</span>
-                  <span style="color: #97d700;">Land</span>
-                </div>
-              </div>
-  
+          <div class="header">
+           <div class="title mt-1">
+            <div class="logo">
+              <img src="/assets/images/Appraisal_Land_Logo.png" alt="header-logo2.png"/>
+              <span style="color: #2e008b; margin-left:-15px;">Appraisal</span>
+              <span style="color: #97d700;">Land</span>
+            </div>
+           </div>
+          </div>
+          
               <div class="footer">
                 <div class="footer-main">
-                  <a href="https://appraisalland.ca/" target="_blank" style="color: #2e008b; text-decoration: underline;">
+                  <span>© ${getCurrentYear()}<a href="https://appraisalland.ca/" target="_blank" style="color: #2e008b; text-decoration: none;">
                     Appraisal Land
-                  </a>
-                  <span>© ${getCurrentYear()} All Rights Reserved.</span>
+                  </a>. All Rights Reserved.</span>
                 </div>
                 <div class="footer-content" style="margin-left: -10%">
-                  <span>Created By: ${getCreatedByName(userFieldType)}</span>
-                  <span>Created At: ${getFormattedDate()}</span>
+                  <span>Created by: ${getCreatedByName(userFieldType)}</span>
+                  <span>Created on: ${getFormattedDate()}</span>
                 </div>
+                
               </div>
   
               <div class="table-container">

@@ -507,8 +507,7 @@ const ProfileInfo = ({
       return false;
     } else if (
       companyName.trim().length < 1 ||
-      companyName.trim().length > 30 ||
-      !nameCityRegex.test(companyName)
+      companyName.trim().length > 30
     ) {
       setCompanyNameError(true);
       toast.error("Please enter a valid appraiser company name");
@@ -641,8 +640,8 @@ const ProfileInfo = ({
         axios
           .put("/api/updateAppraiserCompanyProfile", payload)
           .then((res) => {
-            toast.success("Successfully Updated Profile!");
-
+            toast.success("Successfully Updated !");
+            console.log("user is",res.data.userData);
             let data = userData;
             data.smsNotification = res.data.userData.isSms;
             data.emailNotification = res.data.userData.isEmail;
@@ -652,7 +651,6 @@ const ProfileInfo = ({
             setShowCard(true);
             router.push("/appraiser-company-dashboard");
             setIsSubmitInProgress(false);
-            window.location.reload();
           })
           .catch((err) => {
             if (TimesTrigerredSubmission < 2) {

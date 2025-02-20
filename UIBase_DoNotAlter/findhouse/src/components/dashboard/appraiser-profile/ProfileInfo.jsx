@@ -12,6 +12,7 @@ import Link from "next/link";
 import { uploadFile } from "./functions";
 import { handleDownloadClick } from "./downloadFunction";
 import ReactInputMask from "react-input-mask";
+import CommonLoader from "../../common/CommonLoader/page";
 
 const ProfileInfo = ({
   setProfileCount,
@@ -221,6 +222,7 @@ const ProfileInfo = ({
   const [zipCodeValid, setZipCodeValid] = useState(false);
   const [dropdownValid, setDropdownValid] = useState(false);
   const [designationValid, setDesignationValid] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChangeName = (value, setValue, setValid, setError) => {
     if (value.length <= 30) {
@@ -806,6 +808,8 @@ const ProfileInfo = ({
       <div className="row">
         {/* <h4 className="mb-3">Personal Information</h4> */}
         <div className="col-lg-12"></div>
+        {isLoading && <CommonLoader />}
+
         {!edit && (
           <div>
             <button
